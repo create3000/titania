@@ -84,7 +84,7 @@ WorldInfo {
 
 TimeSensor { }
 
-Script {
+DEF Test Script {
   url "javascript:
 
 // -[]/{}()*+?.\\^$|

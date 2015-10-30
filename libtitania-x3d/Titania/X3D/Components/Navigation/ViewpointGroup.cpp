@@ -182,7 +182,7 @@ ViewpointGroup::addTool ()
 void
 ViewpointGroup::removeTool (const bool really)
 {
-	proximitySensor -> removeTool (true);
+	proximitySensor -> removeTool (really);
 }
 
 void

@@ -776,3 +776,17 @@ Adjustment::changed
   virtual void on_changed();
 TreeViewColumn::clicked
   virtual void on_clicked();
+Entry::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* event);
+Entry::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* event);
+Entry::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* event);
+SearchEntry::insert_text
+  virtual void on_insert_text(const Glib::ustring& text, int* position);
+SearchEntry::map
+  virtual void on_map();
+SearchEntry::configure_event
+  virtual bool on_configure_event(GdkEventConfigure* event);
+SearchEntry::size_allocate
+  virtual void on_size_allocate(Gtk::Allocation& allocation);

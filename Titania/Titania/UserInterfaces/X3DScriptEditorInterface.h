@@ -317,6 +317,10 @@ public:
 	getSearchBox () const
 	{ return *m_SearchBox; }
 
+	Gtk::Grid &
+	getSearchAndReplaceBox () const
+	{ return *m_SearchAndReplaceBox; }
+
 	Gtk::Box &
 	getReplaceButtonsBox () const
 	{ return *m_ReplaceButtonsBox; }
@@ -352,6 +356,22 @@ public:
 	Gtk::ToggleButton &
 	getToggleReplaceButton () const
 	{ return *m_ToggleReplaceButton; }
+
+	Gtk::Box &
+	getGoToLineBox () const
+	{ return *m_GoToLineBox; }
+
+	Gtk::SearchEntry &
+	getGoToLineEntry () const
+	{ return *m_GoToLineEntry; }
+
+	Gtk::Button &
+	getGoToLineButton () const
+	{ return *m_GoToLineButton; }
+
+	Gtk::Button &
+	getHideGoToLineButton () const
+	{ return *m_HideGoToLineButton; }
 
 	virtual
 	void
@@ -462,6 +482,22 @@ public:
 	on_replace_all_clicked () = 0;
 
 	virtual
+	bool
+	on_entry_focus_in_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_entry_focus_out_event (GdkEventFocus* event) = 0;
+
+	virtual
+	bool
+	on_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	bool
+	on_key_release_event (GdkEventKey* event) = 0;
+
+	virtual
 	void
 	on_search_backward_clicked () = 0;
 
@@ -474,28 +510,28 @@ public:
 	on_hide_search_clicked () = 0;
 
 	virtual
-	bool
-	on_search_entry_focus_in_event (GdkEventFocus* event) = 0;
-
-	virtual
-	bool
-	on_search_entry_focus_out_event (GdkEventFocus* event) = 0;
-
-	virtual
 	void
 	on_search_menu_icon_released (Gtk::EntryIconPosition icon_position, const GdkEventButton* event) = 0;
 
 	virtual
-	bool
-	on_key_press_event (GdkEventKey* event) = 0;
-
-	virtual
-	bool
-	on_key_release_event (GdkEventKey* event) = 0;
+	void
+	on_search_size_allocate (Gtk::Allocation & allocation) = 0;
 
 	virtual
 	void
 	on_replace_toggled () = 0;
+
+	virtual
+	void
+	on_go_to_line_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	bool
+	on_go_to_line_key_press_event (GdkEventKey* event) = 0;
+
+	virtual
+	void
+	on_go_to_line_button_clicked () = 0;
 
 	virtual
 	~X3DScriptEditorInterface ();
@@ -567,6 +603,7 @@ private:
 	Gtk::TreeView*                 m_ColorThemeTreeView;
 	Gtk::Revealer*                 m_SearchRevealer;
 	Gtk::Box*                      m_SearchBox;
+	Gtk::Grid*                     m_SearchAndReplaceBox;
 	Gtk::Box*                      m_ReplaceButtonsBox;
 	Gtk::Button*                   m_ReplaceButton;
 	Gtk::Button*                   m_ReplaceAllButton;
@@ -576,6 +613,10 @@ private:
 	Gtk::Button*                   m_HideSearchButton;
 	Gtk::SearchEntry*              m_SearchEntry;
 	Gtk::ToggleButton*             m_ToggleReplaceButton;
+	Gtk::Box*                      m_GoToLineBox;
+	Gtk::SearchEntry*              m_GoToLineEntry;
+	Gtk::Button*                   m_GoToLineButton;
+	Gtk::Button*                   m_HideGoToLineButton;
 
 };
 

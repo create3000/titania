@@ -58,6 +58,9 @@
 #include <gtksourceview/gtksourcesearchcontext.h>
 #include <gtksourceview/gtksourcesearchsettings.h>
 
+#include <regex>
+#include <sstream>
+
 namespace titania {
 namespace puck {
 
@@ -71,7 +74,7 @@ X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	              searchMark (),
 	        searchConnection (),
 	          recentSearches (),
-	                replace (false)
+	                 replace (false)
 { }
 
 void
@@ -97,13 +100,6 @@ X3DScriptEditorSearch::initialize ()
 
 	gtk_source_search_context_set_highlight (searchContext, true);
 
-	// Search Widget
-
-	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));
-
-	if (getConfig () .getBoolean ("searchEnabled"))
-		on_enable_search ();
-
 	// Search Menu
 
 	getCaseSensitiveMenuItem ()      .set_active (getConfig () .getBoolean ("searchCaseSensitive"));
@@ -119,36 +115,42 @@ X3DScriptEditorSearch::initialize ()
 
 	// Restore search and replace strings
 
-	getSearchEntry ()  .set_text (getConfig () .getString ("searchString"));
-	getReplaceEntry () .set_text (getConfig () .getString ("replaceString"));
+	getSearchEntry ()   .set_text (getConfig () .getString ("searchString"));
+	getReplaceEntry ()  .set_text (getConfig () .getString ("replaceString"));
+	getGoToLineEntry () .set_text (getConfig () .getString ("lineNumber"));
 
 	// Search Menu Icon (workaround issue, as settings are not applied from builder)
 
 	getSearchEntry () .set_icon_activatable (true, Gtk::ENTRY_ICON_PRIMARY);
 	getSearchEntry () .set_icon_sensitive   (Gtk::ENTRY_ICON_PRIMARY, true);
+
+	// Enable Search Widget
+
+	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));
+
+	if (getConfig () .getBoolean ("searchEnabled"))
+		on_enable_search ();
+
+	else if (getConfig () .getBoolean ("goToLineEnabled"))
+		on_enable_go_to_line ();
 }
 
-bool
-X3DScriptEditorSearch::on_search_entry_focus_in_event (GdkEventFocus*)
+void
+X3DScriptEditorSearch::on_search_size_allocate (Gtk::Allocation &)
 {
-	getBrowserWindow () -> hasAccelerators (false);
-
-	searchMark = getTextBuffer () -> create_mark (getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ()));
-
-	return false;
+	on_size_allocate (getTextView () .get_allocation ());
 }
 
-bool
-X3DScriptEditorSearch::on_search_entry_focus_out_event (GdkEventFocus*)
+void
+X3DScriptEditorSearch::on_size_allocate (const Gtk::Allocation & allocation)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	const auto    width  = allocation .get_width () * (2 - math::M_PHI);
+	const auto    box    = getSearchBox ()   .get_allocation () .get_width ();
+	const auto    entry  = getSearchEntry () .get_allocation () .get_width ();
+	const int32_t width_ = width * entry / box;
 
-	getTextBuffer () -> delete_mark (searchMark);
-
-	// Don't leave the mark alone.
-	searchMark = getTextBuffer () -> get_insert ();
-
-	return false;
+	getSearchEntry ()  .set_size_request (width_, -1);
+	getReplaceEntry () .set_size_request (width_, -1);
 }
 
 bool
@@ -205,6 +207,16 @@ X3DScriptEditorSearch::on_key_press_event (GdkEventKey* event)
 
 			break;
 		}
+		case GDK_KEY_i:
+		{
+			if (keys .control ())
+			{
+				on_enable_go_to_line ();
+				return true;
+			}
+
+			break;
+		}
 		default:
 			break;
 	}
@@ -220,16 +232,32 @@ X3DScriptEditorSearch::on_key_release_event (GdkEventKey* event)
 	return false;
 }
 
-void
-X3DScriptEditorSearch::on_size_allocate (const Gtk::Allocation & allocation)
+bool
+X3DScriptEditorSearch::on_entry_focus_in_event (GdkEventFocus*)
 {
-	const auto width = allocation .get_width () * (2 - math::M_PHI);
-	const auto box   = getSearchBox ()   .get_allocation () .get_width ();
-	const auto entry = getSearchEntry () .get_allocation () .get_width ();
+	getBrowserWindow () -> hasAccelerators (false);
 
-	getSearchEntry ()  .set_size_request (width * entry / box, -1);
-	getReplaceEntry () .set_size_request (width * entry / box, -1);
+	searchMark = getTextBuffer () -> create_mark (getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ()));
+
+	return false;
 }
+
+bool
+X3DScriptEditorSearch::on_entry_focus_out_event (GdkEventFocus*)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+
+	getTextBuffer () -> delete_mark (searchMark);
+
+	// Don't leave the mark alone.
+	searchMark = getTextBuffer () -> get_insert ();
+
+	return false;
+}
+
+/*
+ * Search
+ */
 
 void
 X3DScriptEditorSearch::on_enable_search ()
@@ -243,6 +271,9 @@ X3DScriptEditorSearch::on_enable_search ()
 
 	std::string selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
 
+	if (selection .empty ())
+		selection = getSearchEntry () .get_text ();
+
 	if (selection .size ())
 	{
 		if (getRegularExpressionMenuItem () .get_active ())
@@ -255,9 +286,10 @@ X3DScriptEditorSearch::on_enable_search ()
 
 	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_entry_changed));
 
-	on_size_allocate (getTextView () .get_allocation ());
-	getSearchEntry ()    .grab_focus ();
-	getSearchRevealer () .set_reveal_child (true);
+	getGoToLineBox ()         .set_visible (false);
+	getSearchAndReplaceBox () .set_visible (true);
+	getSearchEntry ()         .grab_focus ();
+	getSearchRevealer ()      .set_reveal_child (true);
 
 	if (selection .size ())
 		getTextBuffer () -> select_range (selectionBegin, selectionEnd);
@@ -279,9 +311,13 @@ X3DScriptEditorSearch::on_search_menu_icon_released (Gtk::EntryIconPosition icon
 	switch (icon_position)
 	{
 		case Gtk::ENTRY_ICON_PRIMARY:
+		{
 			on_build_search_menu ();
+
 			getSearchMenu () .popup (event -> button, event -> time);
+
 			break;
+		}
 		case Gtk::ENTRY_ICON_SECONDARY:
 			break;
 	}
@@ -474,6 +510,10 @@ X3DScriptEditorSearch::on_hide_search_clicked ()
 	gtk_source_search_settings_set_search_text (searchSettings, nullptr);
 }
 
+/*
+ * Replace
+ */
+
 void
 X3DScriptEditorSearch::on_replace_forward_clicked ()
 {
@@ -482,8 +522,8 @@ X3DScriptEditorSearch::on_replace_forward_clicked ()
 
 	if (replace)
 	{
-	   if (getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd))
-	   {
+		if (getTextBuffer () -> get_selection_bounds (selectionBegin, selectionEnd))
+		{
 			const auto selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
 			const auto string    = getReplaceEntry () .get_text ();
 
@@ -513,15 +553,86 @@ X3DScriptEditorSearch::on_replace_all_clicked ()
 	gtk_source_search_context_replace_all (searchContext, string .c_str (), string .size (), &error);
 }
 
+/*
+ * Go to line
+ */
+
+void
+X3DScriptEditorSearch::on_enable_go_to_line ()
+{
+	getSearchAndReplaceBox () .set_visible (false);
+	getGoToLineBox ()         .set_visible (true);
+	getGoToLineEntry ()       .grab_focus ();
+	getSearchRevealer ()      .set_reveal_child (true);
+}
+
+void
+X3DScriptEditorSearch::on_go_to_line_insert_text (const Glib::ustring & text, int* position)
+{
+	static const std::regex integers (R"([\d]+)");
+
+	const bool valid = std::regex_match (std::string (text), integers);
+
+	if (not valid)
+		getGoToLineEntry () .signal_insert_text () .emission_stop ();
+}
+
+void
+X3DScriptEditorSearch::on_go_to_line_button_clicked ()
+{
+	std::istringstream istream (getGoToLineEntry () .get_text ());
+
+	size_t lineNumber;
+
+	istream >> lineNumber;
+
+	if (lineNumber == 0)
+		return;
+
+	-- lineNumber;
+
+	auto iter = getTextBuffer () -> begin ();
+
+	iter .set_line (lineNumber);
+	iter .set_line_offset (0);
+
+	getTextBuffer () -> place_cursor (iter);
+	getTextView () .scroll_to (iter, 0, 0, 2 - math::M_PHI);
+}
+
+bool
+X3DScriptEditorSearch::on_go_to_line_key_press_event (GdkEventKey* event)
+{
+	switch (event -> keyval)
+	{
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+		{
+			on_go_to_line_button_clicked ();
+			return true;
+		}
+		default:
+		   break;
+	}
+
+	return false;
+}
+
+/*
+ * Destruction
+ */
+
 X3DScriptEditorSearch::~X3DScriptEditorSearch ()
 {
 	// Search & Replace
 
-	getConfig () .setItem ("searchEnabled",  getSearchRevealer ()      .get_child_revealed ());
-	getConfig () .setItem ("replaceEnabled", getToggleReplaceButton () .get_active ());
+	getConfig () .setItem ("searchEnabled",   getSearchRevealer () .get_child_revealed () and getSearchAndReplaceBox () .get_visible ());
+	getConfig () .setItem ("replaceEnabled",  getToggleReplaceButton () .get_active ());
+	getConfig () .setItem ("goToLineEnabled", getSearchRevealer () .get_child_revealed () and getGoToLineBox () .get_visible ());
 
-	getConfig () .setItem ("searchString",  getSearchEntry ()  .get_text ());
-	getConfig () .setItem ("replaceString", getReplaceEntry () .get_text ());
+	getConfig () .setItem ("searchString",  getSearchEntry ()   .get_text ());
+	getConfig () .setItem ("replaceString", getReplaceEntry ()  .get_text ());
+	getConfig () .setItem ("lineNumber",    getGoToLineEntry () .get_text ());
 
 	getConfig () .setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
 	getConfig () .setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());

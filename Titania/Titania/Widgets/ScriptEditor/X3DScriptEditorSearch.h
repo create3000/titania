@@ -99,12 +99,11 @@ private:
 	///  @name Event handler
 
 	virtual
-	bool
-	on_search_entry_focus_in_event (GdkEventFocus*) final override;
+	void
+	on_search_size_allocate (Gtk::Allocation &) final override;
 
-	virtual
-	bool
-	on_search_entry_focus_out_event (GdkEventFocus*) final override;
+	void
+	on_size_allocate (const Gtk::Allocation &);
 
 	virtual
 	bool
@@ -114,8 +113,15 @@ private:
 	bool
 	on_key_release_event (GdkEventKey*) final override;
 
-	void
-	on_size_allocate (const Gtk::Allocation &);
+	virtual
+	bool
+	on_entry_focus_in_event (GdkEventFocus*) final override;
+
+	virtual
+	bool
+	on_entry_focus_out_event (GdkEventFocus*) final override;
+
+	///  @name Search
 
 	void
 	on_enable_search ();
@@ -193,6 +199,8 @@ private:
 	void
 	on_hide_search_clicked () final override;
 
+	///  @name Replace
+
 	virtual
 	void
 	on_replace_forward_clicked () final override;
@@ -203,6 +211,24 @@ private:
 	virtual
 	void
 	on_replace_all_clicked () final override;
+
+	///  @name Go to line
+
+	void
+	on_enable_go_to_line ();
+
+	virtual
+	void
+	on_go_to_line_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_go_to_line_button_clicked () final override;
+
+	virtual
+	bool
+	on_go_to_line_key_press_event (GdkEventKey*) final override;
+
 
 	///  @name Members
 

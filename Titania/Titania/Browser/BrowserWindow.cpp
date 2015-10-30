@@ -69,7 +69,6 @@
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
-#include <Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h>
 #include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
@@ -83,6 +82,13 @@
 
 namespace titania {
 namespace puck {
+
+const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
+	X3D::X3DConstants::ProximitySensor,
+	X3D::X3DConstants::GeoProximitySensor,
+	X3D::X3DConstants::ProximitySensorTool,
+	X3D::X3DConstants::ViewpointGroup
+};
 
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBaseInterface (this, browser),
@@ -371,7 +377,7 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	for (const auto & node : selection)
 	{
-		if (X3D::x3d_cast <X3D::ProximitySensor*> (node))
+		if (proximitySensors .count (node -> getType () .back ()))
 		{
 			getProximitySensorsAction () -> set_active (true);
 			break;
@@ -1561,17 +1567,11 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	if (changing)
 		return;
 
-	static const std::set <X3D::X3DConstants::NodeType> types = {
-		X3D::X3DConstants::ProximitySensor,
-		X3D::X3DConstants::GeoProximitySensor,
-		X3D::X3DConstants::ProximitySensorTool,
-	};
-
 	if (getProximitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  if (types .count (node -> getType () .back ()))
+		                  if (proximitySensors .count (node -> getType () .back ()))
 									node -> addTool ();
 
 		                  return true;
@@ -1583,7 +1583,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  if (types .count (node -> getType () .back ()))
+		                  if (proximitySensors .count (node -> getType () .back ()))
 									node -> removeTool (true);
 
 		                  return true;

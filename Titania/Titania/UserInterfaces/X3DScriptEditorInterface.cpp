@@ -120,6 +120,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorThemeTreeView", m_ColorThemeTreeView);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
+	m_builder -> get_widget ("SearchAndReplaceBox", m_SearchAndReplaceBox);
 	m_builder -> get_widget ("ReplaceButtonsBox", m_ReplaceButtonsBox);
 	m_builder -> get_widget ("ReplaceButton", m_ReplaceButton);
 	m_builder -> get_widget ("ReplaceAllButton", m_ReplaceAllButton);
@@ -129,6 +130,10 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HideSearchButton", m_HideSearchButton);
 	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
 	m_builder -> get_widget ("ToggleReplaceButton", m_ToggleReplaceButton);
+	m_builder -> get_widget ("GoToLineBox", m_GoToLineBox);
+	m_builder -> get_widget ("GoToLineEntry", m_GoToLineEntry);
+	m_builder -> get_widget ("GoToLineButton", m_GoToLineButton);
+	m_builder -> get_widget ("HideGoToLineButton", m_HideGoToLineButton);
 
 	// Connect object Gtk::MenuItem with id 'NewScriptMenuItem'.
 	m_NewScriptMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_script_activated));
@@ -184,19 +189,40 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'ReplaceButton'.
 	m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_forward_clicked));
 	m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_all_clicked));
+
+	// Connect object Gtk::Entry with id 'ReplaceEntry'.
+	m_ReplaceEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_ReplaceEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
+	m_ReplaceEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_ReplaceEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
+
+	// Connect object Gtk::Button with id 'SearchBackwardButton'.
 	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));
 	m_SearchForwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_forward_clicked));
 	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_in_event));
-	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_entry_focus_out_event));
+	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
 	m_SearchEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_menu_icon_released), false);
 	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
 	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
+	m_SearchEntry -> signal_size_allocate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_size_allocate));
 
 	// Connect object Gtk::ToggleButton with id 'ToggleReplaceButton'.
 	m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_toggled));
+
+	// Connect object Gtk::SearchEntry with id 'GoToLineEntry'.
+	m_GoToLineEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_GoToLineEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
+	m_GoToLineEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_insert_text), false);
+	m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_key_press_event), false);
+	m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_GoToLineEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
+
+	// Connect object Gtk::Button with id 'GoToLineButton'.
+	m_GoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_button_clicked));
+	m_HideGoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
 
 	// Call construct handler of base class.
 	construct ();

@@ -779,6 +779,10 @@ private:
 
 	///  @name Members
 
+	static const std::set <X3D::X3DConstants::NodeType> proximitySensors;
+
+	///  @name Members
+
 	bool                        changing;
 	X3D::X3DConstants::NodeType viewer;
 
