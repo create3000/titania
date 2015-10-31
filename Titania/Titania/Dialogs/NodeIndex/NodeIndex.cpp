@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,10 +55,12 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Execution/NamedNode.h>
-#include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
+#include <Titania/X3D/Execution/ImportedNode.h>
+#include <Titania/X3D/Execution/NamedNode.h>
+#include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 
 #include <Titania/OS.h>
 #include <Titania/String.h>
@@ -84,9 +86,10 @@ static constexpr int EXPORTED_NODES = 3;
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.xml"), gconf_dir ()),
-	     executionContext (),
+	     executionContext (getMasterBrowser () -> getExecutionContext ()),
 	                index (NAMED_NODES_INDEX),
 	                types (),
+	            protoNode (),
 	                nodes (),
 	                 node (),
 	            nodeTypes (),
@@ -118,7 +121,7 @@ NodeIndex::initialize ()
 
 		nodeTypes .emplace (node -> getTypeName (), node -> getType () .back ());
 	}
-  
+
 	const auto cellrenderer = Gtk::manage (new Gtk::CellRendererText ());
 	getSearchEntryCompletion () -> pack_start (*cellrenderer, false);
 	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
@@ -131,12 +134,12 @@ NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::Tre
 {
 	std::string lhsString;
 	std::string rhsString;
-	   
+
 	lhs -> get_value (Columns::NAME, lhsString);
 	rhs -> get_value (Columns::NAME, rhsString);
 
 	if (lhsString == rhsString)
-	   return 0;
+		return 0;
 
 	return basic::naturally_compare (lhsString, rhsString) ? -1 : 1;
 }
@@ -159,7 +162,7 @@ NodeIndex::refresh ()
 		case ANIMATION_INDEX:
 		{
 			X3D::MFNode animations;
-			
+
 			for (const auto & basenode : getNodes ({ X3D::X3DConstants::Group }))
 			{
 				try
@@ -173,6 +176,22 @@ NodeIndex::refresh ()
 			}
 
 			setNodes (std::move (animations));
+			break;
+		}
+		case PROTO_INDEX:
+		{
+			X3D::MFNode nodes;
+
+			if (protoNode)
+			{
+				for (const auto & node : protoNode -> getInstances ())
+				{
+					if (node -> getExecutionContext () == getCurrentContext ())
+						nodes .emplace_back (node);
+				}
+			}
+
+			setNodes (std::move (nodes));
 			break;
 		}
 	}
@@ -203,6 +222,17 @@ NodeIndex::setAnimations ()
 	executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
 
 	index = ANIMATION_INDEX;
+	refresh ();
+}
+
+void
+NodeIndex::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
+{
+	protoNode = value;
+
+	executionContext -> sceneGraph_changed () .addInterest (this, &NodeIndex::refresh);
+
+	index = PROTO_INDEX;
 	refresh ();
 }
 
@@ -246,7 +276,7 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 	// Find nodes
 
 	X3D::MFNode nodes;
-	
+
 	if (inPrototypeInstance ())
 		return nodes;
 
@@ -279,7 +309,7 @@ NodeIndex::getNodes ()
 	// Find nodes
 
 	X3D::MFNode nodes;
-	
+
 	if (inPrototypeInstance ())
 		return nodes;
 
@@ -381,7 +411,7 @@ NodeIndex::on_search_entry_key_press_event (GdkEventKey* event)
 			}
 			catch (const std::out_of_range &)
 			{
-			   setTypes ({ });
+				setTypes ({ });
 			}
 
 			return true;
@@ -404,15 +434,15 @@ NodeIndex::on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter
 {
 	try
 	{
-	   Glib::ustring typeName;
+		Glib::ustring typeName;
 
-	   iter -> get_value (Search::TYPE_NAME, typeName);
+		iter -> get_value (Search::TYPE_NAME, typeName);
 
 		setTypes ({ nodeTypes .at (typeName) });
 	}
 	catch (const std::out_of_range &)
 	{
-	   setTypes ({ });
+		setTypes ({ });
 	}
 
 	return false;
@@ -429,6 +459,7 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 	{
 		case NAMED_NODES_INDEX:
 		case TYPE_INDEX:
+		case PROTO_INDEX:
 		{
 			const X3D::MFNode selection = { node };
 

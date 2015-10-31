@@ -729,7 +729,7 @@ private:
 	getChildrenInProtoinstance (const X3D::SFNode &, const std::set <X3D::SFNode> &, std::set <X3D::SFNode> &) const;
 
 	void
-	set_viewer (const X3D::X3DConstants::NodeType);
+	set_viewer ();
 
 	void
 	set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> &);

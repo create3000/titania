@@ -181,6 +181,10 @@ public:
 	getURLRemoveButton () const
 	{ return *m_URLRemoveButton; }
 
+	Gtk::Box &
+	getInstancesBox () const
+	{ return *m_InstancesBox; }
+
 	virtual
 	void
 	on_create_instance_clicked () = 0;
@@ -192,6 +196,10 @@ public:
 	virtual
 	void
 	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	bool
+	on_name_key_press_event (GdkEventKey* event) = 0;
 
 	virtual
 	void
@@ -233,6 +241,7 @@ private:
 	Gtk::TreeView*                         m_URLTreeView;
 	Gtk::Button*                           m_URLAddButton;
 	Gtk::Button*                           m_URLRemoveButton;
+	Gtk::Box*                              m_InstancesBox;
 
 };
 

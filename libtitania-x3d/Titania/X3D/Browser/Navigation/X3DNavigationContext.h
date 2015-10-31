@@ -74,22 +74,26 @@ public:
 	getActiveViewpointEvent () const
 	{ return activeViewpointOutput; }
 
-	bool
-	getLockViewer () const
-	{ return viewerIsLocked; }
-
-	void
-	setLockViewer (const bool value)
-	{ viewerIsLocked = value; }
+	X3D::X3DConstants::NodeType
+	getCurrentViewer () const;
 
 	virtual
 	void
-	setViewer (const X3DConstants::NodeType);
+	setViewer (const X3DConstants::NodeType value)
+	{ viewer = value; }
 
 	virtual
 	const SFEnum <X3DConstants::NodeType> &
 	getViewer () const
 	{ return viewer; }
+
+	void
+	setPrivateViewer (const X3DConstants::NodeType value)
+	{ privateViewer = value; }
+
+	const SFEnum <X3DConstants::NodeType> &
+	getPrivateViewer () const
+	{ return privateViewer; }
 
 	const MFEnum <X3DConstants::NodeType> &
 	getAvailableViewers () const
@@ -168,8 +172,8 @@ private:
 	X3DLayerNodePtr                 activeLayer;
 	NavigationInfo*                 activeNavigationInfo;
 	SFTime                          activeNavigationInfoOutput;
-	bool                            viewerIsLocked;
 	SFEnum <X3DConstants::NodeType> viewer;
+	SFEnum <X3DConstants::NodeType> privateViewer;
 	MFEnum <X3DConstants::NodeType> availableViewers;
 	SFTime                          activeViewpointOutput;
 	std::set <const X3DBaseNode*>   activeCollisions;

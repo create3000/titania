@@ -383,7 +383,7 @@ X3DRenderer::gravite ()
 	{
 		// Terrain following and gravitation
 
-		if (getBrowser () -> getViewer () not_eq X3DConstants::WalkViewer)
+		if (getBrowser () -> getCurrentViewer () not_eq X3DConstants::WalkViewer)
 			return;
 
 		// Get NavigationInfo values

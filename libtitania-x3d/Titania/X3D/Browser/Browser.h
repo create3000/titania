@@ -149,7 +149,7 @@ private:
 	set_cursor (const Gdk::CursorType);
 
 	void
-	set_viewer (const X3DConstants::NodeType);
+	set_viewer ();
 
 	///  @name Operations
 

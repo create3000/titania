@@ -57,6 +57,7 @@
 namespace titania {
 namespace puck {
 
+class X3DProtoDeclarationNode;
 class AdjustmentObject;
 
 class NodeIndex :
@@ -79,6 +80,9 @@ public:
 	void
 	setAnimations ();
 
+	void
+	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
+
 	const X3D::SFNode &
 	getNode () const
 	{ return node; }
@@ -95,7 +99,8 @@ private:
 	{
 		NAMED_NODES_INDEX,
 		TYPE_INDEX,
-		ANIMATION_INDEX
+		ANIMATION_INDEX,
+		PROTO_INDEX
 	};
 
 	///  @name Construction
@@ -153,6 +158,7 @@ private:
 	X3D::X3DExecutionContextPtr                         executionContext;
 	IndexType                                           index;
 	std::set <X3D::X3DConstants::NodeType>              types;
+	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>          protoNode;
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;

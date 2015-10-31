@@ -90,7 +90,7 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 
 	addChildren (viewer,
 	             keyDevice,
-                pointingDevice,
+	             pointingDevice,
 	             cursor);
 }
 
@@ -107,7 +107,7 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 
 	addChildren (viewer,
 	             keyDevice,
-                pointingDevice,
+	             pointingDevice,
 	             cursor);
 }
 
@@ -128,9 +128,10 @@ Browser::initialize ()
 	keyDevice      -> setup ();
 	pointingDevice -> setup ();
 
-	getCursor () .addInterest (this, &Browser::set_cursor);
-	getViewer () .addInterest (this, &Browser::set_viewer);
-	changed ()   .addInterest (this, &Gtk::Widget::queue_draw);
+	getCursor ()        .addInterest (this, &Browser::set_cursor);
+	getViewer ()        .addInterest (this, &Browser::set_viewer);
+	getPrivateViewer () .addInterest (this, &Browser::set_viewer);
+	changed ()          .addInterest (this, &Gtk::Widget::queue_draw);
 
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |
@@ -184,11 +185,13 @@ Browser::set_cursor (const Gdk::CursorType value)
 }
 
 void
-Browser::set_viewer (const X3DConstants::NodeType type)
+Browser::set_viewer ()
 {
+	const auto type = getCurrentViewer ();
+
 	setCursor (Gdk::TOP_LEFT_ARROW);
 
-	if (viewer -> getType () .back () not_eq type)
+	if (type not_eq viewer -> getType () .back ())
 	{
 		switch (type)
 		{
@@ -223,7 +226,7 @@ Browser::set_viewer (const X3DConstants::NodeType type)
 				break;
 			}
 			default:
-			   break;
+				break;
 		}
 
 		viewer -> setup ();
@@ -235,13 +238,13 @@ Browser::reshape ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-   try
+	try
 	{
 		X3DBrowser::reshape ();
 	}
 	catch (const X3D::X3DError &)
 	{
-	   // Send error message, via signal?
+		// Send error message, via signal?
 	}
 }
 
@@ -250,13 +253,13 @@ Browser::update ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-   try
+	try
 	{
 		X3DBrowser::update ();
 	}
 	catch (const X3D::X3DError &)
 	{
-	   // Send error message, via signal?
+		// Send error message, via signal?
 	}
 }
 
@@ -271,7 +274,7 @@ Browser::dispose ()
 	const auto container = get_parent ();
 
 	if (container)
-	   container -> remove (*this);
+		container -> remove (*this);
 }
 
 Browser::~Browser ()

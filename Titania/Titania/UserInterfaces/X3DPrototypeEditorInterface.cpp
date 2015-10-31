@@ -86,11 +86,13 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
+	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 
 	// Connect object Gtk::Entry with id 'NameEntry'.
 	m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_delete_text), false);
 	m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_insert_text), false);
+	m_NameEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_key_press_event), false);
 
 	// Connect object Gtk::Button with id 'RenameButton'.
 	m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_rename_clicked));

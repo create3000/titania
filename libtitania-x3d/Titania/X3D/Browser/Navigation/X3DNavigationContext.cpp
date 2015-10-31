@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,8 +66,8 @@ X3DNavigationContext::X3DNavigationContext () :
 	               activeLayer (),
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
-	            viewerIsLocked (false),
 	                    viewer (X3DConstants::NoneViewer),
+	             privateViewer (X3DConstants::X3DBaseNode),
 	          availableViewers (),
 	     activeViewpointOutput (),
 	          activeCollisions ()
@@ -75,6 +75,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	addChildren (activeLayer,
 	             activeNavigationInfoOutput,
 	             viewer,
+	             privateViewer,
 	             availableViewers,
 	             activeViewpointOutput);
 }
@@ -85,13 +86,13 @@ X3DNavigationContext::initialize ()
 	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
 }
 
-void
-X3DNavigationContext::setViewer (const X3DConstants::NodeType value)
+X3D::X3DConstants::NodeType
+X3DNavigationContext::getCurrentViewer () const
 {
-   if (getLockViewer ())
-      return;
-     
-	viewer = value;
+	if (getPrivateViewer () not_eq X3DConstants::X3DBaseNode)
+	   return getPrivateViewer ();
+
+	return getViewer ();
 }
 
 void
@@ -164,9 +165,6 @@ X3DNavigationContext::set_viewpoint ()
 void
 X3DNavigationContext::set_navigationInfo_type ()
 {
-	if (getLockViewer ())
-	   return;
-
 	availableViewers .clear ();
 
 	bool examineViewer = false;

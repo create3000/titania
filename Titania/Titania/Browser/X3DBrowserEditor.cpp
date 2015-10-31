@@ -172,7 +172,7 @@ X3DBrowserEditor::set_shutdown ()
 void
 X3DBrowserEditor::set_executionContext ()
 {
-	if (not getArrowButton () .get_active ())
+	if (not (isEditor () and getArrowButton () .get_active ()))
 	   return;
 
 	try
@@ -222,9 +222,10 @@ X3DBrowserEditor::set_executionContext ()
 void
 X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 {
-	getCurrentBrowser () -> setLockViewer (false);
-	getCurrentBrowser () -> setViewer (viewer);
-	getCurrentBrowser () -> setLockViewer (getArrowButton () .get_active ());
+	if (isEditor () and getArrowButton () .get_active ())
+	   getCurrentBrowser () -> setPrivateViewer (viewer);
+	else
+		getCurrentBrowser () -> setViewer (viewer);
 }
 
 void
@@ -497,7 +498,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 
-		const auto type = types .find (getCurrentBrowser () -> getViewer ());
+		const auto type = types .find (getCurrentBrowser () -> getCurrentViewer ());
 
 		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
 	}

@@ -202,6 +202,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
 	getCurrentBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
 	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
@@ -218,6 +219,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getCurrentBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
 	getCurrentBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
 	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
@@ -229,7 +231,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	// Initialize
 
 	set_activeLayer ();
-	set_viewer (getCurrentBrowser () -> getViewer ());
+	set_viewer ();
 	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
@@ -1234,6 +1236,11 @@ BrowserWindow::isEditor (const bool enabled)
 		getHandButton () .set_active (true);
 	
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
+
+	if (isEditor () and getArrowButton () .get_active ())
+	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewer ());
+	else
+		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }
 
 void
@@ -2309,7 +2316,10 @@ BrowserWindow::set_arrow_button (const bool value)
 
 	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
-	getCurrentBrowser () -> setLockViewer (value);
+	if (isEditor () and getArrowButton () .get_active ())
+	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewer ());
+	else
+		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }
 
 void
@@ -2636,8 +2646,10 @@ BrowserWindow::getChildrenInProtoinstance (const X3D::SFNode & parent, const std
 // Viewer
 
 void
-BrowserWindow::set_viewer (const X3D::X3DConstants::NodeType type)
+BrowserWindow::set_viewer ()
 {
+	const auto type = getCurrentBrowser () -> getCurrentViewer ();
+
 	switch (type)
 	{
 		case X3D::X3DConstants::PlaneViewer:
@@ -2724,7 +2736,7 @@ BrowserWindow::set_viewer (const X3D::X3DConstants::NodeType type)
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> & availableViewers)
 {
-	const bool editor    = getEditorAction () -> get_active () and getArrowButton () .get_active ();
+	const bool editor    = isEditor () and getArrowButton () .get_active ();
 	const bool dashboard = getCurrentBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;
@@ -2816,7 +2828,7 @@ BrowserWindow::on_straighten_clicked ()
 {
 	if (getCurrentBrowser () -> getActiveLayer ())
 	{
-		if (getCurrentBrowser () -> getViewer () == X3D::X3DConstants::ExamineViewer)
+		if (getCurrentBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer)
 			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten (true);
 		else
 			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
@@ -2865,12 +2877,12 @@ BrowserWindow::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
-		if (getCurrentBrowser () -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
+		if (getCurrentBrowser () -> getCurrentViewer () not_eq X3D::X3DConstants::LookAtViewer)
 			setViewer (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (getCurrentBrowser () -> getViewer () not_eq viewer)
+		if (getCurrentBrowser () -> getCurrentViewer () not_eq viewer)
 			setViewer (viewer);
 	}
 }

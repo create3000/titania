@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.18.3 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkMenu" id="PrototypeMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -212,6 +212,7 @@
                     <property name="can_focus">True</property>
                     <signal name="delete-text" handler="on_name_delete_text" after="yes" swapped="no"/>
                     <signal name="insert-text" handler="on_name_insert_text" after="yes" swapped="no"/>
+                    <signal name="key-press-event" handler="on_name_key_press_event" after="yes" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -414,9 +415,13 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label6">
+                  <object class="GtkBox" id="InstancesBox">
+                    <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Instances</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </object>
                   <packing>
                     <property name="position">2</property>
