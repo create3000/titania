@@ -267,7 +267,7 @@ SceneLoader::dispose ()
 
 	X3DInput::dispose ();
 
-	// This is very important, otherwise not all nodes do dispose!
+	// This is very important, otherwise not all nodes do dispose as they could be bound in the callback!
 	callback = [ ] (X3DScenePtr &&) { };
 }
 
