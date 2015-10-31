@@ -236,7 +236,7 @@ X3DRenderer::getDistance (const Vector3f & translation) const
 			auto       rotation         = Rotation4f (zAxis, -translation) * localOrientation;
 		
 			// The viewer is alway a straight box depending on the upVector.
-			rotation *= viewpoint -> straightenHorizon (rotation);
+			// rotation *= viewpoint -> straightenHorizon (rotation);
 
 			auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
 			modelViewMatrix .translate (viewpoint -> getUserPosition ());

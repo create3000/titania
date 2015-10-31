@@ -70,6 +70,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("EditPrototypeImage", m_EditPrototypeImage);
+	m_builder -> get_widget ("EditLabel", m_EditLabel);
 	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
 	m_builder -> get_widget ("NewPrototypeButton", m_NewPrototypeButton);
 	m_builder -> get_widget ("CreateInstanceButton", m_CreateInstanceButton);

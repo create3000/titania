@@ -118,6 +118,10 @@ public:
 	{ return *m_EditPrototypeImage; }
 
 	Gtk::Label &
+	getEditLabel () const
+	{ return *m_EditLabel; }
+
+	Gtk::Label &
 	getHeaderLabel () const
 	{ return *m_HeaderLabel; }
 
@@ -225,6 +229,7 @@ private:
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Image*                            m_EditPrototypeImage;
+	Gtk::Label*                            m_EditLabel;
 	Gtk::Label*                            m_HeaderLabel;
 	Gtk::Button*                           m_NewPrototypeButton;
 	Gtk::Button*                           m_CreateInstanceButton;

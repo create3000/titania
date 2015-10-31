@@ -52,13 +52,19 @@
 
 #include "../Routing/Route.h"
 
+//#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),
 	            io ()
-{ }
+{
+	// DEBUG rooted objects
+	//__LOG__ << (X3DChildObject*) this << std::endl;
+	//backtrace_fn (6);	           
+}
 
 void
 X3DFieldDefinition::realize () const

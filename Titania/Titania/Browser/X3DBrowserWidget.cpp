@@ -68,6 +68,9 @@
 #include <Titania/gzstream.h>
 #include <fstream>
 
+// DEBUG rooted objects
+//#include <Titania/X3D/Debug.h>
+
 namespace titania {
 namespace puck {
 
@@ -797,6 +800,12 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 	
 	getBrowserNotebook () .remove_page (*browser);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
+
+	// DEBUG rooted objects
+	//const auto b = browser .getValue ();
+	//const_cast <X3D::BrowserPtr &> (browser_) = nullptr;
+	//const_cast <X3D::BrowserPtr &> (browser)  = nullptr;
+	//X3D::debug_roots (b);
 }
 
 bool

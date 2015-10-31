@@ -166,7 +166,7 @@ TextureLoader::prepareEvents ()
 	   // Interrupt
 	}
 
-	X3DInput::dispose ();
+	dispose ();
 }
 
 void
@@ -178,6 +178,8 @@ TextureLoader::dispose ()
 	stop ();
 
 	X3DInput::dispose ();
+
+	callback = [ ] (const TexturePtr &) { };
 }
 
 TextureLoader::~TextureLoader ()

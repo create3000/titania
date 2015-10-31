@@ -122,7 +122,8 @@ SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
 void
 SceneLoader::wait ()
 {
-	X3DInput::dispose ();
+	if (isStopping ())
+		return;
 
 	if (future .valid ())
 	{
@@ -135,8 +136,6 @@ SceneLoader::wait ()
 			scene -> requestImmediateLoadOfExternProtos ();
 
 			callback (std::move (scene));
-
-			scene .dispose ();
 		}
 		catch (const FutureUrlErrorException & error)
 		{
@@ -149,6 +148,8 @@ SceneLoader::wait ()
 		   // Interrupt
 		}
 	}
+
+	dispose ();
 }
 
 std::future <X3DScenePtr> 
@@ -217,6 +218,7 @@ SceneLoader::set_scene (const bool addEvent)
 	if (status not_eq std::future_status::ready)
 		return;
 
+	// Remove set_scene connection.
 	X3DInput::dispose ();
 
 	try
@@ -242,14 +244,15 @@ SceneLoader::set_scene (const bool addEvent)
 void
 SceneLoader::set_loadCount (const int32_t loadCount)
 {
+	if (isStopping ())
+		return;
+
 	if (loadCount)
 	   return;
 
 	callback (std::move (scene));
 
-	scene .dispose ();
-
-	X3DInput::dispose ();
+	dispose ();
 }
 
 void
@@ -260,7 +263,12 @@ SceneLoader::dispose ()
 
 	stop ();
 
+	scene .dispose ();
+
 	X3DInput::dispose ();
+
+	// This is very important, otherwise not all nodes do dispose!
+	callback = [ ] (X3DScenePtr &&) { };
 }
 
 SceneLoader::~SceneLoader ()
