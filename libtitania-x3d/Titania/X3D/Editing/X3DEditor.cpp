@@ -68,6 +68,8 @@
 
 #include <Titania/Utility/Map.h>
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 
@@ -930,6 +932,9 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 {
 	try
 	{
+		if (name .empty ())
+			return;
+
 		if (name == node -> getName ())
 			return;
 
@@ -947,6 +952,78 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 	}
 	catch (...)
 	{ }
+}
+
+/***
+ *
+ *
+ *
+ * Prototype handling
+ *
+ *
+ *
+ */
+
+void
+X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+                                   const std::string & name,
+                                   const ProtoDeclarationPtr & prototype,
+                                   const UndoStepPtr & undoStep) const
+throw (Error <DISPOSED>)
+{
+	if (name .empty ())
+		return;
+
+	if (name == prototype -> getName ())
+		return;
+
+	const auto uniqueName = executionContext -> getUniqueProtoName (name);
+
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, prototype -> getName (), prototype);
+	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, uniqueName, prototype);
+
+	executionContext -> updateProtoDeclaration (uniqueName, prototype);
+}
+
+void
+X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
+                                         const std::string & name,
+                                         const ExternProtoDeclarationPtr & externProto,
+                                         const UndoStepPtr & undoStep) const
+throw (Error <DISPOSED>)
+{
+	if (name .empty ())
+		return;
+
+	if (name == externProto -> getName ())
+		return;
+
+	// Update name.
+
+	const auto uniqueName = executionContext -> getUniqueExternProtoName (name);
+
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, externProto -> getName (), externProto);
+	undoStep -> addRedoFunction (&X3DExecutionContext::updateExternProtoDeclaration, executionContext, uniqueName, externProto);
+
+	executionContext -> updateExternProtoDeclaration (uniqueName, externProto);
+
+	// Update url.
+
+	if (externProto -> checkLoadState () not_eq COMPLETE_STATE)
+		return;
+
+	undoStep -> addUndoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
+
+	for (auto & URL : externProto -> url ())
+	{
+		basic::uri uri = URL .str ();
+
+		uri .fragment (externProto -> getProtoDeclaration () -> getName ());
+
+		URL = uri .str ();
+	}
+
+	undoStep -> addRedoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
 }
 
 /***

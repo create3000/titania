@@ -59,7 +59,6 @@
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ImportedNode.h"
 #include "../Execution/NamedNode.h"
-#include "../Parser/RegEx.h"
 #include "../Prototype/ExternProtoDeclaration.h"
 #include "../Prototype/ProtoDeclaration.h"
 
@@ -68,6 +67,7 @@
 
 #include <algorithm>
 #include <random>
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -338,8 +338,10 @@ X3DExecutionContext::getUniqueName (std::string name) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	RegEx::LastNumber_ .Replace ("", &name);
+ 	static const std::regex _TrailingNumbers (R"(_\d+$)");
 
+	name = std::regex_replace (name, _TrailingNumbers, "");
+ 	
 	std::string newName = name;
 	size_t      i       = 64;
 
@@ -367,7 +369,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
-	RegEx::LastNumber_ .Replace ("", &name);
+ 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+
+	name = std::regex_replace (name, _TrailingNumbers, "");
 
 	std::string newName = name;
 	size_t      i       = 64;
@@ -515,7 +519,9 @@ throw (Error <INVALID_NODE>,
 std::string
 X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const
 {
-	RegEx::LastNumber_ .Replace ("", &importedName);
+ 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+
+	importedName = std::regex_replace (importedName, _TrailingNumbers, "");
 
 	std::string newName = importedName;
 	size_t      i       = 64;
@@ -710,6 +716,40 @@ throw (Error <INVALID_NAME>,
 	}
 }
 
+std::string
+X3DExecutionContext::getUniqueProtoName (const std::string & name_) const
+throw (Error <DISPOSED>)
+{
+	static const std::regex TrailingNumbers (R"(\d+$)");
+
+	if (not getProtoDeclarations () .count (name_))
+		return name_;
+
+	std::string name = std::regex_replace (name_, TrailingNumbers, "");
+
+	std::string newName = name;
+	size_t      i       = 64;
+
+	if (newName .empty ())
+		newName = "Prototype";
+
+	for (; i;)
+	{
+		if (getProtoDeclarations () .count (newName))
+		{
+			const auto                             min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+			newName  = name;
+			newName += basic::to_string (random (random_engine));
+		}
+		else
+			break;
+	}
+
+	return newName;
+}
+
 //	ExternProto declaration handling
 
 ExternProtoDeclarationPtr
@@ -820,6 +860,40 @@ throw (Error <INVALID_NAME>,
 	{
 		throw Error <INVALID_NAME> ("EXTERNPROTO '" + name + "' not found.");
 	}
+}
+
+std::string
+X3DExecutionContext::getUniqueExternProtoName (const std::string & name_) const
+throw (Error <DISPOSED>)
+{
+	static const std::regex TrailingNumbers (R"(\d+$)");
+
+	if (not getExternProtoDeclarations () .count (name_))
+		return name_;
+
+	std::string name = std::regex_replace (name_, TrailingNumbers, "");
+
+	std::string newName = name;
+	size_t      i       = 64;
+
+	if (newName .empty ())
+		newName = "Prototype";
+
+	for (; i;)
+	{
+		if (getExternProtoDeclarations () .count (newName))
+		{
+			const auto                             min = i;
+			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+			newName  = name;
+			newName += basic::to_string (random (random_engine));
+		}
+		else
+			break;
+	}
+
+	return newName;
 }
 
 void

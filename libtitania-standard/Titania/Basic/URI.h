@@ -268,7 +268,7 @@ public:
 	///  Set the query of this URI.
 	void
 	query (const string_type & query)
-	{ value .query = query; }
+	{ value .query = query; value .string = to_string (); }
 
 	///  Returns the query of this URI.
 	const string_type &
@@ -278,7 +278,7 @@ public:
 	///  Set the fragment of this URI.
 	void
 	fragment (const string_type & fragment)
-	{ value .fragment = fragment; }
+	{ value .fragment = fragment; value .string = to_string (); }
 
 	///  Returns the fragment of this URI.
 	const string_type &

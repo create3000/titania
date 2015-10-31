@@ -403,6 +403,10 @@ public:
 	       Error <DISPOSED>)
 	{ return prototypes; }
 
+	std::string
+	getUniqueProtoName (const std::string &) const
+	throw (Error <DISPOSED>);
+
 	const SFTime &
 	prototypes_changed () const
 	throw (Error <INVALID_OPERATION_TIMING>,
@@ -447,6 +451,10 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return externProtos; }
+
+	std::string
+	getUniqueExternProtoName (const std::string &) const
+	throw (Error <DISPOSED>);
 
 	void
 	requestImmediateLoadOfExternProtos ();

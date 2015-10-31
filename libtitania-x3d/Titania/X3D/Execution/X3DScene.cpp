@@ -64,6 +64,7 @@
 #include <Titania/String/to_string.h>
 
 #include <random>
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -302,8 +303,10 @@ throw (Error <INVALID_NAME>,
 std::string
 X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
 {
-	RegEx::LastNumber_ .Replace ("", &exportedName);
+ 	static const std::regex _TrailingNumbers (R"(_\d+$)");
 
+	exportedName = std::regex_replace (exportedName, _TrailingNumbers, "");
+ 	
 	std::string newName = exportedName;
 	size_t      i       = 64;
 

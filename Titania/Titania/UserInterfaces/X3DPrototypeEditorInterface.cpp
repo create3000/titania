@@ -61,6 +61,9 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_URLCellRendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("URLCellRendererText"));
+	m_URLChooserColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("URLChooserColumn"));
+	m_URLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("URLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
@@ -79,7 +82,18 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrototypeNotebook", m_PrototypeNotebook);
 	m_builder -> get_widget ("InterfaceExpander", m_InterfaceExpander);
 	m_builder -> get_widget ("InterfaceBox", m_InterfaceBox);
+	m_builder -> get_widget ("URLBox", m_URLBox);
+	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
+	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
+	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
+
+	// Connect object Gtk::Entry with id 'NameEntry'.
+	m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_delete_text), false);
+	m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_insert_text), false);
+
+	// Connect object Gtk::Button with id 'RenameButton'.
+	m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_rename_clicked));
 
 	// Call construct handler of base class.
 	construct ();

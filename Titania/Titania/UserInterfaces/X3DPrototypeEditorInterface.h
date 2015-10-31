@@ -89,6 +89,18 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getURLCellRendererText () const
+	{ return m_URLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getURLChooserColumn () const
+	{ return m_URLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getURLCellrendererPixbuf () const
+	{ return m_URLCellrendererPixbuf; }
+
 	Gtk::Menu &
 	getPrototypeMenu () const
 	{ return *m_PrototypeMenu; }
@@ -153,9 +165,37 @@ public:
 	getInterfaceBox () const
 	{ return *m_InterfaceBox; }
 
+	Gtk::Box &
+	getURLBox () const
+	{ return *m_URLBox; }
+
+	Gtk::TreeView &
+	getURLTreeView () const
+	{ return *m_URLTreeView; }
+
+	Gtk::Button &
+	getURLAddButton () const
+	{ return *m_URLAddButton; }
+
+	Gtk::Button &
+	getURLRemoveButton () const
+	{ return *m_URLRemoveButton; }
+
 	virtual
 	void
 	on_create_instance_clicked () = 0;
+
+	virtual
+	void
+	on_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_rename_clicked () = 0;
 
 	virtual
 	~X3DPrototypeEditorInterface ();
@@ -168,24 +208,31 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Menu*                  m_PrototypeMenu;
-	Gtk::Window*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Image*                 m_EditPrototypeImage;
-	Gtk::Label*                 m_HeaderLabel;
-	Gtk::Button*                m_NewPrototypeButton;
-	Gtk::Button*                m_CreateInstanceButton;
-	Gtk::MenuButton*            m_MenuButton;
-	Gtk::Image*                 m_PrototypeImage;
-	Gtk::Label*                 m_PrototypeLabel;
-	Gtk::Box*                   m_NameBox;
-	Gtk::Entry*                 m_NameEntry;
-	Gtk::Button*                m_RenameButton;
-	Gtk::Notebook*              m_PrototypeNotebook;
-	Gtk::Expander*              m_InterfaceExpander;
-	Gtk::Box*                   m_InterfaceBox;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::CellRendererText>   m_URLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
+	Gtk::Menu*                             m_PrototypeMenu;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::Image*                            m_EditPrototypeImage;
+	Gtk::Label*                            m_HeaderLabel;
+	Gtk::Button*                           m_NewPrototypeButton;
+	Gtk::Button*                           m_CreateInstanceButton;
+	Gtk::MenuButton*                       m_MenuButton;
+	Gtk::Image*                            m_PrototypeImage;
+	Gtk::Label*                            m_PrototypeLabel;
+	Gtk::Box*                              m_NameBox;
+	Gtk::Entry*                            m_NameEntry;
+	Gtk::Button*                           m_RenameButton;
+	Gtk::Notebook*                         m_PrototypeNotebook;
+	Gtk::Expander*                         m_InterfaceExpander;
+	Gtk::Box*                              m_InterfaceBox;
+	Gtk::Box*                              m_URLBox;
+	Gtk::TreeView*                         m_URLTreeView;
+	Gtk::Button*                           m_URLAddButton;
+	Gtk::Button*                           m_URLRemoveButton;
 
 };
 

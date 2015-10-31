@@ -313,6 +313,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 		return;
 
 	isTainted (false);
+	isSet (true);
 
 	if (event -> object not_eq this)
 		set (*event -> object);

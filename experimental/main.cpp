@@ -601,8 +601,17 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::list <int*>::iterator i;
-	std::clog << (i == std::list <int*>::iterator ()) << std::endl;
+	basic::uri uri = "file:///home/holger/Projekte/Titania/Documentation/Titania/html/classtitania_1_1X3D_1_1X3DExecutionContext.html#a88f10a7165c2028d858f123c7372294a";
+
+
+	std::clog << uri << std::endl;
+	std::clog << uri .fragment () << std::endl;
+
+	uri .fragment ("test");
+
+	std::clog << uri << std::endl;
+	std::clog << uri .str () << std::endl;
+	std::clog << uri .fragment () << std::endl;
 
 	//std::thread (f, std::move (a)) .join ();
 	

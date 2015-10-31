@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/ui/Editors/InlineEditor.xml">
     <Files>
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.h" Line="60" Column="60" />
-      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp" Line="9" Column="9" />
-      <File FileName="Titania/Titania/UserInterfaces/X3DScriptEditorInterface.h" Line="31" Column="31" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DScriptEditorInterface.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="83" Column="83" />
+      <File FileName="Titania/share/titania/ui/Editors/InlineEditor.xml" Line="29" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
