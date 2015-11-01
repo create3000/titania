@@ -110,9 +110,7 @@ class X3DPtr :
 {
 public:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	typedef ValueType* internal_type;
 	typedef ValueType* value_type;
@@ -123,9 +121,7 @@ public:
 	using X3DField <ValueType*>::setValue;
 	using X3DField <ValueType*>::getValue;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DPtr.
 	X3DPtr () :
@@ -229,9 +225,7 @@ public:
 		}
 	}
 
-	/***
-	 *  @name Assignment operators
-	 */
+	///  @name Assignment operators
 
 	///  Assigns the X3DPtr and propagates an event.
 	X3DPtr &
@@ -285,9 +279,7 @@ public:
 		return *this;
 	}
 
-	/***
-	 *  @name Modifiers
-	 */
+	///  @name Modifiers
 
 	///  Assigns the X3DPtr without propagating an event.
 	virtual
@@ -313,9 +305,7 @@ public:
 		set (dynamic_cast <internal_type> (object));
 	}
 
-	/***
-	 *  @name Observers
-	 */
+	///  @name Observers
 
 	ValueType*
 	operator -> () const
@@ -344,9 +334,7 @@ public:
 	operator bool () const
 	{ return getValue (); }
 
-	/**
-	 *  @name Common members
-	 */
+	///  @name Common members
 
 	///  Returns the type name of the object.
 	virtual
@@ -361,9 +349,7 @@ public:
 	getType () const final override
 	{ return X3DConstants::SFNode; }
 
-	/**
-	 *  @name Clone handling
-	 */
+	///  @name Clone handling
 
 	///  Increments the clone count of its child by @a count.
 	virtual
@@ -387,9 +373,7 @@ public:
 			getValue () -> removeClones (count);
 	}
 	
-	/**
-	 *  @name Boolean operations
-	 */
+	///  @name Boolean operations
 
 	///  Returns true if the contents of the arrays are equal, false otherwise.
 	virtual
@@ -417,9 +401,7 @@ public:
 		return a not_eq b;
 	}
 
-	/**
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
@@ -433,9 +415,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtr &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	/**
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  Not supported.
 	virtual
@@ -471,9 +451,7 @@ public:
 			ostream << "NULL";
 	}
 
-	/**
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Destructs the owned object if no more X3DPtr link to it
 	virtual
@@ -493,18 +471,14 @@ public:
 
 private:
 
-	/**
-	 *  @name Fiends
-	 */
+	///  @name Fiends
 
 	template <class Up>
 	friend class X3DPtr;
 
 	using X3DField <ValueType*>::reset;
 
-	/**
-	 *  @name Operations
-	 */
+	///  @name Operations
 
 	void
 	addObject (ValueType* const value)
@@ -605,15 +579,11 @@ private:
 		addEvent ();
 	}
 
-	/**
-	 *  @name Static members
-	 */
+	///  @name Static members
 
 	static const std::string typeName;
 
-	/**
-	 *  @name Members
-	 */
+	///  @name Members
 
 	size_t cloneCount;
 

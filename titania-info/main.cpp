@@ -72,7 +72,7 @@ nodeIndex ()
 				<< '\t'
 				<< field -> getName () << " = "
 				<< field -> getName () << ";"
-				<< X3D::Generator::AccessTypes [field] << ";"
+				<< field -> getAccessType () << ";"
 				<< field -> getTypeName () << ";";
 
 			if (field -> isInitializable ())

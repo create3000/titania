@@ -196,8 +196,15 @@ X3DFieldDefinition::isHidden () const
 	return false;
 }
 
+///  Returns true if this field is a reference for @a accesType, otherwise false.
+bool
+X3DFieldDefinition::isReference (const AccessType accessType) const
+{
+	return accessType == getAccessType () or accessType == inputOutput;
+}
+
 void
-X3DFieldDefinition::addIsReference (X3DFieldDefinition* const reference)
+X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 {
 	realize ();
 
@@ -226,7 +233,7 @@ X3DFieldDefinition::addIsReference (X3DFieldDefinition* const reference)
 }
 
 void
-X3DFieldDefinition::removeIsReference (X3DFieldDefinition* const reference)
+X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 {
 	if (io)
 	{
@@ -254,7 +261,7 @@ X3DFieldDefinition::removeIsReference (X3DFieldDefinition* const reference)
 }
 
 void
-X3DFieldDefinition::updateIsReferences ()
+X3DFieldDefinition::updateReferences ()
 {
 	if (io)
 	{

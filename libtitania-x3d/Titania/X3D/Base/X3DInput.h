@@ -65,9 +65,7 @@ class X3DInput :
 {
 public:
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Returns if this object is an input otherwise false.
 	virtual
@@ -75,9 +73,7 @@ public:
 	isInput () const
 	{ return true; }
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  This service is processed when the object is disposed.  You must release all references to this object now.
 	///  Further access of this object will cause a Segmentation Fault!  X3DWeakPtr's release their reference now.
@@ -99,9 +95,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DInput.
 	X3DInput ();
@@ -109,16 +103,12 @@ protected:
 
 private:
 
-	/***
-	 *  @name Operations
-	 */
+	///  @name Operations
 
 	void
 	clear ();
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	Output disposedOutput;
 

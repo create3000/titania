@@ -1,0 +1,105 @@
+#X3D V3.3 utf8 Titania V0.7.4
+
+META "comment" "World of Titania"
+META "created" "Sun, 14 Sep 2014 03:25:09 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V0.7.4, http://titania.create3000.de"
+META "modified" "Mon, 15 Sep 2014 16:56:48 GMT"
+
+LayerSet {
+  activeLayer 1
+  order 1
+  layers LayoutLayer {
+    layout Layout { }
+    viewport Viewport {
+      clipBoundary [
+        0,
+        0.5,
+        0,
+        0.5
+      ]
+    }
+    children [
+      DEF Gray_1 Background {
+        skyColor 0.2 0.2 0.2
+      }
+      Transform {
+        children LayoutGroup {
+          layout Layout {
+            align [
+              "LEFT",
+              "CENTER"
+            ]
+            sizeUnits [
+              "FRACTION",
+              "FRACTION"
+            ]
+            size [
+              0.5,
+              0.5
+            ]
+          }
+          viewport Viewport {
+            clipBoundary [
+              0,
+              1,
+              0,
+              0.263
+            ]
+          }
+          children LayoutGroup {
+            layout Layout {
+              align [
+                "RIGHT",
+                "TOP"
+              ]
+              offsetUnits [
+                "PIXEL",
+                "PIXEL"
+              ]
+              offset [
+                0,
+                -40
+              ]
+              sizeUnits [
+                "PIXEL",
+                "PIXEL"
+              ]
+              size [
+                300,
+                50
+              ]
+              scaleMode [
+                "STRETCH",
+                "FRACTION"
+              ]
+            }
+            viewport Viewport {
+              clipBoundary [
+                0,
+                0.089,
+                0,
+                1
+              ]
+            }
+            children DEF Rectangle2D_1 Transform {
+              children [
+                Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0.369569 1
+                    }
+                  }
+                  geometry Rectangle2D {
+                    size 1 1
+                  }
+                }
+                TouchSensor { }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}

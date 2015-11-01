@@ -83,9 +83,7 @@ public:
 	using X3DParentObject::addInterest;
 	using X3DParentObject::removeInterest;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Initializes this node.
 	virtual
@@ -118,9 +116,7 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
-	/***
-	 *  @name Commons members
-	 */
+	///  @name Commons members
 
 	///  Sets the name of this object.
 	virtual
@@ -202,9 +198,7 @@ public:
 	throw (Error <DISPOSED>)
 	{ return this; }
 
-	/***
-	 *  @name Field handling
-	 */
+	///  @name Field handling
 
 	///  Checks if a field with @a name exists for this node.
 	bool
@@ -318,9 +312,7 @@ public:
 	getCDATA () const
 	{ return nullptr; }
 
-	/***
-	 *  @name Clone handling
-	 */
+	///  @name Clone handling
 
 	///  Marks this node as private or not.  The default is false.
 	virtual
@@ -349,9 +341,7 @@ public:
 	void
 	removeClones (const size_t count) final override;
 
-	/***
-	 *  @name Tool support
-	 */
+	///  @name Tool support
 
 	///  Replace the node by its tool if it supports any.
 	virtual
@@ -365,9 +355,7 @@ public:
 	removeTool (const bool = false)
 	{ }
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	///  See beginUpdate and endUpdate.
 	virtual
@@ -397,9 +385,7 @@ public:
 	bool
 	hasRoutes () const;
 
-	/***
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
 	///  of the function effectivly calls addEvent on @a requester.
@@ -426,9 +412,7 @@ public:
 	removeInterest (X3DField <ValueType> & requester) const
 	{ removeInterest (&requester, (void (X3DField <ValueType>::*) ()) & X3DField <ValueType>::addEvent); }
 
-	/***
-	 *  @name Traversal handling
-	 */
+	///  @name Traversal handling
 
 	///  Traverses the scene graph depending on @a type.
 	virtual
@@ -436,9 +420,7 @@ public:
 	traverse (const TraverseType)
 	{ }
 
-	/***
-	 *  @name Comment handling
-	 */
+	///  @name Comment handling
 
 	///  Adds comments for this node.  The comments will be printed before the '}'.
 	void
@@ -450,9 +432,7 @@ public:
 	getInnerComments () const
 	{ return comments; }
 
-	/***
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  NOT SUPPORTED
 	virtual
@@ -473,9 +453,7 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposes this node.  You normally do not need to call this function directly.
 	virtual
@@ -489,9 +467,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DBaseNode.
 	X3DBaseNode (X3DBrowser* const = nullptr, X3DExecutionContext* const = nullptr);
@@ -502,18 +478,14 @@ protected:
 	initialize ()
 	{ }
 
-	/***
-	 *  @name Common members
-	 */
+	///  @name Common members
 
 	///  Adds @a value to the type of this node.
 	void
 	addType (const X3DConstants::NodeType value)
 	{ type .emplace_back (value); }
 
-	/***
-	 *  @name Field handling
-	 */
+	///  @name Field handling
 
 	///  Adds @a field to the set of fields of this node.
 	void
@@ -537,9 +509,7 @@ protected:
 	FieldDefinitionArray
 	getChangedFields () const;
 
-	/***
-	 *  @name Tool support
-	 */
+	///  @name Tool support
 
 	///  Replaces this node by @a tool.
 	void
@@ -552,17 +522,13 @@ protected:
 
 private:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	struct FlatCopyType { };
 
 	using FieldAliasIndex = std::map <SpecificationVersionType, std::pair <std::map <std::string, std::string>, std::map <std::string, std::string>>>;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Copy or clone this node into @a executionContext.
 	X3DBaseNode*
@@ -576,9 +542,7 @@ private:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
-	/***
-	 *  @name Field handling
-	 */
+	///  @name Field handling
 
 	///  Replace @a node by this node.
 	void
@@ -596,9 +560,7 @@ private:
 	const std::string &
 	getFieldName (const std::string &, const SpecificationVersionType) const;
 
-	/***
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  Inserts @a userDefinedField into @a ostream.
 	void
@@ -608,9 +570,7 @@ private:
 	void
 	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	X3DExecutionContext* executionContext; // This nodes ExecutionContext
 

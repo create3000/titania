@@ -77,9 +77,7 @@ class X3DOutput :
 {
 public:
 
-	/***
-	 *  @name Member access
-	 */
+	///  @name Member access
 
 	virtual
 	bool
@@ -89,9 +87,7 @@ public:
 	const RequesterArray &
 	getRequesters () const;
 
-	/***
-	 *  @name Has interest service
-	 */
+	///  @name Has interest service
 
 	template <class Class, class Function>
 	bool
@@ -105,9 +101,7 @@ public:
 	hasInterest (Class & object, Function && memberFunction) const
 	{ return hasInterest (&object, memberFunction); }
 
-	/***
-	 *  @name Add interest service
-	 */
+	///  @name Add interest service
 
 	template <class Class, class Function, class ... Arguments>
 	void
@@ -144,9 +138,7 @@ public:
 	void
 	addInterest (const Requester &) const;
 
-	/***
-	 *  @name Remove interest service
-	 */
+	///  @name Remove interest service
 
 	template <class Class, class Function>
 	void
@@ -164,16 +156,12 @@ public:
 	void
 	removeInterest (const Requester &) const;
 
-	/***
-	 *  @name Process interests service
-	 */
+	///  @name Process interests service
 
 	void
 	processInterests () const;
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	virtual
 	void
@@ -187,9 +175,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DOutput.
 	X3DOutput ();
@@ -197,23 +183,17 @@ protected:
 
 private:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	using InputSet = std::set <std::pair <const X3DInput*, const void*>>;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Realizes this object if needed.
 	void
 	realize () const;
 
-	/***
-	 *  @name Operations
-	 */
+	///  @name Operations
 
 	bool
 	checkInterest (const void* const, const void* const) const;
@@ -247,9 +227,7 @@ private:
 	void
 	clear ();
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	struct Data
 	{

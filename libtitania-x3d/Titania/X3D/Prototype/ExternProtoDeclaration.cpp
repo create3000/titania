@@ -466,7 +466,7 @@ ExternProtoDeclaration::toStream (std::ostream & ostream) const
 				{
 					typeLength = std::max (typeLength, field -> getTypeName () .length ());
 
-					accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+					accessTypeLength = std::max (accessTypeLength, to_string (ostream, field -> getAccessType ()) .length ());
 				}
 
 				break;
@@ -535,7 +535,7 @@ ExternProtoDeclaration::toStreamField (std::ostream & ostream, X3DFieldDefinitio
 		<< std::setiosflags (std::ios::left)
 		<< std::setw (accessTypeLength);
 
-	ostream << Generator::AccessTypes [field];
+	ostream << field -> getAccessType ();
 
 	ostream
 		<< Generator::Space
@@ -573,7 +573,7 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< "<field"
 			<< Generator::Space
 			<< "accessType='"
-			<< Generator::X3DAccessTypes [field]
+			<< field -> getAccessType ()
 			<< "'"
 			<< Generator::Space
 			<< "type='"

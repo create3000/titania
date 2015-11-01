@@ -61,10 +61,14 @@ class Event
 {
 public:
 
+	///  @name Construction
+
 	Event (const X3DChildObject* const object) :
 		 object (object),
 		sources ()
 	{ }
+
+	///  @name Members
 
 	const X3DChildObject* const      object;
 	std::set <const X3DChildObject*> sources;

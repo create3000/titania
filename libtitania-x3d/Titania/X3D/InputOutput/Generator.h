@@ -60,6 +60,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace titania {
 namespace X3D {
@@ -73,7 +74,8 @@ class Generator :
 {
 public:
 
-	enum StyleType : uint8_t
+	enum StyleType :
+		uint8_t
 	{
 		SMALLEST,
 		SMALL,
@@ -81,67 +83,9 @@ public:
 		NICEST
 	};
 
-	class AccessTypesIndex
-	{
-	public:
-
-		AccessTypesIndex ();
-
-		const std::string &
-		operator [ ] (const X3DFieldDefinition* const) const;
-
-	};
-
-	class X3DAccessTypesIndex
-	{
-	public:
-
-		X3DAccessTypesIndex ();
-
-		const std::string &
-		operator [ ] (const X3DFieldDefinition* const) const;
-
-
-	private:
-
-		const std::vector <std::string> array;
-	};
-
-	class VrmlAccessTypesIndex
-	{
-	public:
-
-		VrmlAccessTypesIndex ();
-
-		const std::string &
-		operator [ ] (const X3DFieldDefinition* const) const;
-
-
-	private:
-
-		const std::vector <std::string> array;
-
-	};
-
-	class NodeTypeIndex
-	{
-	public:
-
-		NodeTypeIndex ();
-
-		const std::string &
-		operator [ ] (const X3DBaseNode* const) const;
-
-		const std::string &
-		operator [ ] (const X3DConstants::NodeType index) const
-		{ return array [index]; }
-
-
-	private:
-
-		const std::vector <std::string> array;
-
-	};
+	struct X3DAccessTypeType { const AccessType accessType; };
+	
+	struct VrmlAccessTypeType { const AccessType accessType; };
 
 	///  @name Member access
 
@@ -249,15 +193,18 @@ public:
 	{ return containerFieldStack .back (); }
 
 	static
+	X3DAccessTypeType
+	X3DAccessType (const AccessType accessType)
+	{ return X3DAccessTypeType { accessType }; }
+	
+	static
+	VrmlAccessTypeType
+	VrmlAccessType (const AccessType accessType)
+	{ return VrmlAccessTypeType { accessType }; }
+
+	static
 	void
 	XMLEncode (std::ostream &, const std::string &);
-
-	/// @name Static members
-
-	static const AccessTypesIndex     AccessTypes;
-	static const X3DAccessTypesIndex  X3DAccessTypes;
-	static const VrmlAccessTypesIndex VrmlAccessTypes;
-	static const NodeTypeIndex   NodeTypes;
 
 
 private:
@@ -328,6 +275,102 @@ NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
 {
 	Generator::NicestStyle ();
 	return ostream;
+}
+
+/// Access type
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const Generator::X3DAccessTypeType & object)
+{
+	static const std::string initializeOnlyCharacters = "initializeOnly";
+	static const std::string inputOnlyCharacters      = "inputOnly";
+	static const std::string outputOnlyCharacters     = "outputOnly";
+	static const std::string inputOutputCharacters    = "inputOutput";
+
+	switch (object .accessType)
+	{
+		case initializeOnly: return ostream << initializeOnlyCharacters;
+		case inputOnly:      return ostream << inputOnlyCharacters;
+		case outputOnly:     return ostream << outputOnlyCharacters;
+		case inputOutput:    return ostream << inputOutputCharacters;
+	}
+
+	return ostream;
+}
+
+inline
+std::string
+to_string (const Generator::X3DAccessTypeType & accessType)
+{
+	std::ostringstream osstream;
+
+	osstream << accessType;
+
+	return osstream .str ();
+}
+
+inline
+std::string
+to_string (const AccessType accessType)
+{
+	std::ostringstream osstream;
+
+	osstream << Generator::X3DAccessType (accessType);
+
+	return osstream .str ();
+}
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const Generator::VrmlAccessTypeType & object)
+{
+	static const std::string fieldCharacters        = "field";
+	static const std::string eventInCharacters      = "eventIn";
+	static const std::string eventOutCharacters     = "eventOut";
+	static const std::string exposedFieldCharacters = "exposedField";
+
+	switch (object .accessType)
+	{
+		case initializeOnly: return ostream << fieldCharacters;
+		case inputOnly:      return ostream << eventInCharacters;
+		case outputOnly:     return ostream << eventOutCharacters;
+		case inputOutput:    return ostream << exposedFieldCharacters;
+	}
+
+	return ostream;
+}
+
+inline
+std::string
+to_string (const Generator::VrmlAccessTypeType & accessType)
+{
+	std::ostringstream osstream;
+
+	osstream << accessType;
+
+	return osstream .str ();
+}
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const AccessType accessType)
+{
+	if (Generator::SpecificationVersion () == VRML_V2_0)
+		return ostream << Generator::VrmlAccessType (accessType);
+
+	return ostream << Generator::X3DAccessType (accessType);
+}
+
+inline
+std::string
+to_string (std::ostream & ostream, const AccessType accessType)
+{
+	std::ostringstream osstream;
+
+	osstream << accessType;
+
+	return osstream .str ();
 }
 
 // XMLEncode

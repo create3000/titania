@@ -65,9 +65,7 @@ class X3DReferenceObject :
 {
 public:
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
 
 	///  Returns the number of strong references of this object.  Weak references are not counted.
 	virtual
@@ -80,9 +78,7 @@ public:
 	getWeakReferenceCount () const
 	{ return getParents () .size () - getReferenceCount (); }
 
-	/***
-	 *  @name Parent handling
-	 */
+	///  @name Parent handling
 
 	///  Add a parent to this object.
 	virtual
@@ -109,9 +105,7 @@ public:
 	void
 	removeWeakParent (X3DChildObject* const) final override;
 
-	/***
-	 *  @name Shutdown handling
-	 */
+	///  @name Shutdown handling
 
 	///  The shutdown service is processed before the object is disposed.  You must release all references to this object
 	///  now.  Further access of this object will cause a Segmentation Fault!
@@ -120,9 +114,7 @@ public:
 	shutdown () const
 	{ return shutdownOutput; }
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposes this object.  You normally do not need to call this function directly.
 	virtual
@@ -132,16 +124,12 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DReferenceObject.
 	X3DReferenceObject ();
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
 
 	///  Increment the reference count for this object.
 	virtual
@@ -166,9 +154,7 @@ protected:
 
 private:
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	size_t referenceCount;
 	bool   inShutdown;

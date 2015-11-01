@@ -167,7 +167,7 @@ X3DPrototypeInstance::construct ()
 					continue;
 
 				// Has IS references.
-				if (not field -> getIsReferences () .empty ()) // hasIsReferences
+				if (not field -> getReferences () .empty ()) // hasIsReferences
 					continue;
 
 				field -> set (*protoField);
@@ -469,11 +469,11 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			if (Generator::ExecutionContext () and not Generator::IsSharedNode (this))
 			{
-				if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
+				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
 					bool initializableReference = false;
 
-					for (const auto & reference : field -> getIsReferences ())
+					for (const auto & reference : field -> getReferences ())
 						initializableReference |= reference -> isInitializable ();
 
 					try
@@ -491,7 +491,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			// If we have no execution context we are not in a proto and must not generate IS references the same is true
 			// if the node is a shared node as the node does not belong to the execution context.
 
-			if ((field -> getIsReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
+			if ((field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
@@ -594,7 +594,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			for (const auto & field : references)
 			{
-				for (const auto & reference : field -> getIsReferences ())
+				for (const auto & reference : field -> getReferences ())
 				{
 					ostream
 						<< Generator::Indent

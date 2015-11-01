@@ -62,9 +62,7 @@ class X3DUnitContext :
 {
 public:
 
-	/***
-	 *  @name Unit handling
-	 */
+	///  @name Unit handling
 
 	void
 	updateUnit (const std::string &, const std::string &, const double)
@@ -107,9 +105,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	X3DUnitContext ();
 
@@ -120,16 +116,12 @@ protected:
 
 private:
 
-	/***
-	 *  @name Static members
-	 */
+	///  @name Static members
 
 	static const UnitIndex unitCategories;
 	static const UnitArray standardUnits;
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	UnitArray units;
 	SFTime    unitsOutput;

@@ -1066,7 +1066,7 @@ X3DOutlineTreeView::model_expand_node (const X3D::SFNode & sfnode, const Gtk::Tr
 						{
 							if (not get_model () -> get_input_routes_size (field) and not get_model () -> get_output_routes_size (field))
 							{
-								if (field -> getIsReferences () .empty ())
+								if (field -> getReferences () .empty ())
 									continue;
 							}
 						}

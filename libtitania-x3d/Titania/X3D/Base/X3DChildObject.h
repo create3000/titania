@@ -68,9 +68,7 @@ class X3DChildObject :
 {
 public:
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
 
 	///  Returns the number of strong references of this object.  Weak references are not counted.
 	virtual
@@ -103,9 +101,7 @@ public:
 	bool
 	hasRootedObjects (ChildObjectSet &);
 
-	/***
-	 *  @name Clone handling
-	 */
+	///  @name Clone handling
 
 	///  Virtual function that must be implemented in a derived class or it returns the number of parents.
 	virtual
@@ -125,9 +121,7 @@ public:
 	removeClones (const size_t)
 	{ }
 
-	/***
-	 *  @name Event Handling
-	 */
+	///  @name Event Handling
 
 	///  Sets the tainted state.  See isTainted ().
 	void
@@ -156,9 +150,7 @@ public:
 	processEvent (const EventPtr &)
 	{ }
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposes this object.  You normally do not need to call this function directly.
 	virtual
@@ -172,16 +164,12 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DChildObject.
 	X3DChildObject ();
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
 
 	///  Add a weak parent to this object.
 	virtual
@@ -211,9 +199,7 @@ protected:
 	unReference ()
 	{ }
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	///  Handler that is called when a child of this object should be marked tainted.
 	virtual
@@ -226,9 +212,7 @@ protected:
 	void
 	addEvent (X3DChildObject* const, const EventPtr &);
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Handler that is called when the shutdown service should be processed.
 	virtual
@@ -239,9 +223,7 @@ protected:
 
 private:
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	ChildObjectSet  parents;
 	X3DChildObject* root;

@@ -53,7 +53,6 @@
 
 #include <cstdint>
 #include <iostream>
-#include <map>
 
 namespace titania {
 namespace X3D {
@@ -665,6 +664,8 @@ operator << (std::ostream & ostream, const SpecificationVersionType specificatio
 			return ostream << "X3D V3.3";
 	}
 }
+
+/// XMLEncode
 
 inline
 std::string

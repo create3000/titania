@@ -1334,10 +1334,10 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
       // Reassign IS reference to the new field.
  
-      for (const auto & reference : oldField -> getIsReferences ())
+      for (const auto & reference : oldField -> getReferences ())
       {
          if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == inputOutput)
-            newField -> addIsReference (reference);
+            newField -> addReference (reference);
       }
 
       // Create addRoutes functions for input and output routes.
@@ -1512,12 +1512,12 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 {
 	for (const auto & field: node -> getFieldDefinitions ())
 	{
-		if (field -> getIsReferences () .count (protoField))
+		if (field -> getReferences () .count (protoField))
 		{
-		   undoStep -> addUndoFunction (&X3DFieldDefinition::addIsReference,    field, protoField);
-		   undoStep -> addRedoFunction (&X3DFieldDefinition::removeIsReference, field, protoField);
+		   undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+		   undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
 
-		   field -> removeIsReference (protoField);
+		   field -> removeReference (protoField);
 		}
 	}
 

@@ -60,9 +60,7 @@ class X3DBase
 {
 public:
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
@@ -77,9 +75,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DBase.
 	X3DBase ()

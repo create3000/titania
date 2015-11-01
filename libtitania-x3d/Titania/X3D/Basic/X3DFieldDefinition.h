@@ -73,9 +73,7 @@ public:
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	virtual
 	X3DFieldDefinition*
@@ -104,9 +102,7 @@ public:
 	X3DFieldDefinition &
 	operator = (const X3DFieldDefinition &);
 
-	/***
-	 *  @name Comparators
-	 */
+	///  @name Comparators
 
 	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
 	virtual
@@ -118,22 +114,7 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition &) const = 0;
 
-	/***
-	 *  @name
-	 */
-
-	virtual
-	bool
-	isArray () const
-	{ return false; }
-
-	virtual
-	bool
-	hasRootedObjects (ChildObjectSet &) override;
-
-	/***
-	 *  @name Member access
-	 */
+	///  @name Member access
 
 	virtual
 	X3DConstants::FieldType
@@ -188,26 +169,26 @@ public:
 	bool
 	isHidden () const;
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
+
+	///  Returns true if this field is a reference for @a accesType, otherwise false.
+	bool
+	isReference (const AccessType) const;
 
 	void
-	addIsReference (X3DFieldDefinition* const);
+	addReference (X3DFieldDefinition* const);
 
 	void
-	removeIsReference (X3DFieldDefinition* const);
+	removeReference (X3DFieldDefinition* const);
 
 	void
-	updateIsReferences ();
+	updateReferences ();
 
 	const FieldDefinitionSet &
-	getIsReferences () const
+	getReferences () const
 	{ realize (); return io -> references; }
 
-	/***
-	 *  @name Route handling
-	 */
+	///  @name Route handling
 
 	void
 	addInputRoute (Route* const route)
@@ -233,9 +214,7 @@ public:
 	getOutputRoutes () const
 	{ realize (); return io -> outputRoutes; }
 
-	/***
-	 *  @name Interest handling
-	 */
+	///  @name Interest handling
 
 	void
 	addInterest (X3DFieldDefinition* const) const;
@@ -255,17 +234,25 @@ public:
 	getInterests () const
 	{ realize (); return io -> outputInterests; }
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	virtual
 	void
 	processEvent (const EventPtr &) override;
 
-	/***
-	 *  @name Destruction
-	 */
+	
+	///  @name Misc
+
+	virtual
+	bool
+	isArray () const
+	{ return false; }
+
+	virtual
+	bool
+	hasRootedObjects (ChildObjectSet &) override;
+
+	///  @name Destruction
 
 	///  Disposed this object.  For X3DFieldDefinitions it is save to call this function function directly.
 	virtual
@@ -279,9 +266,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DFieldDefinition.
 	X3DFieldDefinition ();
@@ -289,23 +274,17 @@ protected:
 
 private:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	void
 	realize () const;
 
-	/***
-	 *  @name Reference handling
-	 */
+	///  @name Reference handling
 
 	void
 	updateIsReference (X3DFieldDefinition* const);
 
-	/***
-	 *  @name Interest handling
-	 */
+	///  @name Interest handling
 
 	void
 	addInputInterest (const X3DFieldDefinition* const) const;
@@ -314,9 +293,7 @@ private:
 	removeInputInterest (const X3DFieldDefinition* const) const;
 
 
-	/***
-	 *  @name Static Members
-	 */
+	///  @name Static Members
 
 	using FlagsType = uint16_t;
 
@@ -328,9 +305,7 @@ private:
 	static constexpr FlagsType HIDDEN_BIT         = 1 << 8;
 	static constexpr FlagsType GEO_BIT            = 1 << 9;
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	struct IO
 	{

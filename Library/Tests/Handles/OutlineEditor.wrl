@@ -154,19 +154,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              1.61695408821106,
-              2.66384840011597,
-              3.63015246391296
+              1.6068799495697,
+              2.66329002380371,
+              3.62701010704041
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.788882911205292,
-              0.595336019992828,
-              0.152442142367363,
-              5.73963785171509
+              0.787842035293579,
+              0.597084045410156,
+              0.150982022285461,
+              5.73888063430786
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -292,7 +292,7 @@ Group {
     USE _3
     DEF Box Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 5.12123
+      rotation -0 -0 -1 5.03878
       scale 0.2 0.2 0.2
       children Shape {
         appearance Appearance {

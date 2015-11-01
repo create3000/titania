@@ -161,7 +161,7 @@ X3DBaseNode::setup ()
 
 	for (const auto & field : fieldDefinitions)
 	{
-		field -> updateIsReferences ();
+		field -> updateReferences ();
 		field -> isTainted (false);
 	}
 
@@ -236,7 +236,7 @@ throw (Error <INVALID_NAME>,
 			{
 				field -> isSet (fieldDefinition -> isSet ());
 
-				if (fieldDefinition -> getIsReferences () .empty ())
+				if (fieldDefinition -> getReferences () .empty ())
 				{
 					if (fieldDefinition -> isInitializable ())
 					{
@@ -247,11 +247,11 @@ throw (Error <INVALID_NAME>,
 				{
 					// IS relationship
 
-					for (const auto & originalReference : fieldDefinition -> getIsReferences ())
+					for (const auto & originalReference : fieldDefinition -> getReferences ())
 					{
 						try
 						{
-							field -> addIsReference (executionContext -> getField (originalReference -> getName ()));
+							field -> addReference (executionContext -> getField (originalReference -> getName ()));
 						}
 						catch (const Error <INVALID_NAME> &)
 						{
@@ -267,7 +267,7 @@ throw (Error <INVALID_NAME>,
 		{
 			// User defined fields from Script and Shader
 
-			if (fieldDefinition -> getIsReferences () .empty ())
+			if (fieldDefinition -> getReferences () .empty ())
 			{
 				const auto field = fieldDefinition -> copy (executionContext, COPY_OR_CLONE);
 
@@ -289,11 +289,11 @@ throw (Error <INVALID_NAME>,
 				                             fieldDefinition -> getName (),
 				                             field);
 
-				for (const auto & originalReference : fieldDefinition -> getIsReferences ())
+				for (const auto & originalReference : fieldDefinition -> getReferences ())
 				{
 					try
 					{
-						field -> addIsReference (executionContext -> getField (originalReference -> getName ()));
+						field -> addReference (executionContext -> getField (originalReference -> getName ()));
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
@@ -766,7 +766,7 @@ X3DBaseNode::getChangedFields () const
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (field -> getIsReferences () .empty ())
+		if (field -> getReferences () .empty ())
 		{
 			if (not field -> isInitializable ())
 				continue;
@@ -1030,7 +1030,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				for (const auto & field : userDefinedFields)
 				{
 					fieldTypeLength  = std::max (fieldTypeLength, field -> getTypeName () .length ());
-					accessTypeLength = std::max (accessTypeLength, Generator::AccessTypes [field] .length ());
+					accessTypeLength = std::max (accessTypeLength, to_string (ostream, field -> getAccessType ()) .length ());
 				}
 
 				break;
@@ -1128,7 +1128,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getIsReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this))
+	if (field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this))
 	{
 		// Output build in field
 
@@ -1145,7 +1145,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 		size_t index                  = 0;
 		bool   initializableReference = false;
 
-		for (const auto & reference : field -> getIsReferences ())
+		for (const auto & reference : field -> getReferences ())
 		{
 			initializableReference |= reference -> isInitializable ();
 
@@ -1163,7 +1163,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			++ index;
 
-			if (index not_eq field -> getIsReferences () .size ())
+			if (index not_eq field -> getReferences () .size ())
 				ostream << Generator::Break;
 		}
 
@@ -1213,7 +1213,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 	// If we have no execution context we are not in a proto and must not generate IS references the same is true
 	// if the node is a shared node as the node does not belong to the execution context.
 
-	if (field -> getIsReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this))
+	if (field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this))
 	{
 		// Output user defined field
 
@@ -1222,7 +1222,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 			<< std::setiosflags (std::ios::left)
 			<< std::setw (accessTypeLength);
 
-		ostream << Generator::AccessTypes [field];
+		ostream << field -> getAccessType ();
 
 		ostream
 			<< Generator::Space
@@ -1243,7 +1243,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 		size_t index                  = 0;
 		bool   initializableReference = false;
 
-		for (const auto & reference : field -> getIsReferences ())
+		for (const auto & reference : field -> getReferences ())
 		{
 			initializableReference |= reference -> isInitializable ();
 
@@ -1254,7 +1254,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left)
 				<< std::setw (accessTypeLength);
 
-			ostream << Generator::AccessTypes [field];
+			ostream << field -> getAccessType ();
 
 			ostream
 				<< Generator::Space
@@ -1271,7 +1271,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 
 			++ index;
 
-			if (index not_eq field -> getIsReferences () .size ())
+			if (index not_eq field -> getReferences () .size ())
 				ostream << Generator::Break;
 		}
 
@@ -1288,7 +1288,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 				<< std::setiosflags (std::ios::left)
 				<< std::setw (accessTypeLength);
 
-			ostream << Generator::AccessTypes [field];
+			ostream << field -> getAccessType ();
 
 			ostream
 				<< Generator::Space
@@ -1417,11 +1417,11 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		if (Generator::ExecutionContext () and not Generator::IsSharedNode (this))
 		{
-			if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
+			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 			{
 				bool initializableReference = false;
 
-				for (const auto & reference : field -> getIsReferences ())
+				for (const auto & reference : field -> getReferences ())
 					initializableReference |= reference -> isInitializable ();
 
 				try
@@ -1439,7 +1439,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		// If we have no execution context we are not in a proto and must not generate IS references the same is true
 		// if the node is a shared node as the node does not belong to the execution context.
 
-		if ((field -> getIsReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
+		if ((field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
 		{
 			if (mustOutputValue)
 				references .emplace_back (field);
@@ -1499,7 +1499,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					<< "<field"
 					<< Generator::Space
 					<< "accessType='"
-					<< Generator::X3DAccessTypes [field]
+					<< field -> getAccessType ()
 					<< "'"
 					<< Generator::Space
 					<< "type='"
@@ -1515,18 +1515,18 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 				bool mustOutputValue = false;
 
-				if (field -> getAccessType () == inputOutput and not field -> getIsReferences () .empty ())
+				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
 					bool initializableReference = false;
 
-					for (const auto & reference : field -> getIsReferences ())
+					for (const auto & reference : field -> getReferences ())
 						initializableReference |= reference -> isInitializable ();
 
 					if (not initializableReference)
 						mustOutputValue = not field -> isDefaultValue ();
 				}
 
-				if ((field -> getIsReferences () .empty () or not Generator::ExecutionContext ()) or mustOutputValue)
+				if ((field -> getReferences () .empty () or not Generator::ExecutionContext ()) or mustOutputValue)
 				{
 					if (mustOutputValue and Generator::ExecutionContext ())
 						references .emplace_back (field);
@@ -1600,7 +1600,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 			for (const auto & field : references)
 			{
-				for (const auto & reference : field -> getIsReferences ())
+				for (const auto & reference : field -> getReferences ())
 				{
 					ostream
 						<< Generator::Indent

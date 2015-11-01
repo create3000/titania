@@ -335,9 +335,7 @@ protected:
 
 private:
 
-	/***
-	 *  @name Operations
-	 */
+	///  @name Operations
 
 	std::string
 	getUniqueExportedName (const X3DScene* const, std::string = "") const;
@@ -345,9 +343,7 @@ private:
 	void
 	updateExportedNodes (X3DScene* const) const;
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	basic::uri               worldURL;
 	std::string              encoding;

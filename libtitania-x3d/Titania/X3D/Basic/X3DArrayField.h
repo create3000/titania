@@ -76,9 +76,7 @@ class X3DArrayField :
 {
 public:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	typedef ValueType         value_type;
 	typedef Array <ValueType> internal_type;
@@ -104,9 +102,7 @@ public:
 	using X3DField <internal_type>::getValue;
 	using X3DField <internal_type>::operator =;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Default constructor.
 	X3DArrayField () :
@@ -190,9 +186,7 @@ public:
 	       Error <NOT_SUPPORTED>) override
 	{ return copy (type); }
 
-	/***
-	 *  @name Assignment operators
-	 */
+	///  @name Assignment operators
 
 	/// Assigns values to the array.
 	X3DArrayField &
@@ -261,9 +255,7 @@ public:
 	void
 	set (InputIterator, const InputIterator &);
 
-	/**
-	 *  @name Boolean operations
-	 */
+	///  @name Boolean operations
 
 	///  Always returs true.
 	virtual
@@ -281,9 +273,7 @@ public:
 	bool
 	operator not_eq (const X3DFieldDefinition &) const override;
 
-	/**
-	 *  @name Element access
-	 */
+	///  @name Element access
 
 	///  Access specified element with bounds checking and element creation.
 	template <class Arg>
@@ -334,9 +324,7 @@ public:
 	back () const
 	{ return *getValue () .back (); }
 
-	/**
-	 *  @name Iterators
-	 */
+	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
 	iterator
@@ -398,9 +386,7 @@ public:
 	crend () const
 	{ return const_reverse_iterator (getValue () .crend ()); }
 
-	/**
-	 *  @name Capacity
-	 */
+	///  @name Capacity
 
 	///  Checks whether the container is empty.
 	bool
@@ -432,9 +418,7 @@ public:
 	shrink_to_fit ()
 	{ get () .shrink_to_fit (); }
 
-	/**
-	 *  @name Modifiers
-	 */
+	///  @name Modifiers
 
 	///  Clears the contents.
 	void
@@ -526,9 +510,7 @@ public:
 	void
 	swap (X3DArrayField &);
 
-	/***
-	 *  @name Algorithms
-	 */
+	///  @name Algorithms
 
 	///  Returns an array with all indices where the value is equal @a value.
 	std::vector <size_t>
@@ -540,9 +522,7 @@ public:
 	indices_of (const typename ValueType::internal_type & value) const
 	{ return basic::indices_of (begin (), end (), value); }
 
-	/***
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
@@ -556,9 +536,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DArrayField &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	/***
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding.
 	virtual
@@ -579,9 +557,7 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Destructs the X3DArrayField.
 	virtual
@@ -593,9 +569,7 @@ protected:
 
 	using X3DField <internal_type>::get;
 
-	/***
-	 *  @name Element handling
-	 */
+	///  @name Element handling
 
 	void
 	addChildren (const typename iterator::iterator_type &,
@@ -617,9 +591,7 @@ protected:
 	void
 	removeChild (ValueType*);
 
-	/***
-	 *  @name Element access
-	 */
+	///  @name Element access
 
 	///  Clears the contents without notifying its parents.
 	virtual

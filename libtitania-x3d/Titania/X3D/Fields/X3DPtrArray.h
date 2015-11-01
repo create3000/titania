@@ -71,9 +71,7 @@ private:
 
 public:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	typedef typename ArrayField::value_type value_type;
 
@@ -87,9 +85,7 @@ public:
 	using X3DArrayField <X3DPtr <ValueType>> ::size;
 	using X3DArrayField <X3DPtr <ValueType>> ::addInterest;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DPtrArray.
 	X3DPtrArray () :
@@ -168,9 +164,7 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
-	/***
-	 *  @name Assignment operators
-	 */
+	///  @name Assignment operators
 
 	///  Assigns the X3DPtrArray and propagates an event.
 	X3DPtrArray &
@@ -193,9 +187,7 @@ public:
 	X3DPtrArray &
 	operator = (X3DPtrArray <Up> &&);
 
-	/**
-	 *  @name Common members
-	 */
+	///  @name Common members
 
 	///  Returns the type name of the object.
 	virtual
@@ -210,9 +202,7 @@ public:
 	getType () const final override
 	{ return X3DConstants::MFNode; }
 
-	/**
-	 *  @name Clone handling
-	 */
+	///  @name Clone handling
 
 	///  Increments the clone count of its children by @a count.
 	virtual
@@ -236,9 +226,7 @@ public:
 			value -> removeClones (count);
 	}
 
-	/**
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
@@ -252,9 +240,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtrArray &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	/**
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  Not supported.
 	virtual
@@ -282,9 +268,7 @@ private:
 	using X3DArrayField <X3DPtr <ValueType>> ::addChild;
 	using X3DArrayField <X3DPtr <ValueType>> ::removeChildren;
 
-	/***
-	 *  @name Element handling
-	 */
+	///  @name Element handling
 
 	virtual
 	void
@@ -322,15 +306,11 @@ private:
 
 private:
 
-	/**
-	 *  @name Static members
-	 */
+	///  @name Static members
 
 	static const std::string typeName;
 
-	/**
-	 *  @name Members
-	 */
+	///  @name Members
 
 	size_t cloneCount;
 

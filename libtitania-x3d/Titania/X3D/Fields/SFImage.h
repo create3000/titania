@@ -67,9 +67,7 @@ class SFImage :
 {
 public:
 
-	/***
-	 *  @name Member types
-	 */
+	///  @name Member types
 
 	typedef Image::array_type::value_type value_type;
 	typedef Image::size_type              size_type;
@@ -79,9 +77,7 @@ public:
 	using X3DField <Image>::getValue;
 	using X3DField <Image>::operator =;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	SFImage ();
 
@@ -111,9 +107,7 @@ public:
 	       Error <NOT_SUPPORTED>) final override
 	{ return new SFImage (*this); }
 
-	/***
-	 *  @name Assignment operators
-	 */
+	///  @name Assignment operators
 
 	SFImage &
 	operator = (const SFImage &);
@@ -124,9 +118,7 @@ public:
 	SFImage &
 	operator = (Image &&);
 
-	/***
-	 *  @name Member access
-	 */
+	///  @name Member access
 
 	void
 	setWidth (const size_type);
@@ -164,9 +156,7 @@ public:
 	void
 	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
 
-	/***
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	template <class Class>
 	void
@@ -178,9 +168,7 @@ public:
 	addInterest (Class & object, void (Class::* memberFunction) (const SFImage &)) const
 	{ addInterest (object, memberFunction, std::cref (*this)); }
 
-	/***
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	virtual
 	void
@@ -198,9 +186,7 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	virtual
 	void

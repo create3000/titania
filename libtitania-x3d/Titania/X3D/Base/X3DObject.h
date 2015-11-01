@@ -76,9 +76,7 @@ class X3DObject :
 {
 public:
 
-	/***
-	 *  @name Type Information
-	 */
+	///  @name Type Information
 
 	///  Returns the id of this object.  This is usefull for comparing object.
 	virtual
@@ -104,9 +102,7 @@ public:
 	getTypeName () const
 	throw (Error <DISPOSED>) = 0;
 
-	/***
-	 *  @name Comment handling
-	 */
+	///  @name Comment handling
 
 	///  Add comments to this object.
 	void
@@ -118,9 +114,7 @@ public:
 	getComments () const
 	{ realize (); return data -> comments; }
 
-	/***
-	 *  @name User data handling
-	 */
+	///  @name User data handling
 
 	///  Set new user data for this object.
 	virtual
@@ -134,9 +128,7 @@ public:
 	getUserData () const
 	{ realize (); return data -> userData; }
 
-	/***
-	 *  @name String creation
-	 */
+	///  @name String creation
 
 	///  Extracts the value for this object from @a string. The string must be in VRML Classic Encoding.
 	bool
@@ -166,9 +158,7 @@ public:
 	std::string
 	toXMLString () const;
 
-	/***
-	 *  @name Input/Output
-	 */
+	///  @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
@@ -189,9 +179,7 @@ public:
 	void
 	toXMLStream (std::ostream &) const = 0;
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposed this object.  You normally do not need to call this function directly.
 	virtual
@@ -205,9 +193,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DObject.
 	X3DObject ();
@@ -215,17 +201,13 @@ protected:
 
 private:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Realizes this object if needed.
 	void
 	realize () const;
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	struct Data
 	{

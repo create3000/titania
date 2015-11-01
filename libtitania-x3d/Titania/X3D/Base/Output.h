@@ -61,9 +61,7 @@ class Output :
 {
 public:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new Output.
 	Output ();

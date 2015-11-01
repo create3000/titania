@@ -64,8 +64,12 @@ class X3DError :
 {
 public:
 
+	///  @name Construction
+
 	explicit
 	X3DError (const std::string &);
+
+	///  @name Member access
 
 	virtual
 	const char*
@@ -81,6 +85,8 @@ public:
 	const std::string &
 	toString () const
 	throw ();
+
+	///  @name Destruction
 
 	virtual
 	~X3DError ()

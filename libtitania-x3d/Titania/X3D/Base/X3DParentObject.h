@@ -73,9 +73,7 @@ public:
 	using X3DReferenceObject::addInterest;
 	using X3DReferenceObject::removeInterest;
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Initializes this object.
 	virtual
@@ -87,9 +85,7 @@ public:
 	isInitialized () const
 	{ return initialized; }
 
-	/***
-	 *  @name Member access
-	 */
+	///  @name Member access
 
 	///  Returns a pointer to the browser this node belongs to.
 	virtual
@@ -97,9 +93,7 @@ public:
 	getBrowser () const
 	{ return browser; }
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	///  Marks this object as tainted, i.e. all interests of this object will be processed later.
 	virtual
@@ -111,9 +105,7 @@ public:
 	void
 	eventsProcessed ();
 
-	/***
-	 *  @name Interest service
-	 */
+	///  @name Interest service
 
 	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
 	///  of the function effectivly calls addEvent on @a requester.
@@ -126,9 +118,7 @@ public:
 	removeInterest (X3DParentObject* const requester) const
 	{ removeInterest (requester, (void (X3DParentObject::*)()) & X3DParentObject::addEvent); }
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	///  Disposes this object.  You normally do not need to call this function directly.
 	virtual
@@ -142,9 +132,7 @@ public:
 
 protected:
 
-	/***
-	 *  @name Construction
-	 */
+	///  @name Construction
 
 	///  Constructs new X3DParentObject.
 	X3DParentObject (X3DBrowser* const);
@@ -153,9 +141,7 @@ protected:
 	void
 	setBrowser (X3DBrowser* const);
 
-	/***
-	 *  @name Children handling
-	 */
+	///  @name Children handling
 
 	///  Add this node as parent to all @a children.  See addChild.
 	template <typename ... Args>
@@ -177,9 +163,7 @@ protected:
 	void
 	removeChild (X3DChildObject &);
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	///  If extended event handling is set to true, initializeOnly field behave like inputOutput fields.  Otherwise
 	///  initializeOnly fields will not process any events.  The default is true.
@@ -205,17 +189,13 @@ protected:
 
 private:
 
-	/***
-	 *  @name Event handling
-	 */
+	///  @name Event handling
 
 	///  Removes all fields from the event queue of the router.
 	void
 	removeEvents ();
 
-	/***
-	 *  @name Members
-	 */
+	///  @name Members
 
 	X3DBrowser*           browser;               // This objects Browser
 	bool                  extendedEventHandling; // Handle initializeOnlys like inputOutput

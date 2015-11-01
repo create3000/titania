@@ -255,9 +255,9 @@ X3DUserDefinedFieldsEditor::on_user_defined_field_activated (const Gtk::TreeMode
 		editing          = true;
 		userDefinedField = node -> getUserDefinedFields () .at (path .front ());
 
-		getAccessTypeLabel () .set_text (X3D::Generator::X3DAccessTypes [userDefinedField]);
-		getFieldTypeLabel () .set_text (userDefinedField -> getTypeName ());
-		getFieldNameEntry () .set_text (userDefinedField -> getName ());
+		getAccessTypeLabel () .set_text (X3D::to_string (userDefinedField -> getAccessType ()));
+		getFieldTypeLabel ()  .set_text (userDefinedField -> getTypeName ());
+		getFieldNameEntry ()  .set_text (userDefinedField -> getName ());
 		on_field_name_changed ();
 
 		getUserDefinedFieldDialog () .set_title (_ ("Edit User Defined Field"));
@@ -455,7 +455,7 @@ X3DUserDefinedFieldsEditor::addUserDefinedField (X3D::X3DFieldDefinition* const 
 	const auto iter = getUserDefinedFieldsListStore () -> append ();
 	(*iter) [columns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
 	(*iter) [columns .name]       = field -> getName ();
-	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [field] + ".png"));
+	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::to_string (field -> getAccessType ()) + ".png"));
 }
 
 void
@@ -475,7 +475,7 @@ X3DUserDefinedFieldsEditor::replaceUserDefinedField (X3D::X3DFieldDefinition* co
 
 	(*iter) [columns .type]       = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + newField -> getTypeName () + ".svg"));
 	(*iter) [columns .name]       = newField -> getName ();
-	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::Generator::X3DAccessTypes [newField] + ".png"));
+	(*iter) [columns .accessType] = Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/" + X3D::to_string (newField -> getAccessType ()) + ".png"));
 }
 
 void

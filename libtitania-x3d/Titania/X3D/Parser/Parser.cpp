@@ -1494,7 +1494,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 								if (_supportedField -> getType () == _reference -> getType ())
 								{
-									if (_accessType -> second == _reference -> getAccessType () or _accessType -> second == inputOutput)
+									if (_reference -> isReference (_accessType -> second))
 									{
 										X3DFieldDefinition* _field = nullptr;
 
@@ -1503,7 +1503,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 											_field = _baseNode -> getField (_fieldId);
 
 											//if (_field -> getAccessType () not_eq _accessType -> second)
-											//	throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+											//	throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + toString (_field -> getAccessType ()) + ".");
 
 											// experimental see events test and vrml logo test
 											{
@@ -1519,7 +1519,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 													else
 													{
 														if (getBrowser () -> isStrict ())
-															throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+															throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + to_string (_field -> getAccessType ()) + ".");
 
 														return true;
 													}
@@ -1533,7 +1533,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 											_field = createUserDefinedField (_baseNode, _accessType -> second, _fieldId, _supportedField);
 										}
 
-										_field -> addIsReference (_reference);
+										_field -> addReference (_reference);
 										_field -> addComments (getComments ());
 
 										return true;
@@ -1672,9 +1672,9 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 
 					if (_field -> getType () == _reference -> getType ())
 					{
-						if (_field -> getAccessType () == _reference -> getAccessType () or _field -> getAccessType () == inputOutput)
+						if (_reference -> isReference (_field -> getAccessType ()))
 						{
-							_field -> addIsReference (_reference);
+							_field -> addReference (_reference);
 							_field -> addComments (getComments ());
 							return true;
 						}
@@ -1702,7 +1702,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 			throw Error <INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
 		}
 
-		throw Error <INVALID_X3D> ("Couldn't assign value to " + Generator::AccessTypes [_field] + " field '" + _fieldId + "'.");
+		throw Error <INVALID_X3D> ("Couldn't assign value to " + to_string (_field -> getAccessType ()) + " field '" + _fieldId + "'.");
 	}
 
 	return false;
