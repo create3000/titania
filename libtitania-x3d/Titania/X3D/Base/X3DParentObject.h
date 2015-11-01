@@ -82,6 +82,11 @@ public:
 	void
 	setup ();
 
+	///  Returns whether this node is initialized.
+	bool
+	isInitialized () const
+	{ return initialized; }
+
 	/***
 	 *  @name Member access
 	 */
@@ -217,6 +222,7 @@ private:
 	ChildObjectSet        children;              // Internal used fields
 	ParentId              parentId;              // This object within Router
 	std::vector <ChildId> events;                // Children within Router
+	bool                  initialized;
 
 };
 

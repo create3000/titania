@@ -64,15 +64,15 @@
 namespace titania {
 namespace X3D {
 
-static constexpr time_type  SPEED_FACTOR           = 0.007;
-static constexpr time_type  SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
-static constexpr time_type  ROTATION_SPEED_FACTOR  = 1.4;
-static constexpr int        ROTATION_LIMIT         = 40;
-static constexpr time_type  PAN_SPEED_FACTOR       = SPEED_FACTOR;
-static constexpr time_type  PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
-static constexpr double     ROLL_ANGLE             = M_PI / 32;
-static constexpr time_type  ROLL_TIME              = 0.2;
-static constexpr time_type  FRAME_RATE             = 60;
+static constexpr time_type SPEED_FACTOR           = 0.007;
+static constexpr time_type SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
+static constexpr time_type ROTATION_SPEED_FACTOR  = 1.4;
+static constexpr int       ROTATION_LIMIT         = 40;
+static constexpr time_type PAN_SPEED_FACTOR       = SPEED_FACTOR;
+static constexpr time_type PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
+static constexpr double    ROLL_ANGLE             = M_PI / 32;
+static constexpr time_type ROLL_TIME              = 0.2;
+static constexpr time_type FRAME_RATE             = 60;
 
 static constexpr Vector3f yAxis (0, 1, 0);
 
@@ -102,7 +102,8 @@ X3DFlyViewer::initialize ()
 
 	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
 
-	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn überhaupt.
+	getBrowser () -> addCollision (this); // TODO: muss nur im walk viewer f¨¹r gravitation immer an sein.
+	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
 }
 
 bool
@@ -112,7 +113,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 	{
 		if (button)
 			return false;
-		
+
 		switch (event -> button)
 		{
 			case 1:
@@ -123,7 +124,6 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 				getBrowser () -> addEvent ();
 				getBrowser () -> setCursor (Gdk::FLEUR);
-				getBrowser () -> addCollision (this);
 				getActiveViewpoint () -> transitionStop ();
 
 				if (getBrowser () -> hasControlKey ())
@@ -153,7 +153,6 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 				getBrowser () -> addEvent ();
 				getBrowser () -> setCursor (Gdk::FLEUR);
-				getBrowser () -> addCollision (this);
 				getActiveViewpoint () -> transitionStop ();
 
 				fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
@@ -177,10 +176,9 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 	button = 0;
 
 	disconnect ();
-	
+
 	getBrowser () -> addEvent ();
 	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
-	getBrowser () -> removeCollision (this);
 
 	return false;
 }
@@ -281,8 +279,8 @@ X3DFlyViewer::fly ()
 		const time_type now = chrono::now ();
 		const time_type dt  = now - startTime;
 
-		const auto &viewpoint = getActiveViewpoint ();
-		const auto  upVector  = viewpoint -> getUpVector ();
+		const auto & viewpoint = getActiveViewpoint ();
+		const auto   upVector  = viewpoint -> getUpVector ();
 
 		// Rubberband values
 
@@ -326,7 +324,7 @@ X3DFlyViewer::fly ()
 	}
 	catch (const X3DError &)
 	{
-	   return false;
+		return false;
 	}
 }
 
@@ -358,7 +356,7 @@ X3DFlyViewer::pan ()
 	}
 	catch (const X3DError &)
 	{
-	   return false;
+		return false;
 	}
 }
 
@@ -380,7 +378,7 @@ X3DFlyViewer::roll ()
 	}
 	catch (const X3DError &)
 	{
-	   return false;
+		return false;
 	}
 }
 

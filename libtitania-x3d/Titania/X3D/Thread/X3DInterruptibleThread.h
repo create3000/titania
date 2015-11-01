@@ -77,6 +77,12 @@ class X3DInterruptibleThread
 {
 public:
 
+	///  @name Operations
+
+	void
+	stop ()
+	{ stopping .store (true); }
+
 	///  @name Destruction
 
 	virtual
@@ -96,10 +102,6 @@ protected:
 	bool
 	isStopping () const
 	{ return stopping .load (); }
-
-	void
-	stop ()
-	{ stopping .store (true); }
 
 	void
 	checkForInterrupt () const

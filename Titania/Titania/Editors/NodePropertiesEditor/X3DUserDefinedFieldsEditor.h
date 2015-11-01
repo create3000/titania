@@ -174,58 +174,6 @@ private:
 	void
 	connectFields (const X3D::SFTime &);
 
-	///  @name X3DApplicationContext
-
-	static
-	void
-	addUserDefinedField (X3DBrowserWindow* const,
-	                     const X3D::SFNode &,
-	                     X3D::X3DFieldDefinition* const,
-	                     const X3D::UndoStepPtr &);
-
-	static
-	void
-	replaceUserDefinedField (X3DBrowserWindow* const,
-	                        const X3D::SFNode &,
-	                        X3D::X3DFieldDefinition* const,
-	                        X3D::X3DFieldDefinition* const,
-	                        const X3D::UndoStepPtr &);
-
-	static
-	void
-	removeUserDefinedField (X3DBrowserWindow* const,
-	                        const X3D::SFNode &,
-	                        X3D::X3DFieldDefinition* const,
-	                        const X3D::UndoStepPtr &);
-
-	static
-	void
-	setUserDefinedFields (X3DBrowserWindow* const,
-	                      const X3D::SFNode &,
-	                      const X3D::FieldDefinitionArray &,
-	                      const X3D::UndoStepPtr &);
-
-	static
-	void
-	removeRoutes (X3DBrowserWindow* const,
-	              X3D::X3DFieldDefinition* const,
-	              const X3D::UndoStepPtr &);
-
-	static
-	void
-	removeReferences (X3DBrowserWindow* const,
-	                  const X3D::ProtoDeclarationPtr &,
-	                  X3D::X3DFieldDefinition* const,
-	                  const X3D::UndoStepPtr &);
-
-	static
-	bool
-	removeReferencesCallback (X3D::SFNode &,
-	                          X3DBrowserWindow* const,
-                             X3D::X3DFieldDefinition* const,
-                             const X3D::UndoStepPtr &);
-
-
 	///  @name Members
 
 	X3D::SFNode                   node;

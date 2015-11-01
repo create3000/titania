@@ -717,15 +717,15 @@ throw (Error <INVALID_NAME>,
 }
 
 std::string
-X3DExecutionContext::getUniqueProtoName (const std::string & name_) const
+X3DExecutionContext::getUniqueProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
 	static const std::regex TrailingNumbers (R"(\d+$)");
 
-	if (not getProtoDeclarations () .count (name_))
-		return name_;
+	if (not getProtoDeclarations () .count (name))
+		return name;
 
-	std::string name = std::regex_replace (name_, TrailingNumbers, "");
+	name = std::regex_replace (name, TrailingNumbers, "");
 
 	std::string newName = name;
 	size_t      i       = 64;
@@ -863,15 +863,15 @@ throw (Error <INVALID_NAME>,
 }
 
 std::string
-X3DExecutionContext::getUniqueExternProtoName (const std::string & name_) const
+X3DExecutionContext::getUniqueExternProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
 	static const std::regex TrailingNumbers (R"(\d+$)");
 
-	if (not getExternProtoDeclarations () .count (name_))
-		return name_;
+	if (not getExternProtoDeclarations () .count (name))
+		return name;
 
-	std::string name = std::regex_replace (name_, TrailingNumbers, "");
+	name = std::regex_replace (name, TrailingNumbers, "");
 
 	std::string newName = name;
 	size_t      i       = 64;

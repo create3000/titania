@@ -2393,6 +2393,7 @@
     <None Include="Library.pidb" />
     <None Include="Tests\Layering\Collision.x3d" />
     <None Include="Tests\Shaders\ToolShader.x3dv" />
+    <None Include="Tests\PROTO\ProtoEditor.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

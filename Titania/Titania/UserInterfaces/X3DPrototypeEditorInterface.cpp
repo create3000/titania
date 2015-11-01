@@ -67,12 +67,14 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
+	m_builder -> get_widget ("CreateProtoMenu", m_CreateProtoMenu);
+	m_builder -> get_widget ("CreatePrototypeMenuItem", m_CreatePrototypeMenuItem);
+	m_builder -> get_widget ("CreateExternProtoMenuItem", m_CreateExternProtoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("EditPrototypeImage", m_EditPrototypeImage);
 	m_builder -> get_widget ("EditLabel", m_EditLabel);
 	m_builder -> get_widget ("HeaderLabel", m_HeaderLabel);
-	m_builder -> get_widget ("NewPrototypeButton", m_NewPrototypeButton);
 	m_builder -> get_widget ("CreateInstanceButton", m_CreateInstanceButton);
 	m_builder -> get_widget ("MenuButton", m_MenuButton);
 	m_builder -> get_widget ("PrototypeImage", m_PrototypeImage);
@@ -88,6 +90,12 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
 	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
+
+	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.
+	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
+	m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
+
+	// Connect object Gtk::Button with id 'CreateInstanceButton'.
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 
 	// Connect object Gtk::Entry with id 'NameEntry'.

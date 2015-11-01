@@ -65,7 +65,8 @@ X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 	extendedEventHandling (true),
 	             children (),
 	             parentId ({ 0 }),
-	               events ()
+	               events (),
+	          initialized (false)
 {
 	assert (browser);
 }
@@ -80,6 +81,8 @@ X3DParentObject::setup ()
 
 	for (const auto & child : children)
 		child -> isTainted (false);
+
+	initialized = true;
 }
 
 ///  Set the browser this node belongs to.
@@ -260,9 +263,12 @@ X3DParentObject::dispose ()
 
 	children .clear ();
 
-	removeEvents ();
+	if (isInitialized ())
+	{
+		removeEvents ();
 
-	browser -> removeParent (this);
+		browser -> removeParent (this);
+	}
 }
 
 /***

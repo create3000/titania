@@ -272,6 +272,10 @@ ExternProtoDeclaration::requestImmediateLoad ()
 	}
 	catch (const X3DError & error)
 	{
+		setLoadState (FAILED_STATE);
+
+		getBrowser () -> println (error .what ());
+
 		setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 	}
 }
@@ -339,9 +343,9 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 	}
 	catch (const X3DError & error)
 	{
-	   __LOG__ << error .what () << std::endl;
-
 		setLoadState (FAILED_STATE);
+
+	   getBrowser () -> println (error .what ());
 
 		scene = getBrowser () -> getPrivateScene ();
 

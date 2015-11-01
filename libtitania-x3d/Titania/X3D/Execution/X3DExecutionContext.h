@@ -404,7 +404,7 @@ public:
 	{ return prototypes; }
 
 	std::string
-	getUniqueProtoName (const std::string &) const
+	getUniqueProtoName (std::string) const
 	throw (Error <DISPOSED>);
 
 	const SFTime &
@@ -453,7 +453,7 @@ public:
 	{ return externProtos; }
 
 	std::string
-	getUniqueExternProtoName (const std::string &) const
+	getUniqueExternProtoName (std::string) const
 	throw (Error <DISPOSED>);
 
 	void

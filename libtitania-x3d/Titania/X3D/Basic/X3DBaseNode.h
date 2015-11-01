@@ -92,11 +92,6 @@ public:
 	void
 	setup ();
 
-	///  Returns whether this node is initialized.
-	bool
-	isInitialized () const
-	{ return initialized; }
-
 	///  Constructs a new node into @a executionContext.
 	virtual
 	X3DBaseNode*
@@ -628,7 +623,6 @@ private:
 	size_t               numUserDefinedFields;   // Number of user defined fields
 	SFTime               fieldsOutput;
 
-	bool   initialized;
 	bool   private_;
 	size_t cloneCount;
 	SFBool live;

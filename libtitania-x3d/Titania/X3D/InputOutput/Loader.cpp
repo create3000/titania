@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -153,7 +153,7 @@ throw (Error <INVALID_URL>,
 
 			else
 				executionContext -> getBrowser () -> loadURL ({ referer .transform (uri) .str () }, parameter);
-			
+
 			return;
 		}
 		catch (const X3DError &)
@@ -178,7 +178,8 @@ throw (Error <INVALID_URL>,
 {
 	if (url .empty ())
 	{
-	   urlError .emplace_back ("No URL given.");
+		urlError .emplace_back ("No URL given.");
+
 		throw Error <INVALID_URL> ("Invalid url.");
 	}
 
@@ -261,7 +262,7 @@ throw (Error <INVALID_URL>,
 {
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
-	
+
 	const bool data = uri .scheme () == "data";
 
 	//if (not data)

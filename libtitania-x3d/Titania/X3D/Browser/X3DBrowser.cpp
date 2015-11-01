@@ -294,7 +294,7 @@ throw (Error <INVALID_SCENE>,
 		if (future)
 		{
 			removeLoadCount (future .get ());
-			future -> dispose ();
+			future -> stop ();
 		}
 
 		prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);

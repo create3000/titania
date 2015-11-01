@@ -139,7 +139,6 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	        fieldAliases (),
 	numUserDefinedFields (0),
 	        fieldsOutput (),
-	         initialized (false),
 	            private_ (false),
 	          cloneCount (0),
 	                live (true),
@@ -166,7 +165,6 @@ X3DBaseNode::setup ()
 		field -> isTainted (false);
 	}
 
-	initialized = true;
 	initialize ();
 }
 

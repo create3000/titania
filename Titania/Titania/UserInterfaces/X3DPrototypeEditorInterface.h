@@ -105,6 +105,18 @@ public:
 	getPrototypeMenu () const
 	{ return *m_PrototypeMenu; }
 
+	Gtk::Menu &
+	getCreateProtoMenu () const
+	{ return *m_CreateProtoMenu; }
+
+	Gtk::ImageMenuItem &
+	getCreatePrototypeMenuItem () const
+	{ return *m_CreatePrototypeMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCreateExternProtoMenuItem () const
+	{ return *m_CreateExternProtoMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -124,10 +136,6 @@ public:
 	Gtk::Label &
 	getHeaderLabel () const
 	{ return *m_HeaderLabel; }
-
-	Gtk::Button &
-	getNewPrototypeButton () const
-	{ return *m_NewPrototypeButton; }
 
 	Gtk::Button &
 	getCreateInstanceButton () const
@@ -191,6 +199,14 @@ public:
 
 	virtual
 	void
+	on_create_proto_clicked () = 0;
+
+	virtual
+	void
+	on_create_externproto_clicked () = 0;
+
+	virtual
+	void
 	on_create_instance_clicked () = 0;
 
 	virtual
@@ -226,12 +242,14 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
 	Gtk::Menu*                             m_PrototypeMenu;
+	Gtk::Menu*                             m_CreateProtoMenu;
+	Gtk::ImageMenuItem*                    m_CreatePrototypeMenuItem;
+	Gtk::ImageMenuItem*                    m_CreateExternProtoMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Image*                            m_EditPrototypeImage;
 	Gtk::Label*                            m_EditLabel;
 	Gtk::Label*                            m_HeaderLabel;
-	Gtk::Button*                           m_NewPrototypeButton;
 	Gtk::Button*                           m_CreateInstanceButton;
 	Gtk::MenuButton*                       m_MenuButton;
 	Gtk::Image*                            m_PrototypeImage;

@@ -6,16 +6,49 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
   </object>
-  <object class="GtkImage" id="image1">
+  <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-new</property>
+    <property name="stock">ExternProto</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Prototype</property>
+  </object>
+  <object class="GtkMenu" id="CreateProtoMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="CreatePrototypeMenuItem">
+        <property name="label" translatable="yes">Create New Prototype</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image5</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_create_proto_clicked" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="CreateExternProtoMenuItem">
+        <property name="label" translatable="yes">Create New Extern Prototype</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image2</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_create_externproto_clicked" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
     <property name="title" translatable="yes">Prototype Editor</property>
     <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -96,12 +129,18 @@
                 <property name="hexpand">True</property>
                 <property name="spacing">2</property>
                 <child>
-                  <object class="GtkButton" id="NewPrototypeButton">
+                  <object class="GtkMenuButton" id="menubutton1">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">image1</property>
-                    <property name="always_show_image">True</property>
+                    <property name="popup">CreateProtoMenu</property>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-new</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -418,6 +457,7 @@
                   <object class="GtkBox" id="InstancesBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="border_width">8</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <placeholder/>

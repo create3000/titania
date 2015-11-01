@@ -188,8 +188,10 @@ SceneLoader::loadAsync (const MFString & url)
 		
 		getBrowser () -> println (error .what ());
 
-		if (not loader .getUrlError () .empty ())
-			throw FutureUrlErrorException (loader .getUrlError ());
+		if (loader .getUrlError () .empty ())
+			throw FutureUrlErrorException ({ error .what () });
+			
+		throw FutureUrlErrorException (loader .getUrlError ());
 	}
 		
 	checkForInterrupt ();

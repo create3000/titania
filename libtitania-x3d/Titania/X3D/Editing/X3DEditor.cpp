@@ -1288,6 +1288,237 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
  *
  *
  *
+ * User-defined fields operations
+ *
+ *
+ *
+ */
+
+void
+X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (FieldPtr (field));
+
+	undoStep -> addUndoFunction (&X3DBaseNode::removeUserDefinedField, node, field -> getName ());
+	undoStep -> addRedoFunction (&X3DBaseNode::addUserDefinedField, node, field -> getAccessType (), field -> getName (), field);
+
+	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+}
+
+void
+X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
+{
+	auto userDefinedFields = node -> getUserDefinedFields ();
+	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
+
+	if (iter == userDefinedFields .end ())
+		return;
+
+	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
+   // functions we will execute later.
+   
+	std::deque <std::function <void ()>>  addRoutes;
+
+   if (newField -> getType () == oldField -> getType ())
+   {
+      // Assign the old value to the new field.
+   
+      newField -> set (*oldField);
+
+      // Reassign IS reference to the new field.
+ 
+      for (const auto & reference : oldField -> getIsReferences ())
+      {
+         if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == inputOutput)
+            newField -> addIsReference (reference);
+      }
+
+      // Create addRoutes functions for input and output routes.
+ 
+      if (newField -> isInput () and oldField -> isInput ())
+      {
+         for (const auto & route : oldField -> getInputRoutes ())
+         {
+            const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
+
+            addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+                                                this,
+                                                node -> getExecutionContext (),
+                                                route -> getSourceNode (),
+                                                selfConnection ? newField -> getName () : route -> getSourceField (),
+                                                node,
+                                                newField -> getName (),
+                                                undoStep));
+         }
+      }
+
+      if (newField -> isOutput () and oldField -> isOutput ())
+      {
+         for (const auto & route : oldField -> getOutputRoutes ())
+         {
+            const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
+
+            addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+                                                this,
+                                                node -> getExecutionContext (),
+                                                node,
+                                                newField -> getName (),
+                                                route -> getDestinationNode (),
+                                                selfConnection ? newField -> getName () : route -> getDestinationField (),
+                                                undoStep));
+         }
+      }
+   }
+  
+	// Save all involved fields.
+
+	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (newField));
+ 
+	// Remove user data from old field.
+
+	undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, oldField, nullptr);
+	undoStep -> addRedoFunction (&X3DFieldDefinition::setUserData, newField, nullptr);
+	newField -> setUserData (nullptr);
+
+	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
+   
+   removeRoutes (oldField, undoStep);
+
+	// Restore old user defined fields in undo.
+
+	undoStep -> addUndoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
+
+	// Replace old field with new field in temporary array.
+
+	*iter = newField;
+	
+	// Set new user defined fields.
+
+	undoStep -> addRedoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
+	
+	node -> setUserDefinedFields (userDefinedFields);
+
+	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field.
+
+	for (const auto & addRoute : addRoutes)
+	{
+	   try
+	   {
+	      addRoute ();
+	   }
+	   catch (const X3DError &)
+	   { }
+	}
+}
+
+void
+X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+{
+	removeReferences (ProtoDeclarationPtr (node), field, undoStep);
+
+	// Remove field from node
+
+	const auto userDefinedFields = node -> getUserDefinedFields ();
+
+	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (field));
+
+	// Remove user data from old field.
+
+	undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, field, nullptr);
+ 
+	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
+   
+   removeRoutes (field, undoStep);
+
+	undoStep -> addUndoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
+	undoStep -> addRedoFunction (&X3DBaseNode::removeUserDefinedField, node, field -> getName ());
+
+	node -> removeUserDefinedField (field -> getName ());	
+}
+
+void
+X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
+{
+	// Remove any routes and user data.
+
+	const auto currentUserDefinedFields = node -> getUserDefinedFields ();
+	
+	std::set <X3DFieldDefinition*>    lhs (currentUserDefinedFields .begin (), currentUserDefinedFields .end ()); 
+	std::set <X3DFieldDefinition*>    rhs (userDefinedFields .begin (), userDefinedFields .end ()); 
+	std::vector <X3DFieldDefinition*> difference;
+
+	std::set_difference (lhs .begin (), lhs .end (), rhs .begin (), rhs .end (), std::back_inserter (difference));
+
+	for (const auto field : difference)
+	{
+		undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, field, nullptr);
+		removeRoutes (field, undoStep);
+	}
+
+	// Replace the user defined fields.
+
+	undoStep -> addUndoFunction (&X3DBaseNode::setUserDefinedFields, node, currentUserDefinedFields);
+	undoStep -> addRedoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
+
+	node -> setUserDefinedFields (userDefinedFields);	
+}
+
+void
+X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+{
+	// Remove routes from field.
+
+   for (const auto & route : RouteSet (field -> getInputRoutes ()))
+   {
+      deleteRoute (route -> getExecutionContext (),
+                   route -> getSourceNode (),
+                   route -> getSourceField (),
+                   route -> getDestinationNode (),
+                   route -> getDestinationField (),
+                   undoStep);
+   }
+
+   for (const auto & route : RouteSet (field -> getOutputRoutes ()))
+   {
+      deleteRoute (route -> getExecutionContext (),
+                   route -> getSourceNode (),
+                   route -> getSourceField (),
+                   route -> getDestinationNode (),
+                   route -> getDestinationField (),
+                   undoStep);
+   }
+}
+
+void
+X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+{
+	using namespace std::placeholders;
+
+	if (proto)
+		traverse (proto, std::bind (&X3DEditor::removeReferencesCallback, this, _1, field, undoStep));
+}
+
+bool
+X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+{
+	for (const auto & field: node -> getFieldDefinitions ())
+	{
+		if (field -> getIsReferences () .count (protoField))
+		{
+		   undoStep -> addUndoFunction (&X3DFieldDefinition::addIsReference,    field, protoField);
+		   undoStep -> addRedoFunction (&X3DFieldDefinition::removeIsReference, field, protoField);
+
+		   field -> removeIsReference (protoField);
+		}
+	}
+
+	return true;
+}
+
+/***
+ *
+ *
+ *
  * Grouping operations
  *
  *
