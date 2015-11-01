@@ -1507,27 +1507,30 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 											// experimental see events test and vrml logo test
 											{
-												if (_supportedField -> getType () == _field -> getType ())
+												if (_reference -> getType () == _field -> getType ())
 												{
-													if (_accessType -> second == _field -> getAccessType () or _field -> getAccessType () == inputOutput)
+													if (_accessType -> second == _field -> getAccessType ())
+														;
+													else if (_field -> getAccessType () == inputOutput)
 													{
 														if (_accessType -> second not_eq _field -> getAccessType ())
-															throw Error <INVALID_NAME> ("");
+															_field = createUserDefinedField (_baseNode, _accessType -> second, _fieldId, _supportedField);
 													}
 													else
-														throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+													{
+														if (getBrowser () -> isStrict ())
+															throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + Generator::AccessTypes [_field] + ".");
+
+														return true;
+													}
 												}
 												else
-													throw Error <INVALID_NAME> ("");
+													_field = createUserDefinedField (_baseNode, _accessType -> second, _fieldId, _supportedField);
 											}
 										}
 										catch (const Error <INVALID_NAME> &)
 										{
-											_field = _supportedField -> create ();
-
-											_baseNode -> addUserDefinedField (_accessType -> second,
-											                                  _fieldId,
-											                                  _field);
+											_field = createUserDefinedField (_baseNode, _accessType -> second, _fieldId, _supportedField);
 										}
 
 										_field -> addIsReference (_reference);
@@ -1596,6 +1599,16 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 	}
 
 	return nodeBodyElement (_baseNode);
+}
+
+X3DFieldDefinition*
+Parser::createUserDefinedField (X3DBaseNode* const _baseNode, const AccessType _accessType, const std::string & _fieldId, const X3DFieldDefinition* const _supportedField)
+{
+	X3DFieldDefinition* const _field = _supportedField -> create ();
+
+	_baseNode -> addUserDefinedField (_accessType, _fieldId, _field);
+
+	return _field;
 }
 
 void

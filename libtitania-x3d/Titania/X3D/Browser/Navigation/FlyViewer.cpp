@@ -70,6 +70,18 @@ FlyViewer::create (X3DExecutionContext* const executionContext) const
 	return new FlyViewer (executionContext);
 }
 
+void
+FlyViewer::addCollision ()
+{
+	getBrowser () -> addCollision (this);
+}
+
+void
+FlyViewer::removeCollision ()
+{
+	getBrowser () -> removeCollision (this);
+}
+
 Vector3f
 FlyViewer::getTranslationOffset (const Vector3f & velocity)
 {

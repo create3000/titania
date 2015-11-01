@@ -272,6 +272,9 @@ private:
 	bool
 	scriptBodyElement (X3DBaseNode* const);
 
+	X3DFieldDefinition*
+	createUserDefinedField (X3DBaseNode* const, const AccessType, const std::string &, const X3DFieldDefinition* const);
+
 	void
 	nodeBody (X3DBaseNode* const);
 

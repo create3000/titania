@@ -92,6 +92,17 @@ public:
 
 private:
 
+	///  @name Operations
+
+	virtual
+	void
+	addCollision () final override;
+
+	virtual
+	void
+	removeCollision () final override;
+
+
 	virtual
 	Vector3f
 	getTranslationOffset (const Vector3f &) final override;

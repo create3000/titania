@@ -82,18 +82,30 @@ public:
 
 protected:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Operations
+
+	virtual
+	void
+	addCollision ()
+	{ }
+
+	virtual
+	void
+	removeCollision ()
+	{ }
+
 	virtual
 	Vector3f
 	getTranslationOffset (const Vector3f &) = 0;
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
 
 	///  @name Event handlers
 

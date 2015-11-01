@@ -88,9 +88,22 @@ public:
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+	
+	///  @name Construction
 
+	virtual
+	void
+	dispose () final override;
 
 private:
+	
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Operations
 
 	virtual
 	Vector3f

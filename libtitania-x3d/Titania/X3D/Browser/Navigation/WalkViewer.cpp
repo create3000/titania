@@ -70,6 +70,14 @@ WalkViewer::create (X3DExecutionContext* const executionContext) const
 	return new WalkViewer (executionContext);
 }
 
+void
+WalkViewer::initialize ()
+{
+	X3DFlyViewer::initialize ();
+
+	getBrowser () -> addCollision (this);
+}
+
 Vector3f
 WalkViewer::getTranslationOffset (const Vector3f & velocity)
 {
@@ -82,6 +90,14 @@ WalkViewer::getTranslationOffset (const Vector3f & velocity)
 	const auto orientation     = userOrientation * Rotation4f (yAxis * userOrientation, upVector);
 
 	return velocity * orientation;
+}
+
+void
+WalkViewer::dispose ()
+{
+	getBrowser () -> removeCollision (this);
+	
+	X3DFlyViewer::dispose ();
 }
 
 } // X3D

@@ -1314,6 +1314,13 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	if (iter == userDefinedFields .end ())
 		return;
 
+	// Handle IS references, if node is proto.
+
+	if (oldField -> getType () == newField -> getType ())
+		;
+	else
+		removeReferences (ProtoDeclarationPtr (node), oldField, undoStep);
+
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
    // functions we will execute later.
    
@@ -1414,6 +1421,8 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 void
 X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
+	// Handle IS references, if node is proto.
+
 	removeReferences (ProtoDeclarationPtr (node), field, undoStep);
 
 	// Remove field from node

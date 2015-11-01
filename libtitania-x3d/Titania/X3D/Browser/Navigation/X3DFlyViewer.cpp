@@ -102,7 +102,6 @@ X3DFlyViewer::initialize ()
 
 	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
 
-	getBrowser () -> addCollision (this); // TODO: muss nur im walk viewer f¨¹r gravitation immer an sein.
 	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
 }
 
@@ -125,6 +124,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				getBrowser () -> addEvent ();
 				getBrowser () -> setCursor (Gdk::FLEUR);
 				getActiveViewpoint () -> transitionStop ();
+				addCollision ();
 
 				if (getBrowser () -> hasControlKey ())
 				{
@@ -154,6 +154,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				getBrowser () -> addEvent ();
 				getBrowser () -> setCursor (Gdk::FLEUR);
 				getActiveViewpoint () -> transitionStop ();
+				addCollision ();
 
 				fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 
@@ -179,6 +180,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 
 	getBrowser () -> addEvent ();
 	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+	removeCollision ();
 
 	return false;
 }
@@ -480,8 +482,6 @@ X3DFlyViewer::display ()
 void
 X3DFlyViewer::dispose ()
 {
-	getBrowser () -> removeCollision (this);
-
 	X3DViewer::dispose ();
 }
 
