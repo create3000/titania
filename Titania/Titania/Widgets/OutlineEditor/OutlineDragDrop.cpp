@@ -115,6 +115,9 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 
 	const auto iter = treeView -> get_model () -> get_iter (sourcePath);
 
+	if (not treeView -> get_model () -> iter_is_valid (iter))
+		return true;
+
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::ExternProtoDeclaration:
@@ -287,6 +290,9 @@ OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & 
 		return;
 
 	const auto iter = treeView -> get_model () -> get_iter (sourcePath);
+
+	if (not treeView -> get_model () -> iter_is_valid (iter))
+		return;
 
 	switch (treeView -> get_data_type (iter))
 	{
