@@ -153,10 +153,6 @@ public:
 	checkLoadState () const final override
 	{ return X3DUrlObject::checkLoadState (); }
 
-	virtual
-	void
-	updateInterfaceAndInstances () final override;
-
 	///  @name Input/Output
 
 	virtual

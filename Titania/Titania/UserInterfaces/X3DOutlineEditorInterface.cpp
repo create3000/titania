@@ -78,7 +78,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
 	m_builder -> get_widget ("ReloadMenuItem", m_ReloadMenuItem);
-	m_builder -> get_widget ("UpdateInterfaceAndInstancesMenuItem", m_UpdateInterfaceAndInstancesMenuItem);
+	m_builder -> get_widget ("UpdateInstancesMenuItem", m_UpdateInstancesMenuItem);
 	m_builder -> get_widget ("ProtoSeparator", m_ProtoSeparator);
 	m_builder -> get_widget ("AddReferenceMenuItem", m_AddReferenceMenuItem);
 	m_builder -> get_widget ("AddReferenceMenu", m_AddReferenceMenu);
@@ -135,8 +135,8 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
 	m_ReloadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_reload_activated));
 
-	// Connect object Gtk::MenuItem with id 'UpdateInterfaceAndInstancesMenuItem'.
-	m_UpdateInterfaceAndInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_interface_and_instances_activated));
+	// Connect object Gtk::MenuItem with id 'UpdateInstancesMenuItem'.
+	m_UpdateInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_instances_activated));
 
 	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
 	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));

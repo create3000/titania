@@ -1550,6 +1550,8 @@ X3DExecutionContext::dispose ()
 	prototypes    .clear ();
 	externProtos  .clear ();
 	routes        .clear ();
+	
+	rootNodes -> clear ();
 }
 
 X3DExecutionContext::~X3DExecutionContext ()

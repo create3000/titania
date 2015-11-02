@@ -211,6 +211,9 @@ public:
 
 	///  @name Operations
 
+	void
+	update ();
+
 	virtual
 	void
 	traverse (const TraverseType) final override;
@@ -257,9 +260,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	void
-	update ();
 
 	void
 	construct ();

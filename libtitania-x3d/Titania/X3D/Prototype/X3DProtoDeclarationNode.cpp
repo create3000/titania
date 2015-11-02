@@ -48,79 +48,26 @@
  *
  ******************************************************************************/
 
-#include "X3DUrlObject.h"
+#include "X3DProtoDeclarationNode.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
+#include "../Components/Core/X3DPrototypeInstance.h"
 
 namespace titania {
 namespace X3D {
 
-X3DUrlObject::Fields::Fields () :
-	url (new MFString ())
-{ }
-
-X3DUrlObject::X3DUrlObject () :
-	X3DBaseNode (),
-	     fields (),
-	  loadState (NOT_STARTED_STATE)
+X3DProtoDeclarationNode::X3DProtoDeclarationNode () :
+	  X3DNode (),
+	instances (),
+	 comments ()
 {
-	addType (X3DConstants::X3DUrlObject);
-
-	addChildren (loadState);
-}
-
-X3DUrlObject*
-X3DUrlObject::copy (X3DExecutionContext* const executionContext, const CopyType type) const
-throw (Error <INVALID_NAME>,
-	    Error <NOT_SUPPORTED>)
-{
-	X3DUrlObject* const copy = dynamic_cast <X3DUrlObject*> (X3DBaseNode::copy (executionContext, type));
-
-	transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-
-	return copy;
+	addType (X3DConstants::X3DProtoDeclarationNode);
 }
 
 void
-X3DUrlObject::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+X3DProtoDeclarationNode::updateInstances () const
 {
-	transform (url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-}
-
-void
-X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
-{
-	for (auto & value : url)
-	{
-		const basic::uri URL = value .str ();
-
-		if (URL .is_relative () and not URL .filename (true) .empty ())
-		{
-			const auto transformed = oldWorldURL .transform (URL);
-
-			value .set (newWorldURL .relative_path (transformed) .str ());
-		}
-	}
-}
-
-void
-X3DUrlObject::setLoadState (const LoadState value, const bool notify)
-{
-	getBrowser () -> removeLoadCount (this);
-
-	if (notify and value == IN_PROGRESS_STATE)
-		getBrowser () -> addLoadCount (this);
-
-	loadState = value;
-}
-
-void
-X3DUrlObject::dispose ()
-{
-	getBrowser () -> removeLoadCount (this);
+	for (const auto & instance : instances)
+		instance -> update ();
 }
 
 } // X3D

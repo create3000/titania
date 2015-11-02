@@ -113,9 +113,8 @@ public:
 	getInstances () const
 	{ return instances; }
 
-	virtual
 	void
-	updateInterfaceAndInstances () = 0;
+	updateInstances () const;
 
 	///  @name Comment handling
 
@@ -132,13 +131,7 @@ protected:
 
 	///  @name Construction
 
-	X3DProtoDeclarationNode () :
-		      X3DNode (),
-		    instances (),
-		     comments ()
-	{
-		addType (X3DConstants::X3DProtoDeclarationNode);
-	}
+	X3DProtoDeclarationNode ();
 
 private:
 

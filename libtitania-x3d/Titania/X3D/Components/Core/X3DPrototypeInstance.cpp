@@ -201,11 +201,25 @@ X3DPrototypeInstance::update ()
 
 	try
 	{
-		for (const auto fieldDefinition : protoNode -> getUserDefinedFields ())
-			removeField (fieldDefinition -> getName ());
+		const auto proto = protoNode -> getProtoDeclaration ();
 
-		for (const auto fieldDefinition : protoNode -> getProtoDeclaration () -> getUserDefinedFields ())
-			removeField (fieldDefinition -> getName ());
+		for (const auto & fieldDefinition : getFieldDefinitions ())
+		{
+			try
+			{
+				const auto protoField = proto -> getField (fieldDefinition -> getName ());
+
+				if (fieldDefinition -> getType () not_eq protoField -> getType ())
+					removeUserDefinedField (fieldDefinition -> getName ());
+
+				else
+					fieldDefinition -> setAccessType (protoField -> getAccessType ());
+			}
+			catch (const X3DError & error)
+			{
+				removeUserDefinedField (fieldDefinition -> getName ());
+			}
+		}		
 	}
 	catch (const X3DError & error)
 	{
@@ -213,6 +227,10 @@ X3DPrototypeInstance::update ()
 	}
 
 	construct ();
+	setup ();
+
+	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
+	X3DChildObject::addEvent ();
 }
 
 void
@@ -638,10 +656,10 @@ X3DPrototypeInstance::dispose ()
 	catch (const X3D::X3DError &)
 	{ }
 
-	removeChildren (getRootNodes ());
-
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
+
+	removeChildren (getRootNodes ());
 }
 
 } // X3D

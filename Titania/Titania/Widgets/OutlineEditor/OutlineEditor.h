@@ -143,7 +143,7 @@ private:
 
 	virtual
 	void
-	on_update_interface_and_instances_activated () final override;
+	on_update_instances_activated () final override;
 
 	virtual
 	void

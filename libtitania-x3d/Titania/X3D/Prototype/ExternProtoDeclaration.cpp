@@ -354,27 +354,6 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 }
 
 void
-ExternProtoDeclaration::updateInterfaceAndInstances ()
-{
-	if (not proto)
-	   return;
-
-	const auto fieldDefinitions = getUserDefinedFields ();
-
-	for (const auto & fieldDefinition : fieldDefinitions)
-	{
-	   removeUserDefinedField (fieldDefinition -> getName ());
-	}
-	
-	for (const auto & fieldDefinition : proto -> getUserDefinedFields ())
-	{
-		addUserDefinedField (fieldDefinition -> getAccessType (),
-		                     fieldDefinition -> getName (),
-		                     fieldDefinition -> copy (FLAT_COPY));
-	}
-}
-
-void
 ExternProtoDeclaration::set_live ()
 {
 	if (checkLoadState () == COMPLETE_STATE)

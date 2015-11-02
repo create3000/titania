@@ -178,12 +178,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-ProtoDeclaration::updateInterfaceAndInstances ()
-{
-
-}
-
-void
 ProtoDeclaration::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
@@ -478,9 +472,9 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ProtoDeclaration::dispose ()
 {
-	removeChildren (getRootNodes ());
 	X3DExecutionContext::dispose ();
 	X3DProtoDeclarationNode::dispose ();
+	removeChildren (getRootNodes ());
 }
 
 } // X3D

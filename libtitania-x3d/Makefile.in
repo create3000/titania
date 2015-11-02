@@ -606,6 +606,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Prototype/ExternProtoDeclaration.lo \
 	Titania/X3D/Prototype/ProtoArray.lo \
 	Titania/X3D/Prototype/ProtoDeclaration.lo \
+	Titania/X3D/Prototype/X3DProtoDeclarationNode.lo \
 	Titania/X3D/Rendering/ClipPlaneContainer.lo \
 	Titania/X3D/Rendering/CollisionContainer.lo \
 	Titania/X3D/Rendering/FrameBuffer.lo \
@@ -1356,6 +1357,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
+	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
@@ -3304,6 +3306,9 @@ Titania/X3D/Prototype/ProtoArray.lo:  \
 Titania/X3D/Prototype/ProtoDeclaration.lo:  \
 	Titania/X3D/Prototype/$(am__dirstamp) \
 	Titania/X3D/Prototype/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Prototype/X3DProtoDeclarationNode.lo:  \
+	Titania/X3D/Prototype/$(am__dirstamp) \
+	Titania/X3D/Prototype/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Rendering/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Rendering
 	@: > Titania/X3D/Rendering/$(am__dirstamp)
@@ -4096,6 +4101,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ExternProtoDeclaration.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ProtoDeclaration.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/X3DProtoDeclarationNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ClipPlaneContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/CollisionContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo@am__quote@

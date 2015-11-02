@@ -488,6 +488,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/ExternProtoDeclaration.cpp \
 	Titania/X3D/Prototype/ProtoArray.cpp \
 	Titania/X3D/Prototype/ProtoDeclaration.cpp \
+	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \

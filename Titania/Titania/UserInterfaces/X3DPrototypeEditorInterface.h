@@ -201,6 +201,10 @@ public:
 	getInstancesBox () const
 	{ return *m_InstancesBox; }
 
+	Gtk::Button &
+	getUpdateInstancesButton () const
+	{ return *m_UpdateInstancesButton; }
+
 	virtual
 	void
 	on_create_proto_clicked () = 0;
@@ -228,6 +232,10 @@ public:
 	virtual
 	void
 	on_rename_clicked () = 0;
+
+	virtual
+	void
+	on_update_instances_clicked () = 0;
 
 	virtual
 	~X3DPrototypeEditorInterface ();
@@ -270,6 +278,7 @@ private:
 	Gtk::Button*                           m_URLRemoveButton;
 	Gtk::Button*                           m_URLReloadButton;
 	Gtk::Box*                              m_InstancesBox;
+	Gtk::Button*                           m_UpdateInstancesButton;
 
 };
 

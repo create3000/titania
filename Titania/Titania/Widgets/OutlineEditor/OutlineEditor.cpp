@@ -443,7 +443,7 @@ OutlineEditor::on_reload_activated ()
 }
 
 void
-OutlineEditor::on_update_interface_and_instances_activated ()
+OutlineEditor::on_update_instances_activated ()
 {
 	if (nodePath .empty ())
 		return;
@@ -458,7 +458,7 @@ OutlineEditor::on_update_interface_and_instances_activated ()
 			const auto & node      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoNode = dynamic_cast <X3D::X3DProtoDeclarationNode*> (node .getValue ());
 
-			protoNode -> updateInterfaceAndInstances ();
+			protoNode -> updateInstances ();
 		}
 		default:
 			break;
@@ -1220,9 +1220,12 @@ OutlineEditor::selectNode (const double x, const double y)
 	getSetAsCurrentSceneMenuItem () .set_visible (((isExternProto or isInlineNode) and isCompletelyLoaded) or isPrototype or isPrototypeInstance);
 	getCreateInstanceMenuItem ()    .set_visible ((isExternProto or isPrototype) and not inPrototypeInstance () and isLocalNode);
 	getReloadMenuItem ()            .set_visible (isUrlObject and inScene and not isInlineNode);
-	//getUpdateInterfaceAndInstancesMenuItem () .set_visible (not inPrototypeInstance () and isLocalNode and (isPrototype or isExternProto));
+	getUpdateInstancesMenuItem ()   .set_visible ((isPrototype or isExternProto) and not inPrototypeInstance () and isLocalNode);
 	
-	getProtoSeparator () .set_visible (getSetAsCurrentSceneMenuItem () .get_visible () or getCreateInstanceMenuItem () .get_visible ());
+	getProtoSeparator () .set_visible (getSetAsCurrentSceneMenuItem () .get_visible () or
+                                      getCreateInstanceMenuItem ()    .get_visible () or
+                                      getReloadMenuItem ()            .get_visible () or
+	                                   getUpdateInstancesMenuItem ()   .get_visible ());
 
 	getRemoveMenuItem ()            .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode);
 	getUnlinkCloneMenuItem ()       .set_visible (not inPrototypeInstance () and isLocalNode and isBaseNode and isCloned);

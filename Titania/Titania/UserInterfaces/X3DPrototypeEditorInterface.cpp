@@ -91,6 +91,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
 	m_builder -> get_widget ("URLReloadButton", m_URLReloadButton);
 	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
+	m_builder -> get_widget ("UpdateInstancesButton", m_UpdateInstancesButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.
 	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
@@ -106,6 +107,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'RenameButton'.
 	m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_rename_clicked));
+	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 
 	// Call construct handler of base class.
 	construct ();

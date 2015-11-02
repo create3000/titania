@@ -150,8 +150,8 @@ public:
 	{ return *m_ReloadMenuItem; }
 
 	Gtk::MenuItem &
-	getUpdateInterfaceAndInstancesMenuItem () const
-	{ return *m_UpdateInterfaceAndInstancesMenuItem; }
+	getUpdateInstancesMenuItem () const
+	{ return *m_UpdateInstancesMenuItem; }
 
 	Gtk::SeparatorMenuItem &
 	getProtoSeparator () const
@@ -343,7 +343,7 @@ public:
 
 	virtual
 	void
-	on_update_interface_and_instances_activated () = 0;
+	on_update_instances_activated () = 0;
 
 	virtual
 	void
@@ -493,7 +493,7 @@ private:
 	Gtk::ImageMenuItem*             m_SetAsCurrentSceneMenuItem;
 	Gtk::ImageMenuItem*             m_CreateInstanceMenuItem;
 	Gtk::ImageMenuItem*             m_ReloadMenuItem;
-	Gtk::MenuItem*                  m_UpdateInterfaceAndInstancesMenuItem;
+	Gtk::MenuItem*                  m_UpdateInstancesMenuItem;
 	Gtk::SeparatorMenuItem*         m_ProtoSeparator;
 	Gtk::MenuItem*                  m_AddReferenceMenuItem;
 	Gtk::Menu*                      m_AddReferenceMenu;
