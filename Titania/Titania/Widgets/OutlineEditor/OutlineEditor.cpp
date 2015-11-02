@@ -828,6 +828,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, group, undoStep);
 		getBrowserWindow () -> getSelection () -> setChildren ({ group });
+		getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 	}
 	else
 	{
@@ -873,6 +874,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, child, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren ({ group });
+				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
@@ -889,6 +891,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, mfnode, index, group, undoStep);
 				getBrowserWindow () -> getSelection () -> setChildren ({ group });
+				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}
 			default:

@@ -321,7 +321,7 @@ BrowserWindow::set_browserHistory ()
 // Selection
 
 void
-BrowserWindow::on_follow_primary_selection ()
+BrowserWindow::set_touchTime ()
 {
 	if (getSelection () -> getChildren () .empty ())
 		return;
@@ -890,6 +890,8 @@ BrowserWindow::on_group_selected_nodes_activated ()
 
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
+
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 void
@@ -1086,6 +1088,8 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	getSelection () -> setChildren ({ group }, undoStep);
 
 	addUndoStep (undoStep);
+
+	expandNodes (X3D::MFNode ({ group }));
 }
 
 // View menu
@@ -1880,10 +1884,10 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
 
 	if (getFollowPrimarySelectionAction () -> get_active ())
-		getSelection () -> getChildren () .addInterest (this, &BrowserWindow::on_follow_primary_selection);
+		getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
 
 	else
-		getSelection () -> getChildren () .removeInterest (this, &BrowserWindow::on_follow_primary_selection);
+		getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
 }
 
 // Layout
@@ -2430,6 +2434,7 @@ BrowserWindow::on_select_parent_button_clicked ()
 	// Select and expand.
 
 	getSelection () -> setChildren (parents);
+	expandNodes (parents);
 }
 
 void
@@ -2454,6 +2459,7 @@ BrowserWindow::on_select_children_button_clicked ()
 	}
 
 	getSelection () -> setChildren (children);
+	expandNodes (children);
 }
 
 X3D::MFNode

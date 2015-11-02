@@ -198,6 +198,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 		getBrowserWindow () -> replaceNodes (getCurrentContext (), masterSelection, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> getSelection () -> setChildren ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
+		getBrowserWindow () -> expandNodes ({ inlineNode });
 	}
 
 	getWindow () .set_sensitive (true);
@@ -230,6 +231,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 
 	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+	getBrowserWindow () -> expandNodes ({ group });
 }
 
 void
