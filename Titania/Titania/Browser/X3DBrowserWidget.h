@@ -279,6 +279,7 @@ private:
 	X3D::BrowserPtr                 logoBrowser;
 	X3D::BrowserPtr                 browser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;
+	X3D::X3DPtrArray <X3D::Browser> recentBrowsers;
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	X3D::Output                     worldURLOutput;

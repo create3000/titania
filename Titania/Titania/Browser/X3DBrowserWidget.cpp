@@ -81,6 +81,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	              logoBrowser (X3D::createBrowser ({ get_ui ("Logo.x3dv") })),
 	                  browser (masterBrowser_),
 	                 browsers (),
+	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
 	           worldURLOutput (),
@@ -300,7 +301,7 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	browser          = value;
 	scene            = browser -> getExecutionContext () -> getMasterScene ();
 	executionContext = browser -> getExecutionContext ();
-
+	
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
 	browser -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
 
@@ -786,18 +787,34 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 {
 	const X3D::BrowserPtr browser = browser_;
 
+	// Open recent browser if browser is the currentBrowser.
+
 	if (browser == getCurrentBrowser ())
+	{
 		recentView -> loadPreview (browser);
+		recentBrowsers .remove (browser);
+
+		if (not recentBrowsers .empty ())
+		{
+			const auto iter = std::find (browsers .cbegin (), browsers .cend (), recentBrowsers .back ());
+		
+			if (iter not_eq browsers .cend ())
+				getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+		}
+	}
+
+	// Remove browser copletely.
 
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
 
 	getUserData (browser) -> dispose ();
 
+	recentBrowsers .remove (browser);
 	browsers .remove (browser);
 
 	if (browsers .empty ())
 		openRecent ();
-	
+
 	getBrowserNotebook () .remove_page (*browser);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 
@@ -849,6 +866,9 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
+	recentBrowsers .remove (getCurrentBrowser ());
+	recentBrowsers .emplace_back (getCurrentBrowser ());
+
 	recentView -> loadPreview (getCurrentBrowser ());
 
 	setBrowser (browsers [pageNumber]);

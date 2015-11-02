@@ -159,21 +159,21 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
 	getCurrentBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
 
+	std::vector <Gtk::TreePath> paths;
+
 	for (const auto & node : nodes)
 	{
 		getOutlineTreeView () -> expand_to (node);
 
-		std::vector <Gtk::TreePath> paths;
-
 		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
-			paths .emplace_back (getOutlineTreeView () -> get_model () -> get_path (iter));
-
-		for (const auto & path : paths)
 		{
-			getOutlineTreeView () -> expand_row (path, false);
-			getOutlineTreeView () -> scroll_to_row (path);
+			paths .emplace_back (getOutlineTreeView () -> get_model () -> get_path (iter));
+			getOutlineTreeView () -> expand_row (paths .back (), false);
 		}
 	}
+
+	if  (not paths .empty ())
+		getOutlineTreeView () -> scroll_to_row (paths .back (), 2 - math::M_PHI);
 }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
