@@ -18,6 +18,7 @@
     <Folder Include="share\titania\dtd\" />
     <Folder Include="bin\" />
     <Folder Include="share\titania\info\" />
+    <Folder Include="scripts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="share\titania\dtd\x3d-3.0.dtd" />
@@ -31,5 +32,6 @@
     <None Include="Makefile.am" />
     <None Include="Makefile.in" />
     <None Include="bin\titania-x3d2vrml" />
+    <None Include="scripts\update_dtd.pl" />
   </ItemGroup>
 </Project>
