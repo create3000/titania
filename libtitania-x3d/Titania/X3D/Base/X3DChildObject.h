@@ -184,19 +184,19 @@ protected:
 	///  Handler that is called when the reference count should be incremented.
 	virtual
 	void
-	addReference ()
+	addReferenceCount ()
 	{ }
 
 	///  Handler that is called when the reference count should be decremented.
 	virtual
 	void
-	removeReference ()
+	removeReferenceCount ()
 	{ }
 
 	///  Handler that is called when the reference count should be set to 0.
 	virtual
 	void
-	unReference ()
+	clearReferenceCount ()
 	{ }
 
 	///  @name Event handling

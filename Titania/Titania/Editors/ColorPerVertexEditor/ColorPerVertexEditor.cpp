@@ -561,7 +561,7 @@ ColorPerVertexEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 		if (shape)
 		{
 			const auto transform       = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
+			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
 
 			transform -> setMatrix (modelViewMatrix);
 

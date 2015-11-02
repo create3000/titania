@@ -129,30 +129,30 @@ protected:
 	///  Constructs new X3DReferenceObject.
 	X3DReferenceObject ();
 
+
+private:
+
 	///  @name Reference handling
 
 	///  Increment the reference count for this object.
 	virtual
 	void
-	addReference () override;
+	addReferenceCount () final override;
 
 	///  Decrement the reference count for this object.
 	virtual
 	void
-	removeReference () override;
+	removeReferenceCount () final override;
 
 	///  Sets the reference count for this object to 0.
 	virtual
 	void
-	unReference () final override;
+	clearReferenceCount () final override;
 
 	///  Processes all interests of shutdown.
 	virtual
 	void
 	processShutdown () final override;
-
-
-private:
 
 	///  @name Members
 

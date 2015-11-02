@@ -455,7 +455,6 @@
     <None Include="Titania\X3D\Execution\World.h" />
     <None Include="Titania\X3D\Base\Event.h" />
     <None Include="Titania\X3D\Fields\SFNode.h" />
-    <None Include="Titania\X3D\Types\Set.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Rectangle2DOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Disk2DOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry2D\Circle2DOptions.h" />
@@ -758,6 +757,7 @@
     <None Include="Titania\X3D\Editing\Undo\UndoStep.h" />
     <None Include="Titania\X3D\Editing\X3DEditor.h" />
     <None Include="Titania\X3D\Base\International.h" />
+    <None Include="Titania\X3D\Base\X3DSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -52,7 +52,6 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/NamedNode.h"
-#include "../Parser/RegEx.h"
 
 #include <Titania/String/to_string.h>
 

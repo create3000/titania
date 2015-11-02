@@ -1294,8 +1294,9 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
  *
  */
 
+///  This function is with reference handling.
 void
-X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
 {
 	undoStep -> addObjects (FieldPtr (field));
 
@@ -1305,8 +1306,9 @@ X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const f
 	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 }
 
+///  This function is with reference handling.
 void
-X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
+X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep) const
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
 	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
@@ -1317,70 +1319,73 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	// Handle IS references, if node is proto.
 
 	if (oldField -> getType () == newField -> getType ())
-		;
+	{
+		if (oldField -> getAccessType () not_eq newField -> getAccessType ())
+			replaceReferences (ProtoDeclarationPtr (node), oldField, newField, undoStep);
+	}
 	else
 		removeReferences (ProtoDeclarationPtr (node), oldField, undoStep);
 
 	// If possible we want to reassign the routes from the old field to the new fields.  In this step we create addRoutes
-   // functions we will execute later.
-   
+	// functions we will execute later.
+
 	std::deque <std::function <void ()>>  addRoutes;
 
-   if (newField -> getType () == oldField -> getType ())
-   {
-      // Assign the old value to the new field.
-   
-      newField -> set (*oldField);
+	if (newField -> getType () == oldField -> getType ())
+	{
+		// Assign the old value to the new field.
 
-      // Reassign IS reference to the new field.
- 
-      for (const auto & reference : oldField -> getReferences ())
-      {
-         if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == inputOutput)
-            newField -> addReference (reference);
-      }
+		newField -> set (*oldField);
 
-      // Create addRoutes functions for input and output routes.
- 
-      if (newField -> isInput () and oldField -> isInput ())
-      {
-         for (const auto & route : oldField -> getInputRoutes ())
-         {
-            const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
+		// Reassign IS reference to the new field.
 
-            addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-                                                this,
-                                                node -> getExecutionContext (),
-                                                route -> getSourceNode (),
-                                                selfConnection ? newField -> getName () : route -> getSourceField (),
-                                                node,
-                                                newField -> getName (),
-                                                undoStep));
-         }
-      }
+		for (const auto & reference : oldField -> getReferences ())
+		{
+			if (newField -> getAccessType () == reference -> getAccessType () or newField -> getAccessType () == inputOutput)
+				newField -> addReference (reference);
+		}
 
-      if (newField -> isOutput () and oldField -> isOutput ())
-      {
-         for (const auto & route : oldField -> getOutputRoutes ())
-         {
-            const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
+		// Create addRoutes functions for input and output routes.
 
-            addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-                                                this,
-                                                node -> getExecutionContext (),
-                                                node,
-                                                newField -> getName (),
-                                                route -> getDestinationNode (),
-                                                selfConnection ? newField -> getName () : route -> getDestinationField (),
-                                                undoStep));
-         }
-      }
-   }
-  
+		if (newField -> isInput () and oldField -> isInput ())
+		{
+			for (const auto & route : oldField -> getInputRoutes ())
+			{
+				const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
+
+				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+				                                    this,
+				                                    node -> getExecutionContext (),
+				                                    route -> getSourceNode (),
+				                                    selfConnection ? newField -> getName () : route -> getSourceField (),
+				                                    node,
+				                                    newField -> getName (),
+				                                    undoStep));
+			}
+		}
+
+		if (newField -> isOutput () and oldField -> isOutput ())
+		{
+			for (const auto & route : oldField -> getOutputRoutes ())
+			{
+				const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
+
+				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
+				                                    this,
+				                                    node -> getExecutionContext (),
+				                                    node,
+				                                    newField -> getName (),
+				                                    route -> getDestinationNode (),
+				                                    selfConnection ? newField -> getName () : route -> getDestinationField (),
+				                                    undoStep));
+			}
+		}
+	}
+
 	// Save all involved fields.
 
 	undoStep -> addObjects (FieldArray (userDefinedFields .begin (), userDefinedFields .end ()), FieldPtr (newField));
- 
+
 	// Remove user data from old field.
 
 	undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, oldField, nullptr);
@@ -1388,8 +1393,8 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	newField -> setUserData (nullptr);
 
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
-   
-   removeRoutes (oldField, undoStep);
+
+	removeRoutes (oldField, undoStep);
 
 	// Restore old user defined fields in undo.
 
@@ -1398,28 +1403,29 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 	// Replace old field with new field in temporary array.
 
 	*iter = newField;
-	
+
 	// Set new user defined fields.
 
 	undoStep -> addRedoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
-	
+
 	node -> setUserDefinedFields (userDefinedFields);
 
 	// Now process the addRoutes functions recorded above to reassign the routes from the old field to the new field.
 
 	for (const auto & addRoute : addRoutes)
 	{
-	   try
-	   {
-	      addRoute ();
-	   }
-	   catch (const X3DError &)
-	   { }
+		try
+		{
+			addRoute ();
+		}
+		catch (const X3DError &)
+		{ }
 	}
 }
 
+///  This function is with reference handling.
 void
-X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
 {
 	// Handle IS references, if node is proto.
 
@@ -1434,26 +1440,27 @@ X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* cons
 	// Remove user data from old field.
 
 	undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, field, nullptr);
- 
+
 	// Remove routes from field.  We must do this as routes are associated with a node and we are self responsible for doing this.
-   
-   removeRoutes (field, undoStep);
+
+	removeRoutes (field, undoStep);
 
 	undoStep -> addUndoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
 	undoStep -> addRedoFunction (&X3DBaseNode::removeUserDefinedField, node, field -> getName ());
 
-	node -> removeUserDefinedField (field -> getName ());	
+	node -> removeUserDefinedField (field -> getName ());
 }
 
+///  This function is without reference handling.
 void
-X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
+X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep) const
 {
 	// Remove any routes and user data.
 
 	const auto currentUserDefinedFields = node -> getUserDefinedFields ();
-	
-	std::set <X3DFieldDefinition*>    lhs (currentUserDefinedFields .begin (), currentUserDefinedFields .end ()); 
-	std::set <X3DFieldDefinition*>    rhs (userDefinedFields .begin (), userDefinedFields .end ()); 
+
+	std::set <X3DFieldDefinition*>    lhs (currentUserDefinedFields .begin (), currentUserDefinedFields .end ());
+	std::set <X3DFieldDefinition*>    rhs (userDefinedFields .begin (), userDefinedFields .end ());
 	std::vector <X3DFieldDefinition*> difference;
 
 	std::set_difference (lhs .begin (), lhs .end (), rhs .begin (), rhs .end (), std::back_inserter (difference));
@@ -1469,59 +1476,109 @@ X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray
 	undoStep -> addUndoFunction (&X3DBaseNode::setUserDefinedFields, node, currentUserDefinedFields);
 	undoStep -> addRedoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
 
-	node -> setUserDefinedFields (userDefinedFields);	
+	node -> setUserDefinedFields (userDefinedFields);
 }
 
 void
-X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
 {
 	// Remove routes from field.
 
-   for (const auto & route : RouteSet (field -> getInputRoutes ()))
-   {
-      deleteRoute (route -> getExecutionContext (),
-                   route -> getSourceNode (),
-                   route -> getSourceField (),
-                   route -> getDestinationNode (),
-                   route -> getDestinationField (),
-                   undoStep);
-   }
+	for (const auto & route : RouteSet (field -> getInputRoutes ()))
+	{
+		deleteRoute (route -> getExecutionContext (),
+		             route -> getSourceNode (),
+		             route -> getSourceField (),
+		             route -> getDestinationNode (),
+		             route -> getDestinationField (),
+		             undoStep);
+	}
 
-   for (const auto & route : RouteSet (field -> getOutputRoutes ()))
-   {
-      deleteRoute (route -> getExecutionContext (),
-                   route -> getSourceNode (),
-                   route -> getSourceField (),
-                   route -> getDestinationNode (),
-                   route -> getDestinationField (),
-                   undoStep);
-   }
+	for (const auto & route : RouteSet (field -> getOutputRoutes ()))
+	{
+		deleteRoute (route -> getExecutionContext (),
+		             route -> getSourceNode (),
+		             route -> getSourceField (),
+		             route -> getDestinationNode (),
+		             route -> getDestinationField (),
+		             undoStep);
+	}
 }
 
 void
-X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
+X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep) const
 {
 	using namespace std::placeholders;
+	
+	undoStep -> addObjects (proto);
+
+	if (proto)
+		traverse (proto, std::bind (&X3DEditor::replaceReferencesCallback, this, _1, oldField, newField, undoStep));
+}
+
+bool
+X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const oldProtoField, X3DFieldDefinition* const newProtoField, const UndoStepPtr & undoStep) const
+{
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		if (field -> getReferences () .count (oldProtoField))
+		{
+			undoStep -> addObjects (node);
+			removeReference (field, oldProtoField, undoStep);
+
+			// Test if newProtoField is a reference for field.
+			if (newProtoField -> isReference (field -> getAccessType ()))
+				addReference (field, newProtoField, undoStep);
+		}
+	}
+
+	return true;
+}
+
+void
+X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
+{
+	using namespace std::placeholders;
+	
+	undoStep -> addObjects (proto);
 
 	if (proto)
 		traverse (proto, std::bind (&X3DEditor::removeReferencesCallback, this, _1, field, undoStep));
 }
 
 bool
-X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
 {
-	for (const auto & field: node -> getFieldDefinitions ())
+	for (const auto & field : node -> getFieldDefinitions ())
 	{
 		if (field -> getReferences () .count (protoField))
 		{
-		   undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
-		   undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
-
-		   field -> removeReference (protoField);
+			undoStep -> addObjects (node);
+			removeReference (field, protoField, undoStep);
 		}
 	}
 
 	return true;
+}
+
+void
+X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+	field -> addReference (protoField);
+}
+
+void
+X3DEditor::removeReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	field -> removeReference (protoField);
 }
 
 /***
@@ -1700,7 +1757,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 			continue;
 
 		// Adjust transformation
-		Matrix4d                  childModelViewMatrix = findModelViewMatrix (executionContext, child);
+		Matrix4d                  childModelViewMatrix = getModelViewMatrix (executionContext, child);
 		const X3DTransformNodePtr transform (child);
 
 		if (transform)
@@ -1755,7 +1812,7 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 
 				// Adjust transformation
 
-				Matrix4d                  childModelViewMatrix = findModelViewMatrix (executionContext, child);
+				Matrix4d                  childModelViewMatrix = getModelViewMatrix (executionContext, child);
 				const X3DTransformNodePtr transform (child);
 
 				if (transform)
@@ -1837,7 +1894,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 				{
 					// Get group modelview matrix
 
-					Matrix4d groupModelViewMatrix (findModelViewMatrix (executionContext, group));
+					Matrix4d groupModelViewMatrix (getModelViewMatrix (executionContext, group));
 
 					const X3DTransformMatrix4DNodePtr groupTransform (group);
 
@@ -1846,7 +1903,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 					// Adjust child transformation
 
-					Matrix4d childModelViewMatrix = findModelViewMatrix (executionContext, child);
+					Matrix4d childModelViewMatrix = getModelViewMatrix (executionContext, child);
 
 					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
 					childModelViewMatrix .mult_right (~groupModelViewMatrix);
@@ -1869,7 +1926,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 			{
 				replaceNode (executionContext, group, *sfnode, child, undoStep);
 
-				added = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                // XXX Remove previous child completely from scene if not in scene anymore
+				added = true; // XXX Remove previous child completely from scene if not in scene anymore
 			}
 			else
 			{
@@ -1912,7 +1969,7 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 
 		if (transform)
 		{
-			Matrix4d childModelViewMatrix = findModelViewMatrix (executionContext, child);
+			Matrix4d childModelViewMatrix = getModelViewMatrix (executionContext, child);
 
 			childModelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -2157,83 +2214,6 @@ throw (Error <INVALID_NODE>)
  *
  */
 
-Matrix4d
-X3DEditor::findModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node) const
-{
-	Matrix4d modelViewMatrix;
-
-	auto hierarchy = find (executionContext, node, TRAVERSE_ROOT_NODES | TRAVERSE_PROTOTYPE_INSTANCES);
-
-	if (hierarchy .empty ())
-		return modelViewMatrix;
-
-	hierarchy .pop_back ();
-
-	for (const auto & object : basic::make_reverse_range (hierarchy))
-	{
-		const auto node = dynamic_cast <X3DBaseNode*> (object);
-
-		if (not node)
-			continue;
-
-		for (const auto & type : basic::make_reverse_range (node -> getType ()))
-		{
-			switch (type)
-			{
-				case X3DConstants::X3DLayerNode                :
-				case X3DConstants::X3DProtoDeclarationNode     :
-				case X3DConstants::X3DScriptNode               :
-				case X3DConstants::X3DProgrammableShaderObject :
-				case X3DConstants::X3DBaseNode                 :
-					goto END;
-				case X3DConstants::X3DTransformMatrix4DNode:
-				{
-					const auto transform = dynamic_cast <X3DTransformMatrix4DNode*> (object);
-
-					modelViewMatrix .mult_right (transform -> getMatrix ());
-					break;
-				}
-				case X3DConstants::X3DNode:
-					break;
-				default:
-					continue;
-			}
-
-			break;
-		}
-	}
-
-END:
-	return modelViewMatrix;
-}
-
-void
-X3DEditor::saveMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
-{
-	X3DTransformNodePtr transform (node);
-
-	if (transform)
-	{
-		undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
-		                             transform,
-		                             transform -> getMatrix ());
-	}
-}
-
-void
-X3DEditor::setMatrix (const X3DTransformNodePtr & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
-{
-	undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
-	                             transform,
-	                             transform -> getMatrix ());
-
-	undoStep -> addRedoFunction (&X3DTransformNode::setMatrix,
-	                             transform,
-	                             matrix);
-
-	transform -> setMatrix (matrix);
-}
-
 void
 X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoStep) const
 {
@@ -2379,6 +2359,84 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
 			return;
 	}
 }
+
+void
+X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
+{
+	X3DTransformNodePtr transform (node);
+
+	if (transform)
+	{
+		undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
+		                             transform,
+		                             transform -> getMatrix ());
+	}
+}
+
+void
+X3DEditor::setMatrix (const X3DTransformNodePtr & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
+{
+	undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
+	                             transform,
+	                             transform -> getMatrix ());
+
+	undoStep -> addRedoFunction (&X3DTransformNode::setMatrix,
+	                             transform,
+	                             matrix);
+
+	transform -> setMatrix (matrix);
+}
+
+Matrix4d
+X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node) const
+{
+	Matrix4d modelViewMatrix;
+
+	auto hierarchy = find (executionContext, node, TRAVERSE_ROOT_NODES | TRAVERSE_PROTOTYPE_INSTANCES);
+
+	if (hierarchy .empty ())
+		return modelViewMatrix;
+
+	hierarchy .pop_back ();
+
+	for (const auto & object : basic::make_reverse_range (hierarchy))
+	{
+		const auto node = dynamic_cast <X3DBaseNode*> (object);
+
+		if (not node)
+			continue;
+
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::X3DLayerNode                :
+				case X3DConstants::X3DProtoDeclarationNode     :
+				case X3DConstants::X3DScriptNode               :
+				case X3DConstants::X3DProgrammableShaderObject :
+				case X3DConstants::X3DBaseNode                 :
+					goto END;
+				case X3DConstants::X3DTransformMatrix4DNode:
+				{
+					const auto transform = dynamic_cast <X3DTransformMatrix4DNode*> (object);
+
+					modelViewMatrix .mult_right (transform -> getMatrix ());
+					break;
+				}
+				case X3DConstants::X3DNode:
+					break;
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+
+END:
+	return modelViewMatrix;
+}
+
 
 /***
  *

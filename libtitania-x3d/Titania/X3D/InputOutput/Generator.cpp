@@ -54,10 +54,9 @@
 #include "../Components/Networking/Inline.h"
 #include "../Execution/ExportedNode.h"
 #include "../Execution/ImportedNode.h"
-#include "../Parser/RegEx.h"
 
 #include <Titania/String/to_string.h>
-#include <cassert>
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -312,11 +311,13 @@ Generator::Name (const X3DBaseNode* const baseNode)
 	}
 
 	// The node has a name
+ 	
+	static const std::regex _TrailingNumbers (R"(_\d+$)");
 
 	std::string name      = baseNode -> getName ();
-	const bool  hasNumber = RegEx::LastNumber_ .PartialMatch (name);
+	const bool  hasNumber = std::regex_match (name, _TrailingNumbers);
 
-	RegEx::LastNumber_ .Replace ("", &name);
+	name = std::regex_replace (name, _TrailingNumbers, "");
 
 	if (name .empty ())
 	{

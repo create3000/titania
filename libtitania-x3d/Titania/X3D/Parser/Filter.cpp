@@ -50,8 +50,7 @@
 
 #include "Filter.h"
 
-#include "RegEx.h"
-
+#include <regex>
 #include <pcrecpp.h>
 
 namespace titania {
@@ -60,14 +59,12 @@ namespace X3D {
 std::string
 get_display_name (const SFNode & node)
 {
+	static const std::regex _TrailingNumbers (R"(_\d+$)");
+
 	if (not node)
 		return "NULL";
 
-	auto name = node -> getName ();
-
-	RegEx::LastNumber_ .Replace ("", &name);
-
-	return name;
+	return std::regex_replace (node -> getName (), _TrailingNumbers, "");
 }
 
 std::string
@@ -79,7 +76,7 @@ get_name_from_uri (const basic::uri & uri)
 std::string
 get_name_from_string (const std::string & name_)
 {
-	static const pcrecpp::RE Spaces ("\\s+");
+	static const pcrecpp::RE Spaces (R"(\s+)");
 
 	auto name = name_;
 

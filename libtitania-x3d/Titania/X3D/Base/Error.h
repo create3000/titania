@@ -95,6 +95,8 @@ public:
 
 private:
 
+	///  @name Members
+
 	const std::string message;
 
 };
@@ -106,16 +108,22 @@ class Error :
 {
 public:
 
+	///  @name Construction
+
 	explicit
 	Error (const std::string & message) :
 		X3DError (message)
 	{ }
+
+	///  @name Member access
 
 	virtual
 	ErrorType
 	getType () const
 	throw () final override
 	{ return Type; }
+
+	///  @name Destruction
 
 	virtual
 	~Error ()
@@ -133,7 +141,7 @@ inline
 std::basic_ostream <typename StringT::value_type, Traits> &
 operator << (std::basic_ostream <typename StringT::value_type, Traits> & ostream, const X3DError & error)
 {
-	return ostream << error .toString ();
+	return ostream << error .what ();
 }
 
 extern template class Error <BROWSER_UNAVAILABLE>;

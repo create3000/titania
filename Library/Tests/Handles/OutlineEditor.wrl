@@ -117,7 +117,7 @@ PROTO Children1 [
     children2 IS children1
   }
 
-  DEF Box_1 Transform {
+  DEF Box Transform {
     children Shape {
       appearance Appearance {
         material Material { }
@@ -165,8 +165,8 @@ WorldInfo {
             value [
               0.787842035293579,
               0.597084045410156,
-              0.150982022285461,
-              5.73888063430786
+              0.150982052087784,
+              5.73888111114502
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -290,9 +290,9 @@ DEF SnapTarget Transform {
 Group {
   children [
     USE _3
-    DEF Box Transform {
+    DEF Box_1 Transform {
       translation 1.40843 1.10727 0.193803
-      rotation -0 -0 -1 5.03878
+      rotation 0 0 1 4.14168
       scale 0.2 0.2 0.2
       children Shape {
         appearance Appearance {
@@ -380,7 +380,7 @@ LOD {
         geometry USE Text
       }
     }
-    DEF Cylinder_1 Transform {
+    DEF Cylinder Transform {
       translation 2.69615 0.377117 0
       scale 0.18003 0.18003 0.18003
       children Shape {
@@ -416,7 +416,7 @@ Anchor {
 DEF sss Collision {
   children Children1 {
     children1 [
-      DEF Cylinder Transform {
+      DEF Cylinder_1 Transform {
         translation 4.36274 1.14674 0
         scale 0.18003 0.18003 0.18003
         children Shape {
@@ -991,7 +991,7 @@ A { }
 IMPORT _7.CubeExport
 IMPORT _4.Text AS ImportedInline
 
-ROUTE Rotor.rotation_changed TO Box.set_rotation
+ROUTE Rotor.rotation_changed TO Box_1.set_rotation
 ROUTE Sensors.translation_changed TO Inline.set_translation
 ROUTE ModifiedScript.string_changed TO Text2.set_string
 ROUTE Rotor2.rotation_changed TO ImportedInline.set_rotation

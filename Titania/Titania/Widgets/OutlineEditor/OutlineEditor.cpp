@@ -493,49 +493,33 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 void
 OutlineEditor::on_create_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
-	try
-	{
-		const auto field     = fieldPtr .getValue ();
-		const auto reference = referencePtr .getValue ();
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
+	const auto field     = fieldPtr .getValue ();
+	const auto reference = referencePtr .getValue ();
+	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
-		undoStep -> addObjects (fieldPtr, referencePtr);
-		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
-		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
-		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	getBrowserWindow () -> addReference (field, reference, undoStep);
+	
+	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	treeView -> queue_draw ();
 
-		field -> addReference (reference);
-		treeView -> queue_draw ();
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
-	try
-	{
-		const auto field     = fieldPtr .getValue ();
-		const auto reference = referencePtr .getValue ();
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
+	const auto field     = fieldPtr .getValue ();
+	const auto reference = referencePtr .getValue ();
+	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
-		undoStep -> addObjects (fieldPtr, referencePtr);
-		undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-		undoStep -> addUndoFunction (&X3D::X3DFieldDefinition::addReference,    field, reference);
-		undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::removeReference, field, reference);
-		undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	getBrowserWindow () -> removeReference (field, reference, undoStep);
+	
+	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
+	treeView -> queue_draw ();
 
-		field -> removeReference (reference);
-		treeView -> queue_draw ();
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

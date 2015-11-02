@@ -516,7 +516,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									try
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
+										getBrowserWindow () -> storeMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
@@ -584,7 +584,7 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									try
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-										getBrowserWindow () -> saveMatrix (destinationNode, undoStep);
+										getBrowserWindow () -> storeMatrix (destinationNode, undoStep);
 										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}

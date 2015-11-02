@@ -670,7 +670,7 @@ throw (Error <INVALID_NAME>,
 
 	std::vector <FieldPtr> roots;
 
-	for (const auto & field : getUserDefinedFields ())
+	for (const auto & field : std::make_pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ()))
 	{
 		roots .emplace_back (field);
 		removeUserDefinedField (field -> getName ());
@@ -807,6 +807,17 @@ throw (Error <INVALID_NAME>,
 		const X3DFieldDefinition* const declarationField = getInterfaceDeclaration () -> getField (field -> getName ());
 
 		return *field == *declarationField;
+	}
+	catch (const Error <INVALID_NAME> &)
+	{
+		const auto iter = std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field);
+
+		if (iter not_eq fieldDefinitions .end ())
+			return false;
+
+	   // This can happen when the field is in the extern proto but not in the proto.
+
+		throw;
 	}
 	catch (const Error <DISPOSED> &)
 	{

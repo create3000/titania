@@ -1276,7 +1276,7 @@ TextureCoordinateEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & valu
 		if (shape)
 		{
 			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> findModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
+			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
 
 			transform -> setMatrix (modelViewMatrix);
 

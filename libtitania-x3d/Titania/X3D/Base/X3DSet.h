@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_SET_H__
-#define __TITANIA_X3D_TYPES_SET_H__
+#ifndef __TITANIA_X3D_BASE_X3DSET_H__
+#define __TITANIA_X3D_BASE_X3DSET_H__
 
 #include "../Base/X3DOutput.h"
 #include <set>
@@ -60,7 +60,7 @@ namespace X3D {
 template <class Key,
           class Compare   = std::less <Key>,
           class Allocator = std::allocator <Key>> 
-class Set :
+class X3DSet :
 	public X3DOutput
 {
 public:
@@ -77,17 +77,17 @@ public:
 
 	//  @name Constructors
 
-	Set () :
+	X3DSet () :
 		X3DOutput (),
 		      set ()
 	{ }
 
-	Set (const Set & value) :
+	X3DSet (const X3DSet & value) :
 		X3DOutput (),
 		      set (value .set)
 	{ }
 
-	Set (Set && value) :
+	X3DSet (X3DSet && value) :
 		X3DOutput (),
 		      set (std::move (value .set))
 	{
@@ -96,16 +96,16 @@ public:
 
 	//  @name Assignment
 
-	Set &
-	operator = (const Set & value)
+	X3DSet &
+	operator = (const X3DSet & value)
 	{
 		set = value .set;
 		processInterests ();
 		return *this;
 	}
 
-	Set &
-	operator = (Set && value)
+	X3DSet &
+	operator = (X3DSet && value)
 	{
 		set = std::move (value .set);
 		value .processInterests ();
@@ -218,7 +218,7 @@ public:
 	}
 
 	void
-	swap (Set & other)
+	swap (X3DSet & other)
 	{
 		set .swap (other .set);
 		processInterests ();
