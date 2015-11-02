@@ -479,7 +479,6 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	if (not URL .empty ())
 		browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_browser, browser, URL);
 
-	browser -> set_opacity (0);
 	browser -> setAntialiasing (4);
 	browser -> setNotifyOnLoad (true);
 	browser -> isStrict (false);
@@ -533,24 +532,9 @@ X3DBrowserWidget::set_browser (const X3D::BrowserPtr & browser, const basic::uri
 void
 X3DBrowserWidget::set_url (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> prepareEvents () .addInterest (this, &X3DBrowserWidget::set_fadeIn, browser .getValue (), std::make_shared <double> (0));
 	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_url);
 
 	load (browser, URL);
-}
-
-void
-X3DBrowserWidget::set_fadeIn (X3D::Browser* const browser, const std::shared_ptr <double> & opacity)
-{
-	static constexpr double FADE_IN_TIME = 1;
-
-	*opacity = std::min (*opacity + 1 / (browser -> getCurrentFrameRate () * FADE_IN_TIME), 1.0);
-
-	browser -> set_opacity (*opacity);
-	browser -> addEvent ();
-
-	if (*opacity >= 1)
-	   browser -> prepareEvents () .removeInterest (this, &X3DBrowserWidget::set_fadeIn);
 }
 
 void
@@ -805,12 +789,10 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 
 	// Remove browser copletely.
 
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
-
 	getUserData (browser) -> dispose ();
 
-	recentBrowsers .remove (browser);
 	browsers .remove (browser);
+	recentBrowsers .remove (browser);
 
 	if (browsers .empty ())
 		openRecent ();
