@@ -210,14 +210,14 @@ X3DPrototypeInstance::update ()
 				const auto protoField = proto -> getField (fieldDefinition -> getName ());
 
 				if (fieldDefinition -> getType () not_eq protoField -> getType ())
-					removeUserDefinedField (fieldDefinition -> getName ());
+					removeField (fieldDefinition -> getName ());
 
 				else
 					fieldDefinition -> setAccessType (protoField -> getAccessType ());
 			}
 			catch (const X3DError & error)
 			{
-				removeUserDefinedField (fieldDefinition -> getName ());
+				removeField (fieldDefinition -> getName ());
 			}
 		}		
 	}
