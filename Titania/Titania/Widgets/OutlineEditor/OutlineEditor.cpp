@@ -556,8 +556,14 @@ OutlineEditor::on_remove_activate ()
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
 		
-		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
-			return;
+		switch (treeView -> get_data_type (parentIter))
+		{
+			case OutlineIterType::ProtoDeclaration:
+			case OutlineIterType::X3DBaseNode:
+				break;
+			default:
+				return;
+		}
 
 		const auto field  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
@@ -609,30 +615,26 @@ OutlineEditor::on_unlink_clone_activate ()
 		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, copy, undoStep);
 		copy -> getExecutionContext () -> realize ();
 	}
-	else
+	else if (nodePath .size () > 2)
 	{
 		// Child node
 
-		auto path = nodePath;
-
-		if (not path .up ())
-			return;
-
-		const auto fieldIter = treeView -> get_model () -> get_iter (path);
+		const auto fieldIter  = iter -> parent ();
+		const auto parentIter = fieldIter -> parent ();
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
+		
+		switch (treeView -> get_data_type (parentIter))
+		{
+			case OutlineIterType::ProtoDeclaration:
+			case OutlineIterType::X3DBaseNode:
+				break;
+			default:
+				return;
+		}
 
-		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-
-		if (not path .up ())
-			return;
-
-		const auto parentIter = treeView -> get_model () -> get_iter (path);
-
-		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
-			return;
-
+		const auto field  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 		switch (field -> getType ())
