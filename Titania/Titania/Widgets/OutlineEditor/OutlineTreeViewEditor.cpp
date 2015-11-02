@@ -188,12 +188,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 	if (get_data_type (iter) not_eq OutlineIterType::X3DFieldValue)
 		return false;
 
-	if (get_data_type (nodeIter) not_eq OutlineIterType::X3DBaseNode)
-		return false;
-
-	const auto scene    = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
 	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-	const auto node  = *static_cast <X3D::SFNode*> (get_object (nodeIter));
 
 	switch (get_data_type (nodeIter))
 	{
@@ -211,6 +206,9 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 		default:
 			return false;
 	}
+
+	const auto scene = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
+	const auto node  = *static_cast <X3D::SFNode*> (get_object (nodeIter));
 
 	if (node -> getScene () not_eq scene)
 		return true;

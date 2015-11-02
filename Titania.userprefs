@@ -1,16 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="6" Column="6" />
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="3" Column="3" />
       <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="8" Column="8" />
-      <File FileName="Titania/share/titania/ui/BrowserWindow.xml" Line="43" Column="43" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp" Line="47" Column="47" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="57" Column="57" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="33" Column="33" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="45" Column="45" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="121" Column="121" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="21" Column="21" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="21" Column="21" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp" Line="19" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
