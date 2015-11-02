@@ -61,6 +61,10 @@
 namespace titania {
 namespace puck {
 
+/*
+ * Enable drag & drop for a row in the model.
+ */
+
 const std::string OutlineDragDrop::dragDataType = "TITANIA_OUTLINE_TREE_ROW";
 
 OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
@@ -104,8 +108,6 @@ OutlineDragDrop::on_button_press_event (GdkEventButton* event)
 bool
 OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
 {
-	//__LOG__ << "on_drag_motion" << std::endl;
-
 	// Returns false to allow drop and true to reject drop.
 
 	if (time)
@@ -113,13 +115,11 @@ OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context
 
 	const auto iter = treeView -> get_model () -> get_iter (sourcePath);
 
-	if (not treeView -> get_model () -> iter_is_valid (iter))
-		return true;
-
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::ExternProtoDeclaration:
 			return on_drag_motion_extern_proto (context, x, y, time);
+		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DBaseNode:
 			return on_drag_motion_base_node (context, x, y, time);
 		default:
@@ -180,6 +180,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
 	{
+		if (sourcePath == destinationPath)
+			return true;
+
 		// Drag on field
 
 		switch (position)
@@ -290,6 +293,7 @@ OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & 
 		case OutlineIterType::ExternProtoDeclaration:
 			on_drag_data_extern_proto_received (context, x, y, selection_data, info, time);
 			return;
+		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DBaseNode:
 			on_drag_data_base_node_insert_into_node_received (context, x, y, selection_data, info, time);
 			on_drag_data_base_node_on_field_received (context, x, y, selection_data, info, time);
@@ -437,7 +441,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	// Get source field.
 
 	auto                     sourceIndex = treeView -> get_index (sourceNodeIter);
-	X3D::X3DFieldDefinition* sourceField = &sourceNode -> getExecutionContext () -> getRootNodes ();
+	X3D::X3DFieldDefinition* sourceField = &treeView -> get_execution_context () -> getRootNodes ();
 
 	if (sourcePath .size () > 1)
 	{
@@ -450,7 +454,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	// Get source parent node.
 
-	X3D::SFNode executionContext (sourceNode -> getExecutionContext ());
+	X3D::SFNode executionContext (treeView -> get_execution_context ());
 	X3D::SFNode* sourceParent = &executionContext;
 
 	if (sourcePath .size () > 1)
@@ -629,8 +633,6 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	if (treeView -> get_data_type (destFieldIter) not_eq OutlineIterType::X3DField)
 	   return;
 
-	__LOG__ << std::endl;
-
 	const auto destField = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (destFieldIter));
 
 	if (destField -> getType () not_eq X3D::X3DConstants::SFNode and destField -> getType () not_eq X3D::X3DConstants::MFNode)
@@ -647,12 +649,15 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	// Get source node.
 
 	const auto sourceNodeIter = treeView -> get_model () -> get_iter (sourcePath);
-	auto & sourceNode         = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
+	auto       sourceNode     = X3D::SFNode ();
+
+	if (treeView -> get_data_type (sourceNodeIter) == OutlineIterType::X3DBaseNode)
+		sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
 
 	// Get source field.
 
 	auto                     sourceIndex = treeView -> get_index (sourceNodeIter);
-	X3D::X3DFieldDefinition* sourceField = &sourceNode -> getExecutionContext () -> getRootNodes ();
+	X3D::X3DFieldDefinition* sourceField = &treeView -> get_execution_context () -> getRootNodes ();
 
 	if (sourcePath .size () > 1)
 	{
@@ -665,7 +670,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	// Get source parent node.
 
-	X3D::SFNode executionContext (sourceNode -> getExecutionContext ());
+	X3D::SFNode executionContext (treeView -> get_execution_context ());
 	X3D::SFNode* sourceParent = &executionContext;
 
 	if (sourcePath .size () > 1)
@@ -831,12 +836,15 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	// Get source node.
 
 	const auto sourceNodeIter = treeView -> get_model () -> get_iter (sourcePath);
-	auto &     sourceNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
+	auto       sourceNode     = X3D::SFNode ();
+
+	if (treeView -> get_data_type (sourceNodeIter) == OutlineIterType::X3DBaseNode)
+		sourceNode = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceNodeIter));
 
 	// Get source field.
 
 	auto                     sourceIndex = treeView -> get_index (sourceNodeIter);
-	X3D::X3DFieldDefinition* sourceField = &sourceNode -> getExecutionContext () -> getRootNodes ();
+	X3D::X3DFieldDefinition* sourceField = &treeView -> get_execution_context () -> getRootNodes ();
 
 	if (sourcePath .size () > 1)
 	{
@@ -849,7 +857,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Get source parent node.
 
-	X3D::SFNode executionContext (sourceNode -> getExecutionContext ());
+	X3D::SFNode executionContext (treeView -> get_execution_context ());
 	X3D::SFNode* sourceParent = &executionContext;
 
 	if (sourcePath .size () > 1)
@@ -863,7 +871,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	//
 
-	X3D::X3DFieldDefinition* destField   = &sourceNode -> getExecutionContext () -> getRootNodes ();
+	X3D::X3DFieldDefinition* destField   = &treeView -> get_execution_context () -> getRootNodes ();
 	X3D::SFNode*             destParent  = &executionContext;
 
 	if (destinationPath .size () > 1)
@@ -922,7 +930,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		}
 	}
 
-	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER)
+	if (treeView -> is_expanded (destNodeIter) and position == Gtk::TREE_VIEW_DROP_AFTER and
+	    treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::NULL_)
 	   return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));

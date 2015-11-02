@@ -737,11 +737,33 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 
 	switch (get_data_type (iter))
 	{
+		case OutlineIterType::NULL_:
+		{
+			if (path .size () == 1)
+				return true;
+
+			const auto nodeIter = iter -> parent () -> parent ();
+
+			switch (get_data_type (nodeIter))
+			{
+				case OutlineIterType::ProtoDeclaration:
+				case OutlineIterType::X3DBaseNode:
+				case OutlineIterType::ExportedNode:
+				{
+					const auto & node = *static_cast <X3D::SFNode*> (get_object (nodeIter));
+					return node -> getExecutionContext () == get_execution_context ();
+				}
+				default:
+					break;
+			}
+			
+			break;
+		}
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & sfnode = *static_cast <X3D::SFNode*> (get_object (iter));
-			return sfnode -> getExecutionContext () == get_execution_context ();
+			const auto & node = *static_cast <X3D::SFNode*> (get_object (iter));
+			return node -> getExecutionContext () == get_execution_context ();
 		}
 		default:
 			break;
