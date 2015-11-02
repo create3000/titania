@@ -58,6 +58,7 @@
 
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -196,29 +197,29 @@ OutlineEditor::on_set_as_current_scene_activate ()
 	{
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   instance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
+			const auto & node     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   instance = dynamic_cast <X3D::X3DPrototypeInstance*> (node .getValue ());
 
 			if (instance)
 				setCurrentContext (instance);
 
 			else
 			{
-				const auto inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+				const auto inlineNode = dynamic_cast <X3D::Inline*> (node .getValue ());
 
 				if (inlineNode)
 					setCurrentContext (X3D::X3DExecutionContextPtr (inlineNode -> getInternalScene ()));
 
-				else if (sfnode)
-					setCurrentContext (sfnode -> getExecutionContext ());
+				else
+					setCurrentContext (node -> getExecutionContext ());
 			}
 
 			break;
 		}
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			const auto & sfnode      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+			const auto & node        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   externProto = dynamic_cast <X3D::ExternProtoDeclaration*> (node .getValue ());
 
 			try
 			{
@@ -235,8 +236,8 @@ OutlineEditor::on_set_as_current_scene_activate ()
 		}
 		case OutlineIterType::ProtoDeclaration:
 		{
-			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   prototype = dynamic_cast <X3D::ProtoDeclaration*> (sfnode .getValue ());
+			const auto & node      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   prototype = dynamic_cast <X3D::ProtoDeclaration*> (node .getValue ());
 
 			prototype -> realize ();
 
@@ -247,8 +248,8 @@ OutlineEditor::on_set_as_current_scene_activate ()
 		{
 			try
 			{
-				const auto & sfnode       = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (sfnode .getValue ());
+				const auto & node         = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   importedNode = dynamic_cast <X3D::ImportedNode*> (node .getValue ());
 				const auto   exportedNode = importedNode -> getExportedNode ();
 
 				setCurrentContext (exportedNode -> getExecutionContext ());
@@ -430,8 +431,8 @@ OutlineEditor::on_reload_activated ()
 	{
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   protoNode = dynamic_cast <X3D::ExternProtoDeclaration*> (sfnode .getValue ());
+			const auto & node      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoNode = dynamic_cast <X3D::ExternProtoDeclaration*> (node .getValue ());
 
 			protoNode -> setup ();
 			protoNode -> url () .addEvent ();
@@ -455,8 +456,8 @@ OutlineEditor::on_update_interface_and_instances_activated ()
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::ProtoDeclaration:
 		{
-			const auto & sfnode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   protoNode = dynamic_cast <X3D::X3DProtoDeclarationNode*> (sfnode .getValue ());
+			const auto & node      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoNode = dynamic_cast <X3D::X3DProtoDeclarationNode*> (node .getValue ());
 
 			protoNode -> updateInterfaceAndInstances ();
 		}
@@ -478,9 +479,9 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::ProtoDeclaration:
 		{
-			const auto & sfnode   = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), sfnode -> getName () .c_str ()));
-			const auto   instance = getBrowserWindow () -> addPrototypeInstance (treeView -> get_execution_context (), sfnode -> getName (), undoStep);
+			const auto & node     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), node -> getName () .c_str ()));
+			const auto   instance = getBrowserWindow () -> addPrototypeInstance (treeView -> get_execution_context (), node -> getName (), undoStep);
 
 			getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -560,13 +561,18 @@ OutlineEditor::on_remove_activate ()
 		{
 			case OutlineIterType::ProtoDeclaration:
 			case OutlineIterType::X3DBaseNode:
+			case OutlineIterType::ExportedNode:
 				break;
 			default:
 				return;
 		}
 
-		const auto field  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto field        = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+		auto &     parent       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
+		
+		if (exportedNode)
+			parent = exportedNode -> getLocalNode  ();
 
 		switch (field -> getType ())
 		{
@@ -629,13 +635,18 @@ OutlineEditor::on_unlink_clone_activate ()
 		{
 			case OutlineIterType::ProtoDeclaration:
 			case OutlineIterType::X3DBaseNode:
+			case OutlineIterType::ExportedNode:
 				break;
 			default:
 				return;
 		}
 
-		const auto field  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto field        = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+		auto &     parent       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
+		
+		if (exportedNode)
+			parent = exportedNode -> getLocalNode  ();
 
 		switch (field -> getType ())
 		{
@@ -836,7 +847,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
-		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto & parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 		//
 
@@ -903,9 +914,9 @@ OutlineEditor::on_remove_parent_activate ()
 	if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto field    = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-	const auto parent   = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
+	const auto   field    = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+	const auto & parent   = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+	const auto   undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
 
 	if (nodePath .size () == 3)
 	{
@@ -950,10 +961,8 @@ OutlineEditor::on_remove_parent_activate ()
 		if (treeView -> get_data_type (secondParentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
-		const auto secondField  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (secondFieldIter));
-		const auto secondParent = *static_cast <X3D::SFNode*> (treeView -> get_object (secondParentIter));
-
-		//
+		const auto   secondField  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (secondFieldIter));
+		const auto & secondParent = *static_cast <X3D::SFNode*> (treeView -> get_object (secondParentIter));
 
 		switch (field -> getType ())
 		{
