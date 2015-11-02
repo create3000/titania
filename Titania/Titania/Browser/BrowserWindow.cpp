@@ -86,7 +86,6 @@ namespace puck {
 const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
 	X3D::X3DConstants::ProximitySensor,
 	X3D::X3DConstants::GeoProximitySensor,
-	X3D::X3DConstants::ProximitySensorTool,
 	X3D::X3DConstants::ViewpointGroup
 };
 
@@ -379,11 +378,16 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	for (const auto & node : selection)
 	{
-		if (proximitySensors .count (node -> getType () .back ()))
+		try
 		{
-			getProximitySensorsAction () -> set_active (true);
-			break;
+			if (node -> getInnerNode () -> isType (proximitySensors))
+			{
+				getProximitySensorsAction () -> set_active (true);
+				break;
+			}
 		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
 	for (const auto & node : selection)
@@ -1574,7 +1578,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
 		               {
-		                  if (proximitySensors .count (node -> getType () .back ()))
+		                  if (node -> isType (proximitySensors))
 									node -> addTool ();
 
 		                  return true;
@@ -1586,7 +1590,7 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 		               {
-		                  if (proximitySensors .count (node -> getType () .back ()))
+		                  if (node -> isType (proximitySensors))
 									node -> removeTool (true);
 
 		                  return true;

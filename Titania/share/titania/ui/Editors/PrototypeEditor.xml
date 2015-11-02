@@ -21,7 +21,7 @@
     <property name="can_focus">False</property>
     <child>
       <object class="GtkImageMenuItem" id="CreatePrototypeMenuItem">
-        <property name="label" translatable="yes">Create New Prototype</property>
+        <property name="label" translatable="yes">Create Prototype</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="image">image5</property>
@@ -32,7 +32,7 @@
     </child>
     <child>
       <object class="GtkImageMenuItem" id="CreateExternProtoMenuItem">
-        <property name="label" translatable="yes">Create New Extern Prototype</property>
+        <property name="label" translatable="yes">Create Extern Prototype</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="image">image2</property>
@@ -41,6 +41,11 @@
         <signal name="activate" handler="on_create_externproto_clicked" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">X3DBaseNode</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
@@ -150,10 +155,11 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="CreateInstanceButton">
-                    <property name="label">Create Instance</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Create Instance</property>
+                    <property name="image">image7</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_create_instance_clicked" swapped="no"/>
                   </object>
@@ -436,7 +442,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Reload ExternProto</property>
+                            <property name="tooltip_text" translatable="yes">Reload Externproto</property>
                             <child>
                               <object class="GtkImage" id="image6">
                                 <property name="visible">True</property>

@@ -150,7 +150,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Basic/FieldDefinitionSet.lo \
 	Titania/X3D/Basic/FieldSet.lo Titania/X3D/Basic/NodeSet.lo \
 	Titania/X3D/Basic/NodeTypeArray.lo \
-	Titania/X3D/Basic/Traverse.lo Titania/X3D/Basic/X3DBaseNode.lo \
+	Titania/X3D/Basic/NodeTypeSet.lo Titania/X3D/Basic/Traverse.lo \
+	Titania/X3D/Basic/X3DBaseNode.lo \
 	Titania/X3D/Basic/X3DFieldDefinition.lo \
 	Titania/X3D/Browser/Browser.lo \
 	Titania/X3D/Browser/BrowserOptions.lo \
@@ -889,6 +890,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Basic/FieldSet.cpp \
 	Titania/X3D/Basic/NodeSet.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
+	Titania/X3D/Basic/NodeTypeSet.cpp \
 	Titania/X3D/Basic/Traverse.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
@@ -1525,6 +1527,8 @@ Titania/X3D/Basic/FieldSet.lo: Titania/X3D/Basic/$(am__dirstamp) \
 Titania/X3D/Basic/NodeSet.lo: Titania/X3D/Basic/$(am__dirstamp) \
 	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Basic/NodeTypeArray.lo: Titania/X3D/Basic/$(am__dirstamp) \
+	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Basic/NodeTypeSet.lo: Titania/X3D/Basic/$(am__dirstamp) \
 	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Basic/Traverse.lo: Titania/X3D/Basic/$(am__dirstamp) \
 	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
@@ -3626,6 +3630,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/NodeSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/NodeTypeArray.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/NodeTypeSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/Traverse.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo@am__quote@

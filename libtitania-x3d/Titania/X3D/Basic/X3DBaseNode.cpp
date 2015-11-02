@@ -463,7 +463,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
  *  Returns true if the node is one of the types in @a types.
  */
 bool
-X3DBaseNode::isType (const std::set <X3DConstants::NodeType> & types) const
+X3DBaseNode::isType (const NodeTypeSet & types) const
 throw (Error <DISPOSED>)
 {
 	for (const auto & type : getType ())

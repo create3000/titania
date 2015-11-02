@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "NodeTypeArray.h"
+#include "NodeTypeSet.h"
 
 namespace titania {
 namespace X3D {
@@ -58,4 +58,4 @@ namespace X3D {
 } // X3D
 } // titania
 
-template class std::vector <titania::X3D::NodeType>;
+template class std::set <titania::X3D::NodeType>;

@@ -1,13 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="64" Column="64" />
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="110" Column="110" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DFieldDefinition.h" Line="16" Column="16" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="6" Column="6" />
+      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="50" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="29" Column="29" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="21" Column="21" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="16" Column="16" />
+      <File FileName="Titania/share/titania/ui/BrowserWindow.xml" Line="43" Column="43" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineTreeViewEditor.cpp" Line="7" Column="7" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="57" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

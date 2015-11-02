@@ -134,7 +134,9 @@ X3DBaseInterface::inProtoDeclaration () const
 bool
 X3DBaseInterface::inPrototypeInstance () const
 {
-	return dynamic_cast <X3D::X3DPrototypeInstance*> (getCurrentContext () .getValue ());
+	static const X3D::NodeTypeSet protoInstance = { X3D::X3DConstants::X3DPrototypeInstance };
+
+	return getCurrentContext () -> isType (protoInstance);
 }
 
 X3D::WorldInfoPtr

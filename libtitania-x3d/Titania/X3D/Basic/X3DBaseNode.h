@@ -55,6 +55,7 @@
 #include "../Base/X3DParentObject.h"
 #include "../Basic/FieldDefinitionArray.h"
 #include "../Basic/NodeTypeArray.h"
+#include "../Basic/NodeTypeSet.h"
 #include "../Basic/TraverseType.h"
 #include "../Basic/X3DFieldDefinition.h"
 #include "../Fields/ArrayFields.h"
@@ -174,7 +175,7 @@ public:
 
 	///  Returns true if the node is one of the types in @a types;
 	bool
-	isType (const std::set <X3DConstants::NodeType> &) const
+	isType (const NodeTypeSet &) const
 	throw (Error <DISPOSED>);
 
 	///  Returns the XML container field for this node type.

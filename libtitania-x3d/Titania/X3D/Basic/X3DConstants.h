@@ -595,6 +595,8 @@ using X3DConstants::inputOnly;
 using X3DConstants::outputOnly;
 using X3DConstants::inputOutput;
 
+using X3DConstants::NodeType;
+
 enum class ComponentType : uint8_t
 {
 	CAD_GEOMETRY,

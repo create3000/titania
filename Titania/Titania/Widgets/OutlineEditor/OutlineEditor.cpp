@@ -546,30 +546,20 @@ OutlineEditor::on_remove_activate ()
 
 		getBrowserWindow () -> removeNode (treeView -> get_execution_context (), parent, rootNodes, index, undoStep);
 	}
-	else
+	else if (nodePath .size () > 2)
 	{
 		// Child node
 
-		auto path = nodePath;
-
-		if (not path .up ())
-			return;
-
-		const auto fieldIter = treeView -> get_model () -> get_iter (path);
+		const auto fieldIter  = iter -> parent ();
+		const auto parentIter = fieldIter -> parent ();
 
 		if (treeView -> get_data_type (fieldIter) not_eq OutlineIterType::X3DField)
 			return;
-
-		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-
-		if (not path .up ())
-			return;
-
-		const auto parentIter = treeView -> get_model () -> get_iter (path);
-
+		
 		if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
+		const auto field  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
 		const auto parent = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 		switch (field -> getType ())
@@ -1275,21 +1265,19 @@ OutlineEditor::selectField (const double x, const double y)
 Gtk::TreePath
 OutlineEditor::getNodeAtPosition (const double x, const double y)
 {
-	Gtk::TreePath path = getPathAtPosition (x, y);
+	const auto path = getPathAtPosition (x, y);
 
 	if (path .empty ())
-		return path;
+		return Gtk::TreePath ();
 
-	const Gtk::TreeIter iter = treeView -> get_model () -> get_iter (path);
+	const auto iter = treeView -> get_model () -> get_iter (path);
 
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DExecutionContext:
 		{
-			path .up ();
-
-			const Gtk::TreeIter parent = treeView -> get_model () -> get_iter (path);
+			const auto parent = iter -> parent ();
 
 			switch (treeView -> get_data_type (parent))
 			{
@@ -1300,8 +1288,7 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 				case OutlineIterType::ExportedNode:
 					break;
 				default:
-					path .clear ();
-					break;
+					return Gtk::TreePath ();
 			}
 
 			break;
@@ -1314,8 +1301,7 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 		case OutlineIterType::ExportedNode:
 			break;
 		default:
-			path .clear ();
-			break;
+			return Gtk::TreePath ();
 	}
 
 	return path;
@@ -1324,20 +1310,19 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 Gtk::TreePath
 OutlineEditor::getFieldAtPosition (const double x, const double y)
 {
-	Gtk::TreePath path = getPathAtPosition (x, y);
+	const auto path = getPathAtPosition (x, y);
 
 	if (path .empty ())
-		return path;
+		return Gtk::TreePath ();
 
-	const Gtk::TreeIter iter = treeView -> get_model () -> get_iter (path);
+	const auto iter = treeView -> get_model () -> get_iter (path);
 
 	switch (treeView -> get_data_type (iter))
 	{
 		case OutlineIterType::X3DField:
 			break;
 		default:
-			path .clear ();
-			break;
+			return Gtk::TreePath ();
 	}
 
 	return path;

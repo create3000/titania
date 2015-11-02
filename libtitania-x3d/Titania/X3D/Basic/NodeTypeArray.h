@@ -57,11 +57,11 @@
 namespace titania {
 namespace X3D {
 
-typedef std::vector <X3DConstants::NodeType> NodeTypeArray;
+typedef std::vector <NodeType> NodeTypeArray;
 
 } // X3D
 } // titania
 
-extern template class std::vector <titania::X3D::X3DConstants::NodeType>;
+extern template class std::vector <titania::X3D::NodeType>;
 
 #endif

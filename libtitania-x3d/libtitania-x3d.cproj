@@ -758,6 +758,7 @@
     <None Include="Titania\X3D\Editing\X3DEditor.h" />
     <None Include="Titania\X3D\Base\International.h" />
     <None Include="Titania\X3D\Base\X3DSet.h" />
+    <None Include="Titania\X3D\Basic\NodeTypeSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1269,6 +1270,7 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoHistory.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoStep.cpp" />
     <Compile Include="Titania\X3D\Editing\X3DEditor.cpp" />
+    <Compile Include="Titania\X3D\Basic\NodeTypeSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -177,20 +177,24 @@ bool
 OutlineTreeViewEditor::select_field_value (const double x, const double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
-	const auto path             = get_path_at_position (x, y, column);
+	const auto path = get_path_at_position (x, y, column);
 
 	if (path .size () < 3)
 		return false;
 
 	const auto iter     = get_model () -> get_iter (path);
 	const auto nodeIter = iter -> parent () -> parent ();
-	const auto scene    = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
-	const auto field    = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-	const auto node     = *static_cast <X3D::SFNode*> (get_object (nodeIter));
 
 	if (get_data_type (iter) not_eq OutlineIterType::X3DFieldValue)
 		return false;
-	
+
+	if (get_data_type (nodeIter) not_eq OutlineIterType::X3DBaseNode)
+		return false;
+
+	const auto scene    = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
+	const auto field = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+	const auto node  = *static_cast <X3D::SFNode*> (get_object (nodeIter));
+
 	switch (get_data_type (nodeIter))
 	{
 		case OutlineIterType::ExternProtoDeclaration:
@@ -304,12 +308,9 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 		{
 			case OutlineIterType::X3DField:
 			{
-				Gtk::TreePath parentPath (path);
-				parentPath .up ();
+				const auto parentIter = iter -> parent ();
 
-				const auto parent = get_model () -> get_iter (parentPath);
-
-				if (not is_local_node (parent))
+				if (not is_local_node (parentIter))
 					break;
 
 				const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
@@ -353,11 +354,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 			case OutlineIterType::X3DInputRoute:
 			case OutlineIterType::X3DOutputRoute:
 			{
-				Gtk::TreePath parentPath (path);
-				parentPath .up ();
-				parentPath .up ();
-
-				const auto parent = get_model () -> get_iter (parentPath);
+				const auto parent = iter -> parent () -> parent ();
 
 				if (not is_local_node (parent))
 					break;
