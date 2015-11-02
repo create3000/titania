@@ -109,6 +109,9 @@ BrowserUserData::dispose ()
 {
 	undoHistory  .clear ();
 
+	modified      = false;
+	saveConfirmed = false;
+
 	for (const auto & fileMonitor : fileMonitors)
 	{
 		fileMonitor .second -> cancel ();

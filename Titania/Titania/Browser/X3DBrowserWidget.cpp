@@ -59,7 +59,6 @@
 #include "../Configuration/config.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
-#include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/Background.h>
 
@@ -330,18 +329,7 @@ X3DBrowserWidget::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
 	try
 	{
-		if (value == executionContext)
-		   return;
-	 
-		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getCurrentBrowser ());
-
-		browserOptions -> assign (getCurrentBrowser () -> getBrowserOptions ());
-
 		getCurrentBrowser () -> replaceWorld (value);
-		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
-
-		getCurrentBrowser () -> isLive () .addInterest (getCurrentScene () -> isLive ());
-		getCurrentScene () -> isLive () = getCurrentBrowser () -> isLive ();
 	}
 	catch (const X3D::X3DError &)
 	{ }

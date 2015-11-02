@@ -72,6 +72,10 @@ public:
 
 	/// @name Member access
 
+	virtual
+	void
+	setCurrentContext (const X3D::X3DExecutionContextPtr &) final override;
+
 	const X3D::SFBool &
 	isEditor () const
 	{ return enabled; }
@@ -248,10 +252,10 @@ private:
 	// Event handler
 
 	void
-	set_initialized ();
+	set_shutdown ();
 
 	void
-	set_shutdown ();
+	connectShutdown ();
 
 	void
 	set_executionContext ();
@@ -279,7 +283,6 @@ private:
 	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4f, X3D::Vector3f>> ;
 
 	X3D::SFBool                        enabled;
-	X3D::X3DExecutionContextPtr        currentScene;
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;
 	X3D::UndoStepPtr                   undoStep;

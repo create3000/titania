@@ -269,10 +269,10 @@ OutlineEditor::on_scene_activate (Gtk::RadioMenuItem* const menuItem, const size
 {
 	if (menuItem -> get_active ())
 	{
-		const auto & scene = scenes [index] .first;
+		const auto & executionContext = scenes [index] .first;
 
-		if (scene not_eq getCurrentContext ())
-			setCurrentContext (scene);
+		if (executionContext not_eq getCurrentContext ())
+			setCurrentContext (executionContext);
 	}
 }
 
@@ -285,7 +285,7 @@ OutlineEditor::on_previous_scene_clicked ()
 		return;
 
 	if (iter -> second > 0)
-		scenes [iter -> second - 1] .second -> set_active (true);
+		setCurrentContext (scenes [iter -> second - 1] .first);
 }
 
 void
@@ -296,9 +296,8 @@ OutlineEditor::on_next_scene_clicked ()
 	if (iter == sceneIndex .end ())
 		return;
 
-
 	if (iter -> second + 1 < scenes .size ())
-		scenes [iter -> second + 1] .second -> set_active (true);
+		setCurrentContext (scenes [iter -> second + 1] .first);
 }
 
 void
@@ -309,8 +308,8 @@ OutlineEditor::set_scenes_menu ()
 	
 	for (const auto & scene : scenes)
 	{
-	   const auto currentScene = scene .first;
-	   auto menuItem           = scene .second;
+	   const auto & currentScene = scene .first;
+	   auto menuItem             = scene .second;
 
 		menuItem -> set_label (getSceneMenuLabelText (currentScene, false));
 
@@ -1337,9 +1336,14 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 		case OutlineIterType::X3DField:
 		case OutlineIterType::X3DExecutionContext:
 		{
-			const auto parent = iter -> parent ();
+			auto nodePath = path;
 
-			switch (treeView -> get_data_type (parent))
+			if (not nodePath .up ())
+				break;
+
+			const auto parentIter = treeView -> get_model () -> get_iter (nodePath);
+
+			switch (treeView -> get_data_type (parentIter))
 			{
 				case OutlineIterType::Separator:
 				case OutlineIterType::NULL_:
@@ -1348,9 +1352,9 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 				case OutlineIterType::ProtoDeclaration:
 				case OutlineIterType::ImportedNode:
 				case OutlineIterType::ExportedNode:
-					break;
+					return nodePath;
 				default:
-					return Gtk::TreePath ();
+					break;
 			}
 
 			break;
@@ -1362,12 +1366,12 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::ImportedNode:
 		case OutlineIterType::ExportedNode:
-			break;
+			return path;
 		default:
-			return Gtk::TreePath ();
+			break;
 	}
 
-	return path;
+	return Gtk::TreePath ();
 }
 
 Gtk::TreePath

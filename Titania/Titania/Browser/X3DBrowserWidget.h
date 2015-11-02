@@ -72,10 +72,6 @@ public:
 
 	///  @name Member access
 
-	const std::unique_ptr <History> &
-	getHistory () const
-	{ return history; }
-
 	const X3D::X3DPtrArray <X3D::Browser> &
 	getBrowsers () const
 	{ return browsers; }
@@ -99,7 +95,7 @@ public:
 
 	virtual
 	void
-	setCurrentContext (const X3D::X3DExecutionContextPtr &) final override;
+	setCurrentContext (const X3D::X3DExecutionContextPtr &) override;
 
 	virtual
 	const X3D::X3DExecutionContextPtr &
@@ -178,6 +174,10 @@ public:
 	virtual
 	bool
 	quit () override;
+
+	const std::unique_ptr <History> &
+	getHistory () const
+	{ return history; }
 
 	///  @name Destruction
 

@@ -335,11 +335,13 @@ throw (Error <INVALID_SCENE>,
 
 			isLive () .removeInterest (executionContext -> isLive ());
 			executionContext -> isLive () = false;
+			processEvents ();
 
 			// Replace world.
 
 			setDescription ("");
-			browserOptions -> assign (X3D::getBrowser () -> getBrowserOptions (), true);
+			const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (this);
+			browserOptions -> assign (browserOptions, true);
 
 			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
 
