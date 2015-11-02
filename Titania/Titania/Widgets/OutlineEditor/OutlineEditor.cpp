@@ -532,8 +532,14 @@ OutlineEditor::on_remove_activate ()
 
 	const auto iter = treeView -> get_model () -> get_iter (nodePath);
 
-	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
-		return;
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::NULL_:
+		case OutlineIterType::X3DBaseNode:
+			break;
+		default:
+			return;
+	}
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
 
@@ -1116,6 +1122,46 @@ OutlineEditor::selectNode (const double x, const double y)
 
 		switch (treeView -> get_data_type (iter))
 		{
+			case OutlineIterType::NULL_:
+			{
+				if (nodePath .size () > 2)
+				{
+					const auto parentFieldIter = iter -> parent ();
+					const auto parentNodeIter  = parentFieldIter -> parent ();
+
+					if (treeView -> get_data_type (parentFieldIter) not_eq OutlineIterType::X3DField)
+						break;
+
+					const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (parentFieldIter));
+
+					if (field -> getType () not_eq X3D::X3DConstants::MFNode)
+						break;
+
+					switch (treeView -> get_data_type (parentNodeIter))
+					{
+						case OutlineIterType::X3DBaseNode:
+						case OutlineIterType::ProtoDeclaration:
+						case OutlineIterType::ExportedNode:
+						{
+							const auto & node = *static_cast <X3D::SFNode*> (treeView -> get_object (parentNodeIter));
+							
+							isBaseNode  = true;
+							isLocalNode = node -> getExecutionContext () == treeView -> get_execution_context ();;
+							break;
+						}
+						default:
+							break;
+					}
+				}
+				else
+				{
+					// Root node
+					isBaseNode  = true;
+					isLocalNode = true;
+				}
+
+				break;
+			}
 			case OutlineIterType::X3DBaseNode:
 			{
 				const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
@@ -1292,6 +1338,8 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 
 			switch (treeView -> get_data_type (parent))
 			{
+				case OutlineIterType::Separator:
+				case OutlineIterType::NULL_:
 				case OutlineIterType::X3DBaseNode:
 				case OutlineIterType::ExternProtoDeclaration:
 				case OutlineIterType::ProtoDeclaration:
@@ -1305,6 +1353,7 @@ OutlineEditor::getNodeAtPosition (const double x, const double y)
 			break;
 		}
 		case OutlineIterType::Separator:
+		case OutlineIterType::NULL_:
 		case OutlineIterType::X3DBaseNode:
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::ProtoDeclaration:

@@ -163,7 +163,7 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.787842035293579,
+              0.787841975688934,
               0.597084045410156,
               0.150982052087784,
               5.73888111114502
@@ -292,7 +292,7 @@ Group {
     USE _3
     DEF Box_1 Transform {
       translation 1.40843 1.10727 0.193803
-      rotation 0 0 1 4.14168
+      rotation -0 -0 -1 5.46055
       scale 0.2 0.2 0.2
       children Shape {
         appearance Appearance {
@@ -893,25 +893,6 @@ ScreenGroup {
   }
 }
 
-DEF ScreenText Transform {
-  translation 0.673213 2.19 0
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry DEF Text2 Text {
-      string [
-        "modified...",
-        "Mo 12 Mai 2014 19:32:41 CEST"
-      ]
-      fontStyle ScreenFontStyle {
-        family "SANS"
-        style "BOLD"
-      }
-    }
-  }
-}
-
 Shape {
   appearance Appearance {
     material Material {
@@ -973,6 +954,24 @@ DEF NULL Transform {
   children [
     NULL
     NULL
+    DEF ScreenText Transform {
+      translation 0.673213 2.19 0
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry DEF Text2 Text {
+          string [
+            "modified...",
+            "Mo 12 Mai 2014 19:32:41 CEST"
+          ]
+          fontStyle ScreenFontStyle {
+            family "SANS"
+            style "BOLD"
+          }
+        }
+      }
+    }
   ]
 }
 
