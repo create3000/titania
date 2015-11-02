@@ -1952,7 +1952,6 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-find.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-find-and-replace.png" />
     <None Include="share\titania\ui\icons\Faenza\16\stock_script.png" />
-    <None Include="share\titania\ui\icons\Faenza\16\application-x-javascript.png" />
     <None Include="share\titania\ui\Editors\PrototypeEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DPrototypeEditorInterface.h" />
     <None Include="Titania\Editors\PrototypeEditor\PrototypeEditor.h" />

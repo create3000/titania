@@ -169,7 +169,7 @@ X3DExportedNodesEditor::on_exported_name_changed ()
 {
 	const std::string exportedName = getExportedNameEntry () .get_text ();
 
-	getExportedNodeOkButton () .set_sensitive (validateExportedName (exportedName));
+	getExportedNodeOkButton () .set_sensitive (not exportedName .empty () and validateExportedName (exportedName));
 }
 
 void

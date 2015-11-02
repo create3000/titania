@@ -100,6 +100,7 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
+	m_builder -> get_widget ("URLReloadButton", m_URLReloadButton);
 
 	// Connect object Gtk::Button with id 'NewInlineButton'.
 	m_NewInlineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DInlineEditorInterface::on_new_inline_clicked));

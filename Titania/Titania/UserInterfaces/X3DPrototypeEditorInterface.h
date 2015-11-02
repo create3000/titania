@@ -193,6 +193,10 @@ public:
 	getURLRemoveButton () const
 	{ return *m_URLRemoveButton; }
 
+	Gtk::Button &
+	getURLReloadButton () const
+	{ return *m_URLReloadButton; }
+
 	Gtk::Box &
 	getInstancesBox () const
 	{ return *m_InstancesBox; }
@@ -264,6 +268,7 @@ private:
 	Gtk::TreeView*                         m_URLTreeView;
 	Gtk::Button*                           m_URLAddButton;
 	Gtk::Button*                           m_URLRemoveButton;
+	Gtk::Button*                           m_URLReloadButton;
 	Gtk::Box*                              m_InstancesBox;
 
 };

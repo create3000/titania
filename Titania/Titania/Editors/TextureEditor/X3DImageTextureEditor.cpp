@@ -64,6 +64,7 @@ X3DImageTextureEditor::X3DImageTextureEditor () :
 	                           getImageTextureURLCellRendererText (),
 	                           getImageTextureURLAddButton (),
 	                           getImageTextureURLRemoveButton (),
+	                           getImageTextureURLReloadButton (),
 	                           getImageTextureURLChooserColumn (),
 	                           "url")),
 	             imageTexture ()
@@ -130,12 +131,6 @@ X3DImageTextureEditor::on_embed_image_clicked ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
-}
-
-void
-X3DImageTextureEditor::on_image_texture_reload_clicked ()
-{
-	imageTexture -> url () .addEvent ();
 }
 
 X3DImageTextureEditor::~X3DImageTextureEditor ()

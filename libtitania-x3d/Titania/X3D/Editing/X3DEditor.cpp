@@ -1566,7 +1566,7 @@ X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* co
 {
 	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
 
-	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, protoField);
 	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
 	field -> addReference (protoField);
 }

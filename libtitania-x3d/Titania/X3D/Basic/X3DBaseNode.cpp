@@ -460,6 +460,22 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 /***
+ *  Returns true if the node is one of the types in @a types.
+ */
+bool
+X3DBaseNode::isType (const std::set <X3DConstants::NodeType> & types) const
+throw (Error <DISPOSED>)
+{
+	for (const auto & type : getType ())
+	{
+		if (types .count (type))
+			return true;
+	}
+
+	return false;
+}
+
+/***
  *  Returns either a node declaration or the prototype of this node.
  */
 const X3DBaseNode*

@@ -75,7 +75,7 @@ public:
 	///  Value typedef.
 	using value_type = Type;
 
-	///  @name Constructin
+	///  @name Construction
 
 	///  Default constructor.
 	constexpr

@@ -63,6 +63,7 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          getMovieTextureURLCellRendererText (),
 	                          getMovieTextureURLAddButton (),
 	                          getMovieTextureURLRemoveButton (),
+	                          getMovieTextureURLReloadButton (),
 	                          getMovieTextureURLChooserColumn (),
 	                          "url")),
 	             movieTexture ()
@@ -100,12 +101,6 @@ X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	}
 
 	return movieTexture;
-}
-
-void
-X3DMovieTextureEditor::on_movie_texture_reload_clicked ()
-{
-	movieTexture -> url () .addEvent ();
 }
 
 X3DMovieTextureEditor::~X3DMovieTextureEditor ()

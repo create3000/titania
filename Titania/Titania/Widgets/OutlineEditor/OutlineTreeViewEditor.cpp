@@ -177,43 +177,54 @@ bool
 OutlineTreeViewEditor::select_field_value (const double x, const double y)
 {
 	Gtk::TreeViewColumn* column = nullptr;
-	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+	const auto path             = get_path_at_position (x, y, column);
 
-	if (path .size ())
+	if (path .size () < 3)
+		return false;
+
+	const auto iter     = get_model () -> get_iter (path);
+	const auto nodeIter = iter -> parent () -> parent ();
+	const auto scene    = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
+	const auto field    = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
+	const auto node     = *static_cast <X3D::SFNode*> (get_object (nodeIter));
+
+	if (get_data_type (iter) not_eq OutlineIterType::X3DFieldValue)
+		return false;
+	
+	switch (get_data_type (nodeIter))
 	{
-		Gtk::TreeModel::iterator iter = get_model () -> get_iter (path);
-
-		if (get_data_type (iter) == OutlineIterType::X3DFieldValue)
+		case OutlineIterType::ExternProtoDeclaration:
 		{
-			if (inPrototypeInstance ())
-				return true;
-
-			Gtk::TreePath parentPath (path);
-			parentPath .up ();
-			parentPath .up ();
-
-			const auto parent = get_model () -> get_iter (parentPath);
-			const auto field  = static_cast <X3D::X3DFieldDefinition*> (get_object (iter));
-
-			if (is_real_local_node (parent) or get_user_data (field) -> selected & OUTLINE_SPECIAL)
-			{
-
-				if (field -> getAccessType () not_eq X3D::outputOnly)
-				{
-				   // First grab focus to release any previous selected field.
-					grab_focus ();
-
-					getBrowserWindow () -> hasAccelerators (false);
-					get_tree_observer () -> unwatch_tree (iter);
-					watch_motion (false);
-					set_cursor (path, *column, true);
-					return true;
-				}
-			}
+			if (get_user_data (field) -> selected & OUTLINE_SPECIAL)
+				break;
+			
+			return false;
 		}
+		case OutlineIterType::ProtoDeclaration:
+		case OutlineIterType::X3DBaseNode:
+		case OutlineIterType::ExportedNode:
+			break;
+		default:
+			return false;
 	}
 
-	return false;
+	if (node -> getScene () not_eq scene)
+		return true;
+
+	if (node -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+		return true;
+
+	if (field -> getAccessType () == X3D::outputOnly)
+		return true;
+
+  // First grab focus to release any previous selected field.
+	grab_focus ();
+
+	getBrowserWindow () -> hasAccelerators (false);
+	get_tree_observer () -> unwatch_tree (iter);
+	watch_motion (false);
+	set_cursor (path, *column, true);
+	return true;
 }
 
 bool

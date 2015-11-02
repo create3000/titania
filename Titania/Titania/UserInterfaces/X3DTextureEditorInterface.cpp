@@ -166,8 +166,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
 	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
 	m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_embed_image_clicked));
-	m_ImageTextureURLReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_image_texture_reload_clicked));
-	m_MovieTextureURLReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_movie_texture_reload_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TexturePropertiesCheckButton'.
 	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled));

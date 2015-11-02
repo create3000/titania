@@ -68,6 +68,7 @@
       <source stock-id="emblem-shared-symbolic" filename="icons/Faenza/scalable/emblem-shared-symbolic.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
+      <source stock-id="X3DBaseNode" filename="icons/X3DBaseNode.svg"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>

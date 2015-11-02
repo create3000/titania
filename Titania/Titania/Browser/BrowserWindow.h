@@ -114,7 +114,7 @@ private:
 	///  @name Selection handling
 
 	void
-	set_touchTime ();
+	on_follow_primary_selection ();
 
 	void
 	set_selection (const X3D::MFNode & children);

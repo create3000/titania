@@ -64,16 +64,28 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_IconFactory = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 
 	// Get widgets.
+	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("SceneMenuBox", m_SceneMenuBox);
+	m_builder -> get_widget ("SceneMenuButton", m_SceneMenuButton);
+	m_builder -> get_widget ("SceneImage", m_SceneImage);
+	m_builder -> get_widget ("SceneLabel", m_SceneLabel);
+	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
+	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
 	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
-	m_builder -> get_widget ("SetAsCurrentSceneSeparatorMenuItem", m_SetAsCurrentSceneSeparatorMenuItem);
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
-	m_builder -> get_widget ("RequestImmediateLoadMenuItem", m_RequestImmediateLoadMenuItem);
+	m_builder -> get_widget ("ReloadMenuItem", m_ReloadMenuItem);
 	m_builder -> get_widget ("UpdateInterfaceAndInstancesMenuItem", m_UpdateInterfaceAndInstancesMenuItem);
-	m_builder -> get_widget ("CreateReferenceMenuItem", m_CreateReferenceMenuItem);
-	m_builder -> get_widget ("CreateReferenceMenu", m_CreateReferenceMenu);
+	m_builder -> get_widget ("ProtoSeparator", m_ProtoSeparator);
+	m_builder -> get_widget ("AddReferenceMenuItem", m_AddReferenceMenuItem);
+	m_builder -> get_widget ("AddReferenceMenu", m_AddReferenceMenu);
 	m_builder -> get_widget ("RemoveReferenceMenuItem", m_RemoveReferenceMenuItem);
 	m_builder -> get_widget ("RemoveReferenceMenu", m_RemoveReferenceMenu);
+	m_builder -> get_widget ("ReferencesSeparator", m_ReferencesSeparator);
+	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
 	m_builder -> get_widget ("UnlinkCloneMenuItem", m_UnlinkCloneMenuItem);
 	m_builder -> get_widget ("CreateParentGroupMenuItem", m_CreateParentGroupMenuItem);
 	m_builder -> get_widget ("CreateParentTransformMenuItem", m_CreateParentTransformMenuItem);
@@ -96,7 +108,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreateParentLayerMenuItem", m_CreateParentLayerMenuItem);
 	m_builder -> get_widget ("CreateParentViewportMenuItem", m_CreateParentViewportMenuItem);
 	m_builder -> get_widget ("RemoveParentMenuItem", m_RemoveParentMenuItem);
-	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
+	m_builder -> get_widget ("EditSeparator", m_EditSeparator);
 	m_builder -> get_widget ("ViewMenuItem", m_ViewMenuItem);
 	m_builder -> get_widget ("ShowExternProtosMenuItem", m_ShowExternProtosMenuItem);
 	m_builder -> get_widget ("ShowPrototypesMenuItem", m_ShowPrototypesMenuItem);
@@ -106,22 +118,30 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExpandPrototypeInstancesMenuItem", m_ExpandPrototypeInstancesMenuItem);
 	m_builder -> get_widget ("ExpandInlineNodesMenuItem", m_ExpandInlineNodesMenuItem);
 	m_builder -> get_widget ("UseLocaleMenuItem", m_UseLocaleMenuItem);
-	m_builder -> get_widget ("SceneMenu", m_SceneMenu);
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("SceneMenuBox", m_SceneMenuBox);
-	m_builder -> get_widget ("SceneMenuButton", m_SceneMenuButton);
-	m_builder -> get_widget ("SceneImage", m_SceneImage);
-	m_builder -> get_widget ("SceneLabel", m_SceneLabel);
-	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
-	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
-	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 
-	// Connect object Gtk::MenuItem with id 'SetAsCurrentSceneMenuItem'.
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unmap));
+
+	// Connect object Gtk::Button with id 'PreviousSceneButton'.
+	m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked));
+	m_NextSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_next_scene_clicked));
+
+	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
+	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
+
+	// Connect object Gtk::ImageMenuItem with id 'SetAsCurrentSceneMenuItem'.
 	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
 	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
-	m_RequestImmediateLoadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_request_immediate_load_activated));
+	m_ReloadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_reload_activated));
+
+	// Connect object Gtk::MenuItem with id 'UpdateInterfaceAndInstancesMenuItem'.
 	m_UpdateInterfaceAndInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_interface_and_instances_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
+	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));
+
+	// Connect object Gtk::MenuItem with id 'UnlinkCloneMenuItem'.
 	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate));
 	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_transform_activate));
 	m_CreateParentGroupMenuItem1 -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_group_activate));
@@ -144,9 +164,6 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewport_activate));
 	m_RemoveParentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_parent_activate));
 
-	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
-	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));
-
 	// Connect object Gtk::CheckMenuItem with id 'ShowExternProtosMenuItem'.
 	m_ShowExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_extern_protos_toggled));
 	m_ShowPrototypesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_prototypes_toggled));
@@ -156,17 +173,6 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
 	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
 	m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled));
-
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unmap));
-
-	// Connect object Gtk::Button with id 'PreviousSceneButton'.
-	m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked));
-	m_NextSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_next_scene_clicked));
-
-	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
-	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
 
 	// Call construct handler of base class.
 	construct ();

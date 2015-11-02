@@ -71,6 +71,7 @@ public:
 	                   const Glib::RefPtr <Gtk::CellRendererText> &,
 	                   Gtk::Button &,
 	                   Gtk::Button &,
+	                   Gtk::Button &,
 	                   const Glib::RefPtr <Gtk::TreeViewColumn> &,
 	                   const std::string &);
 
@@ -83,6 +84,9 @@ private:
 	void
 	on_add_clicked () final override;
 
+	void
+	on_reload_clicked ();
+
 	bool
 	on_button_release_event (GdkEventButton*);
 
@@ -90,9 +94,14 @@ private:
 	void
 	set_buffer () final override;
 
+	virtual
+	void
+	set_string (const X3D::MFString &) final override;
+
 	///  @name Members
 
 	X3DUserInterface* const                  userInterface;
+	Gtk::Button &                            reloadButton;
 	const Glib::RefPtr <Gtk::TreeViewColumn> URLChooserColumn;
 	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
 
@@ -104,15 +113,18 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
                                       const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
                                       Gtk::Button & addButton,
                                       Gtk::Button & removeButton,
+                                      Gtk::Button & reloadButton,
                                       const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
                                       const std::string & name) :
 	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getCurrentBrowser ()),
 	X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, ""),
 	    userInterface (userInterface),
+	     reloadButton (reloadButton),
 	 URLChooserColumn (URLChooserColumn),
 	   fileOpenDialog ()
 {
-	treeView .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
+	treeView     .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
+	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_reload_clicked));
 }
 
 inline
@@ -133,6 +145,7 @@ MFStringURLWidget::on_add_clicked ()
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
 
 		append (URL .str ());
+		reloadButton .set_sensitive (true);
 	}
 
 	fileOpenDialog -> quit ();
@@ -195,6 +208,28 @@ MFStringURLWidget::set_buffer ()
 		fileOpenDialog -> quit ();
 
 	X3DMFStringWidget::set_buffer ();
+}
+
+inline
+void
+MFStringURLWidget::set_string (const X3D::MFString & string)
+{
+	reloadButton .set_sensitive (not string .empty ());
+}
+
+inline
+void
+MFStringURLWidget::on_reload_clicked ()
+{
+	for (const auto & node : getNodes ())
+	{
+		try
+		{
+			node -> getField <X3D::MFString> (getName ()) .addEvent ();
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 }
 
 } // puck

@@ -89,6 +89,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);
+	m_builder -> get_widget ("URLReloadButton", m_URLReloadButton);
 	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
 
 	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.

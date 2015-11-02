@@ -94,36 +94,76 @@ public:
 	{ return m_IconFactory; }
 
 	Gtk::Menu &
+	getSceneMenu () const
+	{ return *m_SceneMenu; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getSceneMenuBox () const
+	{ return *m_SceneMenuBox; }
+
+	Gtk::MenuButton &
+	getSceneMenuButton () const
+	{ return *m_SceneMenuButton; }
+
+	Gtk::Image &
+	getSceneImage () const
+	{ return *m_SceneImage; }
+
+	Gtk::Label &
+	getSceneLabel () const
+	{ return *m_SceneLabel; }
+
+	Gtk::Button &
+	getPreviousSceneButton () const
+	{ return *m_PreviousSceneButton; }
+
+	Gtk::Button &
+	getNextSceneButton () const
+	{ return *m_NextSceneButton; }
+
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
+
+	Gtk::Menu &
 	getPopupMenu () const
 	{ return *m_PopupMenu; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getSetAsCurrentSceneMenuItem () const
 	{ return *m_SetAsCurrentSceneMenuItem; }
 
-	Gtk::SeparatorMenuItem &
-	getSetAsCurrentSceneSeparatorMenuItem () const
-	{ return *m_SetAsCurrentSceneSeparatorMenuItem; }
-
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getCreateInstanceMenuItem () const
 	{ return *m_CreateInstanceMenuItem; }
 
-	Gtk::MenuItem &
-	getRequestImmediateLoadMenuItem () const
-	{ return *m_RequestImmediateLoadMenuItem; }
+	Gtk::ImageMenuItem &
+	getReloadMenuItem () const
+	{ return *m_ReloadMenuItem; }
 
 	Gtk::MenuItem &
 	getUpdateInterfaceAndInstancesMenuItem () const
 	{ return *m_UpdateInterfaceAndInstancesMenuItem; }
 
+	Gtk::SeparatorMenuItem &
+	getProtoSeparator () const
+	{ return *m_ProtoSeparator; }
+
 	Gtk::MenuItem &
-	getCreateReferenceMenuItem () const
-	{ return *m_CreateReferenceMenuItem; }
+	getAddReferenceMenuItem () const
+	{ return *m_AddReferenceMenuItem; }
 
 	Gtk::Menu &
-	getCreateReferenceMenu () const
-	{ return *m_CreateReferenceMenu; }
+	getAddReferenceMenu () const
+	{ return *m_AddReferenceMenu; }
 
 	Gtk::MenuItem &
 	getRemoveReferenceMenuItem () const
@@ -132,6 +172,14 @@ public:
 	Gtk::Menu &
 	getRemoveReferenceMenu () const
 	{ return *m_RemoveReferenceMenu; }
+
+	Gtk::SeparatorMenuItem &
+	getReferencesSeparator () const
+	{ return *m_ReferencesSeparator; }
+
+	Gtk::ImageMenuItem &
+	getRemoveMenuItem () const
+	{ return *m_RemoveMenuItem; }
 
 	Gtk::MenuItem &
 	getUnlinkCloneMenuItem () const
@@ -221,9 +269,9 @@ public:
 	getRemoveParentMenuItem () const
 	{ return *m_RemoveParentMenuItem; }
 
-	Gtk::ImageMenuItem &
-	getRemoveMenuItem () const
-	{ return *m_RemoveMenuItem; }
+	Gtk::SeparatorMenuItem &
+	getEditSeparator () const
+	{ return *m_EditSeparator; }
 
 	Gtk::MenuItem &
 	getViewMenuItem () const
@@ -261,45 +309,25 @@ public:
 	getUseLocaleMenuItem () const
 	{ return *m_UseLocaleMenuItem; }
 
-	Gtk::Menu &
-	getSceneMenu () const
-	{ return *m_SceneMenu; }
+	virtual
+	void
+	on_map () = 0;
 
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
+	virtual
+	void
+	on_unmap () = 0;
 
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
+	virtual
+	void
+	on_previous_scene_clicked () = 0;
 
-	Gtk::Box &
-	getSceneMenuBox () const
-	{ return *m_SceneMenuBox; }
+	virtual
+	void
+	on_next_scene_clicked () = 0;
 
-	Gtk::MenuButton &
-	getSceneMenuButton () const
-	{ return *m_SceneMenuButton; }
-
-	Gtk::Image &
-	getSceneImage () const
-	{ return *m_SceneImage; }
-
-	Gtk::Label &
-	getSceneLabel () const
-	{ return *m_SceneLabel; }
-
-	Gtk::Button &
-	getPreviousSceneButton () const
-	{ return *m_PreviousSceneButton; }
-
-	Gtk::Button &
-	getNextSceneButton () const
-	{ return *m_NextSceneButton; }
-
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const
-	{ return *m_ScrolledWindow; }
+	virtual
+	bool
+	on_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -311,11 +339,15 @@ public:
 
 	virtual
 	void
-	on_request_immediate_load_activated () = 0;
+	on_reload_activated () = 0;
 
 	virtual
 	void
 	on_update_interface_and_instances_activated () = 0;
+
+	virtual
+	void
+	on_remove_activate () = 0;
 
 	virtual
 	void
@@ -403,10 +435,6 @@ public:
 
 	virtual
 	void
-	on_remove_activate () = 0;
-
-	virtual
-	void
 	on_show_extern_protos_toggled () = 0;
 
 	virtual
@@ -438,26 +466,6 @@ public:
 	on_use_locale_menu_item_toggled () = 0;
 
 	virtual
-	void
-	on_map () = 0;
-
-	virtual
-	void
-	on_unmap () = 0;
-
-	virtual
-	void
-	on_previous_scene_clicked () = 0;
-
-	virtual
-	void
-	on_next_scene_clicked () = 0;
-
-	virtual
-	bool
-	on_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
 	~X3DOutlineEditorInterface ();
 
 
@@ -471,16 +479,28 @@ private:
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
+	Gtk::Menu*                      m_SceneMenu;
+	Gtk::Window*                    m_Window;
+	Gtk::Box*                       m_Widget;
+	Gtk::Box*                       m_SceneMenuBox;
+	Gtk::MenuButton*                m_SceneMenuButton;
+	Gtk::Image*                     m_SceneImage;
+	Gtk::Label*                     m_SceneLabel;
+	Gtk::Button*                    m_PreviousSceneButton;
+	Gtk::Button*                    m_NextSceneButton;
+	Gtk::ScrolledWindow*            m_ScrolledWindow;
 	Gtk::Menu*                      m_PopupMenu;
-	Gtk::MenuItem*                  m_SetAsCurrentSceneMenuItem;
-	Gtk::SeparatorMenuItem*         m_SetAsCurrentSceneSeparatorMenuItem;
-	Gtk::MenuItem*                  m_CreateInstanceMenuItem;
-	Gtk::MenuItem*                  m_RequestImmediateLoadMenuItem;
+	Gtk::ImageMenuItem*             m_SetAsCurrentSceneMenuItem;
+	Gtk::ImageMenuItem*             m_CreateInstanceMenuItem;
+	Gtk::ImageMenuItem*             m_ReloadMenuItem;
 	Gtk::MenuItem*                  m_UpdateInterfaceAndInstancesMenuItem;
-	Gtk::MenuItem*                  m_CreateReferenceMenuItem;
-	Gtk::Menu*                      m_CreateReferenceMenu;
+	Gtk::SeparatorMenuItem*         m_ProtoSeparator;
+	Gtk::MenuItem*                  m_AddReferenceMenuItem;
+	Gtk::Menu*                      m_AddReferenceMenu;
 	Gtk::MenuItem*                  m_RemoveReferenceMenuItem;
 	Gtk::Menu*                      m_RemoveReferenceMenu;
+	Gtk::SeparatorMenuItem*         m_ReferencesSeparator;
+	Gtk::ImageMenuItem*             m_RemoveMenuItem;
 	Gtk::MenuItem*                  m_UnlinkCloneMenuItem;
 	Gtk::MenuItem*                  m_CreateParentGroupMenuItem;
 	Gtk::MenuItem*                  m_CreateParentTransformMenuItem;
@@ -503,7 +523,7 @@ private:
 	Gtk::MenuItem*                  m_CreateParentLayerMenuItem;
 	Gtk::MenuItem*                  m_CreateParentViewportMenuItem;
 	Gtk::MenuItem*                  m_RemoveParentMenuItem;
-	Gtk::ImageMenuItem*             m_RemoveMenuItem;
+	Gtk::SeparatorMenuItem*         m_EditSeparator;
 	Gtk::MenuItem*                  m_ViewMenuItem;
 	Gtk::CheckMenuItem*             m_ShowExternProtosMenuItem;
 	Gtk::CheckMenuItem*             m_ShowPrototypesMenuItem;
@@ -513,16 +533,6 @@ private:
 	Gtk::CheckMenuItem*             m_ExpandPrototypeInstancesMenuItem;
 	Gtk::CheckMenuItem*             m_ExpandInlineNodesMenuItem;
 	Gtk::CheckMenuItem*             m_UseLocaleMenuItem;
-	Gtk::Menu*                      m_SceneMenu;
-	Gtk::Window*                    m_Window;
-	Gtk::Box*                       m_Widget;
-	Gtk::Box*                       m_SceneMenuBox;
-	Gtk::MenuButton*                m_SceneMenuButton;
-	Gtk::Image*                     m_SceneImage;
-	Gtk::Label*                     m_SceneLabel;
-	Gtk::Button*                    m_PreviousSceneButton;
-	Gtk::Button*                    m_NextSceneButton;
-	Gtk::ScrolledWindow*            m_ScrolledWindow;
 
 };
 

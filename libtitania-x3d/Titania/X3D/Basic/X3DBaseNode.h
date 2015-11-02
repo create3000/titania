@@ -172,6 +172,11 @@ public:
 	throw (Error <DISPOSED>)
 	{ return type; }
 
+	///  Returns true if the node is one of the types in @a types;
+	bool
+	isType (const std::set <X3DConstants::NodeType> &) const
+	throw (Error <DISPOSED>);
+
 	///  Returns the XML container field for this node type.
 	virtual
 	const std::string &

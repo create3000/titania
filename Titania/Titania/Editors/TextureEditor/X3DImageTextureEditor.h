@@ -95,10 +95,6 @@ private:
 	void
 	on_embed_image_clicked () final override;
 
-	virtual
-	void
-	on_image_texture_reload_clicked () final override;
-
 	///  @name Members
 
 	std::unique_ptr <MFStringURLWidget> url;

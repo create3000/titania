@@ -147,7 +147,7 @@ private:
 
 	virtual
 	void
-	on_request_immediate_load_activated () final override;
+	on_reload_activated () final override;
 
 	virtual
 	void
@@ -156,12 +156,16 @@ private:
 	// Field references
 
 	void
-	on_create_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr);
+	on_add_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr);
 
 	void
 	on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr);
 
-	// Remove
+	// Edit
+
+	virtual
+	void
+	on_remove_activate () final override;
 
 	virtual
 	void
@@ -249,10 +253,6 @@ private:
 	virtual
 	void
 	on_remove_parent_activate () final override;
-
-	virtual
-	void
-	on_remove_activate () final override;
 
 	// View Menu Item
 

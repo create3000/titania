@@ -487,14 +487,6 @@ public:
 
 	virtual
 	void
-	on_image_texture_reload_clicked () = 0;
-
-	virtual
-	void
-	on_movie_texture_reload_clicked () = 0;
-
-	virtual
-	void
 	on_textureProperties_toggled () = 0;
 
 	virtual

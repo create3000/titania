@@ -7,39 +7,196 @@
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.16.svg"/>
     </sources>
   </object>
+  <object class="GtkMenu" id="SceneMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+  </object>
+  <object class="GtkWindow" id="Window">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Outline Editor</property>
+    <property name="default_width">400</property>
+    <property name="default_height">600</property>
+    <property name="type_hint">utility</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <child>
+      <object class="GtkBox" id="Widget">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
+        <child>
+          <object class="GtkBox" id="SceneMenuBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkMenuButton" id="SceneMenuButton">
+                <property name="name">SceneMenuButton</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <property name="popup">SceneMenu</property>
+                <child>
+                  <object class="GtkBox" id="box2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">1</property>
+                    <property name="margin_right">1</property>
+                    <child>
+                      <object class="GtkImage" id="SceneImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">1</property>
+                        <property name="margin_right">1</property>
+                        <property name="stock">X3DExecutionContext</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="SceneLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;i&gt;&lt;b&gt;Current Scene&lt;/b&gt;&lt;/i&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="PreviousSceneButton">
+                <property name="label" translatable="yes">◂</property>
+                <property name="name">PreviousSceneButton</property>
+                <property name="width_request">0</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_left">1</property>
+                <property name="margin_right">1</property>
+                <property name="margin_top">1</property>
+                <property name="margin_bottom">1</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_previous_scene_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="NextSceneButton">
+                <property name="label" translatable="yes">▸</property>
+                <property name="name">NextSceneButton</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="relief">none</property>
+                <signal name="clicked" handler="on_next_scene_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <style>
+              <class name="background"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="ScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-refresh</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-jump-to</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">X3DBaseNode</property>
+  </object>
   <object class="GtkMenu" id="PopupMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="SetAsCurrentSceneMenuItem">
+      <object class="GtkImageMenuItem" id="SetAsCurrentSceneMenuItem">
+        <property name="label" translatable="yes">Set As Current Scene</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Set As Current Scene</property>
-        <property name="use_underline">True</property>
+        <property name="image">image2</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_set_as_current_scene_activate" swapped="no"/>
       </object>
     </child>
     <child>
-      <object class="GtkSeparatorMenuItem" id="SetAsCurrentSceneSeparatorMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="CreateInstanceMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+      <object class="GtkImageMenuItem" id="CreateInstanceMenuItem">
         <property name="label" translatable="yes">Create Instance</property>
-        <property name="use_underline">True</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image3</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
         <signal name="activate" handler="on_create_instance_activate" swapped="no"/>
       </object>
     </child>
     <child>
-      <object class="GtkMenuItem" id="RequestImmediateLoadMenuItem">
+      <object class="GtkImageMenuItem" id="ReloadMenuItem">
+        <property name="label" translatable="yes">Reload</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Request Immediate Load</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_request_immediate_load_activated" swapped="no"/>
+        <property name="image">image1</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_reload_activated" swapped="no"/>
       </object>
     </child>
     <child>
@@ -51,13 +208,19 @@
       </object>
     </child>
     <child>
-      <object class="GtkMenuItem" id="CreateReferenceMenuItem">
+      <object class="GtkSeparatorMenuItem" id="ProtoSeparator">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Create Reference To</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="AddReferenceMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Add Reference To</property>
         <property name="use_underline">True</property>
         <child type="submenu">
-          <object class="GtkMenu" id="CreateReferenceMenu">
+          <object class="GtkMenu" id="AddReferenceMenu">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -92,6 +255,23 @@
             </child>
           </object>
         </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="ReferencesSeparator">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="RemoveMenuItem">
+        <property name="label">gtk-remove</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -334,18 +514,7 @@
       </object>
     </child>
     <child>
-      <object class="GtkImageMenuItem" id="RemoveMenuItem">
-        <property name="label">gtk-remove</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_remove_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem4">
+      <object class="GtkSeparatorMenuItem" id="EditSeparator">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
       </object>
@@ -446,148 +615,6 @@
               </object>
             </child>
           </object>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkMenu" id="SceneMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-  </object>
-  <object class="GtkWindow" id="Window">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Outline Editor</property>
-    <property name="default_width">400</property>
-    <property name="default_height">600</property>
-    <property name="type_hint">utility</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <child>
-      <object class="GtkBox" id="Widget">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <signal name="map" handler="on_map" swapped="no"/>
-        <signal name="unmap" handler="on_unmap" swapped="no"/>
-        <child>
-          <object class="GtkBox" id="SceneMenuBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkMenuButton" id="SceneMenuButton">
-                <property name="name">SceneMenuButton</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="relief">none</property>
-                <property name="popup">SceneMenu</property>
-                <child>
-                  <object class="GtkBox" id="box2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">1</property>
-                    <property name="margin_right">1</property>
-                    <child>
-                      <object class="GtkImage" id="SceneImage">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_left">1</property>
-                        <property name="margin_right">1</property>
-                        <property name="stock">X3DExecutionContext</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="SceneLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">&lt;i&gt;&lt;b&gt;Current Scene&lt;/b&gt;&lt;/i&gt;</property>
-                        <property name="use_markup">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="PreviousSceneButton">
-                <property name="label" translatable="yes">◂</property>
-                <property name="name">PreviousSceneButton</property>
-                <property name="width_request">0</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_left">1</property>
-                <property name="margin_right">1</property>
-                <property name="margin_top">1</property>
-                <property name="margin_bottom">1</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="on_previous_scene_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="NextSceneButton">
-                <property name="label" translatable="yes">▸</property>
-                <property name="name">NextSceneButton</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="on_next_scene_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <style>
-              <class name="background"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="ScrolledWindow">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
-            <signal name="button-press-event" handler="on_button_press_event" swapped="no"/>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>

@@ -62,6 +62,10 @@ class X3DMFStringWidget :
 public:
 
 	///  @name Member access
+	
+	const std::string &
+	getName ()
+	{ return name; }
 
 	void
 	setNodes (const X3D::MFNode &);
@@ -119,10 +123,19 @@ protected:
 	virtual
 	void
 	on_add_clicked ();
+	
+	virtual
+	void
+	on_remove_clicked ();
 
 	virtual
 	void
 	set_buffer ();
+	
+	virtual
+	void
+	set_string (const X3D::MFString &)
+	{ }
 
 
 private:
@@ -157,9 +170,6 @@ private:
 	on_edited (const Glib::ustring &, const Glib::ustring &);
 
 	void
-	on_remove_clicked ();
-
-	void
 	on_string_changed ();
 
 	void
@@ -180,7 +190,7 @@ private:
 	const std::string                          name;
 	const Glib::ustring                        defaultValue;
 	X3D::MFString                              string;
-	X3D::UndoStepPtr                                undoStep;
+	X3D::UndoStepPtr                           undoStep;
 	X3D::SFTime                                buffer;
 
 };
@@ -425,6 +435,8 @@ X3DMFStringWidget::on_string_changed ()
 	}
 
 	addRedoFunction <X3D::MFString> (nodes, name, undoStep);
+
+	set_string (string);
 }
 
 inline
@@ -448,7 +460,7 @@ X3DMFStringWidget::set_buffer ()
 
 	if (pair .second > -2)
 	{
-		for (const auto & value : pair .first)
+		for (const auto & value : string)
 		{
 			const auto iter = listStore -> append ();
 			(*iter) [columns .string] = value .getValue ();
@@ -457,7 +469,8 @@ X3DMFStringWidget::set_buffer ()
 
 	treeView     .set_sensitive (pair .second not_eq -2);
 	addButton    .set_sensitive (pair .second not_eq -2);
-	removeButton .set_sensitive (false);
+
+	set_string (string);
 }
 
 inline
