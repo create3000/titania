@@ -183,19 +183,19 @@ main (int argc, char** argv)
 		else
 			options .printUsage ();
 	}
-	catch (const X3D::X3DError & exception)
+	catch (const X3D::X3DError & error)
 	{
-		std::cerr << exception .what () << std::endl;
+		std::cerr << error .what () << std::endl;
 		return 1;
 	}
-	catch (const Glib::Error & exception)
+	catch (const Glib::Error & error)
 	{
-		std::cerr << exception .what () << std::endl;
+		std::cerr << error .what () << std::endl;
 		return 1;
 	}
-	catch (const std::exception & exception)
+	catch (const std::exception & error)
 	{
-		std::cerr << exception .what () << std::endl;
+		std::cerr << error .what () << std::endl;
 		return 1;
 	}
 

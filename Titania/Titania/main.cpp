@@ -64,9 +64,11 @@ public:
 	///  @name Construction
 
 	BrowserApplication (int & argc, char** & argv) :
-		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
+		Gtk::Application ("de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
 		   browserWindow ()
-	{ }
+	{
+		Glib::set_application_name ("Titania");
+	}
 
 
 private:
@@ -109,6 +111,9 @@ private:
 			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
 
 		browserWindow -> getWindow () .present ();
+
+		//Call the base class's implementation:
+		Gtk::Application::on_open (files, hint);
 	}
 
 	virtual
