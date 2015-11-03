@@ -337,13 +337,13 @@ X3DGroupingNode::traverse (const TraverseType type)
 			}
 
 			for (const auto & childNode : clipPlanes)
-				childNode -> push (type);
+				childNode -> push ();
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop (type);
+				childNode -> pop ();
 
 			if (not pointingDeviceSensors .empty ())
 				getBrowser () -> getSensors () .pop_back ();
@@ -360,38 +360,38 @@ X3DGroupingNode::traverse (const TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			for (const auto & childNode : clipPlanes)
-				childNode -> push (type);
+				childNode -> push ();
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop (type);
+				childNode -> pop ();
 
 			return;
 		}
 		case TraverseType::DISPLAY:
 		{
 			for (const auto & childNode : clipPlanes)
-				childNode -> push (type);
+				childNode -> push ();
 
 			for (const auto & childNode : localFogs)
 				childNode -> push ();
 
 			for (const auto & childNode : lights)
-				childNode -> push (type);
+				childNode -> push ();
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);
 
 			for (const auto & childNode : basic::make_reverse_range (lights))
-				childNode -> pop (type);
+				childNode -> pop ();
 
 			for (const auto & childNode : basic::make_reverse_range (localFogs))
 				childNode -> pop ();
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop (type);
+				childNode -> pop ();
 
 			return;
 		}

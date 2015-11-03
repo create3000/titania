@@ -174,7 +174,7 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::DISPLAY:
 		{
 			if (viewportNode)
-				viewportNode -> push (type);
+				viewportNode -> push ();
 
 			if (layoutNode)
 			{
@@ -198,7 +198,7 @@ LayoutGroup::traverse (const TraverseType type)
 				X3DGroupingNode::traverse (type);
 
 			if (viewportNode)
-				viewportNode -> pop (type);
+				viewportNode -> pop ();
 
 			break;
 		}

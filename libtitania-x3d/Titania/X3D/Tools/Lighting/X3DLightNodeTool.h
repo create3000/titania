@@ -129,13 +129,13 @@ public:
 
 	virtual
 	void
-	push (const TraverseType type) final override
-	{ return getNode () -> push (type); }
+	push () final override
+	{ return getNode () -> push (); }
 
 	virtual
 	void
-	pop (const TraverseType type) final override
-	{ return getNode () -> pop (type); }
+	pop () final override
+	{ return getNode () -> pop (); }
 
 	virtual
 	void

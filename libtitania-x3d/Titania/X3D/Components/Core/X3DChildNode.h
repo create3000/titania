@@ -63,21 +63,10 @@ public:
 
 	///  @name Member access
 
+	virtual
 	const SFBool &
 	isCameraObject () const
 	{ return cameraObject; }
-
-	///  @name Operations
-
-	virtual
-	void
-	push (const TraverseType)
-	{ }
-
-	virtual
-	void
-	pop (const TraverseType)
-	{ }
 
 
 protected:

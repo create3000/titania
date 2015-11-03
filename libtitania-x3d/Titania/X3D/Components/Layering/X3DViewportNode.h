@@ -85,6 +85,14 @@ public:
 	void
 	disable () = 0;
 
+	virtual
+	void
+	push () = 0;
+
+	virtual
+	void
+	pop () = 0;
+
 
 protected:
 

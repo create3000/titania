@@ -341,11 +341,11 @@ X3DLayerNode::pointer ()
 		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
-		currentViewport -> push (TraverseType::POINTER);
+		currentViewport -> push ();
 
 		collect (TraverseType::POINTER);
 
-		currentViewport -> pop (TraverseType::POINTER);
+		currentViewport -> pop ();
 
 		getGlobalObjects () .clear ();
 	}
@@ -362,11 +362,11 @@ X3DLayerNode::camera ()
 	defaultBackground     -> traverse (TraverseType::CAMERA);
 	defaultFog            -> traverse (TraverseType::CAMERA);
 
-	currentViewport -> push (TraverseType::CAMERA);
+	currentViewport -> push ();
 
 	collect (TraverseType::CAMERA);
 
-	currentViewport -> pop (TraverseType::CAMERA);
+	currentViewport -> pop ();
 
 	navigationInfos -> update ();
 	viewpoints      -> update ();
@@ -381,9 +381,9 @@ X3DLayerNode::collision ()
 	getModelViewMatrix () .identity ();
 
 	// Render
-	currentViewport -> push (TraverseType::COLLISION);
+	currentViewport -> push ();
 	render (TraverseType::COLLISION);
-	currentViewport -> pop (TraverseType::COLLISION);
+	currentViewport -> pop ();
 }
 
 void
@@ -398,9 +398,9 @@ X3DLayerNode::display ()
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
-	currentViewport -> push (TraverseType::DISPLAY);
+	currentViewport -> push ();
 	render (TraverseType::DISPLAY);
-	currentViewport -> pop (TraverseType::DISPLAY);
+	currentViewport -> pop ();
 
 	getNavigationInfo () -> disable ();
 }

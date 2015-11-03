@@ -173,7 +173,8 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 			X3DBrowserWidget::setCurrentContext (value);
 		}
 		else
-			return;  // Do nothing.
+			return;                    // Do nothing.
+
 	}
 
 	if (isEditor ())
@@ -189,7 +190,8 @@ X3DBrowserEditor::set_shutdown ()
 		isModified (getCurrentBrowser (), false);
 	}
 	else
-		X3DBrowserWidget::setCurrentContext (getCurrentContext ()); // Cancel shutdown, there will be no further shutdown now.
+		X3DBrowserWidget::setCurrentContext (getCurrentContext ());  // Cancel shutdown, there will be no further shutdown now.
+
 }
 
 void
@@ -467,11 +469,23 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 			X3D::MFNode importedNodes;
 
 			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-				importedNodes = importScene (getCurrentContext (), X3D::SFNode (layerSet -> getActiveLayer ()), layerSet -> getActiveLayer () -> children (), scene, undoStep);
+			{
+				importedNodes = importScene (getCurrentContext (),
+				                             X3D::SFNode (layerSet -> getActiveLayer ()),
+				                             layerSet -> getActiveLayer () -> children (),
+				                             scene,
+				                             undoStep);
+			}
 			else
-				importedNodes = importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
+			{
+				importedNodes = importScene (getCurrentContext (),
+				                             X3D::SFNode (getCurrentContext ()),
+				                             getCurrentContext () -> getRootNodes (),
+				                             scene,
+				                             undoStep);
+			}
 
-			nodes .insert (nodes .end (), importedNodes .begin (), importedNodes .end ());
+			nodes .append (std::move (importedNodes));
 		}
 		catch (const X3D::X3DError & error)
 		{

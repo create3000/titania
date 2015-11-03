@@ -110,13 +110,11 @@ public:
 	bool
 	isClipped (const Matrix4f &, const Vector3f &);
 
-	virtual
 	void
-	push (const TraverseType) final override;
+	push ();
 	
-	virtual
 	void
-	pop (const TraverseType) final override;
+	pop ();
 
 
 private:

@@ -142,11 +142,11 @@ public:
 
 	virtual
 	void
-	push (const TraverseType) final override;
+	push () final override;
 
 	virtual
 	void
-	pop (const TraverseType) final override;
+	pop () final override;
 
 
 private:

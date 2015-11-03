@@ -147,21 +147,21 @@ Viewport::getTop () const
 void
 Viewport::traverse (const TraverseType type)
 {
-	push (type);
+	push ();
 
 	X3DGroupingNode::traverse (type);
 
-	pop (type);
+	pop ();
 }
 
 void
-Viewport::push (const TraverseType)
+Viewport::push ()
 {
 	getCurrentLayer () -> getViewVolumeStack () .emplace_back (ProjectionMatrix4d (), getScissor ());
 }
 
 void
-Viewport::pop (const TraverseType)
+Viewport::pop ()
 {
 	getCurrentLayer () -> getViewVolumeStack () .pop_back ();
 }

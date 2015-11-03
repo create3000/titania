@@ -60,9 +60,20 @@ template <class Type>
 class X3DChildNodeTool :
 	virtual public X3DNodeTool <Type>
 {
+public:
+
+	///  @name Member access
+
+	virtual
+	const SFBool &
+	isCameraObject () const final override
+	{ return getNode () -> isCameraObject (); }
+
+
 protected:
 
 	using X3DNodeTool <Type>::addType;
+	using X3DNodeTool <Type>::getNode;
 
 	///  @name Construction
 

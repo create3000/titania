@@ -117,11 +117,11 @@ public:
 
 	virtual
 	void
-	push (const TraverseType) override;
+	push ();
 
 	virtual
 	void
-	pop (const TraverseType) override;
+	pop ();
 
 	virtual
 	void
