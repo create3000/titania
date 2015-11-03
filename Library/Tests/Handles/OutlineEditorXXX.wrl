@@ -11,7 +11,7 @@ EXTERNPROTO Rotor [
   eventOut     SFBool     isActive
   eventOut     SFRotation rotation_changed
 ]
-"http://titania.create3000.de/Library/Prototypes/0.1/Engines/Rotor.x3dv"
+"https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Engines/Rotor.x3dv"
 
 DEF Rotor Rotor {
   cycleInterval 10

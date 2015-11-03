@@ -21,7 +21,7 @@ EXTERNPROTO Button [
 [
   "../../../../Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3dv"
 ]
 
 Viewpoint {

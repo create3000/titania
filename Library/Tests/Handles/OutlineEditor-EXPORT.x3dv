@@ -17,7 +17,7 @@ EXTERNPROTO Delay [
 [
   "../../../Titania/share/titania/Prototypes/0.1/Time/Delay.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Time/Delay.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Time/Delay.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/Delay.x3dv"
 ]
 
 EXTERNPROTO BooleanSwitch [
@@ -31,7 +31,7 @@ EXTERNPROTO BooleanSwitch [
 [
   "../../../Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Grouping/BooleanSwitch.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Grouping/BooleanSwitch.x3dv"
 ]
 
 EXTERNPROTO Button [
@@ -49,7 +49,7 @@ EXTERNPROTO Button [
 [
   "../../../Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3dv"
 ]
 
 EXTERNPROTO CheckButton [
@@ -66,7 +66,7 @@ EXTERNPROTO CheckButton [
 [
   "../../../Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
   "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3dv"
 ]
 
 PROTO Rotor [

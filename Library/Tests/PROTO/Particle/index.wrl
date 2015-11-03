@@ -68,7 +68,7 @@ EXTERNPROTO TrackingViewpoint [
 [
   "../../../../Titania/share/titania/Prototypes/Navigation/TrackingViewpoint.x3dv",
   "file:///usr/share/titania/Prototypes/Navigation/TrackingViewpoint.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Navigation/TrackingViewpoint.x3dv"
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Navigation/TrackingViewpoint.x3dv"
 ]
 
 LayerSet {
