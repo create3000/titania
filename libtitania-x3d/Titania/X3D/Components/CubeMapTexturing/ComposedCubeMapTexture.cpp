@@ -62,12 +62,12 @@ const std::string   ComposedCubeMapTexture::typeName       = "ComposedCubeMapTex
 const std::string   ComposedCubeMapTexture::containerField = "texture";
 
 const GLenum ComposedCubeMapTexture::targets [6] = {
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-	GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Front
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Back
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, // Bottom
 
 };
 
@@ -76,8 +76,8 @@ ComposedCubeMapTexture::Fields::Fields () :
 	  back (new SFNode ()),
 	  left (new SFNode ()),
 	 right (new SFNode ()),
-	bottom (new SFNode ()),
-	   top (new SFNode ())
+	   top (new SFNode ()),
+	bottom (new SFNode ())
 { }
 
 ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const executionContext) :
@@ -95,8 +95,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	addField (inputOutput, "back",     back ());
 	addField (inputOutput, "left",     left ());
 	addField (inputOutput, "right",    right ());
-	addField (inputOutput, "bottom",   bottom ());
 	addField (inputOutput, "top",      top ());
+	addField (inputOutput, "bottom",   bottom ());
 
 	addChildren (nodes);
 }
@@ -128,8 +128,8 @@ ComposedCubeMapTexture::initialize ()
 		back ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 1, std::cref (back ()));
 		left ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 2, std::cref (left ()));
 		right ()  .addInterest (this, &ComposedCubeMapTexture::set_texture, 3, std::cref (right ()));
-		bottom () .addInterest (this, &ComposedCubeMapTexture::set_texture, 4, std::cref (bottom ()));
 		top ()    .addInterest (this, &ComposedCubeMapTexture::set_texture, 5, std::cref (top ()));
+		bottom () .addInterest (this, &ComposedCubeMapTexture::set_texture, 4, std::cref (bottom ()));
 		
 		nodes .resize (6);
 
@@ -137,8 +137,8 @@ ComposedCubeMapTexture::initialize ()
 		set_texture (1, back ());
 		set_texture (2, right ());
 		set_texture (3, left ());
-		set_texture (4, bottom ());
-		set_texture (5, top ());
+		set_texture (4, top ());
+		set_texture (5, bottom ());
 	}
 }
 

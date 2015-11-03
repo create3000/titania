@@ -124,20 +124,20 @@ public:
 	{ return *fields .right; }
 
 	SFNode &
-	bottom ()
-	{ return *fields .bottom; }
-
-	const SFNode &
-	bottom () const
-	{ return *fields .bottom; }
-
-	SFNode &
 	top ()
 	{ return *fields .top; }
 
 	const SFNode &
 	top () const
 	{ return *fields .top; }
+
+	SFNode &
+	bottom ()
+	{ return *fields .bottom; }
+
+	const SFNode &
+	bottom () const
+	{ return *fields .bottom; }
 
 	///  @name Operations
 
@@ -185,8 +185,8 @@ private:
 		SFNode* const back;
 		SFNode* const left;
 		SFNode* const right;
-		SFNode* const bottom;
 		SFNode* const top;
+		SFNode* const bottom;
 	};
 
 	Fields fields;

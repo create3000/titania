@@ -1,6 +1,10 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V1.2.0
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Tue, 03 Nov 2015 06:44:31 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Tue, 03 Nov 2015 06:44:31 GMT"
 META "titania magic" "Texture"
 
 DEF LostValley Transform {
@@ -10,44 +14,38 @@ DEF LostValley Transform {
       texture ComposedCubeMapTexture {
         front ImageTexture {
           url [
-            "lostvalley_south.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
           ]
         }
         back ImageTexture {
           url [
-            "lostvalley_north.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
           ]
         }
         left ImageTexture {
           url [
-            "lostvalley_west.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "fhttp://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
           ]
         }
         right ImageTexture {
           url [
-            "lostvalley_east.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
           ]
         }
         bottom ImageTexture {
           url [
-            "lostvalley_down.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
           ]
         }
         top ImageTexture {
           url [
-            "lostvalley_up.jpg",
-            "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg"
-            "http://titania.create3000.de/Library/Textures/0.1/CubeMapTextures/LostValley/lostvalley_south.jpg"
+            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+            "https://rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
           ]
         }
       }

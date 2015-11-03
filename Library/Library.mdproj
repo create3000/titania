@@ -2407,6 +2407,17 @@
     <None Include="Textures\CubeMapTextures\LostValley\LostValley-right.jpg" />
     <None Include="Textures\CubeMapTextures\LostValley\LostValley-top.jpg" />
     <None Include="Textures\CubeMapTextures\LostValley\LostValley-bottom.jpg" />
+    <None Include="Textures\Effects\cloud1.png" />
+    <None Include="Textures\Effects\cloud2.png" />
+    <None Include="Textures\Effects\cloud3.png" />
+    <None Include="Textures\Effects\cloud4.png" />
+    <None Include="Textures\Effects\drop.png" />
+    <None Include="Textures\Effects\fire2.png" />
+    <None Include="Textures\Effects\light1.png" />
+    <None Include="Textures\Effects\light2.png" />
+    <None Include="Textures\Effects\snowflake1.png" />
+    <None Include="Textures\Effects\snowflake2.png" />
+    <None Include="Textures\Effects\snowflake3.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

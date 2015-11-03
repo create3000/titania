@@ -1468,13 +1468,6 @@
     <None Include="Titania\Editors\AppearanceEditor\X3DMaterialPaletteEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.h" />
     <None Include="share\titania\Library\Backgrounds\Funny.x3dv" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\ComposedCubeMapTexture.x3dv" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_down.jpg" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_east.jpg" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_north.jpg" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_south.jpg" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_up.jpg" />
-    <None Include="share\titania\Library\CubeMapTextures\LostValley\lostvalley_west.jpg" />
     <None Include="share\titania\Library\Textures\Animal\barkbase.jpg" />
     <None Include="share\titania\Library\Textures\Animal\bear.jpg" />
     <None Include="share\titania\Library\Textures\Animal\beastfur.jpg" />
@@ -1960,6 +1953,8 @@
     <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
     <None Include="scripts\LibraryURLs.pl" />
     <None Include="share\titania\Library\Backgrounds\CloudySky.x3dv" />
+    <None Include="share\titania\Library\CubeMapTextures\LostValley.x3dv" />
+    <None Include="share\titania\Library\CubeMapTextures\CloudySky.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
