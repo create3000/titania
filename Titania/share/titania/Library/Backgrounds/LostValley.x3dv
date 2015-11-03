@@ -8,39 +8,39 @@ META "modified" "Sun, 26 Oct 2014 17:19:30 GMT"
 
 DEF LostValley Background {
   frontUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
   ]
   backUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
   ]
   leftUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
   ]
   rightUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
   ]
   topUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
   ]
   bottomUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
   ]
 }

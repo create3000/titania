@@ -2323,29 +2323,6 @@
     <None Include="Tests\Shaders\ToolShader.x3dv" />
     <None Include="Tests\PROTO\ProtoEditor.x3dv" />
     <None Include="Tests\Handles\LayoutGroup.x3dv" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-back.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-bottom.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-front.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-left.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-right.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-top.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-front.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-back.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-left.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-right.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-top.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\LostValley-bottom.jpg" />
-    <None Include="Textures\Effects\cloud1.png" />
-    <None Include="Textures\Effects\cloud2.png" />
-    <None Include="Textures\Effects\cloud3.png" />
-    <None Include="Textures\Effects\cloud4.png" />
-    <None Include="Textures\Effects\drop.png" />
-    <None Include="Textures\Effects\fire2.png" />
-    <None Include="Textures\Effects\light1.png" />
-    <None Include="Textures\Effects\light2.png" />
-    <None Include="Textures\Effects\snowflake1.png" />
-    <None Include="Textures\Effects\snowflake2.png" />
-    <None Include="Textures\Effects\snowflake3.png" />
     <None Include="Prototypes\0\Button\Button\Button.x3dv" />
     <None Include="Prototypes\0\Button\Button\example.x3dv" />
     <None Include="Prototypes\0\Button\CheckButton\CheckButton.x3dv" />
@@ -2531,6 +2508,29 @@
     <None Include="Prototypes\1\1.0\Widgets\DiskSensor.x3dv" />
     <None Include="Prototypes\1\1.0\Widgets\RadioButton.x3d" />
     <None Include="Prototypes\1\1.0\Widgets\RadioButton.x3dv" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-back.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-bottom.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-front.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-left.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-right.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\CloudySky\CloudySky-top.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-back.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-bottom.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-front.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-left.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-right.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\LostValley\LostValley-top.jpg" />
+    <None Include="Textures\1\1.0\Effects\cloud1.png" />
+    <None Include="Textures\1\1.0\Effects\cloud2.png" />
+    <None Include="Textures\1\1.0\Effects\cloud3.png" />
+    <None Include="Textures\1\1.0\Effects\cloud4.png" />
+    <None Include="Textures\1\1.0\Effects\drop.png" />
+    <None Include="Textures\1\1.0\Effects\fire2.png" />
+    <None Include="Textures\1\1.0\Effects\light1.png" />
+    <None Include="Textures\1\1.0\Effects\light2.png" />
+    <None Include="Textures\1\1.0\Effects\snowflake1.png" />
+    <None Include="Textures\1\1.0\Effects\snowflake2.png" />
+    <None Include="Textures\1\1.0\Effects\snowflake3.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2605,10 +2605,11 @@
     <Folder Include="Examples\LustForLife\" />
     <Folder Include="Tests\PROTO\solaris\" />
     <Folder Include="Textures\" />
-    <Folder Include="Textures\CubeMapTextures\CloudySky\" />
     <Folder Include="Prototypes\0\" />
     <Folder Include="Prototypes\1\" />
     <Folder Include="Prototypes\1\1.0\" />
+    <Folder Include="Textures\1\" />
+    <Folder Include="Textures\1\1.0\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
