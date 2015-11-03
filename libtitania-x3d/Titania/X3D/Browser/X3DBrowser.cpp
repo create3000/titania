@@ -440,7 +440,11 @@ throw (Error <INVALID_X3D>,
 	ContextLock lock (this);
 
 	if (lock)
-		return Loader (this) .createX3DFromString (string);
+	{
+		Loader loader (this);
+
+		return loader .createX3DFromString (string);
+	}
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
@@ -455,7 +459,11 @@ throw (Error <INVALID_X3D>,
 	ContextLock lock (this);
 
 	if (lock)
-		return Loader (this) .createX3DFromStream (istream);
+	{
+		Loader loader (this);
+
+		return loader .createX3DFromStream (istream);
+	}
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
@@ -470,7 +478,11 @@ throw (Error <INVALID_X3D>,
 	ContextLock lock (this);
 
 	if (lock)
-		return Loader (this) .createX3DFromStream (worldURL, istream);
+	{
+		Loader loader (this);
+
+		return loader .createX3DFromStream (worldURL, istream);
+	}
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
@@ -485,22 +497,9 @@ throw (Error <INVALID_URL>,
 
 	if (lock)
 	{
-		try
-		{
-			Loader loader (this);
+		Loader loader (this);
 
-			const X3DScenePtr scene = loader .createX3DFromURL (url);
-
-			println ("Done loading scene '", loader .getWorldURL (), "'.");
-
-			return scene;
-		}
-		catch (const X3DError & error)
-		{
-			println (error .what ());
-
-			throw;
-		}
+		return loader .createX3DFromURL (url);
 	}
 
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");

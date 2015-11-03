@@ -1,11 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp">
     <Files>
       <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/share/titania/Library/Backgrounds/LostValley.x3dv" Line="1" Column="1" />
-      <File FileName="Titania/share/titania/Library/Backgrounds/CloudySky.x3dv" Line="1" Column="1" />
+      <File FileName="x3dtidy/main.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/Library/Backgrounds/BlueGreen.x3dv" Line="19" Column="19" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Browser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="73" Column="73" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
