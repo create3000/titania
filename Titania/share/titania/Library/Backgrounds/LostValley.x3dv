@@ -8,51 +8,39 @@ META "modified" "Sun, 26 Oct 2014 17:19:30 GMT"
 
 DEF LostValley Background {
   frontUrl [
-    "../CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_south.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-front.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-front.jpg",
   ]
   backUrl [
-    "../CubeMapTextures/LostValleylostvalley_north.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_north.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-back.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-back.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-back.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-back.jpg",
   ]
   leftUrl [
-    "../CubeMapTextures/LostValleylostvalley_east.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_east.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-left.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-left.jpg",
   ]
   rightUrl [
-    "../CubeMapTextures/LostValleylostvalley_west.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_west.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-right.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-right.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-right.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-right.jpg",
   ]
   topUrl [
-    "../CubeMapTextures/LostValleylostvalley_up.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_up.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-top.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-top.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-top.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-top.jpg",
   ]
   bottomUrl [
-    "../CubeMapTextures/LostValleylostvalley_down.jpg",
-    "file:///usr/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg",
-    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/lostvalley_down.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+    "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-bottom.jpg",
+    "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/CubeMapTextures/LostValley/LostValley-bottom.jpg",
   ]
 }

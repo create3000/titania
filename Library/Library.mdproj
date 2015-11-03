@@ -2395,18 +2395,18 @@
     <None Include="Tests\Shaders\ToolShader.x3dv" />
     <None Include="Tests\PROTO\ProtoEditor.x3dv" />
     <None Include="Tests\Handles\LayoutGroup.x3dv" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_down.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_east.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_north.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_south.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_up.jpg" />
-    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_west.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-back.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-bottom.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-front.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-left.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-right.jpg" />
     <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-top.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-front.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-back.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-left.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-right.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-top.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\LostValley-bottom.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
