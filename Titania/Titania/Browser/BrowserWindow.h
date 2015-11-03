@@ -624,6 +624,8 @@ private:
 	void
 	on_location_icon_released (Gtk::EntryIconPosition, const GdkEventButton*) final override;
 
+	///  @name Editors
+
 	virtual
 	void
 	on_node_properties_editor_clicked () final override;
@@ -646,11 +648,11 @@ private:
 
 	virtual
 	void
-	on_color_per_vertex_editor_clicked () final override;
+	on_color_editor_clicked () final override;
 
 	virtual
 	void
-	on_texture_coordinate_editor_clicked () final override;
+	on_texture_mapping_editor_clicked () final override;
 
 	virtual
 	void

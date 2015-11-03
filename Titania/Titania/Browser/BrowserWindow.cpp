@@ -2151,13 +2151,13 @@ BrowserWindow::on_geometry_properties_editor_clicked ()
 }
 
 void
-BrowserWindow::on_color_per_vertex_editor_clicked ()
+BrowserWindow::on_color_editor_clicked ()
 {
-	addDialog ("ColorPerVertexEditor");
+	addDialog ("ColorEditor");
 }
 
 void
-BrowserWindow::on_texture_coordinate_editor_clicked ()
+BrowserWindow::on_texture_mapping_editor_clicked ()
 {
 	addDialog ("TextureMappingEditor");
 }

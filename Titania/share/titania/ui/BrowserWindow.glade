@@ -1750,7 +1750,7 @@
                 <property name="use_underline">True</property>
                 <property name="image">image33</property>
                 <property name="use_stock">False</property>
-                <signal name="activate" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
+                <signal name="activate" handler="on_color_editor_clicked" swapped="no"/>
               </object>
             </child>
             <child>
@@ -1762,7 +1762,7 @@
                 <property name="image">image32</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
-                <signal name="activate" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
+                <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
               </object>
             </child>
           </object>
@@ -3137,7 +3137,7 @@
                                 <property name="image">image14</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
+                                <signal name="activate" handler="on_color_editor_clicked" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -3148,7 +3148,7 @@
                                 <property name="image">image16</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
+                                <signal name="activate" handler="on_texture_mapping_editor_clicked" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -3623,7 +3623,7 @@
                             <property name="label" translatable="yes">Paint Polygons</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">PaintBrush</property>
-                            <signal name="clicked" handler="on_color_per_vertex_editor_clicked" swapped="no"/>
+                            <signal name="clicked" handler="on_color_editor_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -3638,7 +3638,7 @@
                             <property name="label" translatable="yes">Texture Coordinate Editor</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">TextureCoordinate</property>
-                            <signal name="clicked" handler="on_texture_coordinate_editor_clicked" swapped="no"/>
+                            <signal name="clicked" handler="on_texture_mapping_editor_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>

@@ -66,23 +66,23 @@ const std::unique_ptr <DialogFactory> X3DUserInterface::dialogFactory (new Dialo
 const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"ScenePropertiesEditor",
 	"MotionBlurEditor",
-	"TextureMappingEditor",
-	"ColorPerVertexEditor",
 	"GridEditor",
 	"NodePropertiesEditor",
 	"AppearanceEditor",
 	"TextureEditor",
 	"TextEditor",
 	"GeometryPropertiesEditor",
+	"TextureMappingEditor",
+	"ColorEditor",
+	"LayerEditor",
 	"NavigationInfoEditor",
 	"ViewpointEditor",
 	"LightEditor",
 	"LODEditor",
 	"InlineEditor",
-	"LayerEditor",
 	"PrecisionPlacementPanel",
 	"PrototypeEditor",
-	"NodeIndex"
+	"NodeIndex",
 
 };
 
@@ -178,7 +178,6 @@ X3DUserInterface::hasDialog (const std::string & name) const
 
 std::shared_ptr <X3DUserInterface>
 X3DUserInterface::addDialog (const std::string & name, const bool present)
-throw (std::out_of_range)
 {
 	try
 	{

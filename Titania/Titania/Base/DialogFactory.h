@@ -73,7 +73,7 @@
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
-#include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
+#include "../Editors/ColorEditor/ColorEditor.h"
 #include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
@@ -95,30 +95,29 @@ public:
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
+		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
+		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
 		         std::make_pair ("AppearanceEditor",         constructDialog <AppearanceEditor>),
 		         std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),
 		         std::make_pair ("TextEditor",               constructDialog <TextEditor>),
 		         std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
-		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
+		         std::make_pair ("ColorEditor",              constructDialog <ColorEditor>),
 		         std::make_pair ("TextureMappingEditor",     constructDialog <TextureMappingEditor>),
+		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
-		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
+		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
-		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
-		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
-		         std::make_pair ("GridEditor",               constructDialog <GridEditor>)
 				         })
 	{ }
 
 	std::shared_ptr <X3DUserInterface>
 	createDialog (const std::string & name, X3DBrowserWindow* const browserWindow) const
-	throw (std::out_of_range)
 	{
 		return std::shared_ptr <X3DUserInterface> (dialogs .at (name) (browserWindow));
 	}

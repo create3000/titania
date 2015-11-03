@@ -32,7 +32,7 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
-	Titania/Editors/ColorPerVertexEditor/ColorPerVertexEditor.cpp \
+	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FaceSelection.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
@@ -97,7 +97,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
-	Titania/UserInterfaces/X3DColorPerVertexEditorInterface.cpp \
+	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
 	Titania/UserInterfaces/X3DFileImportDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \

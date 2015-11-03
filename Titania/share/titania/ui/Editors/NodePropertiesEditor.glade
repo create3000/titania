@@ -401,7 +401,7 @@
                   <object class="GtkLabel" id="label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Edit Node Properties</property>
+                    <property name="label" translatable="yes">Node Properties</property>
                     <property name="wrap">True</property>
                     <property name="max_width_chars">46</property>
                     <property name="xalign">0</property>

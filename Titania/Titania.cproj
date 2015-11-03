@@ -187,8 +187,6 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.cpp" />
     <Compile Include="Titania\Browser\X3DObjectOperations.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.cpp" />
-    <Compile Include="Titania\Editors\ColorPerVertexEditor\ColorPerVertexEditor.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DColorPerVertexEditorInterface.cpp" />
     <Compile Include="Titania\Editors\FaceSelection.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
@@ -217,6 +215,8 @@
     <Compile Include="Titania\Editors\PrototypeEditor\PrototypeEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.cpp" />
     <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
+    <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DColorEditorInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1721,9 +1721,6 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.h" />
     <None Include="share\titania\Library\Models\Vehicles\alfa147.x3dv" />
     <None Include="share\titania\Library\Textures\Miscellaneous\lena.jpg" />
-    <None Include="Titania\Editors\ColorPerVertexEditor\ColorPerVertexEditor.h" />
-    <None Include="Titania\UserInterfaces\X3DColorPerVertexEditorInterface.h" />
-    <None Include="share\titania\ui\Editors\ColorPerVertexEditorPreview.x3dv" />
     <None Include="Titania\ComposedWidgets\MFColorRGBAButton.h" />
     <None Include="share\titania\ui\icons\ColorAdjacentVertices.svg" />
     <None Include="share\titania\ui\icons\ColorSingleVertex.svg" />
@@ -1957,6 +1954,10 @@
     <None Include="share\titania\ui\Editors\TextureMappingEditorLeftPreview.x3dv" />
     <None Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.h" />
     <None Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.h" />
+    <None Include="share\titania\ui\Editors\ColorEditor.glade" />
+    <None Include="Titania\Editors\ColorEditor\ColorEditor.h" />
+    <None Include="Titania\UserInterfaces\X3DColorEditorInterface.h" />
+    <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2038,7 +2039,6 @@
     <Folder Include="share\titania\Library\Models\Plants\" />
     <Folder Include="share\titania\Library\Models\City\" />
     <Folder Include="share\titania\Library\Textures\Miscellaneous\" />
-    <Folder Include="Titania\Editors\ColorPerVertexEditor\" />
     <Folder Include="Titania\Widgets\AnimationEditor\" />
     <Folder Include="Titania\Editors\LayerEditor\" />
     <Folder Include="share\titania\ui\icons\Faenza\" />
@@ -2050,6 +2050,7 @@
     <Folder Include="share\titania\ui\icons\Faenza\22\" />
     <Folder Include="Titania\Editors\PrototypeEditor\" />
     <Folder Include="Titania\Editors\TextureMappingEditor\" />
+    <Folder Include="Titania\Editors\ColorEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

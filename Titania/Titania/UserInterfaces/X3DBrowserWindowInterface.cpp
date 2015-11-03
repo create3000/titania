@@ -531,8 +531,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'BrowserCombineMenuItem'.
 	m_BrowserCombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
-	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
+	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
+	m_BrowserTextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_BrowserGridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'BrowserScenesMenuItem'.
@@ -630,8 +630,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'CombineMenuItem'.
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
-	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
-	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
+	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
+	m_TextureCoordinateEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_GridPropertiesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_grid_properties_activated));
 
 	// Connect object Gtk::MenuItem with id 'ScenesMenuItem'.
@@ -676,8 +676,8 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
 	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
-	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_per_vertex_editor_clicked));
-	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_coordinate_editor_clicked));
+	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
+	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_LayerEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_layer_editor_clicked));
 	m_NavigationInfoEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_navigation_info_editor_clicked));
 	m_ViewpointEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoint_editor_clicked));

@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_COLOR_PER_VERTEX_EDITOR_H__
-#define __TMP_GLAD2CPP_COLOR_PER_VERTEX_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_COLOR_EDITOR_H__
+#define __TMP_GLAD2CPP_COLOR_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -57,17 +57,17 @@
 namespace titania {
 namespace puck {
 
-class X3DColorPerVertexEditorInterface :
+class X3DColorEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
-	X3DColorPerVertexEditorInterface () :
+	X3DColorEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DColorPerVertexEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DColorEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -302,7 +302,7 @@ public:
 	on_apply_clicked () = 0;
 
 	virtual
-	~X3DColorPerVertexEditorInterface ();
+	~X3DColorEditorInterface ();
 
 
 private:

@@ -73,7 +73,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Edit Inline</property>
+                <property name="label" translatable="yes">Inline Properties</property>
                 <property name="xalign">0</property>
                 <style>
                   <class name="titania-header"/>

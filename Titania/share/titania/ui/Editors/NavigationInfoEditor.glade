@@ -113,7 +113,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Edit Navigation Info</property>
+                <property name="label" translatable="yes">Navigation Info Properties</property>
                 <property name="xalign">0</property>
                 <style>
                   <class name="titania-header"/>

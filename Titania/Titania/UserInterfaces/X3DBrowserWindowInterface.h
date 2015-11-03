@@ -1851,11 +1851,11 @@ public:
 
 	virtual
 	void
-	on_color_per_vertex_editor_clicked () = 0;
+	on_color_editor_clicked () = 0;
 
 	virtual
 	void
-	on_texture_coordinate_editor_clicked () = 0;
+	on_texture_mapping_editor_clicked () = 0;
 
 	virtual
 	void

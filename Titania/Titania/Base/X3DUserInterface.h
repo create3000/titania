@@ -93,8 +93,7 @@ public:
 	hasDialog (const std::string &) const;
 
 	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = true)
-	throw (std::out_of_range);
+	addDialog (const std::string &, const bool = true);
 
 	///  @name Operations
 
