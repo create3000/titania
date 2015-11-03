@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.0//EN" "http://www.web3d.org/specifications/x3d-3.0.dtd">
+<X3D profile='Immersive' version='3.0' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.0.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='22 September 2000'/>
+    <meta name='creator' content='Figure 21.4b, The VRML 2.0 Sourcebook, Copyright [1997] By Andrea L. Ames, David R. Nadeau, and John L. Moreland'/>
+    <meta name='description' content='A somewhat shiny grey vase. Compare Figures 21.4a, 4b, 4c and 4d.'/>
+    <meta name='generator' content='Titania V1.2.0, http://titania.create3000.de'/>
+    <meta name='identifier' content='http://www.web3d.org/x3d/content/examples/Vrml2.0Sourcebook/Chapter21-ShinyMaterials/Figure21.4bSomewhatShinyGreyVase.x3d'/>
+    <meta name='license' content='../../license.html'/>
+    <meta name='modified' content='Tue, 03 Nov 2015 23:42:43 GMT'/>
+    <meta name='title' content='Figure21.4bSomewhatShinyGreyVase.x3d'/>
+    <meta name='translator' content='Don Brutzman'/>
+  </head>
+  <Scene>
+    <Transform>
+      <Shape>
+        <Appearance>
+          <Material DEF='Artdeco1'
+              ambientIntensity='0.0484474'
+              diffuseColor='0.258 0.160476 0.09546'
+              specularColor='0.468 0.290782 0.21012'
+              shininess='0.270833'/>
+        </Appearance>
+        <Extrusion
+            endCap='false'
+            solid='false'
+            creaseAngle='1'
+            crossSection='1 0, 0.92 -0.38, 0.71 -0.71, 0.38 -0.92, 0 -1, -0.38 -0.92, -0.71 -0.71, -0.92 -0.38, -1 -0, -0.92 0.38, -0.71 0.71, -0.38 0.92, 0 1, 0.38 0.92, 0.71 0.71, 0.92 0.38, 1 0'
+            scale='1.8 1.8, 1.95 1.95, 2 2, 1.95 1.95, 1.8 1.8, 1.5 1.5, 1.2 1.2, 1.05 1.05, 1 1, 1.05 1.05, 1.15 1.15'
+            spine='0 0 0, 0 0.4 0, 0 0.8 0, 0 1.2 0, 0 1.6 0, 0 2 0, 0 2.4 0, 0 2.8 0, 0 3.2 0, 0 3.6 0, 0 4 0'/>
+      </Shape>
+    </Transform>
+  </Scene>
+</X3D>

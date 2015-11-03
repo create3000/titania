@@ -1,0 +1,1108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sat, 18 Oct 2014 06:09:00 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.2.0, http://titania.create3000.de'/>
+    <meta name='modified' content='Tue, 03 Nov 2015 23:43:57 GMT'/>
+  </head>
+  <Scene>
+    <Transform
+        translation='-0.108 0.305 0.086'
+        rotation='0 1 0 4.03319'
+        scale='0.00833 0.00833 0.00833'>
+      <Group>
+        <Transform
+            translation='-6 0 3'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%0'
+                    diffuseColor='1 1 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box DEF='_v2%2'
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%0'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%0'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%0'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%0'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%0'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%0'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%0'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%0'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='-6 0 -3'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%3'
+                    diffuseColor='1 1 0'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%3'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%3'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%3'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%3'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%3'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%3'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%3'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%3'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='4.5 0 -3'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%4'
+                    diffuseColor='1 0 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%4'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%4'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%4'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%4'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%4'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%4'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%4'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%4'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='6 0 0'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%5'
+                    diffuseColor='0 1 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%5'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%5'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%5'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%5'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%5'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%5'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%5'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%5'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='-3 2 0'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%6'
+                    diffuseColor='0 1 0'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%6'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%6'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%6'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%6'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%6'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%6'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%6'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%6'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='3 2 0'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%7'
+                    diffuseColor='0 0 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%7'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%7'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%7'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%7'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%7'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%7'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%7'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%7'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='4.5 0 3'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%8'
+                    diffuseColor='1 0 0'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%8'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%8'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%8'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%8'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%8'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%8'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%8'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%8'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='-4.5 4 0'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%9'
+                    diffuseColor='1 1 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%9'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%9'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%9'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%9'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%9'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%9'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%9'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%9'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%10'
+                    diffuseColor='1 1 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='6 2 3'/>
+            </Shape>
+            <Transform
+                translation='-2.25 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%10'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%10'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='1.5 0 0'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%10'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%10'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                    <Transform
+                        translation='0 0 -1.5'>
+                      <Group>
+                        <Shape>
+                          <Appearance>
+                            <Material USE='_v2%10'/>
+                          </Appearance>
+                          <Box
+                              size='0.5 0.5 0.5'/>
+                        </Shape>
+                      </Group>
+                      <Transform
+                          translation='-1.5 0 0'>
+                        <Group>
+                          <Shape>
+                            <Appearance>
+                              <Material USE='_v2%10'/>
+                            </Appearance>
+                            <Box
+                                size='0.5 0.5 0.5'/>
+                          </Shape>
+                        </Group>
+                        <Transform
+                            translation='-1.5 0 0'>
+                          <Group>
+                            <Shape>
+                              <Appearance>
+                                <Material USE='_v2%10'/>
+                              </Appearance>
+                              <Box
+                                  size='0.5 0.5 0.5'/>
+                            </Shape>
+                          </Group>
+                          <Transform
+                              translation='-1.5 0 0'>
+                            <Group>
+                              <Shape>
+                                <Appearance>
+                                  <Material USE='_v2%10'/>
+                                </Appearance>
+                                <Box
+                                    size='0.5 0.5 0.5'/>
+                              </Shape>
+                            </Group>
+                          </Transform>
+                        </Transform>
+                      </Transform>
+                    </Transform>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+      <Group>
+        <Transform
+            translation='-3 6 0'
+            center='0 0.25 0'>
+          <Group>
+            <Shape>
+              <Appearance>
+                <Material DEF='_v2%11'
+                    diffuseColor='1 1 1'
+                    specularColor='0.5 0.5 0.5'
+                    shininess='0.05'/>
+              </Appearance>
+              <Box
+                  size='3 2 3'/>
+            </Shape>
+            <Transform
+                translation='-0.75 1.25 0.75'>
+              <Group>
+                <Shape>
+                  <Appearance>
+                    <Material USE='_v2%11'/>
+                  </Appearance>
+                  <Box
+                      size='0.5 0.5 0.5'/>
+                </Shape>
+              </Group>
+              <Transform
+                  translation='1.5 0 0'>
+                <Group>
+                  <Shape>
+                    <Appearance>
+                      <Material USE='_v2%11'/>
+                    </Appearance>
+                    <Box
+                        size='0.5 0.5 0.5'/>
+                  </Shape>
+                </Group>
+                <Transform
+                    translation='0 0 -1.5'>
+                  <Group>
+                    <Shape>
+                      <Appearance>
+                        <Material USE='_v2%11'/>
+                      </Appearance>
+                      <Box
+                          size='0.5 0.5 0.5'/>
+                    </Shape>
+                  </Group>
+                  <Transform
+                      translation='-1.5 0 0'>
+                    <Group>
+                      <Shape>
+                        <Appearance>
+                          <Material USE='_v2%11'/>
+                        </Appearance>
+                        <Box
+                            size='0.5 0.5 0.5'/>
+                      </Shape>
+                    </Group>
+                  </Transform>
+                </Transform>
+              </Transform>
+            </Transform>
+          </Group>
+        </Transform>
+      </Group>
+    </Transform>
+  </Scene>
+</X3D>

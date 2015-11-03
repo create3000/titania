@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sat, 18 Oct 2014 05:44:14 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.2.0, http://titania.create3000.de'/>
+    <meta name='modified' content='Tue, 03 Nov 2015 23:42:43 GMT'/>
+  </head>
+  <Scene>
+    <Transform>
+      <Shape>
+        <Appearance>
+          <Material DEF='Autumn3'
+              ambientIntensity='0.098983'
+              diffuseColor='0.395932 0.226244 0.128242'
+              specularColor='1 0.464407 0.4753'
+              shininess='0.994595'/>
+          <ImageTexture
+              url='"pipe.GIF"'/>
+        </Appearance>
+        <Extrusion
+            beginCap='false'
+            endCap='false'
+            solid='false'
+            creaseAngle='2'
+            crossSection='1 0, 0.924 -0.383, 0.707 -0.707, 0.383 -0.924, 0 -1, -0.383 -0.924, -0.707 -0.707, -0.924 -0.383, -1 0, -0.924 0.383, -0.707 0.707, -0.383 0.924, 0 1, 0.383 0.924, 0.707 0.707, 0.924 0.383, 1 0'
+            orientation='0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 1 0'
+            scale='0.31 0.31, 0.32 0.32, 0.31 0.31, 0.3 0.3, 0.28 0.28, 0.22 0.22, 0.2 0.2, 0.18 0.18, 0.15 0.15, 0.09 0.11, 0.06 0.09, 0.03 0.07'
+            spine='-1 0.5 0, -1 0.15 0, -1 -0.1 0, -0.94 -0.2 0, -0.83 -0.26 0, -0.66 -0.31 0, -0.55 -0.28 0, -0.18 -0.1 0, 0.05 0.1 0, 0.35 0.3 0, 0.7 0.37 0, 1 0.39 0'/>
+      </Shape>
+    </Transform>
+  </Scene>
+</X3D>
