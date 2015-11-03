@@ -47,15 +47,15 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DTextureCoordinateEditorInterface.h"
+#include "X3DTextureMappingEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DTextureCoordinateEditorInterface::m_widgetName = "TextureCoordinateEditor";
+const std::string X3DTextureMappingEditorInterface::m_widgetName = "TextureMappingEditor";
 
 void
-X3DTextureCoordinateEditorInterface::create (const std::string & filename)
+X3DTextureMappingEditorInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
@@ -107,72 +107,72 @@ X3DTextureCoordinateEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
 
 	// Connect object Gtk::Adjustment with id 'TextureStageAdjustment'.
-	m_TextureStageAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_texture_stage_changed));
+	m_TextureStageAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_texture_stage_changed));
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_key_press_event));
-	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_key_release_event));
+	m_Widget -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_key_press_event));
+	m_Widget -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_key_release_event));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo));
-	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_select_all_activate));
+	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_undo));
+	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_redo));
+	m_SelectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_select_all_activate));
 
 	// Connect object Gtk::MenuItem with id 'DeselectAllMenuItem'.
-	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_deselect_all_activate));
-	m_XPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_x_plane_activate));
-	m_YPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_y_plane_activate));
-	m_ZPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_z_plane_activate));
-	m_CameraMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_camera_activate));
-	m_BoxMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_box_activate));
-	m_CylinderXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_x_activate));
-	m_CylinderYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_y_activate));
-	m_CylinderZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_cylinder_z_activate));
-	m_SphereXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_x_activate));
-	m_SphereYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_y_activate));
-	m_SphereZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_sphere_z_activate));
+	m_DeselectAllMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_deselect_all_activate));
+	m_XPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_x_plane_activate));
+	m_YPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_y_plane_activate));
+	m_ZPlaneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_z_plane_activate));
+	m_CameraMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_camera_activate));
+	m_BoxMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_box_activate));
+	m_CylinderXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_cylinder_x_activate));
+	m_CylinderYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_cylinder_y_activate));
+	m_CylinderZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_cylinder_z_activate));
+	m_SphereXMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_sphere_x_activate));
+	m_SphereYMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_sphere_y_activate));
+	m_SphereZMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_sphere_z_activate));
 
 	// Connect object Gtk::ToolButton with id 'UndoButton'.
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_undo));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_redo));
-	m_RotateCounterlockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_rotate_counterclockwise));
-	m_RotateClockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_rotate_clockwise));
-	m_FlipButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flip));
-	m_FlopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_flop));
-	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_merge_points));
-	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_split_point));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_undo));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_redo));
+	m_RotateCounterlockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_rotate_counterclockwise));
+	m_RotateClockwiseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_rotate_clockwise));
+	m_FlipButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_flip));
+	m_FlopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_flop));
+	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_merge_points));
+	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_split_point));
 
 	// Connect object Gtk::RadioToolButton with id 'LeftHandButton'.
-	m_LeftHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_hand_toggled));
-	m_LeftArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_arrow_toggled));
-	m_RotateButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_rotate_toggled));
-	m_ScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_scale_toggled));
+	m_LeftHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_hand_toggled));
+	m_LeftArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_arrow_toggled));
+	m_RotateButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_rotate_toggled));
+	m_ScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_scale_toggled));
 
 	// Connect object Gtk::ToggleToolButton with id 'SnapCenterButton'.
-	m_SnapCenterButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_snap_center_toggled));
+	m_SnapCenterButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_snap_center_toggled));
 
 	// Connect object Gtk::ToolButton with id 'LeftLookAtButton'.
-	m_LeftLookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_left_look_at_all_clicked));
+	m_LeftLookAtButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_left_look_at_all_clicked));
 
 	// Connect object Gtk::RadioToolButton with id 'RightHandButton'.
-	m_RightHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_hand_toggled));
-	m_RightArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_arrow_toggled));
+	m_RightHandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_right_hand_toggled));
+	m_RightArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_right_arrow_toggled));
 
 	// Connect object Gtk::ToolButton with id 'RightLookAtAllButton'.
-	m_RightLookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_look_at_all_clicked));
+	m_RightLookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_right_look_at_all_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'RightLookAtButton'.
-	m_RightLookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_right_look_at_toggled));
+	m_RightLookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_right_look_at_toggled));
 
 	// Connect object Gtk::Button with id 'RemoveButton'.
-	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_remove_clicked));
-	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureCoordinateEditorInterface::on_apply_clicked));
+	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_remove_clicked));
+	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureMappingEditorInterface::on_apply_clicked));
 
 	// Call construct handler of base class.
 	construct ();
 }
 
-X3DTextureCoordinateEditorInterface::~X3DTextureCoordinateEditorInterface ()
+X3DTextureMappingEditorInterface::~X3DTextureMappingEditorInterface ()
 {
 	delete m_Window;
 }

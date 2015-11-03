@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_TEXTURE_COORDINATE_EDITOR_H__
-#define __TMP_GLAD2CPP_TEXTURE_COORDINATE_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
+#define __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -57,17 +57,17 @@
 namespace titania {
 namespace puck {
 
-class X3DTextureCoordinateEditorInterface :
+class X3DTextureMappingEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
-	X3DTextureCoordinateEditorInterface () :
+	X3DTextureMappingEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DTextureCoordinateEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DTextureMappingEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -402,7 +402,7 @@ public:
 	on_apply_clicked () = 0;
 
 	virtual
-	~X3DTextureCoordinateEditorInterface ();
+	~X3DTextureMappingEditorInterface ();
 
 
 private:

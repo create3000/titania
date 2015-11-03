@@ -2159,7 +2159,7 @@ BrowserWindow::on_color_per_vertex_editor_clicked ()
 void
 BrowserWindow::on_texture_coordinate_editor_clicked ()
 {
-	addDialog ("TextureCoordinateEditor");
+	addDialog ("TextureMappingEditor");
 }
 
 void

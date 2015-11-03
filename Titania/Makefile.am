@@ -77,7 +77,6 @@ titania_SOURCES =  \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
-	Titania/Editors/TextureCoordinateEditor/TextureCoordinateEditor.cpp \
 	Titania/Editors/TextureEditor/TextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
@@ -89,6 +88,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DTexturePropertiesEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
+	Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
@@ -122,8 +122,8 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
-	Titania/UserInterfaces/X3DTextureCoordinateEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
+	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \

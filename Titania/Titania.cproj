@@ -189,8 +189,6 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.cpp" />
     <Compile Include="Titania\Editors\ColorPerVertexEditor\ColorPerVertexEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DColorPerVertexEditorInterface.cpp" />
-    <Compile Include="Titania\Editors\TextureCoordinateEditor\TextureCoordinateEditor.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DTextureCoordinateEditorInterface.cpp" />
     <Compile Include="Titania\Editors\FaceSelection.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
@@ -217,6 +215,8 @@
     <Compile Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineFields.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DPrototypeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\PrototypeEditor\PrototypeEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1733,12 +1733,8 @@
     <None Include="share\titania\ui\icons\Select.svg" />
     <None Include="share\titania\ui\icons\Arrow.svg" />
     <None Include="share\titania\ui\icons\Checkerboard.svg" />
-    <None Include="Titania\Editors\TextureCoordinateEditor\TextureCoordinateEditor.h" />
-    <None Include="Titania\UserInterfaces\X3DTextureCoordinateEditorInterface.h" />
     <None Include="share\titania\ui\icons\TextureCoordinate.svg" />
     <None Include="Titania\Editors\FaceSelection.h" />
-    <None Include="share\titania\ui\Editors\TextureCoordinateEditorLeftPreview.x3dv" />
-    <None Include="share\titania\ui\Editors\TextureCoordinateEditorRightPreview.x3dv" />
     <None Include="share\titania\ui\icons\Flip.svg" />
     <None Include="share\titania\ui\icons\Flop.svg" />
     <None Include="share\titania\ui\icons\Counterclockwise.svg" />
@@ -1954,9 +1950,13 @@
     <None Include="share\titania\ui\Editors\PrototypeEditor.glade" />
     <None Include="share\titania\ui\Editors\ScenePropertiesEditor.glade" />
     <None Include="share\titania\ui\Editors\TextEditor.glade" />
-    <None Include="share\titania\ui\Editors\TextureCoordinateEditor.glade" />
     <None Include="share\titania\ui\Editors\TextureEditor.glade" />
     <None Include="share\titania\ui\Editors\ViewpointEditor.glade" />
+    <None Include="share\titania\ui\Editors\TextureMappingEditor.glade" />
+    <None Include="share\titania\ui\Editors\TextureMappingEditorRightPreview.x3dv" />
+    <None Include="share\titania\ui\Editors\TextureMappingEditorLeftPreview.x3dv" />
+    <None Include="Titania\UserInterfaces\X3DTextureMappingEditorInterface.h" />
+    <None Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2039,7 +2039,6 @@
     <Folder Include="share\titania\Library\Models\City\" />
     <Folder Include="share\titania\Library\Textures\Miscellaneous\" />
     <Folder Include="Titania\Editors\ColorPerVertexEditor\" />
-    <Folder Include="Titania\Editors\TextureCoordinateEditor\" />
     <Folder Include="Titania\Widgets\AnimationEditor\" />
     <Folder Include="Titania\Editors\LayerEditor\" />
     <Folder Include="share\titania\ui\icons\Faenza\" />
@@ -2050,6 +2049,7 @@
     <Folder Include="share\titania\units\" />
     <Folder Include="share\titania\ui\icons\Faenza\22\" />
     <Folder Include="Titania\Editors\PrototypeEditor\" />
+    <Folder Include="Titania\Editors\TextureMappingEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

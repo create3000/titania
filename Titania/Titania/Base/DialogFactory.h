@@ -74,7 +74,7 @@
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/ColorPerVertexEditor/ColorPerVertexEditor.h"
-#include "../Editors/TextureCoordinateEditor/TextureCoordinateEditor.h"
+#include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 
@@ -101,7 +101,7 @@ public:
 		         std::make_pair ("TextEditor",               constructDialog <TextEditor>),
 		         std::make_pair ("GeometryPropertiesEditor", constructDialog <GeometryPropertiesEditor>),
 		         std::make_pair ("ColorPerVertexEditor",     constructDialog <ColorPerVertexEditor>),
-		         std::make_pair ("TextureCoordinateEditor",  constructDialog <TextureCoordinateEditor>),
+		         std::make_pair ("TextureMappingEditor",     constructDialog <TextureMappingEditor>),
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),

@@ -103,6 +103,8 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
 	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
 	m_builder -> get_widget ("LODMoveCenterButton", m_LODMoveCenterButton);
+
+	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
