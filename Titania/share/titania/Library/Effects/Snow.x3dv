@@ -32,12 +32,8 @@ DEF Snow ParticleSystem {
   appearance Appearance {
     texture ImageTexture {
       url [
-        "../Textures/EnvironmentalEffects/snowflake1.png",
-        "file:///usr/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png"
-        "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png",
-        "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png",
-        "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png",
-        "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/snowflake1.png",
+        "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/Effects/snowflake1.png",
+        "https://rawgit.com/create3000/titania/master/Library/Textures/Effects/snowflake1.png",
       ]
       repeatS FALSE
       repeatT FALSE

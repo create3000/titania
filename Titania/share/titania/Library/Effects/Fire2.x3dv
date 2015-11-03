@@ -347,7 +347,7 @@ DEF Fire2 ParticleSystem {
     texture ImageTexture {
       url [
         "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/Effects/fire2.png",
-        "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/Effects/fire2.png",
+        "https://rawgit.com/create3000/titania/master/Library/Textures/Effects/fire2.png",
       ]
     }
   }
