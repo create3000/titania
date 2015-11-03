@@ -62,7 +62,7 @@ namespace puck {
 
 FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.xml"), gconf_dir ())
+	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"), gconf_dir ())
 {
 	getFileFilterX3D   () -> set_name (_ ("X3D"));
 	getFileFilterImage () -> set_name (_ ("Images"));

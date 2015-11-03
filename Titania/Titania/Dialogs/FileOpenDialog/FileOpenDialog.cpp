@@ -60,7 +60,7 @@ namespace puck {
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.xml"), gconf_dir ())
+	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"), gconf_dir ())
 {
 	getFileFilterX3D   () -> set_name (_ ("X3D"));
 	getFileFilterImage () -> set_name (_ ("Images"));
@@ -177,7 +177,6 @@ FileOpenDialog::font ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 		return true;
-
 
 	return false;
 }

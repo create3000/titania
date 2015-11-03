@@ -62,7 +62,7 @@ namespace puck {
 
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.xml"), gconf_dir ()),
+	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.glade"), gconf_dir ()),
 	                        nodeName (this, getNameEntry (), getRenameButton ()),
 	                            type (new MFStringWidget (browserWindow,
 	                                  getTypeTreeView (),

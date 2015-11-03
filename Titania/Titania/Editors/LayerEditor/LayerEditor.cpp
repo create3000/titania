@@ -86,7 +86,7 @@ static constexpr int BOLD   = 700;
 
 LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DLayerEditorInterface (get_ui ("Editors/LayerEditor.xml"), gconf_dir ()),
+	X3DLayerEditorInterface (get_ui ("Editors/LayerEditor.glade"), gconf_dir ()),
 	                  world (),
 	               layerSet (),
 	                 layers ()

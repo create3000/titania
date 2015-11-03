@@ -58,7 +58,7 @@ namespace puck {
 
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DConsoleInterface (get_ui ("Console.xml"), gconf_dir ())
+	X3DConsoleInterface (get_ui ("Console.glade"), gconf_dir ())
 {
 	getBrowserWindow () -> getFooterNotebook () .signal_map ()   .connect (sigc::mem_fun (*this, &Console::set_enabled));
 	getBrowserWindow () -> getFooterNotebook () .signal_unmap () .connect (sigc::mem_fun (*this, &Console::set_enabled));

@@ -120,7 +120,7 @@ const std::map <X3D::X3DConstants::NodeType, size_t> AnimationEditor::interpolat
 
 AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DAnimationEditorInterface (get_ui ("AnimationEditor.xml"), gconf_dir ()),
+	X3DAnimationEditorInterface (get_ui ("AnimationEditor.glade"), gconf_dir ()),
 	            X3DEditorObject (),
 	                    columns (),
 	                  treeStore (Gtk::TreeStore::create (columns)),

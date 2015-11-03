@@ -72,7 +72,7 @@ static constexpr int INLINE        = 3;
 
 FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.xml"), gconf_dir ())
+	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.glade"), gconf_dir ())
 {
 	if (getConfig () .hasItem ("importType"))
 	{

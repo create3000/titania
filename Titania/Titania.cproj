@@ -1121,7 +1121,6 @@
     <None Include="share\titania\ui\icons\FieldType\SFVec4d.svg" />
     <None Include="share\titania\ui\icons\FieldType\SFVec4f.svg" />
     <None Include="share\titania\ui\icons\AccessType\AccessTypes.xcf" />
-    <None Include="share\titania\ui\LibraryView.xml" />
     <None Include="share\titania\ui\icons\AccessType\inputOnly.png" />
     <None Include="share\titania\ui\icons\AccessType\inputOutput.png" />
     <None Include="share\titania\ui\icons\AccessType\outputOnly.png" />
@@ -1157,7 +1156,6 @@
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment3.h" />
     <None Include="share\titania\ui\icons\Light.svg" />
     <None Include="Titania\UserInterfaces\X3DFileOpenDialogInterface.h" />
-    <None Include="share\titania\ui\Dialogs\FileOpenDialog.xml" />
     <None Include="Titania\UserInterfaces\X3DFileImportDialogInterface.h" />
     <None Include="Titania\UserInterfaces\X3DFileSaveDialogInterface.h" />
     <None Include="Titania\Dialogs\FileImportDialog\FileImportDialog.h" />
@@ -1206,11 +1204,7 @@
     <None Include="Titania\UserInterfaces\X3DHistoryViewInterface.h" />
     <None Include="Titania\Base\DialogFactory.h" />
     <None Include="Titania\Dialogs\FileSaveWarningDialog\FileSaveWarningDialog.h" />
-    <None Include="share\titania\ui\Dialogs\FileImportDialog.xml" />
-    <None Include="share\titania\ui\Dialogs\FileSaveDialog.xml" />
-    <None Include="share\titania\ui\Dialogs\FileSaveWarningDialog.xml" />
     <None Include="Titania\UserInterfaces\X3DFileSaveWarningDialogInterface.h" />
-    <None Include="share\titania\ui\Dialogs\OpenLocationDialog.xml" />
     <None Include="Titania\UserInterfaces\X3DOpenLocationDialogInterface.h" />
     <None Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.h" />
     <None Include="share\titania\ui\icons\OutlineEditor.svg" />
@@ -1232,7 +1226,6 @@
     <None Include="Titania\Editors\LODEditor\LODEditor.h" />
     <None Include="Titania\Editors\LODEditor\X3DLODEditor.h" />
     <None Include="Titania\Editors\LODEditor\LODRangeWidget.h" />
-    <None Include="share\titania\ui\Dialogs\NodeIndex.xml" />
     <None Include="Titania\Dialogs\NodeIndex\NodeIndex.h" />
     <None Include="Titania\UserInterfaces\X3DNodeIndexInterface.h" />
     <None Include="Titania\ComposedWidgets\MFStringURLWidget.h" />
@@ -1246,7 +1239,6 @@
     <None Include="Titania\Editors\AppearanceEditor\X3DLinePropertiesEditor.h" />
     <None Include="Titania\UserInterfaces\X3DScriptEditorInterface.h" />
     <None Include="Titania\Widgets\ScriptEditor\ScriptEditor.h" />
-    <None Include="share\titania\ui\ScriptEditor.xml" />
     <None Include="share\titania\Prototypes\0.1\Widgets\CheckButtonGroup.x3dv" />
     <None Include="share\titania\Library\Prototypes\Widgets\CheckButtonGroup.x3dv" />
     <None Include="Titania\ComposedWidgets\RotationTool.h" />
@@ -1254,26 +1246,15 @@
     <None Include="Titania\Base\AdjustmentObject.h" />
     <None Include="Titania\UserInterfaces\X3DBrowserWindowInterface.h" />
     <None Include="Titania\Browser\BrowserWindow.h" />
-    <None Include="share\titania\ui\BrowserWindow.xml" />
     <None Include="Titania\UserInterfaces\X3DPrecisionPlacementPanelInterface.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\PrecisionPlacementPanel.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DTransformEditor.h" />
     <None Include="Titania\Browser\X3DBrowserWindow.h" />
     <None Include="Titania\Browser\BrowserUserData.h" />
-    <None Include="share\titania\ui\Editors\AppearanceEditor.xml" />
-    <None Include="share\titania\ui\Editors\GeometryPropertiesEditor.xml" />
-    <None Include="share\titania\ui\Editors\InlineEditor.xml" />
-    <None Include="share\titania\ui\Editors\LightEditor.xml" />
-    <None Include="share\titania\ui\Editors\LODEditor.xml" />
     <None Include="share\titania\ui\Editors\MaterialEditorPreview.x3dv" />
-    <None Include="share\titania\ui\Editors\NodePropertiesEditor.xml" />
     <None Include="share\titania\ui\Editors\NormalTool.x3dv" />
-    <None Include="share\titania\ui\Editors\PrecisionPlacementPanel.xml" />
     <None Include="share\titania\ui\Editors\RotationTool.x3dv" />
-    <None Include="share\titania\ui\Editors\TextEditor.xml" />
-    <None Include="share\titania\ui\Editors\TextureEditor.xml" />
     <None Include="share\titania\ui\Editors\TextureEditorPreview.x3dv" />
-    <None Include="share\titania\ui\Editors\ViewpointEditor.xml" />
     <None Include="Titania\ComposedWidgets\X3DComposedWidget.h" />
     <None Include="share\titania\ui\BrowserWidget.x3dv" />
     <None Include="share\titania\pages\about\date.x3dv" />
@@ -1377,10 +1358,7 @@
     <None Include="share\titania\ui\icons\Inline.svg" />
     <None Include="share\titania\ui\icons\Navigation.svg" />
     <None Include="share\titania\ui\icons\Placement.svg" />
-    <None Include="share\titania\ui\Editors\ScenePropertiesEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DGridEditorInterface.h" />
-    <None Include="share\titania\ui\Editors\GridEditor.xml" />
-    <None Include="share\titania\ui\Editors\NavigationInfoEditor.xml" />
     <None Include="share\titania\ui\Editors\Palette.x3dv" />
     <None Include="Titania\Editors\GridEditor\GridEditor.h" />
     <None Include="Titania\Editors\GridEditor\X3DGridEditor.h" />
@@ -1755,7 +1733,6 @@
     <None Include="share\titania\ui\icons\Select.svg" />
     <None Include="share\titania\ui\icons\Arrow.svg" />
     <None Include="share\titania\ui\icons\Checkerboard.svg" />
-    <None Include="share\titania\ui\Editors\TextureCoordinateEditor.xml" />
     <None Include="Titania\Editors\TextureCoordinateEditor\TextureCoordinateEditor.h" />
     <None Include="Titania\UserInterfaces\X3DTextureCoordinateEditorInterface.h" />
     <None Include="share\titania\ui\icons\TextureCoordinate.svg" />
@@ -1771,7 +1748,6 @@
     <None Include="share\titania\ui\icons\SnapCenter.svg" />
     <None Include="share\titania\ui\icons\MergePoints.svg" />
     <None Include="share\titania\ui\icons\SplitPoint.svg" />
-    <None Include="share\titania\ui\AnimationEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DAnimationEditorInterface.h" />
     <None Include="Titania\Widgets\AnimationEditor\AnimationEditor.h" />
     <None Include="share\titania\ui\icons\Blue.svg" />
@@ -1864,7 +1840,6 @@
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.h" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.h" />
     <None Include="Titania\Widgets\ScriptEditor\ScriptEditorDatabase.h" />
-    <None Include="share\titania\ui\Editors\LayerEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DLayerEditorInterface.h" />
     <None Include="Titania\Editors\LayerEditor\LayerEditor.h" />
     <None Include="share\titania\ui\icons\LayerSet.svg" />
@@ -1952,11 +1927,36 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-find.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-find-and-replace.png" />
     <None Include="share\titania\ui\icons\Faenza\16\stock_script.png" />
-    <None Include="share\titania\ui\Editors\PrototypeEditor.xml" />
     <None Include="Titania\UserInterfaces\X3DPrototypeEditorInterface.h" />
     <None Include="Titania\Editors\PrototypeEditor\PrototypeEditor.h" />
     <None Include="share\titania\ui\icons\Node\ExternProto.96.svg" />
     <None Include="share\titania\ui\icons\Node\X3DExecutionContext.96.svg" />
+    <None Include="share\titania\ui\AnimationEditor.glade" />
+    <None Include="share\titania\ui\BrowserWindow.glade" />
+    <None Include="share\titania\ui\LibraryView.glade" />
+    <None Include="share\titania\ui\ScriptEditor.glade" />
+    <None Include="share\titania\ui\Dialogs\FileImportDialog.glade" />
+    <None Include="share\titania\ui\Dialogs\FileOpenDialog.glade" />
+    <None Include="share\titania\ui\Dialogs\FileSaveDialog.glade" />
+    <None Include="share\titania\ui\Dialogs\FileSaveWarningDialog.glade" />
+    <None Include="share\titania\ui\Dialogs\NodeIndex.glade" />
+    <None Include="share\titania\ui\Dialogs\OpenLocationDialog.glade" />
+    <None Include="share\titania\ui\Editors\AppearanceEditor.glade" />
+    <None Include="share\titania\ui\Editors\GeometryPropertiesEditor.glade" />
+    <None Include="share\titania\ui\Editors\GridEditor.glade" />
+    <None Include="share\titania\ui\Editors\InlineEditor.glade" />
+    <None Include="share\titania\ui\Editors\LayerEditor.glade" />
+    <None Include="share\titania\ui\Editors\LightEditor.glade" />
+    <None Include="share\titania\ui\Editors\LODEditor.glade" />
+    <None Include="share\titania\ui\Editors\NavigationInfoEditor.glade" />
+    <None Include="share\titania\ui\Editors\NodePropertiesEditor.glade" />
+    <None Include="share\titania\ui\Editors\PrecisionPlacementPanel.glade" />
+    <None Include="share\titania\ui\Editors\PrototypeEditor.glade" />
+    <None Include="share\titania\ui\Editors\ScenePropertiesEditor.glade" />
+    <None Include="share\titania\ui\Editors\TextEditor.glade" />
+    <None Include="share\titania\ui\Editors\TextureCoordinateEditor.glade" />
+    <None Include="share\titania\ui\Editors\TextureEditor.glade" />
+    <None Include="share\titania\ui\Editors\ViewpointEditor.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2071,11 +2071,6 @@
     <Content Include="share\titania\Prototypes\0.1\Engines\Rotor.x3dv" />
     <Content Include="share\titania\ui\icons\unused\ViewpointList.png" />
     <Content Include="share\titania\ui\icons\FieldType\none.png" />
-    <Content Include="share\titania\ui\Console.xml" />
-    <Content Include="share\titania\ui\MotionBlurEditor.xml" />
-    <Content Include="share\titania\ui\OutlineEditor.xml" />
-    <Content Include="share\titania\ui\ViewpointList.xml" />
-    <Content Include="share\titania\ui\HistoryView.xml" />
     <Content Include="share\titania\pages\about\blank.x3dv">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
@@ -2093,6 +2088,11 @@
     <Content Include="share\titania\pages\about\library\red.orange.yellow.x3dv" />
     <Content Include="share\titania\pages\about\library\Rotor.x3dv" />
     <Content Include="share\titania\pages\about\splash.x3dv" />
+    <Content Include="share\titania\ui\Console.glade" />
+    <Content Include="share\titania\ui\HistoryView.glade" />
+    <Content Include="share\titania\ui\MotionBlurEditor.glade" />
+    <Content Include="share\titania\ui\OutlineEditor.glade" />
+    <Content Include="share\titania\ui\ViewpointList.glade" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

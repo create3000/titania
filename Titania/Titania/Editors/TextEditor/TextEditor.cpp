@@ -60,7 +60,7 @@ namespace puck {
 
 TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DTextEditorInterface (get_ui ("Editors/TextEditor.xml"), gconf_dir ()),
+	X3DTextEditorInterface (get_ui ("Editors/TextEditor.glade"), gconf_dir ()),
 	X3DFontStyleNodeEditor (),
 	            shapeNodes (),
 	    geometryNodeBuffer (),

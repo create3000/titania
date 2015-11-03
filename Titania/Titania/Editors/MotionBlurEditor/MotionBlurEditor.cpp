@@ -60,7 +60,7 @@ namespace puck {
 
 MotionBlurEditor::MotionBlurEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.xml"), gconf_dir ()),
+	X3DMotionBlurEditorInterface (get_ui ("MotionBlurEditor.glade"), gconf_dir ()),
 	                     enabled (this, getEnabledCheckButton (), "enabled"),
 	                   intensity (this,
 	                              getIntensityAdjustment (),

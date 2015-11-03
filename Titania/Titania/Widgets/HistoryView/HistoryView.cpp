@@ -64,7 +64,7 @@ static constexpr int WORLD_URL_COLUMN = 2;
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DHistoryViewInterface (get_ui ("HistoryView.xml"), gconf_dir ()),
+	X3DHistoryViewInterface (get_ui ("HistoryView.glade"), gconf_dir ()),
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())
 {

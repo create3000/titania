@@ -59,7 +59,7 @@ namespace puck {
 
 LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	  X3DLightEditorInterface (get_ui ("Editors/LightEditor.xml"), gconf_dir ()),
+	  X3DLightEditorInterface (get_ui ("Editors/LightEditor.glade"), gconf_dir ()),
 	X3DDirectionalLightEditor (),
 	      X3DPointLightEditor (),
 	       X3DSpotLightEditor (),

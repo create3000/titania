@@ -69,7 +69,7 @@ namespace puck {
 
 OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DOutlineEditorInterface (get_ui ("OutlineEditor.xml"), gconf_dir ()),
+	X3DOutlineEditorInterface (get_ui ("OutlineEditor.glade"), gconf_dir ()),
 	                 treeView (new OutlineTreeViewEditor (browserWindow, getCurrentContext ())),
 	               sceneGroup (),
 	               sceneIndex (),

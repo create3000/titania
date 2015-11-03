@@ -62,7 +62,7 @@ namespace puck {
 
 ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DViewpointEditorInterface (get_ui ("Editors/ViewpointEditor.xml"), gconf_dir ()),
+	X3DViewpointEditorInterface (get_ui ("Editors/ViewpointEditor.glade"), gconf_dir ()),
 	         X3DViewpointEditor (),
 	    X3DOrthoViewpointEditor (),
 	      X3DGeoViewpointEditor (),

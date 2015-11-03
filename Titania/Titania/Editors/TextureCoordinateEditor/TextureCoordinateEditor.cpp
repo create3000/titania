@@ -88,7 +88,7 @@ infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float
 
 TextureCoordinateEditor::TextureCoordinateEditor (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DTextureCoordinateEditorInterface (get_ui ("Editors/TextureCoordinateEditor.xml"), gconf_dir ()),
+	X3DTextureCoordinateEditorInterface (get_ui ("Editors/TextureCoordinateEditor.glade"), gconf_dir ()),
 	                               left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorLeftPreview.x3dv") })),
 	                              right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureCoordinateEditorRightPreview.x3dv") })),
 	                        initialized (0),

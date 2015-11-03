@@ -62,7 +62,7 @@ namespace puck {
 
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.xml"), gconf_dir ()),
+	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.glade"), gconf_dir ()),
 	                       X3DArc2DEditor (),
 	                  X3DArcClose2DEditor (),
 	                    X3DCircle2DEditor (),

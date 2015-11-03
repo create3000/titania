@@ -66,7 +66,7 @@ namespace puck {
 
 InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DInlineEditorInterface (get_ui ("Editors/InlineEditor.xml"), gconf_dir ()),
+	X3DInlineEditorInterface (get_ui ("Editors/InlineEditor.glade"), gconf_dir ()),
 	                nodeName (this, getNameEntry (), getRenameButton ()),
 	                    load (this, getLoadCheckButton (),  "load"),
 	                     url (new MFStringURLWidget (this,

@@ -58,7 +58,7 @@ namespace puck {
 
 ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.xml"), gconf_dir ()),
+	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.glade"), gconf_dir ()),
 	                    X3DUnitEditor ()
 {
 	setup ();

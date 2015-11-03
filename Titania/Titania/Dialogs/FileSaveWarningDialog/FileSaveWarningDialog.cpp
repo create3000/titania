@@ -60,7 +60,7 @@ namespace puck {
 
 FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.xml"), gconf_dir ())
+	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.glade"), gconf_dir ())
 {
 	setup ();
 }

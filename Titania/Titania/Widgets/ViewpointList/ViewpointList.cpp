@@ -80,7 +80,7 @@ static constexpr int BOLD   = 700;
 
 ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool label) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DViewpointListInterface (get_ui ("ViewpointList.xml"), gconf_dir ()),
+	X3DViewpointListInterface (get_ui ("ViewpointList.glade"), gconf_dir ()),
 	                  browser (getCurrentBrowser ()),
 	              activeLayer (),
 	           userViewpoints (true),
