@@ -1958,6 +1958,8 @@
     <None Include="Titania\Editors\ColorEditor\ColorEditor.h" />
     <None Include="Titania\UserInterfaces\X3DColorEditorInterface.h" />
     <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
+    <None Include="scripts\LibraryURLs.pl" />
+    <None Include="share\titania\Library\Backgrounds\CloudySky.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

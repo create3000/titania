@@ -348,7 +348,10 @@ DEF Fire2 ParticleSystem {
       url [
         "../Textures/EnvironmentalEffects/fire2.png",
         "file:///usr/share/titania/Library/Textures/EnvironmentalEffects/fire2.png"
-        "http://titania.create3000.de/Library/Textures/0.1/EnvironmentalEffects/fire2.png"
+        "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/fire2.png",
+        "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/fire2.png",
+        "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/fire2.png",
+        "https://rawgit.com/create3000/titania/master/Titania/share/titania/Library/Textures/EnvironmentalEffects/fire2.png",
       ]
     }
   }

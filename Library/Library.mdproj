@@ -2395,6 +2395,18 @@
     <None Include="Tests\Shaders\ToolShader.x3dv" />
     <None Include="Tests\PROTO\ProtoEditor.x3dv" />
     <None Include="Tests\Handles\LayoutGroup.x3dv" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_down.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_east.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_north.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_south.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_up.jpg" />
+    <None Include="Textures\CubeMapTextures\LostValley\lostvalley_west.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\top.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\right.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\left.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\front.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\bottom.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\back.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2529,6 +2541,8 @@
     <Folder Include="Prototypes\Button\ScrolledWindow\" />
     <Folder Include="Examples\LustForLife\" />
     <Folder Include="Tests\PROTO\solaris\" />
+    <Folder Include="Textures\" />
+    <Folder Include="Textures\CubeMapTextures\CloudySky\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
