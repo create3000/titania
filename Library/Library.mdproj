@@ -2401,12 +2401,12 @@
     <None Include="Textures\CubeMapTextures\LostValley\lostvalley_south.jpg" />
     <None Include="Textures\CubeMapTextures\LostValley\lostvalley_up.jpg" />
     <None Include="Textures\CubeMapTextures\LostValley\lostvalley_west.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\top.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\right.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\left.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\front.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\bottom.jpg" />
-    <None Include="Textures\CubeMapTextures\CloudySky\back.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-back.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-bottom.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-front.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-left.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-right.jpg" />
+    <None Include="Textures\CubeMapTextures\CloudySky\CloudySky-top.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
