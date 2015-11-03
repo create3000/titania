@@ -463,7 +463,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 		{
 			const auto scene = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
 
-			if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
+			if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
 				return selection;
 
 			X3D::MFNode importedNodes;
@@ -731,9 +731,9 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 					{
 						const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, text);
 
-						if (not MagicImport (getBrowserWindow ()) .import (nodes, scene, undoStep))
+						if (not MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
 						{
-							getSelection () -> setChildren (importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep),
+							getSelection () -> setChildren (importScene (executionContext, X3D::SFNode (executionContext), executionContext -> getRootNodes (), scene, undoStep),
 							                                undoStep);
 						}
 					}

@@ -154,6 +154,24 @@ LibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 	return fileInfos;
 }
 
+bool
+LibraryView::containsFiles (const Glib::RefPtr <Gio::File> & directory)
+{
+	for (const auto & fileInfo : LibraryView::getChildren (directory))
+	{
+		switch (fileInfo -> get_file_type ())
+		{
+			case Gio::FILE_TYPE_REGULAR       :
+			case Gio::FILE_TYPE_SYMBOLIC_LINK :
+				return true;
+			default:
+				continue;
+		}
+	}
+
+	return false;
+}
+
 void
 LibraryView::append (const std::string & path) const
 {

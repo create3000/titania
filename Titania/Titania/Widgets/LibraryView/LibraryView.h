@@ -72,6 +72,10 @@ public:
 	std::vector <Glib::RefPtr <Gio::FileInfo>>
 	getChildren (const Glib::RefPtr <Gio::File> &);
 
+	static
+	bool
+	containsFiles (const Glib::RefPtr <Gio::File> &);
+
 	///  @name Destruction
 
 	virtual

@@ -232,7 +232,7 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
 		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
 
-		if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
+		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)

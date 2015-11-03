@@ -1,10 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="75" Column="75" />
+      <File FileName="Titania/share/titania/Library/Backgrounds/CloudySky.x3dv" Line="77" Column="77" />
+      <File FileName="Titania/scripts/Library/Textures.pl" Line="15" Column="15" />
+      <File FileName="Titania/scripts/ConvertPrototypes.pl" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp" Line="20" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -12,6 +17,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
+      <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

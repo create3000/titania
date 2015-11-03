@@ -56,8 +56,8 @@
 #include "../../Widgets/LibraryView/LibraryView.h"
 
 #include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
-#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
@@ -92,7 +92,14 @@ X3DTexturePaletteEditor::initialize ()
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 			{
-				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
+				const auto uri    = folder -> get_child (fileInfo -> get_name ()) -> get_uri ();
+				const auto folder = Gio::File::create_for_uri (uri);
+
+				if (not LibraryView::containsFiles (folder))
+					continue;
+
+				folders .emplace_back (uri);
+
 				getPaletteComboBoxText () .append (fileInfo -> get_name ());
 			}
 		}
@@ -181,30 +188,34 @@ X3DTexturePaletteEditor::set_initialized (const size_t index)
 void
 X3DTexturePaletteEditor::addTexture (const size_t i, const std::string & uri)
 {
-	const int column = i % COLUMNS;
-	const int row    = i / COLUMNS;
-
-	const auto texture     = preview -> getExecutionContext () -> createNode <X3D::ImageTexture> ();
-	const auto appearance  = preview -> getExecutionContext () -> createNode <X3D::Appearance> ();
-	const auto rectangle   = preview -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
-	const auto shape       = preview -> getExecutionContext () -> createNode <X3D::Shape> ();
-	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
-	const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
-
-	touchSensor -> touchTime () .addInterest (this, &X3DTexturePaletteEditor::set_touchTime, i);
-	touchSensor -> description () = basic::uri (uri) .basename ();
-
-	texture -> url ()           = { uri };
-	texture -> repeatS ()       = false;
-	texture -> repeatT ()       = false;
-	appearance -> texture ()    = texture;
-	shape -> appearance ()      = appearance;
-	shape -> geometry ()        = rectangle;
-	transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
-	transform -> children ()    = { shape, touchSensor };
-
-	preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
-	preview -> getExecutionContext () -> realize ();
+	try
+	{
+		const int column = i % COLUMNS;
+		const int row    = i / COLUMNS;
+	
+		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Import"));
+		const auto scene       = preview -> createX3DFromURL ({ uri });
+		const auto appearance  = preview -> getExecutionContext () -> createNode <X3D::Appearance> ();
+		const auto rectangle   = preview -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
+		const auto shape       = preview -> getExecutionContext () -> createNode <X3D::Shape> ();
+		const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
+		const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
+	
+		shape -> appearance ()      = appearance;
+		shape -> geometry ()        = rectangle;
+		transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
+		transform -> children ()    = { shape, touchSensor };
+	
+		MagicImport (getBrowserWindow ()) .import (preview -> getExecutionContext (), { transform }, scene, undoStep);
+	
+		touchSensor -> touchTime () .addInterest (this, &X3DTexturePaletteEditor::set_touchTime, i);
+		touchSensor -> description () = scene -> getRootNodes () .at (0) -> getName ();
+	
+		preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
+		preview -> getExecutionContext () -> realize ();
+	}
+	catch (...)
+	{ }
 }
 
 void
@@ -244,7 +255,7 @@ X3DTexturePaletteEditor::set_touchTime (const size_t i)
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Palette"));
 		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
 
-		if (MagicImport (getBrowserWindow ()) .import (selection, scene, undoStep))
+		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)

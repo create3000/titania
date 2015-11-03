@@ -68,7 +68,7 @@ public:
 	///  @name Operations
 
 	bool
-	import (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
+	import (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -81,17 +81,17 @@ private:
 	///  @name Magic handlers
 
 	bool
-	material (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
+	material (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	bool
-	texture (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
+	texture (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	void
-	importProtoDeclaration (const X3D::SFNode &, const X3D::UndoStepPtr &);
+	importProtoDeclaration (const X3D::X3DExecutionContextPtr &, const X3D::SFNode &, const X3D::UndoStepPtr &);
 
 	///  @name Members
 
-	using ImportFunction = std::function <bool (X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
+	using ImportFunction = std::function <bool (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
 	
 	std::map <std::string, ImportFunction> importFunctions;
 
