@@ -59,4 +59,4 @@ sub models {
 	system "x3dtidy", $x3dv, $x3dv;
 }
 
-models $_ foreach `find $models`;
+models $_ foreach `find $models -name \*.x3dv`;
