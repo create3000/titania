@@ -2847,7 +2847,6 @@
     <None Include="Models\1\1.0\Toys\soccerball.x3dv" />
     <None Include="Models\1\1.0\Toys\teddy.x3dv" />
     <None Include="Models\1\1.0\Toys\top.x3dv" />
-    <None Include="Models\1\1.0\Vehicles\767.x3dv" />
     <None Include="Models\1\1.0\Vehicles\aircar.x3dv" />
     <None Include="Models\1\1.0\Vehicles\alfa147.x3dv" />
     <None Include="Models\1\1.0\Vehicles\cessna.x3dv" />
@@ -2864,6 +2863,7 @@
     <None Include="Models\1\1.0\Vehicles\spacestation.x3dv" />
     <None Include="Models\1\1.0\Vehicles\tie.x3dv" />
     <None Include="Models\1\1.0\Vehicles\x29.x3dv" />
+    <None Include="Models\1\1.0\Vehicles\Airbus767.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

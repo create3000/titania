@@ -81,8 +81,6 @@ sub models {
 	say $x3dv;
 
 	system "x3dtidy", $x3dv, $x3dv;
-
-	exit;
 }
 
 models $_ foreach `find $models`;
