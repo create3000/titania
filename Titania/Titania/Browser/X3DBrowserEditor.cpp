@@ -453,6 +453,8 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 {
 	// Import into scene graph
 
+	MagicImport magicImport (getBrowserWindow ());
+
 	X3D::MFNode  nodes;
 	auto         selection = getSelection () -> getChildren ();
 	const auto & layerSet  = getCurrentWorld () -> getLayerSet ();
@@ -463,7 +465,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 		{
 			const auto scene = getCurrentBrowser () -> createX3DFromURL ({ worldURL .str () });
 
-			if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
+			if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
 				return selection;
 
 			X3D::MFNode importedNodes;
@@ -484,6 +486,8 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 				                             scene,
 				                             undoStep);
 			}
+
+			magicImport .process (getCurrentContext (), importedNodes, scene, undoStep);
 
 			nodes .append (std::move (importedNodes));
 		}

@@ -1972,6 +1972,10 @@
     <None Include="share\titania\Library\Models\Vehicles\SpaceStation.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\Tie.x3dv" />
     <None Include="share\titania\Library\Models\Vehicles\X29.x3dv" />
+    <None Include="scripts\Library\CubeMapTextures.pl" />
+    <None Include="scripts\Library\CubeMapTextures-Geometry.x3dv" />
+    <None Include="share\titania\Library\CubeMapTextures\SpaceSky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\SpaceSky.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2051,6 +2055,8 @@
     <Folder Include="scripts\Library\" />
     <Folder Include="share\titania\Library\Textures\" />
     <Folder Include="share\titania\Library\Models\" />
+    <Folder Include="share\titania\Library\CubeMapTextures\" />
+    <Folder Include="share\titania\Library\Backgrounds\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

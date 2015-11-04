@@ -1,67 +1,4 @@
-#X3D V3.3 utf8 Titania V1.2.0
-
-META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 01:20:21 GMT"
-META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 01:20:21 GMT"
-
-DEF LostValley Transform {
-  children Shape {
-    appearance Appearance {
-      material Material { }
-      texture ComposedCubeMapTexture {
-        front ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-front.jpg"
-          ]
-        }
-        back ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-back.jpg"
-          ]
-        }
-        left ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-left.jpg"
-          ]
-        }
-        right ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-right.jpg"
-          ]
-        }
-        top ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-top.jpg"
-          ]
-        }
-        bottom ImageTexture {
-          url [
-            "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/LostValley/LostValley-bottom.jpg"
-          ]
-        }
-      }
-    }
-    geometry IndexedFaceSet {
+IndexedFaceSet {
       creaseAngle 0.5
       texCoordIndex [
         0,
@@ -2661,5 +2598,3 @@ DEF LostValley Transform {
         ]
       }
     }
-  }
-}

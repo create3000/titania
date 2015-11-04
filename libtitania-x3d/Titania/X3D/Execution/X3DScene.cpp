@@ -179,6 +179,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
+X3DScene::removeMetaData (const std::string & key)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	metadatas .erase (key);
+}
+
+void
 X3DScene::setMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -344,7 +352,7 @@ throw (Error <INVALID_NAME>,
 		if (getProfile () or not getComponents () .empty ())
 		   setProfile (getBrowser () -> getProfile ("Full"));
 
-		//importMetaData (executionContext);
+		//importMetaData (executionContext); // Makes no sense.
 
 		const auto scene = dynamic_cast <X3DScene*> (executionContext);
 

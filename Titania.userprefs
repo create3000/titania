@@ -2,11 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Textures.pl" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Models.pl" Line="1" Column="1" />
+      <File FileName="Titania/scripts/Library/Textures.pl" Line="61" Column="61" />
+      <File FileName="Titania/scripts/Library/CubeMapTextures.pl" Line="37" Column="37" />
+      <File FileName="Titania/share/titania/Library/Materials/Artdeco/Artdeco1.x3dv" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/MagicImport.h" Line="6" Column="6" />
+      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="35" Column="35" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

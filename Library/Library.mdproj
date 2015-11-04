@@ -2864,6 +2864,12 @@
     <None Include="Models\1\1.0\Vehicles\SpaceStation.x3d" />
     <None Include="Models\1\1.0\Vehicles\Tie.x3d" />
     <None Include="Models\1\1.0\Vehicles\X29.x3d" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-back.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-front.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-bottom.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-left.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-right.jpg" />
+    <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-top.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2960,6 +2966,7 @@
     <Folder Include="Models\" />
     <Folder Include="Models\1\" />
     <Folder Include="Models\1\1.0\" />
+    <Folder Include="Textures\1\1.0\CubeMapTextures\SpaceSky\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

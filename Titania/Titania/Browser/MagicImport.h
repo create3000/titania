@@ -70,6 +70,9 @@ public:
 	bool
 	import (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
+	void
+	process (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
+
 	///  @name Destruction
 
 	virtual
@@ -79,6 +82,9 @@ public:
 private:
 
 	///  @name Magic handlers
+
+	void
+	bind (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
 
 	bool
 	material (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &);
@@ -91,9 +97,11 @@ private:
 
 	///  @name Members
 
-	using ImportFunction = std::function <bool (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
+	using ImportFunction1 = std::function <bool (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
+	using ImportFunction2 = std::function <void (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::X3DScenePtr &, const X3D::UndoStepPtr &)>;
 	
-	std::map <std::string, ImportFunction> importFunctions;
+	std::map <std::string, ImportFunction1> importFunctions1;
+	std::map <std::string, ImportFunction2> importFunctions2;
 
 };
 

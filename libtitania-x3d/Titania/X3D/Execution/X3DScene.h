@@ -192,6 +192,11 @@ public:
 	       Error <DISPOSED>);
 
 	void
+	removeMetaData (const std::string &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
 	setMetaData (const std::string &, const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

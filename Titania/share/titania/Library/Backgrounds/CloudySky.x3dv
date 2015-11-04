@@ -1,46 +1,47 @@
 #X3D V3.3 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
-META "created" "Tue, 03 Nov 2015 06:15:18 GMT"
+META "created" "Wed, 04 Nov 2015 01:20:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 03 Nov 2015 06:15:18 GMT"
+META "modified" "Wed, 04 Nov 2015 01:28:40 GMT"
+META "titania magic" "Background"
 
-Background {
+DEF CloudySky Background {
   frontUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-front.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-front.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-front.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-front.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-front.jpg"
   ]
   backUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-back.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-back.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-back.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-back.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-back.jpg"
   ]
   leftUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-left.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-left.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-left.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-left.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-left.jpg"
   ]
   rightUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-right.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-right.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-right.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-right.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-right.jpg"
   ]
   topUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-top.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-top.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-top.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-top.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-top.jpg"
   ]
   bottomUrl [
     "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
     "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
     "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
+    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/CloudySky/CloudySky-bottom.jpg"
   ]
 }

@@ -53,16 +53,16 @@
 #include "BrowserSelection.h"
 #include "X3DBrowserWindow.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
+#include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Browser/Core/Cast.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
-#include <Titania/X3D/Browser/Core/Cast.h>
-#include <Titania/X3D/Basic/Traverse.h>
 
 namespace titania {
 namespace puck {
@@ -71,8 +71,16 @@ using namespace std::placeholders;
 
 MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	 importFunctions ({ std::make_pair ("Material", std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
-	                  std::make_pair ("Texture",  std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)) })
+	 importFunctions1 ({
+	                  std::make_pair ("Material",   std::bind (&MagicImport::material, this, _1, _2, _3, _4)),
+	                  std::make_pair ("Texture",    std::bind (&MagicImport::texture,  this, _1, _2, _3, _4)),
+						                  }),
+	 importFunctions2 ({
+	                  std::make_pair ("Background",     std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                  std::make_pair ("Fog",            std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                  std::make_pair ("NavigationInfo", std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+	                  std::make_pair ("Viewpoint",      std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
+						                  })
 {
 	setup ();
 }
@@ -80,14 +88,11 @@ MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 bool
 MagicImport::import (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
-	if (selection .empty ())
-		return false;
-
 	try
 	{
 		const std::string magic = scene -> getMetaData ("titania magic");
 
-		return importFunctions .at (magic) (executionContext, const_cast <X3D::MFNode &> (selection), scene, undoStep);
+		return importFunctions1 .at (magic) (executionContext, const_cast <X3D::MFNode &> (selection), scene, undoStep);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
@@ -99,12 +104,42 @@ MagicImport::import (const X3D::X3DExecutionContextPtr & executionContext, const
 	}
 }
 
+void
+MagicImport::process (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & importedNodes, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
+{
+	try
+	{
+		const std::string magic = scene -> getMetaData ("titania magic");
+
+		importFunctions2 .at (magic) (executionContext, const_cast <X3D::MFNode &> (importedNodes), scene, undoStep);
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{ }
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
+MagicImport::bind (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & importedNodes, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
+{
+	X3D::traverse (importedNodes, [&] (X3D::SFNode & node)
+	               {
+	                  const X3D::X3DPtr <X3D::X3DBindableNode> bindableNode (node);
+
+	                  if (bindableNode)
+	                  {
+	                     bindableNode -> set_bind () = true;
+	                     return false;
+							}
+
+	                  return true;
+						});
+}
+
 bool
 MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
-	X3D::ContextLock lock (getCurrentBrowser ());
-
-	if (not lock)
+	if (selection .empty ())
 		return false;
 
 	// Find first material node in scene
@@ -113,7 +148,7 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 
 	X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  const X3D::AppearancePtr appearance (node);
+	                  const X3D::X3DPtr <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DMaterialNode*> (appearance -> material ()))
 	                  {
@@ -121,7 +156,7 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 
 	                     material = appearance -> material ();
 
-								material -> setExecutionContext (executionContext);
+	                     material -> setExecutionContext (executionContext);
 	                     return false;
 							}
 
@@ -173,16 +208,13 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 	                  return true;
 						});
 
-	executionContext -> realize ();
 	return true;
 }
 
 bool
 MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & selection, const X3D::X3DScenePtr & scene, const X3D::UndoStepPtr & undoStep)
 {
-	X3D::ContextLock lock (getCurrentBrowser ());
-
-	if (not lock)
+	if (selection .empty ())
 		return false;
 
 	// Find first texture node in scene
@@ -191,7 +223,7 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 
 	X3D::traverse (scene -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  const X3D::AppearancePtr appearance (node);
+	                  const X3D::X3DPtr <X3D::Appearance> appearance (node);
 
 	                  if (appearance and X3D::x3d_cast <X3D::X3DTextureNode*> (appearance -> texture ()))
 	                  {
@@ -199,7 +231,7 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 
 	                     texture = appearance -> texture ();
 
-								texture -> setExecutionContext (executionContext);
+	                     texture -> setExecutionContext (executionContext);
 	                     return false;
 							}
 
@@ -240,7 +272,6 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 	                  return true;
 						});
 
-	executionContext-> realize ();
 	return true;
 }
 
