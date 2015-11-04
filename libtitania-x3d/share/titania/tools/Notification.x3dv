@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Mon, 26 Oct 2015 11:28:26 GMT"
+META "modified" "Wed, 04 Nov 2015 11:08:08 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -80,8 +80,7 @@ WorldInfo {
   title "Notification"
 }
 
-DEF Notification Interface {
-}
+DEF Notification Interface { }
 
 Background {
   transparency 1
@@ -95,20 +94,29 @@ LayoutGroup {
       "RIGHT",
       "TOP"
     ]
-    offsetUnits "PIXEL"
+    offsetUnits [
+      "PIXEL",
+      "PIXEL"
+    ]
     offset [
       100,
       -40
     ]
-    sizeUnits "PIXEL"
+    sizeUnits [
+      "PIXEL",
+      "PIXEL"
+    ]
     size [
       200,
       26
     ]
-    scaleMode "PIXEL"
+    scaleMode [
+      "PIXEL",
+      "PIXEL"
+    ]
   }
   children DEF _1 Transform {
-    translation -13.5 0 0
+    translation -14 0 0
     children [
       Shape {
         appearance Appearance {
@@ -185,12 +193,12 @@ DEF NotificationScript Script {
   initializeOnly SFNode   background USE BackgroundGeometry
   initializeOnly SFNode   text USE Text
   initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
-    startTime 1445851671.04429
+    startTime 1446635267.90065
   }
   initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
     cycleInterval 2
-    startTime 1445851675.04429
-    stopTime 1445851671.04429
+    startTime 1446635271.90065
+    stopTime 1446635267.90065
   }
 
   url "peaseblossom:
@@ -223,7 +231,7 @@ function set_textBounds (value, time)
 			++ background .size .y;
 	}
 	
-	translation_changed = new SFVec3f (-value .x / 2 - padding .x + cornerRadius + 0.5, 0, 0);
+	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 0, 0);
 }
 
 function set_start (value, time)
