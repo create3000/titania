@@ -777,6 +777,10 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 
 	// Remove browser copletely.
 
+	// Important here to remove the interests, because the notebook could make it visible on remove_page.
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
+	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_url);
+
 	getUserData (browser) -> dispose ();
 
 	browsers .remove (browser);
