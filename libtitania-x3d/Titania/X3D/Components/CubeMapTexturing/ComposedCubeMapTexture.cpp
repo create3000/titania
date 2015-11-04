@@ -62,8 +62,8 @@ const std::string   ComposedCubeMapTexture::typeName       = "ComposedCubeMapTex
 const std::string   ComposedCubeMapTexture::containerField = "texture";
 
 const GLenum ComposedCubeMapTexture::targets [6] = {
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Front
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Back
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front, front and back are swaped, otherwise background images cannot be used!
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
 	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
 	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top

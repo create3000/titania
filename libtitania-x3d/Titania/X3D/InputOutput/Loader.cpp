@@ -273,7 +273,7 @@ throw (Error <INVALID_URL>,
 	//if (not data)
 	//	std::clog << "Trying to load URI '" << uri << "': " << std::flush;
 
-	basic::ifilestream istream (data ? uri : referer .transform (uri), 16000);
+	basic::ifilestream istream (data ? uri : referer .transform (uri), 30000);
 
 	//if (not data)
 	//	std::clog << "\tTransformed URL is '" << istream .url () << "'" << std::endl;

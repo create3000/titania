@@ -134,6 +134,9 @@ ImageTexture::requestImmediateLoad ()
 void
 ImageTexture::requestAsyncLoad ()
 {
+	if (not glXGetCurrentContext ())
+		return;
+
 	using namespace std::placeholders;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

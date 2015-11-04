@@ -1,0 +1,29 @@
+#X3D V3.0 utf8 Titania V1.2.0
+
+META "comment" "World of Titania"
+META "created" "Wed, 04 Nov 2015 09:39:10 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.0, http://titania.create3000.de"
+META "modified" "Wed, 04 Nov 2015 09:39:11 GMT"
+META "titania magic" "Texture"
+
+DEF SpaceSky-front Transform {
+  scale 0.0903111 0.0903111 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+          "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+          "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+          "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

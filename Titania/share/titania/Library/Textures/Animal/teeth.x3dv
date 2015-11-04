@@ -1,10 +1,10 @@
 #X3D V3.0 utf8 Titania V1.2.0
 
 META "comment" "World of Titania"
-META "created" "Tue, 03 Nov 2015 17:29:57 GMT"
+META "created" "Wed, 04 Nov 2015 09:40:29 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Tue, 03 Nov 2015 17:29:57 GMT"
+META "modified" "Wed, 04 Nov 2015 09:40:29 GMT"
 META "titania magic" "Texture"
 
 DEF teeth Transform {

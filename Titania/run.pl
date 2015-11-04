@@ -7,8 +7,9 @@ use v5.10.0;
 
 use File::Basename qw (dirname);
 
-my $HOME        = $ENV{HOME};
-my $PROJECT_DIR = "/home/holger/Projekte/Titania";
+my $HOME         = $ENV{HOME};
+my $PROJECT_DIR  = dirname $0;
+my $SOLUTION_DIR = "$PROJECT_DIR/../";
 
 my $min = `date +'%M'`; chomp $min;
 
@@ -26,8 +27,8 @@ if (($min > 16 and $min < 20) or 0)
 #$ENV {LIBOVERLAY_SCROLLBAR} = 0;
 $ENV {GTK_MODULES}      = "overlay-scrollbar:unity-gtk-module";
 $ENV {UBUNTU_MENUPROXY} = 1;
-$ENV {PATH}             = "$PROJECT_DIR/titania-info:$PROJECT_DIR/x3d2vrml/bin:$PROJECT_DIR/x3dtidy:$ENV{PATH}";
-$ENV {XDG_DATA_DIRS}    = "$PROJECT_DIR/Titania/share:$PROJECT_DIR/libtitania-x3d/share:$PROJECT_DIR/x3d2vrml/share:$ENV{XDG_DATA_DIRS}";
+$ENV {PATH}             = "$SOLUTION_DIR/x3d2vrml:$SOLUTION_DIR/x3ddidy:$SOLUTION_DIR/titania-info:$SOLUTION_DIR/x3d2vrml/bin:$SOLUTION_DIR/x3dtidy:$ENV{PATH}";
+$ENV {XDG_DATA_DIRS}    = "$SOLUTION_DIR/x3d2vrml/share:$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$SOLUTION_DIR/x3d2vrml/share:$ENV{XDG_DATA_DIRS}";
 #$ENV {LANG} = "C";
 
 chdir dirname $0;

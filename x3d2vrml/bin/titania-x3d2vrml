@@ -2,11 +2,14 @@
 # -*- Mode: Perl; coding: utf-8; tab-width: 3; indent-tabs-mode: t; c-basic-offset: 3 -*-
 
 package X3D::Parser;
+
 use strict;
 use warnings;
 use v5.10.0;
+use open qw/:std :utf8/;
 
 use XML::LibXML;
+
 #libxml-libxml-perl
 
 use Glib;
@@ -404,7 +407,7 @@ sub protoInstance {
 	   typeName          => $xml -> getAttribute ("name"),
 		fields            => [ ],
 		fieldIndex        => { },
-		userDefinedFields => [ ]
+		userDefinedFields => [ ],
 	};
 
 	if ($xml -> getAttribute ("USE"))
@@ -689,12 +692,13 @@ sub export {
 }
 
 1;
+
 package X3D::Generator;
+
 use strict;
 use warnings;
 use v5.10.0;
-
-binmode STDOUT, ":utf8";
+use open qw/:std :utf8/;
 
 sub new {
 	my ($class, $document) = @_;

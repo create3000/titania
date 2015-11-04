@@ -285,6 +285,9 @@ throw (Error <NODE_NOT_AVAILABLE>,
 void
 Inline::requestImmediateLoad ()
 {
+	if (not glXGetCurrentContext ())
+		return;
+
 	if (checkLoadState () == COMPLETE_STATE)
 		return;
 	
@@ -321,6 +324,9 @@ Inline::requestImmediateLoad ()
 void
 Inline::requestAsyncLoad ()
 {
+	if (not glXGetCurrentContext ())
+		return;
+
 	using namespace std::placeholders;
 
 	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)

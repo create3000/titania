@@ -230,11 +230,15 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 	                     importProtoDeclaration (executionContext, appearance -> texture (), undoStep);
 
 	                     texture = appearance -> texture ();
-
-	                     texture -> setExecutionContext (executionContext);
 	                     return false;
 							}
 
+	                  return true;
+						});
+
+	X3D::traverse (texture, [&] (X3D::SFNode & node)
+	               {
+	                  node -> setExecutionContext (executionContext);
 	                  return true;
 						});
 

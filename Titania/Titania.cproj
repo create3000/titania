@@ -1976,6 +1976,12 @@
     <None Include="scripts\Library\CubeMapTextures-Geometry.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\SpaceSky.x3dv" />
     <None Include="share\titania\Library\Backgrounds\SpaceSky.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-back.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-bottom.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-front.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-left.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-right.x3dv" />
+    <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-top.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

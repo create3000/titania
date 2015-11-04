@@ -77,22 +77,23 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 	//std::clog << std::string (80, '+') << " : " << curlURL << std::endl;
 	//std::clog << std::string (80, '+') << " : " << url () .escape () << std::endl;
 
-	curl_easy_setopt (easy_handle, CURLOPT_URL,               curlURL .c_str ());
-	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        bufferSize);
-	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
-	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);
-	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,    true);
-	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        timeout ()); // Timeout for the ENTIRE request
-	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS, timeout ());
-	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,  timeout ());
-	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,   "");
-	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,       true);
-	curl_easy_setopt (easy_handle, CURLOPT_NOSIGNAL,          true);
-	curl_easy_setopt (easy_handle, CURLOPT_HEADERFUNCTION,    write_header);
-	curl_easy_setopt (easy_handle, CURLOPT_HEADERDATA,        &m_headers);
-	curl_easy_setopt (easy_handle, CURLOPT_WRITEFUNCTION,     write_data);
-	curl_easy_setopt (easy_handle, CURLOPT_WRITEDATA,         this);
-	curl_easy_setopt (easy_handle, CURLOPT_VERBOSE,           false);
+	curl_easy_setopt (easy_handle, CURLOPT_URL,                   curlURL .c_str ());
+	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,            bufferSize);
+	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,               CURLUSESSL_TRY);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADER,                false);
+	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,        true);
+	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,            0); // Timeout for the ENTIRE request
+	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS,     timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,      timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_EXPECT_100_TIMEOUT_MS, timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,       "");
+	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,           true);
+	curl_easy_setopt (easy_handle, CURLOPT_NOSIGNAL,              true);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADERFUNCTION,        write_header);
+	curl_easy_setopt (easy_handle, CURLOPT_HEADERDATA,            &m_headers);
+	curl_easy_setopt (easy_handle, CURLOPT_WRITEFUNCTION,         write_data);
+	curl_easy_setopt (easy_handle, CURLOPT_WRITEDATA,             this);
+	curl_easy_setopt (easy_handle, CURLOPT_VERBOSE,               false);
 
 	multi_handle = curl_multi_init ();
 
@@ -124,7 +125,7 @@ urlstreambuf::send (const headers_type & headers)
 	curl_easy_setopt (easy_handle, CURLOPT_HTTPHEADER, headerlist);
 
 	// Attempt to retrieve the remote page
-	CURLMcode retcode = curl_multi_perform (multi_handle, &running);
+	const CURLMcode retcode = curl_multi_perform (multi_handle, &running);
 
 	// Read first arriving bytes
 
@@ -151,6 +152,9 @@ urlstreambuf::send (const headers_type & headers)
 	return nullptr;
 }
 
+/***
+ * Returns a value greater than zero on success. Zero on timeout and -1 if an error occured.
+ */
 int
 urlstreambuf::wait ()
 {
@@ -167,18 +171,18 @@ urlstreambuf::wait ()
 	long curl_timeout = -1;
 	curl_multi_timeout (multi_handle, &curl_timeout);
 
-	struct timeval timeout;
-	timeout .tv_sec  = 0;
-	timeout .tv_usec = 0;
+	struct timeval timeout = { 0, 0 };
 
 	if (curl_timeout >= 0)
 	{
 		timeout .tv_sec  = curl_timeout / 1000;
 		timeout .tv_usec = (curl_timeout % 1000) * 1000;
 	}
+	else
+		return -1; // XXX: Stalled, dont't know what to do in this case.
 
 	// get file descriptors from the transfers
-	CURLMcode retcode = curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
+	const CURLMcode retcode = curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
 
 	// In a real-world program you OF COURSE check the return code of the
 	// function calls.  On success, the value of maxfd is guaranteed to be
@@ -186,17 +190,17 @@ urlstreambuf::wait ()
 	// case of (maxfd == -1), we call select(0, ...), which is basically equal
 	// to sleep.
 
-	if (retcode == CURLM_OK)
-		return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
+	if (retcode not_eq CURLM_OK)
+		return -1;
 
-	return -1;
+	return select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
 }
 
 int
 urlstreambuf::write_header (char* data, size_t size, size_t nmemb, std::stringstream* header)
 {
 	// What we will return
-	size_t bytes = size * nmemb;
+	const size_t bytes = size * nmemb;
 
 	// Append the data to the buffer
 	header -> rdbuf () -> sputn (data, bytes);
@@ -232,7 +236,7 @@ urlstreambuf::write (char* data, size_t bytes)
 urlstreambuf::traits_type::int_type
 urlstreambuf::underflow ()
 {
-	size_t bytesToMove = std::min (bufferSize, backBufferSize + bytesRead);
+	const size_t bytesToMove = std::min (bufferSize, backBufferSize + bytesRead);
 
 	bytesGone += backBufferSize + bytesRead - bytesToMove;
 
@@ -269,7 +273,7 @@ urlstreambuf::seekoff (off_type off, std::ios_base::seekdir dir, std::ios_base::
 	{
 		if (dir == std::ios_base::cur)
 		{
-			auto pos = gptr () + off;
+			const auto pos = gptr () + off;
 
 			if (pos >= eback () and pos <= egptr ())
 			{

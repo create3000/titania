@@ -27,6 +27,6 @@ foreach (@dtd)
 	my $content  = get ($_);
 
 	open FILE, ">", "$folder/$basename";
-	say FILE basename $_;
+	say FILE $content;
 	close FILE;
 }
