@@ -16,10 +16,10 @@ my $folder  = "$project/share/titania/Library/Models/";
 my $models = "/home/holger/Projekte/Titania/Library/Models/$version/";
 
 my @url = (
-	"http://rawgit.com/create3000/titania/master/Library/Models/$version",
-	"https://rawgit.com/create3000/titania/master/Library/Models/$version",
 	"http://cdn.rawgit.com/create3000/titania/master/Library/Models/$version",
 	"https://cdn.rawgit.com/create3000/titania/master/Library/Models/$version",
+	"http://rawgit.com/create3000/titania/master/Library/Models/$version",
+	"https://rawgit.com/create3000/titania/master/Library/Models/$version",
 );
 
 sub models {
@@ -59,4 +59,4 @@ sub models {
 	system "x3dtidy", $x3dv, $x3dv;
 }
 
-models $_ foreach `find $models -name \*.x3dv`;
+models $_ foreach `find $models -name \*.x3d`;
