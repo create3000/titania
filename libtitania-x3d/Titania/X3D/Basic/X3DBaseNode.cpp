@@ -686,7 +686,8 @@ throw (Error <INVALID_NAME>,
 
 	std::vector <FieldPtr> roots;
 
-	for (const auto & field : std::make_pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ()))
+	// Use the temporary array of the userDefined fieds, as we alter fields!
+	for (const auto & field : getUserDefinedFields ())
 	{
 		roots .emplace_back (field);
 		removeUserDefinedField (field -> getName ());
