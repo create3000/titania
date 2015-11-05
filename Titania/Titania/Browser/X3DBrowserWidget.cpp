@@ -484,6 +484,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 
 	label -> set_ellipsize (Pango::ELLIPSIZE_END);
 	label -> set_width_chars (14);
+	label -> set_lines (1);
 	label -> set_tooltip_text (URL .filename () .str ());
 
 	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWidget::close), browser));
