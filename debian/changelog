@@ -1,3 +1,9 @@
+titania (1.2.1) wily; urgency=medium
+
+  * Implemented Prototype Editor.
+
+ -- Holger Seelig <holger@qualle>  Thu, 5 Nov 2015 09:01:00 +0200
+
 titania (1.2.0) trusty; urgency=medium
 
   * Bump version number.
