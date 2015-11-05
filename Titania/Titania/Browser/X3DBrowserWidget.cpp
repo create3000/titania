@@ -403,7 +403,10 @@ X3DBrowserWidget::setTitle ()
 		userData -> icon -> set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
 	if (userData -> label)
+	{
 		userData -> label -> set_text (title);
+		userData -> label -> set_tooltip_text (title);
+	}
 
 	getWindow () .set_title (getCurrentContext () -> getTitle ()
 	                         + " · "
@@ -478,6 +481,10 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	const auto button = Gtk::manage (new Gtk::Button ());
 	const auto image  = Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 	const auto box    = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, 4));
+
+	label -> set_ellipsize (Pango::ELLIPSIZE_END);
+	label -> set_width_chars (14);
+	label -> set_tooltip_text (URL .filename () .str ());
 
 	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWidget::close), browser));
 	button -> get_style_context () -> add_class ("titania-tab-close");

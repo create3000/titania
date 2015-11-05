@@ -1991,6 +1991,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 
 		menuItem -> set_image (*icon);
 		menuItem -> set_label (worldURL .basename () + (modified ? "*" : ""));
+		menuItem -> set_tooltip_text (worldURL .filename () .str ());
 		menuItem -> set_always_show_image (true);
 
 		if (browser == getCurrentBrowser ())
