@@ -61,6 +61,7 @@
       <source stock-id="gtk-zoom-in" filename="icons/Faenza/16/gtk-zoom-in.png"/>
       <source stock-id="gtk-cut" filename="icons/Faenza/16/gtk-cut.png"/>
       <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
+      <source stock-id="X3DBaseNode" filename="icons/X3DBaseNode.svg"/>
       <source stock-id="gtk-file" filename="icons/Faenza/16/gtk-file.png"/>
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
@@ -68,7 +69,6 @@
       <source stock-id="emblem-shared-symbolic" filename="icons/Faenza/scalable/emblem-shared-symbolic.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
-      <source stock-id="X3DBaseNode" filename="icons/X3DBaseNode.svg"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
@@ -79,9 +79,8 @@
       <source stock-id="gtk-remove" filename="icons/Faenza/16/gtk-remove.png"/>
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
-      <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
@@ -89,7 +88,7 @@
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
@@ -936,8 +935,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1270,6 +1269,7 @@
                 <property name="use_underline">True</property>
                 <property name="image">image27</property>
                 <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu21">
                     <property name="visible">True</property>
@@ -1340,6 +1340,7 @@
                 <property name="can_focus">False</property>
                 <property name="image">image28</property>
                 <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu22">
                     <property name="visible">True</property>
@@ -1389,6 +1390,7 @@
                 <property name="can_focus">False</property>
                 <property name="image">image29</property>
                 <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu23">
                     <property name="visible">True</property>
@@ -2304,8 +2306,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2655,6 +2657,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="image">image15</property>
                                 <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <child type="submenu">
                                   <object class="GtkMenu" id="menu7">
                                     <property name="visible">True</property>
@@ -2725,6 +2728,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="image">image18</property>
                                 <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <child type="submenu">
                                   <object class="GtkMenu" id="menu8">
                                     <property name="visible">True</property>
@@ -2773,6 +2777,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="image">image19</property>
                                 <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
                                 <child type="submenu">
                                   <object class="GtkMenu" id="menu14">
                                     <property name="visible">True</property>

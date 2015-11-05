@@ -2,10 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.cpp" Line="21" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/ProximitySensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.cpp" Line="11" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoProximitySensor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoProximitySensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/EnvironmentalSensor/TransformSensor.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
