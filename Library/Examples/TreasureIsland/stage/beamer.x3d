@@ -6,12 +6,41 @@
     <meta name='created' content='Thu, 05 Nov 2015 03:29:14 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V1.2.0, http://titania.create3000.de'/>
-    <meta name='modified' content='Thu, 05 Nov 2015 03:29:14 GMT'/>
+    <meta name='modified' content='Thu, 05 Nov 2015 15:54:25 GMT'/>
   </head>
   <Scene>
     <Group>
       <WorldInfo
-          info='"Created in Titania", "Packaged by CosmoPackage", "Packaged by CosmoPackage"'/>
+          info='"Created in Titania", "Packaged by CosmoPackage", "Packaged by CosmoPackage"'>
+        <MetadataSet DEF='Titania'
+            name='Titania'
+            reference='http://titania.create3000.de'>
+          <MetadataSet DEF='NavigationInfo' containerField='value'
+              name='NavigationInfo'
+              reference='http://titania.create3000.de'>
+            <MetadataString DEF='type' containerField='value'
+                name='type'
+                reference='http://titania.create3000.de'
+                value='"EXAMINE"'/>
+          </MetadataSet>
+          <MetadataSet DEF='Viewpoint' containerField='value'
+              name='Viewpoint'
+              reference='http://titania.create3000.de'>
+            <MetadataDouble DEF='position' containerField='value'
+                name='position'
+                reference='http://titania.create3000.de'
+                value='-0.186790108680725, 2.13022327423096, 3.56886291503906'/>
+            <MetadataDouble DEF='orientation' containerField='value'
+                name='orientation'
+                reference='http://titania.create3000.de'
+                value='0, 0, 1, 0'/>
+            <MetadataDouble DEF='centerOfRotation' containerField='value'
+                name='centerOfRotation'
+                reference='http://titania.create3000.de'
+                value='-0.186790108680725, 2.13022327423096, 0'/>
+          </MetadataSet>
+        </MetadataSet>
+      </WorldInfo>
       <Transform DEF='beamer'>
         <Transform DEF='fx'>
           <Collision
@@ -23,7 +52,7 @@
                   <TimeSensor DEF='Time'
                       cycleInterval='7.5'
                       loop='true'
-                      startTime='952474757.99571'
+                      startTime='1446738785.64288'
                       stopTime='1'/>
                 </Group>
                 <Group>
@@ -38,7 +67,7 @@
                     <field accessType='inputOnly' type='SFFloat' name='xIn'/>
                     <field accessType='inputOnly' type='SFFloat' name='yIn'/>
                     <field accessType='initializeOnly' type='SFFloat' name='xBuf'/>
-                    <field accessType='initializeOnly' type='SFFloat' name='yBuf'/>
+                    <field accessType='initializeOnly' type='SFFloat' name='yBuf' value='-0.214242'/>
 <![CDATA[vrmlscript: function xIn(value) { xBuf = value; vec[0] = xBuf; vec[1] = yBuf; } function yIn(value) { yBuf = value; vec[0] = xBuf; vec[1] = yBuf; } ]]> 
                   </Script>
                 </Group>
@@ -53,7 +82,7 @@
                     <ImageTexture
                         url='"beamcfx.png"'/>
                     <TextureTransform DEF='_4'
-                        translation='0 1'
+                        translation='0 -0.214242'
                         scale='1 2'/>
                   </Appearance>
                   <IndexedFaceSet
@@ -66,7 +95,7 @@
                     <TextureCoordinate
                         point='0 1, 0 0, 1 0, 1 1, 0.5 0, 0.5 1, 0.5 0.5, 0.5 0.5, 1 0.5, 1 0.5, 0 0.5, 0.5 0, 0.5 1, 0.5 0.5, 0.5 0.5, 0 0.5, 1 0.25, 0.5 0.25, 0.5 0.25, 0.75 0.25, 0.75 0.25, 0.75 0.5, 0.75 0.5, 0.75 0, 0.75 1, 0.75 0.75, 0.75 0.75, 0.5 0.75, 0.5 0.75, 1 0.75, 0.25 0.5, 0.25 0.5, 0.25 1, 0.25 0.75, 0.25 0.75, 1 0.75, 0 0.75, 0.25 0, 0.25 0.25, 0.25 0.25, 1 0.25, 0 0.25, 0.5 0.25, 0.5 0.25, 0.75 0.25, 0.75 0.25, 0.75 0.5, 0.75 0.5, 0.75 0, 0.75 1, 0.75 0.75, 0.75 0.75, 0.5 0.75, 0.5 0.75, 0.25 0, 0.25 0.5, 0.25 0.5, 0.25 0.25, 0.25 0.25, 0 0.25, 0.25 1, 0.25 0.75, 0.25 0.75, 0 0.75'/>
                     <Coordinate DEF='_5'
-                        point='0.467449 3.79384 0.385048, 0.467418 0.705385 0.385048, 0.467233 0.705385 -1.00008, 0.467264 3.79384 -1.00008, -0.999901 3.79385 0.385244, -0.999931 0.7054 0.385244, 0.467326 0.705385 -0.307515, 0.467356 3.79384 -0.307515, 0.467341 2.24961 -0.307515, 0.467249 2.24961 -1.00008, 0.467431 1.99107 0.385048, -0.266257 0.705393 0.385146, -0.266226 3.79384 0.385146, -0.320166 1.97775 0.385153, -0.999916 2.24962 0.385244, 0.467241 1.4775 -1.00008, 0.467337 1.8223 -0.307515, 0.467266 1.4775 -0.814645, 0.467295 2.24961 -0.653797, 0.46728 0.705385 -0.653797, 0.46731 3.79384 -0.653796, 0.467306 3.32861 -0.653796, 0.467349 3.05025 -0.307515, 0.467256 3.02172 -1.00008, 0.467377 2.24961 -0.0419772, 0.467403 3.79384 0.0387665, 0.467407 2.84154 0.141139, 0.467441 3.02172 0.385048, 0.467372 0.705385 0.0387661, 0.467399 1.4775 0.180121, 0.467426 1.4775 0.385048, -0.46886 1.47751 0.385173, 6.16449e-05 1.03402 0.38511, 0.100597 2.32443 0.385097, 5.83977e-05 0.70539 0.38511, 0.100612 3.79384 0.385097, 0.100604 3.02173 0.385097, -0.377043 3.22237 0.385161, -0.633094 0.705396 0.385195, -0.544961 2.17306 0.385183, -0.793914 1.47751 0.385216, -0.999924 1.47751 0.385244, -0.633063 3.79385 0.385195, -0.633069 3.26374 0.385195, -0.999908 3.02174 0.385244'/>
+                        point='0.467449 3.79384 0.385048, 0.467418 0.705385 0.385048, 0.467233 0.705385 -1.00008, 0.467264 3.79384 -1.00008, -0.999901 3.79385 0.385244, -0.999931 0.7054 0.385244, 0.467326 0.705385 -0.307515, 0.467356 3.79384 -0.307515, 0.46734 2.25792 -0.317821, 0.467249 2.26877 -1.00008, 0.467431 2.0078 0.385237, -0.266257 0.705393 0.385146, -0.266226 3.79384 0.385146, -0.316428 1.9875 0.385153, -0.999916 2.2418 0.385244, 0.467241 1.46782 -1.00008, 0.467336 1.81939 -0.31452, 0.467267 1.47325 -0.808917, 0.467294 2.25923 -0.661855, 0.46728 0.705385 -0.653797, 0.46731 3.79384 -0.653796, 0.467305 3.32322 -0.660518, 0.467349 3.05946 -0.311914, 0.467256 3.03783 -1.00008, 0.467377 2.25062 -0.0441458, 0.467403 3.79384 0.0387665, 0.467406 2.86943 0.127882, 0.467441 3.0079 0.385105, 0.467372 0.705385 0.0387661, 0.467398 1.48027 0.173563, 0.467426 1.46423 0.385048, -0.465306 1.46393 0.385173, 0.00148945 1.05039 0.38511, 0.108372 2.32526 0.385096, 5.83977e-05 0.70539 0.38511, 0.100612 3.79384 0.385097, 0.102604 3.01368 0.385097, -0.36846 3.21623 0.38516, -0.633094 0.705396 0.385195, -0.54485 2.18448 0.385183, -0.785312 1.47125 0.385215, -0.999924 1.49036 0.385244, -0.633063 3.79385 0.385195, -0.637848 3.2609 0.385196, -0.999908 3.03509 0.385244'/>
                   </IndexedFaceSet>
                 </Shape>
               </Transform>
@@ -104,7 +133,6 @@
     <ROUTE fromNode='Time' fromField='fraction_changed' toNode='_2' toField='set_fraction'/>
     <ROUTE fromNode='_1' fromField='value_changed' toNode='_3' toField='xIn'/>
     <ROUTE fromNode='_2' fromField='value_changed' toNode='_3' toField='yIn'/>
-    <ROUTE fromNode='Time' fromField='fraction_changed' toNode='fxPointInterp' toField='set_fraction'/>
     <ROUTE fromNode='_3' fromField='vec' toNode='_4' toField='set_translation'/>
     <ROUTE fromNode='fxPointInterp' fromField='value_changed' toNode='_5' toField='set_point'/>
   </Scene>
