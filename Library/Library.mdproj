@@ -2870,6 +2870,34 @@
     <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-left.jpg" />
     <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-right.jpg" />
     <None Include="Textures\1\1.0\CubeMapTextures\SpaceSky\SpaceSky-top.jpg" />
+    <None Include="Examples\TreasureIsland\index.x3d" />
+    <None Include="Examples\TreasureIsland\stage\BonusT.x3d" />
+    <None Include="Examples\TreasureIsland\stage\BonusT1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\Bonus_proto__2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\beamer.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-key-level0.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-key-level1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-key-level2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-map-level0.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-map-level1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-map-level2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-pink-level0.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-pink-level1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-pink-level2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-time-level0.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-time-level1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-time-level2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-yellow-level0.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-yellow-level1.x3d" />
+    <None Include="Examples\TreasureIsland\stage\bonus-yellow-level2.x3d" />
+    <None Include="Examples\TreasureIsland\stage\door.x3d" />
+    <None Include="Examples\TreasureIsland\stage\fire.x3d" />
+    <None Include="Examples\TreasureIsland\stage\index.x3d" />
+    <None Include="Examples\TreasureIsland\stage\infra.x3d" />
+    <None Include="Examples\TreasureIsland\stage\kaktus.x3d" />
+    <None Include="Examples\TreasureIsland\stage\karren.x3d" />
+    <None Include="Examples\TreasureIsland\stage\palme.x3d" />
+    <None Include="Examples\TreasureIsland\stage\steine.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -2967,6 +2995,7 @@
     <Folder Include="Models\1\" />
     <Folder Include="Models\1\1.0\" />
     <Folder Include="Textures\1\1.0\CubeMapTextures\SpaceSky\" />
+    <Folder Include="Examples\TreasureIsland\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />
