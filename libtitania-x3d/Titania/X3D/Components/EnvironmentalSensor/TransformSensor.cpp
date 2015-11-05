@@ -72,8 +72,7 @@ TransformSensor::TransformSensor (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentalSensorNode (),
 	                    fields (),
-	          targetObjectNode (),
-	                   visible (false)
+	          targetObjectNode ()
 {
 	addType (X3DConstants::TransformSensor);
 
@@ -104,9 +103,6 @@ TransformSensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &TransformSensor::set_enabled);
-	isLive () .addInterest (this, &TransformSensor::set_enabled);
-
 	enabled ()      .addInterest (this, &TransformSensor::set_enabled);
 	size ()         .addInterest (this, &TransformSensor::set_enabled);
 	targetObject () .addInterest (this, &TransformSensor::set_targetObject);
@@ -115,29 +111,12 @@ TransformSensor::initialize ()
 }
 
 void
-TransformSensor::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	getBrowser () -> sensors ()         .removeInterest (this, &TransformSensor::update);
-	getExecutionContext () -> isLive () .removeInterest (this, &TransformSensor::set_enabled);
-
-	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (this, &TransformSensor::set_enabled);
-
-		set_enabled ();
-	}
-}
-
-void
 TransformSensor::set_enabled ()
 {
-	if (enabled () and isLive () and getExecutionContext () -> isLive () and targetObjectNode and size () not_eq Vector3f ())
+	if (enabled () and size () not_eq Vector3f () and targetObjectNode and isLive () and getExecutionContext () -> isLive ())
+	{
 		getBrowser () -> sensors () .addInterest (this, &TransformSensor::update);
-
+	}
 	else
 	{
 		getBrowser () -> sensors () .removeInterest (this, &TransformSensor::update);
@@ -161,45 +140,32 @@ TransformSensor::set_targetObject ()
 void
 TransformSensor::update ()
 {
-	if (visible)
+	const auto sourceBBox = Box3f (size (), center ());
+	const auto targetBBox = targetObjectNode -> getBBox ();
+
+	if (size () == Vector3f (-1, -1, -1) or sourceBBox .intersects (targetBBox))
 	{
-		const auto sourceBBox = Box3f (size (), center ());
-		const auto targetBBox = targetObjectNode -> getBBox ();
+		Vector3f   translation;
+		Rotation4f rotation;
 
-		if (size () == Vector3f (-1, -1, -1) or sourceBBox .intersects (targetBBox))
+		targetBBox .matrix () .get (translation, rotation);
+
+		if (isActive ())
 		{
-			Vector3f   translation;
-			Rotation4f rotation;
+			if (translation not_eq position_changed ())
+				position_changed () = translation;
 
-			targetBBox .matrix () .get (translation, rotation);
-
-			if (isActive ())
-			{
-				if (translation not_eq position_changed ())
-					position_changed () = translation;
-
-				if (rotation not_eq orientation_changed ())
-					orientation_changed () = rotation;
-			}
-			else
-			{
-				isActive ()  = true;
-				enterTime () = getCurrentTime ();
-
-				position_changed ()    = translation;
+			if (rotation not_eq orientation_changed ())
 				orientation_changed () = rotation;
-			}
 		}
 		else
 		{
-			if (isActive ())
-			{
-				isActive () = false;
-				exitTime () = getCurrentTime ();
-			}
-		}
+			isActive ()  = true;
+			enterTime () = getCurrentTime ();
 
-		visible = false;
+			position_changed ()    = translation;
+			orientation_changed () = rotation;
+		}
 	}
 	else
 	{
@@ -209,15 +175,6 @@ TransformSensor::update ()
 			exitTime () = getCurrentTime ();
 		}
 	}
-}
-
-void
-TransformSensor::traverse (const TraverseType type)
-{
-	// Store whether the sensor is part of the »visible« scene graph.
-
-	if (type == TraverseType::CAMERA)
-		visible = true;
 }
 
 void

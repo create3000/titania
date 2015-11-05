@@ -71,12 +71,6 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
-
 	///  @name Common members
 
 	virtual
@@ -127,10 +121,6 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) override;
-
-	virtual
-	void
 	addTool () override;
 
 
@@ -153,8 +143,9 @@ private:
 	void
 	set_targetObject ();
 
+	virtual
 	void
-	update ();
+	update () final override;
 
 	///  @name Static members
 
@@ -176,7 +167,6 @@ private:
 	Fields fields;
 	
 	X3DPtr <X3DBoundedObject> targetObjectNode;
-	bool                      visible;
 
 };
 

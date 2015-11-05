@@ -50,7 +50,6 @@
 
 #include "VisibilitySensor.h"
 
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../Layering/X3DLayerNode.h"
@@ -77,6 +76,8 @@ VisibilitySensor::VisibilitySensor (X3DExecutionContext* const executionContext)
 	addField (outputOnly,  "enterTime", enterTime ());
 	addField (outputOnly,  "exitTime",  exitTime ());
 	addField (outputOnly,  "isActive",  isActive ());
+
+	setCameraObject (true);
 }
 
 X3DBaseNode*
@@ -90,60 +91,19 @@ VisibilitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &VisibilitySensor::set_enabled);
-	isLive () .addInterest (this, &VisibilitySensor::set_enabled);
-
-	enabled () .addInterest (this, &VisibilitySensor::set_enabled);
-	size ()    .addInterest (this, &VisibilitySensor::set_enabled);
-
-	set_enabled ();
+	enabled () .addInterest (this, &VisibilitySensor::set_enabled_);
 }
 
 void
-VisibilitySensor::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+VisibilitySensor::set_enabled_ ()
 {
-	getBrowser () -> sensors ()         .removeInterest (this, &VisibilitySensor::update);
-	getExecutionContext () -> isLive () .removeInterest (this, &VisibilitySensor::set_enabled);
-
-	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (this, &VisibilitySensor::set_enabled);
-
-		set_enabled ();
-	}
-}
-
-void
-VisibilitySensor::set_enabled ()
-{
-	if (enabled () and isLive () and getExecutionContext () -> isLive () and size () not_eq Vector3f ())
-	{
-		getBrowser () -> sensors () .addInterest (this, &VisibilitySensor::update);
-	
-		setCameraObject (true);
-	}
-	else
-	{
-		getBrowser () -> sensors () .removeInterest (this, &VisibilitySensor::update);
-	
-		setCameraObject (false);
-			
-		if (isActive ())
-		{
-			isActive () = false;
-			exitTime () = getCurrentTime ();
-		}
-	}
+	setCameraObject (enabled ());
 }
 
 void
 VisibilitySensor::update ()
 {
-	if (visible)
+	if (visible and getTraversed ())
 	{
 		if (not isActive ())
 		{
@@ -161,30 +121,40 @@ VisibilitySensor::update ()
 			exitTime () = getCurrentTime ();
 		}
 	}
+
+	setTraversed (false);
 }
 
 void
 VisibilitySensor::traverse (const TraverseType type)
 {
-	switch (type)
+	if (enabled ())
 	{
-		case TraverseType::CAMERA:
+		switch (type)
 		{
-			if (not enabled () or visible)
-				break;
-				
-			if (size () == Vector3f (-1, -1, -1))
-				visible = true;
-
-			else
+			case TraverseType::CAMERA:
 			{
-				visible = getCurrentLayer () -> getViewVolumeStack () .back () .intersects (Box3f (size (), center ()) * getModelViewMatrix (type));
+				if (visible)
+					return;
+					
+				if (size () == Vector3f (-1, -1, -1))
+					visible = true;
+	
+				else
+				{
+					visible = getCurrentLayer () -> getViewVolumeStack () .back () .intersects (Box3f (size (), center ()) * getModelViewMatrix (type));
+				}
+	
+				return;
 			}
-
-			break;
+			case TraverseType::DISPLAY:
+			{
+				setTraversed (true);
+				return;
+			}
+			default:
+				return;
 		}
-		default:
-			break;
 	}
 }
 

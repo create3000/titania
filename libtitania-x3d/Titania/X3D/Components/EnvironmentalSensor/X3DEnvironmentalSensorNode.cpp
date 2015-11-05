@@ -50,6 +50,9 @@
 
 #include "X3DEnvironmentalSensorNode.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
+
 namespace titania {
 namespace X3D {
 
@@ -62,12 +65,79 @@ X3DEnvironmentalSensorNode::Fields::Fields () :
 
 X3DEnvironmentalSensorNode::X3DEnvironmentalSensorNode () :
 	X3DSensorNode (),
-	       fields ()
+	       fields (),
+	    traversed (true)
 {
 	addType (X3DConstants::X3DEnvironmentalSensorNode);
 
 	size ()   .setUnit (UnitCategory::LENGTH);
 	center () .setUnit (UnitCategory::LENGTH);
+}
+
+void
+X3DEnvironmentalSensorNode::initialize ()
+{
+	X3DSensorNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+	isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+
+	if (isCameraObject ())
+	{
+		enabled ()        .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+		size ()           .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+		isCameraObject () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+
+		set_enabled ();
+	}
+}
+
+void
+X3DEnvironmentalSensorNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> sensors ()         .removeInterest (this, &X3DEnvironmentalSensorNode::update);
+	getExecutionContext () -> isLive () .removeInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+
+	X3DSensorNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+
+		set_enabled ();
+	}
+}
+
+void
+X3DEnvironmentalSensorNode::setTraversed (const bool value)
+{
+   if (value)
+		setCameraObject (true);
+	else
+		setCameraObject (traversed);
+
+   traversed = value;
+}
+
+void
+X3DEnvironmentalSensorNode::set_enabled ()
+{
+	if (isCameraObject () and enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
+	{
+		getBrowser () -> sensors () .addInterest (this, &X3DEnvironmentalSensorNode::update);
+	}
+	else
+	{
+		getBrowser () -> sensors () .removeInterest (this, &X3DEnvironmentalSensorNode::update);
+
+		if (isActive ())
+		{
+			isActive () = false;
+			exitTime () = getCurrentTime ();
+		}
+	}
 }
 
 } // X3D

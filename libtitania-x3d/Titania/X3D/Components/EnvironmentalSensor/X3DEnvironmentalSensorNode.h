@@ -61,6 +61,14 @@ class X3DEnvironmentalSensorNode :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	virtual
@@ -110,6 +118,30 @@ protected:
 
 	X3DEnvironmentalSensorNode ();
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+	
+	void
+	setTraversed (const bool);
+
+	bool
+	getTraversed () const
+	{ return traversed; }
+
+	///  @name Event handler
+
+	void
+	set_enabled ();
+
+	virtual
+	void
+	update () = 0;
+
 
 private:
 
@@ -126,6 +158,8 @@ private:
 	};
 
 	Fields fields;
+
+	bool traversed;
 
 };
 

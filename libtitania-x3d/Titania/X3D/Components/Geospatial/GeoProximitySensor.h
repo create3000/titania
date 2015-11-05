@@ -159,6 +159,11 @@ private:
 	void
 	set_position (const Vector3f &);
 
+	virtual
+	void
+	update () final override
+	{ }
+
 	///  @name Static members
 
 	static const ComponentType component;

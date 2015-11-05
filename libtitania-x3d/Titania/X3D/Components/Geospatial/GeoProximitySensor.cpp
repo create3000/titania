@@ -89,13 +89,15 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
 	addField (initializeOnly, "geoOrigin",                geoOrigin ());
 
+	addChildren (proximitySensor);
+
 	geoCoord_changed ()         .setUnit (UnitCategory::LENGTH);
 	position_changed ()         .setUnit (UnitCategory::LENGTH);
 	centerOfRotation_changed () .setUnit (UnitCategory::LENGTH);
 
 	geoCoord_changed () .isGeospatial (true);
 
-	addChildren (proximitySensor);
+	setCameraObject (proximitySensor -> isCameraObject ());
 }
 
 X3DBaseNode*

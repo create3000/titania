@@ -50,7 +50,6 @@
 
 #include "ProximitySensor.h"
 
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 #include "../../Tools/EnvironmentalSensor/ProximitySensorTool.h"
@@ -91,6 +90,8 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 
 	centerOfRotation_changed () .setUnit (UnitCategory::LENGTH);
 	position_changed ()         .setUnit (UnitCategory::LENGTH);
+
+	setCameraObject (true);
 }
 
 X3DBaseNode*
@@ -104,54 +105,13 @@ ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &ProximitySensor::set_enabled);
-	isLive () .addInterest (this, &ProximitySensor::set_enabled);
-
-	enabled () .addInterest (this, &ProximitySensor::set_enabled);
-	size ()    .addInterest (this, &ProximitySensor::set_enabled);
-
-	set_enabled ();
+	enabled () .addInterest (this, &ProximitySensor::set_enabled_);
 }
 
 void
-ProximitySensor::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+ProximitySensor::set_enabled_ ()
 {
-	getBrowser () -> sensors ()         .removeInterest (this, &ProximitySensor::update);
-	getExecutionContext () -> isLive () .removeInterest (this, &ProximitySensor::set_enabled);
-
-	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (this, &ProximitySensor::set_enabled);
-
-		set_enabled ();
-	}
-}
-
-void
-ProximitySensor::set_enabled ()
-{
-	if (enabled () and isLive () and getExecutionContext () -> isLive () and size () not_eq Vector3f ())
-	{
-		getBrowser () -> sensors () .addInterest (this, &ProximitySensor::update);
-	
-		setCameraObject (true);
-	}
-	else
-	{
-		getBrowser () -> sensors () .removeInterest (this, &ProximitySensor::update);
-
-		setCameraObject (false);
-			
-		if (isActive ())
-		{
-			isActive () = false;
-			exitTime () = getCurrentTime ();
-		}
-	}
+	setCameraObject (enabled ());
 }
 
 void
@@ -159,7 +119,7 @@ ProximitySensor::update ()
 {
 	try
 	{
-		if (inside)
+		if (inside and getTraversed ())
 		{
 			Matrix4f centerOfRotationMatrix = viewpointNode -> getTransformationMatrix ();
 			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
@@ -209,6 +169,8 @@ ProximitySensor::update ()
 	}
 	catch (const std::domain_error &)
 	{ }
+
+	setTraversed (false);
 }
 
 void
@@ -216,29 +178,34 @@ ProximitySensor::traverse (const TraverseType type)
 {
 	try
 	{
-		switch (type)
+		if (enabled ())
 		{
-			case TraverseType::CAMERA:
+			switch (type)
 			{
-				viewpointNode   = getCurrentViewpoint ();
-				modelViewMatrix = getModelViewMatrix () .get ();
-				break;
+				case TraverseType::CAMERA:
+				{
+					viewpointNode   = getCurrentViewpoint ();
+					modelViewMatrix = getModelViewMatrix () .get ();
+					return;
+				}
+				case TraverseType::DISPLAY:
+				{
+					setTraversed (true);
+	
+					if (inside)
+						return;
+	
+					if (size () == Vector3f (-1, -1, -1))
+						inside = true;
+	
+					else
+						inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
+	
+					return;
+				}
+				default:
+					return;
 			}
-			case TraverseType::DISPLAY:
-			{
-				if (inside)
-					break;
-
-				if (size () == Vector3f (-1, -1, -1))
-					inside = true;
-
-				else
-					inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
-
-				break;
-			}
-			default:
-				break;
 		}
 	}
 	catch (const std::domain_error &)
