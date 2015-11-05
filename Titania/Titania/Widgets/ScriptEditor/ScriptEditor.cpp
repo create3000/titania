@@ -333,6 +333,11 @@ ScriptEditor::on_new_shader_program_activated ()
 void
 ScriptEditor::on_apply_clicked ()
 {
+	/*
+    * We don't save the whole scene here, as the script could contain infinitive loop,
+	 * and then the scene couldn't be opened again.
+	 */
+
 	if (not node)
 		return;
 
