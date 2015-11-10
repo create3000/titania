@@ -228,7 +228,7 @@ X3DRenderer::getDistance (const Vector3f & translation) const
 
 			// Reshape camera
 
-			const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, bottom, collisionRadius, zNear, zFar);
+			const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
 
 			// Translate camera to user position and to look in the direction of the translation.
 
