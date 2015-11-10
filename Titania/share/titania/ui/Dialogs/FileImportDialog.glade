@@ -271,7 +271,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkRadioButton" id="ImportExternprotosButton">
+                  <object class="GtkRadioButton" id="ImportExternProtosButton">
                     <property name="label" translatable="yes">Import prototypes as externprotos</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

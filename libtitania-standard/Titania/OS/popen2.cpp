@@ -87,6 +87,8 @@ popen3 (const char* const command, int* const stdin, int* const stdout, int* con
 
 	if (pid == 0)
 	{
+		// Child process
+
 		close (output [WRITE]);
 		dup2 (output [READ], STDIN_FILENO);
 

@@ -388,6 +388,17 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
+	for (const auto value : parameter)
+	{
+		const auto pair = basic::split (value .str (), "=");
+
+		if (pair .size () == 2)
+		{
+			if (pair [0] == "target" and pair [1] not_eq "_self")
+				return;
+		}
+	}
+
 	using namespace std::placeholders;
 
 	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);

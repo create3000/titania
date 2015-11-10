@@ -134,8 +134,8 @@ public:
 	{ return *m_ImportAsInlineButton; }
 
 	Gtk::RadioButton &
-	getImportExternprotosButton () const
-	{ return *m_ImportExternprotosButton; }
+	getImportExternProtosButton () const
+	{ return *m_ImportExternProtosButton; }
 
 	Gtk::RadioButton &
 	getImportProtosButton () const
@@ -165,7 +165,7 @@ private:
 	Gtk::Dialog*                   m_ImportDialog;
 	Gtk::RadioButton*              m_ImportSceneButton;
 	Gtk::RadioButton*              m_ImportAsInlineButton;
-	Gtk::RadioButton*              m_ImportExternprotosButton;
+	Gtk::RadioButton*              m_ImportExternProtosButton;
 	Gtk::RadioButton*              m_ImportProtosButton;
 
 };

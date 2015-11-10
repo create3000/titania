@@ -1339,7 +1339,11 @@ $parser -> parse ();
 my $generator = new X3D::Generator ($parser);
 $generator -> output ();
 
-#print STDERR $@ if $@;
+if ($@)
+{
+	print STDERR $@;
+	exit 1;
+}
 
 1;
 __END__
@@ -1347,4 +1351,3 @@ __END__
 # How to update indices
 titania-info -i=nodes 2>/dev/null >~/Projekte/Titania/x3d2vrml/share/titania/info/node-index.txt
 titania-info -f 2>/dev/null >~/Projekte/Titania/x3d2vrml/share/titania/info/field-index.txt
-sudo cp -r /home/holger/Projekte/Titania/x3d2vrml/share/titania/info/ /usr/share/titania/

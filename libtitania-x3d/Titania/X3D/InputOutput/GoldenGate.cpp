@@ -62,6 +62,7 @@
 #include <Magick++.h>
 #include <giomm.h>
 #include <pcrecpp.h>
+#include <sys/wait.h>
 
 //
 
@@ -88,6 +89,8 @@ golden_pipe (const std::string & program, const std::string & input)
 {
 	constexpr size_t BUFFER_SIZE = 1024;
 
+	int    pid       = 0;
+	int    status    = 0;
 	int    stdin     = 0;
 	int    stdout    = 0;
 	int    stderr    = 0;
@@ -97,7 +100,7 @@ golden_pipe (const std::string & program, const std::string & input)
 
 	// Open pipe.
 
-	if (os::popen3 (program, &stdin, &stdout, &stderr) <= 0)
+	if ((pid = os::popen3 (program, &stdin, &stdout, &stderr)) <= 0)
 		throw Error <URL_UNAVAILABLE> ("Couldn't open program '" + program + "'.");
 
 	// Write to pipe.
@@ -122,6 +125,13 @@ golden_pipe (const std::string & program, const std::string & input)
 		std::clog .write (buffer .data (), bytesRead);
 
 	close (stderr);
+
+	// Read from pipe.
+
+	waitpid (pid, &status, 0);
+
+	if (status)
+		throw Error <INVALID_X3D> ("Exit status :" + basic::to_string (status));
 
 	return output;
 }
@@ -152,13 +162,17 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 {
 	// Test
 
+	const auto pos = istream .tellg ();
+
 	try
 	{
-		return golden_x3d (scene, uri, std::move (istream));
-	}
-	catch (const X3DError &)
-	{
 		return golden_x3dv (scene, uri, std::move (istream));
+	}
+	catch (const X3DError & error)
+	{
+		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+		return golden_x3d (scene, uri, std::move (istream));
 	}
 }
 

@@ -79,7 +79,7 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 		switch (getConfig () .getInteger ("importType"))
 		{
 			case ImportType::EXTERN_PROTOS:
-				getImportExternprotosButton () .set_active (true);
+				getImportExternProtosButton () .set_active (true);
 				break;
 		   case ImportType::PROTOS:
 				getImportProtosButton () .set_active (true);
@@ -154,7 +154,7 @@ FileImportDialog::run ()
 
 		if (responseId == Gtk::RESPONSE_OK)
 		{
-		   if (getImportExternprotosButton () .get_active ())
+		   if (getImportExternProtosButton () .get_active ())
 		   {
 				getConfig () .setItem ("importType", ImportType::EXTERN_PROTOS);
 

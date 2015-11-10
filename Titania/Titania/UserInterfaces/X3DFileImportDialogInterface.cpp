@@ -74,7 +74,7 @@ X3DFileImportDialogInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImportDialog", m_ImportDialog);
 	m_builder -> get_widget ("ImportSceneButton", m_ImportSceneButton);
 	m_builder -> get_widget ("ImportAsInlineButton", m_ImportAsInlineButton);
-	m_builder -> get_widget ("ImportExternprotosButton", m_ImportExternprotosButton);
+	m_builder -> get_widget ("ImportExternProtosButton", m_ImportExternProtosButton);
 	m_builder -> get_widget ("ImportProtosButton", m_ImportProtosButton);
 
 	// Call construct handler of base class.
