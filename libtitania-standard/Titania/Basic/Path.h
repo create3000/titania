@@ -295,10 +295,7 @@ basic_path <StringT>::remove_dot_segments () const
 
 		while (first not_eq end ())
 		{
-			if (first -> empty ())
-				;
-
-			else if (*first == dot)
+			if (*first == dot)
 				path .value .trailing_separator = true;
 
 			else if (*first == dots)
