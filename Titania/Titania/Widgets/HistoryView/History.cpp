@@ -88,6 +88,41 @@ History::History () :
 		setItem ("about:date",  get_page ("about/date.x3dv"),  "");
 		setItem ("about:gears", get_page ("about/gears.x3dv"), "");
 		setItem ("about:home",  get_page ("about/home.x3dv"),  "");
+
+		setItem ("Chomp!",                "https://rawgit.com/create3000/titania/Library/Examples/Chomp/chomp.x3d",  "");
+		setItem ("Smashing Boxes",        "https://rawgit.com/create3000/titania/Library/Examples/Boxes/boxes.x3d",  "");
+		setItem ("The Secret Labyrinth",  "https://rawgit.com/create3000/titania/Library/Examples/ICTS/labyrinth.wrl",  "");
+		setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/titania/Library/Examples/ICTS/soccer.wrl",  "");
+		setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/titania/Library/Examples/Astronomy/stage/astrnmy.wrl",  "");
+		setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/Arcadia/stage/index.wrl",  "");
+		setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/titania/Library/Examples/Pong/index.wrl",  "");
+		setItem ("Foldup",                "https://cdn.rawgit.com/create3000/titania/Library/Examples/Compel/foldup.wrl",  "");
+		setItem ("Mediafacade Berlin",    "https://rawgit.com/create3000/titania/Library/Examples/Vattenfall/index.wrl",  "");
+		setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/titania/Library/Examples/LustForLife/stage/index.wrl",  "");
+		setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/titania/Library/Examples/Cathedral/stage/index.wrl",  "");
+		setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/titania/Library/Examples/Compel/huey.wrl",  "");
+		setItem ("Approach",              "https://cdn.rawgit.com/create3000/titania/Library/Examples/Approach/stage/index.wrl",  "");
+		setItem ("Terrain",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/Terrain/index.wrl",  "");
+		setItem ("Old Leipzig Rathaus",   "https://rawgit.com/create3000/titania/Library/Examples/Rathaus/stage/index.wrl",  "");
+		setItem ("Magic Mushrooms",       "https://rawgit.com/create3000/titania/Library/Examples/Mushrooms/index.wrl",  "");
+		
+		setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/titania/Library/Examples/NIST-Logo/index.wrl",  "");
+		setItem ("VRML Banner",           "https://rawgit.com/create3000/titania/Library/Examples/VRMLBanner/vrmlbanner.wrl",  "");
+		setItem ("Ripple",                "https://cdn.rawgit.com/create3000/titania/Library/Examples/Compel/ripple.wrl",  "");
+		setItem ("Jungle",                "https://cdn.rawgit.com/create3000/titania/Library/Examples/Compel/jungle/jungle.wrl",  "");
+		setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/BIC/index.wrl",  "");
+		setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/titania/Library/Examples/BIC/building.wrl",  "");
+		setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/titania/Library/Examples/BIC/buero.wrl",  "");
+		setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/titania/Library/Examples/BIC/info.wrl",  "");
+		setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/Dolphin/index.wrl",  "");
+		setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/titania/Library/Examples/ICTS/index.wrl",  "");
+		setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/titania/Library/Examples/MovieTruck/stage/index.wrl",  "");
+		setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/Compel/anatomy/anatomy.wrl",  "");
+												    
+		setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/titania/Library/Examples/LogoPieces/index.x3d",  "");
+		setItem ("Appartment",            "https://cdn.rawgit.com/create3000/titania/Library/Examples/Appartment/index.wrl",  "");
+		setItem ("Schacht",               "https://cdn.rawgit.com/create3000/titania/Library/Examples/Schacht/index.wrl",  "");
+		setItem ("Gears",                 "https://cdn.rawgit.com/create3000/titania/Library/Examples/Gears/gears.wrl",  "");
 	}
 
 	// Watch for changes

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Fri, 28 Aug 2015 13:29:54 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.0.0, http://titania.create3000.de'/>
+    <meta name='modified' content='Fri, 28 Aug 2015 13:29:54 GMT'/>
+  </head>
+  <Scene>
+    <Group>
+      <Transform>
+        <WorldInfo
+            info='"Created in CosmoWorlds", "Packaged by CosmoPackage", "Packaged by CosmoPackage"'/>
+        <TimeSensor DEF='TickTock'
+            cycleInterval='3.2'
+            loop='true'
+            stopTime='1'/>
+        <Script DEF='Rippler'
+            directOutput='true'>
+          <field accessType='outputOnly' type='MFInt32' name='coordIndicesOut'/>
+          <field accessType='outputOnly' type='SFFloat' name='debug'/>
+          <field accessType='outputOnly' type='SFTime' name='debugTime'/>
+          <field accessType='inputOnly' type='SFTime' name='init'/>
+          <field accessType='inputOnly' type='SFTime' name='rippleNow'/>
+          <field accessType='inputOnly' type='SFTime' name='clicked'/>
+          <field accessType='inputOnly' type='SFVec3f' name='set_mousePos'/>
+          <field accessType='initializeOnly' type='MFInt32' name='coordIndices'/>
+          <field accessType='initializeOnly' type='SFVec3f' name='mousePos'/>
+          <field accessType='initializeOnly' type='SFTime' name='hitTime'/>
+          <field accessType='initializeOnly' type='SFVec3f' name='hitPoint' value='0.75 0.75 0'/>
+          <field accessType='initializeOnly' type='MFFloat' name='dists'/>
+          <field accessType='initializeOnly' type='MFVec3f' name='tempMF' value='0 0 0'/>
+          <field accessType='initializeOnly' type='SFInt32' name='width' value='10'/>
+          <field accessType='initializeOnly' type='SFInt32' name='height' value='10'/>
+          <field accessType='initializeOnly' type='SFFloat' name='deltaX' value='0.1'/>
+          <field accessType='initializeOnly' type='SFFloat' name='deltaY' value='0.1'/>
+          <field accessType='initializeOnly' type='SFNode' name='coords'>
+            <Coordinate DEF='theCoords_1'
+                point='-1.1325 -0.5 0, 1.1325 -0.5 0, 1.1325 0.5 0, -1.1325 0.5 0'/>
+          </field>
+          <field accessType='initializeOnly' type='SFNode' name='timeSensor'>
+            <TimeSensor USE='TickTock'/>
+          </field>
+          <field accessType='initializeOnly' type='SFVec3f' name='vec3f'/>
+<![CDATA[vrmlscript:
+function getIndex( x, y )
+{
+	return (x*width) + y;
+}
+
+function distByXY( x, y )
+{
+   dx = hitPoint[0] - x*deltaX;
+   dy = hitPoint[1] - y*deltaY;
+   return Math.sqrt( dx*dx + dy*dy );
+}
+
+function cacheDists()
+{
+   for( x=0; x < width; x++ ) {
+      for( y=0; y < height; y++ ) {
+	 index = getIndex(x,y);
+	 dists[index] = distByXY( x, y );
+      }
+   }
+}
+
+function genSurf()
+{
+	deltaX = (1 / (width-1)) * 1.5;
+	deltaY = 1 / (height-1);
+
+	for( x=0; x < width; x++ ) {
+		for( y=0; y < height; y++ ) {
+			index = getIndex(x,y);
+			vec3f[0] = x * deltaX;
+			vec3f[1] = y * deltaY;
+			vec3f[2] = 0;
+//			coords.point[index] = vec3f;
+			tempMF[index]          = vec3f;
+		}
+	}
+	coords.set_point = tempMF;
+
+	polyIndex = 0;
+	for( x=0; x < width-1; x++ ) {
+		for( y=0; y < height-1; y++ ) {
+			coordIndices[polyIndex++] = getIndex(x,  y  );
+			coordIndices[polyIndex++] = getIndex(x,  y+1);
+			coordIndices[polyIndex++] = getIndex(x+1,y  );
+			coordIndices[polyIndex++] = -1;
+			coordIndices[polyIndex++] = getIndex(x,  y+1);
+			coordIndices[polyIndex++] = getIndex(x+1,y+1);
+			coordIndices[polyIndex++] = getIndex(x+1,y  );
+			coordIndices[polyIndex++] = -1;
+		}
+	}
+
+	coordIndicesOut = coordIndices;
+
+   cacheDists();
+}
+
+function rippleSurf( time )
+{
+   dTime     = (time-hitTime); // /10;
+   //dTime     = dTime - Math.floor(dTime/3.14)*3.14;
+
+   dampByTime  = (3.14-dTime) / 3.14;
+   if ( dTime > 3.14 ) {
+     dampByTime = 0;
+   }
+   damp = dampByTime;
+
+   waveback  = .1 + dTime;
+   wavefront = .3 + dTime;
+
+   for( x=0; x < width; x++ ) {
+      for( y=0; y < height; y++ ) {
+	 index = (x*width) + y;
+	 dist = dists[ index ];
+	 if ( dist > waveback ) {
+	    if ( dist <= wavefront ) {
+	       damp = dampByTime * 1 - 5*(dist-waveback);
+	    }
+	    else {
+	       damp = 0;
+	    }
+	 }
+	 else {
+	    damp = dampByTime;
+	 }
+	 tempMF[index][2] = damp * .2 * Math.sin( 12*(dTime - dist) );
+      }
+   }
+
+   coords.point = tempMF;
+}
+
+function rippleNow(value, time)
+{
+	rippleSurf( time );
+}
+
+
+function set_mousePos(value, time)
+{
+   mousePos = value;
+}
+
+function clicked( value, time )
+{
+   hitTime = time;
+   hitPoint = mousePos;
+
+   // does not work -- loop true or false
+   //timeSensor.stopTime  = time;
+   //timeSensor.startTime = time + 1;
+   //
+
+   //
+   timeSensor.stopTime  = time + 3.2;
+   timeSensor.startTime = time;
+   //
+
+   cacheDists();
+}
+
+function init(value, time)
+{
+   hitTime = time;
+   genSurf();
+}
+]]> 
+        </Script>
+        <NavigationInfo DEF='Nav'
+            type='"NONE"'
+            headlight='false'/>
+        <TimeSensor DEF='enterWorldTimeSensor'
+            loop='true'
+            startTime='1'/>
+        <Script DEF='enterWorldScript'>
+          <field accessType='outputOnly' type='SFTime' name='startTime'/>
+          <field accessType='outputOnly' type='SFBool' name='firstTime'/>
+          <field accessType='inputOnly' type='SFTime' name='triggerIn'/>
+<![CDATA[vrmlscript:function triggerIn(value, time) {
+                                                                        
+         // fire off a single round                                     
+         startTime = value;                                             
+         firstTime = FALSE;                                             
+       }]]> 
+        </Script>
+        <Group>
+          <Transform>
+            <Collision>
+              <Transform
+                  translation='-0.225858 -1.0243 -3.50008'
+                  rotation='1 0 0 1.5708'>
+                <TouchSensor DEF='touchSensorTrigger_1'/>
+                <Shape>
+                  <Appearance>
+                    <Material/>
+                    <ImageTexture
+                        url='"water.jpg"'/>
+                    <TextureTransform
+                        translation='0 0.13'
+                        scale='1 1.3'
+                        center='0.5 0.33'/>
+                  </Appearance>
+                  <IndexedFaceSet DEF='theIFS_1'
+                      ccw='false'
+                      creaseAngle='3'
+                      coordIndex='0, 1, 2, 3, -1'>
+                    <Coordinate USE='theCoords_1'/>
+                  </IndexedFaceSet>
+                </Shape>
+              </Transform>
+            </Collision>
+          </Transform>
+          <Viewpoint DEF='VP1'
+              description='Watch'
+              position='0.53 -2.6 -3'
+              orientation='1 0 0 1.5708'/>
+          <DirectionalLight DEF='Light1'
+              direction='0.613714 0.705321 0.354789'/>
+          <Sound DEF='Sound1'>
+            <AudioClip DEF='sploit'
+                url='"drip2.wav"'/>
+          </Sound>
+        </Group>
+      </Transform>
+    </Group>
+    <ROUTE fromNode='enterWorldScript' fromField='startTime' toNode='Rippler' toField='init'/>
+    <ROUTE fromNode='TickTock' fromField='time' toNode='Rippler' toField='rippleNow'/>
+    <ROUTE fromNode='touchSensorTrigger_1' fromField='touchTime' toNode='Rippler' toField='clicked'/>
+    <ROUTE fromNode='touchSensorTrigger_1' fromField='hitPoint_changed' toNode='Rippler' toField='set_mousePos'/>
+    <ROUTE fromNode='enterWorldScript' fromField='firstTime' toNode='enterWorldTimeSensor' toField='set_enabled'/>
+    <ROUTE fromNode='enterWorldTimeSensor' fromField='time' toNode='enterWorldScript' toField='triggerIn'/>
+    <ROUTE fromNode='Rippler' fromField='coordIndicesOut' toNode='theIFS_1' toField='set_coordIndex'/>
+    <ROUTE fromNode='touchSensorTrigger_1' fromField='touchTime' toNode='sploit' toField='set_startTime'/>
+  </Scene>
+</X3D>
