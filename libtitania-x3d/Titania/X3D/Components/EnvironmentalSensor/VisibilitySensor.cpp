@@ -110,8 +110,6 @@ VisibilitySensor::update ()
 			isActive ()  = true;
 			enterTime () = getCurrentTime ();
 		}
-
-		visible = false;
 	}
 	else
 	{
@@ -121,6 +119,8 @@ VisibilitySensor::update ()
 			exitTime () = getCurrentTime ();
 		}
 	}
+
+	visible = false;
 
 	setTraversed (false);
 }

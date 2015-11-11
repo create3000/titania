@@ -155,8 +155,6 @@ ProximitySensor::update ()
 				orientation_changed ()      = orientation;
 				centerOfRotation_changed () = centerOfRotation;
 			}
-
-			inside = false;
 		}
 		else
 		{
@@ -169,6 +167,8 @@ ProximitySensor::update ()
 	}
 	catch (const std::domain_error &)
 	{ }
+
+	inside = false;
 
 	setTraversed (false);
 }

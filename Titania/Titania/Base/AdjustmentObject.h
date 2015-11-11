@@ -77,13 +77,11 @@ public:
 	void
 	restore (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
-		connection .disconnect ();
-
 		adjustment -> set_value (value);
 
-		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
+		connection .disconnect ();
 
-		Glib::signal_idle () .connect_once (sigc::mem_fun (connection, &sigc::connection::disconnect));
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
 	}
 
 private:
@@ -91,6 +89,8 @@ private:
 	void
 	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
 	{
+		connection .disconnect ();
+
 		adjustment -> set_value (value);
 		adjustment -> signal_changed () .emission_stop ();
 	}
