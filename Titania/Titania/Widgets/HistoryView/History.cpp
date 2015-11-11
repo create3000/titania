@@ -104,7 +104,7 @@ History::History () :
 		setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/NIST-Logo/index.wrl",  "");
 
 		setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Mushrooms/index.wrl",  "");
-		setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Rathaus/stage/index.wrl",  "");
+		setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Rathaus/stage/index.x3d",  "");
 		setItem ("Terrain",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Terrain/index.wrl",  "");
 		setItem ("Approach",              "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Approach/stage/index.wrl",  "");
 		setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/huey.wrl",  "");

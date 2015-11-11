@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="42" Column="42" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="41" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/NavigationInfo.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="3" Column="3" />
+      <File FileName="Titania/Titania/Widgets/HistoryView/History.cpp" Line="22" Column="22" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Engines/Rotor.x3dv" Line="61" Column="61" />
+      <File FileName="Titania/run.pl" Line="35" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
