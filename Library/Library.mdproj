@@ -3070,6 +3070,7 @@
     <None Include="Examples\Rathaus\stage\heaven\left.jpg" />
     <None Include="Examples\Rathaus\stage\heaven\right.jpg" />
     <None Include="Examples\Rathaus\stage\heaven\top.jpg" />
+    <None Include="Examples\ICTS\soccer.wrl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
