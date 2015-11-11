@@ -11,9 +11,10 @@ EXTERNPROTO RadioButton [
   inputOutput    MFNode  children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/RadioButton.x3dv"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d"
 ]
 
 EXTERNPROTO CheckButton [
@@ -28,9 +29,10 @@ EXTERNPROTO CheckButton [
   inputOutput    MFNode  children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d"
 ]
 
 EXTERNPROTO Button [
@@ -46,9 +48,10 @@ EXTERNPROTO Button [
   inputOutput    MFNode   children
 ]
 [
-  "../../../Prototypes/0.1/Widgets/Button.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d"
 ]
 
 EXTERNPROTO SFInt32 [
@@ -57,9 +60,10 @@ EXTERNPROTO SFInt32 [
   outputOnly  SFInt32 value_changed
 ]
 [
-  "../../../Prototypes/0.1/Fields/SFInt32.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Fields/SFInt32.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Fields/SFInt32.x3dv"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/SFInt32.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/SFInt32.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/SFInt32.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/SFInt32.x3d"
 ]
 
 EXTERNPROTO EnterWorld [
@@ -67,9 +71,10 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "../../../Prototypes/0.1/Time/EnterWorld.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Time/EnterWorld.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Time/EnterWorld.x3dv"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d"
 ]
 
 DEF Summer Background {

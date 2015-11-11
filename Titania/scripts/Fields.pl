@@ -17,7 +17,7 @@ foreach my $name ($keyFile -> get_groups ())
 
 	next if $name eq "Fields.pl";
 
-	my $prototypes = "/home/holger/Projekte/Titania/Titania/share/titania/Prototypes/0.1/Fields";
+	my $prototypes = "/home/holger/Projekte/Library/Prototypes/1/1.0/Fields";
 
 	system "mkdir", "-p", $prototypes;
 
@@ -60,7 +60,6 @@ function set_triggerTime (value, time)
 
 
 	my $x3dv = "$extern_prototypes/$name.x3dv";
-	my $x3d  = "$extern_prototypes/$name.x3d";
 
 	open FILE, ">", $x3dv;
 
@@ -72,14 +71,10 @@ EXTERNPROTO $name [
   eventOut     $name  value_changed
 ]
 [
-	\"file:///usr/share/titania/Prototypes/0.1/Fields/$name.x3dv\"
-	\"file:///usr/share/titania/Prototypes/0.1/Fields/$name.x3d\"
-   \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3dv\"
-   \"http://titania.create3000.de/Library/Prototypes/0.1/Fields/$name.x3d\"
-   \"https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3dv\",
-   \"https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3d\",
-   \"https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3dv\",
-   \"https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Fields/$name.x3d\",
+   \"https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/$name.x3d\",
+   \"http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/$name.x3d\",
+   \"https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/$name.x3d\",
+   \"http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Fields/$name.x3d\",
 ]
 
 $name { }
@@ -88,5 +83,4 @@ $name { }
 	close FILE;
 
 	system "x3dtidy", $x3dv, $x3dv;
-	system "x3dtidy", $x3dv, $x3d;
 }

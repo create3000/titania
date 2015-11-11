@@ -11,14 +11,10 @@ EXTERNPROTO BooleanSwitch [
   inputOutput    MFNode  children
 ]
 [
-  "file:///usr/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3d",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Grouping/BooleanSwitch.x3d",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3d",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3dv",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Grouping/BooleanSwitch.x3d"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Grouping/BooleanSwitch.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Grouping/BooleanSwitch.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Grouping/BooleanSwitch.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Grouping/BooleanSwitch.x3d"
 ]
 
 BooleanSwitch { }

@@ -15,14 +15,10 @@ EXTERNPROTO Button [
   inputOutput    MFNode   children
 ]
 [
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/Button.x3d",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/Button.x3d",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3d",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3dv",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/Button.x3d"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/Button.x3d"
 ]
 
 EXTERNPROTO CheckButton [
@@ -37,14 +33,10 @@ EXTERNPROTO CheckButton [
   inputOutput    MFNode  children
 ]
 [
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/CheckButton.x3d",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3dv",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/CheckButton.x3d"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/CheckButton.x3d"
 ]
 
 EXTERNPROTO RadioButton [
@@ -56,14 +48,10 @@ EXTERNPROTO RadioButton [
   inputOutput    MFNode  children
 ]
 [
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "file:///usr/share/titania/Prototypes/0.1/Widgets/RadioButton.x3d",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "http://titania.create3000.de/Library/Prototypes/0.1/Widgets/RadioButton.x3d",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "https://cdn.rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/RadioButton.x3d",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/RadioButton.x3dv",
-  "https://rawgit.com/create3000/titania/master/Titania/share/titania/Prototypes/0.1/Widgets/RadioButton.x3d"
+  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d",
+  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Widgets/RadioButton.x3d"
 ]
 
 RadioButton {
