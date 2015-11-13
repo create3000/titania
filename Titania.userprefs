@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserWindow.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="64" Column="64" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/HistoryView/History.cpp" Line="1" Column="1" />
       <File FileName="Titania/share/titania/Library/Prototypes/Engines/Rotor.x3dv" Line="1" Column="1" />

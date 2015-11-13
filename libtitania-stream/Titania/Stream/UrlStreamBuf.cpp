@@ -71,7 +71,7 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 	if (not easy_handle)
 		return nullptr;
 
-	const std::string curlURL = url () .filename (url () .is_network ()) .escape ();
+	const std::string curlURL = url () .filename (url () .is_network ());
 
 	//std::clog << std::string (80, '+') << std::endl;
 	//std::clog << std::string (80, '+') << " : " << curlURL << std::endl;

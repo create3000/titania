@@ -601,17 +601,29 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	basic::uri uri = "file:///home/holger/Projekte/Titania/Documentation/Titania/html/classtitania_1_1X3D_1_1X3DExecutionContext.html#a88f10a7165c2028d858f123c7372294a";
+	// There should be a test were this url are tested, with assert and so. If anyone can write this please contact me.
+
+	basic::uri base = "http://x3dgraphics.com/examples/X3dForWebAuthors/KelpForestExhibit/KelpForestMain.x3d";
+	basic::uri uri  = "https://crossorigin.me/http://x3dgraphics.com/examples/X3dForWebAuthors/KelpForestExhibit/KelpForestMain.x3d";
 
 
-	std::clog << uri << std::endl;
-	std::clog << uri .fragment () << std::endl;
+	std::clog << uri .is_local () << std::endl;
+	std::clog << uri .scheme () << std::endl;
+	std::clog << uri .authority () << std::endl;
 
-	uri .fragment ("test");
+	std::clog << base .transform (uri) << std::endl;
+	std::clog << base .transform (uri) .is_local () << std::endl;
+	std::clog << base .transform (uri) .scheme () << std::endl;
+	std::clog << base .transform (uri) .authority () << std::endl;
 
-	std::clog << uri << std::endl;
-	std::clog << uri .str () << std::endl;
-	std::clog << uri .fragment () << std::endl;
+	basic::iurlstream istream (uri, 10000);
+
+	__LOG__ << bool (istream) << std::endl;
+	istream .send ();
+	__LOG__ << istream .status () << std::endl;
+	__LOG__ << bool (istream) << std::endl;
+	
+	
 
 	//std::thread (f, std::move (a)) .join ();
 	
