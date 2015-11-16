@@ -1,10 +1,10 @@
-#X3D V3.0 utf8 Titania V1.2.0
+#X3D V3.0 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 09:36:25 GMT"
+META "created" "Mon, 16 Nov 2015 10:24:18 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 09:36:25 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Mon, 16 Nov 2015 10:24:19 GMT"
 META "titania magic" "Texture"
 
 DEF rivoted Transform {
@@ -13,10 +13,10 @@ DEF rivoted Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Metal/rivoted.jpg",
-          "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Metal/rivoted.jpg",
-          "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Metal/rivoted.jpg",
-          "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Metal/rivoted.jpg"
+          "http://cdn.rawgit.com/create3000/Library/master/Textures/Metal/rivoted.jpg",
+          "https://cdn.rawgit.com/create3000/Library/master/Textures/Metal/rivoted.jpg",
+          "http://rawgit.com/create3000/Library/master/Textures/Metal/rivoted.jpg",
+          "https://rawgit.com/create3000/Library/master/Textures/Metal/rivoted.jpg"
         ]
         repeatS FALSE
         repeatT FALSE

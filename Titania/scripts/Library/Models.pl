@@ -13,13 +13,15 @@ my $script  = dirname $0;
 my $project = "$script/../../";
 my $folder  = "$project/share/titania/Library/Models/";
 
-my $models = "/home/holger/Projekte/Titania/Library/Models/$version/";
+
+my $models = "/home/holger/Projekte/Library/Models/";
+
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/titania/master/Library/Models/$version",
-	"https://cdn.rawgit.com/create3000/titania/master/Library/Models/$version",
-	"http://rawgit.com/create3000/titania/master/Library/Models/$version",
-	"https://rawgit.com/create3000/titania/master/Library/Models/$version",
+	"http://cdn.rawgit.com/create3000/Library/master/Models",
+	"https://cdn.rawgit.com/create3000/Library/master/Models",
+	"http://rawgit.com/create3000/Library/master/Models",
+	"https://rawgit.com/create3000/Library/master/Models",
 );
 
 sub models {

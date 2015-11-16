@@ -85,40 +85,40 @@ History::History () :
 
 	if (not have_history)
 	{
-		setItem ("Gears",                 "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Gears/gears.wrl",  "");
-		setItem ("Schacht",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Schacht/index.wrl",  "");
-		setItem ("Appartment",            "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Appartment/index.wrl",  "");
-		setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/LogoPieces/index.x3d",  "");
+		setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/master/Examples/Gears/gears.wrl",  "");
+		setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Schacht/index.wrl",  "");
+		setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/master/Examples/Appartment/index.wrl",  "");
+		setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/master/Examples/LogoPieces/index.x3d",  "");
 
-		setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/anatomy/anatomy.wrl",  "");
-		setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/MovieTruck/stage/index.wrl",  "");
-		setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/ICTS/index.wrl",  "");
-		setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Dolphin/index.wrl",  "");
-		setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/BIC/info.wrl",  "");
-		setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/BIC/buero.wrl",  "");
-		setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/BIC/building.wrl",  "");
-		setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/BIC/index.wrl",  "");
-		setItem ("Jungle",                "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/jungle/jungle.wrl",  "");
-		setItem ("Ripple",                "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/ripple.wrl",  "");
-		setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/VRMLBanner/vrmlbanner.wrl",  "");
-		setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/NIST-Logo/index.wrl",  "");
+		setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/anatomy/anatomy.wrl",  "");
+		setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/master/Examples/MovieTruck/stage/index.wrl",  "");
+		setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/index.wrl",  "");
+		setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Dolphin/index.wrl",  "");
+		setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/info.wrl",  "");
+		setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/buero.wrl",  "");
+		setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/building.wrl",  "");
+		setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/index.wrl",  "");
+		setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/jungle/jungle.wrl",  "");
+		setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/ripple.wrl",  "");
+		setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/master/Examples/VRMLBanner/vrmlbanner.wrl",  "");
+		setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/master/Examples/NIST-Logo/index.wrl",  "");
 
-		setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Mushrooms/index.wrl",  "");
-		setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Rathaus/stage/index.x3d",  "");
-		setItem ("Terrain",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Terrain/index.wrl",  "");
-		setItem ("Approach",              "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Approach/stage/index.wrl",  "");
-		setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/huey.wrl",  "");
-		setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Cathedral/stage/index.wrl",  "");
-		setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/LustForLife/stage/index.wrl",  "");
-		setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Vattenfall/index.wrl",  "");
-		setItem ("Foldup",                "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Compel/foldup.wrl",  "");
-		setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Pong/index.wrl",  "");
-		setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Arcadia/stage/index.wrl",  "");
-		setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Astronomy/stage/astrnmy.wrl",  "");
-		setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/ICTS/soccer.wrl",  "");
-		setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/ICTS/labyrinth.wrl",  "");
-		setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Boxes/boxes.x3d",  "");
-		setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/titania/master/Library/Examples/Chomp/chomp.x3d",  "");
+		setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/master/Examples/Mushrooms/index.wrl",  "");
+		setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/master/Examples/Rathaus/stage/index.x3d",  "");
+		setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Terrain/index.wrl",  "");
+		setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/master/Examples/Approach/stage/index.wrl",  "");
+		setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/huey.wrl",  "");
+		setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Cathedral/stage/index.wrl",  "");
+		setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/master/Examples/LustForLife/stage/index.wrl",  "");
+		setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/index.wrl",  "");
+		setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/foldup.wrl",  "");
+		setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Pong/index.wrl",  "");
+		setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Arcadia/stage/index.wrl",  "");
+		setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Astronomy/stage/astrnmy.wrl",  "");
+		setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/soccer.wrl",  "");
+		setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/labyrinth.wrl",  "");
+		setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Boxes/boxes.x3d",  "");
+		setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Chomp/chomp.x3d",  "");
 
 		setItem ("about:date",  get_page ("about/date.x3dv"),  "");
 		setItem ("about:gears", get_page ("about/gears.x3dv"), "");

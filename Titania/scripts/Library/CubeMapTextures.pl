@@ -8,7 +8,6 @@ use open qw/:std :utf8/;
 
 use File::Basename qw (dirname basename);
 
-my $version     = "1/1.0";
 my $script      = dirname $0;
 my $project     = "$script/../../";
 my $geometry    = `cat '$script/CubeMapTextures-Geometry.x3dv'`;
@@ -16,15 +15,14 @@ my $spheres     = "$project/share/titania/Library/CubeMapTextures/";
 my $backgrounds = "$project/share/titania/Library/Backgrounds/";
 
 
-my $textures = "/home/holger/Projekte/Titania/Library/Textures/$version/CubeMapTextures/";
-
+my $textures = "/home/holger/Projekte/Library/Textures/CubeMapTextures/";
 
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/titania/master/Library/Textures/$version/CubeMapTextures",
-	"https://cdn.rawgit.com/create3000/titania/master/Library/Textures/$version/CubeMapTextures",
-	"http://rawgit.com/create3000/titania/master/Library/Textures/$version/CubeMapTextures",
-	"https://rawgit.com/create3000/titania/master/Library/Textures/$version/CubeMapTextures",
+	"http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures",
+	"https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures",
+	"http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures",
+	"https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures",
 );
 
 sub url {

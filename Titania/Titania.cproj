@@ -748,7 +748,6 @@
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4d.x3dv" />
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4f.x3dv" />
     <None Include="share\titania\Library\Backgrounds\LostValley.x3dv" />
-    <None Include="scripts\Fields.pl" />
     <None Include="scripts\Components.pl" />
     <None Include="scripts\Materials.pl" />
     <None Include="share\titania\Library\Components\CADGeometry\CADAssembly.x3dv" />
@@ -1982,6 +1981,7 @@
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-left.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-right.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-top.x3dv" />
+    <None Include="scripts\Library\Fields.pl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

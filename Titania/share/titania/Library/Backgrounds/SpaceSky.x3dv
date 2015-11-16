@@ -1,47 +1,47 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 09:36:04 GMT"
+META "created" "Mon, 16 Nov 2015 10:25:44 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 09:36:04 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Mon, 16 Nov 2015 10:25:44 GMT"
 META "titania magic" "Background"
 
 DEF SpaceSky Background {
   frontUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-front.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-front.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-front.jpg"
   ]
   backUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-back.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-back.jpg"
   ]
   leftUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-left.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-left.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-left.jpg"
   ]
   rightUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-right.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-right.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-right.jpg"
   ]
   topUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-top.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-top.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-top.jpg"
   ]
   bottomUrl [
-    "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
-    "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
-    "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
-    "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg"
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/SpaceSky/SpaceSky-bottom.jpg"
   ]
 }

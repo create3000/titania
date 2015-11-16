@@ -8,18 +8,19 @@ use open qw/:std :utf8/;
 
 use File::Basename qw (dirname basename);
 
-my $version = "1/1.0";
 my $script  = dirname $0;
 my $project = "$script/../../";
 my $folder  = "$project/share/titania/Library/Textures/";
 
-my $textures = "/home/holger/Projekte/Titania/Library/Textures/$version/";
+
+my $textures = "/home/holger/Projekte/Library/Textures/";
+
 
 my @url = (
-	"http://cdn.rawgit.com/create3000/titania/master/Library/Textures/$version",
-	"https://cdn.rawgit.com/create3000/titania/master/Library/Textures/$version",
-	"http://rawgit.com/create3000/titania/master/Library/Textures/$version",
-	"https://rawgit.com/create3000/titania/master/Library/Textures/$version",
+	"http://cdn.rawgit.com/create3000/Library/master/Textures",
+	"https://cdn.rawgit.com/create3000/Library/master/Textures",
+	"http://rawgit.com/create3000/Library/master/Textures",
+	"https://rawgit.com/create3000/Library/master/Textures",
 );
 
 sub textures {

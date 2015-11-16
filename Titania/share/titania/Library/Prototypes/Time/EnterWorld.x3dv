@@ -5,10 +5,10 @@ EXTERNPROTO EnterWorld [
   outputOnly SFTime enterTime
 ]
 [
-  "https://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
-  "http://cdn.rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
-  "https://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d",
-  "http://rawgit.com/create3000/titania/master/Library/Prototypes/1/1.0/Time/EnterWorld.x3d"
+  "https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Time/EnterWorld.x3d",
+  "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Time/EnterWorld.x3d"
 ]
 
 EnterWorld { }

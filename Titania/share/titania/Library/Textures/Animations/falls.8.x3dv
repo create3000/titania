@@ -1,10 +1,10 @@
-#X3D V3.0 utf8 Titania V1.2.0
+#X3D V3.0 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 09:38:22 GMT"
+META "created" "Mon, 16 Nov 2015 10:24:34 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 09:38:22 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Mon, 16 Nov 2015 10:24:34 GMT"
 META "titania magic" "Texture"
 
 DEF falls8 Transform {
@@ -13,10 +13,10 @@ DEF falls8 Transform {
     appearance Appearance {
       texture ImageTexture {
         url [
-          "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Animations/falls.8.png",
-          "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Animations/falls.8.png",
-          "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Animations/falls.8.png",
-          "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Animations/falls.8.png"
+          "http://cdn.rawgit.com/create3000/Library/master/Textures/Animations/falls.8.png",
+          "https://cdn.rawgit.com/create3000/Library/master/Textures/Animations/falls.8.png",
+          "http://rawgit.com/create3000/Library/master/Textures/Animations/falls.8.png",
+          "https://rawgit.com/create3000/Library/master/Textures/Animations/falls.8.png"
         ]
         repeatS FALSE
         repeatT FALSE

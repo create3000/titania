@@ -1,18 +1,18 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 09:32:02 GMT"
+META "created" "Mon, 16 Nov 2015 10:25:27 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 09:32:02 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Mon, 16 Nov 2015 10:25:27 GMT"
 
 DEF MiniCooper Transform {
   children Inline {
     url [
-      "http://cdn.rawgit.com/create3000/titania/master/Library/Models/1/1.0/Vehicles/MiniCooper.x3d",
-      "https://cdn.rawgit.com/create3000/titania/master/Library/Models/1/1.0/Vehicles/MiniCooper.x3d",
-      "http://rawgit.com/create3000/titania/master/Library/Models/1/1.0/Vehicles/MiniCooper.x3d",
-      "https://rawgit.com/create3000/titania/master/Library/Models/1/1.0/Vehicles/MiniCooper.x3d"
+      "http://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/MiniCooper.x3d",
+      "https://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/MiniCooper.x3d",
+      "http://rawgit.com/create3000/Library/master/Models/Vehicles/MiniCooper.x3d",
+      "https://rawgit.com/create3000/Library/master/Models/Vehicles/MiniCooper.x3d"
     ]
   }
 }

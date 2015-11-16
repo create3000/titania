@@ -346,10 +346,10 @@ DEF Fire2 ParticleSystem {
   appearance Appearance {
     texture ImageTexture {
       url [
-        "http://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Effects/fire2.png",
-        "https://cdn.rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Effects/fire2.png",
-        "http://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Effects/fire2.png",
-        "https://rawgit.com/create3000/titania/master/Library/Textures/1/1.0/Effects/fire2.png",
+        "http://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire2.png",
+        "https://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire2.png",
+        "http://rawgit.com/create3000/Library/master/Textures/Effects/fire2.png",
+        "https://rawgit.com/create3000/Library/master/Textures/Effects/fire2.png",
       ]
     }
   }
