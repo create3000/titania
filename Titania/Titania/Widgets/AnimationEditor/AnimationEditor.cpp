@@ -2351,11 +2351,9 @@ AnimationEditor::on_key_press_event (GdkEventKey* event)
 		{
 			if (event -> state == GDK_CONTROL_MASK)
 			{
-				selectedFrames .clear ();
 				selectedRange .first  = 0;
-				selectedRange .second = 0;
-				on_expand_selected_range (getDuration ());
-				on_selection_changed ();
+				selectedRange .second = getDuration ();
+				on_select_range ();
 			}
 
 			return true;
