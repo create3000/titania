@@ -204,8 +204,6 @@ X3DLightNodeTool <Type>::initialize ()
 	X3DBoundedObject::initialize ();
 
 	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
-
-	X3DChildObject::addEvent ();
 }
 
 template <class Type>
@@ -237,11 +235,8 @@ void
 X3DLightNodeTool <Type>::removeTool (const bool really)
 {
 	if (really)
-	{
 		X3DChildNodeTool <Type>::removeTool ();
 
-		X3DChildObject::addEvent ();
-	}
 	else
 	{
 		try

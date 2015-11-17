@@ -402,18 +402,66 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not treeView -> row_expanded (path))
 		return;
 
-	Gtk::TreeModel::iterator iter = treeView -> get_model () -> get_iter (path);
-
+	const auto iter          = treeView -> get_model () -> get_iter (path);
 	const bool full_expanded = treeView -> is_full_expanded (iter);
+
+	if (not getToggle (iter))
+		return;
 
 	treeView -> preserve_adjustments ();
 	treeView -> collapse_row (path);
-	treeView -> get_model () -> row_has_child_toggled (path, iter);
 
 	treeView -> disable_shift_key ();
 	treeView -> is_full_expanded (iter, full_expanded);
 	treeView -> expand_row (path, false);
 	treeView -> enable_shift_key ();
+}
+
+bool
+OutlineTreeObserver::getToggle (const Gtk::TreeModel::iterator & iter) const
+{
+	if (treeView -> get_data_type (iter) == OutlineIterType::X3DField)
+	{
+		const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+
+		switch (field -> getType ())
+		{
+			case X3D::X3DConstants::SFNode:
+			{
+				const auto & sfnode   = *static_cast <X3D::SFNode*> (field);
+				const auto   children = iter -> children ();
+
+				if (children .empty ())
+					return true;
+
+				const auto rhs = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (children [0]));
+
+				return sfnode != *rhs;;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				const auto & mfnode   = *static_cast <X3D::MFNode*> (field);
+				const auto   children = iter -> children ();
+
+				if (mfnode .size () != children .size ())
+					return true;
+
+				for (size_t i = 0; i < mfnode .size (); ++ i)
+				{
+					const auto rhs = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (children [i]));
+
+					if (mfnode [i] != *rhs)
+						return true;
+				}
+
+				return false;
+			}
+			default:
+				return true;
+		}
+	}
+
+	return true;
 }
 
 OutlineTreeObserver::~OutlineTreeObserver ()

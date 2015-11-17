@@ -382,6 +382,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 	for (const auto & parent : parents)
 	{
 		parent -> set (replacement);
+		parent -> addEvent ();
 	}
 }
 

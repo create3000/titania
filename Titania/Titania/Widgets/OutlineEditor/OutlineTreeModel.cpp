@@ -299,6 +299,8 @@ OutlineTreeModel::clear (const iterator & iter)
 
 	for (size_t i = 0; i < size; ++ i)
 		row_deleted (path);
+
+	row_has_child_toggled (path, iter);
 }
 
 Gtk::TreeModelFlags
