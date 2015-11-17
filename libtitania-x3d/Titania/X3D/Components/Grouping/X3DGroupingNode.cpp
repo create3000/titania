@@ -249,6 +249,15 @@ X3DGroupingNode::add (const MFNode & children)
 							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
 							goto NEXT;
 						}
+						case X3DConstants::X3DLightNodeTool:
+						{
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
+
+							childNodes .emplace_back (childNode);
+							// Procceed with next step.
+						}
 						case X3DConstants::X3DLightNode:
 						{
 							lights .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
@@ -256,11 +265,11 @@ X3DGroupingNode::add (const MFNode & children)
 						}
 						case X3DConstants::X3DChildNode:
 						{
-						   const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
-
-							childNodes .emplace_back (childNode);
+							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
 							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
+
+							childNodes .emplace_back (childNode);
 							goto NEXT;
 						}
 						case X3DConstants::BooleanFilter:
