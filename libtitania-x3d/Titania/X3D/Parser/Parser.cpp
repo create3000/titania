@@ -2092,7 +2092,8 @@ Parser::sfcolorValue (SFColor* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -2160,7 +2161,8 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -2492,7 +2494,8 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2575,7 +2578,8 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2679,7 +2683,8 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -2783,7 +2788,8 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -3074,7 +3080,8 @@ Parser::sfvec2dValue (SFVec2d* _field)
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -3136,7 +3143,8 @@ Parser::sfvec2fValue (SFVec2f* _field)
 			return true;
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -3201,7 +3209,8 @@ Parser::sfvec3dValue (SFVec3d* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3266,7 +3275,8 @@ Parser::sfvec3fValue (SFVec3f* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3334,7 +3344,8 @@ Parser::sfvec4dValue (SFVec4d* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -3402,7 +3413,8 @@ Parser::sfvec4fValue (SFVec4f* _field)
 			}
 		}
 
-		throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
 	}
 
 	return false;

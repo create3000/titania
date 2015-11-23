@@ -1048,6 +1048,11 @@ sub node {
 	}
 }
 
+my %Depreciated = (
+	navType   => ["navType",   "inputOutput", "MFString", "\"EXAMINE\""],
+	headlight => ["headlight", "inputOutput", "SFBool",   "TRUE"]
+);
+
 sub fields {
 	my ($self, $node) = @_;
 
@@ -1066,26 +1071,35 @@ sub fields {
 
 		if ($field -> {fieldValue})
 		{
-			print $self -> indent ();
-			print $field -> {name}, " ";
-
 			my $proto           = $self -> getPrototype ($node -> {context}, $node -> {typeName});
 			my $fieldDefinition = $proto -> {fieldIndex} -> {$field -> {name}};
+			my $accessType      = $fieldDefinition -> {accessType};
 
-			$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $field);
+			if ($accessType =~ /initializeOnly|inputOutput/sgo)
+			{
+				print $self -> indent ();
+				print $field -> {name}, " ";
+	
+				$self -> field ([$fieldDefinition -> {name}, $fieldDefinition -> {accessType}, $fieldDefinition -> {type}], $field);
+			}
 		}
 		elsif (defined $field -> {value})
 		{
-			print $self -> indent ();
-			print $field -> {name}, " ";
+			my $fieldDefinition = $self -> {nodes} -> has_key ($node -> {typeName}, $field -> {name})
+                               ? [$self -> {nodes} -> get_string_list ($node -> {typeName}, $field -> {name})]
+			                      : $Depreciated {$field -> {name}};
 
-			if ($self -> {nodes} -> has_key ($node -> {typeName}, $field -> {name}))
+			if (defined $fieldDefinition)
 			{
-				$self -> field ([$self -> {nodes} -> get_string_list ($node -> {typeName}, $field -> {name})], $field);
-			}
-			else
-			{
-				$self -> field ([ ], $field);
+				my $accessType = $fieldDefinition -> [1];
+	
+				if ($accessType =~ /initializeOnly|inputOutput/sgo)
+				{
+					print $self -> indent ();
+					print $field -> {name}, " ";
+		
+					$self -> field ($fieldDefinition, $field);
+				}
 			}
 		}
 
@@ -1128,20 +1142,10 @@ sub userDefinedFields {
 	}
 }
 
-my %Depreciated = (
-	navType   => "MFString",
-	headlight => "SFBool"
-);
-
 sub field {
 	my ($self, $fieldDefinition, $field) = @_;
 
 	my $typeName = $fieldDefinition -> [2];
-
-	if (not $typeName)
-	{
-		$typeName = $Depreciated {$field -> {name}};
-	}
 
 	if ($typeName eq "SFBool")
 	{
