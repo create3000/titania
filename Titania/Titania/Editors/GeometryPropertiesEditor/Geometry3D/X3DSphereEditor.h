@@ -48,111 +48,55 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DSPHERE_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DSPHERE_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
-#include "Geometry2D/X3DArc2DEditor.h"
-#include "Geometry2D/X3DArcClose2DEditor.h"
-#include "Geometry2D/X3DCircle2DEditor.h"
-#include "Geometry2D/X3DDisk2DEditor.h"
-#include "Geometry2D/X3DRectangle2DEditor.h"
-#include "Geometry3D/X3DBoxEditor.h"
-#include "Geometry3D/X3DConeEditor.h"
-#include "Geometry3D/X3DCylinderEditor.h"
-#include "Geometry3D/X3DExtrusionEditor.h"
-#include "Geometry3D/X3DSphereEditor.h"
-#include "X3DPrimitiveCountEditor.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+
+#include <Titania/X3D/Components/Geometry3D/Sphere.h>
 
 namespace titania {
 namespace puck {
 
-class GeometryPropertiesEditor :
-	virtual public X3DGeometryPropertiesEditorInterface,
-	public X3DArc2DEditor,
-	public X3DArcClose2DEditor,
-	public X3DCircle2DEditor,
-	public X3DDisk2DEditor,
-	public X3DRectangle2DEditor,
-	public X3DBoxEditor,
-	public X3DConeEditor,
-	public X3DCylinderEditor,
-	public X3DExtrusionEditor,
-	public X3DSphereEditor,
-	public X3DPrimitiveCountEditor
+class X3DSphereEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	GeometryPropertiesEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~GeometryPropertiesEditor ();
+	~X3DSphereEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DSphereEditor ();
+
+	void
+	addShapes ();
+
+	void
+	removeShapes ();
+
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
-	getShapes () final override
-	{ return shapes; }
-
-	void
-	set_selection ();
-
 	void
 	set_geometry ();
 
-	void
-	connectGeometry (const X3D::SFNode & field);
-
-	void
-	set_buffer ();
-
-	void
-	set_normal ();
-
-	virtual
-	void
-	on_geometry_changed () final override;
-
-	virtual
-	void
-	on_geometry_unlink_clicked () final override;
-
-	virtual
-	void
-	on_add_normals_clicked () final override;
-
-	virtual
-	void
-	on_remove_normals_clicked () final override;
-
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> solid;
-	X3DFieldToggleButton <X3D::SFBool> ccw;
-	X3DFieldToggleButton <X3D::SFBool> convex;
-	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
-	X3DFieldToggleButton <X3D::SFBool> colorPerVertex;
-	X3DFieldToggleButton <X3D::SFBool> normalPerVertex;
-
-	X3D::SFNode                          geometryNode;
-	X3D::MFNode                          nodes;
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
-	X3D::SFTime                          nodesBuffer;
-
-	bool changing;
+	X3DFieldAdjustment <X3D::SFFloat> radius;
 
 };
 

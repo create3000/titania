@@ -217,6 +217,7 @@
     <Compile Include="Titania\Editors\TextureMappingEditor\TextureMappingEditor.cpp" />
     <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DColorEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1982,6 +1983,7 @@
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-right.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-top.x3dv" />
     <None Include="scripts\Library\Fields.pl" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

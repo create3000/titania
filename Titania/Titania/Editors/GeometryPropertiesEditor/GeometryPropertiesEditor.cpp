@@ -72,6 +72,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                        X3DConeEditor (),
 	                    X3DCylinderEditor (),
 	                   X3DExtrusionEditor (),
+	                      X3DSphereEditor (),
 	              X3DPrimitiveCountEditor (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
@@ -80,6 +81,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
 	                         geometryNode (),
+	                                nodes (),
 	                               shapes (),
 	                          nodesBuffer (),
 	                            changing (false)
@@ -120,6 +122,7 @@ GeometryPropertiesEditor::set_selection ()
 	X3DConeEditor::removeShapes ();
 	X3DCylinderEditor::removeShapes ();
 	X3DExtrusionEditor::removeShapes ();
+	X3DSphereEditor::removeShapes ();
 
 	shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
 	
@@ -135,6 +138,7 @@ GeometryPropertiesEditor::set_selection ()
 	X3DConeEditor::addShapes ();
 	X3DCylinderEditor::addShapes ();
 	X3DExtrusionEditor::addShapes ();
+	X3DSphereEditor::addShapes ();
 
 	set_geometry ();
 }
@@ -157,14 +161,23 @@ GeometryPropertiesEditor::set_buffer ()
 {
 	changing = true;
 
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <X3D::SFNode> ("normal") .removeInterest (this, &GeometryPropertiesEditor::set_normal);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
 	auto  tuple             = getSelection <X3D::X3DGeometryNode> (getShapes (), "geometry");
 	const int32_t active    = std::get <1> (tuple);
 	const bool    hasParent = std::get <2> (tuple);
 	const bool    hasField  = (active not_eq -2);
 
 	geometryNode = std::move (std::get <0> (tuple));
-
-	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	nodes        = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
 	solid           .setNodes (nodes);
 	ccw             .setNodes (nodes);
@@ -190,14 +203,38 @@ GeometryPropertiesEditor::set_buffer ()
 
 	for (const auto & node : nodes)
 	{
-		if (node -> hasField ("normal"))
+		try
 		{
+			node -> getField <X3D::SFNode> ("normal") .addInterest (this, &GeometryPropertiesEditor::set_normal);
+
 			getNormalsBox () .set_sensitive (true);
-			break;
 		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
+	set_normal ();
+
 	changing = false;
+}
+
+void
+GeometryPropertiesEditor::set_normal ()
+{
+	bool normal = false;
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			if (normal or_eq node -> getField <X3D::SFNode> ("normal"))
+				break;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getRemoveNormalsButton () .set_sensitive (normal);
 }
 
 void
