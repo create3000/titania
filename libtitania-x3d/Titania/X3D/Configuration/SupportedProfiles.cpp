@@ -60,8 +60,6 @@ SupportedProfiles::SupportedProfiles (const SupportedComponents & supportedCompo
 {
 	//std::clog << "Creating profile index:" << std::endl;
 
-	ComponentInfoArray CADInterchange;
-
 	add ("Computer-Aided Design (CAD) interchange", "CADInterchange", {
 	        supportedComponents .get ("Core",        1),
 	        supportedComponents .get ("Networking",  2),

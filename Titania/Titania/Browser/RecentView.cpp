@@ -235,11 +235,11 @@ RecentView::set_url (const X3D::SFString & url)
 	{
 		const X3D::BrowserPtr recentBrowser = getCurrentBrowser ();
 
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
-
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		getCurrentBrowser () -> finished () .addInterest (this, &RecentView::close, recentBrowser);
-		getCurrentBrowser () -> addEvent ();
+		recentBrowser -> finished () .addInterest (getBrowserWindow (), &X3DBrowserWidget::close, recentBrowser);
+		recentBrowser -> addEvent ();
+
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
 	}
 	else
 	{
@@ -250,13 +250,6 @@ RecentView::set_url (const X3D::SFString & url)
 
 		getBrowserWindow () -> load (getBrowserWindow () -> getCurrentBrowser (), URL);
 	}
-}
-
-void
-RecentView::close (const X3D::BrowserPtr & browser)
-{
-	getCurrentBrowser () -> finished () .removeInterest (this, &RecentView::close);
-	getBrowserWindow () -> close (browser);
 }
 
 RecentView::~RecentView ()

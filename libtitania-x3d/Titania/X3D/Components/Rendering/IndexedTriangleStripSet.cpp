@@ -114,26 +114,37 @@ IndexedTriangleStripSet::set_index ()
 	for (size_t i = 0, size = index () .size (); i < size; ++ i)
 	{
 		int32_t first = index () [i];
+		
+		if (first < 0)
+			continue;
 
 		++ i;
 
-		if (i < size and index () [i] > -1)
+		if (i < size)
 		{
 			int32_t second = index () [i];
+		
+			if (second < 0)
+				continue;
 
 			++ i;
 
-			for (size_t face = 0; i < size and index () [i] > -1; ++ i, ++ face)
+			for (size_t face = 0; i < size; ++ i, ++ face)
 			{
+				const int32_t third = index () [i];
+
+				if (third < 0)
+					break;
+
 				coordIndex .emplace_back (first);
 				coordIndex .emplace_back (second);
-				coordIndex .emplace_back (index () [i]);
+				coordIndex .emplace_back (third);
 
 				if (is_odd (face))
-					second = index () [i];
+					second = third;
 
 				else
-					first = index () [i];
+					first = third;
 			}
 		}
 	}
