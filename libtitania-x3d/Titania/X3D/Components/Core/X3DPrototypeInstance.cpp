@@ -404,6 +404,10 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "<ProtoInstance"
 				<< Generator::Space
+				<< "name='"
+				<< XMLEncode (getTypeName ())
+				<< "'"
+				<< Generator::Space
 				<< "USE='"
 				<< XMLEncode (name)
 				<< "'";
