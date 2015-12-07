@@ -418,7 +418,7 @@ ScriptEditor::set_cdata ()
 					getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
 					if (index >= cdata -> size () or cdata -> get1Value (index) .empty ())
-						getTextBuffer () -> set_text ("javascript:\n");
+						getTextBuffer () -> set_text ("ecmascript:\n");
 					else
 						getTextBuffer () -> set_text (cdata -> get1Value (index));
 
