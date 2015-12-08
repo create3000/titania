@@ -138,6 +138,10 @@ private:
 	throw (std::out_of_range);
 
 	void
+	exception (const std::string &)
+	throw (Error <INVALID_X3D>);
+
+	void
 	pushExecutionContext (X3DExecutionContext* const);
 
 	void

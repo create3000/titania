@@ -245,6 +245,16 @@ throw (std::out_of_range)
 }
 
 void
+Parser::exception (const std::string & string)
+throw (Error <INVALID_X3D>)
+{
+	if (getBrowser () -> isStrict ())
+		throw Error <INVALID_X3D> (string);
+
+	getBrowser () -> println (string);
+}
+
+void
 Parser::pushExecutionContext (X3DExecutionContext* const executionContext)
 {
 	//__LOG__ << this << " " << std::endl;
@@ -1269,8 +1279,7 @@ Parser::routeStatement ()
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						if (getBrowser () -> isStrict ())
-							throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
+						exception ("Bad ROUTE specification: Unknown eventOut '" + _eventOutId + "' in node '" + _fromNodeId + "' class " + _fromNode -> getTypeName ());
 					}
 
 					comments ();
@@ -1301,17 +1310,25 @@ Parser::routeStatement ()
 									}
 									catch (const Error <INVALID_NAME> &)
 									{
-										if (getBrowser () -> isStrict ())
-											throw Error <INVALID_X3D> ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
+										exception ("Bad ROUTE specification: Unknown eventIn '" + _eventInId + "' in node '" + _toNodeId + "' class " + _toNode -> getTypeName ());
 										
 										return true;
 									}
 
-									const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+									try
+									{
+										const RoutePtr & _route = getExecutionContext () -> addRoute (_fromNode, _eventOutId, _toNode, _eventInId);
+	
+										_route -> addComments (getComments ());
+	
+										return true;
+									}
+									catch (const X3DError & error)
+									{
+										exception (error .what ());
 
-									_route -> addComments (getComments ());
-
-									return true;
+										return true;
+									}
 								}
 
 								throw Error <INVALID_X3D> ("Bad ROUTE specification: Expected a field name.");
@@ -1484,8 +1501,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 								}
 								catch (const Error <INVALID_NAME> &)
 								{
-									if (getBrowser () -> isStrict ())
-										throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
+									exception ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName () + " interface declaration.");
 									
 									return true;
 								}
@@ -1518,8 +1534,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 													}
 													else
 													{
-														if (getBrowser () -> isStrict ())
-															throw Error <INVALID_X3D> ("Field '" + _fieldId + "' must have access type " + to_string (_field -> getAccessType ()) + ".");
+														exception ("Field '" + _fieldId + "' must have access type " + to_string (_field -> getAccessType ()) + ".");
 
 														return true;
 													}
@@ -1664,8 +1679,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 					}
 					catch (const Error <INVALID_NAME> &)
 					{
-						if (getBrowser () -> isStrict ())
-							throw Error <INVALID_X3D> ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
+						exception ("No such event or field '" + _isId + "' inside PROTO " + getExecutionContext () -> getName ());
 
 						return true;
 					}
@@ -2092,8 +2106,7 @@ Parser::sfcolorValue (SFColor* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		exception ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -2161,8 +2174,7 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		exception ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -2494,8 +2506,7 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
+		exception ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2578,8 +2589,7 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 9.");
+		exception ("To less values, must be a multiple of 9.");
 	}
 
 	return false;
@@ -2683,8 +2693,7 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
+		exception ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -2788,8 +2797,7 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 16.");
+		exception ("To less values, must be a multiple of 16.");
 	}
 
 	return false;
@@ -3080,8 +3088,7 @@ Parser::sfvec2dValue (SFVec2d* _field)
 			return true;
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
+		exception ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -3143,8 +3150,7 @@ Parser::sfvec2fValue (SFVec2f* _field)
 			return true;
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 2.");
+		exception ("To less values, must be a multiple of 2.");
 	}
 
 	return false;
@@ -3209,8 +3215,7 @@ Parser::sfvec3dValue (SFVec3d* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		exception ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3275,8 +3280,7 @@ Parser::sfvec3fValue (SFVec3f* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 3.");
+		exception ("To less values, must be a multiple of 3.");
 	}
 
 	return false;
@@ -3344,8 +3348,7 @@ Parser::sfvec4dValue (SFVec4d* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		exception ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
@@ -3413,8 +3416,7 @@ Parser::sfvec4fValue (SFVec4f* _field)
 			}
 		}
 
-		if (getBrowser () -> isStrict ())
-			throw Error <INVALID_X3D> ("To less values, must be a multiple of 4.");
+		exception ("To less values, must be a multiple of 4.");
 	}
 
 	return false;
