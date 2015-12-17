@@ -1,6 +1,18 @@
-#VRML V2.0 utf8 Titania V0.7.4
+#VRML V2.0 utf8 Titania V1.2.1
 
 META "title" "CADLayer"
+
+EXTERNPROTO MFBool [
+  eventIn      SFTime set_triggerTime
+  exposedField MFBool keyValue
+  eventOut     MFBool value_changed
+]
+[
+  "https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFBool.x3dv",
+  "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFBool.x3dv",
+  "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFBool.x3dv",
+  "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFBool.x3dv"
+]
 
 WorldInfo {
   metadata MetadataSet {
@@ -8,25 +20,73 @@ WorldInfo {
     value [
       MetadataSet {
         name "AngleGrid"
+        reference "http://titania.create3000.de"
         value MetadataBoolean {
           name "enabled"
+          reference "http://titania.create3000.de"
           value FALSE
         }
       }
       MetadataSet {
         name "Grid"
+        reference "http://titania.create3000.de"
         value [
           MetadataBoolean {
             name "enabled"
+            reference "http://titania.create3000.de"
             value TRUE
           }
           MetadataFloat {
             name "rotation"
+            reference "http://titania.create3000.de"
             value [
               1,
               0,
               0,
               1.5708
+            ]
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
             ]
           }
         ]
@@ -42,7 +102,7 @@ Background {
 
 CADAssembly {
   name "CADAssembly"
-  children CADLayer {
+  children DEF _1 CADLayer {
     name "CADLayer"
     visible [
       TRUE,
@@ -90,12 +150,27 @@ CADAssembly {
   }
 }
 
-DEF Box_1 Transform {
-  translation 0 -3 -1.10241e-05
-  children Shape {
-    appearance Appearance {
-      material Material { }
+DEF _2 Transform {
+  children [
+    DEF Box Transform {
+      translation 0 -3 -1.10241e-05
+      children Shape {
+        appearance Appearance {
+          material Material { }
+        }
+        geometry Box { }
+      }
     }
-    geometry Box { }
-  }
+    DEF _3 MFBool {
+      keyValue [
+        TRUE,
+        TRUE,
+        TRUE
+      ]
+    }
+    DEF _4 TouchSensor { }
+  ]
 }
+
+ROUTE _4.touchTime TO _3.set_triggerTime
+ROUTE _3.value_changed TO _1.set_visible
