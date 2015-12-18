@@ -65,19 +65,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              0.493739426136017,
+              0.376810103654861,
+              9.98073577880859
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.606455862522125,
+              0.795073628425598,
+              0.00831684470176697,
+              0.0621505565941334
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -100,9 +100,13 @@ Background {
   skyColor 0.2 0.2 0.2
 }
 
+DEF _1 Viewpoint {
+  description "Home"
+}
+
 CADAssembly {
   name "CADAssembly"
-  children DEF _1 CADLayer {
+  children DEF _2 CADLayer {
     name "CADLayer"
     visible [
       TRUE,
@@ -114,11 +118,18 @@ CADAssembly {
         name "CADPart"
         translation -2 0 0
         children CADFace {
-          shape Shape {
-            appearance Appearance {
-              material Material { }
-            }
-            geometry Box { }
+          shape Transform {
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material { }
+                }
+                geometry Box { }
+              }
+              DEF _3 Viewpoint {
+                description "CADFace 1"
+              }
+            ]
           }
         }
       }
@@ -150,7 +161,7 @@ CADAssembly {
   }
 }
 
-DEF _2 Transform {
+Transform {
   children [
     DEF Box Transform {
       translation 0 -3 -1.10241e-05
@@ -161,16 +172,16 @@ DEF _2 Transform {
         geometry Box { }
       }
     }
-    DEF _3 MFBool {
+    DEF _4 MFBool {
       keyValue [
         TRUE,
         TRUE,
         TRUE
       ]
     }
-    DEF _4 TouchSensor { }
+    DEF _5 TouchSensor { }
   ]
 }
 
-ROUTE _4.touchTime TO _3.set_triggerTime
-ROUTE _3.value_changed TO _1.set_visible
+ROUTE _5.touchTime TO _4.set_triggerTime
+ROUTE _4.value_changed TO _2.set_visible
