@@ -138,12 +138,15 @@ protected:
 	isHidden () const
 	{ return hidden; }
 
-	void
-	setVisible (const MFBool &);
-
+	virtual
 	const MFBool &
 	getVisible () const
 	{ return visible; }
+
+	///  @name Event handlers
+
+	void
+	set_children ();
 
 
 private:
@@ -158,9 +161,6 @@ private:
 
 	void
 	set_removeChildren ();
-
-	void
-	set_children ();
 
 	virtual
 	void

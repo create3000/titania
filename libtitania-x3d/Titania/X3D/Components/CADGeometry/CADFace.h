@@ -136,6 +136,11 @@ protected:
 
 private:
 
+	// Event handler
+
+	void
+	set_shape ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -152,6 +157,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <X3DChildNode> shapeNode;
 
 };
 

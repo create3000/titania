@@ -89,6 +89,8 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	center () .setUnit (UnitCategory::LENGTH);
 
 	addChildren (proximitySensor);
+
+	setCameraObject (true);
 }
 
 X3DBaseNode*
@@ -107,8 +109,6 @@ ViewpointGroup::initialize ()
 
 	size ()   .addInterest (proximitySensor -> size ());
 	center () .addInterest (proximitySensor -> center ());
-
-	proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
@@ -141,6 +141,14 @@ void
 ViewpointGroup::set_displayed ()
 {
 	proximitySensor -> enabled () = displayed () and size () not_eq Vector3f ();
+
+	if (proximitySensor -> enabled ())
+		proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	else
+	{
+		proximitySensor -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+		setCameraObject (true);
+	}
 }
 
 void
@@ -161,15 +169,12 @@ ViewpointGroup::set_children ()
 void
 ViewpointGroup::traverse (const TraverseType type)
 {
-	if (proximitySensor -> enabled ())
-	{
-		proximitySensor -> traverse (type);
+	proximitySensor -> traverse (type);
 
-		if (proximitySensor -> isActive () or size () == Vector3f ())
-		{
-			for (const auto & viewpointObject : viewpointObjects)
-				viewpointObject -> traverse (type);
-		}
+	if (proximitySensor -> isActive () or size () == Vector3f ())
+	{
+		for (const auto & viewpointObject : viewpointObjects)
+			viewpointObject -> traverse (type);
 	}
 }
 

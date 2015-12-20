@@ -23,17 +23,17 @@ EXTERNPROTO Rotor [
 EXTERNPROTO Red [
   inputOutput SFFloat transparency
 ]
-"Colors.x3dv"
+"Colors.x3dv#Red"
 
 EXTERNPROTO Orange [
   inputOutput SFFloat transparency
 ]
-"Colors.x3dv"
+"Colors.x3dv#Orange"
 
 EXTERNPROTO Yellow [
   inputOutput SFFloat transparency
 ]
-"Colors.x3dv"
+"Colors.x3dv#Yellow"
 
 DEF Red Transform {
   children Shape {

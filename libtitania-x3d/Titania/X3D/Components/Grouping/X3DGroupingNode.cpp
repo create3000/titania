@@ -129,14 +129,6 @@ X3DGroupingNode::isHidden (const bool value)
 	}
 }
 
-void
-X3DGroupingNode::setVisible (const MFBool & value)
-{
-	visible = value;
-
-	set_children ();
-}
-
 //void
 //X3DGroupingNode::set_addChildren ()
 //{
@@ -224,7 +216,7 @@ X3DGroupingNode::add (const MFNode & children)
 
 	for (const auto & child : children)
 	{
-		if (child and (i >= visible .size () or visible [i]))
+		if (child and (i >= getVisible () .size () or getVisible () [i]))
 		{
 			try
 			{

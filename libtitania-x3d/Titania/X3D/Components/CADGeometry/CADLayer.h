@@ -129,6 +129,13 @@ protected:
 
 private:
 
+	///  @name Member access
+
+	virtual
+	const MFBool &
+	getVisible () const final override
+	{ return visible (); }
+
 	///  @name Static members
 
 	static const ComponentType component;

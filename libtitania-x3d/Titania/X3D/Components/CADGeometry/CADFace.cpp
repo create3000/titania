@@ -69,7 +69,8 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	                 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DProductStructureChildNode (),
 	            X3DBoundedObject (),
-	                      fields ()
+	                      fields (),
+	                   shapeNode ()
 {
 	addType (X3DConstants::CADFace);
 
@@ -78,6 +79,8 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 	addField (inputOutput,    "shape",      shape ());
+
+	addChildren (shapeNode);
 }
 
 X3DBaseNode*
@@ -91,6 +94,46 @@ CADFace::initialize ()
 {
 	X3DProductStructureChildNode::initialize ();
 	X3DBoundedObject::initialize ();
+
+	shape () .addInterest (this, &CADFace::set_shape);
+
+	set_shape ();
+}
+
+void
+CADFace::set_shape ()
+{
+	try
+	{
+		if (shapeNode)
+			shapeNode -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &CADFace::setCameraObject);
+
+		shapeNode = nullptr;
+
+		const auto innerNode = shape () -> getInnerNode ();
+
+		for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		{
+			switch (type)
+			{
+				case X3DConstants::LOD:
+				case X3DConstants::Transform:
+				case X3DConstants::X3DShapeNode:
+				{
+					shapeNode = dynamic_cast <X3DChildNode*> (innerNode);
+
+					shapeNode -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &CADFace::setCameraObject);
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
+		}
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 Box3f
@@ -98,7 +141,7 @@ CADFace::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		const auto boundedObject = x3d_cast <X3DBoundedObject*> (shape ());
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (shapeNode);
 
 		if (boundedObject)
 			return boundedObject -> getBBox ();
@@ -112,8 +155,8 @@ CADFace::getBBox () const
 void
 CADFace::traverse (const TraverseType type)
 {
-	if (shape ())
-		shape () -> traverse (type);
+	if (shapeNode)
+		shapeNode -> traverse (type);
 }
 
 void
