@@ -260,7 +260,12 @@ CylinderSensor::set_motion (const HitPtr & hit)
 			const auto min   = interval <double> (minAngle (), -M_PI, M_PI);
 			const auto max   = interval <double> (maxAngle (), -M_PI, M_PI);
 
-			if (angle > min and angle < max)
+			if (angle < min)
+				rotation = Rotation4d (cylinder .axis () .direction (), min);
+			else if (angle > max)
+				rotation = Rotation4d (cylinder .axis () .direction (), max);
+	
+			if (rotation_changed () != rotation)
 				rotation_changed () = rotation;
 		}
 	}

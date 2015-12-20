@@ -276,8 +276,13 @@ PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 	if (not (minPosition () .getY () > maxPosition () .getY ()))
 		translation .y (clamp <float> (translation .y (), minPosition () .getY (), maxPosition () .getY ()));
 
-	trackPoint_changed ()  = trackPoint;
-	translation_changed () = translation * Rotation4d (axisRotation () .getValue ());
+	translation = translation * Rotation4d (axisRotation () .getValue ());
+
+	if (trackPoint != trackPoint_changed ())
+		trackPoint_changed () = trackPoint;
+
+	if (translation != translation_changed ())
+		translation_changed () = translation;
 }
 
 } // X3D
