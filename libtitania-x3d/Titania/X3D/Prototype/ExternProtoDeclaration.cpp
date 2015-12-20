@@ -335,13 +335,18 @@ ExternProtoDeclaration::setScene (X3DScenePtr && value)
 		else
 			getExecutionContext () -> addUninitializedNode (scene);
 
-		const std::string protoName = scene -> getWorldURL () .fragment () .empty ()
-		                              ? getName ()
-									       	: scene -> getWorldURL () .fragment ();
+		if (scene -> getWorldURL () .fragment () .empty ())
+		{
+			setProtoDeclaration (scene -> getProtoDeclarations () .at (0));
+		}
+		else
+		{
+			const auto & protoName = scene -> getWorldURL () .fragment ();
 
-		setProtoDeclaration (scene -> getProtoDeclaration (protoName));
+			setProtoDeclaration (scene -> getProtoDeclaration (protoName));
+		}
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
 		setLoadState (FAILED_STATE);
 
