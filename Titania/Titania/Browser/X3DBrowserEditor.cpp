@@ -544,13 +544,12 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 
 		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
-
-		const auto type = types .find (getCurrentBrowser () -> getCurrentViewer ());
+		const auto type        = types .find (getCurrentBrowser () -> getCurrentViewer ());
 
 		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
 	}
 
-	if (true)
+	try
 	{
 		const auto   worldInfo        = createWorldInfo ();
 		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
@@ -564,6 +563,8 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 		metadataSet -> createValue <X3D::MetadataDouble> ("orientation")      -> value () = { orientation      .x (), orientation      .y (), orientation      .z (), orientation .angle () };
 		metadataSet -> createValue <X3D::MetadataDouble> ("centerOfRotation") -> value () = { centerOfRotation .x (), centerOfRotation .y (), centerOfRotation .z () };
 	}
+	catch (const X3D::X3DError &)
+	{ }
 
 	if (X3DBrowserWidget::save (worldURL, compressed, copy))
 	{
