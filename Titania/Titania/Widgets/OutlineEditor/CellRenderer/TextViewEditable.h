@@ -94,6 +94,9 @@ private:
 	on_textview_populate_popup (Gtk::Menu*);
 
 	void
+	on_trigger_event ();
+	
+	void
 	on_toggle_value ();
 	
 	void

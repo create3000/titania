@@ -2,16 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/RecentView.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/RecentView.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.h" Line="23" Column="23" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="35" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
