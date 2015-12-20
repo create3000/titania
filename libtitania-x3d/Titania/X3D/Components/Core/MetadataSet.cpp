@@ -111,7 +111,7 @@ throw (Error <INVALID_NAME>,
 	const auto iter = metadataIndex .find (name);
 
 	if (iter not_eq metadataIndex .end ())
-		return iter -> second;
+		return *iter -> second;
 
 	throw Error <INVALID_NAME> ("MetadataSet::getObject: Invalid name '" + name + "'.");
 }
@@ -144,7 +144,11 @@ throw (Error <DISPOSED>)
 void
 MetadataSet::setValue (X3DMetadataObject* const metadataObject, const std::string & name)
 {
-	metadataIndex .emplace (name, metadataObject) .first -> second .addParent (this);
+	const auto value = new X3DPtr <X3DMetadataObject> (metadataObject);
+
+	value -> addParent (this);
+
+	metadataIndex .emplace (name, value);
 
 	metadataObject -> name ()      = name;
 	metadataObject -> reference () = getBrowser () -> getProviderUrl ();
@@ -167,11 +171,15 @@ MetadataSet::addValue (const SFNode & node)
 	if (metadataObject -> reference () not_eq getBrowser () -> getProviderUrl ())
 		return;
 
-	metadataIndex .emplace (metadataObject -> name (), metadataObject) .first -> second .addParent (this);
+	const auto value = new X3DPtr <X3DMetadataObject> (metadataObject);
+
+	value -> addParent (this);
+
+	metadataIndex .emplace (metadataObject -> name (), value);
 }
 
 void
-MetadataSet::removeValue ()
+MetadataSet::removeValues ()
 throw (Error <DISPOSED>)
 {
 	for (const auto & pair : metadataIndex)
@@ -183,7 +191,7 @@ throw (Error <DISPOSED>)
 void
 MetadataSet::set_value ()
 {
-	removeMetaData ();
+	removeValues ();
 
 	for (const auto & node : value ())
 		addValue (node);
@@ -192,7 +200,7 @@ MetadataSet::set_value ()
 void
 MetadataSet::dispose ()
 {
-	removeMetaData ();
+	removeValues ();
 
 	X3DMetadataObject::dispose ();
 	X3DNode::dispose ();

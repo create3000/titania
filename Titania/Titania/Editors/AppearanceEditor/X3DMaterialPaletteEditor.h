@@ -98,7 +98,11 @@ private:
 	disable ();
 
 	///  @name Event handlers
-	
+
+	virtual
+	void
+	on_palette_face_changed () final override;
+
 	virtual
 	void
 	on_palette_previous_clicked () final override;
@@ -119,6 +123,7 @@ private:
 	X3D::BrowserPtr           preview;
 	std::vector <std::string> folders;
 	std::vector <std::string> files;
+	bool                      frontMaterial;
 };
 
 } // puck

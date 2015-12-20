@@ -64,7 +64,11 @@ public:
 	///  @name Construction
 
 	MagicImport (X3DBrowserWindow* const);
-	
+
+	void
+	setFrontMaterial (const bool value)
+	{ frontMaterial = value; }
+
 	///  @name Operations
 
 	bool
@@ -102,6 +106,8 @@ private:
 	
 	std::map <std::string, ImportFunction1> importFunctions1;
 	std::map <std::string, ImportFunction2> importFunctions2;
+
+	bool frontMaterial;
 
 };
 

@@ -422,6 +422,8 @@ X3DMaterialEditor::on_material_changed ()
 	else
 		getMaterialUnlinkButton () .set_sensitive (getMaterialComboBoxText () .get_active () > 0 and material -> getCloneCount () > 1);
 
+	getPaletteFaceCombo () .set_visible (isTwoSidedMaterial);
+
 	set_widgets ();
 	set_preview ();
 
@@ -496,6 +498,8 @@ X3DMaterialEditor::set_node ()
 		getMaterialUnlinkButton () .set_sensitive (active > 0 and twoSidedMaterial -> getCloneCount () > 1);
 	else
 		getMaterialUnlinkButton () .set_sensitive (active > 0 and material -> getCloneCount () > 1);
+
+	getPaletteFaceCombo () .set_visible (isTwoSidedMaterial);
 
 	changing = false;
 

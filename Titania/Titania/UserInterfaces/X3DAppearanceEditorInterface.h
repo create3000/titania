@@ -397,6 +397,10 @@ public:
 	getPaletteBox () const
 	{ return *m_PaletteBox; }
 
+	Gtk::ComboBoxText &
+	getPaletteFaceCombo () const
+	{ return *m_PaletteFaceCombo; }
+
 	Gtk::Box &
 	getPalettePreviewBox () const
 	{ return *m_PalettePreviewBox; }
@@ -452,6 +456,10 @@ public:
 	virtual
 	void
 	on_lineProperties_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_palette_face_changed () = 0;
 
 	virtual
 	void
@@ -555,6 +563,7 @@ private:
 	Gtk::SpinButton*               m_LinePropertiesLinetypeSpinButton;
 	Gtk::SpinButton*               m_LinePropertiesLinewidthScaleFactorSpinButton;
 	Gtk::Box*                      m_PaletteBox;
+	Gtk::ComboBoxText*             m_PaletteFaceCombo;
 	Gtk::Box*                      m_PalettePreviewBox;
 	Gtk::ComboBoxText*             m_PaletteComboBoxText;
 	Gtk::Button*                   m_PalettePreviousButton;

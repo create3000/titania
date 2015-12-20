@@ -59,6 +59,7 @@
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
@@ -80,7 +81,8 @@ MagicImport::MagicImport (X3DBrowserWindow* const browserWindow) :
 	                  std::make_pair ("Fog",            std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
 	                  std::make_pair ("NavigationInfo", std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
 	                  std::make_pair ("Viewpoint",      std::bind (&MagicImport::bind, this, _1, _2, _3, _4)),
-						                  })
+						                  }),
+	    frontMaterial (true)
 {
 	setup ();
 }
@@ -167,6 +169,8 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 
 	X3D::traverse (selection, [&] (X3D::SFNode & node)
 	               {
+	                  using setValue = void (X3D::SFColor::*) (const X3D::Color3f &);
+	
 	                  const auto appearance = dynamic_cast <X3D::Appearance*> (node .getValue ());
 
 	                  if (appearance)
@@ -174,35 +178,73 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 	                     const X3D::X3DPtr <X3D::Material> lhs (appearance -> material ());
 	                     const X3D::X3DPtr <X3D::Material> rhs (material);
 
-	                     if (lhs and rhs and lhs -> getExecutionContext () == executionContext)
-	                     {
-	                        using setValue = void (X3D::SFColor::*) (const X3D::Color3f &);
+	                     if (rhs)
+								{
+		                     if (lhs and lhs -> getExecutionContext () == executionContext)
+		                     {
+		                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), lhs -> ambientIntensity ());
+		                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     lhs -> diffuseColor ());
+		                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    lhs -> specularColor ());
+		                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    lhs -> emissiveColor ());
+		                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        lhs -> shininess ());
+		                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     lhs -> transparency ());
+	
+		                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), rhs -> ambientIntensity ());
+		                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     rhs -> diffuseColor ());
+		                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    rhs -> specularColor ());
+		                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    rhs -> emissiveColor ());
+		                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        rhs -> shininess ());
+		                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     rhs -> transparency ());
+	
+		                        lhs -> ambientIntensity () = rhs -> ambientIntensity ();
+		                        lhs -> diffuseColor ()     = rhs -> diffuseColor ();
+		                        lhs -> specularColor ()    = rhs -> specularColor ();
+		                        lhs -> emissiveColor ()    = rhs -> emissiveColor ();
+		                        lhs -> shininess ()        = rhs -> shininess ();
+		                        lhs -> transparency ()     = rhs -> transparency ();
+	
+		                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+									}
+		                     else
+									{
+			                     const X3D::X3DPtr <X3D::TwoSidedMaterial> lhs (appearance -> material ());
+	
+			                     if (lhs and lhs -> getExecutionContext () == executionContext)
+			                     {
+										   auto & ambientIntensity = frontMaterial ? lhs -> ambientIntensity () : lhs -> backAmbientIntensity ();
+                                 auto & diffuseColor     = frontMaterial ? lhs -> diffuseColor ()     : lhs -> backDiffuseColor ();
+                                 auto & specularColor    = frontMaterial ? lhs -> specularColor ()    : lhs -> backSpecularColor ();
+                                 auto & emissiveColor    = frontMaterial ? lhs -> emissiveColor ()    : lhs -> backEmissiveColor ();
+                                 auto & shininess        = frontMaterial ? lhs -> shininess ()        : lhs -> backShininess ();
+                                 auto & transparency     = frontMaterial ? lhs -> transparency ()     : lhs -> backTransparency ();
 
-	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), lhs -> ambientIntensity ());
-	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     lhs -> diffuseColor ());
-	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    lhs -> specularColor ());
-	                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    lhs -> emissiveColor ());
-	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        lhs -> shininess ());
-	                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     lhs -> transparency ());
-
-	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> ambientIntensity ()), rhs -> ambientIntensity ());
-	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> diffuseColor ()),     rhs -> diffuseColor ());
-	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> specularColor ()),    rhs -> specularColor ());
-	                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (lhs -> emissiveColor ()),    rhs -> emissiveColor ());
-	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> shininess ()),        rhs -> shininess ());
-	                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (lhs -> transparency ()),     rhs -> transparency ());
-
-	                        lhs -> ambientIntensity () = rhs -> ambientIntensity ();
-	                        lhs -> diffuseColor ()     = rhs -> diffuseColor ();
-	                        lhs -> specularColor ()    = rhs -> specularColor ();
-	                        lhs -> emissiveColor ()    = rhs -> emissiveColor ();
-	                        lhs -> shininess ()        = rhs -> shininess ();
-	                        lhs -> transparency ()     = rhs -> transparency ();
-
-	                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+			                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (ambientIntensity), ambientIntensity);
+			                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (diffuseColor),     diffuseColor);
+			                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (specularColor),    specularColor);
+			                        undoStep -> addUndoFunction ((setValue) & X3D::SFColor::setValue, std::ref (emissiveColor),    emissiveColor);
+			                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (shininess),        shininess);
+			                        undoStep -> addUndoFunction (&X3D::SFFloat::setValue,             std::ref (transparency),     transparency);
+		
+			                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (ambientIntensity), rhs -> ambientIntensity ());
+			                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (diffuseColor),     rhs -> diffuseColor ());
+			                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (specularColor),    rhs -> specularColor ());
+			                        undoStep -> addRedoFunction ((setValue) & X3D::SFColor::setValue, std::ref (emissiveColor),    rhs -> emissiveColor ());
+			                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (shininess),        rhs -> shininess ());
+			                        undoStep -> addRedoFunction (&X3D::SFFloat::setValue,             std::ref (transparency),     rhs -> transparency ());
+		
+			                        ambientIntensity = rhs -> ambientIntensity ();
+			                        diffuseColor     = rhs -> diffuseColor ();
+			                        specularColor    = rhs -> specularColor ();
+			                        emissiveColor    = rhs -> emissiveColor ();
+			                        shininess        = rhs -> shininess ();
+			                        transparency     = rhs -> transparency ();
+		
+			                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+										}
+										else
+											getBrowserWindow () -> replaceNode (executionContext, node, appearance -> material (), material, undoStep);
+									}
 								}
-	                     else
-									getBrowserWindow () -> replaceNode (executionContext, node, appearance -> material (), material, undoStep);
 							}
 
 	                  return true;

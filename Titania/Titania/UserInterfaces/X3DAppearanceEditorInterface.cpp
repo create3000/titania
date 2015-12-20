@@ -140,6 +140,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
 	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
+	m_builder -> get_widget ("PaletteFaceCombo", m_PaletteFaceCombo);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
 	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
@@ -171,7 +172,8 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'LinePropertiesUnlinkButton'.
 	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
 
-	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
+	// Connect object Gtk::ComboBoxText with id 'PaletteFaceCombo'.
+	m_PaletteFaceCombo -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_face_changed));
 	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_changed));
 
 	// Connect object Gtk::Button with id 'PalettePreviousButton'.

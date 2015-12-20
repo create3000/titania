@@ -123,10 +123,6 @@ public:
 	removeValue (const std::string &)
 	throw (Error <DISPOSED>);
 
-	void
-	removeValue ()
-	throw (Error <DISPOSED>);
-
 	///  @name Destruction
 
 	virtual
@@ -168,6 +164,10 @@ private:
 	void
 	setValue (X3DMetadataObject* const, const std::string &);
 
+	void
+	removeValues ()
+	throw (Error <DISPOSED>);
+
 	///  @name Event handlers
 
 	void
@@ -190,7 +190,7 @@ private:
 
 	Fields fields;
 
-	std::map <std::string, X3DPtr <X3DMetadataObject>> metadataIndex;
+	std::map <std::string, X3DPtr <X3DMetadataObject>*> metadataIndex;
 
 };
 

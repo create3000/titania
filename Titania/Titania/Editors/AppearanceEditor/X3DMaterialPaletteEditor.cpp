@@ -71,9 +71,14 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                     folders (),
-	                       files ()
+	                       files (),
+	               frontMaterial (true)
 {
 	preview -> setAntialiasing (4);
+
+	const bool paletteFace = getConfig () .getInteger ("paletteFace");
+
+	getPaletteFaceCombo () .set_active (paletteFace);
 }
 
 void
@@ -202,6 +207,12 @@ X3DMaterialPaletteEditor::disable ()
 }
 
 void
+X3DMaterialPaletteEditor::on_palette_face_changed ()
+{
+	frontMaterial = getPaletteFaceCombo () .get_active_row_number () == 0;
+}
+
+void
 X3DMaterialPaletteEditor::on_palette_previous_clicked ()
 {
 	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
@@ -232,7 +243,11 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
 		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
 
-		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
+		MagicImport magicImport (getBrowserWindow ());
+
+		magicImport .setFrontMaterial (frontMaterial);
+
+		if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)
@@ -240,7 +255,9 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 }
 
 X3DMaterialPaletteEditor::~X3DMaterialPaletteEditor ()
-{ }
+{
+	getConfig () .setItem ("paletteFace", getPaletteFaceCombo () .get_active_row_number ());
+}
 
 } // puck
 } // titania
