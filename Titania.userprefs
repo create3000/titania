@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.h" Line="1" Column="1" />
@@ -11,7 +11,9 @@
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Dialogs/FileImportDialog/FileImportDialog.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="22" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

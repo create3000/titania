@@ -1,62 +1,62 @@
 #X3D V3.3 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Fri, 25 Dec 2015 11:36:28 GMT"
+META "created" "Fri, 25 Dec 2015 11:36:29 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.1, http://titania.create3000.de"
-META "modified" "Fri, 25 Dec 2015 11:36:28 GMT"
+META "modified" "Fri, 25 Dec 2015 11:36:29 GMT"
 
-DEF LostValley Transform {
+DEF WideOcean Transform {
   children Shape {
     appearance Appearance {
       material Material { }
       texture ComposedCubeMapTexture {
         front ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg"
           ]
         }
         back ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg"
           ]
         }
         left ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg"
           ]
         }
         right ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg"
           ]
         }
         top ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg"
           ]
         }
         bottom ImageTexture {
           url [
-            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
+            "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+            "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+            "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+            "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg"
           ]
         }
       }

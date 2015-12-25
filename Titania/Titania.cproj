@@ -1984,6 +1984,7 @@
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-top.x3dv" />
     <None Include="scripts\Library\Fields.pl" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.h" />
+    <None Include="share\titania\Library\CubeMapTextures\WideOcean.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
