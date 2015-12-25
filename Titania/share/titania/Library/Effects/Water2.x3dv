@@ -1,11 +1,64 @@
-#X3D V3.0 utf8 Titania V1.2.0
+#X3D V3.0 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 02:59:56 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Fri, 25 Dec 2015 01:56:50 GMT"
 META "title" "Water Shader 2"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              33.4493408203125,
+              65.2821044921875,
+              106.096557617188
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.997228145599365,
+              0.0698252394795418,
+              0.0256995372474194,
+              0.706964671611786
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              29.5,
+              0,
+              29.4999923706055
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Water2"
+}
 
 DEF Water2 Transform {
   children [
@@ -28,95 +81,90 @@ DEF Water2 Transform {
     }
     Shape {
       appearance Appearance {
-        shaders DEF WaterShader2 ComposedShader {
+        shaders DEF TitaniaWaterShader ComposedShader {
           inputOnly   SFFloat set_time
-          inputOutput SFVec3f position 29.2858 85.2161 83.1894
+          inputOutput SFVec3f position 33.4493 65.2821 106.097
           inputOutput SFInt32 waves 5
           inputOutput MFFloat amplitude [
-            0.2,
-            0.2,
+            0.27,
+            0.17,
             0.1,
             0.1,
             0.1
           ]
-          inputOutput MFFloat waveLength [
-            1.1,
-            2.3,
-            3.1,
-            4.1,
-            5.3
-          ]
-          inputOutput MFFloat speed [
-            1.09,
-            0.79,
-            0.19,
-            0.29,
-            0.37
+          inputOutput MFFloat frequency [
+            1.01,
+            0.97,
+            0.43,
+            0.37,
+            0.29
           ]
           inputOutput MFVec2f direction [
-            0.1 -0.2,
-            0.3 -0.4,
-            0.5 -0.6,
-            0.7 -0.8,
-            0.9 -0.1
+            4 -4,
+            4 -3,
+            4 -2,
+            4 -1,
+            4 -0
           ]
           inputOutput SFFloat transparency 0.5
           inputOutput SFNode  texture ComposedCubeMapTexture {
             front ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-front.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-front.jpg"
               ]
             }
             back ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-back.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-back.jpg"
               ]
             }
             left ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-left.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-left.jpg"
               ]
             }
             right ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-right.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-right.jpg"
               ]
             }
             top ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-top.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-top.jpg"
               ]
             }
             bottom ImageTexture {
               url [
-                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg",
-                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/LostValley/LostValley-bottom.jpg"
+                "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
+                "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
+                "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg",
+                "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/CloudySky/CloudySky-bottom.jpg"
               ]
             }
           }
 
           language "GLSL"
           parts [
-            ShaderPart {
+            DEF TitaniaWaterVertex ShaderPart {
               url "data:text/plain,
 #version 120
+
+precision mediump float;
 
 #define WAVE_MAX 8
 
@@ -124,8 +172,7 @@ uniform float set_time;
 uniform vec3  position;
 uniform int   waves;
 uniform float amplitude [WAVE_MAX];
-uniform float waveLength [WAVE_MAX];
-uniform float speed [WAVE_MAX];
+uniform float frequency [WAVE_MAX];
 uniform vec2  direction [WAVE_MAX];
 
 varying vec3 translation;
@@ -133,74 +180,67 @@ varying vec3 worldNormal;
 varying vec3 reflection;
 varying vec3 eyeNormal;
 
-const float M_PI = 3.14159;
-
 float
-wave (in int i, in float x, in float y)
+getHeight (int i, vec2 vertex)
 {
-	float frequency = 2 * M_PI / waveLength [i];
-	float phase     = speed [i] * frequency;
-	float theta     = dot (direction [i], vec2 (x, y));
+	float theta = -dot (vertex, normalize (direction [i]));
 
-	return amplitude [i] * sin (theta * frequency + set_time * phase);
+	return amplitude [i] * sin (theta * frequency [i] + set_time);
 }
 
 float
-waveHeight (in float x, in float y)
+getWaveHeight (vec2 vertex)
 {
 	float height = 0.0;
 
 	for (int i = 0; i < waves; ++i)
-		height += wave (i, x, y);
+		height += getHeight (i, vertex);
 
 	return height;
 }
 
-float
-dWaved (in int i, in float x, in float y, in float d)
+vec2
+getNormal (int i, vec2 vertex)
 {
-	float frequency = 2 * M_PI / waveLength [i];
-	float phase     = speed [i] * frequency;
-	float theta     = dot (direction [i], vec2 (x, y));
-	float A         = amplitude [i] * d * frequency;
+	vec2  dir   = normalize (direction [i]);
+	float theta = -dot (dir, vertex);
+	vec2  A     = dir * frequency [i];
 
-	return A * cos (theta * frequency + set_time * phase);
+	return A * amplitude [i] * cos (theta * frequency [i] + set_time);
 }
 
 vec3
-waveNormal (in float x, in float y)
+getWaveNormal (vec2 vertex)
 {
-	float dx = 0.0;
-	float dy = 0.0;
+	vec2 dt = vec2 (0.0, 0.0);
 
-	for (int i = 0; i < waves; ++i)
+	for (int i = 0; i < waves; ++ i)
 	{
-		dx += dWaved (i, x, y, direction [i] .x);
-		dy += dWaved (i, x, y, direction [i] .y);
+		dt += getNormal (i, vertex);
 	}
 
-	vec3 n = vec3 (-dx, -dy, 1.0);
-
-	return normalize (n);
+	return normalize (vec3 (dt .x, dt .y, 1.0));
 }
 
 void
 main ()
 {
-	vec4 pos    = gl_Vertex;
-	pos.y       = waveHeight (pos .x, pos .z);
-	translation = position - pos .xyz / pos .w;
-	worldNormal = waveNormal (pos .x, pos .z);
+	vec4 vertex = gl_Vertex;
+	vertex.y    = getWaveHeight (vec2 (vertex .x, vertex .z));
+	translation = position - vertex .xyz / vertex .w;
+	worldNormal = getWaveNormal (vec2 (vertex .x, vertex .z));
 	reflection  = reflect (translation, worldNormal);
 	eyeNormal   = gl_NormalMatrix * worldNormal;
-	gl_Position = gl_ModelViewProjectionMatrix * pos;
+	gl_Position = gl_ModelViewProjectionMatrix * vertex;
 }
 "
             }
-            ShaderPart {
+            DEF TitaniaWaterFragment ShaderPart {
               type "FRAGMENT"
               url "data:text/plain,
 #version 120
+
+precision mediump float;
 
 uniform float       transparency;
 uniform samplerCube texture;
@@ -211,7 +251,7 @@ void
 main ()
 {
 	vec3 color   = vec3 (textureCube (texture, reflection));
-	gl_FragColor = vec4 (color, 1 - transparency);
+	gl_FragColor = vec4 (color, 1.0 - transparency);
 }
 "
             }
@@ -219,13 +259,13 @@ main ()
         }
       }
       geometry ElevationGrid {
-        xDimension 60
-        zDimension 60
+        xDimension 61
+        zDimension 61
       }
     }
   ]
 }
 
+ROUTE _1.position_changed TO TitaniaWaterShader.set_position
+ROUTE ElapsedTime.value_changed TO TitaniaWaterShader.set_time
 ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
-ROUTE ElapsedTime.value_changed TO WaterShader2.set_time
-ROUTE _1.position_changed TO WaterShader2.set_position

@@ -62,7 +62,7 @@ const std::string   ComposedCubeMapTexture::typeName       = "ComposedCubeMapTex
 const std::string   ComposedCubeMapTexture::containerField = "texture";
 
 const GLenum ComposedCubeMapTexture::targets [6] = {
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front, front and back are swaped, otherwise background images cannot be used!
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
 	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
@@ -135,8 +135,8 @@ ComposedCubeMapTexture::initialize ()
 
 		set_texture (0, front ());
 		set_texture (1, back ());
-		set_texture (2, right ());
-		set_texture (3, left ());
+		set_texture (2, left ());
+		set_texture (3, right ());
 		set_texture (4, top ());
 		set_texture (5, bottom ());
 	}
@@ -190,6 +190,14 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 		glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 		glBindTexture (GL_TEXTURE_2D, 0);
+
+//		for (size_t r = 0; r < (height/2); r++)
+//		{
+//			for (size_t c = 0; c != width * 4; ++c)
+//			{
+//				std::swap (image [r * width * 4 + c], image [(height - 1 - r) * width * 4 + c]);
+//			}
+//		}
 
 		// Transfer image
 		// Important: width and height must be equal, and all images must be of the same size!!!

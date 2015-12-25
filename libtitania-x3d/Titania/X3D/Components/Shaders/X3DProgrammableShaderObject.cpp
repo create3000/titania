@@ -132,10 +132,10 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 	if (location == -1)
 	{
 		#ifdef TITANIA_DEBUG
-		getBrowser () -> println ("Warning: Uniform variable '", field -> getName (), "' not found.");
+		//getBrowser () -> println ("Warning: Uniform variable '", field -> getName (), "' not found.");
 
-		if (not getProgramId ())
-			getBrowser () -> println ("Warning: Couldn't allocate shader.");
+		//if (not getProgramId ())
+		//	getBrowser () -> println ("Warning: Couldn't allocate shader.");
 		#endif
 
 		glUseProgram (0);
@@ -562,7 +562,7 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 	else
 	{
 		#ifdef TITANIA_DEBUG
-		getBrowser () -> println ("Warning: Uniform variable '", name, "' not found.");
+		//getBrowser () -> println ("Warning: Uniform variable '", name, "' not found.");
 		#endif
 	}
 
