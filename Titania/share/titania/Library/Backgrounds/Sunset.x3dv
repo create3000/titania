@@ -1,27 +1,47 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Wed, 04 Nov 2015 01:28:05 GMT"
+META "created" "Fri, 25 Dec 2015 14:16:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 01:28:05 GMT"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Fri, 25 Dec 2015 14:16:22 GMT"
 META "titania magic" "Background"
 
 DEF Sunset Background {
-  skyAngle [
-    0.8,
-    1.2,
-    1.5,
-    1.55,
-    1.5708
+  frontUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-front.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-front.jpg"
   ]
-  skyColor [
-    0.0196078 0.0196078 0.0196078,
-    0.054902 0.0705882 0.0862745,
-    0.203922 0.243137 0.313726,
-    0.541176 0.462745 0.435294,
-    0.745098 0.541176 0.376471,
-    0.890196 0.537255 0.172549
+  backUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-back.jpg"
   ]
-  groundColor 0 0 0
+  leftUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-left.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-left.jpg"
+  ]
+  rightUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-right.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-right.jpg"
+  ]
+  topUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-top.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-top.jpg"
+  ]
+  bottomUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/Sunset/Sunset-bottom.jpg"
+  ]
 }
