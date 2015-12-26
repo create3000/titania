@@ -54,6 +54,7 @@
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Geospatial/GeoViewpoint.h>
+#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -151,8 +152,36 @@ void
 X3DGeoViewpointEditor::on_new_geo_viewpoint_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New GeoViewpoint"));
-	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("GeoViewpoint", undoStep));
+	const X3D::X3DPtr <X3D::GeoViewpoint> node (getBrowserWindow () -> createNode ("GeoViewpoint", undoStep));
 	node -> set_bind () = true;
+
+	try
+	{
+		const auto & activeViewpoint = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
+
+		const X3D::X3DPtr <X3D::GeoViewpoint> geoViewpoint (activeViewpoint);
+
+		if (geoViewpoint)
+		{
+			node -> geoOrigin ()   = geoViewpoint -> geoOrigin ();
+			node -> geoSystem ()   = geoViewpoint -> geoSystem ();
+			node -> fieldOfView () = geoViewpoint -> fieldOfView ();
+			node -> setup ();
+		}
+
+		const auto & cameraSpaceMatrix = activeViewpoint -> getCameraSpaceMatrix ();
+
+		X3D::Vector3f   position;
+		X3D::Rotation4f orientation;
+
+		cameraSpaceMatrix .get (position, orientation);
+		node -> setPosition (position);
+		node -> setOrientation (orientation);
+		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getTransformationMatrix ());
+	}
+	catch (const X3D::X3DError &)
+	{ }	
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

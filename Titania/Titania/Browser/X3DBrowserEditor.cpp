@@ -785,8 +785,8 @@ X3DBrowserEditor::getPasteStatus () const
 
 // Edit operations
 
-X3D::SFNode
-X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
+void
+X3DBrowserEditor::addNode (const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
 	auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
@@ -794,11 +794,7 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 										: getCurrentContext () -> getRootNodes ();
 
 	undoStep -> addObjects (getCurrentContext (), activeLayer);
-
-	const auto node = getCurrentContext () -> createNode (typeName);
 	children .emplace_back (node);
-	getCurrentContext () -> addUninitializedNode (node);
-	getCurrentContext () -> realize ();
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 
 	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
@@ -807,6 +803,17 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 	undoStep -> addUndoFunction (&X3D::UndoStep::redo, removeUndoStep);
 	removeUndoStep -> undo ();
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, removeUndoStep);
+}
+
+X3D::SFNode
+X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
+{
+	const auto node = getCurrentContext () -> createNode (typeName);
+	getCurrentContext () -> addUninitializedNode (node);
+	getCurrentContext () -> realize ();
+
+	addNode (node, undoStep);
+
 	return node;
 }
 

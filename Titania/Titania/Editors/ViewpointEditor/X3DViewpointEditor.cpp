@@ -53,6 +53,8 @@
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Execution/World.h>
+
 namespace titania {
 namespace puck {
 
@@ -108,8 +110,30 @@ void
 X3DViewpointEditor::on_new_viewpoint_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Viewpoint"));
-	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("Viewpoint", undoStep));
+	const X3D::X3DPtr <X3D::Viewpoint> node (getBrowserWindow () -> createNode ("Viewpoint", undoStep));
 	node -> set_bind () = true;
+
+	try
+	{
+		const auto & activeViewpoint   = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
+		const auto & cameraSpaceMatrix = activeViewpoint -> getCameraSpaceMatrix ();
+
+		X3D::Vector3f   position;
+		X3D::Rotation4f orientation;
+
+		cameraSpaceMatrix .get (position, orientation);
+		node -> setPosition (position);
+		node -> setOrientation (orientation);
+		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getTransformationMatrix ());
+
+		const X3D::X3DPtr <X3D::Viewpoint> viewpoint (activeViewpoint);
+
+		if (viewpoint)
+			node -> fieldOfView () = viewpoint -> fieldOfView ();
+	}
+	catch (const X3D::X3DError &)
+	{ }	
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

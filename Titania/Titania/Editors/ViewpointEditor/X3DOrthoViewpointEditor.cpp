@@ -53,6 +53,7 @@
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -120,8 +121,30 @@ void
 X3DOrthoViewpointEditor::on_new_ortho_viewpoint_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New OrthoViewpoint"));
-	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("OrthoViewpoint", undoStep));
+	const X3D::X3DPtr <X3D::OrthoViewpoint> node (getBrowserWindow () -> createNode ("OrthoViewpoint", undoStep));
 	node -> set_bind () = true;
+
+	try
+	{
+		const auto & activeViewpoint   = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
+		const auto & cameraSpaceMatrix = activeViewpoint -> getCameraSpaceMatrix ();
+
+		X3D::Vector3f   position;
+		X3D::Rotation4f orientation;
+
+		cameraSpaceMatrix .get (position, orientation);
+		node -> setPosition (position);
+		node -> setOrientation (orientation);
+		node -> setCenterOfRotation (activeViewpoint -> getUserCenterOfRotation () * activeViewpoint -> getTransformationMatrix ());
+
+		const X3D::X3DPtr <X3D::OrthoViewpoint> orthoViewpoint (activeViewpoint);
+
+		if (orthoViewpoint)
+			node -> fieldOfView () = orthoViewpoint -> fieldOfView ();
+	}
+	catch (const X3D::X3DError &)
+	{ }	
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
