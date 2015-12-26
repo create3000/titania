@@ -214,8 +214,8 @@
                   <object class="GtkLabel" id="label7">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
                     <property name="label" translatable="yes">Import File</property>
+                    <property name="xalign">0</property>
                     <style>
                       <class name="titania-header"/>
                     </style>
@@ -241,10 +241,11 @@
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkRadioButton" id="ImportSceneButton">
-                    <property name="label" translatable="yes">Import whole scene</property>
+                    <property name="label" translatable="yes">Magic Import</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Import whole scene, sounds, images and videos.</property>
                     <property name="xalign">0</property>
                     <property name="draw_indicator">True</property>
                   </object>

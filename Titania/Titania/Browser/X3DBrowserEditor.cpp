@@ -712,39 +712,53 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 	{
 		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
-		if (clipboard -> wait_is_text_available ())
-		{
-			basic::ifilestream text (clipboard -> wait_for_text ());
+		if (not clipboard -> wait_is_text_available ())
+			return;
 
-			text .imbue (std::locale::classic ());
+		basic::ifilestream text (clipboard -> wait_for_text ());
 
-			std::string header;
+		text .imbue (std::locale::classic ());
 
-			if (X3D::Grammar::Comment (text, header))
-			{
-				std::string encoding, specificationVersion, characterEncoding, comment;
+		std::string header;
 
-				if (X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
-				{
-					std::string whiteSpaces;
+		if (not X3D::Grammar::Comment (text, header))
+			return;
 
-					X3D::Grammar::WhiteSpaces (text, whiteSpaces);
+		std::string encoding, specificationVersion, characterEncoding, comment;
 
-					std::string worldURL;
+		if (not X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
+			return;
 
-					if (X3D::Grammar::Comment (text, worldURL))
-					{
-						const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, text);
+		std::string whiteSpaces;
 
-						if (not MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
-						{
-							getSelection () -> setChildren (importScene (executionContext, X3D::SFNode (executionContext), executionContext -> getRootNodes (), scene, undoStep),
-							                                undoStep);
-						}
-					}
-				}
-			}
-		}
+		X3D::Grammar::WhiteSpaces (text, whiteSpaces);
+
+		std::string worldURL;
+
+		if (not X3D::Grammar::Comment (text, worldURL))
+			return;
+
+		const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, text);
+
+		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
+			return;
+
+		const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
+		auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
+		                           ? activeLayer -> children ()
+											: getCurrentContext () -> getRootNodes ();
+	
+		undoStep -> addObjects (getCurrentContext (), activeLayer);
+
+		const auto importedNodes = importScene (executionContext,
+                                              X3D::SFNode (executionContext),
+                                              executionContext == getCurrentContext ()
+                                              ? children
+                                              : executionContext -> getRootNodes (),
+                                              scene,
+                                              undoStep);
+
+		getSelection () -> setChildren (importedNodes, undoStep);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -785,6 +799,10 @@ X3DBrowserEditor::getPasteStatus () const
 
 // Edit operations
 
+
+/***
+ *  Add node to current layer root nodes.
+ */
 void
 X3DBrowserEditor::addNode (const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
 {
@@ -805,6 +823,9 @@ X3DBrowserEditor::addNode (const X3D::SFNode & node, const X3D::UndoStepPtr & un
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, removeUndoStep);
 }
 
+/***
+ *  Create node and add node to current layer root nodes.
+ */
 X3D::SFNode
 X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
 {
