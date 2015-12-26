@@ -994,6 +994,12 @@ BrowserWindow::on_create_parent_lod_activated ()
 }
 
 void
+BrowserWindow::on_create_parent_viewpoint_group_activated ()
+{
+	on_create_parent ("ViewpointGroup");
+}
+
+void
 BrowserWindow::on_create_parent_anchor_activated ()
 {
 	on_create_parent ("Anchor");

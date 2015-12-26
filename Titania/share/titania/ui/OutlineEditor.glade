@@ -363,6 +363,15 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="CreateParentViewpontGroupMenuItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">ViewpontGroup</property>
+                <property name="use_underline">True</property>
+                <signal name="activate" handler="on_create_parent_viewpoint_group_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkSeparatorMenuItem" id="separatormenuitem15">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

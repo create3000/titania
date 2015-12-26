@@ -442,6 +442,10 @@ public:
 	{ return *m_BrowserCreateParentLODMenuItem; }
 
 	Gtk::MenuItem &
+	getBrowserCreateParentViewpointGroupMenuItem () const
+	{ return *m_BrowserCreateParentViewpointGroupMenuItem; }
+
+	Gtk::MenuItem &
 	getBrowserCreateParentAnchorMenuItem () const
 	{ return *m_BrowserCreateParentAnchorMenuItem; }
 
@@ -900,6 +904,10 @@ public:
 	Gtk::MenuItem &
 	getCreateParentLODMenuItem () const
 	{ return *m_CreateParentLODMenuItem; }
+
+	Gtk::MenuItem &
+	getCreateParentViewpointGroupMenuItem () const
+	{ return *m_CreateParentViewpointGroupMenuItem; }
 
 	Gtk::MenuItem &
 	getCreateParentAnchorMenuItem () const
@@ -1755,6 +1763,10 @@ public:
 
 	virtual
 	void
+	on_create_parent_viewpoint_group_activated () = 0;
+
+	virtual
+	void
 	on_create_parent_anchor_activated () = 0;
 
 	virtual
@@ -2142,6 +2154,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserCreateParentBillboardMenuItem;
 	Gtk::MenuItem*                   m_BrowserCreateParentCollisionMenuItem;
 	Gtk::MenuItem*                   m_BrowserCreateParentLODMenuItem;
+	Gtk::MenuItem*                   m_BrowserCreateParentViewpointGroupMenuItem;
 	Gtk::MenuItem*                   m_BrowserCreateParentAnchorMenuItem;
 	Gtk::MenuItem*                   m_BrowserCreateParentLayoutLayerMenuItem;
 	Gtk::MenuItem*                   m_BrowserCreateParentScreenGroupMenuItem;
@@ -2257,6 +2270,7 @@ private:
 	Gtk::MenuItem*                   m_CreateParentBillboardMenuItem;
 	Gtk::MenuItem*                   m_CreateParentCollisionMenuItem;
 	Gtk::MenuItem*                   m_CreateParentLODMenuItem;
+	Gtk::MenuItem*                   m_CreateParentViewpointGroupMenuItem;
 	Gtk::MenuItem*                   m_CreateParentAnchorMenuItem;
 	Gtk::MenuItem*                   m_CreateParentLayoutLayerMenuItem;
 	Gtk::MenuItem*                   m_CreateParentScreenGroupMenuItem;

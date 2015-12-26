@@ -80,7 +80,7 @@
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
@@ -88,7 +88,7 @@
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
@@ -935,8 +935,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1009,6 +1009,15 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">LOD</property>
                         <signal name="activate" handler="on_create_parent_lod_activated" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="BrowserCreateParentViewpointGroupMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ViewpointGroup</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_create_parent_viewpoint_group_activated" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2306,8 +2315,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -2387,6 +2396,15 @@
                                         <property name="label" translatable="yes">LOD</property>
                                         <property name="use_underline">True</property>
                                         <signal name="activate" handler="on_create_parent_lod_activated" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkMenuItem" id="CreateParentViewpointGroupMenuItem">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">ViewpointGroup</property>
+                                        <property name="use_underline">True</property>
+                                        <signal name="activate" handler="on_create_parent_viewpoint_group_activated" swapped="no"/>
                                       </object>
                                     </child>
                                     <child>

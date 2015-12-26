@@ -218,6 +218,10 @@ public:
 	{ return *m_CreateParentLODMenuItem; }
 
 	Gtk::MenuItem &
+	getCreateParentViewpontGroupMenuItem () const
+	{ return *m_CreateParentViewpontGroupMenuItem; }
+
+	Gtk::MenuItem &
 	getCreateParentAnchorMenuItem () const
 	{ return *m_CreateParentAnchorMenuItem; }
 
@@ -383,6 +387,10 @@ public:
 
 	virtual
 	void
+	on_create_parent_viewpoint_group_activated () = 0;
+
+	virtual
+	void
 	on_create_parent_anchor_activate () = 0;
 
 	virtual
@@ -510,6 +518,7 @@ private:
 	Gtk::MenuItem*                  m_CreateParentBillboardMenuItem;
 	Gtk::MenuItem*                  m_CreateParentCollisionMenuItem;
 	Gtk::MenuItem*                  m_CreateParentLODMenuItem;
+	Gtk::MenuItem*                  m_CreateParentViewpontGroupMenuItem;
 	Gtk::MenuItem*                  m_CreateParentAnchorMenuItem;
 	Gtk::MenuItem*                  m_CreateParentLayoutLayerMenuItem;
 	Gtk::MenuItem*                  m_CreateParentScreenGroupMenuItem;

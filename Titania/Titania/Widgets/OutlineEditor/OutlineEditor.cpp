@@ -725,6 +725,12 @@ OutlineEditor::on_create_parent_lod_activate ()
 }
 
 void
+OutlineEditor::on_create_parent_viewpoint_group_activated ()
+{
+	on_create_parent ("ViewpointGroup");
+}
+
+void
 OutlineEditor::on_create_parent_anchor_activate ()
 {
 	on_create_parent ("Anchor");

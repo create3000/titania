@@ -201,6 +201,10 @@ private:
 
 	virtual
 	void
+	on_create_parent_viewpoint_group_activated () final override;
+
+	virtual
+	void
 	on_create_parent_anchor_activate () final override;
 
 	virtual

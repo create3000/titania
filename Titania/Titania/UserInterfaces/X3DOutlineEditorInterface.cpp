@@ -95,6 +95,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreateParentBillboardMenuItem", m_CreateParentBillboardMenuItem);
 	m_builder -> get_widget ("CreateParentCollisionMenuItem", m_CreateParentCollisionMenuItem);
 	m_builder -> get_widget ("CreateParentLODMenuItem", m_CreateParentLODMenuItem);
+	m_builder -> get_widget ("CreateParentViewpontGroupMenuItem", m_CreateParentViewpontGroupMenuItem);
 	m_builder -> get_widget ("CreateParentAnchorMenuItem", m_CreateParentAnchorMenuItem);
 	m_builder -> get_widget ("CreateParentLayoutLayerMenuItem", m_CreateParentLayoutLayerMenuItem);
 	m_builder -> get_widget ("CreateParentScreenGroupMenuItem", m_CreateParentScreenGroupMenuItem);
@@ -150,6 +151,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_billboard_activate));
 	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_collision_activate));
 	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_lod_activate));
+	m_CreateParentViewpontGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewpoint_group_activated));
 	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_anchor_activate));
 	m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layout_layer_activate));
 	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_screen_group_activate));

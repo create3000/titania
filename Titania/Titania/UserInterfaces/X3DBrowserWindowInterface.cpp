@@ -151,6 +151,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserCreateParentBillboardMenuItem", m_BrowserCreateParentBillboardMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentCollisionMenuItem", m_BrowserCreateParentCollisionMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentLODMenuItem", m_BrowserCreateParentLODMenuItem);
+	m_builder -> get_widget ("BrowserCreateParentViewpointGroupMenuItem", m_BrowserCreateParentViewpointGroupMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentAnchorMenuItem", m_BrowserCreateParentAnchorMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentLayoutLayerMenuItem", m_BrowserCreateParentLayoutLayerMenuItem);
 	m_builder -> get_widget ("BrowserCreateParentScreenGroupMenuItem", m_BrowserCreateParentScreenGroupMenuItem);
@@ -266,6 +267,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CreateParentBillboardMenuItem", m_CreateParentBillboardMenuItem);
 	m_builder -> get_widget ("CreateParentCollisionMenuItem", m_CreateParentCollisionMenuItem);
 	m_builder -> get_widget ("CreateParentLODMenuItem", m_CreateParentLODMenuItem);
+	m_builder -> get_widget ("CreateParentViewpointGroupMenuItem", m_CreateParentViewpointGroupMenuItem);
 	m_builder -> get_widget ("CreateParentAnchorMenuItem", m_CreateParentAnchorMenuItem);
 	m_builder -> get_widget ("CreateParentLayoutLayerMenuItem", m_CreateParentLayoutLayerMenuItem);
 	m_builder -> get_widget ("CreateParentScreenGroupMenuItem", m_CreateParentScreenGroupMenuItem);
@@ -497,6 +499,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserCreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activated));
 	m_BrowserCreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activated));
 	m_BrowserCreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activated));
+	m_BrowserCreateParentViewpointGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewpoint_group_activated));
 	m_BrowserCreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activated));
 	m_BrowserCreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_layer_activated));
 	m_BrowserCreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activated));
@@ -596,6 +599,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_billboard_activated));
 	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_collision_activated));
 	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_lod_activated));
+	m_CreateParentViewpointGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_viewpoint_group_activated));
 	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_anchor_activated));
 	m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_layout_layer_activated));
 	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_create_parent_screen_group_activated));
