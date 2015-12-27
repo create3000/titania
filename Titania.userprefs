@@ -2,19 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CADGeometry/CADLayer.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/CellRenderer/TextViewEditable.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Anchor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileImportDialog/FileImportDialog.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTexture2DNode.h" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/CubeMapTextures.pl" Line="31" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="52" Column="52" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="11" Column="11" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.h" Line="58" Column="58" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="58" Column="58" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="29" Column="29" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="58" Column="58" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="9" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

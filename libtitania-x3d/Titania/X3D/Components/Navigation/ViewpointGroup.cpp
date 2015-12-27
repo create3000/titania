@@ -143,7 +143,10 @@ ViewpointGroup::set_displayed ()
 	proximitySensor -> enabled () = displayed () and size () not_eq Vector3f ();
 
 	if (proximitySensor -> enabled ())
+	{
 		proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+		setCameraObject (proximitySensor -> isCameraObject ());
+	}
 	else
 	{
 		proximitySensor -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));

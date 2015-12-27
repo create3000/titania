@@ -76,9 +76,7 @@ LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	X3DNetworkSensorNode (),
 	              fields (),
 	          urlObjects (),
-	           startTime (0),
-	              loaded (),
-	            complete (),
+	             aborted (false),
 	  timeOut_connection ()
 {
 	addType (X3DConstants::LoadSensor);
@@ -133,12 +131,12 @@ LoadSensor::set_timeOut ()
 	{
 		timeOut_connection .disconnect ();
 
+		aborted = false;
+
 		if (timeOut () > 0)
 		{
-			time_type duration = timeOut () - (getCurrentTime () - startTime);
-
 			timeOut_connection = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &LoadSensor::abort),
-			                                                       duration * 1000,
+			                                                       timeOut () * 1000,
 			                                                       GDK_PRIORITY_REDRAW); // GDK_PRIORITY_REDRAW is very important
 		}
 	}
@@ -153,106 +151,59 @@ LoadSensor::set_watchList ()
 void
 LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 {
-	if (isActive ())
-	{
-		switch (urlObject -> checkLoadState ())
-		{
-			case COMPLETE_STATE:
-			{
-				complete .emplace (urlObject);
-
-				progress () = float (complete .size ()) / float (urlObjects .size ());
-
-				if (complete .size () == urlObjects .size ())
-				{
-					timeOut_connection .disconnect ();
-
-					isActive () = false;
-					isLoaded () = true;
-					loadTime () = getCurrentTime ();
-				}
-
-				break;
-			}
-			case FAILED_STATE:
-			{
-				abort ();
-				break;
-			}
-			default:
-				break;
-		}
-	}
-	else
-	{
-		if (startTime)
-		{
-			switch (urlObject -> checkLoadState ())
-			{
-				case COMPLETE_STATE:
-				case FAILED_STATE:
-				{
-					if (not loaded .count (urlObject))
-						break;
-					// Proceed with next step
-				}
-				case IN_PROGRESS_STATE:
-				{
-					reset ();
-					break;
-				}
-				default:
-					break;
-			}
-		}
-		else
-		{
-			switch (urlObject -> checkLoadState ())
-			{
-				case COMPLETE_STATE:
-				{
-					start ();
-					set_loadState (urlObject);
-					break;
-				}
-				case FAILED_STATE:
-				{
-					start ();
-					abort ();
-					break;
-				}
-				case IN_PROGRESS_STATE:
-				{
-					start ();			
-					break;
-				}
-				default:
-					break;
-			}
-		}
-	}
+	__LOG__ << urlObject -> getTypeName () << " : " << int (urlObject -> checkLoadState ()) << std::endl;
 
 	switch (urlObject -> checkLoadState ())
 	{
+		case NOT_STARTED_STATE:
+			break;
+		case IN_PROGRESS_STATE:
 		case COMPLETE_STATE:
 		case FAILED_STATE:
 		{
-			loaded .emplace (urlObject);
+			count ();
 			break;
 		}
-		default:
-			break;
 	}
 }
 
 void
-LoadSensor::start ()
+LoadSensor::count ()
 {
-	isActive () = true;
-	progress () = 0;
-	
-	startTime = getCurrentTime ();
-	set_timeOut ();
+	size_t complete = 0;
+	size_t failed = 0;
+
+	for (const auto & node : urlObjects)
+	{
+		const auto urlObject = x3d_cast <X3DUrlObject*> (node);
+
+		complete += urlObject -> checkLoadState () == COMPLETE_STATE;
+		failed   += urlObject -> checkLoadState () == FAILED_STATE;
+	}
+
+	if (aborted or failed or complete == urlObjects .size ())
+	{
+		timeOut_connection .disconnect ();
+
+		isActive () = false;
+		isLoaded () = complete == urlObjects .size ();
+		progress () = float (complete) / float (urlObjects .size ());
+
+		if (isLoaded ())
+			loadTime () = getCurrentTime ();
+	}
+	else
+	{
+		if (isActive ())
+			progress () = float (complete) / float (urlObjects .size ());
+		else
+		{
+			isActive () = true;
+			progress () = float (complete) / float (urlObjects .size ());
+
+			set_timeOut ();
+		}
+	}
 }
 
 bool
@@ -260,10 +211,10 @@ LoadSensor::abort ()
 {
 	timeOut_connection .disconnect ();
 
-	isActive () = false;
-	
+	aborted = true;
+
 	if (enabled ())
-		isLoaded () = false;
+		count ();
 
 	return false;
 }
@@ -275,10 +226,6 @@ LoadSensor::reset ()
 
 	if (enabled ())
 	{
-		startTime = 0;
-		loaded   .clear ();
-		complete .clear ();
-		
 		for (const auto & node : watchList ())
 		{
 			const auto urlObject = x3d_cast <X3DUrlObject*> (node);
@@ -288,17 +235,9 @@ LoadSensor::reset ()
 				urlObjects .emplace_back (urlObject);
 
 				urlObject -> checkLoadState () .addInterest (this, &LoadSensor::set_loadState, urlObject);
+
+				set_loadState (urlObject);
 			}
-		}
-
-		for (const auto & node : urlObjects)
-		{
-			const auto urlObject = x3d_cast <X3DUrlObject*> (node);
-
-			set_loadState (urlObject);
-
-			if (not isActive ())
-				break;
 		}
 	}
 }

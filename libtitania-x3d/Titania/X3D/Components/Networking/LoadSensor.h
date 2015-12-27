@@ -166,7 +166,7 @@ private:
 	///  @name Operations
 
 	void
-	start ();
+	count ();
 	
 	bool
 	abort ();
@@ -198,11 +198,9 @@ private:
 
 	Fields fields;
 
-	MFNode                  urlObjects;
-	time_type               startTime;
-	std::set <X3DBaseNode*> loaded;
-	std::set <X3DBaseNode*> complete;
-	sigc::connection        timeOut_connection;
+	MFNode           urlObjects;
+	bool             aborted;
+	sigc::connection timeOut_connection;
 
 };
 
