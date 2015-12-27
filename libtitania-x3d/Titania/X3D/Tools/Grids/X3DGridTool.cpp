@@ -228,135 +228,145 @@ X3DGridTool::set_children (const MFNode & value)
 void
 X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
-	if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
-		return;
-
-	// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
-	// for easier snap position calculation.
-
-	// Get absolute position.
-
-	const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
-
-	Vector3d position;
-
-	if (snapToCenter () and not master -> getKeepCenter ())
-		position = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
-	else
+	try
 	{
-		// Snap to bbox center.
-		const auto bbox = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
-		position = bbox .center ();
-	}
-
-	// Calculate snap position and apply absolute relative translation.
-
-	Matrix4d grid;
-	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
-
-	Matrix4d snap;
-	snap .set (getSnapPosition (position * ~grid) * grid - position);
-
-	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
-	const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
-
-	if (master -> getKeepCenter ())
-		master -> setMatrixKeepCenter (currentMatrix);
-	else
-		master -> setMatrix (currentMatrix);
-
-	master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-	master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
-
-	// Apply translation to translation group.
-
-	const Matrix4d differenceMatrix = ~matrix * (absoluteMatrix * snap);
-
-	for (const auto & node : children)
-	{
-		if (node == master)
-			continue;
-
-		try
+		if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
+			return;
+	
+		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
+		// for easier snap position calculation.
+	
+		// Get absolute position.
+	
+		const auto absoluteMatrix = master -> getCurrentMatrix () * master -> getTransformationMatrix ();
+	
+		Vector3d position;
+	
+		if (snapToCenter () and not master -> getKeepCenter ())
+			position = Vector3d (master -> center () .getValue ()) * absoluteMatrix;
+		else
 		{
-			const X3DPtr <X3DTransformNode> transform (node);
-
-			if (transform)
+			// Snap to bbox center.
+			const auto bbox = Box3d (master -> X3DGroupingNode::getBBox ()) * absoluteMatrix;
+			position = bbox .center ();
+		}
+	
+		// Calculate snap position and apply absolute relative translation.
+	
+		Matrix4d grid;
+		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
+	
+		Matrix4d snap;
+		snap .set (getSnapPosition (position * ~grid) * grid - position);
+	
+		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
+		const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+	
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+	
+		master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+		master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
+	
+		// Apply translation to translation group.
+	
+		const Matrix4d differenceMatrix = ~matrix * (absoluteMatrix * snap);
+	
+		for (const auto & node : children)
+		{
+			if (node == master)
+				continue;
+	
+			try
 			{
-				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-
-				if (transform -> translation () .isTainted ())
+				const X3DPtr <X3DTransformNode> transform (node);
+	
+				if (transform)
 				{
-					transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-					transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
-				}
-
-				if (transform -> scale () .isTainted ())
-				{
-					transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-					transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+	
+					if (transform -> translation () .isTainted ())
+					{
+						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+					}
+	
+					if (transform -> scale () .isTainted ())
+					{
+						transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+						transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+					}
 				}
 			}
+			catch (const std::exception &)
+			{ }
 		}
-		catch (const std::exception &)
-		{ }
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
 X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
-	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
-
-	const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
-
-	if (tool < 0)
-		return;
-
-	const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 3);
-	const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
-
-	if (master -> getKeepCenter ())
-		master -> setMatrixKeepCenter (currentMatrix);
-	else
-		master -> setMatrix (currentMatrix);
-
-	master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-	master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);
-
-	// Apply translation to translation group.
-
-	const Matrix4d differenceMatrix = ~matrix * currentMatrix* master -> getTransformationMatrix ();
-
-	for (const auto & node : children)
+	try
 	{
-		if (node == master)
-			continue;
-
-		try
+		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+	
+		const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
+	
+		if (tool < 0)
+			return;
+	
+		const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 3);
+		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
+	
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+	
+		master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+		master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);
+	
+		// Apply translation to translation group.
+	
+		const Matrix4d differenceMatrix = ~matrix * currentMatrix* master -> getTransformationMatrix ();
+	
+		for (const auto & node : children)
 		{
-			const X3DPtr <X3DTransformNode> transform (node);
-
-			if (transform)
+			if (node == master)
+				continue;
+	
+			try
 			{
-				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-
-				if (transform -> translation () .isTainted ())
+				const X3DPtr <X3DTransformNode> transform (node);
+	
+				if (transform)
 				{
-					transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-					transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
-				}
-
-				if (transform -> scale () .isTainted ())
-				{
-					transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-					transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+	
+					if (transform -> translation () .isTainted ())
+					{
+						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+					}
+	
+					if (transform -> scale () .isTainted ())
+					{
+						transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
+						transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+					}
 				}
 			}
+			catch (const std::exception &)
+			{ }
 		}
-		catch (const std::exception &)
-		{ }
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 Matrix4d
