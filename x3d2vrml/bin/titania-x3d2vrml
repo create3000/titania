@@ -1326,22 +1326,24 @@ use strict;
 use warnings;
 use v5.10.0;
 
-my $options = { recover => 2 };
-
-if (@ARGV)
-{
-	$options -> {location} = shift @ARGV;
-}
-else
-{
-	$options -> {string} = join '', <STDIN>;
-}
-
-my $parser = new X3D::Parser ($options);
-$parser -> parse ();
-
-my $generator = new X3D::Generator ($parser);
-$generator -> output ();
+eval {
+	my $options = { recover => 2 };
+	
+	if (@ARGV)
+	{
+		$options -> {location} = shift @ARGV;
+	}
+	else
+	{
+		$options -> {string} = join '', <STDIN>;
+	}
+	
+	my $parser = new X3D::Parser ($options);
+	$parser -> parse ();
+	
+	my $generator = new X3D::Generator ($parser);
+	$generator -> output ();
+};
 
 if ($@)
 {

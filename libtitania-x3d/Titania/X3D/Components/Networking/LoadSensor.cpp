@@ -151,8 +151,6 @@ LoadSensor::set_watchList ()
 void
 LoadSensor::set_loadState (X3DUrlObject* const urlObject)
 {
-	__LOG__ << urlObject -> getTypeName () << " : " << int (urlObject -> checkLoadState ()) << std::endl;
-
 	switch (urlObject -> checkLoadState ())
 	{
 		case NOT_STARTED_STATE:
@@ -181,25 +179,39 @@ LoadSensor::count ()
 		failed   += urlObject -> checkLoadState () == FAILED_STATE;
 	}
 
+	const float p = float (complete) / float (urlObjects .size ());
+
 	if (aborted or failed or complete == urlObjects .size ())
 	{
 		timeOut_connection .disconnect ();
 
-		isActive () = false;
-		isLoaded () = complete == urlObjects .size ();
-		progress () = float (complete) / float (urlObjects .size ());
+		const bool loaded = complete == urlObjects .size ();
 
-		if (isLoaded ())
+		if (isActive ())
+			isActive () = false;
+
+		if (loaded != isLoaded ())
+			isLoaded () = loaded;
+
+		if (p != progress ())
+			progress () = float (complete) / float (urlObjects .size ());
+
+		if (loaded)
 			loadTime () = getCurrentTime ();
 	}
 	else
 	{
 		if (isActive ())
-			progress () = float (complete) / float (urlObjects .size ());
+		{
+			if (p != progress ())
+				progress () = p;
+		}
 		else
 		{
 			isActive () = true;
-			progress () = float (complete) / float (urlObjects .size ());
+
+			if (p != progress ())
+				progress () = p;
 
 			set_timeOut ();
 		}
@@ -235,10 +247,10 @@ LoadSensor::reset ()
 				urlObjects .emplace_back (urlObject);
 
 				urlObject -> checkLoadState () .addInterest (this, &LoadSensor::set_loadState, urlObject);
-
-				set_loadState (urlObject);
 			}
 		}
+
+		count ();
 	}
 }
 
