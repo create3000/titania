@@ -530,7 +530,7 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 
 	// Calculate quaternion
 
-	const Type halfTheta = angle / 2;
+	const Type halfTheta = interval <float> (angle / 2, 0, M_PI);
 
 	scale = std::sin (halfTheta) / scale;
 

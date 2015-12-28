@@ -1,18 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Numbers/Rotation4.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/LoadSensor.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/LoadSensor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Thread/SceneLoader.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ComposedShader.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ComposedShader.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ComposedShader.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/ShaderProgram.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="14" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="1" Column="1" />
+      <File FileName="x3d2vrml/bin/titania-x3d2vrml" Line="1" Column="1" />
+      <File FileName="../Cobweb/cobweb.js/tests/Components/Shaders/water.x3d" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Numbers/Rotation4.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

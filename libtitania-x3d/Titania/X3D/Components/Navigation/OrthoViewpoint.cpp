@@ -165,9 +165,9 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 	const double aspect = width / height;
 
 	if (aspect > sizeX / sizeY)
-		return Vector2d (getSizeY () * aspect, getSizeY ());
+		return Vector2d (sizeY * aspect, sizeY);
 
-	return Vector2d (getSizeX (), getSizeX () / aspect);
+	return Vector2d (sizeX, sizeX / aspect);
 }
 
 float
