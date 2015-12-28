@@ -610,7 +610,7 @@ Layout::transform (const TraverseType type)
 
 		//__LOG__ << this << " : " << rectangleSize << std::endl;
 		//__LOG__ << this << " : " << scale << std::endl;
-		__LOG__ << matrix << std::endl;
+		//__LOG__ << matrix << std::endl;
 	}
 }
 
