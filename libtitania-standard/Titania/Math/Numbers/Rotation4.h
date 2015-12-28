@@ -288,7 +288,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 	const vector3 <Type> from (normalize (fromVector));
 	const vector3 <Type> to (normalize (toVector));
 
-	const Type     cos_angle = dot (from, to);
+	const Type     cos_angle = clamp <Type> (dot (from, to), -1, 1);
 	vector3 <Type> crossvec  = normalize (cross (from, to));
 	const Type     crosslen  = abs (crossvec);
 
@@ -321,7 +321,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 		// The abs () wrapping is to avoid problems when `dot' "overflows" a tiny wee bit,
 		// which can lead to sqrt () returning NaN.
 		crossvec *= std::sqrt (std::abs (1 - cos_angle) / 2);
-		value     = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt (std::abs (1 + cos_angle) / 2));
+		value     = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt ((1 + cos_angle) / 2));
 	}
 }
 
@@ -530,7 +530,7 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 
 	// Calculate quaternion
 
-	const Type halfTheta = interval <float> (angle / 2, 0, M_PI);
+	const Type halfTheta = interval <Type> (angle / 2, 0, M_PI);
 
 	scale = std::sin (halfTheta) / scale;
 
