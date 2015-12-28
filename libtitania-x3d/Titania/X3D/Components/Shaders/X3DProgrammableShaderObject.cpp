@@ -86,7 +86,7 @@ X3DProgrammableShaderObject::applyTransformFeedbackVaryings () const
 }
 
 void
-X3DProgrammableShaderObject::setFields ()
+X3DProgrammableShaderObject::addShaderFields ()
 {
 	for (const auto & field : getUserDefinedFields ())
 	{

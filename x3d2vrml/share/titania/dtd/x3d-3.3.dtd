@@ -2954,7 +2954,7 @@ rib10_midspine|sellion|skull_tip|substernale|supramenton|suprasternale|waist_pre
 <!ELEMENT LayoutLayer (IS?, (%MetadataNodes;)?, Layout, Viewport?, (%ChildrenNodes; | %WildcardNodes;)*)>
 <!ATTLIST LayoutLayer
 	isPickable %SFBool; "true"
-	containerField NMTOKEN "children"
+	containerField NMTOKEN "layers"
 	class NMTOKENS #IMPLIED
 	DEF ID #IMPLIED
 	USE IDREF #IMPLIED

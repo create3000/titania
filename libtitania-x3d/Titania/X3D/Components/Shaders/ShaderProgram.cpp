@@ -217,7 +217,7 @@ ShaderProgram::requestImmediateLoad ()
 			if (valid)
 			{
 				// Initialize uniform variables
-				setFields ();
+				addShaderFields ();
 				break;
 			}
 		}

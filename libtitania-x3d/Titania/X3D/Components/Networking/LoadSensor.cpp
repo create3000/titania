@@ -187,14 +187,9 @@ LoadSensor::count ()
 
 		const bool loaded = complete == urlObjects .size ();
 
-		if (isActive ())
-			isActive () = false;
-
-		if (loaded != isLoaded ())
-			isLoaded () = loaded;
-
-		if (p != progress ())
-			progress () = float (complete) / float (urlObjects .size ());
+		isActive () = false;
+		isLoaded () = loaded;
+		progress () = float (complete) / float (urlObjects .size ());
 
 		if (loaded)
 			loadTime () = getCurrentTime ();
@@ -203,15 +198,12 @@ LoadSensor::count ()
 	{
 		if (isActive ())
 		{
-			if (p != progress ())
-				progress () = p;
+			progress () = p;
 		}
 		else
 		{
 			isActive () = true;
-
-			if (p != progress ())
-				progress () = p;
+			progress () = p;
 
 			set_timeOut ();
 		}

@@ -155,16 +155,18 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Operations
-
-	void
-	requestExplicitRelink ();
-
-	void
-	printProgramInfoLog () const;
+	///  @name Event handlers
 
 	void
 	set_activate ();
+
+	void
+	set_loaded ();
+
+	///  @name Operations
+
+	void
+	printProgramInfoLog () const;
 
 	///  @name Static members
 

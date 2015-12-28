@@ -15,4 +15,4 @@ chdir dirname $0;
 
 $ENV {XDG_DATA_DIRS} = "$PROJECT_DIR/share:$ENV{XDG_DATA_DIRS}";
 
-system "./x3dtidy", @ARGV;
+system "./bin/titania-x3d2vrml", @ARGV;

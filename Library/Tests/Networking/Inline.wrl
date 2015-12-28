@@ -1,14 +1,67 @@
-#X3D V3.0 utf8 Titania
+#VRML V2.0 utf8 Titania V1.2.1
 
 META "title" "Inline"
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0.236274361610413,
+              -0.342546433210373,
+              14.9943141937256
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.268331229686737,
+              0.200961887836456,
+              -0.942131996154785,
+              0.0827807411551476
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Inline"
+}
+
 DEF Inline Inline {
-  url "Cube.wrl"
+  url "http://www.thinkbroadband.com/download.html"
 }
 
 Viewpoint {
-	description "Inline"
-	position 0 0 15
+  description "Inline"
+  position 0 0 15
 }
 
 Transform {
@@ -44,9 +97,9 @@ Transform {
 }
 
 DEF ToggleScript Script {
-  inputOnly  SFTime set_load
-  inputOnly  SFTime set_unload
-  outputOnly SFBool load_changed
+  eventIn  SFTime set_load
+  eventIn  SFTime set_unload
+  eventOut SFBool load_changed
 
   url "vrmlscript:
 

@@ -104,7 +104,7 @@ ComposedShader::initialize ()
 
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = parts ();
-	loadSensor -> isActive () .addInterest (this, &ComposedShader::requestExplicitRelink);
+	loadSensor -> isLoaded () .addInterest (this, &ComposedShader::set_loaded);
 	loadSensor -> setup ();
 }
 
@@ -127,7 +127,7 @@ throw (Error <INVALID_NAME>,
 	X3DProgrammableShaderObject::addUserDefinedField (accessType, name, field);
 
 	if (isInitialized ())
-		loadSensor -> isActive () .addEvent ();
+		loadSensor -> loadTime () .addEvent ();
 }
 
 void
@@ -137,16 +137,20 @@ throw (Error <DISPOSED>)
 	X3DProgrammableShaderObject::removeUserDefinedField (name);
 
 	if (isInitialized ())
-		loadSensor -> isActive () .addEvent ();
+		loadSensor -> loadTime () .addEvent ();
 }
 
 void
-ComposedShader::requestExplicitRelink ()
+ComposedShader::set_activate ()
 {
-	if (loadSensor -> isActive ())
-		return;
+	if (activate ())
+		set_loaded ();
+}
 
-	if (loadSensor -> progress () == 1.0f and (language () == "" or language () == "GLSL"))
+void
+ComposedShader::set_loaded ()
+{
+	if (loadSensor -> isLoaded ())
 	{
 		if (programId)
 			glDeleteProgram (programId);
@@ -155,34 +159,45 @@ ComposedShader::requestExplicitRelink ()
 
 		// Attach shader
 
+		size_t valid = 0;
+
 		for (const auto & part : parts ())
 		{
 			const auto partNode = x3d_cast <ShaderPart*> (part);
 
 			if (partNode)
+			{
+				valid += partNode -> isValid ();
 				glAttachShader (programId, partNode -> getShaderId ());
+			}
 		}
 
-		// TransformFeedbackVaryings
+		if (valid)
+		{
+			// TransformFeedbackVaryings
+	
+			applyTransformFeedbackVaryings ();
+	
+			// Link program
+	
+			glLinkProgram (programId);
+	
+			// Check for link status
+	
+			GLint linkStatus;
+	
+			glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
+	
+			valid = valid and linkStatus;
+		}
 
-		applyTransformFeedbackVaryings ();
-
-		// Link program
-
-		glLinkProgram (programId);
-
-		// Check for link status
-
-		GLint linkStatus;
-
-		glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
-
-		isValid () = linkStatus;
+		if (bool (valid) != isValid ())
+			isValid () = valid;
 
 		// Initialize uniform variables
 
-		if (isValid ())
-			setFields ();
+		if (valid)
+			addShaderFields ();
 
 		// Print info log
 
@@ -202,11 +217,10 @@ ComposedShader::requestExplicitRelink ()
 		}
 	}
 	else
-		isValid () = false;
-	
-	// Propagate event further.
-
-	addEvent ();
+	{
+		if (isValid ())
+			isValid () = false;
+	}
 }
 
 void
@@ -230,13 +244,6 @@ ComposedShader::printProgramInfoLog () const
 			                        std::string (80, '#'), '\n');
 		}
 	}
-}
-
-void
-ComposedShader::set_activate ()
-{
-	if (activate ())
-		requestExplicitRelink ();
 }
 
 void

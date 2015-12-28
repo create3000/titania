@@ -632,7 +632,7 @@ sub addNode {
 		# else parent is a custom field
 
 		$field -> {value} = [ ]
-			unless ref ($field -> {value}) eq "ARRAY";
+			unless exists $field -> {value};
 
 		push @{$field -> {value}}, $node;
 	}

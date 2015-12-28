@@ -191,38 +191,41 @@ ViewpointList::set_viewpoints ()
 
 	// Fill the TreeView's model
 
-	guint index = 1;
-
-	for (const auto & viewpoint : std::make_pair (getViewpoints () -> begin () + 1, getViewpoints () -> end ()))
+	if (not getViewpoints () -> empty ())
 	{
-		if (userViewpoints and not viewpoint -> description () .length ())
+		guint index = 1;
+
+		for (const auto & viewpoint : std::make_pair (getViewpoints () -> begin () + 1, getViewpoints () -> end ()))
 		{
-		   ++ index;
-			continue;
-		}
+			if (userViewpoints and not viewpoint -> description () .length ())
+			{
+				++ index;
+				continue;
+			}
 		
-		auto name = viewpoint -> getName ();
+			auto name = viewpoint -> getName ();
 
-		X3D::RegEx::LastNumber_ .Replace ("", &name);
+			X3D::RegEx::LastNumber_ .Replace ("", &name);
 
-		const auto row = getListStore () -> append ();
-		row -> set_value (Columns::INDEX,       index);
-		row -> set_value (Columns::NAME       , name);
-		row -> set_value (Columns::DESCRIPTION, viewpoint -> description () .str ());
-		row -> set_value (Columns::TYPE_NAME,   viewpoint -> getTypeName ());
+			const auto row = getListStore () -> append ();
+			row -> set_value (Columns::INDEX,       index);
+			row -> set_value (Columns::NAME       , name);
+			row -> set_value (Columns::DESCRIPTION, viewpoint -> description () .str ());
+			row -> set_value (Columns::TYPE_NAME,   viewpoint -> getTypeName ());
 
-		if (viewpoint -> isBound ())
-		{
-			row -> set_value (Columns::WEIGHT, Weight::BOLD);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			if (viewpoint -> isBound ())
+			{
+				row -> set_value (Columns::WEIGHT, Weight::BOLD);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+			}
+			else
+			{
+				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+			}
+
+			++ index;
 		}
-		else
-		{
-			row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-			row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
-		}
-
-		++ index;
 	}
 
 	getTreeView () .set_model (getListStore ());

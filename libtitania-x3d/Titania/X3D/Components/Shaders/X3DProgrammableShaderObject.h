@@ -113,7 +113,7 @@ protected:
 	applyTransformFeedbackVaryings () const;
 
 	void
-	setFields ();
+	addShaderFields ();
 
 	///  @name Destructions
 

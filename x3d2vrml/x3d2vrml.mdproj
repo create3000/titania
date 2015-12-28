@@ -33,5 +33,6 @@
     <None Include="Makefile.in" />
     <None Include="bin\titania-x3d2vrml" />
     <None Include="scripts\update_dtd.pl" />
+    <None Include="run.pl" />
   </ItemGroup>
 </Project>
