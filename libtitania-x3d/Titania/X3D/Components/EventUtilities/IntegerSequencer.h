@@ -119,7 +119,7 @@ private:
 	///  @name Operations
 
 	virtual
-	size_t
+	int32_t
 	getSize () final override;
 
 	virtual

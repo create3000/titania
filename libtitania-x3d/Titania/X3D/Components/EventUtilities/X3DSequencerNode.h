@@ -114,7 +114,7 @@ protected:
 	///  @name Operations
 
 	virtual
-	size_t
+	int32_t
 	getSize () = 0;
 
 	virtual
@@ -147,8 +147,8 @@ private:
 		MFFloat* const key;
 	};
 
-	Fields fields;
-	size_t index;
+	Fields  fields;
+	int32_t index;
 
 };
 

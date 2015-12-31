@@ -85,7 +85,7 @@ X3DSequencerNode::set_fraction_ ()
 	if (key () .empty ())
 		return;
 
-	size_t i = 0;
+	int32_t i = 0;
 
 	if (key () .size () == 1 or set_fraction () <= key () .front ())
 		i = 0;
@@ -115,7 +115,7 @@ X3DSequencerNode::set_previous ()
 {
 	if (previous ())
 	{
-		if (index == 0)
+		if (index <= 0)
 			index = getSize () - 1;
 
 		else
@@ -131,7 +131,7 @@ X3DSequencerNode::set_next ()
 {
 	if (next ())
 	{
-		if (index == getSize () - 1)
+		if (index >= getSize () - 1)
 			index = 0;
 
 		else

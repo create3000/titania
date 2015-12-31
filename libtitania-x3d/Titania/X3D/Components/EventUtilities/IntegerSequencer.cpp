@@ -94,10 +94,10 @@ IntegerSequencer::initialize ()
 	keyValue () .addInterest (this, &IntegerSequencer::set_index);
 }
 
-size_t
+int32_t
 IntegerSequencer::getSize ()
 {
-	return keyValue () .size ();
+	return std::min <size_t> (std::numeric_limits <int32_t>::max (), keyValue () .size ());
 }
 
 void

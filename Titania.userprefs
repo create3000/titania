@@ -3,6 +3,7 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="47" Column="47" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

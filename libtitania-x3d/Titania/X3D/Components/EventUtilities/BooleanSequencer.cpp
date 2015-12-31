@@ -94,10 +94,10 @@ BooleanSequencer::initialize ()
 	keyValue () .addInterest (this, &BooleanSequencer::set_index);
 }
 
-size_t
+int32_t
 BooleanSequencer::getSize ()
 {
-	return keyValue () .size ();
+	return std::min <size_t> (std::numeric_limits <int32_t>::max (), keyValue () .size ());
 }
 
 void

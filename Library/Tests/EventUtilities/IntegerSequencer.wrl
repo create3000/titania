@@ -1,10 +1,65 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V1.2.1
 
 META "title" "IntegerSequencer"
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "IntegerSequencer"
+}
+
 Group {
   children [
-    DEF Touch TouchSensor { }
+    DEF Touch TouchSensor {
+      description "TimeSensor"
+    }
     Shape {
       appearance Appearance {
         material Material { }
@@ -17,7 +72,9 @@ Group {
 Transform {
   translation -3 0 0
   children [
-    DEF Prev TouchSensor { }
+    DEF Prev TouchSensor {
+      description "previous"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -32,7 +89,9 @@ Transform {
 Transform {
   translation 3 0 0
   children [
-    DEF Next TouchSensor { }
+    DEF Next TouchSensor {
+      description "next"
+    }
     Shape {
       appearance Appearance {
         material Material {
@@ -49,8 +108,32 @@ DEF Timer TimeSensor {
 }
 
 DEF Filter IntegerSequencer {
-  key [ 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ]
-  keyValue [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+  key [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1
+  ]
+  keyValue [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ]
 }
 
 DEF Debug Script {
