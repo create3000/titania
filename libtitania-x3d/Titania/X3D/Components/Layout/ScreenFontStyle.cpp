@@ -392,8 +392,7 @@ ScreenText::scale ()
 
 		modelViewMatrix .get (translation, rotation, scale);
 
-		const double   distance    = math::abs (modelViewMatrix .origin ());
-		const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+		const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (modelViewMatrix .origin (), Viewport4i ());
 
 		Matrix4d screenMatrix;
 

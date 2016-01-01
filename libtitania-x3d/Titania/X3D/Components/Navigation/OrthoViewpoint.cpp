@@ -135,7 +135,7 @@ OrthoViewpoint::getSizeY () const
 }
 
 Vector3d
-OrthoViewpoint::getScreenScale (const double, const Vector4i & viewport) const
+OrthoViewpoint::getScreenScale (const Vector3d &, const Vector4i & viewport) const
 {
 	const double width  = viewport [2];
 	const double height = viewport [3];

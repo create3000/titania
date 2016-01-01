@@ -342,7 +342,7 @@ X3DBackgroundNode::draw ()
 	// Scale background
 
 	const auto viewport = Viewport4i ();
-	auto       scale    = getCurrentViewpoint () -> getScreenScale (SIZE, viewport);
+	auto       scale    = getCurrentViewpoint () -> getScreenScale (Vector3d (0, 0, SIZE), viewport);
 
 	scale *= std::max (viewport [2], viewport [3]);
 

@@ -218,7 +218,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const double, const Vector4i &) const = 0;
+	getScreenScale (const Vector3d &, const Vector4i &) const = 0;
 
 	///  @name Operations
 

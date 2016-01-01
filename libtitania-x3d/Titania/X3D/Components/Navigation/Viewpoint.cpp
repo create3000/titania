@@ -109,11 +109,13 @@ Viewpoint::getFieldOfView () const
 }
 
 Vector3d
-Viewpoint::getScreenScale (const double distance, const Vector4i & viewport) const
+Viewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) const
 {
 	const int width  = viewport [2];
 	const int height = viewport [3];
-	double    size   = distance * std::tan (getFieldOfView () / 2) * 2;
+	double    size   = abs (point) * std::tan (getFieldOfView () / 2) * 2;
+
+	size *= std::abs (dot (normalize (point), Vector3d (0, 0, 1)));
 
 	if (width > height)
 		size /= height;

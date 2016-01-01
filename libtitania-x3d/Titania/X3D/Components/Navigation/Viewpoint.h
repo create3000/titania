@@ -145,7 +145,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const double, const Vector4i &) const final override;
+	getScreenScale (const Vector3d &, const Vector4i &) const final override;
 
 	virtual
 	Matrix4d

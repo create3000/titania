@@ -114,8 +114,7 @@ ScreenGroup::scale (const TraverseType type)
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	const double   distance    = math::abs (modelViewMatrix .origin ());
-	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (distance, Viewport4i ());
+	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (modelViewMatrix .origin (), Viewport4i ());
 
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
 	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),

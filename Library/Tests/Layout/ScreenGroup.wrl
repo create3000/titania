@@ -1,17 +1,73 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V1.2.1
 
 META "title" "ScreenGroup"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "ScreenGroup"
+}
 
 Background {
   skyColor 0.2 0.2 0.2
 }
 
-OrthoViewpoint { }
+DEF _1 OrthoViewpoint {
+  description "OthoViewpoint"
+}
 
-Viewpoint { }
+DEF _2 Viewpoint {
+  description "Viewpoint"
+}
 
 Transform {
-  rotation 0 0 1 0
   scale 2 1 1
   scaleOrientation 0 0 1 0.785398
   children ScreenGroup {
@@ -61,7 +117,7 @@ Transform {
   }
 }
 
-DEF _1 Transform {
+Transform {
   translation -0.767947 0.507512 0
   children ScreenGroup {
     children DEF Box Transform {
