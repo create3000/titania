@@ -259,7 +259,6 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
 			break;
-			break;
 		}
 		case X3DConstants::SFVec2f:
 		{

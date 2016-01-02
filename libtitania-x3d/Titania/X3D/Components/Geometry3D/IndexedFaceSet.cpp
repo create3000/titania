@@ -600,12 +600,53 @@ throw (Error <NOT_SUPPORTED>,
 
 	geometry -> metadata ()       = metadata ();
 	geometry -> colorIndex ()     = colorIndex ();
-	geometry -> coordIndex ()     = coordIndex ();
 	geometry -> colorPerVertex () = colorPerVertex ();
 	geometry -> attrib ()         = attrib ();
 	geometry -> fogCoord ()       = fogCoord ();
 	geometry -> color ()          = color ();
 	geometry -> coord ()          = coord ();
+
+	if (not colorIndex () .empty ())
+	{
+		MFInt32 lineColorIndex = geometry -> colorIndex ();
+		int32_t firstIndex     = colorIndex () [0];
+	
+		for (const auto index : colorIndex ())
+		{
+			if (index == -1)
+			{
+				lineColorIndex .emplace_back (firstIndex);
+				firstIndex = -1;
+			}
+			else if (firstIndex == -1)
+				firstIndex = index;
+	
+			lineColorIndex .emplace_back (index);
+		}
+
+		geometry -> colorIndex () = lineColorIndex;
+	}
+
+	if (not coordIndex () .empty ())
+	{
+		MFInt32 lineCoordIndex = geometry -> coordIndex ();
+		int32_t firstIndex     = coordIndex () [0];
+
+		for (const auto index : coordIndex ())
+		{
+			if (index == -1)
+			{
+				lineCoordIndex .emplace_back (firstIndex);
+				firstIndex = -1;
+			}
+			else if (firstIndex == -1)
+				firstIndex = index;
+	
+			lineCoordIndex .emplace_back (index);
+		}
+
+		geometry -> coordIndex () = lineCoordIndex;
+	}
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
