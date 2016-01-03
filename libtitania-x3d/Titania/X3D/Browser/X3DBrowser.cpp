@@ -299,6 +299,7 @@ throw (Error <INVALID_SCENE>,
 
 		prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
 
+
 		// Process shutdown.
 
 		if (initialized ()) // Don't do this if browser is not initialized.
@@ -326,8 +327,6 @@ throw (Error <INVALID_SCENE>,
 		}
 
 		// Process as normal.
-
-		getClock () -> advance ();
 
 		if (not initialized () or value not_eq executionContext)
 		{
@@ -401,7 +400,7 @@ throw (Error <INVALID_URL>,
 
 	using namespace std::placeholders;
 
-	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+	finished () .removeInterest (this, &X3DBrowser::set_scene);
 
    setLoadState (IN_PROGRESS_STATE);
 
@@ -416,8 +415,9 @@ void
 X3DBrowser::set_scene_async (X3DScenePtr && scene)
 {
 	// This function is called from the future. Ensure here that the future is not accidentally deleted when calling replaceWorld.
+	// Use finished to get better currentTime on start up of world.
 
-	prepareEvents () .addInterest (this, &X3DBrowser::set_scene, std::move (scene));
+	finished () .addInterest (this, &X3DBrowser::set_scene, std::move (scene));
 
 	addEvent ();
 }
@@ -425,7 +425,7 @@ X3DBrowser::set_scene_async (X3DScenePtr && scene)
 void
 X3DBrowser::set_scene (const X3DScenePtr & scene)
 {
-	prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+	finished () .removeInterest (this, &X3DBrowser::set_scene);
 
 	removeLoadCount (future .get ());
 

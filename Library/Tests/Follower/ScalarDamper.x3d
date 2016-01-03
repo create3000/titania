@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sun, 03 Jan 2016 08:35:00 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.2.2, http://titania.create3000.de'/>
+    <meta name='modified' content='Sun, 03 Jan 2016 09:23:03 GMT'/>
+  </head>
+  <Scene>
+    <ExternProtoDeclare name='LineTrail' url='"../Interpolation/LineTrail.wrl"'>
+      <field accessType='inputOutput' type='SFBool' name='enabled'/>
+      <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
+      <field accessType='inputOutput' type='SFTime' name='resetTime'/>
+      <field accessType='inputOutput' type='SFVec3f' name='point'/>
+      <field accessType='initializeOnly' type='SFInt32' name='dimension'/>
+    </ExternProtoDeclare>
+    <WorldInfo
+        title='PositionDamper2D'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='NavigationInfo' containerField='value'
+            name='NavigationInfo'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='type' containerField='value'
+              name='type'
+              reference='http://titania.create3000.de'
+              value='"NONE"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Viewpoint' containerField='value'
+            name='Viewpoint'
+            reference='http://titania.create3000.de'>
+          <MetadataDouble DEF='position' containerField='value'
+              name='position'
+              reference='http://titania.create3000.de'
+              value='0, 0, 10'/>
+          <MetadataDouble DEF='orientation' containerField='value'
+              name='orientation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 1, 0'/>
+          <MetadataDouble DEF='centerOfRotation' containerField='value'
+              name='centerOfRotation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 0'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <NavigationInfo
+        type='"NONE", "ANY"'/>
+    <Background
+        skyColor='0.2 0.2 0.2'/>
+    <Transform DEF='Plane'>
+      <TouchSensor DEF='Touch'/>
+      <Transform DEF='Rectangle2D'
+          scale='4 4 1'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0.5 0 0.5'
+                transparency='0.5'/>
+          </Appearance>
+          <Rectangle2D/>
+        </Shape>
+      </Transform>
+    </Transform>
+    <Script DEF='DecomposeXYScript'>
+      <field accessType='inputOnly' type='SFVec2f' name='set_xy'/>
+      <field accessType='outputOnly' type='SFFloat' name='x_changed'/>
+      <field accessType='outputOnly' type='SFFloat' name='y_changed'/>
+<![CDATA[ecmascript:
+
+function set_xy (value)
+{
+	x_changed = value .x;
+	y_changed = value .y;
+}]]> 
+    </Script>
+    <ScalarDamper DEF='X'
+        initialValue='2'
+        initialDestination='-2'/>
+    <ScalarDamper DEF='Y'
+        initialValue='2'
+        initialDestination='-2'/>
+    <Script DEF='ComposeXYScript'>
+      <field accessType='inputOnly' type='SFFloat' name='set_x'/>
+      <field accessType='inputOnly' type='SFFloat' name='set_y'/>
+      <field accessType='outputOnly' type='SFVec2f' name='xy_changed'/>
+<![CDATA[ecmascript:
+
+function set_x (value)
+{
+	xy_changed .x = value;
+}
+
+function set_y (value)
+{
+	xy_changed .y = value;
+}
+]]> 
+    </Script>
+    <Transform DEF='Sphere'
+        translation='1.88888 -1.99908 0'
+        scale='0.192862 0.192862 0.192862'>
+      <Shape>
+        <Appearance>
+          <Material DEF='SphereMaterial'/>
+        </Appearance>
+        <Sphere/>
+      </Shape>
+    </Transform>
+    <Shape DEF='LineTrail'>
+      <Appearance>
+        <Material
+            emissiveColor='0 0.8 0.8'/>
+      </Appearance>
+      <ProtoInstance name='LineTrail' DEF='Trail' containerField='geometry'>
+        <fieldValue name='enabled' value='false'/>
+        <fieldValue name='cycleInterval' value='0.1'/>
+        <fieldValue name='point' value='1.88888 -1.99908 0'/>
+        <fieldValue name='dimension' value='200'/>
+      </ProtoInstance>
+    </Shape>
+    <Script DEF='FollowerScript'>
+      <field accessType='inputOnly' type='SFTime' name='set_time'/>
+      <field accessType='inputOnly' type='SFVec2f' name='set_value'/>
+      <field accessType='inputOnly' type='SFBool' name='set_active'/>
+      <field accessType='outputOnly' type='SFColor' name='color_changed'/>
+      <field accessType='outputOnly' type='SFVec2f' name='destination_changed'/>
+      <field accessType='outputOnly' type='SFVec3f' name='value_changed'/>
+      <field accessType='initializeOnly' type='SFNode' name='touchSensor'>
+        <TouchSensor USE='Touch'/>
+      </field>
+<![CDATA[vrmlscript:
+function set_time ()
+{
+	destination_changed = new SFVec2f (touchSensor .hitPoint_changed .x, touchSensor .hitPoint_changed .y);
+}
+
+function set_value (value)
+{
+	value_changed = new SFVec3f (value .x, value .y, 0);
+}
+
+function set_active (value)
+{
+	if (value)
+		color_changed = new SFColor (0.8, 0, 0);
+	
+	else
+		color_changed = new SFColor (0.8, 0.8, 0.8);
+}
+]]> 
+    </Script>
+    <ROUTE fromNode='Touch' fromField='touchTime' toNode='FollowerScript' toField='set_time'/>
+    <ROUTE fromNode='FollowerScript' fromField='color_changed' toNode='SphereMaterial' toField='set_diffuseColor'/>
+    <ROUTE fromNode='FollowerScript' fromField='value_changed' toNode='Sphere' toField='set_translation'/>
+    <ROUTE fromNode='FollowerScript' fromField='value_changed' toNode='Trail' toField='set_point'/>
+    <ROUTE fromNode='FollowerScript' fromField='destination_changed' toNode='DecomposeXYScript' toField='set_xy'/>
+    <ROUTE fromNode='X' fromField='isActive' toNode='Trail' toField='set_enabled'/>
+    <ROUTE fromNode='X' fromField='isActive' toNode='FollowerScript' toField='set_active'/>
+    <ROUTE fromNode='X' fromField='value_changed' toNode='ComposeXYScript' toField='set_x'/>
+    <ROUTE fromNode='ComposeXYScript' fromField='xy_changed' toNode='FollowerScript' toField='set_value'/>
+    <ROUTE fromNode='DecomposeXYScript' fromField='x_changed' toNode='X' toField='set_destination'/>
+    <ROUTE fromNode='Y' fromField='value_changed' toNode='ComposeXYScript' toField='set_y'/>
+    <ROUTE fromNode='DecomposeXYScript' fromField='y_changed' toNode='Y' toField='set_destination'/>
+  </Scene>
+</X3D>
