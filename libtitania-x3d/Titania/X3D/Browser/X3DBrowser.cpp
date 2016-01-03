@@ -297,7 +297,7 @@ throw (Error <INVALID_SCENE>,
 			future -> stop ();
 		}
 
-		prepareEvents () .removeInterest (this, &X3DBrowser::set_scene);
+		finished () .removeInterest (this, &X3DBrowser::set_scene);
 
 
 		// Process shutdown.
