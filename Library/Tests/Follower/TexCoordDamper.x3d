@@ -6,7 +6,7 @@
     <meta name='created' content='Sun, 03 Jan 2016 10:11:36 GMT'/>
     <meta name='creator' content='Holger Seelig'/>
     <meta name='generator' content='Titania V1.2.2, http://titania.create3000.de'/>
-    <meta name='modified' content='Sun, 03 Jan 2016 10:29:50 GMT'/>
+    <meta name='modified' content='Sun, 03 Jan 2016 10:38:57 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='MFVec3f' url='"https://cdn.rawgit.com/create3000/Titania/master/Library/Tests/Follower/MFVec3f.x3dv"'>

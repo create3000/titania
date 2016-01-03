@@ -13,9 +13,6 @@ say "Generate Components";
 my $TitaniaInfo = "/home/holger/Projekte/Titania/titania-info/titania-info";
 my $components  = "/home/holger/Projekte/Titania/Titania/share/titania/Library/Components";
 
-system "rm", "-r", $components if -e $components;
-system "mkdir", "-p", $components;
-
 my $nodes = new Glib::KeyFile ();
 $nodes -> load_from_data (join ("", `$TitaniaInfo -i=nodes 2>/dev/null`), "none");
 

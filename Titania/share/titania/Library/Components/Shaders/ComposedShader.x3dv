@@ -1,3 +1,12 @@
 #X3D V3.3 utf8 Titania
 
-ComposedShader { }
+META "titania magic" "Shader"
+
+DEF Shader ComposedShader {
+	parts [
+		DEF VertexShader ShaderPart { }
+		DEF FragmentShader ShaderPart {
+			type "FRAGMENT"
+		}
+	]
+}
