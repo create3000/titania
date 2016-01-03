@@ -1,14 +1,14 @@
 #X3D V3.0 utf8 Titania V1.2.1
 
 META "comment" "World of Titania"
-META "created" "Mon, 16 Nov 2015 10:24:39 GMT"
+META "created" "Sun, 03 Jan 2016 10:18:38 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.1, http://titania.create3000.de"
-META "modified" "Mon, 16 Nov 2015 10:24:39 GMT"
+META "modified" "Sun, 03 Jan 2016 10:18:39 GMT"
 META "titania magic" "Texture"
 
 DEF LostValley-front Transform {
-  scale 0.0869886 0.0869886 1
+  scale 0.0434943 0.0434943 1
   children Shape {
     appearance Appearance {
       texture ImageTexture {

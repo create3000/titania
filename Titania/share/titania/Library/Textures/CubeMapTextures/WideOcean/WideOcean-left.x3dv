@@ -1,0 +1,29 @@
+#X3D V3.0 utf8 Titania V1.2.1
+
+META "comment" "World of Titania"
+META "created" "Sun, 03 Jan 2016 10:18:44 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Sun, 03 Jan 2016 10:18:44 GMT"
+META "titania magic" "Texture"
+
+DEF WideOcean-left Transform {
+  scale 0.0433493 0.0433493 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+          "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+          "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+          "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

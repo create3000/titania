@@ -257,8 +257,6 @@ X3DBrowserContext::update ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-__LOG__ << std::endl;
-
 	try
 	{
 		ContextLock lock (this);

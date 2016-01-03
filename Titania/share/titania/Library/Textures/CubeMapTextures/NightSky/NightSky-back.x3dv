@@ -1,0 +1,29 @@
+#X3D V3.0 utf8 Titania V1.2.1
+
+META "comment" "World of Titania"
+META "created" "Sun, 03 Jan 2016 10:18:37 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Sun, 03 Jan 2016 10:18:37 GMT"
+META "titania magic" "Texture"
+
+DEF NightSky-back Transform {
+  scale 0.180622 0.180622 1
+  children Shape {
+    appearance Appearance {
+      texture ImageTexture {
+        url [
+          "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/NightSky/NightSky-back.jpg",
+          "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/NightSky/NightSky-back.jpg",
+          "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/NightSky/NightSky-back.jpg",
+          "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/NightSky/NightSky-back.jpg"
+        ]
+        repeatS FALSE
+        repeatT FALSE
+      }
+    }
+    geometry Rectangle2D {
+      solid FALSE
+    }
+  }
+}

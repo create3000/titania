@@ -620,6 +620,7 @@
     <None Include="Tests\PROTO\ProtoEditor.x3dv" />
     <None Include="Tests\Handles\LayoutGroup.x3dv" />
     <None Include="Tests\Follower\ScalarDamper.x3d" />
+    <None Include="Tests\Follower\TexCoordDamper.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
