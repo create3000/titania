@@ -28,6 +28,59 @@ EXTERNPROTO SFVec2f [
   "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec2f.x3dv"
 ]
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "PositionChaser"
+}
+
 NavigationInfo {
   type [
     "NONE",
@@ -57,11 +110,10 @@ DEF Plane Transform {
   ]
 }
 
-DEF Follower PositionChaser {
-  duration 20
-}
+DEF _1 PositionChaser2D { }
 
 DEF Sphere Transform {
+  translation 3.08534 2.06115 0
   scale 0.192862 0.192862 0.192862
   children Shape {
     appearance Appearance {
@@ -80,7 +132,7 @@ DEF LineTrail Shape {
   geometry DEF Trail LineTrail {
     enabled FALSE
     cycleInterval 0.1
-    point 0.841612 -2.58645 0
+    point 3.08534 2.06115 0
     dimension 200
   }
 }
@@ -88,14 +140,17 @@ DEF LineTrail Shape {
 DEF FollowerScript Script {
   eventIn  SFTime  set_time
   eventIn  SFBool  set_active
+  eventIn  SFVec2f set_value
   eventOut SFColor color_changed
-  eventOut SFVec3f destination_changed
+  eventOut SFVec2f destination_changed
+  eventOut SFVec3f value_changed
   field    SFNode  touchSensor USE Touch
 
   url "vrmlscript:
 function set_time ()
 {
-	destination_changed = touchSensor .hitPoint_changed;
+	destination_changed .x = touchSensor .hitPoint_changed .x;
+	destination_changed .y = touchSensor .hitPoint_changed .y;
 }
 
 function set_active (value)
@@ -106,7 +161,12 @@ function set_active (value)
 	else
 		color_changed = new SFColor (0.8, 0.8, 0.8);
 }
-"
+
+function set_value (value)
+{
+	value_changed .x = value .x;
+	value_changed .y = value .y;
+}"
 }
 
 DEF ResetBox Transform {
@@ -119,17 +179,18 @@ DEF ResetBox Transform {
       }
       geometry Box { }
     }
-    DEF Value SFVec3f { }
     DEF ResetTouch TouchSensor { }
+    DEF _2 SFVec2f { }
   ]
 }
 
 ROUTE Touch.touchTime TO FollowerScript.set_time
 ROUTE FollowerScript.color_changed TO SphereMaterial.set_diffuseColor
-ROUTE Follower.value_changed TO Trail.set_point
-ROUTE Follower.value_changed TO Sphere.set_translation
-ROUTE Follower.isActive TO Trail.set_enabled
-ROUTE Follower.isActive TO FollowerScript.set_active
-ROUTE FollowerScript.destination_changed TO Follower.set_destination
-ROUTE Value.value_changed TO Follower.set_value
-ROUTE ResetTouch.touchTime TO Value.set_triggerTime
+ROUTE ResetTouch.touchTime TO _2.set_triggerTime
+ROUTE _2.value_changed TO _1.set_value
+ROUTE FollowerScript.destination_changed TO _1.set_destination
+ROUTE _1.isActive TO Trail.set_enabled
+ROUTE _1.isActive TO FollowerScript.set_active
+ROUTE _1.value_changed TO FollowerScript.set_value
+ROUTE FollowerScript.value_changed TO Trail.set_point
+ROUTE FollowerScript.value_changed TO Sphere.set_translation

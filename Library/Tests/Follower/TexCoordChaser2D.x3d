@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Sun, 03 Jan 2016 10:11:36 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.2.2, http://titania.create3000.de'/>
+    <meta name='modified' content='Mon, 04 Jan 2016 05:29:28 GMT'/>
+  </head>
+  <Scene>
+    <ExternProtoDeclare name='MFVec3f' url='"https://cdn.rawgit.com/create3000/Titania/master/Library/Tests/Follower/MFVec3f.x3dv"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='MFVec3f' name='keyValue'/>
+      <field accessType='outputOnly' type='MFVec3f' name='value_changed'/>
+    </ExternProtoDeclare>
+    <ExternProtoDeclare name='MFVec2f' url='"https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFVec2f.x3dv", "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFVec2f.x3dv", "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFVec2f.x3dv", "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/MFVec2f.x3dv"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='MFVec2f' name='keyValue'/>
+      <field accessType='outputOnly' type='MFVec2f' name='value_changed'/>
+    </ExternProtoDeclare>
+    <WorldInfo
+        title='CoordinateDamper'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='NavigationInfo' containerField='value'
+            name='NavigationInfo'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='type' containerField='value'
+              name='type'
+              reference='http://titania.create3000.de'
+              value='"NONE"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Viewpoint' containerField='value'
+            name='Viewpoint'
+            reference='http://titania.create3000.de'>
+          <MetadataDouble DEF='position' containerField='value'
+              name='position'
+              reference='http://titania.create3000.de'
+              value='0, 0, 10'/>
+          <MetadataDouble DEF='orientation' containerField='value'
+              name='orientation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 1, 0'/>
+          <MetadataDouble DEF='centerOfRotation' containerField='value'
+              name='centerOfRotation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 0'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <NavigationInfo
+        type='"NONE", "ANY"'/>
+    <Background
+        skyColor='0.2 0.2 0.2'/>
+    <Transform DEF='DestinatinButton1'
+        translation='2.71505 2.16353 0'
+        scale='0.204112 0.204112 1'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Rectangle2D/>
+      </Shape>
+      <TouchSensor DEF='Touch'/>
+      <ProtoInstance name='MFVec2f' DEF='_1'>
+        <fieldValue name='keyValue' value='-1 -1, 1 -1, 1 1, -1 1'/>
+      </ProtoInstance>
+    </Transform>
+    <Transform DEF='DestinatinButton2'
+        translation='2.71505 1.65935 0'
+        scale='0.204112 0.204112 1'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Rectangle2D/>
+      </Shape>
+      <TouchSensor DEF='Touch1'/>
+      <ProtoInstance name='MFVec2f' DEF='_2'>
+        <fieldValue name='keyValue' value='-2 -2, 2 -2, 2 2, -2 2'/>
+      </ProtoInstance>
+    </Transform>
+    <Transform DEF='DestinatinButton3'
+        translation='2.71505 1.16847 0'
+        scale='0.204112 0.204112 1'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Rectangle2D/>
+      </Shape>
+      <TouchSensor DEF='Touch2'/>
+      <ProtoInstance name='MFVec2f' DEF='_3'>
+        <fieldValue name='keyValue' value='-0 -2, 2 -0, 0 2, -2 0'/>
+      </ProtoInstance>
+    </Transform>
+    <Transform DEF='DestinatinButton4'
+        translation='2.71505 0.678305 0'
+        scale='0.204112 0.204112 1'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Rectangle2D/>
+      </Shape>
+      <TouchSensor DEF='Touch3'/>
+      <ProtoInstance name='MFVec2f' DEF='_4'>
+        <fieldValue name='keyValue' value='-0 -3, 3 -0, 0 3, -3 0'/>
+      </ProtoInstance>
+    </Transform>
+    <TexCoordChaser2D DEF='_5'
+        initialValue='-1 -1, 1 -1, 1 1, -1 1'
+        initialDestination='-1 -1, 1 -1, 1 1, -1 1'/>
+    <Transform DEF='QuadSetTransform'>
+      <Shape>
+        <Appearance>
+          <ImageTexture
+              url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Miscellaneous/ubuntu.jpg", "https://cdn.rawgit.com/create3000/Library/master/Textures/Miscellaneous/ubuntu.jpg", "http://rawgit.com/create3000/Library/master/Textures/Miscellaneous/ubuntu.jpg", "https://rawgit.com/create3000/Library/master/Textures/Miscellaneous/ubuntu.jpg"'/>
+        </Appearance>
+        <QuadSet
+            solid='false'>
+          <TextureCoordinate DEF='_6'
+              point='-1 -1, 1 -1, 1 1, -1 1'/>
+          <Coordinate DEF='Coordinate'
+              point='-1 -1 0, 1 -1 0, 1 1 0, -1 1 0'/>
+        </QuadSet>
+      </Shape>
+    </Transform>
+    <ROUTE fromNode='Touch3' fromField='touchTime' toNode='_4' toField='set_triggerTime'/>
+    <ROUTE fromNode='Touch2' fromField='touchTime' toNode='_3' toField='set_triggerTime'/>
+    <ROUTE fromNode='Touch1' fromField='touchTime' toNode='_2' toField='set_triggerTime'/>
+    <ROUTE fromNode='Touch' fromField='touchTime' toNode='_1' toField='set_triggerTime'/>
+    <ROUTE fromNode='_4' fromField='value_changed' toNode='_5' toField='set_destination'/>
+    <ROUTE fromNode='_3' fromField='value_changed' toNode='_5' toField='set_destination'/>
+    <ROUTE fromNode='_2' fromField='value_changed' toNode='_5' toField='set_destination'/>
+    <ROUTE fromNode='_1' fromField='value_changed' toNode='_5' toField='set_destination'/>
+    <ROUTE fromNode='_5' fromField='value_changed' toNode='_6' toField='set_point'/>
+  </Scene>
+</X3D>

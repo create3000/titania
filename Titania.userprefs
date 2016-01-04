@@ -1,15 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/X3DBrowserWindow.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenGroup.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/ScalarDamper.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/X3DDamperNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/X3DFollowerNode.cpp" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Textures.pl" Line="1" Column="1" />
+      <File FileName="Titania/scripts/Components.pl" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/LibraryView/LibraryView.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="1" Column="1" />
+      <File FileName="Titania/scripts/Library/Components-Cobweb.pl" Line="1" Column="1" />
+      <File FileName="Titania/scripts/Library/Components-Titania.pl" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

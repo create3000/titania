@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Mon, 04 Jan 2016 05:18:49 GMT'/>
+    <meta name='creator' content='Holger Seelig'/>
+    <meta name='generator' content='Titania V1.2.2, http://titania.create3000.de'/>
+    <meta name='modified' content='Mon, 04 Jan 2016 05:24:22 GMT'/>
+  </head>
+  <Scene>
+    <ExternProtoDeclare name='LineTrail' url='"../Interpolation/LineTrail.wrl"'>
+      <field accessType='inputOutput' type='SFBool' name='enabled'/>
+      <field accessType='inputOutput' type='SFTime' name='cycleInterval'/>
+      <field accessType='inputOutput' type='SFTime' name='resetTime'/>
+      <field accessType='inputOutput' type='SFVec3f' name='point'/>
+      <field accessType='initializeOnly' type='SFInt32' name='dimension'/>
+    </ExternProtoDeclare>
+    <ExternProtoDeclare name='SFVec3f' url='"SFVec3f.x3dv"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='SFVec3f' name='keyValue'/>
+      <field accessType='outputOnly' type='SFVec3f' name='value_changed'/>
+    </ExternProtoDeclare>
+    <ExternProtoDeclare name='SFVec2f' url='"https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec2f.x3dv", "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec2f.x3dv", "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec2f.x3dv", "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFVec2f.x3dv"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='SFVec2f' name='keyValue'/>
+      <field accessType='outputOnly' type='SFVec2f' name='value_changed'/>
+    </ExternProtoDeclare>
+    <ExternProtoDeclare name='SFFloat' url='"https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFFloat.x3dv", "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFFloat.x3dv", "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFFloat.x3dv", "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Fields/SFFloat.x3dv"'>
+      <field accessType='inputOnly' type='SFTime' name='set_triggerTime'/>
+      <field accessType='inputOutput' type='SFFloat' name='keyValue'/>
+      <field accessType='outputOnly' type='SFFloat' name='value_changed'/>
+    </ExternProtoDeclare>
+    <WorldInfo
+        title='PositionChaser'>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='NavigationInfo' containerField='value'
+            name='NavigationInfo'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='type' containerField='value'
+              name='type'
+              reference='http://titania.create3000.de'
+              value='"NONE"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Viewpoint' containerField='value'
+            name='Viewpoint'
+            reference='http://titania.create3000.de'>
+          <MetadataDouble DEF='position' containerField='value'
+              name='position'
+              reference='http://titania.create3000.de'
+              value='0, 0, 10'/>
+          <MetadataDouble DEF='orientation' containerField='value'
+              name='orientation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 1, 0'/>
+          <MetadataDouble DEF='centerOfRotation' containerField='value'
+              name='centerOfRotation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 0'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <NavigationInfo
+        type='"NONE", "ANY"'/>
+    <Background
+        skyColor='0.2 0.2 0.2'/>
+    <Transform DEF='Plane'>
+      <TouchSensor DEF='Touch'/>
+      <Transform DEF='Rectangle2D'
+          scale='4 4 1'>
+        <Shape>
+          <Appearance>
+            <Material
+                diffuseColor='0.5 0 0.5'
+                transparency='0.5'/>
+          </Appearance>
+          <Rectangle2D/>
+        </Shape>
+      </Transform>
+    </Transform>
+    <ScalarChaser DEF='X'/>
+    <ScalarChaser DEF='Y'/>
+    <Transform DEF='Sphere'
+        translation='-3.06654 -0.386463 0'
+        scale='0.192862 0.192862 0.192862'>
+      <Shape>
+        <Appearance>
+          <Material DEF='SphereMaterial'/>
+        </Appearance>
+        <Sphere/>
+      </Shape>
+    </Transform>
+    <Shape DEF='LineTrail'>
+      <Appearance>
+        <Material
+            emissiveColor='0 0.8 0.8'/>
+      </Appearance>
+      <ProtoInstance name='LineTrail' DEF='Trail' containerField='geometry'>
+        <fieldValue name='enabled' value='false'/>
+        <fieldValue name='cycleInterval' value='0.1'/>
+        <fieldValue name='point' value='-3.06654 -0.386463 0'/>
+        <fieldValue name='dimension' value='200'/>
+      </ProtoInstance>
+    </Shape>
+    <Script DEF='FollowerScript'>
+      <field accessType='inputOnly' type='SFTime' name='set_time'/>
+      <field accessType='inputOnly' type='SFBool' name='set_active'/>
+      <field accessType='inputOnly' type='SFFloat' name='set_valueX'/>
+      <field accessType='inputOnly' type='SFFloat' name='set_valueY'/>
+      <field accessType='outputOnly' type='SFColor' name='color_changed'/>
+      <field accessType='outputOnly' type='SFFloat' name='destinationX_changed'/>
+      <field accessType='outputOnly' type='SFFloat' name='destinationY_changed'/>
+      <field accessType='outputOnly' type='SFVec3f' name='value_changed'/>
+      <field accessType='initializeOnly' type='SFNode' name='touchSensor'>
+        <TouchSensor USE='Touch'/>
+      </field>
+<![CDATA[vrmlscript:
+function set_time ()
+{
+	destinationX_changed = touchSensor .hitPoint_changed .x;
+	destinationY_changed = touchSensor .hitPoint_changed .y;
+}
+
+function set_active (value)
+{
+	if (value)
+		color_changed = new SFColor (0.8, 0, 0);
+	
+	else
+		color_changed = new SFColor (0.8, 0.8, 0.8);
+}
+
+function set_valueX (value)
+{
+	value_changed .x = value;
+}
+
+function set_valueY (value)
+{
+	value_changed .y = value;
+}]]> 
+    </Script>
+    <Transform DEF='ResetBox'
+        translation='4.43603 0 0'
+        scale='0.167946 0.167946 0.167946'>
+      <Shape>
+        <Appearance>
+          <Material/>
+        </Appearance>
+        <Box/>
+      </Shape>
+      <TouchSensor DEF='ResetTouch'/>
+      <ProtoInstance name='SFFloat' DEF='_1'/>
+    </Transform>
+    <ROUTE fromNode='Touch' fromField='touchTime' toNode='FollowerScript' toField='set_time'/>
+    <ROUTE fromNode='FollowerScript' fromField='color_changed' toNode='SphereMaterial' toField='set_diffuseColor'/>
+    <ROUTE fromNode='FollowerScript' fromField='value_changed' toNode='Trail' toField='set_point'/>
+    <ROUTE fromNode='FollowerScript' fromField='value_changed' toNode='Sphere' toField='set_translation'/>
+    <ROUTE fromNode='ResetTouch' fromField='touchTime' toNode='_1' toField='set_triggerTime'/>
+    <ROUTE fromNode='_1' fromField='value_changed' toNode='Y' toField='set_value'/>
+    <ROUTE fromNode='_1' fromField='value_changed' toNode='X' toField='set_value'/>
+    <ROUTE fromNode='Y' fromField='isActive' toNode='Trail' toField='set_enabled'/>
+    <ROUTE fromNode='Y' fromField='isActive' toNode='FollowerScript' toField='set_active'/>
+    <ROUTE fromNode='FollowerScript' fromField='destinationX_changed' toNode='X' toField='set_destination'/>
+    <ROUTE fromNode='FollowerScript' fromField='destinationY_changed' toNode='Y' toField='set_destination'/>
+    <ROUTE fromNode='X' fromField='value_changed' toNode='FollowerScript' toField='set_valueX'/>
+    <ROUTE fromNode='Y' fromField='value_changed' toNode='FollowerScript' toField='set_valueY'/>
+  </Scene>
+</X3D>
