@@ -237,9 +237,9 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	const size_t numLines    = text -> string () .size ();
 	const bool   leftToRight = fontStyle -> leftToRight ();
 	const bool   topToBottom = fontStyle -> topToBottom ();
-	const double lineHeight  = fontStyle -> getLineHeight ();
+	const double spacing     = fontStyle -> getLineHeight ();
 	const double scale       = fontStyle -> getScale ();
-	const double height      = lineHeight / fontStyle -> spacing ();
+	const double height      = spacing / fontStyle -> spacing ();
 
 	// Calculate bboxes.
 
@@ -278,7 +278,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			
 			const int glyphNumber = topToBottom ? g : numChars - g - 1;
 
-			translations [t] = Vector2d ((lineHeight - size .x ()) / 2, -(glyphNumber * height));
+			translations [t] = Vector2d ((spacing - size .x ()) / 2, -glyphNumber * height * 1.2);
 			
 			// Calculate center.
 
@@ -303,10 +303,10 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		// Calculate charSpacing and lineBounds.
 
 		const size_t lineNumber = leftToRight ? l : numLines - l - 1;
-		const double padding    = (lineHeight - size .x ()) / 2;
+		const double padding    = (spacing - size .x ()) / 2;
 
 		double   charSpacing = 0;
-		Vector2d lineBound   = Vector2d (l == 0 ? size .x () + padding : lineHeight, size .y ()) * scale;
+		Vector2d lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, size .y ()) * scale;
 		double   length      = text -> getLength (l);
 
 		if (text -> maxExtent ())
@@ -336,17 +336,17 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		{
 			case X3DFontStyleNode::Alignment::BEGIN:
 			case X3DFontStyleNode::Alignment::FIRST:
-				translation = Vector2d (lineNumber * lineHeight, -height);
+				translation = Vector2d (lineNumber * spacing, -height);
 				break;
 			case X3DFontStyleNode::Alignment::MIDDLE:
-				translation = Vector2d (lineNumber * lineHeight, size .y () / 2 - max .y ());
+				translation = Vector2d (lineNumber * spacing, size .y () / 2 - max .y ());
 				break;
 			case X3DFontStyleNode::Alignment::END:
 			{
 				// This is needed to make maxExtend and charSpacing work.
 				Vector2d glyphMin, v;
 				getGlyphExtents (line [topToBottom ? numChars - 1 : 0], glyphMin, v);	
-				translation = Vector2d (lineNumber * lineHeight, size .y () - max .y () + glyphMin .y ());
+				translation = Vector2d (lineNumber * spacing, size .y () - max .y () + glyphMin .y ());
 				break;
 			}
 		}
@@ -360,6 +360,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			glyph += translation;
 
 			glyph .y (glyph .y () - space);
+
 			space += charSpacing;
 		}
 

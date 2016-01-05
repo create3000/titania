@@ -76,7 +76,7 @@ float
 X3DDamperNode::getTolerance () const
 {
 	if (tolerance () < 0)
-		return 0.001;
+		return 0.0001;
 
 	return tolerance ();
 }

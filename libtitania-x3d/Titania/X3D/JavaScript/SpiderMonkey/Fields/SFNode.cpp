@@ -219,7 +219,7 @@ SFNode::getProperty (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 		{
 			const auto field = lhs -> getValue () -> getField (name);
 
-			if (field -> getAccessType () == X3D::initializeOnly or field -> getAccessType () == X3D::inputOnly)
+			if (field -> getAccessType () == X3D::inputOnly)
 			{
 				*vp = JSVAL_VOID;
 				return true;
