@@ -160,7 +160,12 @@ OrientationDamper::prepareEvents ()
 		
 		for (size_t i = 0; i < order; ++ i)
 		{
-			buffer [i + 1] = slerp (buffer [i], buffer [i + 1], alpha);
+			try
+			{
+				buffer [i + 1] = slerp (buffer [i], buffer [i + 1], alpha);
+			}
+			catch (const std::domain_error &)
+			{ }
 		}
 
 		value_changed () = buffer [order];

@@ -153,21 +153,26 @@ OrientationChaser::set_destination_ ()
 void
 OrientationChaser::prepareEvents ()
 {
-	const float fraction = updateBuffer ();
-
-	auto output = slerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
-
-	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+	try
 	{
-      const auto deltaIn = ~buffer [i + 1] * buffer [i];
-
-		output = slerp (output, output * deltaIn, stepResponse ((i + fraction) * getStepTime ()));
+		const float fraction = updateBuffer ();
+	
+		auto output = slerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+	
+		for (int32_t i = buffer .size () - 2; i >= 0; -- i)
+		{
+	      const auto deltaIn = ~buffer [i + 1] * buffer [i];
+	
+			output = slerp (output, output * deltaIn, stepResponse ((i + fraction) * getStepTime ()));
+		}
+	
+		value_changed () = output;
+	
+		if (equals (output, set_destination (), getTolerance ()))
+			set_active (false);
 	}
-
-	value_changed () = output;
-
-	if (equals (output, set_destination (), getTolerance ()))
-		set_active (false);
+	catch (const std::domain_error &)
+	{ }
 }
 
 float
@@ -191,9 +196,14 @@ OrientationChaser::updateBuffer ()
 
 			for (size_t i = 0; i < seconds; ++ i)
 			{
-				const float alpha = i / seconds;
-
-				buffer [i] = slerp (set_destination () .getValue (), buffer [seconds], alpha);
+				try
+				{
+					const float alpha = i / seconds;
+	
+					buffer [i] = slerp (set_destination () .getValue (), buffer [seconds], alpha);
+				}
+				catch (const std::domain_error &)
+				{ }
  			}
 		}
 		else

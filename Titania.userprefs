@@ -1,19 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenGroup.cpp" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Components.pl" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/LibraryView/LibraryView.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Components-Cobweb.pl" Line="1" Column="1" />
-      <File FileName="Titania/scripts/Library/Components-Titania.pl" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWindow.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
