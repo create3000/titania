@@ -1,12 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp" Line="3" Column="3" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/OrientationChaser.cpp" Line="6" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/OrientationDamper.cpp" Line="5" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

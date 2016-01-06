@@ -125,9 +125,14 @@ ColorRGBA::get1Color (const size_t index)
 void
 ColorRGBA::addColor (std::vector <Color4f> & colors, const size_t index) const
 {
-	if (index < color () .size ())
+	const auto size = color () .size ();
+
+	if (index < size)
 		colors .emplace_back (color () [index]);
 		
+	else if (size)
+		colors .emplace_back (color () .back ());
+
 	else
 		colors .emplace_back (1, 1, 1, 1);
 }

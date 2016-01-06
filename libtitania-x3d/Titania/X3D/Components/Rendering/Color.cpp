@@ -97,9 +97,17 @@ Color::get1Color (const size_t index)
 void
 Color::addColor (std::vector <Color4f> & colors, const size_t index) const
 {
-	if (index < color () .size ())
+	const auto size = color () .size ();
+
+	if (index < size)
 	{
 		const Color3f & color3 = color () [index];
+
+		colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
+	}
+	else if (size)
+	{
+		const Color3f & color3 = color () .back ();
 
 		colors .emplace_back (color3 .r (), color3 .g (), color3 .b (), 1);
 	}

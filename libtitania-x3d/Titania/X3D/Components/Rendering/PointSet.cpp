@@ -191,7 +191,7 @@ PointSet::build ()
 	{
 		getColors () .reserve (coordNode -> getSize ());
 
-		for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
+		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
 			colorNode -> addColor (getColors (), i);
 
 		getColors () .resize  (coordNode -> getSize (), Color4f (1, 1, 1, 1));
