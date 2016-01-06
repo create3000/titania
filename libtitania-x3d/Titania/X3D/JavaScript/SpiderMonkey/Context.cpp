@@ -616,6 +616,7 @@ void
 Context::prepareEvents ()
 {
 	callFunction (prepareEventsFn);
+	getBrowser () -> addEvent ();
 }
 
 void
