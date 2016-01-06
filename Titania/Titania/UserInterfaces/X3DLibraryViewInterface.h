@@ -105,6 +105,22 @@ public:
 	getNameRenderer () const
 	{ return m_NameRenderer; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTitania () const
+	{ return m_Titania; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getTitaniaRenderer () const
+	{ return m_TitaniaRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getCobweb () const
+	{ return m_Cobweb; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getCobwebRenderer () const
+	{ return m_CobwebRenderer; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -146,6 +162,10 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_File;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText>   m_NameRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_Titania;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_Cobweb;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;

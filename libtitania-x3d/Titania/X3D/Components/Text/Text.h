@@ -183,6 +183,10 @@ public:
 	float
 	getLength (const size_t);
 
+	const X3DPtr <X3DFontStyleNode> &
+	getFontStyle () const
+	{ return fontStyleNode; }
+
 	const std::unique_ptr <X3DTextGeometry> &
 	getTextGeometry () const
 	{ return textGeometry; }

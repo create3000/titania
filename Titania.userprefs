@@ -1,17 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/SFNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/OrientationChaser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Followers/OrientationDamper.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/Color.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ColorRGBA.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/PointSet.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextEditor/X3DFontStyleNodeEditor.h" Line="25" Column="25" />
+      <File FileName="Titania/Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp" Line="24" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

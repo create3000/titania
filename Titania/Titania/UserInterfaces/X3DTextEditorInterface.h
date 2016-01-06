@@ -106,6 +106,10 @@ public:
 	{ return m_FontStyleSpacingAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextCharSpacingAdjustment () const
+	{ return m_TextCharSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextMaxExtentAdjustment () const
 	{ return m_TextMaxExtentAdjustment; }
 
@@ -173,6 +177,10 @@ public:
 	getLenghtBox () const
 	{ return *m_LenghtBox; }
 
+	Gtk::SpinButton &
+	getTextCharSpacingSpinButton () const
+	{ return *m_TextCharSpacingSpinButton; }
+
 	Gtk::Expander &
 	getFontStyleExpander () const
 	{ return *m_FontStyleExpander; }
@@ -200,6 +208,10 @@ public:
 	Gtk::Label &
 	getFontStyleSizeLabel () const
 	{ return *m_FontStyleSizeLabel; }
+
+	Gtk::Label &
+	getFontStylePointSizeLabel () const
+	{ return *m_FontStylePointSizeLabel; }
 
 	Gtk::SpinButton &
 	getFontStyleSizeSpinButton () const
@@ -249,10 +261,6 @@ public:
 	getFontStyleFamilyRemoveButton () const
 	{ return *m_FontStyleFamilyRemoveButton; }
 
-	Gtk::Label &
-	getFontStylePointSizeLabel () const
-	{ return *m_FontStylePointSizeLabel; }
-
 	Gtk::SpinButton &
 	getFontStylePointSizeSpinButton () const
 	{ return *m_FontStylePointSizeSpinButton; }
@@ -260,6 +268,10 @@ public:
 	Gtk::FontChooserDialog &
 	getFamilyChooserDialog () const
 	{ return *m_FamilyChooserDialog; }
+
+	virtual
+	void
+	on_char_spacing_changed () = 0;
 
 	virtual
 	void
@@ -302,6 +314,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStylePointSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_TextCharSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_TextMaxExtentAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer>       m_TextStringTextBuffer;
 	Glib::RefPtr <Gtk::TreeSelection>    m_FontStyleFamilySelection;
@@ -319,6 +332,7 @@ private:
 	Gtk::SpinButton*                     m_TextMaxExtentSpinButton;
 	Gtk::TextView*                       m_TextStringTextView;
 	Gtk::Box*                            m_LenghtBox;
+	Gtk::SpinButton*                     m_TextCharSpacingSpinButton;
 	Gtk::Expander*                       m_FontStyleExpander;
 	Gtk::Box*                            m_FontStyleBox;
 	Gtk::Box*                            m_SelectFontStyleBox;
@@ -326,6 +340,7 @@ private:
 	Gtk::Button*                         m_FontStyleUnlinkButton;
 	Gtk::Grid*                           m_FontStyleNodeBox;
 	Gtk::Label*                          m_FontStyleSizeLabel;
+	Gtk::Label*                          m_FontStylePointSizeLabel;
 	Gtk::SpinButton*                     m_FontStyleSizeSpinButton;
 	Gtk::SpinButton*                     m_FontStyleSpacingSpinButton;
 	Gtk::CheckButton*                    m_FontStyleHorizontalCheckButton;
@@ -338,7 +353,6 @@ private:
 	Gtk::TreeView*                       m_FontStyleFamilyTreeView;
 	Gtk::Button*                         m_FontStyleFamilyAddButton;
 	Gtk::Button*                         m_FontStyleFamilyRemoveButton;
-	Gtk::Label*                          m_FontStylePointSizeLabel;
 	Gtk::SpinButton*                     m_FontStylePointSizeSpinButton;
 	Gtk::FontChooserDialog*              m_FamilyChooserDialog;
 

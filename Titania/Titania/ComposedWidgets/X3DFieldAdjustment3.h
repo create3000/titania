@@ -180,7 +180,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	
 	setup ();
 
-	buffer                 .addInterest (this, &X3DFieldAdjustment3::set_buffer);
+	buffer               .addInterest (this, &X3DFieldAdjustment3::set_buffer);
 	getCurrentContext () .addInterest (this, &X3DFieldAdjustment3::set_field);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 0));

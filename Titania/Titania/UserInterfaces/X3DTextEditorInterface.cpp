@@ -65,6 +65,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_FontStylePointSizeAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStylePointSizeAdjustment"));
 	m_FontStyleSizeAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
 	m_FontStyleSpacingAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
+	m_TextCharSpacingAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextCharSpacingAdjustment"));
 	m_TextMaxExtentAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
 	m_TextStringTextBuffer            = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
 	m_FontStyleFamilySelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
@@ -84,6 +85,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextMaxExtentSpinButton", m_TextMaxExtentSpinButton);
 	m_builder -> get_widget ("TextStringTextView", m_TextStringTextView);
 	m_builder -> get_widget ("LenghtBox", m_LenghtBox);
+	m_builder -> get_widget ("TextCharSpacingSpinButton", m_TextCharSpacingSpinButton);
 	m_builder -> get_widget ("FontStyleExpander", m_FontStyleExpander);
 	m_builder -> get_widget ("FontStyleBox", m_FontStyleBox);
 	m_builder -> get_widget ("SelectFontStyleBox", m_SelectFontStyleBox);
@@ -91,6 +93,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleUnlinkButton", m_FontStyleUnlinkButton);
 	m_builder -> get_widget ("FontStyleNodeBox", m_FontStyleNodeBox);
 	m_builder -> get_widget ("FontStyleSizeLabel", m_FontStyleSizeLabel);
+	m_builder -> get_widget ("FontStylePointSizeLabel", m_FontStylePointSizeLabel);
 	m_builder -> get_widget ("FontStyleSizeSpinButton", m_FontStyleSizeSpinButton);
 	m_builder -> get_widget ("FontStyleSpacingSpinButton", m_FontStyleSpacingSpinButton);
 	m_builder -> get_widget ("FontStyleHorizontalCheckButton", m_FontStyleHorizontalCheckButton);
@@ -103,9 +106,11 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleFamilyTreeView", m_FontStyleFamilyTreeView);
 	m_builder -> get_widget ("FontStyleFamilyAddButton", m_FontStyleFamilyAddButton);
 	m_builder -> get_widget ("FontStyleFamilyRemoveButton", m_FontStyleFamilyRemoveButton);
-	m_builder -> get_widget ("FontStylePointSizeLabel", m_FontStylePointSizeLabel);
 	m_builder -> get_widget ("FontStylePointSizeSpinButton", m_FontStylePointSizeSpinButton);
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
+
+	// Connect object Gtk::Adjustment with id 'TextCharSpacingAdjustment'.
+	m_TextCharSpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_char_spacing_changed));
 
 	// Connect object Gtk::TextBuffer with id 'TextStringTextBuffer'.
 	m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));

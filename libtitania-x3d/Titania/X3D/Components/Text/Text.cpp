@@ -137,8 +137,7 @@ Text::set_fontStyle ()
 	if (not fontStyleNode)
 		fontStyleNode .set (getBrowser () -> getFontStyle ());
 
-	if (fontStyleNode)
-		fontStyleNode -> addInterest (this);
+	fontStyleNode -> addInterest (this);
 }
 
 float

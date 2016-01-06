@@ -113,12 +113,22 @@ private:
 
 	void
 	connectString (const X3D::MFString &);
+	
+	void
+	on_char_spacing_changed ();
+	
+	void
+	set_length ();
+
+	void
+	connectLength (const X3D::MFFloat &);
 
 	///  @name Members
 
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 	X3D::SFTime                          geometryNodeBuffer;
 	X3D::X3DPtr <X3D::Text>              text;
+	X3D::X3DPtr <X3D::Text>              measure;
 	X3D::UndoStepPtr                     undoStep;
 	bool                                 changing;
 

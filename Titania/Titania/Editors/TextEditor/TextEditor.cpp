@@ -65,6 +65,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	            shapeNodes (),
 	    geometryNodeBuffer (),
 	                  text (),
+	               measure (),
 	              undoStep (),
 	              changing (false),
 	             maxExtent (this,
@@ -180,7 +181,22 @@ TextEditor::set_node ()
 
 	text = std::move (std::get <0> (tuple));
 
-	if (not text)
+	if (text)
+	{
+		measure = getCurrentContext () -> createNode <X3D::Text> ();
+		measure -> lineBounds () .addInterest (this, &TextEditor::on_char_spacing_changed);
+
+		text -> length ()    .addInterest (this, &TextEditor::set_length);
+		text -> string ()    .addInterest (measure -> string ());
+		text -> fontStyle () .addInterest (measure -> fontStyle ());
+
+		measure -> string ()    = text -> string ();
+		measure -> fontStyle () = text -> fontStyle ();
+		getCurrentContext () -> realize ();
+
+		set_length ();
+	}
+	else
 	{
 		text = new X3D::Text (getCurrentContext ());
 		getCurrentContext () -> addUninitializedNode (text);
@@ -261,6 +277,72 @@ TextEditor::connectString (const X3D::MFString & field)
 {
 	field .removeInterest (this, &TextEditor::connectString);
 	field .addInterest (this, &TextEditor::set_string);
+}
+
+void
+TextEditor::on_char_spacing_changed ()
+{
+	if  (not text)
+		return;
+
+	if (changing)
+		return;
+
+	// Set text length
+
+	text -> length () .removeInterest (this, &TextEditor::set_length);
+	text -> length () .addInterest (this, &TextEditor::connectLength);
+	text -> length () .addEvent ();
+
+	const auto kerning = getTextCharSpacingAdjustment () -> get_value ();
+
+	if (kerning)
+	{
+		for (size_t i = 0, size = text -> string () .size (); i < size; ++ i)
+		{
+			const auto numChars   = text -> string () .get1Value (i) .length ();
+			const auto lineLength = text -> getFontStyle () -> horizontal ()
+			                        ? measure -> lineBounds () .get1Value (i) .getX ()
+			                        : measure -> lineBounds () .get1Value (i) .getY ();
+
+			if (numChars)
+				text -> length () .set1Value (i, (numChars - 1) * kerning + lineLength);
+		}
+	}
+	else
+		text -> length () .clear ();
+}
+
+void
+TextEditor::set_length ()
+{
+	changing = true;
+
+	double kerning = 0;
+
+	for (size_t i = 0, size = std::min (text -> length () .size (), text -> string () .size ()); i < size; ++ i)
+	{
+		const auto numChars   = text -> string () .get1Value (i) .length ();
+		const auto lineLength = text -> getFontStyle () -> horizontal ()
+		                        ? measure -> lineBounds () .get1Value (i) .getX ()
+		                        : measure -> lineBounds () .get1Value (i) .getY ();
+
+		kerning += (text -> length () .get1Value (i) - lineLength) / (numChars - 1);
+	}
+
+	if (text -> lineBounds () .size ())
+		kerning /= text -> lineBounds () .size ();
+
+	getTextCharSpacingAdjustment () -> set_value (kerning);
+
+	changing = false;
+}
+
+void
+TextEditor::connectLength (const X3D::MFFloat & field)
+{
+	field .removeInterest (this, &TextEditor::connectLength);
+	field .addInterest (this, &TextEditor::set_length);
 }
 
 TextEditor::~TextEditor ()
