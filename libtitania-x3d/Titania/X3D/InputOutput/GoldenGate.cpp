@@ -77,7 +77,7 @@ static const pcrecpp::RE URL         ("__URL__");
 
 static
 void
-golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && goldenstream)
+golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & goldenstream)
 {
 	scene -> fromStream (uri, goldenstream);
 }
@@ -138,7 +138,7 @@ golden_pipe (const std::string & program, const std::string & input)
 
 static
 void
-golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	static const std::string x3d2vrml = "titania-x3d2vrml";
 
@@ -151,14 +151,14 @@ golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestrea
 
 static
 void
-golden_obj (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_obj (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	Wavefront::Parser (scene, uri, istream) .parseIntoScene ();
 }
 
 static
 void
-golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	// Test
 
@@ -166,19 +166,19 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 
 	try
 	{
-		return golden_x3dv (scene, uri, std::move (istream));
+		return golden_x3dv (scene, uri, istream);
 	}
 	catch (const X3DError & error)
 	{
 		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 
-		return golden_x3d (scene, uri, std::move (istream));
+		return golden_x3d (scene, uri, istream);
 	}
 }
 
 static
 void
-golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	Magick::Image image;
 	image .read (uri);
@@ -203,7 +203,7 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 static
 void
-golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
@@ -220,7 +220,7 @@ golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 static
 void
-golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	MediaStream mediaStream;
 
@@ -253,9 +253,9 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 }
 
 void
-golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream && istream)
+golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &&)>;
+	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
 
 	static const std::map <std::string, GoldenFunction> contentTypes = {
 		std::make_pair ("model/vrml",      &golden_x3dv),
@@ -264,7 +264,8 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		std::make_pair ("model/x3d+xml",   &golden_x3d),
 		std::make_pair ("application/xml", &golden_x3d),
 		std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
-		std::make_pair ("application/ogg", &golden_video)
+		std::make_pair ("application/ogg", &golden_video),
+		std::make_pair ("text/plain",      &golden_text)
 	};
 
 	static const std::map <std::string, GoldenFunction> suffixes = {
@@ -293,31 +294,31 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 
 		try
 		{
-			return contentTypes .at (contentType) (scene, uri, std::move (istream));
+			return contentTypes .at (contentType) (scene, uri, istream);
 		}
 		catch (const std::out_of_range &)
 		{
 			try
 			{
-				return suffixes .at (uri .suffix ()) (scene, uri, std::move (istream));
+				return suffixes .at (uri .suffix ()) (scene, uri, istream);
 			}
 			catch (const std::out_of_range &)
 			{
 				if (Gio::content_type_is_a (contentType, "image/*"))
-					return golden_image (scene, uri, std::move (istream));
+					return golden_image (scene, uri, istream);
 
 				if (Gio::content_type_is_a (contentType, "audio/*"))
-					return golden_audio (scene, uri, std::move (istream));
+					return golden_audio (scene, uri, istream);
 
 				if (Gio::content_type_is_a (contentType, "video/*"))
-					return golden_video (scene, uri, std::move (istream));
+					return golden_video (scene, uri, istream);
 			}
 		}
 	}
 	catch (const std::out_of_range &)
 	{ }
 
-	golden_text (scene, uri, std::move (istream));
+	golden_text (scene, uri, istream);
 }
 
 } // X3D

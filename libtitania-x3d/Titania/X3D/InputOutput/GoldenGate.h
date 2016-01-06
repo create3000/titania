@@ -61,7 +61,7 @@ namespace titania {
 namespace X3D {
 
 void
-golden_gate (const X3DScenePtr &, const basic::uri &, basic::ifilestream &&);
+golden_gate (const X3DScenePtr &, const basic::uri &, basic::ifilestream &);
 
 } // X3D
 } // titania

@@ -105,7 +105,7 @@ throw (Error <INVALID_X3D>,
 {
 	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene ();
 
-	golden_gate (scene, worldURL, std::move (istream));
+	golden_gate (scene, worldURL, istream);
 
 	scene -> setExecutionContext (executionContext);
 	scene -> isLive () = executionContext -> isLive ();
@@ -189,7 +189,7 @@ throw (Error <INVALID_URL>,
 		{
 			basic::ifilestream istream = loadStream (URL .str ());
 
-			golden_gate (scene, worldURL, std::move (istream));
+			golden_gate (scene, worldURL, istream);
 
 			scene -> isCompressed (istream .is_compressed ());
 			return;

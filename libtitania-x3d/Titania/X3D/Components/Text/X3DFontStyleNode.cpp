@@ -278,7 +278,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			
 			const int glyphNumber = topToBottom ? g : numChars - g - 1;
 
-			translations [t] = Vector2d ((spacing - size .x ()) / 2, -glyphNumber * height * 1.2);
+			translations [t] = Vector2d ((spacing - size .x ()) / 2, -glyphNumber * height);
 			
 			// Calculate center.
 
