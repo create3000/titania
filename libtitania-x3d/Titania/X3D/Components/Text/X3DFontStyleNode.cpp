@@ -102,7 +102,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 	Box2d bbox;
 
 	const Font &   font        = fontStyle -> getFont ();
-	const FontFace fontFace    = font .getFace ();
+	const FontFace fontFace    = font .getFace (); // bad alloc!!!
 	const size_t   numLines    = text -> string () .size ();
 	const bool     topToBottom = fontStyle -> topToBottom ();
 	const double   lineHeight  = fontStyle -> getLineHeight ();

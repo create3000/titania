@@ -164,36 +164,43 @@ Text::getMatrix () const
 void
 Text::build ()
 {
-	// Let the fontStyle build the text geometry.
-
-	textGeometry = fontStyleNode -> getTextGeometry (this);
-
-	// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
-
-	const Box3f bbox = textGeometry -> X3DTextGeometry::getBBox ();
-
-	/* const */ Vector3f min, max;
-	bbox .extents (min, max);
-
-	getTexCoords () .emplace_back ();
-
-	getTexCoords () [0] .emplace_back (0, 0, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (min);
-
-	getTexCoords () [0] .emplace_back (1, 0, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (max .x (), min .y (), min .z ());
-
-	getTexCoords () [0] .emplace_back (1, 1, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (max);
-
-	getTexCoords () [0] .emplace_back (0, 1, 0, 1);
-	getNormals  () .emplace_back (0, 0, 1);
-	getVertices () .emplace_back (min .x (), max .y (), min .z ());
-
-	addElements (GL_QUADS, getVertices () .size ());
+	try
+	{
+		// Let the fontStyle build the text geometry.
+	
+		textGeometry = fontStyleNode -> getTextGeometry (this);
+	
+		// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
+	
+		const Box3f bbox = textGeometry -> X3DTextGeometry::getBBox ();
+	
+		/* const */ Vector3f min, max;
+		bbox .extents (min, max);
+	
+		getTexCoords () .emplace_back ();
+	
+		getTexCoords () [0] .emplace_back (0, 0, 0, 1);
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (min);
+	
+		getTexCoords () [0] .emplace_back (1, 0, 0, 1);
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (max .x (), min .y (), min .z ());
+	
+		getTexCoords () [0] .emplace_back (1, 1, 0, 1);
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (max);
+	
+		getTexCoords () [0] .emplace_back (0, 1, 0, 1);
+		getNormals  () .emplace_back (0, 0, 1);
+		getVertices () .emplace_back (min .x (), max .y (), min .z ());
+	
+		addElements (GL_QUADS, getVertices () .size ());
+	}
+	catch (const std::exception &)
+	{
+		// Bad alloc.
+	}
 }
 
 void

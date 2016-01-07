@@ -1,15 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontConfig.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontConfig.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/Font.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/Font.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontFace.h" Line="16" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontFace.cpp" Line="7" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.h" Line="37" Column="37" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="10" Column="10" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="62" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
