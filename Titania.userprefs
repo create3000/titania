@@ -3,6 +3,9 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Text/Text.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Editors/TextEditor/TextEditor.h" Line="53" Column="53" />
+      <File FileName="Titania/Titania/Editors/TextEditor/TextEditor.cpp" Line="15" Column="15" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

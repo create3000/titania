@@ -185,7 +185,7 @@ TextEditor::set_node ()
 	if (text)
 	{
 		measure = getCurrentContext () -> createNode <X3D::Text> ();
-		measure -> lineBounds () .addInterest (this, &TextEditor::on_char_spacing_changed);
+		measure -> lineBounds () .addInterest (this, &TextEditor::set_lineBounds);
 
 		text -> length ()    .addInterest (this, &TextEditor::set_length);
 		text -> string ()    .addInterest (measure -> string ());
@@ -281,23 +281,40 @@ TextEditor::connectString (const X3D::MFString & field)
 }
 
 void
+TextEditor::set_lineBounds ()
+{
+	set_char_spacing (getTextCharSpacingAdjustment () -> get_value ());
+}
+
+void
 TextEditor::on_char_spacing_changed ()
 {
-	if  (not text)
+	if (changing)
 		return;
 
-	if (changing)
+	if (not text)
 		return;
 
 	// Set text length
 
 	addUndoFunction <X3D::MFFloat> (X3D::MFNode ({ text }), "length", lengthUndoStep);
 
+	set_char_spacing (getTextCharSpacingAdjustment () -> get_value ());
+
+	addRedoFunction <X3D::MFFloat> (X3D::MFNode ({ text }), "length", lengthUndoStep);
+}
+
+void
+TextEditor::set_char_spacing (const double kerning)
+{
+	if (not text)
+		return;
+
+	// Set text length
+
 	text -> length () .removeInterest (this, &TextEditor::set_length);
 	text -> length () .addInterest (this, &TextEditor::connectLength);
 	text -> length () .addEvent ();
-
-	const auto kerning = getTextCharSpacingAdjustment () -> get_value ();
 
 	if (kerning)
 	{
@@ -314,8 +331,6 @@ TextEditor::on_char_spacing_changed ()
 	}
 	else
 		text -> length () .clear ();
-
-	addRedoFunction <X3D::MFFloat> (X3D::MFNode ({ text }), "length", lengthUndoStep);
 }
 
 void

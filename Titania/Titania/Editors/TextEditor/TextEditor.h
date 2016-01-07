@@ -113,10 +113,16 @@ private:
 
 	void
 	connectString (const X3D::MFString &);
-	
+
+	void
+	set_lineBounds ();
+
 	void
 	on_char_spacing_changed ();
-	
+
+	void
+	set_char_spacing (const double);
+
 	void
 	set_length ();
 
