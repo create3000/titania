@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_TEXT_X3DFONT_STYLE_NODE_H__
 
-#include "../../Browser/Text/FontConfig.h"
+#include "../../Browser/Text/Font.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 
@@ -231,10 +231,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	std::unique_ptr <X3DTextGeometry>
-	getTextGeometry (Text* const) const = 0;
-
 	bool
 	isItalic () const
 	{ return italic; }
@@ -259,6 +255,14 @@ public:
 	getMinorAlignment () const
 	{ return alignments [1]; }
 
+	virtual
+	const Font &
+	getFont () const = 0;
+
+	virtual
+	std::unique_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const = 0;
+
 
 protected:
 
@@ -271,10 +275,10 @@ protected:
 	initialize () override;
 
 	Font
-	getFont () const;
+	createFont () const;
 
 	Font
-	getFont (const String &, bool &) const;
+	createFont (const String &, bool &) const;
 
 
 private:

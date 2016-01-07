@@ -94,8 +94,8 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 void
 ScreenText::configure (const Cairo::RefPtr <Cairo::Context> & context)
 {
-	const auto & font     = fontStyle -> getScreenFont ();
-	const auto   fontFace = Cairo::FtFontFace::create (font -> getPattern () .get ());
+	const auto & font     = fontStyle -> getFont ();
+	const auto   fontFace = Cairo::FtFontFace::create (font .getPattern () .get ());
 
 	context -> set_font_face (fontFace);
 	context -> set_font_size (fontStyle -> getSize ());
@@ -439,7 +439,7 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
 	          fields (),
-	      screenFont ()
+	            font ()
 {
 	addType (X3DConstants::ScreenFontStyle);
 
@@ -501,13 +501,13 @@ ScreenFontStyle::getSize () const
 void
 ScreenFontStyle::set_font ()
 {
-	screenFont .reset (new Font (getFont ()));
+	font = createFont ();
 }
 
 void
 ScreenFontStyle::dispose ()
 {
-	screenFont .reset ();
+	font .dispose ();
 
 	X3DFontStyleNode::dispose ();
 }

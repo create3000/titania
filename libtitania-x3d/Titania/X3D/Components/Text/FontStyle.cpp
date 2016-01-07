@@ -169,6 +169,7 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
 	          fields (),
+	            font (),
 	     polygonFont (),
 	      lineHeight (1),
 	           scale (1)
@@ -247,7 +248,7 @@ FontStyle::getPolygonFont (const MFString & family) const
 
 	for (const auto & familyName : family)
 	{
-		const Font font = getFont (familyName, isExactMatch);
+		const_cast <Font &> (font) = createFont (familyName, isExactMatch);
 
 		if (isExactMatch)
 		{
@@ -258,12 +259,15 @@ FontStyle::getPolygonFont (const MFString & family) const
 		}
 	}
 
-	return PolygonFontPtr (new FTPolygonFont (getFont ("SERIF", isExactMatch) .getFilename () .c_str ()));
+	const_cast <Font &> (font) = createFont ("SERIF", isExactMatch);
+
+	return PolygonFontPtr (new FTPolygonFont (font .getFilename () .c_str ()));
 }
 
 void
 FontStyle::dispose ()
 {
+	font .dispose ();
 	polygonFont .reset ();
 
 	X3DFontStyleNode::dispose ();

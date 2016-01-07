@@ -101,10 +101,14 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 {
 	Box2d bbox;
 
-	const size_t numLines    = text -> string () .size ();
-	const bool   topToBottom = fontStyle -> topToBottom ();
-	const double lineHeight  = fontStyle -> getLineHeight ();
-	const double scale       = fontStyle -> getScale ();
+	const Font &   font        = fontStyle -> getFont ();
+	const FontFace fontFace    = font .getFace ();
+	const size_t   numLines    = text -> string () .size ();
+	const bool     topToBottom = fontStyle -> topToBottom ();
+	const double   lineHeight  = fontStyle -> getLineHeight ();
+	const double   scale       = fontStyle -> getScale ();
+	const double   factor      = lineHeight / fontStyle -> spacing (); // Scale factor of polygon font
+	const double   descender   = fontFace .getDescender () / double (fontFace .getUnitsPerEm ()) * factor;
 
 	// Calculate bboxes.
 
@@ -128,7 +132,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 		const size_t lineNumber = topToBottom ? l : numLines - l - 1;
 
 		double   charSpacing = 0;
-		Vector2d lineBound   = Vector2d (size .x (), lineNumber == 0 ? size .y () : lineHeight) * scale;
+		Vector2d lineBound   = Vector2d (size .x (), lineNumber == 0 ? max .y () - descender : lineHeight) * scale;
 		double   length      = text -> getLength (l);
 
 		if (text -> maxExtent ())
@@ -607,23 +611,23 @@ X3DFontStyleNode::getAlignment (const size_t index, const bool normal) const
 }
 
 Font
-X3DFontStyleNode::getFont () const
+X3DFontStyleNode::createFont () const
 {
 	bool isExactMatch = false;
 
 	for (const auto & familyName : family ())
 	{
-		const Font font = getFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
+		const Font font = createFont (familyName .empty () ? "SERIF" : familyName .getValue (), isExactMatch);
 
 		if (isExactMatch)
 			return font;
 	}
 
-	return getFont ("SERIF", isExactMatch);
+	return createFont ("SERIF", isExactMatch);
 }
 
 Font
-X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
+X3DFontStyleNode::createFont (const String & familyName, bool & isExactMatch) const
 {
 	// Test if familyName is a valid path local path.
 	// TODO: add support for network paths.
@@ -650,7 +654,7 @@ X3DFontStyleNode::getFont (const String & familyName, bool & isExactMatch) const
 	font .setScalable (true);
 	font .substitute ();
 
-	const Font match = font .match ();
+	const Font match = font .getMatch ();
 
 	isExactMatch = (font == match);
 

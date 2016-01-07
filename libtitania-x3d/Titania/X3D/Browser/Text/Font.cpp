@@ -48,24 +48,26 @@
  *
  ******************************************************************************/
 
-#include "FontConfig.h"
+#include "Font.h"
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {
 
 Font::Font () :
-	pattern (PatternPtr (FcPatternCreate (), PatternDeleter { }))
+	pattern (FontPatternPtr (FcPatternCreate (), PatternDeleter { }))
 { }
 
-Font::Font (const Font & font) :
-	pattern (font .getPattern ())
+Font::Font (const Font & other) :
+	pattern (other .pattern)
 { }
 
-Font::Font (const PatternPtr & pattern) :
+Font::Font (const FontPatternPtr & pattern) :
 	pattern (pattern)
 { }
 
-const Font::PatternPtr &
+const FontPatternPtr &
 Font::getPattern () const
 {
 	return pattern;
@@ -150,11 +152,36 @@ Font::substitute ()
 }
 
 Font
-Font::match () const
+Font::getMatch () const
 {
 	FcResult result;
 
-	return Font (PatternPtr (FcFontMatch (nullptr, pattern .get (), &result), PatternDeleter ()));
+	return Font (FontPatternPtr (FcFontMatch (nullptr, pattern .get (), &result), PatternDeleter ()));
+}
+
+FontFace
+Font::getFace () const
+throw (std::bad_alloc)
+{
+	FcInit ();
+
+	FT_Library freetype;
+
+	if (FT_Init_FreeType (&freetype))
+		throw std::bad_alloc ();
+
+	FT_Face face = nullptr;
+
+	if (FT_New_Face (freetype, getFilename () .c_str (), 0, &face))
+		throw std::bad_alloc ();
+
+	return FontFace (FontFacePtr (face));
+}
+
+void
+Font::dispose ()
+{
+	pattern .reset ();
 }
 
 Font::~Font ()

@@ -58,7 +58,6 @@ namespace titania {
 namespace X3D {
 
 class FontStyle;
-typedef std::unique_ptr <FTPolygonFont> FontPtr;
 
 class PolygonText :
 	public X3DTextGeometry
@@ -136,14 +135,6 @@ public:
 	///  @name Member access
 
 	virtual
-	std::unique_ptr <X3DTextGeometry>
-	getTextGeometry (Text* const) const;
-
-	const FontPtr &
-	getPolygonFont () const
-	{ return polygonFont; }
-
-	virtual
 	double
 	getLineHeight () const final override
 	{ return lineHeight; }
@@ -152,6 +143,19 @@ public:
 	double
 	getScale () const final override
 	{ return scale; }
+
+	virtual
+	const Font &
+	getFont () const final override
+	{ return font; }
+
+	const PolygonFontPtr &
+	getPolygonFont () const
+	{ return polygonFont; }
+
+	virtual
+	std::unique_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const;
 
 	///  @name Destruction
 
@@ -193,6 +197,7 @@ private:
 
 	Fields fields;
 
+	Font           font;
 	PolygonFontPtr polygonFont;
 	double         lineHeight;
 	double         scale;

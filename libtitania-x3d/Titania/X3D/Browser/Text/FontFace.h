@@ -48,117 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
-#define __TITANIA_X3D_MISCELLANEOUS_FONT_CONFIG_H__
+#ifndef __TITANIA_X3D_BROWSER_TEXT_FONT_FACE_H__
+#define __TITANIA_X3D_BROWSER_TEXT_FONT_FACE_H__
 
 #include "../../Types/String.h"
 
-#include <string>
 #include <memory>
+#include <string>
+#include <type_traits>
 
 extern "C"
 {
 #include <fontconfig/fontconfig.h>
+#include <fontconfig/fcfreetype.h>
 }
+
+// See include/freetype2/freetype.h
 
 namespace titania {
 namespace X3D {
 
-class Font
+class Font;
+
+using FontFacePtr = std::shared_ptr <std::remove_pointer <FT_Face>::type>;
+
+class FontFace
 {
 public:
 
-	enum class Slant : uint8_t
-	{
-		ROMAN,
-		ITALIC
-	};
-
-	enum class Weight : uint8_t
-	{
-		NORMAL,
-		BOLD
-	};
-
-	struct PatternDeleter
+	struct FaceDeleter
 	{
 		void
-		operator () (FcPattern* pattern) const
+		operator () (FT_Face face) const
 		{
-			FcPatternDestroy (pattern);
+			FT_Done_Face (face);
 		}
 
 	};
 
-	typedef std::shared_ptr <FcPattern> PatternPtr;
-
 	///  @name Construction
 
-	Font ();
-
-	Font (const Font &);
+	FontFace (const FontFace &);
 
 	///  @name Member access
 
-	const PatternPtr &
-	getPattern () const;
+	const FontFacePtr &
+	getFace () const;
 
-	void
-	setFamilyName (const std::string &);
+	unsigned short
+	getUnitsPerEm () const
+	{ return face -> units_per_EM; }
 
-	std::string
-	getFamilyName () const;
+	short
+	getAscender () const
+	{ return face -> ascender; }
 
-	void
-	setSlant (const Slant &);
+	short
+	getDescender () const
+	{ return face -> descender; }
 
-	void
-	setWeight (const Weight &);
-
-	void
-	setStyle (const std::string &);
-
-	void
-	setScalable (const bool value);
-
-	void
-	setFilename (const std::string &);
-
-	std::string
-	getFilename () const;
-
-	///  @name Operations
-
-	void
-	substitute ();
-
-	Font
-	match () const;
+	short
+	getHeight () const
+	{ return face -> height; }
 
 	///  @name Destruction
 
+	void
+	dispose ();
+
 	virtual
-	~Font ();
+	~FontFace ();
 
 
 private:
 
+	///  @name Friends
+
+	friend Font;
+
 	///  @name Construction
 
-	Font (const PatternPtr &);
+	FontFace (const FontFacePtr &);
 
 	///  @name Members
 
-	PatternPtr pattern;
+	FontFacePtr face;
 
 };
-
-inline
-bool
-operator == (const Font & lhs, const Font & rhs)
-{
-	return String (lhs .getFamilyName ())  .lowercase () == String (rhs .getFamilyName ())  .lowercase ();
-}
 
 } // X3D
 } // titania

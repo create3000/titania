@@ -737,7 +737,6 @@
     <None Include="Titania\X3D\Rendering\CollisionContainer.h" />
     <None Include="Titania\X3D\Browser\ParticleSystems\BVH.h" />
     <None Include="Titania\X3D\Browser\ParticleSystems\Random.h" />
-    <None Include="Titania\X3D\Browser\Text\FontConfig.h" />
     <None Include="Titania\X3D\Browser\Texturing\X3DTexture.h" />
     <None Include="Titania\X3D\Browser\Texturing\Texture.h" />
     <None Include="Titania\X3D\Browser\Texturing3D\Texture3D.h" />
@@ -759,6 +758,8 @@
     <None Include="Titania\X3D\Base\International.h" />
     <None Include="Titania\X3D\Base\X3DSet.h" />
     <None Include="Titania\X3D\Basic\NodeTypeSet.h" />
+    <None Include="Titania\X3D\Browser\Text\Font.h" />
+    <None Include="Titania\X3D\Browser\Text\FontFace.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1257,7 +1258,6 @@
     <Compile Include="Titania\X3D\Rendering\CollisionContainer.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\BVH.cpp" />
     <Compile Include="Titania\X3D\Browser\ParticleSystems\Random.cpp" />
-    <Compile Include="Titania\X3D\Browser\Text\FontConfig.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing\X3DTexture.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing\Texture.cpp" />
     <Compile Include="Titania\X3D\Browser\Texturing3D\Texture3D.cpp" />
@@ -1272,6 +1272,8 @@
     <Compile Include="Titania\X3D\Editing\X3DEditor.cpp" />
     <Compile Include="Titania\X3D\Basic\NodeTypeSet.cpp" />
     <Compile Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\Font.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\FontFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

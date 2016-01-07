@@ -124,8 +124,6 @@ private:
 
 };
 
-typedef std::shared_ptr <Font> ScreenFontPtr;
-
 class ScreenFontStyle :
 	public X3DFontStyleNode
 {
@@ -171,14 +169,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	std::unique_ptr <X3DTextGeometry>
-	getTextGeometry (Text* const) const;
-
-	const ScreenFontPtr &
-	getScreenFont () const
-	{ return screenFont; }
-
 	double
 	getSize () const;
 
@@ -190,6 +180,15 @@ public:
 	double
 	getScale () const final override
 	{ return 1; }
+
+	virtual
+	std::unique_ptr <X3DTextGeometry>
+	getTextGeometry (Text* const) const;
+
+	virtual
+	const Font &
+	getFont () const final override
+	{ return font; }
 
 	///  @name Destruction
 
@@ -233,7 +232,7 @@ private:
 
 	Fields fields;
 	
-	ScreenFontPtr screenFont;
+	Font font;
 
 };
 
