@@ -130,6 +130,7 @@ private:
 	X3D::X3DPtr <X3D::Text>              text;
 	X3D::X3DPtr <X3D::Text>              measure;
 	X3D::UndoStepPtr                     undoStep;
+	X3D::UndoStepPtr                     lengthUndoStep;
 	bool                                 changing;
 
 	X3DFieldAdjustment <X3D::SFFloat> maxExtent;

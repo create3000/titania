@@ -67,6 +67,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	                  text (),
 	               measure (),
 	              undoStep (),
+	        lengthUndoStep (),
 	              changing (false),
 	             maxExtent (this,
 	                        getTextMaxExtentAdjustment (),
@@ -290,6 +291,8 @@ TextEditor::on_char_spacing_changed ()
 
 	// Set text length
 
+	addUndoFunction <X3D::MFFloat> (X3D::MFNode ({ text }), "length", lengthUndoStep);
+
 	text -> length () .removeInterest (this, &TextEditor::set_length);
 	text -> length () .addInterest (this, &TextEditor::connectLength);
 	text -> length () .addEvent ();
@@ -311,11 +314,15 @@ TextEditor::on_char_spacing_changed ()
 	}
 	else
 		text -> length () .clear ();
+
+	addRedoFunction <X3D::MFFloat> (X3D::MFNode ({ text }), "length", lengthUndoStep);
 }
 
 void
 TextEditor::set_length ()
 {
+	lengthUndoStep .reset ();
+
 	changing = true;
 
 	double kerning = 0;
