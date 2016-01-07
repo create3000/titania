@@ -144,7 +144,7 @@ float
 Text::getLength (const size_t index)
 {
 	if (index < length () .size ())
-		return length () [index];
+		return std::max <float> (0, length () [index]);
 
 	return 0;
 }

@@ -104,6 +104,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 	const Font &   font        = fontStyle -> getFont ();
 	const FontFace fontFace    = font .getFace (); // bad alloc!!!
 	const size_t   numLines    = text -> string () .size ();
+	const double   maxExtent   = std::max <double> (0, text -> maxExtent ());
 	const bool     topToBottom = fontStyle -> topToBottom ();
 	const double   lineHeight  = fontStyle -> getLineHeight ();
 	const double   scale       = fontStyle -> getScale ();
@@ -135,13 +136,13 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 		Vector2d lineBound   = Vector2d (size .x (), lineNumber == 0 ? max .y () - descender : lineHeight) * scale;
 		double   length      = text -> getLength (l);
 
-		if (text -> maxExtent ())
+		if (maxExtent)
 		{
 			if (length)
-				length = std::min <double> (text -> maxExtent (), length);
+				length = std::min <double> (maxExtent, length);
 
 			else
-				length = std::min <double> (text -> maxExtent (), size .x () * scale);
+				length = std::min <double> (maxExtent, size .x () * scale);
 		}
 
 		if (length)
@@ -239,6 +240,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 	Box2d bbox;
 
 	const size_t numLines    = text -> string () .size ();
+	const double maxExtent   = std::max <double> (0, text -> maxExtent ());
 	const bool   leftToRight = fontStyle -> leftToRight ();
 	const bool   topToBottom = fontStyle -> topToBottom ();
 	const double spacing     = fontStyle -> getLineHeight ();
@@ -313,13 +315,13 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 		Vector2d lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, size .y ()) * scale;
 		double   length      = text -> getLength (l);
 
-		if (text -> maxExtent ())
+		if (maxExtent)
 		{
 			if (length)
-				length = std::min <double> (text -> maxExtent (), length);
+				length = std::min <double> (maxExtent, length);
 
 			else
-				length = std::min <double> (text -> maxExtent (), size .y () * scale);
+				length = std::min <double> (maxExtent, size .y () * scale);
 		}
 
 		if (length)
