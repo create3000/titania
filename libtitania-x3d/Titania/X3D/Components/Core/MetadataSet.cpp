@@ -129,11 +129,11 @@ throw (Error <DISPOSED>)
 	                                     if (not metadataObject)
 														 return false;
 
-	                                     if (metadataObject -> reference () not_eq providerUrl)
-														 return false;
-
 	                                     if (not metadataObject -> reference () .empty ())
-														 return false;
+													 {
+	                                       if (metadataObject -> reference () not_eq providerUrl)
+														   return false;
+													 }
 
 	                                     return metadataObject -> name () == name;
 												 });

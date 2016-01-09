@@ -86,6 +86,7 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextStringTextView", m_TextStringTextView);
 	m_builder -> get_widget ("LenghtBox", m_LenghtBox);
 	m_builder -> get_widget ("TextCharSpacingSpinButton", m_TextCharSpacingSpinButton);
+	m_builder -> get_widget ("TextWrappingCheckButton", m_TextWrappingCheckButton);
 	m_builder -> get_widget ("FontStyleExpander", m_FontStyleExpander);
 	m_builder -> get_widget ("FontStyleBox", m_FontStyleBox);
 	m_builder -> get_widget ("SelectFontStyleBox", m_SelectFontStyleBox);

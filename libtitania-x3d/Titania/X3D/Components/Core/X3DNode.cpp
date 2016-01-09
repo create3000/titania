@@ -652,7 +652,7 @@ throw (Error <DISPOSED>)
 				return;
 			}
 
-			metadataSets .back () -> removeMetaData (names .back ());
+			metadataSets .back () -> removeValue (names .back ());
 
 			while (metadataSets .back () -> value () .empty ())
 			{
@@ -665,7 +665,7 @@ throw (Error <DISPOSED>)
 					break;
 				}
 
-				metadataSets .back () -> removeMetaData (names .back ());
+				metadataSets .back () -> removeValue (names .back ());
 			}
 
 			return;

@@ -117,8 +117,9 @@ private:
 	void
 	set_lineBounds ();
 
+	virtual
 	void
-	on_char_spacing_changed ();
+	on_char_spacing_changed () final override;
 
 	void
 	set_char_spacing (const double);

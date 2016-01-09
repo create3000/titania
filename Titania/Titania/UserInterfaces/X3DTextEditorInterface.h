@@ -181,6 +181,10 @@ public:
 	getTextCharSpacingSpinButton () const
 	{ return *m_TextCharSpacingSpinButton; }
 
+	Gtk::CheckButton &
+	getTextWrappingCheckButton () const
+	{ return *m_TextWrappingCheckButton; }
+
 	Gtk::Expander &
 	getFontStyleExpander () const
 	{ return *m_FontStyleExpander; }
@@ -333,6 +337,7 @@ private:
 	Gtk::TextView*                       m_TextStringTextView;
 	Gtk::Box*                            m_LenghtBox;
 	Gtk::SpinButton*                     m_TextCharSpacingSpinButton;
+	Gtk::CheckButton*                    m_TextWrappingCheckButton;
 	Gtk::Expander*                       m_FontStyleExpander;
 	Gtk::Box*                            m_FontStyleBox;
 	Gtk::Box*                            m_SelectFontStyleBox;

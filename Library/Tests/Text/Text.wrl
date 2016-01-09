@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.4
+#VRML V2.0 utf8 Titania V1.2.2
 
 META "title" "Text"
 
@@ -47,31 +47,88 @@ PROTO BBox2 [
   }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0.860130786895752,
+              -2.00347495079041,
+              11.2260465621948
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0.860130786895752,
+              -2.00347495079041,
+              -9.5367431640625e-07
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Text"
+}
+
 Background {
   skyColor 0.2 0.2 0.2
 }
 
 Viewpoint {
   description "Viewpoint"
-  position 0 -0.0839844 21.8746
-  centerOfRotation 0 -0.0839844 0
+  position 0.860131 -2.00347 11.226
+  centerOfRotation 0.860131 -2.00347 -9.53674e-07
 }
 
-DEF Text_1 Transform {
+DEF Text Transform {
   children Shape {
     appearance Appearance {
       material Material {
         diffuseColor 1 0 0
       }
     }
-    geometry DEF Text Text {
-      string [
-        "R e a d",
-        "s o m i g",
-        "T e x t",
-        "t o d a y !"
-      ]
-      fontStyle FontStyle {
+    geometry DEF Text_1 Text {
+      metadata DEF Text_2 MetadataSet {
+        name "Text"
+        reference "http://titania.create3000.de"
+        value DEF string MetadataString {
+          name "string"
+          reference "http://titania.create3000.de"
+          value "Read a lot more good Text today! Read a lot more good Text today! Read a lot more good Text today!"
+        }
+      }
+      string "Read a lot more good Text today! Read a lot more good Text today! Read a lot more good Text today!"
+      fontStyle DEF _1 FontStyle {
         family [
           "SANS",
           "Ubuntu Mono"
@@ -149,33 +206,16 @@ DEF YellowBox Transform {
 }
 
 DEF LineBounds Transform {
-  translation 0 0.478083 0
-  children [
-    BBox2 {
-      scale 2.39051 0.487029 1
-      color 1 0 0
-    }
-    BBox2 {
-      translation 0 -0.487029 0
-      scale 2.95177 2 1
-      color 0 1 0
-    }
-    BBox2 {
-      translation 0 -2.48703 0
-      scale 2.2053 2 1
-      color 0 0 1
-    }
-    BBox2 {
-      translation 0 -4.48703 0
-      scale 3.31207 2 1
-      color 1 1 0
-    }
-  ]
+  translation 0 0.759844 0
+  children BBox2 {
+    scale 57.5177 0.995684 1
+    color 1 0 0
+  }
 }
 
 DEF TextBounds Transform {
-  translation 0 0.478083 0
-  scale 3.31207 7.30692 1
+  translation 0 0.759844 0
+  scale 57.5177 0.975625 1
   children BBox2 { }
 }
 
@@ -193,7 +233,7 @@ DEF Bounds Script {
     0 1 1,
     1 0 1
   ]
-  field    SFNode  text USE Text
+  field    SFNode  text USE Text_1
 
   url "vrmlscript:
 
@@ -293,8 +333,8 @@ function set_textBounds (value, time)
   "
 }
 
-ROUTE Text.origin TO LineBounds.set_translation
-ROUTE Text.lineBounds TO Bounds.set_lineBounds
-ROUTE Text.textBounds TO Bounds.set_textBounds
-ROUTE Text.origin TO TextBounds.set_translation
+ROUTE Text_1.origin TO LineBounds.set_translation
+ROUTE Text_1.lineBounds TO Bounds.set_lineBounds
+ROUTE Text_1.textBounds TO Bounds.set_textBounds
+ROUTE Text_1.origin TO TextBounds.set_translation
 ROUTE Bounds.scale_changed TO TextBounds.set_scale

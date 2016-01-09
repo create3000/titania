@@ -2123,9 +2123,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 	using Type = X3D::Rotation4d;
 
 	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
-	const auto & key        = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	const auto & key        = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key",      true);
 	auto &       keyValue   = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &       keyType    = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	auto &       keyType    = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
 
 	keyValue .resize (key .size () * components);
 	keyType  .resize (key .size ());
@@ -2250,9 +2250,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::OrientationInterpolato
 void
 AnimationEditor::resizeInterpolator (const X3D::X3DPtr <X3D::X3DNode> & interpolator, const size_t components, const X3D::UndoStepPtr & undoStep)
 {
-	auto &     key      = interpolator -> getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
+	auto &     key      = interpolator -> getMetaData <X3D::MFInt32>  ("/Interpolator/key",      true);
 	auto &     keyValue = interpolator -> getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	auto &     keyType  = interpolator -> getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
 	const auto iter     = std::upper_bound (key .begin (), key .end (), getDuration ());
 	const auto size     = iter - key .begin ();
 	const auto sizeN    = size * components;
