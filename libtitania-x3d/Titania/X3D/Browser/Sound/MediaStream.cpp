@@ -118,8 +118,8 @@ MediaStream::getDuration () const
 	auto   format   = Gst::FORMAT_TIME;
 	gint64 duration = 0;
 
-	if (player -> query_duration (format, duration))
-		return duration / 1000000000.0;
+	if (player -> query_duration (format, duration) && duration >= 0)
+		return duration / double (Gst::SECOND);
 
 	return -1;
 }
@@ -141,7 +141,7 @@ MediaStream::getState () const
 {
 	Gst::State             state;
 	Gst::State             pending;
-	Gst::StateChangeReturn ret = player -> get_state (state, pending, 10 * Gst::SECOND);
+	Gst::StateChangeReturn ret = player -> get_state (state, pending, 1 * Gst::SECOND);
 
 	switch (ret)
 	{
@@ -183,7 +183,7 @@ MediaStream::getState () const
 //
 //			if (player -> query_position (format, position))
 //			{
-//				__LOG__ << position / 1000000000.0 << std::endl;
+//				__LOG__ << position / double (Gst::SECOND) << std::endl;
 //
 //				player -> seek (speed,
 //				                format,
@@ -209,7 +209,7 @@ MediaStream::start (const double speed, const double position)
 
 	player -> seek (format,
 	                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-	                position * 1000000000.0);
+	                position * double (Gst::SECOND));
 
 	player -> set_state (Gst::STATE_PLAYING);
 }
