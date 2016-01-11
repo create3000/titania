@@ -93,8 +93,23 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	if (protoNode -> isExternproto ())
 	{
-		if (protoNode -> checkLoadState () == COMPLETE_STATE)
-			construct ();
+		protoNode -> requestAsyncLoad ();
+
+		switch (protoNode -> checkLoadState ())
+		{
+			case NOT_STARTED_STATE:
+			case IN_PROGRESS_STATE:
+			{
+				protoNode -> checkLoadState () .addInterest (this, &X3DPrototypeInstance::construct);
+				break;
+			}
+			case COMPLETE_STATE:
+			case FAILED_STATE:
+			{
+				construct ();
+				break;
+			}
+		}
 	}
 	else
 	{
@@ -134,6 +149,8 @@ X3DPrototypeInstance::construct ()
 
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
+
+		protoNode -> checkLoadState () .removeInterest (this, &X3DPrototypeInstance::construct);
 
 		// Interface
 
@@ -187,6 +204,12 @@ X3DPrototypeInstance::construct ()
 		importExternProtos (proto); // XXX: deletable if all get/set are virtual
 		importProtos (proto);       // XXX: deletable if all get/set are virtual
 		copyRootNodes (proto);
+
+		if (isInitialized ())
+		{
+			setup ();
+			X3DChildObject::addEvent ();
+		}
 	}
 	catch (const X3DError & error)
 	{
@@ -227,10 +250,7 @@ X3DPrototypeInstance::update ()
 	}
 
 	construct ();
-	setup ();
-
 	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
-	X3DChildObject::addEvent ();
 }
 
 void

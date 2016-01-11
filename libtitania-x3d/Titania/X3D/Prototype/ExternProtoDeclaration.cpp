@@ -246,16 +246,13 @@ throw (Error <DISPOSED>)
 void
 ExternProtoDeclaration::requestImmediateLoad ()
 {
-	if (checkLoadState () == COMPLETE_STATE)
+	if (checkLoadState () == COMPLETE_STATE or checkLoadState () == IN_PROGRESS_STATE)
 		return;
 
-	if (checkLoadState () == IN_PROGRESS_STATE)
+	if (future)
 	{
-	   if (future)
-	   {
-	      future -> wait ();
-			return;
-		}
+		future -> wait ();
+		return;
 	}
 
 	setLoadState (IN_PROGRESS_STATE);
@@ -290,7 +287,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	getScene () -> addExternProtoLoadCount (this);
+	getScene () -> addSceneLoadCount (this);
 
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
@@ -300,7 +297,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 void
 ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 {
-	getScene () -> removeExternProtoLoadCount (this);
+	getScene () -> removeSceneLoadCount (this);
 
 	if (value)
 	{
@@ -580,7 +577,7 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
-	getScene () -> removeExternProtoLoadCount (this);
+	getScene () -> removeSceneLoadCount (this);
 
 	future .reset ();
 

@@ -216,6 +216,11 @@ public:
 	void
 	requestImmediateLoad () final override
 	{ }
+	
+	virtual
+	void
+	requestAsyncLoad () final override
+	{ }
 
 	///  @name Input/Output
 

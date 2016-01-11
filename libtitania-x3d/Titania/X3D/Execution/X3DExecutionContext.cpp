@@ -85,11 +85,12 @@ X3DExecutionContext::X3DExecutionContext () :
 	           prototypes (),
 	     prototypesOutput (),
 	         externProtos (),
-	externProtosLoadCount (),
 	   externProtosOutput (),
 	               routes (),
 	            rootNodes (new MFNode ()),
 	     sceneGraphOutput (),
+            loadingNodes (),
+	            loadCount (),
 	   uninitializedNodes ()
 {
 	addType (X3DConstants::X3DExecutionContext);
@@ -98,9 +99,9 @@ X3DExecutionContext::X3DExecutionContext () :
 	             namedNodesOutput,
 	             importedNodesOutput,
 	             prototypesOutput,
-	             externProtosLoadCount,
 	             externProtosOutput,
 	             sceneGraphOutput,
+	             loadCount,
 	             uninitializedNodes);
 
 	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.
@@ -123,8 +124,6 @@ void
 X3DExecutionContext::realize ()
 {
 	ContextLock lock (getBrowser ());
-
-	requestImmediateLoadOfExternProtos ();
 
 	if (lock)
 	{
@@ -896,61 +895,6 @@ throw (Error <DISPOSED>)
 	return newName;
 }
 
-void
-X3DExecutionContext::requestImmediateLoadOfExternProtos ()
-{
-	// Parallel load all extern protos, then sync.
-	requestAsyncLoadOfExternProtos ();
-
-	for (const auto externProto : getExternProtoDeclarations ())
-	{
-		if (externProto -> getInstances () .empty ())
-		   continue;
-
-		externProto -> requestImmediateLoad ();
-	}
-
-	for (const auto proto : getProtoDeclarations ())
-		proto -> requestImmediateLoadOfExternProtos ();
-}
-
-void
-X3DExecutionContext::requestAsyncLoadOfExternProtos ()
-{
-	externProtosLoadCount .isTainted (false);
-	externProtosLoadCount .addEvent ();
-
-	for (const auto externProto : getExternProtoDeclarations ())
-	{
-		if (externProto -> getInstances () .empty ())
-		   continue;
-
-		externProto -> requestAsyncLoad ();
-	}
-
-	for (const auto proto : getProtoDeclarations ())
-	{
-	   proto -> requestAsyncLoadOfExternProtos ();
-	}
-}
-
-void
-X3DExecutionContext::addExternProtoLoadCount (const ExternProtoDeclaration* const externProto)
-{
-	loadingExternProtos .emplace (externProto);
-		
-	externProtosLoadCount = loadingExternProtos .size ();
-}
-
-void
-X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* const externProto)
-{
-	if (not loadingExternProtos .erase (externProto))
-		return;
- 
-	externProtosLoadCount = loadingExternProtos .size ();
-}
-
 // ProtoObject handling
 
 X3DProtoDeclarationNode*
@@ -1053,6 +997,23 @@ X3DExecutionContext::set_sceneGraph ()
 		return;
 
 	const_cast <SFTime &> (getExecutionContext () -> sceneGraph_changed ()) = chrono::now ();
+}
+
+void
+X3DExecutionContext::addSceneLoadCount (const X3DBaseNode* const node)
+{
+	loadingNodes .emplace (node);
+		
+	loadCount = loadingNodes .size ();
+}
+
+void
+X3DExecutionContext::removeSceneLoadCount (const X3DBaseNode* const node)
+{
+	if (not loadingNodes .erase (node))
+		return;
+ 
+	loadCount = loadingNodes .size ();
 }
 
 //	Dynamic route handling

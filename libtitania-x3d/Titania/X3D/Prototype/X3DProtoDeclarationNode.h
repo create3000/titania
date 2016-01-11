@@ -98,6 +98,10 @@ public:
 	requestImmediateLoad () = 0;
 
 	virtual
+	void
+	requestAsyncLoad () = 0;
+
+	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const = 0;
 

@@ -431,22 +431,10 @@ public:
 	std::string
 	getUniqueExternProtoName (std::string) const
 	throw (Error <DISPOSED>);
-
-	void
-	requestImmediateLoadOfExternProtos ();
-
-	void
-	requestAsyncLoadOfExternProtos ();
-
-	void
-	addExternProtoLoadCount (const ExternProtoDeclaration* const);
-
-	void
-	removeExternProtoLoadCount (const ExternProtoDeclaration* const);
 	       
 	const SFInt32 &
 	getExternProtosLoadCount () const
-	{ return externProtosLoadCount; }
+	{ return loadCount; }
 
 	const SFTime &
 	externProtos_changed () const
@@ -493,6 +481,12 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ return sceneGraphOutput; }
+
+	void
+	addSceneLoadCount (const X3DBaseNode* const);
+
+	void
+	removeSceneLoadCount (const X3DBaseNode* const);
 
 	///  @name Dynamic route node handling
 
@@ -677,21 +671,21 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtr <WorldInfo>                   worldInfo; 
-	NamedNodeIndex                           namedNodes;
-	SFTime                                   namedNodesOutput;
-	ImportedNodeIndex                        importedNodes;
-	ImportedNamesIndex                       importedNames;
-	SFTime                                   importedNodesOutput;
-	ProtoArray                               prototypes;
-	SFTime                                   prototypesOutput;
-	ExternProtoArray                         externProtos;
-	SFInt32                                  externProtosLoadCount;
-	std::set <const ExternProtoDeclaration*> loadingExternProtos;
-	SFTime                                   externProtosOutput;
-	RouteArray                               routes;
-	MFNode* const                            rootNodes;
-	SFTime                                   sceneGraphOutput;
+	X3DWeakPtr <WorldInfo>        worldInfo; 
+	NamedNodeIndex                namedNodes;
+	SFTime                        namedNodesOutput;
+	ImportedNodeIndex             importedNodes;
+	ImportedNamesIndex            importedNames;
+	SFTime                        importedNodesOutput;
+	ProtoArray                    prototypes;
+	SFTime                        prototypesOutput;
+	ExternProtoArray              externProtos;
+	SFTime                        externProtosOutput;
+	RouteArray                    routes;
+	MFNode* const                 rootNodes;
+	SFTime                        sceneGraphOutput;
+	std::set <const X3DBaseNode*> loadingNodes;
+	SFInt32                       loadCount;
 
 	MFNode uninitializedNodes;
 

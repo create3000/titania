@@ -145,8 +145,9 @@ public:
 	void
 	requestImmediateLoad () final override;
 
+	virtual
 	void
-	requestAsyncLoad ();
+	requestAsyncLoad () final override;
 
 	virtual
 	const SFEnum <LoadState> &
