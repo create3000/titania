@@ -63,7 +63,7 @@ inline
 bool
 ThrowException (JSContext* const cx, const char* format, Args && ... args)
 {
-	JS_ReportWarning (cx, format, std::forward <Args> (args) ...);
+	JS_ReportError (cx, format, std::forward <Args> (args) ...);
 	return false;
 }
 

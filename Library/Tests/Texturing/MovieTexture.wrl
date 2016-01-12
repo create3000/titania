@@ -1,6 +1,59 @@
-#VRML V2.0 utf8 Titania V0.7.3
+#VRML V2.0 utf8 Titania V1.2.2
 
 META "title" "MovieTexture"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "MovieTexture"
+}
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -17,11 +70,11 @@ DEF MovieTexture Transform {
       texture DEF Movie MovieTexture {
         url [
           "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mp4",
-          "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mpv",
+          "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mpv"
         ]
         #loop TRUE
-        startTime 1394361843.25533
-        stopTime 1394355536.05188
+        startTime 1452512631.64944
+        stopTime 1452512633.83991
         repeatS FALSE
         repeatT FALSE
       }
@@ -202,7 +255,7 @@ function set_speed4 ()
   
 function set_active (value)
 {
-	//print ('isActive: ', value)
+	print ('isActive: ', value)
 }	
 
 function set_elapsedTime (value)
@@ -212,7 +265,7 @@ function set_elapsedTime (value)
 
 function set_duration (value)
 {
-	//print ('duration: ', value);
+	print ('duration: ', value);
 }
 	"
 }

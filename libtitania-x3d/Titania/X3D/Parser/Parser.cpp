@@ -618,7 +618,7 @@ Parser::importStatement ()
 					throw Error <INVALID_X3D> ("Expected exported node name.");
 				}
 
-				throw Error <INVALID_X3D> ("Expected exported a '.' after exported node name.");
+				throw Error <INVALID_X3D> ("Expected a '.' after exported node name.");
 			}
 
 			throw Error <INVALID_X3D> ("Node named '" + _inlineNodeNameId + "' is not an Inline node.");
