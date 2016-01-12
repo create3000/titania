@@ -1159,15 +1159,18 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 	if (field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this))
 	{
-		// Output build in field
-
-		ostream << Generator::Indent;
-
-		ostream << getFieldName (field -> getName (), Generator::SpecificationVersion ());
-
-		ostream
-			<< Generator::Space
-			<< *field;
+		if (field -> isInitializable ())
+		{
+			// Output build in field
+	
+			ostream << Generator::Indent;
+	
+			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion ());
+	
+			ostream
+				<< Generator::Space
+				<< *field;
+		}
 	}
 	else
 	{
@@ -1473,28 +1476,31 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			if (mustOutputValue)
 				references .emplace_back (field);
 
-			switch (field -> getType ())
+			if (field -> isInitializable ())
 			{
-				case X3DConstants::SFNode:
-				case X3DConstants::MFNode:
+				switch (field -> getType ())
 				{
-					childNodes .emplace_back (field);
-					break;
-				}
-				default:
-				{
-					if (field == cdata)
+					case X3DConstants::SFNode:
+					case X3DConstants::MFNode:
+					{
+						childNodes .emplace_back (field);
 						break;
-
-					ostream
-						<< Generator::Break
-						<< Generator::Indent
-						<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
-						<< "='"
-						<< XMLEncode (field)
-						<< "'";
-
-					break;
+					}
+					default:
+					{
+						if (field == cdata)
+							break;
+	
+						ostream
+							<< Generator::Break
+							<< Generator::Indent
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< "='"
+							<< XMLEncode (field)
+							<< "'";
+	
+						break;
+					}
 				}
 			}
 		}

@@ -478,25 +478,33 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
-	   // Copy source node into scene.
+		// Copy source node into scene.
 
-		const auto & scene = getBrowserWindow () -> getCurrentScene ();
+		const auto & currentContext = treeView -> getCurrentContext ();
 
-	   std::stringstream sstream;
+		std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (treeView -> getCurrentContext (), sstream, toExport);
-	   X3D::Parser (sstream, scene) .parseIntoScene ();
-	   scene -> realize ();
+		getBrowserWindow () -> exportNodes (currentContext, sstream, toExport);
 
-	   // Change source values.
+		basic::ifilestream text (sstream .str ());
 
-	   sceneNode = scene;
+		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
+		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
+		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
+                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext -> getRootNodes (),
+                                                                     scene,
+                                                                     undoStep);
+
+		// Change source values.
+
+		sceneNode = currentContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = scene -> getRootNodes () .back ();
-		sourceIndex  = scene -> getRootNodes () .size () - 1;
-		sourceField  = &scene -> getRootNodes ();
+		sourceNode   = currentContext -> getRootNodes () .back ();
+		sourceIndex  = currentContext -> getRootNodes () .size () - 1;
+		sourceField  = &currentContext -> getRootNodes ();
 
 		// Adjust transformation like detach from group of copy
 
@@ -504,7 +512,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (currentContext, toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -694,25 +702,33 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
-	   // Copy source node into scene.
+		// Copy source node into scene.
 
-		const auto & scene = getBrowserWindow () -> getCurrentScene ();
+		const auto & currentContext = treeView -> getCurrentContext ();
 
-	   std::stringstream sstream;
+		std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (treeView -> getCurrentContext (), sstream, toExport);
-	   X3D::Parser (sstream, scene) .parseIntoScene ();
-	   scene -> realize ();
+		getBrowserWindow () -> exportNodes (currentContext, sstream, toExport);
 
-	   // Change source values.
+		basic::ifilestream text (sstream .str ());
 
-	   sceneNode = scene;
+		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
+		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
+		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
+                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext -> getRootNodes (),
+                                                                     scene,
+                                                                     undoStep);
+
+		// Change source values.
+
+		sceneNode = currentContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = scene -> getRootNodes () .back ();
-		sourceIndex  = scene -> getRootNodes () .size () - 1;
-		sourceField  = &scene -> getRootNodes ();
+		sourceNode   = currentContext -> getRootNodes () .back ();
+		sourceIndex  = currentContext -> getRootNodes () .size () - 1;
+		sourceField  = &currentContext -> getRootNodes ();
 
 		// Adjust transformation like detach from group of copy
 
@@ -720,7 +736,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (currentContext, toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -902,25 +918,33 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
-	   // Copy source node into scene.
+		// Copy source node into scene.
 
-		const auto & scene = getBrowserWindow () -> getCurrentScene ();
+		const auto & currentContext = treeView -> getCurrentContext ();
 
-	   std::stringstream sstream;
+		std::stringstream sstream;
 		X3D::MFNode toExport ({ sourceNode });
 
-	   getBrowserWindow () -> exportNodes (treeView -> getCurrentContext (), sstream, toExport);
-	   X3D::Parser (sstream, scene) .parseIntoScene ();
-	   scene -> realize ();
+		getBrowserWindow () -> exportNodes (currentContext, sstream, toExport);
 
-	   // Change source values.
+		basic::ifilestream text (sstream .str ());
 
-	   sceneNode = scene;
+		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
+		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
+		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
+                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext -> getRootNodes (),
+                                                                     scene,
+                                                                     undoStep);
+
+		// Change source values.
+
+		sceneNode = currentContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = scene -> getRootNodes () .back ();
-		sourceIndex  = scene -> getRootNodes () .size () - 1;
-		sourceField  = &scene -> getRootNodes ();
+		sourceNode   = currentContext -> getRootNodes () .back ();
+		sourceIndex  = currentContext -> getRootNodes () .size () - 1;
+		sourceField  = &currentContext -> getRootNodes ();
 
 		// Adjust transformation like detach from group of copy
 
@@ -928,7 +952,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), toExport [0]);
+			X3D::Matrix4d modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (currentContext, toExport [0]);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
