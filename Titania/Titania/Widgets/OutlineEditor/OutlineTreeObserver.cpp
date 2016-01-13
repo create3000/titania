@@ -434,9 +434,15 @@ OutlineTreeObserver::getToggle (const Gtk::TreeModel::iterator & iter) const
 				if (children .empty ())
 					return true;
 
-				const auto rhs = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (children [0]));
+				if (treeView -> get_data_type (children [0]) == OutlineIterType::NULL_)
+				{
+					if (sfnode)
+						return true;
+				}
 
-				return sfnode != *rhs;;
+				const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [0]));
+
+				return sfnode != *rhs;
 			}
 			case X3D::X3DConstants::MFNode:
 			{
@@ -448,7 +454,13 @@ OutlineTreeObserver::getToggle (const Gtk::TreeModel::iterator & iter) const
 
 				for (size_t i = 0; i < mfnode .size (); ++ i)
 				{
-					const auto rhs = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (children [i]));
+					if (treeView -> get_data_type (children [i]) == OutlineIterType::NULL_)
+					{
+						if (mfnode [i])
+							return true;
+					}
+
+					const auto rhs = static_cast <X3D::SFNode*> (treeView -> get_object (children [i]));
 
 					if (mfnode [i] != *rhs)
 						return true;

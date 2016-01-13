@@ -457,7 +457,7 @@ Browser::addRoute (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 	}
 	catch (const X3D::X3DError & error)
 	{
-		throw pb::Error (getTypeName () + ".prototype.addRoute: %s:" + error .what ());
+		throw pb::Error (getTypeName () + ".prototype.addRoute: :" + error .what ());
 	}
 }
 
@@ -481,7 +481,7 @@ Browser::deleteRoute (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var
 	}
 	catch (const X3D::X3DError & error)
 	{
-		throw pb::Error (getTypeName () + ".prototype.deleteRoute: %s:" + error .what ());
+		throw pb::Error (getTypeName () + ".prototype.deleteRoute: :" + error .what ());
 	}
 }
 

@@ -88,6 +88,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.glade"), gconf_dir ()),
 	     executionContext (getMasterBrowser () -> getExecutionContext ()),
 	                index (NAMED_NODES_INDEX),
+	               select (true),
 	                types (),
 	            protoNode (),
 	                nodes (),
@@ -463,7 +464,9 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 		{
 			const X3D::MFNode selection = { node };
 
-			node -> getBrowser () -> getSelection () -> setChildren (selection);
+			if (select)
+				node -> getBrowser () -> getSelection () -> setChildren (selection);
+
 			getBrowserWindow () -> expandNodes (selection);
 			break;
 		}

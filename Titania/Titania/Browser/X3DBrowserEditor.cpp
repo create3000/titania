@@ -128,7 +128,8 @@ X3DBrowserEditor::restoreSession ()
 void
 X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 {
-	setMetaData ();
+	if (isEditor () and getCurrentBrowser () -> isInitialized ())
+		setMetaData ();
 
 	getCurrentBrowser () -> shutdown ()    .removeInterest (this, &X3DBrowserEditor::set_shutdown);
 	getUndoHistory (getCurrentBrowser ())  .removeInterest (this, &X3DBrowserEditor::set_undoHistory);

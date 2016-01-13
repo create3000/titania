@@ -72,6 +72,10 @@ public:
 	///  @name Operations
 
 	void
+	setSelect (const bool value)
+	{ select = value; }
+
+	void
 	setNamedNodes ();
 
 	void
@@ -157,6 +161,7 @@ private:
 
 	X3D::X3DExecutionContextPtr                         executionContext;
 	IndexType                                           index;
+	bool                                                select;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>          protoNode;
 	X3D::MFNode                                         nodes;
