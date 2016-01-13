@@ -251,7 +251,7 @@ throw (Error <NODE_NOT_AVAILABLE>,
 		}
 	}
 
-	throw Error <NODE_NOT_AVAILABLE> ("Inline node '" + getName () + "' has not yet been loaded.");
+	return scene;
 }
 
 Box3f
