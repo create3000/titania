@@ -232,6 +232,9 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
+		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+			return;
+
 		if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
 			return;
 	
@@ -321,10 +324,10 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
-		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
+		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
 			return;
 
-		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
 			return;
 
 		const auto   snapAngle = getSnapAngle ();
@@ -371,12 +374,15 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
-		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
+		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+			return;
 	
 		const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
 	
 		if (tool < 0)
 			return;
+
+		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 	
 		const Matrix4d currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
 		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
