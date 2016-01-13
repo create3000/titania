@@ -482,7 +482,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), node -> getName () .c_str ()));
 			const auto   instance = getBrowserWindow () -> addPrototypeInstance (treeView -> get_execution_context (), node -> getName (), undoStep);
 
-			getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
+			//getBrowserWindow () -> getSelection () -> setChildren ({ instance }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 			break;
 		}
@@ -832,7 +832,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 		getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, group, undoStep);
-		getBrowserWindow () -> getSelection () -> setChildren ({ group });
+		//getBrowserWindow () -> getSelection () -> setChildren ({ group });
 		getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 	}
 	else
@@ -878,7 +878,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, child, group, undoStep);
-				getBrowserWindow () -> getSelection () -> setChildren ({ group });
+				//getBrowserWindow () -> getSelection () -> setChildren ({ group });
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}
@@ -895,7 +895,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, mfnode, index, group, undoStep);
-				getBrowserWindow () -> getSelection () -> setChildren ({ group });
+				//getBrowserWindow () -> getSelection () -> setChildren ({ group });
 				getBrowserWindow () -> expandNodes (X3D::MFNode ({ group }));
 				break;
 			}

@@ -48,40 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_TRANSFORM_TOOL_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_TRANSFORM_TOOL_OPTIONS_H__
 
-#include "../Core/X3DNodeTool.h"
+#include "../Core/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DChildNodeTool :
-	virtual public X3DNodeTool <Type>
+class TransformToolOptions :
+	public X3DOptionNode
 {
 public:
 
-	///  @name Member access
+	TransformToolOptions (X3DExecutionContext* const);
+
+	///  @name Common members
 
 	virtual
-	const SFBool &
-	isCameraObject () const override
-	{ return getNode () -> isCameraObject (); }
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFDouble &
+	snapAngle ()
+	{ return *fields .snapAngle; }
+
+	const SFDouble &
+	snapAngle () const
+	{ return *fields .snapAngle; }
 
 
 protected:
 
-	using X3DNodeTool <Type>::addType;
-	using X3DNodeTool <Type>::getNode;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
+private:
 
 	///  @name Construction
 
-	X3DChildNodeTool () :
-		X3DNodeTool <Type> ()
+	virtual
+	TransformToolOptions*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
 	{
-		addType (X3DConstants::X3DChildNodeTool);
-	}
+		Fields ();
+
+		SFDouble* const snapAngle;
+	};
+
+	Fields fields;
 
 };
 

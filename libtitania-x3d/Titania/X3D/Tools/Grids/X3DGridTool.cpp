@@ -207,6 +207,7 @@ X3DGridTool::set_children (const MFNode & value)
 		if (transform)
 		{
 			transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+			transform -> rotation ()    .removeInterest (this, &X3DGridTool::set_rotation);
 			transform -> scale ()       .removeInterest (this, &X3DGridTool::set_scale);
 		}
 	}
@@ -220,6 +221,7 @@ X3DGridTool::set_children (const MFNode & value)
 		if (transform)
 		{
 			transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+			transform -> rotation ()    .addInterest (this, &X3DGridTool::set_rotation,    transform);
 			transform -> scale ()       .addInterest (this, &X3DGridTool::set_scale,       transform);
 		}
 	}
@@ -293,10 +295,66 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
 					}
 	
+					if (transform -> rotation () .isTainted ())
+					{
+						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
+						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
+					}
+	
 					if (transform -> scale () .isTainted ())
 					{
 						transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
 						transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+					}
+				}
+			}
+			catch (const std::exception &)
+			{ }
+		}
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
+{
+	try
+	{
+		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
+			return;
+
+		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+			return;
+
+		const auto   snapAngle = getSnapAngle ();
+		const auto   angle     = std::round (master -> rotation () .getAngle () / snapAngle) * snapAngle;
+
+		if (not snapAngle)
+			return;
+
+		master -> rotation () = Rotation4f (master -> rotation () .getValue () .axis (), angle);
+
+		master -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
+		master -> rotation () .addInterest (this, &X3DGridTool::connectRotation, master);
+	
+		for (const auto & node : children)
+		{
+			if (node == master)
+				continue;
+	
+			try
+			{
+				const X3DPtr <X3DTransformNode> transform (node);
+	
+				if (transform)
+				{
+					transform -> rotation () = Rotation4f (transform -> rotation () .getValue () .axis (), angle);
+	
+					if (transform -> rotation () .isTainted ())
+					{
+						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
+						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
 					}
 				}
 			}
@@ -352,6 +410,12 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 					{
 						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+					}
+	
+					if (transform -> rotation () .isTainted ())
+					{
+						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
+						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
 					}
 	
 					if (transform -> scale () .isTainted ())
@@ -530,6 +594,13 @@ X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
 {
 	transform -> translation () .removeInterest (this, &X3DGridTool::connectTranslation);
 	transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+}
+
+void
+X3DGridTool::connectRotation (const X3DPtr <X3DTransformNode> & transform)
+{
+	transform -> rotation () .removeInterest (this, &X3DGridTool::connectRotation);
+	transform -> rotation () .addInterest (this, &X3DGridTool::set_rotation, transform);
 }
 
 void

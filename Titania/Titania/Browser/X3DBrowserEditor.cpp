@@ -128,6 +128,8 @@ X3DBrowserEditor::restoreSession ()
 void
 X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 {
+	setMetaData ();
+
 	getCurrentBrowser () -> shutdown ()    .removeInterest (this, &X3DBrowserEditor::set_shutdown);
 	getUndoHistory (getCurrentBrowser ())  .removeInterest (this, &X3DBrowserEditor::set_undoHistory);
 
@@ -207,57 +209,7 @@ X3DBrowserEditor::set_executionContext ()
 	if (not (isEditor () and getArrowButton () .get_active ()))
 		return;
 
-	try
-	{
-		static const std::map <std::string, X3D::X3DConstants::NodeType> viewerTypes = {
-			std::make_pair ("EXAMINE",             X3D::X3DConstants::ExamineViewer),
-			std::make_pair ("WALK",                X3D::X3DConstants::WalkViewer),
-			std::make_pair ("FLY",                 X3D::X3DConstants::FlyViewer),
-			std::make_pair ("PLANE",               X3D::X3DConstants::PlaneViewer),
-			std::make_pair ("PLANE_create3000.de", X3D::X3DConstants::PlaneViewer),
-			std::make_pair ("NONE",                X3D::X3DConstants::NoneViewer),
-			std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer)
-		};
-
-		const auto   worldInfo   = getWorldInfo ();
-		const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
-		const auto & type        = metadataSet -> getValue <X3D::MetadataString> ("type") -> value ();
-
-		setViewer (viewerTypes .at (type .at (0)));
-	}
-	catch (const std::exception & error)
-	{
-		setViewer (X3D::X3DConstants::ExamineViewer);
-	}
-
-	try
-	{
-		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
-
-		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position") -> value ();
-		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation") -> value ();
-		auto & c = metadataSet -> getValue <X3D::MetadataDouble> ("centerOfRotation") -> value ();
-
-		const auto viewpoint = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
-
-		viewpoint -> setUserPosition         (X3D::Vector3f (p .get1Value (0), p .get1Value (1), p .get1Value (2)));
-		viewpoint -> setUserOrientation      (X3D::Rotation4f (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
-		viewpoint -> setUserCenterOfRotation (X3D::Vector3f (c .get1Value (0), c .get1Value (1), c .get1Value (2)));
-
-		viewpoint -> set_bind () = true;
-	}
-	catch (const X3D::X3DError & error)
-	{ }
-}
-
-void
-X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
-{
-	if (isEditor () and getArrowButton () .get_active ())
-		getCurrentBrowser () -> setPrivateViewer (viewer);
-	else
-		getCurrentBrowser () -> setViewer (viewer);
+	getMetaData ();
 }
 
 void
@@ -417,6 +369,101 @@ X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
 	return getUndoHistory (browser) .isModified () or getUserData (browser) -> modified;
 }
 
+void
+X3DBrowserEditor::setMetaData ()
+{
+	if (true)
+	{
+		static const std::map <X3D::X3DConstants::NodeType, std::string> types = {
+			std::make_pair (X3D::X3DConstants::ExamineViewer, "EXAMINE"),
+			std::make_pair (X3D::X3DConstants::WalkViewer,    "WALK"),
+			std::make_pair (X3D::X3DConstants::FlyViewer,     "FLY"),
+			std::make_pair (X3D::X3DConstants::PlaneViewer,   "PLANE"),
+			std::make_pair (X3D::X3DConstants::NoneViewer,    "NONE"),
+			std::make_pair (X3D::X3DConstants::LookAtViewer,  "LOOKAT")
+		};
+
+		const auto worldInfo   = createWorldInfo ();
+		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
+		const auto type        = types .find (getCurrentBrowser () -> getCurrentViewer ());
+
+		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
+	}
+
+	try
+	{
+		const auto   worldInfo        = createWorldInfo ();
+		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
+		const auto & activeLayer      = getCurrentWorld () -> getActiveLayer ();
+		const auto   viewpoint        = activeLayer -> getViewpoint ();
+		const auto   position         = viewpoint -> getUserPosition ();
+		const auto   orientation      = viewpoint -> getUserOrientation ();
+		const auto   centerOfRotation = viewpoint -> getUserCenterOfRotation ();
+
+		metadataSet -> createValue <X3D::MetadataDouble> ("position")         -> value () = { position         .x (), position         .y (), position         .z () };
+		metadataSet -> createValue <X3D::MetadataDouble> ("orientation")      -> value () = { orientation      .x (), orientation      .y (), orientation      .z (), orientation .angle () };
+		metadataSet -> createValue <X3D::MetadataDouble> ("centerOfRotation") -> value () = { centerOfRotation .x (), centerOfRotation .y (), centerOfRotation .z () };
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+X3DBrowserEditor::getMetaData ()
+{
+	try
+	{
+		static const std::map <std::string, X3D::X3DConstants::NodeType> viewerTypes = {
+			std::make_pair ("EXAMINE",             X3D::X3DConstants::ExamineViewer),
+			std::make_pair ("WALK",                X3D::X3DConstants::WalkViewer),
+			std::make_pair ("FLY",                 X3D::X3DConstants::FlyViewer),
+			std::make_pair ("PLANE",               X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("PLANE_create3000.de", X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("NONE",                X3D::X3DConstants::NoneViewer),
+			std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer)
+		};
+
+		const auto   worldInfo   = getWorldInfo ();
+		const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
+		const auto & type        = metadataSet -> getValue <X3D::MetadataString> ("type") -> value ();
+
+		setViewer (viewerTypes .at (type .at (0)));
+	}
+	catch (const std::exception & error)
+	{
+		setViewer (X3D::X3DConstants::ExamineViewer);
+	}
+
+	try
+	{
+		const auto worldInfo   = getWorldInfo ();
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
+
+		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position") -> value ();
+		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation") -> value ();
+		auto & c = metadataSet -> getValue <X3D::MetadataDouble> ("centerOfRotation") -> value ();
+
+		const auto viewpoint = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
+
+		viewpoint -> setUserPosition         (X3D::Vector3f (p .get1Value (0), p .get1Value (1), p .get1Value (2)));
+		viewpoint -> setUserOrientation      (X3D::Rotation4f (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
+		viewpoint -> setUserCenterOfRotation (X3D::Vector3f (c .get1Value (0), c .get1Value (1), c .get1Value (2)));
+
+		viewpoint -> set_bind () = true;
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+void
+X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
+{
+	if (isEditor () and getArrowButton () .get_active ())
+		getCurrentBrowser () -> setPrivateViewer (viewer);
+	else
+		getCurrentBrowser () -> setViewer (viewer);
+}
+
 // File operations
 
 void
@@ -531,40 +578,7 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 bool
 X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
-	if (true)
-	{
-		static const std::map <X3D::X3DConstants::NodeType, std::string> types = {
-			std::make_pair (X3D::X3DConstants::ExamineViewer, "EXAMINE"),
-			std::make_pair (X3D::X3DConstants::WalkViewer,    "WALK"),
-			std::make_pair (X3D::X3DConstants::FlyViewer,     "FLY"),
-			std::make_pair (X3D::X3DConstants::PlaneViewer,   "PLANE"),
-			std::make_pair (X3D::X3DConstants::NoneViewer,    "NONE"),
-			std::make_pair (X3D::X3DConstants::LookAtViewer,  "LOOKAT")
-		};
-
-		const auto worldInfo   = createWorldInfo ();
-		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
-		const auto type        = types .find (getCurrentBrowser () -> getCurrentViewer ());
-
-		metadataSet -> createValue <X3D::MetadataString> ("type") -> value () = { type not_eq types .end () ? type -> second : "EXAMINE" };
-	}
-
-	try
-	{
-		const auto   worldInfo        = createWorldInfo ();
-		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
-		const auto & activeLayer      = getCurrentWorld () -> getActiveLayer ();
-		const auto   viewpoint        = activeLayer -> getViewpoint ();
-		const auto   position         = viewpoint -> getUserPosition ();
-		const auto   orientation      = viewpoint -> getUserOrientation ();
-		const auto   centerOfRotation = viewpoint -> getUserCenterOfRotation ();
-
-		metadataSet -> createValue <X3D::MetadataDouble> ("position")         -> value () = { position         .x (), position         .y (), position         .z () };
-		metadataSet -> createValue <X3D::MetadataDouble> ("orientation")      -> value () = { orientation      .x (), orientation      .y (), orientation      .z (), orientation .angle () };
-		metadataSet -> createValue <X3D::MetadataDouble> ("centerOfRotation") -> value () = { centerOfRotation .x (), centerOfRotation .y (), centerOfRotation .z () };
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	setMetaData ();
 
 	if (X3DBrowserWidget::save (worldURL, compressed, copy))
 	{

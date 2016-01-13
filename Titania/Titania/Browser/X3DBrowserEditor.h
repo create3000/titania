@@ -274,6 +274,12 @@ private:
 	bool
 	isSaved (const X3D::BrowserPtr &);
 
+	void
+	setMetaData ();
+
+	void
+	getMetaData ();
+
 	// Edit
 
 	///  @name CDATA field

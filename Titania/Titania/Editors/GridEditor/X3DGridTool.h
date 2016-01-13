@@ -94,6 +94,58 @@ protected:
 	void
 	configure (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
 
+	virtual
+	void
+	set_translation ();
+
+	virtual
+	void
+	set_rotation ();
+
+	virtual
+	void
+	set_scale ();
+
+	virtual
+	void
+	set_dimension ();
+
+	virtual
+	void
+	set_majorLineEvery ();
+
+	virtual
+	void
+	set_majorLineOffset ();
+
+	virtual
+	void
+	set_color ();
+
+	virtual
+	void
+	set_lineColor ();
+
+	virtual
+	void
+	set_majorLineColor ();
+
+
+private:
+
+	///  @name Operations
+
+	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
+	enable ();
+
+	void
+	disable ();
+
+	///  @name Event handler
+
 	void
 	connectTranslation (const X3D::SFVec3f &);
 
@@ -120,47 +172,6 @@ protected:
 
 	void
 	connectMajorLineColor (const X3D::SFColorRGBA &);
-
-	void
-	set_translation ();
-
-	void
-	set_rotation ();
-
-	void
-	set_scale ();
-
-	void
-	set_dimension ();
-
-	void
-	set_majorLineEvery ();
-
-	void
-	set_majorLineOffset ();
-
-	void
-	set_color ();
-
-	void
-	set_lineColor ();
-
-	void
-	set_majorLineColor ();
-
-
-private:
-
-	///  @name Operations
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	enable ();
-
-	void
-	disable ();
 
 	///  @name Members
 

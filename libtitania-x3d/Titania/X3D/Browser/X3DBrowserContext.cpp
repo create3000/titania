@@ -82,6 +82,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	           X3DTexturingContext (),
 	                X3DTimeContext (),
 	               X3DRouterObject (),
+	                X3DToolContext (),
 	             initializedOutput (),
 	                reshapedOutput (),
 	           prepareEventsOutput (),
@@ -130,6 +131,7 @@ X3DBrowserContext::initialize ()
 	X3DTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
 	X3DRouterObject::initialize ();
+	X3DToolContext::initialize ();
 
 	selection    -> setup ();
 	notification -> setup ();
@@ -326,6 +328,7 @@ X3DBrowserContext::dispose ()
 	finishedOutput      .dispose ();
 	changedOutput       .dispose ();
 
+	X3DToolContext::dispose ();
 	X3DRouterObject::dispose ();
 	X3DTimeContext::dispose ();
 	X3DTexturingContext::dispose ();

@@ -118,6 +118,11 @@ private:
 	Vector3d
 	getSnapPosition (const size_t, const Vector3d &, const Vector3d &);
 
+	virtual
+	double
+	getSnapAngle () final override
+	{ return 0; }
+
 	///  @name Static members
 
 	static const ComponentType component;

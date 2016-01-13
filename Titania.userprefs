@@ -1,14 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/Layout.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="18" Column="18" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="29" Column="29" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.h" Line="15" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="16" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/PointingDeviceSensor/PlaneSensor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

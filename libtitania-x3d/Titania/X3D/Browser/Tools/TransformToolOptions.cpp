@@ -48,44 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
+#include "TransformToolOptions.h"
 
-#include "../Core/X3DNodeTool.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DChildNodeTool :
-	virtual public X3DNodeTool <Type>
+const ComponentType TransformToolOptions::component      = ComponentType::TITANIA;
+const std::string   TransformToolOptions::typeName       = "TransformToolOptions";
+const std::string   TransformToolOptions::containerField = "transformToolOptions";
+
+TransformToolOptions::Fields::Fields () :
+	snapAngle (new SFDouble (11.25 / 180 * M_PI))
+{ }
+
+TransformToolOptions::TransformToolOptions (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DOptionNode (),
+	       fields ()
 {
-public:
+	addField (inputOutput, "snapAngle", snapAngle ());
+}
 
-	///  @name Member access
+TransformToolOptions*
+TransformToolOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new TransformToolOptions (executionContext);
+}
 
-	virtual
-	const SFBool &
-	isCameraObject () const override
-	{ return getNode () -> isCameraObject (); }
-
-
-protected:
-
-	using X3DNodeTool <Type>::addType;
-	using X3DNodeTool <Type>::getNode;
-
-	///  @name Construction
-
-	X3DChildNodeTool () :
-		X3DNodeTool <Type> ()
-	{
-		addType (X3DConstants::X3DChildNodeTool);
-	}
-
-};
+void
+TransformToolOptions::initialize ()
+{
+	X3DOptionNode::initialize ();
+}
 
 } // X3D
 } // titania
-
-#endif

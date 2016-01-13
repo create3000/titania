@@ -48,40 +48,52 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_X3DCHILD_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_X3DTOOL_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_X3DTOOL_CONTEXT_H__
 
-#include "../Core/X3DNodeTool.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
-class X3DChildNodeTool :
-	virtual public X3DNodeTool <Type>
+class TransformToolOptions;
+
+class X3DToolContext :
+	virtual public X3DBaseNode
 {
 public:
 
 	///  @name Member access
 
+	const X3DPtr <TransformToolOptions> &
+	getTransformToolOptions () const
+	{ return transformToolOptions; }
+
+	///  @name Destruction
+
 	virtual
-	const SFBool &
-	isCameraObject () const override
-	{ return getNode () -> isCameraObject (); }
+	void
+	dispose () override;
+
+	virtual
+	~X3DToolContext ();
 
 
 protected:
 
-	using X3DNodeTool <Type>::addType;
-	using X3DNodeTool <Type>::getNode;
-
 	///  @name Construction
 
-	X3DChildNodeTool () :
-		X3DNodeTool <Type> ()
-	{
-		addType (X3DConstants::X3DChildNodeTool);
-	}
+	X3DToolContext ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	X3DPtr <TransformToolOptions> transformToolOptions;
 
 };
 

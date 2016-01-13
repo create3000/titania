@@ -56,6 +56,7 @@
 
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
+#include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 
@@ -123,6 +124,11 @@ public:
 	///  @name Member access
 
 	virtual
+	const SFBool &
+	isCameraObject () const final override
+	{ return Type::isCameraObject (); }
+
+	virtual
 	bool
 	getKeepCenter () const final override;
 
@@ -170,6 +176,7 @@ protected:
 
 	using X3DTransformMatrix4DNodeTool <Type>::addType;
 	using X3DTransformMatrix4DNodeTool <Type>::getBrowser;
+	using X3DTransformMatrix4DNodeTool <Type>::setCameraObject;
 	using X3DTransformMatrix4DNodeTool <Type>::getNode;
 	using X3DTransformMatrix4DNodeTool <Type>::getToolNode;
 	using X3DTransformMatrix4DNodeTool <Type>::getCameraSpaceMatrix;
@@ -218,6 +225,8 @@ X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
 	                           changing (false)
 {
 	addType (X3DConstants::X3DTransformNodeTool);
+
+	setCameraObject (true);
 }
 
 template <class Type>
@@ -237,15 +246,17 @@ X3DTransformNodeTool <Type>::realize ()
 
 	try
 	{
-		getBrowser () -> hasControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
-		getBrowser () -> hasShiftKey () .addInterest (getToolNode () -> getField ("shiftKey"));
-		getBrowser () -> hasAltKey () .addInterest (getToolNode () -> getField ("altKey"));
+		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
+		getBrowser ()  -> hasControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
+		getBrowser ()  -> hasShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
+		getBrowser ()  -> hasAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		getToolNode () -> template setField <SFBool> ("controlKey", getBrowser () -> hasControlKey ());
-		getToolNode () -> template setField <SFBool> ("shiftKey",   getBrowser () -> hasShiftKey ());
-		getToolNode () -> template setField <SFBool> ("altKey",     getBrowser () -> hasAltKey ());
-		getToolNode () -> template setField <SFNode> ("transform",  getNode ());
+		getToolNode () -> template setField <SFDouble> ("snapAngle",  getBrowser () -> getTransformToolOptions () -> snapAngle ());
+		getToolNode () -> template setField <SFBool>   ("controlKey", getBrowser () -> hasControlKey ());
+		getToolNode () -> template setField <SFBool>   ("shiftKey",   getBrowser () -> hasShiftKey ());
+		getToolNode () -> template setField <SFBool>   ("altKey",     getBrowser () -> hasAltKey ());
+		getToolNode () -> template setField <SFNode>   ("transform",  getNode ());
 	}
 	catch (const X3DError & error)
 	{ }
@@ -354,7 +365,7 @@ X3DTransformNodeTool <Type>::reshape ()
 {
 	try
 	{
-	   getBrowser () -> endUpdateForFrame ();
+		getBrowser () -> endUpdateForFrame ();
 
 		const auto bbox = getNode () -> X3DGroupingNode::getBBox ();
 
@@ -364,7 +375,7 @@ X3DTransformNodeTool <Type>::reshape ()
 		getToolNode () -> template setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
 		getBrowser () -> processEvents ();
-	   getBrowser () -> beginUpdateForFrame ();
+		getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError & error)
 	{ }

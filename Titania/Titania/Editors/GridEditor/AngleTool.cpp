@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
+#include <Titania/X3D/Browser/Tools/TransformToolOptions.h>
 #include <Titania/X3D/Tools/Grids/AngleTool.h>
 
 #include <Titania/X3D/Components/Core/MetadataBoolean.h>
@@ -148,6 +149,8 @@ AngleTool::configure (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 		getTool () -> dimension () = { 5, 16, 10 };
 	}
 
+	getBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+
 	try
 	{
 		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("majorLineEvery") -> value ();
@@ -203,6 +206,15 @@ AngleTool::configure (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 		getTool () -> majorLineColor () = X3D::Color4f (1, 0.7, 0.7, 0.4);
 	}
 }
+
+void
+AngleTool::set_dimension ()
+{
+	X3DGridTool::set_dimension ();
+
+	getBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+}
+
 
 AngleTool::~AngleTool ()
 {

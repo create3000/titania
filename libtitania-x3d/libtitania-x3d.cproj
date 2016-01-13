@@ -760,6 +760,8 @@
     <None Include="Titania\X3D\Basic\NodeTypeSet.h" />
     <None Include="Titania\X3D\Browser\Text\Font.h" />
     <None Include="Titania\X3D\Browser\Text\FontFace.h" />
+    <None Include="Titania\X3D\Browser\Tools\X3DToolContext.h" />
+    <None Include="Titania\X3D\Browser\Tools\TransformToolOptions.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1274,6 +1276,8 @@
     <Compile Include="Titania\X3D\Prototype\X3DProtoDeclarationNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\Font.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\FontFace.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\X3DToolContext.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\TransformToolOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1341,6 +1345,7 @@
     <Folder Include="Titania\X3D\Browser\Texturing3D\" />
     <Folder Include="Titania\X3D\Browser\Geospatial\" />
     <Folder Include="Titania\X3D\Editing\" />
+    <Folder Include="Titania\X3D\Browser\Tools\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Wed, 13 Jan 2016 02:22:34 GMT"
+META "modified" "Wed, 13 Jan 2016 04:35:54 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -66,6 +66,7 @@ PROTO TransformTool [
   outputOnly  SFBool     isActive
   outputOnly  SFBool     keepCenter_changed
   outputOnly  SFInt32    activeTool_changed
+  inputOutput SFDouble   snapAngle 0.196349540849362
   inputOutput SFBool     controlKey FALSE
   inputOutput SFBool     shiftKey FALSE
   inputOutput SFBool     altKey FALSE
@@ -1298,13 +1299,15 @@ function isActive (sensorA, sensorB, sensorC)
     inputOnly      SFRotation set_xRotation
     inputOnly      SFRotation set_yRotation
     inputOnly      SFRotation set_zRotation
-    inputOutput    SFBool     constrainRotation IS controlKey
-    inputOutput    SFNode     transform IS transform
+    inputOutput    SFDouble   snapAngle IS snapAngle
+    inputOutput    SFBool     controlKey IS controlKey
+    inputOutput    SFBool     shiftKey IS shiftKey
     outputOnly     SFInt32    activeTool_changed IS activeTool_changed
     initializeOnly SFRotation rotation 0 0 1 0
     initializeOnly SFVec3f    scale 1 1 1
     initializeOnly SFRotation scaleOrientation 0 0 1 0
     initializeOnly SFInt32    events 0
+    inputOutput    SFNode     transform IS transform
 
     url "peaseblossom:
 function set_active (value)
@@ -1357,10 +1360,9 @@ function rotate (value)
 		return;
 	}
 
-	if (constrainRotation)
+	if (controlKey && ! shiftKey)
 	{
-		var snapAngle = 11.25 / 180 * Math .PI;
-		var angle     = Math .round (value .angle / snapAngle) * snapAngle;
+		var angle = Math .round (value .angle / snapAngle) * snapAngle;
 		value = new SFRotation (value .getAxis (), angle);
 	}
 

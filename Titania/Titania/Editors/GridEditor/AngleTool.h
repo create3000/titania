@@ -84,6 +84,10 @@ private:
 	void
 	configure (const X3D::X3DPtr <X3D::MetadataSet> &) final override;
 
+	virtual
+	void
+	set_dimension () final override;
+
 	///  @name Members
 
 	X3D::X3DPtr <X3D::X3DGridTool> tool;

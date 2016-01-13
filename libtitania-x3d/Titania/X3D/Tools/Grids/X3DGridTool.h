@@ -186,6 +186,10 @@ protected:
 	getSnapPosition (const Vector3d &) = 0;
 
 	virtual
+	double
+	getSnapAngle () = 0;
+
+	virtual
 	Vector3d
 	getSnapPosition (const Vector3d &, const Vector3d &) = 0;
 
@@ -213,6 +217,9 @@ private:
 	set_translation (const X3DPtr <X3DTransformNode> &);
 
 	void
+	set_rotation (const X3DPtr <X3DTransformNode> &);
+
+	void
 	set_scale (const X3DPtr <X3DTransformNode> &);
 
 	Matrix4d
@@ -226,6 +233,9 @@ private:
 
 	void
 	connectTranslation (const X3DPtr <X3DTransformNode> &);
+
+	void
+	connectRotation (const X3DPtr <X3DTransformNode> &);
 
 	void
 	connectScale (const X3DPtr <X3DTransformNode> &);
