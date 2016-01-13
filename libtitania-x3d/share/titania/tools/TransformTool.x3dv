@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Wed, 13 Jan 2016 02:04:19 GMT"
+META "modified" "Wed, 13 Jan 2016 02:22:34 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -345,15 +345,15 @@ PROTO TransformTool [
                             children Shape {
                               appearance USE Red
                               geometry DEF _4 Cylinder {
-                                height 7
+                                height 8
                                 radius 7
                               }
                             }
                           }
                           USE _3
                           Transform {
-                            translation -3 0 0
-                            scale 0.5 1 1
+                            translation -4 0 0
+                            scale 0.666667 1 1
                             children USE _1
                           }
                         ]
@@ -445,8 +445,8 @@ PROTO TransformTool [
                           }
                           USE _7
                           Transform {
-                            translation 0 -3 0
-                            scale 1 0.5 1
+                            translation 0 -4 0
+                            scale 1 0.666667 1
                             children USE _5
                           }
                         ]
@@ -542,8 +542,8 @@ PROTO TransformTool [
                           }
                           USE _10
                           Transform {
-                            translation 0 0 -3
-                            scale 1 1 0.5
+                            translation 0 0 -4
+                            scale 1 1 0.666667
                             children USE _8
                           }
                         ]
