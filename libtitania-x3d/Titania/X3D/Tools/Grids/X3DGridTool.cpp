@@ -320,7 +320,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (tool < 0)
 			return;
 	
-		const Matrix4d currentMatrix = tool < 3 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 3);
+		const Matrix4d currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
 		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 	
 		if (master -> getKeepCenter ())
@@ -391,12 +391,13 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	Matrix4d grid;
 	grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-	const size_t axis         = tool;
-	const auto   direction    = bbox .axes () [axis];
+	const size_t axis         = tool % 3;
+	const double sgn          = tool < 3 ? 1 : -1;
+	const auto   direction    = bbox .axes () [axis] * sgn;
 	const auto   point        = direction + position;
 	const auto   snapPosition = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid;
 	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
-	auto         before       = shape .axes () [axis] [axis];
+	auto         before       = shape .axes () [axis] [axis] * sgn;
 
 	if (getBrowser () -> hasControlKey ()) // Scale from corner.
 	{
@@ -425,7 +426,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	Matrix4d snap;
 	snap .scale (scale);
 
-	snap *= getOffset (shape, snap, shape .axes () [axis]);
+	snap *= getOffset (shape, snap, shape .axes () [axis] * sgn);
 
 	return snap * currentMatrix;
 }

@@ -1,10 +1,12 @@
 #X3D V3.3 utf8 Titania V1.2.2
 
+UNIT angle degree 0.0174532925199433
+
 META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Tue, 12 Jan 2016 16:29:16 GMT"
+META "modified" "Wed, 13 Jan 2016 02:04:19 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -266,7 +268,7 @@ PROTO TransformTool [
         children [
           DEF X Group {
             children [
-              Group {
+              DEF Front_1 Group {
                 children [
                   DEF XHandle Transform {
                     children ScreenGroup {
@@ -302,7 +304,7 @@ PROTO TransformTool [
                           }
                           Transform {
                             translation 6 0 0
-                            children Shape {
+                            children DEF _1 Shape {
                               appearance USE Red
                               geometry DEF Box Box {
                                 size 12 12 12
@@ -331,156 +333,234 @@ PROTO TransformTool [
                   }
                 ]
               }
-              DEF XBack Transform {
-                children ScreenGroup {
-                  children Transform {
-                    translation -3.5 0 0
-                    rotation 0 0 -1 1.5708
-                    children Shape {
-                      appearance USE Red
-                      geometry DEF _1 Cylinder {
-                        height 7
-                        radius 7
+              DEF Back_1 Group {
+                children [
+                  DEF XBack Transform {
+                    children ScreenGroup {
+                      children DEF _2 Switch {
+                        children [
+                          DEF _3 Transform {
+                            translation -3.5 0 0
+                            rotation 0 0 -1 1.5708
+                            children Shape {
+                              appearance USE Red
+                              geometry DEF _4 Cylinder {
+                                height 7
+                                radius 7
+                              }
+                            }
+                          }
+                          USE _3
+                          Transform {
+                            translation -3 0 0
+                            scale 0.5 1 1
+                            children USE _1
+                          }
+                        ]
                       }
                     }
                   }
-                }
+                  USE ModeTouch
+                  USE XTranslationSensor
+                  #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                  DEF XScaleBackSensor PlaneSensor {
+                    description "x-Axis"
+                    autoOffset FALSE
+                    maxPosition -1 0
+                    isActive IS isActive
+                  }
+                ]
               }
             ]
           }
           DEF Y Group {
             children [
-              USE ModeTouch
-              DEF YTranslationSensor PlaneSensor {
-                enabled IS set_enabled
-                description "y-Axis"
-                autoOffset FALSE
-                maxPosition 0 -1
-                isActive IS isActive
-              }
-              DEF YScaleSensor PlaneSensor {
-                description "y-Axis"
-                autoOffset FALSE
-                maxPosition 0 -1
-                isActive IS isActive
-              }
-              DEF YHandle Transform {
-                children ScreenGroup {
-                  children DEF YSwitch Switch {
-                    children [
-                      Transform {
-                        translation 0 10.5 0
-                        children Shape {
-                          appearance DEF Green Appearance {
-                            material Material {
-                              diffuseColor 0 1 0
-                            }
-                            shaders ToolShader {
-                              diffuseColor 0 1 0
-                              shininess 0
+              DEF Front_2 Group {
+                children [
+                  DEF YHandle Transform {
+                    children ScreenGroup {
+                      children DEF YSwitch Switch {
+                        children [
+                          Transform {
+                            translation 0 10.5 0
+                            children Shape {
+                              appearance DEF Green Appearance {
+                                material Material {
+                                  diffuseColor 0 1 0
+                                }
+                                shaders ToolShader {
+                                  diffuseColor 0 1 0
+                                  shininess 0
+                                }
+                              }
+                              geometry USE Arrow
                             }
                           }
-                          geometry USE Arrow
-                        }
+                          Transform {
+                            translation 0 8 0
+                            children Shape {
+                              appearance USE Green
+                              geometry USE Sphere
+                            }
+                          }
+                          Transform {
+                            translation 0 6 0
+                            children DEF _5 Shape {
+                              appearance USE Green
+                              geometry USE Box
+                            }
+                          }
+                        ]
                       }
-                      Transform {
-                        translation 0 8 0
-                        children Shape {
-                          appearance USE Green
-                          geometry USE Sphere
-                        }
-                      }
-                      Transform {
-                        translation 0 6 0
-                        children Shape {
-                          appearance USE Green
-                          geometry USE Box
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-              DEF YBack Transform {
-                children ScreenGroup {
-                  children Transform {
-                    translation 0 -3.5 0
-                    children Shape {
-                      appearance USE Green
-                      geometry USE _1
                     }
                   }
-                }
+                  USE ModeTouch
+                  DEF YTranslationSensor PlaneSensor {
+                    enabled IS set_enabled
+                    description "y-Axis"
+                    autoOffset FALSE
+                    maxPosition 0 -1
+                    isActive IS isActive
+                  }
+                  DEF YScaleSensor PlaneSensor {
+                    description "y-Axis"
+                    autoOffset FALSE
+                    maxPosition 0 -1
+                    isActive IS isActive
+                  }
+                ]
+              }
+              DEF Back_2 Group {
+                children [
+                  DEF YBack Transform {
+                    children ScreenGroup {
+                      children DEF _6 Switch {
+                        children [
+                          DEF _7 Transform {
+                            translation 0 -3.5 0
+                            children Shape {
+                              appearance USE Green
+                              geometry USE _4
+                            }
+                          }
+                          USE _7
+                          Transform {
+                            translation 0 -3 0
+                            scale 1 0.5 1
+                            children USE _5
+                          }
+                        ]
+                      }
+                    }
+                  }
+                  USE ModeTouch
+                  USE YTranslationSensor
+                  #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                  DEF YScaleBackSensor PlaneSensor {
+                    description "y-Axis"
+                    autoOffset FALSE
+                    maxPosition 0 -1
+                    isActive IS isActive
+                  }
+                ]
               }
             ]
           }
           DEF Z Group {
             children [
-              USE ModeTouch
-              DEF ZTranslationSensor PlaneSensor {
-                enabled IS set_enabled
-                description "z-Axis"
-                axisRotation 0 -1 0 1.5708
-                autoOffset FALSE
-                maxPosition -1 0
-                isActive IS isActive
-              }
-              DEF ZScaleSensor PlaneSensor {
-                description "z-Axis"
-                axisRotation 0 -1 0 1.5708
-                autoOffset FALSE
-                maxPosition -1 0
-                isActive IS isActive
-              }
-              DEF ZHandle Transform {
-                children ScreenGroup {
-                  children DEF ZSwitch Switch {
-                    children [
-                      Transform {
-                        translation 0 0 10.5
-                        rotation 1 0 0 1.5708
-                        children Shape {
-                          appearance DEF Blue Appearance {
-                            material Material {
-                              diffuseColor 0 0 1
-                            }
-                            shaders ToolShader {
-                              diffuseColor 0 0 1
-                              shininess 0
+              DEF Front_3 Group {
+                children [
+                  DEF ZHandle Transform {
+                    children ScreenGroup {
+                      children DEF ZSwitch Switch {
+                        children [
+                          Transform {
+                            translation 0 0 10.5
+                            rotation 1 0 0 1.5708
+                            children Shape {
+                              appearance DEF Blue Appearance {
+                                material Material {
+                                  diffuseColor 0 0 1
+                                }
+                                shaders ToolShader {
+                                  diffuseColor 0 0 1
+                                  shininess 0
+                                }
+                              }
+                              geometry USE Arrow
                             }
                           }
-                          geometry USE Arrow
-                        }
+                          Transform {
+                            translation 0 0 8
+                            children Shape {
+                              appearance USE Blue
+                              geometry USE Sphere
+                            }
+                          }
+                          Transform {
+                            translation 0 0 6
+                            children DEF _8 Shape {
+                              appearance USE Blue
+                              geometry USE Box
+                            }
+                          }
+                        ]
                       }
-                      Transform {
-                        translation 0 0 8
-                        children Shape {
-                          appearance USE Blue
-                          geometry USE Sphere
-                        }
-                      }
-                      Transform {
-                        translation 0 0 6
-                        children Shape {
-                          appearance USE Blue
-                          geometry USE Box
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-              DEF ZBack Transform {
-                children ScreenGroup {
-                  children Transform {
-                    translation 0 0 -3.5
-                    rotation 1 0 0 1.5708
-                    children Shape {
-                      appearance USE Blue
-                      geometry USE _1
                     }
                   }
-                }
+                  USE ModeTouch
+                  DEF ZTranslationSensor PlaneSensor {
+                    enabled IS set_enabled
+                    description "z-Axis"
+                    axisRotation 0 -1 0 1.5708
+                    autoOffset FALSE
+                    maxPosition -1 0
+                    isActive IS isActive
+                  }
+                  DEF ZScaleSensor PlaneSensor {
+                    description "z-Axis"
+                    axisRotation 0 -1 0 1.5708
+                    autoOffset FALSE
+                    maxPosition -1 0
+                    isActive IS isActive
+                  }
+                ]
+              }
+              DEF Back_3 Group {
+                children [
+                  DEF ZBack Transform {
+                    children ScreenGroup {
+                      children DEF _9 Switch {
+                        children [
+                          DEF _10 Transform {
+                            translation 0 0 -3.5
+                            rotation 1 0 0 1.5708
+                            children Shape {
+                              appearance USE Blue
+                              geometry USE _4
+                            }
+                          }
+                          USE _10
+                          Transform {
+                            translation 0 0 -3
+                            scale 1 1 0.5
+                            children USE _8
+                          }
+                        ]
+                      }
+                    }
+                  }
+                  USE ModeTouch
+                  USE ZTranslationSensor
+                  #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                  DEF ZScaleBackSensor PlaneSensor {
+                    description "z-Axis"
+                    axisRotation 0 -1 0 1.5708
+                    autoOffset FALSE
+                    maxPosition -1 0
+                    isActive IS isActive
+                  }
+                ]
               }
             ]
           }
@@ -618,14 +698,14 @@ PROTO TransformTool [
       }
       DEF CenterPoint Transform {
         children [
-          DEF _2 TouchSensor {
+          DEF _11 TouchSensor {
             enabled IS set_enabled
           }
           ScreenGroup {
-            children DEF _3 BooleanSwitch {
+            children DEF _12 BooleanSwitch {
               bboxSize 0 0 0
               children [
-                Shape {
+                DEF _13 Shape {
                   appearance Appearance {
                     material Material {
                       diffuseColor 1 1 0
@@ -635,13 +715,13 @@ PROTO TransformTool [
                       shininess 0
                     }
                   }
-                  geometry DEF _4 Sphere {
+                  geometry DEF _14 Sphere {
                     radius 5
                   }
                 }
-                Shape {
+                DEF _15 Shape {
                   appearance USE Red
-                  geometry USE _4
+                  geometry USE _14
                 }
               ]
             }
@@ -796,9 +876,9 @@ PROTO TransformTool [
     ]
   }
 
-  DEF _5 BooleanFilter { }
+  DEF _16 BooleanFilter { }
 
-  DEF _6 TimeTrigger { }
+  DEF _17 TimeTrigger { }
 
   DEF ModeDoubleClick DoubleClick { }
 
@@ -889,11 +969,12 @@ function eventsProcessed ()
 
 	// Axes
 	
-	axes .point = new MFVec3f (new SFVec3f (0, 0, 0),
-	                           new SFVec3f (bboxSize1_2 .x, 0, 0),
-	                           new SFVec3f (0, bboxSize1_2 .y, 0), 
-	                           new SFVec3f (0, 0, bboxSize1_2 .z), 
-	                           new SFVec3f (0, 0, 0));
+	axes .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x, 0, 0),
+	                           new SFVec3f ( bboxSize1_2 .x, 0, 0),
+	                           new SFVec3f (0,  bboxSize1_2 .y, 0), 
+	                           new SFVec3f (0, -bboxSize1_2 .y, 0), 
+	                           new SFVec3f (0, 0, -bboxSize1_2 .z),
+	                           new SFVec3f (0, 0,  bboxSize1_2 .z));
 
 
 	// BBox
@@ -1330,15 +1411,15 @@ function eventsProcessed ()
 
 	var xAxis = new SFVec3f (1, 0, 0);
 
-	sensor [0] .axisRotation = new SFRotation (xAxis, handle1 .translation);
-	sensor [1] .axisRotation = new SFRotation (xAxis, handle2 .translation);
-	sensor [2] .axisRotation = new SFRotation (xAxis, handle3 .translation);
-	sensor [3] .axisRotation = new SFRotation (xAxis, handle4 .translation);
+	sensor [0] .axisRotation = new SFRotation (xAxis, handle [0] .translation);
+	sensor [1] .axisRotation = new SFRotation (xAxis, handle [1] .translation);
+	sensor [2] .axisRotation = new SFRotation (xAxis, handle [2] .translation);
+	sensor [3] .axisRotation = new SFRotation (xAxis, handle [3] .translation);
 
-	sensor [4] .axisRotation = new SFRotation (xAxis, handle5 .translation);
-	sensor [5] .axisRotation = new SFRotation (xAxis, handle6 .translation);
-	sensor [6] .axisRotation = new SFRotation (xAxis, handle7 .translation);
-	sensor [7] .axisRotation = new SFRotation (xAxis, handle8 .translation);
+	sensor [4] .axisRotation = new SFRotation (xAxis, handle [4] .translation);
+	sensor [5] .axisRotation = new SFRotation (xAxis, handle [5] .translation);
+	sensor [6] .axisRotation = new SFRotation (xAxis, handle [6] .translation);
+	sensor [7] .axisRotation = new SFRotation (xAxis, handle [7] .translation);
 }
 "
     directOutput TRUE
@@ -1349,6 +1430,9 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_xScale
     inputOnly      SFVec3f    set_yScale
     inputOnly      SFVec3f    set_zScale
+    inputOnly      SFVec3f    set_xScaleBack
+    inputOnly      SFVec3f    set_yScaleBack
+    inputOnly      SFVec3f    set_zScaleBack
     inputOnly      SFVec3f    set_scale1
     inputOnly      SFVec3f    set_scale2
     inputOnly      SFVec3f    set_scale3
@@ -1375,6 +1459,9 @@ function eventsProcessed ()
       USE XScaleSensor
       USE YScaleSensor
       USE ZScaleSensor
+      USE XScaleBackSensor
+      USE YScaleBackSensor
+      USE ZScaleBackSensor
       USE ScaleSensor1
       USE ScaleSensor2
       USE ScaleSensor3
@@ -1424,7 +1511,9 @@ function set_active (value)
 		for (var i in sensors)
 		{
 			if (sensors [i] .isActive)
+			{
 				activeTool_changed = 3 + parseInt (i);
+			}
 		}
 
 		translation = transform .translation;
@@ -1449,35 +1538,59 @@ function set_active (value)
 
 function set_xScale (value)
 {
-	if (scaleFromCorner)
-		scale (new SFVec3f (1 + value .x / bboxSize .x, 1, 1),
-		       new SFVec3f (-bboxSize .x / 2, 0, 0));
-
-	else
-		scale (new SFVec3f (1 + 2 * value .x / bboxSize .x, 1, 1),
-		       new SFVec3f ());
+	set_axisScale (\"x\", value, 1);
 }
 
 function set_yScale (value)
 {
-	if (scaleFromCorner)
-		scale (new SFVec3f (1, 1 + value .y / bboxSize .y, 1),
-		       new SFVec3f (0, -bboxSize .y / 2, 0));
-	
-	else
-		scale (new SFVec3f (1, 1 + 2 * value .y / bboxSize .y, 1),
-		       new SFVec3f ());
+	set_axisScale (\"y\", value, 1);
 }
 
 function set_zScale (value)
 {
-	if (scaleFromCorner)
-		scale (new SFVec3f (1, 1, 1 + value .z / bboxSize .z),
-		       new SFVec3f (0, 0, -bboxSize .z / 2));
+	set_axisScale (\"z\", value, 1);
+}
 
+function set_xScaleBack (value)
+{		       
+	set_axisScale (\"x\", value, -1);
+}
+
+function set_yScaleBack (value)
+{
+	set_axisScale (\"y\", value, -1);
+}
+
+function set_zScaleBack (value)
+{
+	set_axisScale (\"z\", value, -1);
+}
+
+function set_axisScale (axis, value, sgn)
+{
+	value = value [axis];
+
+	if (scaleFromCorner)
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + sgn * value / bboxSize [axis];
+		offset [axis] = -sgn * bboxSize [axis] / 2;
+
+		scale (vector, offset);
+	}
 	else
-		scale (new SFVec3f (1, 1, 1 + 2 * value .z / bboxSize .z),
-		       new SFVec3f ());
+	{
+		var
+			vector = new SFVec3f (1, 1, 1),
+			offset = new SFVec3f ();
+	
+		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
+
+		scale (vector, offset);
+	}
 }
 
 function set_scale1 (value)
@@ -1722,24 +1835,36 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-  ROUTE _2.touchTime TO CenterDoubleClick.set_time
+  ROUTE _11.touchTime TO CenterDoubleClick.set_time
   ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-  ROUTE CenterScript.keepCenter_changed TO _3.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO _12.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-  ROUTE _6.triggerTime TO ModeDoubleClick.set_time
-  ROUTE XRotationSensor.isActive TO _5.set_boolean
-  ROUTE YRotationSensor.isActive TO _5.set_boolean
-  ROUTE ZRotationSensor.isActive TO _5.set_boolean
-  ROUTE _5.inputFalse TO _6.set_boolean
-  ROUTE ScaleSensor1.isActive TO _5.set_boolean
-  ROUTE ScaleSensor2.isActive TO _5.set_boolean
-  ROUTE ScaleSensor3.isActive TO _5.set_boolean
-  ROUTE ScaleSensor4.isActive TO _5.set_boolean
-  ROUTE ScaleSensor5.isActive TO _5.set_boolean
-  ROUTE ScaleSensor6.isActive TO _5.set_boolean
-  ROUTE ScaleSensor7.isActive TO _5.set_boolean
-  ROUTE ScaleSensor8.isActive TO _5.set_boolean
+  ROUTE _17.triggerTime TO ModeDoubleClick.set_time
+  ROUTE XRotationSensor.isActive TO _16.set_boolean
+  ROUTE YRotationSensor.isActive TO _16.set_boolean
+  ROUTE ZRotationSensor.isActive TO _16.set_boolean
+  ROUTE _16.inputFalse TO _17.set_boolean
+  ROUTE ScaleSensor1.isActive TO _16.set_boolean
+  ROUTE ScaleSensor2.isActive TO _16.set_boolean
+  ROUTE ScaleSensor3.isActive TO _16.set_boolean
+  ROUTE ScaleSensor4.isActive TO _16.set_boolean
+  ROUTE ScaleSensor5.isActive TO _16.set_boolean
+  ROUTE ScaleSensor6.isActive TO _16.set_boolean
+  ROUTE ScaleSensor7.isActive TO _16.set_boolean
+  ROUTE ScaleSensor8.isActive TO _16.set_boolean
+  ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
+  ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
+  ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
+  ROUTE ZScaleBackSensor.isActive TO ScaleScript.set_active
+  ROUTE YScaleBackSensor.isActive TO ScaleScript.set_active
+  ROUTE XScaleBackSensor.isActive TO ScaleScript.set_active
+  ROUTE ModeScript.scale TO ZScaleBackSensor.set_enabled
+  ROUTE ModeScript.scale TO YScaleBackSensor.set_enabled
+  ROUTE ModeScript.scale TO XScaleBackSensor.set_enabled
+  ROUTE XSwitch.whichChoice_changed TO _2.set_whichChoice
+  ROUTE ZSwitch.whichChoice_changed TO _9.set_whichChoice
+  ROUTE YSwitch.whichChoice_changed TO _6.set_whichChoice
 }
 
 WorldInfo {
@@ -1764,19 +1889,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              7.61215257644653,
-              3.25150513648987,
-              5.61330604553223
+              -5.26768016815186,
+              -2.68345403671265,
+              -8.06782531738281
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.420594245195389,
-              0.905343174934387,
-              -0.0587721616029739,
-              0.976727664470673
+              0.0335642211139202,
+              -0.989970147609711,
+              0.137231633067131,
+              2.57048082351685
             ]
           }
           DEF centerOfRotation MetadataDouble {
