@@ -297,18 +297,6 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
 					}
-	
-					if (transform -> rotation () .isTainted ())
-					{
-						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
-						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
-					}
-	
-					if (transform -> scale () .isTainted ())
-					{
-						transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-						transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
-					}
 				}
 			}
 			catch (const std::exception &)
@@ -361,9 +349,9 @@ __LOG__ << std::endl;
 		Vector3d Z         = cross (X, Y);
 		Matrix3d gridPlane = grid;
 
-__LOG__ << abs (X) << std::endl;
-__LOG__ << abs (Y) << std::endl;
-__LOG__ << abs (Z) << std::endl;
+//__LOG__ << abs (X) << std::endl;
+//__LOG__ << abs (Y) << std::endl;
+//__LOG__ << abs (Z) << std::endl;
 
 		if (abs (X) < 0.5 or abs (Z) < 0.5)
 		{
@@ -380,10 +368,10 @@ __LOG__ << abs (Z) << std::endl;
 		Vector3d vectorToSnap  = s [index];
 		Vector3d vector        = vectorToSnap * ~rotationPlane;
 
-__LOG__ << std::endl;
-__LOG__ << gridPlane << std::endl;
-__LOG__ << normalize (vectorToSnap * ~rotationPlane) << std::endl;
-__LOG__ << normalize (vector) << std::endl;
+//__LOG__ << std::endl;
+//__LOG__ << gridPlane << std::endl;
+//__LOG__ << normalize (vectorToSnap * ~rotationPlane) << std::endl;
+//__LOG__ << normalize (vector) << std::endl;
 
 		const auto snapVector    = getSnapPosition (normalize (vector)) * rotationPlane;
 		const auto snap          = Matrix4d (Rotation4d (vectorToSnap, snapVector));
@@ -396,8 +384,10 @@ __LOG__ << normalize (vector) << std::endl;
 	
 		master -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
 		master -> rotation () .addInterest (this, &X3DGridTool::connectRotation, master);
-
-return;
+	
+		// Apply translation to translation group.
+	
+		const Matrix4d differenceMatrix = ~matrixBefore * (matrixAfter * snap);
 	
 		for (const auto & node : children)
 		{
@@ -410,12 +400,12 @@ return;
 	
 				if (transform)
 				{
-					transform -> rotation () = Rotation4f (transform -> rotation () .getValue () .axis (), angle);
+					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 	
-					if (transform -> rotation () .isTainted ())
+					if (transform -> translation () .isTainted ())
 					{
-						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
-						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
+						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
+						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
 					}
 				}
 			}
@@ -455,7 +445,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = ~matrix * currentMatrix* master -> getTransformationMatrix ();
+		const Matrix4d differenceMatrix = ~matrix * currentMatrix * master -> getTransformationMatrix ();
 	
 		for (const auto & node : children)
 		{
@@ -469,18 +459,6 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 				if (transform)
 				{
 					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-	
-					if (transform -> translation () .isTainted ())
-					{
-						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
-					}
-	
-					if (transform -> rotation () .isTainted ())
-					{
-						transform -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
-						transform -> rotation () .addInterest (this, &X3DGridTool::connectRotation, transform);
-					}
 	
 					if (transform -> scale () .isTainted ())
 					{
