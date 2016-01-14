@@ -186,10 +186,6 @@ protected:
 	getSnapPosition (const Vector3d &) = 0;
 
 	virtual
-	double
-	getSnapAngle () = 0;
-
-	virtual
 	Vector3d
 	getSnapPosition (const Vector3d &, const Vector3d &) = 0;
 

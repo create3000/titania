@@ -179,11 +179,5 @@ AngleTool::getSnapPosition (const double position)
 	return std::abs (p1 - position) < std::abs (p2 - position) ? p1 : p2;
 }
 
-double
-AngleTool::getSnapAngle ()
-{
-	return 2 * M_PI / dimension () .get1Value (1);
-}
-
 } // X3D
 } // titania
