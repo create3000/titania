@@ -356,18 +356,19 @@ __LOG__ << std::endl;
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		Vector3d Y = normalize (y [index]);
-		Vector3d X = cross (grid .y (), Y);
-		Vector3d Z = cross (X, Y);
+		Vector3d Y         = normalize (y [index]);
+		Vector3d X         = cross (yAxis, Y);
+		Vector3d Z         = cross (X, Y);
+		Matrix3d gridPlane = grid;
 
-//__LOG__ << abs (X) << std::endl;
-//__LOG__ << abs (Y) << std::endl;
-//__LOG__ << abs (Z) << std::endl;
+__LOG__ << abs (X) << std::endl;
+__LOG__ << abs (Y) << std::endl;
+__LOG__ << abs (Z) << std::endl;
 
 		if (abs (X) < 0.5 or abs (Z) < 0.5)
 		{
-			X = grid .x ();
-			Z = grid .z ();
+			X = xAxis;
+			Z = zAxis;
 		}
 
 //__LOG__ << std::endl;
@@ -376,16 +377,15 @@ __LOG__ << std::endl;
 //__LOG__ << Z << std::endl;
 
 		Matrix3d rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
-		Matrix3d gridPlane     = grid;
 		Vector3d vectorToSnap  = s [index];
-		Vector3d vector        = vectorToSnap * ~rotationPlane;
+		Vector3d vector        = vectorToSnap * ~rotationPlane * ~gridPlane;
 
 __LOG__ << std::endl;
 __LOG__ << gridPlane << std::endl;
 __LOG__ << normalize (vectorToSnap * ~rotationPlane) << std::endl;
 __LOG__ << normalize (vector) << std::endl;
 
-		const auto snapVector    = getSnapPosition (normalize (vector)) * rotationPlane;
+		const auto snapVector    = getSnapPosition (normalize (vector)) * gridPlane * rotationPlane;
 		const auto snap          = Matrix4d (Rotation4d (vectorToSnap, snapVector));
 		const auto currentMatrix = matrixAfter * snap * ~master -> getTransformationMatrix ();
 
