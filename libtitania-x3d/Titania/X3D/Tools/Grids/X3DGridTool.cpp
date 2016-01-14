@@ -330,11 +330,52 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
 			return;
 
-		const auto   snapAngle = getSnapAngle ();
-		const auto   angle     = std::round (master -> rotation () .getAngle () / snapAngle) * snapAngle;
+		const auto snapAngle = getSnapAngle ();
+		const auto angle     = std::round (master -> rotation () .getAngle () / snapAngle) * snapAngle;
 
 		if (not snapAngle)
 			return;
+
+		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix (); // Matrix before transformation
+		const auto matrixAfter  = master -> getCurrentMatrix () * master -> getTransformationMatrix ();     // Matrix after transformation
+
+		std::vector <double> distances = { abs (matrixAfter .x () - matrixBefore .x ()),
+		                                   abs (matrixAfter .y () - matrixBefore .y ()),
+		                                   abs (matrixAfter .z () - matrixBefore .z ()) };
+
+		const auto index = std::min_element (distances .begin (), distances .end ()) - distances .begin ();
+
+		const std::vector <Vector3d> axes    = {  matrixAfter .x (), matrixAfter .y (),  matrixAfter .z () };
+		const std::vector <Vector3d> vectors = { -matrixAfter .y (), matrixAfter .z (), -matrixAfter .y () };
+
+		Vector3d rotationNormal = axes [index];
+		Vector3d vector         = vectors [index];
+
+		Matrix4d grid;
+		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
+
+		Vector3d gridNormal = grid .mult_dir_matrix (Vector3d (0, 1, 0));
+
+		Rotation4d rotationToGrid (rotationNormal, gridNormal);
+
+		const auto snapVector = getSnapPosition (normalize (vector * rotationToGrid * ~grid)) * grid * ~rotationToGrid;
+		const auto snap       = Matrix4d (Rotation4d (vector, snapVector));
+	
+//__LOG__ << snapVector << std::endl;
+
+
+		const Matrix4d currentMatrix = matrixAfter * snap * ~master -> getTransformationMatrix ();
+	
+		if (master -> getKeepCenter ())
+			master -> setMatrixKeepCenter (currentMatrix);
+		else
+			master -> setMatrix (currentMatrix);
+	
+		master -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
+		master -> rotation () .addInterest (this, &X3DGridTool::connectRotation, master);
+
+
+return;
 
 		master -> rotation () = Rotation4f (master -> rotation () .getValue () .axis (), angle);
 
