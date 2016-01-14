@@ -317,11 +317,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
 			return;
 
-__LOG__ << std::endl;
-
-		Vector3d xAxis (1, 0, 0);
-		Vector3d yAxis (0, 1, 0);
-		Vector3d zAxis (0, 0, 1);
+//__LOG__ << std::endl;
 
 		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix (); // Matrix before transformation
 		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getTransformationMatrix (); // Matrix after transformation
@@ -338,12 +334,12 @@ __LOG__ << std::endl;
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		Matrix3d   gridPlane     = grid;
 		Vector3d   Y             = normalize (y [index]);
 		Vector3d   X             = cross (grid .y (), Y);
 		Vector3d   Z             = cross (X, Y);
 		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
 		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
+		Matrix3d   gridPlane     = grid;
 
 //__LOG__ << abs (X) << std::endl;
 //__LOG__ << abs (Y) << std::endl;
@@ -357,10 +353,10 @@ __LOG__ << std::endl;
 			gridRotation  = Rotation4d ();
 		}
 
-__LOG__ << std::endl;
-__LOG__ << X << std::endl;
-__LOG__ << Y << std::endl;
-__LOG__ << Z << std::endl;
+//__LOG__ << std::endl;
+//__LOG__ << X << std::endl;
+//__LOG__ << Y << std::endl;
+//__LOG__ << Z << std::endl;
 
 		Vector3d vectorToSnap  = z [index];
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
