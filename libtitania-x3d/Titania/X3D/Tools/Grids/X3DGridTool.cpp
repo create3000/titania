@@ -317,12 +317,6 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
 			return;
 
-		const auto snapAngle = getSnapAngle ();
-		const auto angle     = std::round (master -> rotation () .getAngle () / snapAngle) * snapAngle;
-
-		if (not snapAngle)
-			return;
-
 __LOG__ << std::endl;
 
 		Vector3d xAxis (1, 0, 0);
@@ -336,46 +330,52 @@ __LOG__ << std::endl;
 		                                   abs (normalize (matrixAfter .y ()) - normalize (matrixBefore .y ())),
 		                                   abs (normalize (matrixAfter .z ()) - normalize (matrixBefore .z ())) };
 
-		const auto index = std::min_element (distances .begin (), distances .end ()) - distances .begin ();
+		const auto index = std::min_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
 
-		const std::vector <Vector3d> y = {  matrixAfter .x (), matrixAfter .y (),  matrixAfter .z () }; // ok, normal of rotation plane
-		const std::vector <Vector3d> s = { -matrixAfter .y (), matrixAfter .z (), -matrixAfter .y () }; // ok, vector to snap
+		const std::vector <Vector3d> y = {  matrixAfter .x (), matrixAfter .y (),  matrixAfter .z () }; // Rotation axis, equates to grid normal
+		const std::vector <Vector3d> z = { -matrixAfter .y (), matrixAfter .z (), -matrixAfter .y () }; // Vector to snap, later transformed to grid space
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 
-		Vector3d Y         = normalize (y [index]);
-		Vector3d X         = cross (grid .y (), Y);
-		Vector3d Z         = cross (X, Y);
-		Matrix3d gridPlane = grid;
+		Matrix3d   gridPlane     = grid;
+		Vector3d   Y             = normalize (y [index]);
+		Vector3d   X             = cross (grid .y (), Y);
+		Vector3d   Z             = cross (X, Y);
+		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
+		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
 
 //__LOG__ << abs (X) << std::endl;
 //__LOG__ << abs (Y) << std::endl;
 //__LOG__ << abs (Z) << std::endl;
 
-		if (abs (X) < 0.5 or abs (Z) < 0.5)
+		// If X or Z are near 0 then Y is collinear to the y-axis.
+
+		if (abs (X) < 1e-3 or abs (Z) < 1e-3)
 		{
-			X = grid .x ();
-			Z = grid .z ();
+			rotationPlane = Matrix3d ();
+			gridRotation  = Rotation4d ();
 		}
 
-//__LOG__ << std::endl;
-//__LOG__ << X << std::endl;
-//__LOG__ << Y << std::endl;
-//__LOG__ << Z << std::endl;
+__LOG__ << std::endl;
+__LOG__ << X << std::endl;
+__LOG__ << Y << std::endl;
+__LOG__ << Z << std::endl;
 
-		Matrix3d rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
-		Vector3d vectorToSnap  = s [index];
-		Vector3d vector        = vectorToSnap * ~rotationPlane;
+		Vector3d vectorToSnap  = z [index];
+		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
+
+		const auto snapVector    = getSnapPosition (vectorOnGrid) * gridPlane * ~gridRotation * rotationPlane;
+		const auto snap          = Matrix4d (Rotation4d (vectorToSnap, snapVector));
+		const auto currentMatrix = matrixAfter * snap * ~master -> getTransformationMatrix ();
 
 //__LOG__ << std::endl;
 //__LOG__ << gridPlane << std::endl;
+//__LOG__ << vectorToSnap << std::endl;
 //__LOG__ << normalize (vectorToSnap * ~rotationPlane) << std::endl;
-//__LOG__ << normalize (vector) << std::endl;
-
-		const auto snapVector    = getSnapPosition (normalize (vector)) * rotationPlane;
-		const auto snap          = Matrix4d (Rotation4d (vectorToSnap, snapVector));
-		const auto currentMatrix = matrixAfter * snap * ~master -> getTransformationMatrix ();
+//__LOG__ << vectorOnGrid << std::endl;
+//__LOG__ << getSnapPosition (vectorOnGrid) << std::endl;
+//__LOG__ << snapVector << std::endl;
 
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
