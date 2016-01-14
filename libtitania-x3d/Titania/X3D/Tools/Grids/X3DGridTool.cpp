@@ -328,8 +328,8 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 
 		const auto index = std::min_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
 
-		const std::vector <Vector3d> y = {  matrixAfter .x (), matrixAfter .y (),  matrixAfter .z () }; // Rotation axis, equates to grid normal
-		const std::vector <Vector3d> z = { -matrixAfter .y (), matrixAfter .z (), -matrixAfter .y () }; // Vector to snap, later transformed to grid space
+		const std::vector <Vector3d> y = { matrixAfter .x (), matrixAfter .y (), matrixAfter .z () }; // Rotation axis, equates to grid normal
+		const std::vector <Vector3d> z = { matrixAfter .y (), matrixAfter .z (), matrixAfter .y () }; // Vector to snap, later transformed to grid space
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
@@ -344,10 +344,11 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 //__LOG__ << abs (X) << std::endl;
 //__LOG__ << abs (Y) << std::endl;
 //__LOG__ << abs (Z) << std::endl;
+__LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
 
 		// If X or Z are near 0 then Y is collinear to the y-axis.
 
-		if (abs (X) < 1e-3 or abs (Z) < 1e-3)
+		if (1 - std::abs (dot (normalize (grid .y ()), Y)) < 1e-6)
 		{
 			rotationPlane = Matrix3d ();
 			gridRotation  = Rotation4d ();
@@ -361,8 +362,12 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		Vector3d vectorToSnap  = z [index];
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
 
-		const auto snapVector    = getSnapPosition (vectorOnGrid) * gridPlane * ~gridRotation * rotationPlane;
-		const auto snap          = Matrix4d (Rotation4d (vectorToSnap, snapVector));
+		const auto snapVector   = getSnapPosition (vectorOnGrid) * gridPlane * ~gridRotation * rotationPlane;
+		const auto snapRotation = Rotation4d (vectorToSnap, snapVector);
+
+		Matrix4d snap;
+		snap .set (Vector3d (), snapRotation, Vector3d (1, 1, 1), Rotation4d (), matrixAfter .origin ());
+
 		const auto currentMatrix = matrixAfter * snap * ~master -> getTransformationMatrix ();
 
 //__LOG__ << std::endl;

@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.2.2
 
 PROFILE Full
 
@@ -7,8 +7,8 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 07 Oct 2014 02:03:56 GMT"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Thu, 14 Jan 2016 21:13:29 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -70,14 +70,14 @@ PROTO Grid [
           }
         }
       }
-      DEF MajorGrid_1 Shape {
+      DEF MajorGrid Shape {
         appearance Appearance {
           material DEF MajorMaterial Material {
             emissiveColor IS majorLineColor
             transparency IS majorLineTransparency
           }
         }
-        geometry DEF MajorGrid IndexedLineSet {
+        geometry DEF MajorGrid_1 IndexedLineSet {
           coordIndex [
             0,
             1,
@@ -116,14 +116,14 @@ PROTO Grid [
           }
         }
       }
-      DEF MinorGrid_1 Shape {
+      DEF MinorGrid Shape {
         appearance Appearance {
           material DEF MinorMaterial Material {
             emissiveColor IS lineColor
             transparency IS lineTransparency
           }
         }
-        geometry DEF MinorGrid IndexedLineSet {
+        geometry DEF MinorGrid_1 IndexedLineSet {
           coordIndex [
             0,
             1,
@@ -212,14 +212,14 @@ PROTO Grid [
           }
         }
       }
-      DEF MajorPoints_1 Shape {
+      DEF MajorPoints Shape {
         appearance Appearance {
           lineProperties LineProperties {
             linewidthScaleFactor 6
           }
           material USE MajorMaterial
         }
-        geometry DEF MajorPoints PointSet {
+        geometry DEF MajorPoints_1 PointSet {
           coord Coordinate {
             point [
               0 -5 0,
@@ -229,14 +229,14 @@ PROTO Grid [
           }
         }
       }
-      DEF MinorPoints_1 Shape {
+      DEF MinorPoints Shape {
         appearance Appearance {
           lineProperties LineProperties {
             linewidthScaleFactor 4
           }
           material USE MinorMaterial
         }
-        geometry DEF MinorPoints PointSet {
+        geometry DEF MinorPoints_1 PointSet {
           coord Coordinate {
             point [
               0 -4 0,
@@ -259,10 +259,10 @@ PROTO Grid [
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  plane USE Plane
-    initializeOnly SFNode  majorGrid USE MajorGrid
-    initializeOnly SFNode  minorGrid USE MinorGrid
-    initializeOnly SFNode  majorPoints USE MajorPoints
-    initializeOnly SFNode  minorPoints USE MinorPoints
+    initializeOnly SFNode  majorGrid USE MajorGrid_1
+    initializeOnly SFNode  minorGrid USE MinorGrid_1
+    initializeOnly SFNode  majorPoints USE MajorPoints_1
+    initializeOnly SFNode  minorPoints USE MinorPoints_1
 
     url "peaseblossom:
 
@@ -379,10 +379,63 @@ function isMajor (i, dimension, majorLineEvery, majorLineOffset)
   }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.8371753692627,
+              8.18800354003906,
+              5.43893718719482
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.962775886058807,
+              0.259036391973495,
+              0.0772186517715454,
+              0.998984575271606
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "GridTool"
+}
+
 DEF GridTool Collision {
   enabled FALSE
   children [
-    DEF Grid_1 TouchGroup {
+    DEF Grid TouchGroup {
       enabled FALSE
       children DEF _1 Grid {
         transparency 0.8
@@ -566,6 +619,7 @@ function set_translation (value)
 	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
 
 	scale .x *= factor;
+	scale .y *= factor;
 	scale .z *= factor;
 }
 

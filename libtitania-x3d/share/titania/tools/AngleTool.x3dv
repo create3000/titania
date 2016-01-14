@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.2.2
 
 PROFILE Full
 
@@ -7,8 +7,8 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Tue, 07 Oct 2014 06:39:13 GMT"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Thu, 14 Jan 2016 21:14:53 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -53,12 +53,12 @@ PROTO AngleGrid [
     rotation IS rotation
     scale IS scale
     children [
-      DEF Disk_1 Transform {
+      DEF Disk Transform {
         rotation -5.25948e-13 0.707105 0.707108 3.14159
         scale 5 5 1
         children Shape {
           appearance Appearance {
-            material DEF Material2_1 Material {
+            material DEF Material2 Material {
               diffuseColor 0 0 0
               emissiveColor IS color
               transparency IS transparency
@@ -162,9 +162,9 @@ PROTO AngleGrid [
           }
         }
       }
-      DEF MajorLines_1 Shape {
+      DEF MajorLines Shape {
         appearance USE MajorAppearance
-        geometry DEF MajorLines IndexedLineSet {
+        geometry DEF MajorLines_1 IndexedLineSet {
           coordIndex [
             0,
             1,
@@ -252,10 +252,10 @@ PROTO AngleGrid [
     inputOutput    MFInt32 dimension IS dimension
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
-    initializeOnly SFNode  disk USE Disk_1
+    initializeOnly SFNode  disk USE Disk
     initializeOnly SFNode  rings USE Rings
     initializeOnly SFNode  minorLines USE MinorLines_1
-    initializeOnly SFNode  majorLines USE MajorLines
+    initializeOnly SFNode  majorLines USE MajorLines_1
     initializeOnly SFNode  minorPoints USE MinorPoints_1
     initializeOnly SFNode  majorPoints USE MajorPoints_1
     initializeOnly SFNode  minorAppearance USE MinorAppearance
@@ -422,13 +422,66 @@ function isMajorXYZ (i, dimension, majorLineEvery, majorLineOffset)
   }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "AngleTool"
+}
+
 DEF AngleTool Transform {
   children [
     DEF AngleGrid TouchGroup {
       enabled FALSE
       children DEF _2 AngleGrid { }
     }
-    DEF Center_1 Transform {
+    DEF Center Transform {
       children [
         DEF _3 PlaneSensor {
           axisRotation 1 0 0 1.5708
@@ -436,7 +489,7 @@ DEF AngleTool Transform {
         }
         DEF _4 Transform {
           children ScreenGroup {
-            children DEF Sphere_1 Transform {
+            children DEF Sphere Transform {
               scale 4 4 4
               children Shape {
                 appearance DEF _5 Appearance {
@@ -487,7 +540,7 @@ DEF AngleTool Transform {
             DEF _9 Transform {
               translation 0 0 5
               children ScreenGroup {
-                children DEF Sphere Transform {
+                children DEF Sphere_1 Transform {
                   scale 6 3 3
                   children Shape {
                     appearance USE _5
@@ -500,7 +553,7 @@ DEF AngleTool Transform {
         }
       ]
     }
-    DEF ScaleHandle_1 Transform {
+    DEF ScaleHandle Transform {
       children [
         DEF _10 PlaneSensor {
           axisRotation 1 0 0 1.5708
@@ -510,7 +563,7 @@ DEF AngleTool Transform {
         DEF _11 Transform {
           translation 3.53553 0 -3.53553
           children ScreenGroup {
-            children DEF Box_1 Transform {
+            children DEF Box Transform {
               scale 3 3 3
               children Shape {
                 appearance Appearance {
@@ -634,6 +687,7 @@ function set_translation (value)
 	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
 
 	scale .x *= factor;
+	scale .y *= factor;
 	scale .z *= factor;
 }
 
@@ -646,7 +700,7 @@ function eventsProcessed ()
 }"
 }
 
-DEF Tool_1 Script {
+DEF Tool Script {
   inputOutput SFVec3f    translation 0 0 0
   inputOutput SFRotation rotation 0 0 1 0
   inputOutput SFVec3f    scale 1 1 1
@@ -676,42 +730,42 @@ DEF Tool_1 Script {
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
 ROUTE _6.rotation_changed TO AngleScript.set_rotation
-ROUTE Tool_1.translation_changed TO Handles.set_translation
-ROUTE Tool_1.translation_changed TO _4.set_translation
-ROUTE _3.translation_changed TO Tool_1.set_translation
-ROUTE Tool_1.translation_changed TO _3.set_offset
-ROUTE Tool_1.transparency_changed TO _2.set_transparency
-ROUTE Tool_1.color_changed TO _2.set_color
-ROUTE Tool_1.lineColor_changed TO _2.set_lineColor
-ROUTE Tool_1.lineTransparency_changed TO _2.set_lineTransparency
-ROUTE Tool_1.majorLineColor_changed TO _2.set_majorLineColor
-ROUTE Tool_1.majorLineTransparency_changed TO _2.set_majorLineTransparency
-ROUTE Tool_1.majorLineEvery_changed TO _2.set_majorLineEvery
+ROUTE Tool.translation_changed TO Handles.set_translation
+ROUTE Tool.translation_changed TO _4.set_translation
+ROUTE _3.translation_changed TO Tool.set_translation
+ROUTE Tool.translation_changed TO _3.set_offset
+ROUTE Tool.transparency_changed TO _2.set_transparency
+ROUTE Tool.color_changed TO _2.set_color
+ROUTE Tool.lineColor_changed TO _2.set_lineColor
+ROUTE Tool.lineTransparency_changed TO _2.set_lineTransparency
+ROUTE Tool.majorLineColor_changed TO _2.set_majorLineColor
+ROUTE Tool.majorLineTransparency_changed TO _2.set_majorLineTransparency
+ROUTE Tool.majorLineEvery_changed TO _2.set_majorLineEvery
 ROUTE DimensionScript.angleTranslation_changed TO _7.set_translation
 ROUTE _8.translation_changed TO DimensionScript.set_translation
 ROUTE DimensionScript.dimensionTranslation_changed TO _9.set_translation
 ROUTE DimensionScript.dimensionTranslation_changed TO _8.set_offset
-ROUTE Tool_1.rotation_changed TO MoveScript.set_rotation
+ROUTE Tool.rotation_changed TO MoveScript.set_rotation
 ROUTE MoveScript.axisOfRotation_changed TO _3.set_axisRotation
-ROUTE Tool_1.rotation_changed TO Handles.set_rotation
-ROUTE Tool_1.translation_changed TO _2.set_translation
-ROUTE Tool_1.rotation_changed TO _2.set_rotation
-ROUTE Tool_1.scale_changed TO _2.set_scale
-ROUTE Tool_1.scale_changed TO Handles.set_scale
+ROUTE Tool.rotation_changed TO Handles.set_rotation
+ROUTE Tool.translation_changed TO _2.set_translation
+ROUTE Tool.rotation_changed TO _2.set_rotation
+ROUTE Tool.scale_changed TO _2.set_scale
+ROUTE Tool.scale_changed TO Handles.set_scale
 ROUTE AngleScript.angle_changed TO _6.set_offset
-ROUTE Tool_1.dimension_changed TO DimensionScript.set_dimension
-ROUTE DimensionScript.dimension_changed TO Tool_1.set_dimension
-ROUTE Tool_1.dimension_changed TO AngleScript.set_dimension
-ROUTE AngleScript.dimension_changed TO Tool_1.set_dimension
-ROUTE Tool_1.dimension_changed TO _2.set_dimension
-ROUTE Tool_1.majorLineOffset_changed TO _2.set_majorLineOffset
-ROUTE Tool_1.scale_changed TO ScaleScript.set_scale
-ROUTE ScaleScript.scale_changed TO Tool_1.set_scale
+ROUTE Tool.dimension_changed TO DimensionScript.set_dimension
+ROUTE DimensionScript.dimension_changed TO Tool.set_dimension
+ROUTE Tool.dimension_changed TO AngleScript.set_dimension
+ROUTE AngleScript.dimension_changed TO Tool.set_dimension
+ROUTE Tool.dimension_changed TO _2.set_dimension
+ROUTE Tool.majorLineOffset_changed TO _2.set_majorLineOffset
+ROUTE Tool.scale_changed TO ScaleScript.set_scale
+ROUTE ScaleScript.scale_changed TO Tool.set_scale
 ROUTE _10.translation_changed TO ScaleScript.set_translation
-ROUTE Tool_1.dimension_changed TO ScaleScript.set_dimension
+ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.translation_changed TO _11.set_translation
 ROUTE ScaleScript.translation_changed TO _10.set_offset
-ROUTE Tool_1.translation_changed TO ScaleHandle_1.set_translation
-ROUTE Tool_1.rotation_changed TO ScaleHandle_1.set_rotation
+ROUTE Tool.translation_changed TO ScaleHandle.set_translation
+ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 
-EXPORT Tool_1 AS Tool
+EXPORT Tool
