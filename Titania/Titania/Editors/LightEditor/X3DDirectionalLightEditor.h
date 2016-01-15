@@ -98,7 +98,7 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	std::unique_ptr <NormalTool>    directionTool;	
+	std::unique_ptr <NormalTool>       directionTool;	
 
 };
 

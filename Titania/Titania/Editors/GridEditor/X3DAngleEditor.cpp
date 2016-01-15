@@ -66,6 +66,7 @@ static constexpr int INDICES = 3;
 
 X3DAngleEditor::X3DAngleEditor () :
 	X3DGridEditorInterface (),
+	               enabled (this, getAngleEnabledCheckButton (), "enabled"),
 	           translation (this,
 	                        getAngleTranslationXAdjustment (),
 	                        getAngleTranslationYAdjustment (),
@@ -111,6 +112,8 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        getAngleMajorLineColorAdjustment (),
 	                        getAngleMajorLineColorBox (),
 	                        "majorLineColor"),
+	          snapDistance (this, getAngleSnapDistanceAdjustment (), getAngleSnapDistanceSpinButton (), "snapDistance"),
+	          snapToCenter (this, getAngleSnapToCenterCheckButton (), "snapToCenter"),
 	              changing (false)
 {
 	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleLayoutToolAction ());
@@ -133,6 +136,7 @@ X3DAngleEditor::initialize ()
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
+	enabled         .setNodes (angleTools);
 	translation     .setNodes (angleTools);
 	scale           .setNodes (angleTools);
 	dimension       .setNodes (angleTools);
@@ -141,6 +145,8 @@ X3DAngleEditor::initialize ()
 	color           .setNodes (angleTools);
 	lineColor       .setNodes (angleTools);
 	majorLineColor  .setNodes (angleTools);
+	snapDistance    .setNodes (angleTools);
+	snapToCenter    .setNodes (angleTools);
 
 	angleTool -> rotation () .addInterest (this, &X3DAngleEditor::set_rotation);
 	getCurrentScene ()       .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
@@ -153,7 +159,8 @@ X3DAngleEditor::initialize ()
 void
 X3DAngleEditor::on_angle_toggled ()
 {
-	getAngleBox () .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleBox ()         .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleSnappingBox () .set_visible   (getAngleCheckButton () .get_active ());
 }
 
 void

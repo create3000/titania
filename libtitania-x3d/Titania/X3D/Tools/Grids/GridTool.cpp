@@ -67,6 +67,7 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -125,7 +126,7 @@ GridTool::realize ()
 }
 
 Vector3d
-GridTool::getSnapPosition (const Vector3d & position)
+GridTool::getSnapPosition (const Vector3d & position, const bool)
 {
 	auto translation = position;
 

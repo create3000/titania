@@ -73,6 +73,14 @@ public:
 
 	///  @name Fields
 
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
@@ -153,11 +161,11 @@ public:
 	snapToCenter () const
 	{ return *fields .snapToCenter; }
 
-	SFFloat &
+	SFDouble &
 	snapDistance ()
 	{ return *fields .snapDistance; }
 
-	const SFFloat &
+	const SFDouble &
 	snapDistance () const
 	{ return *fields .snapDistance; }
 
@@ -183,7 +191,7 @@ protected:
 
 	virtual
 	Vector3d
-	getSnapPosition (const Vector3d &) = 0;
+	getSnapPosition (const Vector3d &, const bool = true) = 0;
 
 	virtual
 	Vector3d
@@ -242,6 +250,7 @@ private:
 	{
 		Fields ();
 
+		SFBool* const enabled;
 		SFVec3f* const translation;
 		SFRotation* const rotation;
 		SFVec3f* const scale;
@@ -252,7 +261,7 @@ private:
 		SFColorRGBA* const lineColor;
 		SFColorRGBA* const majorLineColor;
 		SFBool* const snapToCenter;
-		SFFloat* const snapDistance;
+		SFDouble* const snapDistance;
 	};
 
 	Fields fields;

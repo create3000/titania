@@ -69,6 +69,7 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::AngleTool);
 
 	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
@@ -127,7 +128,7 @@ AngleTool::realize ()
 }
 
 Vector3d
-AngleTool::getSnapPosition (const Vector3d & position)
+AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {
 	auto translation = position;
 
@@ -155,9 +156,15 @@ AngleTool::getSnapPosition (const Vector3d & position)
 	translation .z (polar .imag ());
 
 	const auto y = getSnapPosition (translation .y ());
+	
+	if (snapY)
+	{
+		if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))
+			translation .y (y);
+	}
 
-	if (std::abs (y - translation .y ()) < std::abs (snapDistance ()))
-		translation .y (y);
+	if (snapRadius == radius and snapAngle == angle and translation .y () not_eq y)
+		return position;
 
 	return translation;
 }

@@ -154,6 +154,10 @@ public:
 	{ return m_AngleScaleZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAngleSnapDistanceAdjustment () const
+	{ return m_AngleSnapDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getAngleTranslationXAdjustment () const
 	{ return m_AngleTranslationXAdjustment; }
 
@@ -228,6 +232,10 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridScaleZAdjustment () const
 	{ return m_GridScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGridSnapDistanceAdjustment () const
+	{ return m_GridSnapDistanceAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridTranslationXAdjustment () const
@@ -429,6 +437,46 @@ public:
 	getAngleRemoveMajorGridButton () const
 	{ return *m_AngleRemoveMajorGridButton; }
 
+	Gtk::Expander &
+	getGridSnappingExpander () const
+	{ return *m_GridSnappingExpander; }
+
+	Gtk::Box &
+	getGridSnappingBox () const
+	{ return *m_GridSnappingBox; }
+
+	Gtk::CheckButton &
+	getGridEnabledCheckButton () const
+	{ return *m_GridEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getGridSnapToCenterCheckButton () const
+	{ return *m_GridSnapToCenterCheckButton; }
+
+	Gtk::SpinButton &
+	getGridSnapDistanceSpinButton () const
+	{ return *m_GridSnapDistanceSpinButton; }
+
+	Gtk::Box &
+	getAngleSnappingBox () const
+	{ return *m_AngleSnappingBox; }
+
+	Gtk::Expander &
+	getAngleSnappingExpander () const
+	{ return *m_AngleSnappingExpander; }
+
+	Gtk::CheckButton &
+	getAngleEnabledCheckButton () const
+	{ return *m_AngleEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getAngleSnapToCenterCheckButton () const
+	{ return *m_AngleSnapToCenterCheckButton; }
+
+	Gtk::SpinButton &
+	getAngleSnapDistanceSpinButton () const
+	{ return *m_AngleSnapDistanceSpinButton; }
+
 	virtual
 	void
 	on_grid_toggled () = 0;
@@ -506,6 +554,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AngleSnapDistanceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationZAdjustment;
@@ -525,6 +574,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridScaleXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridScaleYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GridSnapDistanceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridTranslationZAdjustment;
@@ -575,6 +625,16 @@ private:
 	Gtk::SpinButton*               m_AngleMajorGridSpinButton;
 	Gtk::Button*                   m_AngleAddMajorGridButton;
 	Gtk::Button*                   m_AngleRemoveMajorGridButton;
+	Gtk::Expander*                 m_GridSnappingExpander;
+	Gtk::Box*                      m_GridSnappingBox;
+	Gtk::CheckButton*              m_GridEnabledCheckButton;
+	Gtk::CheckButton*              m_GridSnapToCenterCheckButton;
+	Gtk::SpinButton*               m_GridSnapDistanceSpinButton;
+	Gtk::Box*                      m_AngleSnappingBox;
+	Gtk::Expander*                 m_AngleSnappingExpander;
+	Gtk::CheckButton*              m_AngleEnabledCheckButton;
+	Gtk::CheckButton*              m_AngleSnapToCenterCheckButton;
+	Gtk::SpinButton*               m_AngleSnapDistanceSpinButton;
 
 };
 

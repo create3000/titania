@@ -96,6 +96,10 @@ protected:
 
 	virtual
 	void
+	set_enabled ();
+
+	virtual
+	void
 	set_translation ();
 
 	virtual
@@ -130,6 +134,14 @@ protected:
 	void
 	set_majorLineColor ();
 
+	virtual
+	void
+	set_snapDistance ();
+	
+	virtual
+	void
+	set_snapToCenter ();
+
 
 private:
 
@@ -145,6 +157,9 @@ private:
 	disable ();
 
 	///  @name Event handler
+
+	void
+	connectEnabled (const X3D::SFBool &);
 
 	void
 	connectTranslation (const X3D::SFVec3f &);
@@ -172,6 +187,12 @@ private:
 
 	void
 	connectMajorLineColor (const X3D::SFColorRGBA &);
+
+	void
+	connectSnapDistance (const X3D::SFDouble &);
+	
+	void
+	connectSnapToCenter (const X3D::SFBool &);
 
 	///  @name Members
 

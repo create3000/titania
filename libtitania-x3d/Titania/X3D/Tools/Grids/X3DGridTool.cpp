@@ -58,6 +58,7 @@ namespace titania {
 namespace X3D {
 
 X3DGridTool::Fields::Fields () :
+	        enabled (new SFBool (true)),
 	    translation (new SFVec3f ()),
 	       rotation (new SFRotation ()),
 	          scale (new SFVec3f (1, 1, 1)),
@@ -68,7 +69,7 @@ X3DGridTool::Fields::Fields () :
 	      lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
 	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
 	   snapToCenter (new SFBool (true)),
-	   snapDistance (new SFFloat (0.25))
+	   snapDistance (new SFDouble (0.25))
 { }
 
 X3DGridTool::X3DGridTool () :
@@ -232,6 +233,9 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
+		if (not enabled ())
+			return;
+
 		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
 			return;
 
@@ -311,6 +315,9 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
+		if (not enabled ())
+			return;
+
 		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
 			return;
 
@@ -322,11 +329,11 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix (); // Matrix before transformation
 		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getTransformationMatrix (); // Matrix after transformation
 
-		std::vector <double> distances = { abs (normalize (matrixAfter .x ()) - normalize (matrixBefore .x ())),
-		                                   abs (normalize (matrixAfter .y ()) - normalize (matrixBefore .y ())),
-		                                   abs (normalize (matrixAfter .z ()) - normalize (matrixBefore .z ())) };
+		std::vector <double> distances = { dot (normalize (matrixAfter .x ()), normalize (matrixBefore .x ())),
+		                                   dot (normalize (matrixAfter .y ()), normalize (matrixBefore .y ())),
+		                                   dot (normalize (matrixAfter .z ()), normalize (matrixBefore .z ())) };
 
-		const auto index = std::min_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
+		const auto index = std::max_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
 
 		const std::vector <Vector3d> y = { matrixAfter .x (), matrixAfter .y (), matrixAfter .z () }; // Rotation axis, equates to grid normal
 		const std::vector <Vector3d> z = { matrixAfter .y (), matrixAfter .z (), matrixAfter .y () }; // Vector to snap, later transformed to grid space
@@ -362,7 +369,7 @@ __LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
 		Vector3d vectorToSnap  = z [index];
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
 
-		const auto snapVector   = getSnapPosition (vectorOnGrid) * gridPlane * ~gridRotation * rotationPlane;
+		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * ~gridRotation * rotationPlane;
 		const auto snapRotation = Rotation4d (vectorToSnap, snapVector);
 
 		Matrix4d snap;
@@ -423,6 +430,9 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
+		if (not enabled ())
+			return;
+
 		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
 			return;
 	

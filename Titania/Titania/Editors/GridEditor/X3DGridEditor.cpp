@@ -66,6 +66,7 @@ static constexpr int INDICES = 3;
 
 X3DGridEditor::X3DGridEditor () :
 	X3DGridEditorInterface (),
+	               enabled (this, getGridEnabledCheckButton (), "enabled"),
 	           translation (this,
 	                        getGridTranslationXAdjustment (),
 	                        getGridTranslationYAdjustment (),
@@ -111,6 +112,8 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridMajorLineColorAdjustment (),
 	                        getGridMajorLineColorBox (),
 	                        "majorLineColor"),
+	          snapDistance (this, getGridSnapDistanceAdjustment (), getGridSnapDistanceSpinButton (), "snapDistance"),
+	          snapToCenter (this, getGridSnapToCenterCheckButton (), "snapToCenter"),
 	              changing (false)
 {
 	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridLayoutToolAction ());
@@ -133,6 +136,7 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
+	enabled         .setNodes (gridTools);
 	translation     .setNodes (gridTools);
 	scale           .setNodes (gridTools);
 	dimension       .setNodes (gridTools);
@@ -141,6 +145,8 @@ X3DGridEditor::initialize ()
 	color           .setNodes (gridTools);
 	lineColor       .setNodes (gridTools);
 	majorLineColor  .setNodes (gridTools);
+	snapDistance    .setNodes (gridTools);
+	snapToCenter    .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 	getCurrentScene ()      .addInterest (this, &X3DGridEditor::set_majorLineEvery);
@@ -153,7 +159,8 @@ X3DGridEditor::initialize ()
 void
 X3DGridEditor::on_grid_toggled ()
 {
-	getGridBox () .set_sensitive (getGridCheckButton () .get_active ());
+	getGridBox ()         .set_sensitive (getGridCheckButton () .get_active ());
+	getGridSnappingBox () .set_visible   (getGridCheckButton () .get_active ());
 }
 
 void

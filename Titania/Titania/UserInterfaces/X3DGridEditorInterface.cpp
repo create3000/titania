@@ -77,6 +77,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_AngleScaleXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleXAdjustment"));
 	m_AngleScaleYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleYAdjustment"));
 	m_AngleScaleZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleZAdjustment"));
+	m_AngleSnapDistanceAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleSnapDistanceAdjustment"));
 	m_AngleTranslationXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationXAdjustment"));
 	m_AngleTranslationYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationYAdjustment"));
 	m_AngleTranslationZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationZAdjustment"));
@@ -96,6 +97,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_GridScaleXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleXAdjustment"));
 	m_GridScaleYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleYAdjustment"));
 	m_GridScaleZAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleZAdjustment"));
+	m_GridSnapDistanceAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridSnapDistanceAdjustment"));
 	m_GridTranslationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationXAdjustment"));
 	m_GridTranslationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationYAdjustment"));
 	m_GridTranslationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationZAdjustment"));
@@ -148,6 +150,16 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleMajorGridSpinButton", m_AngleMajorGridSpinButton);
 	m_builder -> get_widget ("AngleAddMajorGridButton", m_AngleAddMajorGridButton);
 	m_builder -> get_widget ("AngleRemoveMajorGridButton", m_AngleRemoveMajorGridButton);
+	m_builder -> get_widget ("GridSnappingExpander", m_GridSnappingExpander);
+	m_builder -> get_widget ("GridSnappingBox", m_GridSnappingBox);
+	m_builder -> get_widget ("GridEnabledCheckButton", m_GridEnabledCheckButton);
+	m_builder -> get_widget ("GridSnapToCenterCheckButton", m_GridSnapToCenterCheckButton);
+	m_builder -> get_widget ("GridSnapDistanceSpinButton", m_GridSnapDistanceSpinButton);
+	m_builder -> get_widget ("AngleSnappingBox", m_AngleSnappingBox);
+	m_builder -> get_widget ("AngleSnappingExpander", m_AngleSnappingExpander);
+	m_builder -> get_widget ("AngleEnabledCheckButton", m_AngleEnabledCheckButton);
+	m_builder -> get_widget ("AngleSnapToCenterCheckButton", m_AngleSnapToCenterCheckButton);
+	m_builder -> get_widget ("AngleSnapDistanceSpinButton", m_AngleSnapDistanceSpinButton);
 
 	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
