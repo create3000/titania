@@ -165,7 +165,7 @@ public:
 
 	virtual
 	void
-	dispose ()
+	dispose () override
 	{ clear (); }
 
 	///  Destructs this object.

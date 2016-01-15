@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Thu, 14 Jan 2016 21:14:53 GMT"
+META "modified" "Fri, 15 Jan 2016 06:10:41 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -444,19 +444,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              0.722134947776794,
+              5.00497579574585,
+              8.62721633911133
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.990457773208618,
+              0.133024796843529,
+              -0.0360276363790035,
+              0.530521988868713
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -470,6 +470,24 @@ WorldInfo {
           }
         ]
       }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
     ]
   }
   title "AngleTool"
@@ -477,7 +495,7 @@ WorldInfo {
 
 DEF AngleTool Transform {
   children [
-    DEF AngleGrid TouchGroup {
+    DEF AngleGrid_1 TouchGroup {
       enabled FALSE
       children DEF _2 AngleGrid { }
     }
@@ -768,4 +786,5 @@ ROUTE ScaleScript.translation_changed TO _10.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 
+EXPORT ScaleScript
 EXPORT Tool

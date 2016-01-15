@@ -109,10 +109,13 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 void
 X3DUrlObject::setLoadState (const LoadState value, const bool notify)
 {
-	getBrowser () -> removeLoadCount (this);
+	if (notify)
+	{
+		getBrowser () -> removeLoadCount (this);
 
-	if (notify and value == IN_PROGRESS_STATE)
-		getBrowser () -> addLoadCount (this);
+		if (value == IN_PROGRESS_STATE)
+			getBrowser () -> addLoadCount (this);
+	}
 
 	loadState = value;
 }

@@ -287,7 +287,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	getScene () -> addSceneLoadCount (this);
+	getScene () -> addExternProtoLoadCount (this);
 
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
@@ -297,7 +297,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 void
 ExternProtoDeclaration::setSceneAsync (X3DScenePtr && value)
 {
-	getScene () -> removeSceneLoadCount (this);
+	getScene () -> removeExternProtoLoadCount (this);
 
 	if (value)
 	{
@@ -577,7 +577,7 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::dispose ()
 {
-	getScene () -> removeSceneLoadCount (this);
+	getScene () -> removeExternProtoLoadCount (this);
 
 	future .reset ();
 

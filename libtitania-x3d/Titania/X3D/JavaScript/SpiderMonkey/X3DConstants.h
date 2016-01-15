@@ -176,6 +176,13 @@ private:
 	static JSBool COMPLETE_STATE    (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool FAILED_STATE      (JSContext *, JSObject *, jsid, jsval*);
 
+	// Unit categories
+
+	static JSBool ANGLE  (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool FORCE  (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool LENGTH (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool MASS   (JSContext *, JSObject *, jsid, jsval*);
+
 	// Access types
 
 	static JSBool initializeOnly (JSContext *, JSObject *, jsid, jsval*);

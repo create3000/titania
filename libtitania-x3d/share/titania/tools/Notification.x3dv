@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 15 Jan 2016 03:51:55 GMT"
+META "modified" "Fri, 15 Jan 2016 05:05:27 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -81,6 +81,7 @@ WorldInfo {
 }
 
 DEF Notification Interface {
+  cycleInterval 5
   isActive TRUE
 }
 
@@ -190,7 +191,7 @@ DEF NotificationScript Script {
   inputOnly      SFVec2f  set_textBounds
   inputOnly      SFBool   set_start
   inputOnly      SFBool   set_end
-  inputOutput    SFTime   cycleInterval 3
+  inputOutput    SFTime   cycleInterval 5
   inputOutput    SFFloat  linewidthScaleFactor 1
   inputOutput    SFVec2f  padding 18 8
   outputOnly     SFBool   isActive

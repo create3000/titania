@@ -93,6 +93,13 @@ JSPropertySpec X3DConstants::properties [ ] = {
 	{ "COMPLETE_STATE",    JS_COMPLETE_STATE,    JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, COMPLETE_STATE,    nullptr },
 	{ "FAILED_STATE",      JS_FAILED_STATE,      JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FAILED_STATE,      nullptr },
 
+	// Unit category
+
+	{ "ANGLE",  0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ANGLE,  nullptr },
+	{ "FORCE",  0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FORCE,  nullptr },
+	{ "LENGTH", 0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LENGTH, nullptr },
+	{ "MASS",   0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MASS,   nullptr },
+
 	// Access types
 
 	{ "initializeOnly", JS_INITIALIZE_ONLY, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, initializeOnly, nullptr },
@@ -524,6 +531,30 @@ JSBool
 X3DConstants::FAILED_STATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::FAILED_STATE, vp);
+}
+
+JSBool
+X3DConstants::ANGLE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::ANGLE, vp);
+}
+
+JSBool
+X3DConstants::FORCE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::FORCE, vp);
+}
+
+JSBool
+X3DConstants::LENGTH (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::LENGTH, vp);
+}
+
+JSBool
+X3DConstants::MASS (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::MASS, vp);
 }
 
 // Access types

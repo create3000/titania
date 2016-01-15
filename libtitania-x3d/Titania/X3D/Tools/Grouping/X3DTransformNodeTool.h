@@ -334,7 +334,7 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 
 		else
 		{
-			getBrowser () -> setDescription (this -> getDescription ());
+			//getBrowser () -> setDescription (this -> getDescription ());
 
 			const auto differenceMatrix = ~(matrix * transformationMatrix) * Matrix4d (getMatrix ()) * transformationMatrix;
 

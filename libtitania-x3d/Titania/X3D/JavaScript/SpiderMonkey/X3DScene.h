@@ -99,6 +99,9 @@ private:
 
 	///  @name Functions
 
+	static JSBool fromBaseUnit (JSContext *, uint32_t, jsval*);
+	static JSBool toBaseUnit   (JSContext *, uint32_t, jsval*);
+
 	static JSBool setMetaData (JSContext *, uint32_t, jsval*);
 	static JSBool getMetaData (JSContext *, uint32_t, jsval*);
 
@@ -116,6 +119,8 @@ private:
 	static JSClass        static_class;
 	static JSPropertySpec properties [ ];
 	static JSFunctionSpec functions [ ];
+
+	static const std::set <int32_t> unitCategories;
 
 };
 

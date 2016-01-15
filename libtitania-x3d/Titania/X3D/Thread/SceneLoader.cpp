@@ -133,6 +133,8 @@ SceneLoader::wait ()
 		{
 			scene = future .get ();
 
+			scene -> requestImmediateLoadOfExternProtos ();
+
 			callback (std::move (scene));
 		}
 		catch (const FutureUrlErrorException & error)
@@ -221,8 +223,7 @@ SceneLoader::set_scene (const bool addEvent)
 
 		scene -> getExternProtosLoadCount () .addInterest (this, &SceneLoader::set_loadCount);
 
-		const_cast <SFInt32 &> (scene -> getExternProtosLoadCount ()) .isTainted (false);
-		const_cast <SFInt32 &> (scene -> getExternProtosLoadCount ()) .addEvent ();
+		scene -> requestAsyncLoadOfExternProtos ();
 	}
 	catch (const FutureUrlErrorException & error)
 	{

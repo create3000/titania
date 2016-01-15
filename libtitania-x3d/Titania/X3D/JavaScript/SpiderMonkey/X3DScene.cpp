@@ -73,6 +73,9 @@ JSPropertySpec X3DScene::properties [ ] = {
 };
 
 JSFunctionSpec X3DScene::functions [ ] = {
+	{ "fromBaseUnit", fromBaseUnit, 2, 0 },
+	{ "toBaseUnit",   toBaseUnit,   2, 0 },
+
 	{ "setMetaData", setMetaData, 2, 0 },
 	{ "getMetaData", getMetaData, 1, 0 },
 
@@ -83,6 +86,13 @@ JSFunctionSpec X3DScene::functions [ ] = {
 
 	{ 0 }
 
+};
+
+const std::set <int32_t> X3DScene::unitCategories = {
+	(int32_t) X3D::UnitCategory::ANGLE,
+	(int32_t) X3D::UnitCategory::FORCE,
+	(int32_t) X3D::UnitCategory::LENGTH,
+	(int32_t) X3D::UnitCategory::MASS
 };
 
 JSObject*
@@ -148,6 +158,54 @@ X3DScene::rootNodes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .rootNodes: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::fromBaseUnit (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .fromBaseUnit: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <X3DScene> (cx, vp);
+		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
+		const auto value        = getArgument <double> (cx, argv, 1);
+
+		if (unitCategories .count (unitCategory) == 0)
+			return ThrowException (cx, "%s .fromBaseUnit: unknown base unit.", getClass () -> name);
+
+		return JS_NewNumberValue (cx, scene -> fromBaseUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .fromBaseUnit: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DScene::toBaseUnit (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .toBaseUnit: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <X3DScene> (cx, vp);
+		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
+		const auto value        = getArgument <double> (cx, argv, 1);
+
+		if (unitCategories .count (unitCategory) == 0)
+			return ThrowException (cx, "%s .toBaseUnit: unknown base unit.", getClass () -> name);
+
+		return JS_NewNumberValue (cx, scene -> fromBaseUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toBaseUnit: %s.", getClass () -> name, error .what ());
 	}
 }
 

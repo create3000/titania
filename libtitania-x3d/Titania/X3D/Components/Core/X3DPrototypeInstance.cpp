@@ -93,23 +93,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	if (protoNode -> isExternproto ())
 	{
-		protoNode -> requestAsyncLoad ();
-
-		switch (protoNode -> checkLoadState ())
-		{
-			case NOT_STARTED_STATE:
-			case IN_PROGRESS_STATE:
-			{
-				protoNode -> checkLoadState () .addInterest (this, &X3DPrototypeInstance::construct);
-				break;
-			}
-			case COMPLETE_STATE:
-			case FAILED_STATE:
-			{
-				construct ();
-				break;
-			}
-		}
+		if (protoNode -> checkLoadState () == COMPLETE_STATE)
+			construct ();
 	}
 	else
 	{
@@ -207,7 +192,11 @@ X3DPrototypeInstance::construct ()
 
 		if (isInitialized ())
 		{
-			setup ();
+			copyImportedNodes (proto);
+			copyRoutes (proto);
+
+			X3DNode::initialize ();
+			X3DExecutionContext::initialize ();
 			X3DChildObject::addEvent ();
 		}
 	}
@@ -250,6 +239,7 @@ X3DPrototypeInstance::update ()
 	}
 
 	construct ();
+
 	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 }
 
@@ -258,15 +248,28 @@ X3DPrototypeInstance::initialize ()
 {
 	try
 	{
-		if (protoNode -> isExternproto () and getExtendedEventHandling ())
-			construct ();
-
-		if (protoNode -> checkLoadState () == COMPLETE_STATE)
+		switch (protoNode -> checkLoadState ())
 		{
-			ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+			case NOT_STARTED_STATE:
+				protoNode -> requestAsyncLoad ();
+				// Procceed with next case:
+			case IN_PROGRESS_STATE:
+				protoNode -> checkLoadState () .addInterest (this, &X3DPrototypeInstance::construct);
+				break;
 
-			copyImportedNodes (proto);
-			copyRoutes (proto);
+			case COMPLETE_STATE:
+			{
+				if (protoNode -> isExternproto () and getExtendedEventHandling ())
+					construct ();
+
+				ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+
+				copyImportedNodes (proto);
+				copyRoutes (proto);
+				break;
+			}
+			case FAILED_STATE:
+				break;
 		}
 
 		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
