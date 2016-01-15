@@ -115,14 +115,14 @@ X3DAngleEditor::X3DAngleEditor () :
 {
 	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleLayoutToolAction ());
 
-	translation     .setUndo (false);
-	scale           .setUndo (false);
-	dimension       .setUndo (false);
-	majorLineEvery  .setUndo (false);
-	majorLineOffset .setUndo (false);
-	color           .setUndo (false);
-	lineColor       .setUndo (false);
-	majorLineColor  .setUndo (false);
+	//translation     .setUndo (false);
+	//scale           .setUndo (false);
+	//dimension       .setUndo (false);
+	//majorLineEvery  .setUndo (false);
+	//majorLineOffset .setUndo (false);
+	//color           .setUndo (false);
+	//lineColor       .setUndo (false);
+	//majorLineColor  .setUndo (false);
 }
 
 void
