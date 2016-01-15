@@ -1,10 +1,10 @@
-#X3D V3.3 utf8 Titania V1.2.0
+#X3D V3.3 utf8 Titania V1.2.2
 
 META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.0, http://titania.create3000.de"
-META "modified" "Wed, 04 Nov 2015 11:08:08 GMT"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Fri, 15 Jan 2016 03:51:55 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -80,7 +80,9 @@ WorldInfo {
   title "Notification"
 }
 
-DEF Notification Interface { }
+DEF Notification Interface {
+  isActive TRUE
+}
 
 Background {
   transparency 1
@@ -115,42 +117,44 @@ LayoutGroup {
       "PIXEL"
     ]
   }
-  children DEF _1 Transform {
-    translation -14 0 0
-    children [
-      Shape {
-        appearance Appearance {
-          material DEF BackgroundMaterial Material {
-            diffuseColor 0 0 0
-            transparency 1
+  children [
+    DEF _1 Transform {
+      translation -14 -8.5 0
+      children [
+        Shape {
+          appearance Appearance {
+            material DEF BackgroundMaterial Material {
+              diffuseColor 0 0 0
+            }
+          }
+          geometry DEF BackgroundGeometry RoundedRectangle2D {
+            cornerRadius 4
+            size 37 17
           }
         }
-        geometry DEF BackgroundGeometry RoundedRectangle2D {
-          cornerRadius 4
-          size 37 17
+        Shape {
+          appearance Appearance {
+            fillProperties FillProperties {
+              filled FALSE
+              hatched FALSE
+            }
+            lineProperties DEF LineProperties LineProperties {
+              linewidthScaleFactor 1
+            }
+            material DEF BorderMaterial Material {
+              diffuseColor 1 1 1
+            }
+          }
+          geometry USE BackgroundGeometry
         }
-      }
-      Shape {
-        appearance Appearance {
-          fillProperties FillProperties {
-            filled FALSE
-            hatched FALSE
-          }
-          lineProperties DEF LineProperties LineProperties {
-            linewidthScaleFactor 1
-          }
-          material DEF BorderMaterial Material {
-            diffuseColor 1 1 1
-            transparency 1
-          }
-        }
-        geometry USE BackgroundGeometry
-      }
-      Shape {
+      ]
+    }
+    Transform {
+      translation -15 -8 0
+      children Shape {
         appearance Appearance {
           material DEF TextMaterial Material {
             diffuseColor 1 1 1
-            transparency 1
           }
         }
         geometry DEF Text Text {
@@ -158,15 +162,16 @@ LayoutGroup {
           fontStyle ScreenFontStyle {
             family "SANS"
             pointSize 9
+            spacing 1.6
             justify [
-              "MIDDLE",
-              "MIDDLE"
+              "END",
+              "BEGIN"
             ]
           }
         }
       }
-    ]
-  }
+    }
+  ]
 }
 
 DEF FadeIn ScalarInterpolator {
@@ -193,21 +198,26 @@ DEF NotificationScript Script {
   initializeOnly SFNode   background USE BackgroundGeometry
   initializeOnly SFNode   text USE Text
   initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
-    startTime 1446635267.90065
+    startTime 1452829911.62804
   }
   initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
     cycleInterval 2
-    startTime 1446635271.90065
-    stopTime 1446635267.90065
+    startTime 1452829915.62804
+    stopTime 1452829911.62804
   }
 
-  url "peaseblossom:
+  url "javascript:
 
 var cornerRadius = 4;
 
 function set_string (value, time)
 {
-	text .string = new MFString (value);
+	var array = value .split (\"\\n\");
+
+	for (var i = 0; i < array .length; ++ i)
+		text .string [i] = array [i];
+
+	text .string .length = array .length;
 
 	if (!isActive || endTimer .isActive)
 		startTimer .startTime = time;
@@ -231,7 +241,9 @@ function set_textBounds (value, time)
 			++ background .size .y;
 	}
 	
-	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 0, 0);
+	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 
+	                                   -background .size .y / 2,
+	                                   0);
 }
 
 function set_start (value, time)

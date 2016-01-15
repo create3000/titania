@@ -160,6 +160,9 @@ public:
 	getActiveTool () const
 	{ return Selection::ToolType::NO_TOOL; }
 
+	std::string
+	getDescription () const;
+
 
 protected:
 

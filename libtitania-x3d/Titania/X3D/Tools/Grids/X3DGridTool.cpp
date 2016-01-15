@@ -275,7 +275,9 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 			master -> setMatrixKeepCenter (currentMatrix);
 		else
 			master -> setMatrix (currentMatrix);
-	
+
+		getBrowser () -> setDescription (master -> getDescription ());
+
 		master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
 		master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
 	
@@ -389,6 +391,8 @@ __LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
 			master -> setMatrixKeepCenter (currentMatrix);
 		else
 			master -> setMatrix (currentMatrix);
+
+		getBrowser () -> setDescription (master -> getDescription ());
 	
 		master -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
 		master -> rotation () .addInterest (this, &X3DGridTool::connectRotation, master);
@@ -433,7 +437,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+		if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 			return;
 	
 		const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
@@ -450,6 +454,8 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 			master -> setMatrixKeepCenter (currentMatrix);
 		else
 			master -> setMatrix (currentMatrix);
+
+		getBrowser () -> setDescription (master -> getDescription ());
 	
 		master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
 		master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);

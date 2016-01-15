@@ -2025,7 +2025,6 @@
             </child>
             <child>
               <object class="GtkBox" id="GridSnappingBox">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">8</property>
                 <property name="orientation">vertical</property>
@@ -2163,7 +2162,6 @@
             </child>
             <child>
               <object class="GtkBox" id="AngleSnappingBox">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="border_width">8</property>
                 <property name="orientation">vertical</property>

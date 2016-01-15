@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Wed, 13 Jan 2016 04:35:54 GMT"
+META "modified" "Fri, 15 Jan 2016 03:21:45 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity

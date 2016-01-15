@@ -50,7 +50,10 @@
 
 #include "X3DTransformNode.h"
 
+#include "../../Execution/X3DScene.h"
+
 #include <Titania/Math/Utility/almost_equal.h>
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -156,6 +159,33 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 	}
 	catch (const std::exception &)
 	{ }
+}
+
+std::string
+X3DTransformNode::getDescription () const
+{
+	const auto scene       = getScene ();
+	const auto description = basic::sprintf ("%s\ntranslation %.03f %.03f %.03f\nrotation %.03f %.03f %.03f %.03f\nscale %.03f %.03f %.03f\nscaleOrientation %.03f %.03f %.03f %.03f\ncenter %.03f %.03f %.03f",
+                                            getTypeName () .c_str (),
+                                            scene -> fromBaseUnit (translation () .getUnit (), translation () .getX ()),
+                                            scene -> fromBaseUnit (translation () .getUnit (), translation () .getY ()),
+                                            scene -> fromBaseUnit (translation () .getUnit (), translation () .getZ ()),
+                                            rotation () .getX (),
+                                            rotation () .getY (),
+                                            rotation () .getZ (),
+                                            scene -> fromBaseUnit (UnitCategory::ANGLE, rotation () .getAngle ()),
+                                            scene -> fromBaseUnit (scale () .getUnit (), scale () .getX ()),
+                                            scene -> fromBaseUnit (scale () .getUnit (), scale () .getY ()),
+                                            scene -> fromBaseUnit (scale () .getUnit (), scale () .getZ ()),
+                                            scaleOrientation () .getX (),
+                                            scaleOrientation () .getY (),
+                                            scaleOrientation () .getZ (),
+                                            scene -> fromBaseUnit (UnitCategory::ANGLE, scaleOrientation () .getAngle ()),
+                                            scene -> fromBaseUnit (center () .getUnit (), center () .getX ()),
+                                            scene -> fromBaseUnit (center () .getUnit (), center () .getY ()), 
+                                            scene -> fromBaseUnit (center () .getUnit (), center () .getZ ()));
+
+	return description;
 }
 
 } // X3D
