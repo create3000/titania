@@ -169,8 +169,8 @@ LayoutGroup::traverse (const TraverseType type)
 {
 	switch (type)
 	{
-		case TraverseType::CAMERA:
 		case TraverseType::POINTER:
+		case TraverseType::CAMERA:
 		case TraverseType::DISPLAY:
 		{
 			if (viewportNode)
@@ -180,7 +180,7 @@ LayoutGroup::traverse (const TraverseType type)
 			{
 				getModelViewMatrix () .push ();
 
-				modelViewMatrix = getModelViewMatrix (type);
+				modelViewMatrix = getModelViewMatrix () .get ();
 
 				layoutNode -> transform (type);
 				

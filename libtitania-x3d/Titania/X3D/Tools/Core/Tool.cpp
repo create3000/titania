@@ -57,14 +57,17 @@ namespace X3D {
 
 const ComponentType Tool::component      = ComponentType::TITANIA;
 const std::string   Tool::typeName       = "Tool";
-const std::string   Tool::containerField = "friends";
+const std::string   Tool::containerField = "children";
 
 Tool::Tool (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      X3DNode (),
-	X3DToolObject ()
+	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	        X3DChildNode (),
+	       X3DToolObject (),
+	transformationMatrix ()
 {
 	addType (X3DConstants::Tool);
+
+	setCameraObject (true);
 }
 
 X3DBaseNode*
@@ -76,15 +79,24 @@ Tool::create (X3DExecutionContext* const executionContext) const
 void
 Tool::initialize ()
 {
-	X3DNode::initialize ();
+	X3DChildNode::initialize ();
 	X3DToolObject::initialize ();
+}
+
+void
+Tool::traverse (const TraverseType type)
+{
+	if (type == TraverseType::CAMERA)
+		transformationMatrix = getModelViewMatrix () .get ();
+
+	X3DToolObject::traverse (type);
 }
 
 void
 Tool::dispose ()
 {
 	X3DToolObject::dispose ();
-	X3DNode::dispose ();
+	X3DChildNode::dispose ();
 }
 
 } // X3D

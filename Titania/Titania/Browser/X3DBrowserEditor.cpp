@@ -59,6 +59,7 @@
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Components/Core/MetadataDouble.h>
+#include <Titania/X3D/Components/Core/MetadataInteger.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
@@ -375,6 +376,38 @@ X3DBrowserEditor::setMetaData ()
 {
 	if (true)
 	{
+		const auto worldInfo = createWorldInfo ();
+
+		if (not getSelection () -> getChildren () .empty ())
+		{
+			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+
+			children -> isPrivate (true);
+			children -> value () = getSelection () -> getChildren ();
+		}
+		else
+			worldInfo -> removeMetaData ("/Titania/Selection/children");
+	}
+
+	if (true)
+	{
+		const auto   worldInfo = createWorldInfo ();
+		const auto & world     = getCurrentWorld ();
+		const auto & layerSet  = world -> getLayerSet ();
+		
+		if (layerSet not_eq world -> getDefaultLayerSet ())
+		{
+			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/LayerSet");
+
+			metadataSet -> createValue <X3D::MetadataInteger> ("activeLayer") -> value () = { layerSet -> getActiveLayerIndex () };
+		}
+		else
+			worldInfo -> removeMetaData ("/Titania/LayerSet/activeLayer");
+	}
+
+	if (true)
+	{
 		static const std::map <X3D::X3DConstants::NodeType, std::string> types = {
 			std::make_pair (X3D::X3DConstants::ExamineViewer, "EXAMINE"),
 			std::make_pair (X3D::X3DConstants::WalkViewer,    "WALK"),
@@ -412,6 +445,35 @@ X3DBrowserEditor::setMetaData ()
 void
 X3DBrowserEditor::getMetaData ()
 {
+	try
+	{
+		const auto worldInfo   = getWorldInfo ();
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("children");
+
+		children -> isPrivate (true);
+		getCurrentBrowser () -> getSelection () -> setChildren (children -> value ());
+	}
+	catch (const std::exception & error)
+	{ }
+
+	try
+	{
+		const auto & world    = getCurrentWorld ();
+		const auto & layerSet = world -> getLayerSet ();
+
+		if (layerSet not_eq world -> getDefaultLayerSet ())
+		{
+			const auto   worldInfo   = getWorldInfo ();
+			const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/LayerSet");
+			const auto & activeLayer = metadataSet -> getValue <X3D::MetadataInteger> ("activeLayer") -> value ();
+
+			layerSet -> privateActiveLayer () = activeLayer .at (0);
+		}
+	}
+	catch (const std::exception & error)
+	{ }
+
 	try
 	{
 		static const std::map <std::string, X3D::X3DConstants::NodeType> viewerTypes = {

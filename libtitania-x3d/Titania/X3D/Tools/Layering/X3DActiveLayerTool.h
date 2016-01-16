@@ -95,6 +95,11 @@ protected:
 
 	///  @name Member access
 
+	const X3DPtr <Tool> &
+	getTool () const
+	throw (Error <DISPOSED>)
+	{ return tool; }
+
 	const X3DPtr <Inline> &
 	getInlineNode () const
 	{ return tool -> getInlineNode (); }

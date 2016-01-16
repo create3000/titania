@@ -51,15 +51,15 @@
 #ifndef __TITANIA_X3D_TOOLS_CORE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_CORE_TOOL_H__
 
-#include "../../Components/Core/X3DNode.h"
+#include "../../Components/Core/X3DChildNode.h"
 #include "../Core/X3DToolObject.h"
 
 namespace titania {
 namespace X3D {
 
 class Tool :
-	virtual public X3DNode,
-	virtual public X3DToolObject
+	public X3DChildNode,
+	public X3DToolObject
 {
 public:
 
@@ -93,10 +93,18 @@ public:
 
 	///  @name Operations
 
+	const Matrix4d &
+	getTransformationMatrix () const
+	{ return transformationMatrix; }
+
 	virtual
 	void
 	requestAsyncLoad (const MFString & url) final override
 	{ X3DToolObject::requestAsyncLoad (url); }
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
 
 	///  @name Destruction
 
@@ -118,6 +126,10 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	///  @name Members
+
+	Matrix4d transformationMatrix;
 
 };
 

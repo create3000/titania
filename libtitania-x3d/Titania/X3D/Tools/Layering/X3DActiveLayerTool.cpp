@@ -114,19 +114,19 @@ void
 X3DActiveLayerTool::set_activeLayer ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () .remove (tool .getValue ());
+		activeLayer -> getFriends () -> children () .remove (tool .getValue ());
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 
 	if (activeLayer)
-		activeLayer -> getFriends () .emplace_back (tool);
+		activeLayer -> getFriends () -> children () .emplace_back (tool);
 }
 
 void
 X3DActiveLayerTool::dispose ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () .remove (tool .getValue ());
+		activeLayer -> getFriends () -> children () .remove (tool .getValue ());
 
 	X3DNode::dispose ();
 }

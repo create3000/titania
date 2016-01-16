@@ -211,11 +211,11 @@ public:
 
 	///  @name Friends handling
 
-	MFNode &
+	X3DPtr <X3DGroupingNode> &
 	getFriends ()
 	{ return friends; }
 
-	const MFNode &
+	const X3DPtr <X3DGroupingNode> &
 	getFriends () const
 	{ return friends; }
 
@@ -324,7 +324,7 @@ private:
 	Line3d hitRay;
 
 	X3DPtr <X3DGroupingNode> group;
-	MFNode                   friends;
+	X3DPtr <X3DGroupingNode> friends;
 
 };
 

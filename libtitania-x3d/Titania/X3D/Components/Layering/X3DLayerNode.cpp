@@ -90,7 +90,7 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	            localFogs (),
 	               hitRay (),
 	                group (layerGroup_),
-	              friends ()
+	              friends (layerGroup_ -> create (getExecutionContext ()))
 {
 	addType (X3DConstants::X3DLayerNode);
 
@@ -144,6 +144,9 @@ X3DLayerNode::initialize ()
 	group -> children () = children ();
 	group -> setup ();
 
+	friends -> isPrivate (true);
+	friends -> setup ();
+
 	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
 	addChildren ()    .addInterest (group -> addChildren ());
 	removeChildren () .addInterest (group -> removeChildren ());
@@ -172,7 +175,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	backgrounds     -> setExecutionContext (executionContext);
 	fogs            -> setExecutionContext (executionContext);
 
-	group -> setExecutionContext (executionContext);
+	group   -> setExecutionContext (executionContext);
+	friends -> setExecutionContext (executionContext);
 
 	X3DRenderer::setExecutionContext (executionContext);
 	X3DNode::setExecutionContext (executionContext);
@@ -363,9 +367,7 @@ X3DLayerNode::camera ()
 	defaultFog            -> traverse (TraverseType::CAMERA);
 
 	currentViewport -> push ();
-
 	collect (TraverseType::CAMERA);
-
 	currentViewport -> pop ();
 
 	navigationInfos -> update ();
@@ -408,10 +410,8 @@ X3DLayerNode::display ()
 void
 X3DLayerNode::collect (const TraverseType type)
 {
-	group -> traverse (type);
-
-	for (const auto & friendNode : friends)
-		friendNode -> traverse (type);
+	group   -> traverse (type);
+	friends -> traverse (type);
 }
 
 void

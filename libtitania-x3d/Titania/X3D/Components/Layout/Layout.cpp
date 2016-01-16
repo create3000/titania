@@ -539,7 +539,7 @@ Layout::transform (const TraverseType type)
 		Vector3d   currentTranslation, currentScale;
 		Rotation4d currentRotation;
 
-		const Matrix4d modelViewMatrix = getModelViewMatrix (type);
+		const Matrix4d modelViewMatrix = getModelViewMatrix () .get ();
 		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
 
 		switch (getScaleModeX ())
