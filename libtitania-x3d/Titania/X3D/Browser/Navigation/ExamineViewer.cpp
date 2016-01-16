@@ -124,6 +124,10 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 		if (button)
 			return false;
 
+		//do this everywhere
+		//if (not isInViewport (event))
+		// return;
+
 		pressTime = chrono::now ();
 
 		switch (event -> button)
