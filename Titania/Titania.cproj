@@ -2331,6 +2331,8 @@
     <None Include="share\titania\Library\Components\Time\.TimeSensor-Titania" />
     <None Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.h" />
     <None Include="Titania\Editors\BackgroundEditor\BackgroundEditor.h" />
+    <None Include="share\titania\ui\Editors\BackgroundEditor.glade" />
+    <None Include="share\titania\ui\Editors\BackgroundEditor.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

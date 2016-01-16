@@ -1,0 +1,432 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+UNIT angle degree 0.0174532925199433
+
+META "comment" "World of Titania"
+META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Sat, 16 Jan 2016 17:41:03 GMT"
+
+PROTO DoubleClick [
+  inputOnly   SFTime set_time
+  inputOutput SFTime doubleClickInterval 0.5
+  outputOnly  SFTime doubleClickTime
+]
+{
+  DEF DoubleClick Script {
+    inputOnly   SFTime set_time IS set_time
+    inputOutput SFTime doubleClickInterval IS doubleClickInterval
+    outputOnly  SFTime doubleClickTime IS doubleClickTime
+
+    url "peaseblossom:
+
+var firstTime = 0;
+
+function set_time (value, time)
+{
+	if (firstTime == 0)
+		firstTime = time;
+	
+	else if (time - firstTime < doubleClickInterval)
+	{
+		firstTime = 0;
+		doubleClickTime = time;
+	}
+	else
+		firstTime = time;
+}
+"
+  }
+}
+
+PROTO Arrow [
+  inputOutput SFColor color 1 1 1
+  inputOutput SFVec3f offset 0 0 0
+  outputOnly  SFVec3f translation_changed
+]
+{
+  Group {
+    children [
+      DEF _1 Transform {
+        translation IS offset
+        children DEF TriangleSet2D Transform {
+          translation -0.5 0 0
+          children ScreenGroup {
+            children Transform {
+              translation 0 8 0
+              rotation 0 0 1 3.14159
+              scale 8 8 8
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0 0 0
+                    emissiveColor IS color
+                  }
+                }
+                geometry TriangleSet2D {
+                  vertices [
+                    0 1,
+                    -0.866025 -0.5,
+                    0.866025 -0.5
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+      DEF _2 PlaneSensor {
+        offset IS offset
+        maxPosition 1 0
+        translation_changed IS translation_changed
+      }
+    ]
+  }
+
+  ROUTE _2.translation_changed TO _1.set_translation
+}
+
+PROTO Gradient [
+  inputOutput MFFloat position [
+    0,
+    1
+  ]
+  inputOutput MFColor color [
+    0 0 0,
+    1 1 1
+  ]
+]
+{
+  Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry DEF _3 IndexedQuadSet {
+      index [
+        0,
+        2,
+        3,
+        1,
+        2,
+        4,
+        5,
+        3
+      ]
+      color Color {
+        color [
+          0 0 0,
+          0 0 0,
+          1 1 1,
+          1 1 1,
+          0 0 0,
+          0 0 0
+        ]
+      }
+      coord Coordinate {
+        point [
+          0 -1 0,
+          0 1 0,
+          1 -1 0,
+          1 1 0,
+          1 0 0,
+          1 1 0
+        ]
+      }
+    }
+  }
+
+  DEF GradientScript Script {
+    inputOutput    MFFloat position IS position
+    inputOutput    MFColor color IS color
+    initializeOnly SFNode  geometry USE _3
+
+    url "ecmascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var
+		c = [ ],
+		p = [ ];
+
+
+	for (var i = 0, length = position .length; i < length; ++ i)
+	{
+		p .push (position [i]);
+		c .push (color [i]);
+	}
+
+	if (position [0] > 0)
+	{
+		c .unshift (c [0]);
+		p .unshift (0);
+	}
+
+	if (position [position .length - 1] < 1)
+	{
+		c .push (c [c .length - 1]);
+		p .push (1);
+	}
+
+	for (var i = 0, length = p .length; i < length; ++ i)
+	{
+		geometry .color .color [i * 2]     = c [i];
+		geometry .color .color [i * 2 + 1] = c [i];
+	}
+
+	var point = geometry .coord .point;
+	
+	for (var i = 0, length = p .length; i < length; ++ i)
+	{
+		var x = p [i];
+
+		point [i * 2]     = new SFVec3f (x, -1, 0);
+		point [i * 2 + 1] = new SFVec3f (x,  1, 0);
+	}
+	
+	var index = new MFInt32 ();
+	
+	for (var i = 0, length = p .length; i < length; ++ i)
+	{
+		index [i * 4]     = i * 2;
+		index [i * 4 + 1] = i * 2 + 2;
+		index [i * 4 + 2] = i * 2 + 3;
+		index [i * 4 + 3] = i * 2 + 1;
+	}
+	
+	geometry .index = index;
+}
+"
+  }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
+      }
+    ]
+  }
+}
+
+LayerSet {
+  activeLayer -1
+  order 1
+  layers DEF HUD LayoutLayer {
+    metadata DEF Titania_1 MetadataSet {
+      name "Titania"
+      reference "http://titania.create3000.de"
+      value [
+        DEF AngleGrid MetadataSet {
+          name "AngleGrid"
+          reference "http://titania.create3000.de"
+          value [
+            DEF enabled MetadataBoolean {
+              name "enabled"
+              reference "http://titania.create3000.de"
+              value FALSE
+            }
+            DEF rotation MetadataFloat {
+              name "rotation"
+              reference "http://titania.create3000.de"
+              value [
+                1,
+                0,
+                0,
+                1.5708
+              ]
+            }
+            DEF scale MetadataFloat {
+              name "scale"
+              reference "http://titania.create3000.de"
+              value [
+                0.1,
+                0.1,
+                0.1
+              ]
+            }
+          ]
+        }
+        DEF Grid MetadataSet {
+          name "Grid"
+          reference "http://titania.create3000.de"
+          value [
+            DEF enabled_1 MetadataBoolean {
+              name "enabled"
+              reference "http://titania.create3000.de"
+              value TRUE
+            }
+            DEF rotation_1 MetadataFloat {
+              name "rotation"
+              reference "http://titania.create3000.de"
+              value [
+                1,
+                0,
+                0,
+                1.5708
+              ]
+            }
+            DEF scale_1 MetadataFloat {
+              name "scale"
+              reference "http://titania.create3000.de"
+              value [
+                0.25,
+                0.25,
+                0.25
+              ]
+            }
+            DEF dimension MetadataInteger {
+              name "dimension"
+              reference "http://titania.create3000.de"
+              value [
+                4,
+                10,
+                4
+              ]
+            }
+            DEF snapDistance MetadataDouble {
+              name "snapDistance"
+              reference "http://titania.create3000.de"
+              value 0.6
+            }
+          ]
+        }
+      ]
+    }
+    layout Layout { }
+    viewport Viewport { }
+    children [
+      DEF Colors Group {
+        children [
+          DEF _4 Arrow {
+            color 1 1 0
+            offset 0.348921 0 0
+          }
+          DEF _5 Arrow {
+            color 1 0 0
+            offset 0.723546 0 0
+          }
+        ]
+      }
+      Transform {
+        translation -0.5 -0.25 0
+        scale 1 0.25 1
+        children DEF _6 Gradient {
+          position [
+            0.348921,
+            0.723546
+          ]
+          color [
+            1 1 0,
+            1 0 0
+          ]
+        }
+      }
+      DEF GradientEditoScript Script {
+        inputOnly      SFVec3f set_translation
+        inputOutput    MFFloat position [
+          0.348921,
+          0.723546
+        ]
+        inputOutput    MFColor color [
+          1 1 0,
+          1 0 0
+        ]
+        initializeOnly SFNode  arrows USE Colors
+
+        url "ecmascript:
+
+function set_translation (value)
+{
+	var a = [ ];
+
+	for (var i = 0; i < arrows .children .length; ++ i)
+		a .push (arrows .children [i]);
+
+	a .sort (function (lhs, rhs) { return compare (lhs .translation_changed .x, rhs .translation_changed .x); });
+
+	for (var i = 0; i < a .length; ++ i)
+	{
+		position [i] = a [i] .translation_changed .x;
+		color [i]    = a [i] .color;
+	}
+}
+
+function compare (lhs, rhs)
+{
+	if (lhs < rhs)
+		return -1;
+		
+	if (lhs > rhs)
+		return 1;
+
+	return 0;
+}"
+      }
+    ]
+  }
+}
+
+DoubleClick { }
+
+ROUTE _5.translation_changed TO GradientEditoScript.set_translation
+ROUTE _4.translation_changed TO GradientEditoScript.set_translation
+ROUTE GradientEditoScript.position_changed TO _6.set_position
+ROUTE GradientEditoScript.color_changed TO _6.set_color
