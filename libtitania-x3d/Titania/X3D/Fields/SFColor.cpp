@@ -138,6 +138,12 @@ SFColor::getHSV (value_type & h, value_type & s, value_type & v) const
 	getValue () .get_hsv (h, s, v);
 }
 
+SFColor*
+SFColor::lerp (const SFColor & dest, const value_type & t) const
+{
+	return new SFColor (math::clerp (getValue (), dest .getValue (), t));
+}
+
 void
 SFColor::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,

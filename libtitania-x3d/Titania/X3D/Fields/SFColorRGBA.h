@@ -160,6 +160,9 @@ public:
 	void
 	getHSV (value_type &, value_type &, value_type &) const;
 
+	SFColorRGBA*
+	lerp (const SFColorRGBA &, const value_type &) const;
+
 	///  @name Input/Output
 
 	virtual

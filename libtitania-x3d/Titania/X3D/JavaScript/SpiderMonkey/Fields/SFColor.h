@@ -105,6 +105,7 @@ private:
 
 	static JSBool getHSV (JSContext*, uint32_t, jsval*);
 	static JSBool setHSV (JSContext*, uint32_t, jsval*);
+	static JSBool lerp   (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 

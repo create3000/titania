@@ -146,6 +146,12 @@ SFColorRGBA::getHSV (value_type & h, value_type & s, value_type & v) const
 	getValue () .get_hsv (h, s, v);
 }
 
+SFColorRGBA*
+SFColorRGBA::lerp (const SFColorRGBA & dest, const value_type & t) const
+{
+	return new SFColorRGBA (math::clerp (getValue (), dest .getValue (), t));
+}
+
 void
 SFColorRGBA::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,

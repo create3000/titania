@@ -153,6 +153,9 @@ public:
 	void
 	getHSV (value_type &, value_type &, value_type &) const;
 
+	SFColor*
+	lerp (const SFColor &, const value_type &) const;
+
 	///  @name Input/Output
 
 	virtual

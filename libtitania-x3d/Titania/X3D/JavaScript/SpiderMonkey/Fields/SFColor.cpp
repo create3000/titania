@@ -78,6 +78,7 @@ JSPropertySpec SFColor::properties [ ] = {
 JSFunctionSpec SFColor::functions [ ] = {
 	{ "getHSV",      getHSV,   0, 0 },
 	{ "setHSV",      setHSV,   3, 0 },
+	{ "lerp",        lerp,     2, 0 },
 
 	{ 0 }
 
@@ -272,6 +273,27 @@ SFColor::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .setHSV: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+SFColor::lerp (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .lerp: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <SFColor> (cx, vp);
+		const auto rhs  = getArgument <SFColor> (cx, argv, 0);
+		const auto t    = getArgument <value_type> (cx, argv, 1);
+
+		return create <SFColor> (cx, lhs -> lerp (*rhs, t), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .lerp: %s.", getClass () -> name, error .what ());
 	}
 }
 

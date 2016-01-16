@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 16 Jan 2016 17:41:03 GMT"
+META "modified" "Sat, 16 Jan 2016 18:00:50 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -44,6 +44,7 @@ PROTO Arrow [
   inputOutput SFColor color 1 1 1
   inputOutput SFVec3f offset 0 0 0
   outputOnly  SFVec3f translation_changed
+  outputOnly  SFTime  doubleClickTime
 ]
 {
   Group {
@@ -76,7 +77,8 @@ PROTO Arrow [
           }
         }
       }
-      DEF _2 PlaneSensor {
+      DEF _2 TouchSensor { }
+      DEF _3 PlaneSensor {
         offset IS offset
         maxPosition 1 0
         translation_changed IS translation_changed
@@ -84,7 +86,12 @@ PROTO Arrow [
     ]
   }
 
-  ROUTE _2.translation_changed TO _1.set_translation
+  DEF _4 DoubleClick {
+    doubleClickTime IS doubleClickTime
+  }
+
+  ROUTE _3.translation_changed TO _1.set_translation
+  ROUTE _2.touchTime TO _4.set_time
 }
 
 PROTO Gradient [
@@ -102,7 +109,7 @@ PROTO Gradient [
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _3 IndexedQuadSet {
+    geometry DEF _5 IndexedQuadSet {
       index [
         0,
         2,
@@ -139,7 +146,7 @@ PROTO Gradient [
   DEF GradientScript Script {
     inputOutput    MFFloat position IS position
     inputOutput    MFColor color IS color
-    initializeOnly SFNode  geometry USE _3
+    initializeOnly SFNode  geometry USE _5
 
     url "ecmascript:
 
@@ -355,39 +362,39 @@ LayerSet {
     children [
       DEF Colors Group {
         children [
-          DEF _4 Arrow {
-            color 1 1 0
-            offset 0.348921 0 0
+          DEF _6 Arrow {
+            color 0.5 0.5 0
+            offset 0.811747 0 0
           }
-          DEF _5 Arrow {
-            color 1 0 0
-            offset 0.723546 0 0
+          DEF _7 Arrow {
+            color 0.5 0 0
+            offset 0.314591 0 0
           }
         ]
       }
       Transform {
         translation -0.5 -0.25 0
         scale 1 0.25 1
-        children DEF _6 Gradient {
+        children DEF _8 Gradient {
           position [
-            0.348921,
-            0.723546
+            0.314591,
+            0.811747
           ]
           color [
-            1 1 0,
-            1 0 0
+            0.5 0 0,
+            0.5 0.5 0
           ]
         }
       }
       DEF GradientEditoScript Script {
         inputOnly      SFVec3f set_translation
         inputOutput    MFFloat position [
-          0.348921,
-          0.723546
+          0.314591,
+          0.811747
         ]
         inputOutput    MFColor color [
-          1 1 0,
-          1 0 0
+          0.5 0 0,
+          0.5 0.5 0
         ]
         initializeOnly SFNode  arrows USE Colors
 
@@ -426,7 +433,7 @@ function compare (lhs, rhs)
 
 DoubleClick { }
 
-ROUTE _5.translation_changed TO GradientEditoScript.set_translation
-ROUTE _4.translation_changed TO GradientEditoScript.set_translation
-ROUTE GradientEditoScript.position_changed TO _6.set_position
-ROUTE GradientEditoScript.color_changed TO _6.set_color
+ROUTE _7.translation_changed TO GradientEditoScript.set_translation
+ROUTE _6.translation_changed TO GradientEditoScript.set_translation
+ROUTE GradientEditoScript.position_changed TO _8.set_position
+ROUTE GradientEditoScript.color_changed TO _8.set_color
