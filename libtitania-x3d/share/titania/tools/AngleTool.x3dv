@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 15 Jan 2016 06:10:41 GMT"
+META "modified" "Fri, 15 Jan 2016 16:22:54 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -444,19 +444,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0.722134947776794,
-              5.00497579574585,
-              8.62721633911133
+              0,
+              0,
+              10
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.990457773208618,
-              0.133024796843529,
-              -0.0360276363790035,
-              0.530521988868713
+              0,
+              0,
+              1,
+              0
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -712,9 +712,27 @@ function set_translation (value)
 function eventsProcessed ()
 {
 	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
-	translation_changed = new SFVec3f ( scale .x * dimension [0] * Math .cos (Math .PI / 4),
+	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
 	                                   0,
 	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
+	                                   
+	var
+		scene  = Browser .currentScene,
+		scaleX = scene .fromBaseUnit (X3DConstants .LENGTH, scale .x),
+		scaleY = scene .fromBaseUnit (X3DConstants .LENGTH, scale .y),
+		scaleZ = scene .fromBaseUnit (X3DConstants .LENGTH, scale .z),
+		sizeX  = scaleX * dimension [0],
+		sizeY  = scaleY * dimension [1],
+		sizeZ  = scaleZ * dimension [2],
+		angle  = scene .fromBaseUnit (X3DConstants .ANGLE, 2 * Math .PI / dimension [1]);
+	                                   
+	Browser .description = \"Angle Layout Tool\\n\" +
+                          \"rings \" + dimension [0] + \"\\n\" +
+                          \"sectors \" + dimension [1] + \"\\n\" +
+                          \"height \" + dimension [2] + \"\\n\" +
+                          \"scale \" + scaleX .toFixed (3) + \" x \" + scaleY .toFixed (3) + \" x \" + scaleZ .toFixed (3) + \"\\n\" +
+                          \"size \" + sizeX .toFixed (3) + \" x \" + sizeY .toFixed (3) + \" x \" + sizeZ .toFixed (3) + \"\\n\" +
+	                       \"angle \" + angle .toFixed (3);
 }"
 }
 

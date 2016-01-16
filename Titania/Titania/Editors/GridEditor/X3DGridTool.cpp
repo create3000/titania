@@ -99,7 +99,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 	browser = value;
 
-	getTool () -> setExecutionContext (browser -> getPrivateScene ());
+	set_executionContext (browser == getMasterBrowser () ? X3D::X3DExecutionContextPtr (browser -> getPrivateScene ()) : getCurrentContext ());
 
 	browser -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
 
@@ -143,43 +143,51 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 		getTool () -> snapToCenter () .removeInterest (this, &X3DGridTool::set_snapToCenter);
 		getTool () -> snapToCenter () .addInterest (this, &X3DGridTool::connectSnapToCenter);
 
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("enabled") -> value ();
-
-		getTool () -> enabled () = v .at (0);
-	}
-	catch (...)
-	{
-		getTool () -> enabled () = true;
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataDouble> ("snapDistance") -> value ();
-
-		getTool () -> snapDistance () = v .at (0);
-	}
-	catch (...)
-	{
-		getTool () -> snapDistance () = 0.25;
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("snapToCenter") -> value ();
-
-		getTool () -> snapToCenter () = v .at (0);
-	}
-	catch (...)
-	{
-		getTool () -> snapToCenter () = true;
-	}
+		try
+		{
+			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("enabled") -> value ();
+	
+			getTool () -> enabled () = v .at (0);
+		}
+		catch (...)
+		{
+			getTool () -> enabled () = true;
+		}
+	
+		try
+		{
+			const auto & v = metadataSet -> getValue <X3D::MetadataDouble> ("snapDistance") -> value ();
+	
+			getTool () -> snapDistance () = v .at (0);
+		}
+		catch (...)
+		{
+			getTool () -> snapDistance () = 0.25;
+		}
+	
+		try
+		{
+			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("snapToCenter") -> value ();
+	
+			getTool () -> snapToCenter () = v .at (0);
+		}
+		catch (...)
+		{
+			getTool () -> snapToCenter () = true;
+		}
 
 		configure (metadataSet);
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DGridTool::set_executionContext (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	getTool () -> setExecutionContext (executionContext);
 }
 
 void
@@ -196,6 +204,7 @@ X3DGridTool::enable ()
 {
 	getCurrentBrowser () .addInterest (this, &X3DGridTool::set_browser);
 	getCurrentBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
+	getCurrentContext () .addInterest (this, &X3DGridTool::set_executionContext);
 
 	set_browser (getCurrentBrowser ());
 }
@@ -207,6 +216,7 @@ X3DGridTool::disable ()
 	{
 		getCurrentBrowser () .removeInterest (this, &X3DGridTool::set_browser);
 		getCurrentBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
+		getCurrentContext () .removeInterest (this, &X3DGridTool::set_executionContext);
 
 		set_browser (getMasterBrowser ());
 	}

@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Thu, 14 Jan 2016 21:13:29 GMT"
+META "modified" "Sat, 16 Jan 2016 00:50:18 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -401,19 +401,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              1.8371753692627,
-              8.18800354003906,
-              5.43893718719482
+              0,
+              0,
+              10
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.962775886058807,
-              0.259036391973495,
-              0.0772186517715454,
-              0.998984575271606
+              0,
+              0,
+              1,
+              0
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -606,7 +606,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "peaseblossom:
+  url "javascript:
 
 function initialize ()
 {
@@ -626,6 +626,20 @@ function set_translation (value)
 function eventsProcessed ()
 {
 	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
+	                                   
+	var
+		scene  = Browser .currentScene,
+		scaleX = scene .fromBaseUnit (X3DConstants .LENGTH, scale .x),
+		scaleY = scene .fromBaseUnit (X3DConstants .LENGTH, scale .y),
+		scaleZ = scene .fromBaseUnit (X3DConstants .LENGTH, scale .z),
+		sizeX  = scaleX * dimension [0],
+		sizeY  = scaleY * dimension [1],
+		sizeZ  = scaleZ * dimension [2];
+	                                   
+	Browser .description = \"Grid Layout Tool\\n\" +
+                          \"dimension \" + dimension [0] + \" ×  \" + dimension [1] + \" ×  \" + dimension [2] + \"\\n\" +
+                          \"scale \" + scaleX .toFixed (3) + \" × \" + scaleY .toFixed (3) + \" × \" + scaleZ .toFixed (3) + \"\\n\" +
+                          \"size \" + sizeX .toFixed (3) + \" × \" + sizeY .toFixed (3) + \" × \" + sizeZ .toFixed (3);
 }"
 }
 
@@ -694,4 +708,5 @@ ROUTE ScaleScript.translation_changed TO _7.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
 
+EXPORT ScaleScript
 EXPORT Tool

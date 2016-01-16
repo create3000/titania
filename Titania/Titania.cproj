@@ -218,6 +218,8 @@
     <Compile Include="Titania\Editors\ColorEditor\ColorEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DColorEditorInterface.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\BackgroundEditor\BackgroundEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2327,6 +2329,8 @@
     <None Include="share\titania\Library\Components\Texturing3D\.TextureTransformMatrix3D-Titania" />
     <None Include="share\titania\Library\Components\Time\.TimeSensor-Cobweb" />
     <None Include="share\titania\Library\Components\Time\.TimeSensor-Titania" />
+    <None Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.h" />
+    <None Include="Titania\Editors\BackgroundEditor\BackgroundEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2408,6 +2412,7 @@
     <Folder Include="share\titania\Library\Models\" />
     <Folder Include="share\titania\Library\CubeMapTextures\" />
     <Folder Include="share\titania\Library\Backgrounds\" />
+    <Folder Include="Titania\Editors\BackgroundEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

@@ -47,162 +47,40 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_EDITORS_GRID_EDITOR_X3DGRID_TOOL_H__
-#define __TITANIA_EDITORS_GRID_EDITOR_X3DGRID_TOOL_H__
-
-#include "../../Base/X3DBaseInterface.h"
-
-#include <Titania/X3D/Tools/Grids/X3DGridTool.h>
+#include "X3DBackgroundEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DGridTool :
-	virtual public X3DBaseInterface
+const std::string X3DBackgroundEditorInterface::m_widgetName = "BackgroundEditor";
+
+void
+X3DBackgroundEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	virtual
-	const X3D::X3DPtr <X3D::X3DGridTool> &
-	getTool () const = 0;
+	// Get objects.
+	m_ColorAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
+	m_TransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
-	void
-	isEnabled (const bool);
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("ColorBox", m_ColorBox);
+	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
+	m_builder -> get_widget ("GradientBox", m_GradientBox);
+	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
+	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
 
-	bool
-	isEnabled () const;
+	// Call construct handler of base class.
+	construct ();
+}
 
-	void
-	update ();
-
-	///  @name Destruction
-
-	virtual
-	~X3DGridTool ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DGridTool ();
-
-	///  @name Event handler
-
-	virtual
-	void
-	configure (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
-
-	virtual
-	void
-	set_enabled ();
-
-	virtual
-	void
-	set_translation ();
-
-	virtual
-	void
-	set_rotation ();
-
-	virtual
-	void
-	set_scale ();
-
-	virtual
-	void
-	set_dimension ();
-
-	virtual
-	void
-	set_majorLineEvery ();
-
-	virtual
-	void
-	set_majorLineOffset ();
-
-	virtual
-	void
-	set_color ();
-
-	virtual
-	void
-	set_lineColor ();
-
-	virtual
-	void
-	set_majorLineColor ();
-
-	virtual
-	void
-	set_snapDistance ();
-	
-	virtual
-	void
-	set_snapToCenter ();
-
-
-private:
-
-	///  @name Operations
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_executionContext (const X3D::X3DExecutionContextPtr &);
-
-	void
-	enable ();
-
-	void
-	disable ();
-
-	///  @name Event handler
-
-	void
-	connectEnabled (const X3D::SFBool &);
-
-	void
-	connectTranslation (const X3D::SFVec3f &);
-
-	void
-	connectRotation (const X3D::SFRotation &);
-
-	void
-	connectScale (const X3D::SFVec3f &);
-
-	void
-	connectDimension (const X3D::MFInt32 &);
-
-	void
-	connectMajorLineEvery (const X3D::MFInt32 &);
-
-	void
-	connectMajorLineOffset (const X3D::MFInt32 &);
-
-	void
-	connectColor (const X3D::SFColorRGBA &);
-
-	void
-	connectLineColor (const X3D::SFColorRGBA &);
-
-	void
-	connectMajorLineColor (const X3D::SFColorRGBA &);
-
-	void
-	connectSnapDistance (const X3D::SFDouble &);
-	
-	void
-	connectSnapToCenter (const X3D::SFBool &);
-
-	///  @name Members
-
-	X3D::BrowserPtr browser;
-};
+X3DBackgroundEditorInterface::~X3DBackgroundEditorInterface ()
+{
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

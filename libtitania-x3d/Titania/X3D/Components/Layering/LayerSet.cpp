@@ -145,7 +145,7 @@ LayerSet::set_activeLayer ()
 		if (index >= 0 and index < (int32_t) layers () .size ())
 		{
 			if (activeLayerNode not_eq layers () [index])
-				activeLayerNode = layers () [index];
+				activeLayerNode = x3d_cast <X3DLayerNode*> (layers () [index]);
 		}
 		else
 		{

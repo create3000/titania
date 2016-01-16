@@ -77,8 +77,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
 	                  history (new History ()),
 	            masterBrowser (masterBrowser_),
-	              logoBrowser (X3D::createBrowser ({ get_ui ("Logo.x3dv") })),
-	                  browser (masterBrowser_),
+	                  browser (X3D::createBrowser ()),
 	                 browsers (),
 	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
@@ -89,7 +88,6 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	// For some reaseon, masterBrowser and loaoBrowser must be added, otherwise there is a Xlib error on destruction.
 
 	addChildren (masterBrowser,
-	             logoBrowser,
 	             browsers,
 	             browser,
 	             scene,
@@ -104,8 +102,9 @@ X3DBrowserWidget::initialize ()
 	// Master browser
 
 	getMasterBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getMasterBrowser () -> setAntialiasing (4);
 	getMasterBrowser () -> show ();
-	getMasterBox () .pack_start (*getMasterBrowser (), true, true, 0);
+	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
 }
 
 void
@@ -156,14 +155,7 @@ X3DBrowserWidget::set_initialized ()
 
 	getCurrentScene () .addInterest (this, &X3DBrowserWidget::set_scene);
 
-	getMasterBox ()       .set_visible (false);
 	getBrowserNotebook () .set_visible (true);
-
-	// Logo Button
-
-	logoBrowser -> setAntialiasing (4);
-	logoBrowser -> show ();
-	getLogoBox () .pack_start (*logoBrowser, true, true, 0);
 }
 
 void

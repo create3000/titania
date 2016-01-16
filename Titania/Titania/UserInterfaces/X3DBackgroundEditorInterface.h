@@ -47,125 +47,110 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_BACKGROUND_EDITOR_H__
+#define __TMP_GLAD2CPP_BACKGROUND_EDITOR_H__
 
-#include "Browser/BrowserWindow.h"
-
-#include "Configuration/config.h"
-
-#include <Titania/OS/env.h>
-#include <Titania/X3D.h>
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class BrowserApplication :
-	public Gtk::Application
+class X3DBackgroundEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
-	///  @name Construction
+	X3DBackgroundEditorInterface () :
+		X3DEditorInterface ()
+	{ }
 
-	BrowserApplication (int & argc, char** & argv) :
-		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
-		   browserWindow ()
+	template <class ... Arguments>
+	X3DBackgroundEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
+
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
+
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
+
+	template <class Type>
+	Type*
+	createWidget (const std::string & name) const
 	{
-		Glib::set_application_name ("Titania");
+		getBuilder () -> add_from_file (filename, name);
+
+		Type* widget = nullptr;
+		m_builder -> get_widget (name, widget);
+		return widget;
 	}
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorAdjustment () const
+	{ return m_ColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTransparencyAdjustment () const
+	{ return m_TransparencyAdjustment; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getColorBox () const
+	{ return *m_ColorBox; }
+
+	Gtk::Expander &
+	getColorsExpander () const
+	{ return *m_ColorsExpander; }
+
+	Gtk::Box &
+	getGradientBox () const
+	{ return *m_GradientBox; }
+
+	Gtk::Box &
+	getGridColorBox () const
+	{ return *m_GridColorBox; }
+
+	Gtk::Button &
+	getGridColorButton () const
+	{ return *m_GridColorButton; }
+
+	virtual
+	~X3DBackgroundEditorInterface ();
 
 
 private:
 
-	///  @name Operations
-
 	void
-	realize ()
-	{
-		browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
+	create (const std::string &);
 
-		add_window (browserWindow -> getWindow ());
+	static const std::string m_widgetName;
 
-		browserWindow -> getWindow () .present ();
-	}
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_activate () final override
-	{
-		if (browserWindow)
-		{
-			browserWindow -> blank ();
-			browserWindow -> getWindow () .present ();
-		}
-		else
-			realize ();
-	}
-
-	virtual
-	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override
-	{
-		if (not browserWindow)
-			realize ();
-
-		for (const auto & file : files)
-			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
-
-		browserWindow -> getWindow () .present ();
-
-		//Call the base class's implementation:
-		Gtk::Application::on_open (files, hint);
-	}
-
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final override
-	{
-		quit ();
-	}
-
-	///  @name Members
-
-	std::unique_ptr <BrowserWindow> browserWindow;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_ColorBox;
+	Gtk::Expander*                 m_ColorsExpander;
+	Gtk::Box*                      m_GradientBox;
+	Gtk::Box*                      m_GridColorBox;
+	Gtk::Button*                   m_GridColorButton;
 
 };
 
 } // puck
 } // titania
 
-int
-main (int argc, char** argv)
-{
-	using namespace titania;
-	using namespace titania::puck;
-
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::boolalpha
-		<< "Titania started ..." << std::endl
-		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
-		<< std::endl;
-	#endif
-
-	std::locale::global (std::locale (""));
-
-	// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-	os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
-	os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars.
-	os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars.
-
-	{
-		BrowserApplication browserApplication (argc, argv);
-
-		browserApplication .run ();
-	}
-
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::endl
-		<< "Titania finished." << std::endl;
-	#endif
-
-	return 0;
-}
+#endif

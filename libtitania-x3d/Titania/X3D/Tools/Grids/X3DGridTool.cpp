@@ -95,11 +95,17 @@ void
 X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
-
 {
 	X3DActiveLayerTool::setExecutionContext (executionContext);
 
 	set_selection (getBrowser () -> getSelection ());
+
+	try
+	{
+		getInlineNode () -> getExportedNode ("ScaleScript") -> setExecutionContext (executionContext);
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 void
@@ -109,6 +115,8 @@ X3DGridTool::realize ()
 
 	try
 	{
+		getInlineNode () -> getExportedNode ("ScaleScript") -> setExecutionContext (getExecutionContext ());
+
 		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
 		translation ()  .addInterest (set_translation);
 		set_translation .addInterest (translation ());
@@ -133,7 +141,9 @@ X3DGridTool::realize ()
 		set_majorLineColor ();
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

@@ -1314,6 +1314,10 @@ public:
 	{ return *m_LayerEditorButton; }
 
 	Gtk::ToolButton &
+	getBackgroundEditorButton () const
+	{ return *m_BackgroundEditorButton; }
+
+	Gtk::ToolButton &
 	getNavigationInfoEditorButton () const
 	{ return *m_NavigationInfoEditorButton; }
 
@@ -1356,10 +1360,6 @@ public:
 	Gtk::Paned &
 	getHPaned () const
 	{ return *m_HPaned; }
-
-	Gtk::Box &
-	getMasterBox () const
-	{ return *m_MasterBox; }
 
 	Gtk::Notebook &
 	getBrowserNotebook () const
@@ -1963,6 +1963,10 @@ public:
 
 	virtual
 	void
+	on_background_editor_clicked () = 0;
+
+	virtual
+	void
 	on_navigation_info_editor_clicked () = 0;
 
 	virtual
@@ -2372,6 +2376,7 @@ private:
 	Gtk::ToolButton*                 m_ColorPerVertexEditorButton;
 	Gtk::ToolButton*                 m_TextureCoordinateEditorButton;
 	Gtk::ToolButton*                 m_LayerEditorButton;
+	Gtk::ToolButton*                 m_BackgroundEditorButton;
 	Gtk::ToolButton*                 m_NavigationInfoEditorButton;
 	Gtk::ToolButton*                 m_ViewpointEditorButton;
 	Gtk::ToolButton*                 m_LightEditorButton;
@@ -2383,7 +2388,6 @@ private:
 	Gtk::ToolButton*                 m_HammerButton;
 	Gtk::Paned*                      m_VPaned;
 	Gtk::Paned*                      m_HPaned;
-	Gtk::Box*                        m_MasterBox;
 	Gtk::Notebook*                   m_BrowserNotebook;
 	Gtk::Box*                        m_Dashboard;
 	Gtk::Toolbar*                    m_DashboardToolBar;

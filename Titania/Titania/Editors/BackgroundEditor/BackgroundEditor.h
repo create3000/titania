@@ -48,124 +48,48 @@
  *
  ******************************************************************************/
 
-#include "Browser/BrowserWindow.h"
+#ifndef __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
+#define __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
 
-#include "Configuration/config.h"
-
-#include <Titania/OS/env.h>
-#include <Titania/X3D.h>
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserApplication :
-	public Gtk::Application
+class BackgroundEditor :
+	virtual public X3DBackgroundEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	BrowserApplication (int & argc, char** & argv) :
-		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
-		   browserWindow ()
-	{
-		Glib::set_application_name ("Titania");
-	}
+	BackgroundEditor (X3DBrowserWindow* const);
+
+	///  @name Destruction
+
+	virtual
+	~BackgroundEditor ();
 
 
 private:
 
-	///  @name Operations
-
-	void
-	realize ()
-	{
-		browserWindow .reset (new BrowserWindow (X3D::createBrowser ({ get_ui ("Logo.x3dv") })));
-
-		add_window (browserWindow -> getWindow ());
-
-		browserWindow -> getWindow () .present ();
-	}
-
-	///  @name Event handlers
+	///  @name Construction
 
 	virtual
 	void
-	on_activate () final override
-	{
-		if (browserWindow)
-		{
-			browserWindow -> blank ();
-			browserWindow -> getWindow () .present ();
-		}
-		else
-			realize ();
-	}
+	initialize () final override;
 
-	virtual
 	void
-	on_open (const Gio::Application::type_vec_files & files, const Glib::ustring & hint) final override
-	{
-		if (not browserWindow)
-			realize ();
-
-		for (const auto & file : files)
-			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
-
-		browserWindow -> getWindow () .present ();
-
-		//Call the base class's implementation:
-		Gtk::Application::on_open (files, hint);
-	}
-
-	virtual
-	void
-	on_window_removed (Gtk::Window* window) final override
-	{
-		quit ();
-	}
+	set_initialized ();
 
 	///  @name Members
 
-	std::unique_ptr <BrowserWindow> browserWindow;
+	X3D::BrowserPtr gradientEditor;
 
 };
 
 } // puck
 } // titania
 
-int
-main (int argc, char** argv)
-{
-	using namespace titania;
-	using namespace titania::puck;
-
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::boolalpha
-		<< "Titania started ..." << std::endl
-		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
-		<< std::endl;
-	#endif
-
-	std::locale::global (std::locale (""));
-
-	// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-	os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
-	os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars.
-	os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars.
-
-	{
-		BrowserApplication browserApplication (argc, argv);
-
-		browserApplication .run ();
-	}
-
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::endl
-		<< "Titania finished." << std::endl;
-	#endif
-
-	return 0;
-}
+#endif

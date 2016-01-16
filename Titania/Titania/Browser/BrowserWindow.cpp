@@ -2176,6 +2176,12 @@ BrowserWindow::on_layer_editor_clicked ()
 }
 
 void
+BrowserWindow::on_background_editor_clicked ()
+{
+	addDialog ("BackgroundEditor");
+}
+
+void
 BrowserWindow::on_navigation_info_editor_clicked ()
 {
 	addDialog ("NavigationInfoEditor");

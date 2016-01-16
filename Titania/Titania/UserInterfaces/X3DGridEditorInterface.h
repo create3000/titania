@@ -437,13 +437,13 @@ public:
 	getAngleRemoveMajorGridButton () const
 	{ return *m_AngleRemoveMajorGridButton; }
 
-	Gtk::Expander &
-	getGridSnappingExpander () const
-	{ return *m_GridSnappingExpander; }
-
 	Gtk::Box &
 	getGridSnappingBox () const
 	{ return *m_GridSnappingBox; }
+
+	Gtk::Expander &
+	getGridSnappingExpander () const
+	{ return *m_GridSnappingExpander; }
 
 	Gtk::CheckButton &
 	getGridEnabledCheckButton () const
@@ -625,8 +625,8 @@ private:
 	Gtk::SpinButton*               m_AngleMajorGridSpinButton;
 	Gtk::Button*                   m_AngleAddMajorGridButton;
 	Gtk::Button*                   m_AngleRemoveMajorGridButton;
-	Gtk::Expander*                 m_GridSnappingExpander;
 	Gtk::Box*                      m_GridSnappingBox;
+	Gtk::Expander*                 m_GridSnappingExpander;
 	Gtk::CheckButton*              m_GridEnabledCheckButton;
 	Gtk::CheckButton*              m_GridSnapToCenterCheckButton;
 	Gtk::SpinButton*               m_GridSnapDistanceSpinButton;

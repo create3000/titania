@@ -369,6 +369,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorPerVertexEditorButton", m_ColorPerVertexEditorButton);
 	m_builder -> get_widget ("TextureCoordinateEditorButton", m_TextureCoordinateEditorButton);
 	m_builder -> get_widget ("LayerEditorButton", m_LayerEditorButton);
+	m_builder -> get_widget ("BackgroundEditorButton", m_BackgroundEditorButton);
 	m_builder -> get_widget ("NavigationInfoEditorButton", m_NavigationInfoEditorButton);
 	m_builder -> get_widget ("ViewpointEditorButton", m_ViewpointEditorButton);
 	m_builder -> get_widget ("LightEditorButton", m_LightEditorButton);
@@ -380,7 +381,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_builder -> get_widget ("HPaned", m_HPaned);
-	m_builder -> get_widget ("MasterBox", m_MasterBox);
 	m_builder -> get_widget ("BrowserNotebook", m_BrowserNotebook);
 	m_builder -> get_widget ("Dashboard", m_Dashboard);
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
@@ -683,6 +683,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_LayerEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_layer_editor_clicked));
+	m_BackgroundEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_background_editor_clicked));
 	m_NavigationInfoEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_navigation_info_editor_clicked));
 	m_ViewpointEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoint_editor_clicked));
 	m_LightEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_light_editor_clicked));
