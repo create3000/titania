@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 17 Jan 2016 01:13:43 GMT"
+META "modified" "Sun, 17 Jan 2016 02:31:17 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -162,21 +162,31 @@ function eventsProcessed ()
 		p = [ ];
 
 
-	for (var i = 0, length = position .length; i < length; ++ i)
+	if (position .length)
 	{
-		p .push (position [i]);
-		c .push (color [i]);
-	}
+		for (var i = 0, length = position .length; i < length; ++ i)
+		{
+			p .push (position [i]);
+			c .push (color [i]);
+		}
+	
+		if (position [0] > 0)
+		{
+			c .unshift (c [0]);
+			p .unshift (0);
+		}
 
-	if (position [0] > 0)
-	{
-		c .unshift (c [0]);
-		p .unshift (0);
+		if (position [position .length - 1] < 1)
+		{
+			c .push (c [c .length - 1]);
+			p .push (1);
+		}
 	}
-
-	if (position [position .length - 1] < 1)
+	else
 	{
-		c .push (c [c .length - 1]);
+		c .push (new SFColor ());
+		c .push (new SFColor (1, 1, 1));
+		p .push (0);
 		p .push (1);
 	}
 
@@ -360,44 +370,28 @@ LayerSet {
     layout Layout { }
     viewport Viewport { }
     children [
-      DEF Colors Group {
-        children [
-          DEF _6 Arrow {
-            color 0.5 0.5 0
-            offset 1 0 0
-          }
-          DEF _7 Arrow {
-            color 0.5 0 0
-          }
-        ]
-      }
+      DEF Colors Group { }
       Transform {
         translation -0.5 -0.25 0
         scale 1 0.25 1
         children [
-          DEF _8 Gradient {
-            color [
-              0.5 0 0,
-              0.5 0.5 0
-            ]
+          DEF _6 Gradient {
+            position [ ]
+            color [ ]
           }
-          DEF _9 TouchSensor { }
-          DEF _10 DoubleClick { }
+          DEF _7 TouchSensor { }
+          DEF _8 DoubleClick { }
         ]
       }
       DEF GradientEditorScript Script {
         inputOnly      SFTime  add
+        inputOnly      SFTime  remove
         inputOnly      SFVec3f set_translation
-        inputOutput    MFFloat position [
-          0,
-          1
-        ]
-        inputOutput    MFColor color [
-          0.5 0 0,
-          0.5 0.5 0
-        ]
+        inputOnly      MFNode  set_children
+        inputOutput    MFFloat position [ ]
+        inputOutput    MFColor color [ ]
         initializeOnly SFNode  arrows USE Colors
-        initializeOnly SFNode  gradientTouch USE _9
+        initializeOnly SFNode  gradientTouch USE _7
 
         url "ecmascript:
 
@@ -455,10 +449,30 @@ function add_color (index, value, color)
 	
 	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
 	
+	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"remove\");
 	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
 }
 
-function set_translation (value)
+function remove (value)
+{
+	for (var i = 0; i < arrows .children .length; ++ i)
+	{
+		if (value == arrows .children [i] .doubleClickTime)
+			break;
+	}
+
+	if (i < arrows .children .length)
+	{
+		arrows .removeChildren = new MFNode (arrows .children [i]);
+	}
+}
+
+function set_children ()
+{
+	set_translation ();
+}
+
+function set_translation ()
 {
 	var arrows = get_arrows ();
 
@@ -467,6 +481,9 @@ function set_translation (value)
 		position [i] = arrows [i] .translation_changed .x;
 		color [i]    = arrows [i] .color;
 	}
+	
+	position .length = arrows .length;
+	color .length    = arrows .length;
 }
 
 function get_arrows ()
@@ -526,9 +543,8 @@ function lowerBound (array, first, last, value, comp)
   }
 }
 
-ROUTE _7.translation_changed TO GradientEditorScript.set_translation
-ROUTE _6.translation_changed TO GradientEditorScript.set_translation
-ROUTE GradientEditorScript.position_changed TO _8.set_position
-ROUTE GradientEditorScript.color_changed TO _8.set_color
-ROUTE _9.touchTime TO _10.set_time
-ROUTE _10.doubleClickTime TO GradientEditorScript.add
+ROUTE GradientEditorScript.position_changed TO _6.set_position
+ROUTE GradientEditorScript.color_changed TO _6.set_color
+ROUTE _7.touchTime TO _8.set_time
+ROUTE _8.doubleClickTime TO GradientEditorScript.add
+ROUTE Colors.children_changed TO GradientEditorScript.set_children
