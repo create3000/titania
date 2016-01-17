@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 16 Jan 2016 18:00:50 GMT"
+META "modified" "Sun, 17 Jan 2016 01:13:43 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -51,6 +51,7 @@ PROTO Arrow [
     children [
       DEF _1 Transform {
         translation IS offset
+        translation IS translation_changed
         children DEF TriangleSet2D Transform {
           translation -0.5 0 0
           children ScreenGroup {
@@ -81,7 +82,6 @@ PROTO Arrow [
       DEF _3 PlaneSensor {
         offset IS offset
         maxPosition 1 0
-        translation_changed IS translation_changed
       }
     ]
   }
@@ -364,76 +364,171 @@ LayerSet {
         children [
           DEF _6 Arrow {
             color 0.5 0.5 0
-            offset 0.811747 0 0
+            offset 1 0 0
           }
           DEF _7 Arrow {
             color 0.5 0 0
-            offset 0.314591 0 0
           }
         ]
       }
       Transform {
         translation -0.5 -0.25 0
         scale 1 0.25 1
-        children DEF _8 Gradient {
-          position [
-            0.314591,
-            0.811747
-          ]
-          color [
-            0.5 0 0,
-            0.5 0.5 0
-          ]
-        }
+        children [
+          DEF _8 Gradient {
+            color [
+              0.5 0 0,
+              0.5 0.5 0
+            ]
+          }
+          DEF _9 TouchSensor { }
+          DEF _10 DoubleClick { }
+        ]
       }
-      DEF GradientEditoScript Script {
+      DEF GradientEditorScript Script {
+        inputOnly      SFTime  add
         inputOnly      SFVec3f set_translation
         inputOutput    MFFloat position [
-          0.314591,
-          0.811747
+          0,
+          1
         ]
         inputOutput    MFColor color [
           0.5 0 0,
           0.5 0.5 0
         ]
         initializeOnly SFNode  arrows USE Colors
+        initializeOnly SFNode  gradientTouch USE _9
 
         url "ecmascript:
 
+function add (value)
+{
+	var
+		value  = gradientTouch .hitPoint_changed .x,
+		index1 = lowerBound (position, 0, position .length, value, less),
+		index0 = index1 - 1;
+	
+	
+	if (index1 < position .length)
+	{
+		if (index0 < 0)
+		{
+			add_color (index1, value, color [index1]);
+		}
+		else
+		{
+			var
+				color0 = color [index0],
+				color1 = color [index1],
+				t      = (value - position [index0]) / (position [index1] - position [index0]);
+				
+			add_color (index0, value, color0 .lerp (color1, t));
+		}
+	}
+	else
+	{
+		if (position .length)
+		{
+			add_color (index0, value, color [index0]);
+		}
+		else
+		{
+			add_color (0, value, new SFColor (1, 1, 1));
+		}
+	}
+}
+
+function add_color (index, value, color)
+{
+	print (index, \" : \", value, \" : \", color);
+	
+	// Create arrow
+	
+	var arrow = Browser .currentScene .createProto (\"Arrow\");
+	
+	arrow .color     = color;
+	arrow .offset .x = value;
+	
+	arrows .addChildren = new MFNode (arrow);
+	
+	// Add routes
+	
+	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
+	
+	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
+}
+
 function set_translation (value)
+{
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
+	{
+		position [i] = arrows [i] .translation_changed .x;
+		color [i]    = arrows [i] .color;
+	}
+}
+
+function get_arrows ()
 {
 	var a = [ ];
 
 	for (var i = 0; i < arrows .children .length; ++ i)
 		a .push (arrows .children [i]);
 
-	a .sort (function (lhs, rhs) { return compare (lhs .translation_changed .x, rhs .translation_changed .x); });
+	return a .sort (compare);
+}
 
-	for (var i = 0; i < a .length; ++ i)
-	{
-		position [i] = a [i] .translation_changed .x;
-		color [i]    = a [i] .color;
-	}
+function less (lhs, rhs)
+{
+	return lhs < rhs;
 }
 
 function compare (lhs, rhs)
 {
-	if (lhs < rhs)
+	if (lhs .translation_changed .x < rhs .translation_changed .x)
 		return -1;
 		
-	if (lhs > rhs)
+	if (lhs .translation_changed .x > rhs .translation_changed .x)
 		return 1;
 
 	return 0;
-}"
+}
+
+function lowerBound (array, first, last, value, comp)
+{
+   // http://en.cppreference.com/w/cpp/algorithm/lower_bound
+
+	var
+		index = 0,
+		step  = 0,
+		count = last - first;
+
+	while (count > 0)
+	{
+		step  = count >>> 1;
+		index = first + step;
+
+		if (comp (array [index], value))
+		{
+			first  = ++ index;
+			count -= step + 1;
+		}
+		else
+			count = step;
+	}
+
+	return first;
+}
+"
       }
     ]
   }
 }
 
-DoubleClick { }
-
-ROUTE _7.translation_changed TO GradientEditoScript.set_translation
-ROUTE _6.translation_changed TO GradientEditoScript.set_translation
-ROUTE GradientEditoScript.position_changed TO _8.set_position
-ROUTE GradientEditoScript.color_changed TO _8.set_color
+ROUTE _7.translation_changed TO GradientEditorScript.set_translation
+ROUTE _6.translation_changed TO GradientEditorScript.set_translation
+ROUTE GradientEditorScript.position_changed TO _8.set_position
+ROUTE GradientEditorScript.color_changed TO _8.set_color
+ROUTE _9.touchTime TO _10.set_time
+ROUTE _10.doubleClickTime TO GradientEditorScript.add

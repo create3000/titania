@@ -50,6 +50,7 @@
 
 #include "X3DRenderingContext.h"
 
+#include "../X3DBrowser.h"
 #include "../Rendering/MotionBlur.h"
 #include "../../Rendering/OpenGL.h"
 
@@ -101,6 +102,11 @@ X3DRenderingContext::initialize ()
 void
 X3DRenderingContext::renderBackground ()
 {
+	const auto rectangle = getBrowser () -> getRectangle ();
+
+	glViewport (rectangle [0], rectangle [1], rectangle [2], rectangle [3]);
+	glScissor  (rectangle [0], rectangle [1], rectangle [2], rectangle [3]);
+
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);
 }

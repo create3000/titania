@@ -59,6 +59,37 @@ namespace opengl {
 
 using namespace math;
 
+class PolygonMode
+{
+public:
+
+	PolygonMode (GLenum type) :
+		polygonMode ()
+	{
+		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+
+		glPolygonMode (GL_FRONT_AND_BACK, type);
+	}
+	
+	GLenum
+	front () const
+	{ return polygonMode [0]; }
+	
+	GLenum
+	back () const
+	{ return polygonMode [1]; }
+	
+	~PolygonMode ()
+	{
+		glPolygonMode (GL_FRONT, polygonMode [0]);
+		glPolygonMode (GL_BACK,  polygonMode [1]);
+	}
+
+private:
+
+	GLint polygonMode [2];
+};
+
 Background::Background () :
 	       textureId (0),
 	projectionMatrix (ortho <float> (0, 1, 0, 1, -1, 1))
@@ -92,6 +123,8 @@ Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, co
 void
 Background::draw ()
 {
+	PolygonMode polygonMode (GL_FILL);
+
 	static const std::vector <vector4 <float>> coords = {
 		vector4 <float> (0, 0, 0, 1),
 		vector4 <float> (1, 0, 0, 1),
