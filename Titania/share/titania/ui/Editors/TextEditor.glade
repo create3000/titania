@@ -96,7 +96,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="notebook1">
+          <object class="GtkNotebook" id="TextNotebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
@@ -379,6 +379,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="border_width">8</property>
+                <property name="expanded">True</property>
                 <property name="spacing">8</property>
                 <property name="resize_toplevel">True</property>
                 <child>
@@ -460,7 +461,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
+                        <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
@@ -782,6 +783,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
                             <property name="orientation">vertical</property>
                             <property name="spacing">2</property>
                             <child>
@@ -846,7 +848,7 @@
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
+                                <property name="expand">True</property>
                                 <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
@@ -931,7 +933,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>

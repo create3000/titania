@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 17 Jan 2016 02:31:17 GMT"
+META "modified" "Sun, 17 Jan 2016 04:00:55 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -41,17 +41,17 @@ function set_time (value, time)
 }
 
 PROTO Arrow [
+  inputOutput SFBool  active FALSE
   inputOutput SFColor color 1 1 1
-  inputOutput SFVec3f offset 0 0 0
-  outputOnly  SFVec3f translation_changed
+  inputOutput SFVec3f position 0.0153129 0 0
   outputOnly  SFTime  doubleClickTime
+  outputOnly  SFTime  touchTime
 ]
 {
   Group {
     children [
       DEF _1 Transform {
-        translation IS offset
-        translation IS translation_changed
+        translation IS position
         children DEF TriangleSet2D Transform {
           translation -0.5 0 0
           children ScreenGroup {
@@ -59,39 +59,84 @@ PROTO Arrow [
               translation 0 8 0
               rotation 0 0 1 3.14159
               scale 8 8 8
-              children Shape {
-                appearance Appearance {
-                  material Material {
-                    diffuseColor 0 0 0
-                    emissiveColor IS color
+              children [
+                Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                      emissiveColor IS color
+                    }
+                  }
+                  geometry TriangleSet2D {
+                    vertices [
+                      0 1,
+                      -0.866025 -0.5,
+                      0.866025 -0.5
+                    ]
                   }
                 }
-                geometry TriangleSet2D {
-                  vertices [
-                    0 1,
-                    -0.866025 -0.5,
-                    0.866025 -0.5
-                  ]
+                DEF _2 Switch {
+                  #file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/BackgroundEditor.x3dv
+                  children Shape {
+                    appearance Appearance {
+                      fillProperties FillProperties {
+                        filled FALSE
+                        hatched FALSE
+                      }
+                      lineProperties LineProperties {
+                        linewidthScaleFactor 2
+                      }
+                      material Material {
+                        diffuseColor 0 0 0
+                      }
+                    }
+                    geometry TriangleSet2D {
+                      vertices [
+                        0 1,
+                        -0.866025 -0.5,
+                        0.866025 -0.5
+                      ]
+                    }
+                  }
                 }
-              }
+              ]
             }
           }
         }
       }
-      DEF _2 TouchSensor { }
-      DEF _3 PlaneSensor {
-        offset IS offset
+      DEF _3 TouchSensor {
+        touchTime IS touchTime
+      }
+      DEF _4 PlaneSensor {
+        offset IS position
         maxPosition 1 0
       }
     ]
   }
 
-  DEF _4 DoubleClick {
+  DEF _5 DoubleClick {
     doubleClickTime IS doubleClickTime
   }
 
-  ROUTE _3.translation_changed TO _1.set_translation
-  ROUTE _2.touchTime TO _4.set_time
+  DEF _6 BooleanToggle {
+    toggle IS active
+  }
+
+  DEF _7 BooleanFilter { }
+
+  DEF _8 IntegerTrigger {
+    integerKey -1
+  }
+
+  DEF _9 IntegerTrigger { }
+
+  ROUTE _4.translation_changed TO _1.set_translation
+  ROUTE _3.touchTime TO _5.set_time
+  ROUTE _6.toggle_changed TO _7.set_boolean
+  ROUTE _7.inputFalse TO _8.set_boolean
+  ROUTE _8.triggerValue TO _2.set_whichChoice
+  ROUTE _7.inputTrue TO _9.set_boolean
+  ROUTE _9.triggerValue TO _2.set_whichChoice
 }
 
 PROTO Gradient [
@@ -109,7 +154,7 @@ PROTO Gradient [
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _5 IndexedQuadSet {
+    geometry DEF _10 IndexedQuadSet {
       index [
         0,
         2,
@@ -146,7 +191,7 @@ PROTO Gradient [
   DEF GradientScript Script {
     inputOutput    MFFloat position IS position
     inputOutput    MFColor color IS color
-    initializeOnly SFNode  geometry USE _5
+    initializeOnly SFNode  geometry USE _10
 
     url "ecmascript:
 
@@ -370,30 +415,99 @@ LayerSet {
     layout Layout { }
     viewport Viewport { }
     children [
-      DEF Colors Group { }
+      DEF Colors Group {
+        children [
+          DEF _11 Arrow {
+            color 0.862188 0.702531 0.267938
+            position 0.336562 0 0
+          }
+          DEF _12 Arrow {
+            color 0.472521 0.694605 0.629244
+            position 0.731158 0 0
+          }
+          DEF _13 Arrow {
+            color 0.529893 0.132893 0.912987
+            position 0.847208 0 0
+          }
+          DEF _14 Arrow {
+            active TRUE
+            color 0.260084 0.0188011 0.067607
+            position 0.5374 0 0
+          }
+          DEF _15 Arrow {
+            color 0.643032 0.378889 0.422449
+            position 0.151379 0 0
+          }
+        ]
+      }
       Transform {
         translation -0.5 -0.25 0
         scale 1 0.25 1
         children [
-          DEF _6 Gradient {
-            position [ ]
-            color [ ]
+          DEF _16 Gradient {
+            position [
+              0.151379,
+              0.336562,
+              0.5374,
+              0.731158,
+              0.847208
+            ]
+            color [
+              0.643032 0.378889 0.422449,
+              0.862188 0.702531 0.267938,
+              0.260084 0.0188011 0.067607,
+              0.472521 0.694605 0.629244,
+              0.529893 0.132893 0.912987
+            ]
           }
-          DEF _7 TouchSensor { }
-          DEF _8 DoubleClick { }
+          DEF _17 TouchSensor { }
+          DEF _18 DoubleClick { }
         ]
       }
       DEF GradientEditorScript Script {
+        inputOnly      SFTime  set_touchTime
         inputOnly      SFTime  add
         inputOnly      SFTime  remove
         inputOnly      SFVec3f set_translation
         inputOnly      MFNode  set_children
-        inputOutput    MFFloat position [ ]
-        inputOutput    MFColor color [ ]
+        inputOutput    MFFloat position [
+          0.151379,
+          0.336562,
+          0.5374,
+          0.731158,
+          0.847208
+        ]
+        inputOutput    MFColor color [
+          0.643032 0.378889 0.422449,
+          0.862188 0.702531 0.267938,
+          0.260084 0.0188011 0.067607,
+          0.472521 0.694605 0.629244,
+          0.529893 0.132893 0.912987
+        ]
+        outputOnly     SFInt32 active_changed
         initializeOnly SFNode  arrows USE Colors
-        initializeOnly SFNode  gradientTouch USE _7
+        initializeOnly SFNode  gradientTouch USE _17
 
         url "ecmascript:
+
+function set_touchTime (value)
+{
+	for (var i = 0; i < arrows .children .length; ++ i)
+	{
+		arrows .children [i] .active = false;
+	}
+	
+	for (var i = 0; i < arrows .children .length; ++ i)
+	{
+		if (value == arrows .children [i] .touchTime)
+			break;
+	}
+
+	if (i < arrows .children .length)
+	{
+		arrows .children [i] .active = true;
+	}
+}
 
 function add (value)
 {
@@ -436,12 +550,15 @@ function add_color (index, value, color)
 {
 	print (index, \" : \", value, \" : \", color);
 	
+	set_touchTime (-1);
+	
 	// Create arrow
 	
 	var arrow = Browser .currentScene .createProto (\"Arrow\");
 	
-	arrow .color     = color;
-	arrow .offset .x = value;
+	arrow .color       = color;
+	arrow .color       = new SFColor (Math .random (), Math .random (), Math .random ());
+	arrow .position .x = value;
 	
 	arrows .addChildren = new MFNode (arrow);
 	
@@ -449,8 +566,10 @@ function add_color (index, value, color)
 	
 	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
 	
-	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"remove\");
-	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
+
+	Browser .addRoute (arrow, \"touchTime\",       self, \"set_touchTime\");
+	Browser .addRoute (arrow, \"doubleClickTime\", self, \"remove\");
+	Browser .addRoute (arrow, \"position\",        self, \"set_translation\");
 }
 
 function remove (value)
@@ -478,12 +597,12 @@ function set_translation ()
 
 	for (var i = 0; i < arrows .length; ++ i)
 	{
-		position [i] = arrows [i] .translation_changed .x;
+		position [i] = arrows [i] .position .x;
 		color [i]    = arrows [i] .color;
 	}
-	
+
 	position .length = arrows .length;
-	color .length    = arrows .length;
+	color    .length = arrows .length;
 }
 
 function get_arrows ()
@@ -503,10 +622,10 @@ function less (lhs, rhs)
 
 function compare (lhs, rhs)
 {
-	if (lhs .translation_changed .x < rhs .translation_changed .x)
+	if (lhs .position .x < rhs .position .x)
 		return -1;
 		
-	if (lhs .translation_changed .x > rhs .translation_changed .x)
+	if (lhs .position .x > rhs .position .x)
 		return 1;
 
 	return 0;
@@ -543,8 +662,23 @@ function lowerBound (array, first, last, value, comp)
   }
 }
 
-ROUTE GradientEditorScript.position_changed TO _6.set_position
-ROUTE GradientEditorScript.color_changed TO _6.set_color
-ROUTE _7.touchTime TO _8.set_time
-ROUTE _8.doubleClickTime TO GradientEditorScript.add
+ROUTE GradientEditorScript.position_changed TO _16.set_position
+ROUTE GradientEditorScript.color_changed TO _16.set_color
+ROUTE _17.touchTime TO _18.set_time
+ROUTE _18.doubleClickTime TO GradientEditorScript.add
 ROUTE Colors.children_changed TO GradientEditorScript.set_children
+ROUTE _11.touchTime TO GradientEditorScript.set_touchTime
+ROUTE _11.doubleClickTime TO GradientEditorScript.remove
+ROUTE _11.position_changed TO GradientEditorScript.set_translation
+ROUTE _12.touchTime TO GradientEditorScript.set_touchTime
+ROUTE _12.doubleClickTime TO GradientEditorScript.remove
+ROUTE _12.position_changed TO GradientEditorScript.set_translation
+ROUTE _13.touchTime TO GradientEditorScript.set_touchTime
+ROUTE _13.doubleClickTime TO GradientEditorScript.remove
+ROUTE _13.position_changed TO GradientEditorScript.set_translation
+ROUTE _14.touchTime TO GradientEditorScript.set_touchTime
+ROUTE _14.doubleClickTime TO GradientEditorScript.remove
+ROUTE _14.position_changed TO GradientEditorScript.set_translation
+ROUTE _15.touchTime TO GradientEditorScript.set_touchTime
+ROUTE _15.doubleClickTime TO GradientEditorScript.remove
+ROUTE _15.position_changed TO GradientEditorScript.set_translation
