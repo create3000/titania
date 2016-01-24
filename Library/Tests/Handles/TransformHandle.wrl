@@ -91,28 +91,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              12.068115234375,
-              3.4139552116394,
-              8.67851638793945
+              12.4727602005005,
+              3.31728959083557,
+              7.2234845161438
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.51121461391449,
-              0.76053112745285,
-              0.40031486749649,
-              1.20476734638214
+              -0.445636510848999,
+              0.832988142967224,
+              0.327931195497513,
+              1.38871204853058
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              9.44336700439453,
-              0.362515211105347,
-              6.58866882324219
+              9.72853088378906,
+              0.720459938049316,
+              6.16765594482422
             ]
           }
         ]
