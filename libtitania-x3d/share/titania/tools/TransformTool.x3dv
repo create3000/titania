@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 15 Jan 2016 03:21:45 GMT"
+META "modified" "Sun, 24 Jan 2016 10:27:46 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -943,6 +943,8 @@ function set_whichChoice (value)
   }
 
   DEF BBoxScript Script {
+    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
+    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
     inputOutput    SFVec3f bboxSize IS bboxSize
     initializeOnly SFFloat offset 0.01
     initializeOnly SFVec3f xAxis 1 0 0
@@ -962,6 +964,7 @@ function set_whichChoice (value)
     initializeOnly SFNode  xBack USE XBack
     initializeOnly SFNode  yBack USE YBack
     initializeOnly SFNode  zBack USE ZBack
+    inputOutput    SFNode  transform IS transform
 
     url "peaseblossom:
 function eventsProcessed ()
@@ -1018,8 +1021,7 @@ function eventsProcessed ()
 	xBack .translation = new SFVec3f (-bboxSize1_2 .x, 0, 0);
 	yBack .translation = new SFVec3f (0, -bboxSize1_2 .y, 0);
 	zBack .translation = new SFVec3f (0, 0, -bboxSize1_2 .z);
-}
-"
+}"
     directOutput TRUE
   }
 
@@ -1916,6 +1918,15 @@ WorldInfo {
             ]
           }
         ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value NULL
+        }
       }
     ]
   }
