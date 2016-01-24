@@ -68,6 +68,7 @@ X3DGridTool::X3DGridTool () :
 {
 	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::update);
 }
+
 void
 X3DGridTool::isEnabled (const bool value)
 {

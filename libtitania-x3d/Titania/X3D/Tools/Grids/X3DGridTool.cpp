@@ -346,7 +346,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		                                   dot (normalize (matrixAfter .y ()), normalize (matrixBefore .y ())),
 		                                   dot (normalize (matrixAfter .z ()), normalize (matrixBefore .z ())) };
 
-		const auto index = std::max_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
+		const auto index0 = std::max_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
 
 		const std::vector <Vector3d> y = { matrixAfter .x (), matrixAfter .y (), matrixAfter .z () }; // Rotation axis, equates to grid normal
 		const std::vector <Vector3d> z = { matrixAfter .y (), matrixAfter .z (), matrixAfter .y () }; // Vector to snap, later transformed to grid space
@@ -355,9 +355,12 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
 		grid *= getTool () -> getTransformationMatrix ();
 
-		Vector3d   Y             = normalize (y [index]);
-		Vector3d   X             = cross (grid .y (), Y);
-		Vector3d   Z             = cross (X, Y);
+		const auto index1 = (index0 + 1) % y .size ();
+		const auto index2 = (index0 + 2) % y .size ();
+
+		Vector3d   Y             = normalize (cross (y [index1], y [index2]));
+		Vector3d   X             = cross (grid .y (), Y); // Intersection between both planes
+		Vector3d   Z             = cross (X, Y); // Front vector
 		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
 		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
 		Matrix3d   gridPlane     = grid;
@@ -380,7 +383,7 @@ __LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
 //__LOG__ << Y << std::endl;
 //__LOG__ << Z << std::endl;
 
-		Vector3d vectorToSnap  = z [index];
+		Vector3d vectorToSnap  = z [index0];
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
 
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * ~gridRotation * rotationPlane;

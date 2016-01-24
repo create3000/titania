@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Titania V0.7.5
+#VRML V2.0 utf8 Titania V1.2.2
 
 META "title" "TransformHandle"
 
@@ -27,6 +27,100 @@ EXTERNPROTO Rotor [
   "../../../Titania/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv",
   "file:///usr/share/titania/Library/Prototypes/Engines/Rotor/Rotor.x3dv"
 ]
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 Transform {
+            translation 6.67177 -7.11893 3.34431
+            rotation -0.00505129 0.999982 -0.0032434 2.00002
+            scale 1.00009 1.00007 1.00003
+            scaleOrientation 0.0506802 0.996573 -0.0653713 0.22901
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.5 0 1
+                  transparency 0.5
+                }
+              }
+              geometry Box { }
+            }
+          }
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              12.068115234375,
+              3.4139552116394,
+              8.67851638793945
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.51121461391449,
+              0.76053112745285,
+              0.40031486749649,
+              1.20476734638214
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              9.44336700439453,
+              0.362515211105347,
+              6.58866882324219
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "TransformHandle"
+}
 
 NavigationInfo { }
 
@@ -66,7 +160,6 @@ Transform {
       translation 9.13001 -0.205781 -5
       rotation 0 -1 0 1.5708
       scale 1 2 3
-      scaleOrientation 0 0 1 0
       children [
         Viewpoint {
           description "Inside"
@@ -105,11 +198,12 @@ DEF Three Transform {
         translation -19.1921 1.03601e-05 -0.423022
         rotation 4.34001e-07 1 -6.24773e-07 0.669766
         scale 1.4214 0.322302 1
-        scaleOrientation 0 0 1 0
         children [
           Transform {
             translation 5.00001 -6.97649 4.72069e-05
-            scale 1.29667 1.68473 1.25458
+            rotation 0.246411 0.958388 -0.144132 3.89601
+            scale 1.54926 2.01291 1.49897
+            scaleOrientation -0.113617 -0.978035 0.174755 0.000976562
             children [
               Viewpoint {
                 description "Inside Three"
@@ -127,21 +221,7 @@ DEF Three Transform {
               }
             ]
           }
-          Transform {
-            translation 6.67177 -7.11893 3.34431
-            rotation 3.11361e-11 1 6.47652e-12 2
-            scale 1.00009 1.00007 1.00003
-            scaleOrientation 9.89448e-07 1 1.09528e-05 0.215976
-            children Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.5 0 1
-                  transparency 0.5
-                }
-              }
-              geometry Box { }
-            }
-          }
+          USE _1
         ]
       }
     }
@@ -194,12 +274,9 @@ Transform {
 }
 
 DEF A Transform {
-  translation 0 0 -2
-  scale 2 1 1
   children Transform {
-    translation 9.79508e-08 0 7.86781e-06
-    scale 2 1 1
-    center -0.5 0 0
+    rotation 0.560075 -0.820917 0.111406 0.475448
+    scaleOrientation -0.338067 0.911459 0.23442 1.62898
     children Shape {
       appearance Appearance {
         material Material {
@@ -218,7 +295,9 @@ DEF B Transform {
   translation 0 0 2
   scale 0.5 1 1
   children Transform {
+    rotation -0.971483 -0.0602141 -0.229336 2.64213
     scale 2 1 1
+    scaleOrientation -1 1.6181e-05 7.29973e-06 0.172604
     children Shape {
       appearance Appearance {
         material Material {
@@ -233,7 +312,7 @@ DEF B Transform {
   }
 }
 
-DEF bwa_1 Transform {
+DEF bwa Transform {
   translation 1.5331 -2.26627 0
   scale 1 1 300
   children Shape {
