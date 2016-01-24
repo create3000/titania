@@ -368,7 +368,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 //__LOG__ << abs (X) << std::endl;
 //__LOG__ << abs (Y) << std::endl;
 //__LOG__ << abs (Z) << std::endl;
-__LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
+//__LOG__ << 1 - std::abs (dot (normalize (grid .y ()), Y)) << std::endl;
 
 		// If X or Z are near 0 then Y is collinear to the y-axis.
 

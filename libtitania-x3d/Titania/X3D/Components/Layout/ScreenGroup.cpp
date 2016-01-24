@@ -116,13 +116,11 @@ ScreenGroup::scale (const TraverseType type)
 
 	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (modelViewMatrix .origin (), Viewport4i ());
 
-	getModelViewMatrix () .scale (screenScale / scale);
+	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
-//	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-//	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-//	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
-//
-//	getModelViewMatrix () .set (screenMatrix);
+	getModelViewMatrix () .set (screenMatrix);
 }
 
 void

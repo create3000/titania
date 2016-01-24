@@ -5,7 +5,7 @@
       <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenGroup.cpp" Line="17" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenGroup.cpp" Line="44" Column="44" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
