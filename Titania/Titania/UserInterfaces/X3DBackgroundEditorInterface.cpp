@@ -72,6 +72,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GradientBox", m_GradientBox);
 	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
 	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
+	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
 
 	// Call construct handler of base class.
 	construct ();

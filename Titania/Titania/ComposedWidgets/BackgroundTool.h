@@ -48,49 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
-#define __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
+#define __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
-
-#include "../../ComposedWidgets/BackgroundTool.h"
+#include "../ComposedWidgets/GradientTool.h"
 
 namespace titania {
 namespace puck {
 
-class BackgroundEditor :
-	virtual public X3DBackgroundEditorInterface
+class BackgroundTool :
+	public GradientTool
 {
 public:
 
 	///  @name Construction
 
-	BackgroundEditor (X3DBrowserWindow* const);
-
-	///  @name Destruction
-
-	virtual
-	~BackgroundEditor ();
+	BackgroundTool (X3DBaseInterface* const,
+	                Gtk::Box &,
+	                const std::string &,
+	                const std::string &);
 
 
 private:
 
-	///  @name Construction
-
 	virtual
 	void
-	initialize () final override;
-
-	void
-	set_selection (const X3D::MFNode &);
-
-	///  @name Members
-
-	BackgroundTool                    sky;
-	X3DFieldAdjustment <X3D::SFFloat> transparency;
+	set_position_value (const X3D::MFFloat &);
 
 };
+
+inline
+BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
+                                      Gtk::Box & box,
+                                      const std::string & positionName,
+                                      const std::string & colorName) :
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	     GradientTool (editor, box, positionName, colorName)
+{ }
+
+inline
+void
+BackgroundTool::set_position_value (const X3D::MFFloat & field)
+{
+	try
+	{
+		X3D::MFFloat position ({ 0 });
+
+		for (const auto & value : field)
+			position .emplace_back (1 - std::cos (math::clamp <float> (value, 0, M_PI / 2)));
+
+		getTool () -> setField <X3D::MFFloat> ("inputPosition", position);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
 
 } // puck
 } // titania

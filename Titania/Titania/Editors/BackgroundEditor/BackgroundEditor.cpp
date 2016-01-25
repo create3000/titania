@@ -58,9 +58,9 @@ namespace puck {
 BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
-	              gradientEditor (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/BackgroundEditor.x3dv") }))
+	                         sky (this, getGradientBox (), "skyAngle", "skyColor"),
+	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency")
 {
-	gradientEditor -> setAntialiasing (4);
 	setup ();
 }
 
@@ -69,25 +69,19 @@ BackgroundEditor::initialize ()
 {
 	X3DBackgroundEditorInterface::initialize ();
 
-	gradientEditor -> initialized () .addInterest (this, &BackgroundEditor::set_initialized);
-	gradientEditor -> set_opacity (0);
-	gradientEditor -> show ();
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &BackgroundEditor::set_selection);
 
-	getGradientBox () .pack_start (*gradientEditor, true, true, 0);
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
-BackgroundEditor::set_initialized ()
+BackgroundEditor::set_selection (const X3D::MFNode & selection)
 {
-	gradientEditor -> initialized () .removeInterest (this, &BackgroundEditor::set_initialized);
-	gradientEditor -> set_opacity (1);
+	const auto & background = selection .empty () ? nullptr : selection .back ();
+	const auto   nodes      = background ? X3D::MFNode ({ background }) : X3D::MFNode ();
 
-	try
-	{
-		gradientEditor -> getExecutionContext () -> getScene () -> getExportedNode ("GradientTool");
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	sky          .setNodes (nodes);
+	transparency .setNodes (nodes);
 }
 
 BackgroundEditor::~BackgroundEditor ()

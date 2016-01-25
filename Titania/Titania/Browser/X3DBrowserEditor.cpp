@@ -208,10 +208,8 @@ X3DBrowserEditor::connectShutdown ()
 void
 X3DBrowserEditor::set_executionContext ()
 {
-	if (not (isEditor () and getArrowButton () .get_active ()))
-		return;
-
-	getMetaData ();
+	if (isEditor ())
+		getMetaData ();
 }
 
 void
@@ -643,7 +641,32 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 {
 	setMetaData ();
 
-	if (X3DBrowserWidget::save (worldURL, compressed, copy))
+	try
+	{
+		const auto worldInfo   = createWorldInfo ();
+		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+
+		children -> isPrivate (false);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	// Save world
+	const bool saved = X3DBrowserWidget::save (worldURL, compressed, copy);
+
+	try
+	{
+		const auto worldInfo   = createWorldInfo ();
+		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+
+		children -> isPrivate (true);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	if (saved)
 	{
 		if (not copy)
 			isModified (getCurrentBrowser (), false);

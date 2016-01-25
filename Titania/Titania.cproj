@@ -2332,7 +2332,9 @@
     <None Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.h" />
     <None Include="Titania\Editors\BackgroundEditor\BackgroundEditor.h" />
     <None Include="share\titania\ui\Editors\BackgroundEditor.glade" />
-    <None Include="share\titania\ui\Editors\BackgroundEditor.x3dv" />
+    <None Include="Titania\ComposedWidgets\GradientTool.h" />
+    <None Include="share\titania\ui\Editors\GradientTool.x3dv" />
+    <None Include="Titania\ComposedWidgets\BackgroundTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

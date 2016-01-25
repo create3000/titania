@@ -75,6 +75,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"TextureMappingEditor",
 	"ColorEditor",
 	"LayerEditor",
+	"BackgroundEditor",
 	"NavigationInfoEditor",
 	"ViewpointEditor",
 	"LightEditor",

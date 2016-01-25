@@ -191,7 +191,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkScale" id="scale2">
+                              <object class="GtkScale" id="TransparencyScale">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="hexpand">True</property>

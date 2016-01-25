@@ -125,6 +125,10 @@ public:
 	getGridColorButton () const
 	{ return *m_GridColorButton; }
 
+	Gtk::Scale &
+	getTransparencyScale () const
+	{ return *m_TransparencyScale; }
+
 	virtual
 	~X3DBackgroundEditorInterface ();
 
@@ -147,6 +151,7 @@ private:
 	Gtk::Box*                      m_GradientBox;
 	Gtk::Box*                      m_GridColorBox;
 	Gtk::Button*                   m_GridColorButton;
+	Gtk::Scale*                    m_TransparencyScale;
 
 };
 

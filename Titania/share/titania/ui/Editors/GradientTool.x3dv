@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 17 Jan 2016 04:00:55 GMT"
+META "modified" "Mon, 25 Jan 2016 06:32:22 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -170,9 +170,7 @@ PROTO Gradient [
           0 0 0,
           0 0 0,
           1 1 1,
-          1 1 1,
-          0 0 0,
-          0 0 0
+          1 1 1
         ]
       }
       coord Coordinate {
@@ -180,8 +178,6 @@ PROTO Gradient [
           0 -1 0,
           0 1 0,
           1 -1 0,
-          1 1 0,
-          1 0 0,
           1 1 0
         ]
       }
@@ -234,12 +230,18 @@ function eventsProcessed ()
 		p .push (0);
 		p .push (1);
 	}
+	
+	// color
 
 	for (var i = 0, length = p .length; i < length; ++ i)
 	{
 		geometry .color .color [i * 2]     = c [i];
 		geometry .color .color [i * 2 + 1] = c [i];
 	}
+	
+	geometry .color .color .length = length * 2;
+
+	// point
 
 	var point = geometry .coord .point;
 	
@@ -250,6 +252,10 @@ function eventsProcessed ()
 		point [i * 2]     = new SFVec3f (x, -1, 0);
 		point [i * 2 + 1] = new SFVec3f (x,  1, 0);
 	}
+	
+	point .length = length * 2;
+	
+	// index
 	
 	var index = new MFInt32 ();
 	
@@ -315,13 +321,13 @@ WorldInfo {
           }
         ]
       }
-      DEF LayerSet MetadataSet {
-        name "LayerSet"
+      DEF Selection MetadataSet {
+        name "Selection"
         reference "http://titania.create3000.de"
-        value DEF activeLayer MetadataInteger {
-          name "activeLayer"
+        value DEF children MetadataSet {
+          name "children"
           reference "http://titania.create3000.de"
-          value -1
+          value NULL
         }
       }
     ]
@@ -423,14 +429,13 @@ LayerSet {
           }
           DEF _12 Arrow {
             color 0.472521 0.694605 0.629244
-            position 0.731158 0 0
+            position 0.720741 0 0
           }
           DEF _13 Arrow {
             color 0.529893 0.132893 0.912987
             position 0.847208 0 0
           }
           DEF _14 Arrow {
-            active TRUE
             color 0.260084 0.0188011 0.067607
             position 0.5374 0 0
           }
@@ -449,7 +454,7 @@ LayerSet {
               0.151379,
               0.336562,
               0.5374,
-              0.731158,
+              0.720741,
               0.847208
             ]
             color [
@@ -465,30 +470,42 @@ LayerSet {
         ]
       }
       DEF GradientEditorScript Script {
+        inputOnly      MFFloat inputPosition
+        inputOnly      MFColor inputColor
         inputOnly      SFTime  set_touchTime
         inputOnly      SFTime  add
         inputOnly      SFTime  remove
         inputOnly      SFVec3f set_translation
-        inputOnly      MFNode  set_children
-        inputOutput    MFFloat position [
-          0.151379,
-          0.336562,
-          0.5374,
-          0.731158,
-          0.847208
-        ]
-        inputOutput    MFColor color [
-          0.643032 0.378889 0.422449,
-          0.862188 0.702531 0.267938,
-          0.260084 0.0188011 0.067607,
-          0.472521 0.694605 0.629244,
-          0.529893 0.132893 0.912987
-        ]
+        inputOutput    MFFloat position [ ]
+        inputOutput    MFColor color [ ]
         outputOnly     SFInt32 active_changed
+        outputOnly     MFFloat outputPosition
+        outputOnly     MFColor outputColor
         initializeOnly SFNode  arrows USE Colors
         initializeOnly SFNode  gradientTouch USE _17
 
         url "ecmascript:
+
+function inputPosition (value)
+{
+	set_values (value, color)
+}
+
+function inputColor (value)
+{
+	set_values (position, value)
+}
+
+function set_values (p, c)
+{
+	position = p;
+	color    = c;
+	
+	arrows .children .length = 0;
+	
+	for (var i = 0; i < color .length; ++ i)
+		add_color (i, position [i], color [i])
+}
 
 function set_touchTime (value)
 {
@@ -544,24 +561,23 @@ function add (value)
 			add_color (0, value, new SFColor (1, 1, 1));
 		}
 	}
+
+	updateFields ();
 }
 
 function add_color (index, value, color)
 {
 	print (index, \" : \", value, \" : \", color);
 	
-	set_touchTime (-1);
-	
 	// Create arrow
 	
 	var arrow = Browser .currentScene .createProto (\"Arrow\");
 	
 	arrow .color       = color;
-	arrow .color       = new SFColor (Math .random (), Math .random (), Math .random ());
 	arrow .position .x = value;
 	
-	arrows .addChildren = new MFNode (arrow);
-	
+	arrows .children [arrows .children .length] = arrow;
+
 	// Add routes
 	
 	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
@@ -584,14 +600,19 @@ function remove (value)
 	{
 		arrows .removeChildren = new MFNode (arrows .children [i]);
 	}
-}
 
-function set_children ()
-{
-	set_translation ();
+	updateFields ();
 }
 
 function set_translation ()
+{
+	updateFields ();
+	
+	outputPosition = position;
+	outputColor    = color;
+}
+
+function updateFields ()
 {
 	var arrows = get_arrows ();
 
@@ -662,11 +683,8 @@ function lowerBound (array, first, last, value, comp)
   }
 }
 
-ROUTE GradientEditorScript.position_changed TO _16.set_position
-ROUTE GradientEditorScript.color_changed TO _16.set_color
 ROUTE _17.touchTime TO _18.set_time
 ROUTE _18.doubleClickTime TO GradientEditorScript.add
-ROUTE Colors.children_changed TO GradientEditorScript.set_children
 ROUTE _11.touchTime TO GradientEditorScript.set_touchTime
 ROUTE _11.doubleClickTime TO GradientEditorScript.remove
 ROUTE _11.position_changed TO GradientEditorScript.set_translation
@@ -682,3 +700,7 @@ ROUTE _14.position_changed TO GradientEditorScript.set_translation
 ROUTE _15.touchTime TO GradientEditorScript.set_touchTime
 ROUTE _15.doubleClickTime TO GradientEditorScript.remove
 ROUTE _15.position_changed TO GradientEditorScript.set_translation
+ROUTE GradientEditorScript.position_changed TO _16.set_position
+ROUTE GradientEditorScript.color_changed TO _16.set_color
+
+EXPORT GradientEditorScript AS Tool
