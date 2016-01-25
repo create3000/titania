@@ -2336,6 +2336,11 @@
     <None Include="Titania\ComposedWidgets\BackgroundTool.h" />
     <None Include="Titania\ComposedWidgets\MFColorButton.h" />
     <None Include="Titania\ComposedWidgets\X3DGradientTool.h" />
+    <None Include="share\titania\Library\Backgrounds\DesertSky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Interstellar.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\NightSky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\ViolentDays.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\WideOcean.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

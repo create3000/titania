@@ -61,6 +61,8 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_GroundAngleAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GroundAngleAdjustment"));
+	m_GroundColorAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GroundColorAdjustment"));
 	m_SkyAngleAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SkyAngleAdjustment"));
 	m_SkyColorAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SkyColorAdjustment"));
 	m_TransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
@@ -70,13 +72,20 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
-	m_builder -> get_widget ("GradientBox", m_GradientBox);
+	m_builder -> get_widget ("SkyGradientBox", m_SkyGradientBox);
 	m_builder -> get_widget ("SkyColorGrid", m_SkyColorGrid);
 	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
 	m_builder -> get_widget ("AddSkyColorButton", m_AddSkyColorButton);
 	m_builder -> get_widget ("RemoveSkyColorButton", m_RemoveSkyColorButton);
 	m_builder -> get_widget ("SkyColorBox", m_SkyColorBox);
 	m_builder -> get_widget ("SkyColorButton", m_SkyColorButton);
+	m_builder -> get_widget ("GroundGradientBox", m_GroundGradientBox);
+	m_builder -> get_widget ("GroundColorGrid", m_GroundColorGrid);
+	m_builder -> get_widget ("GroundColorsScrolledWindow", m_GroundColorsScrolledWindow);
+	m_builder -> get_widget ("AddGroundColorButton", m_AddGroundColorButton);
+	m_builder -> get_widget ("RemoveGroundColorButton", m_RemoveGroundColorButton);
+	m_builder -> get_widget ("GroundColorBox", m_GroundColorBox);
+	m_builder -> get_widget ("GroundColorButton", m_GroundColorButton);
 	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
 
 	// Call construct handler of base class.

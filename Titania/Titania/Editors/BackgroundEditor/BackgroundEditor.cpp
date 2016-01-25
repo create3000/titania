@@ -60,7 +60,7 @@ namespace puck {
 BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
-	                         sky (this, getGradientBox (), "skyAngle", "skyColor"),
+	                         sky (this, getSkyGradientBox (), "skyAngle", "skyColor"),
 	                    skyColor (this,
 	                              getSkyColorButton (),
 	                              getSkyColorAdjustment (),
@@ -69,13 +69,29 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              getRemoveSkyColorButton (),
 	                              getSkyColorsScrolledWindow (),
 	                              "skyColor"),
+	                      ground (this, getGroundGradientBox (), "groundAngle", "groundColor"),
+	                 groundColor (this,
+	                              getGroundColorButton (),
+	                              getGroundColorAdjustment (),
+	                              getGroundColorGrid (),
+	                              getAddGroundColorButton (),
+	                              getRemoveGroundColorButton (),
+	                              getGroundColorsScrolledWindow (),
+	                              "groundColor"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
 	                    changing (false)
 {
-	skyColor .setColorsSize (16);
-
 	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
 	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
+
+	ground      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_whichChoice_changed)); 
+	groundColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_color_index_changed)); 
+	
+	sky    .addClass ("notebook");
+	ground .addClass ("notebook");
+	
+	skyColor    .setColorsSize (16);
+	groundColor .setColorsSize (16);
 
 	setup ();
 }
@@ -98,6 +114,8 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
+	ground       .setNodes (nodes);
+	groundColor  .setNodes (nodes);
 	transparency .setNodes (nodes);
 }
 
@@ -127,6 +145,36 @@ BackgroundEditor::on_sky_color_index_changed ()
 	changing = true;
 
 	sky .setWhichChoice (skyColor .getIndex ());
+
+	changing = false;
+}
+
+void
+BackgroundEditor::on_ground_whichChoice_changed ()
+{
+	__LOG__ << ground .getWhichChoice () << std::endl;
+
+	if (changing)
+		return;
+
+	changing = true;
+
+	groundColor .setIndex (ground .getWhichChoice ());
+
+	changing = false;
+}
+
+void
+BackgroundEditor::on_ground_color_index_changed ()
+{
+	__LOG__ << groundColor .getIndex () << std::endl;
+
+	if (changing)
+		return;
+
+	changing = true;
+
+	ground .setWhichChoice (groundColor .getIndex ());
 
 	changing = false;
 }

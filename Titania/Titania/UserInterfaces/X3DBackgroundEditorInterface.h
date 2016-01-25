@@ -90,6 +90,14 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGroundAngleAdjustment () const
+	{ return m_GroundAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGroundColorAdjustment () const
+	{ return m_GroundColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getSkyAngleAdjustment () const
 	{ return m_SkyAngleAdjustment; }
 
@@ -118,8 +126,8 @@ public:
 	{ return *m_ColorsExpander; }
 
 	Gtk::Box &
-	getGradientBox () const
-	{ return *m_GradientBox; }
+	getSkyGradientBox () const
+	{ return *m_SkyGradientBox; }
 
 	Gtk::Grid &
 	getSkyColorGrid () const
@@ -145,6 +153,34 @@ public:
 	getSkyColorButton () const
 	{ return *m_SkyColorButton; }
 
+	Gtk::Box &
+	getGroundGradientBox () const
+	{ return *m_GroundGradientBox; }
+
+	Gtk::Grid &
+	getGroundColorGrid () const
+	{ return *m_GroundColorGrid; }
+
+	Gtk::ScrolledWindow &
+	getGroundColorsScrolledWindow () const
+	{ return *m_GroundColorsScrolledWindow; }
+
+	Gtk::Button &
+	getAddGroundColorButton () const
+	{ return *m_AddGroundColorButton; }
+
+	Gtk::Button &
+	getRemoveGroundColorButton () const
+	{ return *m_RemoveGroundColorButton; }
+
+	Gtk::Box &
+	getGroundColorBox () const
+	{ return *m_GroundColorBox; }
+
+	Gtk::Button &
+	getGroundColorButton () const
+	{ return *m_GroundColorButton; }
+
 	Gtk::Scale &
 	getTransparencyScale () const
 	{ return *m_TransparencyScale; }
@@ -162,6 +198,8 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_GroundAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GroundColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SkyAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SkyColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
@@ -169,13 +207,20 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_ColorBox;
 	Gtk::Expander*                 m_ColorsExpander;
-	Gtk::Box*                      m_GradientBox;
+	Gtk::Box*                      m_SkyGradientBox;
 	Gtk::Grid*                     m_SkyColorGrid;
 	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
 	Gtk::Button*                   m_AddSkyColorButton;
 	Gtk::Button*                   m_RemoveSkyColorButton;
 	Gtk::Box*                      m_SkyColorBox;
 	Gtk::Button*                   m_SkyColorButton;
+	Gtk::Box*                      m_GroundGradientBox;
+	Gtk::Grid*                     m_GroundColorGrid;
+	Gtk::ScrolledWindow*           m_GroundColorsScrolledWindow;
+	Gtk::Button*                   m_AddGroundColorButton;
+	Gtk::Button*                   m_RemoveGroundColorButton;
+	Gtk::Box*                      m_GroundColorBox;
+	Gtk::Button*                   m_GroundColorButton;
 	Gtk::Scale*                    m_TransparencyScale;
 
 };

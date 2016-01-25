@@ -1,0 +1,47 @@
+#X3D V3.3 utf8 Titania V1.2.1
+
+META "comment" "World of Titania"
+META "created" "Fri, 25 Dec 2015 14:16:25 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.1, http://titania.create3000.de"
+META "modified" "Fri, 25 Dec 2015 14:16:25 GMT"
+META "titania magic" "Background"
+
+DEF WideOcean Background {
+  frontUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-front.jpg"
+  ]
+  backUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-back.jpg"
+  ]
+  leftUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-left.jpg"
+  ]
+  rightUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-right.jpg"
+  ]
+  topUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-top.jpg"
+  ]
+  bottomUrl [
+    "http://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+    "https://cdn.rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+    "http://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg",
+    "https://rawgit.com/create3000/Library/master/Textures/CubeMapTextures/WideOcean/WideOcean-bottom.jpg"
+  ]
+}

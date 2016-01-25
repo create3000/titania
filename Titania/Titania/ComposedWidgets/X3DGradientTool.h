@@ -88,6 +88,10 @@ public:
 	getNodes ()
 	{ return nodes; }
 
+	void
+	addClass (const std::string & name)
+	{browser -> get_style_context () -> add_class (name); }
+
 	///  @name Destruction
 
 	virtual

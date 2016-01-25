@@ -531,6 +531,8 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 				return;
 		}
 	}
+	else
+		undoStep .reset ();
 
 	currentField = fieldName;
 

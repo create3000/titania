@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 25 Jan 2016 20:31:30 GMT"
+META "modified" "Mon, 25 Jan 2016 22:41:52 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -394,33 +394,37 @@ function inputWhichChoice (value)
 {
 	whichChoice = value;
 
-	for (var i = 0; i < arrows .children .length; ++ i)
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
 	{
-		arrows .children [i] .active = false;
+		arrows [i] .active = false;
 	}
 
-	if (value > 0 && value < arrows .children .length)
-		arrows .children [value] .active = true;
+	if (value > 0 && value < arrows .length)
+		arrows [value] .active = true;
 }
 
 function set_active (value)
 {
 	if (value)
 	{
-		for (var i = 0; i < arrows .children .length; ++ i)
+		var arrows = get_arrows ();
+
+		for (var i = 0; i < arrows .length; ++ i)
 		{
-			arrows .children [i] .active = false;
+			arrows [i] .active = false;
 		}
 	
-		for (var i = 0; i < arrows .children .length; ++ i)
+		for (var i = 0; i < arrows .length; ++ i)
 		{
-			if (arrows .children [i] .isActive)
+			if (arrows [i] .isActive)
 				break;
 		}
 
-		if (i < arrows .children .length)
+		if (i < arrows .length)
 		{
-			arrows .children [i] .active = true;
+			arrows [i] .active = true;
 			
 			if (i !== outputWhichChoice)
 			{
@@ -511,10 +515,29 @@ function remove (value)
 	
 	outputPosition = position;
 	outputColor    = color;
+		
+	inputWhichChoice (whichChoice);
 }
 
 function set_translation ()
 {
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
+	{
+		if (arrows [i] .active)
+			break;
+	}
+
+	if (i < arrows .length)
+	{
+		if (i !== outputWhichChoice)
+		{
+			whichChoice       = i;
+			outputWhichChoice = i;
+		}
+	}
+
 	updateFields ();
 	
 	outputPosition = position;

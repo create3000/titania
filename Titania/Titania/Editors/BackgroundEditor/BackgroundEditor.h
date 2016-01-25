@@ -94,10 +94,18 @@ private:
 	void
 	on_sky_color_index_changed ();
 
+	void
+	on_ground_whichChoice_changed ();
+	
+	void
+	on_ground_color_index_changed ();
+
 	///  @name Members
 
 	BackgroundTool                    sky;
 	MFColorButton                     skyColor;
+	BackgroundTool                    ground;
+	MFColorButton                     groundColor;
 	X3DFieldAdjustment <X3D::SFFloat> transparency;
 	bool                              changing;
 
