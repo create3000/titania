@@ -52,6 +52,8 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
+
 namespace titania {
 namespace puck {
 
@@ -77,8 +79,8 @@ BackgroundEditor::initialize ()
 void
 BackgroundEditor::set_selection (const X3D::MFNode & selection)
 {
-	const auto & background = selection .empty () ? nullptr : selection .back ();
-	const auto   nodes      = background ? X3D::MFNode ({ background }) : X3D::MFNode ();
+	X3D::X3DPtr <X3D::X3DBackgroundNode> background (selection .empty () ? nullptr : selection .back ());
+	const auto nodes = background ? X3D::MFNode ({ background }) : X3D::MFNode ();
 
 	sky          .setNodes (nodes);
 	transparency .setNodes (nodes);

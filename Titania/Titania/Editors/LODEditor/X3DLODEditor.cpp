@@ -55,6 +55,8 @@
 
 #include "LODRangeWidget.h"
 
+#include <Titania/X3D/Components/Navigation/LOD.h>
+
 namespace titania {
 namespace puck {
 
@@ -105,8 +107,7 @@ X3DLODEditor::initialize ()
 void
 X3DLODEditor::set_selection (const X3D::MFNode & selection)
 {
-	lod = selection .empty () ? nullptr : selection .back ();
-
+	X3D::X3DPtr <X3D::LOD> lod (selection .empty () ? nullptr : selection .back ());
 	const auto nodes = lod ? X3D::MFNode ({ lod }) : X3D::MFNode ();
 
 	nodeName         .setNode  (X3D::SFNode (lod));

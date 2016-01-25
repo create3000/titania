@@ -73,18 +73,63 @@ private:
 
 	virtual
 	void
-	set_position_value (const X3D::MFFloat &);
+	set_position (X3D::MFFloat &, const X3D::MFFloat &) final override;
+
+	virtual
+	void
+	set_color (X3D::MFColor &, const X3D::MFColor &) final override;
+
+	virtual
+	void
+	set_position_value (const X3D::MFFloat &) final override;
+
+	/// @name Members
+
+	X3D::MFFloat position;
 
 };
 
 inline
 BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
-                                      Gtk::Box & box,
-                                      const std::string & positionName,
-                                      const std::string & colorName) :
+                                Gtk::Box & box,
+                                const std::string & positionName,
+                                const std::string & colorName) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	     GradientTool (editor, box, positionName, colorName)
+	     GradientTool (editor, box, positionName, colorName),
+            position ()
 { }
+
+inline
+void
+BackgroundTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & position)
+{
+	this -> position = position;
+
+	X3D::MFFloat angle;
+
+	if (not position .empty ())
+	{
+		const size_t offset = position [0] == 0.0f ? 1 : 0;
+
+		for (const auto & value : std::make_pair (position .begin () + offset, position .end ()))
+			angle .emplace_back (std::acos (1 - value));
+	}
+
+	field = angle;
+}
+
+inline
+void
+BackgroundTool::set_color (X3D::MFColor & field, const X3D::MFColor & color)
+{
+	field = color;
+
+	if (not position .empty () and not color .empty ())
+	{
+		if (position [0] not_eq 0.0f)
+			field .emplace_front (color [0]);
+	}
+}
 
 inline
 void
@@ -92,7 +137,7 @@ BackgroundTool::set_position_value (const X3D::MFFloat & field)
 {
 	try
 	{
-		X3D::MFFloat position ({ 0 });
+		position = { 0 };
 
 		for (const auto & value : field)
 			position .emplace_back (1 - std::cos (math::clamp <float> (value, 0, M_PI / 2)));

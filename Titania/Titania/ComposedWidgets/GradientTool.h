@@ -107,8 +107,16 @@ private:
 	void
 	set_position (const X3D::MFFloat &);
 
+	virtual
+	void
+	set_position (X3D::MFFloat &, const X3D::MFFloat &);
+
 	void
 	set_color (const X3D::MFColor &);
+
+	virtual
+	void
+	set_color (X3D::MFColor &, const X3D::MFColor &);
 
 	void
 	set_field ();
@@ -249,7 +257,7 @@ inline
 void
 GradientTool::set_position (const X3D::MFFloat & value)
 {
-	__LOG__ << value .size () << " : " << value << std::endl;
+	//__LOG__ << value .size () << " : " << value << std::endl;
 
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
 
@@ -262,7 +270,7 @@ GradientTool::set_position (const X3D::MFFloat & value)
 			field .removeInterest (this, &GradientTool::set_field);
 			field .addInterest (this, &GradientTool::connectPosition);
 
-			field = value;
+			set_position (field, value);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -273,9 +281,16 @@ GradientTool::set_position (const X3D::MFFloat & value)
 
 inline
 void
+GradientTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & value)
+{
+	field = value;
+}
+
+inline
+void
 GradientTool::set_color (const X3D::MFColor & value)
 {
-	__LOG__ << value .size () << " : " << value << std::endl;
+	//__LOG__ << value .size () << " : " << value << std::endl;
 
 	addUndoFunction <X3D::MFColor> (nodes, colorName, undoStep);
 
@@ -288,13 +303,20 @@ GradientTool::set_color (const X3D::MFColor & value)
 			field .removeInterest (this, &GradientTool::set_field);
 			field .addInterest (this, &GradientTool::connectColor);
 
-			field = value;
+			set_color (field, value);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
 	addRedoFunction <X3D::MFColor> (nodes, colorName, undoStep);
+}
+
+inline
+void
+GradientTool::set_color (X3D::MFColor & field, const X3D::MFColor & value)
+{
+	field = value;
 }
 
 inline
