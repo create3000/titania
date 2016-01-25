@@ -61,21 +61,21 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
 	                         sky (this, getGradientBox (), "skyAngle", "skyColor"),
-//	                    skyColor (this,
-//	                              getSkyColorButton (),
-//	                              getSkyColorAdjustment (),
-//	                              getSkyColorGrid (),
-//	                              getAddSkyColorButton (),
-//	                              getRemoveSkyColorButton (),
-//	                              getSkyColorsScrolledWindow (),
-//	                              "skyColor"),
+	                    skyColor (this,
+	                              getSkyColorButton (),
+	                              getSkyColorAdjustment (),
+	                              getSkyColorGrid (),
+	                              getAddSkyColorButton (),
+	                              getRemoveSkyColorButton (),
+	                              getSkyColorsScrolledWindow (),
+	                              "skyColor"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
 	                    changing (false)
 {
-//	skyColor .setColorsSize (16);
+	skyColor .setColorsSize (16);
 
 	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
-//	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
+	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
 
 	setup ();
 }
@@ -97,7 +97,7 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 	const auto nodes = background ? X3D::MFNode ({ background }) : X3D::MFNode ();
 
 	sky          .setNodes (nodes);
-//	skyColor     .setNodes (nodes);
+	skyColor     .setNodes (nodes);
 	transparency .setNodes (nodes);
 }
 
@@ -106,29 +106,29 @@ BackgroundEditor::on_sky_whichChoice_changed ()
 {
 	__LOG__ << sky .getWhichChoice () << std::endl;
 
-//	if (changing)
-//		return;
-//
-//	changing = true;
-//
-//	skyColor .setIndex (sky .getWhichChoice ());
-//
-//	changing = false;
+	if (changing)
+		return;
+
+	changing = true;
+
+	skyColor .setIndex (sky .getWhichChoice ());
+
+	changing = false;
 }
 
 void
 BackgroundEditor::on_sky_color_index_changed ()
 {
-//	__LOG__ << skyColor .getIndex () << std::endl;
-//
-//	if (changing)
-//		return;
-//
-//	changing = true;
-//
-//	sky .setWhichChoice (skyColor .getIndex ());
-//
-//	changing = false;
+	__LOG__ << skyColor .getIndex () << std::endl;
+
+	if (changing)
+		return;
+
+	changing = true;
+
+	sky .setWhichChoice (skyColor .getIndex ());
+
+	changing = false;
 }
 
 BackgroundEditor::~BackgroundEditor ()

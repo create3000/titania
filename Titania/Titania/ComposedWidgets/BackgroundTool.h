@@ -51,13 +51,13 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
 #define __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
 
-#include "../ComposedWidgets/GradientTool.h"
+#include "../ComposedWidgets/X3DGradientTool.h"
 
 namespace titania {
 namespace puck {
 
 class BackgroundTool :
-	public GradientTool
+	public X3DGradientTool
 {
 public:
 
@@ -95,7 +95,7 @@ BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
                                 const std::string & positionName,
                                 const std::string & colorName) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	     GradientTool (editor, box, positionName, colorName),
+	  X3DGradientTool (editor, box, positionName, colorName),
             position ()
 { }
 

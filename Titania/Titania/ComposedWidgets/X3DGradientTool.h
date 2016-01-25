@@ -57,17 +57,10 @@
 namespace titania {
 namespace puck {
 
-class GradientTool :
+class X3DGradientTool :
 	public X3DComposedWidget
 {
 public:
-
-	///  @name Construction
-
-	GradientTool (X3DBaseInterface* const,
-	              Gtk::Box &,
-	              const std::string &,
-	              const std::string &);
 
 	///  @name Signals
 
@@ -98,10 +91,19 @@ public:
 	///  @name Destruction
 
 	virtual
-	~GradientTool ();
+	~X3DGradientTool ();
 
 
 protected:
+
+	///  @name Construction
+
+	X3DGradientTool (X3DBaseInterface* const,
+	              Gtk::Box &,
+	              const std::string &,
+	              const std::string &);
+
+	///  @name Member access
 
 	X3D::SFNode
 	getTool () const
@@ -123,12 +125,15 @@ private:
 	void
 	set_position (const X3D::MFFloat &);
 
+	void
+	set_color (const X3D::MFColor &);
+
+	void
+	set_value (const X3D::time_type &);
+
 	virtual
 	void
 	set_position (X3D::MFFloat &, const X3D::MFFloat &);
-
-	void
-	set_color (const X3D::MFColor &);
 
 	virtual
 	void
@@ -167,13 +172,14 @@ private:
 	const std::string   positionName;
 	const std::string   colorName;
 	X3D::UndoStepPtr    undoStep;
+	X3D::SFTime         value;
 	X3D::MFColor        buffer;
 	int32_t             whichChoice;
 
 };
 
 inline
-GradientTool::GradientTool (X3DBaseInterface* const editor,
+X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
                             Gtk::Box & box,
                             const std::string & positionName,
                             const std::string & colorName) :
@@ -186,17 +192,19 @@ GradientTool::GradientTool (X3DBaseInterface* const editor,
 	       positionName (positionName),
 	          colorName (colorName),
 	           undoStep (),
+	              value (),
 	             buffer (),
            whichChoice (-1)
 {
 	// Buffer
 
-	addChildren (buffer);
-	buffer .addInterest (this, &GradientTool::set_buffer);
+	addChildren (value, buffer);
+	value  .addInterest (this, &X3DGradientTool::set_value);
+	buffer .addInterest (this, &X3DGradientTool::set_buffer);
 
 	// Browser
 
-	browser -> initialized () .addInterest (this, &GradientTool::set_initialized);
+	browser -> initialized () .addInterest (this, &X3DGradientTool::set_initialized);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -209,17 +217,17 @@ GradientTool::GradientTool (X3DBaseInterface* const editor,
 
 inline
 void
-GradientTool::set_initialized ()
+X3DGradientTool::set_initialized ()
 {
-	browser -> initialized () .removeInterest (this, &GradientTool::set_initialized);
+	browser -> initialized () .removeInterest (this, &X3DGradientTool::set_initialized);
 
 	try
 	{
 		const auto tool = getTool ();
 
-		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &GradientTool::set_position);
-		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &GradientTool::set_color);
-		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (this, &GradientTool::set_whichChoice);
+		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &X3DGradientTool::set_position);
+		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &X3DGradientTool::set_color);
+		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (this, &X3DGradientTool::set_whichChoice);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -231,8 +239,10 @@ GradientTool::set_initialized ()
 
 inline
 void
-GradientTool::setWhichChoice (const int32_t value)
+X3DGradientTool::setWhichChoice (const int32_t value)
 {
+	__LOG__ << value << std::endl;
+
 	try
 	{
 		whichChoice = value;
@@ -247,13 +257,13 @@ GradientTool::setWhichChoice (const int32_t value)
 
 inline
 void
-GradientTool::setNodes (const X3D::MFNode & value)
+X3DGradientTool::setNodes (const X3D::MFNode & value)
 {
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .removeInterest (this, &GradientTool::set_field);
+			node -> getField <X3D::MFFloat> (positionName) .removeInterest (this, &X3DGradientTool::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -263,7 +273,7 @@ GradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .removeInterest (this, &GradientTool::set_field);
+			node -> getField <X3D::MFColor> (colorName) .removeInterest (this, &X3DGradientTool::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -275,7 +285,7 @@ GradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .addInterest (this, &GradientTool::set_field);
+			node -> getField <X3D::MFFloat> (positionName) .addInterest (this, &X3DGradientTool::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -285,7 +295,7 @@ GradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .addInterest (this, &GradientTool::set_field);
+			node -> getField <X3D::MFColor> (colorName) .addInterest (this, &X3DGradientTool::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -296,98 +306,131 @@ GradientTool::setNodes (const X3D::MFNode & value)
 
 inline
 void
-GradientTool::set_position (const X3D::MFFloat & value)
+X3DGradientTool::set_position (const X3D::MFFloat &)
 {
-__LOG__ << value .size () << " : " << value << std::endl;
+	value .addEvent ();
+}
 
+inline
+void
+X3DGradientTool::set_color (const X3D::MFColor &)
+{
+	value .addEvent ();
+}
+
+inline
+void
+X3DGradientTool::set_value (const X3D::time_type &)
+{
+	__LOG__ << undoStep .get () << std::endl;
+
+	beginUndoGroup ("gradient", undoStep);
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
+	addUndoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
+	endUndoGroup ("gradient", undoStep);
 
-	for (const auto & node : nodes)
+	try
 	{
-		try
+		const auto   tool  = getTool ();
+		const auto & value = tool -> getField <X3D::MFFloat> ("outputPosition");
+	
+		//
+
+		for (const auto & node : nodes)
 		{
-			auto & field = node -> getField <X3D::MFFloat> (positionName);
-
-			field .removeInterest (this, &GradientTool::set_field);
-			field .addInterest (this, &GradientTool::connectPosition);
-
-			set_position (field, value);
+			try
+			{
+				auto & field = node -> getField <X3D::MFFloat> (positionName);
+	
+				field .removeInterest (this, &X3DGradientTool::set_field);
+				field .addInterest (this, &X3DGradientTool::connectPosition);
+	
+				set_position (field, value);
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
-	addRedoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
-
-if (undoStep)
-__LOG__ << undoStep -> getRedoFunctions () .size () << std::endl;
-else
-	__LOG__ << "null" << std::endl;
-}
-
-inline
-void
-GradientTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & value)
-{
-	field = value;
-}
-
-inline
-void
-GradientTool::set_color (const X3D::MFColor & value)
-{
 	//__LOG__ << value .size () << " : " << value << std::endl;
 
-//	addUndoFunction <X3D::MFColor> (nodes, colorName, undoStep);
-
-	for (const auto & node : nodes)
+	try
 	{
-		try
+		const auto   tool  = getTool ();
+		const auto & value = tool -> getField <X3D::MFColor> ("outputColor");
+
+		//
+
+		for (const auto & node : nodes)
 		{
-			auto & field = node -> getField <X3D::MFColor> (colorName);
-
-			field .removeInterest (this, &GradientTool::set_field);
-			field .addInterest (this, &GradientTool::connectColor);
-
-			set_color (field, value);
+			try
+			{
+				auto & field = node -> getField <X3D::MFColor> (colorName);
+	
+				field .removeInterest (this, &X3DGradientTool::set_field);
+				field .addInterest (this, &X3DGradientTool::connectColor);
+	
+				set_color (field, value);
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
-//	addRedoFunction <X3D::MFColor> (nodes, colorName, undoStep);
+	beginRedoGroup ("gradient", undoStep);
+	addRedoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
+	addRedoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
+	endRedoGroup ("gradient", undoStep);
 }
 
 inline
 void
-GradientTool::set_whichChoice (const X3D::SFInt32 & value)
+X3DGradientTool::set_whichChoice (const X3D::SFInt32 & value)
 {
 	whichChoice = value;
+
+	resetUndoGroup ("gradient", undoStep);
 
 	whichChoice_changed .emit ();
 }
 
 inline
 void
-GradientTool::set_color (X3D::MFColor & field, const X3D::MFColor & value)
+X3DGradientTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & value)
+{
+	field = value;
+}
+
+
+inline
+void
+X3DGradientTool::set_color (X3D::MFColor & field, const X3D::MFColor & value)
 {
 	field = value;
 }
 
 inline
 void
-GradientTool::set_field ()
+X3DGradientTool::set_field ()
 {
 	buffer .addEvent ();
 }
 
 inline
 void
-GradientTool::set_buffer ()
+X3DGradientTool::set_buffer ()
 {
 __LOG__ << std::endl;
 
-	undoStep .reset ();
+	resetUndoGroup ("gradient", undoStep);
 
 	// Position field
 
@@ -438,7 +481,7 @@ __LOG__ << std::endl;
 
 inline
 void
-GradientTool::set_tool_position (const X3D::MFFloat & value)
+X3DGradientTool::set_tool_position (const X3D::MFFloat & value)
 {
 	try
 	{
@@ -450,7 +493,7 @@ GradientTool::set_tool_position (const X3D::MFFloat & value)
 
 inline
 void
-GradientTool::set_tool_color (const X3D::MFColor & value)
+X3DGradientTool::set_tool_color (const X3D::MFColor & value)
 {
 	try
 	{
@@ -462,22 +505,22 @@ GradientTool::set_tool_color (const X3D::MFColor & value)
 
 inline
 void
-GradientTool::connectPosition (const X3D::MFFloat & field)
+X3DGradientTool::connectPosition (const X3D::MFFloat & field)
 {
-	field .removeInterest (this, &GradientTool::connectPosition);
-	field .addInterest (this, &GradientTool::set_field);
+	field .removeInterest (this, &X3DGradientTool::connectPosition);
+	field .addInterest (this, &X3DGradientTool::set_field);
 }
 
 inline
 void
-GradientTool::connectColor (const X3D::MFColor & field)
+X3DGradientTool::connectColor (const X3D::MFColor & field)
 {
-	field .removeInterest (this, &GradientTool::connectColor);
-	field .addInterest (this, &GradientTool::set_field);
+	field .removeInterest (this, &X3DGradientTool::connectColor);
+	field .addInterest (this, &X3DGradientTool::set_field);
 }
 
 inline
-GradientTool::~GradientTool ()
+X3DGradientTool::~X3DGradientTool ()
 {
 	dispose ();
 }

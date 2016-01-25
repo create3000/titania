@@ -97,7 +97,7 @@ private:
 	///  @name Members
 
 	BackgroundTool                    sky;
-//	MFColorButton                     skyColor;
+	MFColorButton                     skyColor;
 	X3DFieldAdjustment <X3D::SFFloat> transparency;
 	bool                              changing;
 

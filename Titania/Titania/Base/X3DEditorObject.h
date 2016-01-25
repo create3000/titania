@@ -97,9 +97,13 @@ protected:
 	X3DEditorObject () :
 		X3DBaseInterface (),
 		            undo (true),
+             undoGroup (),
+             redoGroup (),
+	      lastUndoGroup (),
 		    currentField (),
 		          fields (new X3D::FieldSet (getCurrentBrowser ())),
-		        undoSize (0)
+		        undoSize (0),
+               changed (0)
 	{ }
 
 	virtual
@@ -165,6 +169,69 @@ protected:
 	void
 	addRedoFunction (FieldType &, X3D::UndoStepPtr &);
 
+	void
+	resetUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+	{
+		lastUndoGroup .clear ();
+		undoStep      .reset ();
+	}
+
+	void
+	beginUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+	{
+		undoGroup = name;
+		changed   = 0;
+	}
+
+	void
+	endUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+	{
+		if (lastUndoGroup == undoGroup)
+		{
+			for (const auto & undoFunction : std::make_pair (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
+			{
+				try
+				{
+					undoFunction ();
+				}
+				catch (const std::exception & error)
+				{
+					std::clog
+						<< std::string (80, '*') << std::endl
+						<< "*  Warning:  Undo step not possible:" << std::endl
+						<< "*  " << error .what () << std::endl
+						<< std::string (80, '*') << std::endl;
+				}
+			}
+	
+			undoStep -> getUndoFunctions () .resize (undoSize);
+			undoStep -> getRedoFunctions () .clear ();
+		}
+
+		lastUndoGroup = undoGroup;
+
+		undoGroup .clear ();
+	}
+
+	void
+	beginRedoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+	{
+		redoGroup = name;
+	}
+
+	void
+	endRedoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+	{
+		redoGroup .clear ();
+
+		if (changed == 0)
+		{
+			undoStep .reset ();
+
+			removeUndoStep ();
+		}
+	}
+
 	/// @name Destuction
 	
 	virtual
@@ -195,9 +262,13 @@ private:
 	///  @name Members
 
 	bool                        undo;
+	std::string                 undoGroup;
+	std::string                 redoGroup;
+	std::string                 lastUndoGroup;
 	std::string                 currentField;
 	X3D::X3DPtr <X3D::FieldSet> fields;
 	size_t                      undoSize;
+	size_t                      changed;
 
 };
 
@@ -440,29 +511,25 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 	if (not undo)
 		return;
 
+	++ changed;
+
 	const auto lastUndoStep = getUndoStep ();
 
-	if (undoStep and lastUndoStep == undoStep and fieldName == currentField)
+	if (undoStep and lastUndoStep == undoStep)
 	{
-		for (const auto & undoFunction : std::make_pair (undoStep -> getUndoFunctions () .rbegin (), undoStep -> getUndoFunctions () .rend () - undoSize))
+		if (undoGroup .empty ())
 		{
-			try
+			if (fieldName == currentField)
 			{
-				undoFunction ();
-			}
-			catch (const std::exception & error)
-			{
-				std::clog
-					<< std::string (80, '*') << std::endl
-					<< "*  Warning:  Undo step not possible:" << std::endl
-					<< "*  " << error .what () << std::endl
-					<< std::string (80, '*') << std::endl;
+				endUndoGroup ("", undoStep);
+				return;
 			}
 		}
-
-		undoStep -> getUndoFunctions () .resize (undoSize);
-		undoStep -> getRedoFunctions () .clear ();
-		return;
+		else
+		{
+			if (lastUndoGroup == undoGroup)
+				return;
+		}
 	}
 
 	currentField = fieldName;
@@ -503,7 +570,23 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	// Undo
 
-	undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
+	bool add = false;
+
+	if (undoGroup .empty ())
+	{
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
+		
+		add = true;
+	}
+	else
+	{
+		if (not undoStep)
+		{
+			undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), undoGroup .c_str ()));
+			
+			add = true;
+		}
+	}
 
 	undoStep -> addObjects (nodes);
 
@@ -523,7 +606,8 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		{ }
 	}
 
-	addUndoStep (undoStep);
+	if (add)
+		addUndoStep (undoStep);
 
 	undoSize = undoStep -> getUndoFunctions () .size ();
 }
@@ -547,9 +631,15 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 			{
 				if (fields -> template getField <FieldType> (currentField) == field)
 				{
-					undoStep .reset ();
+					if (redoGroup .empty ())
+					{
+						undoStep .reset ();
 
-					removeUndoStep ();
+						removeUndoStep ();
+					}
+					else
+						-- changed;
+
 					return;
 				}
 			}
