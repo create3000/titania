@@ -125,7 +125,7 @@ private:
 	Gtk::ColorSelectionDialog            dialog;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
-	X3D::UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                     undoStep;
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;

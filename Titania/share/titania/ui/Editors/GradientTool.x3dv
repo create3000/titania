@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 25 Jan 2016 08:52:55 GMT"
+META "modified" "Mon, 25 Jan 2016 17:35:47 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -19,7 +19,7 @@ PROTO DoubleClick [
     inputOutput SFTime doubleClickInterval IS doubleClickInterval
     outputOnly  SFTime doubleClickTime IS doubleClickTime
 
-    url "peaseblossom:
+    url "javascript:
 
 var firstTime = 0;
 
@@ -43,7 +43,8 @@ function set_time (value, time)
 PROTO Arrow [
   inputOutput SFBool  active FALSE
   inputOutput SFColor color 1 1 1
-  inputOutput SFVec3f position 0.0153129 0 0
+  inputOutput SFVec3f offset 0.0153129 0 0
+  outputOnly  SFVec3f translation_changed
   outputOnly  SFTime  doubleClickTime
   outputOnly  SFTime  touchTime
 ]
@@ -51,7 +52,7 @@ PROTO Arrow [
   Group {
     children [
       DEF _1 Transform {
-        translation IS position
+        translation IS offset
         children DEF TriangleSet2D Transform {
           translation -0.5 0 0
           children ScreenGroup {
@@ -108,8 +109,9 @@ PROTO Arrow [
         touchTime IS touchTime
       }
       DEF _4 PlaneSensor {
-        offset IS position
+        offset IS offset
         maxPosition 1 0
+        translation_changed IS translation_changed
       }
     ]
   }
@@ -137,6 +139,7 @@ PROTO Arrow [
   ROUTE _8.triggerValue TO _2.set_whichChoice
   ROUTE _7.inputTrue TO _9.set_boolean
   ROUTE _9.triggerValue TO _2.set_whichChoice
+  ROUTE _4.translation_changed TO _4.set_offset
 }
 
 PROTO Gradient [
@@ -329,35 +332,35 @@ WorldInfo {
           value DEF GradientEditorScript Script {
             inputOnly      MFFloat inputPosition
             inputOnly      MFColor inputColor
+            inputOnly      SFInt32 inputWhichChoice
             inputOnly      SFTime  set_touchTime
             inputOnly      SFTime  add
             inputOnly      SFTime  remove
             inputOnly      SFVec3f set_translation
-            inputOutput    MFFloat position [ ]
-            inputOutput    MFColor color [ ]
-            outputOnly     SFInt32 active_changed
+            inputOutput    MFFloat position [
+              0.159354,
+              0.897933
+            ]
+            inputOutput    MFColor color [
+              0.643032 0.378889 0.422449,
+              0.844259 0.651834 0.281599
+            ]
+            outputOnly     SFInt32 outputWhichChoice
             outputOnly     MFFloat outputPosition
             outputOnly     MFColor outputColor
             initializeOnly SFNode  arrows DEF Colors Group {
               children [
                 DEF _11 Arrow {
-                  color 0.862188 0.702531 0.267938
+                  color 0.643032 0.378889 0.422449
+                  offset 0.159354 0 0
                 }
                 DEF _12 Arrow {
-                  color 0.472521 0.694605 0.629244
-                }
-                DEF _13 Arrow {
-                  color 0.529893 0.132893 0.912987
-                }
-                DEF _14 Arrow {
-                  color 0.260084 0.0188011 0.067607
-                }
-                DEF _15 Arrow {
-                  color 0.643032 0.378889 0.422449
+                  color 0.844259 0.651834 0.281599
+                  offset 0.897933 0 0
                 }
               ]
             }
-            initializeOnly SFNode  gradientTouch DEF _16 TouchSensor { }
+            initializeOnly SFNode  gradientTouch DEF _13 TouchSensor { }
 
             url "ecmascript:
 
@@ -382,6 +385,16 @@ function set_values (p, c)
 		add_color (i, position [i], color [i])
 }
 
+function inputWhichChoice (value)
+{
+	for (var i = 0; i < arrows .children .length; ++ i)
+	{
+		arrows .children [i] .active = false;
+	}
+
+	arrows .children [value] .active = true;
+}
+
 function set_touchTime (value)
 {
 	for (var i = 0; i < arrows .children .length; ++ i)
@@ -398,6 +411,7 @@ function set_touchTime (value)
 	if (i < arrows .children .length)
 	{
 		arrows .children [i] .active = true;
+		outputWhichChoice            = i;
 	}
 }
 
@@ -449,8 +463,8 @@ function add_color (index, value, color)
 	
 	var arrow = Browser .currentScene .createProto (\"Arrow\");
 	
-	arrow .color       = color;
-	arrow .position .x = value;
+	arrow .color     = color;
+	arrow .offset .x = value;
 	
 	arrows .children [arrows .children .length] = arrow;
 
@@ -459,9 +473,9 @@ function add_color (index, value, color)
 	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
 	
 
-	Browser .addRoute (arrow, \"touchTime\",        self, \"set_touchTime\");
-	Browser .addRoute (arrow, \"doubleClickTime\",  self, \"remove\");
-	Browser .addRoute (arrow, \"position_changed\", self, \"set_translation\");
+	Browser .addRoute (arrow, \"touchTime\",           self, \"set_touchTime\");
+	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"remove\");
+	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
 }
 
 function remove (value)
@@ -497,7 +511,7 @@ function updateFields ()
 
 	for (var i = 0; i < arrows .length; ++ i)
 	{
-		position [i] = arrows [i] .position .x;
+		position [i] = arrows [i] .offset .x;
 		color [i]    = arrows [i] .color;
 	}
 
@@ -522,10 +536,10 @@ function less (lhs, rhs)
 
 function compare (lhs, rhs)
 {
-	if (lhs .position .x < rhs .position .x)
+	if (lhs .offset .x < rhs .offset .x)
 		return -1;
 		
-	if (lhs .position .x > rhs .position .x)
+	if (lhs .offset .x > rhs .offset .x)
 		return 1;
 
 	return 0;
@@ -665,24 +679,18 @@ LayerSet {
         translation -0.5 -0.25 0
         scale 1 0.25 1
         children [
-          DEF _17 Gradient {
+          DEF _14 Gradient {
             position [
-              0.151379,
-              0.336562,
-              0.5374,
-              0.720741,
-              0.847208
+              0.159354,
+              0.897933
             ]
             color [
               0.643032 0.378889 0.422449,
-              0.862188 0.702531 0.267938,
-              0.260084 0.0188011 0.067607,
-              0.472521 0.694605 0.629244,
-              0.529893 0.132893 0.912987
+              0.844259 0.651834 0.281599
             ]
           }
-          USE _16
-          DEF _18 DoubleClick { }
+          USE _13
+          DEF _15 DoubleClick { }
         ]
       }
       USE GradientEditorScript
@@ -690,19 +698,15 @@ LayerSet {
   }
 }
 
-ROUTE _16.touchTime TO _18.set_time
-ROUTE _18.doubleClickTime TO GradientEditorScript.add
+ROUTE _13.touchTime TO _15.set_time
+ROUTE _15.doubleClickTime TO GradientEditorScript.add
+ROUTE GradientEditorScript.position_changed TO _14.set_position
+ROUTE GradientEditorScript.color_changed TO _14.set_color
 ROUTE _11.touchTime TO GradientEditorScript.set_touchTime
 ROUTE _11.doubleClickTime TO GradientEditorScript.remove
+ROUTE _11.translation_changed TO GradientEditorScript.set_translation
 ROUTE _12.touchTime TO GradientEditorScript.set_touchTime
 ROUTE _12.doubleClickTime TO GradientEditorScript.remove
-ROUTE _13.touchTime TO GradientEditorScript.set_touchTime
-ROUTE _13.doubleClickTime TO GradientEditorScript.remove
-ROUTE _14.touchTime TO GradientEditorScript.set_touchTime
-ROUTE _14.doubleClickTime TO GradientEditorScript.remove
-ROUTE _15.touchTime TO GradientEditorScript.set_touchTime
-ROUTE _15.doubleClickTime TO GradientEditorScript.remove
-ROUTE GradientEditorScript.position_changed TO _17.set_position
-ROUTE GradientEditorScript.color_changed TO _17.set_color
+ROUTE _12.translation_changed TO GradientEditorScript.set_translation
 
 EXPORT GradientEditorScript AS Tool

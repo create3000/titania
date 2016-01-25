@@ -48,107 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
-#define __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
+#ifndef __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
+#define __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
 
-#include "../ComposedWidgets/GradientTool.h"
+#include "../../UserInterfaces/X3DPrototypeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BackgroundTool :
-	public GradientTool
+class NodePropertiesEditor;
+class MFStringURLWidget;
+class NodeIndex;
+
+class PrototypeEditor :
+	virtual public X3DPrototypeEditorInterface
 {
 public:
 
 	///  @name Construction
 
-	BackgroundTool (X3DBaseInterface* const,
-	                Gtk::Box &,
-	                const std::string &,
-	                const std::string &);
+	PrototypeEditor (X3DBrowserWindow* const);
 
+	///  @name Destruction
+
+	virtual
+	~PrototypeEditor ();
 
 private:
 
-	virtual
-	void
-	set_position (X3D::MFFloat &, const X3D::MFFloat &) final override;
+	///  @name Construction
 
 	virtual
 	void
-	set_color (X3D::MFColor &, const X3D::MFColor &) final override;
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_executionContext ();
+
+	void
+	on_create_prototype_menu ();
+
+	void
+	set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
 
 	virtual
 	void
-	set_tool_position (const X3D::MFFloat &) final override;
+	on_create_proto_clicked () final override;
 
-	/// @name Members
+	virtual
+	void
+	on_create_externproto_clicked () final override;
 
-	X3D::MFFloat position;
+	virtual
+	void
+	on_create_instance_clicked () final override;
 
+	virtual
+	bool
+	on_name_key_press_event (GdkEventKey*);
+
+	virtual
+	void
+	on_name_insert_text (const Glib::ustring &, int*) final override;
+
+	virtual
+	void
+	on_name_delete_text (int, int) final override;
+
+	virtual
+	void
+	on_rename_clicked () final override;
+
+	virtual
+	void
+	on_update_instances_clicked () final override;
+
+	///  @name Members
+
+	std::unique_ptr <NodePropertiesEditor> nodePropertiesEditor;
+	std::unique_ptr <MFStringURLWidget>    url;
+	std::unique_ptr <NodeIndex>            nodeIndex;
+
+	X3D::X3DExecutionContextPtr                executionContext;
+	X3D::X3DPtr <X3D::X3DProtoDeclarationNode> protoNode;
+	X3D::X3DPtr <X3D::FieldSet>                urlNode;
 };
-
-inline
-BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
-                                Gtk::Box & box,
-                                const std::string & positionName,
-                                const std::string & colorName) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	     GradientTool (editor, box, positionName, colorName),
-            position ()
-{ }
-
-inline
-void
-BackgroundTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & position)
-{
-	this -> position = position;
-
-	X3D::MFFloat angle;
-
-	if (not position .empty ())
-	{
-		const size_t offset = position [0] == 0.0f ? 1 : 0;
-
-		for (const auto & value : std::make_pair (position .begin () + offset, position .end ()))
-			angle .emplace_back (std::acos (1 - value));
-	}
-
-	field = angle;
-}
-
-inline
-void
-BackgroundTool::set_color (X3D::MFColor & field, const X3D::MFColor & color)
-{
-	field = color;
-
-	if (not position .empty () and not color .empty ())
-	{
-		if (position [0] not_eq 0.0f)
-			field .emplace_front (color [0]);
-	}
-}
-
-inline
-void
-BackgroundTool::set_tool_position (const X3D::MFFloat & field)
-{
-	try
-	{
-		position = { 0 };
-
-		for (const auto & value : field)
-			position .emplace_back (1 - std::cos (math::clamp <float> (value, 0, M_PI / 2)));
-
-		getTool () -> setField <X3D::MFFloat> ("inputPosition", position);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-}
 
 } // puck
 } // titania

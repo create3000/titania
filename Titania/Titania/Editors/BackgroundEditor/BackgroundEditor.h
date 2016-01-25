@@ -54,6 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
 
+#include "../../ComposedWidgets/MFColorButton.h"
 #include "../../ComposedWidgets/BackgroundTool.h"
 
 namespace titania {
@@ -85,10 +86,20 @@ private:
 	void
 	set_selection (const X3D::MFNode &);
 
+	///  @name Event handler
+
+	void
+	on_sky_whichChoice_changed ();
+	
+	void
+	on_sky_color_index_changed ();
+
 	///  @name Members
 
 	BackgroundTool                    sky;
+//	MFColorButton                     skyColor;
 	X3DFieldAdjustment <X3D::SFFloat> transparency;
+	bool                              changing;
 
 };
 

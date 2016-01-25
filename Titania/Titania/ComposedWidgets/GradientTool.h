@@ -69,7 +69,24 @@ public:
 	              const std::string &,
 	              const std::string &);
 
+	///  @name Signals
+
+	sigc::signal <void> &
+	signal_whichChoice_changed ()
+	{ return whichChoice_changed; }
+
+	const sigc::signal <void> &
+	signal_whichChoice_changed () const
+	{ return whichChoice_changed; }
+
 	///  @name Member access
+
+	void
+	setWhichChoice (const int32_t);
+
+	int32_t
+	getWhichChoice () const
+	{ return whichChoice; }
 
 	void
 	setNodes (const X3D::MFNode &);
@@ -93,7 +110,6 @@ protected:
 
 		return scene -> getExportedNode ("Tool");
 	}
-
 
 private:
 
@@ -126,11 +142,15 @@ private:
 
 	virtual
 	void
-	set_position_value (const X3D::MFFloat &);
+	set_tool_position (const X3D::MFFloat &);
 
 	virtual
 	void
-	set_color_value (const X3D::MFColor &);
+	set_tool_color (const X3D::MFColor &);
+
+	virtual
+	void
+	set_whichChoice (const X3D::SFInt32 &);
 
 	void
 	connectPosition (const X3D::MFFloat &);
@@ -140,30 +160,34 @@ private:
 
 	///  @name Members
 
-	Gtk::Box &        box;
-	X3D::BrowserPtr   browser;
-	X3D::MFNode       nodes;
-	const std::string positionName;
-	const std::string colorName;
-	X3D::UndoStepPtr  undoStep;
-	X3D::MFColor      buffer;
+	sigc::signal <void> whichChoice_changed;
+	Gtk::Box &          box;
+	X3D::BrowserPtr     browser;
+	X3D::MFNode         nodes;
+	const std::string   positionName;
+	const std::string   colorName;
+	X3D::UndoStepPtr    undoStep;
+	X3D::MFColor        buffer;
+	int32_t             whichChoice;
 
 };
 
 inline
 GradientTool::GradientTool (X3DBaseInterface* const editor,
-                        Gtk::Box & box,
-                        const std::string & positionName,
-                        const std::string & colorName) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	X3DComposedWidget (editor),
-	              box (box),
-	          browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/GradientTool.x3dv") })),
-	            nodes (),
-	     positionName (positionName),
-	        colorName (colorName),
-	         undoStep (),
-	           buffer ()
+                            Gtk::Box & box,
+                            const std::string & positionName,
+                            const std::string & colorName) :
+	   X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	  X3DComposedWidget (editor),
+	whichChoice_changed (),
+	                box (box),
+	            browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/GradientTool.x3dv") })),
+	              nodes (),
+	       positionName (positionName),
+	          colorName (colorName),
+	           undoStep (),
+	             buffer (),
+           whichChoice (-1)
 {
 	// Buffer
 
@@ -193,8 +217,9 @@ GradientTool::set_initialized ()
 	{
 		const auto tool = getTool ();
 
-		tool -> getField <X3D::MFFloat> ("outputPosition") .addInterest (this, &GradientTool::set_position);
-		tool -> getField <X3D::MFColor> ("outputColor")    .addInterest (this, &GradientTool::set_color);
+		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &GradientTool::set_position);
+		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &GradientTool::set_color);
+		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (this, &GradientTool::set_whichChoice);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -202,6 +227,22 @@ GradientTool::set_initialized ()
 	}
 
 	setNodes (nodes);
+}
+
+inline
+void
+GradientTool::setWhichChoice (const int32_t value)
+{
+	try
+	{
+		whichChoice = value;
+
+		getTool () -> getField <X3D::SFInt32> ("inputWhichChoice") = value;
+
+		whichChoice_changed .emit ();
+	}
+	catch (const X3D::X3DError & error)
+	{ }
 }
 
 inline
@@ -257,7 +298,7 @@ inline
 void
 GradientTool::set_position (const X3D::MFFloat & value)
 {
-	//__LOG__ << value .size () << " : " << value << std::endl;
+__LOG__ << value .size () << " : " << value << std::endl;
 
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
 
@@ -277,6 +318,11 @@ GradientTool::set_position (const X3D::MFFloat & value)
 	}
 
 	addRedoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
+
+if (undoStep)
+__LOG__ << undoStep -> getRedoFunctions () .size () << std::endl;
+else
+	__LOG__ << "null" << std::endl;
 }
 
 inline
@@ -292,7 +338,7 @@ GradientTool::set_color (const X3D::MFColor & value)
 {
 	//__LOG__ << value .size () << " : " << value << std::endl;
 
-	addUndoFunction <X3D::MFColor> (nodes, colorName, undoStep);
+//	addUndoFunction <X3D::MFColor> (nodes, colorName, undoStep);
 
 	for (const auto & node : nodes)
 	{
@@ -309,7 +355,16 @@ GradientTool::set_color (const X3D::MFColor & value)
 		{ }
 	}
 
-	addRedoFunction <X3D::MFColor> (nodes, colorName, undoStep);
+//	addRedoFunction <X3D::MFColor> (nodes, colorName, undoStep);
+}
+
+inline
+void
+GradientTool::set_whichChoice (const X3D::SFInt32 & value)
+{
+	whichChoice = value;
+
+	whichChoice_changed .emit ();
 }
 
 inline
@@ -330,6 +385,8 @@ inline
 void
 GradientTool::set_buffer ()
 {
+__LOG__ << std::endl;
+
 	undoStep .reset ();
 
 	// Position field
@@ -344,7 +401,7 @@ GradientTool::set_buffer ()
 
 			hasPosition = true;
 
-			set_position_value (field);
+			set_tool_position (field);
 			break;
 		}
 		catch (const X3D::X3DError &)
@@ -352,7 +409,7 @@ GradientTool::set_buffer ()
 	}
 
 	if (not hasPosition)
-		set_position_value (X3D::MFFloat ());
+		set_tool_position (X3D::MFFloat ());
 
 	// Color field
 
@@ -366,7 +423,7 @@ GradientTool::set_buffer ()
 
 			hasColor = true;
 
-			set_color_value (field);
+			set_tool_color (field);
 			break;
 		}
 		catch (const X3D::X3DError &)
@@ -374,14 +431,14 @@ GradientTool::set_buffer ()
 	}
 
 	if (not hasColor)
-		set_color_value (X3D::MFColor ());
+		set_tool_color (X3D::MFColor ());
 
 	browser -> set_sensitive (hasColor);
 }
 
 inline
 void
-GradientTool::set_position_value (const X3D::MFFloat & value)
+GradientTool::set_tool_position (const X3D::MFFloat & value)
 {
 	try
 	{
@@ -393,7 +450,7 @@ GradientTool::set_position_value (const X3D::MFFloat & value)
 
 inline
 void
-GradientTool::set_color_value (const X3D::MFColor & value)
+GradientTool::set_tool_color (const X3D::MFColor & value)
 {
 	try
 	{

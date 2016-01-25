@@ -1,13 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/MFColorRGBAButton.h">
     <Files>
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="35" Column="35" />
+      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="34" Column="34" />
       <File FileName="Titania/Titania/ComposedWidgets/GradientTool.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/BackgroundTool.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/LODEditor/LODEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/LODEditor/X3DLODEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/ComposedWidgets/BackgroundTool.h" Line="3" Column="3" />
+      <File FileName="Titania/Titania/ComposedWidgets/MFColorRGBAButton.h" Line="25" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

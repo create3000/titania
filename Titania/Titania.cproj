@@ -2335,6 +2335,7 @@
     <None Include="Titania\ComposedWidgets\GradientTool.h" />
     <None Include="share\titania\ui\Editors\GradientTool.x3dv" />
     <None Include="Titania\ComposedWidgets\BackgroundTool.h" />
+    <None Include="Titania\ComposedWidgets\MFColorButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

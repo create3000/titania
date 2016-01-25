@@ -61,7 +61,8 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_ColorAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
+	m_SkyAngleAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SkyAngleAdjustment"));
+	m_SkyColorAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SkyColorAdjustment"));
 	m_TransparencyAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransparencyAdjustment"));
 
 	// Get widgets.
@@ -70,8 +71,12 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
 	m_builder -> get_widget ("GradientBox", m_GradientBox);
-	m_builder -> get_widget ("GridColorBox", m_GridColorBox);
-	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
+	m_builder -> get_widget ("SkyColorGrid", m_SkyColorGrid);
+	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
+	m_builder -> get_widget ("AddSkyColorButton", m_AddSkyColorButton);
+	m_builder -> get_widget ("RemoveSkyColorButton", m_RemoveSkyColorButton);
+	m_builder -> get_widget ("SkyColorBox", m_SkyColorBox);
+	m_builder -> get_widget ("SkyColorButton", m_SkyColorButton);
 	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
 
 	// Call construct handler of base class.
