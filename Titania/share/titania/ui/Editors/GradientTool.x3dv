@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 25 Jan 2016 22:41:52 GMT"
+META "modified" "Mon, 25 Jan 2016 23:05:21 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -347,6 +347,7 @@ WorldInfo {
               0.643032 0.378889 0.422449,
               0.844259 0.651834 0.281599
             ]
+            outputOnly     SFBool  isActive
             outputOnly     SFInt32 outputWhichChoice
             outputOnly     MFFloat outputPosition
             outputOnly     MFColor outputColor
@@ -407,6 +408,8 @@ function inputWhichChoice (value)
 
 function set_active (value)
 {
+	isActive = value;
+	
 	if (value)
 	{
 		var arrows = get_arrows ();

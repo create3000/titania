@@ -90,7 +90,7 @@ public:
 
 	void
 	addClass (const std::string & name)
-	{browser -> get_style_context () -> add_class (name); }
+	{ browser -> get_style_context () -> add_class (name); }
 
 	///  @name Destruction
 
@@ -125,6 +125,9 @@ private:
 	set_initialized ();
 
 	///  @name Event handler
+
+	void
+	set_active (const bool);
 
 	void
 	set_position (const X3D::MFFloat &);
@@ -229,6 +232,7 @@ X3DGradientTool::set_initialized ()
 	{
 		const auto tool = getTool ();
 
+		tool -> getField <X3D::SFBool>  ("isActive")          .addInterest (this, &X3DGradientTool::set_active);
 		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &X3DGradientTool::set_position);
 		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &X3DGradientTool::set_color);
 		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (this, &X3DGradientTool::set_whichChoice);
@@ -397,11 +401,24 @@ X3DGradientTool::set_value (const X3D::time_type &)
 
 inline
 void
+X3DGradientTool::set_active (const bool value)
+{
+	try
+	{
+		if (value)
+			resetUndoGroup ("gradient", undoStep);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+inline
+void
 X3DGradientTool::set_whichChoice (const X3D::SFInt32 & value)
 {
 	whichChoice = value;
-
-	resetUndoGroup ("gradient", undoStep);
 
 	whichChoice_changed .emit ();
 }
