@@ -1,12 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/ComposedWidgets/MFColorRGBAButton.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="35" Column="35" />
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="34" Column="34" />
-      <File FileName="Titania/Titania/ComposedWidgets/GradientTool.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/BackgroundTool.h" Line="3" Column="3" />
-      <File FileName="Titania/Titania/ComposedWidgets/MFColorRGBAButton.h" Line="25" Column="25" />
+      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="52" Column="52" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DGradientTool.h" Line="17" Column="17" />
+      <File FileName="Titania/Titania/ComposedWidgets/BackgroundTool.h" Line="33" Column="33" />
+      <File FileName="Titania/Titania/ComposedWidgets/MFColorButton.h" Line="55" Column="55" />
+      <File FileName="Titania/Titania/Base/X3DEditorObject.h" Line="14" Column="14" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment3.h" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/Library/Backgrounds/DesertSky.x3dv" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

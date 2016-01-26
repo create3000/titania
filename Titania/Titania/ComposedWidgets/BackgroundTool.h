@@ -72,12 +72,12 @@ public:
 private:
 
 	virtual
-	void
-	set_position (X3D::MFFloat &, const X3D::MFFloat &) final override;
+	X3D::MFFloat
+	get_position (const X3D::MFFloat &) final override;
 
 	virtual
-	void
-	set_color (X3D::MFColor &, const X3D::MFColor &) final override;
+	X3D::MFColor
+	get_color (const X3D::MFColor &) final override;
 
 	virtual
 	void
@@ -100,8 +100,8 @@ BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
 { }
 
 inline
-void
-BackgroundTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & position)
+X3D::MFFloat
+BackgroundTool::get_position (const X3D::MFFloat & position)
 {
 	this -> position = position;
 
@@ -115,20 +115,22 @@ BackgroundTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & positio
 			angle .emplace_back (std::acos (1 - value));
 	}
 
-	field = angle;
+	return angle;
 }
 
 inline
-void
-BackgroundTool::set_color (X3D::MFColor & field, const X3D::MFColor & color)
+X3D::MFColor
+BackgroundTool::get_color (const X3D::MFColor & color)
 {
-	field = color;
+	X3D::MFColor result = color;
 
-	if (not position .empty () and not color .empty ())
+	if (not position .empty () and not result .empty ())
 	{
 		if (position [0] not_eq 0.0f)
-			field .emplace_front (color [0]);
+			result .emplace_front (color [0]);
 	}
+
+	return result;
 }
 
 inline

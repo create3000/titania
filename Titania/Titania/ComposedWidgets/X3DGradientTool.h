@@ -127,7 +127,19 @@ private:
 	///  @name Event handler
 
 	void
+	set_addTime (const X3D::time_type);
+	
+	void
+	set_removeTime (const X3D::time_type);
+	
+	void
+	set_editTime (const X3D::UndoStepPtr &);
+
+	void
 	set_active (const bool);
+
+	void
+	set_whichChoice (const X3D::SFInt32 &);
 
 	void
 	set_position (const X3D::MFFloat &);
@@ -139,12 +151,14 @@ private:
 	set_value (const X3D::time_type &);
 
 	virtual
-	void
-	set_position (X3D::MFFloat &, const X3D::MFFloat &);
+	X3D::MFFloat
+	get_position (const X3D::MFFloat & value)
+	{ return value; }
 
 	virtual
-	void
-	set_color (X3D::MFColor &, const X3D::MFColor &);
+	X3D::MFColor
+	get_color (const X3D::MFColor & value)
+	{ return value; }
 
 	void
 	set_field ();
@@ -159,10 +173,6 @@ private:
 	virtual
 	void
 	set_tool_color (const X3D::MFColor &);
-
-	virtual
-	void
-	set_whichChoice (const X3D::SFInt32 &);
 
 	void
 	connectPosition (const X3D::MFFloat &);
@@ -232,6 +242,8 @@ X3DGradientTool::set_initialized ()
 	{
 		const auto tool = getTool ();
 
+		tool -> getField <X3D::SFTime>  ("outputAddTime")     .addInterest (this, &X3DGradientTool::set_addTime);
+		tool -> getField <X3D::SFTime>  ("outputRemoveTime")  .addInterest (this, &X3DGradientTool::set_removeTime);
 		tool -> getField <X3D::SFBool>  ("isActive")          .addInterest (this, &X3DGradientTool::set_active);
 		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &X3DGradientTool::set_position);
 		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &X3DGradientTool::set_color);
@@ -332,6 +344,8 @@ X3DGradientTool::set_value (const X3D::time_type &)
 {
 	__LOG__ << undoStep .get () << std::endl;
 
+	bool changed = false;
+
 	beginUndoGroup ("gradient", undoStep);
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
 	addUndoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
@@ -353,7 +367,14 @@ X3DGradientTool::set_value (const X3D::time_type &)
 				field .removeInterest (this, &X3DGradientTool::set_field);
 				field .addInterest (this, &X3DGradientTool::connectPosition);
 	
-				set_position (field, value);
+				const auto position = get_position (value);
+
+				if (field not_eq position)
+				{
+					changed = true;
+					field   = position;
+__LOG__ << std::endl;
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -382,7 +403,14 @@ X3DGradientTool::set_value (const X3D::time_type &)
 				field .removeInterest (this, &X3DGradientTool::set_field);
 				field .addInterest (this, &X3DGradientTool::connectColor);
 	
-				set_color (field, value);
+				const auto color = get_color (value);
+
+				if (field not_eq color)
+				{
+					changed = true;
+					field   = color;
+__LOG__ << std::endl;
+				}
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -403,15 +431,66 @@ inline
 void
 X3DGradientTool::set_active (const bool value)
 {
+	if (value)
+		resetUndoGroup ("gradient", undoStep);
+}
+
+inline
+void
+X3DGradientTool::set_addTime (const X3D::time_type value)
+{
+	undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Color To Gradient"));
+
+	set_editTime (undoStep);
+}
+
+inline
+void
+X3DGradientTool::set_removeTime (const X3D::time_type value)
+{
+	undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Color From Gradient"));
+
+	set_editTime (undoStep);
+}
+
+inline
+void
+X3DGradientTool::set_editTime (const X3D::UndoStepPtr & undoStep)
+{
 	try
 	{
-		if (value)
-			resetUndoGroup ("gradient", undoStep);
+		const auto   tool           = getTool ();
+		const auto & outputPosition = tool -> getField <X3D::MFFloat> ("position");
+		const auto & outputColor    = tool -> getField <X3D::MFColor> ("color");
+
+		//
+
+		for (const auto & node : nodes)
+		{
+			try
+			{
+				X3D::MFFloat & nodePosition = node -> getField <X3D::MFFloat> (positionName);
+				X3D::MFColor & nodeColor    = node -> getField <X3D::MFColor> (colorName);
+
+				undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (nodePosition), nodePosition);
+				undoStep -> addUndoFunction (&X3D::MFColor::setValue, std::ref (nodeColor),    nodeColor);
+
+				nodePosition = get_position (outputPosition);
+				nodeColor    = get_color (outputColor);
+
+				undoStep -> addRedoFunction (&X3D::MFFloat::setValue, std::ref (nodePosition), nodePosition);
+				undoStep -> addRedoFunction (&X3D::MFColor::setValue, std::ref (nodeColor),    nodeColor);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+		}
 	}
 	catch (const X3D::X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 inline
@@ -421,21 +500,6 @@ X3DGradientTool::set_whichChoice (const X3D::SFInt32 & value)
 	whichChoice = value;
 
 	whichChoice_changed .emit ();
-}
-
-inline
-void
-X3DGradientTool::set_position (X3D::MFFloat & field, const X3D::MFFloat & value)
-{
-	field = value;
-}
-
-
-inline
-void
-X3DGradientTool::set_color (X3D::MFColor & field, const X3D::MFColor & value)
-{
-	field = value;
 }
 
 inline

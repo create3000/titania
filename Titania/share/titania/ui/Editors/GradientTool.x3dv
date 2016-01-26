@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 25 Jan 2016 23:05:21 GMT"
+META "modified" "Tue, 26 Jan 2016 08:47:41 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -331,288 +331,23 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF GradientEditorScript Script {
-            inputOnly      MFFloat inputPosition
-            inputOnly      MFColor inputColor
-            inputOnly      SFInt32 inputWhichChoice
-            inputOnly      SFBool  set_active
-            inputOnly      SFTime  add
-            inputOnly      SFTime  remove
-            inputOnly      SFVec3f set_translation
-            inputOutput    MFFloat position [
-              0.147972,
-              0.850492
+          value DEF Gradient Transform {
+            translation -0.5 -0.25 0
+            scale 1 0.25 1
+            children [
+              DEF _11 Gradient {
+                position [
+                  0.147972,
+                  0.850492
+                ]
+                color [
+                  0.643032 0.378889 0.422449,
+                  0.844259 0.651834 0.281599
+                ]
+              }
+              DEF _12 TouchSensor { }
+              DEF _13 DoubleClick { }
             ]
-            inputOutput    MFColor color [
-              0.643032 0.378889 0.422449,
-              0.844259 0.651834 0.281599
-            ]
-            outputOnly     SFBool  isActive
-            outputOnly     SFInt32 outputWhichChoice
-            outputOnly     MFFloat outputPosition
-            outputOnly     MFColor outputColor
-            initializeOnly SFInt32 whichChoice -1
-            initializeOnly SFNode  arrows DEF Colors Group {
-              children [
-                DEF _11 Arrow {
-                  color 0.844259 0.651834 0.281599
-                  offset 0.850492 0 0
-                }
-                DEF _12 Arrow {
-                  color 0.643032 0.378889 0.422449
-                  offset 0.147972 0 0
-                }
-              ]
-            }
-            initializeOnly SFNode  gradientTouch DEF _13 TouchSensor { }
-
-            url "ecmascript:
-
-function inputPosition (value)
-{
-	set_values (value, color)
-}
-
-function inputColor (value)
-{
-	set_values (position, value)
-}
-
-function set_values (p, c)
-{
-	position = p;
-	color    = c;
-	
-	arrows .children .length = 0;
-	
-	for (var i = 0; i < position .length; ++ i)
-		add_color (i, position [i], color [i])
-		
-	inputWhichChoice (whichChoice);
-}
-
-function inputWhichChoice (value)
-{
-	whichChoice = value;
-
-	var arrows = get_arrows ();
-
-	for (var i = 0; i < arrows .length; ++ i)
-	{
-		arrows [i] .active = false;
-	}
-
-	if (value > 0 && value < arrows .length)
-		arrows [value] .active = true;
-}
-
-function set_active (value)
-{
-	isActive = value;
-	
-	if (value)
-	{
-		var arrows = get_arrows ();
-
-		for (var i = 0; i < arrows .length; ++ i)
-		{
-			arrows [i] .active = false;
-		}
-	
-		for (var i = 0; i < arrows .length; ++ i)
-		{
-			if (arrows [i] .isActive)
-				break;
-		}
-
-		if (i < arrows .length)
-		{
-			arrows [i] .active = true;
-			
-			if (i !== outputWhichChoice)
-			{
-				whichChoice       = i;
-				outputWhichChoice = i;
-			}
-		}
-	}
-}
-
-function add (value)
-{
-	var
-		value  = gradientTouch .hitPoint_changed .x,
-		index1 = lowerBound (position, 0, position .length, value, less),
-		index0 = index1 - 1;
-	
-	
-	if (index1 < position .length)
-	{
-		if (index0 < 0)
-		{
-			add_color (index1, value, color [index1]);
-		}
-		else
-		{
-			var
-				color0 = color [index0],
-				color1 = color [index1],
-				t      = (value - position [index0]) / (position [index1] - position [index0]);
-				
-			add_color (index0, value, color0 .lerp (color1, t));
-		}
-	}
-	else
-	{
-		if (position .length)
-		{
-			add_color (index0, value, color [index0]);
-		}
-		else
-		{
-			add_color (0, value, new SFColor (1, 1, 1));
-		}
-	}
-
-	updateFields ();
-	// set_translation is later called
-}
-
-function add_color (index, value, color)
-{
-	print (index, \" : \", value, \" : \", color);
-	
-	// Create arrow
-	
-	var arrow = Browser .currentScene .createProto (\"Arrow\");
-	
-	arrow .color     = color;
-	arrow .offset .x = value;
-	
-	arrows .children [arrows .children .length] = arrow;
-
-	// Add routes
-	
-	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
-	
-
-	Browser .addRoute (arrow, \"isActive\",            self, \"set_active\");
-	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"remove\");
-	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
-}
-
-function remove (value)
-{
-	for (var i = 0; i < arrows .children .length; ++ i)
-	{
-		if (value == arrows .children [i] .doubleClickTime)
-			break;
-	}
-
-	for (++ i; i < arrows .children .length; ++ i)
-		arrows .children [i - 1] = arrows .children [i];
-
-	-- arrows .children .length;
-
-	updateFields ();
-	
-	outputPosition = position;
-	outputColor    = color;
-		
-	inputWhichChoice (whichChoice);
-}
-
-function set_translation ()
-{
-	var arrows = get_arrows ();
-
-	for (var i = 0; i < arrows .length; ++ i)
-	{
-		if (arrows [i] .active)
-			break;
-	}
-
-	if (i < arrows .length)
-	{
-		if (i !== outputWhichChoice)
-		{
-			whichChoice       = i;
-			outputWhichChoice = i;
-		}
-	}
-
-	updateFields ();
-	
-	outputPosition = position;
-	outputColor    = color;
-}
-
-function updateFields ()
-{
-	var arrows = get_arrows ();
-
-	for (var i = 0; i < arrows .length; ++ i)
-	{
-		position [i] = arrows [i] .offset .x;
-		color [i]    = arrows [i] .color;
-	}
-
-	position .length = arrows .length;
-	color    .length = arrows .length;
-}
-
-function get_arrows ()
-{
-	var a = [ ];
-
-	for (var i = 0; i < arrows .children .length; ++ i)
-		a .push (arrows .children [i]);
-
-	return a .sort (compare);
-}
-
-function less (lhs, rhs)
-{
-	return lhs < rhs;
-}
-
-function compare (lhs, rhs)
-{
-	if (lhs .offset .x < rhs .offset .x)
-		return -1;
-		
-	if (lhs .offset .x > rhs .offset .x)
-		return 1;
-
-	return 0;
-}
-
-function lowerBound (array, first, last, value, comp)
-{
-   // http://en.cppreference.com/w/cpp/algorithm/lower_bound
-
-	var
-		index = 0,
-		step  = 0,
-		count = last - first;
-
-	while (count > 0)
-	{
-		step  = count >>> 1;
-		index = first + step;
-
-		if (comp (array [index], value))
-		{
-			first  = ++ index;
-			count -= step + 1;
-		}
-		else
-			count = step;
-	}
-
-	return first;
-}
-"
           }
         }
       }
@@ -716,39 +451,312 @@ LayerSet {
     layout Layout { }
     viewport Viewport { }
     children [
-      USE Colors
-      Transform {
-        translation -0.5 -0.25 0
-        scale 1 0.25 1
+      DEF Colors Group {
         children [
-          DEF _14 Gradient {
-            position [
-              0.147972,
-              0.850492
-            ]
-            color [
-              0.643032 0.378889 0.422449,
-              0.844259 0.651834 0.281599
-            ]
+          DEF _14 Arrow {
+            color 0.844259 0.651834 0.281599
+            offset 0.850492 0 0
           }
-          USE _13
-          DEF _15 DoubleClick { }
+          DEF _15 Arrow {
+            color 0.643032 0.378889 0.422449
+            offset 0.147972 0 0
+          }
         ]
       }
-      USE GradientEditorScript
+      USE Gradient
+      DEF GradientEditorScript Script {
+        inputOnly      MFFloat inputPosition
+        inputOnly      MFColor inputColor
+        inputOnly      SFInt32 inputWhichChoice
+        inputOnly      SFBool  set_active
+        inputOutput    SFTime  addTime nan
+        inputOutput    SFTime  removeTime nan
+        inputOnly      SFVec3f set_translation
+        inputOutput    MFFloat position [
+          0.147972,
+          0.850492
+        ]
+        inputOutput    MFColor color [
+          0.643032 0.378889 0.422449,
+          0.844259 0.651834 0.281599
+        ]
+        outputOnly     SFBool  isActive
+        outputOnly     SFInt32 outputWhichChoice
+        outputOnly     MFFloat outputPosition
+        outputOnly     MFColor outputColor
+        outputOnly     SFTime  outputAddTime
+        outputOnly     SFTime  outputRemoveTime
+        initializeOnly SFInt32 whichChoice -1
+        initializeOnly SFNode  arrows USE Colors
+        initializeOnly SFNode  gradientTouch USE _12
+
+        url "ecmascript:
+
+function inputPosition (value)
+{
+	set_values (value, color)
+}
+
+function inputColor (value)
+{
+	set_values (position, value)
+}
+
+function set_values (p, c)
+{
+	position = p;
+	color    = c;
+	
+	arrows .children .length = 0;
+	
+	for (var i = 0; i < position .length; ++ i)
+		add_color (i, position [i], color [i])
+		
+	inputWhichChoice (whichChoice);
+}
+
+function inputWhichChoice (value)
+{
+	whichChoice = value;
+
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
+	{
+		arrows [i] .active = false;
+	}
+
+	if (value > 0 && value < arrows .length)
+		arrows [value] .active = true;
+}
+
+function set_active (value)
+{
+print (\"active: \", value);
+
+	isActive = value;
+	
+	if (value)
+	{
+		var arrows = get_arrows ();
+
+		for (var i = 0; i < arrows .length; ++ i)
+		{
+			arrows [i] .active = false;
+		}
+	
+		for (var i = 0; i < arrows .length; ++ i)
+		{
+			if (arrows [i] .isActive)
+				break;
+		}
+
+		if (i < arrows .length)
+		{
+			arrows [i] .active = true;
+			
+			if (i !== outputWhichChoice)
+			{
+				whichChoice       = i;
+				outputWhichChoice = i;
+			}
+		}
+	}
+}
+
+function set_addTime (value, time)
+{
+	var
+		value  = gradientTouch .hitPoint_changed .x,
+		index1 = lowerBound (position, 0, position .length, value, less),
+		index0 = index1 - 1;
+	
+	
+	if (index1 < position .length)
+	{
+		if (index0 < 0)
+		{
+			add_color (index1, value, color [index1]);
+		}
+		else
+		{
+			var
+				color0 = color [index0],
+				color1 = color [index1],
+				t      = (value - position [index0]) / (position [index1] - position [index0]);
+				
+			add_color (index0, value, color0 .lerp (color1, t));
+		}
+	}
+	else
+	{
+		if (position .length)
+		{
+			add_color (index0, value, color [index0]);
+		}
+		else
+		{
+			add_color (0, value, new SFColor (1, 1, 1));
+		}
+	}
+
+	updateFields ();
+	// set_translation is later called
+
+	outputAddTime  = time;
+}
+
+function add_color (index, value, color)
+{
+	print (index, \" : \", value, \" : \", color);
+	
+	// Create arrow
+	
+	var arrow = Browser .currentScene .createProto (\"Arrow\");
+	
+	arrow .color     = color;
+	arrow .offset .x = value;
+	
+	arrows .children [arrows .children .length] = arrow;
+
+	// Add routes
+	
+	var self = Browser .currentScene .getNamedNode (\"GradientEditorScript\");
+	
+
+	Browser .addRoute (arrow, \"isActive\",            self, \"set_active\");
+	Browser .addRoute (arrow, \"doubleClickTime\",     self, \"removeTime\");
+	Browser .addRoute (arrow, \"translation_changed\", self, \"set_translation\");
+}
+
+function set_removeTime (value, time)
+{
+print (\"set_removeTime: \", value);
+
+	for (var i = 0; i < arrows .children .length; ++ i)
+	{
+		if (value == arrows .children [i] .doubleClickTime)
+			break;
+	}
+
+	for (++ i; i < arrows .children .length; ++ i)
+		arrows .children [i - 1] = arrows .children [i];
+
+	-- arrows .children .length;
+
+	updateFields ();
+	inputWhichChoice (whichChoice);
+
+	outputRemoveTime = time;
+}
+
+function set_translation ()
+{
+print (\"set_translation: \");
+
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
+	{
+		if (arrows [i] .active)
+			break;
+	}
+
+	if (i < arrows .length)
+	{
+		if (i !== outputWhichChoice)
+		{
+			whichChoice       = i;
+			outputWhichChoice = i;
+		}
+	}
+
+	updateFields ();
+	
+	outputPosition = position;
+	outputColor    = color;
+}
+
+function updateFields ()
+{
+	var arrows = get_arrows ();
+
+	for (var i = 0; i < arrows .length; ++ i)
+	{
+		position [i] = arrows [i] .offset .x;
+		color [i]    = arrows [i] .color;
+	}
+
+	position .length = arrows .length;
+	color    .length = arrows .length;
+}
+
+function get_arrows ()
+{
+	var a = [ ];
+
+	for (var i = 0; i < arrows .children .length; ++ i)
+		a .push (arrows .children [i]);
+
+	return a .sort (compare);
+}
+
+function less (lhs, rhs)
+{
+	return lhs < rhs;
+}
+
+function compare (lhs, rhs)
+{
+	if (lhs .offset .x < rhs .offset .x)
+		return -1;
+		
+	if (lhs .offset .x > rhs .offset .x)
+		return 1;
+
+	return 0;
+}
+
+function lowerBound (array, first, last, value, comp)
+{
+   // http://en.cppreference.com/w/cpp/algorithm/lower_bound
+
+	var
+		index = 0,
+		step  = 0,
+		count = last - first;
+
+	while (count > 0)
+	{
+		step  = count >>> 1;
+		index = first + step;
+
+		if (comp (array [index], value))
+		{
+			first  = ++ index;
+			count -= step + 1;
+		}
+		else
+			count = step;
+	}
+
+	return first;
+}
+"
+      }
     ]
   }
 }
 
-ROUTE _13.touchTime TO _15.set_time
-ROUTE _15.doubleClickTime TO GradientEditorScript.add
-ROUTE GradientEditorScript.position_changed TO _14.set_position
-ROUTE GradientEditorScript.color_changed TO _14.set_color
-ROUTE _11.isActive TO GradientEditorScript.set_active
-ROUTE _11.doubleClickTime TO GradientEditorScript.remove
-ROUTE _11.translation_changed TO GradientEditorScript.set_translation
-ROUTE _12.isActive TO GradientEditorScript.set_active
-ROUTE _12.doubleClickTime TO GradientEditorScript.remove
-ROUTE _12.translation_changed TO GradientEditorScript.set_translation
+ROUTE _12.touchTime TO _13.set_time
+ROUTE GradientEditorScript.position_changed TO _11.set_position
+ROUTE GradientEditorScript.color_changed TO _11.set_color
+ROUTE _14.isActive TO GradientEditorScript.set_active
+ROUTE _14.translation_changed TO GradientEditorScript.set_translation
+ROUTE _15.isActive TO GradientEditorScript.set_active
+ROUTE _15.translation_changed TO GradientEditorScript.set_translation
+ROUTE _13.doubleClickTime TO GradientEditorScript.set_addTime
+ROUTE _15.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _14.doubleClickTime TO GradientEditorScript.set_removeTime
 
 EXPORT GradientEditorScript AS Tool
