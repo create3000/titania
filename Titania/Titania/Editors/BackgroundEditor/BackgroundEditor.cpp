@@ -135,6 +135,8 @@ BackgroundEditor::on_sky_whichChoice_changed ()
 void
 BackgroundEditor::on_sky_color_index_changed ()
 {
+	__LOG__ << skyColor .getIndex () << std::endl;
+
 	if (changing)
 		return;
 
@@ -148,6 +150,8 @@ BackgroundEditor::on_sky_color_index_changed ()
 void
 BackgroundEditor::on_ground_whichChoice_changed ()
 {
+	__LOG__ << ground .getWhichChoice () << std::endl;
+
 	if (changing)
 		return;
 

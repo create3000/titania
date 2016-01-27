@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Wed, 27 Jan 2016 04:25:53 GMT"
+META "modified" "Wed, 27 Jan 2016 08:49:38 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -231,8 +231,8 @@ function eventsProcessed ()
 	}
 	else
 	{
-		c .push (new SFColor ());
 		c .push (new SFColor (1, 1, 1));
+		c .push (new SFColor ());
 		p .push (0);
 		p .push (1);
 	}
@@ -326,6 +326,15 @@ WorldInfo {
             ]
           }
         ]
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
       }
       DEF Selection MetadataSet {
         name "Selection"
@@ -430,11 +439,9 @@ LayerSet {
         children [
           DEF _11 Arrow {
             color 0.844259 0.651834 0.281599
-            offset 0.850492 0 0
           }
           DEF _12 Arrow {
             color 0.643032 0.378889 0.422449
-            offset 0.147972 0 0
           }
         ]
       }
@@ -460,11 +467,11 @@ LayerSet {
         inputOnly      MFFloat inputPosition
         inputOnly      MFColor inputColor
         inputOnly      SFInt32 inputWhichChoice
-        inputOutput    SFBool  enableFirst TRUE
         inputOnly      SFBool  set_active
+        inputOnly      SFVec3f set_translation
+        inputOutput    SFBool  enableFirst TRUE
         inputOutput    SFTime  addTime nan
         inputOutput    SFTime  removeTime nan
-        inputOnly      SFVec3f set_translation
         inputOutput    MFFloat position [
           0.147972,
           0.850492
@@ -510,6 +517,12 @@ function set_values (p, c)
 	
 	for (var i = 0, length = position .length; i < length; ++ i)
 		add_color (i, position [i], color [i])
+
+	if (length == 0)
+		whichChoice = 0;
+		
+	else if (whichChoice >= length)
+		whichChoice = length - 1;
 
 	set_enableFirst (enableFirst);
 	inputWhichChoice (whichChoice);
@@ -606,29 +619,10 @@ function set_addTime (value, time)
 	
 	// select added arrow
 	{
-		var arrows = get_arrows ();
+		arrows .children [arrows .children .length - 1] .active = true;
 
-		for (var i = 0; i < arrows .length; ++ i)
-		{
-			arrows [i] .active = false;
-		}
-
-		for (var i = 0; i < arrows .length; ++ i)
-		{
-			if (arrows [i] .offset .x == value)
-				break;
-		}
-
-		if (i < arrows .length)
-		{
-			arrows [i] .active = true;
-		
-			if (i !== outputWhichChoice)
-			{
-				whichChoice       = i;
-				outputWhichChoice = i;
-			}
-		}
+		whichChoice       = index1;
+		outputWhichChoice = index1;
 	}
 
 	outputAddTime = time;
@@ -645,6 +639,9 @@ function add_color (index, value, color)
 	arrow .color     = color;
 	arrow .offset .x = value;
 	
+	if (! enableFirst && arrows .children .length == 0)
+		arrow .offset .z = -1;
+
 	arrows .children [arrows .children .length] = arrow;
 
 	// Add routes
@@ -681,9 +678,9 @@ function set_removeTime (value, time)
 	outputRemoveTime = time;
 }
 
-function set_translation ()
+function set_translation (value)
 {
-	//print (\"set_translation: \");
+	print (\"set_translation: \", value);
 
 	var arrows = get_arrows ();
 
@@ -695,6 +692,8 @@ function set_translation ()
 
 	if (i < arrows .length)
 	{
+		arrows [i] .offset = value;
+	
 		if (i !== outputWhichChoice)
 		{
 			whichChoice       = i;
@@ -783,9 +782,7 @@ ROUTE _14.touchTime TO _15.set_time
 ROUTE GradientEditorScript.position_changed TO _13.set_position
 ROUTE GradientEditorScript.color_changed TO _13.set_color
 ROUTE _11.isActive TO GradientEditorScript.set_active
-ROUTE _11.translation_changed TO GradientEditorScript.set_translation
 ROUTE _12.isActive TO GradientEditorScript.set_active
-ROUTE _12.translation_changed TO GradientEditorScript.set_translation
 ROUTE _15.doubleClickTime TO GradientEditorScript.set_addTime
 ROUTE _12.doubleClickTime TO GradientEditorScript.set_removeTime
 ROUTE _11.doubleClickTime TO GradientEditorScript.set_removeTime

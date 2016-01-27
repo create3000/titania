@@ -124,10 +124,13 @@ BackgroundTool::set_addTime (const X3D::time_type value)
 		const auto & position = tool -> getField <X3D::MFFloat> ("position");
 		auto       & color    = tool -> getField <X3D::MFColor> ("color");
 
-		if (not position .empty ())
+		if (position .size () == 1)
 		{
 			if (position [0] > 0)
+			{
 				color .emplace_back (color [0]);
+				setWhichChoice (1);
+			}
 		}
 
 		X3DGradientTool::set_addTime (value);

@@ -545,6 +545,8 @@ X3DGradientTool::set_buffer ()
 	}
 
 	set_tool_values (position, color);
+
+	browser -> set_sensitive (not nodes .empty ());
 }
 
 inline
