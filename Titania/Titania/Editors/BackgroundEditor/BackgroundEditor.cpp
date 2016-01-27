@@ -60,7 +60,7 @@ namespace puck {
 BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
-	                         sky (this, getSkyGradientBox (), "skyAngle", "skyColor"),
+	                         sky (this, "Sky Gradient", getSkyGradientBox (), "skyAngle", "skyColor"),
 	                    skyColor (this,
 	                              getSkyColorButton (),
 	                              getSkyColorAdjustment (),
@@ -69,7 +69,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              getRemoveSkyColorButton (),
 	                              getSkyColorsScrolledWindow (),
 	                              "skyColor"),
-	                      ground (this, getGroundGradientBox (), "groundAngle", "groundColor"),
+	                      ground (this, "Ground Gradient", getGroundGradientBox (), "groundAngle", "groundColor"),
 	                 groundColor (this,
 	                              getGroundColorButton (),
 	                              getGroundColorAdjustment (),
@@ -122,8 +122,6 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 void
 BackgroundEditor::on_sky_whichChoice_changed ()
 {
-	__LOG__ << sky .getWhichChoice () << std::endl;
-
 	if (changing)
 		return;
 
@@ -137,8 +135,6 @@ BackgroundEditor::on_sky_whichChoice_changed ()
 void
 BackgroundEditor::on_sky_color_index_changed ()
 {
-	__LOG__ << skyColor .getIndex () << std::endl;
-
 	if (changing)
 		return;
 
@@ -152,8 +148,6 @@ BackgroundEditor::on_sky_color_index_changed ()
 void
 BackgroundEditor::on_ground_whichChoice_changed ()
 {
-	__LOG__ << ground .getWhichChoice () << std::endl;
-
 	if (changing)
 		return;
 
@@ -167,8 +161,6 @@ BackgroundEditor::on_ground_whichChoice_changed ()
 void
 BackgroundEditor::on_ground_color_index_changed ()
 {
-	__LOG__ << groundColor .getIndex () << std::endl;
-
 	if (changing)
 		return;
 

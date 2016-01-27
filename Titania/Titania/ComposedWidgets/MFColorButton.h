@@ -423,6 +423,8 @@ MFColorButton::set_buffer ()
 	bool hasField = false;
 	bool isEmpty  = false;
 
+	this -> node = nullptr;
+
 	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		try
@@ -431,9 +433,10 @@ MFColorButton::set_buffer ()
 
 			if (field .empty ())
 			{
-				index    = 0;
-				hasField = true;
-				isEmpty  = true;
+				index        = 0;
+				hasField     = true;
+				isEmpty      = true;
+				this -> node = node;
 				break;
 			}
 
@@ -459,13 +462,12 @@ MFColorButton::set_buffer ()
 
 	if (not hasField or isEmpty)
 	{
-		this -> node = nullptr;
 		dialog .get_color_selection () -> set_current_rgba (Gdk::RGBA ());
 		valueAdjustment -> set_value (0);
 	}
 
-	widget               .set_sensitive (hasField);
-	colorsScrolledWindow .set_sensitive (hasField);
+	widget               .set_sensitive (hasField and not isEmpty);
+	colorsScrolledWindow .set_sensitive (hasField and not isEmpty);
 	on_colors_configure_event (nullptr);
 
 	changing = false;

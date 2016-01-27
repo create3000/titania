@@ -64,6 +64,7 @@ public:
 	///  @name Construction
 
 	BackgroundTool (X3DBaseInterface* const,
+	                const std::string &,
 	                Gtk::Box &,
 	                const std::string &,
 	                const std::string &);
@@ -72,39 +73,74 @@ public:
 private:
 
 	virtual
+	void
+	realize () final override;
+
+	virtual
+	void
+	set_addTime (const X3D::time_type);
+
+	virtual
 	X3D::MFFloat
 	get_position (const X3D::MFFloat &) final override;
 
 	virtual
-	X3D::MFColor
-	get_color (const X3D::MFColor &) final override;
-
-	virtual
 	void
-	set_tool_position (const X3D::MFFloat &) final override;
-
-	/// @name Members
-
-	X3D::MFFloat position;
+	set_tool_values (const X3D::MFFloat &, const X3D::MFColor &) final override;
 
 };
 
 inline
 BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
+                                const std::string & name,
                                 Gtk::Box & box,
                                 const std::string & positionName,
                                 const std::string & colorName) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	  X3DGradientTool (editor, box, positionName, colorName),
-            position ()
+	  X3DGradientTool (editor, name, box, positionName, colorName)
 { }
+
+inline
+void
+BackgroundTool::realize ()
+{
+	try
+	{
+		getTool () -> getField <X3D::SFBool>  ("enableFirst") = false;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+inline
+void
+BackgroundTool::set_addTime (const X3D::time_type value)
+{
+	try
+	{
+		const auto   tool     = getTool ();
+		const auto & position = tool -> getField <X3D::MFFloat> ("position");
+		auto       & color    = tool -> getField <X3D::MFColor> ("color");
+
+		if (not position .empty ())
+		{
+			if (position [0] > 0)
+				color .emplace_back (color [0]);
+		}
+
+		X3DGradientTool::set_addTime (value);
+	}
+	catch (const X3D::X3DError & error)
+	{
+	}
+}
 
 inline
 X3D::MFFloat
 BackgroundTool::get_position (const X3D::MFFloat & position)
 {
-	this -> position = position;
-
 	X3D::MFFloat angle;
 
 	if (not position .empty ())
@@ -119,32 +155,21 @@ BackgroundTool::get_position (const X3D::MFFloat & position)
 }
 
 inline
-X3D::MFColor
-BackgroundTool::get_color (const X3D::MFColor & color)
-{
-	X3D::MFColor result = color;
-
-	if (not position .empty () and not result .empty ())
-	{
-		if (position [0] not_eq 0.0f)
-			result .emplace_front (color [0]);
-	}
-
-	return result;
-}
-
-inline
 void
-BackgroundTool::set_tool_position (const X3D::MFFloat & field)
+BackgroundTool::set_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
 {
 	try
 	{
-		position = { 0 };
+		X3D::MFFloat position;
 
-		for (const auto & value : field)
+		for (const auto & value : positionValue)
 			position .emplace_back (1 - std::cos (math::clamp <float> (value, 0, M_PI / 2)));
 
+		if (not colorValue .empty ())
+			position .emplace_front (0);
+
 		getTool () -> setField <X3D::MFFloat> ("inputPosition", position);
+		getTool () -> setField <X3D::MFColor> ("inputColor",    colorValue);
 	}
 	catch (const X3D::X3DError & error)
 	{

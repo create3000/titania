@@ -224,9 +224,10 @@ __LOG__ << undoStep -> getRedoFunctions () .size () << std::endl;
 
 		if (undoStep -> getRedoFunctions () .empty ())
 		{
-			undoStep .reset ();
+			if (undoStep == getUndoStep ())
+				removeUndoStep ();
 
-			removeUndoStep ();
+			undoStep .reset ();
 		}
 	}
 
@@ -241,8 +242,8 @@ __LOG__ << undoStep -> getRedoFunctions () .size () << std::endl;
 	
 	static constexpr int32_t NO_FIELD     = -2;
 	static constexpr int32_t INCONSISTENT = -1;
-	static constexpr int32_t FIELD_NULL   = 0;
-	static constexpr int32_t SAME_NODE    = 1;
+	static constexpr int32_t FIELD_NULL   =  0;
+	static constexpr int32_t SAME_NODE    =  1;
 
 
 private:
@@ -511,8 +512,7 @@ if (undoStep)
 	__LOG__ << undoStep -> getUndoFunctions () .size () << std::endl;
 else
 	__LOG__ << undoStep .get () << std::endl;
-
-
+	
 	const auto lastUndoStep = getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep)
@@ -521,7 +521,7 @@ else
 		{
 			if (fieldName == currentField)
 			{
-				endUndoGroup ("", undoStep);
+				endUndoGroup (undoGroup, undoStep);
 				return;
 			}
 		}
@@ -572,23 +572,25 @@ else
 			fields -> addUserDefinedField (X3D::initializeOnly, fieldName, new FieldType (std::move (value)));
 	}
 
+	std::string nodeTypeName = nodes .empty () ? "" : nodes [0] -> getTypeName ();
+
 	// Undo
 
 	if (undoGroup .empty ())
 	{
-		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), fieldName .c_str ()));
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field %s »%s«"), nodeTypeName .c_str (), fieldName .c_str ()));
 	}
 	else
 	{
 		if (not undoStep)
 		{
-			undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change »%s«"), undoGroup .c_str ()));
+			undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change %s »%s«"), nodeTypeName .c_str (), undoGroup .c_str ()));
 		}
 	}
 
-	undoStep -> addObjects (nodes);
-
 	// Undo field change
+
+	undoStep -> addObjects (nodes);
 
 	for (const auto & node : nodes)
 	{
@@ -598,7 +600,6 @@ else
 			
 			using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-			undoStep -> addObjects (node);
 			undoStep -> addUndoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
@@ -638,7 +639,6 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 			}
 			catch (const X3D::X3DError & error)
 			{
-__LOG__ << error .what () << std::endl;
 				changed = true;
 				break;
 			}
@@ -652,11 +652,7 @@ __LOG__ << changed << std::endl;
 	if (not changed)
 	{
 		if (redoGroup .empty ())
-		{
-			undoStep .reset ();
-	
-			removeUndoStep ();
-		}
+			endRedoGroup (redoGroup, undoStep);
 
 		return;
 	}
