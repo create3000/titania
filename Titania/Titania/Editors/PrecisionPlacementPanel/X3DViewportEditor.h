@@ -109,7 +109,10 @@ private:
 	X3D::UndoStepPtr                 undoStep;
 	bool                        changing;
 
-	X3DFieldAdjustment4 <X3D::MFFloat> clipBoundary;
+	X3DFieldAdjustment <X3D::MFFloat> clipBoundary0;
+	X3DFieldAdjustment <X3D::MFFloat> clipBoundary1;
+	X3DFieldAdjustment <X3D::MFFloat> clipBoundary2;
+	X3DFieldAdjustment <X3D::MFFloat> clipBoundary3;
 
 };
 

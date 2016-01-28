@@ -148,15 +148,17 @@
                         </child>
                         <child>
                           <object class="GtkGrid" id="grid1">
+                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="row_spacing">4</property>
                             <property name="column_spacing">16</property>
                             <child>
-                              <object class="GtkSpinButton" id="spinbutton1">
+                              <object class="GtkSpinButton" id="SkyAngleSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">Sky Angle</property>
                                 <property name="adjustment">SkyAngleAdjustment</property>
+                                <property name="climb_rate">0.01</property>
                                 <property name="digits">6</property>
                               </object>
                               <packing>
@@ -166,6 +168,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel" id="label6">
+                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Sky Angle:</property>
                                 <property name="xalign">0</property>
@@ -375,16 +378,18 @@
                         </child>
                         <child>
                           <object class="GtkGrid" id="grid2">
+                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="row_spacing">4</property>
                             <property name="column_spacing">16</property>
                             <child>
-                              <object class="GtkSpinButton" id="spinbutton2">
+                              <object class="GtkSpinButton" id="GroundAngleSpinButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="tooltip_text" translatable="yes">Sky Angle</property>
                                 <property name="text" translatable="yes">0,000000</property>
                                 <property name="adjustment">GroundAngleAdjustment</property>
+                                <property name="climb_rate">0.01</property>
                                 <property name="digits">6</property>
                               </object>
                               <packing>
@@ -394,6 +399,7 @@
                             </child>
                             <child>
                               <object class="GtkLabel" id="label9">
+                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Ground Angle:</property>
                                 <property name="xalign">0</property>

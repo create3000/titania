@@ -62,13 +62,10 @@ X3DViewportEditor::X3DViewportEditor () :
 	                           viewport (),
 	                           undoStep (),
 	                           changing (false),
-	                       clipBoundary (this,
-	                                     getViewportClipBoundaryLeftAdjustment (),
-	                                     getViewportClipBoundaryRightAdjustment (),
-	                                     getViewportClipBoundaryBottomAdjustment (),
-	                                     getViewportClipBoundaryTopAdjustment (),
-	                                     getViewportClipBoundaryBox (),
-	                                     "clipBoundary")
+	                      clipBoundary0 (this, getViewportClipBoundaryLeftAdjustment (),   getViewportClipBoundarySpinButton0 (), "clipBoundary"),
+	                      clipBoundary1 (this, getViewportClipBoundaryRightAdjustment (),  getViewportClipBoundarySpinButton1 (), "clipBoundary"),
+	                      clipBoundary2 (this, getViewportClipBoundaryBottomAdjustment (), getViewportClipBoundarySpinButton2 (), "clipBoundary"),
+	                      clipBoundary3 (this, getViewportClipBoundaryTopAdjustment (),    getViewportClipBoundarySpinButton3 (), "clipBoundary")
 {
 	addChildren (viewportBuffer);
 	viewportBuffer .addInterest (this, &X3DViewportEditor::set_node);
@@ -77,6 +74,11 @@ X3DViewportEditor::X3DViewportEditor () :
 	getViewportClipBoundaryRightAdjustment ()  -> set_step_increment (0.001);
 	getViewportClipBoundaryBottomAdjustment () -> set_step_increment (0.001);
 	getViewportClipBoundaryTopAdjustment ()    -> set_step_increment (0.001);
+
+	clipBoundary0 .setIndex (0);
+	clipBoundary1 .setIndex (1);
+	clipBoundary2 .setIndex (2);
+	clipBoundary3 .setIndex (3);
 }
 
 void
@@ -196,7 +198,10 @@ X3DViewportEditor::set_node ()
 		};
 	}
 
-	clipBoundary .setNodes (viewports);
+	clipBoundary0 .setNodes (viewports);
+	clipBoundary1 .setNodes (viewports);
+	clipBoundary2 .setNodes (viewports);
+	clipBoundary3 .setNodes (viewports);
 }
 
 void

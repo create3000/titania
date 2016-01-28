@@ -548,7 +548,7 @@
                                 <property name="spacing">2</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton12">
+                                  <object class="GtkSpinButton" id="GridDimensionSpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
@@ -565,7 +565,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton10">
+                                  <object class="GtkSpinButton" id="GridDimensionSpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
@@ -582,7 +582,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton11">
+                                  <object class="GtkSpinButton" id="GridDimensionSpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
@@ -625,7 +625,7 @@
                                 <property name="spacing">2</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton3">
+                                  <object class="GtkSpinButton" id="GridMajorLineEverySpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
@@ -643,7 +643,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton5">
+                                  <object class="GtkSpinButton" id="GridMajorLineEverySpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
@@ -661,7 +661,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton6">
+                                  <object class="GtkSpinButton" id="GridMajorLineEverySpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
@@ -906,7 +906,7 @@
                                 <property name="spacing">2</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton26">
+                                  <object class="GtkSpinButton" id="GridMajorLineOffsetSpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
@@ -924,7 +924,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton27">
+                                  <object class="GtkSpinButton" id="GridMajorLineOffsetSpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
@@ -942,7 +942,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton28">
+                                  <object class="GtkSpinButton" id="GridMajorLineOffsetSpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
@@ -1405,7 +1405,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="spacing">2</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton13">
+                                  <object class="GtkSpinButton" id="AngleDimensionSpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Rings</property>
@@ -1423,7 +1423,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton14">
+                                  <object class="GtkSpinButton" id="AngleDimensionSpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Sectors</property>
@@ -1441,7 +1441,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton25">
+                                  <object class="GtkSpinButton" id="AngleDimensionSpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Height</property>
@@ -1484,7 +1484,7 @@
                                 <property name="spacing">2</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton19">
+                                  <object class="GtkSpinButton" id="AngleMajorLineEverySpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Rings</property>
@@ -1502,7 +1502,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton23">
+                                  <object class="GtkSpinButton" id="AngleMajorLineEverySpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Radiuses</property>
@@ -1520,7 +1520,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton29">
+                                  <object class="GtkSpinButton" id="AngleMajorLineEverySpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Height</property>
@@ -1765,7 +1765,7 @@
                                 <property name="spacing">2</property>
                                 <property name="homogeneous">True</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton16">
+                                  <object class="GtkSpinButton" id="AngleMajorLineOffsetSpinButton0">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Rings</property>
@@ -1783,7 +1783,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton24">
+                                  <object class="GtkSpinButton" id="AngleMajorLineOffsetSpinButton1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Radiuses</property>
@@ -1801,7 +1801,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkSpinButton" id="spinbutton30">
+                                  <object class="GtkSpinButton" id="AngleMajorLineOffsetSpinButton2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Height</property>

@@ -114,10 +114,10 @@ noexcept (true)
 
 using AttributeType = uint64_t;
 
-constexpr AttributeType NONE         = 0;
-constexpr AttributeType WRITABLE     = 1L << 32;
-constexpr AttributeType ENUMERABLE   = 1L << 33;
-constexpr AttributeType CONFIGURABLE = 1L << 34;
+constexpr AttributeType NONE         = 0UL;
+constexpr AttributeType WRITABLE     = 1UL << 32;
+constexpr AttributeType ENUMERABLE   = 1UL << 33;
+constexpr AttributeType CONFIGURABLE = 1UL << 34;
 constexpr AttributeType PROPERTY     = 0xffffffff;
 constexpr AttributeType DEFAULT      = WRITABLE | CONFIGURABLE | ENUMERABLE;
 

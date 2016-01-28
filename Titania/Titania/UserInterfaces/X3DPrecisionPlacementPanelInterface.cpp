@@ -152,8 +152,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayoutSizeBox", m_LayoutSizeBox);
 	m_builder -> get_widget ("LayoutSizeXSpinButton", m_LayoutSizeXSpinButton);
 	m_builder -> get_widget ("LayoutSizeYSpinButton", m_LayoutSizeYSpinButton);
-	m_builder -> get_widget ("LayoutUniformSizeButton", m_LayoutUniformSizeButton);
-	m_builder -> get_widget ("LayoutUniformSizeImage", m_LayoutUniformSizeImage);
 	m_builder -> get_widget ("LayoutAlignXComboBoxText", m_LayoutAlignXComboBoxText);
 	m_builder -> get_widget ("LayoutAlignYComboBoxText", m_LayoutAlignYComboBoxText);
 	m_builder -> get_widget ("LayoutOffsetUnitsXComboBoxText", m_LayoutOffsetUnitsXComboBoxText);
@@ -167,6 +165,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
 	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
 	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
+	m_builder -> get_widget ("ViewportClipBoundarySpinButton3", m_ViewportClipBoundarySpinButton3);
+	m_builder -> get_widget ("ViewportClipBoundarySpinButton0", m_ViewportClipBoundarySpinButton0);
+	m_builder -> get_widget ("ViewportClipBoundarySpinButton1", m_ViewportClipBoundarySpinButton1);
+	m_builder -> get_widget ("ViewportClipBoundarySpinButton2", m_ViewportClipBoundarySpinButton2);
 	m_builder -> get_widget ("GeoTransformExpander", m_GeoTransformExpander);
 	m_builder -> get_widget ("GeoTransformBox", m_GeoTransformBox);
 	m_builder -> get_widget ("GeoTransformTranslationBox", m_GeoTransformTranslationBox);
@@ -227,11 +229,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
 	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
-
-	// Connect object Gtk::ToggleButton with id 'LayoutUniformSizeButton'.
-	m_LayoutUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_uniform_size_clicked));
-
-	// Connect object Gtk::CheckButton with id 'ViewportCheckButton'.
 	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.

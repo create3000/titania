@@ -109,6 +109,78 @@ public:
 	getTransparencyAdjustment () const
 	{ return m_TransparencyAdjustment; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getFrontURLCellRendererText () const
+	{ return m_FrontURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getFrontURLChooserColumn () const
+	{ return m_FrontURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getFrontURLCellrendererPixbuf () const
+	{ return m_FrontURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getBackURLCellRendererText () const
+	{ return m_BackURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getBackURLChooserColumn () const
+	{ return m_BackURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getBackURLCellrendererPixbuf () const
+	{ return m_BackURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getLeftURLCellRendererText () const
+	{ return m_LeftURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getLeftURLChooserColumn () const
+	{ return m_LeftURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getLeftURLCellrendererPixbuf () const
+	{ return m_LeftURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getRightURLCellRendererText () const
+	{ return m_RightURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getRightURLChooserColumn () const
+	{ return m_RightURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getRightURLCellrendererPixbuf () const
+	{ return m_RightURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getTopURLCellRendererText () const
+	{ return m_TopURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTopURLChooserColumn () const
+	{ return m_TopURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getTopURLCellrendererPixbuf () const
+	{ return m_TopURLCellrendererPixbuf; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getBottomURLCellRendererText () const
+	{ return m_BottomURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getBottomURLChooserColumn () const
+	{ return m_BottomURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getBottomURLCellrendererPixbuf () const
+	{ return m_BottomURLCellrendererPixbuf; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -128,6 +200,10 @@ public:
 	Gtk::Box &
 	getSkyGradientBox () const
 	{ return *m_SkyGradientBox; }
+
+	Gtk::SpinButton &
+	getSkyAngleSpinButton () const
+	{ return *m_SkyAngleSpinButton; }
 
 	Gtk::Grid &
 	getSkyColorGrid () const
@@ -157,6 +233,10 @@ public:
 	getGroundGradientBox () const
 	{ return *m_GroundGradientBox; }
 
+	Gtk::SpinButton &
+	getGroundAngleSpinButton () const
+	{ return *m_GroundAngleSpinButton; }
+
 	Gtk::Grid &
 	getGroundColorGrid () const
 	{ return *m_GroundColorGrid; }
@@ -185,6 +265,138 @@ public:
 	getTransparencyScale () const
 	{ return *m_TransparencyScale; }
 
+	Gtk::Expander &
+	getTextureExpander () const
+	{ return *m_TextureExpander; }
+
+	Gtk::Label &
+	getTextureFormatLabel () const
+	{ return *m_TextureFormatLabel; }
+
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
+
+	Gtk::Box &
+	getFrontURLBox () const
+	{ return *m_FrontURLBox; }
+
+	Gtk::TreeView &
+	getFrontURLTreeView () const
+	{ return *m_FrontURLTreeView; }
+
+	Gtk::Button &
+	getFrontURLAddButton () const
+	{ return *m_FrontURLAddButton; }
+
+	Gtk::Button &
+	getFrontURLRemoveButton () const
+	{ return *m_FrontURLRemoveButton; }
+
+	Gtk::Button &
+	getFrontURLReloadButton () const
+	{ return *m_FrontURLReloadButton; }
+
+	Gtk::Box &
+	getBackURLBox () const
+	{ return *m_BackURLBox; }
+
+	Gtk::TreeView &
+	getBackURLTreeView () const
+	{ return *m_BackURLTreeView; }
+
+	Gtk::Button &
+	getBackURLAddButton () const
+	{ return *m_BackURLAddButton; }
+
+	Gtk::Button &
+	getBackURLRemoveButton () const
+	{ return *m_BackURLRemoveButton; }
+
+	Gtk::Button &
+	getBackURLReloadButton () const
+	{ return *m_BackURLReloadButton; }
+
+	Gtk::Box &
+	getLeftURLBox () const
+	{ return *m_LeftURLBox; }
+
+	Gtk::TreeView &
+	getLeftURLTreeView () const
+	{ return *m_LeftURLTreeView; }
+
+	Gtk::Button &
+	getLeftURLAddButton () const
+	{ return *m_LeftURLAddButton; }
+
+	Gtk::Button &
+	getLeftURLRemoveButton () const
+	{ return *m_LeftURLRemoveButton; }
+
+	Gtk::Button &
+	getLeftURLReloadButton () const
+	{ return *m_LeftURLReloadButton; }
+
+	Gtk::Box &
+	getRightURLBox () const
+	{ return *m_RightURLBox; }
+
+	Gtk::TreeView &
+	getRightURLTreeView () const
+	{ return *m_RightURLTreeView; }
+
+	Gtk::Button &
+	getRightURLAddButton () const
+	{ return *m_RightURLAddButton; }
+
+	Gtk::Button &
+	getRightURLRemoveButton () const
+	{ return *m_RightURLRemoveButton; }
+
+	Gtk::Button &
+	getRightURLReloadButton () const
+	{ return *m_RightURLReloadButton; }
+
+	Gtk::Box &
+	getTopURLBox () const
+	{ return *m_TopURLBox; }
+
+	Gtk::TreeView &
+	getTopURLTreeView () const
+	{ return *m_TopURLTreeView; }
+
+	Gtk::Button &
+	getTopURLAddButton () const
+	{ return *m_TopURLAddButton; }
+
+	Gtk::Button &
+	getTopURLRemoveButton () const
+	{ return *m_TopURLRemoveButton; }
+
+	Gtk::Button &
+	getTopURLReloadButton () const
+	{ return *m_TopURLReloadButton; }
+
+	Gtk::Box &
+	getBottomURLBox () const
+	{ return *m_BottomURLBox; }
+
+	Gtk::TreeView &
+	getBottomURLTreeView () const
+	{ return *m_BottomURLTreeView; }
+
+	Gtk::Button &
+	getBottomURLAddButton () const
+	{ return *m_BottomURLAddButton; }
+
+	Gtk::Button &
+	getBottomURLRemoveButton () const
+	{ return *m_BottomURLRemoveButton; }
+
+	Gtk::Button &
+	getBottomURLReloadButton () const
+	{ return *m_BottomURLReloadButton; }
+
 	virtual
 	~X3DBackgroundEditorInterface ();
 
@@ -196,32 +408,85 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_GroundAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GroundColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SkyAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SkyColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_TransparencyAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_ColorBox;
-	Gtk::Expander*                 m_ColorsExpander;
-	Gtk::Box*                      m_SkyGradientBox;
-	Gtk::Grid*                     m_SkyColorGrid;
-	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
-	Gtk::Button*                   m_AddSkyColorButton;
-	Gtk::Button*                   m_RemoveSkyColorButton;
-	Gtk::Box*                      m_SkyColorBox;
-	Gtk::Button*                   m_SkyColorButton;
-	Gtk::Box*                      m_GroundGradientBox;
-	Gtk::Grid*                     m_GroundColorGrid;
-	Gtk::ScrolledWindow*           m_GroundColorsScrolledWindow;
-	Gtk::Button*                   m_AddGroundColorButton;
-	Gtk::Button*                   m_RemoveGroundColorButton;
-	Gtk::Box*                      m_GroundColorBox;
-	Gtk::Button*                   m_GroundColorButton;
-	Gtk::Scale*                    m_TransparencyScale;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_GroundAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_GroundColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SkyAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SkyColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TransparencyAdjustment;
+	Glib::RefPtr <Gtk::CellRendererText>   m_FrontURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_FrontURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_FrontURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_BackURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_BackURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BackURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_LeftURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_LeftURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_LeftURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_RightURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_RightURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_RightURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_TopURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_TopURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TopURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_BottomURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_BottomURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BottomURLCellrendererPixbuf;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::Box*                              m_ColorBox;
+	Gtk::Expander*                         m_ColorsExpander;
+	Gtk::Box*                              m_SkyGradientBox;
+	Gtk::SpinButton*                       m_SkyAngleSpinButton;
+	Gtk::Grid*                             m_SkyColorGrid;
+	Gtk::ScrolledWindow*                   m_SkyColorsScrolledWindow;
+	Gtk::Button*                           m_AddSkyColorButton;
+	Gtk::Button*                           m_RemoveSkyColorButton;
+	Gtk::Box*                              m_SkyColorBox;
+	Gtk::Button*                           m_SkyColorButton;
+	Gtk::Box*                              m_GroundGradientBox;
+	Gtk::SpinButton*                       m_GroundAngleSpinButton;
+	Gtk::Grid*                             m_GroundColorGrid;
+	Gtk::ScrolledWindow*                   m_GroundColorsScrolledWindow;
+	Gtk::Button*                           m_AddGroundColorButton;
+	Gtk::Button*                           m_RemoveGroundColorButton;
+	Gtk::Box*                              m_GroundColorBox;
+	Gtk::Button*                           m_GroundColorButton;
+	Gtk::Scale*                            m_TransparencyScale;
+	Gtk::Expander*                         m_TextureExpander;
+	Gtk::Label*                            m_TextureFormatLabel;
+	Gtk::Box*                              m_PreviewBox;
+	Gtk::Box*                              m_FrontURLBox;
+	Gtk::TreeView*                         m_FrontURLTreeView;
+	Gtk::Button*                           m_FrontURLAddButton;
+	Gtk::Button*                           m_FrontURLRemoveButton;
+	Gtk::Button*                           m_FrontURLReloadButton;
+	Gtk::Box*                              m_BackURLBox;
+	Gtk::TreeView*                         m_BackURLTreeView;
+	Gtk::Button*                           m_BackURLAddButton;
+	Gtk::Button*                           m_BackURLRemoveButton;
+	Gtk::Button*                           m_BackURLReloadButton;
+	Gtk::Box*                              m_LeftURLBox;
+	Gtk::TreeView*                         m_LeftURLTreeView;
+	Gtk::Button*                           m_LeftURLAddButton;
+	Gtk::Button*                           m_LeftURLRemoveButton;
+	Gtk::Button*                           m_LeftURLReloadButton;
+	Gtk::Box*                              m_RightURLBox;
+	Gtk::TreeView*                         m_RightURLTreeView;
+	Gtk::Button*                           m_RightURLAddButton;
+	Gtk::Button*                           m_RightURLRemoveButton;
+	Gtk::Button*                           m_RightURLReloadButton;
+	Gtk::Box*                              m_TopURLBox;
+	Gtk::TreeView*                         m_TopURLTreeView;
+	Gtk::Button*                           m_TopURLAddButton;
+	Gtk::Button*                           m_TopURLRemoveButton;
+	Gtk::Button*                           m_TopURLReloadButton;
+	Gtk::Box*                              m_BottomURLBox;
+	Gtk::TreeView*                         m_BottomURLTreeView;
+	Gtk::Button*                           m_BottomURLAddButton;
+	Gtk::Button*                           m_BottomURLRemoveButton;
+	Gtk::Button*                           m_BottomURLReloadButton;
 
 };
 

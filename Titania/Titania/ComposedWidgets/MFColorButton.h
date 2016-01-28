@@ -271,6 +271,7 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 	// Dialog
 
 	dialog .set_title (refineName (name));
+	dialog .set_transient_for (editor -> getBrowserWindow () -> getWindow ());
 	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &MFColorButton::on_color_changed));
 	dialog .get_color_selection () -> set_has_opacity_control (false);
 	dialog .get_color_selection () -> set_has_palette (true);

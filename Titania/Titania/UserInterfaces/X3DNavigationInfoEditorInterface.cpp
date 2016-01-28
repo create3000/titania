@@ -81,6 +81,9 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("NavigationInfoExpander", m_NavigationInfoExpander);
 	m_builder -> get_widget ("AvatarSizeBox", m_AvatarSizeBox);
+	m_builder -> get_widget ("AvatarSizeSpinButton0", m_AvatarSizeSpinButton0);
+	m_builder -> get_widget ("AvatarSizeSpinButton1", m_AvatarSizeSpinButton1);
+	m_builder -> get_widget ("AvatarSizeSpinButton2", m_AvatarSizeSpinButton2);
 	m_builder -> get_widget ("SpeedSpinButton", m_SpeedSpinButton);
 	m_builder -> get_widget ("HeadlightCheckButton", m_HeadlightCheckButton);
 	m_builder -> get_widget ("TransitionTimeSpinButton", m_TransitionTimeSpinButton);

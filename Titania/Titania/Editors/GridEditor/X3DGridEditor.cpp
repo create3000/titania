@@ -79,24 +79,15 @@ X3DGridEditor::X3DGridEditor () :
 	                        getGridScaleZAdjustment (),
 	                        getGridScaleBox (),
 	                        "scale"),
-	             dimension (this,
-	                        getGridXDimensionAdjustment (),
-	                        getGridYDimensionAdjustment (),
-	                        getGridZDimensionAdjustment (),
-	                        getGridDimensionBox (),
-	                        "dimension"),
-	       majorLineEvery (this,
-	                        getGridMajorLineEveryXAdjustment (),
-	                        getGridMajorLineEveryYAdjustment (),
-	                        getGridMajorLineEveryZAdjustment (),
-	                        getGridMajorLineEveryBox (),
-	                        "majorLineEvery"),
-	       majorLineOffset (this,
-	                        getGridMajorLineOffsetXAdjustment (),
-	                        getGridMajorLineOffsetYAdjustment (),
-	                        getGridMajorLineOffsetZAdjustment (),
-	                        getGridMajorLineOffsetBox (),
-	                        "majorLineOffset"),
+	            dimension0 (this, getGridXDimensionAdjustment (), getGridDimensionSpinButton0 (), "dimension"),
+	            dimension1 (this, getGridYDimensionAdjustment (), getGridDimensionSpinButton1 (), "dimension"),
+	            dimension2 (this, getGridZDimensionAdjustment (), getGridDimensionSpinButton2 (), "dimension"),
+	       majorLineEvery0 (this, getGridMajorLineEveryXAdjustment (), getGridMajorLineEverySpinButton0 (), "majorLineEvery"),
+	       majorLineEvery1 (this, getGridMajorLineEveryYAdjustment (), getGridMajorLineEverySpinButton1 (), "majorLineEvery"),
+	       majorLineEvery2 (this, getGridMajorLineEveryZAdjustment (), getGridMajorLineEverySpinButton2 (), "majorLineEvery"),
+	      majorLineOffset0 (this, getGridMajorLineOffsetXAdjustment (), getGridMajorLineOffsetSpinButton0 (), "majorLineOffset"),
+	      majorLineOffset1 (this, getGridMajorLineOffsetYAdjustment (), getGridMajorLineOffsetSpinButton1 (), "majorLineOffset"),
+	      majorLineOffset2 (this, getGridMajorLineOffsetZAdjustment (), getGridMajorLineOffsetSpinButton2 (), "majorLineOffset"),
 	                 color (this,
 	                        getGridColorButton (),
 	                        getGridColorAdjustment (),
@@ -126,6 +117,16 @@ X3DGridEditor::X3DGridEditor () :
 	//color           .setUndo (false);
 	//lineColor       .setUndo (false);
 	//majorLineColor  .setUndo (false);
+
+	dimension0       .setIndex (0);
+	dimension1       .setIndex (1);
+	dimension2       .setIndex (2);
+	majorLineEvery0  .setIndex (0);
+	majorLineEvery1  .setIndex (1);
+	majorLineEvery2  .setIndex (2);
+	majorLineOffset0 .setIndex (0);
+	majorLineOffset1 .setIndex (1);
+	majorLineOffset2 .setIndex (2);
 }
 
 void
@@ -136,17 +137,23 @@ X3DGridEditor::initialize ()
 	const auto & gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
 	X3D::MFNode  gridTools = { gridTool };
 
-	enabled         .setNodes (gridTools);
-	translation     .setNodes (gridTools);
-	scale           .setNodes (gridTools);
-	dimension       .setNodes (gridTools);
-	majorLineEvery  .setNodes (gridTools);
-	majorLineOffset .setNodes (gridTools);
-	color           .setNodes (gridTools);
-	lineColor       .setNodes (gridTools);
-	majorLineColor  .setNodes (gridTools);
-	snapDistance    .setNodes (gridTools);
-	snapToCenter    .setNodes (gridTools);
+	enabled          .setNodes (gridTools);
+	translation      .setNodes (gridTools);
+	scale            .setNodes (gridTools);
+	dimension0       .setNodes (gridTools);
+	dimension1       .setNodes (gridTools);
+	dimension2       .setNodes (gridTools);
+	majorLineEvery0  .setNodes (gridTools);
+	majorLineEvery1  .setNodes (gridTools);
+	majorLineEvery2  .setNodes (gridTools);
+	majorLineOffset0 .setNodes (gridTools);
+	majorLineOffset1 .setNodes (gridTools);
+	majorLineOffset2 .setNodes (gridTools);
+	color            .setNodes (gridTools);
+	lineColor        .setNodes (gridTools);
+	majorLineColor   .setNodes (gridTools);
+	snapDistance     .setNodes (gridTools);
+	snapToCenter     .setNodes (gridTools);
 
 	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
 	getCurrentScene ()      .addInterest (this, &X3DGridEditor::set_majorLineEvery);
@@ -240,8 +247,12 @@ X3DGridEditor::on_major_line_grid_value_changed ()
 {
 	const int index = getGridMajorGridAdjustment () -> get_value () - 1;
 
-	majorLineEvery  .setIndex (INDICES * index);
-	majorLineOffset .setIndex (INDICES * index);
+	majorLineEvery0  .setIndex (INDICES * index + 0);
+	majorLineEvery1  .setIndex (INDICES * index + 1);
+	majorLineEvery2  .setIndex (INDICES * index + 2);
+	majorLineOffset0 .setIndex (INDICES * index + 0);
+	majorLineOffset1 .setIndex (INDICES * index + 1);
+	majorLineOffset2 .setIndex (INDICES * index + 2);
 }
 
 void

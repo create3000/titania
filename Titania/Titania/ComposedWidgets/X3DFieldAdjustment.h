@@ -72,6 +72,19 @@ public:
 	///  @name Member access
 
 	void
+	setIndex (const int value)
+	{
+		index = value;
+		
+		if (not nodes .empty ())
+			set_field ();
+	}
+
+	int
+	getIndex () const
+	{ return index; }
+
+	void
 	setNodes (const X3D::MFNode &);
 
 	const X3D::MFNode &
@@ -92,11 +105,27 @@ private:
 	void
 	on_value_changed ();
 
+	template <class ValueType, class Value>
+	void
+	set_value (X3D::X3DField <ValueType> &, const Value &) const;
+	
+	template <class ValueType, class Value>
+	void
+	set_value (X3D::X3DArrayField <ValueType> &, const Value &) const;
+
 	void
 	set_field ();
 
 	void
 	set_buffer ();
+
+	template <class ValueType>
+	double
+	get_value (const X3D::X3DField <ValueType> &) const;
+	
+	template <class ValueType>
+	double
+	get_value (X3D::X3DArrayField <ValueType> &);
 
 	void
 	set_bounds ();
@@ -116,6 +145,7 @@ private:
 	X3D::UnitCategory                    unit;
 	double                               lower;
 	double                               upper;
+	int32_t                              index;
 
 };
 
@@ -135,7 +165,8 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	           buffer (),
 	             unit (X3D::UnitCategory::NONE),
 	            lower (0),
-	            upper (0)
+	            upper (0),
+               index (0)
 {
 	addChildren (buffer);
 
@@ -202,13 +233,29 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment::set_field);
 			field .addInterest (this, &X3DFieldAdjustment::connect);
 
-			field = getCurrentScene () -> toBaseUnit (unit, adjustment -> get_value ());
+			set_value (field, getCurrentScene () -> toBaseUnit (unit, adjustment -> get_value ()));
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
 	addRedoFunction <Type> (nodes, name, undoStep);
+}
+
+template <class Type>
+template <class ValueType, class Value>
+void
+X3DFieldAdjustment <Type>::set_value (X3D::X3DField <ValueType> & field, const Value & value) const
+{
+	field = value;
+}
+
+template <class Type>
+template <class ValueType, class Value>
+void
+X3DFieldAdjustment <Type>::set_value (X3D::X3DArrayField <ValueType> & field, const Value & value) const
+{
+	field .set1Value (index, value);
 }
 
 template <class Type>
@@ -230,23 +277,26 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 	bool hasField = false;
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	if (index >= 0)
 	{
-		try
+		for (const auto & node : basic::make_reverse_range (nodes))
 		{
-		   const auto & field = node -> getField <Type> (name);
+			try
+			{
+			   auto & field = node -> getField <Type> (name);
+	
+				unit = field .getUnit ();
+	
+				set_bounds ();
+	
+				adjustment -> set_value (getCurrentScene () -> fromBaseUnit (unit, get_value (field)));
 
-			unit = field .getUnit ();
-
-			set_bounds ();
-
-			adjustment -> set_value (getCurrentScene () -> fromBaseUnit (unit, field));
-
-			hasField = true;
-			break;
+				hasField = true;
+				break;
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
 	}
 
 	if (not hasField)
@@ -255,12 +305,31 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustment -> set_value (adjustment -> get_lower () / 2 + adjustment -> get_upper () / 2);
+		adjustment -> set_value (adjustment -> get_lower ());
 	}
 
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+template <class ValueType>
+double
+X3DFieldAdjustment <Type>::get_value (const X3D::X3DField <ValueType> & field) const
+{
+	return field;
+}
+
+template <class Type>
+template <class ValueType>
+double
+X3DFieldAdjustment <Type>::get_value (X3D::X3DArrayField <ValueType> & field)
+{
+	if (index >= (int32_t) field .size ())
+		index = field .size () - 1;
+
+	return field .get1Value (index);
 }
 
 template <class Type>

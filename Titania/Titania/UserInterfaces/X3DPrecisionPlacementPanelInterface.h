@@ -445,14 +445,6 @@ public:
 	getLayoutSizeYSpinButton () const
 	{ return *m_LayoutSizeYSpinButton; }
 
-	Gtk::ToggleButton &
-	getLayoutUniformSizeButton () const
-	{ return *m_LayoutUniformSizeButton; }
-
-	Gtk::Image &
-	getLayoutUniformSizeImage () const
-	{ return *m_LayoutUniformSizeImage; }
-
 	Gtk::ComboBoxText &
 	getLayoutAlignXComboBoxText () const
 	{ return *m_LayoutAlignXComboBoxText; }
@@ -504,6 +496,22 @@ public:
 	Gtk::Grid &
 	getViewportClipBoundaryBox () const
 	{ return *m_ViewportClipBoundaryBox; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundarySpinButton3 () const
+	{ return *m_ViewportClipBoundarySpinButton3; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundarySpinButton0 () const
+	{ return *m_ViewportClipBoundarySpinButton0; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundarySpinButton1 () const
+	{ return *m_ViewportClipBoundarySpinButton1; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundarySpinButton2 () const
+	{ return *m_ViewportClipBoundarySpinButton2; }
 
 	Gtk::Expander &
 	getGeoTransformExpander () const
@@ -715,10 +723,6 @@ public:
 
 	virtual
 	void
-	on_layout_uniform_size_clicked () = 0;
-
-	virtual
-	void
 	on_viewport_toggled () = 0;
 
 	virtual
@@ -835,8 +839,6 @@ private:
 	Gtk::Box*                      m_LayoutSizeBox;
 	Gtk::SpinButton*               m_LayoutSizeXSpinButton;
 	Gtk::SpinButton*               m_LayoutSizeYSpinButton;
-	Gtk::ToggleButton*             m_LayoutUniformSizeButton;
-	Gtk::Image*                    m_LayoutUniformSizeImage;
 	Gtk::ComboBoxText*             m_LayoutAlignXComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutAlignYComboBoxText;
 	Gtk::ComboBoxText*             m_LayoutOffsetUnitsXComboBoxText;
@@ -850,6 +852,10 @@ private:
 	Gtk::CheckButton*              m_ViewportCheckButton;
 	Gtk::Grid*                     m_ViewportBox;
 	Gtk::Grid*                     m_ViewportClipBoundaryBox;
+	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton3;
+	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton0;
+	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton1;
+	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton2;
 	Gtk::Expander*                 m_GeoTransformExpander;
 	Gtk::Grid*                     m_GeoTransformBox;
 	Gtk::Box*                      m_GeoTransformTranslationBox;

@@ -118,7 +118,13 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridColorButton", m_GridColorButton);
 	m_builder -> get_widget ("GridTranslationBox", m_GridTranslationBox);
 	m_builder -> get_widget ("GridDimensionBox", m_GridDimensionBox);
+	m_builder -> get_widget ("GridDimensionSpinButton0", m_GridDimensionSpinButton0);
+	m_builder -> get_widget ("GridDimensionSpinButton1", m_GridDimensionSpinButton1);
+	m_builder -> get_widget ("GridDimensionSpinButton2", m_GridDimensionSpinButton2);
 	m_builder -> get_widget ("GridMajorLineEveryBox", m_GridMajorLineEveryBox);
+	m_builder -> get_widget ("GridMajorLineEverySpinButton0", m_GridMajorLineEverySpinButton0);
+	m_builder -> get_widget ("GridMajorLineEverySpinButton1", m_GridMajorLineEverySpinButton1);
+	m_builder -> get_widget ("GridMajorLineEverySpinButton2", m_GridMajorLineEverySpinButton2);
 	m_builder -> get_widget ("GridLineColorBox", m_GridLineColorBox);
 	m_builder -> get_widget ("GridLineColorButton", m_GridLineColorButton);
 	m_builder -> get_widget ("GridMajorLineColorBox", m_GridMajorLineColorBox);
@@ -127,6 +133,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GridUniformScaleButton", m_GridUniformScaleButton);
 	m_builder -> get_widget ("GridUniformScaleImage", m_GridUniformScaleImage);
 	m_builder -> get_widget ("GridMajorLineOffsetBox", m_GridMajorLineOffsetBox);
+	m_builder -> get_widget ("GridMajorLineOffsetSpinButton0", m_GridMajorLineOffsetSpinButton0);
+	m_builder -> get_widget ("GridMajorLineOffsetSpinButton1", m_GridMajorLineOffsetSpinButton1);
+	m_builder -> get_widget ("GridMajorLineOffsetSpinButton2", m_GridMajorLineOffsetSpinButton2);
 	m_builder -> get_widget ("GridMajorGridSpinButton", m_GridMajorGridSpinButton);
 	m_builder -> get_widget ("GridAddMajorGridButton", m_GridAddMajorGridButton);
 	m_builder -> get_widget ("GridRemoveMajorGridButton", m_GridRemoveMajorGridButton);
@@ -138,7 +147,13 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleColorButton", m_AngleColorButton);
 	m_builder -> get_widget ("AngleTranslationBox", m_AngleTranslationBox);
 	m_builder -> get_widget ("AngleDimensionBox", m_AngleDimensionBox);
+	m_builder -> get_widget ("AngleDimensionSpinButton0", m_AngleDimensionSpinButton0);
+	m_builder -> get_widget ("AngleDimensionSpinButton1", m_AngleDimensionSpinButton1);
+	m_builder -> get_widget ("AngleDimensionSpinButton2", m_AngleDimensionSpinButton2);
 	m_builder -> get_widget ("AngleMajorLineEveryBox", m_AngleMajorLineEveryBox);
+	m_builder -> get_widget ("AngleMajorLineEverySpinButton0", m_AngleMajorLineEverySpinButton0);
+	m_builder -> get_widget ("AngleMajorLineEverySpinButton1", m_AngleMajorLineEverySpinButton1);
+	m_builder -> get_widget ("AngleMajorLineEverySpinButton2", m_AngleMajorLineEverySpinButton2);
 	m_builder -> get_widget ("AngleLineColorBox", m_AngleLineColorBox);
 	m_builder -> get_widget ("AngleLineColorButton", m_AngleLineColorButton);
 	m_builder -> get_widget ("AngleMajorLineColorBox", m_AngleMajorLineColorBox);
@@ -147,6 +162,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleUniformScaleButton", m_AngleUniformScaleButton);
 	m_builder -> get_widget ("AngleUniformScaleImage", m_AngleUniformScaleImage);
 	m_builder -> get_widget ("AngleMajorLineOffsetBox", m_AngleMajorLineOffsetBox);
+	m_builder -> get_widget ("AngleMajorLineOffsetSpinButton0", m_AngleMajorLineOffsetSpinButton0);
+	m_builder -> get_widget ("AngleMajorLineOffsetSpinButton1", m_AngleMajorLineOffsetSpinButton1);
+	m_builder -> get_widget ("AngleMajorLineOffsetSpinButton2", m_AngleMajorLineOffsetSpinButton2);
 	m_builder -> get_widget ("AngleMajorGridSpinButton", m_AngleMajorGridSpinButton);
 	m_builder -> get_widget ("AngleAddMajorGridButton", m_AngleAddMajorGridButton);
 	m_builder -> get_widget ("AngleRemoveMajorGridButton", m_AngleRemoveMajorGridButton);

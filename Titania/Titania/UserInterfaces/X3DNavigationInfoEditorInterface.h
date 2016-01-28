@@ -162,6 +162,18 @@ public:
 	{ return *m_AvatarSizeBox; }
 
 	Gtk::SpinButton &
+	getAvatarSizeSpinButton0 () const
+	{ return *m_AvatarSizeSpinButton0; }
+
+	Gtk::SpinButton &
+	getAvatarSizeSpinButton1 () const
+	{ return *m_AvatarSizeSpinButton1; }
+
+	Gtk::SpinButton &
+	getAvatarSizeSpinButton2 () const
+	{ return *m_AvatarSizeSpinButton2; }
+
+	Gtk::SpinButton &
 	getSpeedSpinButton () const
 	{ return *m_SpeedSpinButton; }
 
@@ -264,6 +276,9 @@ private:
 	Gtk::Button*                          m_IndexButton;
 	Gtk::Expander*                        m_NavigationInfoExpander;
 	Gtk::Box*                             m_AvatarSizeBox;
+	Gtk::SpinButton*                      m_AvatarSizeSpinButton0;
+	Gtk::SpinButton*                      m_AvatarSizeSpinButton1;
+	Gtk::SpinButton*                      m_AvatarSizeSpinButton2;
 	Gtk::SpinButton*                      m_SpeedSpinButton;
 	Gtk::CheckButton*                     m_HeadlightCheckButton;
 	Gtk::SpinButton*                      m_TransitionTimeSpinButton;

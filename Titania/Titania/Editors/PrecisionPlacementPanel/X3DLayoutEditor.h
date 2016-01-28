@@ -101,26 +101,24 @@ private:
 	void
 	connectLayout (const X3D::SFNode &);
 
-	virtual
-	void
-	on_layout_uniform_size_clicked () final override;
-
 	///  @name Members
 
 	X3D::MFNode               nodes;
 	X3D::SFTime               layoutBuffer;
 	X3D::X3DPtr <X3D::Layout> layout;
-	X3D::UndoStepPtr               undoStep;
+	X3D::UndoStepPtr          undoStep;
 	bool                      changing;
 
 	MFStringComboBoxText               alignX;          
 	MFStringComboBoxText               alignY;          
 	MFStringComboBoxText               offsetUnitsX;          
 	MFStringComboBoxText               offsetUnitsY;          
-	X3DFieldAdjustment2 <X3D::MFFloat> offset;
+	X3DFieldAdjustment <X3D::MFFloat>  offsetX;
+	X3DFieldAdjustment <X3D::MFFloat>  offsetY;
 	MFStringComboBoxText               sizeUnitsX;          
 	MFStringComboBoxText               sizeUnitsY;          
-	X3DFieldAdjustment2 <X3D::MFFloat> size;
+	X3DFieldAdjustment <X3D::MFFloat>  sizeX;
+	X3DFieldAdjustment <X3D::MFFloat>  sizeY;
 	MFStringComboBoxText               scaleModeX;          
 	MFStringComboBoxText               scaleModeY;          
 };

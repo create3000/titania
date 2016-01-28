@@ -385,6 +385,22 @@ public:
 	getOrthoViewpointFieldOfViewBox () const
 	{ return *m_OrthoViewpointFieldOfViewBox; }
 
+	Gtk::SpinButton &
+	getOrthoViewpointFieldOfViewSpinButton3 () const
+	{ return *m_OrthoViewpointFieldOfViewSpinButton3; }
+
+	Gtk::SpinButton &
+	getOrthoViewpointFieldOfViewSpinButton0 () const
+	{ return *m_OrthoViewpointFieldOfViewSpinButton0; }
+
+	Gtk::SpinButton &
+	getOrthoViewpointFieldOfViewSpinButton2 () const
+	{ return *m_OrthoViewpointFieldOfViewSpinButton2; }
+
+	Gtk::SpinButton &
+	getOrthoViewpointFieldOfViewSpinButton1 () const
+	{ return *m_OrthoViewpointFieldOfViewSpinButton1; }
+
 	Gtk::Expander &
 	getGeoViewpointExpander () const
 	{ return *m_GeoViewpointExpander; }
@@ -580,6 +596,10 @@ private:
 	Gtk::Box*                      m_OrthoViewpointOrientationBox;
 	Gtk::Box*                      m_OthoViewpointOrientationToolBox;
 	Gtk::Grid*                     m_OrthoViewpointFieldOfViewBox;
+	Gtk::SpinButton*               m_OrthoViewpointFieldOfViewSpinButton3;
+	Gtk::SpinButton*               m_OrthoViewpointFieldOfViewSpinButton0;
+	Gtk::SpinButton*               m_OrthoViewpointFieldOfViewSpinButton2;
+	Gtk::SpinButton*               m_OrthoViewpointFieldOfViewSpinButton1;
 	Gtk::Expander*                 m_GeoViewpointExpander;
 	Gtk::Grid*                     m_GeoViewpointBox;
 	Gtk::Box*                      m_GeoViewpointFieldOfViewBox;

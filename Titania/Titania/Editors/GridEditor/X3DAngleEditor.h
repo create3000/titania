@@ -132,9 +132,15 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> enabled;
 	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
 	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
-	X3DFieldAdjustment3 <X3D::MFInt32> dimension;;
-	X3DFieldAdjustment3 <X3D::MFInt32> majorLineEvery;
-	X3DFieldAdjustment3 <X3D::MFInt32> majorLineOffset;
+	X3DFieldAdjustment <X3D::MFInt32>  dimension0;
+	X3DFieldAdjustment <X3D::MFInt32>  dimension1;
+	X3DFieldAdjustment <X3D::MFInt32>  dimension2;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineEvery0;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineEvery1;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineEvery2;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineOffset0;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineOffset1;
+	X3DFieldAdjustment <X3D::MFInt32>  majorLineOffset2;
 	SFColorRGBAButton                  color;
 	SFColorRGBAButton                  lineColor;
 	SFColorRGBAButton                  majorLineColor;

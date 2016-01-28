@@ -1401,7 +1401,7 @@
                     <property name="row_spacing">2</property>
                     <property name="column_spacing">2</property>
                     <child>
-                      <object class="GtkSpinButton" id="spinbutton12">
+                      <object class="GtkSpinButton" id="OrthoViewpointFieldOfViewSpinButton3">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Top</property>
@@ -1416,7 +1416,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="spinbutton23">
+                      <object class="GtkSpinButton" id="OrthoViewpointFieldOfViewSpinButton0">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Left</property>
@@ -1431,7 +1431,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="spinbutton24">
+                      <object class="GtkSpinButton" id="OrthoViewpointFieldOfViewSpinButton2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Right</property>
@@ -1446,7 +1446,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="spinbutton25">
+                      <object class="GtkSpinButton" id="OrthoViewpointFieldOfViewSpinButton1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="tooltip_text" translatable="yes">Bottom</property>

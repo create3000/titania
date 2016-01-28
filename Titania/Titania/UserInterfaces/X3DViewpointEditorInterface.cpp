@@ -137,6 +137,10 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("OrthoViewpointOrientationBox", m_OrthoViewpointOrientationBox);
 	m_builder -> get_widget ("OthoViewpointOrientationToolBox", m_OthoViewpointOrientationToolBox);
 	m_builder -> get_widget ("OrthoViewpointFieldOfViewBox", m_OrthoViewpointFieldOfViewBox);
+	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton3", m_OrthoViewpointFieldOfViewSpinButton3);
+	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton0", m_OrthoViewpointFieldOfViewSpinButton0);
+	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton2", m_OrthoViewpointFieldOfViewSpinButton2);
+	m_builder -> get_widget ("OrthoViewpointFieldOfViewSpinButton1", m_OrthoViewpointFieldOfViewSpinButton1);
 	m_builder -> get_widget ("GeoViewpointExpander", m_GeoViewpointExpander);
 	m_builder -> get_widget ("GeoViewpointBox", m_GeoViewpointBox);
 	m_builder -> get_widget ("GeoViewpointFieldOfViewBox", m_GeoViewpointFieldOfViewBox);

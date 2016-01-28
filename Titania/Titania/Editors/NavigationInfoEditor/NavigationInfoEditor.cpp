@@ -71,12 +71,9 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                                  getTypeRemoveButton (),
 	                                  "type",
 	                                  "EXAMINE")),
-	                      avatarSize (this,
-	                                  getCollisionRadiusAdjustment (),
-	                                  getHeightAdjustment (),
-	                                  getStepHeightAdjustment (),
-	                                  getAvatarSizeBox (),
-	                                  "avatarSize"),
+	                     avatarSize0 (this, getCollisionRadiusAdjustment (), getAvatarSizeSpinButton0 (), "avatarSize"),
+	                     avatarSize1 (this, getHeightAdjustment (), getAvatarSizeSpinButton1 (), "avatarSize"),
+	                     avatarSize2 (this, getStepHeightAdjustment (), getAvatarSizeSpinButton2 (), "avatarSize"),
 	                           speed (this, getSpeedAdjustment (), getSpeedSpinButton (), "speed"),
 	                       headlight (this, getHeadlightCheckButton (),  "headlight"),
 	                 visibilityLimit (this, getVisibilityLimitAdjustment (), getVisibilityLimitSpinButton (), "visibilityLimit"),
@@ -89,6 +86,10 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                                  "LINEAR")),
 	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime")
 {
+	avatarSize0 .setIndex (0);
+	avatarSize1 .setIndex (1);
+	avatarSize2 .setIndex (2);
+
 	setup ();
 }
 
@@ -110,7 +111,9 @@ NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 
 	nodeName   .setNode  (navigationInfo);
 	type ->           setNodes (navigationInfos);
-	avatarSize       .setNodes (navigationInfos);
+	avatarSize0      .setNodes (navigationInfos);
+	avatarSize1      .setNodes (navigationInfos);
+	avatarSize2      .setNodes (navigationInfos);
 	speed            .setNodes (navigationInfos);
 	headlight        .setNodes (navigationInfos);
 	visibilityLimit  .setNodes (navigationInfos);

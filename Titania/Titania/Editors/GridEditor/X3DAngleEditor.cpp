@@ -79,24 +79,15 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        getAngleScaleZAdjustment (),
 	                        getAngleScaleBox (),
 	                        "scale"),
-	             dimension (this,
-	                        getAngleDimension0Adjustment (),
-	                        getAngleDimension1Adjustment (),
-	                        getAngleDimensionYAdjustment (),
-	                        getAngleDimensionBox (),
-	                        "dimension"),
-	        majorLineEvery (this,
-	                        getAngleMajorLineEvery0Adjustment (),
-	                        getAngleMajorLineEvery1Adjustment (),
-	                        getAngleMajorLineEveryYAdjustment (),
-	                        getAngleMajorLineEveryBox (),
-	                        "majorLineEvery"),
-	       majorLineOffset (this,
-	                        getAngleMajorLineOffset0Adjustment (),
-	                        getAngleMajorLineOffset1Adjustment (),
-	                        getAngleMajorLineOffsetYAdjustment (),
-	                        getAngleMajorLineOffsetBox (),
-	                        "majorLineOffset"),
+	            dimension0 (this, getAngleDimension0Adjustment (), getAngleDimensionSpinButton0 (), "dimension"),
+	            dimension1 (this, getAngleDimension1Adjustment (), getAngleDimensionSpinButton1 (), "dimension"),
+	            dimension2 (this, getAngleDimensionYAdjustment (), getAngleDimensionSpinButton2 (), "dimension"),
+	       majorLineEvery0 (this, getAngleMajorLineEvery0Adjustment (), getAngleMajorLineEverySpinButton0 (), "majorLineEvery"),
+	       majorLineEvery1 (this, getAngleMajorLineEvery1Adjustment (), getAngleMajorLineEverySpinButton1 (), "majorLineEvery"),
+	       majorLineEvery2 (this, getAngleMajorLineEveryYAdjustment (), getAngleMajorLineEverySpinButton2 (), "majorLineEvery"),
+	      majorLineOffset0 (this, getAngleMajorLineOffset0Adjustment (), getAngleMajorLineOffsetSpinButton0 (), "majorLineOffset"),
+	      majorLineOffset1 (this, getAngleMajorLineOffset1Adjustment (), getAngleMajorLineOffsetSpinButton1 (), "majorLineOffset"),
+	      majorLineOffset2 (this, getAngleMajorLineOffsetYAdjustment (), getAngleMajorLineOffsetSpinButton2 (), "majorLineOffset"),
 	                 color (this,
 	                        getAngleColorButton (),
 	                        getAngleColorAdjustment (),
@@ -126,6 +117,16 @@ X3DAngleEditor::X3DAngleEditor () :
 	//color           .setUndo (false);
 	//lineColor       .setUndo (false);
 	//majorLineColor  .setUndo (false);
+
+	dimension0       .setIndex (0);
+	dimension1       .setIndex (1);
+	dimension2       .setIndex (2);
+	majorLineEvery0  .setIndex (0);
+	majorLineEvery1  .setIndex (1);
+	majorLineEvery2  .setIndex (2);
+	majorLineOffset0 .setIndex (0);
+	majorLineOffset1 .setIndex (1);
+	majorLineOffset2 .setIndex (2);
 }
 
 void
@@ -136,17 +137,23 @@ X3DAngleEditor::initialize ()
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
-	enabled         .setNodes (angleTools);
-	translation     .setNodes (angleTools);
-	scale           .setNodes (angleTools);
-	dimension       .setNodes (angleTools);
-	majorLineEvery  .setNodes (angleTools);
-	majorLineOffset .setNodes (angleTools);
-	color           .setNodes (angleTools);
-	lineColor       .setNodes (angleTools);
-	majorLineColor  .setNodes (angleTools);
-	snapDistance    .setNodes (angleTools);
-	snapToCenter    .setNodes (angleTools);
+	enabled          .setNodes (angleTools);
+	translation      .setNodes (angleTools);
+	scale            .setNodes (angleTools);
+	dimension0       .setNodes (angleTools);
+	dimension1       .setNodes (angleTools);
+	dimension2       .setNodes (angleTools);
+	majorLineEvery0  .setNodes (angleTools);
+	majorLineEvery1  .setNodes (angleTools);
+	majorLineEvery2  .setNodes (angleTools);
+	majorLineOffset0 .setNodes (angleTools);
+	majorLineOffset1 .setNodes (angleTools);
+	majorLineOffset2 .setNodes (angleTools);
+	color            .setNodes (angleTools);
+	lineColor        .setNodes (angleTools);
+	majorLineColor   .setNodes (angleTools);
+	snapDistance     .setNodes (angleTools);
+	snapToCenter     .setNodes (angleTools);
 
 	angleTool -> rotation () .addInterest (this, &X3DAngleEditor::set_rotation);
 	getCurrentScene ()       .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
@@ -240,8 +247,12 @@ X3DAngleEditor::on_angle_major_line_grid_value_changed ()
 {
 	const int index = getAngleMajorGridAdjustment () -> get_value () - 1;
 
-	majorLineEvery  .setIndex (INDICES * index);
-	majorLineOffset .setIndex (INDICES * index);
+	majorLineEvery0  .setIndex (INDICES * index + 0);
+	majorLineEvery1  .setIndex (INDICES * index + 1);
+	majorLineEvery2  .setIndex (INDICES * index + 2);
+	majorLineOffset0 .setIndex (INDICES * index + 0);
+	majorLineOffset1 .setIndex (INDICES * index + 1);
+	majorLineOffset2 .setIndex (INDICES * index + 2);
 }
 
 void

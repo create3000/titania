@@ -99,7 +99,10 @@ private:
 	SFRotationAdjustment                  orientation;
 	std::unique_ptr <RotationTool>        orientationTool;	
 	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
-	X3DFieldAdjustment4 <X3D::MFFloat>    fieldOfView;
+	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView0;
+	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView1;
+	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView2;
+	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView3;
 
 };
 

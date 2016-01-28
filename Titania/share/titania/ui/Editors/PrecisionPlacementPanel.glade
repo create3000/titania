@@ -1417,29 +1417,6 @@
                             <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkToggleButton" id="LayoutUniformSizeButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
-                            <property name="halign">start</property>
-                            <signal name="toggled" handler="on_layout_uniform_size_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="LayoutUniformSizeImage">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">Disconnected</property>
-                                <property name="icon_size">1</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -1788,7 +1765,7 @@
                         <property name="row_spacing">2</property>
                         <property name="column_spacing">2</property>
                         <child>
-                          <object class="GtkSpinButton" id="spinbutton18">
+                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton3">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Top</property>
@@ -1804,7 +1781,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="spinbutton23">
+                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton0">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Left</property>
@@ -1820,7 +1797,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="spinbutton24">
+                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Right</property>
@@ -1836,7 +1813,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="spinbutton25">
+                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Bottom</property>

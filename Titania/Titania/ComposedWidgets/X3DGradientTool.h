@@ -352,7 +352,7 @@ inline
 void
 X3DGradientTool::set_value (const X3D::time_type &)
 {
-	__LOG__ << undoStep .get () << std::endl;
+	//__LOG__ << undoStep .get () << std::endl;
 
 	beginUndoGroup (name, undoStep);
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);

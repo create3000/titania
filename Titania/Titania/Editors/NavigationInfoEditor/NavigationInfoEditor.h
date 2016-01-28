@@ -103,7 +103,9 @@ private:
 
 	NameEntry                          nodeName;
 	std::unique_ptr <MFStringWidget>   type;
-	X3DFieldAdjustment3 <X3D::MFFloat> avatarSize;
+	X3DFieldAdjustment <X3D::MFFloat>  avatarSize0;
+	X3DFieldAdjustment <X3D::MFFloat>  avatarSize1;
+	X3DFieldAdjustment <X3D::MFFloat>  avatarSize2;
 	X3DFieldAdjustment <X3D::SFFloat>  speed;
 	X3DFieldToggleButton <X3D::SFBool> headlight;
 	X3DFieldAdjustment <X3D::SFFloat>  visibilityLimit;

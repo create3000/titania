@@ -77,7 +77,9 @@ public:
 	setIndex (const int value)
 	{
 		index = value;
-		set_field ();
+		
+		if (not nodes .empty ())
+			set_field ();
 	}
 
 	int
@@ -121,11 +123,27 @@ private:
 	void
 	on_value_changed (const int);
 
+	template <class ValueType, class Value>
+	void
+	set_value (X3D::X3DField <ValueType> &, const Value &) const;
+	
+	template <class ValueType, class Value>
+	void
+	set_value (X3D::X3DArrayField <ValueType> &, const Value &) const;
+
 	void
 	set_field ();
 
 	void
 	set_buffer ();
+
+	template <class ValueType>
+	X3D::Vector3d
+	get_value (const X3D::X3DField <ValueType> &) const;
+	
+	template <class ValueType>
+	X3D::Vector3d
+	get_value (X3D::X3DArrayField <ValueType> &);
 
 	void
 	set_bounds ();
@@ -284,15 +302,29 @@ X3DFieldAdjustment3 <Type>::on_value_changed (const int id)
 				changing = false;
 			}
 
-			field .set1Value (index + 0, vector .x ());
-			field .set1Value (index + 1, vector .y ());
-			field .set1Value (index + 2, vector .z ());
+			set_value (field, vector);
 		}
 		catch (const X3D::X3DError &)
 		{ }
 	}
 
 	addRedoFunction <Type> (nodes, name, undoStep);
+}
+
+template <class Type>
+template <class ValueType, class Value>
+void
+X3DFieldAdjustment3 <Type>::set_value (X3D::X3DField <ValueType> & field, const Value & value) const
+{
+	field = value;
+}
+
+template <class Type>
+template <class ValueType, class Value>
+void
+X3DFieldAdjustment3 <Type>::set_value (X3D::X3DArrayField <ValueType> & field, const Value & value) const
+{
+	field .set1Value (index, value);
 }
 
 template <class Type>
@@ -322,14 +354,15 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 			{
 				auto &     field = node -> getField <Type> (name);
 				const auto geo   = field .isGeospatial ();
+				const auto value = get_value (field);
 
 				unit = field .getUnit ();
 
 				set_bounds ();
 
-				adjustments [0] -> set_value (geo ? field .get1Value (index + 0) : getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 0)));
-				adjustments [1] -> set_value (geo ? field .get1Value (index + 1) : getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 1)));
-				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, field .get1Value (index + 2)));
+				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
+				adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
+				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
 
 				hasField = true;
 				break;
@@ -345,14 +378,33 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustments [0] -> set_value (adjustments [0] -> get_lower () / 2 + adjustments [0] -> get_upper () / 2);
-		adjustments [1] -> set_value (adjustments [1] -> get_lower () / 2 + adjustments [1] -> get_upper () / 2);
-		adjustments [2] -> set_value (adjustments [2] -> get_lower () / 2 + adjustments [2] -> get_upper () / 2);
+		adjustments [0] -> set_value (adjustments [0] -> get_lower ());
+		adjustments [1] -> set_value (adjustments [1] -> get_lower ());
+		adjustments [2] -> set_value (adjustments [2] -> get_lower ());
 	}
 
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+template <class ValueType>
+X3D::Vector3d
+X3DFieldAdjustment3 <Type>::get_value (const X3D::X3DField <ValueType> & field) const
+{
+	return X3D::Vector3d (field .getValue ());
+}
+
+template <class Type>
+template <class ValueType>
+X3D::Vector3d
+X3DFieldAdjustment3 <Type>::get_value (X3D::X3DArrayField <ValueType> & field)
+{
+	if (index >= (int32_t) field .size ())
+		index = field .size () - 1;
+
+	return X3D::Vector3d (field .get1Value (index));
 }
 
 template <class Type>

@@ -54,11 +54,6 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-extern "C"
-{
-#include <glx.h>
-}
-
 namespace titania {
 namespace X3D {
 

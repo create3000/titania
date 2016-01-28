@@ -220,8 +220,6 @@ protected:
 	{
 		redoGroup .clear ();
 
-__LOG__ << undoStep -> getRedoFunctions () .size () << std::endl;
-
 		if (undoStep -> getRedoFunctions () .empty ())
 		{
 			if (undoStep == getUndoStep ())
@@ -508,11 +506,6 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 	if (not undo)
 		return;
 
-if (undoStep)
-	__LOG__ << undoStep -> getUndoFunctions () .size () << std::endl;
-else
-	__LOG__ << undoStep .get () << std::endl;
-	
 	const auto lastUndoStep = getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep)
@@ -608,8 +601,6 @@ else
 
 	if (undoStep not_eq lastUndoStep)
 		addUndoStep (undoStep);
-
-	__LOG__ << undoStep -> getUndoFunctions () .size () << std::endl;
 }
 
 template <class FieldType, class NodeType>
@@ -646,8 +637,6 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		catch (const X3D::X3DError &)
 		{ }
 	}
-
-__LOG__ << changed << std::endl;
 
 	if (not changed)
 	{

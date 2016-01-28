@@ -69,6 +69,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              getRemoveSkyColorButton (),
 	                              getSkyColorsScrolledWindow (),
 	                              "skyColor"),
+	                    skyAngle (this, getSkyAngleAdjustment (), getSkyAngleSpinButton (), "skyAngle"),
 	                      ground (this, "Ground Gradient", getGroundGradientBox (), "groundAngle", "groundColor"),
 	                 groundColor (this,
 	                              getGroundColorButton (),
@@ -78,6 +79,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              getRemoveGroundColorButton (),
 	                              getGroundColorsScrolledWindow (),
 	                              "groundColor"),
+	                 groundAngle (this, getGroundAngleAdjustment (), getGroundAngleSpinButton (), "groundAngle"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
 	                    changing (false)
 {
@@ -92,6 +94,9 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	
 	skyColor    .setColorsSize (16);
 	groundColor .setColorsSize (16);
+
+	skyAngle    .setIndex (-1);
+	groundAngle .setIndex (-1);
 
 	setup ();
 }
@@ -114,8 +119,10 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
+	skyAngle     .setNodes (nodes);
 	ground       .setNodes (nodes);
 	groundColor  .setNodes (nodes);
+	groundAngle  .setNodes (nodes);
 	transparency .setNodes (nodes);
 }
 
@@ -128,6 +135,7 @@ BackgroundEditor::on_sky_whichChoice_changed ()
 	changing = true;
 
 	skyColor .setIndex (sky .getWhichChoice ());
+	skyAngle .setIndex (sky .getWhichChoice () - 1);
 
 	changing = false;
 }
@@ -135,14 +143,15 @@ BackgroundEditor::on_sky_whichChoice_changed ()
 void
 BackgroundEditor::on_sky_color_index_changed ()
 {
-	__LOG__ << skyColor .getIndex () << std::endl;
+	//__LOG__ << skyColor .getIndex () << std::endl;
 
 	if (changing)
 		return;
 
 	changing = true;
 
-	sky .setWhichChoice (skyColor .getIndex ());
+	sky      .setWhichChoice (skyColor .getIndex ());
+	skyAngle .setIndex       (skyColor .getIndex () - 1);
 
 	changing = false;
 }
@@ -150,7 +159,7 @@ BackgroundEditor::on_sky_color_index_changed ()
 void
 BackgroundEditor::on_ground_whichChoice_changed ()
 {
-	__LOG__ << ground .getWhichChoice () << std::endl;
+	//__LOG__ << ground .getWhichChoice () << std::endl;
 
 	if (changing)
 		return;
@@ -158,6 +167,7 @@ BackgroundEditor::on_ground_whichChoice_changed ()
 	changing = true;
 
 	groundColor .setIndex (ground .getWhichChoice ());
+	groundAngle .setIndex (ground .getWhichChoice () - 1);
 
 	changing = false;
 }
@@ -170,7 +180,8 @@ BackgroundEditor::on_ground_color_index_changed ()
 
 	changing = true;
 
-	ground .setWhichChoice (groundColor .getIndex ());
+	ground      .setWhichChoice (groundColor .getIndex ());
+	groundAngle .setIndex       (groundColor .getIndex () - 1);
 
 	changing = false;
 }

@@ -102,12 +102,14 @@ private:
 
 	///  @name Members
 
-	BackgroundTool                    sky;
-	MFColorButton                     skyColor;
-	BackgroundTool                    ground;
-	MFColorButton                     groundColor;
-	X3DFieldAdjustment <X3D::SFFloat> transparency;
-	bool                              changing;
+	BackgroundTool                     sky;
+	MFColorButton                      skyColor;
+	X3DFieldAdjustment <X3D::MFFloat>  skyAngle;
+	BackgroundTool                     ground;
+	MFColorButton                      groundColor;
+	X3DFieldAdjustment <X3D::MFFloat>  groundAngle;
+	X3DFieldAdjustment <X3D::SFFloat>  transparency;
+	bool                               changing;
 
 };
 

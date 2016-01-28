@@ -66,30 +66,28 @@ X3DLayoutEditor::X3DLayoutEditor () :
 	                             alignY (this, getLayoutAlignYComboBoxText (), "align", 1, "CENTER"),
 	                       offsetUnitsX (this, getLayoutOffsetUnitsXComboBoxText (), "offsetUnits", 0, "WORLD"),
 	                       offsetUnitsY (this, getLayoutOffsetUnitsYComboBoxText (), "offsetUnits", 1, "WORLD"),
-	                             offset (this,
-	                                     getLayoutOffsetXAdjustment (),
-	                                     getLayoutOffsetYAdjustment (),
-	                                     getLayoutOffsetBox (),
-	                                     "offset"),
+	                            offsetX (this, getLayoutOffsetXAdjustment (), getLayoutOffsetXSpinButton (), "offset"),
+	                            offsetY (this, getLayoutOffsetYAdjustment (), getLayoutOffsetYSpinButton (), "offset"),
 	                         sizeUnitsX (this, getLayoutSizeUnitsXComboBoxText (), "sizeUnits", 0, "WORLD"),
 	                         sizeUnitsY (this, getLayoutSizeUnitsYComboBoxText (), "sizeUnits", 1, "WORLD"),
-	                               size (this,
-	                                     getLayoutSizeXAdjustment (),
-	                                     getLayoutSizeYAdjustment (),
-	                                     getLayoutSizeBox (),
-	                                     "size"),
+	                              sizeX (this, getLayoutSizeXAdjustment (), getLayoutSizeXSpinButton (), "size"),
+	                              sizeY (this, getLayoutSizeYAdjustment (), getLayoutSizeYSpinButton (), "size"),
 	                         scaleModeX (this, getLayoutScaleModeXComboBoxText (), "scaleMode", 0, "NONE"),
 	                         scaleModeY (this, getLayoutScaleModeYComboBoxText (), "scaleMode", 1, "NONE")
 {
 	addChildren (layoutBuffer);
 	layoutBuffer .addInterest (this, &X3DLayoutEditor::set_node);
+
+	offsetX .setIndex (0);
+	offsetY .setIndex (1);
+
+	sizeX .setIndex (0);
+	sizeY .setIndex (1);
 }
 
 void
 X3DLayoutEditor::initialize ()
 {
-	getLayoutUniformSizeButton () .set_active (getConfig () .getBoolean ("layoutUniformSize"));
-
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLayoutEditor::set_layout);
 
 	set_layout ();
@@ -198,10 +196,12 @@ X3DLayoutEditor::set_node ()
 	alignY       .setNodes (layouts);
 	offsetUnitsX .setNodes (layouts);
 	offsetUnitsY .setNodes (layouts);
-	offset       .setNodes (layouts);
+	offsetX      .setNodes (layouts);
+	offsetY      .setNodes (layouts);
 	sizeUnitsX   .setNodes (layouts);
 	sizeUnitsY   .setNodes (layouts);
-	size         .setNodes (layouts);
+	sizeX        .setNodes (layouts);
+	sizeY        .setNodes (layouts);
 	scaleModeX   .setNodes (layouts);
 	scaleModeY   .setNodes (layouts);
 }
@@ -213,24 +213,8 @@ X3DLayoutEditor::connectLayout (const X3D::SFNode & field)
 	field .addInterest (this, &X3DLayoutEditor::set_layout);
 }
 
-void
-X3DLayoutEditor::on_layout_uniform_size_clicked ()
-{
-	if (getLayoutUniformSizeButton () .get_active ())
-	{
-		getLayoutUniformSizeImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-		size .setUniform (true);
-	}
-	else
-	{
-		getLayoutUniformSizeImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-		size .setUniform (false);
-	}
-}
-
 X3DLayoutEditor::~X3DLayoutEditor ()
 {
-	getConfig () .setItem ("layoutUniformSize", getLayoutUniformSizeButton () .get_active ());
 }
 
 } // puck

@@ -80,14 +80,16 @@ X3DOrthoViewpointEditor::X3DOrthoViewpointEditor () :
 	                             getOrthoViewpointCenterOfRotationZAdjustment (),
 	                             getOrthoViewpointCenterOfRotationBox (),
 	                             "centerOfRotation"),
-	                fieldOfView (this,
-	                             getOrthoViewpointFieldOfViewMinXAdjustment (),
-	                             getOrthoViewpointFieldOfViewMinYAdjustment (),
-	                             getOrthoViewpointFieldOfViewMaxXAdjustment (),
-	                             getOrthoViewpointFieldOfViewMaxYAdjustment (),
-	                             getOrthoViewpointFieldOfViewBox (),
-	                             "fieldOfView")
-{ }
+	               fieldOfView0 (this, getOrthoViewpointFieldOfViewMinXAdjustment (), getOrthoViewpointFieldOfViewSpinButton0 (), "fieldOfView"),
+	               fieldOfView1 (this, getOrthoViewpointFieldOfViewMinYAdjustment (), getOrthoViewpointFieldOfViewSpinButton1 (), "fieldOfView"),
+	               fieldOfView2 (this, getOrthoViewpointFieldOfViewMaxXAdjustment (), getOrthoViewpointFieldOfViewSpinButton2 (), "fieldOfView"),
+	               fieldOfView3 (this, getOrthoViewpointFieldOfViewMaxYAdjustment (), getOrthoViewpointFieldOfViewSpinButton3 (), "fieldOfView")
+{
+	fieldOfView0 .setIndex (0);
+	fieldOfView1 .setIndex (1);
+	fieldOfView2 .setIndex (2);
+	fieldOfView3 .setIndex (3);
+}
 
 void
 X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & viewpointNode, const bool inScene)
@@ -112,7 +114,10 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 	position         .setNodes (orthoViewpoints);
 	orientation      .setNodes (orthoViewpoints);
 	centerOfRotation .setNodes (orthoViewpoints);
-	fieldOfView      .setNodes (orthoViewpoints);
+	fieldOfView0     .setNodes (orthoViewpoints);
+	fieldOfView1     .setNodes (orthoViewpoints);
+	fieldOfView2     .setNodes (orthoViewpoints);
+	fieldOfView3     .setNodes (orthoViewpoints);
 
 	orientationTool -> setNodes (orthoViewpoints);
 }
