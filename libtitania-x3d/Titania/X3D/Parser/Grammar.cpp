@@ -116,7 +116,7 @@ const io::string Grammar::HEX ("0X");
 
 // Locale
 
-const io::sequence Grammar::WhiteSpacesNoComma ("\r\n \t");
+const io::sequence Grammar::WhiteSpacesNoCommaSequence ("\r\n \t");
 
 bool
 Grammar::Double (std::istream & istream, double & value)
@@ -223,6 +223,15 @@ Grammar::getSupportedFields ()
 		supportedFields .emplace (field -> getTypeName ());
 
 	return supportedFields;
+}
+
+bool
+Grammar::WhiteSpacesNoComma (std::istream & istream, std::string & string)
+{
+	if (istream .getloc () == std::locale::classic ())
+		return WhiteSpaces (istream, string);
+
+	return WhiteSpacesNoCommaSequence (istream, string);
 }
 
 } // X3D

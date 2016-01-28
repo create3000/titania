@@ -136,7 +136,10 @@ public:
 
 	// Locale
 
-	static const io::sequence WhiteSpacesNoComma;
+	static
+	bool
+	WhiteSpacesNoComma (std::istream &, std::string &);
+
 
 private:
 
@@ -151,6 +154,8 @@ private:
 	static const io::string neg_nan;
 	static const io::string hex;
 	static const io::string HEX;
+
+	static const io::sequence WhiteSpacesNoCommaSequence;
 
 };
 

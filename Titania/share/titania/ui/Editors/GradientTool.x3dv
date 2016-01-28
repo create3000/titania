@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Wed, 27 Jan 2016 08:49:38 GMT"
+META "modified" "Wed, 27 Jan 2016 09:57:44 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -545,7 +545,7 @@ function inputWhichChoice (value)
 
 function set_active (value)
 {
-	//print (\"active: \", value);
+	print (\"active: \", value);
 
 	isActive = value;
 	
@@ -568,11 +568,11 @@ function set_active (value)
 		{
 			arrows [i] .active = true;
 			
-			if (i !== outputWhichChoice)
-			{
+			//if (i !== outputWhichChoice)
+			//{
 				whichChoice       = i;
 				outputWhichChoice = i;
-			}
+			//}
 		}
 	}
 }
@@ -598,7 +598,11 @@ function set_addTime (value, time)
 				color1 = color [index1],
 				t      = (value - position [index0]) / (position [index1] - position [index0]);
 				
-			add_color (index0, value, color0 .lerp (color1, t));
+			var col = new SFColor (lerp (color0 .r, color1 .r, t),
+			                       lerp (color0 .g, color1 .g, t),
+			                       lerp (color0 .b, color1 .b, t));
+			
+			add_color (index0, value, col);
 		}
 	}
 	else
@@ -626,6 +630,11 @@ function set_addTime (value, time)
 	}
 
 	outputAddTime = time;
+}
+
+function lerp (source, destination, t)
+{
+	return source + t * (destination - source);
 }
 
 function add_color (index, value, color)
