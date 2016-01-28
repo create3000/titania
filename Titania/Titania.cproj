@@ -220,6 +220,8 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DSphereEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DBackgroundEditorInterface.cpp" />
     <Compile Include="Titania\Editors\BackgroundEditor\BackgroundEditor.cpp" />
+    <Compile Include="Titania\Editors\BackgroundEditor\X3DBackgroundEditor.cpp" />
+    <Compile Include="Titania\ComposedWidgets\TexturePreview.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2341,6 +2343,8 @@
     <None Include="share\titania\Library\Backgrounds\NightSky.x3dv" />
     <None Include="share\titania\Library\Backgrounds\ViolentDays.x3dv" />
     <None Include="share\titania\Library\Backgrounds\WideOcean.x3dv" />
+    <None Include="Titania\Editors\BackgroundEditor\X3DBackgroundEditor.h" />
+    <None Include="Titania\ComposedWidgets\TexturePreview.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

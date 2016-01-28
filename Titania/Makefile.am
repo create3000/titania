@@ -19,6 +19,7 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Browser/X3DObjectOperations.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
+	Titania/ComposedWidgets/TexturePreview.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
@@ -33,6 +34,7 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
+	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FaceSelection.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \

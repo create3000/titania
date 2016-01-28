@@ -50,25 +50,19 @@
 
 #include "X3DTexture2DNodeEditor.h"
 
-#include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
-
 namespace titania {
 namespace puck {
 
-X3DTexture2DNodeEditor::X3DTexture2DNodeEditor (const X3D::BrowserPtr & preview) :
+X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
 	    X3DImageTextureEditor (),
 	    X3DPixelTextureEditor (),
 	    X3DMovieTextureEditor (),
-	                  preview (preview),
 	            texture2DNode (),
 	                  repeatS (this, getTexture2DNodeRepeatSCheckButton (), "repeatS"),
 	                  repeatT (this, getTexture2DNodeRepeatTCheckButton (), "repeatT")
-{
-	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &X3DTexture2DNodeEditor::on_configure_event));
-}
+{ }
 
 void
 X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
@@ -115,11 +109,6 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 {
 	getTexture2DBox () .set_visible (texture);
 
-	if (texture2DNode)
-	{
-		texture2DNode -> checkLoadState () .removeInterest (this, &X3DTexture2DNodeEditor::set_loadState);
-	}
-
 	texture2DNode = texture;
 
 	if (not texture2DNode or not value)
@@ -129,12 +118,8 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 		return;
 	}
 
-	texture2DNode -> checkLoadState () .addInterest (this, &X3DTexture2DNodeEditor::set_loadState);
-
 	repeatS .setNodes ({ texture2DNode });
 	repeatT .setNodes ({ texture2DNode });
-
-	set_loadState ();
 
 	if (texture2DNode == value)
 		return;
@@ -156,68 +141,6 @@ X3DTexture2DNodeEditor::setTexture2DNode (const X3D::X3DPtr <X3D::X3DTexture2DNo
 				break;
 		}
 	}
-}
-
-void
-X3DTexture2DNodeEditor::set_loadState ()
-{
-	set_preview ();
-
-	std::string components;
-
-	switch (texture2DNode -> getComponents ())
-	{
-		case 1: components = _ ("GRAY");       break;
-		case 2: components = _ ("GRAY ALPHA"); break;
-		case 3: components = _ ("RGB");        break;
-		case 4: components = _ ("RGBA");       break;
-		default:
-			break;
-	}
-
-	getTextureFormatLabel () .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
-	                                    " × " +
-	                                    std::to_string (texture2DNode -> getImageHeight ()) +
-	                                    " (" +
-	                                    components +
-	                                    ")");
-}
-
-bool
-X3DTexture2DNodeEditor::on_configure_event (GdkEventConfigure* const)
-{
-	set_preview ();
-	return false;
-}
-
-void
-X3DTexture2DNodeEditor::set_preview ()
-{
-	if (not texture2DNode)
-		return;
-
-	try
-	{
-		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("OrthoViewpoint"));
-		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
-
-		if (viewpoint and transform)
-		{
-			double width  = texture2DNode -> getImageWidth ();
-			double height = texture2DNode -> getImageHeight ();
-
-			if (not width or not height)
-			{
-				width  = 1;
-				height = 1;
-			}
-
-			viewpoint -> fieldOfView () = { -width, -height, width, height };
-			transform -> scale ()       = X3D::Vector3f (width, height, 1);
-		}
-	}
-	catch (const X3D::X3DError &)
-	{ }
 }
 
 X3DTexture2DNodeEditor::~X3DTexture2DNodeEditor ()

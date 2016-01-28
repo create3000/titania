@@ -51,6 +51,7 @@
 #include "BackgroundEditor.h"
 
 #include "../../Configuration/config.h"
+#include "../../ComposedWidgets/TexturePreview.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 
@@ -60,6 +61,7 @@ namespace puck {
 BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
+	         X3DBackgroundEditor (),
 	                         sky (this, "Sky Gradient", getSkyGradientBox (), "skyAngle", "skyColor"),
 	                    skyColor (this,
 	                              getSkyColorButton (),
@@ -81,8 +83,18 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              "groundColor"),
 	                 groundAngle (this, getGroundAngleAdjustment (), getGroundAngleSpinButton (), "groundAngle"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
+	                frontPreview (new TexturePreview (this, getFrontTexturePreviewBox (), getFrontTextureFormatLabel ())),
+	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (), getBackTextureFormatLabel ())),
+	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (), getLeftTextureFormatLabel ())),
+	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (), getRightTextureFormatLabel ())),
+	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (), getFrontTextureFormatLabel ())),
+	               bottomPreview (new TexturePreview (this, getBottomTexturePreviewBox (), getBottomTextureFormatLabel ())),
+	              backgroundNode (),
 	                    changing (false)
 {
+	getNotebook ()         .set_current_page (getConfig () .getInteger ("currentPage"));
+	getTexturesNotebook () .set_current_page (getConfig () .getInteger ("texturePage"));
+
 	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
 	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
 
@@ -95,9 +107,6 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	skyColor    .setColorsSize (16);
 	groundColor .setColorsSize (16);
 
-	skyAngle    .setIndex (-1);
-	groundAngle .setIndex (-1);
-
 	setup ();
 }
 
@@ -105,6 +114,7 @@ void
 BackgroundEditor::initialize ()
 {
 	X3DBackgroundEditorInterface::initialize ();
+	X3DBackgroundEditor::initialize ();
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &BackgroundEditor::set_selection);
 
@@ -114,8 +124,20 @@ BackgroundEditor::initialize ()
 void
 BackgroundEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3D::X3DPtr <X3D::X3DBackgroundNode> background (selection .empty () ? nullptr : selection .back ());
-	const auto nodes = background ? X3D::MFNode ({ background }) : X3D::MFNode ();
+	if (backgroundNode)
+	{
+		backgroundNode -> getFrontTexture ()  .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getBackTexture ()   .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getLeftTexture ()   .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getRightTexture ()  .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getTopTexture ()    .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getBottomTexture () .removeInterest (this, &BackgroundEditor::set_texture);
+	}
+
+	backgroundNode   = selection .empty () ? nullptr : selection .back ();
+	const auto nodes = backgroundNode ? X3D::MFNode ({ backgroundNode }) : X3D::MFNode ();
+
+	setBackground (backgroundNode);
 
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
@@ -124,6 +146,35 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 	groundColor  .setNodes (nodes);
 	groundAngle  .setNodes (nodes);
 	transparency .setNodes (nodes);
+
+	if (backgroundNode)
+	{
+		backgroundNode -> getFrontTexture ()  .addInterest (this, &BackgroundEditor::set_texture, frontPreview,  std::cref (backgroundNode -> getFrontTexture ()));
+		backgroundNode -> getBackTexture ()   .addInterest (this, &BackgroundEditor::set_texture, backPreview,   std::cref (backgroundNode -> getBackTexture ()));
+		backgroundNode -> getLeftTexture ()   .addInterest (this, &BackgroundEditor::set_texture, leftPreview,   std::cref (backgroundNode -> getLeftTexture ()));
+		backgroundNode -> getRightTexture ()  .addInterest (this, &BackgroundEditor::set_texture, rightPreview,  std::cref (backgroundNode -> getRightTexture ()));
+		backgroundNode -> getTopTexture ()    .addInterest (this, &BackgroundEditor::set_texture, topPreview,    std::cref (backgroundNode -> getTopTexture ()));
+		backgroundNode -> getBottomTexture () .addInterest (this, &BackgroundEditor::set_texture, bottomPreview, std::cref (backgroundNode -> getBottomTexture ()));
+
+		set_texture (frontPreview,  backgroundNode -> getFrontTexture ());
+		set_texture (backPreview,   backgroundNode -> getBackTexture ());
+		set_texture (leftPreview,   backgroundNode -> getLeftTexture ());
+		set_texture (rightPreview , backgroundNode -> getRightTexture ());
+		set_texture (topPreview,    backgroundNode -> getTopTexture ());
+		set_texture (bottomPreview, backgroundNode -> getBottomTexture ());
+	}
+	else
+	{
+		set_texture (frontPreview, nullptr);
+	}
+}
+
+void
+BackgroundEditor::set_texture (const std::shared_ptr <TexturePreview> & preview, const X3D::X3DPtr <X3D::X3DTextureNode> & texture)
+{
+__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+
+	preview -> setTexture (texture);
 }
 
 void
@@ -188,6 +239,9 @@ BackgroundEditor::on_ground_color_index_changed ()
 
 BackgroundEditor::~BackgroundEditor ()
 {
+	getConfig () .setItem ("currentPage", getNotebook ()         .get_current_page ());
+	getConfig () .setItem ("texturePage", getTexturesNotebook () .get_current_page ());
+
 	dispose ();
 }
 

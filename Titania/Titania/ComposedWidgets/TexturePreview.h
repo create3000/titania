@@ -48,45 +48,66 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#ifndef __TITANIA_COMPOSED_WIDGETS_TEXTURE_PREVIEW_H__
+#define __TITANIA_COMPOSED_WIDGETS_TEXTURE_PREVIEW_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
+#include "../Configuration/config.h"
 
-#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	          X3DTextureEditorInterface (get_ui ("Editors/TextureEditor.glade"), gconf_dir ()),
-	               X3DTextureNodeEditor (),
-	      X3DTextureTransformNodeEditor (),
-	X3DTextureCoordinateGeneratorEditor (),
-	            X3DTexturePaletteEditor ()
+class TexturePreview :
+	public X3DComposedWidget
 {
-	getTextureChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+public:
 
-	setup ();
-}
+	///  @name Construction
 
-void
-TextureEditor::initialize ()
-{
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
-	X3DTextureCoordinateGeneratorEditor::initialize ();
-	X3DTexturePaletteEditor::initialize ();
-}
+	TexturePreview (X3DBaseInterface* const,
+	                Gtk::Box &,
+	                Gtk::Label &);
 
-TextureEditor::~TextureEditor ()
-{
-	getConfig () .setItem ("currentPage", getTextureChildNotebook () .get_current_page ());
+	void
+	setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
-	dispose ();
-}
+	///  @name Destruction
+
+	virtual
+	~TexturePreview ();
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_initialized ();
+
+	void
+	set_texture ();
+
+	void
+	set_loadState ();
+
+	bool
+	on_configure_event (GdkEventConfigure* const);
+
+	void
+	set_camera ();
+
+	///  @name Members
+
+	Gtk::Box &                          box;
+	Gtk::Label &                        label;
+	X3D::BrowserPtr                     preview;
+	X3D::X3DPtr <X3D::X3DTexture2DNode> textureNode;
+
+};
 
 } // puck
 } // titania
+
+#endif

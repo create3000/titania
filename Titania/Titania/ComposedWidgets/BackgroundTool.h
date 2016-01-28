@@ -151,7 +151,7 @@ BackgroundTool::get_position (const X3D::MFFloat & position)
 		const size_t offset = position [0] == 0.0f ? 1 : 0;
 
 		for (const auto & value : std::make_pair (position .begin () + offset, position .end ()))
-			angle .emplace_back (std::acos (1 - value));
+			angle .emplace_back (value * (M_PI / 2));
 	}
 
 	return angle;
@@ -166,7 +166,7 @@ BackgroundTool::set_tool_values (const X3D::MFFloat & positionValue, const X3D::
 		X3D::MFFloat position;
 
 		for (const auto & value : positionValue)
-			position .emplace_back (1 - std::cos (math::clamp <float> (value, 0, M_PI / 2)));
+			position .emplace_back (math::clamp <float> (value / (M_PI / 2), 0, 1));
 
 		if (not colorValue .empty ())
 			position .emplace_front (0);

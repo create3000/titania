@@ -111,7 +111,32 @@ public:
 
 	bool
 	isHidden () const
-	{ return hidden; }	
+	{ return hidden; }
+
+	const X3DPtr <X3DTextureNode> &
+	getFrontTexture () const
+	{ return frontTexture; }
+
+	const X3DPtr <X3DTextureNode> &
+	getBackTexture () const
+	{ return backTexture; }
+
+	const X3DPtr <X3DTextureNode> &
+	getLeftTexture () const
+	{ return leftTexture; }
+
+	const X3DPtr <X3DTextureNode> &
+	getRightTexture () const
+	{ return rightTexture; }
+
+	const X3DPtr <X3DTextureNode> &
+	getTopTexture () const
+	{ return topTexture; }
+
+	const X3DPtr <X3DTextureNode> &
+	getBottomTexture () const
+	{ return bottomTexture; }
+
 
 	///  @name Operations
 
@@ -145,27 +170,27 @@ protected:
 
 	void
 	set_frontTexture (X3DTextureNode* const value)
-	{ frontTexture .set (value); }
+	{ frontTexture = value; }
 
 	void
 	set_backTexture (X3DTextureNode* const value)
-	{ backTexture .set (value); }
+	{ backTexture = value; }
 
 	void
 	set_leftTexture (X3DTextureNode* const value)
-	{ leftTexture .set (value); }
+	{ leftTexture = value; }
 
 	void
 	set_rightTexture (X3DTextureNode* const value)
-	{ rightTexture .set (value); }
+	{ rightTexture = value; }
 
 	void
 	set_topTexture (X3DTextureNode* const value)
-	{ topTexture .set (value); }
+	{ topTexture = value; }
 
 	void
 	set_bottomTexture (X3DTextureNode* const value)
-	{ bottomTexture .set (value); }
+	{ bottomTexture = value; }
 
 
 private:

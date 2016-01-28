@@ -58,6 +58,8 @@
 namespace titania {
 namespace puck {
 
+class TexturePreview;
+
 class X3DTextureNodeEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DTexture2DNodeEditor,
@@ -72,7 +74,7 @@ protected:
 
 	///  @name Construction
 
-	X3DTextureNodeEditor (const X3D::BrowserPtr &);
+	X3DTextureNodeEditor ();
 
 	virtual
 	void
@@ -84,18 +86,9 @@ private:
 	///  @name Construction
 
 	void
-	set_browser ();
-
-	void
-	set_initialized ();
-
-	void
 	set_selection ();
 
 	///  @name Preview
-
-	void
-	set_preview ();
 
 	///  @name textureTransform
 
@@ -118,11 +111,11 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                    preview;
+	std::unique_ptr <TexturePreview>   preview;
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::SFTime                        textureBuffer;
 	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
-	X3D::UndoStepPtr                        undoStep;
+	X3D::UndoStepPtr                   undoStep;
 	bool                               changing;
 
 };

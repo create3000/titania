@@ -75,7 +75,7 @@ protected:
 
 	///  @name Construction
 
-	X3DTexture2DNodeEditor (const X3D::BrowserPtr &);
+	X3DTexture2DNodeEditor ();
 
 	///  @name Member access
 
@@ -107,9 +107,6 @@ private:
 
 	bool
 	on_configure_event (GdkEventConfigure* const);
-
-	void
-	set_loadState ();
 
 	///  @name Construction
 

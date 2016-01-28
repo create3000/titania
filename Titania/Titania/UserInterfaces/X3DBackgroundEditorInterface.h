@@ -189,6 +189,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
 	Gtk::Box &
 	getColorBox () const
 	{ return *m_ColorBox; }
@@ -265,17 +269,29 @@ public:
 	getTransparencyScale () const
 	{ return *m_TransparencyScale; }
 
+	Gtk::Box &
+	getTexturesBox () const
+	{ return *m_TexturesBox; }
+
 	Gtk::Expander &
 	getTextureExpander () const
 	{ return *m_TextureExpander; }
 
+	Gtk::Notebook &
+	getTexturesNotebook () const
+	{ return *m_TexturesNotebook; }
+
 	Gtk::Label &
-	getTextureFormatLabel () const
-	{ return *m_TextureFormatLabel; }
+	getFrontTextureFormatLabel () const
+	{ return *m_FrontTextureFormatLabel; }
 
 	Gtk::Box &
-	getPreviewBox () const
-	{ return *m_PreviewBox; }
+	getFrontTexturePreviewBox () const
+	{ return *m_FrontTexturePreviewBox; }
+
+	Gtk::Grid &
+	getFrontURLGrid () const
+	{ return *m_FrontURLGrid; }
 
 	Gtk::Box &
 	getFrontURLBox () const
@@ -297,6 +313,18 @@ public:
 	getFrontURLReloadButton () const
 	{ return *m_FrontURLReloadButton; }
 
+	Gtk::Label &
+	getBackTextureFormatLabel () const
+	{ return *m_BackTextureFormatLabel; }
+
+	Gtk::Box &
+	getBackTexturePreviewBox () const
+	{ return *m_BackTexturePreviewBox; }
+
+	Gtk::Grid &
+	getBackURLGrid () const
+	{ return *m_BackURLGrid; }
+
 	Gtk::Box &
 	getBackURLBox () const
 	{ return *m_BackURLBox; }
@@ -316,6 +344,18 @@ public:
 	Gtk::Button &
 	getBackURLReloadButton () const
 	{ return *m_BackURLReloadButton; }
+
+	Gtk::Label &
+	getLeftTextureFormatLabel () const
+	{ return *m_LeftTextureFormatLabel; }
+
+	Gtk::Box &
+	getLeftTexturePreviewBox () const
+	{ return *m_LeftTexturePreviewBox; }
+
+	Gtk::Grid &
+	getLeftURLGrid () const
+	{ return *m_LeftURLGrid; }
 
 	Gtk::Box &
 	getLeftURLBox () const
@@ -337,6 +377,18 @@ public:
 	getLeftURLReloadButton () const
 	{ return *m_LeftURLReloadButton; }
 
+	Gtk::Label &
+	getRightTextureFormatLabel () const
+	{ return *m_RightTextureFormatLabel; }
+
+	Gtk::Box &
+	getRightTexturePreviewBox () const
+	{ return *m_RightTexturePreviewBox; }
+
+	Gtk::Grid &
+	getRightURLGrid () const
+	{ return *m_RightURLGrid; }
+
 	Gtk::Box &
 	getRightURLBox () const
 	{ return *m_RightURLBox; }
@@ -357,6 +409,18 @@ public:
 	getRightURLReloadButton () const
 	{ return *m_RightURLReloadButton; }
 
+	Gtk::Label &
+	getTopTextureFormatLabel () const
+	{ return *m_TopTextureFormatLabel; }
+
+	Gtk::Box &
+	getTopTexturePreviewBox () const
+	{ return *m_TopTexturePreviewBox; }
+
+	Gtk::Grid &
+	getTopURLGrid () const
+	{ return *m_TopURLGrid; }
+
 	Gtk::Box &
 	getTopURLBox () const
 	{ return *m_TopURLBox; }
@@ -376,6 +440,18 @@ public:
 	Gtk::Button &
 	getTopURLReloadButton () const
 	{ return *m_TopURLReloadButton; }
+
+	Gtk::Label &
+	getBottomTextureFormatLabel () const
+	{ return *m_BottomTextureFormatLabel; }
+
+	Gtk::Box &
+	getBottomTexturePreviewBox () const
+	{ return *m_BottomTexturePreviewBox; }
+
+	Gtk::Grid &
+	getBottomURLGrid () const
+	{ return *m_BottomURLGrid; }
 
 	Gtk::Box &
 	getBottomURLBox () const
@@ -435,6 +511,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BottomURLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Notebook*                         m_Notebook;
 	Gtk::Box*                              m_ColorBox;
 	Gtk::Expander*                         m_ColorsExpander;
 	Gtk::Box*                              m_SkyGradientBox;
@@ -454,34 +531,52 @@ private:
 	Gtk::Box*                              m_GroundColorBox;
 	Gtk::Button*                           m_GroundColorButton;
 	Gtk::Scale*                            m_TransparencyScale;
+	Gtk::Box*                              m_TexturesBox;
 	Gtk::Expander*                         m_TextureExpander;
-	Gtk::Label*                            m_TextureFormatLabel;
-	Gtk::Box*                              m_PreviewBox;
+	Gtk::Notebook*                         m_TexturesNotebook;
+	Gtk::Label*                            m_FrontTextureFormatLabel;
+	Gtk::Box*                              m_FrontTexturePreviewBox;
+	Gtk::Grid*                             m_FrontURLGrid;
 	Gtk::Box*                              m_FrontURLBox;
 	Gtk::TreeView*                         m_FrontURLTreeView;
 	Gtk::Button*                           m_FrontURLAddButton;
 	Gtk::Button*                           m_FrontURLRemoveButton;
 	Gtk::Button*                           m_FrontURLReloadButton;
+	Gtk::Label*                            m_BackTextureFormatLabel;
+	Gtk::Box*                              m_BackTexturePreviewBox;
+	Gtk::Grid*                             m_BackURLGrid;
 	Gtk::Box*                              m_BackURLBox;
 	Gtk::TreeView*                         m_BackURLTreeView;
 	Gtk::Button*                           m_BackURLAddButton;
 	Gtk::Button*                           m_BackURLRemoveButton;
 	Gtk::Button*                           m_BackURLReloadButton;
+	Gtk::Label*                            m_LeftTextureFormatLabel;
+	Gtk::Box*                              m_LeftTexturePreviewBox;
+	Gtk::Grid*                             m_LeftURLGrid;
 	Gtk::Box*                              m_LeftURLBox;
 	Gtk::TreeView*                         m_LeftURLTreeView;
 	Gtk::Button*                           m_LeftURLAddButton;
 	Gtk::Button*                           m_LeftURLRemoveButton;
 	Gtk::Button*                           m_LeftURLReloadButton;
+	Gtk::Label*                            m_RightTextureFormatLabel;
+	Gtk::Box*                              m_RightTexturePreviewBox;
+	Gtk::Grid*                             m_RightURLGrid;
 	Gtk::Box*                              m_RightURLBox;
 	Gtk::TreeView*                         m_RightURLTreeView;
 	Gtk::Button*                           m_RightURLAddButton;
 	Gtk::Button*                           m_RightURLRemoveButton;
 	Gtk::Button*                           m_RightURLReloadButton;
+	Gtk::Label*                            m_TopTextureFormatLabel;
+	Gtk::Box*                              m_TopTexturePreviewBox;
+	Gtk::Grid*                             m_TopURLGrid;
 	Gtk::Box*                              m_TopURLBox;
 	Gtk::TreeView*                         m_TopURLTreeView;
 	Gtk::Button*                           m_TopURLAddButton;
 	Gtk::Button*                           m_TopURLRemoveButton;
 	Gtk::Button*                           m_TopURLReloadButton;
+	Gtk::Label*                            m_BottomTextureFormatLabel;
+	Gtk::Box*                              m_BottomTexturePreviewBox;
+	Gtk::Grid*                             m_BottomURLGrid;
 	Gtk::Box*                              m_BottomURLBox;
 	Gtk::TreeView*                         m_BottomURLTreeView;
 	Gtk::Button*                           m_BottomURLAddButton;

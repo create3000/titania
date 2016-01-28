@@ -138,6 +138,15 @@ private:
 	set_buffer ();
 
 	template <class ValueType>
+	int32_t
+	get_index (const X3D::X3DField <ValueType> & field) const
+	{ return 0; }
+	
+	template <class ValueType>
+	int32_t
+	get_index (X3D::X3DArrayField <ValueType> & field) const;
+
+	template <class ValueType>
 	X3D::Vector3d
 	get_value (const X3D::X3DField <ValueType> &) const;
 	
@@ -167,6 +176,7 @@ private:
 	X3D::UnitCategory                                   unit;
 	std::vector <double>                                lower;
 	std::vector <double>                                upper;
+	std::vector <double>                                empty;
 
 };
 
@@ -183,7 +193,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	           widget (widget),
 	            nodes (),
 	             name (name),
-	            index (0),
+	            index (-1),
 	         undoStep (),
 	            input (-1),
 	         changing (false),
@@ -192,7 +202,8 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	          uniform (false),
 	             unit (X3D::UnitCategory::NONE),
 	            lower (),
-	            upper ()
+	            upper (),
+               empty ()
 {
 	addChildren (buffer);
 	
@@ -216,6 +227,7 @@ X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 		{
 			lower .emplace_back (adjustment -> get_lower ());
 			upper .emplace_back (adjustment -> get_upper ());
+			empty .emplace_back (adjustment -> get_value ());
 		}
 	}
 	
@@ -356,15 +368,19 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 				const auto geo   = field .isGeospatial ();
 				const auto value = get_value (field);
 
-				unit = field .getUnit ();
+				unit  = field .getUnit ();
+				index = get_index (field);
+	
+				if (index >= 0)
+				{
+					set_bounds ();
+	
+					adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
+					adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
+					adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
+				}
 
-				set_bounds ();
-
-				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
-				adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
-				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
-
-				hasField = true;
+				hasField = (index >= 0);
 				break;
 			}
 			catch (const X3D::X3DError &)
@@ -378,14 +394,25 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustments [0] -> set_value (adjustments [0] -> get_lower ());
-		adjustments [1] -> set_value (adjustments [1] -> get_lower ());
-		adjustments [2] -> set_value (adjustments [2] -> get_lower ());
+		adjustments [0] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [0]));
+		adjustments [1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [1]));
+		adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [2]));
 	}
 
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+template <class ValueType>
+int32_t
+X3DFieldAdjustment3 <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
+{
+	if (field .empty ())
+		return -1;
+
+	return std::min <int32_t> (index, field .size () - 1);
 }
 
 template <class Type>

@@ -53,15 +53,21 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
+#include "X3DBackgroundEditor.h"
 
 #include "../../ComposedWidgets/MFColorButton.h"
 #include "../../ComposedWidgets/BackgroundTool.h"
 
+#include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
+
 namespace titania {
 namespace puck {
 
+class TexturePreview;
+
 class BackgroundEditor :
-	virtual public X3DBackgroundEditorInterface
+	virtual public X3DBackgroundEditorInterface,
+	public X3DBackgroundEditor
 {
 public:
 
@@ -89,6 +95,9 @@ private:
 	///  @name Event handler
 
 	void
+	set_texture (const std::shared_ptr <TexturePreview> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	void
 	on_sky_whichChoice_changed ();
 	
 	void
@@ -102,14 +111,21 @@ private:
 
 	///  @name Members
 
-	BackgroundTool                     sky;
-	MFColorButton                      skyColor;
-	X3DFieldAdjustment <X3D::MFFloat>  skyAngle;
-	BackgroundTool                     ground;
-	MFColorButton                      groundColor;
-	X3DFieldAdjustment <X3D::MFFloat>  groundAngle;
-	X3DFieldAdjustment <X3D::SFFloat>  transparency;
-	bool                               changing;
+	BackgroundTool                       sky;
+	MFColorButton                        skyColor;
+	X3DFieldAdjustment <X3D::MFFloat>    skyAngle;
+	BackgroundTool                       ground;
+	MFColorButton                        groundColor;
+	X3DFieldAdjustment <X3D::MFFloat>    groundAngle;
+	X3DFieldAdjustment <X3D::SFFloat>    transparency;
+	std::shared_ptr <TexturePreview>     frontPreview;
+	std::shared_ptr <TexturePreview>     backPreview;
+	std::shared_ptr <TexturePreview>     leftPreview;
+	std::shared_ptr <TexturePreview>     rightPreview;
+	std::shared_ptr <TexturePreview>     topPreview;
+	std::shared_ptr <TexturePreview>     bottomPreview;
+	X3D::X3DPtr <X3D::X3DBackgroundNode> backgroundNode;
+	bool                                 changing;
 
 };
 

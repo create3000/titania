@@ -48,45 +48,59 @@
  *
  ******************************************************************************/
 
-#include "TextureEditor.h"
+#ifndef __TITANIA_EDITORS_BACKGROUND_EDITOR_X3DBACKGROUND_EDITOR_H__
+#define __TITANIA_EDITORS_BACKGROUND_EDITOR_X3DBACKGROUND_EDITOR_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
+#include "../../ComposedWidgets/MFStringURLWidget.h"
 
-#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 
 namespace titania {
 namespace puck {
 
-TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	          X3DTextureEditorInterface (get_ui ("Editors/TextureEditor.glade"), gconf_dir ()),
-	               X3DTextureNodeEditor (),
-	      X3DTextureTransformNodeEditor (),
-	X3DTextureCoordinateGeneratorEditor (),
-	            X3DTexturePaletteEditor ()
+class NormalTool;
+
+class X3DBackgroundEditor :
+	virtual public X3DBackgroundEditorInterface
 {
-	getTextureChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+public:
 
-	setup ();
-}
+	///  @name Destruction
 
-void
-TextureEditor::initialize ()
-{
-	X3DTextureEditorInterface::initialize ();
-	X3DTextureNodeEditor::initialize ();
-	X3DTextureTransformNodeEditor::initialize ();
-	X3DTextureCoordinateGeneratorEditor::initialize ();
-	X3DTexturePaletteEditor::initialize ();
-}
+	virtual
+	~X3DBackgroundEditor ();
 
-TextureEditor::~TextureEditor ()
-{
-	getConfig () .setItem ("currentPage", getTextureChildNotebook () .get_current_page ());
 
-	dispose ();
-}
+protected:
+
+	///  @name Construction
+
+	X3DBackgroundEditor ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	setBackground (const X3D::X3DPtr <X3D::X3DBackgroundNode> &);
+
+
+private:
+
+	///  @name Members
+
+	MFStringURLWidget frontUrl;
+	MFStringURLWidget backUrl;
+	MFStringURLWidget leftUrl;
+	MFStringURLWidget rightUrl;
+	MFStringURLWidget topUrl;
+	MFStringURLWidget bottomUrl;
+
+};
 
 } // puck
 } // titania
+
+#endif
