@@ -467,11 +467,11 @@
                       <object class="GtkSpinButton" id="RangeSpinButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">Sky Angle</property>
+                        <property name="tooltip_text" translatable="yes">Range</property>
                         <property name="text" translatable="yes">0,000000</property>
                         <property name="adjustment">RangeAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">6</property>
+                        <property name="digits">3</property>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

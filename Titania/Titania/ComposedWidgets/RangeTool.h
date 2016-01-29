@@ -115,13 +115,17 @@ RangeTool::setNodes (const X3D::MFNode & nodes)
 		{
 			try
 			{
+				__LOG__ << node -> getTypeName () << std::endl;
+
 				node    -> getField <X3D::MFFloat> ("range") .addInterest (auxNode -> getField <X3D::MFFloat> ("range"));
 				auxNode -> getField <X3D::MFFloat> ("range") .addInterest (node    -> getField <X3D::MFFloat> ("range"));
 
 				auxNode -> setField <X3D::MFFloat> ("range", node -> getField <X3D::MFFloat> ("range"));
 			}
-			catch (const X3D::X3DError &)
-			{ }
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 
 		auxNode -> setup ();
@@ -165,6 +169,8 @@ RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFCol
 				color    .emplace_back (1 - p, 1 -p, 1 - p);
 			}	
 		}
+
+		setWhichChoice (position .empty () ? -1 : 0);
 
 		return std::make_pair (position, color);
 	}

@@ -263,9 +263,8 @@ X3DGradientTool::set_initialized ()
 		__LOG__ << error .what () << std::endl;
 	}
 
-	setNodes (nodes);
-
 	realize ();
+	set_field ();
 }
 
 inline
