@@ -170,8 +170,6 @@ RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFCol
 			}	
 		}
 
-		setWhichChoice (position .empty () ? -1 : 0);
-
 		return std::make_pair (position, color);
 	}
 	catch (const X3D::X3DError & error)

@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Thu, 28 Jan 2016 11:56:47 GMT"
+META "modified" "Fri, 29 Jan 2016 12:11:21 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -334,14 +334,6 @@ WorldInfo {
           name "activeLayer"
           reference "http://titania.create3000.de"
           value -1
-        }
-      }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
         }
       }
     ]
@@ -689,7 +681,7 @@ function set_removeTime (value, time)
 
 function set_translation (value)
 {
-	//print (\"set_translation: \", value);
+	print (\"set_translation: \", value);
 
 	var arrows = get_arrows ();
 

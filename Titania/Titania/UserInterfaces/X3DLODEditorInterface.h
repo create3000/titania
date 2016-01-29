@@ -221,34 +221,6 @@ public:
 	getRangeSpinButton () const
 	{ return *m_RangeSpinButton; }
 
-	Gtk::Box &
-	getRangeGradientBox () const
-	{ return *m_RangeGradientBox; }
-
-	Gtk::Grid &
-	getRangeColorGrid () const
-	{ return *m_RangeColorGrid; }
-
-	Gtk::ScrolledWindow &
-	getSkyColorsScrolledWindow () const
-	{ return *m_SkyColorsScrolledWindow; }
-
-	Gtk::Button &
-	getAddRangeColorButton () const
-	{ return *m_AddRangeColorButton; }
-
-	Gtk::Button &
-	getRemoveRangeColorButton () const
-	{ return *m_RemoveRangeColorButton; }
-
-	Gtk::Box &
-	getRangeColorBox () const
-	{ return *m_RangeColorBox; }
-
-	Gtk::Button &
-	getRangeColorButton () const
-	{ return *m_RangeColorButton; }
-
 	Gtk::SpinButton &
 	getLODLevelSpinButton () const
 	{ return *m_LODLevelSpinButton; }
@@ -256,6 +228,10 @@ public:
 	Gtk::CheckButton &
 	getLODKeepCurrentLevelCheckButton () const
 	{ return *m_LODKeepCurrentLevelCheckButton; }
+
+	Gtk::Box &
+	getRangeGradientBox () const
+	{ return *m_RangeGradientBox; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -292,6 +268,30 @@ public:
 	Gtk::SpinButton &
 	getLODBBoxCenterZSpinButton () const
 	{ return *m_LODBBoxCenterZSpinButton; }
+
+	Gtk::Grid &
+	getRangeColorGrid () const
+	{ return *m_RangeColorGrid; }
+
+	Gtk::ScrolledWindow &
+	getSkyColorsScrolledWindow () const
+	{ return *m_SkyColorsScrolledWindow; }
+
+	Gtk::Button &
+	getAddRangeColorButton () const
+	{ return *m_AddRangeColorButton; }
+
+	Gtk::Button &
+	getRemoveRangeColorButton () const
+	{ return *m_RemoveRangeColorButton; }
+
+	Gtk::Box &
+	getRangeColorBox () const
+	{ return *m_RangeColorBox; }
+
+	Gtk::Button &
+	getRangeColorButton () const
+	{ return *m_RangeColorButton; }
 
 	virtual
 	void
@@ -351,15 +351,9 @@ private:
 	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
 	Gtk::CheckButton*              m_LODMaxCheckButton;
 	Gtk::SpinButton*               m_RangeSpinButton;
-	Gtk::Box*                      m_RangeGradientBox;
-	Gtk::Grid*                     m_RangeColorGrid;
-	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
-	Gtk::Button*                   m_AddRangeColorButton;
-	Gtk::Button*                   m_RemoveRangeColorButton;
-	Gtk::Box*                      m_RangeColorBox;
-	Gtk::Button*                   m_RangeColorButton;
 	Gtk::SpinButton*               m_LODLevelSpinButton;
 	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
+	Gtk::Box*                      m_RangeGradientBox;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Box*                      m_LODBBoxSizeBox;
 	Gtk::SpinButton*               m_LODBBoxSizeXSpinButton;
@@ -369,6 +363,12 @@ private:
 	Gtk::SpinButton*               m_LODBBoxCenterXSpinButton;
 	Gtk::SpinButton*               m_LODBBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_LODBBoxCenterZSpinButton;
+	Gtk::Grid*                     m_RangeColorGrid;
+	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
+	Gtk::Button*                   m_AddRangeColorButton;
+	Gtk::Button*                   m_RemoveRangeColorButton;
+	Gtk::Box*                      m_RangeColorBox;
+	Gtk::Button*                   m_RangeColorButton;
 
 };
 

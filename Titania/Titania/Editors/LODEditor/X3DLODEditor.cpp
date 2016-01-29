@@ -128,6 +128,9 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 		getLODKeepCurrentLevelCheckButton () .set_sensitive (true);
 		getLODKeepCurrentLevelCheckButton () .set_active (lod -> getKeepCurrentLevel ());
 		getLODKeepCurrentLevelCheckButton () .set_inconsistent (false);
+
+		range .setWhichChoice (lod -> range () .empty () ? -1 : 0);
+		singleRange .setIndex (lod -> range () .empty () ? -1 : 0);
 	}
 	else
 	{
