@@ -102,7 +102,10 @@ protected:
 	      lastUndoGroup (),
 		    currentField (),
 		          fields (new X3D::FieldSet (getCurrentBrowser ()))
-	{ }
+	{
+		fields -> hasEvents (false);
+		fields -> setup ();
+	}
 
 	virtual
 	void

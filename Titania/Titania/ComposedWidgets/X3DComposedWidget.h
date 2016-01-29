@@ -122,6 +122,9 @@ protected:
 		          editor (editor)
 	{ }
 
+
+private:
+
 	/***
 	 *  @name Members
 	 */

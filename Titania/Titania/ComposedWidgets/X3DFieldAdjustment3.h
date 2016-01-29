@@ -358,34 +358,31 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 	bool hasField = false;
 
-	if (index >= 0)
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
-		for (const auto & node : basic::make_reverse_range (nodes))
+		try
 		{
-			try
+			auto &     field = node -> getField <Type> (name);
+			const auto geo   = field .isGeospatial ();
+			const auto value = get_value (field);
+
+			unit  = field .getUnit ();
+			index = get_index (field);
+
+			if (index >= 0)
 			{
-				auto &     field = node -> getField <Type> (name);
-				const auto geo   = field .isGeospatial ();
-				const auto value = get_value (field);
+				set_bounds ();
 
-				unit  = field .getUnit ();
-				index = get_index (field);
-	
-				if (index >= 0)
-				{
-					set_bounds ();
-	
-					adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
-					adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
-					adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
-				}
-
-				hasField = (index >= 0);
-				break;
+				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
+				adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
+				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
 			}
-			catch (const X3D::X3DError &)
-			{ }
+
+			hasField = (index >= 0);
+			break;
 		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
 	if (not hasField)

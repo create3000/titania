@@ -254,6 +254,10 @@ public:
 	{ return *m_ColorsExpander; }
 
 	Gtk::Box &
+	getSkyBox () const
+	{ return *m_SkyBox; }
+
+	Gtk::Box &
 	getSkyGradientBox () const
 	{ return *m_SkyGradientBox; }
 
@@ -284,6 +288,10 @@ public:
 	Gtk::Button &
 	getSkyColorButton () const
 	{ return *m_SkyColorButton; }
+
+	Gtk::Box &
+	getGroundBox () const
+	{ return *m_GroundBox; }
 
 	Gtk::Box &
 	getGroundGradientBox () const
@@ -599,6 +607,7 @@ private:
 	Gtk::Notebook*                         m_Notebook;
 	Gtk::Box*                              m_ColorBox;
 	Gtk::Expander*                         m_ColorsExpander;
+	Gtk::Box*                              m_SkyBox;
 	Gtk::Box*                              m_SkyGradientBox;
 	Gtk::SpinButton*                       m_SkyAngleSpinButton;
 	Gtk::Grid*                             m_SkyColorGrid;
@@ -607,6 +616,7 @@ private:
 	Gtk::Button*                           m_RemoveSkyColorButton;
 	Gtk::Box*                              m_SkyColorBox;
 	Gtk::Button*                           m_SkyColorButton;
+	Gtk::Box*                              m_GroundBox;
 	Gtk::Box*                              m_GroundGradientBox;
 	Gtk::SpinButton*                       m_GroundAngleSpinButton;
 	Gtk::Grid*                             m_GroundColorGrid;

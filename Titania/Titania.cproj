@@ -2347,6 +2347,7 @@
     <None Include="Titania\ComposedWidgets\TexturePreview.h" />
     <None Include="share\titania\ui\icons\Bound.svg" />
     <None Include="share\titania\ui\icons\X3DBaseNode.svg" />
+    <None Include="Titania\ComposedWidgets\RangeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

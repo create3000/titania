@@ -60,28 +60,39 @@ const std::string   FieldSet::typeName       = "FieldSet";
 const std::string   FieldSet::containerField = "fieldContainer";
 
 FieldSet::FieldSet (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext)
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+		  events (true)
 {
 	addType (X3DConstants::FieldSet);
 
 	isPrivate (true);
-	setup ();
 }
 
 FieldSet::FieldSet (X3DExecutionContext* const executionContext, const FieldDefinitionArray & fields) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext)
+	FieldSet (executionContext)
 {
 	for (const auto & field : fields)
 		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
-
-	isPrivate (true);
-	setup ();
 }
 
 X3DBaseNode*
 FieldSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new FieldSet (executionContext);
+}
+
+void
+FieldSet::addEvent (X3DChildObject* const object)
+{
+	if (events)
+		X3DBaseNode::addEvent (object);
+}
+
+void
+FieldSet::addEvent (X3DChildObject* const object, const EventPtr & event)
+{
+	if (events)
+		X3DBaseNode::addEvent (object, event);
 }
 
 } // X3D

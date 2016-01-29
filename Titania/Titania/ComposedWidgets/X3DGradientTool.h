@@ -81,6 +81,7 @@ public:
 	getWhichChoice () const
 	{ return whichChoice; }
 
+	virtual
 	void
 	setNodes (const X3D::MFNode &);
 
@@ -176,8 +177,8 @@ private:
 	set_buffer ();
 
 	virtual
-	void
-	set_tool_values (const X3D::MFFloat &, const X3D::MFColor &);
+	std::pair <X3D::MFFloat, X3D::MFColor>
+	get_tool_values (const X3D::MFFloat &, const X3D::MFColor &);
 
 	void
 	connectPosition (const X3D::MFFloat &);
@@ -544,22 +545,24 @@ X3DGradientTool::set_buffer ()
 		{ }
 	}
 
-	set_tool_values (position, color);
+	try
+	{
+		const auto values = get_tool_values (position, color);
+
+		getTool () -> setField <X3D::MFFloat> ("inputPosition", values .first);
+		getTool () -> setField <X3D::MFColor> ("inputColor",    values .second);
+	}
+	catch (const X3D::X3DError & error)
+	{ }
 
 	browser -> set_sensitive (not nodes .empty ());
 }
 
 inline
-void
-X3DGradientTool::set_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+std::pair <X3D::MFFloat, X3D::MFColor>
+X3DGradientTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
 {
-	try
-	{
-		getTool () -> setField <X3D::MFFloat> ("inputPosition", positionValue);
-		getTool () -> setField <X3D::MFColor> ("inputColor",    colorValue);
-	}
-	catch (const X3D::X3DError & error)
-	{ }
+	return std::make_pair (positionValue, colorValue);
 }
 
 inline

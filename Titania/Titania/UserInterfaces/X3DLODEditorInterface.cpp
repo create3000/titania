@@ -73,6 +73,8 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_LODLevelAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODLevelAdjustment"));
 	m_LODRangeMaxAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMaxAdjustment"));
 	m_LODRangeMinAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMinAdjustment"));
+	m_RangeAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RangeAdjustment"));
+	m_RangeColorAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RangeColorAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -80,21 +82,7 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("LODExpander", m_LODExpander);
 	m_builder -> get_widget ("LODBox", m_LODBox);
-	m_builder -> get_widget ("LODBBoxCenterBox", m_LODBBoxCenterBox);
-	m_builder -> get_widget ("LODBBoxCenterXSpinButton", m_LODBBoxCenterXSpinButton);
-	m_builder -> get_widget ("LODBBoxCenterYSpinButton", m_LODBBoxCenterYSpinButton);
-	m_builder -> get_widget ("LODBBoxCenterZSpinButton", m_LODBBoxCenterZSpinButton);
-	m_builder -> get_widget ("LODBBoxSizeBox", m_LODBBoxSizeBox);
-	m_builder -> get_widget ("LODBBoxSizeXSpinButton", m_LODBBoxSizeXSpinButton);
-	m_builder -> get_widget ("LODBBoxSizeYSpinButton", m_LODBBoxSizeYSpinButton);
-	m_builder -> get_widget ("LODBBoxSizeZSpinButton", m_LODBBoxSizeZSpinButton);
-	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
-	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
 	m_builder -> get_widget ("LODForceTransitionsCheckButton", m_LODForceTransitionsCheckButton);
-	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
-	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
-	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
-	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
 	m_builder -> get_widget ("LODNameBox", m_LODNameBox);
 	m_builder -> get_widget ("LODNameEntry", m_LODNameEntry);
 	m_builder -> get_widget ("LODRenameButton", m_LODRenameButton);
@@ -103,15 +91,36 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
 	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
 	m_builder -> get_widget ("LODMoveCenterButton", m_LODMoveCenterButton);
+	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
+	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
+	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
+	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
+	m_builder -> get_widget ("RangeSpinButton", m_RangeSpinButton);
+	m_builder -> get_widget ("RangeGradientBox", m_RangeGradientBox);
+	m_builder -> get_widget ("RangeColorGrid", m_RangeColorGrid);
+	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
+	m_builder -> get_widget ("AddRangeColorButton", m_AddRangeColorButton);
+	m_builder -> get_widget ("RemoveRangeColorButton", m_RemoveRangeColorButton);
+	m_builder -> get_widget ("RangeColorBox", m_RangeColorBox);
+	m_builder -> get_widget ("RangeColorButton", m_RangeColorButton);
+	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
+	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
+	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
+	m_builder -> get_widget ("LODBBoxSizeBox", m_LODBBoxSizeBox);
+	m_builder -> get_widget ("LODBBoxSizeXSpinButton", m_LODBBoxSizeXSpinButton);
+	m_builder -> get_widget ("LODBBoxSizeYSpinButton", m_LODBBoxSizeYSpinButton);
+	m_builder -> get_widget ("LODBBoxSizeZSpinButton", m_LODBBoxSizeZSpinButton);
+	m_builder -> get_widget ("LODBBoxCenterBox", m_LODBBoxCenterBox);
+	m_builder -> get_widget ("LODBBoxCenterXSpinButton", m_LODBBoxCenterXSpinButton);
+	m_builder -> get_widget ("LODBBoxCenterYSpinButton", m_LODBBoxCenterYSpinButton);
+	m_builder -> get_widget ("LODBBoxCenterZSpinButton", m_LODBBoxCenterZSpinButton);
 
 	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
+	m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_move_center_button));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
 	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate));
-
-	// Connect object Gtk::Button with id 'LODMoveCenterButton'.
-	m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_move_center_button));
 
 	// Call construct handler of base class.
 	construct ();

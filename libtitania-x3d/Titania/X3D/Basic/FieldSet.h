@@ -104,20 +104,17 @@ public:
 		return getField (getName ());
 	}
 
-	virtual
 	void
-	addEvent () final override
-	{ }
+	hasEvents (const bool value)
+	{ events = value; }
 
 	virtual
 	void
-	addEvent (X3DChildObject* const) final override
-	{ }
+	addEvent (X3DChildObject* const) final override;
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
+	addEvent (X3DChildObject* const, const EventPtr &) final override;
 
 
 private:
@@ -127,6 +124,10 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	///  @name Members
+
+	bool events;
 
 };
 

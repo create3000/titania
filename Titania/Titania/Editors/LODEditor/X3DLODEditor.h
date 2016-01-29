@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
 
 #include "../../ComposedWidgets.h"
+#include "../../ComposedWidgets/RangeTool.h"
 #include "../../UserInterfaces/X3DLODEditorInterface.h"
 
 #include <Titania/X3D/Components/Navigation/LOD.h>
@@ -97,6 +98,9 @@ private:
 	void
 	on_lod_move_center_button () final override;
 
+	void
+	on_range_whichChoice_changed ();
+
 	virtual
 	void
 	on_lod_keep_current_level_activate () final override;
@@ -106,7 +110,8 @@ private:
 	NameEntry                          nodeName;
 	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
 	X3DFieldAdjustment3 <X3D::SFVec3f> center;
-	std::unique_ptr <LODRangeWidget>   range;
+	RangeTool                          range;
+	X3DFieldAdjustment <X3D::MFFloat>  singleRange;
 	X3DFieldAdjustment <X3D::SFInt32>  level_changed;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;

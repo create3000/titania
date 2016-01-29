@@ -104,6 +104,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
+	m_builder -> get_widget ("SkyBox", m_SkyBox);
 	m_builder -> get_widget ("SkyGradientBox", m_SkyGradientBox);
 	m_builder -> get_widget ("SkyAngleSpinButton", m_SkyAngleSpinButton);
 	m_builder -> get_widget ("SkyColorGrid", m_SkyColorGrid);
@@ -112,6 +113,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RemoveSkyColorButton", m_RemoveSkyColorButton);
 	m_builder -> get_widget ("SkyColorBox", m_SkyColorBox);
 	m_builder -> get_widget ("SkyColorButton", m_SkyColorButton);
+	m_builder -> get_widget ("GroundBox", m_GroundBox);
 	m_builder -> get_widget ("GroundGradientBox", m_GroundGradientBox);
 	m_builder -> get_widget ("GroundAngleSpinButton", m_GroundAngleSpinButton);
 	m_builder -> get_widget ("GroundColorGrid", m_GroundColorGrid);

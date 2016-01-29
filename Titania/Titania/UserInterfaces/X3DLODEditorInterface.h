@@ -137,6 +137,14 @@ public:
 	getLODRangeMinAdjustment () const
 	{ return m_LODRangeMinAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getRangeAdjustment () const
+	{ return m_RangeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getRangeColorAdjustment () const
+	{ return m_RangeColorAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -157,65 +165,9 @@ public:
 	getLODBox () const
 	{ return *m_LODBox; }
 
-	Gtk::Box &
-	getLODBBoxCenterBox () const
-	{ return *m_LODBBoxCenterBox; }
-
-	Gtk::SpinButton &
-	getLODBBoxCenterXSpinButton () const
-	{ return *m_LODBBoxCenterXSpinButton; }
-
-	Gtk::SpinButton &
-	getLODBBoxCenterYSpinButton () const
-	{ return *m_LODBBoxCenterYSpinButton; }
-
-	Gtk::SpinButton &
-	getLODBBoxCenterZSpinButton () const
-	{ return *m_LODBBoxCenterZSpinButton; }
-
-	Gtk::Box &
-	getLODBBoxSizeBox () const
-	{ return *m_LODBBoxSizeBox; }
-
-	Gtk::SpinButton &
-	getLODBBoxSizeXSpinButton () const
-	{ return *m_LODBBoxSizeXSpinButton; }
-
-	Gtk::SpinButton &
-	getLODBBoxSizeYSpinButton () const
-	{ return *m_LODBBoxSizeYSpinButton; }
-
-	Gtk::SpinButton &
-	getLODBBoxSizeZSpinButton () const
-	{ return *m_LODBBoxSizeZSpinButton; }
-
-	Gtk::SpinButton &
-	getLODLevelSpinButton () const
-	{ return *m_LODLevelSpinButton; }
-
-	Gtk::CheckButton &
-	getLODKeepCurrentLevelCheckButton () const
-	{ return *m_LODKeepCurrentLevelCheckButton; }
-
 	Gtk::CheckButton &
 	getLODForceTransitionsCheckButton () const
 	{ return *m_LODForceTransitionsCheckButton; }
-
-	Gtk::Box &
-	getLODRangeBox () const
-	{ return *m_LODRangeBox; }
-
-	Gtk::SpinButton &
-	getLODRangeMinSpinButton () const
-	{ return *m_LODRangeMinSpinButton; }
-
-	Gtk::SpinButton &
-	getLODRangeMaxSpinButton () const
-	{ return *m_LODRangeMaxSpinButton; }
-
-	Gtk::CheckButton &
-	getLODMaxCheckButton () const
-	{ return *m_LODMaxCheckButton; }
 
 	Gtk::Box &
 	getLODNameBox () const
@@ -249,17 +201,109 @@ public:
 	getLODMoveCenterButton () const
 	{ return *m_LODMoveCenterButton; }
 
+	Gtk::Box &
+	getLODRangeBox () const
+	{ return *m_LODRangeBox; }
+
+	Gtk::SpinButton &
+	getLODRangeMinSpinButton () const
+	{ return *m_LODRangeMinSpinButton; }
+
+	Gtk::SpinButton &
+	getLODRangeMaxSpinButton () const
+	{ return *m_LODRangeMaxSpinButton; }
+
+	Gtk::CheckButton &
+	getLODMaxCheckButton () const
+	{ return *m_LODMaxCheckButton; }
+
+	Gtk::SpinButton &
+	getRangeSpinButton () const
+	{ return *m_RangeSpinButton; }
+
+	Gtk::Box &
+	getRangeGradientBox () const
+	{ return *m_RangeGradientBox; }
+
+	Gtk::Grid &
+	getRangeColorGrid () const
+	{ return *m_RangeColorGrid; }
+
+	Gtk::ScrolledWindow &
+	getSkyColorsScrolledWindow () const
+	{ return *m_SkyColorsScrolledWindow; }
+
+	Gtk::Button &
+	getAddRangeColorButton () const
+	{ return *m_AddRangeColorButton; }
+
+	Gtk::Button &
+	getRemoveRangeColorButton () const
+	{ return *m_RemoveRangeColorButton; }
+
+	Gtk::Box &
+	getRangeColorBox () const
+	{ return *m_RangeColorBox; }
+
+	Gtk::Button &
+	getRangeColorButton () const
+	{ return *m_RangeColorButton; }
+
+	Gtk::SpinButton &
+	getLODLevelSpinButton () const
+	{ return *m_LODLevelSpinButton; }
+
+	Gtk::CheckButton &
+	getLODKeepCurrentLevelCheckButton () const
+	{ return *m_LODKeepCurrentLevelCheckButton; }
+
+	Gtk::Expander &
+	getBoundingBoxExpander () const
+	{ return *m_BoundingBoxExpander; }
+
+	Gtk::Box &
+	getLODBBoxSizeBox () const
+	{ return *m_LODBBoxSizeBox; }
+
+	Gtk::SpinButton &
+	getLODBBoxSizeXSpinButton () const
+	{ return *m_LODBBoxSizeXSpinButton; }
+
+	Gtk::SpinButton &
+	getLODBBoxSizeYSpinButton () const
+	{ return *m_LODBBoxSizeYSpinButton; }
+
+	Gtk::SpinButton &
+	getLODBBoxSizeZSpinButton () const
+	{ return *m_LODBBoxSizeZSpinButton; }
+
+	Gtk::Box &
+	getLODBBoxCenterBox () const
+	{ return *m_LODBBoxCenterBox; }
+
+	Gtk::SpinButton &
+	getLODBBoxCenterXSpinButton () const
+	{ return *m_LODBBoxCenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getLODBBoxCenterYSpinButton () const
+	{ return *m_LODBBoxCenterYSpinButton; }
+
+	Gtk::SpinButton &
+	getLODBBoxCenterZSpinButton () const
+	{ return *m_LODBBoxCenterZSpinButton; }
+
 	virtual
 	void
 	on_index_clicked () = 0;
 
 	virtual
 	void
-	on_lod_keep_current_level_activate () = 0;
+	on_lod_move_center_button () = 0;
 
 	virtual
 	void
-	on_lod_move_center_button () = 0;
+	on_lod_keep_current_level_activate () = 0;
 
 	virtual
 	~X3DLODEditorInterface ();
@@ -286,26 +330,14 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LODLevelAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMaxAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_RangeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Button*                   m_IndexButton;
 	Gtk::Expander*                 m_LODExpander;
 	Gtk::Grid*                     m_LODBox;
-	Gtk::Box*                      m_LODBBoxCenterBox;
-	Gtk::SpinButton*               m_LODBBoxCenterXSpinButton;
-	Gtk::SpinButton*               m_LODBBoxCenterYSpinButton;
-	Gtk::SpinButton*               m_LODBBoxCenterZSpinButton;
-	Gtk::Box*                      m_LODBBoxSizeBox;
-	Gtk::SpinButton*               m_LODBBoxSizeXSpinButton;
-	Gtk::SpinButton*               m_LODBBoxSizeYSpinButton;
-	Gtk::SpinButton*               m_LODBBoxSizeZSpinButton;
-	Gtk::SpinButton*               m_LODLevelSpinButton;
-	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
 	Gtk::CheckButton*              m_LODForceTransitionsCheckButton;
-	Gtk::Box*                      m_LODRangeBox;
-	Gtk::SpinButton*               m_LODRangeMinSpinButton;
-	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
-	Gtk::CheckButton*              m_LODMaxCheckButton;
 	Gtk::Box*                      m_LODNameBox;
 	Gtk::Entry*                    m_LODNameEntry;
 	Gtk::Button*                   m_LODRenameButton;
@@ -314,6 +346,29 @@ private:
 	Gtk::SpinButton*               m_LODCenterYSpinButton;
 	Gtk::SpinButton*               m_LODCenterZSpinButton;
 	Gtk::Button*                   m_LODMoveCenterButton;
+	Gtk::Box*                      m_LODRangeBox;
+	Gtk::SpinButton*               m_LODRangeMinSpinButton;
+	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
+	Gtk::CheckButton*              m_LODMaxCheckButton;
+	Gtk::SpinButton*               m_RangeSpinButton;
+	Gtk::Box*                      m_RangeGradientBox;
+	Gtk::Grid*                     m_RangeColorGrid;
+	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
+	Gtk::Button*                   m_AddRangeColorButton;
+	Gtk::Button*                   m_RemoveRangeColorButton;
+	Gtk::Box*                      m_RangeColorBox;
+	Gtk::Button*                   m_RangeColorButton;
+	Gtk::SpinButton*               m_LODLevelSpinButton;
+	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
+	Gtk::Expander*                 m_BoundingBoxExpander;
+	Gtk::Box*                      m_LODBBoxSizeBox;
+	Gtk::SpinButton*               m_LODBBoxSizeXSpinButton;
+	Gtk::SpinButton*               m_LODBBoxSizeYSpinButton;
+	Gtk::SpinButton*               m_LODBBoxSizeZSpinButton;
+	Gtk::Box*                      m_LODBBoxCenterBox;
+	Gtk::SpinButton*               m_LODBBoxCenterXSpinButton;
+	Gtk::SpinButton*               m_LODBBoxCenterYSpinButton;
+	Gtk::SpinButton*               m_LODBBoxCenterZSpinButton;
 
 };
 

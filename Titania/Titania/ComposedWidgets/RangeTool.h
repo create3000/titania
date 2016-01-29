@@ -48,37 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
-#define __TITANIA_COMPOSED_WIDGETS_BACKGROUND_TOOL_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_RANGE_TOOL_H__
+#define __TITANIA_COMPOSED_WIDGETS_RANGE_TOOL_H__
 
 #include "../ComposedWidgets/X3DGradientTool.h"
 
 namespace titania {
 namespace puck {
 
-class BackgroundTool :
+class RangeTool :
 	public X3DGradientTool
 {
 public:
 
 	///  @name Construction
 
-	BackgroundTool (X3DBaseInterface* const,
-	                const std::string &,
-	                Gtk::Box &,
-	                const std::string &,
-	                const std::string &);
+	RangeTool (X3DBaseInterface* const,
+	           const std::string &,
+	           Gtk::Box &);
+
+	virtual
+	void
+	setNodes (const X3D::MFNode &) final override;
 
 
 private:
-
-	virtual
-	void
-	realize () final override;
-
-	virtual
-	void
-	set_addTime (const X3D::time_type);
 
 	virtual
 	X3D::MFFloat
@@ -88,95 +82,96 @@ private:
 	std::pair <X3D::MFFloat, X3D::MFColor>
 	get_tool_values (const X3D::MFFloat &, const X3D::MFColor &) final override;
 
+	X3D::SFNode auxNode;
+	double      positionFactor;
+
 };
 
 inline
-BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
-                                const std::string & name,
-                                Gtk::Box & box,
-                                const std::string & positionName,
-                                const std::string & colorName) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	  X3DGradientTool (editor, name, box, positionName, colorName)
+RangeTool::RangeTool (X3DBaseInterface* const editor,
+                      const std::string & name,
+                      Gtk::Box & box) :
+	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	 X3DGradientTool (editor, name, box, "range", "color"),
+	         auxNode (),
+	  positionFactor (1)
 { }
 
 inline
 void
-BackgroundTool::realize ()
+RangeTool::setNodes (const X3D::MFNode & nodes)
 {
-	try
-	{
-		getTool () -> getField <X3D::SFBool>  ("enableFirst") = false;
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
+	if (nodes .empty ())
+		X3DGradientTool::setNodes ({ });
 
-inline
-void
-BackgroundTool::set_addTime (const X3D::time_type value)
-{
-	try
+	else
 	{
-		const auto   tool     = getTool ();
-		const auto & position = tool -> getField <X3D::MFFloat> ("position");
-		auto       & color    = tool -> getField <X3D::MFColor> ("color");
+		auxNode = new X3D::FieldSet (getMasterBrowser ());
+	
+		auxNode -> addUserDefinedField (X3D::inputOutput, "range", new X3D::MFFloat ());
+		auxNode -> addUserDefinedField (X3D::inputOutput, "color", new X3D::MFColor ());
 
-		if (position .size () == 1)
+		for (const auto & node : nodes)
 		{
-			if (position [0] > 0)
+			try
 			{
-				color .emplace_back (color [0]);
-				setWhichChoice (1);
+				node    -> getField <X3D::MFFloat> ("range") .addInterest (auxNode -> getField <X3D::MFFloat> ("range"));
+				auxNode -> getField <X3D::MFFloat> ("range") .addInterest (node    -> getField <X3D::MFFloat> ("range"));
+
+				auxNode -> setField <X3D::MFFloat> ("range", node -> getField <X3D::MFFloat> ("range"));
 			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
 
-		X3DGradientTool::set_addTime (value);
-	}
-	catch (const X3D::X3DError & error)
-	{
+		auxNode -> setup ();
+		X3DGradientTool::setNodes ({ auxNode });
 	}
 }
 
 inline
 X3D::MFFloat
-BackgroundTool::get_position (const X3D::MFFloat & position)
+RangeTool::get_position (const X3D::MFFloat & position)
 {
-	X3D::MFFloat angle;
+	X3D::MFFloat range;
 
 	if (not position .empty ())
 	{
-		const size_t offset = position [0] == 0.0f ? 1 : 0;
-
-		for (const auto & value : std::make_pair (position .begin () + offset, position .end ()))
-			angle .emplace_back (value * (M_PI / 2));
+		for (const auto & value : position)
+			range .emplace_back (value * positionFactor);
 	}
 
-	return angle;
+	return range;
 }
 
 inline
 std::pair <X3D::MFFloat, X3D::MFColor>
-BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
 {
 	try
 	{
 		X3D::MFFloat position;
+		X3D::MFColor color;
 
-		for (const auto & value : positionValue)
-			position .emplace_back (math::clamp <float> (value / (M_PI / 2), 0, 1));
+		if (not positionValue .empty ())
+		{
+			positionFactor = positionValue .back ();
+	
+			for (const auto & value : positionValue)
+			{
+				const auto p = value / positionFactor;
 
-		if (not colorValue .empty ())
-			position .emplace_front (0);
+				position .emplace_back (p);
+				color    .emplace_back (1 - p, 1 -p, 1 - p);
+			}	
+		}
 
-		return std::make_pair (position, colorValue);
+		return std::make_pair (position, color);
 	}
 	catch (const X3D::X3DError & error)
 	{
-		//__LOG__ << error .what () << std::endl;
 		return std::make_pair (positionValue, colorValue);
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

@@ -70,13 +70,15 @@ X3DLODEditor::X3DLODEditor () :
 	                       getLODCenterZAdjustment (),
 	                       getLODCenterBox (),
 	                       "center"),
-	                 range (new LODRangeWidget (this,
-	                       getLODRangeMinAdjustment (),
-	                       getLODRangeMaxAdjustment (),
-	                       getLODRangeMinSpinButton (),
-	                       getLODRangeMaxSpinButton (),
-	                       getLODMaxCheckButton (),
-	                       getLODRangeBox ())),
+//	                 range (new LODRangeWidget (this,
+//	                       getLODRangeMinAdjustment (),
+//	                       getLODRangeMaxAdjustment (),
+//	                       getLODRangeMinSpinButton (),
+//	                       getLODRangeMaxSpinButton (),
+//	                       getLODMaxCheckButton (),
+//	                       getLODRangeBox ())),
+						 range (this, "Range", getRangeGradientBox ()),
+	          singleRange (this, getRangeAdjustment (), getRangeSpinButton (), "range"),
 	        level_changed (this,
 	                       getLODLevelAdjustment (),
 	                       getLODLevelSpinButton (),
@@ -94,7 +96,9 @@ X3DLODEditor::X3DLODEditor () :
 	                       getLODBBoxCenterBox (),
 	                       "bboxCenter"),
 	                  lod ()
-{ }
+{
+	range .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_whichChoice_changed)); 
+}
 
 void
 X3DLODEditor::initialize ()
@@ -113,7 +117,8 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 	nodeName         .setNode  (X3D::SFNode (lod));
 	forceTransitions .setNodes (nodes);
 	center           .setNodes (nodes);
-	range ->          setNodes (nodes);
+	range            .setNodes (nodes);
+	singleRange      .setNodes (nodes);
 	level_changed    .setNodes (nodes);
 	bboxSize         .setNodes (nodes);
 	bboxCenter       .setNodes (nodes);
@@ -151,6 +156,12 @@ X3DLODEditor::on_lod_move_center_button ()
 	undoStep -> addRedoFunction ((setValue) &X3D::SFVec3f::setValue, std::ref (lod -> center ()), lod -> center ());
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DLODEditor::on_range_whichChoice_changed ()
+{
+	singleRange .setIndex (range .getWhichChoice ());
 }
 
 void
