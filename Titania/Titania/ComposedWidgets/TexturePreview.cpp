@@ -94,7 +94,6 @@ TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 		textureNode -> checkLoadState () .addInterest (this, &TexturePreview::set_loadState);
 
 	set_texture ();
-	set_loadState ();
 }
 
 void
@@ -134,6 +133,7 @@ TexturePreview::set_texture ()
 	{ }
 
 	set_camera ();
+	set_loadState ();
 }
 
 void

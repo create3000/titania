@@ -181,6 +181,18 @@ public:
 	getBottomURLCellrendererPixbuf () const
 	{ return m_BottomURLCellrendererPixbuf; }
 
+	Gtk::Menu &
+	getNewBackgroundMenu () const
+	{ return *m_NewBackgroundMenu; }
+
+	Gtk::MenuItem &
+	getNewBackgroundMenuItem () const
+	{ return *m_NewBackgroundMenuItem; }
+
+	Gtk::MenuItem &
+	getNewTextureBackgroundMenuItem () const
+	{ return *m_NewTextureBackgroundMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -188,6 +200,46 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::Box &
+	getActionBox () const
+	{ return *m_ActionBox; }
+
+	Gtk::Button &
+	getRemoveBackgroundButton () const
+	{ return *m_RemoveBackgroundButton; }
+
+	Gtk::ToggleButton &
+	getBindToggleButton () const
+	{ return *m_BindToggleButton; }
+
+	Gtk::Image &
+	getBindImage () const
+	{ return *m_BindImage; }
+
+	Gtk::Button &
+	getIndexButton () const
+	{ return *m_IndexButton; }
+
+	Gtk::Expander &
+	getBackgroundExpander () const
+	{ return *m_BackgroundExpander; }
+
+	Gtk::Grid &
+	getLightBox () const
+	{ return *m_LightBox; }
+
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
 
 	Gtk::Notebook &
 	getNotebook () const
@@ -474,6 +526,26 @@ public:
 	{ return *m_BottomURLReloadButton; }
 
 	virtual
+	void
+	on_new_background_activated () = 0;
+
+	virtual
+	void
+	on_new_texture_background_activated () = 0;
+
+	virtual
+	void
+	on_remove_background_clicked () = 0;
+
+	virtual
+	void
+	on_bind_toggled () = 0;
+
+	virtual
+	void
+	on_index_clicked () = 0;
+
+	virtual
 	~X3DBackgroundEditorInterface ();
 
 
@@ -509,8 +581,21 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_BottomURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_BottomURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BottomURLCellrendererPixbuf;
+	Gtk::Menu*                             m_NewBackgroundMenu;
+	Gtk::MenuItem*                         m_NewBackgroundMenuItem;
+	Gtk::MenuItem*                         m_NewTextureBackgroundMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Box*                              m_ActionBox;
+	Gtk::Button*                           m_RemoveBackgroundButton;
+	Gtk::ToggleButton*                     m_BindToggleButton;
+	Gtk::Image*                            m_BindImage;
+	Gtk::Button*                           m_IndexButton;
+	Gtk::Expander*                         m_BackgroundExpander;
+	Gtk::Grid*                             m_LightBox;
+	Gtk::Box*                              m_NameBox;
+	Gtk::Entry*                            m_NameEntry;
+	Gtk::Button*                           m_RenameButton;
 	Gtk::Notebook*                         m_Notebook;
 	Gtk::Box*                              m_ColorBox;
 	Gtk::Expander*                         m_ColorsExpander;

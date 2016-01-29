@@ -51,6 +51,7 @@
 #include "BackgroundEditor.h"
 
 #include "../../Configuration/config.h"
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/TexturePreview.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
@@ -62,6 +63,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
 	         X3DBackgroundEditor (),
+	                    nodeName (this, getNameEntry (), getRenameButton ()),
 	                         sky (this, "Sky Gradient", getSkyGradientBox (), "skyAngle", "skyColor"),
 	                    skyColor (this,
 	                              getSkyColorButton (),
@@ -87,7 +89,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (), getBackTextureFormatLabel ())),
 	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (), getLeftTextureFormatLabel ())),
 	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (), getRightTextureFormatLabel ())),
-	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (), getFrontTextureFormatLabel ())),
+	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (), getTopTextureFormatLabel ())),
 	               bottomPreview (new TexturePreview (this, getBottomTexturePreviewBox (), getBottomTextureFormatLabel ())),
 	              backgroundNode (),
 	                    changing (false)
@@ -132,6 +134,8 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 		backgroundNode -> getRightTexture ()  .removeInterest (this, &BackgroundEditor::set_texture);
 		backgroundNode -> getTopTexture ()    .removeInterest (this, &BackgroundEditor::set_texture);
 		backgroundNode -> getBottomTexture () .removeInterest (this, &BackgroundEditor::set_texture);
+
+		backgroundNode -> isBound () .removeInterest (this, &BackgroundEditor::set_bind);
 	}
 
 	backgroundNode   = selection .empty () ? nullptr : selection .back ();
@@ -139,6 +143,7 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 
 	setBackground (backgroundNode);
 
+	nodeName .setNode (X3D::SFNode (backgroundNode));
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
 	skyAngle     .setNodes (nodes);
@@ -146,6 +151,9 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 	groundColor  .setNodes (nodes);
 	groundAngle  .setNodes (nodes);
 	transparency .setNodes (nodes);
+
+	getRemoveBackgroundButton () .set_sensitive (backgroundNode);
+	getBindToggleButton ()        .set_sensitive (backgroundNode);
 
 	if (backgroundNode)
 	{
@@ -156,6 +164,10 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 		backgroundNode -> getTopTexture ()    .addInterest (this, &BackgroundEditor::set_texture, topPreview,    std::cref (backgroundNode -> getTopTexture ()));
 		backgroundNode -> getBottomTexture () .addInterest (this, &BackgroundEditor::set_texture, bottomPreview, std::cref (backgroundNode -> getBottomTexture ()));
 
+		backgroundNode -> isBound () .addInterest (this, &BackgroundEditor::set_bind);
+
+		set_bind ();
+
 		set_texture (frontPreview,  backgroundNode -> getFrontTexture ());
 		set_texture (backPreview,   backgroundNode -> getBackTexture ());
 		set_texture (leftPreview,   backgroundNode -> getLeftTexture ());
@@ -165,7 +177,14 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 	}
 	else
 	{
-		set_texture (frontPreview, nullptr);
+		set_bind ();
+
+		set_texture (frontPreview,  nullptr);
+		set_texture (backPreview,   nullptr);
+		set_texture (leftPreview,   nullptr);
+		set_texture (rightPreview , nullptr);
+		set_texture (topPreview,    nullptr);
+		set_texture (bottomPreview, nullptr);
 	}
 }
 
@@ -243,6 +262,74 @@ BackgroundEditor::~BackgroundEditor ()
 	getConfig () .setItem ("texturePage", getTexturesNotebook () .get_current_page ());
 
 	dispose ();
+}
+
+/*
+ * Action buttons
+ */
+
+void
+BackgroundEditor::on_new_background_activated ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Background"));
+	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("Background", undoStep));
+	node -> set_bind () = true;
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+BackgroundEditor::on_new_texture_background_activated ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New TextureBackground"));
+	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("TextureBackground", undoStep));
+	node -> set_bind () = true;
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+BackgroundEditor::on_remove_background_clicked ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove NavigationInfo"));
+
+	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+BackgroundEditor::on_bind_toggled ()
+{
+	if (changing)
+		return;
+
+	if (backgroundNode)
+		backgroundNode -> set_bind () = not backgroundNode -> isBound ();
+}
+
+void
+BackgroundEditor::set_bind ()
+{
+	changing = true;
+
+	if (backgroundNode)
+	{
+		getBindToggleButton () .set_active (backgroundNode -> isBound ());
+		getBindImage () .set (Gtk::StockID (backgroundNode -> isBound () ? "Bound" : "Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	}
+	else
+	{
+		getBindToggleButton () .set_active (false);
+		getBindImage () .set (Gtk::StockID ("Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	}
+
+	changing = false;
+}
+
+void
+BackgroundEditor::on_index_clicked ()
+{
+	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
+
+	nodeIndex -> setTypes ({ X3D::X3DConstants::Background, X3D::X3DConstants::TextureBackground });
 }
 
 } // puck

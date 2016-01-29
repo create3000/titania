@@ -180,6 +180,27 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToggleButton" id="BindToggleButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Toggles the bind state of the node.</property>
+                <signal name="toggled" handler="on_bind_toggled" swapped="no"/>
+                <child>
+                  <object class="GtkImage" id="BindImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">Bind</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="IndexButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -198,7 +219,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
           </object>

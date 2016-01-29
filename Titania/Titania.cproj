@@ -2345,6 +2345,8 @@
     <None Include="share\titania\Library\Backgrounds\WideOcean.x3dv" />
     <None Include="Titania\Editors\BackgroundEditor\X3DBackgroundEditor.h" />
     <None Include="Titania\ComposedWidgets\TexturePreview.h" />
+    <None Include="share\titania\ui\icons\Bound.svg" />
+    <None Include="share\titania\ui\icons\X3DBaseNode.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

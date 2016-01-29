@@ -84,7 +84,9 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                                  getTransitionTypeRemoveButton (),
 	                                  "transitionType",
 	                                  "LINEAR")),
-	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime")
+	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime"),
+                 navigationInfoNode (),
+                           changing (false)
 {
 	avatarSize0 .setIndex (0);
 	avatarSize1 .setIndex (1);
@@ -106,21 +108,30 @@ NavigationInfoEditor::initialize ()
 void
 NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 {
-	const auto navigationInfo  = selection .empty () ? nullptr : selection .back ();
-	const auto navigationInfos = navigationInfo ? X3D::MFNode ({ navigationInfo }) : X3D::MFNode ();
+	if (navigationInfoNode)
+		navigationInfoNode -> isBound () .removeInterest (this, &NavigationInfoEditor::set_bind);
 
-	nodeName   .setNode  (navigationInfo);
-	type ->           setNodes (navigationInfos);
-	avatarSize0      .setNodes (navigationInfos);
-	avatarSize1      .setNodes (navigationInfos);
-	avatarSize2      .setNodes (navigationInfos);
-	speed            .setNodes (navigationInfos);
-	headlight        .setNodes (navigationInfos);
-	visibilityLimit  .setNodes (navigationInfos);
-	transitionType -> setNodes (navigationInfos);
-	transitionTime   .setNodes (navigationInfos);
+	navigationInfoNode = selection .empty () ? nullptr : selection .back ();
+	const auto nodes   = navigationInfoNode ? X3D::MFNode ({ navigationInfoNode }) : X3D::MFNode ();
 
-	getRemoveNavigationInfoButton () .set_sensitive (navigationInfo);
+	nodeName .setNode  (X3D::SFNode (navigationInfoNode));
+	type ->           setNodes (nodes);
+	avatarSize0      .setNodes (nodes);
+	avatarSize1      .setNodes (nodes);
+	avatarSize2      .setNodes (nodes);
+	speed            .setNodes (nodes);
+	headlight        .setNodes (nodes);
+	visibilityLimit  .setNodes (nodes);
+	transitionType -> setNodes (nodes);
+	transitionTime   .setNodes (nodes);
+
+	getRemoveNavigationInfoButton () .set_sensitive (navigationInfoNode);
+	getBindToggleButton ()           .set_sensitive (navigationInfoNode);
+
+	if (navigationInfoNode)
+		navigationInfoNode -> isBound () .addInterest (this, &NavigationInfoEditor::set_bind);
+
+	set_bind ();
 }
 
 void
@@ -139,6 +150,35 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+NavigationInfoEditor::on_bind_toggled ()
+{
+	if (changing)
+		return;
+
+	if (navigationInfoNode)
+		navigationInfoNode -> set_bind () = not navigationInfoNode -> isBound ();
+}
+
+void
+NavigationInfoEditor::set_bind ()
+{
+	changing = true;
+
+	if (navigationInfoNode)
+	{
+		getBindToggleButton () .set_active (navigationInfoNode -> isBound ());
+		getBindImage () .set (Gtk::StockID (navigationInfoNode -> isBound () ? "Bound" : "Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	}
+	else
+	{
+		getBindToggleButton () .set_active (false);
+		getBindImage () .set (Gtk::StockID ("Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	}
+
+	changing = false;
 }
 
 void

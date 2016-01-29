@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DNavigationInfoEditorInterface.h"
 
+#include <Titania/X3D/Components/Navigation/NavigationInfo.h>
+
 namespace titania {
 namespace puck {
 
@@ -97,6 +99,13 @@ private:
 
 	virtual
 	void
+	on_bind_toggled () final override;
+	
+	void
+	set_bind ();
+
+	virtual
+	void
 	on_index_clicked () final override;
 
 	///  @name Members
@@ -111,6 +120,8 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>  visibilityLimit;
 	std::unique_ptr <MFStringWidget>   transitionType;
 	X3DFieldAdjustment <X3D::SFTime>   transitionTime;
+	X3D::X3DPtr <X3D::NavigationInfo>  navigationInfoNode;
+	bool                               changing;
 
 };
 

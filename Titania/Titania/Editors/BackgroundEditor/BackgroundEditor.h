@@ -109,8 +109,34 @@ private:
 	void
 	on_ground_color_index_changed ();
 
+	// Action buttons
+
+	virtual
+	void
+	on_new_background_activated () final override;
+
+	virtual
+	void
+	on_new_texture_background_activated () final override;
+
+	virtual
+	void
+	on_remove_background_clicked () final override;
+
+	virtual
+	void
+	on_bind_toggled () final override;
+	
+	void
+	set_bind ();
+
+	virtual
+	void
+	on_index_clicked () final override;
+
 	///  @name Members
 
+	NameEntry                            nodeName;
 	BackgroundTool                       sky;
 	MFColorButton                        skyColor;
 	X3DFieldAdjustment <X3D::MFFloat>    skyAngle;

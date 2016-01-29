@@ -149,6 +149,14 @@ public:
 	getRemoveNavigationInfoButton () const
 	{ return *m_RemoveNavigationInfoButton; }
 
+	Gtk::ToggleButton &
+	getBindToggleButton () const
+	{ return *m_BindToggleButton; }
+
+	Gtk::Image &
+	getBindImage () const
+	{ return *m_BindImage; }
+
 	Gtk::Button &
 	getIndexButton () const
 	{ return *m_IndexButton; }
@@ -243,6 +251,10 @@ public:
 
 	virtual
 	void
+	on_bind_toggled () = 0;
+
+	virtual
+	void
 	on_index_clicked () = 0;
 
 	virtual
@@ -273,6 +285,8 @@ private:
 	Gtk::Box*                             m_NavigationInfoActionBox;
 	Gtk::Button*                          m_NewNavigationInfoButton;
 	Gtk::Button*                          m_RemoveNavigationInfoButton;
+	Gtk::ToggleButton*                    m_BindToggleButton;
+	Gtk::Image*                           m_BindImage;
 	Gtk::Button*                          m_IndexButton;
 	Gtk::Expander*                        m_NavigationInfoExpander;
 	Gtk::Box*                             m_AvatarSizeBox;
