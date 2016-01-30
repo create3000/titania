@@ -197,11 +197,11 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 			else
 				getTrackPoint (hitRay, trackPoint, behind);
 
-			fromVector = -cylinder .axis () .perpendicular_vector (trackPoint);
+			fromVector  = -cylinder .axis () .perpendicular_vector (trackPoint);
+			startOffset = Rotation4d (yAxis, offset ());
 
-			startOffset           = Rotation4d (yAxis, offset ());
-			//trackPoint_changed () = trackPoint;
-			//rotation_changed ()   = startOffset;
+			trackPoint_changed () .set (trackPoint);
+			rotation_changed ()   .set (startOffset);
 		}
 		else
 		{

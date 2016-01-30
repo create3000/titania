@@ -75,6 +75,9 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 	if (not executionContext)
 		return true;
 
+	if (executionContext -> isPrivate ())
+		return true;
+
 	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 	{
 		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
@@ -146,6 +149,9 @@ bool
 traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
 {
 	if (not node)
+		return true;
+
+	if (node -> isPrivate ())
 		return true;
 
 	if (flags & TRAVERSE_VISIBLE_NODES)
@@ -392,6 +398,9 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	if (not executionContext)
 		return false;
 
+	if (executionContext -> isPrivate ())
+		return false;
+
 	hierarchy .emplace_back (executionContext);
 
 	if (executionContext == object)
@@ -456,6 +465,9 @@ bool
 find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
+		return false;
+
+	if (node -> isPrivate ())
 		return false;
 
 	if (not seen .emplace (node) .second)

@@ -129,11 +129,12 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 			sphere = Sphere3d (abs (hitPoint - center), center);
 			behind = zPlane .distance (hitPoint) < 0;
 
-			fromVector            = hitPoint - sphere .center ();
-			startPoint            = hit -> intersection -> point;
-			startOffset           = offset () .getValue ();
-			//trackPoint_changed () = hitPoint;
-			//rotation_changed ()   = offset ();
+			fromVector  = hitPoint - sphere .center ();
+			startPoint  = hit -> intersection -> point;
+			startOffset = offset () .getValue ();
+
+			trackPoint_changed () .set (hitPoint);
+			rotation_changed ()   .set (offset ());
 		}
 		else
 		{

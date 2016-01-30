@@ -208,9 +208,10 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 void
 PlaneSensor::trackStart (const Vector3d & trackPoint)
 {
-	startOffset            = offset () .getValue ();
-	//trackPoint_changed ()  = trackPoint;
-	//translation_changed () = offset ();
+	startOffset = offset () .getValue ();
+
+	trackPoint_changed ()  .set (trackPoint);
+	translation_changed () .set (offset ());
 }
 
 void
