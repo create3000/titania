@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_GRID_EDITOR_X3DGRID_TOOL_H__
 
 #include "../../Base/X3DBaseInterface.h"
+#include "../../Base/X3DEditorObject.h"
 
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 
@@ -141,6 +142,10 @@ protected:
 	virtual
 	void
 	set_snapToCenter ();
+	
+	virtual
+	void
+	set_active ();
 
 
 private:
@@ -199,7 +204,12 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr browser;
+	X3D::BrowserPtr  browser;
+	X3D::UndoStepPtr undoStep;
+	X3D::Vector3f    translation;
+	X3D::Rotation4f  rotation;
+	X3D::Vector3f    scale;
+	X3D::MFInt32     dimension;
 };
 
 } // puck

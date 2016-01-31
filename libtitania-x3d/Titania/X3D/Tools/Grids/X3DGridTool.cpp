@@ -69,7 +69,8 @@ X3DGridTool::Fields::Fields () :
 	      lineColor (new SFColorRGBA (1, 0.7, 0.7, 0.2)),
 	 majorLineColor (new SFColorRGBA (1, 0.7, 0.7, 0.4)),
 	   snapToCenter (new SFBool (true)),
-	   snapDistance (new SFDouble (0.25))
+	   snapDistance (new SFDouble (0.25)),
+	       isActive (new SFBool (true))
 { }
 
 X3DGridTool::X3DGridTool () :
@@ -134,6 +135,8 @@ X3DGridTool::realize ()
 		scale ()  .addInterest (set_scale);
 		set_scale .addInterest (scale ());
 		set_scale .addEvent (scale ());
+
+		getToolNode () -> getField <SFBool> ("isActive") .addInterest (isActive ());
 
 		color ()          .addInterest (this, &X3DGridTool::set_color);
 		lineColor ()      .addInterest (this, &X3DGridTool::set_lineColor);

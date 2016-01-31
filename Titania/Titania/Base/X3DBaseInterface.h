@@ -84,9 +84,7 @@ public:
 	void
 	setup () override;
 
-	/***
-	 *  @name Common members
-	 */
+	/// @name Common members
 
 	///  Returns the type name of this object.
 	virtual
@@ -95,9 +93,7 @@ public:
 	throw (X3D::Error <X3D::DISPOSED>) override
 	{ return typeName; }
 
-	/***
-	 *  @name Member access
-	 */
+	/// @name Member access
 
 	X3DBrowserWindow*
 	getBrowserWindow () const
@@ -162,9 +158,7 @@ public:
 	const X3D::UndoStepPtr &
 	getUndoStep () const;
 
-	/***
-	 *  @name Input/Output
-	 */
+	/// @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
@@ -188,9 +182,7 @@ public:
 	toXMLStream (std::ostream &) const final override
 	{ }
 
-	/***
-	 *  @name Destruction
-	 */
+	///  @name Destruction
 
 	virtual
 	~X3DBaseInterface ();
@@ -198,15 +190,11 @@ public:
 
 protected:
 
-	/***
-	 *  @name Friends
-	 */
+	/// @name Friends
 
 	friend class X3DBrowserWindow;
 
-	/***
-	 *  @name Construction
-	 */
+	/// @name Construction
 
 	X3DBaseInterface ();
 
@@ -215,9 +203,7 @@ protected:
 
 private:
 
-	/***
-	 *  @name Event handlers
-	 */
+	/// @name Event handlers
 	 
 	void
 	set_browser (const X3D::BrowserPtr &);
@@ -226,15 +212,11 @@ private:
 	getWorldInfo (const bool)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
-	/***
-	 *  @name Static members
-	 */
+	/// @name Static members
 
 	static const std::string typeName;
 
-	/***
-	 *  @name Members
-	 */
+	/// @name Members
 
 	X3DBrowserWindow* const browserWindow;
 

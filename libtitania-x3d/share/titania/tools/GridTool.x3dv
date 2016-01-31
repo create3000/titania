@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 16 Jan 2016 00:50:18 GMT"
+META "modified" "Sun, 31 Jan 2016 02:47:50 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -401,19 +401,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              0.195047289133072,
+              4.12723350524902,
+              9.10649490356445
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.998934328556061,
+              0.0448422804474831,
+              -0.0109284929931164,
+              0.42597234249115
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -426,6 +426,44 @@ WorldInfo {
             ]
           }
         ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF Tool Script {
+            inputOutput SFVec3f    translation 0 0 0
+            inputOutput SFRotation rotation 0 0 1 0
+            inputOutput SFVec3f    scale 1 1 1
+            inputOutput MFInt32    dimension [
+              10,
+              10,
+              10
+            ]
+            inputOutput MFInt32    majorLineEvery [
+              5,
+              5,
+              5
+            ]
+            inputOutput MFInt32    majorLineOffset [
+              0,
+              0,
+              0
+            ]
+            inputOutput SFColor    color 0.5 0.5 0.5
+            inputOutput SFFloat    transparency 0.8
+            inputOutput SFColor    lineColor 1 0.7 0.7
+            inputOutput SFFloat    lineTransparency 0.8
+            inputOutput SFColor    majorLineColor 1 0.7 0.7
+            inputOutput SFFloat    majorLineTransparency 0.6
+            inputOutput SFBool     isActive FALSE
+
+            url "ecmascript:
+// Empty body"
+          }
+        }
       }
     ]
   }
@@ -643,33 +681,7 @@ function eventsProcessed ()
 }"
 }
 
-DEF Tool Script {
-  inputOutput SFVec3f    translation 0 0 0
-  inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFVec3f    scale 1 1 1
-  inputOutput MFInt32    dimension [
-    10,
-    10,
-    10
-  ]
-  inputOutput MFInt32    majorLineEvery [
-    5,
-    5,
-    5
-  ]
-  inputOutput MFInt32    majorLineOffset [
-    0,
-    0,
-    0
-  ]
-  inputOutput SFColor    color 0.5 0.5 0.5
-  inputOutput SFFloat    transparency 0.8
-  inputOutput SFColor    lineColor 1 0.7 0.7
-  inputOutput SFFloat    lineTransparency 0.8
-  inputOutput SFColor    majorLineColor 1 0.7 0.7
-  inputOutput SFFloat    majorLineTransparency 0.6
-
-}
+USE Tool
 
 ROUTE DimensionScript.translation_changed TO _6.set_translation
 ROUTE _5.translation_changed TO DimensionScript.set_translation
@@ -707,6 +719,9 @@ ROUTE Tool.dimension_changed TO ScaleScript.set_dimension
 ROUTE ScaleScript.translation_changed TO _7.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
+ROUTE _2.isActive TO Tool.set_isActive
+ROUTE _5.isActive TO Tool.set_isActive
+ROUTE _7.isActive TO Tool.set_isActive
 
 EXPORT ScaleScript
 EXPORT Tool

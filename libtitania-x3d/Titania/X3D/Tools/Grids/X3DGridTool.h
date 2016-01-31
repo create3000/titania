@@ -169,6 +169,14 @@ public:
 	snapDistance () const
 	{ return *fields .snapDistance; }
 
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
 	///  @name Destruction
 
 	~X3DGridTool ();
@@ -262,6 +270,7 @@ private:
 		SFColorRGBA* const majorLineColor;
 		SFBool* const snapToCenter;
 		SFDouble* const snapDistance;
+		SFBool* const isActive;
 	};
 
 	Fields fields;

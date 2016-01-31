@@ -8,7 +8,7 @@ META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 30 Jan 2016 05:15:41 GMT"
+META "modified" "Sun, 31 Jan 2016 03:00:21 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -494,111 +494,35 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF AngleTool Collision {
-            enabled FALSE
-            children [
-              DEF AngleGrid_1 TouchGroup {
-                enabled FALSE
-                children DEF _2 AngleGrid { }
-              }
-              DEF Center Transform {
-                children [
-                  DEF _3 PlaneSensor {
-                    axisRotation 1 0 0 1.5708
-                    autoOffset FALSE
-                  }
-                  DEF _4 Transform {
-                    children ScreenGroup {
-                      children DEF Sphere Transform {
-                        scale 4 4 4
-                        children Shape {
-                          appearance DEF _5 Appearance {
-                            shaders ToolShader {
-                              diffuseColor 1 0.7 0
-                            }
-                          }
-                          geometry Sphere { }
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-              DEF Handles Transform {
-                children [
-                  DEF AngleHandle Group {
-                    children [
-                      DEF _6 CylinderSensor {
-                        diskAngle 1.2
-                        offset 0.392699
-                      }
-                      DEF Handle Transform {
-                        rotation 0 1 0 0.392699
-                        children DEF _7 Transform {
-                          translation 0 0 4
-                          children ScreenGroup {
-                            children Transform {
-                              scale 6 6 6
-                              children Shape {
-                                appearance USE _5
-                                geometry Sphere { }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                  DEF DimensionHandle Group {
-                    children [
-                      DEF _8 PlaneSensor {
-                        axisRotation 1 0 0 1.5708
-                        autoOffset FALSE
-                        offset 0 0 5
-                        maxPosition 0 -1
-                      }
-                      DEF _9 Transform {
-                        translation 0 0 5
-                        children ScreenGroup {
-                          children DEF Sphere_1 Transform {
-                            scale 6 3 3
-                            children Shape {
-                              appearance USE _5
-                              geometry Box { }
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-              DEF ScaleHandle Transform {
-                children [
-                  DEF _10 PlaneSensor {
-                    axisRotation 1 0 0 1.5708
-                    autoOffset FALSE
-                    offset 3.53553 0 -3.53553
-                  }
-                  DEF _11 Transform {
-                    translation 3.53553 0 -3.53553
-                    children ScreenGroup {
-                      children DEF Box Transform {
-                        scale 3 3 3
-                        children Shape {
-                          appearance Appearance {
-                            shaders ToolShader {
-                              diffuseColor 1 0.7 0
-                            }
-                          }
-                          geometry Box { }
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
+          value DEF Tool Script {
+            inputOutput SFVec3f    translation 0 0 0
+            inputOutput SFRotation rotation 0 0 1 0
+            inputOutput SFVec3f    scale 1 1 1
+            inputOutput MFInt32    dimension [
+              5,
+              16,
+              10
             ]
+            inputOutput MFInt32    majorLineEvery [
+              5,
+              2,
+              5
+            ]
+            inputOutput MFInt32    majorLineOffset [
+              0,
+              0,
+              0
+            ]
+            inputOutput SFColor    color 0.5 0.5 0.5
+            inputOutput SFFloat    transparency 0.8
+            inputOutput SFColor    lineColor 1 0.7 0.7
+            inputOutput SFFloat    lineTransparency 0.8
+            inputOutput SFColor    majorLineColor 1 0.7 0.7
+            inputOutput SFFloat    majorLineTransparency 0.6
+            inputOutput SFBool     isActive FALSE
+
+            url "ecmascript:
+// Empty body"
           }
         }
       }
@@ -607,7 +531,112 @@ WorldInfo {
   title "AngleTool"
 }
 
-USE AngleTool
+DEF AngleTool Collision {
+  enabled FALSE
+  children [
+    DEF AngleGrid_1 TouchGroup {
+      enabled FALSE
+      children DEF _2 AngleGrid { }
+    }
+    DEF Center Transform {
+      children [
+        DEF _3 PlaneSensor {
+          axisRotation 1 0 0 1.5708
+          autoOffset FALSE
+        }
+        DEF _4 Transform {
+          children ScreenGroup {
+            children DEF Sphere Transform {
+              scale 4 4 4
+              children Shape {
+                appearance DEF _5 Appearance {
+                  shaders ToolShader {
+                    diffuseColor 1 0.7 0
+                  }
+                }
+                geometry Sphere { }
+              }
+            }
+          }
+        }
+      ]
+    }
+    DEF Handles Transform {
+      children [
+        DEF AngleHandle Group {
+          children [
+            DEF _6 CylinderSensor {
+              diskAngle 1.2
+              offset 0.392699
+            }
+            DEF Handle Transform {
+              rotation 0 1 0 0.392699
+              children DEF _7 Transform {
+                translation 0 0 4
+                children ScreenGroup {
+                  children Transform {
+                    scale 6 6 6
+                    children Shape {
+                      appearance USE _5
+                      geometry Sphere { }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+        DEF DimensionHandle Group {
+          children [
+            DEF _8 PlaneSensor {
+              axisRotation 1 0 0 1.5708
+              autoOffset FALSE
+              offset 0 0 5
+              maxPosition 0 -1
+            }
+            DEF _9 Transform {
+              translation 0 0 5
+              children ScreenGroup {
+                children DEF Sphere_1 Transform {
+                  scale 6 3 3
+                  children Shape {
+                    appearance USE _5
+                    geometry Box { }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+    DEF ScaleHandle Transform {
+      children [
+        DEF _10 PlaneSensor {
+          axisRotation 1 0 0 1.5708
+          autoOffset FALSE
+          offset 3.53553 0 -3.53553
+        }
+        DEF _11 Transform {
+          translation 3.53553 0 -3.53553
+          children ScreenGroup {
+            children DEF Box Transform {
+              scale 3 3 3
+              children Shape {
+                appearance Appearance {
+                  shaders ToolShader {
+                    diffuseColor 1 0.7 0
+                  }
+                }
+                geometry Box { }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
 
 DEF MoveScript Script {
   inputOutput SFRotation rotation 0 0 1 0
@@ -746,33 +775,7 @@ function eventsProcessed ()
 }"
 }
 
-DEF Tool Script {
-  inputOutput SFVec3f    translation 0 0 0
-  inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFVec3f    scale 1 1 1
-  inputOutput MFInt32    dimension [
-    5,
-    16,
-    10
-  ]
-  inputOutput MFInt32    majorLineEvery [
-    5,
-    2,
-    5
-  ]
-  inputOutput MFInt32    majorLineOffset [
-    0,
-    0,
-    0
-  ]
-  inputOutput SFColor    color 0.5 0.5 0.5
-  inputOutput SFFloat    transparency 0.8
-  inputOutput SFColor    lineColor 1 0.7 0.7
-  inputOutput SFFloat    lineTransparency 0.8
-  inputOutput SFColor    majorLineColor 1 0.7 0.7
-  inputOutput SFFloat    majorLineTransparency 0.6
-
-}
+USE Tool
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
 ROUTE _6.rotation_changed TO AngleScript.set_rotation
@@ -813,6 +816,10 @@ ROUTE ScaleScript.translation_changed TO _11.set_translation
 ROUTE ScaleScript.translation_changed TO _10.set_offset
 ROUTE Tool.translation_changed TO ScaleHandle.set_translation
 ROUTE Tool.rotation_changed TO ScaleHandle.set_rotation
+ROUTE _3.isActive TO Tool.set_isActive
+ROUTE _6.isActive TO Tool.set_isActive
+ROUTE _8.isActive TO Tool.set_isActive
+ROUTE _10.isActive TO Tool.set_isActive
 
 EXPORT ScaleScript
 EXPORT Tool

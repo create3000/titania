@@ -63,8 +63,13 @@ namespace titania {
 namespace puck {
 
 X3DGridTool::X3DGridTool () :
-	X3DBaseInterface (),
-	         browser ()
+	 X3DBaseInterface (),
+	          browser (),
+	         undoStep (std::make_shared <X3D::UndoStep> ("X3DGridTool")),
+	      translation (),
+	         rotation (),
+	            scale (),
+	        dimension ()
 {
 	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::update);
 }
@@ -72,7 +77,7 @@ X3DGridTool::X3DGridTool () :
 void
 X3DGridTool::isEnabled (const bool value)
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 
 	metadataSet-> createValue <X3D::MetadataBoolean> ("enabled") -> value () = { value };
 }
@@ -82,7 +87,7 @@ X3DGridTool::isEnabled () const
 {
 	try
 	{
-		const auto metadataSet = getMetaData ("/Titania/" + getName ());
+		const auto metadataSet = getMetaData ("/Titania/" + getTypeName ());
 
 		return metadataSet -> getValue <X3D::MetadataBoolean> ("enabled") -> value () .at (0);
 	}
@@ -106,7 +111,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 	try
 	{
-		const auto metadataSet = getMetaData ("/Titania/" + getName ());
+		const auto metadataSet = getMetaData ("/Titania/" + getTypeName ());
 
 		getTool () -> enabled () .removeInterest (this, &X3DGridTool::set_enabled);
 		getTool () -> enabled () .addInterest (this, &X3DGridTool::connectEnabled);
@@ -143,6 +148,8 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 		getTool () -> snapToCenter () .removeInterest (this, &X3DGridTool::set_snapToCenter);
 		getTool () -> snapToCenter () .addInterest (this, &X3DGridTool::connectSnapToCenter);
+
+		getTool () -> isActive () .addInterest (this, &X3DGridTool::set_active);
 
 		try
 		{
@@ -226,7 +233,7 @@ X3DGridTool::disable ()
 void
 X3DGridTool::set_enabled ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("enabled") -> value ();
 
 	value = { getTool () -> enabled () };
@@ -237,7 +244,7 @@ X3DGridTool::set_enabled ()
 void
 X3DGridTool::set_translation ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("translation") -> value ();
 
 	value = { getTool () -> translation () .getX (),
@@ -250,7 +257,7 @@ X3DGridTool::set_translation ()
 void
 X3DGridTool::set_rotation ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("rotation") -> value ();
 
 	value = { getTool () -> rotation () .getX (),
@@ -264,7 +271,7 @@ X3DGridTool::set_rotation ()
 void
 X3DGridTool::set_scale ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("scale") -> value ();
 
 	value = { getTool () -> scale () .getX (),
@@ -277,7 +284,7 @@ X3DGridTool::set_scale ()
 void
 X3DGridTool::set_dimension ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("dimension") -> value ();
 
 	value = getTool () -> dimension ();
@@ -288,7 +295,7 @@ X3DGridTool::set_dimension ()
 void
 X3DGridTool::set_majorLineEvery ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("majorLineEvery") -> value ();
 
 	value = getTool () -> majorLineEvery ();
@@ -299,7 +306,7 @@ X3DGridTool::set_majorLineEvery ()
 void
 X3DGridTool::set_majorLineOffset ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("majorLineOffset") -> value ();
 
 	value = getTool () -> majorLineOffset ();
@@ -310,7 +317,7 @@ X3DGridTool::set_majorLineOffset ()
 void
 X3DGridTool::set_color ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("color") -> value ();
 
 	value = { getTool () -> color () .getRed (),
@@ -324,7 +331,7 @@ X3DGridTool::set_color ()
 void
 X3DGridTool::set_lineColor ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("lineColor") -> value ();
 
 	value = { getTool () -> lineColor () .getRed (),
@@ -338,7 +345,7 @@ X3DGridTool::set_lineColor ()
 void
 X3DGridTool::set_majorLineColor ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("majorLineColor") -> value ();
 
 	value = { getTool () -> majorLineColor () .getRed (),
@@ -352,7 +359,7 @@ X3DGridTool::set_majorLineColor ()
 void
 X3DGridTool::set_snapDistance ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataDouble> ("snapDistance") -> value ();
 
 	value = { getTool () -> snapDistance () };
@@ -363,12 +370,51 @@ X3DGridTool::set_snapDistance ()
 void
 X3DGridTool::set_snapToCenter ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
+	const auto metadataSet = createMetaData ("/Titania/" + getTypeName ());
 	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("snapToCenter") -> value ();
 
 	value = { getTool () -> snapToCenter () };
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+}
+
+void
+X3DGridTool::set_active ()
+{
+	if (getTool () -> isActive ())
+	{
+		translation = getTool () -> translation ();
+		rotation    = getTool () -> rotation ();
+		scale       = getTool () -> scale ();
+		dimension   = getTool () -> dimension ();
+
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change %s Properties"), getName () .c_str ()));
+
+		undoStep -> addObjects (getTool ());
+		undoStep -> addUndoFunction ((void (X3D::SFVec3f::*) (const X3D::Vector3f &))      &X3D::SFVec3f::setValue,    std::ref (getTool () -> translation ()), getTool () -> translation ());
+		undoStep -> addUndoFunction ((void (X3D::SFRotation::*) (const X3D::Rotation4f &)) &X3D::SFRotation::setValue, std::ref (getTool () -> rotation ()),    getTool () -> rotation ());
+		undoStep -> addUndoFunction ((void (X3D::SFVec3f::*) (const X3D::Vector3f &))      &X3D::SFVec3f::setValue,    std::ref (getTool () -> scale ()),       getTool () -> scale ());
+		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (getTool () -> dimension ()), getTool () -> dimension ());
+	}
+	else
+	{
+		bool changed = false;
+
+		changed |= (translation not_eq getTool () -> translation ());
+		changed |= (rotation    not_eq getTool () -> rotation ());
+		changed |= (scale       not_eq getTool () -> scale ());
+		changed |= (dimension   not_eq getTool () -> dimension ());
+
+		if (changed)
+		{
+			undoStep -> addRedoFunction ((void (X3D::SFVec3f::*) (const X3D::Vector3f &))      &X3D::SFVec3f::setValue,    std::ref (getTool () -> translation ()), getTool () -> translation ());
+			undoStep -> addRedoFunction ((void (X3D::SFRotation::*) (const X3D::Rotation4f &)) &X3D::SFRotation::setValue, std::ref (getTool () -> rotation ()),    getTool () -> rotation ());
+			undoStep -> addRedoFunction ((void (X3D::SFVec3f::*) (const X3D::Vector3f &))      &X3D::SFVec3f::setValue,    std::ref (getTool () -> scale ()),       getTool () -> scale ());
+			undoStep -> addRedoFunction (&X3D::MFInt32::setValue, std::ref (getTool () -> dimension ()), getTool () -> dimension ());
+			
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+	}
 }
 
 void

@@ -81,6 +81,7 @@ AngleTool::AngleTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
+	addField (inputOutput, "isActive",        isActive ());
 
 	dimension ()       = { 5, 16, 10 };
 	majorLineEvery ()  = { 5, 2, 5 };
