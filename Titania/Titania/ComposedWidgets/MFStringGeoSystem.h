@@ -53,8 +53,13 @@
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
-#include <Titania/X3D/Components/Geospatial/X3DGeospatialObject.h>
-#include <Titania/String.h>
+namespace titania {
+namespace X3D {
+
+class X3DGeospatialObject;
+
+} // X3D
+} // titania
 
 namespace titania {
 namespace puck {
@@ -112,210 +117,11 @@ private:
 	Gtk::Widget &                          gdBox;
 	Gtk::Widget &                          utmBox;
 	X3D::X3DPtr <X3D::X3DGeospatialObject> node;
-	X3D::UndoStepPtr                            undoStep;
+	X3D::UndoStepPtr                       undoStep;
 	int                                    input;
 	bool                                   changing;
 
 };
-
-inline
-MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
-                                      Gtk::ComboBoxText & coordinateSystem,
-                                      Gtk::ComboBoxText & ellipsoid,
-                                      Gtk::ComboBoxText & gdOrder,
-                                      const Glib::RefPtr <Gtk::Adjustment> & zone,
-                                      Gtk::ComboBoxText & hemisphere,
-                                      Gtk::ComboBoxText & utmOrder,
-                                      Gtk::Widget & ellipsoidBox,
-                                      Gtk::Widget & gdBox,
-                                      Gtk::Widget & utmBox) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	X3DComposedWidget (editor),
-	 coordinateSystem (coordinateSystem),
-	        ellipsoid (ellipsoid),
-	          gdOrder (gdOrder),
-	             zone (zone),
-	       hemisphere (hemisphere),
-	         utmOrder (utmOrder),
-	     ellipsoidBox (ellipsoidBox),
-	            gdBox (gdBox),
-	           utmBox (utmBox),
-	             node (),
-	         undoStep (),
-	            input (-1),
-	         changing (false)
-{
-	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
-	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));
-	gdOrder          .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 2));
-
-	zone -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 3));
-	hemisphere .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 4));
-	utmOrder   .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 5));
-
-	setup ();
-}
-
-inline
-void
-MFStringGeoSystem::setNode (const X3D::SFNode & value)
-{
-	if (node)
-		node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
-
-	node = value;
-
-	if (node)
-	{
-		node -> geoSystem () .addInterest (this, &MFStringGeoSystem::set_field);
-		set_field ();
-	}
-	else
-	{
-		undoStep .reset ();
-
-		changing = true;
-
-		coordinateSystem .set_active (0);
-		ellipsoid        .set_active_text ("WE");
-
-		coordinateSystem .set_sensitive (false);
-		ellipsoidBox     .set_sensitive (false);
-
-		ellipsoidBox .set_visible (true);
-		gdBox        .set_visible (false);
-		utmBox       .set_visible (false);
-
-		changing = false;
-	}
-}
-
-inline
-void
-MFStringGeoSystem::on_changed (const int id)
-{
-	if (changing)
-		return;
-
-	if (id not_eq input)
-		undoStep .reset ();
-
-	input = id;
-
-	addUndoFunction (node, node -> geoSystem (), undoStep);
-
-	node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
-	node -> geoSystem () .addInterest (this, &MFStringGeoSystem::connect);
-
-	node -> geoSystem () .clear ();
-
-	gdBox  .set_visible (false);
-	utmBox .set_visible (false);
-
-	switch (coordinateSystem .get_active_row_number ())
-	{
-		case 0:
-		{
-			ellipsoidBox .set_visible (true);
-			gdBox        .set_visible (true);
-
-			node -> geoSystem () .emplace_back ("GD");
-			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
-
-			if (gdOrder .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("longitude_first");
-
-			break;
-		}
-		case 1:
-		{
-			ellipsoidBox .set_visible (true);
-			utmBox       .set_visible (true);
-
-			node -> geoSystem () .emplace_back ("UTM");
-			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
-			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value ()));
-
-			if (hemisphere .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("S");
-
-			if (utmOrder .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("easting_first");
-
-			break;
-		}
-		case 2:
-		{
-			ellipsoidBox .set_visible (false);
-
-			node -> geoSystem () = { "GC" };
-			break;
-		}
-		default:
-			break;
-	}
-
-	addRedoFunction (node -> geoSystem (), undoStep);
-
-}
-
-inline
-void
-MFStringGeoSystem::set_field ()
-{
-	undoStep .reset ();
-
-	changing = true;
-
-	coordinateSystem .set_sensitive (true);
-	ellipsoidBox     .set_sensitive (true);
-
-	gdBox  .set_visible (false);
-	utmBox .set_visible (false);
-
-	switch (X3D::Geospatial::getCoordinateSystem (node -> geoSystem ()))
-	{
-		case X3D::Geospatial::CoordinateSystemType::GD:
-		{
-			coordinateSystem .set_active (0);
-			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
-			gdOrder          .set_active (not X3D::Geospatial::getLatitudeFirst (node -> geoSystem ()));
-
-			ellipsoidBox .set_visible (true);
-			gdBox        .set_visible (true);
-			break;
-		}
-		case X3D::Geospatial::CoordinateSystemType::UTM:
-		{
-			coordinateSystem .set_active (1);
-			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
-
-			zone -> set_value (X3D::Geospatial::getZone (node -> geoSystem ()));
-			hemisphere .set_active (not X3D::Geospatial::getNorthernHemisphere (node -> geoSystem ()));
-			utmOrder   .set_active (not X3D::Geospatial::getNorthingFirst (node -> geoSystem ()));
-
-			ellipsoidBox .set_visible (true);
-			utmBox       .set_visible (true);
-			break;
-		}
-		case X3D::Geospatial::CoordinateSystemType::GC:
-		{
-			coordinateSystem .set_active (2);
-			ellipsoidBox     .set_visible (false);
-			break;
-		}
-	}
-
-	changing = false;
-}
-
-inline
-void
-MFStringGeoSystem::connect (const X3D::MFString & field)
-{
-	field .removeInterest (this, &MFStringGeoSystem::connect);
-	field .addInterest (this, &MFStringGeoSystem::set_field);
-}
 
 } // puck
 } // titania

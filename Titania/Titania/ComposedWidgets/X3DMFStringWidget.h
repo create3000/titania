@@ -48,29 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_X3DMFSTRING_WIDGET_H__
+#define __TITANIA_COMPOSED_WIDGETS_X3DMFSTRING_WIDGET_H__
 
-#include "../ComposedWidgets/Cairo.h"
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
 namespace puck {
 
-class SFColorRGBAButton :
+class X3DMFStringWidget :
 	public X3DComposedWidget
 {
 public:
 
-	///  @name Construction
-
-	SFColorRGBAButton (X3DBaseInterface* const,
-	                   Gtk::Button &,
-	                   const Glib::RefPtr <Gtk::Adjustment> &,
-	                   Gtk::Widget &,
-	                   const std::string &);
-
 	///  @name Member access
+
+	const std::string &
+	getName ()
+	{ return name; }
 
 	void
 	setNodes (const X3D::MFNode &);
@@ -82,54 +77,121 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFColorRGBAButton ();
+	~X3DMFStringWidget ()
+	{ dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DMFStringWidget (X3DBaseInterface* const editor,
+	                   Gtk::TreeView &,
+	                   const Glib::RefPtr <Gtk::CellRendererText> &,
+	                   Gtk::Button &,
+	                   Gtk::Button &,
+	                   const std::string &,
+	                   const Glib::ustring &);
+
+	///  @name Member access
+
+	Gtk::TreeView &
+	getTreeView ()
+	{ return treeView; }
+
+	const Gtk::TreeView &
+	getTreeView () const
+	{ return treeView; }
+
+	void
+	set1Value (const size_t, const Glib::ustring &);
+
+	void
+	set1Value (const Gtk::TreePath &, const Glib::ustring &);
+
+	const Glib::ustring &
+	get1Value (const size_t index)
+	{ return string .get1Value (index); }
+
+	///  @name Operations
+
+	void
+	append (const Glib::ustring &);
+
+	///  @name Event handler
+
+	virtual
+	void
+	on_add_clicked ();
+
+	virtual
+	void
+	on_remove_clicked ();
+
+	virtual
+	void
+	set_buffer ();
+
+	virtual
+	void
+	set_string (const X3D::MFString &)
+	{ }
 
 
 private:
 
+	class Columns :
+		public Gtk::TreeModel::ColumnRecord
+	{
+	public:
+
+		Columns ()
+		{
+			add (string);
+		}
+
+		Gtk::TreeModelColumn <Glib::ustring> string;
+
+	};
+
 	///  @name Event handler
 
 	void
-	on_color_changed ();
+	on_selection_changed ();
 
 	void
-	on_value_changed ();
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &,
+	                       int, int,
+	                       const Gtk::SelectionData &,
+	                       guint,
+	                       guint);
 
 	void
-	set_color (const int, const X3D::Color4f &);
+	on_edited (const Glib::ustring &, const Glib::ustring &);
+
+	void
+	on_string_changed ();
 
 	void
 	set_field ();
 
 	void
-	set_buffer ();
-
-	void
-	connect (const X3D::SFColorRGBA &);
-
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> &);
-
-	void
-	on_clicked ();
-
-	Gdk::RGBA
-	to_rgba (const X3D::Color4f &);
+	connect (const X3D::MFString &);
 
 	///  @name Members
 
-	Gtk::Button &                        colorButton;
-	const Glib::RefPtr <Gtk::Adjustment> valueAdjustment;
-	Gtk::Widget &                        widget;
-	Gtk::DrawingArea                     drawingArea;
-	Gtk::ColorSelectionDialog            dialog;
-	X3D::MFNode                          nodes;
-	const std::string                    name;
-	X3D::UndoStepPtr                     undoStep;
-	int                                  input;
-	bool                                 changing;
-	X3D::SFTime                          buffer;
-	float                                hsva [4];
+	Gtk::TreeView &                            treeView;
+	Columns                                    columns;
+	Glib::RefPtr <Gtk::ListStore>              listStore;
+	const Glib::RefPtr <Gtk::CellRendererText> cellRenderer;
+	Gtk::Button &                              addButton;
+	Gtk::Button &                              removeButton;
+	X3D::MFNode                                nodes;
+	const std::string                          name;
+	const Glib::ustring                        defaultValue;
+	X3D::MFString                              string;
+	X3D::UndoStepPtr                           undoStep;
+	X3D::SFTime                                buffer;
 
 };
 

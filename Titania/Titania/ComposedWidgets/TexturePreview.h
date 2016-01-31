@@ -52,9 +52,15 @@
 #define __TITANIA_COMPOSED_WIDGETS_TEXTURE_PREVIEW_H__
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
-#include "../Configuration/config.h"
 
-#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
+namespace titania {
+namespace X3D {
+
+class X3DTextureNode;
+class X3DTexture2DNode;
+
+} // X3D
+} // titania
 
 namespace titania {
 namespace puck {

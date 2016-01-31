@@ -115,8 +115,26 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWidget.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWindow.$(OBJEXT) \
 	Titania/Browser/X3DObjectOperations.$(OBJEXT) \
+	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/Cairo.$(OBJEXT) \
+	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
+	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT) \
+	Titania/ComposedWidgets/NameEntry.$(OBJEXT) \
+	Titania/ComposedWidgets/NormalTool.$(OBJEXT) \
+	Titania/ComposedWidgets/RangeTool.$(OBJEXT) \
+	Titania/ComposedWidgets/RotationTool.$(OBJEXT) \
+	Titania/ComposedWidgets/SFColorButton.$(OBJEXT) \
+	Titania/ComposedWidgets/SFColorRGBAButton.$(OBJEXT) \
+	Titania/ComposedWidgets/SFRotationAdjustment.$(OBJEXT) \
+	Titania/ComposedWidgets/SFStringComboBoxText.$(OBJEXT) \
+	Titania/ComposedWidgets/SFStringEntry.$(OBJEXT) \
+	Titania/ComposedWidgets/SFStringTextView.$(OBJEXT) \
 	Titania/ComposedWidgets/TexturePreview.$(OBJEXT) \
+	Titania/ComposedWidgets/X3DGradientTool.$(OBJEXT) \
+	Titania/ComposedWidgets/X3DMFStringWidget.$(OBJEXT) \
 	Titania/Configuration/config.$(OBJEXT) \
 	Titania/Configuration/Configuration.$(OBJEXT) \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.$(OBJEXT) \
@@ -515,8 +533,26 @@ titania_SOURCES = \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Browser/X3DObjectOperations.cpp \
+	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
+	Titania/ComposedWidgets/MFColorButton.cpp \
+	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
+	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
+	Titania/ComposedWidgets/MFStringURLWidget.cpp \
+	Titania/ComposedWidgets/NameEntry.cpp \
+	Titania/ComposedWidgets/NormalTool.cpp \
+	Titania/ComposedWidgets/RangeTool.cpp \
+	Titania/ComposedWidgets/RotationTool.cpp \
+	Titania/ComposedWidgets/SFColorButton.cpp \
+	Titania/ComposedWidgets/SFColorRGBAButton.cpp \
+	Titania/ComposedWidgets/SFRotationAdjustment.cpp \
+	Titania/ComposedWidgets/SFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/SFStringEntry.cpp \
+	Titania/ComposedWidgets/SFStringTextView.cpp \
 	Titania/ComposedWidgets/TexturePreview.cpp \
+	Titania/ComposedWidgets/X3DGradientTool.cpp \
+	Titania/ComposedWidgets/X3DMFStringWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
@@ -817,10 +853,64 @@ Titania/ComposedWidgets/$(am__dirstamp):
 Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/ComposedWidgets/$(DEPDIR)
 	@: > Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/BackgroundTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/Cairo.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFColorButton.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/NameEntry.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/NormalTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/RangeTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/RotationTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFColorButton.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFColorRGBAButton.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFRotationAdjustment.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFStringComboBoxText.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFStringEntry.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/SFStringTextView.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/TexturePreview.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/X3DGradientTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/X3DMFStringWidget.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/Configuration/$(am__dirstamp):
@@ -1521,8 +1611,26 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DObjectOperations.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/Cairo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringComboBoxText.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringGeoSystem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringURLWidget.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NameEntry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NormalTool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/RangeTool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/RotationTool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFColorButton.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFColorRGBAButton.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFRotationAdjustment.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFStringComboBoxText.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFStringEntry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFStringTextView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/TexturePreview.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/X3DGradientTool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/X3DMFStringWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/Configuration.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileImportDialog/$(DEPDIR)/FileImportDialog.Po@am__quote@

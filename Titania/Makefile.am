@@ -18,8 +18,26 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
 	Titania/Browser/X3DObjectOperations.cpp \
+	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
+	Titania/ComposedWidgets/MFColorButton.cpp \
+	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
+	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
+	Titania/ComposedWidgets/MFStringURLWidget.cpp \
+	Titania/ComposedWidgets/NameEntry.cpp \
+	Titania/ComposedWidgets/NormalTool.cpp \
+	Titania/ComposedWidgets/RangeTool.cpp \
+	Titania/ComposedWidgets/RotationTool.cpp \
+	Titania/ComposedWidgets/SFColorButton.cpp \
+	Titania/ComposedWidgets/SFColorRGBAButton.cpp \
+	Titania/ComposedWidgets/SFRotationAdjustment.cpp \
+	Titania/ComposedWidgets/SFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/SFStringEntry.cpp \
+	Titania/ComposedWidgets/SFStringTextView.cpp \
 	Titania/ComposedWidgets/TexturePreview.cpp \
+	Titania/ComposedWidgets/X3DGradientTool.cpp \
+	Titania/ComposedWidgets/X3DMFStringWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \

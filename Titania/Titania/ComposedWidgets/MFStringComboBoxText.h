@@ -112,133 +112,11 @@ private:
 	const std::string   name;
 	const size_t        index;
 	const std::string   defaultValue;
-	X3D::UndoStepPtr         undoStep;
+	X3D::UndoStepPtr    undoStep;
 	bool                changing;
 	X3D::SFTime         buffer;
 
 };
-
-inline
-MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
-                                            Gtk::ComboBoxText & comboBoxText,
-                                            const std::string & name,
-                                            const size_t index,
-                                            const std::string & defaultValue) :
-	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	X3DComposedWidget (editor),
-	     comboBoxText (comboBoxText),
-	            nodes (),
-	             name (name),
-	            index (index),
-	     defaultValue (defaultValue),
-	         undoStep (),
-	         changing (false),
-	           buffer ()
-{
-	addChildren (buffer);
-	buffer .addInterest (this, &MFStringComboBoxText::set_buffer);
-
-	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &MFStringComboBoxText::on_changed));
-	setup ();
-}
-
-inline
-void
-MFStringComboBoxText::setNodes (const X3D::MFNode & value)
-{
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			node -> getField <X3D::MFString> (name) .removeInterest (this, &MFStringComboBoxText::set_field);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	nodes = value;
-
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			node -> getField <X3D::MFString> (name) .addInterest (this, &MFStringComboBoxText::set_field);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	set_field ();
-}
-
-inline
-void
-MFStringComboBoxText::on_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction <X3D::MFString> (nodes, name, undoStep);
-
-	for (const auto & node : nodes)
-	{
-		try
-		{
-			auto & field = node -> getField <X3D::MFString> (name);
-
-			field .removeInterest (this, &MFStringComboBoxText::set_field);
-			field .addInterest (this, &MFStringComboBoxText::connect);
-
-			field .set1Value (index, comboBoxText .get_active_text ());
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	addRedoFunction <X3D::MFString> (nodes, name, undoStep);
-}
-
-inline
-void
-MFStringComboBoxText::set_field ()
-{
-	buffer .addEvent ();
-}
-
-inline
-void
-MFStringComboBoxText::set_buffer ()
-{
-	undoStep .reset ();
-
-	changing = true;
-
-	const auto pair = getString (nodes, name, index, defaultValue);
-
-	if (pair .second > 0)
-	{
-		comboBoxText .set_active_text (pair .first);
-
-		if (comboBoxText .get_active_row_number () < 0)
-			comboBoxText .set_active_text (defaultValue);
-	}
-	else if (pair .second == 0)
-		comboBoxText .set_active_text (defaultValue);
-	else
-		comboBoxText .set_active (-1);
-
-	comboBoxText .set_sensitive (pair .second not_eq -2);
-
-	changing = false;
-}
-
-inline
-void
-MFStringComboBoxText::connect (const X3D::MFString & field)
-{
-	field .removeInterest (this, &MFStringComboBoxText::connect);
-	field .addInterest (this, &MFStringComboBoxText::set_field);
-}
 
 /***
  *  Returns the string in @a nodes in field @a fieldName. The second value indicates if the field
@@ -249,7 +127,6 @@ MFStringComboBoxText::connect (const X3D::MFString & field)
  *   1 means all values are equal
  */
 template <class NodeType>
-inline
 std::pair <X3D::String, int>
 MFStringComboBoxText::getString (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, const size_t index, const std::string & defaultValue)
 {

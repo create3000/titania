@@ -55,6 +55,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 
 namespace titania {
 namespace puck {

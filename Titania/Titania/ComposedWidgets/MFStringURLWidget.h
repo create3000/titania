@@ -51,7 +51,7 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLWIDGET_H__
 
-#include "../ComposedWidgets/MFStringWidget.h"
+#include "../ComposedWidgets/X3DMFStringWidget.h"
 
 #include "../Base/X3DUserInterface.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
@@ -106,131 +106,6 @@ private:
 	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
 
 };
-
-inline
-MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
-                                      Gtk::TreeView & treeView,
-                                      const Glib::RefPtr <Gtk::CellRendererText> & cellRenderer,
-                                      Gtk::Button & addButton,
-                                      Gtk::Button & removeButton,
-                                      Gtk::Button & reloadButton,
-                                      const Glib::RefPtr <Gtk::TreeViewColumn> & URLChooserColumn,
-                                      const std::string & name) :
-	 X3DBaseInterface (userInterface -> getBrowserWindow (), userInterface -> getCurrentBrowser ()),
-	X3DMFStringWidget (userInterface, treeView, cellRenderer, addButton, removeButton, name, ""),
-	    userInterface (userInterface),
-	     reloadButton (reloadButton),
-	 URLChooserColumn (URLChooserColumn),
-	   fileOpenDialog ()
-{
-	treeView     .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
-	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_reload_clicked));
-}
-
-inline
-void
-MFStringURLWidget::on_add_clicked ()
-{
-	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
-
-	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
-	fileOpenDialog -> getWindow () .set_modal (true);
-	fileOpenDialog -> getRelativePathBox () .set_visible (true);
-
-	if (fileOpenDialog -> run ())
-	{
-		auto URL = fileOpenDialog -> getURL ();
-
-		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
-
-		append (URL .str ());
-		reloadButton .set_sensitive (true);
-	}
-
-	fileOpenDialog -> quit ();
-	fileOpenDialog .reset ();
-}
-
-inline
-bool
-MFStringURLWidget::on_button_release_event (GdkEventButton* event)
-{
-	Gtk::TreeModel::Path path;
-	Gtk::TreeViewColumn* column = nullptr;
-	int                  cell_x = 0;
-	int                  cell_y = 0;
-
-	getTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
-
-	if (not path .size ())
-		return false;
-
-	if (column not_eq URLChooserColumn .operator -> ())
-		return false;
-
-	// Choose new URL
-
-	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
-
-	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
-	fileOpenDialog -> getWindow () .set_modal (true);
-	fileOpenDialog -> getRelativePathBox () .set_visible (true);
-
-	// Set URL
-
-	basic::uri URL = getCurrentContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
-
-	fileOpenDialog -> setURL (URL);
-
-	// Run
-
-	if (fileOpenDialog -> run ())
-	{
-		URL = fileOpenDialog -> getURL ();
-
-		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
-			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
-
-		set1Value (path .front (), URL .str ());
-	}
-
-	fileOpenDialog -> quit ();
-	fileOpenDialog .reset ();
-	return true;
-}
-
-inline
-void
-MFStringURLWidget::set_buffer ()
-{
-	if (fileOpenDialog)
-		fileOpenDialog -> quit ();
-
-	X3DMFStringWidget::set_buffer ();
-}
-
-inline
-void
-MFStringURLWidget::set_string (const X3D::MFString & string)
-{
-	reloadButton .set_sensitive (not string .empty ());
-}
-
-inline
-void
-MFStringURLWidget::on_reload_clicked ()
-{
-	for (const auto & node : getNodes ())
-	{
-		try
-		{
-			node -> getField <X3D::MFString> (getName ()) .addEvent ();
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-}
 
 } // puck
 } // titania

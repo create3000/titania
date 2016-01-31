@@ -222,6 +222,24 @@
     <Compile Include="Titania\Editors\BackgroundEditor\BackgroundEditor.cpp" />
     <Compile Include="Titania\Editors\BackgroundEditor\X3DBackgroundEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\TexturePreview.cpp" />
+    <Compile Include="Titania\ComposedWidgets\RangeTool.cpp" />
+    <Compile Include="Titania\ComposedWidgets\X3DGradientTool.cpp" />
+    <Compile Include="Titania\ComposedWidgets\BackgroundTool.cpp" />
+    <Compile Include="Titania\ComposedWidgets\NameEntry.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFStringTextView.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFStringEntry.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFStringComboBoxText.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFRotationAdjustment.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFColorRGBAButton.cpp" />
+    <Compile Include="Titania\ComposedWidgets\SFColorButton.cpp" />
+    <Compile Include="Titania\ComposedWidgets\RotationTool.cpp" />
+    <Compile Include="Titania\ComposedWidgets\NormalTool.cpp" />
+    <Compile Include="Titania\ComposedWidgets\X3DMFStringWidget.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFStringURLWidget.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFStringGeoSystem.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFStringComboBoxText.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFColorRGBAButton.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFColorButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2349,6 +2367,7 @@
     <None Include="share\titania\ui\icons\X3DBaseNode.svg" />
     <None Include="Titania\ComposedWidgets\RangeTool.h" />
     <None Include="share\titania\ui\icons\Background.svg" />
+    <None Include="Titania\ComposedWidgets\X3DMFStringWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

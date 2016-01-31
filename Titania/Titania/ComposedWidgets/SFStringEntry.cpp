@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,92 +48,120 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
-
-#include "../ComposedWidgets/Cairo.h"
-#include "../ComposedWidgets/X3DComposedWidget.h"
+#include "SFStringEntry.h"
 
 namespace titania {
 namespace puck {
 
-class SFColorRGBAButton :
-	public X3DComposedWidget
+SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
+                              Gtk::Entry & entry,
+                              const std::string & name) :
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	X3DComposedWidget (editor),
+	            entry (entry),
+	            nodes (),
+	             name (name),
+	         undoStep (),
+	         changing (false),
+	           buffer ()
 {
-public:
+	addChildren (buffer);
+	buffer .addInterest (this, &SFStringEntry::set_buffer);
 
-	///  @name Construction
+	entry .signal_changed () .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));
+	setup ();
+}
 
-	SFColorRGBAButton (X3DBaseInterface* const,
-	                   Gtk::Button &,
-	                   const Glib::RefPtr <Gtk::Adjustment> &,
-	                   Gtk::Widget &,
-	                   const std::string &);
+void
+SFStringEntry::setNodes (const X3D::MFNode & value)
+{
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <X3D::SFString> (name) .removeInterest (this, &SFStringEntry::set_field);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-	///  @name Member access
+	nodes = value;
 
-	void
-	setNodes (const X3D::MFNode &);
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <X3D::SFString> (name) .addInterest (this, &SFStringEntry::set_field);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-	const X3D::MFNode &
-	getNodes ()
-	{ return nodes; }
-
-	///  @name Destruction
-
-	virtual
-	~SFColorRGBAButton ();
-
-
-private:
-
-	///  @name Event handler
-
-	void
-	on_color_changed ();
-
-	void
-	on_value_changed ();
-
-	void
-	set_color (const int, const X3D::Color4f &);
-
-	void
 	set_field ();
+}
 
-	void
-	set_buffer ();
+void
+SFStringEntry::on_changed ()
+{
+	if (changing)
+		return;
 
-	void
-	connect (const X3D::SFColorRGBA &);
+	addUndoFunction <X3D::SFString> (nodes, name, undoStep);
 
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> &);
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			auto & field = node -> getField <X3D::SFString> (name);
 
-	void
-	on_clicked ();
+			field .removeInterest (this, &SFStringEntry::set_field);
+			field .addInterest (this, &SFStringEntry::connect);
 
-	Gdk::RGBA
-	to_rgba (const X3D::Color4f &);
+			field = entry .get_text ();
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 
-	///  @name Members
+	addRedoFunction <X3D::SFString> (nodes, name, undoStep);
+}
 
-	Gtk::Button &                        colorButton;
-	const Glib::RefPtr <Gtk::Adjustment> valueAdjustment;
-	Gtk::Widget &                        widget;
-	Gtk::DrawingArea                     drawingArea;
-	Gtk::ColorSelectionDialog            dialog;
-	X3D::MFNode                          nodes;
-	const std::string                    name;
-	X3D::UndoStepPtr                     undoStep;
-	int                                  input;
-	bool                                 changing;
-	X3D::SFTime                          buffer;
-	float                                hsva [4];
+void
+SFStringEntry::set_field ()
+{
+	buffer .addEvent ();
+}
 
-};
+void
+SFStringEntry::set_buffer ()
+{
+	undoStep .reset ();
+
+	changing = true;
+
+	// Find last field.
+
+	const auto pair = getArray <X3D::SFString> (nodes, name);
+
+	if (pair .second >= 0)
+		entry .set_text (pair .first);
+	else
+	{
+		entry .set_text ("");
+		entry .set_placeholder_text (pair .first);
+	}
+
+	entry .set_sensitive (pair .second not_eq -2);
+
+	changing = false;
+}
+
+void
+SFStringEntry::connect (const X3D::SFString & field)
+{
+	field .removeInterest (this, &SFStringEntry::connect);
+	field .addInterest (this, &SFStringEntry::set_field);
+}
 
 } // puck
 } // titania
-
-#endif

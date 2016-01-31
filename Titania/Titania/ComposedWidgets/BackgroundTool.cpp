@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,92 +48,95 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFCOLOR_RGBABUTTON_H__
-
-#include "../ComposedWidgets/Cairo.h"
-#include "../ComposedWidgets/X3DComposedWidget.h"
+#include "BackgroundTool.h"
 
 namespace titania {
 namespace puck {
 
-class SFColorRGBAButton :
-	public X3DComposedWidget
+BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
+                                const std::string & name,
+                                Gtk::Box & box,
+                                const std::string & positionName,
+                                const std::string & colorName) :
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	  X3DGradientTool (editor, name, box, positionName, colorName)
+{ }
+
+void
+BackgroundTool::realize ()
 {
-public:
+	try
+	{
+		getTool () -> getField <X3D::SFBool>  ("enableFirst") = false;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
-	///  @name Construction
+void
+BackgroundTool::set_addTime (const X3D::time_type value)
+{
+	try
+	{
+		const auto   tool     = getTool ();
+		const auto & position = tool -> getField <X3D::MFFloat> ("position");
+		auto       & color    = tool -> getField <X3D::MFColor> ("color");
 
-	SFColorRGBAButton (X3DBaseInterface* const,
-	                   Gtk::Button &,
-	                   const Glib::RefPtr <Gtk::Adjustment> &,
-	                   Gtk::Widget &,
-	                   const std::string &);
+		if (position .size () == 1)
+		{
+			if (position [0] > 0)
+			{
+				color .emplace_back (color [0]);
+				setWhichChoice (1);
+			}
+		}
 
-	///  @name Member access
+		X3DGradientTool::set_addTime (value);
+	}
+	catch (const X3D::X3DError & error)
+	{
+	}
+}
 
-	void
-	setNodes (const X3D::MFNode &);
+X3D::MFFloat
+BackgroundTool::get_position (const X3D::MFFloat & position)
+{
+	X3D::MFFloat angle;
 
-	const X3D::MFNode &
-	getNodes ()
-	{ return nodes; }
+	if (not position .empty ())
+	{
+		const size_t offset = position [0] == 0.0f ? 1 : 0;
 
-	///  @name Destruction
+		for (const auto & value : std::make_pair (position .begin () + offset, position .end ()))
+			angle .emplace_back (value * (M_PI / 2));
+	}
 
-	virtual
-	~SFColorRGBAButton ();
+	return angle;
+}
 
+std::pair <X3D::MFFloat, X3D::MFColor>
+BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
+{
+	try
+	{
+		X3D::MFFloat position;
 
-private:
+		for (const auto & value : positionValue)
+			position .emplace_back (math::clamp <float> (value / (M_PI / 2), 0, 1));
 
-	///  @name Event handler
+		if (not colorValue .empty ())
+			position .emplace_front (0);
 
-	void
-	on_color_changed ();
-
-	void
-	on_value_changed ();
-
-	void
-	set_color (const int, const X3D::Color4f &);
-
-	void
-	set_field ();
-
-	void
-	set_buffer ();
-
-	void
-	connect (const X3D::SFColorRGBA &);
-
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> &);
-
-	void
-	on_clicked ();
-
-	Gdk::RGBA
-	to_rgba (const X3D::Color4f &);
-
-	///  @name Members
-
-	Gtk::Button &                        colorButton;
-	const Glib::RefPtr <Gtk::Adjustment> valueAdjustment;
-	Gtk::Widget &                        widget;
-	Gtk::DrawingArea                     drawingArea;
-	Gtk::ColorSelectionDialog            dialog;
-	X3D::MFNode                          nodes;
-	const std::string                    name;
-	X3D::UndoStepPtr                     undoStep;
-	int                                  input;
-	bool                                 changing;
-	X3D::SFTime                          buffer;
-	float                                hsva [4];
-
-};
+		return std::make_pair (position, colorValue);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+		return std::make_pair (positionValue, colorValue);
+	}
+}
 
 } // puck
 } // titania
-
-#endif
