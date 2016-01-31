@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,82 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
-#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DComposedTexture3DEditor.h"
-#include "X3DImageTexture3DEditor.h"
 #include "X3DPixelTexture3DEditor.h"
+
+#include <Titania/X3D/Browser/ContextLock.h>
 
 namespace titania {
 namespace puck {
 
-class X3DTexture3DNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DComposedTexture3DEditor,
-	public X3DImageTexture3DEditor,
-	public X3DPixelTexture3DEditor
+X3DPixelTexture3DEditor::X3DPixelTexture3DEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface (),
+	             pixelTexture ()
+{ }
+
+void
+X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-public:
+	if (pixelTexture)
+	{
+		//pixelTexture -> image () .removeInterest (this, &X3DPixelTexture3DEditor::set_image);
+	}
 
-	~X3DTexture3DNodeEditor ();
+	pixelTexture = value;
 
+	getPixelTexture3DBox () .set_visible (pixelTexture);
 
-protected:
+	if (not pixelTexture)
+	{
+		pixelTexture = new X3D::PixelTexture3D (getCurrentContext ());
+		getCurrentContext () -> addUninitializedNode (pixelTexture);
+		getCurrentContext () -> realize ();
+	}
 
-	///  @name Construction
+	//pixelTexture -> image () .addInterest (this, &X3DPixelTexture3DEditor::set_image);
 
-	X3DTexture3DNodeEditor ();
+	//set_image ();
+}
 
-	///  @name Member access
+const X3D::X3DPtr <X3D::PixelTexture3D> &
+X3DPixelTexture3DEditor::getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	getPixelTextureBox () .set_visible (value);
 
-	void
-	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+//	if (value)
+//	{
+//		switch (value -> getType () .back ())
+//		{
+//			case X3D::X3DConstants::ImageTexture:
+//			case X3D::X3DConstants::MovieTexture:
+//			{
+//				try
+//				{
+//					X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (value);
+//
+//					if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> getComponents ())
+//						pixelTexture -> assign (texture2DNode);
+//				}
+//				catch (const X3D::X3DError &)
+//				{ }
+//
+//				break;
+//			}
+//			default:
+//				break;
+//		}
+//	}
 
-	virtual
-	const X3D::X3DPtr <X3D::ComposedTexture3D> &
-	getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-	virtual
-	const X3D::X3DPtr <X3D::ImageTexture3D> &
-	getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-	virtual
-	const X3D::X3DPtr <X3D::PixelTexture3D> &
-	getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-
-protected:
-
-	void
-	set_preview ();
-
-
-private:
-
-	///  @name Event handlers
-
-	bool
-	on_configure_event (GdkEventConfigure* const);
-
-	///  @name Construction
-
-	void
-	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTexture3DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	///  @name Members
-
-	X3D::BrowserPtr                     preview;
-	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode;
-	X3DFieldToggleButton <X3D::SFBool>  repeatS;
-	X3DFieldToggleButton <X3D::SFBool>  repeatT;
-	X3DFieldToggleButton <X3D::SFBool>  repeatR;
-
-};
+	return pixelTexture;
+}
 
 } // puck
 } // titania
-
-#endif

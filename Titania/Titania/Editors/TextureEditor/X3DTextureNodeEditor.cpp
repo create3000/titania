@@ -114,16 +114,12 @@ void
 X3DTextureNodeEditor::on_texture_changed ()
 {
 	getTextureNotebook () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0);
-	getTextureNotebook () .set_visible (getTextureComboBoxText () .get_active_row_number () > 0 and
-	                                    getTextureComboBoxText () .get_active_row_number () not_eq 2);
 
 	if (changing)
 		return;
 
 	if (getTextureComboBoxText () .get_active_row_number () > 0)
 	{
-		//getTextureNotebook () .set_visible (true);
-
 		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
 			case 1:
@@ -136,13 +132,13 @@ X3DTextureNodeEditor::on_texture_changed ()
 				textureNode = getMovieTexture (textureNode);
 				break;
 			case 4:
-				//textureNode = getComposedTexture3D (textureNode);
+				textureNode = getComposedTexture3D (textureNode);
 				break;
 			case 5:
-				//textureNode = getImageTexture3D (textureNode);
+				textureNode = getImageTexture3D (textureNode);
 				break;
 			case 6:
-				//textureNode = getPixelTexture3D (textureNode);
+				textureNode = getPixelTexture3D (textureNode);
 				break;
 			default:
 				break;
@@ -238,13 +234,13 @@ X3DTextureNodeEditor::set_node ()
 				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
 				break;
 			case X3D::X3DConstants::ComposedTexture3D:
-				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
+				getTextureComboBoxText () .set_active (COMPOSED_TEXTURE3D);
 				break;
 			case X3D::X3DConstants::ImageTexture3D:
-				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
+				getTextureComboBoxText () .set_active (IMAGE_TEXTURE3D);
 				break;
 			case X3D::X3DConstants::PixelTexture3D:
-				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
+				getTextureComboBoxText () .set_active (PIXEL_TEXTURE3D);
 				break;
 			default:
 				getTextureComboBoxText () .set_active (-1);

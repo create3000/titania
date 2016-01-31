@@ -107,8 +107,8 @@ PixelTexture3D::initialize ()
 size_t
 PixelTexture3D::getImageWidth () const
 {
-	if (image () .size () <= WIDTH)
-		return image () [WIDTH];
+	if (image () .size () > WIDTH)
+		return std::max <int32_t> (0, image () [WIDTH]);
 
 	return 0;
 }
@@ -116,8 +116,8 @@ PixelTexture3D::getImageWidth () const
 size_t
 PixelTexture3D::getImageHeight () const
 {
-	if (image () .size () <= HEIGHT)
-		return image () [HEIGHT];
+	if (image () .size () > HEIGHT)
+		return std::max <int32_t> (0, image () [HEIGHT]);
 
 	return 0;
 }

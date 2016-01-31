@@ -157,6 +157,18 @@ public:
 	getMovieTextureURLCellrendererPixbuf () const
 	{ return m_MovieTextureURLCellrendererPixbuf; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImageTexture3DURLCellRendererText () const
+	{ return m_ImageTexture3DURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImageTexture3DURLChooserColumn () const
+	{ return m_ImageTexture3DURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getImageTexture3DURLCellrendererPixbuf () const
+	{ return m_ImageTexture3DURLCellrendererPixbuf; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -260,6 +272,42 @@ public:
 	Gtk::Button &
 	getMovieTextureURLReloadButton () const
 	{ return *m_MovieTextureURLReloadButton; }
+
+	Gtk::Box &
+	getComposedTexture3DBox () const
+	{ return *m_ComposedTexture3DBox; }
+
+	Gtk::Box &
+	getImageTexture3DBox () const
+	{ return *m_ImageTexture3DBox; }
+
+	Gtk::Box &
+	getImageTexture3DURLBox () const
+	{ return *m_ImageTexture3DURLBox; }
+
+	Gtk::TreeView &
+	getImageTexture3DURLTreeView () const
+	{ return *m_ImageTexture3DURLTreeView; }
+
+	Gtk::Button &
+	getImageTexture3DURLAddButton () const
+	{ return *m_ImageTexture3DURLAddButton; }
+
+	Gtk::Button &
+	getImageTexture3DURLRemoveButton () const
+	{ return *m_ImageTexture3DURLRemoveButton; }
+
+	Gtk::Button &
+	getImageTexture3DEmbedButton () const
+	{ return *m_ImageTexture3DEmbedButton; }
+
+	Gtk::Button &
+	getImageTexture3DURLReloadButton () const
+	{ return *m_ImageTexture3DURLReloadButton; }
+
+	Gtk::Box &
+	getPixelTexture3DBox () const
+	{ return *m_PixelTexture3DBox; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -571,6 +619,9 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_MovieTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_MovieTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_MovieTextureURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImageTexture3DURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTexture3DURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTexture3DURLCellrendererPixbuf;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_TextureChildNotebook;
@@ -597,6 +648,15 @@ private:
 	Gtk::Button*                           m_MovieTextureURLAddButton;
 	Gtk::Button*                           m_MovieTextureURLRemoveButton;
 	Gtk::Button*                           m_MovieTextureURLReloadButton;
+	Gtk::Box*                              m_ComposedTexture3DBox;
+	Gtk::Box*                              m_ImageTexture3DBox;
+	Gtk::Box*                              m_ImageTexture3DURLBox;
+	Gtk::TreeView*                         m_ImageTexture3DURLTreeView;
+	Gtk::Button*                           m_ImageTexture3DURLAddButton;
+	Gtk::Button*                           m_ImageTexture3DURLRemoveButton;
+	Gtk::Button*                           m_ImageTexture3DEmbedButton;
+	Gtk::Button*                           m_ImageTexture3DURLReloadButton;
+	Gtk::Box*                              m_PixelTexture3DBox;
 	Gtk::Grid*                             m_Texture2DBox;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;

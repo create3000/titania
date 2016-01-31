@@ -48,78 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
-#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DPIXEL_TEXTURE3DEDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DPIXEL_TEXTURE3DEDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DComposedTexture3DEditor.h"
-#include "X3DImageTexture3DEditor.h"
-#include "X3DPixelTexture3DEditor.h"
+
+#include <Titania/X3D/Components/Texturing3D/PixelTexture3D.h>
 
 namespace titania {
 namespace puck {
 
-class X3DTexture3DNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DComposedTexture3DEditor,
-	public X3DImageTexture3DEditor,
-	public X3DPixelTexture3DEditor
+class X3DPixelTexture3DEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
 
-	~X3DTexture3DNodeEditor ();
+	///  @name Destruction
+
+	virtual
+	~X3DPixelTexture3DEditor ()
+	{ }
 
 
 protected:
 
 	///  @name Construction
 
-	X3DTexture3DNodeEditor ();
+	X3DPixelTexture3DEditor ();
 
-	///  @name Member access
+	///  @name Construction
 
 	void
-	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
-	virtual
-	const X3D::X3DPtr <X3D::ComposedTexture3D> &
-	getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-	virtual
-	const X3D::X3DPtr <X3D::ImageTexture3D> &
-	getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+	setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
 	const X3D::X3DPtr <X3D::PixelTexture3D> &
-	getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
-
-
-protected:
-
-	void
-	set_preview ();
+	getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 
 private:
 
-	///  @name Event handlers
-
-	bool
-	on_configure_event (GdkEventConfigure* const);
-
-	///  @name Construction
-
-	void
-	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTexture3DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
-
 	///  @name Members
 
-	X3D::BrowserPtr                     preview;
-	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode;
-	X3DFieldToggleButton <X3D::SFBool>  repeatS;
-	X3DFieldToggleButton <X3D::SFBool>  repeatT;
-	X3DFieldToggleButton <X3D::SFBool>  repeatR;
+	X3D::X3DPtr <X3D::PixelTexture3D> pixelTexture;
 
 };
 

@@ -54,56 +54,56 @@ namespace titania {
 namespace puck {
 
 X3DTexture3DNodeEditor::X3DTexture3DNodeEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface (),
-//	    X3DImageTextureEditor (),
-//	    X3DPixelTextureEditor (),
-//	    X3DMovieTextureEditor (),
-	            texture3DNode (),
-	                  repeatS (this, getTexture3DNodeRepeatSCheckButton (), "repeatS"),
-	                  repeatT (this, getTexture3DNodeRepeatTCheckButton (), "repeatT"),
-	                  repeatR (this, getTexture3DNodeRepeatRCheckButton (), "repeatR")
+	          X3DBaseInterface (),
+	 X3DTextureEditorInterface (),
+	X3DComposedTexture3DEditor (),
+	   X3DImageTexture3DEditor (),
+	   X3DPixelTexture3DEditor (),
+	             texture3DNode (),
+	                   repeatS (this, getTexture3DNodeRepeatSCheckButton (), "repeatS"),
+	                   repeatT (this, getTexture3DNodeRepeatTCheckButton (), "repeatT"),
+	                   repeatR (this, getTexture3DNodeRepeatRCheckButton (), "repeatR")
 { }
 
 void
 X3DTexture3DNodeEditor::setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-//	setComposedTexture3D (value);
-//	setImageTexture3D (value);
-//	setPixelTexture3D (value);
+	setComposedTexture3D (value);
+	setImageTexture3D (value);
+	setPixelTexture3D (value);
 
 	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (value), value);
 }
 
-//const X3D::X3DPtr <X3D::ImageTexture> &
-//X3DTexture3DNodeEditor::getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-//{
-//	const auto & texture = X3DImageTextureEditor::getComposedTexture3D (value);
-//
-//	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
-//
-//	return texture;
-//}
-//
-//const X3D::X3DPtr <X3D::PixelTexture> &
-//X3DTexture3DNodeEditor::getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-//{
-//	const auto & texture = X3DPixelTextureEditor::getImageTexture3D (value);
-//
-//	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
-//
-//	return texture;
-//}
-//
-//const X3D::X3DPtr <X3D::MovieTexture> &
-//X3DTexture3DNodeEditor::getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-//{
-//	const auto & texture = X3DMovieTextureEditor::getPixelTexture3D (value);
-//
-//	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
-//
-//	return texture;
-//}
+const X3D::X3DPtr <X3D::ComposedTexture3D> &
+X3DTexture3DNodeEditor::getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DComposedTexture3DEditor::getComposedTexture3D (value);
+
+	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
+
+	return texture;
+}
+
+const X3D::X3DPtr <X3D::ImageTexture3D> &
+X3DTexture3DNodeEditor::getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DImageTexture3DEditor::getImageTexture3D (value);
+
+	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
+
+	return texture;
+}
+
+const X3D::X3DPtr <X3D::PixelTexture3D> &
+X3DTexture3DNodeEditor::getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DPixelTexture3DEditor::getPixelTexture3D (value);
+
+	setTexture3DNode (X3D::X3DPtr <X3D::X3DTexture3DNode> (texture), value);
+
+	return texture;
+}
 
 void
 X3DTexture3DNodeEditor::setTexture3DNode (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture, const X3D::X3DPtr <X3D::X3DTextureNode> & value)

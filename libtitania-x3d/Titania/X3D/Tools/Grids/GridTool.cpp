@@ -79,8 +79,8 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "majorLineColor",  majorLineColor ());
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
-	addField (inputOutput, "isActive",        isActive ());
-	      
+	addField (outputOnly,  "isActive",        isActive ());
+
 	dimension ()       = { 10, 10, 10 };
 	majorLineEvery ()  = { 5, 5, 5 };
 	majorLineOffset () = { 0, 0, 0 };

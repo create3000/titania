@@ -78,6 +78,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_MovieTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellRendererText"));
 	m_MovieTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("MovieTextureURLChooserColumn"));
 	m_MovieTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("MovieTextureURLCellrendererPixbuf"));
+	m_ImageTexture3DURLCellRendererText            = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLCellRendererText"));
+	m_ImageTexture3DURLChooserColumn               = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLChooserColumn"));
+	m_ImageTexture3DURLCellrendererPixbuf          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -106,6 +109,15 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("MovieTextureURLAddButton", m_MovieTextureURLAddButton);
 	m_builder -> get_widget ("MovieTextureURLRemoveButton", m_MovieTextureURLRemoveButton);
 	m_builder -> get_widget ("MovieTextureURLReloadButton", m_MovieTextureURLReloadButton);
+	m_builder -> get_widget ("ComposedTexture3DBox", m_ComposedTexture3DBox);
+	m_builder -> get_widget ("ImageTexture3DBox", m_ImageTexture3DBox);
+	m_builder -> get_widget ("ImageTexture3DURLBox", m_ImageTexture3DURLBox);
+	m_builder -> get_widget ("ImageTexture3DURLTreeView", m_ImageTexture3DURLTreeView);
+	m_builder -> get_widget ("ImageTexture3DURLAddButton", m_ImageTexture3DURLAddButton);
+	m_builder -> get_widget ("ImageTexture3DURLRemoveButton", m_ImageTexture3DURLRemoveButton);
+	m_builder -> get_widget ("ImageTexture3DEmbedButton", m_ImageTexture3DEmbedButton);
+	m_builder -> get_widget ("ImageTexture3DURLReloadButton", m_ImageTexture3DURLReloadButton);
+	m_builder -> get_widget ("PixelTexture3DBox", m_PixelTexture3DBox);
 	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
 	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);

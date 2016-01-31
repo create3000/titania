@@ -169,8 +169,6 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 
 		getCurrentScene () -> getRootNodes () .emplace_front (worldInfo);
 		getCurrentScene () -> realize ();
-
-		getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 	}
 
 	return worldInfo;

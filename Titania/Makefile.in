@@ -197,8 +197,11 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/TextEditor/TextEditor.$(OBJEXT) \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/TextureEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DPixelTexture3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DPixelTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTexture3DNodeEditor.$(OBJEXT) \
@@ -616,8 +619,11 @@ titania_SOURCES = \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
 	Titania/Editors/TextureEditor/TextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.cpp \
+	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DPixelTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DPixelTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTexture3DNodeEditor.cpp \
@@ -1253,10 +1259,19 @@ Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp):
 Titania/Editors/TextureEditor/TextureEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DImageTexture3DEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DImageTextureEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DMovieTextureEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DPixelTexture3DEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DPixelTextureEditor.$(OBJEXT):  \
@@ -1698,8 +1713,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/TextEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/X3DFontStyleNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/TextureEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DComposedTexture3DEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DImageTexture3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DImageTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DMovieTextureEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DPixelTexture3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DPixelTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexture2DNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexture3DNodeEditor.Po@am__quote@
