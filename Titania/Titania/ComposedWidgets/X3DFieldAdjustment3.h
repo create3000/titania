@@ -282,9 +282,9 @@ X3DFieldAdjustment3 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment3::set_field);
 			field .addInterest (this, &X3DFieldAdjustment3::connect);
 
-			X3D::Vector3d vector (geo ? adjustments [0] -> get_value () : getCurrentScene () -> toBaseUnit (unit, adjustments [0] -> get_value ()),
-			                      geo ? adjustments [1] -> get_value () : getCurrentScene () -> toBaseUnit (unit, adjustments [1] -> get_value ()),
-			                      getCurrentScene () -> toBaseUnit (unit, adjustments [2] -> get_value ()));
+			X3D::Vector3d vector (geo ? adjustments [0] -> get_value () : getCurrentScene () -> fromUnit (unit, adjustments [0] -> get_value ()),
+			                      geo ? adjustments [1] -> get_value () : getCurrentScene () -> fromUnit (unit, adjustments [1] -> get_value ()),
+			                      getCurrentScene () -> fromUnit (unit, adjustments [2] -> get_value ()));
 
 			if (normalize)
 				vector .normalize ();
@@ -308,8 +308,8 @@ X3DFieldAdjustment3 <Type>::on_value_changed (const int id)
 					vector [index2] = vector [id];
 				}
 
-				adjustments [index1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index1]));
-				adjustments [index2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index2]));
+				adjustments [index1] -> set_value (getCurrentScene () -> toUnit (unit, vector [index1]));
+				adjustments [index2] -> set_value (getCurrentScene () -> toUnit (unit, vector [index2]));
 
 				changing = false;
 			}
@@ -373,9 +373,9 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 			{
 				set_bounds ();
 
-				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> fromBaseUnit (unit, value [0]));
-				adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> fromBaseUnit (unit, value [1]));
-				adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [2]));
+				adjustments [0] -> set_value (geo ? value [0] : getCurrentScene () -> toUnit (unit, value [0]));
+				adjustments [1] -> set_value (geo ? value [1] : getCurrentScene () -> toUnit (unit, value [1]));
+				adjustments [2] -> set_value (getCurrentScene () -> toUnit (unit, value [2]));
 			}
 
 			hasField = (index >= 0);
@@ -391,9 +391,9 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustments [0] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [0]));
-		adjustments [1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [1]));
-		adjustments [2] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [2]));
+		adjustments [0] -> set_value (getCurrentScene () -> toUnit (unit, empty [0]));
+		adjustments [1] -> set_value (getCurrentScene () -> toUnit (unit, empty [1]));
+		adjustments [2] -> set_value (getCurrentScene () -> toUnit (unit, empty [2]));
 	}
 
 	widget .set_sensitive (hasField);
@@ -437,8 +437,8 @@ X3DFieldAdjustment3 <Type>::set_bounds ()
 {
 	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
 	{
-		adjustments [i] -> set_lower (getCurrentScene () -> fromBaseUnit (unit, lower [i]));
-		adjustments [i] -> set_upper (getCurrentScene () -> fromBaseUnit (unit, upper [i]));
+		adjustments [i] -> set_lower (getCurrentScene () -> toUnit (unit, lower [i]));
+		adjustments [i] -> set_upper (getCurrentScene () -> toUnit (unit, upper [i]));
 	}
 }
 

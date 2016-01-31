@@ -95,10 +95,15 @@ JSPropertySpec X3DConstants::properties [ ] = {
 
 	// Unit category
 
-	{ "ANGLE",  0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ANGLE,  nullptr },
-	{ "FORCE",  0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FORCE,  nullptr },
-	{ "LENGTH", 0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LENGTH, nullptr },
-	{ "MASS",   0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MASS,   nullptr },
+	{ "ANGLE",        0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ANGLE,        nullptr },
+	{ "FORCE",        0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, FORCE,        nullptr },
+	{ "LENGTH",       0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, LENGTH,       nullptr },
+	{ "MASS",         0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, MASS,         nullptr },
+	{ "ACCELERATION", 0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ACCELERATION, nullptr },
+	{ "ANGULAR_RATE", 0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, ANGULAR_RATE, nullptr },
+	{ "AREA",         0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, AREA,         nullptr },
+	{ "SPEED",        0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, SPEED,        nullptr },
+	{ "VOLUME",       0, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, VOLUME,       nullptr },
 
 	// Access types
 
@@ -555,6 +560,36 @@ JSBool
 X3DConstants::MASS (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::MASS, vp);
+}
+
+JSBool
+X3DConstants::ACCELERATION (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::ACCELERATION, vp);
+}
+
+JSBool
+X3DConstants::ANGULAR_RATE (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::ANGULAR_RATE, vp);
+}
+
+JSBool
+X3DConstants::AREA (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::AREA, vp);
+}
+
+JSBool
+X3DConstants::SPEED (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::SPEED, vp);
+}
+
+JSBool
+X3DConstants::VOLUME (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, (double) X3D::UnitCategory::VOLUME, vp);
 }
 
 // Access types

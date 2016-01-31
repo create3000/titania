@@ -246,7 +246,7 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 			field .removeInterest (this, &X3DFieldAdjustment::set_field);
 			field .addInterest (this, &X3DFieldAdjustment::connect);
 
-			set_value (field, getCurrentScene () -> toBaseUnit (unit, adjustment -> get_value ()));
+			set_value (field, getCurrentScene () -> fromUnit (unit, adjustment -> get_value ()));
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -303,7 +303,7 @@ X3DFieldAdjustment <Type>::set_buffer ()
 			{
 				set_bounds ();
 			
-				adjustment -> set_value (getCurrentScene () -> fromBaseUnit (unit, get_value (field)));
+				adjustment -> set_value (getCurrentScene () -> toUnit (unit, get_value (field)));
 			}
 
 			hasField = (index >= 0);
@@ -319,7 +319,7 @@ X3DFieldAdjustment <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustment -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty));
+		adjustment -> set_value (getCurrentScene () -> toUnit (unit, empty));
 	}
 
 	widget .set_sensitive (hasField);
@@ -350,8 +350,8 @@ template <class Type>
 void
 X3DFieldAdjustment <Type>::set_bounds ()
 {
-	adjustment -> set_lower (getCurrentScene () -> fromBaseUnit (unit, lower));
-	adjustment -> set_upper (getCurrentScene () -> fromBaseUnit (unit, upper));
+	adjustment -> set_lower (getCurrentScene () -> toUnit (unit, lower));
+	adjustment -> set_upper (getCurrentScene () -> toUnit (unit, upper));
 }
 
 template <class Type>

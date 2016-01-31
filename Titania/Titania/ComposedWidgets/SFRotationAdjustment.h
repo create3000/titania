@@ -214,7 +214,7 @@ SFRotationAdjustment::on_value_changed (const int id)
 			X3D::Rotation4f rotation (adjustments [0] -> get_value (),
 			                          adjustments [1] -> get_value (),
 			                          adjustments [2] -> get_value (),
-			                          getCurrentScene () -> toBaseUnit (X3D::UnitCategory::ANGLE, adjustments [3] -> get_value ()));
+			                          getCurrentScene () -> fromUnit (X3D::UnitCategory::ANGLE, adjustments [3] -> get_value ()));
 
 			field = rotation;
 		}
@@ -255,7 +255,7 @@ SFRotationAdjustment::set_buffer ()
 			adjustments [0] -> set_value (field .getX ());
 			adjustments [1] -> set_value (field .getY ());
 			adjustments [2] -> set_value (field .getZ ());
-			adjustments [3] -> set_value (getCurrentScene () -> fromBaseUnit (X3D::UnitCategory::ANGLE, field .getAngle ()));
+			adjustments [3] -> set_value (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, field .getAngle ()));
 
 			hasField = true;
 			break;
@@ -283,8 +283,8 @@ inline
 void
 SFRotationAdjustment::set_bounds ()
 {
-	adjustments [3] -> set_lower (getCurrentScene () -> fromBaseUnit (X3D::UnitCategory::ANGLE, lower));
-	adjustments [3] -> set_upper (getCurrentScene () -> fromBaseUnit (X3D::UnitCategory::ANGLE, upper));
+	adjustments [3] -> set_lower (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, lower));
+	adjustments [3] -> set_upper (getCurrentScene () -> toUnit (X3D::UnitCategory::ANGLE, upper));
 }
 
 inline

@@ -278,8 +278,8 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 			field .removeInterest (this, &X3DFieldAdjustment2::set_field);
 			field .addInterest (this, &X3DFieldAdjustment2::connect);
 
-			X3D::Vector2d vector (getCurrentScene () -> toBaseUnit (unit, adjustments [0] -> get_value ()),
-			                      getCurrentScene () -> toBaseUnit (unit, adjustments [1] -> get_value ()));
+			X3D::Vector2d vector (getCurrentScene () -> fromUnit (unit, adjustments [0] -> get_value ()),
+			                      getCurrentScene () -> fromUnit (unit, adjustments [1] -> get_value ()));
 
 			if (normalize)
 				vector .normalize ();
@@ -296,7 +296,7 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 				else
 					vector [index1] = vector [id];
 
-				adjustments [index1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, vector [index1]));
+				adjustments [index1] -> set_value (getCurrentScene () -> toUnit (unit, vector [index1]));
 
 				changing = false;
 			}
@@ -359,8 +359,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 			{
 				set_bounds ();
 
-				adjustments [0] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [0]));
-				adjustments [1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, value [1]));
+				adjustments [0] -> set_value (getCurrentScene () -> toUnit (unit, value [0]));
+				adjustments [1] -> set_value (getCurrentScene () -> toUnit (unit, value [1]));
 			}
 
 			hasField = (index >= 0);
@@ -376,8 +376,8 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 		set_bounds ();
 
-		adjustments [0] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [0]));
-		adjustments [1] -> set_value (getCurrentScene () -> fromBaseUnit (unit, empty [1]));
+		adjustments [0] -> set_value (getCurrentScene () -> toUnit (unit, empty [0]));
+		adjustments [1] -> set_value (getCurrentScene () -> toUnit (unit, empty [1]));
 	}
 
 	widget .set_sensitive (hasField);
@@ -421,8 +421,8 @@ X3DFieldAdjustment2 <Type>::set_bounds ()
 {
 	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
 	{
-		adjustments [i] -> set_lower (getCurrentScene () -> fromBaseUnit (unit, lower [i]));
-		adjustments [i] -> set_upper (getCurrentScene () -> fromBaseUnit (unit, upper [i]));
+		adjustments [i] -> set_lower (getCurrentScene () -> toUnit (unit, lower [i]));
+		adjustments [i] -> set_upper (getCurrentScene () -> toUnit (unit, upper [i]));
 	}
 }
 

@@ -183,6 +183,12 @@ private:
 	static JSBool LENGTH (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool MASS   (JSContext *, JSObject *, jsid, jsval*);
 
+	static JSBool ACCELERATION (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool ANGULAR_RATE (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool AREA         (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool SPEED        (JSContext*, JSObject*, jsid, jsval*);
+	static JSBool VOLUME       (JSContext*, JSObject*, jsid, jsval*);
+
 	// Access types
 
 	static JSBool initializeOnly (JSContext *, JSObject *, jsid, jsval*);

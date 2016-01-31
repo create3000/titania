@@ -111,39 +111,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 double
-X3DUnitContext::fromBaseUnit (const UnitCategory category, const double value) const
-throw (Error <DISPOSED>)
-{
-	switch (category)
-	{
-	   case UnitCategory::NONE:
-			return value;
-	   
-		// Base units
-	   case UnitCategory::ANGLE:
-	   case UnitCategory::FORCE:
-	   case UnitCategory::LENGTH:
-	   case UnitCategory::MASS:
-			return value / getUnit (category) .getConversionFactor ();
-	
-		// Derived units
-		case UnitCategory::ACCELERATION:
-			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
-		case UnitCategory::ANGULAR_RATE:
-			return value / getUnit (UnitCategory::ANGLE) .getConversionFactor ();
-		case UnitCategory::AREA:
-			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
-		case UnitCategory::SPEED:
-			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
-		case UnitCategory::VOLUME:
-			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
-	}
-
-	return value;
-}
-
-double
-X3DUnitContext::toBaseUnit (const UnitCategory category, const double value) const
+X3DUnitContext::fromUnit (const UnitCategory category, const double value) const
 throw (Error <DISPOSED>)
 {
 	switch (category)
@@ -169,6 +137,38 @@ throw (Error <DISPOSED>)
 			return value * getUnit (UnitCategory::LENGTH) .getConversionFactor ();
 		case UnitCategory::VOLUME:
 			return value * std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
+	}
+
+	return value;
+}
+
+double
+X3DUnitContext::toUnit (const UnitCategory category, const double value) const
+throw (Error <DISPOSED>)
+{
+	switch (category)
+	{
+	   case UnitCategory::NONE:
+			return value;
+	   
+		// Base units
+	   case UnitCategory::ANGLE:
+	   case UnitCategory::FORCE:
+	   case UnitCategory::LENGTH:
+	   case UnitCategory::MASS:
+			return value / getUnit (category) .getConversionFactor ();
+	
+		// Derived units
+		case UnitCategory::ACCELERATION:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::ANGULAR_RATE:
+			return value / getUnit (UnitCategory::ANGLE) .getConversionFactor ();
+		case UnitCategory::AREA:
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 2);
+		case UnitCategory::SPEED:
+			return value / getUnit (UnitCategory::LENGTH) .getConversionFactor ();
+		case UnitCategory::VOLUME:
+			return value / std::pow (getUnit (UnitCategory::LENGTH) .getConversionFactor (), 3);
 	}
 
 	return value;

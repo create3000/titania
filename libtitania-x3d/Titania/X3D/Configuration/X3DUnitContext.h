@@ -82,11 +82,11 @@ public:
 	{ return units; }
 
 	double
-	fromBaseUnit (const UnitCategory, const double) const
+	fromUnit (const UnitCategory, const double) const
 	throw (Error <DISPOSED>);
 
 	double
-	toBaseUnit (const UnitCategory, const double) const
+	toUnit (const UnitCategory, const double) const
 	throw (Error <DISPOSED>);
 
 	const SFTime &

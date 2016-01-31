@@ -728,13 +728,13 @@ function eventsProcessed ()
 	                                   
 	var
 		scene  = Browser .currentScene,
-		scaleX = scene .fromBaseUnit (X3DConstants .LENGTH, scale .x),
-		scaleY = scene .fromBaseUnit (X3DConstants .LENGTH, scale .y),
-		scaleZ = scene .fromBaseUnit (X3DConstants .LENGTH, scale .z),
+		scaleX = scene .toUnit (X3DConstants .LENGTH, scale .x),
+		scaleY = scene .toUnit (X3DConstants .LENGTH, scale .y),
+		scaleZ = scene .toUnit (X3DConstants .LENGTH, scale .z),
 		sizeX  = scaleX * dimension [0],
 		sizeY  = scaleY * dimension [1],
 		sizeZ  = scaleZ * dimension [2],
-		angle  = scene .fromBaseUnit (X3DConstants .ANGLE, 2 * Math .PI / dimension [1]);
+		angle  = scene .toUnit (X3DConstants .ANGLE, 2 * Math .PI / dimension [1]);
 	                                   
 	Browser .description = \"Angle Layout Tool\\n\" +
                           \"rings \" + dimension [0] + \"\\n\" +

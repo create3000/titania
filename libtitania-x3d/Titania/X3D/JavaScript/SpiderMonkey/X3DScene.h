@@ -99,8 +99,8 @@ private:
 
 	///  @name Functions
 
-	static JSBool fromBaseUnit (JSContext *, uint32_t, jsval*);
-	static JSBool toBaseUnit   (JSContext *, uint32_t, jsval*);
+	static JSBool fromUnit   (JSContext *, uint32_t, jsval*);
+	static JSBool toUnit (JSContext *, uint32_t, jsval*);
 
 	static JSBool setMetaData (JSContext *, uint32_t, jsval*);
 	static JSBool getMetaData (JSContext *, uint32_t, jsval*);
