@@ -12,7 +12,7 @@ my $script      = dirname $0;
 my $project     = "$script/../../";
 my $geometry    = `cat '$script/CubeMapTextures-Geometry.x3dv'`;
 my $spheres     = "$project/share/titania/Library/CubeMapTextures/";
-my $backgrounds = "$project/share/titania/Library/Backgrounds/";
+my $backgrounds = "$project/share/titania/Library/Backgrounds/Texture";
 
 
 my $textures = "/home/holger/Projekte/Library/Textures/CubeMapTextures/";
@@ -110,13 +110,38 @@ DEF $basename Transform {
 	say FILE "
 META \"titania magic\" \"Background\"
 
-DEF $basename Background {
-	frontUrl [$front ]
-	backUrl [ $back  ]
-	leftUrl [ $left ]
-	rightUrl [ $right ]
-	topUrl [ $top ]
-	bottomUrl [ $bottom ]
+DEF $basename TextureBackground {
+	frontTexture ImageTexture {
+		url [ $front ]
+		textureProperties DEF _0 TextureProperties {
+			minificationFilter \"DEFAULT\"
+			magnificationFilter \"DEFAULT\"
+			boundaryModeS \"CLAMP_TO_EDGE\"
+			boundaryModeT \"CLAMP_TO_EDGE\"
+			boundaryModeR \"CLAMP_TO_EDGE\"
+			textureCompression \"DEFAULT\"
+		}
+	}
+	backTexture ImageTexture {
+		url [ $back ]
+		textureProperties USE _0
+	}
+	leftTexture ImageTexture {
+		url [ $left ]
+		textureProperties USE _0
+	}
+	rightTexture ImageTexture {
+		url [ $right ]
+		textureProperties USE _0
+	}
+	topTexture ImageTexture {
+		url [ $top ]
+		textureProperties USE _0
+	}
+	bottomTexture ImageTexture {
+		url [ $bottom ]
+		textureProperties USE _0
+	}
 }
 ";
 

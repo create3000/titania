@@ -1,0 +1,10 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+META "comment" "World of Titania"
+META "created" "Wed, 04 Nov 2015 01:27:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Sun, 31 Jan 2016 11:13:58 GMT"
+META "titania magic" "Background"
+
+DEF Black Background { }

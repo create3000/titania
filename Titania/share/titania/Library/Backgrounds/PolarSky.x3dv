@@ -1,0 +1,33 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+META "comment" "World of Titania"
+META "created" "Wed, 04 Nov 2015 01:28:48 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Sun, 31 Jan 2016 11:13:19 GMT"
+META "titania magic" "Background"
+
+DEF PolarSky Background {
+  skyAngle [
+    0.917252,
+    1.32316,
+    1.51859,
+    1.5708
+  ]
+  skyColor [
+    0.117647 0.231373 0.254902,
+    0.188235 0.35991 0.439216,
+    0.352941 0.368627 0.615686,
+    0.576471 0.494118 0.521569,
+    0.819608 0.521569 0.278431
+  ]
+  groundAngle [
+    1.38173,
+    1.5708
+  ]
+  groundColor [
+    0 0 0,
+    0.204 0.204 0.204,
+    0.513673 0.513673 0.513673
+  ]
+}

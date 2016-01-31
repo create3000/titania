@@ -265,7 +265,6 @@
     <None Include="share\titania\Library\Backgrounds\CityNight.x3dv" />
     <None Include="share\titania\Library\Backgrounds\Summer.x3dv" />
     <None Include="share\titania\Library\Backgrounds\Sunny.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\Sunset.x3dv" />
     <None Include="share\titania\Library\Backgrounds\BlueGreen.x3dv" />
     <None Include="share\titania\Library\TitaniaLogo.x3d" />
     <None Include="share\titania\Library\Materials\Artdeco\Artdeco1.x3dv" />
@@ -770,7 +769,6 @@
     <None Include="share\titania\Library\Prototypes\Fields\SFVec3f.x3dv" />
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4d.x3dv" />
     <None Include="share\titania\Library\Prototypes\Fields\SFVec4f.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\LostValley.x3dv" />
     <None Include="scripts\Components.pl" />
     <None Include="scripts\Materials.pl" />
     <None Include="share\titania\Library\Components\CADGeometry\CADAssembly.x3dv" />
@@ -1633,7 +1631,6 @@
     <None Include="Titania\UserInterfaces\X3DColorEditorInterface.h" />
     <None Include="share\titania\ui\Editors\ColorEditorPreview.x3dv" />
     <None Include="scripts\LibraryURLs.pl" />
-    <None Include="share\titania\Library\Backgrounds\CloudySky.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\LostValley.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\CloudySky.x3dv" />
     <None Include="scripts\Library\Textures.pl" />
@@ -1997,7 +1994,6 @@
     <None Include="scripts\Library\CubeMapTextures.pl" />
     <None Include="scripts\Library\CubeMapTextures-Geometry.x3dv" />
     <None Include="share\titania\Library\CubeMapTextures\SpaceSky.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\SpaceSky.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-back.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-bottom.x3dv" />
     <None Include="share\titania\Library\Textures\CubeMapTextures\SpaceSky\SpaceSky-front.x3dv" />
@@ -2357,10 +2353,6 @@
     <None Include="Titania\ComposedWidgets\MFColorButton.h" />
     <None Include="Titania\ComposedWidgets\X3DGradientTool.h" />
     <None Include="share\titania\Library\Backgrounds\DesertSky.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\Interstellar.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\NightSky.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\ViolentDays.x3dv" />
-    <None Include="share\titania\Library\Backgrounds\WideOcean.x3dv" />
     <None Include="Titania\Editors\BackgroundEditor\X3DBackgroundEditor.h" />
     <None Include="Titania\ComposedWidgets\TexturePreview.h" />
     <None Include="share\titania\ui\icons\Bound.svg" />
@@ -2368,6 +2360,16 @@
     <None Include="Titania\ComposedWidgets\RangeTool.h" />
     <None Include="share\titania\ui\icons\Background.svg" />
     <None Include="Titania\ComposedWidgets\X3DMFStringWidget.h" />
+    <None Include="share\titania\Library\Backgrounds\PolarSky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\CloudySky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\Interstellar.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\LostValley.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\SpaceSky.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\Sunset.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\ViolentDays.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\WideOcean.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Black.x3dv" />
+    <None Include="share\titania\Library\Backgrounds\Texture\NightSky.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2450,6 +2452,7 @@
     <Folder Include="share\titania\Library\CubeMapTextures\" />
     <Folder Include="share\titania\Library\Backgrounds\" />
     <Folder Include="Titania\Editors\BackgroundEditor\" />
+    <Folder Include="share\titania\Library\Backgrounds\Texture\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
