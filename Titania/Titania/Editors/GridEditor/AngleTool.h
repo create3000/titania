@@ -65,15 +65,6 @@ public:
 
 	AngleTool (X3DBrowserWindow* const);
 
-	/// @name Common members
-
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) override
-	{ return typeName; }
-
 	/// @name Members
 
 	virtual
@@ -98,11 +89,7 @@ private:
 	virtual
 	void
 	set_dimension () final override;
-
-	///  @name Static members
-
-	static const std::string typeName;
-
+	
 	///  @name Members
 
 	X3D::X3DPtr <X3D::X3DGridTool> tool;

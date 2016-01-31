@@ -63,8 +63,6 @@
 namespace titania {
 namespace puck {
 
-const std::string GridTool::typeName = "Grid";
-
 GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	     X3DGridTool (),

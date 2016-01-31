@@ -105,6 +105,7 @@ X3DAngleEditor::X3DAngleEditor () :
 	                        "majorLineColor"),
 	          snapDistance (this, getAngleSnapDistanceAdjustment (), getAngleSnapDistanceSpinButton (), "snapDistance"),
 	          snapToCenter (this, getAngleSnapToCenterCheckButton (), "snapToCenter"),
+	              undoStep (),
 	              changing (false)
 {
 	getAngleCheckButton () .set_related_action (getBrowserWindow () -> getAngleLayoutToolAction ());
@@ -176,7 +177,10 @@ X3DAngleEditor::on_angle_plane_changed ()
 	if (changing)
 		return;
 
-	const auto & grid = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const auto &      grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const X3D::MFNode nodes = { grid };
+
+	addUndoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 
 	grid -> rotation () .removeInterest (this, &X3DAngleEditor::set_rotation);
 	grid -> rotation () .addInterest (this, &X3DAngleEditor::connectRotation);
@@ -195,6 +199,8 @@ X3DAngleEditor::on_angle_plane_changed ()
 		default:
 			break;
 	}
+
+	addRedoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 }
 
 void

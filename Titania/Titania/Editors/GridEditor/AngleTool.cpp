@@ -64,14 +64,12 @@
 namespace titania {
 namespace puck {
 
-const std::string AngleTool::typeName = "AngleGrid";
-
 AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	     X3DGridTool (),
 	            tool ()
 {
-	setName ("Angle Grid");
+	setName ("AngleGrid");
 
 	setup ();
 }

@@ -60,7 +60,8 @@ namespace titania {
 namespace puck {
 
 class X3DGridTool :
-	virtual public X3DBaseInterface
+	virtual public X3DBaseInterface,
+	public X3DEditorObject
 {
 public:
 
@@ -206,10 +207,6 @@ private:
 
 	X3D::BrowserPtr  browser;
 	X3D::UndoStepPtr undoStep;
-	X3D::Vector3f    translation;
-	X3D::Rotation4f  rotation;
-	X3D::Vector3f    scale;
-	X3D::MFInt32     dimension;
 };
 
 } // puck

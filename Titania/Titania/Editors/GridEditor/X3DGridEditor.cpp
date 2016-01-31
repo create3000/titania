@@ -105,6 +105,7 @@ X3DGridEditor::X3DGridEditor () :
 	                        "majorLineColor"),
 	          snapDistance (this, getGridSnapDistanceAdjustment (), getGridSnapDistanceSpinButton (), "snapDistance"),
 	          snapToCenter (this, getGridSnapToCenterCheckButton (), "snapToCenter"),
+	              undoStep (),
 	              changing (false)
 {
 	getGridCheckButton () .set_related_action (getBrowserWindow () -> getGridLayoutToolAction ());
@@ -176,7 +177,10 @@ X3DGridEditor::on_grid_plane_changed ()
 	if (changing)
 		return;
 
-	const auto & grid = getBrowserWindow () -> getGridTool () -> getTool ();
+	const auto &      grid  = getBrowserWindow () -> getGridTool () -> getTool ();
+	const X3D::MFNode nodes = { grid };
+
+	addUndoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 
 	grid -> rotation () .removeInterest (this, &X3DGridEditor::set_rotation);
 	grid -> rotation () .addInterest (this, &X3DGridEditor::connectRotation);
@@ -195,6 +199,8 @@ X3DGridEditor::on_grid_plane_changed ()
 		default:
 			break;
 	}
+
+	addRedoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 }
 
 void

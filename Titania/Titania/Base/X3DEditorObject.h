@@ -525,8 +525,6 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		{
 			if (lastUndoGroup == undoGroup)
 				return;
-
-			lastUndoGroup = undoGroup;
 		}
 	}
 	else

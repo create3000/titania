@@ -146,8 +146,8 @@ private:
 	SFColorRGBAButton                  majorLineColor;
 	X3DFieldAdjustment <X3D::SFDouble> snapDistance;
 	X3DFieldToggleButton <X3D::SFBool> snapToCenter;
-
-	bool changing;
+	X3D::UndoStepPtr                   undoStep;
+	bool                               changing;
 
 };
 
