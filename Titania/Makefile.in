@@ -201,6 +201,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DPixelTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DTexture3DNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTextureNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTexturePaletteEditor.$(OBJEXT) \
@@ -619,6 +620,7 @@ titania_SOURCES = \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DPixelTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTexture3DNodeEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureNodeEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTexturePaletteEditor.cpp \
@@ -1263,6 +1265,9 @@ Titania/Editors/TextureEditor/X3DPixelTextureEditor.$(OBJEXT):  \
 Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DTexture3DNodeEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DTextureCoordinateGeneratorEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
@@ -1697,6 +1702,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DMovieTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DPixelTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexture2DNodeEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexture3DNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureCoordinateGeneratorEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexturePaletteEditor.Po@am__quote@

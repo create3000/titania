@@ -56,6 +56,12 @@
 namespace titania {
 namespace X3D {
 
+constexpr size_t OFFSET     = 4;
+constexpr size_t COMPONENTS = 0;
+constexpr size_t WIDTH      = 1;
+constexpr size_t HEIGHT     = 2;
+constexpr size_t DEPTH      = 3;
+
 const ComponentType PixelTexture3D::component      = ComponentType::TEXTURING_3D;
 const std::string   PixelTexture3D::typeName       = "PixelTexture3D";
 const std::string   PixelTexture3D::containerField = "texture";
@@ -98,15 +104,27 @@ PixelTexture3D::initialize ()
 	update ();
 }
 
+size_t
+PixelTexture3D::getImageWidth () const
+{
+	if (image () .size () <= WIDTH)
+		return image () [WIDTH];
+
+	return 0;
+}
+
+size_t
+PixelTexture3D::getImageHeight () const
+{
+	if (image () .size () <= HEIGHT)
+		return image () [HEIGHT];
+
+	return 0;
+}
+
 void
 PixelTexture3D::update ()
 {
-	constexpr size_t OFFSET     = 4;
-	constexpr size_t COMPONENTS = 0;
-	constexpr size_t WIDTH      = 1;
-	constexpr size_t HEIGHT     = 2;
-	constexpr size_t DEPTH      = 3;
-
 	if (image () .size () < OFFSET)
 	{
 		setTexture (Texture3DPtr ());

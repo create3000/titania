@@ -240,6 +240,7 @@
     <Compile Include="Titania\ComposedWidgets\MFStringComboBoxText.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFColorRGBAButton.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFColorButton.cpp" />
+    <Compile Include="Titania\Editors\TextureEditor\X3DTexture3DNodeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1272,7 +1273,6 @@
     <None Include="share\titania\ui\Editors\MaterialEditorPreview.x3dv" />
     <None Include="share\titania\ui\Editors\NormalTool.x3dv" />
     <None Include="share\titania\ui\Editors\RotationTool.x3dv" />
-    <None Include="share\titania\ui\Editors\TextureEditorPreview.x3dv" />
     <None Include="Titania\ComposedWidgets\X3DComposedWidget.h" />
     <None Include="share\titania\ui\BrowserWidget.x3dv" />
     <None Include="share\titania\pages\about\date.x3dv" />
@@ -2370,6 +2370,9 @@
     <None Include="share\titania\Library\Backgrounds\Texture\WideOcean.x3dv" />
     <None Include="share\titania\Library\Backgrounds\Black.x3dv" />
     <None Include="share\titania\Library\Backgrounds\Texture\NightSky.x3dv" />
+    <None Include="share\titania\ui\Editors\Texture3DPreview.x3dv" />
+    <None Include="share\titania\ui\Editors\TexturePreview.x3dv" />
+    <None Include="Titania\Editors\TextureEditor\X3DTexture3DNodeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

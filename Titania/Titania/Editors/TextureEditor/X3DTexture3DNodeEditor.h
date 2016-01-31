@@ -48,77 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE3DNODE_EDITOR_H__
 
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DTexture2DNodeEditor.h"
-#include "X3DTexture3DNodeEditor.h"
-#include "X3DTexturePropertiesEditor.h"
+//#include "X3DComposedTexture3DEditor.h"
+//#include "X3DImageTexture3DEditor.h"
+//#include "X3DPixelTexture3DEditor.h"
+
+#include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 
 namespace titania {
 namespace puck {
 
-class TexturePreview;
-
-class X3DTextureNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DTexture2DNodeEditor,
-	public X3DTexture3DNodeEditor,
-	public X3DTexturePropertiesEditor
+class X3DTexture3DNodeEditor :
+	virtual public X3DTextureEditorInterface
+//	public X3DComposedTexture3DEditor,
+//	public X3DImageTexture3DEditor,
+//	public X3DPixelTexture3DEditor
 {
 public:
 
-	~X3DTextureNodeEditor ();
+	~X3DTexture3DNodeEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DTextureNodeEditor ();
+	X3DTexture3DNodeEditor ();
 
-	virtual
+	///  @name Member access
+
 	void
-	initialize () override;
+	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	//	virtual
+	//	const X3D::X3DPtr <X3D::ImageTexture> &
+	//	getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+	//
+	//	virtual
+	//	const X3D::X3DPtr <X3D::PixelTexture> &
+	//	getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+	//
+	//	virtual
+	//	const X3D::X3DPtr <X3D::MovieTexture> &
+	//	getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+
+
+protected:
+
+	void
+	set_preview ();
 
 
 private:
 
+	///  @name Event handlers
+
+	bool
+	on_configure_event (GdkEventConfigure* const);
+
 	///  @name Construction
 
 	void
-	set_selection ();
-
-	///  @name Preview
-
-	///  @name textureTransform
-
-	virtual
-	void
-	on_texture_unlink_clicked () final override;
-
-	virtual
-	void
-	on_texture_changed () final override;
-
-	void
-	set_texture ();
-
-	void
-	set_node ();
-
-	void
-	connectTexture (const X3D::SFNode &);
+	setTexture3DNode (const X3D::X3DPtr <X3D::X3DTexture3DNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	///  @name Members
 
-	std::unique_ptr <TexturePreview>   preview;
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::SFTime                        textureBuffer;
-	X3D::X3DPtr <X3D::X3DTextureNode>  textureNode;
-	X3D::UndoStepPtr                   undoStep;
-	bool                               changing;
+	X3D::BrowserPtr                     preview;
+	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode;
+	X3DFieldToggleButton <X3D::SFBool>  repeatS;
+	X3DFieldToggleButton <X3D::SFBool>  repeatT;
+	X3DFieldToggleButton <X3D::SFBool>  repeatR;
 
 };
 

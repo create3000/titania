@@ -111,6 +111,30 @@ public:
 	isTransparent () const override
 	{ return transparent; }
 
+	size_t
+	getWidth () const
+	{ return width; }
+
+	size_t
+	getHeight () const
+	{ return height; }
+
+	size_t
+	getDepth () const
+	{ return depth; }
+
+	size_t
+	getComponents () const
+	{ return components; }
+
+	virtual
+	size_t
+	getImageWidth () const = 0;
+
+	virtual
+	size_t
+	getImageHeight () const = 0;
+
 	///  @name Operations
 
 	virtual
@@ -172,6 +196,7 @@ private:
 
 	size_t                     width;
 	size_t                     height;
+	size_t                     depth;
 	size_t                     components;
 	bool                       transparent;
 	X3DPtr <TextureProperties> texturePropertiesNode;

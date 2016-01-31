@@ -109,6 +109,10 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
 	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);
+	m_builder -> get_widget ("Texture3DBox", m_Texture3DBox);
+	m_builder -> get_widget ("Texture3DNodeRepeatSCheckButton", m_Texture3DNodeRepeatSCheckButton);
+	m_builder -> get_widget ("Texture3DNodeRepeatTCheckButton", m_Texture3DNodeRepeatTCheckButton);
+	m_builder -> get_widget ("Texture3DNodeRepeatRCheckButton", m_Texture3DNodeRepeatRCheckButton);
 	m_builder -> get_widget ("TexturePropertiesExpander", m_TexturePropertiesExpander);
 	m_builder -> get_widget ("SelectTexturePropertiesBox", m_SelectTexturePropertiesBox);
 	m_builder -> get_widget ("TexturePropertiesCheckButton", m_TexturePropertiesCheckButton);

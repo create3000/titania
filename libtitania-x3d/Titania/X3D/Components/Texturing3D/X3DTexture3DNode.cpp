@@ -68,6 +68,7 @@ X3DTexture3DNode::X3DTexture3DNode () :
 	               fields (),
 	                width (0),
 	               height (0),
+	                depth (0),
 	           components (0),
 	          transparent (false),
 	texturePropertiesNode ()
@@ -133,7 +134,7 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 }
 
 void
-X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint depth, const GLenum format, const void* const data)
+X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, const GLint w, const GLint h, const GLint d, const GLenum format, const void* const data)
 {
 	if (glXGetCurrentContext ())
 	{
@@ -141,6 +142,7 @@ X3DTexture3DNode::setImage (const GLenum internalFormat, const size_t comp, cons
 
 		width       = w;
 		height      = h;
+		depth       = d;
 		components  = comp;
 		transparent = math::is_even (comp);
 

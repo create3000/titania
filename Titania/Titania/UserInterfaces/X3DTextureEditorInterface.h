@@ -273,6 +273,22 @@ public:
 	getTexture2DNodeRepeatTCheckButton () const
 	{ return *m_Texture2DNodeRepeatTCheckButton; }
 
+	Gtk::Grid &
+	getTexture3DBox () const
+	{ return *m_Texture3DBox; }
+
+	Gtk::CheckButton &
+	getTexture3DNodeRepeatSCheckButton () const
+	{ return *m_Texture3DNodeRepeatSCheckButton; }
+
+	Gtk::CheckButton &
+	getTexture3DNodeRepeatTCheckButton () const
+	{ return *m_Texture3DNodeRepeatTCheckButton; }
+
+	Gtk::CheckButton &
+	getTexture3DNodeRepeatRCheckButton () const
+	{ return *m_Texture3DNodeRepeatRCheckButton; }
+
 	Gtk::Expander &
 	getTexturePropertiesExpander () const
 	{ return *m_TexturePropertiesExpander; }
@@ -584,6 +600,10 @@ private:
 	Gtk::Grid*                             m_Texture2DBox;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;
+	Gtk::Grid*                             m_Texture3DBox;
+	Gtk::CheckButton*                      m_Texture3DNodeRepeatSCheckButton;
+	Gtk::CheckButton*                      m_Texture3DNodeRepeatTCheckButton;
+	Gtk::CheckButton*                      m_Texture3DNodeRepeatRCheckButton;
 	Gtk::Expander*                         m_TexturePropertiesExpander;
 	Gtk::Box*                              m_SelectTexturePropertiesBox;
 	Gtk::CheckButton*                      m_TexturePropertiesCheckButton;

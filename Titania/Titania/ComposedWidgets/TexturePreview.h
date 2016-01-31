@@ -57,7 +57,6 @@ namespace titania {
 namespace X3D {
 
 class X3DTextureNode;
-class X3DTexture2DNode;
 
 } // X3D
 } // titania
@@ -106,10 +105,10 @@ private:
 
 	///  @name Members
 
-	Gtk::Box &                          box;
-	Gtk::Label &                        label;
-	X3D::BrowserPtr                     preview;
-	X3D::X3DPtr <X3D::X3DTexture2DNode> textureNode;
+	Gtk::Box &                        box;
+	Gtk::Label &                      label;
+	X3D::BrowserPtr                   preview;
+	X3D::X3DPtr <X3D::X3DTextureNode> textureNode;
 
 };
 

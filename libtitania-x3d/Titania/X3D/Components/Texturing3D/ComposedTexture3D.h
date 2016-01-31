@@ -106,6 +106,16 @@ public:
 	checkLoadState () const final override
 	{ return loadState; }
 
+	virtual
+	size_t
+	getImageWidth () const final override
+	{ return getWidth (); }
+
+	virtual
+	size_t
+	getImageHeight () const final override
+	{ return getHeight (); }
+
 
 private:
 

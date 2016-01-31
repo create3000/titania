@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
+#include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 
 namespace titania {
 namespace puck {
@@ -67,7 +68,7 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	              box (box),
 	            label (label),
-	          preview (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/TextureEditorPreview.x3dv") }))
+	          preview (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }))
 {
 	// Browser
 
@@ -140,27 +141,55 @@ TexturePreview::set_texture ()
 void
 TexturePreview::set_loadState ()
 {
-	if (not textureNode)
-		return;
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
-	std::string components;
-
-	switch (textureNode -> getComponents ())
+	if (texture2DNode)
 	{
-		case 1: components = _ ("GRAY");       break;
-		case 2: components = _ ("GRAY ALPHA"); break;
-		case 3: components = _ ("RGB");        break;
-		case 4: components = _ ("RGBA");       break;
-		default:
-			break;
+		std::string components;
+	
+		switch (texture2DNode -> getComponents ())
+		{
+			case 1: components = _ ("GRAY");       break;
+			case 2: components = _ ("GRAY ALPHA"); break;
+			case 3: components = _ ("RGB");        break;
+			case 4: components = _ ("RGBA");       break;
+			default:
+				break;
+		}
+	
+		label .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
+		                 " × " +
+		                 std::to_string (texture2DNode -> getImageHeight ()) +
+		                 " (" +
+		                 components +
+		                 ")");
 	}
 
-	label .set_text (std::to_string (textureNode -> getImageWidth ()) +
-	                 " × " +
-	                 std::to_string (textureNode -> getImageHeight ()) +
-	                 " (" +
-	                 components +
-	                 ")");
+	const X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode (textureNode);
+
+	if (texture3DNode)
+	{
+		std::string components;
+	
+		switch (texture3DNode -> getComponents ())
+		{
+			case 1: components = _ ("GRAY");       break;
+			case 2: components = _ ("GRAY ALPHA"); break;
+			case 3: components = _ ("RGB");        break;
+			case 4: components = _ ("RGBA");       break;
+			default:
+				break;
+		}
+	
+		label .set_text (std::to_string (texture3DNode -> getImageWidth ()) +
+		                 " × " +
+		                 std::to_string (texture3DNode -> getImageHeight ()) +
+		                 " × " +
+		                 std::to_string (texture3DNode -> getDepth ()) +
+		                 " (" +
+		                 components +
+		                 ")");
+	}
 }
 
 bool
@@ -173,27 +202,29 @@ TexturePreview::on_configure_event (GdkEventConfigure* const)
 void
 TexturePreview::set_camera ()
 {
-	if (not textureNode)
-		return;
-
 	try
 	{
-		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("OrthoViewpoint"));
-		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
+		const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
-		if (viewpoint and transform)
+		if (texture2DNode)
 		{
-			double width  = textureNode -> getImageWidth ();
-			double height = textureNode -> getImageHeight ();
+			const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("OrthoViewpoint"));
+			const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
 
-			if (not width or not height)
+			if (viewpoint and transform)
 			{
-				width  = 1;
-				height = 1;
-			}
+				double width  = texture2DNode -> getImageWidth ();
+				double height = texture2DNode -> getImageHeight ();
 
-			viewpoint -> fieldOfView () = { -width, -height, width, height };
-			transform -> scale ()       = X3D::Vector3f (width, height, 1);
+				if (not width or not height)
+				{
+					width  = 1;
+					height = 1;
+				}
+
+				viewpoint -> fieldOfView () = { -width, -height, width, height };
+				transform -> scale ()       = X3D::Vector3f (width, height, 1);
+			}
 		}
 	}
 	catch (const X3D::X3DError &)
