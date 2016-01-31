@@ -48,74 +48,65 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_NODE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_NODE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM3DEDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM3DEDITOR_H__
 
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DTextureTransformEditor.h"
-#include "X3DTextureTransform3DEditor.h"
+
+#include <Titania/X3D/Components/Texturing3D/TextureTransform3D.h>
 
 namespace titania {
 namespace puck {
 
-class X3DTextureTransformNodeEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DTextureTransformEditor,
-	public X3DTextureTransform3DEditor
+class RotationTool;
+
+class X3DTextureTransform3DEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DTextureTransformNodeEditor ()
-	{ }
+	~X3DTextureTransform3DEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DTextureTransformNodeEditor ();
+	X3DTextureTransform3DEditor ();
 
-	virtual
 	void
-	initialize () override;
-
-
-private:
+	initialize ();
 
 	///  @name Construction
 
 	void
-	set_selection ();
+	setTextureTransform3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
-	///  @name textureTransform
+	const X3D::X3DPtr <X3D::TextureTransform3D> &
+	getTextureTransform3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
+
+
+private:
+
+	///  @name Event handlers
 
 	virtual
 	void
-	on_textureTransform_unlink_clicked () final override;
-
-	virtual
-	void
-	on_textureTransform_changed () final override;
-
-	void
-	set_textureTransform ();
-
-	void
-	set_node ();
-
-	void
-	connectTextureTransform (const X3D::SFNode &);
+	on_texture_transform3D_uniform_scale_clicked () final override;
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::Appearance>         appearances;
-	X3D::SFTime                                textureTransformBuffer;
-	X3D::X3DPtr <X3D::X3DTextureTransformNode> textureTransformNode;
-	X3D::UndoStepPtr                                undoStep;
-	bool                                       changing;
+	X3D::X3DPtr <X3D::TextureTransform3D> textureTransform;
+
+	X3DFieldAdjustment3 <X3D::SFVec3f> translation;
+	SFRotationAdjustment               rotation;
+	std::unique_ptr <RotationTool>     rotationTool;	
+	X3DFieldAdjustment3 <X3D::SFVec3f> scale;
+	X3DFieldAdjustment3 <X3D::SFVec3f> center;
 
 };
 

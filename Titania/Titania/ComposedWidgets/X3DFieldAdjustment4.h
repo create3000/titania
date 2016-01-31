@@ -263,15 +263,15 @@ X3DFieldAdjustment4 <Type>::setNodes (const X3D::MFNode & value)
 
 template <class Type>
 void
-X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
+X3DFieldAdjustment4 <Type>::on_value_changed (const int index0)
 {
 	if (changing)
 		return;
 
-	if (id not_eq input)
+	if (index0 not_eq input)
 		undoStep .reset ();
 
-	input = id;
+	input = index0;
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
@@ -296,22 +296,23 @@ X3DFieldAdjustment4 <Type>::on_value_changed (const int id)
 			{
 				changing = true;
 
-				const auto scale  = vector [id] / field .get1Value (id);
-				const auto index1 = (id + 1) % 4;
-				const auto index2 = (id + 2) % 4;
-				const auto index3 = (id + 3) % 4;
+				const auto current = get_value (field);
+				const auto scale   = vector [index0] / current [index0];
+				const auto index1  = (index0 + 1) % 4;
+				const auto index2  = (index0 + 2) % 4;
+				const auto index3  = (index0 + 3) % 4;
 
-				if (field .get1Value (id))
+				if (field .get1Value (index0))
 				{
-					vector [index1] *= scale;
-					vector [index2] *= scale;
-					vector [index3] *= scale;
+					vector [index1] = current [index1] * scale;
+					vector [index2] = current [index2] * scale;
+					vector [index3] = current [index3] * scale;
 				}
 				else
 				{
-					vector [index1] = vector [id];
-					vector [index2] = vector [id];
-					vector [index3] = vector [id];
+					vector [index1] = vector [index0];
+					vector [index2] = vector [index0];
+					vector [index3] = vector [index0];
 				}
 
 				adjustments [index1] -> set_value (getCurrentScene () -> toUnit (unit, vector [index1]));

@@ -65,6 +65,19 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TexturePropertiesBorderColorAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderColorAdjustment"));
 	m_TexturePropertiesBorderWidthAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderWidthAdjustment"));
 	m_TexturePropertiesTexturePriorityAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesTexturePriorityAdjustment"));
+	m_TextureTransform3DCenterXAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DCenterXAdjustment"));
+	m_TextureTransform3DCenterYAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DCenterYAdjustment"));
+	m_TextureTransform3DCenterZAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DCenterZAdjustment"));
+	m_TextureTransform3DRotationAAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationAAdjustment"));
+	m_TextureTransform3DRotationXAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationXAdjustment"));
+	m_TextureTransform3DRotationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationYAdjustment"));
+	m_TextureTransform3DRotationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DRotationZAdjustment"));
+	m_TextureTransform3DScaleXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DScaleXAdjustment"));
+	m_TextureTransform3DScaleYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DScaleYAdjustment"));
+	m_TextureTransform3DScaleZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DScaleZAdjustment"));
+	m_TextureTransform3DTranslationXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DTranslationXAdjustment"));
+	m_TextureTransform3DTranslationYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DTranslationYAdjustment"));
+	m_TextureTransform3DTranslationZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransform3DTranslationZAdjustment"));
 	m_TextureTransformCenterXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterXAdjustment"));
 	m_TextureTransformCenterYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformCenterYAdjustment"));
 	m_TextureTransformRotationAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformRotationAdjustment"));
@@ -145,7 +158,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TexturePropertiesBorderColorScale", m_TexturePropertiesBorderColorScale);
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_builder -> get_widget ("TextureTransformNodeBox", m_TextureTransformNodeBox);
-	m_builder -> get_widget ("SelectTextureTransBox", m_SelectTextureTransBox);
+	m_builder -> get_widget ("SelectTextureTransformBox", m_SelectTextureTransformBox);
 	m_builder -> get_widget ("TextureTransformComboBoxText", m_TextureTransformComboBoxText);
 	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
@@ -163,6 +176,14 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureTransformCenterXSpinButton", m_TextureTransformCenterXSpinButton);
 	m_builder -> get_widget ("TextureTransformCenterYSpinButton", m_TextureTransformCenterYSpinButton);
 	m_builder -> get_widget ("TextureTransformRotationSpinButton", m_TextureTransformRotationSpinButton);
+	m_builder -> get_widget ("TextureTransform3DBox", m_TextureTransform3DBox);
+	m_builder -> get_widget ("TextureTransform3DTranslationBox", m_TextureTransform3DTranslationBox);
+	m_builder -> get_widget ("TextureTransform3DRotationBox", m_TextureTransform3DRotationBox);
+	m_builder -> get_widget ("TextureTransform3DRotationToolBox", m_TextureTransform3DRotationToolBox);
+	m_builder -> get_widget ("TextureTransform3DScaleBox", m_TextureTransform3DScaleBox);
+	m_builder -> get_widget ("TextureTransform3DUniformScaleButton", m_TextureTransform3DUniformScaleButton);
+	m_builder -> get_widget ("TextureTransform3DUniformScaleImage", m_TextureTransform3DUniformScaleImage);
+	m_builder -> get_widget ("TextureTransform3DCenterBox", m_TextureTransform3DCenterBox);
 	m_builder -> get_widget ("TextureCoordinateGeneratorExpander", m_TextureCoordinateGeneratorExpander);
 	m_builder -> get_widget ("TextureCoordinateGeneratorMainBox", m_TextureCoordinateGeneratorMainBox);
 	m_builder -> get_widget ("SelectTextureCoordinateGeneratorBox", m_SelectTextureCoordinateGeneratorBox);
@@ -197,6 +218,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'TextureTransformUniformScaleButton'.
 	m_TextureTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform_uniform_scale_clicked));
+	m_TextureTransform3DUniformScaleButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform3D_uniform_scale_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TextureCoordinateGeneratorCheckButton'.
 	m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_toggled));

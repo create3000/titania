@@ -56,14 +56,15 @@ namespace titania {
 namespace puck {
 
 X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface (),
-	X3DTextureTransformEditor (),
-	              appearances (),
-	   textureTransformBuffer (),
-	     textureTransformNode (),
-	                 undoStep (),
-	                 changing (false)
+	           X3DBaseInterface (),
+	  X3DTextureEditorInterface (),
+	  X3DTextureTransformEditor (),
+	X3DTextureTransform3DEditor (),
+	                appearances (),
+	     textureTransformBuffer (),
+	       textureTransformNode (),
+	                   undoStep (),
+	                  changing (false)
 {
 	addChildren (textureTransformBuffer);
 	textureTransformBuffer .addInterest (this, &X3DTextureTransformNodeEditor::set_node);
@@ -110,7 +111,8 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 {
 	getTextureTransformNotebook () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0);
 
-	getTextureTransformBox () .set_visible (false);
+	getTextureTransformBox ()   .set_visible (false);
+	getTextureTransform3DBox () .set_visible (false);
 
 	if (textureTransformNode)
 	{
@@ -119,6 +121,10 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			case 1:
 				getTextureTransformBox () .set_visible (true);
 				getTextureTransformNotebook () .set_current_page (1);
+				break;
+			case 2:
+				getTextureTransform3DBox () .set_visible (true);
+				getTextureTransformNotebook () .set_current_page (2);
 				break;
 			default:
 				break;
@@ -134,6 +140,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 		{
 			case 1:
 				textureTransformNode = getTextureTransform (textureTransformNode);
+				break;
+			case 2:
+				textureTransformNode = getTextureTransform3D (textureTransformNode);
 				break;
 			default:
 				break;
@@ -185,7 +194,8 @@ X3DTextureTransformNodeEditor::set_node ()
 
 	textureTransformNode = std::move (std::get <0> (tuple));
 
-	setTextureTransform (textureTransformNode);
+	setTextureTransform   (textureTransformNode);
+	setTextureTransform3D (textureTransformNode);
 
 	if (not textureTransformNode)
 		textureTransformNode = getTextureTransform (textureTransformNode);
@@ -199,6 +209,9 @@ X3DTextureTransformNodeEditor::set_node ()
 			case X3D::X3DConstants::TextureTransform:
 				getTextureTransformComboBoxText () .set_active (1);
 				break;
+			case X3D::X3DConstants::TextureTransform3D:
+				getTextureTransformComboBoxText () .set_active (2);
+				break;
 			default:
 				getTextureTransformComboBoxText () .set_active (-1);
 				break;
@@ -209,7 +222,7 @@ X3DTextureTransformNodeEditor::set_node ()
 	else
 		getTextureTransformComboBoxText () .set_active (-1);
 
-	getSelectTextureTransBox ()        .set_sensitive (hasParent);
+	getSelectTextureTransformBox ()    .set_sensitive (hasParent);
 	getTextureTransformNodeBox ()      .set_sensitive (hasField);
 	getTextureTransformUnlinkButton () .set_sensitive (active > 0 and textureTransformNode -> getCloneCount () > 1);
 

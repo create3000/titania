@@ -796,3 +796,5 @@ Window::key_press_event
   virtual bool on_key_press_event(GdkEventKey* event);
 Window::key_release_event
   virtual bool on_key_release_event(GdkEventKey* event);
+ToggleButton::clicked
+  virtual void on_clicked();

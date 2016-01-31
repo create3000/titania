@@ -257,15 +257,15 @@ X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 
 template <class Type>
 void
-X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
+X3DFieldAdjustment2 <Type>::on_value_changed (const int index0)
 {
 	if (changing)
 		return;
 
-	if (id not_eq input)
+	if (index0 not_eq input)
 		undoStep .reset ();
 
-	input = id;
+	input = index0;
 
 	addUndoFunction <Type> (nodes, name, undoStep);
 
@@ -288,13 +288,14 @@ X3DFieldAdjustment2 <Type>::on_value_changed (const int id)
 			{
 				changing = true;
 
-				const auto scale  = vector [id] / field .get1Value (id);
-				const auto index1 = (id + 1) % 2;
+				const auto current = get_value (field);
+				const auto scale   = vector [index0] / current [index0];
+				const auto index1  = (index0 + 1) % 2;
 
-				if (field .get1Value (id))
-					vector [index1] *= scale;
+				if (field .get1Value (index0))
+					vector [index1] = current [index1] * scale;
 				else
-					vector [index1] = vector [id];
+					vector [index1] = vector [index0];
 
 				adjustments [index1] -> set_value (getCurrentScene () -> toUnit (unit, vector [index1]));
 

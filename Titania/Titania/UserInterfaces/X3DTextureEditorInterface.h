@@ -106,6 +106,58 @@ public:
 	{ return m_TexturePropertiesTexturePriorityAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DCenterXAdjustment () const
+	{ return m_TextureTransform3DCenterXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DCenterYAdjustment () const
+	{ return m_TextureTransform3DCenterYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DCenterZAdjustment () const
+	{ return m_TextureTransform3DCenterZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationAAdjustment () const
+	{ return m_TextureTransform3DRotationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationXAdjustment () const
+	{ return m_TextureTransform3DRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationYAdjustment () const
+	{ return m_TextureTransform3DRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DRotationZAdjustment () const
+	{ return m_TextureTransform3DRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DScaleXAdjustment () const
+	{ return m_TextureTransform3DScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DScaleYAdjustment () const
+	{ return m_TextureTransform3DScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DScaleZAdjustment () const
+	{ return m_TextureTransform3DScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DTranslationXAdjustment () const
+	{ return m_TextureTransform3DTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DTranslationYAdjustment () const
+	{ return m_TextureTransform3DTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransform3DTranslationZAdjustment () const
+	{ return m_TextureTransform3DTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextureTransformCenterXAdjustment () const
 	{ return m_TextureTransformCenterXAdjustment; }
 
@@ -418,8 +470,8 @@ public:
 	{ return *m_TextureTransformNodeBox; }
 
 	Gtk::Box &
-	getSelectTextureTransBox () const
-	{ return *m_SelectTextureTransBox; }
+	getSelectTextureTransformBox () const
+	{ return *m_SelectTextureTransformBox; }
 
 	Gtk::ComboBoxText &
 	getTextureTransformComboBoxText () const
@@ -488,6 +540,38 @@ public:
 	Gtk::SpinButton &
 	getTextureTransformRotationSpinButton () const
 	{ return *m_TextureTransformRotationSpinButton; }
+
+	Gtk::Grid &
+	getTextureTransform3DBox () const
+	{ return *m_TextureTransform3DBox; }
+
+	Gtk::Box &
+	getTextureTransform3DTranslationBox () const
+	{ return *m_TextureTransform3DTranslationBox; }
+
+	Gtk::Box &
+	getTextureTransform3DRotationBox () const
+	{ return *m_TextureTransform3DRotationBox; }
+
+	Gtk::Box &
+	getTextureTransform3DRotationToolBox () const
+	{ return *m_TextureTransform3DRotationToolBox; }
+
+	Gtk::Box &
+	getTextureTransform3DScaleBox () const
+	{ return *m_TextureTransform3DScaleBox; }
+
+	Gtk::ToggleButton &
+	getTextureTransform3DUniformScaleButton () const
+	{ return *m_TextureTransform3DUniformScaleButton; }
+
+	Gtk::Image &
+	getTextureTransform3DUniformScaleImage () const
+	{ return *m_TextureTransform3DUniformScaleImage; }
+
+	Gtk::Box &
+	getTextureTransform3DCenterBox () const
+	{ return *m_TextureTransform3DCenterBox; }
 
 	Gtk::Expander &
 	getTextureCoordinateGeneratorExpander () const
@@ -571,6 +655,10 @@ public:
 
 	virtual
 	void
+	on_texture_transform3D_uniform_scale_clicked () = 0;
+
+	virtual
+	void
 	on_textureCoordinateGenerator_toggled () = 0;
 
 	virtual
@@ -606,6 +694,19 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderWidthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesTexturePriorityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformRotationAdjustment;
@@ -684,7 +785,7 @@ private:
 	Gtk::Scale*                            m_TexturePropertiesBorderColorScale;
 	Gtk::Expander*                         m_TextureTransformExpander;
 	Gtk::Box*                              m_TextureTransformNodeBox;
-	Gtk::Box*                              m_SelectTextureTransBox;
+	Gtk::Box*                              m_SelectTextureTransformBox;
 	Gtk::ComboBoxText*                     m_TextureTransformComboBoxText;
 	Gtk::Button*                           m_TextureTransformUnlinkButton;
 	Gtk::Notebook*                         m_TextureTransformNotebook;
@@ -702,6 +803,14 @@ private:
 	Gtk::SpinButton*                       m_TextureTransformCenterXSpinButton;
 	Gtk::SpinButton*                       m_TextureTransformCenterYSpinButton;
 	Gtk::SpinButton*                       m_TextureTransformRotationSpinButton;
+	Gtk::Grid*                             m_TextureTransform3DBox;
+	Gtk::Box*                              m_TextureTransform3DTranslationBox;
+	Gtk::Box*                              m_TextureTransform3DRotationBox;
+	Gtk::Box*                              m_TextureTransform3DRotationToolBox;
+	Gtk::Box*                              m_TextureTransform3DScaleBox;
+	Gtk::ToggleButton*                     m_TextureTransform3DUniformScaleButton;
+	Gtk::Image*                            m_TextureTransform3DUniformScaleImage;
+	Gtk::Box*                              m_TextureTransform3DCenterBox;
 	Gtk::Expander*                         m_TextureCoordinateGeneratorExpander;
 	Gtk::Box*                              m_TextureCoordinateGeneratorMainBox;
 	Gtk::Box*                              m_SelectTextureCoordinateGeneratorBox;

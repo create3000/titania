@@ -78,6 +78,9 @@ TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionCont
 	addField (inputOutput, "rotation",    rotation ());
 	addField (inputOutput, "scale",       scale ());
 	addField (inputOutput, "center",      center ());
+
+	translation () .setUnit (UnitCategory::LENGTH);
+	center ()      .setUnit (UnitCategory::LENGTH);
 }
 
 X3DBaseNode*

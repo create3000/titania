@@ -244,6 +244,7 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DImageTexture3DEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DPixelTexture3DEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DComposedTexture3DEditor.cpp" />
+    <Compile Include="Titania\Editors\TextureEditor\X3DTextureTransform3DEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2379,6 +2380,7 @@
     <None Include="Titania\Editors\TextureEditor\X3DImageTexture3DEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DPixelTexture3DEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DComposedTexture3DEditor.h" />
+    <None Include="Titania\Editors\TextureEditor\X3DTextureTransform3DEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
