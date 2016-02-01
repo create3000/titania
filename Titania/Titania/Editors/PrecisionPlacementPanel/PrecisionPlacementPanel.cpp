@@ -61,6 +61,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.glade"), gconf_dir ()),
 	                 X3DTransformEditor (),
+	                    X3DSwitchEditor (),
 	                 X3DBillboardEditor (),
 	                    X3DLayoutEditor (),
 	                  X3DViewportEditor (),
@@ -89,6 +90,7 @@ PrecisionPlacementPanel::initialize ()
 {
 	X3DPrecisionPlacementPanelInterface::initialize ();
 	X3DTransformEditor::initialize ();
+	X3DSwitchEditor::initialize ();
 	X3DBillboardEditor::initialize ();
 	X3DLayoutEditor::initialize ();
 	X3DViewportEditor::initialize ();

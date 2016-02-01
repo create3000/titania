@@ -246,6 +246,7 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DComposedTexture3DEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTextureTransform3DEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTextureTransformMatrix3DEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DSwitchEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2383,6 +2384,7 @@
     <None Include="Titania\Editors\TextureEditor\X3DComposedTexture3DEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DTextureTransform3DEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DTextureTransformMatrix3DEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DSwitchEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

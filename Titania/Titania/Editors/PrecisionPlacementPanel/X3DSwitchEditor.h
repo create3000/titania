@@ -48,76 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DLayoutEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DBillboardEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
-#include "X3DSwitchEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DSwitchEditor,
-	public X3DBillboardEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor
+class NormalTool;
+
+class X3DSwitchEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	PrecisionPlacementPanel (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel ();
+	~X3DSwitchEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DSwitchEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
-	void
-	initialize () final override;
-
 	void
 	set_selection (const X3D::MFNode &);
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	on_bbox_uniform_size_clicked () final override;
-
-	virtual
-	void
-	on_fill_bounding_box_fields_clicked () final override;
-
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
-
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
+	X3DFieldAdjustment <X3D::SFInt32> whichChoice;
 
 };
 

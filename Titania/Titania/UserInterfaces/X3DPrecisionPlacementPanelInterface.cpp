@@ -96,6 +96,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_LayoutOffsetYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetYAdjustment"));
 	m_LayoutSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeXAdjustment"));
 	m_LayoutSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeYAdjustment"));
+	m_SwitchWhichChoiceAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SwitchWhichChoiceAdjustment"));
 	m_TransformCenterXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterXAdjustment"));
 	m_TransformCenterYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterYAdjustment"));
 	m_TransformCenterZAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterZAdjustment"));
@@ -137,6 +138,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TransformUniformScaleImage", m_TransformUniformScaleImage);
 	m_builder -> get_widget ("TransformCenterBox", m_TransformCenterBox);
 	m_builder -> get_widget ("TransformMoveCenterButton", m_TransformMoveCenterButton);
+	m_builder -> get_widget ("SwitchExpander", m_SwitchExpander);
+	m_builder -> get_widget ("SwitchWhichChoiceSpinButton", m_SwitchWhichChoiceSpinButton);
 	m_builder -> get_widget ("BillboardExpander", m_BillboardExpander);
 	m_builder -> get_widget ("BillboardBox", m_BillboardBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationToolBox", m_BillboardAxisOfRotationToolBox);

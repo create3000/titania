@@ -230,6 +230,10 @@ public:
 	{ return m_LayoutSizeYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getSwitchWhichChoiceAdjustment () const
+	{ return m_SwitchWhichChoiceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTransformCenterXAdjustment () const
 	{ return m_TransformCenterXAdjustment; }
 
@@ -384,6 +388,14 @@ public:
 	Gtk::Button &
 	getTransformMoveCenterButton () const
 	{ return *m_TransformMoveCenterButton; }
+
+	Gtk::Expander &
+	getSwitchExpander () const
+	{ return *m_SwitchExpander; }
+
+	Gtk::SpinButton &
+	getSwitchWhichChoiceSpinButton () const
+	{ return *m_SwitchWhichChoiceSpinButton; }
 
 	Gtk::Expander &
 	getBillboardExpander () const
@@ -785,6 +797,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterZAdjustment;
@@ -824,6 +837,8 @@ private:
 	Gtk::Image*                    m_TransformUniformScaleImage;
 	Gtk::Box*                      m_TransformCenterBox;
 	Gtk::Button*                   m_TransformMoveCenterButton;
+	Gtk::Expander*                 m_SwitchExpander;
+	Gtk::SpinButton*               m_SwitchWhichChoiceSpinButton;
 	Gtk::Expander*                 m_BillboardExpander;
 	Gtk::Grid*                     m_BillboardBox;
 	Gtk::Box*                      m_BillboardAxisOfRotationToolBox;
