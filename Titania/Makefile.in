@@ -211,6 +211,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTexturePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTextureTransform3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTextureTransformEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DTextureTransformMatrix3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureMappingEditor/TextureMappingEditor.$(OBJEXT) \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.$(OBJEXT) \
@@ -634,6 +635,7 @@ titania_SOURCES = \
 	Titania/Editors/TextureEditor/X3DTexturePropertiesEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransform3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformEditor.cpp \
+	Titania/Editors/TextureEditor/X3DTextureTransformMatrix3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
@@ -1303,6 +1305,9 @@ Titania/Editors/TextureEditor/X3DTextureTransform3DEditor.$(OBJEXT):  \
 Titania/Editors/TextureEditor/X3DTextureTransformEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DTextureTransformMatrix3DEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
@@ -1732,6 +1737,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTexturePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureTransform3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureTransformEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureTransformMatrix3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DTextureTransformNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureMappingEditor/$(DEPDIR)/TextureMappingEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ViewpointEditor/$(DEPDIR)/ViewpointEditor.Po@am__quote@

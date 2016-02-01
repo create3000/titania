@@ -166,6 +166,70 @@ public:
 	{ return m_TextureTransformCenterYAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D00Adjustment () const
+	{ return m_TextureTransformMatrix3D00Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D01Adjustment () const
+	{ return m_TextureTransformMatrix3D01Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D02Adjustment () const
+	{ return m_TextureTransformMatrix3D02Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D03Adjustment () const
+	{ return m_TextureTransformMatrix3D03Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D04Adjustment () const
+	{ return m_TextureTransformMatrix3D04Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D05Adjustment () const
+	{ return m_TextureTransformMatrix3D05Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D06Adjustment () const
+	{ return m_TextureTransformMatrix3D06Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D07Adjustment () const
+	{ return m_TextureTransformMatrix3D07Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D08Adjustment () const
+	{ return m_TextureTransformMatrix3D08Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D09Adjustment () const
+	{ return m_TextureTransformMatrix3D09Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D10Adjustment () const
+	{ return m_TextureTransformMatrix3D10Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D11Adjustment () const
+	{ return m_TextureTransformMatrix3D11Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D12Adjustment () const
+	{ return m_TextureTransformMatrix3D12Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D13Adjustment () const
+	{ return m_TextureTransformMatrix3D13Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D14Adjustment () const
+	{ return m_TextureTransformMatrix3D14Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTextureTransformMatrix3D15Adjustment () const
+	{ return m_TextureTransformMatrix3D15Adjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTextureTransformRotationAdjustment () const
 	{ return m_TextureTransformRotationAdjustment; }
 
@@ -573,6 +637,14 @@ public:
 	getTextureTransform3DCenterBox () const
 	{ return *m_TextureTransform3DCenterBox; }
 
+	Gtk::Grid &
+	getTextureTransformMatrix3DBox () const
+	{ return *m_TextureTransformMatrix3DBox; }
+
+	Gtk::Grid &
+	getTextureTransformMatrix3DMatrixGrid () const
+	{ return *m_TextureTransformMatrix3DMatrixGrid; }
+
 	Gtk::Expander &
 	getTextureCoordinateGeneratorExpander () const
 	{ return *m_TextureCoordinateGeneratorExpander; }
@@ -709,6 +781,22 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransform3DTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D00Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D01Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D02Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D03Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D04Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D05Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D06Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D07Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D08Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D09Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D10Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D11Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D12Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D13Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D14Adjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformMatrix3D15Adjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformRotationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformScaleXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformScaleYAdjustment;
@@ -811,6 +899,8 @@ private:
 	Gtk::ToggleButton*                     m_TextureTransform3DUniformScaleButton;
 	Gtk::Image*                            m_TextureTransform3DUniformScaleImage;
 	Gtk::Box*                              m_TextureTransform3DCenterBox;
+	Gtk::Grid*                             m_TextureTransformMatrix3DBox;
+	Gtk::Grid*                             m_TextureTransformMatrix3DMatrixGrid;
 	Gtk::Expander*                         m_TextureCoordinateGeneratorExpander;
 	Gtk::Box*                              m_TextureCoordinateGeneratorMainBox;
 	Gtk::Box*                              m_SelectTextureCoordinateGeneratorBox;

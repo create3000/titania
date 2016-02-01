@@ -61,6 +61,11 @@ class X3DTextureTransformNode :
 {
 public:
 
+	///  @name Member access
+
+	Matrix4f
+	getMatrix () const;
+
 	///  @name Operations
 
 	virtual
@@ -77,6 +82,8 @@ protected:
 	///  @name Construction
 
 	X3DTextureTransformNode ();
+
+	///  @name Member access
 
 	void
 	setMatrix (const Matrix4f &);

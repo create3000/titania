@@ -107,11 +107,18 @@ private:
 
 	template <class ValueType, class Value>
 	void
-	set_value (X3D::X3DField <ValueType> &, const Value &) const;
+	set_value (X3D::X3DField <ValueType> & field, const Value & value) const
+	{ field = value; }
+
+	template <class ValueType, class Value>
+	void
+	set_value (X3D::SFMatrix4 <ValueType> & field, const Value & value) const
+	{ field .set1Value (index, value); }
 	
 	template <class ValueType, class Value>
 	void
-	set_value (X3D::X3DArrayField <ValueType> &, const Value &) const;
+	set_value (X3D::X3DArrayField <ValueType> & field, const Value & value) const
+	{ field .set1Value (index, value); }
 
 	void
 	set_field ();
@@ -126,7 +133,17 @@ private:
 	
 	template <class ValueType>
 	int32_t
+	get_index (const X3D::SFMatrix4 <ValueType> & field) const
+	{ return index; }
+	
+	template <class ValueType>
+	int32_t
 	get_index (X3D::X3DArrayField <ValueType> & field) const;
+
+	template <class ValueType>
+	double
+	get_value (const X3D::SFMatrix4 <ValueType> & field) const
+	{ return field .get1Value (index); }
 
 	template <class ValueType>
 	double
@@ -253,22 +270,6 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 	}
 
 	addRedoFunction <Type> (nodes, name, undoStep);
-}
-
-template <class Type>
-template <class ValueType, class Value>
-void
-X3DFieldAdjustment <Type>::set_value (X3D::X3DField <ValueType> & field, const Value & value) const
-{
-	field = value;
-}
-
-template <class Type>
-template <class ValueType, class Value>
-void
-X3DFieldAdjustment <Type>::set_value (X3D::X3DArrayField <ValueType> & field, const Value & value) const
-{
-	field .set1Value (index, value);
 }
 
 template <class Type>

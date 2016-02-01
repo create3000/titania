@@ -52,7 +52,8 @@
 
 #include "../../ComposedWidgets/RotationTool.h"
 
-#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Texturing/TextureTransform.h>
+#include <Titania/X3D/Components/Texturing3D/TextureTransformMatrix3D.h>
 
 namespace titania {
 namespace puck {
@@ -107,12 +108,14 @@ X3DTextureTransform3DEditor::setTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 		getCurrentContext () -> realize ();
 	}
 
-	translation .setNodes ({ textureTransform });
-	rotation    .setNodes ({ textureTransform });
-	scale       .setNodes ({ textureTransform });
-	center      .setNodes ({ textureTransform });
+	X3D::MFNode nodes = { textureTransform };
 
-	rotationTool -> setNodes ({ textureTransform });
+	translation .setNodes (nodes);
+	rotation    .setNodes (nodes);
+	scale       .setNodes (nodes);
+	center      .setNodes (nodes);
+
+	rotationTool -> setNodes (nodes);
 }
 
 const X3D::X3DPtr <X3D::TextureTransform3D> &
@@ -123,6 +126,16 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 
 	switch (value -> getType () .back ())
 	{
+		case X3D::X3DConstants::TextureTransform:
+		{
+			const X3D::X3DPtr <X3D::TextureTransform> last (value);
+
+			textureTransform -> translation () = X3D::Vector3f (last -> translation () .getX (), last -> translation () .getY (), 0);
+			textureTransform -> rotation ()    = X3D::Rotation4f (0, 0, 1, last -> rotation ());
+			textureTransform -> scale ()       = X3D::Vector3f (last -> scale ()  .getX (), last -> scale ()  .getY (), 1);
+			textureTransform -> center ()      = X3D::Vector3f (last -> center () .getX (), last -> center () .getY (), 0);
+			break;
+		}
 		case X3D::X3DConstants::TextureTransform3D:
 		{
 			const X3D::X3DPtr <X3D::TextureTransform3D> last (value);
@@ -131,6 +144,22 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 			textureTransform -> rotation ()    = last -> rotation ();
 			textureTransform -> scale ()       = last -> scale ();
 			textureTransform -> center ()      = last -> center ();
+			break;
+		}
+		case X3D::X3DConstants::TextureTransformMatrix3D:
+		{
+			const X3D::X3DPtr <X3D::TextureTransformMatrix3D> last (value);
+
+			X3D::Vector3f   translation;
+			X3D::Rotation4f rotation;
+			X3D::Vector3f   scale;
+			X3D::Rotation4f scaleOrientation;
+
+			math::inverse (last -> matrix () .getValue ()) .get (translation, rotation, scale, scaleOrientation);
+
+			textureTransform -> translation () = -translation;
+			textureTransform -> rotation ()    = ~rotation;
+			textureTransform -> scale ()       = 1.0f / scale;
 			break;
 		}
 		default:

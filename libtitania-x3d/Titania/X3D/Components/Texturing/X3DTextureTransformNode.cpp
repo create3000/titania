@@ -72,6 +72,19 @@ X3DTextureTransformNode::setMatrix (const Matrix4f & value)
 	matrix = value * textureMatrix;
 }
 
+Matrix4f
+X3DTextureTransformNode::getMatrix () const
+{
+	try
+	{
+		return matrix * ~textureMatrix;
+	}
+	catch (const std::domain_error &)
+	{
+		return Matrix4f ();
+	}
+}
+
 void
 X3DTextureTransformNode::draw ()
 {

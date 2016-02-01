@@ -48,78 +48,72 @@
  *
  ******************************************************************************/
 
-#include "TextureTransform3D.h"
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_MATRIX3DEDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_TRANSFORM_MATRIX3DEDITOR_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
+
+#include <Titania/X3D/Components/Texturing3D/TextureTransformMatrix3D.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-const ComponentType TextureTransform3D::component      = ComponentType::TEXTURING_3D;
-const std::string   TextureTransform3D::typeName       = "TextureTransform3D";
-const std::string   TextureTransform3D::containerField = "textureTransform";
-
-TextureTransform3D::Fields::Fields () :
-	translation (new SFVec3f ()),
-	   rotation (new SFRotation ()),
-	      scale (new SFVec3f (1, 1, 1)),
-	     center (new SFVec3f ())
-{ }
-
-TextureTransform3D::TextureTransform3D (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTextureTransformNode (),
-	                 fields ()
+class X3DTextureTransformMatrix3DEditor :
+	virtual public X3DTextureEditorInterface
 {
-	addType (X3DConstants::TextureTransform3D);
+public:
 
-	addField (inputOutput, "metadata",    metadata ());
-	addField (inputOutput, "translation", translation ());
-	addField (inputOutput, "rotation",    rotation ());
-	addField (inputOutput, "scale",       scale ());
-	addField (inputOutput, "center",      center ());
-}
+	///  @name Destruction
 
-X3DBaseNode*
-TextureTransform3D::create (X3DExecutionContext* const executionContext) const
-{
-	return new TextureTransform3D (executionContext);
-}
+	virtual
+	~X3DTextureTransformMatrix3DEditor ();
 
-void
-TextureTransform3D::initialize ()
-{
-	X3DTextureTransformNode::initialize ();
 
-	addInterest (this, &TextureTransform3D::eventsProcessed);
+protected:
 
-	eventsProcessed ();
-}
+	///  @name Construction
 
-void
-TextureTransform3D::eventsProcessed ()
-{
-	// Tc' = -C × S × R × C × T × Tc
+	X3DTextureTransformMatrix3DEditor ();
 
-	Matrix4f matrix;
+	void
+	initialize ();
 
-	if (center () not_eq Vector3f ())
-		matrix .translate (-center ());
+	///  @name Construction
 
-	if (scale () not_eq Vector3f (1, 1, 1))
-		matrix .scale (scale ());
+	void
+	setTextureTransformMatrix3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
-	if (rotation () not_eq Rotation4f ())
-		matrix .rotate (rotation ());
+	const X3D::X3DPtr <X3D::TextureTransformMatrix3D> &
+	getTextureTransformMatrix3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
 
-	if (center () not_eq Vector3f ())
-		matrix .translate (center ());
 
-	if (translation () not_eq Vector3f ())
-		matrix .translate (translation ());
+private:
 
-	setMatrix (matrix);
-}
+	///  @name Members
 
-} // X3D
+	X3D::X3DPtr <X3D::TextureTransformMatrix3D> textureTransform;
+
+	X3DFieldAdjustment <X3D::SFMatrix4f> value00;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value01;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value02;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value03;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value04;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value05;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value06;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value07;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value08;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value09;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value10;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value11;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value12;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value13;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value14;
+	X3DFieldAdjustment <X3D::SFMatrix4f> value15;
+
+};
+
+} // puck
 } // titania
+
+#endif
