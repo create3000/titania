@@ -286,20 +286,12 @@ public:
 	{ return *m_GridCheckButton; }
 
 	Gtk::Grid &
-	getGridBox () const
-	{ return *m_GridBox; }
+	getGridTransformBox () const
+	{ return *m_GridTransformBox; }
 
 	Gtk::ComboBoxText &
 	getGridPlaneComboBoxText () const
 	{ return *m_GridPlaneComboBoxText; }
-
-	Gtk::Box &
-	getGridColorBox () const
-	{ return *m_GridColorBox; }
-
-	Gtk::Button &
-	getGridColorButton () const
-	{ return *m_GridColorButton; }
 
 	Gtk::Box &
 	getGridTranslationBox () const
@@ -322,38 +314,6 @@ public:
 	{ return *m_GridDimensionSpinButton2; }
 
 	Gtk::Box &
-	getGridMajorLineEveryBox () const
-	{ return *m_GridMajorLineEveryBox; }
-
-	Gtk::SpinButton &
-	getGridMajorLineEverySpinButton0 () const
-	{ return *m_GridMajorLineEverySpinButton0; }
-
-	Gtk::SpinButton &
-	getGridMajorLineEverySpinButton1 () const
-	{ return *m_GridMajorLineEverySpinButton1; }
-
-	Gtk::SpinButton &
-	getGridMajorLineEverySpinButton2 () const
-	{ return *m_GridMajorLineEverySpinButton2; }
-
-	Gtk::Box &
-	getGridLineColorBox () const
-	{ return *m_GridLineColorBox; }
-
-	Gtk::Button &
-	getGridLineColorButton () const
-	{ return *m_GridLineColorButton; }
-
-	Gtk::Box &
-	getGridMajorLineColorBox () const
-	{ return *m_GridMajorLineColorBox; }
-
-	Gtk::Button &
-	getGridMajorLineColorButton () const
-	{ return *m_GridMajorLineColorButton; }
-
-	Gtk::Box &
 	getGridScaleBox () const
 	{ return *m_GridScaleBox; }
 
@@ -364,6 +324,14 @@ public:
 	Gtk::Image &
 	getGridUniformScaleImage () const
 	{ return *m_GridUniformScaleImage; }
+
+	Gtk::Expander &
+	getGridMajorLinesExpander () const
+	{ return *m_GridMajorLinesExpander; }
+
+	Gtk::Grid &
+	getGridMajorLinesBox () const
+	{ return *m_GridMajorLinesBox; }
 
 	Gtk::Box &
 	getGridMajorLineOffsetBox () const
@@ -381,6 +349,22 @@ public:
 	getGridMajorLineOffsetSpinButton2 () const
 	{ return *m_GridMajorLineOffsetSpinButton2; }
 
+	Gtk::Box &
+	getGridMajorLineEveryBox () const
+	{ return *m_GridMajorLineEveryBox; }
+
+	Gtk::SpinButton &
+	getGridMajorLineEverySpinButton0 () const
+	{ return *m_GridMajorLineEverySpinButton0; }
+
+	Gtk::SpinButton &
+	getGridMajorLineEverySpinButton1 () const
+	{ return *m_GridMajorLineEverySpinButton1; }
+
+	Gtk::SpinButton &
+	getGridMajorLineEverySpinButton2 () const
+	{ return *m_GridMajorLineEverySpinButton2; }
+
 	Gtk::SpinButton &
 	getGridMajorGridSpinButton () const
 	{ return *m_GridMajorGridSpinButton; }
@@ -394,6 +378,38 @@ public:
 	{ return *m_GridRemoveMajorGridButton; }
 
 	Gtk::Expander &
+	getGridColorsExpander () const
+	{ return *m_GridColorsExpander; }
+
+	Gtk::Grid &
+	getGridColorsBox () const
+	{ return *m_GridColorsBox; }
+
+	Gtk::Box &
+	getGridMajorLineColorBox () const
+	{ return *m_GridMajorLineColorBox; }
+
+	Gtk::Button &
+	getGridMajorLineColorButton () const
+	{ return *m_GridMajorLineColorButton; }
+
+	Gtk::Box &
+	getGridLineColorBox () const
+	{ return *m_GridLineColorBox; }
+
+	Gtk::Button &
+	getGridLineColorButton () const
+	{ return *m_GridLineColorButton; }
+
+	Gtk::Box &
+	getGridColorBox () const
+	{ return *m_GridColorBox; }
+
+	Gtk::Button &
+	getGridColorButton () const
+	{ return *m_GridColorButton; }
+
+	Gtk::Expander &
 	getAngleExpander () const
 	{ return *m_AngleExpander; }
 
@@ -402,24 +418,28 @@ public:
 	{ return *m_AngleCheckButton; }
 
 	Gtk::Grid &
-	getAngleBox () const
-	{ return *m_AngleBox; }
+	getAngleTransformBox () const
+	{ return *m_AngleTransformBox; }
 
 	Gtk::ComboBoxText &
 	getAnglePlaneComboBoxText () const
 	{ return *m_AnglePlaneComboBoxText; }
 
 	Gtk::Box &
-	getAngleColorBox () const
-	{ return *m_AngleColorBox; }
-
-	Gtk::Button &
-	getAngleColorButton () const
-	{ return *m_AngleColorButton; }
-
-	Gtk::Box &
 	getAngleTranslationBox () const
 	{ return *m_AngleTranslationBox; }
+
+	Gtk::Box &
+	getAngleScaleBox () const
+	{ return *m_AngleScaleBox; }
+
+	Gtk::ToggleButton &
+	getAngleUniformScaleButton () const
+	{ return *m_AngleUniformScaleButton; }
+
+	Gtk::Image &
+	getAngleUniformScaleImage () const
+	{ return *m_AngleUniformScaleImage; }
 
 	Gtk::Box &
 	getAngleDimensionBox () const
@@ -437,49 +457,13 @@ public:
 	getAngleDimensionSpinButton2 () const
 	{ return *m_AngleDimensionSpinButton2; }
 
-	Gtk::Box &
-	getAngleMajorLineEveryBox () const
-	{ return *m_AngleMajorLineEveryBox; }
+	Gtk::Expander &
+	getAngleMajorLinesExpander () const
+	{ return *m_AngleMajorLinesExpander; }
 
-	Gtk::SpinButton &
-	getAngleMajorLineEverySpinButton0 () const
-	{ return *m_AngleMajorLineEverySpinButton0; }
-
-	Gtk::SpinButton &
-	getAngleMajorLineEverySpinButton1 () const
-	{ return *m_AngleMajorLineEverySpinButton1; }
-
-	Gtk::SpinButton &
-	getAngleMajorLineEverySpinButton2 () const
-	{ return *m_AngleMajorLineEverySpinButton2; }
-
-	Gtk::Box &
-	getAngleLineColorBox () const
-	{ return *m_AngleLineColorBox; }
-
-	Gtk::Button &
-	getAngleLineColorButton () const
-	{ return *m_AngleLineColorButton; }
-
-	Gtk::Box &
-	getAngleMajorLineColorBox () const
-	{ return *m_AngleMajorLineColorBox; }
-
-	Gtk::Button &
-	getAngleMajorLineColorButton () const
-	{ return *m_AngleMajorLineColorButton; }
-
-	Gtk::Box &
-	getAngleScaleBox () const
-	{ return *m_AngleScaleBox; }
-
-	Gtk::ToggleButton &
-	getAngleUniformScaleButton () const
-	{ return *m_AngleUniformScaleButton; }
-
-	Gtk::Image &
-	getAngleUniformScaleImage () const
-	{ return *m_AngleUniformScaleImage; }
+	Gtk::Grid &
+	getAngleMajorLinesBox () const
+	{ return *m_AngleMajorLinesBox; }
 
 	Gtk::Box &
 	getAngleMajorLineOffsetBox () const
@@ -497,6 +481,22 @@ public:
 	getAngleMajorLineOffsetSpinButton2 () const
 	{ return *m_AngleMajorLineOffsetSpinButton2; }
 
+	Gtk::Box &
+	getAngleMajorLineEveryBox () const
+	{ return *m_AngleMajorLineEveryBox; }
+
+	Gtk::SpinButton &
+	getAngleMajorLineEverySpinButton0 () const
+	{ return *m_AngleMajorLineEverySpinButton0; }
+
+	Gtk::SpinButton &
+	getAngleMajorLineEverySpinButton1 () const
+	{ return *m_AngleMajorLineEverySpinButton1; }
+
+	Gtk::SpinButton &
+	getAngleMajorLineEverySpinButton2 () const
+	{ return *m_AngleMajorLineEverySpinButton2; }
+
 	Gtk::SpinButton &
 	getAngleMajorGridSpinButton () const
 	{ return *m_AngleMajorGridSpinButton; }
@@ -508,6 +508,38 @@ public:
 	Gtk::Button &
 	getAngleRemoveMajorGridButton () const
 	{ return *m_AngleRemoveMajorGridButton; }
+
+	Gtk::Expander &
+	getAngleColorsExpander () const
+	{ return *m_AngleColorsExpander; }
+
+	Gtk::Grid &
+	getAngleColorsBox () const
+	{ return *m_AngleColorsBox; }
+
+	Gtk::Box &
+	getAngleMajorLineColorBox () const
+	{ return *m_AngleMajorLineColorBox; }
+
+	Gtk::Button &
+	getAngleMajorLineColorButton () const
+	{ return *m_AngleMajorLineColorButton; }
+
+	Gtk::Box &
+	getAngleLineColorBox () const
+	{ return *m_AngleLineColorBox; }
+
+	Gtk::Button &
+	getAngleLineColorButton () const
+	{ return *m_AngleLineColorButton; }
+
+	Gtk::Box &
+	getAngleColorBox () const
+	{ return *m_AngleColorBox; }
+
+	Gtk::Button &
+	getAngleColorButton () const
+	{ return *m_AngleColorButton; }
 
 	Gtk::Box &
 	getGridSnappingBox () const
@@ -659,62 +691,70 @@ private:
 	Gtk::Notebook*                 m_GridNotebook;
 	Gtk::Expander*                 m_GridExpander;
 	Gtk::CheckButton*              m_GridCheckButton;
-	Gtk::Grid*                     m_GridBox;
+	Gtk::Grid*                     m_GridTransformBox;
 	Gtk::ComboBoxText*             m_GridPlaneComboBoxText;
-	Gtk::Box*                      m_GridColorBox;
-	Gtk::Button*                   m_GridColorButton;
 	Gtk::Box*                      m_GridTranslationBox;
 	Gtk::Box*                      m_GridDimensionBox;
 	Gtk::SpinButton*               m_GridDimensionSpinButton0;
 	Gtk::SpinButton*               m_GridDimensionSpinButton1;
 	Gtk::SpinButton*               m_GridDimensionSpinButton2;
-	Gtk::Box*                      m_GridMajorLineEveryBox;
-	Gtk::SpinButton*               m_GridMajorLineEverySpinButton0;
-	Gtk::SpinButton*               m_GridMajorLineEverySpinButton1;
-	Gtk::SpinButton*               m_GridMajorLineEverySpinButton2;
-	Gtk::Box*                      m_GridLineColorBox;
-	Gtk::Button*                   m_GridLineColorButton;
-	Gtk::Box*                      m_GridMajorLineColorBox;
-	Gtk::Button*                   m_GridMajorLineColorButton;
 	Gtk::Box*                      m_GridScaleBox;
 	Gtk::ToggleButton*             m_GridUniformScaleButton;
 	Gtk::Image*                    m_GridUniformScaleImage;
+	Gtk::Expander*                 m_GridMajorLinesExpander;
+	Gtk::Grid*                     m_GridMajorLinesBox;
 	Gtk::Box*                      m_GridMajorLineOffsetBox;
 	Gtk::SpinButton*               m_GridMajorLineOffsetSpinButton0;
 	Gtk::SpinButton*               m_GridMajorLineOffsetSpinButton1;
 	Gtk::SpinButton*               m_GridMajorLineOffsetSpinButton2;
+	Gtk::Box*                      m_GridMajorLineEveryBox;
+	Gtk::SpinButton*               m_GridMajorLineEverySpinButton0;
+	Gtk::SpinButton*               m_GridMajorLineEverySpinButton1;
+	Gtk::SpinButton*               m_GridMajorLineEverySpinButton2;
 	Gtk::SpinButton*               m_GridMajorGridSpinButton;
 	Gtk::Button*                   m_GridAddMajorGridButton;
 	Gtk::Button*                   m_GridRemoveMajorGridButton;
+	Gtk::Expander*                 m_GridColorsExpander;
+	Gtk::Grid*                     m_GridColorsBox;
+	Gtk::Box*                      m_GridMajorLineColorBox;
+	Gtk::Button*                   m_GridMajorLineColorButton;
+	Gtk::Box*                      m_GridLineColorBox;
+	Gtk::Button*                   m_GridLineColorButton;
+	Gtk::Box*                      m_GridColorBox;
+	Gtk::Button*                   m_GridColorButton;
 	Gtk::Expander*                 m_AngleExpander;
 	Gtk::CheckButton*              m_AngleCheckButton;
-	Gtk::Grid*                     m_AngleBox;
+	Gtk::Grid*                     m_AngleTransformBox;
 	Gtk::ComboBoxText*             m_AnglePlaneComboBoxText;
-	Gtk::Box*                      m_AngleColorBox;
-	Gtk::Button*                   m_AngleColorButton;
 	Gtk::Box*                      m_AngleTranslationBox;
+	Gtk::Box*                      m_AngleScaleBox;
+	Gtk::ToggleButton*             m_AngleUniformScaleButton;
+	Gtk::Image*                    m_AngleUniformScaleImage;
 	Gtk::Box*                      m_AngleDimensionBox;
 	Gtk::SpinButton*               m_AngleDimensionSpinButton0;
 	Gtk::SpinButton*               m_AngleDimensionSpinButton1;
 	Gtk::SpinButton*               m_AngleDimensionSpinButton2;
-	Gtk::Box*                      m_AngleMajorLineEveryBox;
-	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton0;
-	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton1;
-	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton2;
-	Gtk::Box*                      m_AngleLineColorBox;
-	Gtk::Button*                   m_AngleLineColorButton;
-	Gtk::Box*                      m_AngleMajorLineColorBox;
-	Gtk::Button*                   m_AngleMajorLineColorButton;
-	Gtk::Box*                      m_AngleScaleBox;
-	Gtk::ToggleButton*             m_AngleUniformScaleButton;
-	Gtk::Image*                    m_AngleUniformScaleImage;
+	Gtk::Expander*                 m_AngleMajorLinesExpander;
+	Gtk::Grid*                     m_AngleMajorLinesBox;
 	Gtk::Box*                      m_AngleMajorLineOffsetBox;
 	Gtk::SpinButton*               m_AngleMajorLineOffsetSpinButton0;
 	Gtk::SpinButton*               m_AngleMajorLineOffsetSpinButton1;
 	Gtk::SpinButton*               m_AngleMajorLineOffsetSpinButton2;
+	Gtk::Box*                      m_AngleMajorLineEveryBox;
+	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton0;
+	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton1;
+	Gtk::SpinButton*               m_AngleMajorLineEverySpinButton2;
 	Gtk::SpinButton*               m_AngleMajorGridSpinButton;
 	Gtk::Button*                   m_AngleAddMajorGridButton;
 	Gtk::Button*                   m_AngleRemoveMajorGridButton;
+	Gtk::Expander*                 m_AngleColorsExpander;
+	Gtk::Grid*                     m_AngleColorsBox;
+	Gtk::Box*                      m_AngleMajorLineColorBox;
+	Gtk::Button*                   m_AngleMajorLineColorButton;
+	Gtk::Box*                      m_AngleLineColorBox;
+	Gtk::Button*                   m_AngleLineColorButton;
+	Gtk::Box*                      m_AngleColorBox;
+	Gtk::Button*                   m_AngleColorButton;
 	Gtk::Box*                      m_GridSnappingBox;
 	Gtk::Expander*                 m_GridSnappingExpander;
 	Gtk::CheckButton*              m_GridEnabledCheckButton;

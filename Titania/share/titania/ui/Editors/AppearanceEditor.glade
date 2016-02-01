@@ -1123,12 +1123,12 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="orientation">vertical</property>
-                                <property name="spacing">4</property>
+                                <property name="spacing">8</property>
                                 <child>
                                   <object class="GtkGrid" id="box11">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label32">
@@ -1390,12 +1390,12 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="orientation">vertical</property>
-                                <property name="spacing">4</property>
+                                <property name="spacing">8</property>
                                 <child>
                                   <object class="GtkGrid" id="box5">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label24">

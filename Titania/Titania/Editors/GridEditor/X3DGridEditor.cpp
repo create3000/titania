@@ -33,7 +33,10 @@
  *
  * Titania is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License version 3 only, as published by the
- * Free Software Foundation.
+ * Free Softwar	getAngleTransformBox ()  .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleMajorLinesBox () .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleColorsBox ()     .set_sensitive (getAngleCheckButton () .get_active ());
+e Foundation.
  *
  * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
@@ -167,8 +170,10 @@ X3DGridEditor::initialize ()
 void
 X3DGridEditor::on_grid_toggled ()
 {
-	getGridBox ()         .set_sensitive (getGridCheckButton () .get_active ());
-	getGridSnappingBox () .set_visible   (getGridCheckButton () .get_active ());
+	getGridTransformBox ()  .set_sensitive (getGridCheckButton () .get_active ());
+	getGridMajorLinesBox () .set_sensitive (getGridCheckButton () .get_active ());
+	getGridColorsBox ()     .set_sensitive (getGridCheckButton () .get_active ());
+	getGridSnappingBox ()   .set_visible   (getGridCheckButton () .get_active ());
 }
 
 void

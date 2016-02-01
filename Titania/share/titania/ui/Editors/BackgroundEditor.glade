@@ -197,7 +197,7 @@
         </child>
         <child>
           <object class="GtkExpander" id="BackgroundExpander">
-            <property name="name">LightExpander</property>
+            <property name="name">BackgroundExpander</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
@@ -301,6 +301,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
                             <child>
                               <object class="GtkBox" id="box28">
                                 <property name="visible">True</property>
@@ -350,7 +351,7 @@
                               <object class="GtkGrid" id="grid1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkSpinButton" id="SkyAngleSpinButton">
@@ -390,7 +391,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="hexpand">True</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label7">
@@ -546,6 +547,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
+                            <property name="spacing">8</property>
                             <child>
                               <object class="GtkBox" id="box29">
                                 <property name="visible">True</property>
@@ -595,7 +597,7 @@
                               <object class="GtkGrid" id="grid2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkSpinButton" id="GroundAngleSpinButton">
@@ -636,7 +638,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="hexpand">True</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label11">
@@ -858,6 +860,7 @@
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkExpander" id="TextureExpander">
+                    <property name="name">TextureExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
@@ -896,12 +899,12 @@
                                 <property name="can_focus">False</property>
                                 <property name="border_width">8</property>
                                 <property name="orientation">vertical</property>
-                                <property name="spacing">4</property>
+                                <property name="spacing">8</property>
                                 <child>
                                   <object class="GtkGrid" id="grid7">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label35">
@@ -984,7 +987,7 @@
                                   <object class="GtkGrid" id="FrontURLGrid">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label14">

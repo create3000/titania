@@ -1246,12 +1246,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
-                <property name="spacing">4</property>
+                <property name="spacing">8</property>
                 <child>
                   <object class="GtkGrid" id="CreateLayoutBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
+                    <property name="row_spacing">8</property>
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel" id="label20">
@@ -1688,11 +1688,12 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">8</property>
                 <child>
                   <object class="GtkGrid" id="CreateViewportBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
+                    <property name="row_spacing">8</property>
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel" id="label22">
@@ -1744,7 +1745,7 @@
                   <object class="GtkGrid" id="ViewportBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="row_spacing">4</property>
+                    <property name="row_spacing">8</property>
                     <property name="column_spacing">16</property>
                     <child>
                       <object class="GtkLabel" id="label21">

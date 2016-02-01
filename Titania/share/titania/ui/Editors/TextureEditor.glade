@@ -314,12 +314,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">4</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="grid4">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label6">
@@ -401,7 +401,7 @@
                       <object class="GtkGrid" id="grid3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label35">
@@ -509,7 +509,7 @@
                               <object class="GtkGrid" id="grid5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label18">
@@ -750,7 +750,7 @@
                               <object class="GtkGrid" id="grid6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkBox" id="MovieTextureURLBox">
@@ -969,7 +969,7 @@
                               <object class="GtkGrid" id="grid7">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label50">
@@ -1212,7 +1212,7 @@
                       <object class="GtkGrid" id="Texture2DBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">8</property>
+                        <property name="row_spacing">9</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label8">
@@ -1398,12 +1398,12 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">4</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="grid1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label19">
@@ -1871,7 +1871,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">4</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="grid2">
                         <property name="visible">True</property>
@@ -2985,12 +2985,12 @@
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">4</property>
+                    <property name="spacing">8</property>
                     <child>
                       <object class="GtkGrid" id="box11">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label32">
