@@ -90,29 +90,29 @@ X3DPixelTexture3DEditor::getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 {
 	getPixelTextureBox () .set_visible (value);
 
-//	if (value)
-//	{
-//		switch (value -> getType () .back ())
-//		{
-//			case X3D::X3DConstants::ImageTexture:
-//			case X3D::X3DConstants::MovieTexture:
-//			{
-//				try
-//				{
-//					X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (value);
-//
-//					if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> getComponents ())
-//						pixelTexture -> assign (texture2DNode);
-//				}
-//				catch (const X3D::X3DError &)
-//				{ }
-//
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-//	}
+	if (value)
+	{
+		switch (value -> getType () .back ())
+		{
+			case X3D::X3DConstants::ComposedTexture3D:
+			case X3D::X3DConstants::ImageTexture3D:
+			{
+				try
+				{
+					X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode (value);
+
+					if (texture3DNode -> getWidth () and texture3DNode -> getHeight () and texture3DNode -> getDepth () and texture3DNode -> getComponents ())
+						pixelTexture -> setImage (texture3DNode);
+				}
+				catch (const X3D::X3DError &)
+				{ }
+
+				break;
+			}
+			default:
+				break;
+		}
+	}
 
 	return pixelTexture;
 }

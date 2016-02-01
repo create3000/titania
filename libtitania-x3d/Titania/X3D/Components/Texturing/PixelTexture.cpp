@@ -246,7 +246,7 @@ PixelTexture::update ()
 }
 
 void
-PixelTexture::assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
+PixelTexture::setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode)
 throw (Error <INVALID_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -261,8 +261,8 @@ throw (Error <INVALID_NODE>,
 
 	const auto   width      = texture2DNode -> getWidth ();
 	const auto   height     = texture2DNode -> getHeight ();
-	const auto   height_1   = height - 1;
 	const auto   components = texture2DNode -> getComponents ();
+	const auto   height_1   = height - 1;
 	X3D::MFInt32 array;
 
 	switch (components)
@@ -280,7 +280,7 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
-			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+			const uint8_t* first = image .data ();
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -309,7 +309,7 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
-			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+			const uint8_t* first = image .data ();
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -342,7 +342,7 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
-			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+			const uint8_t* first = image .data ();
 
 			for (size_t h = 0; h < height; ++ h)
 			{
@@ -375,7 +375,7 @@ throw (Error <INVALID_NODE>,
 			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 			glBindTexture (GL_TEXTURE_2D, 0);
 
-			const uint8_t* first = static_cast <uint8_t*> (image .data ());
+			const uint8_t* first = image .data ();
 
 			for (size_t h = 0; h < height; ++ h)
 			{

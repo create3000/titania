@@ -114,6 +114,12 @@ public:
 	size_t
 	getImageHeight () const final override;
 
+	void
+	setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DNode)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 
 private:
 

@@ -161,7 +161,6 @@ X3DTexture::refineImageFormats ()
 
 	for (Magick::Image & next : std::make_pair (++ images -> begin (), images -> end ()))
 	{
-		next .type (image .type ());
 		next .magick (image .magick ());
 	}
 }

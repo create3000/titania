@@ -114,10 +114,8 @@ public:
 	getImageHeight () const final override
 	{ return image () .getHeight (); }
 
-	///  @name Operations
-
 	void
-	assign (const X3D::X3DPtr <X3D::X3DTexture2DNode> &)
+	setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &)
 	throw (Error <INVALID_NODE>,
           Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

@@ -50,6 +50,7 @@
 
 #include "PixelTexture3D.h"
 
+#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -278,6 +279,187 @@ PixelTexture3D::update ()
 	setTexture (texture);
 
 	loadState = COMPLETE_STATE;
+}
+
+void
+PixelTexture3D::setImage (const X3D::X3DPtr <X3D::X3DTexture3DNode> & texture3DNode)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (not texture3DNode)
+		throw Error <INVALID_NODE> ("Node is NULL.");
+
+	X3D::ContextLock lock (texture3DNode -> getBrowser ());
+
+	if (not lock)
+		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+
+	const auto   width      = texture3DNode -> getWidth ();
+	const auto   height     = texture3DNode -> getHeight ();
+	const auto   depth      = texture3DNode -> getDepth ();
+	const auto   components = texture3DNode -> getComponents ();
+	const auto   height_1   = height - 1;
+
+	X3D::MFInt32 & array = image ();
+
+	array .resize (OFFSET);
+
+	array [WIDTH]      = width;
+	array [HEIGHT]     = height;
+	array [DEPTH]      = depth;
+	array [COMPONENTS] = components;
+
+	switch (components)
+	{
+		case 1:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = 3;
+			const auto rowStride = width * stride;
+			const auto size      = width * height * stride;
+
+			std::vector <uint8_t> images (size * depth);
+
+			glBindTexture (GL_TEXTURE_3D, texture3DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGB, GL_UNSIGNED_BYTE, images .data ());
+			glBindTexture (GL_TEXTURE_3D, 0);
+
+			for (size_t i = 0; i < depth; ++ i)
+			{
+				const uint8_t* first = images .data () + i * size;
+		
+				for (size_t h = 0; h < height; ++ h)
+				{
+					const auto row = (height_1 - h) * rowStride;
+	
+					for (size_t w = 0; w < rowStride; w += stride)
+					{
+						auto p = first + (row + w);
+	
+						array .emplace_back (*p);
+					}
+				}
+			}
+
+			break;
+		}
+		case 2:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = 4;
+			const auto rowStride = width * stride;
+			const auto size      = width * height * stride;
+
+			std::vector <uint8_t> images (size * depth);
+
+			glBindTexture (GL_TEXTURE_3D, texture3DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGBA, GL_UNSIGNED_BYTE, images .data ());
+			glBindTexture (GL_TEXTURE_3D, 0);
+
+			for (size_t i = 0; i < depth; ++ i)
+			{
+				const uint8_t* first = images .data () + i * size;
+	
+				for (size_t h = 0; h < height; ++ h)
+				{
+					const auto row = (height_1 - h) * rowStride;
+	
+					for (size_t w = 0; w < rowStride; w += stride)
+					{
+						auto p = first + (row + w);
+	
+						uint32_t point = *p << 8; // The value is in the red channel.
+						p     += 3;
+						point |= *p;
+	
+						array .emplace_back (point);
+					}
+				}
+			}
+
+			break;
+		}
+		case 3:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+			const auto size      = width * height * stride;
+
+			std::vector <uint8_t> images (size * depth);
+
+			glBindTexture (GL_TEXTURE_3D, texture3DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGB, GL_UNSIGNED_BYTE, images .data ());
+			glBindTexture (GL_TEXTURE_3D, 0);
+
+			for (size_t i = 0; i < depth; ++ i)
+			{
+				const uint8_t* first = images .data () + i * size;
+	
+				for (size_t h = 0; h < height; ++ h)
+				{
+					const auto row = (height_1 - h) * rowStride;
+	
+					for (size_t w = 0; w < rowStride; w += stride)
+					{
+						auto p = first + (row + w);
+	
+						uint32_t point = *p ++ << 16;
+						point |= *p ++ << 8;
+						point |= *p;
+	
+						array .emplace_back (point);
+					}
+				}
+			}
+
+			break;
+		}
+		case 4:
+		{
+			// Copy and flip image vertically.
+
+			const auto stride    = components;
+			const auto rowStride = width * stride;
+			const auto size      = width * height * stride;
+
+			std::vector <uint8_t> images (size * depth);
+
+			glBindTexture (GL_TEXTURE_3D, texture3DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_3D, 0, GL_RGBA, GL_UNSIGNED_BYTE, images .data ());
+			glBindTexture (GL_TEXTURE_3D, 0);
+
+			for (size_t i = 0; i < depth; ++ i)
+			{
+				const uint8_t* first = images .data () + i * size;
+	
+				for (size_t h = 0; h < height; ++ h)
+				{
+					const auto row = (height_1 - h) * rowStride;
+	
+					for (size_t w = 0; w < rowStride; w += stride)
+					{
+						auto p = first + (row + w);
+	
+						uint32_t point = *p ++ << 24;
+						point |= *p ++ << 16;
+						point |= *p ++ << 8;
+						point |= *p;
+	
+						array .emplace_back (point);
+					}
+				}
+			}
+
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 } // X3D
