@@ -135,7 +135,6 @@ PixelTexture3D::update ()
 	const size_t components  = std::max <int32_t> (0, image () [COMPONENTS]);
 	const size_t width       = std::max <int32_t> (0, image () [WIDTH]);
 	const size_t height      = std::max <int32_t> (0, image () [HEIGHT]);
-	const size_t height_1    = height - 1;
 	const size_t depth       = std::max <int32_t> (0, image () [DEPTH]);
 	const size_t size        = width * height;
 	const size_t size3D      = width * height * depth;
@@ -170,7 +169,7 @@ PixelTexture3D::update ()
 
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * width;
+					const auto row = h * width;
 
 					for (size_t w = 0; w < width; ++ w)
 						pixels .emplace_back (image () [first + row + w]);
@@ -192,7 +191,7 @@ PixelTexture3D::update ()
 
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * width;
+					const auto row = h * width;
 
 					for (size_t w = 0; w < width; ++ w)
 					{
@@ -220,7 +219,7 @@ PixelTexture3D::update ()
 
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * width;
+					const auto row = h * width;
 
 					for (size_t w = 0; w < width; ++ w)
 					{
@@ -246,7 +245,7 @@ PixelTexture3D::update ()
 
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * width;
+					const auto row = h * width;
 
 					for (size_t w = 0; w < width; ++ w)
 					{
@@ -299,7 +298,6 @@ throw (Error <INVALID_NODE>,
 	const auto   height     = texture3DNode -> getHeight ();
 	const auto   depth      = texture3DNode -> getDepth ();
 	const auto   components = texture3DNode -> getComponents ();
-	const auto   height_1   = height - 1;
 
 	X3D::MFInt32 & array = image ();
 
@@ -332,7 +330,7 @@ throw (Error <INVALID_NODE>,
 		
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * rowStride;
+					const auto row = h * rowStride;
 	
 					for (size_t w = 0; w < rowStride; w += stride)
 					{
@@ -365,7 +363,7 @@ throw (Error <INVALID_NODE>,
 	
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * rowStride;
+					const auto row = h * rowStride;
 	
 					for (size_t w = 0; w < rowStride; w += stride)
 					{
@@ -402,7 +400,7 @@ throw (Error <INVALID_NODE>,
 	
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * rowStride;
+					const auto row = h * rowStride;
 	
 					for (size_t w = 0; w < rowStride; w += stride)
 					{
@@ -439,7 +437,7 @@ throw (Error <INVALID_NODE>,
 	
 				for (size_t h = 0; h < height; ++ h)
 				{
-					const auto row = (height_1 - h) * rowStride;
+					const auto row = h * rowStride;
 	
 					for (size_t w = 0; w < rowStride; w += stride)
 					{

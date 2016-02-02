@@ -86,6 +86,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	                   fields (),
 	                    nodes (),
 	              transparent (false),
+	                    width (0),
+                      height (0),
 	               components (0)
 {
 	addType (X3DConstants::ComposedCubeMapTexture);
@@ -170,34 +172,35 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		for (const auto & node : nodes)
 		{
-				const auto texture = x3d_cast <X3DTexture2DNode*> (node);
+			const auto texture = x3d_cast <X3DTexture2DNode*> (node);
 
-				if (texture)
-				{
-					transparent = transparent or texture -> isTransparent ();
-					components  = std::max (components, texture -> getComponents ());
-				}
+			if (texture)
+			{
+				transparent = transparent or texture -> isTransparent ();
+				components  = std::max (components, texture -> getComponents ());
+			}
 		}
 
-		// Get texture 2d data
+		// Get texture 2d data as four component RGBA
 
-		const size_t width      = texture -> getWidth ();
-		const size_t height     = texture -> getHeight ();
-		const size_t components = 4;
+		width  = texture -> getWidth ();
+		height = texture -> getHeight ();
 
-		std::vector <char> image (width * height * components);
+		std::vector <uint8_t> image (width * height * 4);
 
 		glBindTexture (GL_TEXTURE_2D, texture -> getTextureId ());
 		glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 		glBindTexture (GL_TEXTURE_2D, 0);
 
-//		for (size_t r = 0; r < (height/2); r++)
-//		{
-//			for (size_t c = 0; c != width * 4; ++c)
-//			{
-//				std::swap (image [r * width * 4 + c], image [(height - 1 - r) * width * 4 + c]);
-//			}
-//		}
+		// Flip image vertically
+
+		for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
+		{
+			for (size_t c = 0, width4 = width * 4; c < width4; ++ c)
+			{
+				std::swap (image [r * width4 + c], image [(height - 1 - r) * width4 + c]);
+			}
+		}
 
 		// Transfer image
 		// Important: width and height must be equal, and all images must be of the same size!!!
@@ -205,12 +208,20 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 		glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+
+		setLoadState (COMPLETE_STATE);
 	}
 	else
 	{
+		width      = 0;
+		height     = 0;
+		components = 0;
+
 		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+
+		setLoadState (FAILED_STATE);
 	}
 }
 

@@ -55,34 +55,10 @@
 namespace titania {
 namespace X3D {
 
-const Matrix4f X3DTextureTransformNode::textureMatrix = { 1,  0, 0, 0,
-	                                                       0, -1, 0, 0,
-	                                                       0,  0, 1, 0,
-	                                                       0,  1, 0, 1 };
-
 X3DTextureTransformNode::X3DTextureTransformNode () :
 	X3DAppearanceChildNode ()
 {
 	addType (X3DConstants::X3DTextureTransformNode);
-}
-
-void
-X3DTextureTransformNode::setMatrix (const Matrix4f & value)
-{
-	matrix = value * textureMatrix;
-}
-
-Matrix4f
-X3DTextureTransformNode::getMatrix () const
-{
-	try
-	{
-		return matrix * ~textureMatrix;
-	}
-	catch (const std::domain_error &)
-	{
-		return Matrix4f ();
-	}
 }
 
 void

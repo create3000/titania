@@ -54,6 +54,7 @@
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
 #include "X3DTexture2DNodeEditor.h"
 #include "X3DTexture3DNodeEditor.h"
+#include "X3DEnvironmentTextureNodeEditor.h"
 #include "X3DTexturePropertiesEditor.h"
 
 namespace titania {
@@ -65,6 +66,7 @@ class X3DTextureNodeEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DTexture2DNodeEditor,
 	public X3DTexture3DNodeEditor,
+	public X3DEnvironmentTextureNodeEditor,
 	public X3DTexturePropertiesEditor
 {
 public:

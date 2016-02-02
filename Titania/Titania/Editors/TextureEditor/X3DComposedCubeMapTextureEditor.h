@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,56 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DCOMPOSED_CUBE_MAP_TEXTURE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DCOMPOSED_CUBE_MAP_TEXTURE_EDITOR_H__
 
-#include "../Texturing/X3DTextureNode.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
+
+#include <Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DEnvironmentTextureNode :
-	public X3DTextureNode
+class TexturePreview;
+
+class X3DComposedCubeMapTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
 
-	///  @name Member access
+	///  @name Destruction
 
 	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return loadState; }
-
-	virtual
-	size_t
-	getWidth () const  = 0;
-
-	virtual
-	size_t
-	getHeight () const = 0;
-
-	virtual
-	size_t
-	getComponents () const = 0;
+	~X3DComposedCubeMapTextureEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DEnvironmentTextureNode ();
+	X3DComposedCubeMapTextureEditor ();
+
+	///  @name Construction
 
 	void
-	setLoadState (const LoadState & value)
-	{ loadState = value; }
+	setComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	virtual
+	const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
+	getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
 
 private:
-	
-	SFEnum <LoadState> loadState;
+
+	void
+	set_texture (const std::shared_ptr <TexturePreview> &, const X3D::SFNode &);
+
+	///  @name Members
+
+	std::shared_ptr <TexturePreview>          frontPreview;
+	std::shared_ptr <TexturePreview>          backPreview;
+	std::shared_ptr <TexturePreview>          leftPreview;
+	std::shared_ptr <TexturePreview>          rightPreview;
+	std::shared_ptr <TexturePreview>          topPreview;
+	std::shared_ptr <TexturePreview>          bottomPreview;
+	X3D::X3DPtr <X3D::ComposedCubeMapTexture> cubeMapTexture;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

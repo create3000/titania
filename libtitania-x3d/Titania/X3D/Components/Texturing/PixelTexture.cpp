@@ -103,7 +103,6 @@ PixelTexture::update ()
 {
 	const size_t width      = image () .getWidth ();
 	const size_t height     = image () .getHeight ();
-	const size_t height_1   = height - 1;
 	const size_t components = image () .getComponents ();
 	auto &       array      = image () .getArray ();
 	const size_t size       = width * height;
@@ -135,7 +134,7 @@ PixelTexture::update ()
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * width;
+				const auto row = h * width;
 
 				for (size_t w = 0; w < width; ++ w)
 					pixels .emplace_back (array [row + w]);
@@ -157,7 +156,7 @@ PixelTexture::update ()
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * width;
+				const auto row = h * width;
 
 				for (size_t w = 0; w < width; ++ w)
 				{
@@ -185,7 +184,7 @@ PixelTexture::update ()
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * width;
+				const auto row = h * width;
 
 				for (size_t w = 0; w < width; ++ w)
 				{
@@ -211,7 +210,7 @@ PixelTexture::update ()
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * width;
+				const auto row = h * width;
 
 				for (size_t w = 0; w < width; ++ w)
 				{
@@ -262,14 +261,13 @@ throw (Error <INVALID_NODE>,
 	const auto   width      = texture2DNode -> getWidth ();
 	const auto   height     = texture2DNode -> getHeight ();
 	const auto   components = texture2DNode -> getComponents ();
-	const auto   height_1   = height - 1;
 	X3D::MFInt32 array;
 
 	switch (components)
 	{
 		case 1:
 		{
-			// Copy and flip image vertically.
+			// Copy image to array.
 
 			const auto stride    = 3;
 			const auto rowStride = width * stride;
@@ -284,7 +282,7 @@ throw (Error <INVALID_NODE>,
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * rowStride;
+				const auto row = h * rowStride;
 
 				for (size_t w = 0; w < rowStride; w += stride)
 				{
@@ -298,7 +296,7 @@ throw (Error <INVALID_NODE>,
 		}
 		case 2:
 		{
-			// Copy and flip image vertically.
+			// Copy image to array.
 
 			const auto stride    = 4;
 			const auto rowStride = width * stride;
@@ -313,7 +311,7 @@ throw (Error <INVALID_NODE>,
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * rowStride;
+				const auto row = h * rowStride;
 
 				for (size_t w = 0; w < rowStride; w += stride)
 				{
@@ -331,7 +329,7 @@ throw (Error <INVALID_NODE>,
 		}
 		case 3:
 		{
-			// Copy and flip image vertically.
+			// Copy image to array.
 
 			const auto stride    = components;
 			const auto rowStride = width * stride;
@@ -346,7 +344,7 @@ throw (Error <INVALID_NODE>,
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * rowStride;
+				const auto row = h * rowStride;
 
 				for (size_t w = 0; w < rowStride; w += stride)
 				{
@@ -364,7 +362,7 @@ throw (Error <INVALID_NODE>,
 		}
 		case 4:
 		{
-			// Copy and flip image vertically.
+			// Copy image to array.
 
 			const auto stride    = components;
 			const auto rowStride = width * stride;
@@ -379,7 +377,7 @@ throw (Error <INVALID_NODE>,
 
 			for (size_t h = 0; h < height; ++ h)
 			{
-				const auto row = (height_1 - h) * rowStride;
+				const auto row = h * rowStride;
 
 				for (size_t w = 0; w < rowStride; w += stride)
 				{

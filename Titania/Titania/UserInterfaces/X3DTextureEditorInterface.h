@@ -389,6 +389,14 @@ public:
 	getMovieTextureURLReloadButton () const
 	{ return *m_MovieTextureURLReloadButton; }
 
+	Gtk::CheckButton &
+	getMovieTextureEnabledCheckButton () const
+	{ return *m_MovieTextureEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getMovieTextureLoopCheckButton () const
+	{ return *m_MovieTextureLoopCheckButton; }
+
 	Gtk::Box &
 	getComposedTexture3DBox () const
 	{ return *m_ComposedTexture3DBox; }
@@ -424,6 +432,62 @@ public:
 	Gtk::Box &
 	getPixelTexture3DBox () const
 	{ return *m_PixelTexture3DBox; }
+
+	Gtk::Notebook &
+	getEnvironmentTextureNotebook () const
+	{ return *m_EnvironmentTextureNotebook; }
+
+	Gtk::Grid &
+	getComposedCubeMapTextureBox () const
+	{ return *m_ComposedCubeMapTextureBox; }
+
+	Gtk::Label &
+	getComposedCubeMapFrontTextureFormatLabel () const
+	{ return *m_ComposedCubeMapFrontTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapFrontTexturePreviewBox () const
+	{ return *m_ComposedCubeMapFrontTexturePreviewBox; }
+
+	Gtk::Label &
+	getComposedCubeMapBackTextureFormatLabel () const
+	{ return *m_ComposedCubeMapBackTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapBackTexturePreviewBox () const
+	{ return *m_ComposedCubeMapBackTexturePreviewBox; }
+
+	Gtk::Label &
+	getComposedCubeMapLeftTextureFormatLabel () const
+	{ return *m_ComposedCubeMapLeftTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapLeftTexturePreviewBox () const
+	{ return *m_ComposedCubeMapLeftTexturePreviewBox; }
+
+	Gtk::Label &
+	getComposedCubeMapRightTextureFormatLabel () const
+	{ return *m_ComposedCubeMapRightTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapRightTexturePreviewBox () const
+	{ return *m_ComposedCubeMapRightTexturePreviewBox; }
+
+	Gtk::Label &
+	getComposedCubeMapTopTextureFormatLabel () const
+	{ return *m_ComposedCubeMapTopTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapTopTexturePreviewBox () const
+	{ return *m_ComposedCubeMapTopTexturePreviewBox; }
+
+	Gtk::Label &
+	getComposedCubeMapBottomTextureFormatLabel () const
+	{ return *m_ComposedCubeMapBottomTextureFormatLabel; }
+
+	Gtk::Box &
+	getComposedCubeMapBottomTexturePreviewBox () const
+	{ return *m_ComposedCubeMapBottomTexturePreviewBox; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -837,6 +901,8 @@ private:
 	Gtk::Button*                           m_MovieTextureURLAddButton;
 	Gtk::Button*                           m_MovieTextureURLRemoveButton;
 	Gtk::Button*                           m_MovieTextureURLReloadButton;
+	Gtk::CheckButton*                      m_MovieTextureEnabledCheckButton;
+	Gtk::CheckButton*                      m_MovieTextureLoopCheckButton;
 	Gtk::Box*                              m_ComposedTexture3DBox;
 	Gtk::Box*                              m_ImageTexture3DBox;
 	Gtk::Box*                              m_ImageTexture3DURLBox;
@@ -846,6 +912,20 @@ private:
 	Gtk::Button*                           m_ImageTexture3DEmbedButton;
 	Gtk::Button*                           m_ImageTexture3DURLReloadButton;
 	Gtk::Box*                              m_PixelTexture3DBox;
+	Gtk::Notebook*                         m_EnvironmentTextureNotebook;
+	Gtk::Grid*                             m_ComposedCubeMapTextureBox;
+	Gtk::Label*                            m_ComposedCubeMapFrontTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapFrontTexturePreviewBox;
+	Gtk::Label*                            m_ComposedCubeMapBackTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapBackTexturePreviewBox;
+	Gtk::Label*                            m_ComposedCubeMapLeftTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapLeftTexturePreviewBox;
+	Gtk::Label*                            m_ComposedCubeMapRightTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapRightTexturePreviewBox;
+	Gtk::Label*                            m_ComposedCubeMapTopTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapTopTexturePreviewBox;
+	Gtk::Label*                            m_ComposedCubeMapBottomTextureFormatLabel;
+	Gtk::Box*                              m_ComposedCubeMapBottomTexturePreviewBox;
 	Gtk::Grid*                             m_Texture2DBox;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;

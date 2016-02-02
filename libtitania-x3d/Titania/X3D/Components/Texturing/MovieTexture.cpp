@@ -65,7 +65,8 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DTexture2DNode (),
 	X3DSoundSourceNode (),
-	      X3DUrlObject ()
+	      X3DUrlObject (),
+	             image ()
 {
 	addType (X3DConstants::MovieTexture);
 
@@ -188,10 +189,25 @@ MovieTexture::prepareEvents ()
 
 	if (buffer)
 	{
-		updateImage (getVideoSink () -> get_width (),
-		             getVideoSink () -> get_height (),
-		             GL_BGRA,
-		             GST_BUFFER_DATA (buffer));
+		const auto width  = getVideoSink () -> get_width ();
+		const auto height = getVideoSink () -> get_height ();
+		const auto data   = static_cast <uint8_t*> (GST_BUFFER_DATA (buffer));
+
+		// Flip image vertically
+
+		image .assign (data, data + width * height * 4);
+
+		for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
+		{
+			for (size_t c = 0, width4 = width * 4; c < width4; ++ c)
+			{
+				std::swap (image [r * width4 + c], image [(height - 1 - r) * width4 + c]);
+			}
+		}
+
+		// Transfer texture
+
+		updateImage (width, height, GL_BGRA, image .data ());
 
 		gst_buffer_unref (buffer);
 	}	

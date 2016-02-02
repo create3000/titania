@@ -52,6 +52,7 @@
 #define __TITANIA_TEXTURE_EDITOR_X3DMOVIE_TEXTURE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../../ComposedWidgets.h"
 
 #include <Titania/X3D/Components/Texturing/MovieTexture.h>
 
@@ -91,6 +92,8 @@ private:
 
 	///  @name Members
 
+	X3DFieldToggleButton <X3D::SFBool>  enabled;
+	X3DFieldToggleButton <X3D::SFBool>  loop;
 	std::unique_ptr <MFStringURLWidget> url;
 	X3D::X3DPtr <X3D::MovieTexture>     movieTexture;
 

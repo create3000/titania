@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,56 +48,69 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
-
-#include "../Texturing/X3DTextureNode.h"
+#include "X3DEnvironmentTextureNodeEditor.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DEnvironmentTextureNode :
-	public X3DTextureNode
+X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
+	               X3DBaseInterface (),
+	      X3DTextureEditorInterface (),
+	X3DComposedCubeMapTextureEditor (),
+	         environmentTextureNode ()
+{ }
+
+void
+X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-public:
+	setComposedCubeMapTexture (value);
 
-	///  @name Member access
+	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (value), value);
+}
 
-	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return loadState; }
+const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
+X3DEnvironmentTextureNodeEditor::getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DComposedCubeMapTextureEditor::getComposedCubeMapTexture (value);
 
-	virtual
-	size_t
-	getWidth () const  = 0;
+	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (texture), value);
 
-	virtual
-	size_t
-	getHeight () const = 0;
+	return texture;
+}
 
-	virtual
-	size_t
-	getComponents () const = 0;
+void
+X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> & texture, 
+                                                            const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	getEnvironmentTextureNotebook () .set_visible (texture);
 
+	environmentTextureNode = texture;
 
-protected:
+	if (environmentTextureNode == value)
+		return;
 
-	///  @name Construction
+//	for (const auto & type : value -> getType ())
+//	{
+//		switch (type)
+//		{
+//			case X3D::X3DConstants::X3DTexture3DNode :
+//				{
+//					const X3D::X3DPtr <X3D::X3DTexture3DNode> last (value);
+//
+//					texture3DNode -> repeatS ()           = last -> repeatS ();
+//					texture3DNode -> repeatT ()           = last -> repeatT ();
+//					texture3DNode -> repeatR ()           = last -> repeatR ();
+//					texture3DNode -> textureProperties () = last -> textureProperties ();
+//					break;
+//				}
+//			default:
+//				break;
+//		}
+//	}
+}
 
-	X3DEnvironmentTextureNode ();
+X3DEnvironmentTextureNodeEditor::~X3DEnvironmentTextureNodeEditor ()
+{ }
 
-	void
-	setLoadState (const LoadState & value)
-	{ loadState = value; }
-
-private:
-	
-	SFEnum <LoadState> loadState;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

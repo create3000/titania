@@ -58,17 +58,18 @@ namespace titania {
 namespace puck {
 
 X3DTextureNodeEditor::X3DTextureNodeEditor () :
-	          X3DBaseInterface (),
-	 X3DTextureEditorInterface (),
-	    X3DTexture2DNodeEditor (),
-	    X3DTexture3DNodeEditor (),
-	X3DTexturePropertiesEditor (),
-	                   preview (new TexturePreview (this, getPreviewBox (), getTextureFormatLabel ())),
-	               appearances (),
-	             textureBuffer (),
-	               textureNode (),
-	                  undoStep (),
-	                  changing (false)
+	               X3DBaseInterface (),
+	      X3DTextureEditorInterface (),
+	         X3DTexture2DNodeEditor (),
+	         X3DTexture3DNodeEditor (),
+	X3DEnvironmentTextureNodeEditor (),
+	     X3DTexturePropertiesEditor (),
+	                        preview (new TexturePreview (this, getPreviewBox (), getTextureFormatLabel ())),
+	                    appearances (),
+	                  textureBuffer (),
+	                    textureNode (),
+	                       undoStep (),
+	                       changing (false)
 {
 	addChildren (textureBuffer, textureNode);
 	textureBuffer .addInterest (this, &X3DTextureNodeEditor::set_node);
@@ -140,6 +141,9 @@ X3DTextureNodeEditor::on_texture_changed ()
 			case 6:
 				textureNode = getPixelTexture3D (textureNode);
 				break;
+			case 7:
+				textureNode = getComposedCubeMapTexture (textureNode);
+				break;
 			default:
 				break;
 		}
@@ -200,9 +204,10 @@ X3DTextureNodeEditor::set_node ()
 		IMAGE_TEXTURE,
 		PIXEL_TEXTURE,
 		MOVIE_TEXTURE,
-		COMPOSED_TEXTURE3D,
-		IMAGE_TEXTURE3D,
-		PIXEL_TEXTURE3D
+		COMPOSED_TEXTURE_3D,
+		IMAGE_TEXTURE_3D,
+		PIXEL_TEXTURE_3D,
+		COMPOSED_CUBE_MAP_TEXTURE
 	};
 
 	auto       tuple     = getSelection <X3D::X3DTextureNode> (appearances, "texture");
@@ -212,8 +217,9 @@ X3DTextureNodeEditor::set_node ()
 
 	textureNode = std::move (std::get <0> (tuple));
 
-	setTexture2DNode (textureNode);
-	setTexture3DNode (textureNode);
+	setTexture2DNode          (textureNode);
+	setTexture3DNode          (textureNode);
+	setEnvironmentTextureNode (textureNode);
 
 	if (not textureNode)
 		textureNode = getImageTexture (textureNode);
@@ -234,13 +240,16 @@ X3DTextureNodeEditor::set_node ()
 				getTextureComboBoxText () .set_active (MOVIE_TEXTURE);
 				break;
 			case X3D::X3DConstants::ComposedTexture3D:
-				getTextureComboBoxText () .set_active (COMPOSED_TEXTURE3D);
+				getTextureComboBoxText () .set_active (COMPOSED_TEXTURE_3D);
 				break;
 			case X3D::X3DConstants::ImageTexture3D:
-				getTextureComboBoxText () .set_active (IMAGE_TEXTURE3D);
+				getTextureComboBoxText () .set_active (IMAGE_TEXTURE_3D);
 				break;
 			case X3D::X3DConstants::PixelTexture3D:
-				getTextureComboBoxText () .set_active (PIXEL_TEXTURE3D);
+				getTextureComboBoxText () .set_active (PIXEL_TEXTURE_3D);
+				break;
+			case X3D::X3DConstants::ComposedCubeMapTexture:
+				getTextureComboBoxText () .set_active (COMPOSED_CUBE_MAP_TEXTURE);
 				break;
 			default:
 				getTextureComboBoxText () .set_active (-1);

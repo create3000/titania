@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,56 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CUBE_MAP_TEXTURING_X3DENVIRONMENT_TEXTURE_NODE_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DENVIRONMENT_TEXTURE_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DENVIRONMENT_TEXTURE_NODE_EDITOR_H__
 
-#include "../Texturing/X3DTextureNode.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
+
+#include "X3DComposedCubeMapTextureEditor.h"
+
+#include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class X3DEnvironmentTextureNode :
-	public X3DTextureNode
+class X3DEnvironmentTextureNodeEditor :
+	virtual public X3DTextureEditorInterface,
+	public X3DComposedCubeMapTextureEditor
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return loadState; }
-
-	virtual
-	size_t
-	getWidth () const  = 0;
-
-	virtual
-	size_t
-	getHeight () const = 0;
-
-	virtual
-	size_t
-	getComponents () const = 0;
+	~X3DEnvironmentTextureNodeEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DEnvironmentTextureNode ();
+	X3DEnvironmentTextureNodeEditor ();
+
+	///  @name Member access
 
 	void
-	setLoadState (const LoadState & value)
-	{ loadState = value; }
+	setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	virtual
+	const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
+	getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+
+
+protected:
 
 private:
-	
-	SFEnum <LoadState> loadState;
+
+	///  @name Construction
+
+	void
+	setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	///  @name Members
+
+	X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> environmentTextureNode;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

@@ -55,7 +55,7 @@ namespace X3D {
 
 X3DEnvironmentTextureNode::X3DEnvironmentTextureNode () :
 	X3DTextureNode (),
-	     loadState (COMPLETE_STATE)
+	     loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::X3DEnvironmentTextureNode);
 	

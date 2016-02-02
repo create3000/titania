@@ -114,6 +114,7 @@ Texture3DLoader::loadAsync (const MFString & url,
 
 			checkForInterrupt ();
 
+			texture -> setFlipY (true);
 			texture -> process (minTextureSize, maxTextureSize);
 
 			checkForInterrupt ();

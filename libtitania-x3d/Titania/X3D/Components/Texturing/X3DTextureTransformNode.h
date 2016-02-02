@@ -62,9 +62,10 @@ class X3DTextureTransformNode :
 public:
 
 	///  @name Member access
-
+	
 	Matrix4f
-	getMatrix () const;
+	getMatrix () const
+	{ return matrix; }
 
 	///  @name Operations
 
@@ -86,14 +87,11 @@ protected:
 	///  @name Member access
 
 	void
-	setMatrix (const Matrix4f &);
+	setMatrix (const Matrix4f & value)
+	{ matrix = value; }
 
 
 private:
-
-	///  @name Static members
-
-	static const Matrix4f textureMatrix;
 
 	///  @name Members
 

@@ -113,6 +113,21 @@ public:
 	isTransparent () const
 	{ return false; }
 
+	virtual
+	size_t
+	getWidth () const final override
+	{ return 0; }
+
+	virtual
+	size_t
+	getHeight () const final override
+	{ return 0; }
+
+	virtual
+	size_t
+	getComponents () const final override
+	{ return 0; }
+
 	///  @name Operations
 
 	virtual

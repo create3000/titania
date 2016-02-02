@@ -90,7 +90,7 @@ X3DImageTextureEditor::setImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 const X3D::X3DPtr <X3D::ImageTexture> &
 X3DImageTextureEditor::getImageTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getImageTextureBox () .set_visible (value);
+	getImageTextureBox () .set_visible (true);
 
 	if (value)
 	{

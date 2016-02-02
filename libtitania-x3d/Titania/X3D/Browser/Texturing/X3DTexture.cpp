@@ -58,6 +58,7 @@ namespace X3D {
 
 X3DTexture::X3DTexture (MagickImageArrayPtr && images) :
 	      images (std::move (images)),
+	       flipY (false),
 	      format (GL_RGB),
 	       width (this -> images -> front () .size () .width ()),
 	      height (this -> images -> front () .size () .height ()),
@@ -82,15 +83,15 @@ X3DTexture::readImages (const std::string & data)
 void
 X3DTexture::refineImageFormats ()
 {
-	Magick::Image & image = images -> front ();
+	Magick::Image & first = images -> front ();
 
-	switch (image .type ())
+	switch (first .type ())
 	{
 		case Magick::GrayscaleType:
 		{
-			if (not image .matte ())
+			if (not first .matte ())
 			{
-				image .magick ("GRAY");
+				first .magick ("GRAY");
 				format     = GL_LUMINANCE;
 				components = 1;
 				break;
@@ -100,17 +101,17 @@ X3DTexture::refineImageFormats ()
 		}
 		case Magick::GrayscaleMatteType:
 		{
-			image .type (Magick::TrueColorMatteType);
-			image .magick ("RGBA");
+			first .type (Magick::TrueColorMatteType);
+			first .magick ("RGBA");
 			format     = GL_RGBA;
 			components = 2;
 			break;
 		}
 		case Magick::TrueColorType:
 		{
-			if (not image .matte ())
+			if (not first .matte ())
 			{
-				image .magick ("RGB");
+				first .magick ("RGB");
 				format     = GL_RGB;
 				components = 3;
 				break;
@@ -120,21 +121,21 @@ X3DTexture::refineImageFormats ()
 		}
 		case Magick::TrueColorMatteType:
 		{
-			image .magick ("RGBA");
+			first .magick ("RGBA");
 			format     = GL_RGBA;
 			components = 4;
 			break;
 		}
 		case Magick::BilevelType: // Does not work
 		{
-			if (image .matte ())
+			if (first .matte ())
 			{
-				image .type (Magick::GrayscaleMatteType);
+				first .type (Magick::GrayscaleMatteType);
 				refineImageFormats ();
 				return;
 			}
 			
-			image .type (Magick::GrayscaleType);
+			first .type (Magick::GrayscaleType);
 			refineImageFormats ();
 			return;
 		}
@@ -146,22 +147,22 @@ X3DTexture::refineImageFormats ()
 		case Magick::OptimizeType:
 		default:
 		{
-			if (image .matte ())
+			if (first .matte ())
 			{
-				image .type (Magick::TrueColorMatteType);
+				first .type (Magick::TrueColorMatteType);
 				refineImageFormats ();
 				return;
 			}
 
-			image .type (Magick::TrueColorType);
+			first .type (Magick::TrueColorType);
 			refineImageFormats ();
 			return;
 		}
 	}
 
-	for (Magick::Image & next : std::make_pair (++ images -> begin (), images -> end ()))
+	for (auto & image : std::make_pair (++ images -> begin (), images -> end ()))
 	{
-		next .magick (image .magick ());
+		image .magick (first .magick ());
 	}
 }
 
@@ -170,6 +171,7 @@ X3DTexture::process (const size_type minTextureSize, const size_type maxTextureS
 {
 	refineImageFormats ();
 
+	flip ();
 	tryScaleImages (minTextureSize, maxTextureSize);
 
 	writeImages ();
@@ -177,6 +179,16 @@ X3DTexture::process (const size_type minTextureSize, const size_type maxTextureS
 	setTransparency ();
 
 	images .reset ();
+}
+
+void
+X3DTexture::flip ()
+{
+	if (flipY)
+	{
+		for (auto & image : *images)
+			image .flip ();
+	}
 }
 
 void

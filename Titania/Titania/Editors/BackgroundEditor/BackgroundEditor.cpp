@@ -85,11 +85,11 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              "groundColor"),
 	                 groundAngle (this, getGroundAngleAdjustment (), getGroundAngleSpinButton (), "groundAngle"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
-	                frontPreview (new TexturePreview (this, getFrontTexturePreviewBox (), getFrontTextureFormatLabel ())),
-	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (), getBackTextureFormatLabel ())),
-	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (), getLeftTextureFormatLabel ())),
-	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (), getRightTextureFormatLabel ())),
-	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (), getTopTextureFormatLabel ())),
+	                frontPreview (new TexturePreview (this, getFrontTexturePreviewBox (),  getFrontTextureFormatLabel ())),
+	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (),   getBackTextureFormatLabel ())),
+	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (),   getLeftTextureFormatLabel ())),
+	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (),  getRightTextureFormatLabel ())),
+	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (),    getTopTextureFormatLabel ())),
 	               bottomPreview (new TexturePreview (this, getBottomTexturePreviewBox (), getBottomTextureFormatLabel ())),
 	              backgroundNode (),
 	                    changing (false)
@@ -191,8 +191,6 @@ BackgroundEditor::set_selection (const X3D::MFNode & selection)
 void
 BackgroundEditor::set_texture (const std::shared_ptr <TexturePreview> & preview, const X3D::X3DPtr <X3D::X3DTextureNode> & texture)
 {
-__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
-
 	preview -> setTexture (texture);
 }
 

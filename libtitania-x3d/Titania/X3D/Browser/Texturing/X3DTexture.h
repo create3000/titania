@@ -72,6 +72,10 @@ public:
 
 	///  @name Member access
 
+	void
+	setFlipY (const bool value)
+	{ flipY = value; }
+
 	GLenum
 	getFormat ()
 	{ return format; }
@@ -145,6 +149,9 @@ private:
 	refineImageFormats ();
 
 	void
+	flip ();
+
+	void
 	tryScaleImages (const size_type, const size_type);
 
 	void
@@ -160,6 +167,7 @@ private:
 
 	MagickImageArrayPtr images;
 
+	bool         flipY;
 	GLenum       format;
 	size_type    width;
 	size_type    height;

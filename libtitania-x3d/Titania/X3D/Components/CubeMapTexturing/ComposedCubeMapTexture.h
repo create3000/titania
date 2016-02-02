@@ -147,6 +147,21 @@ public:
 	{ return transparent; }
 
 	virtual
+	size_t
+	getWidth () const final override
+	{ return width; }
+
+	virtual
+	size_t
+	getHeight () const final override
+	{ return height; }
+
+	virtual
+	size_t
+	getComponents () const final override
+	{ return components; }
+
+	virtual
 	void
 	draw () final override;
 
@@ -193,6 +208,8 @@ private:
 
 	MFNode nodes;
 	bool   transparent;
+	size_t width;
+	size_t height;
 	size_t components;
 
 };

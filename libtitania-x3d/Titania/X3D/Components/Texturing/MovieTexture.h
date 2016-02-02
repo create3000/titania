@@ -158,6 +158,9 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
+	///  @name Members
+
+	std::vector <uint8_t> image;
 
 };
 

@@ -57,6 +57,7 @@
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
+#include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
 
 namespace titania {
 namespace puck {
@@ -187,6 +188,31 @@ TexturePreview::set_loadState ()
 		                 std::to_string (texture3DNode -> getImageHeight ()) +
 		                 " × " +
 		                 std::to_string (texture3DNode -> getDepth ()) +
+		                 " (" +
+		                 components +
+		                 ")");
+	}
+
+	const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> environmentTexture (textureNode);
+
+	if (environmentTexture)
+	{
+		std::string components;
+	
+		switch (environmentTexture -> getComponents ())
+		{
+			case 1: components = _ ("GRAY");       break;
+			case 2: components = _ ("GRAY ALPHA"); break;
+			case 3: components = _ ("RGB");        break;
+			case 4: components = _ ("RGBA");       break;
+			default:
+				break;
+		}
+
+		label .set_text (std::to_string (environmentTexture -> getWidth ()) +
+		                 " × " +
+		                 std::to_string (environmentTexture -> getHeight ()) +
+		                 " × 6 " +
 		                 " (" +
 		                 components +
 		                 ")");

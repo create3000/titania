@@ -58,6 +58,8 @@ namespace puck {
 X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
+	                 enabled (this, getMovieTextureEnabledCheckButton (), "enabled"),
+	                    loop (this, getMovieTextureLoopCheckButton (), "loop"),
 	                     url (new MFStringURLWidget (this,
 	                          getMovieTextureURLTreeView (),
 	                          getMovieTextureURLCellRendererText (),
@@ -83,13 +85,18 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		getCurrentContext () -> realize ();
 	}
 
-	url -> setNodes ({ movieTexture });
+	X3D::MFNode nodes = { movieTexture };
+
+	enabled .setNodes (nodes);
+	loop    .setNodes (nodes);
+
+	url -> setNodes (nodes);
 }
 
 const X3D::X3DPtr <X3D::MovieTexture> &
 X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getMovieTextureBox () .set_visible (value);
+	getMovieTextureBox () .set_visible (true);
 
 	if (value)
 	{
