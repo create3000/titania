@@ -148,25 +148,30 @@ MovieTexture::requestImmediateLoad ()
 		
 		// We use the c versions of this functions here because get_last_buffer has a memory leak.
 
-		GstBuffer* buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
+		GstBuffer* const buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
 
 		if (buffer)
 		{
+			const auto width  = getVideoSink () -> get_width ();
+			const auto height = getVideoSink () -> get_height ();
+			const auto data   = static_cast <uint8_t*> (GST_BUFFER_DATA (buffer));
+
 			duration_changed () = getDuration ();
 
 			setImage (GL_RGB, false, 3, 
 			          getVideoSink () -> get_width (),
 			          getVideoSink () -> get_height (),
 			          GL_BGRA,
-			          GST_BUFFER_DATA (buffer));
+			          flip (width, height, data) .data ());
 
 			gst_buffer_unref (buffer);
 
 			setLoadState (COMPLETE_STATE);
-
 			break;
 		}
 	}
+
+	set_loop ();
 
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
@@ -185,7 +190,7 @@ MovieTexture::prepareEvents ()
 
 	// We use the c versions of this functions here because get_last_buffer has a memory leak.
 
-	GstBuffer* buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
+	GstBuffer* const buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
 
 	if (buffer)
 	{
@@ -193,24 +198,9 @@ MovieTexture::prepareEvents ()
 		const auto height = getVideoSink () -> get_height ();
 		const auto data   = static_cast <uint8_t*> (GST_BUFFER_DATA (buffer));
 
-		// Flip image vertically
-
-		const size_t width4   = width * 4;
-		const size_t height_1 = height - 1;
-
-		image .assign (data, data + width4 * height);
-
-		for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
-		{
-			for (size_t c = 0; c < width4; ++ c)
-			{
-				std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
-			}
-		}
-
 		// Transfer texture
 
-		updateImage (width, height, GL_BGRA, image .data ());
+		updateImage (width, height, GL_BGRA, flip (width, height, data) .data ());
 
 		gst_buffer_unref (buffer);
 	}	
@@ -233,6 +223,27 @@ MovieTexture::update ()
 		else
 			do_stop ();
 	}
+}
+
+const std::vector <uint8_t> &
+MovieTexture::flip (const size_t width, const size_t height, const uint8_t* data)
+{
+	// Flip image vertically
+
+	const size_t width4   = width * 4;
+	const size_t height_1 = height - 1;
+
+	image .assign (data, data + width4 * height);
+
+	for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
+	{
+		for (size_t c = 0; c < width4; ++ c)
+		{
+			std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
+		}
+	}
+	
+	return image;
 }
 
 void

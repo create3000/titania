@@ -110,7 +110,7 @@ X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DPtr <X
 const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
 X3DComposedCubeMapTextureEditor::getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getComposedCubeMapTextureBox () .set_visible (true);
+	getComposedCubeMapTextureBox () .set_visible (value);
 
 	if (value)
 	{

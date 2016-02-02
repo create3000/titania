@@ -1,4 +1,151 @@
-#VRML V2.0 utf8 Titania V0.7.5
+#VRML V2.0 utf8 Titania V1.2.2
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 1 1 1
+                emissiveColor 1 1 1
+              }
+              texture MultiTexture {
+                mode [
+                  "SELECTARG1",
+                  "SELECTARG1",
+                  "MODULATE"
+                ]
+                source ""
+                function [
+                  "COMPLEMENT",
+                  "ALPHAREPLICATE",
+                  ""
+                ]
+                texture [
+                  DEF _2 ImageTexture {
+                    url "../images/image.png"
+                  }
+                  DEF _3 MovieTexture {
+                    url "../../../../Library/Examples/Vattenfall/stage/film6.mpv"
+                    loop TRUE
+                  }
+                  DEF _4 ImageTexture {
+                    url "../images/lena.jpg"
+                  }
+                ]
+              }
+              textureTransform MultiTextureTransform { }
+            }
+            geometry IndexedFaceSet {
+              solid FALSE
+              colorIndex [
+                0,
+                1,
+                2,
+                3,
+                -1
+              ]
+              texCoordIndex [
+                0,
+                1,
+                2,
+                3,
+                -1
+              ]
+              coordIndex [
+                0,
+                1,
+                2,
+                3,
+                -1
+              ]
+              texCoord MultiTextureCoordinate {
+                texCoord [
+                  TextureCoordinate {
+                    point [
+                      0 0,
+                      2 0,
+                      2 2,
+                      0 2
+                    ]
+                  }
+                  TextureCoordinate {
+                    point [
+                      0 0,
+                      1 0,
+                      1 1,
+                      0 1
+                    ]
+                  }
+                ]
+              }
+              coord Coordinate {
+                point [
+                  -1 -1 0,
+                  1 -1 0,
+                  1 1 0,
+                  -1 1 0
+                ]
+              }
+            }
+          }
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              3.04796361923218,
+              0.899199843406677,
+              1.85423898696899
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.71410083770752,
+              0.696352422237396,
+              -0.0717861279845238,
+              0.480825781822205
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              1.93312418460846,
+              -0.20451894402504,
+              -1.16232311725616
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "MultiTexture"
+}
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -23,89 +170,7 @@ DEF Rectangle2D Transform {
 }
 
 DEF MultiTexture Transform {
-  children Shape {
-    appearance Appearance {
-      material Material {
-        diffuseColor 1 1 1
-        emissiveColor 1 1 1
-      }
-      texture MultiTexture {
-        mode [
-          "SELECTARG1",
-          "SELECTARG1",
-          "MODULATE"
-        ]
-        function [
-          "COMPLEMENT",
-          "ALPHAREPLICATE",
-          ""
-        ]
-        texture [
-          ImageTexture {
-            url "../images/image.png"
-          }
-          MovieTexture {
-            url "../../Examples/Vattenfall/stage/film6.mpv"
-            loop TRUE
-          }
-          DEF _1 ImageTexture {
-            url "../images/lena.jpg"
-          }
-        ]
-      }
-      textureTransform MultiTextureTransform { }
-    }
-    geometry IndexedFaceSet {
-      solid FALSE
-      texCoordIndex [
-        0,
-        1,
-        2,
-        3,
-        -1
-      ]
-      colorIndex [
-        0,
-        1,
-        2,
-        3,
-        -1
-      ]
-      coordIndex [
-        0,
-        1,
-        2,
-        3,
-        -1
-      ]
-      texCoord MultiTextureCoordinate {
-        texCoord [
-          TextureCoordinate {
-            point [
-              0 0,
-              2 0,
-              2 2,
-              0 2
-            ]
-          }
-          DEF _2 TextureCoordinate {
-            point [
-              0 0,
-              1 0,
-              1 1,
-              0 1
-            ]
-          }
-        ]
-      }
-      coord DEF _3 Coordinate {
-        point [
-          -1 -1 0,
-          1 -1 0,
-          1 1 0,
-          -1 1 0
-        ]
-      }
-    }
-  }
+  children USE _1
 }
+
+NavigationInfo { }

@@ -87,7 +87,7 @@ X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 const X3D::X3DPtr <X3D::PixelTexture> &
 X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getPixelTextureBox () .set_visible (true);
+	getPixelTextureBox () .set_visible (value);
 
 	if (value)
 	{

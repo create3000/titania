@@ -147,6 +147,8 @@ AudioClip::requestImmediateLoad ()
 		break;
 	}
 
+	set_loop ();
+
 	if (checkLoadState () not_eq COMPLETE_STATE)
 	{
 		duration_changed () = -1;

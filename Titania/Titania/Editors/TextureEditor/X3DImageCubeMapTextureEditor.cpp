@@ -96,7 +96,7 @@ X3DImageCubeMapTextureEditor::setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3
 const X3D::X3DPtr <X3D::ImageCubeMapTexture> &
 X3DImageCubeMapTextureEditor::getImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getImageCubeMapTextureBox () .set_visible (true);
+	getImageCubeMapTextureBox () .set_visible (value);
 
 	if (value)
 	{

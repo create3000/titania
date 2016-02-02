@@ -68,6 +68,9 @@ public:
 	{ return name; }
 
 	void
+	setDefaultValue (const std::string &, const std::string &);
+
+	void
 	setNodes (const X3D::MFNode &);
 
 	const X3D::MFNode &
@@ -188,7 +191,8 @@ private:
 	Gtk::Button &                              removeButton;
 	X3D::MFNode                                nodes;
 	const std::string                          name;
-	const Glib::ustring                        defaultValue;
+	Glib::ustring                              displayValue;
+	Glib::ustring                              defaultValue;
 	X3D::MFString                              string;
 	X3D::UndoStepPtr                           undoStep;
 	X3D::SFTime                                buffer;

@@ -108,6 +108,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
+	Titania/Editors/TextureEditor/X3DMultiTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DPixelTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DPixelTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTexture2DNodeEditor.cpp \

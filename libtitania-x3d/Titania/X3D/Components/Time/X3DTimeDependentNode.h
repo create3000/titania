@@ -189,6 +189,9 @@ protected:
 	void
 	prepareEvents () = 0;
 
+	void
+	set_loop ();
+
 	virtual
 	void
 	set_start () = 0;
@@ -235,9 +238,6 @@ private:
 
 	void
 	set_enabled ();
-
-	void
-	set_loop ();
 
 	void
 	set_startTime ();

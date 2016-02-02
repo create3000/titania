@@ -90,6 +90,26 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getMultiTextureAlphaAdjustment () const
+	{ return m_MultiTextureAlphaAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getMultiTextureColorAdjustment () const
+	{ return m_MultiTextureColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getMultiTextureFunctionListStore () const
+	{ return m_MultiTextureFunctionListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getMultiTextureModeListStore () const
+	{ return m_MultiTextureModeListStore; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getMultiTextureSourceListStore () const
+	{ return m_MultiTextureSourceListStore; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getTexturePropertiesAnisotropicDegreeAdjustment () const
 	{ return m_TexturePropertiesAnisotropicDegreeAdjustment; }
 
@@ -249,6 +269,18 @@ public:
 	getTextureTransformTranslationYAdjustment () const
 	{ return m_TextureTransformTranslationYAdjustment; }
 
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getMultiTextureModeCellRendererCombo () const
+	{ return m_MultiTextureModeCellRendererCombo; }
+
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getMultiTextureSourceCellRendererCombo () const
+	{ return m_MultiTextureSourceCellRendererCombo; }
+
+	const Glib::RefPtr <Gtk::CellRendererCombo> &
+	getMultiTextureFunctionCellRendererCombo () const
+	{ return m_MultiTextureFunctionCellRendererCombo; }
+
 	const Glib::RefPtr <Gtk::CellRendererText> &
 	getImageTextureURLCellRendererText () const
 	{ return m_ImageTextureURLCellRendererText; }
@@ -348,6 +380,78 @@ public:
 	Gtk::Label &
 	getTextureLabel () const
 	{ return *m_TextureLabel; }
+
+	Gtk::Box &
+	getMultiTextureBox () const
+	{ return *m_MultiTextureBox; }
+
+	Gtk::Box &
+	getMultiTextureColorBox () const
+	{ return *m_MultiTextureColorBox; }
+
+	Gtk::Button &
+	getMultiTextureColorButton () const
+	{ return *m_MultiTextureColorButton; }
+
+	Gtk::Scale &
+	getMultiTextureColorScale () const
+	{ return *m_MultiTextureColorScale; }
+
+	Gtk::Box &
+	getMultiTextureAlphaBox () const
+	{ return *m_MultiTextureAlphaBox; }
+
+	Gtk::Scale &
+	getMultiTextureAlphaScale () const
+	{ return *m_MultiTextureAlphaScale; }
+
+	Gtk::Box &
+	getMultiTextureModeBox () const
+	{ return *m_MultiTextureModeBox; }
+
+	Gtk::TreeView &
+	getMultiTextureModeTreeView () const
+	{ return *m_MultiTextureModeTreeView; }
+
+	Gtk::Button &
+	getMultiTextureModeAddButton () const
+	{ return *m_MultiTextureModeAddButton; }
+
+	Gtk::Button &
+	getMultiTextureModeRemoveButton () const
+	{ return *m_MultiTextureModeRemoveButton; }
+
+	Gtk::Box &
+	getMultiTextureSourceBox () const
+	{ return *m_MultiTextureSourceBox; }
+
+	Gtk::TreeView &
+	getMultiTextureSourceTreeView () const
+	{ return *m_MultiTextureSourceTreeView; }
+
+	Gtk::Button &
+	getMultiTextureSourceAddButton () const
+	{ return *m_MultiTextureSourceAddButton; }
+
+	Gtk::Button &
+	getMultiTextureSourceRemoveButton () const
+	{ return *m_MultiTextureSourceRemoveButton; }
+
+	Gtk::Box &
+	getMultiTextureFunctionBox () const
+	{ return *m_MultiTextureFunctionBox; }
+
+	Gtk::TreeView &
+	getMultiTextureFunctionTreeView () const
+	{ return *m_MultiTextureFunctionTreeView; }
+
+	Gtk::Button &
+	getMultiTextureFunctionAddButton () const
+	{ return *m_MultiTextureFunctionAddButton; }
+
+	Gtk::Button &
+	getMultiTextureFunctionRemoveButton () const
+	{ return *m_MultiTextureFunctionRemoveButton; }
 
 	Gtk::Box &
 	getImageTextureBox () const
@@ -906,6 +1010,11 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureAlphaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureColorAdjustment;
+	Glib::RefPtr <Gtk::ListStore>          m_MultiTextureFunctionListStore;
+	Glib::RefPtr <Gtk::ListStore>          m_MultiTextureModeListStore;
+	Glib::RefPtr <Gtk::ListStore>          m_MultiTextureSourceListStore;
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesAnisotropicDegreeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TexturePropertiesBorderWidthAdjustment;
@@ -946,6 +1055,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformScaleYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_TextureTransformTranslationYAdjustment;
+	Glib::RefPtr <Gtk::CellRendererCombo>  m_MultiTextureModeCellRendererCombo;
+	Glib::RefPtr <Gtk::CellRendererCombo>  m_MultiTextureSourceCellRendererCombo;
+	Glib::RefPtr <Gtk::CellRendererCombo>  m_MultiTextureFunctionCellRendererCombo;
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImageTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf;
@@ -971,6 +1083,24 @@ private:
 	Gtk::Box*                              m_PreviewBox;
 	Gtk::Notebook*                         m_TextureNotebook;
 	Gtk::Label*                            m_TextureLabel;
+	Gtk::Box*                              m_MultiTextureBox;
+	Gtk::Box*                              m_MultiTextureColorBox;
+	Gtk::Button*                           m_MultiTextureColorButton;
+	Gtk::Scale*                            m_MultiTextureColorScale;
+	Gtk::Box*                              m_MultiTextureAlphaBox;
+	Gtk::Scale*                            m_MultiTextureAlphaScale;
+	Gtk::Box*                              m_MultiTextureModeBox;
+	Gtk::TreeView*                         m_MultiTextureModeTreeView;
+	Gtk::Button*                           m_MultiTextureModeAddButton;
+	Gtk::Button*                           m_MultiTextureModeRemoveButton;
+	Gtk::Box*                              m_MultiTextureSourceBox;
+	Gtk::TreeView*                         m_MultiTextureSourceTreeView;
+	Gtk::Button*                           m_MultiTextureSourceAddButton;
+	Gtk::Button*                           m_MultiTextureSourceRemoveButton;
+	Gtk::Box*                              m_MultiTextureFunctionBox;
+	Gtk::TreeView*                         m_MultiTextureFunctionTreeView;
+	Gtk::Button*                           m_MultiTextureFunctionAddButton;
+	Gtk::Button*                           m_MultiTextureFunctionRemoveButton;
 	Gtk::Box*                              m_ImageTextureBox;
 	Gtk::Box*                              m_ImageTextureURLBox;
 	Gtk::TreeView*                         m_ImageTextureURLTreeView;

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,126 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_MOVIE_TEXTURE_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DMULTI_TEXTURE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DMULTI_TEXTURE_EDITOR_H__
 
-#include "../Networking/X3DUrlObject.h"
-#include "../Sound/X3DSoundSourceNode.h"
-#include "../Texturing/X3DTexture2DNode.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../../ComposedWidgets.h"
 
-namespace Gst {
-class XImageSink;
-}
+#include <Titania/X3D/Components/Texturing/MultiTexture.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class MovieTexture :
-	public X3DTexture2DNode, public X3DSoundSourceNode, public X3DUrlObject
+class MFStringWidget;
+
+class X3DMultiTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DMultiTextureEditor ();
+
+
+protected:
+
 	///  @name Construction
 
-	MovieTexture (X3DExecutionContext* const);
+	X3DMultiTextureEditor ();
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	///  @name Construction
 
-	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	///  @name Common members
+	setMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Member access
-	
-	virtual
-	bool
-	isTransparent () const final override
-	{ return false; }
-
-	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return X3DUrlObject::checkLoadState (); }
-
-	virtual
-	size_t
-	getImageWidth () const final override
-	{ return getWidth (); }
-
-	virtual
-	size_t
-	getImageHeight () const final override
-	{ return getHeight (); }
-
-	///  @name Operations
-	
-	virtual
-	void
-	requestImmediateLoad () final override;
-
-	virtual
-	void
-	dispose () final override;
+	const X3D::X3DPtr <X3D::MultiTexture> &
+	getMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Operations
-	
-	virtual
-	void
-	prepareEvents () final override;
-
-	virtual
-	void
-	update () final override;
-
-	const std::vector <uint8_t> &
-	flip (const size_t, const size_t, const uint8_t*);
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
 	///  @name Members
 
-	std::vector <uint8_t> image;
+	SFColorButton                     color;
+	X3DFieldAdjustment <X3D::SFFloat> alpha;
+	std::unique_ptr <MFStringWidget>  mode;
+	std::unique_ptr <MFStringWidget>  source;
+	std::unique_ptr <MFStringWidget>  function;
+	X3D::X3DPtr <X3D::MultiTexture>   multiTexture;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

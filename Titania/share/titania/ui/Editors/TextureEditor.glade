@@ -2,6 +2,121 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
+  <object class="GtkAdjustment" id="MultiTextureAlphaAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="MultiTextureColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkListStore" id="MultiTextureFunctionListStore">
+    <columns>
+      <!-- column-name Type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">COMPLEMENT</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ALPHAREPLICATE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">DEFAULT</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="MultiTextureModeListStore">
+    <columns>
+      <!-- column-name Type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">MODULATE</col>
+      </row>
+      <row>
+        <col id="0">REPLACE</col>
+      </row>
+      <row>
+        <col id="0">MODULATE2X</col>
+      </row>
+      <row>
+        <col id="0">MODULATE4X</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ADD</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ADDSIGNED</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ADDSIGNED2X</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SUBTRACT</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ADDSMOOTH</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">BLENDDIFFUSEALPHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">BLENDTEXTUREALPHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">BLENDFACTORALPHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">BLENDCURRENTALPHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">MODULATEALPHA_ADDCOLOR</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">MODULATEINVALPHA_ADDCOLOR</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">MODULATEINVCOLOR_ADDALPHA</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">OFF</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SELECTARG1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SELECTARG2</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">DOTPRODUCT3</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="MultiTextureSourceListStore">
+    <columns>
+      <!-- column-name Type -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">DIFFUSE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SPECULAR</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">FACTOR</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">DEFAULT</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkAdjustment" id="TexturePropertiesAnisotropicDegreeAdjustment">
     <property name="lower">1</property>
     <property name="upper">1000000000</property>
@@ -346,6 +461,7 @@
                                 <property name="hexpand">True</property>
                                 <items>
                                   <item translatable="yes">None</item>
+                                  <item translatable="yes">MultiTexture</item>
                                   <item translatable="yes">ImageTexture</item>
                                   <item translatable="yes">PixelTexture</item>
                                   <item translatable="yes">MovieTexture</item>
@@ -528,6 +644,533 @@
                             <property name="label" translatable="yes">NULL</property>
                           </object>
                           <packing>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="MultiTextureBox">
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkGrid" id="grid14">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">8</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel" id="label95">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Alpha:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label96">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Color:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="MultiTextureColorBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="spacing">8</property>
+                                    <property name="homogeneous">True</property>
+                                    <child>
+                                      <object class="GtkButton" id="MultiTextureColorButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="hexpand">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkScale" id="MultiTextureColorScale">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="adjustment">MultiTextureColorAdjustment</property>
+                                        <property name="round_digits">3</property>
+                                        <property name="digits">3</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="MultiTextureAlphaBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                      <object class="GtkSpinButton" id="spinbutton30">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="text" translatable="yes">0,000</property>
+                                        <property name="adjustment">MultiTextureAlphaAdjustment</property>
+                                        <property name="climb_rate">0.01</property>
+                                        <property name="digits">3</property>
+                                        <property name="numeric">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkScale" id="MultiTextureAlphaScale">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="adjustment">MultiTextureAlphaAdjustment</property>
+                                        <property name="upper_stepper_sensitivity">off</property>
+                                        <property name="digits">3</property>
+                                        <property name="draw_value">False</property>
+                                        <property name="value_pos">right</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="MultiTextureModeBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkScrolledWindow" id="scrolledwindow5">
+                                        <property name="height_request">96</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="shadow_type">in</property>
+                                        <child>
+                                          <object class="GtkTreeView" id="MultiTextureModeTreeView">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="headers_visible">False</property>
+                                            <property name="headers_clickable">False</property>
+                                            <property name="rules_hint">True</property>
+                                            <property name="enable_search">False</property>
+                                            <property name="search_column">0</property>
+                                            <property name="show_expanders">False</property>
+                                            <child internal-child="selection">
+                                              <object class="GtkTreeSelection" id="treeview-selection5"/>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                                                <property name="sizing">autosize</property>
+                                                <property name="min_width">200</property>
+                                                <property name="title" translatable="yes">Type</property>
+                                                <child>
+                                                  <object class="GtkCellRendererCombo" id="MultiTextureModeCellRendererCombo">
+                                                    <property name="editable">True</property>
+                                                    <property name="has_entry">False</property>
+                                                    <property name="model">MultiTextureModeListStore</property>
+                                                    <property name="text_column">0</property>
+                                                  </object>
+                                                  <attributes>
+                                                    <attribute name="text">0</attribute>
+                                                  </attributes>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                                                <property name="sizing">autosize</property>
+                                                <property name="expand">True</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="box12">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureModeAddButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image23">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-add</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureModeRemoveButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image24">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-remove</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label97">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Mode:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label98">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Sources:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="MultiTextureSourceBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkScrolledWindow" id="scrolledwindow6">
+                                        <property name="height_request">96</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="shadow_type">in</property>
+                                        <child>
+                                          <object class="GtkTreeView" id="MultiTextureSourceTreeView">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="headers_visible">False</property>
+                                            <property name="headers_clickable">False</property>
+                                            <property name="rules_hint">True</property>
+                                            <property name="enable_search">False</property>
+                                            <property name="search_column">0</property>
+                                            <property name="show_expanders">False</property>
+                                            <child internal-child="selection">
+                                              <object class="GtkTreeSelection" id="treeview-selection11"/>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn7">
+                                                <property name="sizing">autosize</property>
+                                                <property name="min_width">200</property>
+                                                <property name="title" translatable="yes">Type</property>
+                                                <child>
+                                                  <object class="GtkCellRendererCombo" id="MultiTextureSourceCellRendererCombo">
+                                                    <property name="editable">True</property>
+                                                    <property name="has_entry">False</property>
+                                                    <property name="model">MultiTextureSourceListStore</property>
+                                                    <property name="text_column">0</property>
+                                                  </object>
+                                                  <attributes>
+                                                    <attribute name="text">0</attribute>
+                                                  </attributes>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn8">
+                                                <property name="sizing">autosize</property>
+                                                <property name="expand">True</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="box13">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureSourceAddButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image25">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-add</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureSourceRemoveButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image26">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-remove</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label99">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Function:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="MultiTextureFunctionBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkScrolledWindow" id="scrolledwindow7">
+                                        <property name="height_request">96</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="shadow_type">in</property>
+                                        <child>
+                                          <object class="GtkTreeView" id="MultiTextureFunctionTreeView">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="headers_visible">False</property>
+                                            <property name="headers_clickable">False</property>
+                                            <property name="rules_hint">True</property>
+                                            <property name="enable_search">False</property>
+                                            <property name="search_column">0</property>
+                                            <property name="show_expanders">False</property>
+                                            <child internal-child="selection">
+                                              <object class="GtkTreeSelection" id="treeview-selection13"/>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn9">
+                                                <property name="sizing">autosize</property>
+                                                <property name="min_width">200</property>
+                                                <property name="title" translatable="yes">Type</property>
+                                                <child>
+                                                  <object class="GtkCellRendererCombo" id="MultiTextureFunctionCellRendererCombo">
+                                                    <property name="editable">True</property>
+                                                    <property name="has_entry">False</property>
+                                                    <property name="model">MultiTextureFunctionListStore</property>
+                                                    <property name="text_column">0</property>
+                                                  </object>
+                                                  <attributes>
+                                                    <attribute name="text">0</attribute>
+                                                  </attributes>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="GtkTreeViewColumn" id="treeviewcolumn10">
+                                                <property name="sizing">autosize</property>
+                                                <property name="expand">True</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="box15">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureFunctionAddButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image27">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-add</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="MultiTextureFunctionRemoveButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <child>
+                                              <object class="GtkImage" id="image28">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-remove</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel" id="label94">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Multi</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -727,7 +1370,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -737,7 +1380,7 @@
                             <property name="label" translatable="yes">Image</property>
                           </object>
                           <packing>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -758,7 +1401,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -768,7 +1411,7 @@
                             <property name="label" translatable="yes">Pixel</property>
                           </object>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -994,7 +1637,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1004,7 +1647,7 @@
                             <property name="label" translatable="yes">Movie</property>
                           </object>
                           <packing>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -1025,7 +1668,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">4</property>
+                            <property name="position">5</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1035,7 +1678,7 @@
                             <property name="label" translatable="yes">Composed3D</property>
                           </object>
                           <packing>
-                            <property name="position">4</property>
+                            <property name="position">5</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -1233,7 +1876,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">5</property>
+                            <property name="position">6</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1243,7 +1886,7 @@
                             <property name="label" translatable="yes">Image3D</property>
                           </object>
                           <packing>
-                            <property name="position">5</property>
+                            <property name="position">6</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -1264,7 +1907,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">6</property>
+                            <property name="position">7</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -1274,7 +1917,7 @@
                             <property name="label" translatable="yes">Pixel3D</property>
                           </object>
                           <packing>
-                            <property name="position">6</property>
+                            <property name="position">7</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -2021,7 +2664,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">7</property>
+                            <property name="position">8</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -2031,7 +2674,7 @@
                             <property name="label" translatable="yes">ComposedCubeMap</property>
                           </object>
                           <packing>
-                            <property name="position">7</property>
+                            <property name="position">8</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -2044,7 +2687,7 @@
                               <object class="GtkLabel" id="label81">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">2D Texture:</property>
+                                <property name="label" translatable="yes">Image:</property>
                               </object>
                               <packing>
                                 <property name="left_attach">0</property>
@@ -2316,7 +2959,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">8</property>
+                            <property name="position">9</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -2326,7 +2969,7 @@
                             <property name="label" translatable="yes">ImageCubeMap</property>
                           </object>
                           <packing>
-                            <property name="position">8</property>
+                            <property name="position">9</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>

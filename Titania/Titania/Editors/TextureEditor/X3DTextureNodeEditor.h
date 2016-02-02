@@ -52,6 +52,7 @@
 #define __TITANIA_TEXTURE_EDITOR_X3DTEXTURE_NODE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
+#include "X3DMultiTextureEditor.h"
 #include "X3DTexture2DNodeEditor.h"
 #include "X3DTexture3DNodeEditor.h"
 #include "X3DEnvironmentTextureNodeEditor.h"
@@ -64,6 +65,7 @@ class TexturePreview;
 
 class X3DTextureNodeEditor :
 	virtual public X3DTextureEditorInterface,
+	public X3DMultiTextureEditor,
 	public X3DTexture2DNodeEditor,
 	public X3DTexture3DNodeEditor,
 	public X3DEnvironmentTextureNodeEditor,

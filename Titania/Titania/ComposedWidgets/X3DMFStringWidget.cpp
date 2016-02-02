@@ -69,6 +69,7 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	     removeButton (removeButton),
 	            nodes (),
 	             name (name),
+	     displayValue (defaultValue),
 	     defaultValue (defaultValue),
 	           string (),
 	         undoStep (),
@@ -88,6 +89,13 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	treeView .set_model (listStore);
 
 	setup ();
+}
+
+void
+X3DMFStringWidget::setDefaultValue (const std::string & first, const std::string & second)
+{
+	displayValue = first;
+	defaultValue = second;
 }
 
 void
@@ -136,7 +144,7 @@ X3DMFStringWidget::set1Value (const Gtk::TreePath & path, const Glib::ustring & 
 	if (string .get1Value (path .front ()) == value)
 		return;
 
-	string .set1Value (path .front (), value);
+	string .set1Value (path .front (), value == displayValue ? defaultValue : value);
 
 	// Update list store.
 
@@ -151,9 +159,9 @@ X3DMFStringWidget::append (const Glib::ustring & value)
 {
 	const auto iter = listStore -> append ();
 
-	(*iter) [columns .string] = value;
+	(*iter) [columns .string] = value .length () ? value : displayValue;
 
-	string .emplace_back (value);
+	string .emplace_back (value == displayValue ? defaultValue : value);
 
 	on_string_changed ();
 }
@@ -308,7 +316,7 @@ X3DMFStringWidget::set_buffer ()
 		for (const auto & value : string)
 		{
 			const auto iter = listStore -> append ();
-			(*iter) [columns .string] = value .getValue ();
+			(*iter) [columns .string] = value .length () ? value .getValue () : displayValue;
 		}
 	}
 

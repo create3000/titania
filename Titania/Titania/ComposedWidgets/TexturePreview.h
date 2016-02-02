@@ -96,13 +96,19 @@ private:
 	set_texture ();
 
 	void
+	set_textures (const X3D::MFNode &);
+
+	void
 	set_loadState ();
 
 	bool
 	on_configure_event (GdkEventConfigure* const);
 
 	void
-	set_camera ();
+	configure ();
+	
+	void
+	set_camera (double, double);
 
 	///  @name Members
 
@@ -111,6 +117,7 @@ private:
 	Gtk::Label &                      loadStateLabel;
 	X3D::BrowserPtr                   preview;
 	X3D::X3DPtr <X3D::X3DTextureNode> textureNode;
+	X3D::MFNode                       textureNodes;
 
 };
 

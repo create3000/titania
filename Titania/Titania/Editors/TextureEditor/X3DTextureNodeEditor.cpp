@@ -60,6 +60,7 @@ namespace puck {
 X3DTextureNodeEditor::X3DTextureNodeEditor () :
 	               X3DBaseInterface (),
 	      X3DTextureEditorInterface (),
+	          X3DMultiTextureEditor (),
 	         X3DTexture2DNodeEditor (),
 	         X3DTexture3DNodeEditor (),
 	X3DEnvironmentTextureNodeEditor (),
@@ -127,30 +128,33 @@ X3DTextureNodeEditor::on_texture_changed ()
 		switch (getTextureComboBoxText () .get_active_row_number ())
 		{
 			case 1:
-				textureNode = getImageTexture (textureNode);
+				textureNode = getMultiTexture (textureNode);
 				break;
 			case 2:
-				textureNode = getPixelTexture (textureNode);
+				textureNode = getImageTexture (textureNode);
 				break;
 			case 3:
-				textureNode = getMovieTexture (textureNode);
+				textureNode = getPixelTexture (textureNode);
 				break;
 			case 4:
-				textureNode = getComposedTexture3D (textureNode);
+				textureNode = getMovieTexture (textureNode);
 				break;
 			case 5:
-				textureNode = getImageTexture3D (textureNode);
+				textureNode = getComposedTexture3D (textureNode);
 				break;
 			case 6:
-				textureNode = getPixelTexture3D (textureNode);
+				textureNode = getImageTexture3D (textureNode);
 				break;
 			case 7:
+				textureNode = getPixelTexture3D (textureNode);
+				break;
+			case 8:
 				textureNode = getComposedCubeMapTexture (textureNode);
 				break;
-			//case 8:
+			//case 9:
 				//textureNode = getGeneratedCubeMapTexture (textureNode);
 			//	break;
-			case 8:
+			case 9:
 				textureNode = getImageCubeMapTexture (textureNode);
 				break;
 			default:
@@ -210,6 +214,7 @@ X3DTextureNodeEditor::set_node ()
 
 	enum {
 		NULL_TEXTURE,
+		MULTI_TEXTURE,
 		IMAGE_TEXTURE,
 		PIXEL_TEXTURE,
 		MOVIE_TEXTURE,
@@ -228,6 +233,7 @@ X3DTextureNodeEditor::set_node ()
 
 	textureNode = std::move (std::get <0> (tuple));
 
+	setMultiTexture           (textureNode);
 	setTexture2DNode          (textureNode);
 	setTexture3DNode          (textureNode);
 	setEnvironmentTextureNode (textureNode);
@@ -241,6 +247,9 @@ X3DTextureNodeEditor::set_node ()
 	{
 		switch (textureNode -> getType () .back ())
 		{
+			case X3D::X3DConstants::MultiTexture:
+				getTextureComboBoxText () .set_active (MULTI_TEXTURE);
+				break;
 			case X3D::X3DConstants::ImageTexture:
 				getTextureComboBoxText () .set_active (IMAGE_TEXTURE);
 				break;

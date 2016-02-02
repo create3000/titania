@@ -50,7 +50,6 @@
 
 #include "ImageCubeMapTexture.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Texturing/ImageTexture.h"
 
@@ -162,11 +161,6 @@ ImageCubeMapTexture::set_loadState ()
 
 	setLoadState (textureNode -> checkLoadState ());
 
-	ContextLock lock (getBrowser ());
-
-	if (not lock)
-		return;
-
 	switch (checkLoadState ())
 	{
 		case COMPLETE_STATE:
@@ -204,8 +198,6 @@ ImageCubeMapTexture::set_loadState ()
 		
 				// Transfer image
 				// Important: width and height must be equal, and all images must be of the same size!!!
-		
-				__LOG__ << getTextureId () << " : " << targets [i] <<  " : " << width  << " : " << height << std::endl;
 	
 				setImage (targets [i], GL_RGBA, GL_RGBA, image .data ());
 			}
@@ -214,10 +206,9 @@ ImageCubeMapTexture::set_loadState ()
 		}
 		case FAILED_STATE:
 		{
-			__LOG__ << getTextureId () << std::endl;
-	
 			for (size_t i = 0; i < 6; ++ i)
 				setImage (targets [i], GL_RGBA, GL_RGBA, nullptr);
+
 			break;
 		}
 		default:

@@ -78,7 +78,7 @@ X3DComposedTexture3DEditor::setComposedTexture3D (const X3D::X3DPtr <X3D::X3DTex
 const X3D::X3DPtr <X3D::ComposedTexture3D> &
 X3DComposedTexture3DEditor::getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getComposedTexture3DBox () .set_visible (true);
+	getComposedTexture3DBox () .set_visible (value);
 
 	if (value)
 	{

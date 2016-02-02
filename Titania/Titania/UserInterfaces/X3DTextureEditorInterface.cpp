@@ -61,6 +61,11 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_MultiTextureAlphaAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MultiTextureAlphaAdjustment"));
+	m_MultiTextureColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("MultiTextureColorAdjustment"));
+	m_MultiTextureFunctionListStore                = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MultiTextureFunctionListStore"));
+	m_MultiTextureModeListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MultiTextureModeListStore"));
+	m_MultiTextureSourceListStore                  = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("MultiTextureSourceListStore"));
 	m_TexturePropertiesAnisotropicDegreeAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesAnisotropicDegreeAdjustment"));
 	m_TexturePropertiesBorderColorAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderColorAdjustment"));
 	m_TexturePropertiesBorderWidthAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TexturePropertiesBorderWidthAdjustment"));
@@ -101,6 +106,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_TextureTransformScaleYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformScaleYAdjustment"));
 	m_TextureTransformTranslationXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationXAdjustment"));
 	m_TextureTransformTranslationYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextureTransformTranslationYAdjustment"));
+	m_MultiTextureModeCellRendererCombo            = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("MultiTextureModeCellRendererCombo"));
+	m_MultiTextureSourceCellRendererCombo          = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("MultiTextureSourceCellRendererCombo"));
+	m_MultiTextureFunctionCellRendererCombo        = Glib::RefPtr <Gtk::CellRendererCombo>::cast_dynamic (m_builder -> get_object ("MultiTextureFunctionCellRendererCombo"));
 	m_ImageTextureURLCellRendererText              = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellRendererText"));
 	m_ImageTextureURLChooserColumn                 = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTextureURLChooserColumn"));
 	m_ImageTextureURLCellrendererPixbuf            = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf"));
@@ -128,6 +136,24 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("TextureNotebook", m_TextureNotebook);
 	m_builder -> get_widget ("TextureLabel", m_TextureLabel);
+	m_builder -> get_widget ("MultiTextureBox", m_MultiTextureBox);
+	m_builder -> get_widget ("MultiTextureColorBox", m_MultiTextureColorBox);
+	m_builder -> get_widget ("MultiTextureColorButton", m_MultiTextureColorButton);
+	m_builder -> get_widget ("MultiTextureColorScale", m_MultiTextureColorScale);
+	m_builder -> get_widget ("MultiTextureAlphaBox", m_MultiTextureAlphaBox);
+	m_builder -> get_widget ("MultiTextureAlphaScale", m_MultiTextureAlphaScale);
+	m_builder -> get_widget ("MultiTextureModeBox", m_MultiTextureModeBox);
+	m_builder -> get_widget ("MultiTextureModeTreeView", m_MultiTextureModeTreeView);
+	m_builder -> get_widget ("MultiTextureModeAddButton", m_MultiTextureModeAddButton);
+	m_builder -> get_widget ("MultiTextureModeRemoveButton", m_MultiTextureModeRemoveButton);
+	m_builder -> get_widget ("MultiTextureSourceBox", m_MultiTextureSourceBox);
+	m_builder -> get_widget ("MultiTextureSourceTreeView", m_MultiTextureSourceTreeView);
+	m_builder -> get_widget ("MultiTextureSourceAddButton", m_MultiTextureSourceAddButton);
+	m_builder -> get_widget ("MultiTextureSourceRemoveButton", m_MultiTextureSourceRemoveButton);
+	m_builder -> get_widget ("MultiTextureFunctionBox", m_MultiTextureFunctionBox);
+	m_builder -> get_widget ("MultiTextureFunctionTreeView", m_MultiTextureFunctionTreeView);
+	m_builder -> get_widget ("MultiTextureFunctionAddButton", m_MultiTextureFunctionAddButton);
+	m_builder -> get_widget ("MultiTextureFunctionRemoveButton", m_MultiTextureFunctionRemoveButton);
 	m_builder -> get_widget ("ImageTextureBox", m_ImageTextureBox);
 	m_builder -> get_widget ("ImageTextureURLBox", m_ImageTextureURLBox);
 	m_builder -> get_widget ("ImageTextureURLTreeView", m_ImageTextureURLTreeView);

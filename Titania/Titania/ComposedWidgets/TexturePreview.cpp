@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Texturing/MultiTexture.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 #include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
@@ -70,9 +71,11 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
-	            formatLabel (formatLabel),
+	      formatLabel (formatLabel),
 	   loadStateLabel (loadStateLabel),
-	          preview (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }))
+	          preview (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") })),
+	      textureNode (),
+	     textureNodes ()
 {
 	// Browser
 
@@ -92,14 +95,52 @@ void
 TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	if (textureNode)
+	{
+		textureNode -> removeInterest (*preview, &X3D::Browser::addEvent);
 		textureNode -> checkLoadState () .removeInterest (this, &TexturePreview::set_loadState);
+
+		try
+		{
+			textureNode -> getField <X3D::MFNode> ("texture") .removeInterest (this, &TexturePreview::set_textures);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		set_textures ({ });
+	}
 
 	textureNode = value;
 
 	if (textureNode)
+	{
+		textureNode -> addInterest (*preview, &X3D::Browser::addEvent);
 		textureNode -> checkLoadState () .addInterest (this, &TexturePreview::set_loadState);
 
+		try
+		{
+			const auto & texture = textureNode -> getField <X3D::MFNode> ("texture");
+
+			texture .addInterest (this, &TexturePreview::set_textures);
+
+			set_textures (texture);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
 	set_texture ();
+}
+
+void
+TexturePreview::set_textures (const X3D::MFNode & value)
+{
+	for (const auto & node : textureNodes)
+		node -> removeInterest (*preview, &X3D::Browser::addEvent);
+
+	textureNodes = value;
+
+	for (const auto & node : textureNodes)
+		node -> addInterest (*preview, &X3D::Browser::addEvent);
 }
 
 void
@@ -136,13 +177,25 @@ TexturePreview::set_texture ()
 
 		if (appearance)
 		{
-			if (appearance -> texture ())
-				appearance -> texture () -> removeInterest (*preview, &X3D::Browser::addEvent);
+			const X3D::X3DPtr <X3D::MultiTexture> multiTexture (textureNode);
 
-			appearance -> texture () = textureNode;
+			if (multiTexture)
+			{
+				const X3D::X3DPtr <X3D::MultiTexture> localTexture (textureNode -> copy (appearance -> getExecutionContext (), X3D::FLAT_COPY));
 
-			if (appearance -> texture ())
-				appearance -> texture () -> addInterest (*preview, &X3D::Browser::addEvent);
+				localTexture -> getExecutionContext () -> realize ();
+
+				multiTexture -> color ()    .addInterest (localTexture -> color ());
+				multiTexture -> alpha ()    .addInterest (localTexture -> alpha ());
+				multiTexture -> mode ()     .addInterest (localTexture -> mode ());
+				multiTexture -> source ()   .addInterest (localTexture -> source ());
+				multiTexture -> function () .addInterest (localTexture -> function ());
+				multiTexture -> texture ()  .addInterest (localTexture -> texture ());
+
+				appearance -> texture ()  = localTexture;
+			}
+			else
+				appearance -> texture ()  = textureNode;
 		}
 	}
 	catch (const X3D::X3DError & error)
@@ -156,9 +209,11 @@ TexturePreview::set_texture ()
 void
 TexturePreview::set_loadState ()
 {
-	set_camera ();
+	configure ();
 
 	// Set label
+
+	formatLabel .set_text ("");
 
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
@@ -268,36 +323,40 @@ TexturePreview::set_loadState ()
 bool
 TexturePreview::on_configure_event (GdkEventConfigure* const)
 {
-	set_camera ();
+	configure ();
 	return false;
 }
 
 void
-TexturePreview::set_camera ()
+TexturePreview::configure ()
+{
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+
+	if (texture2DNode)
+		set_camera (texture2DNode -> getImageWidth (), texture2DNode -> getImageHeight ());
+
+	else
+		set_camera (512, 512);
+}
+
+void
+TexturePreview::set_camera (double width, double height)
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
+		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
 
-		if (texture2DNode)
+		if (viewpoint and transform)
 		{
-			const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-			const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
-
-			if (viewpoint and transform)
+			if (not width or not height)
 			{
-				double width  = texture2DNode -> getImageWidth ();
-				double height = texture2DNode -> getImageHeight ();
-
-				if (not width or not height)
-				{
-					width  = 1;
-					height = 1;
-				}
-
-				viewpoint -> fieldOfView () = { -width, -height, width, height };
-				transform -> scale ()       = X3D::Vector3f (width, height, 1);
+				width  = 1;
+				height = 1;
 			}
+
+			viewpoint -> fieldOfView () = { -width, -height, width, height };
+			transform -> scale ()       = X3D::Vector3f (width, height, 1);
 		}
 	}
 	catch (const X3D::X3DError & error)

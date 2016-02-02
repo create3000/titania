@@ -95,7 +95,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 const X3D::X3DPtr <X3D::MovieTexture> &
 X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getMovieTextureBox () .set_visible (true);
+	getMovieTextureBox () .set_visible (value);
 
 	if (value)
 	{
