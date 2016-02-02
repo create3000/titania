@@ -285,6 +285,18 @@ public:
 	getImageTexture3DURLCellrendererPixbuf () const
 	{ return m_ImageTexture3DURLCellrendererPixbuf; }
 
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getImageCubeMapTextureURLCellRendererText () const
+	{ return m_ImageCubeMapTextureURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImageCubeMapTextureURLChooserColumn () const
+	{ return m_ImageCubeMapTextureURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getImageTextureURLCellrendererPixbuf1 () const
+	{ return m_ImageTextureURLCellrendererPixbuf1; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -433,13 +445,13 @@ public:
 	getPixelTexture3DBox () const
 	{ return *m_PixelTexture3DBox; }
 
-	Gtk::Notebook &
-	getEnvironmentTextureNotebook () const
-	{ return *m_EnvironmentTextureNotebook; }
-
 	Gtk::Grid &
 	getComposedCubeMapTextureBox () const
 	{ return *m_ComposedCubeMapTextureBox; }
+
+	Gtk::Notebook &
+	getComposedCubeMapNotebook () const
+	{ return *m_ComposedCubeMapNotebook; }
 
 	Gtk::Label &
 	getComposedCubeMapFrontTextureFormatLabel () const
@@ -488,6 +500,42 @@ public:
 	Gtk::Box &
 	getComposedCubeMapBottomTexturePreviewBox () const
 	{ return *m_ComposedCubeMapBottomTexturePreviewBox; }
+
+	Gtk::Grid &
+	getImageCubeMapTextureBox () const
+	{ return *m_ImageCubeMapTextureBox; }
+
+	Gtk::Label &
+	getImageCubeMapTextureFormatLabel () const
+	{ return *m_ImageCubeMapTextureFormatLabel; }
+
+	Gtk::Box &
+	getImageCubeMapTexturePreviewBox () const
+	{ return *m_ImageCubeMapTexturePreviewBox; }
+
+	Gtk::Box &
+	getImageCubeMapTextureURLBox () const
+	{ return *m_ImageCubeMapTextureURLBox; }
+
+	Gtk::TreeView &
+	getImageCubeMapTextureURLTreeView () const
+	{ return *m_ImageCubeMapTextureURLTreeView; }
+
+	Gtk::Button &
+	getImageCubeMapTextureURLAddButton () const
+	{ return *m_ImageCubeMapTextureURLAddButton; }
+
+	Gtk::Button &
+	getImageCubeMapTextureURLRemoveButton () const
+	{ return *m_ImageCubeMapTextureURLRemoveButton; }
+
+	Gtk::Button &
+	getImageCubeMapTextureEmbedButton () const
+	{ return *m_ImageCubeMapTextureEmbedButton; }
+
+	Gtk::Button &
+	getImageCubeMapTextureURLReloadButton () const
+	{ return *m_ImageCubeMapTextureURLReloadButton; }
 
 	Gtk::Grid &
 	getTexture2DBox () const
@@ -875,6 +923,9 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImageTexture3DURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageTexture3DURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTexture3DURLCellrendererPixbuf;
+	Glib::RefPtr <Gtk::CellRendererText>   m_ImageCubeMapTextureURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageCubeMapTextureURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_TextureChildNotebook;
@@ -912,8 +963,8 @@ private:
 	Gtk::Button*                           m_ImageTexture3DEmbedButton;
 	Gtk::Button*                           m_ImageTexture3DURLReloadButton;
 	Gtk::Box*                              m_PixelTexture3DBox;
-	Gtk::Notebook*                         m_EnvironmentTextureNotebook;
 	Gtk::Grid*                             m_ComposedCubeMapTextureBox;
+	Gtk::Notebook*                         m_ComposedCubeMapNotebook;
 	Gtk::Label*                            m_ComposedCubeMapFrontTextureFormatLabel;
 	Gtk::Box*                              m_ComposedCubeMapFrontTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapBackTextureFormatLabel;
@@ -926,6 +977,15 @@ private:
 	Gtk::Box*                              m_ComposedCubeMapTopTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapBottomTextureFormatLabel;
 	Gtk::Box*                              m_ComposedCubeMapBottomTexturePreviewBox;
+	Gtk::Grid*                             m_ImageCubeMapTextureBox;
+	Gtk::Label*                            m_ImageCubeMapTextureFormatLabel;
+	Gtk::Box*                              m_ImageCubeMapTexturePreviewBox;
+	Gtk::Box*                              m_ImageCubeMapTextureURLBox;
+	Gtk::TreeView*                         m_ImageCubeMapTextureURLTreeView;
+	Gtk::Button*                           m_ImageCubeMapTextureURLAddButton;
+	Gtk::Button*                           m_ImageCubeMapTextureURLRemoveButton;
+	Gtk::Button*                           m_ImageCubeMapTextureEmbedButton;
+	Gtk::Button*                           m_ImageCubeMapTextureURLReloadButton;
 	Gtk::Grid*                             m_Texture2DBox;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatSCheckButton;
 	Gtk::CheckButton*                      m_Texture2DNodeRepeatTCheckButton;

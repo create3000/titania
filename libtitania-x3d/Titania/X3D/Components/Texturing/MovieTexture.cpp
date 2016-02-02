@@ -195,13 +195,16 @@ MovieTexture::prepareEvents ()
 
 		// Flip image vertically
 
-		image .assign (data, data + width * height * 4);
+		const size_t width4   = width * 4;
+		const size_t height_1 = height - 1;
+
+		image .assign (data, data + width4 * height);
 
 		for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
 		{
-			for (size_t c = 0, width4 = width * 4; c < width4; ++ c)
+			for (size_t c = 0; c < width4; ++ c)
 			{
-				std::swap (image [r * width4 + c], image [(height - 1 - r) * width4 + c]);
+				std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
 			}
 		}
 

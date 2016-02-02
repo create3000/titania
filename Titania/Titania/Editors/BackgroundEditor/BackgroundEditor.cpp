@@ -254,14 +254,6 @@ BackgroundEditor::on_ground_color_index_changed ()
 	changing = false;
 }
 
-BackgroundEditor::~BackgroundEditor ()
-{
-	getConfig () .setItem ("currentPage", getNotebook ()         .get_current_page ());
-	getConfig () .setItem ("texturePage", getTexturesNotebook () .get_current_page ());
-
-	dispose ();
-}
-
 /*
  * Action buttons
  */
@@ -328,6 +320,14 @@ BackgroundEditor::on_index_clicked ()
 	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
 
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Background, X3D::X3DConstants::TextureBackground });
+}
+
+BackgroundEditor::~BackgroundEditor ()
+{
+	getConfig () .setItem ("currentPage", getNotebook ()         .get_current_page ());
+	getConfig () .setItem ("texturePage", getTexturesNotebook () .get_current_page ());
+
+	dispose ();
 }
 
 } // puck

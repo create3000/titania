@@ -57,8 +57,11 @@
 namespace titania {
 namespace X3D {
 
+class ImageTexture;
+
 class ImageCubeMapTexture :
-	public X3DEnvironmentTextureNode, public X3DUrlObject
+	public X3DEnvironmentTextureNode,
+	public X3DUrlObject
 {
 public:
 
@@ -96,47 +99,38 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
-	///  @name Fields
-
-	SFNode &
-	textureProperties ()
-	{ return *fields .textureProperties; }
-
-	const SFNode &
-	textureProperties () const
-	{ return *fields .textureProperties; }
-
 	///  @name Member access
 
 	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return X3DUrlObject::checkLoadState (); }
+
+	virtual
 	bool
-	isTransparent () const
-	{ return false; }
+	isTransparent () const;
 
 	virtual
 	size_t
-	getWidth () const final override
-	{ return 0; }
+	getWidth () const final override;
 
 	virtual
 	size_t
-	getHeight () const final override
-	{ return 0; }
+	getHeight () const final override;
 
 	virtual
 	size_t
-	getComponents () const final override
-	{ return 0; }
+	getComponents () const final override;
+
+	const X3D::X3DPtr <X3D::ImageTexture> &
+	getTexture () const
+	{ return textureNode; }
 
 	///  @name Operations
 
 	virtual
 	void
 	requestImmediateLoad () final override;
-	
-	virtual
-	void
-	draw () final override;
 
 	///  @name Destruction
 
@@ -155,20 +149,20 @@ private:
 
 	///  @name Static members
 
+	void
+	set_loadState ();
+
+	///  @name Static members
+
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
 
+	static const GLenum targets [6];
+
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFNode* const textureProperties;
-	};
-
-	Fields fields;
+	X3D::X3DPtr <X3D::ImageTexture> textureNode;
 
 };
 

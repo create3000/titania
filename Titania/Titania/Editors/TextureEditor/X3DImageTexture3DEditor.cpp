@@ -80,8 +80,7 @@ X3DImageTexture3DEditor::setImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 
 	if (not imageTexture)
 	{
-		imageTexture = new X3D::ImageTexture3D (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (imageTexture);
+		imageTexture = getCurrentContext () -> createNode <X3D::ImageTexture3D> ();
 		getCurrentContext () -> realize ();
 	}
 

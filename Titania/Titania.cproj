@@ -249,6 +249,7 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DSwitchEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DEnvironmentTextureNodeEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.cpp" />
+    <Compile Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2389,6 +2390,7 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DSwitchEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DEnvironmentTextureNodeEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.h" />
+    <None Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

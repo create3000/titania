@@ -80,6 +80,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	               X3DShapeContext (),
 	                X3DTextContext (),
 	           X3DTexturingContext (),
+	    X3DCubeMapTexturingContext (),
 	                X3DTimeContext (),
 	               X3DRouterObject (),
 	                X3DToolContext (),
@@ -129,6 +130,7 @@ X3DBrowserContext::initialize ()
 	X3DShapeContext::initialize ();
 	X3DTextContext::initialize ();
 	X3DTexturingContext::initialize ();
+	X3DCubeMapTexturingContext::initialize ();
 	X3DTimeContext::initialize ();
 	X3DRouterObject::initialize ();
 	X3DToolContext::initialize ();
@@ -331,6 +333,7 @@ X3DBrowserContext::dispose ()
 	X3DToolContext::dispose ();
 	X3DRouterObject::dispose ();
 	X3DTimeContext::dispose ();
+	X3DCubeMapTexturingContext::dispose ();
 	X3DTexturingContext::dispose ();
 	X3DTextContext::dispose ();
 	X3DShapeContext::dispose ();

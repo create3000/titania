@@ -55,6 +55,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
+#include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
 #include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
@@ -109,8 +110,10 @@ TexturePreview::set_initialized ()
 		preview -> getExecutionContext () -> getNamedNode ("Appearance")    -> isPrivate (true);
 		preview -> getExecutionContext () -> getNamedNode ("TextureScript") -> isPrivate (true);
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 
 	set_texture ();
 }
@@ -120,7 +123,14 @@ TexturePreview::set_texture ()
 {
 	try
 	{
-		const X3D::AppearancePtr appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const X3D::X3DPtr <X3D::OrthoViewpoint> texture2DViewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+		const X3D::X3DPtr <X3D::Viewpoint>      texture3DViewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture3DViewpoint"));
+		const X3D::X3DPtr <X3D::Viewpoint>      cubeMapViewpoint   (preview -> getExecutionContext () -> getNamedNode ("CubeMapViewpoint"));
+		const X3D::AppearancePtr                appearance         (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+
+		texture2DViewpoint -> resetUserOffsets ();
+		texture3DViewpoint -> resetUserOffsets ();
+		cubeMapViewpoint   -> resetUserOffsets ();
 
 		if (appearance)
 		{
@@ -133,16 +143,21 @@ TexturePreview::set_texture ()
 				appearance -> texture () -> addInterest (*preview, &X3D::Browser::addEvent);
 		}
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 
-	set_camera ();
 	set_loadState ();
 }
 
 void
 TexturePreview::set_loadState ()
 {
+	set_camera ();
+
+	// Set label
+
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 
 	if (texture2DNode)
@@ -235,7 +250,7 @@ TexturePreview::set_camera ()
 
 		if (texture2DNode)
 		{
-			const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("OrthoViewpoint"));
+			const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
 			const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
 
 			if (viewpoint and transform)
@@ -254,8 +269,10 @@ TexturePreview::set_camera ()
 			}
 		}
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 TexturePreview::~TexturePreview ()

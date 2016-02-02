@@ -88,7 +88,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	              transparent (false),
 	                    width (0),
                       height (0),
-	               components (0)
+	               components (0),
+	                loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::ComposedCubeMapTexture);
 
@@ -100,7 +101,8 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	addField (inputOutput, "top",      top ());
 	addField (inputOutput, "bottom",   bottom ());
 
-	addChildren (nodes);
+	addChildren (textureProperties ());
+	addChildren (nodes, loadState);
 }
 
 X3DBaseNode*
@@ -116,16 +118,6 @@ ComposedCubeMapTexture::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-
-		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
-		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
-
 		front ()  .addInterest (this, &ComposedCubeMapTexture::set_texture, 0, std::cref (front ()));
 		back ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 1, std::cref (back ()));
 		left ()   .addInterest (this, &ComposedCubeMapTexture::set_texture, 2, std::cref (left ()));
@@ -194,21 +186,21 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 
 		// Flip image vertically
 
+		const size_t width4   = width * 4;
+		const size_t height_1 = height - 1;
+
 		for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
 		{
-			for (size_t c = 0, width4 = width * 4; c < width4; ++ c)
+			for (size_t c = 0; c < width4; ++ c)
 			{
-				std::swap (image [r * width4 + c], image [(height - 1 - r) * width4 + c]);
+				std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
 			}
 		}
 
 		// Transfer image
 		// Important: width and height must be equal, and all images must be of the same size!!!
 
-		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-		glTexImage2D (target, 0, GL_RGBA, width, height, false, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
-		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
-
+		setImage (target, GL_RGBA, GL_RGBA, image .data ());
 		setLoadState (COMPLETE_STATE);
 	}
 	else
@@ -217,22 +209,17 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 		height     = 0;
 		components = 0;
 
-		glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
-		glTexImage2D (target, 0, GL_RGBA, 0, 0, false, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
-
+		setImage (target, GL_RGBA, GL_RGBA, nullptr);
 		setLoadState (FAILED_STATE);
 	}
 }
 
 void
-ComposedCubeMapTexture::draw ()
+ComposedCubeMapTexture::dispose ()
 {
-	glMatrixMode (GL_TEXTURE);
-	glScalef (-1, -1, 1);
-	glMatrixMode (GL_MODELVIEW);
+	removeChildren (textureProperties ());
 
-	X3DEnvironmentTextureNode::draw (GL_TEXTURE_CUBE_MAP, components);
+	X3DEnvironmentTextureNode::dispose ();
 }
 
 } // X3D

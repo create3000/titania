@@ -762,6 +762,7 @@
     <None Include="Titania\X3D\Browser\Text\FontFace.h" />
     <None Include="Titania\X3D\Browser\Tools\X3DToolContext.h" />
     <None Include="Titania\X3D\Browser\Tools\TransformToolOptions.h" />
+    <None Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1278,6 +1279,7 @@
     <Compile Include="Titania\X3D\Browser\Text\FontFace.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\X3DToolContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\TransformToolOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

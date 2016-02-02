@@ -201,6 +201,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DComposedCubeMapTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DEnvironmentTextureNodeEditor.$(OBJEXT) \
+	Titania/Editors/TextureEditor/X3DImageCubeMapTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.$(OBJEXT) \
@@ -628,6 +629,7 @@ titania_SOURCES = \
 	Titania/Editors/TextureEditor/X3DComposedCubeMapTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DEnvironmentTextureNodeEditor.cpp \
+	Titania/Editors/TextureEditor/X3DImageCubeMapTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DMovieTextureEditor.cpp \
@@ -1281,6 +1283,9 @@ Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.$(OBJEXT):  \
 Titania/Editors/TextureEditor/X3DEnvironmentTextureNodeEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/TextureEditor/X3DImageCubeMapTextureEditor.$(OBJEXT):  \
+	Titania/Editors/TextureEditor/$(am__dirstamp) \
+	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextureEditor/X3DImageTexture3DEditor.$(OBJEXT):  \
 	Titania/Editors/TextureEditor/$(am__dirstamp) \
 	Titania/Editors/TextureEditor/$(DEPDIR)/$(am__dirstamp)
@@ -1742,6 +1747,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DComposedCubeMapTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DComposedTexture3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DEnvironmentTextureNodeEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DImageCubeMapTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DImageTexture3DEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DImageTextureEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/X3DMovieTextureEditor.Po@am__quote@

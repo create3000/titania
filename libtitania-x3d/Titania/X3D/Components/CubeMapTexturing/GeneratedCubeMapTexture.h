@@ -107,15 +107,12 @@ public:
 	size () const
 	{ return *fields .size; }
 
-	SFNode &
-	textureProperties ()
-	{ return *fields .textureProperties; }
-
-	const SFNode &
-	textureProperties () const
-	{ return *fields .textureProperties; }
-
 	///  @name Operations
+
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return loadState; }
 
 	virtual
 	bool
@@ -137,13 +134,14 @@ public:
 	getComponents () const final override
 	{ return 0; }
 
-	virtual
-	void
-	draw () final override;
-
 
 private:
 
+	///  @name Member access
+
+	void
+	setLoadState (const LoadState & value)
+	{ loadState = value; }
 
 	///  @name Static members
 
@@ -163,6 +161,7 @@ private:
 	};
 
 	Fields fields;
+	SFEnum <LoadState> loadState;
 
 };
 

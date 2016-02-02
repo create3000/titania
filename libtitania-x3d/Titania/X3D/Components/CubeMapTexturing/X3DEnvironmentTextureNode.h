@@ -61,12 +61,21 @@ class X3DEnvironmentTextureNode :
 {
 public:
 
+	///  @name Fields
+
+	SFNode &
+	textureProperties ()
+	{ return *fields .textureProperties; }
+
+	const SFNode &
+	textureProperties () const
+	{ return *fields .textureProperties; }
+
 	///  @name Member access
 
 	virtual
 	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return loadState; }
+	checkLoadState () const = 0;
 
 	virtual
 	size_t
@@ -79,6 +88,12 @@ public:
 	virtual
 	size_t
 	getComponents () const = 0;
+	
+	///  @name Operations
+
+	virtual
+	void
+	draw () final override;
 
 
 protected:
@@ -87,13 +102,38 @@ protected:
 
 	X3DEnvironmentTextureNode ();
 
+	virtual
 	void
-	setLoadState (const LoadState & value)
-	{ loadState = value; }
+	initialize () override;
+
+	void
+	setImage (const GLenum, const GLenum, const GLenum, const void* const);
+	
 
 private:
-	
-	SFEnum <LoadState> loadState;
+
+	///  @name Event handlers
+
+	void
+	set_textureProperties ();
+
+	///  @name Operations
+
+	void
+	updateTextureProperties ();
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode* const textureProperties;
+	};
+
+	Fields fields;
+
+	X3DPtr <TextureProperties> texturePropertiesNode;
 
 };
 

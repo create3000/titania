@@ -2,8 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureTransform3DEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureTransform3DEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureNodeEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DTextureNodeEditor.cpp" Line="11" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/PixelTexture.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing3D/PixelTexture3D.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.h" Line="29" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

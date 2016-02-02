@@ -194,7 +194,7 @@ X3DTexture::flip ()
 void
 X3DTexture::tryScaleImages (const size_type minTextureSize, const size_type maxTextureSize)
 {
-	if (minTextureSize == 0)
+	if (maxTextureSize == 0)
 		return;
 
 	if (std::max (width, height) >= minTextureSize)

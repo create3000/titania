@@ -57,6 +57,7 @@ X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
 	               X3DBaseInterface (),
 	      X3DTextureEditorInterface (),
 	X3DComposedCubeMapTextureEditor (),
+	   X3DImageCubeMapTextureEditor (),
 	         environmentTextureNode ()
 { }
 
@@ -64,6 +65,7 @@ void
 X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	setComposedCubeMapTexture (value);
+	setImageCubeMapTexture    (value);
 
 	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (value), value);
 }
@@ -78,12 +80,20 @@ X3DEnvironmentTextureNodeEditor::getComposedCubeMapTexture (const X3D::X3DPtr <X
 	return texture;
 }
 
+const X3D::X3DPtr <X3D::ImageCubeMapTexture> &
+X3DEnvironmentTextureNodeEditor::getImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DImageCubeMapTextureEditor::getImageCubeMapTexture (value);
+
+	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (texture), value);
+
+	return texture;
+}
+
 void
 X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> & texture, 
                                                             const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getEnvironmentTextureNotebook () .set_visible (texture);
-
 	environmentTextureNode = texture;
 
 	if (environmentTextureNode == value)

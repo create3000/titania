@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,129 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
-#define __TITANIA_X3D_COMPONENTS_TEXTURING_IMAGE_TEXTURE_H__
+#ifndef __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_X3DCUBE_MAP_TEXTURING_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_CUBE_MAP_TEXTURING_X3DCUBE_MAP_TEXTURING_CONTEXT_H__
 
-#include "../Networking/X3DUrlObject.h"
-#include "../Texturing/X3DTexture2DNode.h"
-#include "../../Thread/TextureLoader.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+
+#include <stack>
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class Texture;
+class TextureProperties;
 
-class ImageTexture :
-	public X3DTexture2DNode, public X3DUrlObject
+class X3DCubeMapTexturingContext :
+	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Construction
-
-	ImageTexture (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-	
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	///  @name Member access
-	
-	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const final override
-	{ return X3DUrlObject::checkLoadState (); }
-
-	virtual
-	size_t
-	getImageWidth () const final override
-	{ return imageWidth; }
-
-	virtual
-	size_t
-	getImageHeight () const final override
-	{ return imageHeight; }
-
-	void
-	setScale (const bool value)
-	{ scale = value; }
-
-	size_t
-	getScale () const
-	{ return scale; }
-
-	///  @name Operations
-	
-	virtual
-	void
-	requestImmediateLoad () final override;
-
-	void
-	requestAsyncLoad ();
+	const X3DPtr <TextureProperties> &
+	getCubeMapTextureProperties () const
+	{ return textureProperties; }
 
 	///  @name Destruction
-	
+
 	virtual
 	void
-	dispose () final override;
+	dispose () override
+	{ }
+
+	virtual
+	~X3DCubeMapTexturingContext ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DCubeMapTexturingContext ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Operations
-	
-	virtual
-	void
-	setTexture (const TexturePtr &) final override;
-
-	virtual
-	void
-	update () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
 	///  @name Members
-	
-	size_t                          imageWidth;
-	size_t                          imageHeight;
-	bool                            scale;
-	std::unique_ptr <TextureLoader> future;
 
+	X3DPtr <TextureProperties> textureProperties;
 
 };
 

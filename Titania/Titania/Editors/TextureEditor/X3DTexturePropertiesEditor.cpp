@@ -103,7 +103,9 @@ X3DTexturePropertiesEditor::set_selection ()
 	                                                      X3D::X3DConstants::PixelTexture,
 	                                                      X3D::X3DConstants::ComposedTexture3D,
 	                                                      X3D::X3DConstants::ImageTexture3D,
-	                                                      X3D::X3DConstants::PixelTexture3D
+	                                                      X3D::X3DConstants::PixelTexture3D,
+	                                                      X3D::X3DConstants::ComposedCubeMapTexture,
+	                                                      X3D::X3DConstants::ImageCubeMapTexture
 																		});
 
 	for (const auto & textureNode : textureNodes)

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,54 +48,52 @@
  *
  ******************************************************************************/
 
-#include "X3DMovieTextureEditor.h"
+#include "X3DImageCubeMapTextureEditor.h"
 
 #include "../../ComposedWidgets/MFStringURLWidget.h"
+#include "../../ComposedWidgets/TexturePreview.h"
+
+#include <Titania/X3D/Components/Texturing/ImageTexture.h>
 
 namespace titania {
 namespace puck {
 
-X3DMovieTextureEditor::X3DMovieTextureEditor () :
+X3DImageCubeMapTextureEditor::X3DImageCubeMapTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
-	                 enabled (this, getMovieTextureEnabledCheckButton (), "enabled"),
-	                    loop (this, getMovieTextureLoopCheckButton (), "loop"),
-	                     url (new MFStringURLWidget (this,
-	                          getMovieTextureURLTreeView (),
-	                          getMovieTextureURLCellRendererText (),
-	                          getMovieTextureURLAddButton (),
-	                          getMovieTextureURLRemoveButton (),
-	                          getMovieTextureURLReloadButton (),
-	                          getMovieTextureURLChooserColumn (),
-	                          "url")),
-	             movieTexture ()
+	                  preview (new TexturePreview (this, getImageCubeMapTexturePreviewBox (),  getImageCubeMapTextureFormatLabel ())),
+	                      url (new MFStringURLWidget (this,
+	                           getImageCubeMapTextureURLTreeView (),
+	                           getImageCubeMapTextureURLCellRendererText (),
+	                           getImageCubeMapTextureURLAddButton (),
+	                           getImageCubeMapTextureURLRemoveButton (),
+	                           getImageCubeMapTextureURLReloadButton (),
+	                           getImageCubeMapTextureURLChooserColumn (),
+	                           "url")),
+	           cubeMapTexture ()
 { }
 
 void
-X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DImageCubeMapTextureEditor::setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	movieTexture = value;
+	cubeMapTexture = value;
 
-	getMovieTextureBox () .set_visible (movieTexture);
+	getImageCubeMapTextureBox () .set_visible (cubeMapTexture);
 
-	if (not movieTexture)
+	if (not cubeMapTexture)
 	{
-		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
+		cubeMapTexture = getCurrentContext () -> createNode <X3D::ImageCubeMapTexture> ();
 		getCurrentContext () -> realize ();
 	}
 
-	X3D::MFNode nodes = { movieTexture };
-
-	enabled .setNodes (nodes);
-	loop    .setNodes (nodes);
-
-	url -> setNodes (nodes);
+	preview -> setTexture (X3D::X3DPtr <X3D::X3DTextureNode> (cubeMapTexture -> getTexture ()));
+	url     -> setNodes ({ cubeMapTexture });
 }
 
-const X3D::X3DPtr <X3D::MovieTexture> &
-X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+const X3D::X3DPtr <X3D::ImageCubeMapTexture> &
+X3DImageCubeMapTextureEditor::getImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	getMovieTextureBox () .set_visible (true);
+	getImageCubeMapTextureBox () .set_visible (true);
 
 	if (value)
 	{
@@ -106,10 +104,10 @@ X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 		}
 	}
 
-	return movieTexture;
+	return cubeMapTexture;
 }
 
-X3DMovieTextureEditor::~X3DMovieTextureEditor ()
+X3DImageCubeMapTextureEditor::~X3DImageCubeMapTextureEditor ()
 { }
 
 } // puck

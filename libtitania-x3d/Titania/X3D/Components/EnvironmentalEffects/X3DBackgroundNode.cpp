@@ -411,8 +411,6 @@ X3DBackgroundNode::drawCube ()
 
 	glMatrixMode (GL_TEXTURE);
 	glLoadIdentity ();
-	glTranslatef (0, 1, 0);
-	glScalef (1, -1, 1);
 	glMatrixMode (GL_MODELVIEW);
 
 	glFrontFace (GL_CCW);

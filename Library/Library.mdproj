@@ -624,6 +624,9 @@
     <None Include="Tests\Follower\PositionChaser2D.wrl" />
     <None Include="Tests\Follower\ScalarChaser.x3d" />
     <None Include="Tests\Follower\TexCoordChaser2D.x3d" />
+    <None Include="Tests\CubeMapTexturing\ImageCubeMapTexture.x3dv" />
+    <None Include="Tests\CubeMapTexturing\images\skybox_texture.jpg" />
+    <None Include="Tests\CubeMapTexturing\images\skybox_texture.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

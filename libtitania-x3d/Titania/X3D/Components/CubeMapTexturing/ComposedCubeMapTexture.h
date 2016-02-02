@@ -142,6 +142,11 @@ public:
 	///  @name Operations
 
 	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return loadState; }
+
+	virtual
 	bool
 	isTransparent () const final override
 	{ return transparent; }
@@ -161,9 +166,11 @@ public:
 	getComponents () const final override
 	{ return components; }
 
+	///  @name Construction
+
 	virtual
 	void
-	draw () final override;
+	dispose () final override;
 
 
 private:
@@ -173,6 +180,12 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Member access
+
+	void
+	setLoadState (const LoadState & value)
+	{ loadState = value; }
 
 	///  @name Event handlers
 
@@ -211,6 +224,8 @@ private:
 	size_t width;
 	size_t height;
 	size_t components;
+
+	SFEnum <LoadState> loadState;
 
 };
 

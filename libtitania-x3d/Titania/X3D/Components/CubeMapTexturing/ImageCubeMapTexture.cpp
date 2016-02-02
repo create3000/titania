@@ -50,7 +50,9 @@
 
 #include "ImageCubeMapTexture.h"
 
+#include "../../Browser/ContextLock.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Texturing/ImageTexture.h"
 
 namespace titania {
 namespace X3D {
@@ -59,21 +61,29 @@ const ComponentType ImageCubeMapTexture::component      = ComponentType::CUBE_MA
 const std::string   ImageCubeMapTexture::typeName       = "ImageCubeMapTexture";
 const std::string   ImageCubeMapTexture::containerField = "texture";
 
-ImageCubeMapTexture::Fields::Fields () :
-	textureProperties (new SFNode ())
-{ }
+const GLenum ImageCubeMapTexture::targets [6] = {
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, // Bottom
+
+};
 
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	             X3DUrlObject (),
-	                   fields ()
+	              textureNode (new ImageTexture (executionContext))
 {
 	addType (X3DConstants::ImageCubeMapTexture);
 
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+
+	addChildren (textureNode);
 }
 
 X3DBaseNode*
@@ -87,6 +97,13 @@ ImageCubeMapTexture::initialize ()
 {
 	X3DEnvironmentTextureNode::initialize ();
 	X3DUrlObject::initialize ();
+
+	url () .addInterest (textureNode -> url ());
+
+	textureNode -> checkLoadState () .addInterest (this, &ImageCubeMapTexture::set_loadState);
+	textureNode -> setScale (false);
+	textureNode -> url () = url ();
+	textureNode -> setup ();
 }
 
 void
@@ -94,17 +111,120 @@ ImageCubeMapTexture::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	textureNode -> setExecutionContext (executionContext);
+
 	X3DUrlObject::setExecutionContext (executionContext);
 	X3DEnvironmentTextureNode::setExecutionContext (executionContext);
 }
 
-void
-ImageCubeMapTexture::requestImmediateLoad ()
-{ }
+bool
+ImageCubeMapTexture::isTransparent () const
+{
+	return textureNode -> isTransparent ();
+}
+
+size_t
+ImageCubeMapTexture::getWidth () const
+{
+	return textureNode -> getWidth () / 4;
+}
+
+size_t
+ImageCubeMapTexture::getHeight () const
+{
+	return textureNode -> getHeight () / 3;
+}
+
+size_t
+ImageCubeMapTexture::getComponents () const
+{
+	return textureNode -> getComponents ();
+}
 
 void
-ImageCubeMapTexture::draw ()
-{ }
+ImageCubeMapTexture::requestImmediateLoad ()
+{
+	textureNode -> requestImmediateLoad ();
+}
+
+void
+ImageCubeMapTexture::set_loadState ()
+{
+	static const std::vector <std::pair <size_t, size_t>> offsets = {
+		std::make_pair (1, 1), // Front
+		std::make_pair (3, 1), // Back
+		std::make_pair (0, 1), // Left
+		std::make_pair (2, 1), // Right
+		std::make_pair (1, 2), // Top
+		std::make_pair (1, 0), // Bottom
+	
+	};
+
+	setLoadState (textureNode -> checkLoadState ());
+
+	ContextLock lock (getBrowser ());
+
+	if (not lock)
+		return;
+
+	switch (checkLoadState ())
+	{
+		case COMPLETE_STATE:
+		{
+			// Get texture 2d data as four component RGBA
+	
+			const auto width         = getWidth ();
+			const auto height        = getHeight ();
+			const auto width4        = width * 4;
+			const auto textureWidth4 = textureNode -> getWidth () * 4;
+	
+			std::vector <uint8_t> texture (textureWidth4 * textureNode -> getHeight ());
+			std::vector <uint8_t> image (width4 * height);
+		
+			glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			const size_t height_1 = height - 1;
+
+			for (size_t i = 0; i < 6; ++ i)
+			{
+				const auto x = offsets [i] .first  * width4;
+				const auto y = offsets [i] .second * height;
+	
+				// Flip image vertically
+		
+				for (size_t r = 0; r < height; ++ r)
+				{
+					for (size_t c = 0; c < width4; ++ c)
+					{
+						image [r * width4 + c] = texture [(height_1 - r + y) * textureWidth4 + c + x];
+					}
+				}
+		
+				// Transfer image
+				// Important: width and height must be equal, and all images must be of the same size!!!
+		
+				__LOG__ << getTextureId () << " : " << targets [i] <<  " : " << width  << " : " << height << std::endl;
+	
+				setImage (targets [i], GL_RGBA, GL_RGBA, image .data ());
+			}
+	
+			break;
+		}
+		case FAILED_STATE:
+		{
+			__LOG__ << getTextureId () << std::endl;
+	
+			for (size_t i = 0; i < 6; ++ i)
+				setImage (targets [i], GL_RGBA, GL_RGBA, nullptr);
+			break;
+		}
+		default:
+			break;
+	}
+}
+
 
 void
 ImageCubeMapTexture::dispose ()

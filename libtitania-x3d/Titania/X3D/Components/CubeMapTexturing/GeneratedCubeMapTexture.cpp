@@ -68,7 +68,8 @@ GeneratedCubeMapTexture::Fields::Fields () :
 GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
-	                   fields ()
+	                   fields (),
+	                loadState (NOT_STARTED_STATE)
 {
 	addType (X3DConstants::GeneratedCubeMapTexture);
 
@@ -84,9 +85,6 @@ GeneratedCubeMapTexture::create (X3DExecutionContext* const executionContext) co
 	return new GeneratedCubeMapTexture (executionContext);
 }
 
-void
-GeneratedCubeMapTexture::draw ()
-{ }
 
 } // X3D
 } // titania

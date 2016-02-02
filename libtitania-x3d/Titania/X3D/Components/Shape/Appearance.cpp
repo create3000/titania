@@ -266,6 +266,10 @@ Appearance::draw ()
 		glColor4f (1, 1, 1, 1);
 	}
 
+	// TextureTransform
+
+	textureTransformNode -> draw ();
+
 	// Texture
 
 	if (textureNode)
@@ -273,10 +277,6 @@ Appearance::draw ()
 		textureNode -> draw ();
 		getBrowser () -> setTexture (true);
 	}
-
-	// TextureTransform
-
-	textureTransformNode -> draw ();
 
 	// Shader
 

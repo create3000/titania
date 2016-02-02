@@ -32,6 +32,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Console.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
+	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.cpp \
 	Titania/X3D/Browser/Geometry2D/Arc2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.cpp \
 	Titania/X3D/Browser/Geometry2D/Circle2DOptions.cpp \

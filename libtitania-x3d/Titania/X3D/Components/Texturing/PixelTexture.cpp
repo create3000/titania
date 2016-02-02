@@ -253,7 +253,7 @@ throw (Error <INVALID_NODE>,
 	if (not texture2DNode)
 		throw Error <INVALID_NODE> ("Node is NULL.");
 
-	X3D::ContextLock lock (texture2DNode -> getBrowser ());
+	ContextLock lock (texture2DNode -> getBrowser ());
 
 	if (not lock)
 		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");

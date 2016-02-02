@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,69 +48,33 @@
  *
  ******************************************************************************/
 
-#include "X3DMovieTextureEditor.h"
+#include "X3DCubeMapTexturingContext.h"
 
-#include "../../ComposedWidgets/MFStringURLWidget.h"
+#include "../../Components/Texturing/TextureProperties.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-X3DMovieTextureEditor::X3DMovieTextureEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface (),
-	                 enabled (this, getMovieTextureEnabledCheckButton (), "enabled"),
-	                    loop (this, getMovieTextureLoopCheckButton (), "loop"),
-	                     url (new MFStringURLWidget (this,
-	                          getMovieTextureURLTreeView (),
-	                          getMovieTextureURLCellRendererText (),
-	                          getMovieTextureURLAddButton (),
-	                          getMovieTextureURLRemoveButton (),
-	                          getMovieTextureURLReloadButton (),
-	                          getMovieTextureURLChooserColumn (),
-	                          "url")),
-	             movieTexture ()
-{ }
+X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
+	            X3DBaseNode (),
+	      textureProperties (new TextureProperties (getExecutionContext ()))
+{
+	addChildren (textureProperties);
+}
 
 void
-X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+X3DCubeMapTexturingContext::initialize ()
 {
-	movieTexture = value;
-
-	getMovieTextureBox () .set_visible (movieTexture);
-
-	if (not movieTexture)
-	{
-		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
-		getCurrentContext () -> realize ();
-	}
-
-	X3D::MFNode nodes = { movieTexture };
-
-	enabled .setNodes (nodes);
-	loop    .setNodes (nodes);
-
-	url -> setNodes (nodes);
+	textureProperties -> minificationFilter ()  = "NEAREST_PIXEL";
+	textureProperties -> magnificationFilter () = "NEAREST_PIXEL";
+	textureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
+	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
+	textureProperties -> setup ();
 }
 
-const X3D::X3DPtr <X3D::MovieTexture> &
-X3DMovieTextureEditor::getMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-{
-	getMovieTextureBox () .set_visible (true);
-
-	if (value)
-	{
-		switch (value -> getType () .back ())
-		{
-			default:
-				break;
-		}
-	}
-
-	return movieTexture;
-}
-
-X3DMovieTextureEditor::~X3DMovieTextureEditor ()
+X3DCubeMapTexturingContext::~X3DCubeMapTexturingContext ()
 { }
 
-} // puck
+} // X3D
 } // titania

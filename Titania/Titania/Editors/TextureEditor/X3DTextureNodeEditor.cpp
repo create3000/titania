@@ -144,6 +144,12 @@ X3DTextureNodeEditor::on_texture_changed ()
 			case 7:
 				textureNode = getComposedCubeMapTexture (textureNode);
 				break;
+			//case 8:
+				//textureNode = getGeneratedCubeMapTexture (textureNode);
+			//	break;
+			case 8:
+				textureNode = getImageCubeMapTexture (textureNode);
+				break;
 			default:
 				break;
 		}
@@ -207,7 +213,9 @@ X3DTextureNodeEditor::set_node ()
 		COMPOSED_TEXTURE_3D,
 		IMAGE_TEXTURE_3D,
 		PIXEL_TEXTURE_3D,
-		COMPOSED_CUBE_MAP_TEXTURE
+		COMPOSED_CUBE_MAP_TEXTURE,
+		//GERNERATED_CUBE_MAP_TEXTURE,
+		IMAGE_CUBE_MAP_TEXTURE
 	};
 
 	auto       tuple     = getSelection <X3D::X3DTextureNode> (appearances, "texture");
@@ -250,6 +258,12 @@ X3DTextureNodeEditor::set_node ()
 				break;
 			case X3D::X3DConstants::ComposedCubeMapTexture:
 				getTextureComboBoxText () .set_active (COMPOSED_CUBE_MAP_TEXTURE);
+				break;
+			//case X3D::X3DConstants::GenratedCubeMapTexture:
+			//	getTextureComboBoxText () .set_active (GENERATED_CUBE_MAP_TEXTURE);
+			//	break;
+			case X3D::X3DConstants::ImageCubeMapTexture:
+				getTextureComboBoxText () .set_active (IMAGE_CUBE_MAP_TEXTURE);
 				break;
 			default:
 				getTextureComboBoxText () .set_active (-1);

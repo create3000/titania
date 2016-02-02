@@ -110,6 +110,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_ImageTexture3DURLCellRendererText            = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLCellRendererText"));
 	m_ImageTexture3DURLChooserColumn               = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLChooserColumn"));
 	m_ImageTexture3DURLCellrendererPixbuf          = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTexture3DURLCellrendererPixbuf"));
+	m_ImageCubeMapTextureURLCellRendererText       = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("ImageCubeMapTextureURLCellRendererText"));
+	m_ImageCubeMapTextureURLChooserColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageCubeMapTextureURLChooserColumn"));
+	m_ImageTextureURLCellrendererPixbuf1           = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf1"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -149,8 +152,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageTexture3DEmbedButton", m_ImageTexture3DEmbedButton);
 	m_builder -> get_widget ("ImageTexture3DURLReloadButton", m_ImageTexture3DURLReloadButton);
 	m_builder -> get_widget ("PixelTexture3DBox", m_PixelTexture3DBox);
-	m_builder -> get_widget ("EnvironmentTextureNotebook", m_EnvironmentTextureNotebook);
 	m_builder -> get_widget ("ComposedCubeMapTextureBox", m_ComposedCubeMapTextureBox);
+	m_builder -> get_widget ("ComposedCubeMapNotebook", m_ComposedCubeMapNotebook);
 	m_builder -> get_widget ("ComposedCubeMapFrontTextureFormatLabel", m_ComposedCubeMapFrontTextureFormatLabel);
 	m_builder -> get_widget ("ComposedCubeMapFrontTexturePreviewBox", m_ComposedCubeMapFrontTexturePreviewBox);
 	m_builder -> get_widget ("ComposedCubeMapBackTextureFormatLabel", m_ComposedCubeMapBackTextureFormatLabel);
@@ -163,6 +166,15 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ComposedCubeMapTopTexturePreviewBox", m_ComposedCubeMapTopTexturePreviewBox);
 	m_builder -> get_widget ("ComposedCubeMapBottomTextureFormatLabel", m_ComposedCubeMapBottomTextureFormatLabel);
 	m_builder -> get_widget ("ComposedCubeMapBottomTexturePreviewBox", m_ComposedCubeMapBottomTexturePreviewBox);
+	m_builder -> get_widget ("ImageCubeMapTextureBox", m_ImageCubeMapTextureBox);
+	m_builder -> get_widget ("ImageCubeMapTextureFormatLabel", m_ImageCubeMapTextureFormatLabel);
+	m_builder -> get_widget ("ImageCubeMapTexturePreviewBox", m_ImageCubeMapTexturePreviewBox);
+	m_builder -> get_widget ("ImageCubeMapTextureURLBox", m_ImageCubeMapTextureURLBox);
+	m_builder -> get_widget ("ImageCubeMapTextureURLTreeView", m_ImageCubeMapTextureURLTreeView);
+	m_builder -> get_widget ("ImageCubeMapTextureURLAddButton", m_ImageCubeMapTextureURLAddButton);
+	m_builder -> get_widget ("ImageCubeMapTextureURLRemoveButton", m_ImageCubeMapTextureURLRemoveButton);
+	m_builder -> get_widget ("ImageCubeMapTextureEmbedButton", m_ImageCubeMapTextureEmbedButton);
+	m_builder -> get_widget ("ImageCubeMapTextureURLReloadButton", m_ImageCubeMapTextureURLReloadButton);
 	m_builder -> get_widget ("Texture2DBox", m_Texture2DBox);
 	m_builder -> get_widget ("Texture2DNodeRepeatSCheckButton", m_Texture2DNodeRepeatSCheckButton);
 	m_builder -> get_widget ("Texture2DNodeRepeatTCheckButton", m_Texture2DNodeRepeatTCheckButton);

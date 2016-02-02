@@ -65,7 +65,9 @@ X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 	               topPreview (new TexturePreview (this, getComposedCubeMapTopTexturePreviewBox (),    getComposedCubeMapTopTextureFormatLabel ())),
 	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel ())),
 	           cubeMapTexture ()
-{ }
+{
+	getComposedCubeMapNotebook () .set_current_page (getConfig () .getInteger ("composedCubeMapPage"));
+}
 
 void
 X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
@@ -84,13 +86,9 @@ X3DComposedCubeMapTextureEditor::setComposedCubeMapTexture (const X3D::X3DPtr <X
 
 	getComposedCubeMapTextureBox () .set_visible (cubeMapTexture);
 
-	if (cubeMapTexture)
-		getEnvironmentTextureNotebook () .set_current_page (0);
-
-	else
+	if (not cubeMapTexture)
 	{
-		cubeMapTexture = new X3D::ComposedCubeMapTexture (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (cubeMapTexture);
+		cubeMapTexture = getCurrentContext () -> createNode <X3D::ComposedCubeMapTexture> ();
 		getCurrentContext () -> realize ();
 	}
 
@@ -133,7 +131,9 @@ X3DComposedCubeMapTextureEditor::set_texture (const std::shared_ptr <TexturePrev
 }
 
 X3DComposedCubeMapTextureEditor::~X3DComposedCubeMapTextureEditor ()
-{ }
+{
+	getConfig () .setItem ("composedCubeMapPage", getComposedCubeMapNotebook () .get_current_page ());
+}
 
 } // puck
 } // titania

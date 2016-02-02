@@ -50,16 +50,79 @@
 
 #include "X3DEnvironmentTextureNode.h"
 
+#include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
+X3DEnvironmentTextureNode::Fields::Fields () :
+	textureProperties (new SFNode ())
+{ }
+
 X3DEnvironmentTextureNode::X3DEnvironmentTextureNode () :
-	X3DTextureNode (),
-	     loadState (NOT_STARTED_STATE)
+	       X3DTextureNode (),
+	texturePropertiesNode ()
 {
 	addType (X3DConstants::X3DEnvironmentTextureNode);
-	
-	addChildren (loadState);
+}
+
+void
+X3DEnvironmentTextureNode::initialize ()
+{
+	X3DTextureNode::initialize ();
+
+	textureProperties () .addInterest (this, &X3DEnvironmentTextureNode::set_textureProperties);
+
+	set_textureProperties ();
+}
+
+void
+X3DEnvironmentTextureNode::set_textureProperties ()
+{
+	if (texturePropertiesNode)
+		texturePropertiesNode -> removeInterest (this, &X3DEnvironmentTextureNode::updateTextureProperties);
+
+	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
+
+	if (not texturePropertiesNode)
+		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getCubeMapTextureProperties ()));
+
+	texturePropertiesNode -> addInterest (this, &X3DEnvironmentTextureNode::updateTextureProperties);
+
+	updateTextureProperties ();
+}
+
+void
+X3DEnvironmentTextureNode::setImage (const GLenum target, const GLenum internalFormat, const GLenum format, const void* const data)
+{
+	updateTextureProperties ();
+
+	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
+
+	glTexImage2D (target,
+	              0,     // This texture is level 0 in mimpap generation.
+	              internalFormat,
+	              getWidth (), getHeight (),
+	              0, /* clamp <int> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
+	              format, GL_UNSIGNED_BYTE,
+	              data);
+
+	glBindTexture (GL_TEXTURE_CUBE_MAP, 0);
+
+	addEvent ();
+}
+
+void
+X3DEnvironmentTextureNode::updateTextureProperties ()
+{
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_CUBE_MAP, textureProperties (), texturePropertiesNode, getWidth (), getHeight (), true, true, true);
+}
+
+void
+X3DEnvironmentTextureNode::draw ()
+{
+	X3DTextureNode::draw (GL_TEXTURE_CUBE_MAP, getComponents ());
 }
 
 } // X3D

@@ -75,8 +75,7 @@ X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 
 	if (not pixelTexture)
 	{
-		pixelTexture = new X3D::PixelTexture3D (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (pixelTexture);
+		pixelTexture = getCurrentContext () -> createNode <X3D::PixelTexture3D> ();
 		getCurrentContext () -> realize ();
 	}
 
