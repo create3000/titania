@@ -65,11 +65,13 @@ namespace puck {
 
 TexturePreview::TexturePreview (X3DBaseInterface* const editor,
                                 Gtk::Box & box,
-                                Gtk::Label & label) :
+                                Gtk::Label & formatLabel,
+                                Gtk::Label & loadStateLabel) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	X3DComposedWidget (editor),
 	              box (box),
-	            label (label),
+	            formatLabel (formatLabel),
+	   loadStateLabel (loadStateLabel),
 	          preview (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }))
 {
 	// Browser
@@ -174,12 +176,12 @@ TexturePreview::set_loadState ()
 				break;
 		}
 	
-		label .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
-		                 " × " +
-		                 std::to_string (texture2DNode -> getImageHeight ()) +
-		                 " (" +
-		                 components +
-		                 ")");
+		formatLabel .set_text (std::to_string (texture2DNode -> getImageWidth ()) +
+		                       " × " +
+		                       std::to_string (texture2DNode -> getImageHeight ()) +
+		                       " (" +
+		                       components +
+		                       ")");
 	}
 
 	const X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode (textureNode);
@@ -198,14 +200,14 @@ TexturePreview::set_loadState ()
 				break;
 		}
 	
-		label .set_text (std::to_string (texture3DNode -> getImageWidth ()) +
-		                 " × " +
-		                 std::to_string (texture3DNode -> getImageHeight ()) +
-		                 " × " +
-		                 std::to_string (texture3DNode -> getDepth ()) +
-		                 " (" +
-		                 components +
-		                 ")");
+		formatLabel .set_text (std::to_string (texture3DNode -> getImageWidth ()) +
+		                       " × " +
+		                       std::to_string (texture3DNode -> getImageHeight ()) +
+		                       " × " +
+		                       std::to_string (texture3DNode -> getDepth ()) +
+		                       " (" +
+		                       components +
+		                       ")");
 	}
 
 	const X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> environmentTexture (textureNode);
@@ -224,14 +226,43 @@ TexturePreview::set_loadState ()
 				break;
 		}
 
-		label .set_text (std::to_string (environmentTexture -> getWidth ()) +
-		                 " × " +
-		                 std::to_string (environmentTexture -> getHeight ()) +
-		                 " × 6 " +
-		                 " (" +
-		                 components +
-		                 ")");
+		formatLabel .set_text (std::to_string (environmentTexture -> getWidth ()) +
+		                       " × " +
+		                       std::to_string (environmentTexture -> getHeight ()) +
+		                       " × 6 " +
+		                       " (" +
+		                       components +
+		                       ")");
 	}
+
+	if (textureNode)
+	{
+		switch (textureNode -> checkLoadState ())
+		{
+			case X3D::NOT_STARTED_STATE:
+			{
+				loadStateLabel .set_text (_ ("NOT STARTED"));
+				break;
+			}
+			case X3D::IN_PROGRESS_STATE:
+			{
+				loadStateLabel.set_text (_ ("IN PROGRESS"));
+				break;
+			}
+			case X3D::COMPLETE_STATE:
+			{
+				loadStateLabel .set_text (_ ("COMPLETE"));
+				break;
+			}
+			case X3D::FAILED_STATE:
+			{
+				loadStateLabel .set_text (_ ("FAILED"));
+				break;
+			}
+		}
+	}
+	else
+		loadStateLabel .set_text (_ ("NOT STARTED"));
 }
 
 bool

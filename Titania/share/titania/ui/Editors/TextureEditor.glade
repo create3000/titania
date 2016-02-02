@@ -432,7 +432,7 @@
                           <object class="GtkBox" id="box5">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">vertical</property>
+                            <property name="spacing">16</property>
                             <child>
                               <object class="GtkLabel" id="TextureFormatLabel">
                                 <property name="visible">True</property>
@@ -444,6 +444,32 @@
                                 <property name="expand">False</property>
                                 <property name="fill">True</property>
                                 <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label73">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">end</property>
+                                <property name="label" translatable="yes">Load State:</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="TextureLoadStateLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">end</property>
+                                <property name="label" translatable="yes">NOT STARTED</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                           </object>
@@ -1286,7 +1312,7 @@
                                       <object class="GtkBox" id="box24">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapFrontTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1298,6 +1324,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label77">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapFrontTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1387,7 +1439,7 @@
                                       <object class="GtkBox" id="box8">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapBackTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1399,6 +1451,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label88">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapBackTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1480,7 +1558,7 @@
                                       <object class="GtkBox" id="box17">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapLeftTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1492,6 +1570,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label89">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapLeftTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1573,7 +1677,7 @@
                                       <object class="GtkBox" id="box25">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapRightTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1585,6 +1689,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label90">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapRightTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1666,7 +1796,7 @@
                                       <object class="GtkBox" id="box26">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapTopTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1678,6 +1808,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label91">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapTopTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1760,7 +1916,7 @@
                                       <object class="GtkBox" id="box27">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">16</property>
                                         <child>
                                           <object class="GtkLabel" id="ComposedCubeMapBottomTextureFormatLabel">
                                             <property name="visible">True</property>
@@ -1772,6 +1928,32 @@
                                             <property name="expand">False</property>
                                             <property name="fill">True</property>
                                             <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label92">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">Load State:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="ComposedCubeMapBottomTextureLoadStateLabel">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">end</property>
+                                            <property name="label" translatable="yes">NOT STARTED</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -1885,7 +2067,7 @@
                               <object class="GtkBox" id="box9">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="orientation">vertical</property>
+                                <property name="spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="ImageCubeMapTextureFormatLabel">
                                     <property name="visible">True</property>
@@ -1897,6 +2079,32 @@
                                     <property name="expand">False</property>
                                     <property name="fill">True</property>
                                     <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label93">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
+                                    <property name="label" translatable="yes">Load State:</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="ImageCubeMapTextureLoadStateLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">end</property>
+                                    <property name="label" translatable="yes">NOT STARTED</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
                                   </packing>
                                 </child>
                               </object>

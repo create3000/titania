@@ -61,7 +61,10 @@ namespace puck {
 X3DImageCubeMapTextureEditor::X3DImageCubeMapTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
-	                  preview (new TexturePreview (this, getImageCubeMapTexturePreviewBox (),  getImageCubeMapTextureFormatLabel ())),
+	                  preview (new TexturePreview (this,
+                              getImageCubeMapTexturePreviewBox (),
+                              getImageCubeMapTextureFormatLabel (),
+                              getImageCubeMapTextureLoadStateLabel ())),
 	                      url (new MFStringURLWidget (this,
 	                           getImageCubeMapTextureURLTreeView (),
 	                           getImageCubeMapTextureURLCellRendererText (),

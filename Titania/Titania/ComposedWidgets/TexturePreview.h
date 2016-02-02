@@ -73,6 +73,7 @@ public:
 
 	TexturePreview (X3DBaseInterface* const,
 	                Gtk::Box &,
+	                Gtk::Label &,
 	                Gtk::Label &);
 
 	void
@@ -106,7 +107,8 @@ private:
 	///  @name Members
 
 	Gtk::Box &                        box;
-	Gtk::Label &                      label;
+	Gtk::Label &                      formatLabel;
+	Gtk::Label &                      loadStateLabel;
 	X3D::BrowserPtr                   preview;
 	X3D::X3DPtr <X3D::X3DTextureNode> textureNode;
 

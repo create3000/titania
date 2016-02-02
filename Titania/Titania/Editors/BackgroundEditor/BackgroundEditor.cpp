@@ -85,12 +85,12 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                              "groundColor"),
 	                 groundAngle (this, getGroundAngleAdjustment (), getGroundAngleSpinButton (), "groundAngle"),
 	                transparency (this, getTransparencyAdjustment (), getTransparencyScale (), "transparency"),
-	                frontPreview (new TexturePreview (this, getFrontTexturePreviewBox (),  getFrontTextureFormatLabel ())),
-	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (),   getBackTextureFormatLabel ())),
-	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (),   getLeftTextureFormatLabel ())),
-	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (),  getRightTextureFormatLabel ())),
-	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (),    getTopTextureFormatLabel ())),
-	               bottomPreview (new TexturePreview (this, getBottomTexturePreviewBox (), getBottomTextureFormatLabel ())),
+	                frontPreview (new TexturePreview (this, getFrontTexturePreviewBox (),  getFrontTextureFormatLabel (),  getFrontTextureLoadStateLabel ())),
+	                 backPreview (new TexturePreview (this, getBackTexturePreviewBox (),   getBackTextureFormatLabel (),   getBackTextureLoadStateLabel ())),
+	                 leftPreview (new TexturePreview (this, getLeftTexturePreviewBox (),   getLeftTextureFormatLabel (),   getLeftTextureLoadStateLabel ())),
+	                rightPreview (new TexturePreview (this, getRightTexturePreviewBox (),  getRightTextureFormatLabel (),  getRightTextureLoadStateLabel ())),
+	                  topPreview (new TexturePreview (this, getTopTexturePreviewBox (),    getTopTextureFormatLabel (),    getTopTextureLoadStateLabel ())),
+	               bottomPreview (new TexturePreview (this, getBottomTexturePreviewBox (), getBottomTextureFormatLabel (), getBottomTextureLoadStateLabel ())),
 	              backgroundNode (),
 	                    changing (false)
 {

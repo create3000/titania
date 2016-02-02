@@ -127,6 +127,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_builder -> get_widget ("TexturesNotebook", m_TexturesNotebook);
 	m_builder -> get_widget ("FrontTextureFormatLabel", m_FrontTextureFormatLabel);
+	m_builder -> get_widget ("FrontTextureLoadStateLabel", m_FrontTextureLoadStateLabel);
 	m_builder -> get_widget ("FrontTexturePreviewBox", m_FrontTexturePreviewBox);
 	m_builder -> get_widget ("FrontURLGrid", m_FrontURLGrid);
 	m_builder -> get_widget ("FrontURLBox", m_FrontURLBox);
@@ -135,6 +136,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FrontURLRemoveButton", m_FrontURLRemoveButton);
 	m_builder -> get_widget ("FrontURLReloadButton", m_FrontURLReloadButton);
 	m_builder -> get_widget ("BackTextureFormatLabel", m_BackTextureFormatLabel);
+	m_builder -> get_widget ("BackTextureLoadStateLabel", m_BackTextureLoadStateLabel);
 	m_builder -> get_widget ("BackTexturePreviewBox", m_BackTexturePreviewBox);
 	m_builder -> get_widget ("BackURLGrid", m_BackURLGrid);
 	m_builder -> get_widget ("BackURLBox", m_BackURLBox);
@@ -143,6 +145,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BackURLRemoveButton", m_BackURLRemoveButton);
 	m_builder -> get_widget ("BackURLReloadButton", m_BackURLReloadButton);
 	m_builder -> get_widget ("LeftTextureFormatLabel", m_LeftTextureFormatLabel);
+	m_builder -> get_widget ("LeftTextureLoadStateLabel", m_LeftTextureLoadStateLabel);
 	m_builder -> get_widget ("LeftTexturePreviewBox", m_LeftTexturePreviewBox);
 	m_builder -> get_widget ("LeftURLGrid", m_LeftURLGrid);
 	m_builder -> get_widget ("LeftURLBox", m_LeftURLBox);
@@ -151,6 +154,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LeftURLRemoveButton", m_LeftURLRemoveButton);
 	m_builder -> get_widget ("LeftURLReloadButton", m_LeftURLReloadButton);
 	m_builder -> get_widget ("RightTextureFormatLabel", m_RightTextureFormatLabel);
+	m_builder -> get_widget ("RightTextureLoadStateLabel", m_RightTextureLoadStateLabel);
 	m_builder -> get_widget ("RightTexturePreviewBox", m_RightTexturePreviewBox);
 	m_builder -> get_widget ("RightURLGrid", m_RightURLGrid);
 	m_builder -> get_widget ("RightURLBox", m_RightURLBox);
@@ -159,6 +163,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RightURLRemoveButton", m_RightURLRemoveButton);
 	m_builder -> get_widget ("RightURLReloadButton", m_RightURLReloadButton);
 	m_builder -> get_widget ("TopTextureFormatLabel", m_TopTextureFormatLabel);
+	m_builder -> get_widget ("TopTextureLoadStateLabel", m_TopTextureLoadStateLabel);
 	m_builder -> get_widget ("TopTexturePreviewBox", m_TopTexturePreviewBox);
 	m_builder -> get_widget ("TopURLGrid", m_TopURLGrid);
 	m_builder -> get_widget ("TopURLBox", m_TopURLBox);
@@ -167,6 +172,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TopURLRemoveButton", m_TopURLRemoveButton);
 	m_builder -> get_widget ("TopURLReloadButton", m_TopURLReloadButton);
 	m_builder -> get_widget ("BottomTextureFormatLabel", m_BottomTextureFormatLabel);
+	m_builder -> get_widget ("BottomTextureLoadStateLabel", m_BottomTextureLoadStateLabel);
 	m_builder -> get_widget ("BottomTexturePreviewBox", m_BottomTexturePreviewBox);
 	m_builder -> get_widget ("BottomURLGrid", m_BottomURLGrid);
 	m_builder -> get_widget ("BottomURLBox", m_BottomURLBox);

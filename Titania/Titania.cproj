@@ -2391,6 +2391,7 @@
     <None Include="Titania\Editors\TextureEditor\X3DEnvironmentTextureNodeEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.h" />
+    <None Include="share\titania\Library\Components\CubeMapTexturing\.ImageCubeMapTexture-Titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

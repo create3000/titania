@@ -333,6 +333,10 @@ public:
 	getTextureFormatLabel () const
 	{ return *m_TextureFormatLabel; }
 
+	Gtk::Label &
+	getTextureLoadStateLabel () const
+	{ return *m_TextureLoadStateLabel; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -457,6 +461,10 @@ public:
 	getComposedCubeMapFrontTextureFormatLabel () const
 	{ return *m_ComposedCubeMapFrontTextureFormatLabel; }
 
+	Gtk::Label &
+	getComposedCubeMapFrontTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapFrontTextureLoadStateLabel; }
+
 	Gtk::Box &
 	getComposedCubeMapFrontTexturePreviewBox () const
 	{ return *m_ComposedCubeMapFrontTexturePreviewBox; }
@@ -464,6 +472,10 @@ public:
 	Gtk::Label &
 	getComposedCubeMapBackTextureFormatLabel () const
 	{ return *m_ComposedCubeMapBackTextureFormatLabel; }
+
+	Gtk::Label &
+	getComposedCubeMapBackTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapBackTextureLoadStateLabel; }
 
 	Gtk::Box &
 	getComposedCubeMapBackTexturePreviewBox () const
@@ -473,6 +485,10 @@ public:
 	getComposedCubeMapLeftTextureFormatLabel () const
 	{ return *m_ComposedCubeMapLeftTextureFormatLabel; }
 
+	Gtk::Label &
+	getComposedCubeMapLeftTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapLeftTextureLoadStateLabel; }
+
 	Gtk::Box &
 	getComposedCubeMapLeftTexturePreviewBox () const
 	{ return *m_ComposedCubeMapLeftTexturePreviewBox; }
@@ -480,6 +496,10 @@ public:
 	Gtk::Label &
 	getComposedCubeMapRightTextureFormatLabel () const
 	{ return *m_ComposedCubeMapRightTextureFormatLabel; }
+
+	Gtk::Label &
+	getComposedCubeMapRightTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapRightTextureLoadStateLabel; }
 
 	Gtk::Box &
 	getComposedCubeMapRightTexturePreviewBox () const
@@ -489,6 +509,10 @@ public:
 	getComposedCubeMapTopTextureFormatLabel () const
 	{ return *m_ComposedCubeMapTopTextureFormatLabel; }
 
+	Gtk::Label &
+	getComposedCubeMapTopTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapTopTextureLoadStateLabel; }
+
 	Gtk::Box &
 	getComposedCubeMapTopTexturePreviewBox () const
 	{ return *m_ComposedCubeMapTopTexturePreviewBox; }
@@ -496,6 +520,10 @@ public:
 	Gtk::Label &
 	getComposedCubeMapBottomTextureFormatLabel () const
 	{ return *m_ComposedCubeMapBottomTextureFormatLabel; }
+
+	Gtk::Label &
+	getComposedCubeMapBottomTextureLoadStateLabel () const
+	{ return *m_ComposedCubeMapBottomTextureLoadStateLabel; }
 
 	Gtk::Box &
 	getComposedCubeMapBottomTexturePreviewBox () const
@@ -508,6 +536,10 @@ public:
 	Gtk::Label &
 	getImageCubeMapTextureFormatLabel () const
 	{ return *m_ImageCubeMapTextureFormatLabel; }
+
+	Gtk::Label &
+	getImageCubeMapTextureLoadStateLabel () const
+	{ return *m_ImageCubeMapTextureLoadStateLabel; }
 
 	Gtk::Box &
 	getImageCubeMapTexturePreviewBox () const
@@ -935,6 +967,7 @@ private:
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
 	Gtk::Button*                           m_TextureUnlinkButton;
 	Gtk::Label*                            m_TextureFormatLabel;
+	Gtk::Label*                            m_TextureLoadStateLabel;
 	Gtk::Box*                              m_PreviewBox;
 	Gtk::Notebook*                         m_TextureNotebook;
 	Gtk::Label*                            m_TextureLabel;
@@ -966,19 +999,26 @@ private:
 	Gtk::Grid*                             m_ComposedCubeMapTextureBox;
 	Gtk::Notebook*                         m_ComposedCubeMapNotebook;
 	Gtk::Label*                            m_ComposedCubeMapFrontTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapFrontTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapFrontTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapBackTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapBackTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapBackTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapLeftTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapLeftTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapLeftTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapRightTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapRightTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapRightTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapTopTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapTopTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapTopTexturePreviewBox;
 	Gtk::Label*                            m_ComposedCubeMapBottomTextureFormatLabel;
+	Gtk::Label*                            m_ComposedCubeMapBottomTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapBottomTexturePreviewBox;
 	Gtk::Grid*                             m_ImageCubeMapTextureBox;
 	Gtk::Label*                            m_ImageCubeMapTextureFormatLabel;
+	Gtk::Label*                            m_ImageCubeMapTextureLoadStateLabel;
 	Gtk::Box*                              m_ImageCubeMapTexturePreviewBox;
 	Gtk::Box*                              m_ImageCubeMapTextureURLBox;
 	Gtk::TreeView*                         m_ImageCubeMapTextureURLTreeView;

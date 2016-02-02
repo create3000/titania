@@ -58,12 +58,12 @@ namespace puck {
 X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
-	             frontPreview (new TexturePreview (this, getComposedCubeMapFrontTexturePreviewBox (),  getComposedCubeMapFrontTextureFormatLabel ())),
-	              backPreview (new TexturePreview (this, getComposedCubeMapBackTexturePreviewBox (),   getComposedCubeMapBackTextureFormatLabel ())),
-	              leftPreview (new TexturePreview (this, getComposedCubeMapLeftTexturePreviewBox (),   getComposedCubeMapLeftTextureFormatLabel ())),
-	             rightPreview (new TexturePreview (this, getComposedCubeMapRightTexturePreviewBox (),  getComposedCubeMapRightTextureFormatLabel ())),
-	               topPreview (new TexturePreview (this, getComposedCubeMapTopTexturePreviewBox (),    getComposedCubeMapTopTextureFormatLabel ())),
-	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel ())),
+	             frontPreview (new TexturePreview (this, getComposedCubeMapFrontTexturePreviewBox (),  getComposedCubeMapFrontTextureFormatLabel (),  getComposedCubeMapFrontTextureLoadStateLabel ())),
+	              backPreview (new TexturePreview (this, getComposedCubeMapBackTexturePreviewBox (),   getComposedCubeMapBackTextureFormatLabel (),   getComposedCubeMapBackTextureLoadStateLabel ())),
+	              leftPreview (new TexturePreview (this, getComposedCubeMapLeftTexturePreviewBox (),   getComposedCubeMapLeftTextureFormatLabel (),   getComposedCubeMapLeftTextureLoadStateLabel ())),
+	             rightPreview (new TexturePreview (this, getComposedCubeMapRightTexturePreviewBox (),  getComposedCubeMapRightTextureFormatLabel (),  getComposedCubeMapRightTextureLoadStateLabel ())),
+	               topPreview (new TexturePreview (this, getComposedCubeMapTopTexturePreviewBox (),    getComposedCubeMapTopTextureFormatLabel (),    getComposedCubeMapTopTextureLoadStateLabel ())),
+	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel (), getComposedCubeMapBottomTextureLoadStateLabel ())),
 	           cubeMapTexture ()
 {
 	getComposedCubeMapNotebook () .set_current_page (getConfig () .getInteger ("composedCubeMapPage"));
