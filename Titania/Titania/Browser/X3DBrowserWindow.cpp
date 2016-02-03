@@ -53,15 +53,11 @@
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
-#include "../Widgets/Console/Console.h"
-#include "../Widgets/HistoryView/HistoryView.h"
-#include "../Widgets/LibraryView/LibraryView.h"
+#include "../Widgets/Sidebar/Sidebar.h"
+#include "../Widgets/Footer/Footer.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 #include "../Widgets/OutlineEditor/OutlineTreeModel.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
-#include "../Widgets/AnimationEditor/AnimationEditor.h"
-#include "../Widgets/ScriptEditor/ScriptEditor.h"
-#include "../Widgets/ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
@@ -74,18 +70,13 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
-	         X3DBrowserEditor (browser),
-	            viewpointList (new ViewpointList (this, true)),
-	            historyEditor (new HistoryView (this)),
-	              libraryView (new LibraryView (this)),
-	            outlineEditor (new OutlineEditor (this)),
-	                  console (new Console (this)),
-	             scriptEditor (new ScriptEditor (this)),
-	          animationEditor (new AnimationEditor (this)),
-	                 gridTool (new GridTool (this)),
-	                angleTool (new AngleTool (this)),
-	                     keys (),
-	             accelerators (true)
+	X3DBrowserEditor (browser),
+	         sidebar (new Sidebar (this)),
+	          footer (new Footer (this)),
+	        gridTool (new GridTool (this)),
+	       angleTool (new AngleTool (this)),
+	            keys (),
+	    accelerators (true)
 { }
 
 void
@@ -93,13 +84,8 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	viewpointList   -> reparent (getViewpointListBox (),   getWindow ());
-	historyEditor   -> reparent (getHistoryViewBox (),     getWindow ());
-	libraryView     -> reparent (getLibraryViewBox (),     getWindow ());
-	outlineEditor   -> reparent (getOutlineEditorBox (),   getWindow ());
-	console         -> reparent (getConsoleBox (),         getWindow ());
-	scriptEditor    -> reparent (getScriptEditorBox (),    getWindow ());
-	animationEditor -> reparent (getAnimationEditorBox (), getWindow ());
+	sidebar -> reparent (getSidebarBox (), getWindow ());
+	footer  -> reparent (getFooterBox (),  getWindow ());
 }
 
 void
@@ -111,7 +97,7 @@ X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 const std::shared_ptr <OutlineTreeViewEditor> &
 X3DBrowserWindow::getOutlineTreeView () const
 {
-	return outlineEditor -> getTreeView ();
+	return sidebar -> getOutlineEditor () -> getTreeView ();
 }
 
 // Menu
@@ -138,8 +124,8 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
-	if (scriptEditor -> isModified ())
-		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
+	if (footer -> getScriptEditor () -> isModified ())
+		footer -> getScriptEditor () -> apply (std::make_shared <X3D::UndoStep> (""));
 
 	return X3DBrowserEditor::save (worldURL, compressed, copy);
 }

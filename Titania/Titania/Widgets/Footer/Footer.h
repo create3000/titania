@@ -48,67 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
+#ifndef __TITANIA_WIDGETS_FOOTER_FOOTER_H__
+#define __TITANIA_WIDGETS_FOOTER_FOOTER_H__
 
-#include "../../UserInterfaces/X3DConsoleInterface.h"
+#include "../../UserInterfaces/X3DFooterInterface.h"
+
+#include "../AnimationEditor/AnimationEditor.h"
+#include "../Console/Console.h"
+#include "../ScriptEditor/ScriptEditor.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class Console :
-	public X3DConsoleInterface
+class Footer :
+	virtual public X3DFooterInterface
 {
 public:
 
 	///  @name Construction
-	
-	Console (X3DBrowserWindow* const);
+
+	Footer (X3DBrowserWindow* const);
 
 	///  @name Member access
 
-	bool
-	isEnabled () const;
+	const std::shared_ptr <Console> &
+	getConsole () const
+	{ return console; }
+
+	const std::shared_ptr <ScriptEditor> &
+	getScriptEditor () const
+	{ return scriptEditor; }
+
+	const std::shared_ptr <AnimationEditor> &
+	getAnimationEditor () const
+	{ return animationEditor; }
 
 	///  @name Destruction
-	
+
 	virtual
-	~Console ();
+	~Footer ();
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
-	
-	///  @name Event handlers
-	
-	virtual
-	void
-	on_map () final override;
 
 	virtual
 	void
-	on_suspend_button_toggled () final override;
+	on_switch_page (Gtk::Widget*, guint) final override;
 
-	virtual
-	void
-	on_clear_button_clicked () final override;
+	std::shared_ptr <Console>         console;
+	std::shared_ptr <ScriptEditor>    scriptEditor;
+	std::shared_ptr <AnimationEditor> animationEditor;
 
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
+	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

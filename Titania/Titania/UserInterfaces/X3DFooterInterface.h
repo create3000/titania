@@ -47,68 +47,96 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_FOOTER_H__
+#define __TMP_GLAD2CPP_FOOTER_H__
 
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
-
-#include "../../UserInterfaces/X3DConsoleInterface.h"
+#include "../Base/X3DUserInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class Console :
-	public X3DConsoleInterface
+class X3DFooterInterface :
+	public X3DUserInterface
 {
 public:
 
-	///  @name Construction
-	
-	Console (X3DBrowserWindow* const);
+	X3DFooterInterface () :
+		X3DUserInterface ()
+	{ }
 
-	///  @name Member access
+	template <class ... Arguments>
+	X3DFooterInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename)
+	{ create (filename); }
 
-	bool
-	isEnabled () const;
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
-	///  @name Destruction
-	
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
+
+	template <class Type>
+	Type*
+	createWidget (const std::string & name) const
+	{
+		getBuilder () -> add_from_file (filename, name);
+
+		Type* widget = nullptr;
+		m_builder -> get_widget (name, widget);
+		return widget;
+	}
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
+	Gtk::Box &
+	getConsoleBox () const
+	{ return *m_ConsoleBox; }
+
+	Gtk::Box &
+	getScriptEditorBox () const
+	{ return *m_ScriptEditorBox; }
+
+	Gtk::Box &
+	getAnimationEditorBox () const
+	{ return *m_AnimationEditorBox; }
+
 	virtual
-	~Console ();
+	void
+	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+
+	virtual
+	~X3DFooterInterface ();
 
 
 private:
 
-	///  @name Event handlers
-
-	virtual
 	void
-	initialize () final override;
-	
-	///  @name Event handlers
-	
-	virtual
-	void
-	on_map () final override;
+	create (const std::string &);
 
-	virtual
-	void
-	on_suspend_button_toggled () final override;
+	static const std::string m_widgetName;
 
-	virtual
-	void
-	on_clear_button_clicked () final override;
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::deque <sigc::connection> m_connections;
+	Gtk::Window*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::Notebook*                m_Notebook;
+	Gtk::Box*                     m_ConsoleBox;
+	Gtk::Box*                     m_ScriptEditorBox;
+	Gtk::Box*                     m_AnimationEditorBox;
 
 };
 

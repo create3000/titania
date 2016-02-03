@@ -47,72 +47,43 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
-
-#include "../../UserInterfaces/X3DConsoleInterface.h"
+#include "X3DFooterInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
+const std::string X3DFooterInterface::m_widgetName = "Footer";
 
-class Console :
-	public X3DConsoleInterface
+void
+X3DFooterInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
-	
-	Console (X3DBrowserWindow* const);
+	// Get objects.
 
-	///  @name Member access
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
+	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
+	m_builder -> get_widget ("AnimationEditorBox", m_AnimationEditorBox);
 
-	bool
-	isEnabled () const;
+	// Connect object Gtk::Notebook with id 'Notebook'.
+	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DFooterInterface::on_switch_page)));
 
-	///  @name Destruction
-	
-	virtual
-	~Console ();
+	// Call construct handler of base class.
+	construct ();
+}
 
+X3DFooterInterface::~X3DFooterInterface ()
+{
+	for (auto & connection : m_connections)
+		connection .disconnect ();
 
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	initialize () final override;
-	
-	///  @name Event handlers
-	
-	virtual
-	void
-	on_map () final override;
-
-	virtual
-	void
-	on_suspend_button_toggled () final override;
-
-	virtual
-	void
-	on_clear_button_clicked () final override;
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
-
-};
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

@@ -58,15 +58,9 @@
 namespace titania {
 namespace puck {
 
-class HistoryView;
-class LibraryView;
-class MotionBlurEditor;
-class OutlineEditor;
+class Sidebar;
+class Footer;
 class OutlineTreeViewEditor;
-class ViewpointList;
-class Console;
-class ScriptEditor;
-class AnimationEditor;
 class X3DGridTool;
 
 class X3DBrowserWindow :
@@ -93,13 +87,21 @@ public:
 	hasAccelerators () const
 	{ return accelerators; }
 
-	///  @name Grid Tool
+	///  @name Tool handling
 
-	const std::unique_ptr <X3DGridTool> &
+	const std::shared_ptr <Sidebar> &
+	getSidebar () const
+	{ return sidebar; }
+
+	const std::shared_ptr <Footer> &
+	getFooter () const
+	{ return footer; }
+
+	const std::shared_ptr <X3DGridTool> &
 	getGridTool () const
 	{ return gridTool; }
 
-	const std::unique_ptr <X3DGridTool> &
+	const std::shared_ptr <X3DGridTool> &
 	getAngleTool () const
 	{ return angleTool; }
 
@@ -148,15 +150,10 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList>     viewpointList;
-	std::unique_ptr <HistoryView>       historyEditor;
-	std::unique_ptr <LibraryView>       libraryView;
-	std::unique_ptr <OutlineEditor>     outlineEditor;
-	std::unique_ptr <Console>           console;
-	std::unique_ptr <ScriptEditor>      scriptEditor;
-	std::unique_ptr <AnimationEditor>   animationEditor;
-	std::unique_ptr <X3DGridTool>       gridTool;
-	std::unique_ptr <X3DGridTool>       angleTool;
+	std::shared_ptr <Sidebar>     sidebar;
+	std::shared_ptr <Footer>      footer;
+	std::shared_ptr <X3DGridTool> gridTool;
+	std::shared_ptr <X3DGridTool> angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

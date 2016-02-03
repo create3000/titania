@@ -240,12 +240,6 @@ X3DBrowserWidget::restoreSession ()
 
 	if (getConfig () .hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () .getInteger ("hPaned"));
-
-	
-	// Notebooks
-
-	getSideBarNotebook () .set_current_page (getConfig () .getInteger ("sideBarCurrentPage")); // XXX Produces a width/height -1 warning
-	getFooterNotebook ()  .set_current_page (getConfig () .getInteger ("footerCurrentPage"));
 }
 
 void
@@ -274,9 +268,6 @@ X3DBrowserWidget::saveSession ()
 {
 	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
-
-	getConfig () .setItem ("sideBarCurrentPage", getSideBarNotebook () .get_current_page ());
-	getConfig () .setItem ("footerCurrentPage",  getFooterNotebook ()  .get_current_page ());
 
 	X3DBrowserWindowInterface::saveSession ();
 }

@@ -94,9 +94,6 @@ private:
 	void
 	initialize () final override;
 
-	void
-	set_selection (const X3D::MFNode &);
-
 	virtual
 	void
 	on_switch_page (Gtk::Widget*, guint) final override;
@@ -114,7 +111,7 @@ private:
 	std::shared_ptr <InlineEditor>             inlineEditor;
 	std::shared_ptr <PrecisionPlacementPanel>  precisionPlacementPanel;
 
-	std::vector <std::shared_ptr <X3DUserInterface>>  editors;
+	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

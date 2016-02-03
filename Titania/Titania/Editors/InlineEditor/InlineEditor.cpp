@@ -77,18 +77,6 @@ InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
 	                          getURLReloadButton (),
 	                          getURLChooserColumn (),
 	                          "url")),
-	                bboxSize (this,
-	                          getBBoxSizeXAdjustment (),
-	                          getBBoxSizeYAdjustment (),
-	                          getBBoxSizeZAdjustment (),
-	                          getBBoxSizeBox (),
-	                          "bboxSize"),
-	              bboxCenter (this,
-	                          getBBoxCenterXAdjustment (),
-	                          getBBoxCenterYAdjustment (),
-	                          getBBoxCenterZAdjustment (),
-	                          getBBoxCenterBox (),
-	                          "bboxCenter"),
 	              inlineNode (),
 	               loadState (false)
 {
@@ -140,8 +128,6 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 	nodeName   .setNode  (X3D::SFNode (inlineNode));
 	load       .setNodes (nodes);
 	url ->      setNodes (nodes);
-	bboxSize   .setNodes (nodes);
-	bboxCenter .setNodes (nodes);
 
 	getRemoveInlineButton () .set_sensitive (inlineNode);
 }

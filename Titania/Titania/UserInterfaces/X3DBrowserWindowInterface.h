@@ -1434,56 +1434,28 @@ public:
 	{ return *m_LookAtButton; }
 
 	Gtk::Box &
-	getFooter () const
-	{ return *m_Footer; }
+	getFooterMainBox () const
+	{ return *m_FooterMainBox; }
 
 	Gtk::Label &
 	getFooterLabel () const
 	{ return *m_FooterLabel; }
 
-	Gtk::Notebook &
-	getFooterNotebook () const
-	{ return *m_FooterNotebook; }
+	Gtk::Box &
+	getFooterBox () const
+	{ return *m_FooterBox; }
 
 	Gtk::Box &
-	getConsoleBox () const
-	{ return *m_ConsoleBox; }
-
-	Gtk::Box &
-	getScriptEditorBox () const
-	{ return *m_ScriptEditorBox; }
-
-	Gtk::Box &
-	getAnimationEditorBox () const
-	{ return *m_AnimationEditorBox; }
-
-	Gtk::Box &
-	getSidebar () const
-	{ return *m_Sidebar; }
+	getSidebarMainBox () const
+	{ return *m_SidebarMainBox; }
 
 	Gtk::Label &
 	getSideBarLabel () const
 	{ return *m_SideBarLabel; }
 
-	Gtk::Notebook &
-	getSideBarNotebook () const
-	{ return *m_SideBarNotebook; }
-
 	Gtk::Box &
-	getViewpointListBox () const
-	{ return *m_ViewpointListBox; }
-
-	Gtk::Box &
-	getHistoryViewBox () const
-	{ return *m_HistoryViewBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
-
-	Gtk::Box &
-	getOutlineEditorBox () const
-	{ return *m_OutlineEditorBox; }
+	getSidebarBox () const
+	{ return *m_SidebarBox; }
 
 	Gtk::MessageDialog &
 	getMessageDialog () const
@@ -2415,19 +2387,12 @@ private:
 	Gtk::ToolButton*                 m_LookAtSelectionButton;
 	Gtk::ToolButton*                 m_LookAtAllButton;
 	Gtk::ToggleToolButton*           m_LookAtButton;
-	Gtk::Box*                        m_Footer;
+	Gtk::Box*                        m_FooterMainBox;
 	Gtk::Label*                      m_FooterLabel;
-	Gtk::Notebook*                   m_FooterNotebook;
-	Gtk::Box*                        m_ConsoleBox;
-	Gtk::Box*                        m_ScriptEditorBox;
-	Gtk::Box*                        m_AnimationEditorBox;
-	Gtk::Box*                        m_Sidebar;
+	Gtk::Box*                        m_FooterBox;
+	Gtk::Box*                        m_SidebarMainBox;
 	Gtk::Label*                      m_SideBarLabel;
-	Gtk::Notebook*                   m_SideBarNotebook;
-	Gtk::Box*                        m_ViewpointListBox;
-	Gtk::Box*                        m_HistoryViewBox;
-	Gtk::Box*                        m_LibraryViewBox;
-	Gtk::Box*                        m_OutlineEditorBox;
+	Gtk::Box*                        m_SidebarBox;
 	Gtk::MessageDialog*              m_MessageDialog;
 
 };

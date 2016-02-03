@@ -48,113 +48,68 @@
  *
  ******************************************************************************/
 
-#include "Console.h"
+#include "Sidebar.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../Footer/Footer.h"
 
 namespace titania {
 namespace puck {
 
-Console::Console (X3DBrowserWindow* const browserWindow) :
+Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DConsoleInterface (get_ui ("Console.glade"), gconf_dir ())
+	X3DSidebarInterface (get_ui ("Sidebar.glade"), gconf_dir ()),
+	      viewpointList (new ViewpointList (browserWindow)),
+	      historyEditor (new HistoryView (browserWindow)),
+	        libraryView (new LibraryView (browserWindow)),
+	      outlineEditor (new OutlineEditor (browserWindow)),
+	            widgets ()
 {
+	const auto currentPage = getConfig () .getInteger ("currentPage");
+
+	getNotebook () .set_current_page (currentPage);
+
+	viewpointList   -> reparent (getViewpointListBox (),   getWindow ());
+	historyEditor   -> reparent (getHistoryViewBox (),     getWindow ());
+	libraryView     -> reparent (getLibraryViewBox (),     getWindow ());
+	outlineEditor   -> reparent (getOutlineEditorBox (),   getWindow ());
+
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointList));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (historyEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (libraryView));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (outlineEditor));
+
+	for (const auto & widget : widgets)
+		widget -> getWidget () .set_visible (false);
+
+	if (widgets [currentPage])
+		widgets [currentPage] -> getWidget () .set_visible (true);
+
 	setup ();
 }
 
 void
-Console::initialize ()
+Sidebar::initialize ()
 {
-	X3DConsoleInterface::initialize ();
-
-	getBrowserWindow () -> getFooter () -> getNotebook () .signal_map ()   .connect (sigc::mem_fun (*this, &Console::set_enabled));
-	getBrowserWindow () -> getFooter () -> getNotebook () .signal_unmap () .connect (sigc::mem_fun (*this, &Console::set_enabled));
-}
-
-bool
-Console::isEnabled () const
-{
-	return not getSuspendButton () .get_active () and getBrowserWindow () -> getFooter () -> getNotebook () .get_mapped ();
+	X3DSidebarInterface::initialize ();
 }
 
 void
-Console::on_map ()
+Sidebar::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
-	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Console"));
+	const size_t currentPage = getConfig () .getInteger ("currentPage");
+
+	if (currentPage < widgets .size ())
+		widgets [currentPage] -> getWidget () .set_visible (false);
+
+	if (pageNumber < widgets .size ())
+		widgets [pageNumber] -> getWidget () .set_visible (true);
+
+	getConfig () .setItem ("currentPage", int (pageNumber));
 }
 
-void
-Console::on_suspend_button_toggled ()
-{
-	set_enabled ();
-}
-
-void
-Console::on_clear_button_clicked ()
-{
-	getTextBuffer () -> set_text ("");
-}
-
-void
-Console::set_browser (const X3D::BrowserPtr & browser)
-{
-	if (browser == getBrowserWindow () -> getMasterBrowser ())
-	   return;
-	
-	browser -> getConsole () -> getString () .addInterest (this, &Console::set_string);	
-}
-
-void
-Console::set_enabled ()
-{
-	if (isEnabled ())
-	{
-		getCurrentBrowser () .addInterest (this, &Console::set_browser);
-
-		set_browser (getCurrentBrowser ());
-	}
-	else
-	{
-		getCurrentBrowser () .removeInterest (this, &Console::set_browser);
-
-		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
-			browser -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
-	}
-}
-
-void
-Console::set_string (const X3D::MFString & value)
-{
-	// Insert.
-
-	for (const auto & string : value)
-		getTextBuffer () -> insert (getTextBuffer () -> end (), string .getValue ());
-
-	// Erase.
-
-	static constexpr int CONSOLE_LIMIT = 1 << 20; // 2 MB
-
-	if (getTextBuffer () -> size () > CONSOLE_LIMIT)
-	{
-		const int charOffset = getTextBuffer () -> size () - CONSOLE_LIMIT;
-
-		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
-	}
-
-	// Place cursor.
-
-	getTextBuffer () -> place_cursor (getTextBuffer () -> end ());
-
-	getTextView () .scroll_to (getTextBuffer () -> get_insert ());
-
-	// Refresh.
-
-	getTextView () .queue_draw ();
-}
-
-Console::~Console ()
+Sidebar::~Sidebar ()
 {
 	dispose ();
 }

@@ -57,6 +57,8 @@
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 #include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
+#include "../Widgets/Footer/Footer.h"
+#include "../Widgets/Sidebar/Sidebar.h"
 
 #include "../Browser/BrowserEditorObject.h"
 #include "../Browser/BrowserSelection.h"
@@ -1135,7 +1137,7 @@ BrowserWindow::on_sidebar_toggled ()
 	else
 		getConfig () .setItem ("sidebar", getSidebarAction () -> get_active ());
 	
-	getSidebar () .set_visible (getSidebarAction () -> get_active ());
+	getSidebarMainBox () .set_visible (getSidebarAction () -> get_active ());
 }
 
 void
@@ -1146,7 +1148,7 @@ BrowserWindow::on_footer_toggled ()
 	else
 		getConfig () .setItem ("footer", getFooterAction () -> get_active ());
 
-	getFooter () .set_visible (getFooterAction () -> get_active ());
+	getFooterMainBox () .set_visible (getFooterAction () -> get_active ());
 }
 
 void
@@ -1239,11 +1241,12 @@ BrowserWindow::isEditor (const bool enabled)
 	getViewerSeparator ()       .set_visible (enabled);
 	getLookAtSelectionButton () .set_visible (enabled and getArrowButton () .get_active ());
 
-	getLibraryViewBox ()     .set_visible (enabled);
-	getOutlineEditorBox ()   .set_visible (enabled);
-	getScriptEditorBox ()    .set_visible (enabled);
-	getAnimationEditorBox () .set_visible (enabled);
-	getBrowserNotebook ()    .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
+	getBrowserNotebook () .set_tab_pos (enabled ? Gtk::POS_BOTTOM : Gtk::POS_TOP);
+
+	getSidebar () -> getLibraryViewBox ()     .set_visible (enabled);
+	getSidebar () -> getOutlineEditorBox ()   .set_visible (enabled);
+	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
+	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
 
 	if (enabled and getConfig () .getBoolean ("arrow"))
 		getArrowButton () .set_active (true);

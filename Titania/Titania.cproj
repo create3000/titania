@@ -148,7 +148,6 @@
     <Compile Include="Titania\Editors\ViewpointEditor\X3DGeoViewpointEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DInlineEditorInterface.cpp" />
     <Compile Include="Titania\Editors\InlineEditor\InlineEditor.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DLODEditorInterface.cpp" />
     <Compile Include="Titania\Dialogs\NodeIndex\NodeIndex.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodeIndexInterface.cpp" />
     <Compile Include="Titania\Editors\NodePropertiesEditor\X3DExportedNodesEditor.cpp" />
@@ -253,6 +252,10 @@
     <Compile Include="Titania\UserInterfaces\X3DNodeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\NodeEditor\NodeEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DSidebarInterface.cpp" />
+    <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DFooterInterface.cpp" />
+    <Compile Include="Titania\Widgets\Footer\Footer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1253,7 +1256,6 @@
     <None Include="Titania\ComposedWidgets\MFStringComboBoxText.h" />
     <None Include="Titania\UserInterfaces\X3DInlineEditorInterface.h" />
     <None Include="Titania\Editors\InlineEditor\InlineEditor.h" />
-    <None Include="Titania\UserInterfaces\X3DLODEditorInterface.h" />
     <None Include="Titania\Dialogs\NodeIndex\NodeIndex.h" />
     <None Include="Titania\UserInterfaces\X3DNodeIndexInterface.h" />
     <None Include="Titania\ComposedWidgets\MFStringURLWidget.h" />
@@ -1621,7 +1623,6 @@
     <None Include="share\titania\ui\Editors\InlineEditor.glade" />
     <None Include="share\titania\ui\Editors\LayerEditor.glade" />
     <None Include="share\titania\ui\Editors\LightEditor.glade" />
-    <None Include="share\titania\ui\Editors\LODEditor.glade" />
     <None Include="share\titania\ui\Editors\NavigationInfoEditor.glade" />
     <None Include="share\titania\ui\Editors\NodePropertiesEditor.glade" />
     <None Include="share\titania\ui\Editors\PrecisionPlacementPanel.glade" />
@@ -2399,6 +2400,12 @@
     <None Include="Titania\Editors\NodeEditor\NodeEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\LODRangeWidget.h" />
+    <None Include="Titania\UserInterfaces\X3DSidebarInterface.h" />
+    <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
+    <None Include="share\titania\ui\Footer.glade" />
+    <None Include="share\titania\ui\Sidebar.glade" />
+    <None Include="Titania\UserInterfaces\X3DFooterInterface.h" />
+    <None Include="Titania\Widgets\Footer\Footer.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2482,6 +2489,8 @@
     <Folder Include="Titania\Editors\BackgroundEditor\" />
     <Folder Include="share\titania\Library\Backgrounds\Texture\" />
     <Folder Include="Titania\Editors\NodeEditor\" />
+    <Folder Include="Titania\Widgets\Sidebar\" />
+    <Folder Include="Titania\Widgets\Footer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

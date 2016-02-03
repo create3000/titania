@@ -72,7 +72,7 @@ NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
 	             lightEditor (new LightEditor (browserWindow)),
 	            inlineEditor (new InlineEditor (browserWindow)),
 	 precisionPlacementPanel (new PrecisionPlacementPanel (browserWindow)),
-	                 editors ()
+	                 widgets ()
 {
 	const auto currentPage = getConfig () .getInteger ("currentPage");
 
@@ -91,24 +91,24 @@ NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
 	inlineEditor             -> reparent (getInlineEditorBox (),         getWindow ());
 	precisionPlacementPanel  -> reparent (getPrecisionPlacementPanelBox (), getWindow ());
 
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (nodePropertiesEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (appearanceEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (textureEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (geometryPropertiesEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (textEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (layerEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (backgroundEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (navigationInfoEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (lightEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (inlineEditor));
-	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (precisionPlacementPanel));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (nodePropertiesEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (appearanceEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (textureEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (geometryPropertiesEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (textEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (layerEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (backgroundEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (navigationInfoEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (lightEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (inlineEditor));
+	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (precisionPlacementPanel));
 
-	for (const auto & editor : editors)
-		editor -> getWidget () .set_visible (false);
+	for (const auto & widget : widgets)
+		widget -> getWidget () .set_visible (false);
 
-	if (editors [currentPage])
-		editors [currentPage] -> getWidget () .set_visible (true);
+	if (widgets [currentPage])
+		widgets [currentPage] -> getWidget () .set_visible (true);
 
 	setup ();
 }
@@ -117,15 +117,6 @@ void
 NodeEditor::initialize ()
 {
 	X3DNodeEditorInterface::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NodeEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
-
-void
-NodeEditor::set_selection (const X3D::MFNode & selection)
-{
 }
 
 void
@@ -133,11 +124,11 @@ NodeEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
 	const size_t currentPage = getConfig () .getInteger ("currentPage");
 
-	if (currentPage < editors .size ())
-		editors [currentPage] -> getWidget () .set_visible (false);
+	if (currentPage < widgets .size ())
+		widgets [currentPage] -> getWidget () .set_visible (false);
 
-	if (pageNumber < editors .size ())
-		editors [pageNumber] -> getWidget () .set_visible (true);
+	if (pageNumber < widgets .size ())
+		widgets [pageNumber] -> getWidget () .set_visible (true);
 
 	getConfig () .setItem ("currentPage", int (pageNumber));
 }

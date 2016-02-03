@@ -173,38 +173,6 @@ public:
 	getFoldBackIntoSceneButton () const
 	{ return *m_FoldBackIntoSceneButton; }
 
-	Gtk::Box &
-	getBBoxSizeBox () const
-	{ return *m_BBoxSizeBox; }
-
-	Gtk::SpinButton &
-	getBBoxSizeXSpinButton () const
-	{ return *m_BBoxSizeXSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxSizeYSpinButton () const
-	{ return *m_BBoxSizeYSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxSizeZSpinButton () const
-	{ return *m_BBoxSizeZSpinButton; }
-
-	Gtk::Box &
-	getBBoxCenterBox () const
-	{ return *m_BBoxCenterBox; }
-
-	Gtk::SpinButton &
-	getBBoxCenterXSpinButton () const
-	{ return *m_BBoxCenterXSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxCenterYSpinButton () const
-	{ return *m_BBoxCenterYSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxCenterZSpinButton () const
-	{ return *m_BBoxCenterZSpinButton; }
-
 	Gtk::Label &
 	getLoadStateLabel () const
 	{ return *m_LoadStateLabel; }
@@ -296,14 +264,6 @@ private:
 	Gtk::Grid*                             m_InlineBox;
 	Gtk::CheckButton*                      m_LoadCheckButton;
 	Gtk::Button*                           m_FoldBackIntoSceneButton;
-	Gtk::Box*                              m_BBoxSizeBox;
-	Gtk::SpinButton*                       m_BBoxSizeXSpinButton;
-	Gtk::SpinButton*                       m_BBoxSizeYSpinButton;
-	Gtk::SpinButton*                       m_BBoxSizeZSpinButton;
-	Gtk::Box*                              m_BBoxCenterBox;
-	Gtk::SpinButton*                       m_BBoxCenterXSpinButton;
-	Gtk::SpinButton*                       m_BBoxCenterYSpinButton;
-	Gtk::SpinButton*                       m_BBoxCenterZSpinButton;
 	Gtk::Label*                            m_LoadStateLabel;
 	Gtk::Box*                              m_NameBox;
 	Gtk::Entry*                            m_NameEntry;

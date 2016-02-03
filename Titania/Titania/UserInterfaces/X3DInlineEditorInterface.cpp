@@ -84,14 +84,6 @@ X3DInlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("InlineBox", m_InlineBox);
 	m_builder -> get_widget ("LoadCheckButton", m_LoadCheckButton);
 	m_builder -> get_widget ("FoldBackIntoSceneButton", m_FoldBackIntoSceneButton);
-	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
-	m_builder -> get_widget ("BBoxSizeXSpinButton", m_BBoxSizeXSpinButton);
-	m_builder -> get_widget ("BBoxSizeYSpinButton", m_BBoxSizeYSpinButton);
-	m_builder -> get_widget ("BBoxSizeZSpinButton", m_BBoxSizeZSpinButton);
-	m_builder -> get_widget ("BBoxCenterBox", m_BBoxCenterBox);
-	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
-	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
-	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("LoadStateLabel", m_LoadStateLabel);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);

@@ -138,6 +138,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
+	Titania/UserInterfaces/X3DFooterInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
@@ -145,7 +146,6 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
-	Titania/UserInterfaces/X3DLODEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNavigationInfoEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodeEditorInterface.cpp \
@@ -157,6 +157,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DPrototypeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScenePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DScriptEditorInterface.cpp \
+	Titania/UserInterfaces/X3DSidebarInterface.cpp \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
@@ -164,6 +165,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/Console/Console.cpp \
+	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/HistoryView/History.cpp \
 	Titania/Widgets/HistoryView/HistoryView.cpp \
 	Titania/Widgets/LibraryView/LibraryView.cpp \
@@ -186,6 +188,7 @@ titania_SOURCES =  \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp \
 	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
+	Titania/Widgets/Sidebar/Sidebar.cpp \
 	Titania/Widgets/ViewpointList/ViewpointList.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \

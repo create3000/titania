@@ -48,67 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_CONSOLE_CONSOLE_H__
-#define __TITANIA_CONSOLE_CONSOLE_H__
+#ifndef __TITANIA_WIDGETS_SIDEBAR_SIDEBAR_H__
+#define __TITANIA_WIDGETS_SIDEBAR_SIDEBAR_H__
 
-#include "../../UserInterfaces/X3DConsoleInterface.h"
+#include "../../UserInterfaces/X3DSidebarInterface.h"
+
+#include "../ViewpointList/ViewpointList.h"
+#include "../HistoryView/HistoryView.h"
+#include "../LibraryView/LibraryView.h"
+#include "../OutlineEditor/OutlineEditor.h"
+#include "../OutlineEditor/OutlineTreeViewEditor.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
-
-class Console :
-	public X3DConsoleInterface
+class Sidebar :
+	virtual public X3DSidebarInterface
 {
 public:
 
 	///  @name Construction
-	
-	Console (X3DBrowserWindow* const);
+
+	Sidebar (X3DBrowserWindow* const);
 
 	///  @name Member access
 
-	bool
-	isEnabled () const;
+	const std::shared_ptr <OutlineEditor> &
+	getOutlineEditor () const
+	{ return outlineEditor; }
 
 	///  @name Destruction
-	
+
 	virtual
-	~Console ();
+	~Sidebar ();
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
 
 	virtual
 	void
 	initialize () final override;
-	
-	///  @name Event handlers
-	
-	virtual
-	void
-	on_map () final override;
 
 	virtual
 	void
-	on_suspend_button_toggled () final override;
+	on_switch_page (Gtk::Widget*, guint) final override;
 
-	virtual
-	void
-	on_clear_button_clicked () final override;
+	std::shared_ptr <ViewpointList>     viewpointList;
+	std::shared_ptr <HistoryView>       historyEditor;
+	std::shared_ptr <LibraryView>       libraryView;
+	std::shared_ptr <OutlineEditor>     outlineEditor;
 
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_enabled ();
-
-	void
-	set_string (const X3D::MFString & value);
-
+	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

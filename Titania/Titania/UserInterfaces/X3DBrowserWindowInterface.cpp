@@ -399,19 +399,12 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
-	m_builder -> get_widget ("Footer", m_Footer);
+	m_builder -> get_widget ("FooterMainBox", m_FooterMainBox);
 	m_builder -> get_widget ("FooterLabel", m_FooterLabel);
-	m_builder -> get_widget ("FooterNotebook", m_FooterNotebook);
-	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
-	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
-	m_builder -> get_widget ("AnimationEditorBox", m_AnimationEditorBox);
-	m_builder -> get_widget ("Sidebar", m_Sidebar);
+	m_builder -> get_widget ("FooterBox", m_FooterBox);
+	m_builder -> get_widget ("SidebarMainBox", m_SidebarMainBox);
 	m_builder -> get_widget ("SideBarLabel", m_SideBarLabel);
-	m_builder -> get_widget ("SideBarNotebook", m_SideBarNotebook);
-	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("HistoryViewBox", m_HistoryViewBox);
-	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
-	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
+	m_builder -> get_widget ("SidebarBox", m_SidebarBox);
 	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 
 	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
