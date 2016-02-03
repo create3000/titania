@@ -117,12 +117,12 @@ public:
 	{ return imageHeight; }
 
 	void
-	setScale (const bool value)
-	{ scale = value; }
+	setResizeToPowerOfTwo (const bool value)
+	{ resize = value; }
 
 	size_t
-	getScale () const
-	{ return scale; }
+	getResizeToPowerOfTwo () const
+	{ return resize; }
 
 	///  @name Operations
 	
@@ -168,7 +168,7 @@ private:
 	
 	size_t                          imageWidth;
 	size_t                          imageHeight;
-	bool                            scale;
+	bool                            resize;
 	std::unique_ptr <TextureLoader> future;
 
 

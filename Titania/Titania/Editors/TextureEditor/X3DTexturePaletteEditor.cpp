@@ -212,7 +212,6 @@ X3DTexturePaletteEditor::addTexture (const size_t i, const std::string & uri)
 		touchSensor -> description () = scene -> getRootNodes () .at (0) -> getName ();
 	
 		preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
-		preview -> getExecutionContext () -> realize ();
 	}
 	catch (...)
 	{ }

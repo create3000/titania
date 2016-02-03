@@ -201,10 +201,9 @@ public:
 
 	/// Add uninitialized node
 	void
-	addUninitializedNode (X3DBaseNode* const uninitializedNode)
+	addUninitializedNode (X3DBaseNode* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{ uninitializedNodes .emplace_back (uninitializedNode); }
+	       Error <DISPOSED>);
 
 	///  @name Named node handling
 

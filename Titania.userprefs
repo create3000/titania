@@ -1,6 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp">
+    <Files>
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DMultiTextureEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/TextureEditor/X3DMultiTextureEditor.cpp" Line="14" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MultiTexture.cpp" Line="19" Column="19" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DMFStringWidget.h" Line="24" Column="24" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DMFStringWidget.cpp" Line="42" Column="42" />
+      <File FileName="Titania/Titania/ComposedWidgets/TexturePreview.cpp" Line="5" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/ComposedCubeMapTexture.cpp" Line="29" Column="29" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />

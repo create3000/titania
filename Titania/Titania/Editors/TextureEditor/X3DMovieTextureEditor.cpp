@@ -79,10 +79,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	getMovieTextureBox () .set_visible (movieTexture);
 
 	if (not movieTexture)
-	{
 		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
-		getCurrentContext () -> realize ();
-	}
 
 	X3D::MFNode nodes = { movieTexture };
 

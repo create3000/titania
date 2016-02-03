@@ -84,10 +84,7 @@ X3DImageCubeMapTextureEditor::setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3
 	getImageCubeMapTextureBox () .set_visible (cubeMapTexture);
 
 	if (not cubeMapTexture)
-	{
 		cubeMapTexture = getCurrentContext () -> createNode <X3D::ImageCubeMapTexture> ();
-		getCurrentContext () -> realize ();
-	}
 
 	preview -> setTexture (X3D::X3DPtr <X3D::X3DTextureNode> (cubeMapTexture -> getTexture ()));
 	url     -> setNodes ({ cubeMapTexture });

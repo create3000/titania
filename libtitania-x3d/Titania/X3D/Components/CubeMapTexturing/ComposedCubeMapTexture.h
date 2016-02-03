@@ -190,7 +190,22 @@ private:
 	///  @name Event handlers
 
 	void
-	set_texture (const size_t, const SFNode &);
+	set_texture_0 (const SFNode &);
+
+	void
+	set_texture_1 (const SFNode &);
+
+	void
+	set_texture_2 (const SFNode &);
+
+	void
+	set_texture_3 (const SFNode &);
+
+	void
+	set_texture_4 (const SFNode &);
+
+	void
+	set_texture_5 (const SFNode &);
 
 	void
 	setTexture (const GLenum, const SFNode &);

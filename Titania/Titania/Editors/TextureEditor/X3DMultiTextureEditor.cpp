@@ -99,10 +99,7 @@ X3DMultiTextureEditor::setMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	getMultiTextureBox () .set_visible (multiTexture);
 
 	if (not multiTexture)
-	{
 		multiTexture = getCurrentContext () -> createNode <X3D::MultiTexture> ();
-		getCurrentContext () -> realize ();
-	}
 
 	X3D::MFNode nodes = { multiTexture };
 

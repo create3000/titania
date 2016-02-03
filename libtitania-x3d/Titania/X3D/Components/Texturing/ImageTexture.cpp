@@ -66,7 +66,7 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	    X3DUrlObject (),
 	      imageWidth (0),
 	     imageHeight (0),
-	           scale (true),
+	          resize (true),
 	          future ()
 {
 	addType (X3DConstants::ImageTexture);
@@ -147,8 +147,8 @@ ImageTexture::requestAsyncLoad ()
 
 	future .reset (new TextureLoader (getExecutionContext (),
 	                                  url (),
-	                                  scale ? getBrowser () -> getMinTextureSize () : 0,
-	                                  scale ? getBrowser () -> getMaxTextureSize () : 0,
+	                                  resize ? getBrowser () -> getMinTextureSize () : 0,
+	                                  resize ? getBrowser () -> getMaxTextureSize () : 0,
 	                                  std::bind (&ImageTexture::setTexture, this, _1)));
 }
 

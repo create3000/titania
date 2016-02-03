@@ -93,11 +93,7 @@ X3DTextureTransformEditor::setTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 	textureTransform = value;
 
 	if (not textureTransform)
-	{
-		textureTransform = new X3D::TextureTransform (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (textureTransform);
-		getCurrentContext () -> realize ();
-	}
+		textureTransform = getCurrentContext () -> createNode <X3D::TextureTransform> ();
 
 	X3D::MFNode nodes = { textureTransform };
 

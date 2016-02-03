@@ -188,11 +188,7 @@ X3DTexturePropertiesEditor::set_node ()
 	textureProperties = std::move (std::get <0> (tuple));
 
 	if (not textureProperties)
-	{
-		textureProperties = new X3D::TextureProperties (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (textureProperties);
-		getCurrentContext () -> realize ();
-	}
+		textureProperties = getCurrentContext () -> createNode <X3D::TextureProperties> ();
 
 	changing = true;
 

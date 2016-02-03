@@ -19,13 +19,13 @@
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">COMPLEMENT</col>
+        <col id="0">COMPLEMENT</col>
       </row>
       <row>
-        <col id="0" translatable="yes">ALPHAREPLICATE</col>
+        <col id="0">ALPHAREPLICATE</col>
       </row>
       <row>
-        <col id="0" translatable="yes">DEFAULT</col>
+        <col id="0">DEFAULT</col>
       </row>
     </data>
   </object>
@@ -48,52 +48,52 @@
         <col id="0">MODULATE4X</col>
       </row>
       <row>
-        <col id="0" translatable="yes">ADD</col>
+        <col id="0">ADD</col>
       </row>
       <row>
-        <col id="0" translatable="yes">ADDSIGNED</col>
+        <col id="0">ADDSIGNED</col>
       </row>
       <row>
-        <col id="0" translatable="yes">ADDSIGNED2X</col>
+        <col id="0">ADDSIGNED2X</col>
       </row>
       <row>
-        <col id="0" translatable="yes">SUBTRACT</col>
+        <col id="0">SUBTRACT</col>
       </row>
       <row>
-        <col id="0" translatable="yes">ADDSMOOTH</col>
+        <col id="0">ADDSMOOTH</col>
       </row>
       <row>
-        <col id="0" translatable="yes">BLENDDIFFUSEALPHA</col>
+        <col id="0">BLENDDIFFUSEALPHA</col>
       </row>
       <row>
-        <col id="0" translatable="yes">BLENDTEXTUREALPHA</col>
+        <col id="0">BLENDTEXTUREALPHA</col>
       </row>
       <row>
-        <col id="0" translatable="yes">BLENDFACTORALPHA</col>
+        <col id="0">BLENDFACTORALPHA</col>
       </row>
       <row>
-        <col id="0" translatable="yes">BLENDCURRENTALPHA</col>
+        <col id="0">BLENDCURRENTALPHA</col>
       </row>
       <row>
-        <col id="0" translatable="yes">MODULATEALPHA_ADDCOLOR</col>
+        <col id="0">MODULATEALPHA_ADDCOLOR</col>
       </row>
       <row>
-        <col id="0" translatable="yes">MODULATEINVALPHA_ADDCOLOR</col>
+        <col id="0">MODULATEINVALPHA_ADDCOLOR</col>
       </row>
       <row>
-        <col id="0" translatable="yes">MODULATEINVCOLOR_ADDALPHA</col>
+        <col id="0">MODULATEINVCOLOR_ADDALPHA</col>
       </row>
       <row>
-        <col id="0" translatable="yes">OFF</col>
+        <col id="0">OFF</col>
       </row>
       <row>
-        <col id="0" translatable="yes">SELECTARG1</col>
+        <col id="0">SELECTARG1</col>
       </row>
       <row>
-        <col id="0" translatable="yes">SELECTARG2</col>
+        <col id="0">SELECTARG2</col>
       </row>
       <row>
-        <col id="0" translatable="yes">DOTPRODUCT3</col>
+        <col id="0">DOTPRODUCT3</col>
       </row>
     </data>
   </object>
@@ -104,16 +104,16 @@
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">DIFFUSE</col>
+        <col id="0">DIFFUSE</col>
       </row>
       <row>
-        <col id="0" translatable="yes">SPECULAR</col>
+        <col id="0">SPECULAR</col>
       </row>
       <row>
-        <col id="0" translatable="yes">FACTOR</col>
+        <col id="0">FACTOR</col>
       </row>
       <row>
-        <col id="0" translatable="yes">DEFAULT</col>
+        <col id="0">DEFAULT</col>
       </row>
     </data>
   </object>

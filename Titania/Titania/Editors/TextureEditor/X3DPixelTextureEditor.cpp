@@ -74,10 +74,7 @@ X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	getPixelTextureBox () .set_visible (pixelTexture);
 
 	if (not pixelTexture)
-	{
 		pixelTexture = getCurrentContext () -> createNode <X3D::PixelTexture> ();
-		getCurrentContext () -> realize ();
-	}
 
 	//pixelTexture -> image () .addInterest (this, &X3DPixelTextureEditor::set_image);
 

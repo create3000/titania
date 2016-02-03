@@ -109,37 +109,6 @@ X3DExecutionContext::X3DExecutionContext () :
 }
 
 void
-X3DExecutionContext::initialize ()
-{
-	sceneGraphOutput .addInterest (this, &X3DExecutionContext::set_sceneGraph);
-
-	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
-
-	if (not isProtoDeclaration ())
-		realize ();
-}
-
-void
-X3DExecutionContext::realize ()
-{
-	ContextLock lock (getBrowser ());
-
-	requestImmediateLoadOfExternProtos ();
-
-	if (lock)
-	{
-		while (not uninitializedNodes .empty ())
-		{
-			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
-				uninitializedNode -> setup ();
-		}
-	}
-
-	//else
-	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
-}
-
-void
 X3DExecutionContext::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -158,6 +127,53 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		// Reset executionContext to set browser.
 		node -> setExecutionContext (this);
+	}
+}
+
+void
+X3DExecutionContext::initialize ()
+{
+	sceneGraphOutput .addInterest (this, &X3DExecutionContext::set_sceneGraph);
+
+	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
+
+	if (not isProtoDeclaration ())
+		realize ();
+}
+
+void
+X3DExecutionContext::realize ()
+{
+	ContextLock lock (getBrowser ());
+
+	getBrowser () -> prepareEvents () .removeInterest (this, &X3DExecutionContext::realize);
+
+	requestImmediateLoadOfExternProtos ();
+
+	if (lock)
+	{
+		while (not uninitializedNodes .empty ())
+		{
+			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
+				uninitializedNode -> setup ();
+		}
+	}
+
+	//else
+	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
+}
+
+void
+X3DExecutionContext::addUninitializedNode (X3DBaseNode* const uninitializedNode)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	uninitializedNodes .emplace_back (uninitializedNode);
+
+	if (isInitialized ())
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &X3DExecutionContext::realize);
+		getBrowser () -> addEvent ();
 	}
 }
 

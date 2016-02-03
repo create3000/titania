@@ -13,21 +13,11 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF _1 ComposedCubeMapTexture {
-            front DEF Movie MovieTexture {
-              url [
-                "../../../../Library/Examples/Vattenfall/stage/film6.mpv",
-                "../../../../../Videos/Webcam/video1.avi"
-              ]
-              loop TRUE
-              repeatS FALSE
-              repeatT FALSE
-            }
-            back USE Movie
-            left USE Movie
-            right USE Movie
-            top USE Movie
-            bottom USE Movie
+          value DEF Movie MovieTexture {
+            url "../../../../../campfire.avi"
+            loop TRUE
+            repeatS FALSE
+            repeatT FALSE
           }
         }
       }
@@ -109,7 +99,14 @@ Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _1
+      texture ComposedCubeMapTexture {
+        front USE Movie
+        back USE Movie
+        left USE Movie
+        right USE Movie
+        top USE Movie
+        bottom USE Movie
+      }
     }
     geometry IndexedFaceSet {
       creaseAngle 0.5
