@@ -50,8 +50,6 @@
 
 #include "BrowserWindow.h"
 
-#include "../Base/X3DEditorObject.h"
-
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
@@ -60,12 +58,14 @@
 #include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
+#include "../Browser/BrowserEditorObject.h"
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
+#include <Titania/X3D/Browser/Navigation/X3DViewer.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
@@ -83,6 +83,7 @@
 namespace titania {
 namespace puck {
 
+
 const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
 	X3D::X3DConstants::ProximitySensor,
 	X3D::X3DConstants::GeoProximitySensor,
@@ -96,6 +97,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	      X3DObjectOperations (),
 	                 changing (false),
 	                   viewer (X3D::X3DConstants::NodeType::NoneViewer),
+	            browserEditor (new BrowserEditorObject (this)),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
@@ -199,8 +201,9 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
 	// Disconnect
 
-	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
 	getCurrentBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
+	getCurrentBrowser () -> getViewerType ()       .removeInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
 
@@ -210,6 +213,8 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
 
+	browserEditor -> setBrowser (getCurrentBrowser (), value);
+
 	// Set browser
 
 	X3DBrowserWindow::setBrowser (value);
@@ -217,7 +222,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	// Connect
 
 	getCurrentBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
-	getCurrentBrowser () -> getViewer ()           .addInterest (this, &BrowserWindow::set_viewer);
+	getCurrentBrowser () -> getViewerType ()       .addInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (this, &BrowserWindow::set_viewer);
 	getCurrentBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
 
@@ -1248,7 +1253,7 @@ BrowserWindow::isEditor (const bool enabled)
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 
 	if (isEditor () and getArrowButton () .get_active ())
-	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewer ());
+	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewerType ());
 	else
 		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }
@@ -2334,7 +2339,7 @@ BrowserWindow::set_arrow_button (const bool value)
 	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
 	if (isEditor () and getArrowButton () .get_active ())
-	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewer ());
+	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewerType ());
 	else
 		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }

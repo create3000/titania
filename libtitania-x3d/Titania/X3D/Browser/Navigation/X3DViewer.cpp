@@ -59,8 +59,14 @@
 namespace titania {
 namespace X3D {
 
+X3DViewer::Fields::Fields () :
+	  isActive (new SFBool ()),
+	scrollTime (new SFTime ())
+{ }
+
 X3DViewer::X3DViewer () :
-	X3DBrowserObject ()
+	X3DBrowserObject (),
+	          fields ()
 { }
 
 NavigationInfo*

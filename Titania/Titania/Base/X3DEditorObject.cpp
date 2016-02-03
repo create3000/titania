@@ -126,5 +126,67 @@ X3DEditorObject::refineName (const Glib::ustring & name)
 	return result;
 }
 
+void
+X3DEditorObject::resetUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+{
+	lastUndoGroup .clear ();
+	undoStep      .reset ();
+}
+
+void
+X3DEditorObject::beginUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+{
+	undoGroup = name;
+}
+
+void
+X3DEditorObject::endUndoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+{
+	if (lastUndoGroup == undoGroup)
+	{
+		for (const auto & undoFunction : undoStep -> getUndoFunctions ())
+		{
+			try
+			{
+				undoFunction ();
+			}
+			catch (const std::exception & error)
+			{
+				std::clog
+					<< std::string (80, '*') << std::endl
+					<< "*  Warning:  Undo step not possible:" << std::endl
+					<< "*  " << error .what () << std::endl
+					<< std::string (80, '*') << std::endl;
+			}
+		}
+
+		undoStep -> getRedoFunctions () .clear ();
+	}
+
+	lastUndoGroup = undoGroup;
+
+	undoGroup .clear ();
+}
+
+void
+X3DEditorObject::beginRedoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+{
+	redoGroup = name;
+}
+
+void
+X3DEditorObject::endRedoGroup (const std::string & name, X3D::UndoStepPtr & undoStep)
+{
+	redoGroup .clear ();
+
+	if (undoStep -> getRedoFunctions () .empty ())
+	{
+		if (undoStep == getUndoStep ())
+			removeUndoStep ();
+
+		undoStep .reset ();
+	}
+}
+
 } // puck
 } // titania

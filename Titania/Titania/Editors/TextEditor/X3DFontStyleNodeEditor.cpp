@@ -349,7 +349,7 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 			break;
 	}
 
-	addRedoFunction (fontStyleNode -> style (), styleUndoStep);
+	addRedoFunction (fontStyleNode, fontStyleNode -> style (), styleUndoStep);
 }
 
 void

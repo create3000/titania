@@ -129,7 +129,7 @@ Browser::initialize ()
 	pointingDevice -> setup ();
 
 	getCursor ()        .addInterest (this, &Browser::set_cursor);
-	getViewer ()        .addInterest (this, &Browser::set_viewer);
+	getViewerType ()    .addInterest (this, &Browser::set_viewer);
 	getPrivateViewer () .addInterest (this, &Browser::set_viewer);
 	changed ()          .addInterest (this, &Gtk::Widget::queue_draw);
 

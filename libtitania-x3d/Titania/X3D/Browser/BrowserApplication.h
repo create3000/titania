@@ -71,12 +71,12 @@ public:
 
 	virtual
 	void
-	setViewer (const X3DConstants::NodeType) final override
+	setViewerType (const X3DConstants::NodeType) final override
 	{ }
 
 	virtual
 	const SFEnum <X3DConstants::NodeType> &
-	getViewer () const final override
+	getViewerType () const final override
 	{ return viewer; }
 
 

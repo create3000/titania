@@ -190,7 +190,7 @@ MFStringGeoSystem::on_changed (const int id)
 			break;
 	}
 
-	addRedoFunction (node -> geoSystem (), undoStep);
+	addRedoFunction (node, node -> geoSystem (), undoStep);
 
 }
 

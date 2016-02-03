@@ -1132,13 +1132,13 @@ TextureMappingEditor::on_right_look_at_toggled ()
 {
 	if (getRightLookAtButton () .get_active ())
 	{
-		if (right -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
-			right -> setViewer (X3D::X3DConstants::LookAtViewer);
+		if (right -> getViewerType () not_eq X3D::X3DConstants::LookAtViewer)
+			right -> setViewerType (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (right -> getViewer () not_eq X3D::X3DConstants::ExamineViewer)
-			right -> setViewer (X3D::X3DConstants::ExamineViewer);
+		if (right -> getViewerType () not_eq X3D::X3DConstants::ExamineViewer)
+			right -> setViewerType (X3D::X3DConstants::ExamineViewer);
 	}
 
 	right -> grab_focus ();

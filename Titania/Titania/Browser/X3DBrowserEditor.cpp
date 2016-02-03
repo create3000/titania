@@ -80,14 +80,14 @@ namespace puck {
 static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
-	X3DBrowserWidget (browser),
-	  X3D::X3DEditor (),
-	         enabled (false),
-	       selection (new BrowserSelection (getBrowserWindow ())),
-	    undoMatrices (),
-	        undoStep (),
-	        undoTime (0),
-	            tool (NONE_TOOL)
+	 X3DBrowserWidget (browser),
+	   X3D::X3DEditor (),
+	          enabled (false),
+	        selection (new BrowserSelection (getBrowserWindow ())),
+	     undoMatrices (),
+	    nudgeUndoStep (),
+	         undoTime (0),
+	             tool (NONE_TOOL)
 {
 	addChildren (enabled);
 }
@@ -522,7 +522,7 @@ X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 	if (isEditor () and getArrowButton () .get_active ())
 		getCurrentBrowser () -> setPrivateViewer (viewer);
 	else
-		getCurrentBrowser () -> setViewer (viewer);
+		getCurrentBrowser () -> setViewerType (viewer);
 }
 
 // File operations
@@ -971,13 +971,13 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 		if (transform)
 		{
-			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or undoStep not_eq getBrowserWindow () -> getUndoStep ())
-				undoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
+			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
+				nudgeUndoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
 
 			tool     = currentTool;
 			undoTime = chrono::now ();
 
-			getSelection () -> redoRestoreSelection (undoStep);
+			getSelection () -> redoRestoreSelection (nudgeUndoStep);
 
 			if (transform -> getKeepCenter ())
 			{
@@ -985,8 +985,8 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 				matrix .set (offset);
 				matrix = transform -> getCurrentMatrix () * matrix;
 
-				undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
-				undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixKeepCenter, transform, matrix);
+				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixKeepCenter, transform, matrix);
 				transform -> setMatrixKeepCenter (matrix);
 
 				// If we use setMatrixKeepCenter we must do the group translation by ourself.
@@ -1009,23 +1009,23 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 						continue;
 					}
 
-					undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+					nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
 					transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
-					undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center ());
+					nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center ());
 				}
 			}
 			else
 			{
-				undoStep -> addObjects (node);
-				undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
-				undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + offset);
+				nudgeUndoStep -> addObjects (node);
+				nudgeUndoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
+				nudgeUndoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + offset);
 				transform -> translation () += offset;
 			}
 
-			getSelection () -> undoRestoreSelection (undoStep);
+			getSelection () -> undoRestoreSelection (nudgeUndoStep);
 
-			if (undoStep not_eq getBrowserWindow () -> getUndoStep ())
-				addUndoStep (undoStep);
+			if (nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
+				addUndoStep (nudgeUndoStep);
 
 			break;
 		}

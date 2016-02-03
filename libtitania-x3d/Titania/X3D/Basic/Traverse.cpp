@@ -239,12 +239,17 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 									
 								if (mfnode == &lod -> children ())
 								{
-									if (lod -> level_changed () >= 0 and lod -> level_changed () < (int32_t) lod -> children () .size ())
+									if (lod -> children () .size ())
 									{
-										if (traverse (lod -> children () [lod -> level_changed ()], callback, distinct, flags, seen))
-											continue;
-										
-										return false;
+										const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
+	
+										if (index >= 0)
+										{
+											if (traverse (lod -> children () [index], callback, distinct, flags, seen))
+												continue;
+											
+											return false;
+										}
 									}
 
 									continue;
@@ -574,14 +579,19 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 								
 							if (mfnode == &lod -> children ())
 							{
-								if (lod -> level_changed () >= 0 and lod -> level_changed () < (int32_t) lod -> children () .size ())
+								if (lod -> children () .size ())
 								{
-									hierarchy .emplace_back (field);
+									const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
 
-									if (find (lod -> children () [lod -> level_changed ()], object, flags, hierarchy, seen))
-										return true;
-
-									hierarchy .pop_back ();
+									if (index >= 0)
+									{
+										hierarchy .emplace_back (field);
+	
+										if (find (lod -> children () [index], object, flags, hierarchy, seen))
+											return true;
+	
+										hierarchy .pop_back ();
+									}
 								}
 								
 								continue;

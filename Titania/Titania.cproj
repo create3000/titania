@@ -251,6 +251,7 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.cpp" />
+    <Compile Include="Titania\Browser\BrowserEditorObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2394,6 +2395,7 @@
     <None Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.h" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.ImageCubeMapTexture-Titania" />
     <None Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.h" />
+    <None Include="Titania\Browser\BrowserEditorObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

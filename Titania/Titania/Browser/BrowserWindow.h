@@ -51,11 +51,14 @@
 #ifndef __TITANIA_BROWSER_BROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
+#include "../Base/X3DEditorObject.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Browser/X3DObjectOperations.h"
 
 namespace titania {
 namespace puck {
+
+class BrowserEditorObject;
 
 class BrowserWindow :
 	public X3DBrowserWindow,
@@ -793,8 +796,9 @@ private:
 
 	///  @name Members
 
-	bool                        changing;
-	X3D::X3DConstants::NodeType viewer;
+	bool                                  changing;
+	X3D::X3DConstants::NodeType           viewer;
+	std::unique_ptr <BrowserEditorObject> browserEditor;
 
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;

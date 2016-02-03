@@ -62,6 +62,9 @@ WalkViewer::WalkViewer (X3DExecutionContext* const executionContext) :
 	X3DFlyViewer ()
 {
 	addType (X3DConstants::WalkViewer);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
 X3DBaseNode*

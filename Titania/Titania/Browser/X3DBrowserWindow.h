@@ -148,15 +148,15 @@ private:
 
 	///  @name Members
 
-	std::unique_ptr <ViewpointList>   viewpointList;
-	std::unique_ptr <HistoryView>     historyEditor;
-	std::unique_ptr <LibraryView>     libraryView;
-	std::unique_ptr <OutlineEditor>   outlineEditor;
-	std::unique_ptr <Console>         console;
-	std::unique_ptr <ScriptEditor>    scriptEditor;
-	std::unique_ptr <AnimationEditor> animationEditor;
-	std::unique_ptr <X3DGridTool>     gridTool;
-	std::unique_ptr <X3DGridTool>     angleTool;
+	std::unique_ptr <ViewpointList>     viewpointList;
+	std::unique_ptr <HistoryView>       historyEditor;
+	std::unique_ptr <LibraryView>       libraryView;
+	std::unique_ptr <OutlineEditor>     outlineEditor;
+	std::unique_ptr <Console>           console;
+	std::unique_ptr <ScriptEditor>      scriptEditor;
+	std::unique_ptr <AnimationEditor>   animationEditor;
+	std::unique_ptr <X3DGridTool>       gridTool;
+	std::unique_ptr <X3DGridTool>       angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

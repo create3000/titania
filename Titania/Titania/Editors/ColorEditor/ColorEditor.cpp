@@ -403,13 +403,13 @@ ColorEditor::on_look_at_toggled ()
 {
 	if (getLookAtButton () .get_active ())
 	{
-		if (preview -> getViewer () not_eq X3D::X3DConstants::LookAtViewer)
-			preview -> setViewer (X3D::X3DConstants::LookAtViewer);
+		if (preview -> getViewerType () not_eq X3D::X3DConstants::LookAtViewer)
+			preview -> setViewerType (X3D::X3DConstants::LookAtViewer);
 	}
 	else
 	{
-		if (preview -> getViewer () not_eq X3D::X3DConstants::ExamineViewer)
-			preview -> setViewer (X3D::X3DConstants::ExamineViewer);
+		if (preview -> getViewerType () not_eq X3D::X3DConstants::ExamineViewer)
+			preview -> setViewerType (X3D::X3DConstants::ExamineViewer);
 	}
 }
 

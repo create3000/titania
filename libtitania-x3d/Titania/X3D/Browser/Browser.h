@@ -90,6 +90,10 @@ public:
 	getCursor () const
 	{ return cursor; }
 
+	const X3DPtr <X3DViewer> &
+	getViewer () const
+	{ return viewer; }
+
 	///  @name Operations
 
 	virtual

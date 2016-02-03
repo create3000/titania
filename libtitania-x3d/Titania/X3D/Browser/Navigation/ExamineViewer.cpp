@@ -83,6 +83,9 @@ ExamineViewer::ExamineViewer (X3DExecutionContext* const executionContext) :
 	          spin_id ()
 {
 	addType (X3DConstants::ExamineViewer);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
 X3DBaseNode*
@@ -146,6 +149,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 				motionTime = 0;
 
+				isActive () = true;
 				return false;
 			}
 
@@ -160,6 +164,7 @@ ExamineViewer::on_button_press_event (GdkEventButton* event)
 
 				fromPoint = getPointOnCenterPlane (event -> x, event -> y);
 			
+				isActive () = true;
 				return false;
 			}
 		}
@@ -191,6 +196,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 				addSpinning ();
 			}
 		
+			isActive () = false;
 		   return false;
 		}
 
@@ -198,6 +204,7 @@ ExamineViewer::on_button_release_event (GdkEventButton* event)
 		{
 			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 		
+			isActive () = false;
 		   return false;
 		}
 	}
@@ -274,6 +281,8 @@ ExamineViewer::on_scroll_event (GdkEventScroll* event)
 		{
 			viewpoint -> positionOffset () -= positionOffset;
 		}
+
+		scrollTime () = getCurrentTime ();
 	}
 	catch (const X3DError &)
 	{ }

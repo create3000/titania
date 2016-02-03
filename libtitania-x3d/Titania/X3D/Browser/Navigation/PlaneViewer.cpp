@@ -72,6 +72,9 @@ PlaneViewer::PlaneViewer (X3DExecutionContext* const executionContext) :
 	        button (0)
 {
 	addType (X3DConstants::PlaneViewer);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
 X3DBaseNode*
@@ -107,6 +110,8 @@ PlaneViewer::on_button_press_event (GdkEventButton* event)
 			getActiveViewpoint () -> transitionStop ();
 
 			fromPoint = getPointOnCenterPlane (event -> x, event -> y);
+
+			isActive () = true;
 		}
 	}
 	catch (const X3DError &)
@@ -125,6 +130,7 @@ PlaneViewer::on_button_release_event (GdkEventButton* event)
 
 	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 
+	isActive () = false;
 	return false;
 }
 
@@ -181,6 +187,8 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 
 		viewpoint -> positionOffset ()         += translation;
 		viewpoint -> centerOfRotationOffset () += translation;
+
+		scrollTime () = getCurrentTime ();
 	}
 	catch (const X3DError &)
 	{ }

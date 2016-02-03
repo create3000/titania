@@ -142,6 +142,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
 				}
 
+				isActive () = true;
 				return false;
 			}
 
@@ -158,6 +159,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 				fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
 
+				isActive () = true;
 				return false;
 			}
 		}
@@ -182,6 +184,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
 	removeCollision ();
 
+	isActive () = false;
 	return false;
 }
 
@@ -266,6 +269,8 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 			destinationRotation = sourceRotation * Rotation4f (Vector3f (1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 			addRoll ();
 		}
+
+		scrollTime () = getCurrentTime ();
 	}
 	catch (const X3DError &)
 	{ }

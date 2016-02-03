@@ -62,6 +62,9 @@ FlyViewer::FlyViewer (X3DExecutionContext* const executionContext) :
 	X3DFlyViewer ()
 {
 	addType (X3DConstants::FlyViewer);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
 X3DBaseNode*

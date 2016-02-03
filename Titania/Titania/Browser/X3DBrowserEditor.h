@@ -294,7 +294,7 @@ private:
 	X3D::SFBool                        enabled;
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;
-	X3D::UndoStepPtr                   undoStep;
+	X3D::UndoStepPtr                   nudgeUndoStep;
 	double                             undoTime;
 	ToolType                           tool;
 

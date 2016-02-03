@@ -48,30 +48,54 @@
  *
  ******************************************************************************/
 
-#include "NoneViewer.h"
+#ifndef __TITANIA_BROWSER_BROWSER_EDITOR_OBJECT_H__
+#define __TITANIA_BROWSER_BROWSER_EDITOR_OBJECT_H__
+
+#include "../Base/X3DEditorObject.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-const ComponentType NoneViewer::component      = ComponentType::TITANIA;
-const std::string   NoneViewer::typeName       = "NoneViewer";
-const std::string   NoneViewer::containerField = "viewer";
-
-NoneViewer::NoneViewer (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	  X3DViewer ()
+class BrowserEditorObject :
+	public X3DEditorObject
 {
-	addType (X3DConstants::NoneViewer);
+public:
 
-	addField (outputOnly, "isActive",   isActive ());
-	addField (outputOnly, "scrollTime", scrollTime ());
-}
+	BrowserEditorObject (X3DBrowserWindow* const);
 
-X3DBaseNode*
-NoneViewer::create (X3DExecutionContext* const executionContext) const
-{
-	return new NoneViewer (executionContext);
-}
+	void
+	setBrowser (const X3D::BrowserPtr &, const X3D::BrowserPtr &);
 
-} // X3D
+	~BrowserEditorObject ()
+	{ dispose (); }
+
+
+private:
+
+	/// @name Viewpoint handling
+
+	void
+	set_viewer (const X3D::X3DPtr <X3D::X3DViewer> &);
+
+	void
+	set_viewer_active (const bool);
+
+	void
+	set_viewer_scrollTime ();
+
+	void
+	set_offsets ();
+
+	X3D::X3DPtr <X3D::X3DViewer> viewerNode;
+	X3D::UndoStepPtr             undoStep;
+	X3D::Vector3f                positionOffset;
+	X3D::Rotation4f              orientationOffset;
+	X3D::Vector3f                centerOfRotationOffset;
+	float                        fieldOfViewScale;
+
+};
+
+} // puck
 } // titania
+
+#endif

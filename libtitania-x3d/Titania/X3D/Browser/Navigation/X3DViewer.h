@@ -68,6 +68,28 @@ public:
 
 	X3DViewer ();
 
+	///  @name Fields
+
+	virtual
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	virtual
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	virtual
+	SFTime &
+	scrollTime ()
+	{ return *fields .scrollTime; }
+
+	virtual
+	const SFTime &
+	scrollTime () const
+	{ return *fields .scrollTime; }
+
 
 protected:
 
@@ -101,6 +123,18 @@ private:
 	static
 	double
 	tb_project_to_sphere (const double, const double, const double);
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const isActive;
+		SFTime* const scrollTime;
+	};
+
+	Fields fields;
 
 };
 

@@ -145,7 +145,7 @@ X3DBillboardEditor::on_axisOfRotation_changed ()
 			break;
 	}
 
-	addRedoFunction (billboard -> axisOfRotation (), undoStep);
+	addRedoFunction (billboard, billboard -> axisOfRotation (), undoStep);
 }
 
 void

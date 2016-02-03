@@ -253,7 +253,7 @@ TextEditor::on_string_changed ()
 	for (auto & value : string)
 		text -> string () .emplace_back (std::move (value));
 
-	addRedoFunction (text -> string (), undoStep);
+	addRedoFunction (text, text -> string (), undoStep);
 }
 
 void

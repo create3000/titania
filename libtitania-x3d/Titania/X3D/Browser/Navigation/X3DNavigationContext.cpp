@@ -66,7 +66,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	               activeLayer (),
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
-	                    viewer (X3DConstants::NoneViewer),
+	                viewerType (X3DConstants::NoneViewer),
 	             privateViewer (X3DConstants::X3DBaseNode),
 	          availableViewers (),
 	     activeViewpointOutput (),
@@ -74,7 +74,7 @@ X3DNavigationContext::X3DNavigationContext () :
 {
 	addChildren (activeLayer,
 	             activeNavigationInfoOutput,
-	             viewer,
+	             viewerType,
 	             privateViewer,
 	             availableViewers,
 	             activeViewpointOutput);
@@ -92,7 +92,7 @@ X3DNavigationContext::getCurrentViewer () const
 	if (getPrivateViewer () not_eq X3DConstants::X3DBaseNode)
 	   return getPrivateViewer ();
 
-	return getViewer ();
+	return getViewerType ();
 }
 
 void
@@ -188,21 +188,21 @@ X3DNavigationContext::set_navigationInfo_type ()
 
 		// Determine active viewer.
 
-		viewer = X3DConstants::ExamineViewer;
+		viewerType = X3DConstants::ExamineViewer;
 
 		for (const auto & string : activeNavigationInfo -> type ())
 		{
 			try
 			{
-				const auto viewerType = viewerTypes .at (string);
+				const auto viewer = viewerTypes .at (string);
 
-				switch (viewerType)
+				switch (viewer)
 				{
 					case X3DConstants::NodeType::LookAtViewer:
 						// Continue with next type.
 						continue;
 					default:
-						viewer = viewerType;
+						viewerType = viewer;
 						break;
 				}
 
@@ -230,11 +230,11 @@ X3DNavigationContext::set_navigationInfo_type ()
 		{
 			for (const auto & string : activeNavigationInfo -> type ())
 			{
-				const auto viewerType = viewerTypes .find (string);
+				const auto viewer = viewerTypes .find (string);
 
-				if (viewerType not_eq viewerTypes .end ())
+				if (viewer not_eq viewerTypes .end ())
 				{
-					switch (viewerType -> second)
+					switch (viewer -> second)
 					{
 						case X3DConstants::ExamineViewer:
 							examineViewer = true;
@@ -281,7 +281,7 @@ X3DNavigationContext::set_navigationInfo_type ()
 	}
 	else
 	{
-		viewer     = X3DConstants::NoneViewer;
+		viewerType = X3DConstants::NoneViewer;
 		noneViewer = true;
 	}
 
@@ -304,7 +304,7 @@ X3DNavigationContext::set_navigationInfo_type ()
 	{
 		if (availableViewers .empty ())
 		{
-			viewer = X3DConstants::NoneViewer;
+			viewerType = X3DConstants::NoneViewer;
 
 			availableViewers .emplace_back (X3DConstants::NoneViewer);
 		}
