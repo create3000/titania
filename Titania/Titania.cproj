@@ -252,6 +252,8 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.cpp" />
     <Compile Include="Titania\Browser\BrowserEditorObject.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DNodeEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\NodeEditor\NodeEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2396,6 +2398,9 @@
     <None Include="share\titania\Library\Components\CubeMapTexturing\.ImageCubeMapTexture-Titania" />
     <None Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.h" />
     <None Include="Titania\Browser\BrowserEditorObject.h" />
+    <None Include="share\titania\ui\Editors\NodeEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DNodeEditorInterface.h" />
+    <None Include="Titania\Editors\NodeEditor\NodeEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2479,6 +2484,7 @@
     <Folder Include="share\titania\Library\Backgrounds\" />
     <Folder Include="Titania\Editors\BackgroundEditor\" />
     <Folder Include="share\titania\Library\Backgrounds\Texture\" />
+    <Folder Include="Titania\Editors\NodeEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

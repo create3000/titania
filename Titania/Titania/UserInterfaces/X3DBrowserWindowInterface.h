@@ -1282,6 +1282,10 @@ public:
 	{ return *m_SeparatorToolItem2; }
 
 	Gtk::ToolButton &
+	getNodeEditorButton () const
+	{ return *m_NodeEditorButton; }
+
+	Gtk::ToolButton &
 	getNodePropertiesEditorButton () const
 	{ return *m_NodePropertiesEditorButton; }
 
@@ -1939,6 +1943,10 @@ public:
 
 	virtual
 	void
+	on_node_editor_clicked () = 0;
+
+	virtual
+	void
 	on_node_properties_editor_clicked () = 0;
 
 	virtual
@@ -2368,6 +2376,7 @@ private:
 	Gtk::ToolButton*                 m_UndoButton;
 	Gtk::ToolButton*                 m_RedoButton;
 	Gtk::SeparatorToolItem*          m_SeparatorToolItem2;
+	Gtk::ToolButton*                 m_NodeEditorButton;
 	Gtk::ToolButton*                 m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                 m_AppearanceEditorButton;
 	Gtk::ToolButton*                 m_TextureEditorButton;

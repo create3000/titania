@@ -58,6 +58,7 @@
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
+#include "../Editors/NodeEditor/NodeEditor.h"
 #include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/BackgroundEditor/BackgroundEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
@@ -98,6 +99,7 @@ public:
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
+		         std::make_pair ("NodeEditor",               constructDialog <NodeEditor>),
 		         std::make_pair ("NodePropertiesEditor",     constructDialog <NodePropertiesEditor>),
 		         std::make_pair ("AppearanceEditor",         constructDialog <AppearanceEditor>),
 		         std::make_pair ("TextureEditor",            constructDialog <TextureEditor>),

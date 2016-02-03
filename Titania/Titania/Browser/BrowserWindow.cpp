@@ -2128,6 +2128,12 @@ BrowserWindow::on_location_icon_released (Gtk::EntryIconPosition icon_position, 
 }
 
 void
+BrowserWindow::on_node_editor_clicked ()
+{
+	addDialog ("NodeEditor");
+}
+
+void
 BrowserWindow::on_node_properties_editor_clicked ()
 {
 	addDialog ("NodePropertiesEditor");

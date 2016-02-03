@@ -175,7 +175,18 @@ ImageCubeMapTexture::set_loadState ()
 			const auto height        = getHeight ();
 			const auto width4        = width * 4;
 			const auto textureWidth4 = textureNode -> getWidth () * 4;
-	
+
+			if (width != height)
+			{
+				getBrowser () -> println ("Error: ImageCubeMapTexture: width and height must be equal, and all images must be of the same size!");
+
+				for (size_t i = 0; i < 6; ++ i)
+					setImage (targets [i], GL_RGBA, GL_RGBA, nullptr);
+
+				setLoadState (FAILED_STATE);
+				return;
+			}
+
 			std::vector <uint8_t> texture (textureWidth4 * textureNode -> getHeight ());
 			std::vector <uint8_t> image (width4 * height);
 		

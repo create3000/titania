@@ -635,6 +635,10 @@ private:
 
 	virtual
 	void
+	on_node_editor_clicked () final override;
+
+	virtual
+	void
 	on_node_properties_editor_clicked () final override;
 
 	virtual

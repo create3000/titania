@@ -361,6 +361,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("SeparatorToolItem2", m_SeparatorToolItem2);
+	m_builder -> get_widget ("NodeEditorButton", m_NodeEditorButton);
 	m_builder -> get_widget ("NodePropertiesEditorButton", m_NodePropertiesEditorButton);
 	m_builder -> get_widget ("AppearanceEditorButton", m_AppearanceEditorButton);
 	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
@@ -675,6 +676,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
+	m_NodeEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_editor_clicked));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor_clicked));
 	m_AppearanceEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_appearance_editor_clicked));
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));

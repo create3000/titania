@@ -84,6 +84,7 @@ titania_SOURCES =  \
 	Titania/Editors/LODEditor/X3DLODEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp \
+	Titania/Editors/NodeEditor/NodeEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp \
@@ -148,6 +149,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DLODEditorInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNavigationInfoEditorInterface.cpp \
+	Titania/UserInterfaces/X3DNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodeIndexInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \

@@ -48,79 +48,43 @@
  *
  ******************************************************************************/
 
-#include "X3DImageCubeMapTextureEditor.h"
+#ifndef __TITANIA_EDITORS_NODE_EDITOR_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_NODE_EDITOR_NODE_EDITOR_H__
 
-#include "../../ComposedWidgets/MFStringURLWidget.h"
-#include "../../ComposedWidgets/TexturePreview.h"
-
-#include <Titania/X3D/Components/Texturing/ImageTexture.h>
+#include "../../UserInterfaces/X3DNodeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DImageCubeMapTextureEditor::X3DImageCubeMapTextureEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface (),
-	                  preview (new TexturePreview (this,
-                              getImageCubeMapTexturePreviewBox (),
-                              getImageCubeMapTextureFormatLabel (),
-                              getImageCubeMapTextureLoadStateLabel ())),
-	                      url (new MFStringURLWidget (this,
-	                           getImageCubeMapTextureURLTreeView (),
-	                           getImageCubeMapTextureURLCellRendererText (),
-	                           getImageCubeMapTextureURLAddButton (),
-	                           getImageCubeMapTextureURLRemoveButton (),
-	                           getImageCubeMapTextureURLReloadButton (),
-	                           getImageCubeMapTextureURLChooserColumn (),
-	                           "url")),
-	           cubeMapTexture ()
-{ }
-
-void
-X3DImageCubeMapTextureEditor::setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+class NodeEditor :
+	virtual public X3DNodeEditorInterface
 {
-	cubeMapTexture = value;
+public:
 
-	getImageCubeMapTextureBox () .set_visible (cubeMapTexture);
+	///  @name Construction
 
-	if (not cubeMapTexture)
-		cubeMapTexture = getCurrentContext () -> createNode <X3D::ImageCubeMapTexture> ();
+	NodeEditor (X3DBrowserWindow* const);
 
-	preview -> setTexture (X3D::X3DPtr <X3D::X3DTextureNode> (cubeMapTexture -> getTexture ()));
-	url     -> setNodes ({ cubeMapTexture });
-}
+	///  @name Destruction
 
-const X3D::X3DPtr <X3D::ImageCubeMapTexture> &
-X3DImageCubeMapTextureEditor::getImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-{
-	getImageCubeMapTextureBox () .set_visible (value);
+	virtual
+	~NodeEditor ();
 
-	if (value)
-	{
-		for (const auto & type : basic::make_reverse_range (value -> getType ()))
-		{
-			switch (type)
-			{
-				case X3D::X3DConstants::MovieTexture:
-					break;
-				case X3D::X3DConstants::X3DUrlObject:
-				{
-					cubeMapTexture -> url () = value -> getField <X3D::MFString> ("url");
-					break;
-				}
-				default:
-					continue;
-			}
 
-			break;
-		}
-	}
+private:
 
-	return cubeMapTexture;
-}
+	///  @name Construction
 
-X3DImageCubeMapTextureEditor::~X3DImageCubeMapTextureEditor ()
-{ }
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_selection (const X3D::MFNode &);
+
+};
 
 } // puck
 } // titania
+
+#endif

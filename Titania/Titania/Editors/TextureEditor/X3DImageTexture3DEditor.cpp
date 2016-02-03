@@ -91,10 +91,22 @@ X3DImageTexture3DEditor::getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 
 	if (value)
 	{
-		switch (value -> getType () .back ())
+		for (const auto & type : basic::make_reverse_range (value -> getType ()))
 		{
-			default:
-				break;
+			switch (type)
+			{
+				case X3D::X3DConstants::MovieTexture:
+					break;
+				case X3D::X3DConstants::X3DUrlObject:
+				{
+					imageTexture -> url () = value -> getField <X3D::MFString> ("url");
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
 		}
 	}
 
