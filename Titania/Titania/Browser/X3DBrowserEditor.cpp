@@ -519,7 +519,7 @@ X3DBrowserEditor::getMetaData ()
 void
 X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 {
-	if (isEditor () and getArrowButton () .get_active ())
+	if (isEditor ())
 		getCurrentBrowser () -> setPrivateViewer (viewer);
 	else
 		getCurrentBrowser () -> setViewerType (viewer);

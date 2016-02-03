@@ -318,6 +318,7 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 	if (changing)
 		return;
 
+	styleUndoStep .reset ();
 	addUndoFunction (fontStyleNode, fontStyleNode -> style (), styleUndoStep);
 
 	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);

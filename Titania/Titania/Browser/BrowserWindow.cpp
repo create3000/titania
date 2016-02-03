@@ -1251,11 +1251,6 @@ BrowserWindow::isEditor (const bool enabled)
 		getHandButton () .set_active (true);
 	
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
-
-	if (isEditor () and getArrowButton () .get_active ())
-	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewerType ());
-	else
-		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }
 
 void
@@ -2337,11 +2332,6 @@ BrowserWindow::set_arrow_button (const bool value)
 	getLookAtSelectionButton () .set_visible (isEditor () and value);
 
 	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
-
-	if (isEditor () and getArrowButton () .get_active ())
-	   getCurrentBrowser () -> setPrivateViewer (getCurrentBrowser () -> getViewerType ());
-	else
-		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 }
 
 void
