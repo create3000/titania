@@ -182,17 +182,17 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BottomURLReloadButton", m_BottomURLReloadButton);
 
 	// Connect object Gtk::MenuItem with id 'NewBackgroundMenuItem'.
-	m_NewBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_background_activated));
-	m_NewTextureBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_texture_background_activated));
+	m_connections .emplace_back (m_NewBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_background_activated)));
+	m_connections .emplace_back (m_NewTextureBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_texture_background_activated)));
 
 	// Connect object Gtk::Button with id 'RemoveBackgroundButton'.
-	m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_remove_background_clicked));
+	m_connections .emplace_back (m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_remove_background_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'BindToggleButton'.
-	m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_bind_toggled));
+	m_connections .emplace_back (m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_bind_toggled)));
 
 	// Connect object Gtk::Button with id 'IndexButton'.
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_index_clicked));
+	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_index_clicked)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -200,6 +200,9 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 
 X3DBackgroundEditorInterface::~X3DBackgroundEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

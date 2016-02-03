@@ -218,16 +218,6 @@ template <class Type>
 void
 X3DFieldAdjustment2 <Type>::setNodes (const X3D::MFNode & value)
 {
-	if (lower .empty ())
-	{
-		for (const auto adjustment : adjustments)
-		{
-			lower .emplace_back (adjustment -> get_lower ());
-			upper .emplace_back (adjustment -> get_upper ());
-			empty .emplace_back (adjustment -> get_value ());
-		}
-	}
-	
 	for (const auto & node : nodes)
 	{
 		try
@@ -259,6 +249,9 @@ template <class Type>
 void
 X3DFieldAdjustment2 <Type>::on_value_changed (const int index0)
 {
+	if (nodes .empty ())
+		return;
+
 	if (changing)
 		return;
 
@@ -420,6 +413,16 @@ template <class Type>
 void
 X3DFieldAdjustment2 <Type>::set_bounds ()
 {
+	if (lower .empty ())
+	{
+		for (const auto adjustment : adjustments)
+		{
+			lower .emplace_back (adjustment -> get_lower ());
+			upper .emplace_back (adjustment -> get_upper ());
+			empty .emplace_back (adjustment -> get_value ());
+		}
+	}
+	
 	for (size_t i = 0, size = adjustments .size (); i < size; ++ i)
 	{
 		adjustments [i] -> set_lower (getCurrentScene () -> toUnit (unit, lower [i]));

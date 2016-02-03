@@ -164,16 +164,16 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
 
 	// Connect object Gtk::MenuItem with id 'NewViewpointMenuItem'.
-	m_NewViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_viewpoint_activated));
-	m_NewOrthoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_activated));
-	m_NewGeoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_activated));
+	m_connections .emplace_back (m_NewViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_viewpoint_activated)));
+	m_connections .emplace_back (m_NewOrthoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_activated)));
+	m_connections .emplace_back (m_NewGeoViewpointMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_activated)));
 
 	// Connect object Gtk::Button with id 'RemoveViewpointButton'.
-	m_RemoveViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_remove_viewpoint_clicked));
-	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));
+	m_connections .emplace_back (m_RemoveViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_remove_viewpoint_clicked)));
+	m_connections .emplace_back (m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'LockToCameraButton'.
-	m_LockToCameraButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_lock_to_camera_toggled));
+	m_connections .emplace_back (m_LockToCameraButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DViewpointEditorInterface::on_lock_to_camera_toggled)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -181,6 +181,9 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 
 X3DViewpointEditorInterface::~X3DViewpointEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

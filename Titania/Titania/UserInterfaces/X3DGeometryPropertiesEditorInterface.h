@@ -514,6 +514,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;

@@ -109,7 +109,6 @@
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
-    <property name="border_width">8</property>
     <property name="title" translatable="yes">Geometry Properties Editor</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
@@ -118,6 +117,7 @@
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
@@ -206,6 +206,7 @@
                           <item translatable="yes">IndexedTriangleStripSet</item>
                           <item translatable="yes">LineSet</item>
                           <item translatable="yes">QuadSet</item>
+                          <item translatable="yes">Text</item>
                           <item translatable="yes">TriangleFanSet</item>
                           <item translatable="yes">TriangleSet</item>
                           <item translatable="yes">TriangleStripSet</item>

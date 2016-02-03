@@ -131,6 +131,9 @@ NormalTool::setNodes (const X3D::MFNode & value)
 void
 NormalTool::set_rotation (const X3D::SFRotation & value)
 {
+	if (nodes .empty ())
+		return;
+
 	const auto normal = negate (X3D::Vector3f (0, 0, 1) * value);
 
 	addUndoFunction <X3D::SFVec3f> (nodes, name, undoStep);

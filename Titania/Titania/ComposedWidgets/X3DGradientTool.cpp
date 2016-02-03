@@ -198,6 +198,9 @@ X3DGradientTool::set_color (const X3D::MFColor &)
 void
 X3DGradientTool::set_value (const X3D::time_type &)
 {
+	if (nodes .empty ())
+		return;
+
 	//__LOG__ << undoStep .get () << std::endl;
 
 	beginUndoGroup (name, undoStep);

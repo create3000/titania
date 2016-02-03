@@ -80,8 +80,6 @@ titania_SOURCES =  \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DSpotLightEditor.cpp \
-	Titania/Editors/LODEditor/LODEditor.cpp \
-	Titania/Editors/LODEditor/X3DLODEditor.cpp \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp \
 	Titania/Editors/NodeEditor/NodeEditor.cpp \
@@ -94,6 +92,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DLODEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DSwitchEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DViewportEditor.cpp \

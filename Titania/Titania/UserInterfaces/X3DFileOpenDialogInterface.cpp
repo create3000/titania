@@ -80,6 +80,9 @@ X3DFileOpenDialogInterface::create (const std::string & filename)
 
 X3DFileOpenDialogInterface::~X3DFileOpenDialogInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

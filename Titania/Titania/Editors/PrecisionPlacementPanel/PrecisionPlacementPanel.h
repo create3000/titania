@@ -56,6 +56,7 @@
 #include "X3DLayoutEditor.h"
 #include "X3DTransformEditor.h"
 #include "X3DBillboardEditor.h"
+#include "X3DLODEditor.h"
 #include "X3DViewportEditor.h"
 #include "X3DGeoLocationEditor.h"
 #include "X3DGeoTransformEditor.h"
@@ -69,6 +70,7 @@ class PrecisionPlacementPanel :
 	public X3DTransformEditor,
 	public X3DSwitchEditor,
 	public X3DBillboardEditor,
+	public X3DLODEditor,
 	public X3DLayoutEditor,
 	public X3DViewportEditor,
 	public X3DGeoTransformEditor,

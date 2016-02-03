@@ -103,6 +103,9 @@ SFStringEntry::setNodes (const X3D::MFNode & value)
 void
 SFStringEntry::on_changed ()
 {
+	if (nodes .empty ())
+		return;
+
 	if (changing)
 		return;
 

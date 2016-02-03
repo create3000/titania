@@ -278,40 +278,40 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
-	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
+	m_connections .emplace_back (m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed)));
 
 	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
-	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
-	m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_embed_image_clicked));
+	m_connections .emplace_back (m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked)));
+	m_connections .emplace_back (m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_embed_image_clicked)));
 
 	// Connect object Gtk::CheckButton with id 'TexturePropertiesCheckButton'.
-	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled));
+	m_connections .emplace_back (m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled)));
 
 	// Connect object Gtk::Button with id 'TexturePropertiesUnlinkButton'.
-	m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked));
+	m_connections .emplace_back (m_TexturePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_unlink_clicked)));
 
 	// Connect object Gtk::ComboBoxText with id 'TextureTransformComboBoxText'.
-	m_TextureTransformComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed));
+	m_connections .emplace_back (m_TextureTransformComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_changed)));
 
 	// Connect object Gtk::Button with id 'TextureTransformUnlinkButton'.
-	m_TextureTransformUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_unlink_clicked));
+	m_connections .emplace_back (m_TextureTransformUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureTransform_unlink_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'TextureTransformUniformScaleButton'.
-	m_TextureTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform_uniform_scale_clicked));
-	m_TextureTransform3DUniformScaleButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform3D_uniform_scale_clicked));
+	m_connections .emplace_back (m_TextureTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform_uniform_scale_clicked)));
+	m_connections .emplace_back (m_TextureTransform3DUniformScaleButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_transform3D_uniform_scale_clicked)));
 
 	// Connect object Gtk::CheckButton with id 'TextureCoordinateGeneratorCheckButton'.
-	m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_toggled));
+	m_connections .emplace_back (m_TextureCoordinateGeneratorCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_toggled)));
 
 	// Connect object Gtk::Button with id 'TextureCoordinateGeneratorUnlinkButton'.
-	m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked));
+	m_connections .emplace_back (m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked)));
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
-	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_changed));
+	m_connections .emplace_back (m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_changed)));
 
 	// Connect object Gtk::Button with id 'PalettePreviousButton'.
-	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_previous_clicked));
-	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_next_clicked));
+	m_connections .emplace_back (m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_previous_clicked)));
+	m_connections .emplace_back (m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_next_clicked)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -319,6 +319,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 X3DTextureEditorInterface::~X3DTextureEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

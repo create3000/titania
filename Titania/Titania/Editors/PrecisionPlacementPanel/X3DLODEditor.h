@@ -48,42 +48,77 @@
  *
  ******************************************************************************/
 
-#include "LODEditor.h"
+#ifndef __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
+#define __TITANIA_EDITORS_LODEDITOR_X3DLODEDITOR_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
+#include "../../ComposedWidgets.h"
+#include "../../ComposedWidgets/RangeTool.h"
+#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+
+#include <Titania/X3D/Components/Navigation/LOD.h>
 
 namespace titania {
 namespace puck {
 
-LODEditor::LODEditor (X3DBrowserWindow* const browserWindow) :
-	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DLODEditorInterface (get_ui ("Editors/LODEditor.glade"), gconf_dir ()),
-	         X3DLODEditor ()//,
-	    //X3DGeoLODEditor ()
-{
-	setup ();
-}
+class BrowserWindow;
+class LODRangeWidget;
 
-void
-LODEditor::initialize ()
+class X3DLODEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
-	X3DLODEditor::initialize ();
-	//X3DGeoLODEditor::initialize ();
-}
+public:
 
-void
-LODEditor::on_index_clicked ()
-{
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
-	nodeIndex -> setTypes ({ X3D::X3DConstants::LOD, X3D::X3DConstants::GeoLOD });
-}
+	///  @name Destruction
 
-LODEditor::~LODEditor ()
-{
-	dispose ();
-}
+	virtual
+	~X3DLODEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DLODEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_selection (const X3D::MFNode &);
+
+	///  @name Event handlers
+	
+	virtual
+	void
+	on_lod_move_center_button_clicked () final override;
+
+	void
+	on_range_whichChoice_changed ();
+
+	virtual
+	void
+	on_lod_keep_current_level_toggled () final override;
+
+	///  @name Members
+
+	NameEntry                          nodeName;
+	X3DFieldToggleButton <X3D::SFBool> forceTransitions;
+	X3DFieldAdjustment3 <X3D::SFVec3f> center;
+	RangeTool                          range;
+	X3DFieldAdjustment <X3D::MFFloat>  singleRange;
+	X3DFieldAdjustment <X3D::SFInt32>  level_changed;
+	
+	X3D::X3DPtr <X3D::LOD> lod;
+
+};
 
 } // puck
 } // titania
+
+#endif

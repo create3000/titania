@@ -133,6 +133,9 @@ RotationTool::setNodes (const X3D::MFNode & value)
 void
 RotationTool::set_rotation (const X3D::SFRotation & value)
 {
+	if (nodes .empty ())
+		return;
+
 	addUndoFunction <X3D::SFRotation> (nodes, name, undoStep);
 
 	for (const auto & node : nodes)

@@ -2078,6 +2078,7 @@ private:
 
 	std::string                      filename;
 	Glib::RefPtr <Gtk::Builder>      m_builder;
+	std::deque <sigc::connection>    m_connections;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;

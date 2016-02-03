@@ -61,120 +61,26 @@ X3DNodeEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FrontURLCellRendererText    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FrontURLCellRendererText"));
-	m_FrontURLChooserColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FrontURLChooserColumn"));
-	m_FrontURLCellrendererPixbuf  = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("FrontURLCellrendererPixbuf"));
-	m_BackURLCellRendererText     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("BackURLCellRendererText"));
-	m_BackURLChooserColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("BackURLChooserColumn"));
-	m_BackURLCellrendererPixbuf   = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("BackURLCellrendererPixbuf"));
-	m_LeftURLCellRendererText     = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("LeftURLCellRendererText"));
-	m_LeftURLChooserColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("LeftURLChooserColumn"));
-	m_LeftURLCellrendererPixbuf   = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("LeftURLCellrendererPixbuf"));
-	m_RightURLCellRendererText    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("RightURLCellRendererText"));
-	m_RightURLChooserColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("RightURLChooserColumn"));
-	m_RightURLCellrendererPixbuf  = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("RightURLCellrendererPixbuf"));
-	m_TopURLCellRendererText      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TopURLCellRendererText"));
-	m_TopURLChooserColumn         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TopURLChooserColumn"));
-	m_TopURLCellrendererPixbuf    = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("TopURLCellrendererPixbuf"));
-	m_BottomURLCellRendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("BottomURLCellRendererText"));
-	m_BottomURLChooserColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("BottomURLChooserColumn"));
-	m_BottomURLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("BottomURLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("NodePropertiesBox", m_NodePropertiesBox);
-	m_builder -> get_widget ("NodeFieldsBox", m_NodeFieldsBox);
-	m_builder -> get_widget ("Widget1", m_Widget1);
-	m_builder -> get_widget ("ActionBox", m_ActionBox);
-	m_builder -> get_widget ("RemoveBackgroundButton", m_RemoveBackgroundButton);
-	m_builder -> get_widget ("BindToggleButton", m_BindToggleButton);
-	m_builder -> get_widget ("BindImage", m_BindImage);
-	m_builder -> get_widget ("IndexButton", m_IndexButton);
-	m_builder -> get_widget ("BackgroundExpander", m_BackgroundExpander);
-	m_builder -> get_widget ("LightBox", m_LightBox);
-	m_builder -> get_widget ("NameBox", m_NameBox);
-	m_builder -> get_widget ("NameEntry", m_NameEntry);
-	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ColorBox", m_ColorBox);
-	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
-	m_builder -> get_widget ("SkyBox", m_SkyBox);
-	m_builder -> get_widget ("SkyGradientBox", m_SkyGradientBox);
-	m_builder -> get_widget ("SkyAngleSpinButton", m_SkyAngleSpinButton);
-	m_builder -> get_widget ("SkyColorGrid", m_SkyColorGrid);
-	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
-	m_builder -> get_widget ("AddSkyColorButton", m_AddSkyColorButton);
-	m_builder -> get_widget ("RemoveSkyColorButton", m_RemoveSkyColorButton);
-	m_builder -> get_widget ("SkyColorBox", m_SkyColorBox);
-	m_builder -> get_widget ("SkyColorButton", m_SkyColorButton);
-	m_builder -> get_widget ("GroundBox", m_GroundBox);
-	m_builder -> get_widget ("GroundGradientBox", m_GroundGradientBox);
-	m_builder -> get_widget ("GroundAngleSpinButton", m_GroundAngleSpinButton);
-	m_builder -> get_widget ("GroundColorGrid", m_GroundColorGrid);
-	m_builder -> get_widget ("GroundColorsScrolledWindow", m_GroundColorsScrolledWindow);
-	m_builder -> get_widget ("AddGroundColorButton", m_AddGroundColorButton);
-	m_builder -> get_widget ("RemoveGroundColorButton", m_RemoveGroundColorButton);
-	m_builder -> get_widget ("GroundColorBox", m_GroundColorBox);
-	m_builder -> get_widget ("GroundColorButton", m_GroundColorButton);
-	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
-	m_builder -> get_widget ("TexturesBox", m_TexturesBox);
-	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
-	m_builder -> get_widget ("TexturesNotebook", m_TexturesNotebook);
-	m_builder -> get_widget ("FrontTextureFormatLabel", m_FrontTextureFormatLabel);
-	m_builder -> get_widget ("FrontTextureLoadStateLabel", m_FrontTextureLoadStateLabel);
-	m_builder -> get_widget ("FrontTexturePreviewBox", m_FrontTexturePreviewBox);
-	m_builder -> get_widget ("FrontURLGrid", m_FrontURLGrid);
-	m_builder -> get_widget ("FrontURLBox", m_FrontURLBox);
-	m_builder -> get_widget ("FrontURLTreeView", m_FrontURLTreeView);
-	m_builder -> get_widget ("FrontURLAddButton", m_FrontURLAddButton);
-	m_builder -> get_widget ("FrontURLRemoveButton", m_FrontURLRemoveButton);
-	m_builder -> get_widget ("FrontURLReloadButton", m_FrontURLReloadButton);
-	m_builder -> get_widget ("BackTextureFormatLabel", m_BackTextureFormatLabel);
-	m_builder -> get_widget ("BackTextureLoadStateLabel", m_BackTextureLoadStateLabel);
-	m_builder -> get_widget ("BackTexturePreviewBox", m_BackTexturePreviewBox);
-	m_builder -> get_widget ("BackURLGrid", m_BackURLGrid);
-	m_builder -> get_widget ("BackURLBox", m_BackURLBox);
-	m_builder -> get_widget ("BackURLTreeView", m_BackURLTreeView);
-	m_builder -> get_widget ("BackURLAddButton", m_BackURLAddButton);
-	m_builder -> get_widget ("BackURLRemoveButton", m_BackURLRemoveButton);
-	m_builder -> get_widget ("BackURLReloadButton", m_BackURLReloadButton);
-	m_builder -> get_widget ("LeftTextureFormatLabel", m_LeftTextureFormatLabel);
-	m_builder -> get_widget ("LeftTextureLoadStateLabel", m_LeftTextureLoadStateLabel);
-	m_builder -> get_widget ("LeftTexturePreviewBox", m_LeftTexturePreviewBox);
-	m_builder -> get_widget ("LeftURLGrid", m_LeftURLGrid);
-	m_builder -> get_widget ("LeftURLBox", m_LeftURLBox);
-	m_builder -> get_widget ("LeftURLTreeView", m_LeftURLTreeView);
-	m_builder -> get_widget ("LeftURLAddButton", m_LeftURLAddButton);
-	m_builder -> get_widget ("LeftURLRemoveButton", m_LeftURLRemoveButton);
-	m_builder -> get_widget ("LeftURLReloadButton", m_LeftURLReloadButton);
-	m_builder -> get_widget ("RightTextureFormatLabel", m_RightTextureFormatLabel);
-	m_builder -> get_widget ("RightTextureLoadStateLabel", m_RightTextureLoadStateLabel);
-	m_builder -> get_widget ("RightTexturePreviewBox", m_RightTexturePreviewBox);
-	m_builder -> get_widget ("RightURLGrid", m_RightURLGrid);
-	m_builder -> get_widget ("RightURLBox", m_RightURLBox);
-	m_builder -> get_widget ("RightURLTreeView", m_RightURLTreeView);
-	m_builder -> get_widget ("RightURLAddButton", m_RightURLAddButton);
-	m_builder -> get_widget ("RightURLRemoveButton", m_RightURLRemoveButton);
-	m_builder -> get_widget ("RightURLReloadButton", m_RightURLReloadButton);
-	m_builder -> get_widget ("TopTextureFormatLabel", m_TopTextureFormatLabel);
-	m_builder -> get_widget ("TopTextureLoadStateLabel", m_TopTextureLoadStateLabel);
-	m_builder -> get_widget ("TopTexturePreviewBox", m_TopTexturePreviewBox);
-	m_builder -> get_widget ("TopURLGrid", m_TopURLGrid);
-	m_builder -> get_widget ("TopURLBox", m_TopURLBox);
-	m_builder -> get_widget ("TopURLTreeView", m_TopURLTreeView);
-	m_builder -> get_widget ("TopURLAddButton", m_TopURLAddButton);
-	m_builder -> get_widget ("TopURLRemoveButton", m_TopURLRemoveButton);
-	m_builder -> get_widget ("TopURLReloadButton", m_TopURLReloadButton);
-	m_builder -> get_widget ("BottomTextureFormatLabel", m_BottomTextureFormatLabel);
-	m_builder -> get_widget ("BottomTextureLoadStateLabel", m_BottomTextureLoadStateLabel);
-	m_builder -> get_widget ("BottomTexturePreviewBox", m_BottomTexturePreviewBox);
-	m_builder -> get_widget ("BottomURLGrid", m_BottomURLGrid);
-	m_builder -> get_widget ("BottomURLBox", m_BottomURLBox);
-	m_builder -> get_widget ("BottomURLTreeView", m_BottomURLTreeView);
-	m_builder -> get_widget ("BottomURLAddButton", m_BottomURLAddButton);
-	m_builder -> get_widget ("BottomURLRemoveButton", m_BottomURLRemoveButton);
-	m_builder -> get_widget ("BottomURLReloadButton", m_BottomURLReloadButton);
+	m_builder -> get_widget ("NodePropertiesEditorBox", m_NodePropertiesEditorBox);
+	m_builder -> get_widget ("AppearanceEditorBox", m_AppearanceEditorBox);
+	m_builder -> get_widget ("TextureEditorBox", m_TextureEditorBox);
+	m_builder -> get_widget ("GeometryPropertiesEditorBox", m_GeometryPropertiesEditorBox);
+	m_builder -> get_widget ("TextEditorBox", m_TextEditorBox);
+	m_builder -> get_widget ("LayerEditorBox", m_LayerEditorBox);
+	m_builder -> get_widget ("BackgroundEditorBox", m_BackgroundEditorBox);
+	m_builder -> get_widget ("NavigationInfoEditorBox", m_NavigationInfoEditorBox);
+	m_builder -> get_widget ("ViewpointEditorBox", m_ViewpointEditorBox);
+	m_builder -> get_widget ("LightEditorBox", m_LightEditorBox);
+	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
+	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
+
+	// Connect object Gtk::Notebook with id 'Notebook'.
+	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -182,6 +88,9 @@ X3DNodeEditorInterface::create (const std::string & filename)
 
 X3DNodeEditorInterface::~X3DNodeEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

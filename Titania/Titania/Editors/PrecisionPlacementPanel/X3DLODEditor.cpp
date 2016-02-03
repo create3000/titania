@@ -61,41 +61,29 @@ namespace titania {
 namespace puck {
 
 X3DLODEditor::X3DLODEditor () :
-	X3DLODEditorInterface (),
-	             nodeName (this, getLODNameEntry (), getLODRenameButton ()),
-	     forceTransitions (this, getLODForceTransitionsCheckButton (),  "forceTransitions"),
-	               center (this,
-	                       getLODCenterXAdjustment (),
-	                       getLODCenterYAdjustment (),
-	                       getLODCenterZAdjustment (),
-	                       getLODCenterBox (),
-	                       "center"),
-//	                 range (new LODRangeWidget (this,
-//	                       getLODRangeMinAdjustment (),
-//	                       getLODRangeMaxAdjustment (),
-//	                       getLODRangeMinSpinButton (),
-//	                       getLODRangeMaxSpinButton (),
-//	                       getLODMaxCheckButton (),
-//	                       getLODRangeBox ())),
-						 range (this, "Range", getRangeGradientBox ()),
-	          singleRange (this, getRangeAdjustment (), getRangeSpinButton (), "range"),
-	        level_changed (this,
-	                       getLODLevelAdjustment (),
-	                       getLODLevelSpinButton (),
-	                       "level_changed"),
-	             bboxSize (this,
-	                       getLODBBoxSizeXAdjustment (),
-	                       getLODBBoxSizeYAdjustment (),
-	                       getLODBBoxSizeZAdjustment (),
-	                       getLODBBoxSizeBox (),
-	                       "bboxSize"),
-	           bboxCenter (this,
-	                       getLODBBoxCenterXAdjustment (),
-	                       getLODBBoxCenterYAdjustment (),
-	                       getLODBBoxCenterZAdjustment (),
-	                       getLODBBoxCenterBox (),
-	                       "bboxCenter"),
-	                  lod ()
+	X3DPrecisionPlacementPanelInterface (),
+	                           nodeName (this, getLODNameEntry (), getLODRenameButton ()),
+	                   forceTransitions (this, getLODForceTransitionsCheckButton (),  "forceTransitions"),
+	                             center (this,
+	                                     getLODCenterXAdjustment (),
+	                                     getLODCenterYAdjustment (),
+	                                     getLODCenterZAdjustment (),
+	                                     getLODCenterBox (),
+	                                     "center"),
+//	                               range (new LODRangeWidget (this,
+//	                                     getLODRangeMinAdjustment (),
+//	                                     getLODRangeMaxAdjustment (),
+//	                                     getLODRangeMinSpinButton (),
+//	                                     getLODRangeMaxSpinButton (),
+//	                                     getLODMaxCheckButton (),
+//	                                     getLODRangeBox ())),
+		  	            			 range (this, "Range", getRangeGradientBox ()),
+	                        singleRange (this, getLODRangeAdjustment (), getLODRangeSpinButton (), "range"),
+	                      level_changed (this,
+	                                     getLODLevelAdjustment (),
+	                                     getLODLevelSpinButton (),
+	                                     "level_changed"),
+	                                lod ()
 {
 	range .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_whichChoice_changed)); 
 }
@@ -120,27 +108,20 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 	range            .setNodes (nodes);
 	singleRange      .setNodes (nodes);
 	level_changed    .setNodes (nodes);
-	bboxSize         .setNodes (nodes);
-	bboxCenter       .setNodes (nodes);
+
+	getLODExpander ()                    .set_visible (lod);
+	getLODKeepCurrentLevelCheckButton () .set_sensitive (lod);
+	getLODKeepCurrentLevelCheckButton () .set_inconsistent (not lod);
 
 	if (lod)
 	{
-		getLODKeepCurrentLevelCheckButton () .set_sensitive (true);
-		getLODKeepCurrentLevelCheckButton () .set_active (lod -> getKeepCurrentLevel ());
-		getLODKeepCurrentLevelCheckButton () .set_inconsistent (false);
-
 		range .setWhichChoice (lod -> range () .empty () ? -1 : 0);
 		singleRange .setIndex (lod -> range () .empty () ? -1 : 0);
-	}
-	else
-	{
-		getLODKeepCurrentLevelCheckButton () .set_sensitive (false);
-		getLODKeepCurrentLevelCheckButton () .set_inconsistent (true);
 	}
 }
 
 void
-X3DLODEditor::on_lod_move_center_button ()
+X3DLODEditor::on_lod_move_center_button_clicked ()
 {
 	using setValue = void (X3D::SFVec3f::*) (const X3D::SFVec3f::internal_type &);
 
@@ -168,7 +149,7 @@ X3DLODEditor::on_range_whichChoice_changed ()
 }
 
 void
-X3DLODEditor::on_lod_keep_current_level_activate ()
+X3DLODEditor::on_lod_keep_current_level_toggled ()
 {
 	lod -> setKeepCurrentLevel (getLODKeepCurrentLevelCheckButton () .get_active ());
 	getLODLevelSpinButton () .set_editable (getLODKeepCurrentLevelCheckButton () .get_active ());

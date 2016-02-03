@@ -98,44 +98,44 @@ X3DColorEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
 
 	// Connect object Gtk::RadioMenuItem with id 'PhongMenuItem'.
-	m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_phong_activate));
-	m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_gouraud_activate));
-	m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_flat_activate));
-	m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_wireframe_activate));
-	m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_pointset_activate));
+	m_connections .emplace_back (m_PhongMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_phong_activate)));
+	m_connections .emplace_back (m_GouraudMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_gouraud_activate)));
+	m_connections .emplace_back (m_FlatMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_flat_activate)));
+	m_connections .emplace_back (m_WireFrameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_wireframe_activate)));
+	m_connections .emplace_back (m_PointSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_pointset_activate)));
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
-	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_undo));
-	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_redo));
-	m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_remove_unused_colors_activate));
+	m_connections .emplace_back (m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_undo)));
+	m_connections .emplace_back (m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_redo)));
+	m_connections .emplace_back (m_RemoveUnusedColorsMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_remove_unused_colors_activate)));
 
 	// Connect object Gtk::ToolButton with id 'UndoButton'.
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_undo));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_redo));
+	m_connections .emplace_back (m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_undo)));
+	m_connections .emplace_back (m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_redo)));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
-	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_hand_toggled));
-	m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_arrow_toggled));
+	m_connections .emplace_back (m_HandButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_hand_toggled)));
+	m_connections .emplace_back (m_ArrowButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_arrow_toggled)));
 
 	// Connect object Gtk::ToggleToolButton with id 'CheckerBoardButton'.
-	m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_checkerboard_toggled));
-	m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_texture_toggled));
+	m_connections .emplace_back (m_CheckerBoardButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_checkerboard_toggled)));
+	m_connections .emplace_back (m_TextureButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_texture_toggled)));
 
 	// Connect object Gtk::ToolButton with id 'LookAtAllButton'.
-	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_look_at_all_clicked));
+	m_connections .emplace_back (m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_look_at_all_clicked)));
 
 	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
-	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_look_at_toggled));
+	m_connections .emplace_back (m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_look_at_toggled)));
 
 	// Connect object Gtk::RadioButton with id 'SingleVertexButton'.
-	m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_single_vertex_clicked));
-	m_AdjacentVerticesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_adjacent_vertices_clicked));
-	m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_single_face_clicked));
-	m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_whole_object_clicked));
+	m_connections .emplace_back (m_SingleVertexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_single_vertex_clicked)));
+	m_connections .emplace_back (m_AdjacentVerticesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_adjacent_vertices_clicked)));
+	m_connections .emplace_back (m_SingleFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_single_face_clicked)));
+	m_connections .emplace_back (m_WholeObjectButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_whole_object_clicked)));
 
 	// Connect object Gtk::Button with id 'RemoveButton'.
-	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_remove_clicked));
-	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_apply_clicked));
+	m_connections .emplace_back (m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_remove_clicked)));
+	m_connections .emplace_back (m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DColorEditorInterface::on_apply_clicked)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -143,6 +143,9 @@ X3DColorEditorInterface::create (const std::string & filename)
 
 X3DColorEditorInterface::~X3DColorEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

@@ -76,6 +76,9 @@ X3DMotionBlurEditorInterface::create (const std::string & filename)
 
 X3DMotionBlurEditorInterface::~X3DMotionBlurEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

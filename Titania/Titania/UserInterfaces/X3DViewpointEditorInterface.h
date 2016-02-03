@@ -522,6 +522,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoViewpointCenterOfRotationZAdjustment;

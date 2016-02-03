@@ -121,6 +121,9 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 void
 SFRotationAdjustment::on_value_changed (const int id)
 {
+	if (nodes .empty ())
+		return;
+
 	if (changing)
 		return;
 

@@ -81,24 +81,24 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UnitAngleEntry", m_UnitAngleEntry);
 
 	// Connect object Gtk::Adjustment with id 'UnitAngleAdjustment'.
-	m_UnitAngleAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_changed));
-	m_UnitForceAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_changed));
-	m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
-	m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
+	m_connections .emplace_back (m_UnitAngleAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_changed)));
+	m_connections .emplace_back (m_UnitForceAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_changed)));
+	m_connections .emplace_back (m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed)));
+	m_connections .emplace_back (m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed)));
 
 	// Connect object Gtk::Entry with id 'UnitMassEntry'.
-	m_UnitMassEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
-	m_UnitMassEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_delete_text), false);
-	m_UnitMassEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_insert_text), false);
-	m_UnitLengthEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
-	m_UnitLengthEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_delete_text), false);
-	m_UnitLengthEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_insert_text), false);
-	m_UnitForceEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_changed));
-	m_UnitForceEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_delete_text), false);
-	m_UnitForceEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_insert_text), false);
-	m_UnitAngleEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_changed));
-	m_UnitAngleEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_delete_text), false);
-	m_UnitAngleEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_insert_text), false);
+	m_connections .emplace_back (m_UnitMassEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed)));
+	m_connections .emplace_back (m_UnitMassEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_delete_text), false));
+	m_connections .emplace_back (m_UnitMassEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_insert_text), false));
+	m_connections .emplace_back (m_UnitLengthEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed)));
+	m_connections .emplace_back (m_UnitLengthEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_delete_text), false));
+	m_connections .emplace_back (m_UnitLengthEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_insert_text), false));
+	m_connections .emplace_back (m_UnitForceEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_changed)));
+	m_connections .emplace_back (m_UnitForceEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_delete_text), false));
+	m_connections .emplace_back (m_UnitForceEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_force_insert_text), false));
+	m_connections .emplace_back (m_UnitAngleEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_changed)));
+	m_connections .emplace_back (m_UnitAngleEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_delete_text), false));
+	m_connections .emplace_back (m_UnitAngleEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_insert_text), false));
 
 	// Call construct handler of base class.
 	construct ();
@@ -106,6 +106,9 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 
 X3DScenePropertiesEditorInterface::~X3DScenePropertiesEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

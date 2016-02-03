@@ -101,14 +101,14 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-	m_NewNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_new_navigation_info_clicked));
-	m_RemoveNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_remove_navigation_info_clicked));
+	m_connections .emplace_back (m_NewNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_new_navigation_info_clicked)));
+	m_connections .emplace_back (m_RemoveNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_remove_navigation_info_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'BindToggleButton'.
-	m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_bind_toggled));
+	m_connections .emplace_back (m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_bind_toggled)));
 
 	// Connect object Gtk::Button with id 'IndexButton'.
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_index_clicked));
+	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_index_clicked)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -116,6 +116,9 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 
 X3DNavigationInfoEditorInterface::~X3DNavigationInfoEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

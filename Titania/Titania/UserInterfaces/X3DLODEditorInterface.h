@@ -130,16 +130,16 @@ public:
 	{ return m_LODLevelAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeAdjustment () const
+	{ return m_LODRangeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getLODRangeMaxAdjustment () const
 	{ return m_LODRangeMaxAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getLODRangeMinAdjustment () const
 	{ return m_LODRangeMinAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getRangeAdjustment () const
-	{ return m_RangeAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getRangeColorAdjustment () const
@@ -218,8 +218,8 @@ public:
 	{ return *m_LODMaxCheckButton; }
 
 	Gtk::SpinButton &
-	getRangeSpinButton () const
-	{ return *m_RangeSpinButton; }
+	getLODRangeSpinButton () const
+	{ return *m_LODRangeSpinButton; }
 
 	Gtk::SpinButton &
 	getLODLevelSpinButton () const
@@ -318,6 +318,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterZAdjustment;
@@ -328,9 +329,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LODCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODLevelAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMaxAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_RangeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
@@ -350,7 +351,7 @@ private:
 	Gtk::SpinButton*               m_LODRangeMinSpinButton;
 	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
 	Gtk::CheckButton*              m_LODMaxCheckButton;
-	Gtk::SpinButton*               m_RangeSpinButton;
+	Gtk::SpinButton*               m_LODRangeSpinButton;
 	Gtk::SpinButton*               m_LODLevelSpinButton;
 	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
 	Gtk::Box*                      m_RangeGradientBox;

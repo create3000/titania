@@ -129,6 +129,9 @@ MFStringGeoSystem::setNode (const X3D::SFNode & value)
 void
 MFStringGeoSystem::on_changed (const int id)
 {
+	if (not node)
+		return;
+
 	if (changing)
 		return;
 

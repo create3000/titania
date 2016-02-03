@@ -103,6 +103,9 @@ SFStringComboBoxText::setNodes (const X3D::MFNode & value)
 void
 SFStringComboBoxText::on_changed ()
 {
+	if (nodes .empty ())
+		return;
+
 	if (changing)
 		return;
 

@@ -126,6 +126,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_IntensityAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;

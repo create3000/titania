@@ -71,9 +71,9 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_LODCenterYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterYAdjustment"));
 	m_LODCenterZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterZAdjustment"));
 	m_LODLevelAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODLevelAdjustment"));
+	m_LODRangeAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeAdjustment"));
 	m_LODRangeMaxAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMaxAdjustment"));
 	m_LODRangeMinAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMinAdjustment"));
-	m_RangeAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RangeAdjustment"));
 	m_RangeColorAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RangeColorAdjustment"));
 
 	// Get widgets.
@@ -95,7 +95,7 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
 	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
 	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
-	m_builder -> get_widget ("RangeSpinButton", m_RangeSpinButton);
+	m_builder -> get_widget ("LODRangeSpinButton", m_LODRangeSpinButton);
 	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
 	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
 	m_builder -> get_widget ("RangeGradientBox", m_RangeGradientBox);
@@ -116,11 +116,11 @@ X3DLODEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RangeColorButton", m_RangeColorButton);
 
 	// Connect object Gtk::Button with id 'IndexButton'.
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked));
-	m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_move_center_button));
+	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_index_clicked)));
+	m_connections .emplace_back (m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_move_center_button)));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
-	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate));
+	m_connections .emplace_back (m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DLODEditorInterface::on_lod_keep_current_level_activate)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -128,6 +128,9 @@ X3DLODEditorInterface::create (const std::string & filename)
 
 X3DLODEditorInterface::~X3DLODEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

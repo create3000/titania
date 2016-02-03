@@ -124,12 +124,13 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                 filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Image*                 m_OpenLocationImage;
-	Gtk::Dialog*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Entry*                 m_LocationEntry;
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::deque <sigc::connection> m_connections;
+	Gtk::Image*                   m_OpenLocationImage;
+	Gtk::Dialog*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::Entry*                   m_LocationEntry;
 
 };
 

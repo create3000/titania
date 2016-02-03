@@ -268,6 +268,9 @@ X3DMFStringWidget::on_remove_clicked ()
 void
 X3DMFStringWidget::on_string_changed ()
 {
+	if (nodes .empty ())
+		return;
+
 	// Change node field
 
 	undoStep .reset ();

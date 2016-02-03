@@ -58,9 +58,58 @@ namespace titania {
 namespace puck {
 
 NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ())
+	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	  X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ()),
+	    nodePropertiesEditor (new NodePropertiesEditor (browserWindow)),
+	        appearanceEditor (new AppearanceEditor (browserWindow)),
+	           textureEditor (new TextureEditor (browserWindow)),
+	geometryPropertiesEditor (new GeometryPropertiesEditor (browserWindow)),
+	              textEditor (new TextEditor (browserWindow)),
+	             layerEditor (new LayerEditor (browserWindow)),
+	        backgroundEditor (new BackgroundEditor (browserWindow)),
+	    navigationInfoEditor (new NavigationInfoEditor (browserWindow)),
+	         viewpointEditor (new ViewpointEditor (browserWindow)),
+	             lightEditor (new LightEditor (browserWindow)),
+	            inlineEditor (new InlineEditor (browserWindow)),
+	 precisionPlacementPanel (new PrecisionPlacementPanel (browserWindow)),
+	                 editors ()
 {
+	const auto currentPage = getConfig () .getInteger ("currentPage");
+
+	getNotebook () .set_current_page (currentPage);
+
+	nodePropertiesEditor     -> reparent (getNodePropertiesEditorBox (),     getWindow ());
+	appearanceEditor         -> reparent (getAppearanceEditorBox (),         getWindow ());
+	textureEditor            -> reparent (getTextureEditorBox (),            getWindow ());
+	geometryPropertiesEditor -> reparent (getGeometryPropertiesEditorBox (), getWindow ());
+	textEditor               -> reparent (getTextEditorBox (),               getWindow ());
+	layerEditor              -> reparent (getLayerEditorBox (),              getWindow ());
+	backgroundEditor         -> reparent (getBackgroundEditorBox (),         getWindow ());
+	navigationInfoEditor     -> reparent (getNavigationInfoEditorBox (),         getWindow ());
+	viewpointEditor          -> reparent (getViewpointEditorBox (),         getWindow ());
+	lightEditor              -> reparent (getLightEditorBox (),         getWindow ());
+	inlineEditor             -> reparent (getInlineEditorBox (),         getWindow ());
+	precisionPlacementPanel  -> reparent (getPrecisionPlacementPanelBox (), getWindow ());
+
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (nodePropertiesEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (appearanceEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (textureEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (geometryPropertiesEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (textEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (layerEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (backgroundEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (navigationInfoEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (lightEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (inlineEditor));
+	editors .emplace_back (std::static_pointer_cast <X3DUserInterface> (precisionPlacementPanel));
+
+	for (const auto & editor : editors)
+		editor -> getWidget () .set_visible (false);
+
+	if (editors [currentPage])
+		editors [currentPage] -> getWidget () .set_visible (true);
+
 	setup ();
 }
 
@@ -77,6 +126,20 @@ NodeEditor::initialize ()
 void
 NodeEditor::set_selection (const X3D::MFNode & selection)
 {
+}
+
+void
+NodeEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
+{
+	const size_t currentPage = getConfig () .getInteger ("currentPage");
+
+	if (currentPage < editors .size ())
+		editors [currentPage] -> getWidget () .set_visible (false);
+
+	if (pageNumber < editors .size ())
+		editors [pageNumber] -> getWidget () .set_visible (true);
+
+	getConfig () .setItem ("currentPage", int (pageNumber));
 }
 
 NodeEditor::~NodeEditor ()

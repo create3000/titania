@@ -175,6 +175,14 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 	}
 }
 
+void
+X3DDialogInterface::dispose ()
+{
+	saveExpander (getWidget ());
+
+	X3DUserInterface::dispose ();
+}
+
 X3DDialogInterface::~X3DDialogInterface ()
 { }
 

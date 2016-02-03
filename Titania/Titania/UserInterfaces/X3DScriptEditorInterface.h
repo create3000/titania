@@ -546,6 +546,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::AccelGroup> m_AccelGroup;
 	Glib::RefPtr <Gtk::ListStore>  m_ColorThemeListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;

@@ -1010,6 +1010,7 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureAlphaAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureColorAdjustment;
 	Glib::RefPtr <Gtk::ListStore>          m_MultiTextureFunctionListStore;

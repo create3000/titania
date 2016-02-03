@@ -214,6 +214,58 @@ public:
 	{ return m_GeoTransformZoneAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxCenterXAdjustment () const
+	{ return m_LODBBoxCenterXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxCenterYAdjustment () const
+	{ return m_LODBBoxCenterYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxCenterZAdjustment () const
+	{ return m_LODBBoxCenterZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxSizeXAdjustment () const
+	{ return m_LODBBoxSizeXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxSizeYAdjustment () const
+	{ return m_LODBBoxSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODBBoxSizeZAdjustment () const
+	{ return m_LODBBoxSizeZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODCenterXAdjustment () const
+	{ return m_LODCenterXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODCenterYAdjustment () const
+	{ return m_LODCenterYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODCenterZAdjustment () const
+	{ return m_LODCenterZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODLevelAdjustment () const
+	{ return m_LODLevelAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeAdjustment () const
+	{ return m_LODRangeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeMaxAdjustment () const
+	{ return m_LODRangeMaxAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getLODRangeMinAdjustment () const
+	{ return m_LODRangeMinAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getLayoutOffsetXAdjustment () const
 	{ return m_LayoutOffsetXAdjustment; }
 
@@ -318,6 +370,34 @@ public:
 	{ return m_ViewportClipBoundaryTopAdjustment; }
 
 	Gtk::Window &
+	getLODExtraWindow () const
+	{ return *m_LODExtraWindow; }
+
+	Gtk::Grid &
+	getRangeColorGrid () const
+	{ return *m_RangeColorGrid; }
+
+	Gtk::ScrolledWindow &
+	getSkyColorsScrolledWindow () const
+	{ return *m_SkyColorsScrolledWindow; }
+
+	Gtk::Button &
+	getAddRangeColorButton () const
+	{ return *m_AddRangeColorButton; }
+
+	Gtk::Button &
+	getRemoveRangeColorButton () const
+	{ return *m_RemoveRangeColorButton; }
+
+	Gtk::Box &
+	getRangeColorBox () const
+	{ return *m_RangeColorBox; }
+
+	Gtk::Button &
+	getRangeColorButton () const
+	{ return *m_RangeColorButton; }
+
+	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
 
@@ -416,6 +496,82 @@ public:
 	Gtk::ComboBoxText &
 	getBillboardAxisOfRotationComboBoxText () const
 	{ return *m_BillboardAxisOfRotationComboBoxText; }
+
+	Gtk::Expander &
+	getLODExpander () const
+	{ return *m_LODExpander; }
+
+	Gtk::Grid &
+	getLODBox () const
+	{ return *m_LODBox; }
+
+	Gtk::CheckButton &
+	getLODForceTransitionsCheckButton () const
+	{ return *m_LODForceTransitionsCheckButton; }
+
+	Gtk::Box &
+	getLODNameBox () const
+	{ return *m_LODNameBox; }
+
+	Gtk::Entry &
+	getLODNameEntry () const
+	{ return *m_LODNameEntry; }
+
+	Gtk::Button &
+	getLODRenameButton () const
+	{ return *m_LODRenameButton; }
+
+	Gtk::Box &
+	getLODCenterBox () const
+	{ return *m_LODCenterBox; }
+
+	Gtk::SpinButton &
+	getLODCenterXSpinButton () const
+	{ return *m_LODCenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getLODCenterYSpinButton () const
+	{ return *m_LODCenterYSpinButton; }
+
+	Gtk::SpinButton &
+	getLODCenterZSpinButton () const
+	{ return *m_LODCenterZSpinButton; }
+
+	Gtk::Button &
+	getLODMoveCenterButton () const
+	{ return *m_LODMoveCenterButton; }
+
+	Gtk::Box &
+	getLODRangeBox () const
+	{ return *m_LODRangeBox; }
+
+	Gtk::SpinButton &
+	getLODRangeMinSpinButton () const
+	{ return *m_LODRangeMinSpinButton; }
+
+	Gtk::SpinButton &
+	getLODRangeMaxSpinButton () const
+	{ return *m_LODRangeMaxSpinButton; }
+
+	Gtk::CheckButton &
+	getLODMaxCheckButton () const
+	{ return *m_LODMaxCheckButton; }
+
+	Gtk::SpinButton &
+	getLODRangeSpinButton () const
+	{ return *m_LODRangeSpinButton; }
+
+	Gtk::SpinButton &
+	getLODLevelSpinButton () const
+	{ return *m_LODLevelSpinButton; }
+
+	Gtk::CheckButton &
+	getLODKeepCurrentLevelCheckButton () const
+	{ return *m_LODKeepCurrentLevelCheckButton; }
+
+	Gtk::Box &
+	getRangeGradientBox () const
+	{ return *m_RangeGradientBox; }
 
 	Gtk::Expander &
 	getLayoutExpander () const
@@ -731,6 +887,14 @@ public:
 
 	virtual
 	void
+	on_lod_move_center_button_clicked () = 0;
+
+	virtual
+	void
+	on_lod_keep_current_level_toggled () = 0;
+
+	virtual
+	void
 	on_layout_toggled () = 0;
 
 	virtual
@@ -762,6 +926,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BBoxCenterZAdjustment;
@@ -793,6 +958,19 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformZoneAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODLevelAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMaxAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
@@ -819,6 +997,13 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryLeftAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryRightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ViewportClipBoundaryTopAdjustment;
+	Gtk::Window*                   m_LODExtraWindow;
+	Gtk::Grid*                     m_RangeColorGrid;
+	Gtk::ScrolledWindow*           m_SkyColorsScrolledWindow;
+	Gtk::Button*                   m_AddRangeColorButton;
+	Gtk::Button*                   m_RemoveRangeColorButton;
+	Gtk::Box*                      m_RangeColorBox;
+	Gtk::Button*                   m_RangeColorButton;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Button*                   m_IndexButton;
@@ -844,6 +1029,25 @@ private:
 	Gtk::Box*                      m_BillboardAxisOfRotationToolBox;
 	Gtk::Box*                      m_BillboardAxisOfRotationBox;
 	Gtk::ComboBoxText*             m_BillboardAxisOfRotationComboBoxText;
+	Gtk::Expander*                 m_LODExpander;
+	Gtk::Grid*                     m_LODBox;
+	Gtk::CheckButton*              m_LODForceTransitionsCheckButton;
+	Gtk::Box*                      m_LODNameBox;
+	Gtk::Entry*                    m_LODNameEntry;
+	Gtk::Button*                   m_LODRenameButton;
+	Gtk::Box*                      m_LODCenterBox;
+	Gtk::SpinButton*               m_LODCenterXSpinButton;
+	Gtk::SpinButton*               m_LODCenterYSpinButton;
+	Gtk::SpinButton*               m_LODCenterZSpinButton;
+	Gtk::Button*                   m_LODMoveCenterButton;
+	Gtk::Box*                      m_LODRangeBox;
+	Gtk::SpinButton*               m_LODRangeMinSpinButton;
+	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
+	Gtk::CheckButton*              m_LODMaxCheckButton;
+	Gtk::SpinButton*               m_LODRangeSpinButton;
+	Gtk::SpinButton*               m_LODLevelSpinButton;
+	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
+	Gtk::Box*                      m_RangeGradientBox;
 	Gtk::Expander*                 m_LayoutExpander;
 	Gtk::Grid*                     m_CreateLayoutBox;
 	Gtk::CheckButton*              m_LayoutCheckButton;

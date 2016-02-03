@@ -121,60 +121,60 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UseLocaleMenuItem", m_UseLocaleMenuItem);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unmap));
+	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_map)));
+	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unmap)));
 
 	// Connect object Gtk::Button with id 'PreviousSceneButton'.
-	m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked));
-	m_NextSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_next_scene_clicked));
+	m_connections .emplace_back (m_PreviousSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_previous_scene_clicked)));
+	m_connections .emplace_back (m_NextSceneButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_next_scene_clicked)));
 
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
-	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
+	m_connections .emplace_back (m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event)));
 
 	// Connect object Gtk::ImageMenuItem with id 'SetAsCurrentSceneMenuItem'.
-	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
-	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
-	m_ReloadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_reload_activated));
+	m_connections .emplace_back (m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate)));
+	m_connections .emplace_back (m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate)));
+	m_connections .emplace_back (m_ReloadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_reload_activated)));
 
 	// Connect object Gtk::MenuItem with id 'UpdateInstancesMenuItem'.
-	m_UpdateInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_instances_activated));
+	m_connections .emplace_back (m_UpdateInstancesMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_update_instances_activated)));
 
 	// Connect object Gtk::ImageMenuItem with id 'RemoveMenuItem'.
-	m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate));
+	m_connections .emplace_back (m_RemoveMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_activate)));
 
 	// Connect object Gtk::MenuItem with id 'UnlinkCloneMenuItem'.
-	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate));
-	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_transform_activate));
-	m_CreateParentGroupMenuItem1 -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_group_activate));
-	m_CreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_static_group_activate));
-	m_CreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_switch_activate));
-	m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_billboard_activate));
-	m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_collision_activate));
-	m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_lod_activate));
-	m_CreateParentViewpontGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewpoint_group_activated));
-	m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_anchor_activate));
-	m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layout_layer_activate));
-	m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_screen_group_activate));
-	m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layout_group_activate));
-	m_CreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_geo_transform_activate));
-	m_CreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_geo_location_activate));
-	m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_part_activate));
-	m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_assembly_activate));
-	m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_layer_activate));
-	m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_set_activate));
-	m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_activate));
-	m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewport_activate));
-	m_RemoveParentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_parent_activate));
+	m_connections .emplace_back (m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate)));
+	m_connections .emplace_back (m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_transform_activate)));
+	m_connections .emplace_back (m_CreateParentGroupMenuItem1 -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_group_activate)));
+	m_connections .emplace_back (m_CreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_static_group_activate)));
+	m_connections .emplace_back (m_CreateParentSwitchMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_switch_activate)));
+	m_connections .emplace_back (m_CreateParentBillboardMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_billboard_activate)));
+	m_connections .emplace_back (m_CreateParentCollisionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_collision_activate)));
+	m_connections .emplace_back (m_CreateParentLODMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_lod_activate)));
+	m_connections .emplace_back (m_CreateParentViewpontGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewpoint_group_activated)));
+	m_connections .emplace_back (m_CreateParentAnchorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_anchor_activate)));
+	m_connections .emplace_back (m_CreateParentLayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layout_layer_activate)));
+	m_connections .emplace_back (m_CreateParentScreenGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_screen_group_activate)));
+	m_connections .emplace_back (m_CreateParentLayoutGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layout_group_activate)));
+	m_connections .emplace_back (m_CreateParentGeoTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_geo_transform_activate)));
+	m_connections .emplace_back (m_CreateParentGeoLocationMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_geo_location_activate)));
+	m_connections .emplace_back (m_CreateParentCADPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_part_activate)));
+	m_connections .emplace_back (m_CreateParentCADAssemblyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_assembly_activate)));
+	m_connections .emplace_back (m_CreateParentCADLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_cad_layer_activate)));
+	m_connections .emplace_back (m_CreateParentLayerSetMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_set_activate)));
+	m_connections .emplace_back (m_CreateParentLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_layer_activate)));
+	m_connections .emplace_back (m_CreateParentViewportMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_viewport_activate)));
+	m_connections .emplace_back (m_RemoveParentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_remove_parent_activate)));
 
 	// Connect object Gtk::CheckMenuItem with id 'ShowExternProtosMenuItem'.
-	m_ShowExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_extern_protos_toggled));
-	m_ShowPrototypesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_prototypes_toggled));
-	m_ShowImportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_imported_nodes_toggled));
-	m_ShowExportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_exported_nodes_toggled));
-	m_ExpandExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_extern_protos_toggled));
-	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
-	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
-	m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled));
+	m_connections .emplace_back (m_ShowExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_extern_protos_toggled)));
+	m_connections .emplace_back (m_ShowPrototypesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_prototypes_toggled)));
+	m_connections .emplace_back (m_ShowImportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_imported_nodes_toggled)));
+	m_connections .emplace_back (m_ShowExportedNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_show_exported_nodes_toggled)));
+	m_connections .emplace_back (m_ExpandExternProtosMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_extern_protos_toggled)));
+	m_connections .emplace_back (m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled)));
+	m_connections .emplace_back (m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled)));
+	m_connections .emplace_back (m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -182,6 +182,9 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 X3DOutlineEditorInterface::~X3DOutlineEditorInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

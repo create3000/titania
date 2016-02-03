@@ -77,13 +77,13 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
 
 	// Connect object Gtk::EntryCompletion with id 'SearchEntryCompletion'.
-	m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_match_selected), false);
+	m_connections .emplace_back (m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_match_selected), false));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false);
+	m_connections .emplace_back (m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
+	m_connections .emplace_back (m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -91,6 +91,9 @@ X3DNodeIndexInterface::create (const std::string & filename)
 
 X3DNodeIndexInterface::~X3DNodeIndexInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

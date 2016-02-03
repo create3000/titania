@@ -270,6 +270,7 @@ private:
 
 	std::string                           filename;
 	Glib::RefPtr <Gtk::Builder>           m_builder;
+	std::deque <sigc::connection>         m_connections;
 	Glib::RefPtr <Gtk::Adjustment>        m_CollisionRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>        m_HeightAdjustment;
 	Glib::RefPtr <Gtk::ListStore>         m_NavigationInfoTransitionTypeListStore;

@@ -178,6 +178,9 @@ SFColorButton::on_value_changed ()
 void
 SFColorButton::set_color (const int id, const X3D::Color3f & color)
 {
+	if (nodes .empty ())
+		return;
+
 	if (id not_eq input)
 		undoStep .reset ();
 

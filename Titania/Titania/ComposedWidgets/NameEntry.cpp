@@ -132,6 +132,9 @@ NameEntry::on_key_press_event (GdkEventKey* event)
 void
 NameEntry::on_clicked ()
 {
+	if (not node)
+		return;
+
 	const std::string name = entry .get_text ();
 
 	if (name not_eq node -> getName ())

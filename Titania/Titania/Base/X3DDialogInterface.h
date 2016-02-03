@@ -64,6 +64,12 @@ class X3DDialogInterface :
 {
 public:
 
+	/// @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 	virtual
 	~X3DDialogInterface ();
 

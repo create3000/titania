@@ -291,21 +291,12 @@ sub cpp_signals
 
 	if ($swapped)
 	{
-		say $file "$signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after);";
+		say $file "m_connections .emplace_back ($signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after));";
 	}
 	else
 	{
-		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after);";
+		say $file "m_connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after));";
 	}
-}
-
-sub cpp_disconnect_signals
-{
-	my ($self) = @_;
-	my $file = $self -> {handle};
-	
-	say $file "for (auto & connection : m_connections)";
-	say $file "   connection .disconnect ();";
 }
 
 sub cpp_signal_handler
@@ -491,7 +482,7 @@ sub generate
 
 	say OUT "  std::string filename;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
-	#say OUT "  std::deque <sigc::connection> m_connections;";
+	say OUT "  std::deque <sigc::connection> m_connections;";
 
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_objects (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
@@ -586,16 +577,11 @@ sub generate
 		$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 	}
 	
-	# Dispose
-	#say OUT "void";
-	#say OUT "$self->{class_name}\::dispose ()";
-	#say OUT "{";
-	#$self -> cpp_disconnect_signals ();	
-	#say OUT "}";
-
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
+	say OUT "for (auto & connection : m_connections)";
+	say OUT "   connection .disconnect ();";
 	say OUT "delete $_;" foreach keys %{$self -> {windows}};
 	say OUT "}";
 

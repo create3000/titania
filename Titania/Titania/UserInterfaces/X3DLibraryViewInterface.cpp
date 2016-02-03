@@ -77,10 +77,10 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TreeView", m_TreeView);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map));
+	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_map)));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated));
+	m_connections .emplace_back (m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -88,6 +88,9 @@ X3DLibraryViewInterface::create (const std::string & filename)
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 }
 

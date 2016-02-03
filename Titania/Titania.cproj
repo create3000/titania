@@ -149,8 +149,6 @@
     <Compile Include="Titania\UserInterfaces\X3DInlineEditorInterface.cpp" />
     <Compile Include="Titania\Editors\InlineEditor\InlineEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLODEditorInterface.cpp" />
-    <Compile Include="Titania\Editors\LODEditor\LODEditor.cpp" />
-    <Compile Include="Titania\Editors\LODEditor\X3DLODEditor.cpp" />
     <Compile Include="Titania\Dialogs\NodeIndex\NodeIndex.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodeIndexInterface.cpp" />
     <Compile Include="Titania\Editors\NodePropertiesEditor\X3DExportedNodesEditor.cpp" />
@@ -254,6 +252,7 @@
     <Compile Include="Titania\Browser\BrowserEditorObject.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\NodeEditor\NodeEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1255,9 +1254,6 @@
     <None Include="Titania\UserInterfaces\X3DInlineEditorInterface.h" />
     <None Include="Titania\Editors\InlineEditor\InlineEditor.h" />
     <None Include="Titania\UserInterfaces\X3DLODEditorInterface.h" />
-    <None Include="Titania\Editors\LODEditor\LODEditor.h" />
-    <None Include="Titania\Editors\LODEditor\X3DLODEditor.h" />
-    <None Include="Titania\Editors\LODEditor\LODRangeWidget.h" />
     <None Include="Titania\Dialogs\NodeIndex\NodeIndex.h" />
     <None Include="Titania\UserInterfaces\X3DNodeIndexInterface.h" />
     <None Include="Titania\ComposedWidgets\MFStringURLWidget.h" />
@@ -2401,6 +2397,8 @@
     <None Include="share\titania\ui\Editors\NodeEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DNodeEditorInterface.h" />
     <None Include="Titania\Editors\NodeEditor\NodeEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.h" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\LODRangeWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2455,7 +2453,6 @@
     <Folder Include="Titania\Dialogs\OpenLocationDialog\" />
     <Folder Include="Titania\Editors\ViewpointEditor\" />
     <Folder Include="Titania\Editors\InlineEditor\" />
-    <Folder Include="Titania\Editors\LODEditor\" />
     <Folder Include="Titania\Dialogs\NodeIndex\" />
     <Folder Include="Titania\Widgets\ScriptEditor\" />
     <Folder Include="Titania\Editors\PrecisionPlacementPanel\" />

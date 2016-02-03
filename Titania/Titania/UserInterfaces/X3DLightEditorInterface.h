@@ -438,6 +438,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_DirectionalLightDirectionXAdjustment;

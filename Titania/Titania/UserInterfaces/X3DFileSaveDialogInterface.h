@@ -170,6 +170,7 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;

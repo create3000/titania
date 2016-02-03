@@ -87,6 +87,9 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 
 X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
 	delete m_Window;
 	delete m_ImageOptionsDialog;
 	delete m_MessageDialog;

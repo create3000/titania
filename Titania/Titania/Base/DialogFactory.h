@@ -64,7 +64,6 @@
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
-#include "../Editors/LODEditor/LODEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
@@ -112,7 +111,6 @@ public:
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
-		         std::make_pair ("LODEditor",                constructDialog <LODEditor>),
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),

@@ -3565,7 +3565,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="NodePropertiesEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Node Properties Editor</property>
                             <property name="label" translatable="yes">Node Properties Editor</property>
@@ -3590,7 +3589,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="AppearanceEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Appearance Editor</property>
                             <property name="label" translatable="yes">Appearance Editor</property>
@@ -3605,7 +3603,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="TextureEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Texture Editor</property>
                             <property name="label" translatable="yes">Texture Editor</property>
@@ -3620,7 +3617,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="TextEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Text Editor</property>
                             <property name="label" translatable="yes">Text Editor</property>
@@ -3635,7 +3631,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="GeometryPropertiesEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Geometry Properties Editor</property>
                             <property name="label" translatable="yes">Geometry Properties Editor</property>
@@ -3650,7 +3645,6 @@
                         </child>
                         <child>
                           <object class="GtkSeparatorToolItem" id="separatortoolitem3">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>
                           <packing>
@@ -3700,7 +3694,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="LayerEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Layer Editor</property>
                             <property name="label" translatable="yes">Layer Editor</property>
@@ -3715,7 +3708,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="BackgroundEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Background Editor</property>
                             <property name="label" translatable="yes">Background Editor</property>
@@ -3730,7 +3722,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="NavigationInfoEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Navigation Info Editor</property>
                             <property name="label" translatable="yes">Navigation Info Editor</property>
@@ -3745,7 +3736,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="ViewpointEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
                             <property name="label" translatable="yes">Viewpoint Editor</property>
@@ -3760,7 +3750,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="LightEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Light Editor</property>
                             <property name="label" translatable="yes">Light Editor</property>
@@ -3775,7 +3764,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="LODEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">LOD Editor</property>
                             <property name="label" translatable="yes">LOD Editor</property>
@@ -3790,7 +3778,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="InlineEditorButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Inline Editor</property>
                             <property name="label" translatable="yes">Inline Editor</property>
@@ -3805,7 +3792,6 @@
                         </child>
                         <child>
                           <object class="GtkToolButton" id="PrecisionPlacementPanelButton">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Precision Placement Panel</property>
                             <property name="label" translatable="yes">Precision Placement Panel</property>
@@ -3820,7 +3806,6 @@
                         </child>
                         <child>
                           <object class="GtkSeparatorToolItem" id="separatortoolitem4">
-                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>
                           <packing>

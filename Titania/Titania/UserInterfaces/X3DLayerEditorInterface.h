@@ -262,6 +262,7 @@ private:
 
 	std::string                        filename;
 	Glib::RefPtr <Gtk::Builder>        m_builder;
+	std::deque <sigc::connection>      m_connections;
 	Glib::RefPtr <Gtk::ListStore>      m_LayerListStore;
 	Glib::RefPtr <Gtk::TreeSelection>  m_LayerSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_VisibilityColumn;

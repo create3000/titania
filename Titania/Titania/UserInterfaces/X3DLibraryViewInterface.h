@@ -158,6 +158,7 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::TreeStore>          m_TreeStore;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_File;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;

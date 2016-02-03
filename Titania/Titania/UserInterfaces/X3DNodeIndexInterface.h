@@ -162,6 +162,7 @@ private:
 
 	std::string                         filename;
 	Glib::RefPtr <Gtk::Builder>         m_builder;
+	std::deque <sigc::connection>       m_connections;
 	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
 	Glib::RefPtr <Gtk::TreeModelSort>   m_TreeModelSort;
 	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;

@@ -80,7 +80,6 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"NavigationInfoEditor",
 	"ViewpointEditor",
 	"LightEditor",
-	"LODEditor",
 	"InlineEditor",
 	"PrecisionPlacementPanel",
 	"PrototypeEditor",

@@ -92,6 +92,19 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_GeoTransformTranslationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformTranslationYAdjustment"));
 	m_GeoTransformTranslationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformTranslationZAdjustment"));
 	m_GeoTransformZoneAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformZoneAdjustment"));
+	m_LODBBoxCenterXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterXAdjustment"));
+	m_LODBBoxCenterYAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterYAdjustment"));
+	m_LODBBoxCenterZAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterZAdjustment"));
+	m_LODBBoxSizeXAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxSizeXAdjustment"));
+	m_LODBBoxSizeYAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxSizeYAdjustment"));
+	m_LODBBoxSizeZAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxSizeZAdjustment"));
+	m_LODCenterXAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterXAdjustment"));
+	m_LODCenterYAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterYAdjustment"));
+	m_LODCenterZAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterZAdjustment"));
+	m_LODLevelAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODLevelAdjustment"));
+	m_LODRangeAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeAdjustment"));
+	m_LODRangeMaxAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMaxAdjustment"));
+	m_LODRangeMinAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMinAdjustment"));
 	m_LayoutOffsetXAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetXAdjustment"));
 	m_LayoutOffsetYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetYAdjustment"));
 	m_LayoutSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeXAdjustment"));
@@ -120,6 +133,13 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_ViewportClipBoundaryTopAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ViewportClipBoundaryTopAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("LODExtraWindow", m_LODExtraWindow);
+	m_builder -> get_widget ("RangeColorGrid", m_RangeColorGrid);
+	m_builder -> get_widget ("SkyColorsScrolledWindow", m_SkyColorsScrolledWindow);
+	m_builder -> get_widget ("AddRangeColorButton", m_AddRangeColorButton);
+	m_builder -> get_widget ("RemoveRangeColorButton", m_RemoveRangeColorButton);
+	m_builder -> get_widget ("RangeColorBox", m_RangeColorBox);
+	m_builder -> get_widget ("RangeColorButton", m_RangeColorButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
@@ -145,6 +165,25 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BillboardAxisOfRotationToolBox", m_BillboardAxisOfRotationToolBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationBox", m_BillboardAxisOfRotationBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationComboBoxText", m_BillboardAxisOfRotationComboBoxText);
+	m_builder -> get_widget ("LODExpander", m_LODExpander);
+	m_builder -> get_widget ("LODBox", m_LODBox);
+	m_builder -> get_widget ("LODForceTransitionsCheckButton", m_LODForceTransitionsCheckButton);
+	m_builder -> get_widget ("LODNameBox", m_LODNameBox);
+	m_builder -> get_widget ("LODNameEntry", m_LODNameEntry);
+	m_builder -> get_widget ("LODRenameButton", m_LODRenameButton);
+	m_builder -> get_widget ("LODCenterBox", m_LODCenterBox);
+	m_builder -> get_widget ("LODCenterXSpinButton", m_LODCenterXSpinButton);
+	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
+	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
+	m_builder -> get_widget ("LODMoveCenterButton", m_LODMoveCenterButton);
+	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
+	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
+	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
+	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
+	m_builder -> get_widget ("LODRangeSpinButton", m_LODRangeSpinButton);
+	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
+	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
+	m_builder -> get_widget ("RangeGradientBox", m_RangeGradientBox);
 	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
 	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
 	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);
@@ -219,27 +258,31 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
+	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.
-	m_TransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_uniform_scale_clicked));
+	m_connections .emplace_back (m_TransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_uniform_scale_clicked)));
 
 	// Connect object Gtk::Button with id 'TransformMoveCenterButton'.
-	m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button));
+	m_connections .emplace_back (m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button)));
 
 	// Connect object Gtk::ComboBoxText with id 'BillboardAxisOfRotationComboBoxText'.
-	m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed));
+	m_connections .emplace_back (m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed)));
 
-	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
-	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
-	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
+	// Connect object Gtk::Button with id 'LODMoveCenterButton'.
+	m_connections .emplace_back (m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_move_center_button_clicked)));
+
+	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
+	m_connections .emplace_back (m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_keep_current_level_toggled)));
+	m_connections .emplace_back (m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled)));
+	m_connections .emplace_back (m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled)));
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
-	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
-	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
+	m_connections .emplace_back (m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked)));
+	m_connections .emplace_back (m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked)));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
-	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));
+	m_connections .emplace_back (m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked)));
 
 	// Call construct handler of base class.
 	construct ();
@@ -247,6 +290,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 X3DPrecisionPlacementPanelInterface::~X3DPrecisionPlacementPanelInterface ()
 {
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
+	delete m_LODExtraWindow;
 	delete m_Window;
 }
 
