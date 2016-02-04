@@ -77,15 +77,13 @@ void
 X3DImportedNodesEditor::setNode (const X3D::SFNode & value)
 {
 	if (inlineNode)
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+		inlineNode -> checkLoadState () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 
 	inlineNode = value;
 
-	if (inlineNode and not inlineNode -> getExportedNodes () .empty ())
+	if (inlineNode)
 	{
-		getImportedNodesExpander () .set_visible (true);
-
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+		inlineNode -> checkLoadState () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 
 		set_importedNodes ();
 	}
@@ -274,6 +272,14 @@ X3DImportedNodesEditor::validateImportedName (const std::string & exportedName, 
 void
 X3DImportedNodesEditor::set_importedNodes ()
 {
+	if (inlineNode -> getExportedNodes () .empty ())
+	{
+		getImportedNodesExpander () .set_visible (false);
+		return;
+	}
+
+	getImportedNodesExpander () .set_visible (true);
+
 	getImportedNodesListStore () -> clear ();
 
 	// Get imported nodes where inline == inline from execution context
