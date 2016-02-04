@@ -399,11 +399,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
-	m_builder -> get_widget ("FooterMainBox", m_FooterMainBox);
-	m_builder -> get_widget ("FooterLabel", m_FooterLabel);
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
-	m_builder -> get_widget ("SidebarMainBox", m_SidebarMainBox);
-	m_builder -> get_widget ("SideBarLabel", m_SideBarLabel);
 	m_builder -> get_widget ("SidebarBox", m_SidebarBox);
 	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 

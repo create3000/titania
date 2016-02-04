@@ -131,12 +131,12 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 		getTextureQualityLowAction (),
 	};
 
-	//if (getConfig () .getBoolean ("transparent"))
+	//if (getConfig () -> getBoolean ("transparent"))
 	//	setTransparent (true);
 	//else
 		browser -> setAntialiasing (4);
 
-	//if (not getConfig () .hasItem ("maximized"))
+	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
 	setup ();
@@ -488,7 +488,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 
 	// Nudge selection.
 
-	const bool editMode = getConfig () .getBoolean ("arrow");
+	const bool editMode = getConfig () -> getBoolean ("arrow");
 
 	if (editMode)
 	{
@@ -1111,9 +1111,9 @@ void
 BrowserWindow::on_menubar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () .setItem ("menubarFullscreen", getMenubarAction () -> get_active ());
+		getConfig () -> setItem ("menubarFullscreen", getMenubarAction () -> get_active ());
 	else
-		getConfig () .setItem ("menubar", getMenubarAction () -> get_active ());
+		getConfig () -> setItem ("menubar", getMenubarAction () -> get_active ());
 	
 	getMenubar () .set_visible (getMenubarAction () -> get_active ());
 }
@@ -1122,9 +1122,9 @@ void
 BrowserWindow::on_toolbar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () .setItem ("toolbarFullscreen", getToolbarAction () -> get_active ());
+		getConfig () -> setItem ("toolbarFullscreen", getToolbarAction () -> get_active ());
 	else
-		getConfig () .setItem ("toolbar", getToolbarAction () -> get_active ());
+		getConfig () -> setItem ("toolbar", getToolbarAction () -> get_active ());
 
 	getToolbar () .set_visible (getToolbarAction () -> get_active ());
 }
@@ -1133,31 +1133,31 @@ void
 BrowserWindow::on_sidebar_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () .setItem ("sidebarFullscreen", getSidebarAction () -> get_active ());
+		getConfig () -> setItem ("sidebarFullscreen", getSidebarAction () -> get_active ());
 	else
-		getConfig () .setItem ("sidebar", getSidebarAction () -> get_active ());
+		getConfig () -> setItem ("sidebar", getSidebarAction () -> get_active ());
 	
-	getSidebarMainBox () .set_visible (getSidebarAction () -> get_active ());
+	getSidebarBox () .set_visible (getSidebarAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_footer_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () .setItem ("footerFullscreen", getFooterAction () -> get_active ());
+		getConfig () -> setItem ("footerFullscreen", getFooterAction () -> get_active ());
 	else
-		getConfig () .setItem ("footer", getFooterAction () -> get_active ());
+		getConfig () -> setItem ("footer", getFooterAction () -> get_active ());
 
-	getFooterMainBox () .set_visible (getFooterAction () -> get_active ());
+	getFooterBox () .set_visible (getFooterAction () -> get_active ());
 }
 
 void
 BrowserWindow::on_tabs_toggled ()
 {
 	if (isFullscreen ())
-		getConfig () .setItem ("tabsFullscreen", getTabsAction () -> get_active ());
+		getConfig () -> setItem ("tabsFullscreen", getTabsAction () -> get_active ());
 	else
-		getConfig () .setItem ("tabs", getTabsAction () -> get_active ());
+		getConfig () -> setItem ("tabs", getTabsAction () -> get_active ());
 
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 }
@@ -1249,7 +1249,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
 	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
 
-	if (enabled and getConfig () .getBoolean ("arrow"))
+	if (enabled and getConfig () -> getBoolean ("arrow"))
 		getArrowButton () .set_active (true);
 	else
 		getHandButton () .set_active (true);
@@ -1732,7 +1732,7 @@ BrowserWindow::on_hide_all_object_icons_activated ()
 void
 BrowserWindow::on_rubberband_toggled ()
 {
-	getConfig () .setItem ("rubberBand", getRubberbandAction () -> get_active ());
+	getConfig () -> setItem ("rubberBand", getRubberbandAction () -> get_active ());
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand () = getRubberbandAction () -> get_active ();
 }
 
@@ -1741,7 +1741,7 @@ BrowserWindow::on_rubberband_toggled ()
 void
 BrowserWindow::on_rendering_properties_toggled ()
 {
-	getConfig () .setItem ("renderingProperties", getRenderingPropertiesAction () -> get_active ());
+	getConfig () -> setItem ("renderingProperties", getRenderingPropertiesAction () -> get_active ());
 	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 }
 
@@ -1883,7 +1883,7 @@ BrowserWindow::on_show_all_objects_activated ()
 void
 BrowserWindow::on_select_lowest_toggled ()
 {
-	getConfig () .setItem ("selectLowest", getSelectLowestAction () -> get_active ());
+	getConfig () -> setItem ("selectLowest", getSelectLowestAction () -> get_active ());
 
 	getSelection () -> setSelectLowest (getSelectLowestAction () -> get_active ());
 }
@@ -1891,7 +1891,7 @@ BrowserWindow::on_select_lowest_toggled ()
 void
 BrowserWindow::on_follow_primary_selection_toggled ()
 {
-	getConfig () .setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
+	getConfig () -> setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
 
 	if (getFollowPrimarySelectionAction () -> get_active ())
 		getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
@@ -2332,7 +2332,7 @@ BrowserWindow::on_arrow_button_toggled ()
 void
 BrowserWindow::set_arrow_button (const bool value)
 {
-	getConfig () .setItem ("arrow", value);
+	getConfig () -> setItem ("arrow", value);
 	getSelection () -> isEnabled (value);
 
 	getPlayPauseButton ()       .set_visible (value);

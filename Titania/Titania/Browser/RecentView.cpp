@@ -74,7 +74,7 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	           gconf (gconf_dir (), "RecentView")
+	           gconf (new Configuration (gconf_dir (), "RecentView"))
 {
 	// Don't use browserWindow here.
 	setup ();
@@ -148,7 +148,7 @@ RecentView::set_scene ()
 		previousPage_changed .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (previousPage_changed));
 		nextPage_changed     .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (nextPage_changed));
 
-		set_page (scene, X3D::SFInt32 (getConfig () .getInteger ("currentPage")));
+		set_page (scene, X3D::SFInt32 (getConfig () -> getInteger ("currentPage")));
 	}
 	catch (...)
 	{ }
@@ -162,7 +162,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 
 	try
 	{
-		getConfig () .setItem ("currentPage", page);
+		getConfig () -> setItem ("currentPage", page);
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
 		const auto size         = getBrowserWindow () -> getHistory () -> getSize ();

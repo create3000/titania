@@ -76,6 +76,10 @@ public:
 	{ return getWidgetName (); }
 
 	virtual
+	void
+	setName (const std::string &) override;
+
+	virtual
 	const std::string &
 	getWidgetName () const = 0;
 
@@ -140,11 +144,7 @@ protected:
 
 	///  @name Configuration handling
 
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
+	const std::shared_ptr <Configuration> &
 	getConfig () const
 	{ return gconf; }
 
@@ -152,11 +152,11 @@ protected:
 	
 	bool
 	isMaximized () const
-	{ return getConfig () .getBoolean ("maximized"); }
+	{ return getConfig () -> getBoolean ("maximized"); }
 
 	bool
 	isFullscreen () const
-	{ return getConfig () .getBoolean ("fullscreen"); }
+	{ return getConfig () -> getBoolean ("fullscreen"); }
 
 	virtual
 	void
@@ -212,10 +212,10 @@ private:
 
 	///  @name Members
 
-	Configuration                 gconf;
-	sigc::connection              constructed_connection;
-	UserInterfaceArray::iterator  userInterface;
-	std::shared_ptr <DialogIndex> dialogs;
+	std::shared_ptr <Configuration> gconf;
+	sigc::connection                constructed_connection;
+	UserInterfaceArray::iterator    userInterface;
+	std::shared_ptr <DialogIndex>   dialogs;
 
 
 };

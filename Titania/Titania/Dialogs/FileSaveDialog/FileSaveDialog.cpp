@@ -113,8 +113,8 @@ FileSaveDialog::exportImage ()
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
-	if (getConfig () .hasItem ("exportFolder"))
-		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
+	if (getConfig () -> hasItem ("exportFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
 	else
 		getWindow () .set_current_folder (os::home ());
 
@@ -126,7 +126,7 @@ FileSaveDialog::exportImage ()
 
 	const auto responseId = getWindow () .run ();
 
-	getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+	getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
@@ -181,19 +181,19 @@ FileSaveDialog::imageOptions ()
 
 	// Restore image options.
 
-	if (getConfig () .hasItem ("imageWidth"))
-		getImageWidthAdjustment () -> set_value (getConfig () .getInteger ("imageWidth"));
+	if (getConfig () -> hasItem ("imageWidth"))
+		getImageWidthAdjustment () -> set_value (getConfig () -> getInteger ("imageWidth"));
 
-	if (getConfig () .hasItem ("imageHeight"))
-		getImageHeightAdjustment () -> set_value (getConfig () .getInteger ("imageHeight"));
+	if (getConfig () -> hasItem ("imageHeight"))
+		getImageHeightAdjustment () -> set_value (getConfig () -> getInteger ("imageHeight"));
 
-	getImageAlphaChannelSwitch () .set_active (getConfig () .getBoolean ("imageAlphaChannel"));
+	getImageAlphaChannelSwitch () .set_active (getConfig () -> getBoolean ("imageAlphaChannel"));
 
-	if (getConfig () .hasItem ("imageAntialiasing"))
-		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () .getInteger ("imageAntialiasing"), antialiasing));
+	if (getConfig () -> hasItem ("imageAntialiasing"))
+		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getInteger ("imageAntialiasing"), antialiasing));
 
-	if (getConfig () .hasItem ("imageCompression"))
-		getImageCompressionAdjustment () -> set_value (getConfig () .getInteger ("imageCompression"));
+	if (getConfig () -> hasItem ("imageCompression"))
+		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
 
 	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> hasExtension ("GL_EXT_framebuffer_multisample"));
 
@@ -203,11 +203,11 @@ FileSaveDialog::imageOptions ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getConfig () .setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
-		getConfig () .setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
-		getConfig () .setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
-		getConfig () .setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
-		getConfig () .setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
+		getConfig () -> setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
 	}
 
 	getImageOptionsDialog () .hide ();
@@ -220,8 +220,8 @@ FileSaveDialog::imageOptions ()
 bool
 FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
 {
-	if (getConfig () .hasItem ("exportFolder"))
-		getWindow () .set_current_folder_uri (getConfig () .getString ("exportFolder"));
+	if (getConfig () -> hasItem ("exportFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
 
 	getWindow () .add_filter (getFileFilterX3D ());
 	getWindow () .set_filter (getFileFilterX3D ());
@@ -233,7 +233,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		getConfig () .setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
 		worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
 

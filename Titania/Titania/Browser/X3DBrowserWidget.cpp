@@ -122,8 +122,8 @@ X3DBrowserWidget::set_initialized ()
 		urlIndex .emplace (getWorldURL (browser));
 
 	const auto empty     = browsers .empty ();
-	auto       worldURLs = basic::split (getConfig () .getString ("worldURL"), "\n");
-	auto       histories = basic::split (getConfig () .getString ("history"), "\n");
+	auto       worldURLs = basic::split (getConfig () -> getString ("worldURL"), "\n");
+	auto       histories = basic::split (getConfig () -> getString ("history"), "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
@@ -143,7 +143,7 @@ X3DBrowserWidget::set_initialized ()
 
 	if (empty)
 	{
-		const size_t pageNumber = getConfig () .getInteger ("currentPage");
+		const size_t pageNumber = getConfig () -> getInteger ("currentPage");
 
 		if (pageNumber < browsers .size ())
 			getBrowserNotebook () .set_current_page (pageNumber);
@@ -167,62 +167,62 @@ X3DBrowserWidget::restoreSession ()
 
 	// ToolBar
 
-	if (not getConfig () .hasItem ("menubar"))
-		getConfig () .setItem ("menubar", true);
+	if (not getConfig () -> hasItem ("menubar"))
+		getConfig () -> setItem ("menubar", true);
 
-	if (not getConfig () .hasItem ("menubarFullscreen"))
-		getConfig () .setItem ("menubarFullscreen", false);
+	if (not getConfig () -> hasItem ("menubarFullscreen"))
+		getConfig () -> setItem ("menubarFullscreen", false);
 	
 
 	// ToolBar
 
-	if (not getConfig () .hasItem ("toolbar"))
-		getConfig () .setItem ("toolbar", true);
+	if (not getConfig () -> hasItem ("toolbar"))
+		getConfig () -> setItem ("toolbar", true);
 
-	if (not getConfig () .hasItem ("toolbarFullscreen"))
-		getConfig () .setItem ("toolbarFullscreen", false);
+	if (not getConfig () -> hasItem ("toolbarFullscreen"))
+		getConfig () -> setItem ("toolbarFullscreen", false);
 
 	
 	// SideBar
 
-	if (not getConfig () .hasItem ("sidebar"))
-		getConfig () .setItem ("sidebar", true);
+	if (not getConfig () -> hasItem ("sidebar"))
+		getConfig () -> setItem ("sidebar", true);
 
-	if (not getConfig () .hasItem ("sidebarFullscreen"))
-		getConfig () .setItem ("sidebarFullscreen", false);
+	if (not getConfig () -> hasItem ("sidebarFullscreen"))
+		getConfig () -> setItem ("sidebarFullscreen", false);
 
 
 	// Footer
 
-	if (not getConfig () .hasItem ("footer"))
-		getConfig () .setItem ("footer", true);
+	if (not getConfig () -> hasItem ("footer"))
+		getConfig () -> setItem ("footer", true);
 
-	if (not getConfig () .hasItem ("footerFullscreen"))
-		getConfig () .setItem ("footerFullscreen", false);
+	if (not getConfig () -> hasItem ("footerFullscreen"))
+		getConfig () -> setItem ("footerFullscreen", false);
 
 
 	// TAbs
 
-	if (not getConfig () .hasItem ("tabs"))
-		getConfig () .setItem ("tabs", true);
+	if (not getConfig () -> hasItem ("tabs"))
+		getConfig () -> setItem ("tabs", true);
 
-	if (not getConfig () .hasItem ("tabsFullscreen"))
-		getConfig () .setItem ("tabsFullscreen", false);
+	if (not getConfig () -> hasItem ("tabsFullscreen"))
+		getConfig () -> setItem ("tabsFullscreen", false);
 
 	
 	// RenderingProperties
 
-	if (getConfig () .hasItem ("renderingProperties"))
-		getRenderingPropertiesAction () -> set_active (getConfig () .getBoolean ("renderingProperties"));
+	if (getConfig () -> hasItem ("renderingProperties"))
+		getRenderingPropertiesAction () -> set_active (getConfig () -> getBoolean ("renderingProperties"));
 
 	
 	// Rubberband
 
-	if (getConfig () .hasItem ("rubberBand"))
-		getRubberbandAction () -> set_active (getConfig () .getBoolean ("rubberBand"));
+	if (getConfig () -> hasItem ("rubberBand"))
+		getRubberbandAction () -> set_active (getConfig () -> getBoolean ("rubberBand"));
 
-	if (not getConfig () .hasItem ("isLive"))
-		getConfig () .setItem ("isLive", true);
+	if (not getConfig () -> hasItem ("isLive"))
+		getConfig () -> setItem ("isLive", true);
 
 	
 	// isLive
@@ -232,14 +232,14 @@ X3DBrowserWidget::restoreSession ()
 
 	// VPaned
 
-	if (getConfig () .hasItem ("vPaned"))
-		getVPaned () .set_position (getConfig () .getInteger ("vPaned"));
+	if (getConfig () -> hasItem ("vPaned"))
+		getVPaned () .set_position (getConfig () -> getInteger ("vPaned"));
 
 	
 	// HPaned
 
-	if (getConfig () .hasItem ("hPaned"))
-		getHPaned () .set_position (getConfig () .getInteger ("hPaned"));
+	if (getConfig () -> hasItem ("hPaned"))
+		getHPaned () .set_position (getConfig () -> getInteger ("hPaned"));
 }
 
 void
@@ -247,27 +247,27 @@ X3DBrowserWidget::set_fullscreen (const bool value)
 {
 	if (value)
 	{
-		getMenubarAction () -> set_active (getConfig () .getBoolean ("menubarFullscreen"));
-		getToolbarAction () -> set_active (getConfig () .getBoolean ("toolbarFullscreen"));
-		getSidebarAction () -> set_active (getConfig () .getBoolean ("sidebarFullscreen"));
-		getFooterAction ()  -> set_active (getConfig () .getBoolean ("footerFullscreen"));
-		getTabsAction ()    -> set_active (getConfig () .getBoolean ("tabsFullscreen"));
+		getMenubarAction () -> set_active (getConfig () -> getBoolean ("menubarFullscreen"));
+		getToolbarAction () -> set_active (getConfig () -> getBoolean ("toolbarFullscreen"));
+		getSidebarAction () -> set_active (getConfig () -> getBoolean ("sidebarFullscreen"));
+		getFooterAction ()  -> set_active (getConfig () -> getBoolean ("footerFullscreen"));
+		getTabsAction ()    -> set_active (getConfig () -> getBoolean ("tabsFullscreen"));
 	}
 	else
 	{
-		getMenubarAction () -> set_active (getConfig () .getBoolean ("menubar"));
-		getToolbarAction () -> set_active (getConfig () .getBoolean ("toolbar"));
-		getSidebarAction () -> set_active (getConfig () .getBoolean ("sidebar"));
-		getFooterAction ()  -> set_active (getConfig () .getBoolean ("footer"));
-		getTabsAction ()    -> set_active (getConfig () .getBoolean ("tabs"));
+		getMenubarAction () -> set_active (getConfig () -> getBoolean ("menubar"));
+		getToolbarAction () -> set_active (getConfig () -> getBoolean ("toolbar"));
+		getSidebarAction () -> set_active (getConfig () -> getBoolean ("sidebar"));
+		getFooterAction ()  -> set_active (getConfig () -> getBoolean ("footer"));
+		getTabsAction ()    -> set_active (getConfig () -> getBoolean ("tabs"));
 	}
 }
 
 void
 X3DBrowserWidget::saveSession ()
 {
-	getConfig () .setItem ("vPaned", getVPaned () .get_position ());
-	getConfig () .setItem ("hPaned", getHPaned () .get_position ());
+	getConfig () -> setItem ("vPaned", getVPaned () .get_position ());
+	getConfig () -> setItem ("hPaned", getHPaned () .get_position ());
 
 	X3DBrowserWindowInterface::saveSession ();
 }
@@ -330,7 +330,7 @@ X3DBrowserWidget::getWorldURL (const X3D::BrowserPtr & browser) const
 void
 X3DBrowserWidget::isLive (const bool value)
 {
-	getConfig () .setItem ("isLive", value);
+	getConfig () -> setItem ("isLive", value);
 
 	getPlayPauseButton () .set_stock_id (Gtk::StockID (value ? "gtk-media-pause" : "gtk-media-play"));
 
@@ -343,7 +343,7 @@ X3DBrowserWidget::isLive (const bool value)
 bool
 X3DBrowserWidget::isLive () const
 {
-	return getConfig () .getBoolean ("isLive");
+	return getConfig () -> getBoolean ("isLive");
 }
 
 std::shared_ptr <BrowserUserData>
@@ -495,7 +495,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 bool
 X3DBrowserWidget::getShowTabs () const
 {
-	const bool showTabs = isFullscreen () ? getConfig () .getBoolean ("tabsFullscreen") : getConfig () .getBoolean ("tabs");
+	const bool showTabs = isFullscreen () ? getConfig () -> getBoolean ("tabsFullscreen") : getConfig () -> getBoolean ("tabs");
 
 	return browsers .size () > 1 && showTabs;
 }
@@ -820,9 +820,9 @@ X3DBrowserWidget::quit ()
 	if (browsers [currentPage] -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
 		currentPage = 0;
 
-	getConfig () .setItem ("currentPage", currentPage);
-	getConfig () .setItem ("worldURL",    basic::join (worldURLs, "\n"));
-	getConfig () .setItem ("history",     basic::join (browserHistories, "\n"));
+	getConfig () -> setItem ("currentPage", currentPage);
+	getConfig () -> setItem ("worldURL",    basic::join (worldURLs, "\n"));
+	getConfig () -> setItem ("history",     basic::join (browserHistories, "\n"));
 
 	X3DBrowserWindowInterface::quit ();
 	return false;

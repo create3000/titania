@@ -126,7 +126,7 @@ X3DTexturePaletteEditor::set_browser ()
 		return;
 	}
 
-	const size_t index = getConfig () .getInteger ("palette");
+	const size_t index = getConfig () -> getInteger ("palette");
 
 	if (index < folders .size ())
 		getPaletteComboBoxText () .set_active (index);
@@ -146,7 +146,7 @@ X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
 void
 X3DTexturePaletteEditor::set_initialized (const size_t index)
 {
-	getConfig () .setItem ("palette", (int) index);
+	getConfig () -> setItem ("palette", (int) index);
 
 	getPalettePreviousButton () .set_sensitive (index > 0);
 	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());

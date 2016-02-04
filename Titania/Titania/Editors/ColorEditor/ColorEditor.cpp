@@ -146,10 +146,10 @@ ColorEditor::set_initialized ()
 void
 ColorEditor::configure ()
 {
-	getCheckerBoardButton () .set_active (getConfig () .getBoolean ("checkerBoard"));
-	getTextureButton ()      .set_active (getConfig () .getBoolean ("texture"));
+	getCheckerBoardButton () .set_active (getConfig () -> getBoolean ("checkerBoard"));
+	getTextureButton ()      .set_active (getConfig () -> getBoolean ("texture"));
 
-	switch (getConfig () .getInteger ("mode"))
+	switch (getConfig () -> getInteger ("mode"))
 	{
 		case SINGLE_VERTEX:
 		{
@@ -329,7 +329,7 @@ ColorEditor::on_checkerboard_toggled ()
 		else
 			layerSet -> order () = { 1, 3, 4 };
 
-		getConfig () .setItem ("checkerBoard", getCheckerBoardButton () .get_active ());
+		getConfig () -> setItem ("checkerBoard", getCheckerBoardButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -385,7 +385,7 @@ ColorEditor::on_texture_toggled ()
 	{
 		setTexture (getTextureButton () .get_active ());
 
-		getConfig () .setItem ("texture", getTextureButton () .get_active ());
+		getConfig () -> setItem ("texture", getTextureButton () .get_active ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -418,7 +418,7 @@ ColorEditor::on_single_vertex_clicked ()
 {
 	mode = SINGLE_VERTEX;
 
-	getConfig () .setItem ("mode", mode);
+	getConfig () -> setItem ("mode", mode);
 }
 
 void
@@ -426,7 +426,7 @@ ColorEditor::on_adjacent_vertices_clicked ()
 {
 	mode = ADJACENT_VERTICES;
 
-	getConfig () .setItem ("mode", mode);
+	getConfig () -> setItem ("mode", mode);
 }
 
 void
@@ -434,7 +434,7 @@ ColorEditor::on_single_face_clicked ()
 {
 	mode = SINGLE_FACE;
 
-	getConfig () .setItem ("mode", mode);
+	getConfig () -> setItem ("mode", mode);
 }
 
 void
@@ -442,7 +442,7 @@ ColorEditor::on_whole_object_clicked ()
 {
 	mode = WHOLE_OBJECT;
 
-	getConfig () .setItem ("mode", mode);
+	getConfig () -> setItem ("mode", mode);
 }
 
 void

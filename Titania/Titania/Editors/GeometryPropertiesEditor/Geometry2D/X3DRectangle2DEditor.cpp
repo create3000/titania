@@ -108,7 +108,7 @@ X3DRectangle2DEditor::on_rectangle2d_uniform_size_clicked ()
 
 X3DRectangle2DEditor::~X3DRectangle2DEditor ()
 {
-	getConfig () .setItem ("rectangle2DUniformSize", getRectangle2DUniformSizeButton () .get_active ());
+	getConfig () -> setItem ("rectangle2DUniformSize", getRectangle2DUniformSizeButton () .get_active ());
 }
 
 } // puck

@@ -81,7 +81,7 @@ NodePropertiesEditor::initialize ()
 
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 
-	getNodeChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+	getNodeChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -134,7 +134,7 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 
 NodePropertiesEditor::~NodePropertiesEditor ()
 {
-	getConfig () .setItem ("currentPage", getNodeChildNotebook () .get_current_page ());
+	getConfig () -> setItem ("currentPage", getNodeChildNotebook () .get_current_page ());
 
 	dispose ();
 }

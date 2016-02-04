@@ -93,7 +93,7 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 void
 X3DTextureTransform3DEditor::initialize ()
 {
-	getTextureTransform3DUniformScaleButton () .set_active (getConfig () .getBoolean ("textureTransform3DUniformScale"));
+	getTextureTransform3DUniformScaleButton () .set_active (getConfig () -> getBoolean ("textureTransform3DUniformScale"));
 }
 
 void
@@ -182,7 +182,7 @@ X3DTextureTransform3DEditor::on_texture_transform3D_uniform_scale_clicked ()
 
 X3DTextureTransform3DEditor::~X3DTextureTransform3DEditor ()
 {
-	getConfig () .setItem ("textureTransform3DUniformScale", getTextureTransform3DUniformScaleButton () .get_active ());
+	getConfig () -> setItem ("textureTransform3DUniformScale", getTextureTransform3DUniformScaleButton () .get_active ());
 }
 
 } // puck

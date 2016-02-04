@@ -149,10 +149,10 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                   changing (false),
 	                       keys ()
 {
-	getScaleKeyframesButton () .set_active (getConfig () .getBoolean ("scaleKeyframes"));
+	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
 
-	if (getConfig () .hasItem ("hPaned"))
-		getAnimationBox () .set_position (getConfig () .getInteger ("hPaned"));
+	if (getConfig () -> hasItem ("hPaned"))
+		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
 
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
@@ -199,8 +199,6 @@ AnimationEditor::setScale (const double value)
 void
 AnimationEditor::on_map ()
 {
-	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Keyframe Animation"));
-
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &AnimationEditor::set_selection);
 
 	set_selection ();
@@ -3037,8 +3035,8 @@ AnimationEditor::getFrameParams () const
 
 AnimationEditor::~AnimationEditor ()
 {
-	getConfig () .setItem ("scaleKeyframes", getScaleKeyframesButton () .get_active ());
-	getConfig () .setItem ("hPaned",         getAnimationBox () .get_position ());
+	getConfig () -> setItem ("scaleKeyframes", getScaleKeyframesButton () .get_active ());
+	getConfig () -> setItem ("hPaned",         getAnimationBox () .get_position ());
 
 	dispose ();
 }

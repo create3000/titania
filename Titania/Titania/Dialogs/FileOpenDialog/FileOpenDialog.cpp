@@ -77,7 +77,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	else
 		getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
 
-	getRelativePathSwitch () .set_active (getConfig () .getBoolean ("relativePath"));
+	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
 
 	setup ();
 }
@@ -92,7 +92,7 @@ FileOpenDialog::setMode (Mode mode)
 			getWindow () .add_filter (getFileFilterImage ());
 			getWindow () .add_filter (getFileFilterAudio ());
 			getWindow () .add_filter (getFileFilterVideo ());
-			setFilter (getConfig () .getString ("filter"));
+			setFilter (getConfig () -> getString ("filter"));
 	      break;
 	   case Mode::FONTS:
 			getWindow () .add_filter (getFileFilterFonts ());
@@ -138,8 +138,8 @@ FileOpenDialog::loadURL ()
 bool
 FileOpenDialog::run ()
 {
-	if (getConfig () .hasItem ("currentFolder"))
-		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	else
 		getWindow () .set_current_folder (os::home ());
 	
@@ -147,11 +147,11 @@ FileOpenDialog::run ()
 
 	const auto responseId = getWindow () .run ();
 
-	getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+	getConfig () -> setItem ("relativePath", getRelativePathSwitch () .get_active ());
 
 	if (getWindow () .get_filter ())
-		getConfig () .setItem ("filter", getWindow () .get_filter () -> get_name ());
+		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
 	
 	quit ();
 
@@ -164,15 +164,15 @@ FileOpenDialog::run ()
 bool
 FileOpenDialog::font ()
 {
-	if (getConfig () .hasItem ("currentFolder"))
-		getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	
 	setMode (Mode::FONTS);
 
 	const auto responseId = getWindow () .run ();
 
-	getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-	getConfig () .setItem ("relativePath", getRelativePathSwitch () .get_active ());
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+	getConfig () -> setItem ("relativePath", getRelativePathSwitch () .get_active ());
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)

@@ -76,7 +76,7 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 {
 	preview -> setAntialiasing (4);
 
-	const bool paletteFace = getConfig () .getInteger ("paletteFace");
+	const bool paletteFace = getConfig () -> getInteger ("paletteFace");
 
 	getPaletteFaceCombo () .set_active (paletteFace);
 }
@@ -121,7 +121,7 @@ X3DMaterialPaletteEditor::set_browser ()
 		return;
 	}
 
-	const size_t index = getConfig () .getInteger ("palette");
+	const size_t index = getConfig () -> getInteger ("palette");
 
 	if (index < folders .size ())
 		getPaletteComboBoxText () .set_active (index);
@@ -141,7 +141,7 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t index)
 void
 X3DMaterialPaletteEditor::set_initialized (const size_t index)
 {
-	getConfig () .setItem ("palette", (int) index);
+	getConfig () -> setItem ("palette", (int) index);
 
 	getPalettePreviousButton () .set_sensitive (index > 0);
 	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());
@@ -256,7 +256,7 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 
 X3DMaterialPaletteEditor::~X3DMaterialPaletteEditor ()
 {
-	getConfig () .setItem ("paletteFace", getPaletteFaceCombo () .get_active_row_number ());
+	getConfig () -> setItem ("paletteFace", getPaletteFaceCombo () .get_active_row_number ());
 }
 
 } // puck

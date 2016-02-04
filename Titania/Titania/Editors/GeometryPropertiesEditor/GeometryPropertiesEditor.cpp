@@ -91,7 +91,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI);
 
-	getGeometryChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
 	setup ();
 }
@@ -417,7 +417,7 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 
 GeometryPropertiesEditor::~GeometryPropertiesEditor ()
 {
-	getConfig () .setItem ("currentPage", getGeometryChildNotebook () .get_current_page ());
+	getConfig () -> setItem ("currentPage", getGeometryChildNotebook () .get_current_page ());
 
 	dispose ();
 }

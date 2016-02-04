@@ -81,9 +81,7 @@ LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 
 void
 LibraryView::on_map ()
-{
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Library"));
-}
+{ }
 
 void
 LibraryView::initialize ()
@@ -298,14 +296,14 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 void
 LibraryView::restoreExpanded ()
 {
-	const auto expanded = getConfig () .getString ("expanded");
+	const auto expanded = getConfig () -> getString ("expanded");
 	const auto paths    = basic::split (expanded, ";");
 
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);
 
-	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () .getDouble ("hadjustment"));
-	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () .getDouble ("vadjustment"));
+	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
+	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
 }
 
 void
@@ -317,9 +315,9 @@ LibraryView::saveExpanded ()
 
 	const auto expanded = basic::join (paths, ";");
 
-	getConfig () .setItem ("expanded", expanded);
-	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	getConfig () -> setItem ("expanded", expanded);
+	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 }
 
 void

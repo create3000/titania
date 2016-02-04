@@ -109,7 +109,7 @@ X3DBoxEditor::on_box_uniform_size_clicked ()
 
 X3DBoxEditor::~X3DBoxEditor ()
 {
-	getConfig () .setItem ("boxUniformSize", getBoxUniformSizeButton () .get_active ());
+	getConfig () -> setItem ("boxUniformSize", getBoxUniformSizeButton () .get_active ());
 }
 
 } // puck

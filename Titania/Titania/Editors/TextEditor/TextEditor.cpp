@@ -78,7 +78,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	addChildren (geometryNodeBuffer);
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
 
-	getTextNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
 	setup ();
 }
@@ -373,7 +373,7 @@ TextEditor::connectLength (const X3D::MFFloat & field)
 
 TextEditor::~TextEditor ()
 {
-	getConfig () .setItem ("currentPage", getTextNotebook () .get_current_page ());
+	getConfig () -> setItem ("currentPage", getTextNotebook () .get_current_page ());
 	dispose ();
 }
 

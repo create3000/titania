@@ -70,7 +70,7 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 			                         lines (0),
 			                        points (0)
 {
-	getPrimitiveCountCountButton () .set_active (getConfig () .getInteger ("primitiveCount"));
+	getPrimitiveCountCountButton () .set_active (getConfig () -> getInteger ("primitiveCount"));
 }
 
 void
@@ -351,7 +351,7 @@ X3DPrimitiveCountEditor::set_executionContext ()
 
 X3DPrimitiveCountEditor::~X3DPrimitiveCountEditor ()
 {
-	getConfig () .setItem ("primitiveCount", getPrimitiveCountCountButton () .get_active_row_number ());
+	getConfig () -> setItem ("primitiveCount", getPrimitiveCountCountButton () .get_active_row_number ());
 }
 
 } // puck

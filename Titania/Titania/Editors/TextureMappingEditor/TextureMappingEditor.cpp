@@ -216,7 +216,7 @@ TextureMappingEditor::set_initialized ()
 void
 TextureMappingEditor::configure ()
 {
-	getSnapCenterButton () .set_active (getConfig () .getBoolean ("snapCenter"));
+	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
 }
 
 void
@@ -1092,7 +1092,7 @@ TextureMappingEditor::on_left_scale_toggled ()
 void
 TextureMappingEditor::on_left_snap_center_toggled ()
 {
-	getConfig () .setItem ("snapCenter", getSnapCenterButton () .get_active ());
+	getConfig () -> setItem ("snapCenter", getSnapCenterButton () .get_active ());
 }
 
 void

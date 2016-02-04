@@ -77,7 +77,7 @@ HistoryView::initialize ()
 {
 	X3DHistoryViewInterface::initialize ();
 
-	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () .getInteger ("rememberHistory"));
+	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
 }
 
 void
@@ -85,10 +85,10 @@ HistoryView::restoreSession ()
 {
 	X3DHistoryViewInterface::restoreSession ();
 			
-	if (not getConfig () .hasItem ("rememberHistory"))
-		getConfig () .setItem ("rememberHistory", 12);
+	if (not getConfig () -> hasItem ("rememberHistory"))
+		getConfig () -> setItem ("rememberHistory", 12);
 
-	const auto rememberHistory = getConfig () .getInteger ("rememberHistory");
+	const auto rememberHistory = getConfig () -> getInteger ("rememberHistory");
 
 	switch (rememberHistory)
 	{
@@ -118,8 +118,6 @@ HistoryView::restoreSession ()
 void
 HistoryView::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("History"));
-
 	getBrowserWindow () -> getHistory () -> addInterest (this, &HistoryView::set_history);
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &HistoryView::set_scene);
 
@@ -159,15 +157,15 @@ HistoryView::set_history ()
 	for (const auto & path : rows)
 		getTreeView () .get_selection () -> select (path);
 
-	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () .getDouble ("hadjustment"));
-	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () .getDouble ("vadjustment"));
+	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
+	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
 }
 
 void
 HistoryView::set_scene ()
 {
-	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
 	const std::string title    = getCurrentScene () -> getTitle ();
 	const basic::uri  worldURL = getCurrentScene () -> getWorldURL ();
@@ -220,37 +218,37 @@ HistoryView::on_button_press_event (GdkEventButton* event)
 void
 HistoryView::on_never_toggled ()
 {
-	getConfig () .setItem ("rememberHistory", 0);
+	getConfig () -> setItem ("rememberHistory", 0);
 }
 
 void
 HistoryView::on_on_month_toggled ()
 {
-	getConfig () .setItem ("rememberHistory", 1);
+	getConfig () -> setItem ("rememberHistory", 1);
 }
 
 void
 HistoryView::on_half_year_toggled ()
 {
-	getConfig () .setItem ("rememberHistory", 6);
+	getConfig () -> setItem ("rememberHistory", 6);
 }
 
 void
 HistoryView::on_one_year_toggled ()
 {
-	getConfig () .setItem ("rememberHistory", 12);
+	getConfig () -> setItem ("rememberHistory", 12);
 }
 
 void
 HistoryView::on_always_toggled ()
 {
-	getConfig () .setItem ("rememberHistory", -1);
+	getConfig () -> setItem ("rememberHistory", -1);
 }
 
 HistoryView::~HistoryView ()
 {
-	getConfig () .setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () .setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
 	dispose ();
 }

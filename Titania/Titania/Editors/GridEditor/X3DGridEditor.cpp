@@ -136,7 +136,7 @@ X3DGridEditor::X3DGridEditor () :
 void
 X3DGridEditor::initialize ()
 {
-	getGridUniformScaleButton () .set_active (getConfig () .getBoolean ("gridUniformScale"));
+	getGridUniformScaleButton () .set_active (getConfig () -> getBoolean ("gridUniformScale"));
 
 	const auto & gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
 	X3D::MFNode  gridTools = { gridTool };
@@ -320,7 +320,7 @@ X3DGridEditor::set_majorLineEvery ()
 
 X3DGridEditor::~X3DGridEditor ()
 {
-	getConfig () .setItem ("gridUniformScale", getGridUniformScaleButton () .get_active ());
+	getConfig () -> setItem ("gridUniformScale", getGridUniformScaleButton () .get_active ());
 }
 
 } // puck

@@ -65,6 +65,7 @@ X3DFooterInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Label", m_Label);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);

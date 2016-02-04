@@ -1434,24 +1434,8 @@ public:
 	{ return *m_LookAtButton; }
 
 	Gtk::Box &
-	getFooterMainBox () const
-	{ return *m_FooterMainBox; }
-
-	Gtk::Label &
-	getFooterLabel () const
-	{ return *m_FooterLabel; }
-
-	Gtk::Box &
 	getFooterBox () const
 	{ return *m_FooterBox; }
-
-	Gtk::Box &
-	getSidebarMainBox () const
-	{ return *m_SidebarMainBox; }
-
-	Gtk::Label &
-	getSideBarLabel () const
-	{ return *m_SideBarLabel; }
 
 	Gtk::Box &
 	getSidebarBox () const
@@ -2387,11 +2371,7 @@ private:
 	Gtk::ToolButton*                 m_LookAtSelectionButton;
 	Gtk::ToolButton*                 m_LookAtAllButton;
 	Gtk::ToggleToolButton*           m_LookAtButton;
-	Gtk::Box*                        m_FooterMainBox;
-	Gtk::Label*                      m_FooterLabel;
 	Gtk::Box*                        m_FooterBox;
-	Gtk::Box*                        m_SidebarMainBox;
-	Gtk::Label*                      m_SideBarLabel;
 	Gtk::Box*                        m_SidebarBox;
 	Gtk::MessageDialog*              m_MessageDialog;
 

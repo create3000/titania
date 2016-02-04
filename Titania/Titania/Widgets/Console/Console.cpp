@@ -82,7 +82,6 @@ Console::isEnabled () const
 void
 Console::on_map ()
 {
-	getBrowserWindow () -> getFooterLabel () .set_text (_ ("Console"));
 }
 
 void

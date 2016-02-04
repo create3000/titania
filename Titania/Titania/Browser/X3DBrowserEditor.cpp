@@ -106,21 +106,21 @@ void
 X3DBrowserEditor::restoreSession ()
 {
 	// Workspace
-	if (not getConfig () .hasItem ("environment"))
-		getConfig () .setItem ("environment", 1);
+	if (not getConfig () -> hasItem ("environment"))
+		getConfig () -> setItem ("environment", 1);
 
-	if (getConfig () .getInteger ("environment") == 1)
+	if (getConfig () -> getInteger ("environment") == 1)
 		getEditorAction () -> set_active (true);
 	else
 		getBrowserAction () -> set_active (true);
 
 	// SelectLowest
-	if (getConfig () .hasItem ("selectLowest"))
-		getSelectLowestAction () -> set_active (getConfig () .getBoolean ("selectLowest"));
+	if (getConfig () -> hasItem ("selectLowest"))
+		getSelectLowestAction () -> set_active (getConfig () -> getBoolean ("selectLowest"));
 
 	// FollowPrimarySelection
-	if (getConfig () .hasItem ("followPrimarySelection"))
-		getFollowPrimarySelectionAction () -> set_active (getConfig () .getBoolean ("followPrimarySelection"));
+	if (getConfig () -> hasItem ("followPrimarySelection"))
+		getFollowPrimarySelectionAction () -> set_active (getConfig () -> getBoolean ("followPrimarySelection"));
 
 	// This must be done after.
 	X3DBrowserWidget::restoreSession ();
@@ -303,7 +303,7 @@ void
 X3DBrowserEditor::isEditor (const bool value)
 {
 	enabled = value;
-	getConfig () .setItem ("environment", value ? 1 : 0);
+	getConfig () -> setItem ("environment", value ? 1 : 0);
 }
 
 bool

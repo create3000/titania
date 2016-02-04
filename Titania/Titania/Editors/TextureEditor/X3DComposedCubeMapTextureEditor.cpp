@@ -66,7 +66,7 @@ X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel (), getComposedCubeMapBottomTextureLoadStateLabel ())),
 	           cubeMapTexture ()
 {
-	getComposedCubeMapNotebook () .set_current_page (getConfig () .getInteger ("composedCubeMapPage"));
+	getComposedCubeMapNotebook () .set_current_page (getConfig () -> getInteger ("composedCubeMapPage"));
 }
 
 void
@@ -129,7 +129,7 @@ X3DComposedCubeMapTextureEditor::set_texture (const std::shared_ptr <TexturePrev
 
 X3DComposedCubeMapTextureEditor::~X3DComposedCubeMapTextureEditor ()
 {
-	getConfig () .setItem ("composedCubeMapPage", getComposedCubeMapNotebook () .get_current_page ());
+	getConfig () -> setItem ("composedCubeMapPage", getComposedCubeMapNotebook () .get_current_page ());
 }
 
 } // puck

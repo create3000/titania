@@ -103,11 +103,11 @@ ScriptEditor::initialize ()
 
 	// Config
 
-	if (getConfig () .hasItem ("paned"))
-		getPaned () .set_position (getConfig () .getInteger ("paned"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
-	if (getConfig () .hasItem ("sidePaned"))
-		getSidePaned () .set_position (getConfig () .getInteger ("sidePaned"));
+	if (getConfig () -> hasItem ("sidePaned"))
+		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
 
 	// Text view
 
@@ -169,8 +169,6 @@ ScriptEditor::on_map ()
 {
 	getCurrentContext () .addInterest (this, &ScriptEditor::set_executionContext);
 
-	set_label ();
-
 	set_executionContext ();
 }
 
@@ -178,19 +176,6 @@ void
 ScriptEditor::on_unmap ()
 {
 	getCurrentContext () .removeInterest (this, &ScriptEditor::set_executionContext);
-}
-
-void
-ScriptEditor::set_label ()
-{
-	if (not getWidget () .get_mapped ())
-		return;
-
-	if (node)
-		getBrowserWindow () -> getFooterLabel () .set_text (basic::sprintf (_ ("Script Editor »%s«"), node -> getName () .c_str ()));
-
-	else
-		getBrowserWindow () -> getFooterLabel () .set_text (_ ("Script Editor"));
 }
 
 void
@@ -223,8 +208,6 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	node = value;
 
 	nodeName .setNode (node);
-
-	set_label ();
 
 	getScriptEditorBox () .set_sensitive (node);
 	getToolbar ()         .set_sensitive (node);
@@ -546,8 +529,8 @@ ScriptEditor::saveSession ()
 
 ScriptEditor::~ScriptEditor ()
 {
-	getConfig () .setItem ("paned",     getPaned ()     .get_position ());
-	getConfig () .setItem ("sidePaned", getSidePaned () .get_position ());
+	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());
+	getConfig () -> setItem ("sidePaned", getSidePaned () .get_position ());
 
 	saveSession ();
 

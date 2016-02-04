@@ -84,8 +84,6 @@ OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 void
 OutlineEditor::on_map ()
 {
-	getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Outline Editor"));
-
 	getBrowserWindow () -> worldURL_changed () .addInterest (this, &OutlineEditor::set_scenes_menu);
 
 	set_scenes_menu ();
@@ -106,16 +104,16 @@ OutlineEditor::initialize ()
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
-	getShowExternProtosMenuItem ()         .set_active (getConfig () .getBoolean ("showExternProtos"));
-	getShowPrototypesMenuItem ()           .set_active (getConfig () .getBoolean ("showPrototypes"));
-	getShowImportedNodesMenuItem ()        .set_active (getConfig () .getBoolean ("showImportedNodes"));
-	getShowExportedNodesMenuItem ()        .set_active (getConfig () .getBoolean ("showExportedNodes"));
-	getExpandExternProtosMenuItem ()       .set_active (getConfig () .getBoolean ("expandExternProtos"));
-	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () .getBoolean ("expandPrototypeInstances"));
-	getExpandInlineNodesMenuItem ()        .set_active (getConfig () .getBoolean ("expandInlineNodes"));
+	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getBoolean ("showExternProtos"));
+	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getBoolean ("showPrototypes"));
+	getShowImportedNodesMenuItem ()        .set_active (getConfig () -> getBoolean ("showImportedNodes"));
+	getShowExportedNodesMenuItem ()        .set_active (getConfig () -> getBoolean ("showExportedNodes"));
+	getExpandExternProtosMenuItem ()       .set_active (getConfig () -> getBoolean ("expandExternProtos"));
+	getExpandPrototypeInstancesMenuItem () .set_active (getConfig () -> getBoolean ("expandPrototypeInstances"));
+	getExpandInlineNodesMenuItem ()        .set_active (getConfig () -> getBoolean ("expandInlineNodes"));
 
-	if (getConfig () .hasItem ("useLocale"))
-	 getUseLocaleMenuItem () .set_active (getConfig () .getBoolean ("useLocale"));
+	if (getConfig () -> hasItem ("useLocale"))
+	 getUseLocaleMenuItem () .set_active (getConfig () -> getBoolean ("useLocale"));
 
 	realized = true;
 
@@ -1048,7 +1046,7 @@ OutlineEditor::on_remove_parent_activate ()
 void
 OutlineEditor::on_show_extern_protos_toggled ()
 {
-	getConfig () .setItem ("showExternProtos", getShowExternProtosMenuItem () .get_active ());
+	getConfig () -> setItem ("showExternProtos", getShowExternProtosMenuItem () .get_active ());
 	treeView -> set_show_extern_protos (getShowExternProtosMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1056,7 +1054,7 @@ OutlineEditor::on_show_extern_protos_toggled ()
 void
 OutlineEditor::on_show_prototypes_toggled ()
 {
-	getConfig () .setItem ("showPrototypes", getShowPrototypesMenuItem () .get_active ());
+	getConfig () -> setItem ("showPrototypes", getShowPrototypesMenuItem () .get_active ());
 	treeView -> set_show_prototypes (getShowPrototypesMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1064,7 +1062,7 @@ OutlineEditor::on_show_prototypes_toggled ()
 void
 OutlineEditor::on_show_imported_nodes_toggled ()
 {
-	getConfig () .setItem ("showImportedNodes", getShowImportedNodesMenuItem () .get_active ());
+	getConfig () -> setItem ("showImportedNodes", getShowImportedNodesMenuItem () .get_active ());
 	treeView -> set_show_imported_nodes (getShowImportedNodesMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1072,7 +1070,7 @@ OutlineEditor::on_show_imported_nodes_toggled ()
 void
 OutlineEditor::on_show_exported_nodes_toggled ()
 {
-	getConfig () .setItem ("showExportedNodes", getShowExportedNodesMenuItem () .get_active ());
+	getConfig () -> setItem ("showExportedNodes", getShowExportedNodesMenuItem () .get_active ());
 	treeView -> set_show_exported_nodes (getShowExportedNodesMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1080,7 +1078,7 @@ OutlineEditor::on_show_exported_nodes_toggled ()
 void
 OutlineEditor::on_expand_extern_protos_toggled ()
 {
-	getConfig () .setItem ("expandExternProtos", getExpandExternProtosMenuItem () .get_active ());
+	getConfig () -> setItem ("expandExternProtos", getExpandExternProtosMenuItem () .get_active ());
 	treeView -> set_expand_extern_protos (getExpandExternProtosMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1088,7 +1086,7 @@ OutlineEditor::on_expand_extern_protos_toggled ()
 void
 OutlineEditor::on_expand_prototype_instances_toggled ()
 {
-	getConfig () .setItem ("expandPrototypeInstances", getExpandPrototypeInstancesMenuItem () .get_active ());
+	getConfig () -> setItem ("expandPrototypeInstances", getExpandPrototypeInstancesMenuItem () .get_active ());
 	treeView -> set_expand_prototype_instances (getExpandPrototypeInstancesMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1096,7 +1094,7 @@ OutlineEditor::on_expand_prototype_instances_toggled ()
 void
 OutlineEditor::on_expand_inline_nodes_toggled ()
 {
-	getConfig () .setItem ("expandInlineNodes", getExpandInlineNodesMenuItem () .get_active ());
+	getConfig () -> setItem ("expandInlineNodes", getExpandInlineNodesMenuItem () .get_active ());
 	treeView -> set_expand_inline_nodes (getExpandInlineNodesMenuItem () .get_active ());
 	set_executionContext ();
 }
@@ -1104,7 +1102,7 @@ OutlineEditor::on_expand_inline_nodes_toggled ()
 void
 OutlineEditor::on_use_locale_menu_item_toggled ()
 {
-	getConfig () .setItem ("useLocale", getUseLocaleMenuItem () .get_active ());
+	getConfig () -> setItem ("useLocale", getUseLocaleMenuItem () .get_active ());
 	treeView -> set_use_locale (getUseLocaleMenuItem () .get_active ());
 }
 

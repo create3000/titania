@@ -97,6 +97,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Label &
+	getLabel () const
+	{ return *m_Label; }
+
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -169,6 +173,7 @@ private:
 	std::deque <sigc::connection> m_connections;
 	Gtk::Window*                  m_Window;
 	Gtk::Box*                     m_Widget;
+	Gtk::Label*                   m_Label;
 	Gtk::Notebook*                m_Notebook;
 	Gtk::Box*                     m_NodePropertiesEditorBox;
 	Gtk::Box*                     m_AppearanceEditorBox;

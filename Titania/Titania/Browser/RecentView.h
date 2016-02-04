@@ -81,11 +81,7 @@ public:
 
 	///  @name Configuration handling
 
-	Configuration &
-	getConfig ()
-	{ return gconf; }
-
-	const Configuration &
+	const std::shared_ptr <Configuration> &
 	getConfig () const
 	{ return gconf; }
 
@@ -115,7 +111,7 @@ private:
 
 	///  @name Members
 
-	Configuration gconf;
+	const std::shared_ptr <Configuration> gconf;
 
 };
 

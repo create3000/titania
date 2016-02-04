@@ -133,7 +133,7 @@ X3DAngleEditor::X3DAngleEditor () :
 void
 X3DAngleEditor::initialize ()
 {
-	getAngleUniformScaleButton () .set_active (getConfig () .getBoolean ("angleUniformScale"));
+	getAngleUniformScaleButton () .set_active (getConfig () -> getBoolean ("angleUniformScale"));
 
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	X3D::MFNode  angleTools = { angleTool };
@@ -317,7 +317,7 @@ X3DAngleEditor::set_majorLineEvery ()
 
 X3DAngleEditor::~X3DAngleEditor ()
 {
-	getConfig () .setItem ("angleUniformScale", getAngleUniformScaleButton () .get_active ());
+	getConfig () -> setItem ("angleUniformScale", getAngleUniformScaleButton () .get_active ());
 }
 
 } // puck

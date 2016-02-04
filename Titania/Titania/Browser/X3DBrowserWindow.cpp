@@ -136,7 +136,7 @@ X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, cons
 void
 X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 {
-	if (getConfig () .getBoolean ("followPrimarySelection"))
+	if (getConfig () -> getBoolean ("followPrimarySelection"))
 	{
 		getCurrentBrowser () -> addEvent ();
 		getCurrentBrowser () -> finished () .addInterest (this, &X3DBrowserWindow::expandNodesImpl, nodes);

@@ -128,10 +128,18 @@ template <class Interface>
 void
 X3DNotebook <Interface>::addPage (const std::string & name, const std::shared_ptr <X3DUserInterface> & userInterface, Gtk::Box & box)
 {
-	const size_t currentPage = this -> getConfig () .getInteger ("currentPage");
+	const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
 
 	userInterface -> reparent (box, this -> getWindow ());
-	userInterface -> getWidget () .set_visible (currentPage == userInterfaces .size ());
+	userInterface -> setName (this -> getWidgetName () + "." + userInterface -> getName ());
+
+	if (currentPage == userInterfaces .size ())
+	{
+		userInterface -> getWidget () .set_visible (true);
+		this -> getLabel () .set_text (_ (userInterface -> getWidgetName () .c_str ()));
+	}
+	else
+		userInterface -> getWidget () .set_visible (false);
 
 	userInterfaces .emplace_back (userInterface);
 	pages .emplace (name, userInterface);
@@ -141,22 +149,27 @@ template <class Interface>
 void
 X3DNotebook <Interface>::initialize ()
 {
-	this -> getNotebook () .set_current_page (this -> getConfig () .getInteger ("currentPage"));
+	this -> getNotebook () .set_current_page (this -> getConfig () -> getInteger ("currentPage"));
 }
 
 template <class Interface>
 void
 X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
-	const size_t currentPage = this -> getConfig () .getInteger ("currentPage");
+	// Show/hide pages
+
+	const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
 
 	if (currentPage < userInterfaces .size ())
 		userInterfaces [currentPage] -> getWidget () .set_visible (false);
 
 	if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
+	{
 		userInterfaces [pageNumber] -> getWidget () .set_visible (true);
+		this -> getLabel () .set_text (_ (userInterfaces [pageNumber] -> getWidgetName () .c_str ()));
+	}
 
-	this -> getConfig () .setItem ("currentPage", int (pageNumber));
+	this -> getConfig () -> setItem ("currentPage", int (pageNumber));
 }
 
 template <class Interface>

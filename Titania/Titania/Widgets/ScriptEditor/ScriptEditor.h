@@ -140,9 +140,6 @@ private:
 	on_unmap () final override;
 
 	void
-	set_label ();
-
-	void
 	set_node (const X3D::SFNode &);
 
 	void

@@ -80,45 +80,45 @@ X3DScriptEditorPreferences::initialize ()
 {
 	// View
 
-	if (getConfig () .hasItem ("showLineNumbers"))
-		 getShowLineNumbersCheckButton () .set_active (getConfig () .getBoolean ("showLineNumbers"));
+	if (getConfig () -> hasItem ("showLineNumbers"))
+		 getShowLineNumbersCheckButton () .set_active (getConfig () -> getBoolean ("showLineNumbers"));
 	else
 		 getShowLineNumbersCheckButton () .set_active (true);
 
-	if (getConfig () .hasItem ("showRightMargin"))
-		 getShowRightMarginCheckButton () .set_active (getConfig () .getBoolean ("showRightMargin"));
+	if (getConfig () -> hasItem ("showRightMargin"))
+		 getShowRightMarginCheckButton () .set_active (getConfig () -> getBoolean ("showRightMargin"));
 	else
 		getShowRightMarginCheckButton () .set_active (true);
 
-	if (getConfig () .hasItem ("rightMarginPosition"))
-		 getRightMarginSpinButton () .set_value (getConfig () .getInteger ("rightMarginPosition"));
+	if (getConfig () -> hasItem ("rightMarginPosition"))
+		 getRightMarginSpinButton () .set_value (getConfig () -> getInteger ("rightMarginPosition"));
 	else
 		getRightMarginSpinButton () .set_value (100);
 	
-	if (getConfig () .hasItem ("wrapMode"))
-		getWrapModeComboBoxText () .set_active (getConfig () .getInteger ("wrapMode"));
+	if (getConfig () -> hasItem ("wrapMode"))
+		getWrapModeComboBoxText () .set_active (getConfig () -> getInteger ("wrapMode"));
 	else
 		getWrapModeComboBoxText () .set_active (0);
 
-	if (getConfig () .hasItem ("highlightCurrentLine"))
-		getHighlightCurrentLineCheckButton () .set_active (getConfig () .getBoolean ("highlightCurrentLine"));
+	if (getConfig () -> hasItem ("highlightCurrentLine"))
+		getHighlightCurrentLineCheckButton () .set_active (getConfig () -> getBoolean ("highlightCurrentLine"));
 	else
 		getHighlightCurrentLineCheckButton () .set_active (false);
 	
-	if (getConfig () .hasItem ("highlightMatchingBrackets"))
-		getHighlightMatchingBracketsCheckButton () .set_active (getConfig () .getBoolean ("highlightMatchingBrackets"));
+	if (getConfig () -> hasItem ("highlightMatchingBrackets"))
+		getHighlightMatchingBracketsCheckButton () .set_active (getConfig () -> getBoolean ("highlightMatchingBrackets"));
 	else
 		getHighlightMatchingBracketsCheckButton () .set_active (true);
 
 	// Editor
 
-	if (getConfig () .hasItem ("tabWidth"))
-		getTabWidthSpinButton () .set_value (getConfig () .getInteger ("tabWidth"));
+	if (getConfig () -> hasItem ("tabWidth"))
+		getTabWidthSpinButton () .set_value (getConfig () -> getInteger ("tabWidth"));
 	else
 		getTabWidthSpinButton () .set_value (3);
 	
-	if (getConfig () .hasItem ("insertSpacesInsteadOfTabs"))
-		getInsertSpacesInsteadOfTabsCheckButton () .set_active (getConfig () .getBoolean ("insertSpacesInsteadOfTabs"));
+	if (getConfig () -> hasItem ("insertSpacesInsteadOfTabs"))
+		getInsertSpacesInsteadOfTabsCheckButton () .set_active (getConfig () -> getBoolean ("insertSpacesInsteadOfTabs"));
 	else
 		getInsertSpacesInsteadOfTabsCheckButton () .set_active (false);
 
@@ -126,8 +126,8 @@ X3DScriptEditorPreferences::initialize ()
 
 	std::string themeId = "tango";
 	
-	if (getConfig () .hasItem ("colorTheme"))
-		themeId = getConfig () .getString ("colorTheme");
+	if (getConfig () -> hasItem ("colorTheme"))
+		themeId = getConfig () -> getString ("colorTheme");
 
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));
 
@@ -180,7 +180,7 @@ X3DScriptEditorPreferences::on_preferences_delete_event (GdkEventAny*)
 void
 X3DScriptEditorPreferences::on_show_line_numbers_toggled ()
 {
-	getConfig () .setItem ("showLineNumbers", getShowLineNumbersCheckButton () .get_active ());
+	getConfig () -> setItem ("showLineNumbers", getShowLineNumbersCheckButton () .get_active ());
 
 	getTextView () .set_show_line_numbers (getShowLineNumbersCheckButton () .get_active ());
 }
@@ -188,7 +188,7 @@ X3DScriptEditorPreferences::on_show_line_numbers_toggled ()
 void
 X3DScriptEditorPreferences::on_show_right_margin_toggled ()
 {
-	getConfig () .setItem ("showRightMargin", getShowRightMarginCheckButton () .get_active ());
+	getConfig () -> setItem ("showRightMargin", getShowRightMarginCheckButton () .get_active ());
 
 	getTextView () .set_show_right_margin (getShowRightMarginCheckButton () .get_active ());
 }
@@ -196,7 +196,7 @@ X3DScriptEditorPreferences::on_show_right_margin_toggled ()
 void
 X3DScriptEditorPreferences::on_right_margin_changed ()
 {
-	getConfig () .setItem ("rightMarginPosition", (int) getRightMarginSpinButton () .get_value ());
+	getConfig () -> setItem ("rightMarginPosition", (int) getRightMarginSpinButton () .get_value ());
 
 	getTextView () .set_right_margin_position (getRightMarginSpinButton () .get_value ());
 }
@@ -215,20 +215,20 @@ X3DScriptEditorPreferences::on_wrap_mode_changed ()
 	{
 		getTextView () .set_wrap_mode (wrapModes .at (getWrapModeComboBoxText () .get_active_row_number ()));
 
-		getConfig () .setItem ("wrapMode", getWrapModeComboBoxText () .get_active_row_number ());
+		getConfig () -> setItem ("wrapMode", getWrapModeComboBoxText () .get_active_row_number ());
 	}
 	catch (const std::out_of_range &)
 	{
 		getTextView () .set_wrap_mode (Gtk::WRAP_NONE);
 
-		getConfig () .setItem ("wrapMode", Gtk::WRAP_NONE);  
+		getConfig () -> setItem ("wrapMode", Gtk::WRAP_NONE);  
 	}
 }
 
 void
 X3DScriptEditorPreferences::on_highlight_current_line_togged ()
 {
-	getConfig () .setItem ("highlightCurrentLine", getHighlightCurrentLineCheckButton () .get_active ());
+	getConfig () -> setItem ("highlightCurrentLine", getHighlightCurrentLineCheckButton () .get_active ());
 
 	getTextView () .set_highlight_current_line (getHighlightCurrentLineCheckButton () .get_active ());
 }
@@ -236,7 +236,7 @@ X3DScriptEditorPreferences::on_highlight_current_line_togged ()
 void
 X3DScriptEditorPreferences::on_highlight_matching_brackets_toggled ()
 {
-	getConfig () .setItem ("highlightMatchingBrackets", getHighlightMatchingBracketsCheckButton () .get_active ());
+	getConfig () -> setItem ("highlightMatchingBrackets", getHighlightMatchingBracketsCheckButton () .get_active ());
 
 	getTextBuffer () -> set_highlight_matching_brackets (getHighlightMatchingBracketsCheckButton () .get_active ());
 }
@@ -244,7 +244,7 @@ X3DScriptEditorPreferences::on_highlight_matching_brackets_toggled ()
 void
 X3DScriptEditorPreferences::on_tab_width_changed ()
 {
-	getConfig () .setItem ("tabWidth", (int) getTabWidthSpinButton () .get_value ());
+	getConfig () -> setItem ("tabWidth", (int) getTabWidthSpinButton () .get_value ());
 
 	getTextView () .property_tab_width () = getTabWidthSpinButton () .get_value ();
 	getTextView () .set_indent_width (getTabWidthSpinButton () .get_value ());
@@ -253,7 +253,7 @@ X3DScriptEditorPreferences::on_tab_width_changed ()
 void
 X3DScriptEditorPreferences::on_insert_spaces_instead_of_tabs_toggled ()
 {
-	getConfig () .setItem ("insertSpacesInsteadOfTabs", getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
+	getConfig () -> setItem ("insertSpacesInsteadOfTabs", getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
 
 	getTextView () .set_insert_spaces_instead_of_tabs (getInsertSpacesInsteadOfTabsCheckButton () .get_active ());
 }
@@ -287,7 +287,7 @@ X3DScriptEditorPreferences::on_color_theme_activated (const Gtk::TreeModel::Path
 
 	getTextBuffer () -> set_style_scheme (Gsv::StyleSchemeManager::get_default () -> get_scheme (themeId));
 
-	getConfig () .setItem ("colorTheme", themeId);
+	getConfig () -> setItem ("colorTheme", themeId);
 }
 
 X3DScriptEditorPreferences::~X3DScriptEditorPreferences ()

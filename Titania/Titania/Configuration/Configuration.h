@@ -70,6 +70,10 @@ public:
 
 	/// @name Key lockup
 
+	const std::string &
+	getPath () const
+	{ return path; }
+
 	bool
 	hasItem (const std::string &) const;
 

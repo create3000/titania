@@ -89,19 +89,20 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
-X3DUserInterface::X3DUserInterface () :
-	gconf ("", "")
+X3DUserInterface::X3DUserInterface ()
 {
 	assert (false);
 }
 
 X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
 	      X3DBaseInterface (),
-	                 gconf (configKey, widgetName),
+	                 gconf (new Configuration (configKey, widgetName)),
 	constructed_connection (),
 	         userInterface (),
 	               dialogs (new DialogIndex ())
 {
+	setName (widgetName);
+
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
 }
@@ -115,6 +116,14 @@ X3DUserInterface::construct ()
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
 
 	restoreInterface ();
+}
+
+void
+X3DUserInterface::setName (const std::string & value)
+{
+	X3DBaseInterface::setName (value);
+
+	gconf .reset (new Configuration (gconf -> getPath (), value));
 }
 
 void
@@ -155,11 +164,11 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 	const bool maximized  = event -> new_window_state & GDK_WINDOW_STATE_MAXIMIZED;
 	const bool fullscreen = event -> new_window_state & GDK_WINDOW_STATE_FULLSCREEN;
 
-	getConfig () .setItem ("maximized",  maximized);
+	getConfig () -> setItem ("maximized",  maximized);
 
-	if (fullscreen not_eq getConfig () .getBoolean ("fullscreen"))
+	if (fullscreen not_eq getConfig () -> getBoolean ("fullscreen"))
 	{
-		getConfig () .setItem ("fullscreen", fullscreen);
+		getConfig () -> setItem ("fullscreen", fullscreen);
 		set_fullscreen (fullscreen);
 	}
 
@@ -230,16 +239,16 @@ X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position
 
-	if (getConfig () .hasItem ("x") and getConfig () .hasItem ("y"))
+	if (getConfig () -> hasItem ("x") and getConfig () -> hasItem ("y"))
 	{
-		getWindow () .move (getConfig () .getInteger ("x"),
-		                    getConfig () .getInteger ("y"));
+		getWindow () .move (getConfig () -> getInteger ("x"),
+		                    getConfig () -> getInteger ("y"));
 	}
 
-	if (getConfig () .getInteger ("width") > 0 and getConfig () .getInteger ("height") > 0)
+	if (getConfig () -> getInteger ("width") > 0 and getConfig () -> getInteger ("height") > 0)
 	{
-		getWindow () .resize (getConfig () .getInteger ("width"),
-		                      getConfig () .getInteger ("height"));
+		getWindow () .resize (getConfig () -> getInteger ("width"),
+		                      getConfig () -> getInteger ("height"));
 	}
 
 	if (isMaximized ())
@@ -264,12 +273,12 @@ X3DUserInterface::saveInterface ()
 		int x, y, width, height;
 
 		getWindow () .get_position (x, y);
-		getConfig () .setItem ("x", x);
-		getConfig () .setItem ("y", y);
+		getConfig () -> setItem ("x", x);
+		getConfig () -> setItem ("y", y);
 
 		getWindow () .get_size (width, height);
-		getConfig () .setItem ("width",  width);
-		getConfig () .setItem ("height", height);
+		getConfig () -> setItem ("width",  width);
+		getConfig () -> setItem ("height", height);
 	}
 }
 
@@ -278,7 +287,7 @@ X3DUserInterface::restoreSession ()
 {
 	// Restore dialogs
 
-	for (const auto & dialogName : basic::split (getConfig () .getString ("dialogs"), ";"))
+	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
 	{
 		if (restorableDialogs .count (dialogName))
 			addDialog (dialogName);
@@ -301,7 +310,7 @@ X3DUserInterface::saveSession ()
 	if (not dialogNames .empty ())
 		dialogNames .resize (dialogNames .size () - 1);
 
-	getConfig () .setItem ("dialogs", dialogNames);
+	getConfig () -> setItem ("dialogs", dialogNames);
 
 	// Close dialogs
 

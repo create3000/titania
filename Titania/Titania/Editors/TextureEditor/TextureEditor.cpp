@@ -66,7 +66,7 @@ TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
 	X3DTextureCoordinateGeneratorEditor (),
 	            X3DTexturePaletteEditor ()
 {
-	getTextureChildNotebook () .set_current_page (getConfig () .getInteger ("currentPage"));
+	getTextureChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
 	setup ();
 }
@@ -83,7 +83,7 @@ TextureEditor::initialize ()
 
 TextureEditor::~TextureEditor ()
 {
-	getConfig () .setItem ("currentPage", getTextureChildNotebook () .get_current_page ());
+	getConfig () -> setItem ("currentPage", getTextureChildNotebook () .get_current_page ());
 
 	dispose ();
 }

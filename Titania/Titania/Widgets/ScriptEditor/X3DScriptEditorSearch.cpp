@@ -102,22 +102,22 @@ X3DScriptEditorSearch::initialize ()
 
 	// Search Menu
 
-	getCaseSensitiveMenuItem ()      .set_active (getConfig () .getBoolean ("searchCaseSensitive"));
-	getAtWordBoundariesMenuItem ()   .set_active (getConfig () .getBoolean ("searchAtWordBoundaries"));
-	getRegularExpressionMenuItem ()  .set_active (getConfig () .getBoolean ("searchRegularExpression"));
-	getWithinSelectionMenuItem ()    .set_active (getConfig () .getBoolean ("searchWithinSelection"));
-	getWrapAroundMenuItemMenuItem () .set_active (getConfig () .getBoolean ("searchWrapAround"));
+	getCaseSensitiveMenuItem ()      .set_active (getConfig () -> getBoolean ("searchCaseSensitive"));
+	getAtWordBoundariesMenuItem ()   .set_active (getConfig () -> getBoolean ("searchAtWordBoundaries"));
+	getRegularExpressionMenuItem ()  .set_active (getConfig () -> getBoolean ("searchRegularExpression"));
+	getWithinSelectionMenuItem ()    .set_active (getConfig () -> getBoolean ("searchWithinSelection"));
+	getWrapAroundMenuItemMenuItem () .set_active (getConfig () -> getBoolean ("searchWrapAround"));
 
-	recentSearches = basic::basic_split <Glib::ustring, std::deque> (getConfig () .getString ("recentSearches"), ";");
+	recentSearches = basic::basic_split <Glib::ustring, std::deque> (getConfig () -> getString ("recentSearches"), ";");
 
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
 
 	// Restore search and replace strings
 
-	getSearchEntry ()   .set_text (getConfig () .getString ("searchString"));
-	getReplaceEntry ()  .set_text (getConfig () .getString ("replaceString"));
-	getGoToLineEntry () .set_text (getConfig () .getString ("lineNumber"));
+	getSearchEntry ()   .set_text (getConfig () -> getString ("searchString"));
+	getReplaceEntry ()  .set_text (getConfig () -> getString ("replaceString"));
+	getGoToLineEntry () .set_text (getConfig () -> getString ("lineNumber"));
 
 	// Search Menu Icon (workaround issue, as settings are not applied from builder)
 
@@ -129,12 +129,12 @@ X3DScriptEditorSearch::initialize ()
 
 	// Enable Search Widget
 
-	getToggleReplaceButton () .set_active (getConfig () .getBoolean ("replaceEnabled"));
+	getToggleReplaceButton () .set_active (getConfig () -> getBoolean ("replaceEnabled"));
 
-	if (getConfig () .getBoolean ("searchEnabled"))
+	if (getConfig () -> getBoolean ("searchEnabled"))
 		on_enable_search ();
 
-	else if (getConfig () .getBoolean ("goToLineEnabled"))
+	else if (getConfig () -> getBoolean ("goToLineEnabled"))
 		on_enable_go_to_line ();
 }
 
@@ -629,24 +629,24 @@ X3DScriptEditorSearch::~X3DScriptEditorSearch ()
 {
 	// Search & Replace
 
-	getConfig () .setItem ("searchEnabled",   getSearchRevealer () .get_child_revealed () and getSearchAndReplaceBox () .get_visible ());
-	getConfig () .setItem ("replaceEnabled",  getToggleReplaceButton () .get_active ());
-	getConfig () .setItem ("goToLineEnabled", getSearchRevealer () .get_child_revealed () and getGoToLineBox () .get_visible ());
+	getConfig () -> setItem ("searchEnabled",   getSearchRevealer () .get_child_revealed () and getSearchAndReplaceBox () .get_visible ());
+	getConfig () -> setItem ("replaceEnabled",  getToggleReplaceButton () .get_active ());
+	getConfig () -> setItem ("goToLineEnabled", getSearchRevealer () .get_child_revealed () and getGoToLineBox () .get_visible ());
 
-	getConfig () .setItem ("searchString",  getSearchEntry ()   .get_text ());
-	getConfig () .setItem ("replaceString", getReplaceEntry ()  .get_text ());
-	getConfig () .setItem ("lineNumber",    getGoToLineEntry () .get_text ());
+	getConfig () -> setItem ("searchString",  getSearchEntry ()   .get_text ());
+	getConfig () -> setItem ("replaceString", getReplaceEntry ()  .get_text ());
+	getConfig () -> setItem ("lineNumber",    getGoToLineEntry () .get_text ());
 
-	getConfig () .setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
-	getConfig () .setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());
-	getConfig () .setItem ("searchRegularExpression", getRegularExpressionMenuItem ()  .get_active ());
-	getConfig () .setItem ("searchWithinSelection",   getWithinSelectionMenuItem ()    .get_active ());
-	getConfig () .setItem ("searchWrapAround",        getWrapAroundMenuItemMenuItem () .get_active ());
+	getConfig () -> setItem ("searchCaseSensitive",     getCaseSensitiveMenuItem ()      .get_active ());
+	getConfig () -> setItem ("searchAtWordBoundaries",  getAtWordBoundariesMenuItem ()   .get_active ());
+	getConfig () -> setItem ("searchRegularExpression", getRegularExpressionMenuItem ()  .get_active ());
+	getConfig () -> setItem ("searchWithinSelection",   getWithinSelectionMenuItem ()    .get_active ());
+	getConfig () -> setItem ("searchWrapAround",        getWrapAroundMenuItemMenuItem () .get_active ());
 
 	for (auto search : recentSearches)
 		search = basic::base64_encode (search);
 
-	getConfig () .setItem ("recentSearches", basic::join (recentSearches, ";"));
+	getConfig () -> setItem ("recentSearches", basic::join (recentSearches, ";"));
 
 	//how to delete searchContext;
 	//how to delete searchSettings;

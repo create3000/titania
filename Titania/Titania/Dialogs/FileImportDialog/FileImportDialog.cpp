@@ -74,9 +74,9 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.glade"), gconf_dir ())
 {
-	if (getConfig () .hasItem ("importType"))
+	if (getConfig () -> hasItem ("importType"))
 	{
-		switch (getConfig () .getInteger ("importType"))
+		switch (getConfig () -> getInteger ("importType"))
 		{
 			case ImportType::EXTERN_PROTOS:
 				getImportExternProtosButton () .set_active (true);
@@ -138,25 +138,25 @@ FileImportDialog::run ()
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-		if (getConfig () .hasItem ("currentFolder"))
-			getWindow () .set_current_folder_uri (getConfig () .getString ("currentFolder"));
+		if (getConfig () -> hasItem ("currentFolder"))
+			getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 		else
 			getWindow () .set_current_folder (os::home ());
 		
-		setFilter (getConfig () .getString ("filter"));
+		setFilter (getConfig () -> getString ("filter"));
 		
 		const auto responseId = getWindow () .run ();
 
-		getConfig () .setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+		getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
 
 		if (getWindow () .get_filter ())
-			getConfig () .setItem ("filter", getWindow () .get_filter () -> get_name ());
+			getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
 
 		if (responseId == Gtk::RESPONSE_OK)
 		{
 		   if (getImportExternProtosButton () .get_active ())
 		   {
-				getConfig () .setItem ("importType", ImportType::EXTERN_PROTOS);
+				getConfig () -> setItem ("importType", ImportType::EXTERN_PROTOS);
 
 				try
 				{
@@ -202,7 +202,7 @@ FileImportDialog::run ()
 				{
 				   // The URLs of the proto body must be rewriten, probable by setting execution context.
 
-					getConfig () .setItem ("importType", ImportType::PROTOS);
+					getConfig () -> setItem ("importType", ImportType::PROTOS);
 
 					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) });
 
@@ -217,7 +217,7 @@ FileImportDialog::run ()
 
 			else if (getImportSceneButton () .get_active ())
 			{
-				getConfig () .setItem ("importType", ImportType::SCENE);
+				getConfig () -> setItem ("importType", ImportType::SCENE);
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
 
@@ -229,7 +229,7 @@ FileImportDialog::run ()
 
 			else if (getImportAsInlineButton () .get_active ())
 			{
-				getConfig () .setItem ("importType", ImportType::INLINE);
+				getConfig () -> setItem ("importType", ImportType::INLINE);
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 

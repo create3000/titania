@@ -93,10 +93,7 @@ ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool 
 
 void
 ViewpointList::on_map ()
-{
-	if (label)
-		getBrowserWindow () -> getSideBarLabel () .set_text (_ ("Viewpoint List"));
-}
+{ }
 
 void
 ViewpointList::initialize ()
