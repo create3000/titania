@@ -54,35 +54,18 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "../AnimationEditor/AnimationEditor.h"
+#include "../Console/Console.h"
+#include "../ScriptEditor/ScriptEditor.h"
+
 namespace titania {
 namespace puck {
 
 Footer::Footer (X3DBrowserWindow* const browserWindow) :
-	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFooterInterface (get_ui ("Footer.glade"), gconf_dir ()),
-	           console (new Console (browserWindow)),
-	      scriptEditor (new ScriptEditor (browserWindow)),
-	   animationEditor (new AnimationEditor (browserWindow)),
-	           widgets ()
+	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DFooterInterface (get_ui ("Footer.glade"), gconf_dir ()),
+	X3DNotebook <X3DFooterInterface> ()
 {
-	const auto currentPage = getConfig () .getInteger ("currentPage");
-
-	getNotebook () .set_current_page (currentPage);
-
-	console         -> reparent (getConsoleBox (),         getWindow ());
-	scriptEditor    -> reparent (getScriptEditorBox (),    getWindow ());
-	animationEditor -> reparent (getAnimationEditorBox (), getWindow ());
-
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (console));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (scriptEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (animationEditor));
-
-	for (const auto & widget : widgets)
-		widget -> getWidget () .set_visible (false);
-
-	if (widgets [currentPage])
-		widgets [currentPage] -> getWidget () .set_visible (true);
-
 	setup ();
 }
 
@@ -90,25 +73,17 @@ void
 Footer::initialize ()
 {
 	X3DFooterInterface::initialize ();
-}
+	X3DNotebook <X3DFooterInterface>::initialize ();
 
-void
-Footer::on_switch_page (Gtk::Widget*, guint pageNumber)
-{
-	const size_t currentPage = getConfig () .getInteger ("currentPage");
-
-	if (currentPage < widgets .size ())
-		widgets [currentPage] -> getWidget () .set_visible (false);
-
-	if (pageNumber < widgets .size ())
-		widgets [pageNumber] -> getWidget () .set_visible (true);
-
-	getConfig () .setItem ("currentPage", int (pageNumber));
+	addPage ("Console",         std::make_shared <Console>         (getBrowserWindow ()), getConsoleBox         ());
+	addPage ("ScriptEditor",    std::make_shared <ScriptEditor>    (getBrowserWindow ()), getScriptEditorBox    ());
+	addPage ("AnimationEditor", std::make_shared <AnimationEditor> (getBrowserWindow ()), getAnimationEditorBox ());
 }
 
 Footer::~Footer ()
 {
-	dispose ();
+	X3DNotebook <X3DFooterInterface>::dispose ();
+	X3DFooterInterface::dispose ();
 }
 
 } // puck

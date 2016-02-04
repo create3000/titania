@@ -52,27 +52,14 @@
 #define __TITANIA_EDITORS_NODE_EDITOR_NODE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DNodeEditorInterface.h"
-
-#include "../AppearanceEditor/AppearanceEditor.h"
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../TextureEditor/TextureEditor.h"
-#include "../TextEditor/TextEditor.h"
-#include "../LayerEditor/LayerEditor.h"
-#include "../BackgroundEditor/BackgroundEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
-#include "../LightEditor/LightEditor.h"
-#include "../InlineEditor/InlineEditor.h"
-
-#include "../PrecisionPlacementPanel/PrecisionPlacementPanel.h"
+#include "../../Widgets/X3DNotebook/X3DNotebook.h"
 
 namespace titania {
 namespace puck {
 
 class NodeEditor :
-	virtual public X3DNodeEditorInterface
+	virtual public X3DNodeEditorInterface,
+	public X3DNotebook <X3DNodeEditorInterface>
 {
 public:
 
@@ -93,25 +80,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget*, guint) final override;
-
-	std::shared_ptr <NodePropertiesEditor>     nodePropertiesEditor;
-	std::shared_ptr <AppearanceEditor>         appearanceEditor;
-	std::shared_ptr <TextureEditor>            textureEditor;
-	std::shared_ptr <GeometryPropertiesEditor> geometryPropertiesEditor;
-	std::shared_ptr <TextEditor>               textEditor;
-	std::shared_ptr <LayerEditor>              layerEditor;
-	std::shared_ptr <BackgroundEditor>         backgroundEditor;
-	std::shared_ptr <NavigationInfoEditor>     navigationInfoEditor;
-	std::shared_ptr <ViewpointEditor>          viewpointEditor;
-	std::shared_ptr <LightEditor>              lightEditor;
-	std::shared_ptr <InlineEditor>             inlineEditor;
-	std::shared_ptr <PrecisionPlacementPanel>  precisionPlacementPanel;
-
-	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

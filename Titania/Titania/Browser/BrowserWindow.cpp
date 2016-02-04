@@ -1245,6 +1245,7 @@ BrowserWindow::isEditor (const bool enabled)
 
 	getSidebar () -> getLibraryViewBox ()     .set_visible (enabled);
 	getSidebar () -> getOutlineEditorBox ()   .set_visible (enabled);
+	getSidebar () -> getNodeEditorBox ()      .set_visible (enabled);
 	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
 	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
 

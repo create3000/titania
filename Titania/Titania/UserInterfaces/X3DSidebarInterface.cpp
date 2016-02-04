@@ -70,6 +70,7 @@ X3DSidebarInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HistoryViewBox", m_HistoryViewBox);
 	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
+	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DSidebarInterface::on_switch_page)));

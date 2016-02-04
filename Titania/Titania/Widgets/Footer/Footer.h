@@ -52,36 +52,20 @@
 #define __TITANIA_WIDGETS_FOOTER_FOOTER_H__
 
 #include "../../UserInterfaces/X3DFooterInterface.h"
-
-#include "../AnimationEditor/AnimationEditor.h"
-#include "../Console/Console.h"
-#include "../ScriptEditor/ScriptEditor.h"
+#include "../X3DNotebook/X3DNotebook.h"
 
 namespace titania {
 namespace puck {
 
 class Footer :
-	virtual public X3DFooterInterface
+	virtual public X3DFooterInterface,
+	public X3DNotebook <X3DFooterInterface>
 {
 public:
 
 	///  @name Construction
 
 	Footer (X3DBrowserWindow* const);
-
-	///  @name Member access
-
-	const std::shared_ptr <Console> &
-	getConsole () const
-	{ return console; }
-
-	const std::shared_ptr <ScriptEditor> &
-	getScriptEditor () const
-	{ return scriptEditor; }
-
-	const std::shared_ptr <AnimationEditor> &
-	getAnimationEditor () const
-	{ return animationEditor; }
 
 	///  @name Destruction
 
@@ -96,16 +80,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget*, guint) final override;
-
-	std::shared_ptr <Console>         console;
-	std::shared_ptr <ScriptEditor>    scriptEditor;
-	std::shared_ptr <AnimationEditor> animationEditor;
-
-	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

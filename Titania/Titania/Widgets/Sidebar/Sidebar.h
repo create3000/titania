@@ -52,30 +52,20 @@
 #define __TITANIA_WIDGETS_SIDEBAR_SIDEBAR_H__
 
 #include "../../UserInterfaces/X3DSidebarInterface.h"
-
-#include "../ViewpointList/ViewpointList.h"
-#include "../HistoryView/HistoryView.h"
-#include "../LibraryView/LibraryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../OutlineEditor/OutlineTreeViewEditor.h"
+#include "../X3DNotebook/X3DNotebook.h"
 
 namespace titania {
 namespace puck {
 
 class Sidebar :
-	virtual public X3DSidebarInterface
+	virtual public X3DSidebarInterface,
+	public X3DNotebook <X3DSidebarInterface>
 {
 public:
 
 	///  @name Construction
 
 	Sidebar (X3DBrowserWindow* const);
-
-	///  @name Member access
-
-	const std::shared_ptr <OutlineEditor> &
-	getOutlineEditor () const
-	{ return outlineEditor; }
 
 	///  @name Destruction
 
@@ -90,17 +80,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	virtual
-	void
-	on_switch_page (Gtk::Widget*, guint) final override;
-
-	std::shared_ptr <ViewpointList>     viewpointList;
-	std::shared_ptr <HistoryView>       historyEditor;
-	std::shared_ptr <LibraryView>       libraryView;
-	std::shared_ptr <OutlineEditor>     outlineEditor;
-
-	std::vector <std::shared_ptr <X3DUserInterface>>  widgets;
 
 };
 

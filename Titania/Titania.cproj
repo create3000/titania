@@ -2406,6 +2406,7 @@
     <None Include="share\titania\ui\Sidebar.glade" />
     <None Include="Titania\UserInterfaces\X3DFooterInterface.h" />
     <None Include="Titania\Widgets\Footer\Footer.h" />
+    <None Include="Titania\Widgets\X3DNotebook\X3DNotebook.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2491,6 +2492,7 @@
     <Folder Include="Titania\Editors\NodeEditor\" />
     <Folder Include="Titania\Widgets\Sidebar\" />
     <Folder Include="Titania\Widgets\Footer\" />
+    <Folder Include="Titania\Widgets\X3DNotebook\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

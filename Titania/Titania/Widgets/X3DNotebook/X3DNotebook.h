@@ -47,108 +47,121 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_SIDEBAR_H__
-#define __TMP_GLAD2CPP_SIDEBAR_H__
 
-#include "../Base/X3DUserInterface.h"
+#ifndef __TITANIA_WIDGETS_X3DNOTEBOOK_X3DNOTEBOOK_H__
+#define __TITANIA_WIDGETS_X3DNOTEBOOK_X3DNOTEBOOK_H__
+
+#include "../../Base/X3DUserInterface.h"
+
+#include <Titania/Math/Functional.h>
+
 #include <gtkmm.h>
-#include <string>
+
+#include <memory>
+#include <vector>
+#include <map>
 
 namespace titania {
 namespace puck {
 
-class X3DSidebarInterface :
-	public X3DUserInterface
+template <class Interface>
+class X3DNotebook :
+	virtual public Interface
 {
 public:
 
-	X3DSidebarInterface () :
-		X3DUserInterface ()
-	{ }
+	///  @name Construction
 
-	template <class ... Arguments>
-	X3DSidebarInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename)
-	{ create (filename); }
+	X3DNotebook ();
 
-	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	///  @name Operations
 
-	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	void
+	addPage (const std::string &, const std::shared_ptr <X3DUserInterface> &, Gtk::Box &);
 
 	template <class Type>
-	Type*
-	createWidget (const std::string & name) const
-	{
-		getBuilder () -> add_from_file (filename, name);
+	std::shared_ptr <Type>
+	getPage (const std::string & name) const
+	{ return std::dynamic_pointer_cast <Type> (pages .at (name)); }
 
-		Type* widget = nullptr;
-		m_builder -> get_widget (name, widget);
-		return widget;
-	}
-
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
-
-	Gtk::Box &
-	getViewpointListBox () const
-	{ return *m_ViewpointListBox; }
-
-	Gtk::Box &
-	getHistoryViewBox () const
-	{ return *m_HistoryViewBox; }
-
-	Gtk::Box &
-	getLibraryViewBox () const
-	{ return *m_LibraryViewBox; }
-
-	Gtk::Box &
-	getOutlineEditorBox () const
-	{ return *m_OutlineEditorBox; }
-
-	Gtk::Box &
-	getNodeEditorBox () const
-	{ return *m_NodeEditorBox; }
+	///  @name Event handler
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_switch_page (Gtk::Widget*, guint) override;
+
+	///  @name Destruction
 
 	virtual
-	~X3DSidebarInterface ();
+	void
+	dispose () override
+	{ }
+
+	virtual
+	~X3DNotebook ();
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	void
-	create (const std::string &);
+	///  @name Members
 
-	static const std::string m_widgetName;
-
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Window*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Notebook*                m_Notebook;
-	Gtk::Box*                     m_ViewpointListBox;
-	Gtk::Box*                     m_HistoryViewBox;
-	Gtk::Box*                     m_LibraryViewBox;
-	Gtk::Box*                     m_OutlineEditorBox;
-	Gtk::Box*                     m_NodeEditorBox;
+	std::vector <std::shared_ptr <X3DUserInterface>>            userInterfaces;
+	std::map <std::string, std::shared_ptr <X3DUserInterface>>  pages;
 
 };
+
+template <class Interface>
+X3DNotebook <Interface>::X3DNotebook () :
+	Interface ()
+{ }
+
+template <class Interface>
+void
+X3DNotebook <Interface>::addPage (const std::string & name, const std::shared_ptr <X3DUserInterface> & userInterface, Gtk::Box & box)
+{
+	const size_t currentPage = this -> getConfig () .getInteger ("currentPage");
+
+	userInterface -> reparent (box, this -> getWindow ());
+	userInterface -> getWidget () .set_visible (currentPage == userInterfaces .size ());
+
+	userInterfaces .emplace_back (userInterface);
+	pages .emplace (name, userInterface);
+}
+
+template <class Interface>
+void
+X3DNotebook <Interface>::initialize ()
+{
+	this -> getNotebook () .set_current_page (this -> getConfig () .getInteger ("currentPage"));
+}
+
+template <class Interface>
+void
+X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
+{
+	const size_t currentPage = this -> getConfig () .getInteger ("currentPage");
+
+	if (currentPage < userInterfaces .size ())
+		userInterfaces [currentPage] -> getWidget () .set_visible (false);
+
+	if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
+		userInterfaces [pageNumber] -> getWidget () .set_visible (true);
+
+	this -> getConfig () .setItem ("currentPage", int (pageNumber));
+}
+
+template <class Interface>
+X3DNotebook <Interface>::~X3DNotebook ()
+{ }
 
 } // puck
 } // titania

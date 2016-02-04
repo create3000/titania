@@ -54,62 +54,28 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "../AppearanceEditor/AppearanceEditor.h"
+#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
+#include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../TextureEditor/TextureEditor.h"
+#include "../TextEditor/TextEditor.h"
+#include "../LayerEditor/LayerEditor.h"
+#include "../BackgroundEditor/BackgroundEditor.h"
+#include "../NavigationInfoEditor/NavigationInfoEditor.h"
+#include "../NavigationInfoEditor/NavigationInfoEditor.h"
+#include "../ViewpointEditor/ViewpointEditor.h"
+#include "../LightEditor/LightEditor.h"
+#include "../InlineEditor/InlineEditor.h"
+#include "../PrecisionPlacementPanel/PrecisionPlacementPanel.h"
+
 namespace titania {
 namespace puck {
 
 NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
-	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	  X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ()),
-	    nodePropertiesEditor (new NodePropertiesEditor (browserWindow)),
-	        appearanceEditor (new AppearanceEditor (browserWindow)),
-	           textureEditor (new TextureEditor (browserWindow)),
-	geometryPropertiesEditor (new GeometryPropertiesEditor (browserWindow)),
-	              textEditor (new TextEditor (browserWindow)),
-	             layerEditor (new LayerEditor (browserWindow)),
-	        backgroundEditor (new BackgroundEditor (browserWindow)),
-	    navigationInfoEditor (new NavigationInfoEditor (browserWindow)),
-	         viewpointEditor (new ViewpointEditor (browserWindow)),
-	             lightEditor (new LightEditor (browserWindow)),
-	            inlineEditor (new InlineEditor (browserWindow)),
-	 precisionPlacementPanel (new PrecisionPlacementPanel (browserWindow)),
-	                 widgets ()
+	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ()),
+	X3DNotebook <X3DNodeEditorInterface> ()
 {
-	const auto currentPage = getConfig () .getInteger ("currentPage");
-
-	getNotebook () .set_current_page (currentPage);
-
-	nodePropertiesEditor     -> reparent (getNodePropertiesEditorBox (),     getWindow ());
-	appearanceEditor         -> reparent (getAppearanceEditorBox (),         getWindow ());
-	textureEditor            -> reparent (getTextureEditorBox (),            getWindow ());
-	geometryPropertiesEditor -> reparent (getGeometryPropertiesEditorBox (), getWindow ());
-	textEditor               -> reparent (getTextEditorBox (),               getWindow ());
-	layerEditor              -> reparent (getLayerEditorBox (),              getWindow ());
-	backgroundEditor         -> reparent (getBackgroundEditorBox (),         getWindow ());
-	navigationInfoEditor     -> reparent (getNavigationInfoEditorBox (),         getWindow ());
-	viewpointEditor          -> reparent (getViewpointEditorBox (),         getWindow ());
-	lightEditor              -> reparent (getLightEditorBox (),         getWindow ());
-	inlineEditor             -> reparent (getInlineEditorBox (),         getWindow ());
-	precisionPlacementPanel  -> reparent (getPrecisionPlacementPanelBox (), getWindow ());
-
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (nodePropertiesEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (appearanceEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (textureEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (geometryPropertiesEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (textEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (layerEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (backgroundEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (navigationInfoEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (lightEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (inlineEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (precisionPlacementPanel));
-
-	for (const auto & widget : widgets)
-		widget -> getWidget () .set_visible (false);
-
-	if (widgets [currentPage])
-		widgets [currentPage] -> getWidget () .set_visible (true);
-
 	setup ();
 }
 
@@ -117,25 +83,26 @@ void
 NodeEditor::initialize ()
 {
 	X3DNodeEditorInterface::initialize ();
-}
+	X3DNotebook <X3DNodeEditorInterface>::initialize ();
 
-void
-NodeEditor::on_switch_page (Gtk::Widget*, guint pageNumber)
-{
-	const size_t currentPage = getConfig () .getInteger ("currentPage");
-
-	if (currentPage < widgets .size ())
-		widgets [currentPage] -> getWidget () .set_visible (false);
-
-	if (pageNumber < widgets .size ())
-		widgets [pageNumber] -> getWidget () .set_visible (true);
-
-	getConfig () .setItem ("currentPage", int (pageNumber));
+	addPage ("NodePropertiesEditor",     std::make_shared <NodePropertiesEditor>     (getBrowserWindow ()), getNodePropertiesEditorBox     ());
+	addPage ("AppearanceEditor",         std::make_shared <AppearanceEditor>         (getBrowserWindow ()), getAppearanceEditorBox         ());
+	addPage ("TextureEditor",            std::make_shared <TextureEditor>            (getBrowserWindow ()), getTextureEditorBox            ());
+	addPage ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()), getGeometryPropertiesEditorBox ());
+	addPage ("TextEditor",               std::make_shared <TextEditor>               (getBrowserWindow ()), getTextEditorBox               ());
+	addPage ("LayerEditor",              std::make_shared <LayerEditor>              (getBrowserWindow ()), getLayerEditorBox              ());
+	addPage ("BackgroundEditor",         std::make_shared <BackgroundEditor>         (getBrowserWindow ()), getBackgroundEditorBox         ());
+	addPage ("NavigationInfoEditor",     std::make_shared <NavigationInfoEditor>     (getBrowserWindow ()), getNavigationInfoEditorBox     ());
+	addPage ("ViewpointEditor",          std::make_shared <ViewpointEditor>          (getBrowserWindow ()), getViewpointEditorBox          ());
+	addPage ("LightEditor",              std::make_shared <LightEditor>              (getBrowserWindow ()), getLightEditorBox              ());
+	addPage ("InlineEditor",             std::make_shared <InlineEditor>             (getBrowserWindow ()), getInlineEditorBox             ());
+	addPage ("PrecisionPlacementPanel",  std::make_shared <PrecisionPlacementPanel>  (getBrowserWindow ()), getPrecisionPlacementPanelBox  ());
 }
 
 NodeEditor::~NodeEditor ()
 {
-	dispose ();
+	X3DNotebook <X3DNodeEditorInterface>::dispose ();
+	X3DNodeEditorInterface::dispose ();
 }
 
 } // puck

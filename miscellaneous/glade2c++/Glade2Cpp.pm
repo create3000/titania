@@ -784,3 +784,5 @@ Window::key_release_event
   virtual bool on_key_release_event(GdkEventKey* event);
 ToggleButton::clicked
   virtual void on_clicked();
+Notebook::map
+  virtual void on_map();

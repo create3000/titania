@@ -54,38 +54,20 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "../../Editors/NodeEditor/NodeEditor.h"
+#include "../HistoryView/HistoryView.h"
+#include "../LibraryView/LibraryView.h"
+#include "../OutlineEditor/OutlineEditor.h"
+#include "../ViewpointList/ViewpointList.h"
+
 namespace titania {
 namespace puck {
 
 Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
-	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DSidebarInterface (get_ui ("Sidebar.glade"), gconf_dir ()),
-	      viewpointList (new ViewpointList (browserWindow)),
-	      historyEditor (new HistoryView (browserWindow)),
-	        libraryView (new LibraryView (browserWindow)),
-	      outlineEditor (new OutlineEditor (browserWindow)),
-	            widgets ()
+	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DSidebarInterface (get_ui ("Sidebar.glade"), gconf_dir ()),
+	X3DNotebook <X3DSidebarInterface> ()
 {
-	const auto currentPage = getConfig () .getInteger ("currentPage");
-
-	getNotebook () .set_current_page (currentPage);
-
-	viewpointList   -> reparent (getViewpointListBox (),   getWindow ());
-	historyEditor   -> reparent (getHistoryViewBox (),     getWindow ());
-	libraryView     -> reparent (getLibraryViewBox (),     getWindow ());
-	outlineEditor   -> reparent (getOutlineEditorBox (),   getWindow ());
-
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (viewpointList));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (historyEditor));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (libraryView));
-	widgets .emplace_back (std::static_pointer_cast <X3DUserInterface> (outlineEditor));
-
-	for (const auto & widget : widgets)
-		widget -> getWidget () .set_visible (false);
-
-	if (widgets [currentPage])
-		widgets [currentPage] -> getWidget () .set_visible (true);
-
 	setup ();
 }
 
@@ -93,25 +75,21 @@ void
 Sidebar::initialize ()
 {
 	X3DSidebarInterface::initialize ();
-}
+	X3DNotebook <X3DSidebarInterface>::initialize ();
 
-void
-Sidebar::on_switch_page (Gtk::Widget*, guint pageNumber)
-{
-	const size_t currentPage = getConfig () .getInteger ("currentPage");
+	addPage ("ViewpointList", std::make_shared <ViewpointList> (getBrowserWindow ()), getViewpointListBox ());
+	addPage ("HistoryView",   std::make_shared <HistoryView>   (getBrowserWindow ()), getHistoryViewBox   ());
+	addPage ("LibraryView",   std::make_shared <LibraryView>   (getBrowserWindow ()), getLibraryViewBox   ());
+	addPage ("OutlineEditor", std::make_shared <OutlineEditor> (getBrowserWindow ()), getOutlineEditorBox ());
+	addPage ("NodeEditor",    std::make_shared <NodeEditor>    (getBrowserWindow ()), getNodeEditorBox    ());
 
-	if (currentPage < widgets .size ())
-		widgets [currentPage] -> getWidget () .set_visible (false);
-
-	if (pageNumber < widgets .size ())
-		widgets [pageNumber] -> getWidget () .set_visible (true);
-
-	getConfig () .setItem ("currentPage", int (pageNumber));
+	getPage <NodeEditor> ("NodeEditor") -> getNotebook () .set_tab_pos (Gtk::POS_RIGHT);
 }
 
 Sidebar::~Sidebar ()
 {
-	dispose ();
+	X3DNotebook <X3DSidebarInterface>::dispose ();
+	X3DSidebarInterface::dispose ();
 }
 
 } // puck

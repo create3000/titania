@@ -58,6 +58,7 @@
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 #include "../Widgets/OutlineEditor/OutlineTreeModel.h"
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
+#include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 #include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
@@ -97,7 +98,7 @@ X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 const std::shared_ptr <OutlineTreeViewEditor> &
 X3DBrowserWindow::getOutlineTreeView () const
 {
-	return sidebar -> getOutlineEditor () -> getTreeView ();
+	return sidebar -> getPage <OutlineEditor> ("OutlineEditor") -> getTreeView ();
 }
 
 // Menu
@@ -124,8 +125,10 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 bool
 X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
 {
-	if (footer -> getScriptEditor () -> isModified ())
-		footer -> getScriptEditor () -> apply (std::make_shared <X3D::UndoStep> (""));
+	const auto scriptEditor = footer -> getPage <ScriptEditor> ("ScriptEditor");
+
+	if (scriptEditor -> isModified ())
+		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
 
 	return X3DBrowserEditor::save (worldURL, compressed, copy);
 }
@@ -145,21 +148,22 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
 	getCurrentBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
 
+	const auto &                outlineTreeView = getOutlineTreeView ();
 	std::vector <Gtk::TreePath> paths;
 
 	for (const auto & node : nodes)
 	{
-		getOutlineTreeView () -> expand_to (node);
+		outlineTreeView -> expand_to (node);
 
-		for (const auto & iter : getOutlineTreeView () -> get_iters (node))
+		for (const auto & iter : outlineTreeView -> get_iters (node))
 		{
-			paths .emplace_back (getOutlineTreeView () -> get_model () -> get_path (iter));
-			getOutlineTreeView () -> expand_row (paths .back (), false);
+			paths .emplace_back (outlineTreeView-> get_model () -> get_path (iter));
+			outlineTreeView -> expand_row (paths .back (), false);
 		}
 	}
 
 	if  (not paths .empty ())
-		getOutlineTreeView () -> scroll_to_row (paths .back (), 2 - math::M_PHI);
+		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::M_PHI);
 }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
