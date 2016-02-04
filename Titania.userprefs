@@ -1,11 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Browser.h">
     <Files>
       <File FileName="Titania/Titania/Editors/NodeEditor/NodeEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/NodeEditor/NodeEditor.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Widgets/Sidebar/Sidebar.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/X3DNotebook/X3DNotebook.h" Line="4" Column="4" />
+      <File FileName="Titania/Titania/Widgets/X3DNotebook/X3DNotebook.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DAnimationEditorInterface.cpp" Line="1" Column="1" />
+      <File FileName="miscellaneous/glade2c++/Glade2Cpp.pm" Line="27" Column="27" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DAnimationEditorInterface.h" Line="6" Column="6" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserWindowInterface.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DBrowserWindowInterface.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.h" Line="2" Column="2" />
+      <File FileName="Titania/Titania/UserInterfaces/X3DConsoleInterface.cpp" Line="2" Column="2" />
+      <File FileName="Titania/Titania/Base/X3DUserInterface.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Base/X3DDialogInterface.h" Line="23" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

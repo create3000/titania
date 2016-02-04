@@ -122,6 +122,7 @@ protected:
 
 	X3DUserInterface (const std::string &, const std::string &);
 
+	virtual
 	void
 	construct ();
 

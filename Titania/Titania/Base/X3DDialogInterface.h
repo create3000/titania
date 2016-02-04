@@ -85,7 +85,7 @@ protected:
 
 	virtual
 	void
-	construct ();
+	construct () override;
 
 	virtual
 	void

@@ -583,6 +583,11 @@ public:
 
 private:
 
+	virtual
+	void
+	construct () final override
+	{ X3DEditorInterface::construct (); }
+
 	void
 	create (const std::string &);
 

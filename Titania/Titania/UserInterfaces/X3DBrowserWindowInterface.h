@@ -2027,6 +2027,11 @@ public:
 
 private:
 
+	virtual
+	void
+	construct () final override
+	{ X3DUserInterface::construct (); }
+
 	void
 	create (const std::string &);
 

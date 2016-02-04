@@ -163,6 +163,11 @@ public:
 
 private:
 
+	virtual
+	void
+	construct () final override
+	{ X3DDialogInterface::construct (); }
+
 	void
 	create (const std::string &);
 

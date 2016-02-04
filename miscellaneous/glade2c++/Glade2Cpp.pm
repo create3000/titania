@@ -472,7 +472,16 @@ sub generate
 	# Private section
 	say OUT "private:";
 	say OUT "";
-	
+
+	# Call construct
+	if ($base_class_name)
+	{
+		say OUT "virtual";
+		say OUT "void";
+		say OUT "construct () final override";
+		say OUT "{ ${base_class_name}::construct (); }";
+	}
+
 	say OUT "  void";
 	say OUT "  create (const std::string &);";
 	say OUT "";
