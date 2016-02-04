@@ -149,7 +149,8 @@ RenderingProperties::initialize ()
 
 		Enabled () .addInterest (this, &RenderingProperties::set_Enabled);
 
-		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::set_Enabled);
+		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_Enabled);
+		getBrowser () -> reshaped ()    .addInterest (this, &RenderingProperties::build);
 	}
 }
 
@@ -287,6 +288,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s"), Renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
+		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3]));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getMaxTextureUnits (), getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));
