@@ -119,6 +119,14 @@ public:
 
 	virtual
 	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_suspend_button_toggled () = 0;
 
 	virtual
