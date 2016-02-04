@@ -92,10 +92,6 @@ ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool 
 }
 
 void
-ViewpointList::on_map ()
-{ }
-
-void
 ViewpointList::initialize ()
 {
 	X3DViewpointListInterface::initialize ();

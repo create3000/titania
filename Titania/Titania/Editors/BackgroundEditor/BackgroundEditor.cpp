@@ -94,9 +94,6 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	              backgroundNode (),
 	                    changing (false)
 {
-	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
-	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
-
 	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
 	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
 
@@ -117,6 +114,9 @@ BackgroundEditor::initialize ()
 {
 	X3DBackgroundEditorInterface::initialize ();
 	X3DBackgroundEditor::initialize ();
+
+	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &BackgroundEditor::set_selection);
 

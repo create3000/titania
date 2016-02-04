@@ -135,10 +135,6 @@ public:
 
 	virtual
 	void
-	on_map () = 0;
-
-	virtual
-	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual

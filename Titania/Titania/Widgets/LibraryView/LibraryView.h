@@ -88,10 +88,6 @@ private:
 
 	virtual
 	void
-	on_map () final override;
-
-	virtual
-	void
 	initialize () final override;
 
 	std::string

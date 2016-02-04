@@ -65,6 +65,10 @@ X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 	               topPreview (new TexturePreview (this, getComposedCubeMapTopTexturePreviewBox (),    getComposedCubeMapTopTextureFormatLabel (),    getComposedCubeMapTopTextureLoadStateLabel ())),
 	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel (), getComposedCubeMapBottomTextureLoadStateLabel ())),
 	           cubeMapTexture ()
+{ }
+
+void
+X3DComposedCubeMapTextureEditor::initialize ()
 {
 	getComposedCubeMapNotebook () .set_current_page (getConfig () -> getInteger ("composedCubeMapPage"));
 }

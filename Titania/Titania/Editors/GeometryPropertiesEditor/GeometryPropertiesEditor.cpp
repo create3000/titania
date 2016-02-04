@@ -91,8 +91,6 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI);
 
-	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
 	setup ();
 }
 
@@ -101,6 +99,8 @@ GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
+
+	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
 

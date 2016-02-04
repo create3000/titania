@@ -78,6 +78,10 @@ protected:
 
 	X3DEnvironmentTextureNodeEditor ();
 
+	virtual
+	void
+	initialize () override;
+
 	///  @name Member access
 
 	void

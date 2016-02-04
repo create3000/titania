@@ -64,8 +64,6 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DLinePropertiesEditor (),
 	    X3DMaterialPaletteEditor ()
 {
-	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
 	setup ();
 }
 
@@ -77,6 +75,8 @@ AppearanceEditor::initialize ()
 	X3DFillPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
 	X3DMaterialPaletteEditor::initialize ();
+
+	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 AppearanceEditor::~AppearanceEditor ()

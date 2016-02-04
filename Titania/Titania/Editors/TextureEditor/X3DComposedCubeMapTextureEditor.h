@@ -78,6 +78,10 @@ protected:
 
 	X3DComposedCubeMapTextureEditor ();
 
+	virtual
+	void
+	initialize () override;
+
 	///  @name Construction
 
 	void

@@ -71,9 +71,6 @@ X3DConsoleInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
 	m_builder -> get_widget ("ClearButton", m_ClearButton);
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map)));
-
 	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
 	m_connections .emplace_back (m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_suspend_button_toggled)));
 

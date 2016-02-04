@@ -62,6 +62,12 @@ X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
 { }
 
 void
+X3DEnvironmentTextureNodeEditor::initialize ()
+{
+	X3DComposedCubeMapTextureEditor::initialize ();
+}
+
+void
 X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	setComposedCubeMapTexture (value);

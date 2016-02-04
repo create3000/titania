@@ -130,8 +130,8 @@ X3DNotebook <Interface>::addPage (const std::string & name, const std::shared_pt
 {
 	const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
 
-	userInterface -> reparent (box, this -> getWindow ());
 	userInterface -> setName (this -> getWidgetName () + "." + userInterface -> getName ());
+	userInterface -> reparent (box, this -> getWindow ());
 
 	if (currentPage == userInterfaces .size ())
 	{

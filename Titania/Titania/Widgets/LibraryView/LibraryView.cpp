@@ -80,10 +80,6 @@ LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-LibraryView::on_map ()
-{ }
-
-void
 LibraryView::initialize ()
 {
 	try

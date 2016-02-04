@@ -78,8 +78,6 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	addChildren (geometryNodeBuffer);
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
 
-	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
 	setup ();
 }
 
@@ -88,6 +86,8 @@ TextEditor::initialize ()
 {
 	X3DTextEditorInterface::initialize ();
 	X3DFontStyleNodeEditor::initialize ();
+
+	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &TextEditor::set_selection);
 

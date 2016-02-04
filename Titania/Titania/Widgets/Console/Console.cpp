@@ -71,17 +71,14 @@ Console::initialize ()
 
 	getBrowserWindow () -> getFooter () -> getNotebook () .signal_map ()   .connect (sigc::mem_fun (*this, &Console::set_enabled));
 	getBrowserWindow () -> getFooter () -> getNotebook () .signal_unmap () .connect (sigc::mem_fun (*this, &Console::set_enabled));
+
+	set_enabled ();
 }
 
 bool
 Console::isEnabled () const
 {
 	return not getSuspendButton () .get_active () and getBrowserWindow () -> getFooter () -> getNotebook () .get_mapped ();
-}
-
-void
-Console::on_map ()
-{
 }
 
 void

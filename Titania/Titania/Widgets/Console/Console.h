@@ -87,10 +87,6 @@ private:
 	initialize () final override;
 	
 	///  @name Event handlers
-	
-	virtual
-	void
-	on_map () final override;
 
 	virtual
 	void
