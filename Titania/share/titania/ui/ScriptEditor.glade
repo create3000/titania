@@ -599,7 +599,7 @@
                       <object class="GtkGrid" id="grid2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkCheckButton" id="ShowLineNumbersCheckButton">
@@ -791,7 +791,7 @@
                       <object class="GtkGrid" id="grid3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label12">

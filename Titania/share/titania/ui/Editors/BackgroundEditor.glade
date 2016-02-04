@@ -791,7 +791,7 @@
                           <object class="GtkGrid" id="grid3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="row_spacing">4</property>
+                            <property name="row_spacing">8</property>
                             <property name="column_spacing">16</property>
                             <child>
                               <object class="GtkLabel" id="label5">
@@ -1179,7 +1179,7 @@
                               <object class="GtkGrid" id="grid4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label15">
@@ -1288,7 +1288,7 @@
                               <object class="GtkGrid" id="BackURLGrid">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label12">
@@ -1481,7 +1481,7 @@
                               <object class="GtkGrid" id="grid5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label17">
@@ -1590,7 +1590,7 @@
                               <object class="GtkGrid" id="LeftURLGrid">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label20">
@@ -1783,7 +1783,7 @@
                               <object class="GtkGrid" id="grid6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label19">
@@ -1892,7 +1892,7 @@
                               <object class="GtkGrid" id="RightURLGrid">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label27">
@@ -2085,7 +2085,7 @@
                               <object class="GtkGrid" id="grid8">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label31">
@@ -2194,7 +2194,7 @@
                               <object class="GtkGrid" id="TopURLGrid">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label28">
@@ -2387,7 +2387,7 @@
                               <object class="GtkGrid" id="grid9">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label33">
@@ -2496,7 +2496,7 @@
                               <object class="GtkGrid" id="BottomURLGrid">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="row_spacing">4</property>
+                                <property name="row_spacing">8</property>
                                 <property name="column_spacing">16</property>
                                 <child>
                                   <object class="GtkLabel" id="label29">

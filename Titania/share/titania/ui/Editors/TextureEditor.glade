@@ -2065,7 +2065,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="border_width">8</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label67">
@@ -2184,7 +2184,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="border_width">8</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label71">
@@ -2303,7 +2303,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="border_width">8</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label75">
@@ -2422,7 +2422,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="border_width">8</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label79">
@@ -2542,7 +2542,7 @@
                                     <property name="can_focus">False</property>
                                     <property name="valign">baseline</property>
                                     <property name="border_width">8</property>
-                                    <property name="row_spacing">4</property>
+                                    <property name="row_spacing">8</property>
                                     <property name="column_spacing">16</property>
                                     <child>
                                       <object class="GtkLabel" id="label83">
@@ -3648,7 +3648,7 @@
                       <object class="GtkGrid" id="grid2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="row_spacing">4</property>
+                        <property name="row_spacing">8</property>
                         <property name="column_spacing">16</property>
                         <child>
                           <object class="GtkLabel" id="label7">
