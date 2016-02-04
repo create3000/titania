@@ -240,7 +240,7 @@ private:
 	Fields fields;
 
 	bool                   hidden;
-	Matrix4d               matrix;
+	Matrix4f               matrix;
 	std::vector <Color4f>  glColors;
 	std::vector <Vector3f> glPoints;
 	GLsizei                numIndices;

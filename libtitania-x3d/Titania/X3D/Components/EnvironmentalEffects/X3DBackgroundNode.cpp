@@ -350,7 +350,7 @@ X3DBackgroundNode::draw ()
 
 	// Rotate and scale background
 
-	Vector3d   translation;
+	Vector3f   translation;
 	Rotation4f rotation;
 
 	matrix .get (translation, rotation);

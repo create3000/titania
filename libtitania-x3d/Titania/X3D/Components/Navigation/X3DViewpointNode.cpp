@@ -109,6 +109,14 @@ X3DViewpointNode::X3DViewpointNode () :
 	             scaleInterpolator,
 	             scaleOrientationInterpolator,
 	             lockToCamera);
+
+	positionOffset         () .setAccessType (inputOutput);
+	orientationOffset      () .setAccessType (inputOutput);
+	scaleOffset            () .setAccessType (inputOutput);
+	scaleOrientationOffset () .setAccessType (inputOutput);
+	centerOfRotationOffset () .setAccessType (inputOutput);
+	fieldOfViewScale       () .setAccessType (inputOutput);
+
 }
 
 void
@@ -220,8 +228,13 @@ X3DViewpointNode::setCameraSpaceMatrix (const Matrix4f & value)
 {
 	try
 	{
-		cameraSpaceMatrix        = value;
-		inverseCameraSpaceMatrix = ~value;
+		if (value != cameraSpaceMatrix)
+		{
+			cameraSpaceMatrix        = value;
+			inverseCameraSpaceMatrix = ~value;
+
+			getBrowser () -> addEvent ();
+		}
 	}
 	catch (const std::domain_error &)
 	{ }
