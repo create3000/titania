@@ -75,8 +75,7 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 
 private:

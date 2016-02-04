@@ -89,6 +89,10 @@ protected:
 
 	virtual
 	void
+	initialize () override;
+
+	virtual
+	void
 	saveSession () override;
 
 

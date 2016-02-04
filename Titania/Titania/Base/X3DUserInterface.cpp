@@ -89,7 +89,8 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
-X3DUserInterface::X3DUserInterface ()
+X3DUserInterface::X3DUserInterface () :
+	X3DUserInterface ("", "")
 {
 	assert (false);
 }
@@ -101,7 +102,7 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::s
 	         userInterface (),
 	               dialogs (new DialogIndex ())
 {
-	setName (widgetName);
+	X3DBaseInterface::setName (widgetName);
 
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();

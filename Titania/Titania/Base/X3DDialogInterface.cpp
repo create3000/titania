@@ -67,6 +67,12 @@ X3DDialogInterface::construct ()
 
 	if (&getWindow () not_eq &getBrowserWindow () -> getWindow ())
 		getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());
+}
+
+void
+X3DDialogInterface::initialize ()
+{
+	X3DUserInterface::initialize ();
 
 	restoreExpander (getWidget ());
 	setupGridLabels (getWidget ());

@@ -75,15 +75,13 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	               frontMaterial (true)
 {
 	preview -> setAntialiasing (4);
-
-	const bool paletteFace = getConfig () -> getInteger ("paletteFace");
-
-	getPaletteFaceCombo () .set_active (paletteFace);
 }
 
 void
 X3DMaterialPaletteEditor::initialize ()
 {
+	getPaletteFaceCombo () .set_active (getConfig () -> getInteger ("paletteFace"));
+
 	// Find material folders.
 
 	try

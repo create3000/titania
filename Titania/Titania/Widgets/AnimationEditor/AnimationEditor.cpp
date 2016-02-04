@@ -149,11 +149,6 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                   changing (false),
 	                       keys ()
 {
-	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
-
-	if (getConfig () -> hasItem ("hPaned"))
-		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
-
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);
 
@@ -173,6 +168,11 @@ void
 AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
+
+	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
+
+	if (getConfig () -> hasItem ("hPaned"))
+		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
 
 	getCurrentBrowser ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 	getCurrentContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);

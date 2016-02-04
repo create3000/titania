@@ -69,6 +69,10 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 			                     triangles (0),
 			                         lines (0),
 			                        points (0)
+{ }
+
+void
+X3DPrimitiveCountEditor::initialize ()
 {
 	getPrimitiveCountCountButton () .set_active (getConfig () -> getInteger ("primitiveCount"));
 }
