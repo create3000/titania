@@ -77,12 +77,16 @@ void
 X3DImportedNodesEditor::setNode (const X3D::SFNode & value)
 {
 	if (inlineNode)
+	{
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> checkLoadState () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+	}
 
 	inlineNode = value;
 
 	if (inlineNode)
 	{
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> checkLoadState () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 
 		set_importedNodes ();
