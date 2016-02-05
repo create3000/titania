@@ -109,14 +109,6 @@ X3DViewpointNode::X3DViewpointNode () :
 	             scaleInterpolator,
 	             scaleOrientationInterpolator,
 	             lockToCamera);
-
-	positionOffset         () .setAccessType (inputOutput);
-	orientationOffset      () .setAccessType (inputOutput);
-	scaleOffset            () .setAccessType (inputOutput);
-	scaleOrientationOffset () .setAccessType (inputOutput);
-	centerOfRotationOffset () .setAccessType (inputOutput);
-	fieldOfViewScale       () .setAccessType (inputOutput);
-
 }
 
 void

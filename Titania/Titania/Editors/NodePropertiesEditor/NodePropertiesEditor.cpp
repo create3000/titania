@@ -77,16 +77,14 @@ NodePropertiesEditor::initialize ()
 	X3DImportedNodesEditor::initialize ();
 	X3DExportedNodesEditor::initialize ();
 
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NodePropertiesEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-
 	getNodeChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
 NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DNodePropertiesEditorInterface::set_selection (selection);
+
 	if (node)
 		node -> name_changed () .removeInterest (this, &NodePropertiesEditor::set_name);
 

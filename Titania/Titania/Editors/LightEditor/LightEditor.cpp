@@ -76,18 +76,17 @@ LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 void
 LightEditor::initialize ()
 {
+	X3DLightEditorInterface::initialize ();
 	X3DDirectionalLightEditor::initialize ();
 	X3DPointLightEditor::initialize ();
 	X3DSpotLightEditor::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &LightEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
 LightEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DLightEditorInterface::set_selection (selection);
+
 	X3D::X3DPtr <X3D::X3DLightNode> lightNode (selection .empty () ? nullptr : selection .back ());
 
 	setDirectionalLight (lightNode);

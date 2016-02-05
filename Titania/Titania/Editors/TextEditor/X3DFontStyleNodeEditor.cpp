@@ -98,14 +98,10 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 
 void
 X3DFontStyleNodeEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DFontStyleNodeEditor::set_selection);
-
-	set_selection ();
-}
+{ }
 
 void
-X3DFontStyleNodeEditor::set_selection ()
+X3DFontStyleNodeEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & text : texts)
 		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);

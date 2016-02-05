@@ -55,6 +55,19 @@
 namespace titania {
 namespace puck {
 
+X3DEditorObject::X3DEditorObject () :
+	X3DBaseInterface (),
+	            undo (true),
+     undoGroup (),
+     redoGroup (),
+      lastUndoGroup (),
+	    currentField (),
+	          fields (new X3D::FieldSet (getCurrentBrowser ()))
+{
+	fields -> hasEvents (false);
+	fields -> setup ();
+}
+
 void
 X3DEditorObject::setup ()
 {

@@ -256,6 +256,9 @@
     <Compile Include="Titania\Widgets\Sidebar\Sidebar.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFooterInterface.cpp" />
     <Compile Include="Titania\Widgets\Footer\Footer.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DGeometryToolsInterface.cpp" />
+    <Compile Include="Titania\Base\X3DEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\GeometryTools\GeometryTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2407,6 +2410,9 @@
     <None Include="Titania\UserInterfaces\X3DFooterInterface.h" />
     <None Include="Titania\Widgets\Footer\Footer.h" />
     <None Include="Titania\Widgets\X3DNotebook\X3DNotebook.h" />
+    <None Include="Titania\UserInterfaces\X3DGeometryToolsInterface.h" />
+    <None Include="share\titania\ui\Editors\GeometryTools.glade" />
+    <None Include="Titania\Editors\GeometryTools\GeometryTools.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

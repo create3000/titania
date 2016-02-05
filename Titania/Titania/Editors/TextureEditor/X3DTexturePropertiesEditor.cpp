@@ -78,14 +78,10 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 
 void
 X3DTexturePropertiesEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTexturePropertiesEditor::set_selection);
-
-	set_selection ();
-}
+{ }
 
 void
-X3DTexturePropertiesEditor::set_selection ()
+X3DTexturePropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & textureNode : textureNodes)
 	{

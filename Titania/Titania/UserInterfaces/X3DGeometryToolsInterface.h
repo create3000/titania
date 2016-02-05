@@ -47,112 +47,91 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TMP_GLAD2CPP_GEOMETRY_TOOLS_H__
+#define __TMP_GLAD2CPP_GEOMETRY_TOOLS_H__
 
-#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-
-#include <Titania/X3D/Components/Text/Text.h>
-#include <Titania/X3D/Components/Text/FontStyle.h>
-#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class MFStringFamilyWidget;
-
-class X3DFontStyleNodeEditor :
-	virtual public X3DTextEditorInterface
+class X3DGeometryToolsInterface :
+	public X3DEditorInterface
 {
 public:
 
-	///  @name Destruction
+	X3DGeometryToolsInterface () :
+		X3DEditorInterface ()
+	{ }
 
-	virtual
-	~X3DFontStyleNodeEditor ();
+	template <class ... Arguments>
+	X3DGeometryToolsInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
 
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
-protected:
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
 
-	///  @name Construction
+	template <class Type>
+	Type*
+	createWidget (const std::string & name) const
+	{
+		getBuilder () -> add_from_file (filename, name);
 
-	X3DFontStyleNodeEditor ();
+		Type* widget = nullptr;
+		m_builder -> get_widget (name, widget);
+		return widget;
+	}
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Revealer &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getGeometryEditorBox () const
+	{ return *m_GeometryEditorBox; }
+
+	Gtk::Button &
+	getHammerButton () const
+	{ return *m_HammerButton; }
 
 	virtual
 	void
-	initialize () override;
+	on_hammer_clicked () = 0;
 
 	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
+	~X3DGeometryToolsInterface ();
 
 
 private:
 
-	///  @name fontStyle
-	
 	virtual
 	void
-	on_fontStyle_unlink_clicked () final override;
-
-	virtual
-	void
-	on_fontStyle_changed () final override;
+	construct () final override
+	{ X3DEditorInterface::construct (); }
 
 	void
-	set_fontStyle ();
+	create (const std::string &);
 
-	void
-	connectFontStyle (const X3D::SFNode &);
+	static const std::string m_widgetName;
 
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	///  @name style
-
-	virtual
-	void
-	on_style_toggled () final override;
-
-	void
-	set_style ();
-
-	void
-	connectStyle (const X3D::SFString & field);
-
-	///  @name size
-	
-	void
-	on_size_sensitive_changed ();
-	
-	void
-	on_point_size_sensitive_changed ();
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::Text>        texts;
-	X3D::SFTime                         fontStyleNodeBuffer;
-	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
-	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
-	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	X3D::UndoStepPtr                         undoStep;
-	X3D::UndoStepPtr                         styleUndoStep;
-	bool                                changing;
-
-	std::unique_ptr <MFStringFamilyWidget> family;
-	X3DFieldAdjustment <X3D::SFFloat>      size;
-	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
-	X3DFieldAdjustment <X3D::SFFloat>      spacing;
-	X3DFieldToggleButton <X3D::SFBool>     horizontal;
-	X3DFieldToggleButton <X3D::SFBool>     leftToRight;
-	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
-	MFStringComboBoxText                   majorAlignment;          
-	MFStringComboBoxText                   minorAlignment;          
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::deque <sigc::connection> m_connections;
+	Gtk::Window*                  m_Window;
+	Gtk::Revealer*                m_Widget;
+	Gtk::Box*                     m_GeometryEditorBox;
+	Gtk::Button*                  m_HammerButton;
 
 };
 

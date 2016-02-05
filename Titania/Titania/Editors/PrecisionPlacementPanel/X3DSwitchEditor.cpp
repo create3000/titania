@@ -65,11 +65,7 @@ X3DSwitchEditor::X3DSwitchEditor () :
 
 void
 X3DSwitchEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DSwitchEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
+{ }
 
 void
 X3DSwitchEditor::set_selection (const X3D::MFNode & selection)

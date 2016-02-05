@@ -88,15 +88,13 @@ void
 InlineEditor::initialize ()
 {
 	X3DInlineEditorInterface::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &InlineEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
 InlineEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DInlineEditorInterface::set_selection (selection);
+
 	getConvertMasterSelectionButton () .set_sensitive (not selection .empty ());
 
 	if (inlineNode)

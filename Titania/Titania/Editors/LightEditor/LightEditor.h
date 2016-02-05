@@ -62,6 +62,7 @@ namespace puck {
 class BrowserWindow;
 
 class LightEditor :
+	virtual public X3DLightEditorInterface,
 	public X3DDirectionalLightEditor,
 	public X3DPointLightEditor,
 	public X3DSpotLightEditor
@@ -86,8 +87,9 @@ private:
 	void
 	initialize () final override;
 
+	virtual
 	void
-	set_selection (const X3D::MFNode &);
+	set_selection (const X3D::MFNode &) final override;
 
 	/// @name Event handlers
 	

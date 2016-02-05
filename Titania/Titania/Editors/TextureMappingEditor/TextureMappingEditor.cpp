@@ -87,37 +87,37 @@ constexpr X3D::Vector2d
 infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float>::infinity ());
 
 TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindow) :
-	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DTextureMappingEditorInterface (get_ui ("Editors/TextureMappingEditor.glade"), gconf_dir ()),
-	                               left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorLeftPreview.x3dv") })),
-	                              right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorRightPreview.x3dv") })),
-	                        initialized (0),
-	                              shape (),
-	                         appearance (),
-	                           material (),
-	                            texture (),
-	                   textureTransform (),
-	                           geometry (),
-	                      multiTexCoord (),
-	                              coord (),
-	                    previewGeometry (),
-	                           texCoord (),
-	                              stage (0),
-	                               tool (ToolType::MOVE),
-	                     rightSelection (new FaceSelection ()),
-	                 rightPaintSelecion (false),
-	                      selectedFaces (),
-	                        activePoint (-1),
-	                        masterPoint (-1),
-	                     selectedPoints (),
-	                      startHitPoint (),
-	                        pointOffset (),
-	                      startPosition (),
-	                     startPositions (),
-	                      startDistance (),
-	                               keys (),
-	                        undoHistory (),
-	                           undoStep ()
+	                            left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorLeftPreview.x3dv") })),
+	                           right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorRightPreview.x3dv") })),
+	                     initialized (0),
+	                           shape (),
+	                      appearance (),
+	                        material (),
+	                         texture (),
+	                textureTransform (),
+	                        geometry (),
+	                   multiTexCoord (),
+	                           coord (),
+	                 previewGeometry (),
+	                        texCoord (),
+	                           stage (0),
+	                            tool (ToolType::MOVE),
+	                  rightSelection (new FaceSelection ()),
+	              rightPaintSelecion (false),
+	                   selectedFaces (),
+	                     activePoint (-1),
+	                     masterPoint (-1),
+	                  selectedPoints (),
+	                   startHitPoint (),
+	                     pointOffset (),
+	                   startPosition (),
+	                  startPositions (),
+	                   startDistance (),
+	                            keys (),
+	                     undoHistory (),
+	                        undoStep ()
 {
 	setup ();
 }
@@ -139,8 +139,6 @@ TextureMappingEditor::initialize ()
 
 	getLeftBox ()  .pack_start (*left, true, true, 0);
 	getRightBox () .pack_start (*right, true, true, 0);
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &TextureMappingEditor::set_selection);
 
 	undoHistory .addInterest (this, &TextureMappingEditor::set_undoHistory);
 }
@@ -210,7 +208,7 @@ TextureMappingEditor::set_initialized ()
 	{ }
 
 	configure ();
-	set_selection ();
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
@@ -220,7 +218,7 @@ TextureMappingEditor::configure ()
 }
 
 void
-TextureMappingEditor::set_selection ()
+TextureMappingEditor::set_selection (const X3D::MFNode & selection)
 {
 	undoHistory .clear ();
 

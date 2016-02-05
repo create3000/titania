@@ -51,7 +51,6 @@
 #ifndef __TITANIA_BROWSER_BROWSER_WINDOW_H__
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
-#include "../Base/X3DEditorObject.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Browser/X3DObjectOperations.h"
 
@@ -704,12 +703,6 @@ private:
 	virtual
 	void
 	on_node_index_clicked () final override;
-
-	///  @name Geometry handling
-
-	virtual
-	void
-	on_hammer_clicked () final override;
 
 	///  @name Browser dashboard handling
 

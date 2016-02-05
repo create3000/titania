@@ -99,10 +99,6 @@ void
 NavigationInfoEditor::initialize ()
 {
 	X3DNavigationInfoEditorInterface::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &NavigationInfoEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

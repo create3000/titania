@@ -58,9 +58,10 @@
 namespace titania {
 namespace puck {
 
-class Sidebar;
 class Footer;
+class GeometryTools;
 class OutlineTreeViewEditor;
+class Sidebar;
 class X3DGridTool;
 
 class X3DBrowserWindow :
@@ -69,6 +70,11 @@ class X3DBrowserWindow :
 public:
 
 	using X3DBrowserEditor::getWorldInfo;
+	using X3DBrowserEditor::isEditor;
+
+	virtual
+	void
+	isEditor (const bool) override;
 
 	/// @name Key device handling
 
@@ -150,10 +156,11 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <Sidebar>     sidebar;
-	std::shared_ptr <Footer>      footer;
-	std::shared_ptr <X3DGridTool> gridTool;
-	std::shared_ptr <X3DGridTool> angleTool;
+	std::shared_ptr <GeometryTools> geometryTools;
+	std::shared_ptr <Sidebar>       sidebar;
+	std::shared_ptr <Footer>        footer;
+	std::shared_ptr <X3DGridTool>   gridTool;
+	std::shared_ptr <X3DGridTool>   angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

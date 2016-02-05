@@ -48,115 +48,74 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
+#include "X3DEditorInterface.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-
-#include <Titania/X3D/Components/Text/Text.h>
-#include <Titania/X3D/Components/Text/FontStyle.h>
-#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
+#include "../Browser/X3DBrowserWindow.h"
+#include "../Browser/BrowserSelection.h"
 
 namespace titania {
 namespace puck {
 
-class MFStringFamilyWidget;
+///  @name Construction
 
-class X3DFontStyleNodeEditor :
-	virtual public X3DTextEditorInterface
+X3DEditorInterface::X3DEditorInterface () :
+	X3DEditorInterface ("", "")
+{ }
+
+X3DEditorInterface::X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
+	X3DDialogInterface (widgetName, configKey),
+	   X3DEditorObject ()
 {
-public:
+}
 
-	///  @name Destruction
+void
+X3DEditorInterface::setup ()
+{
+	X3DDialogInterface::setup ();
+	X3DEditorObject::setup ();
+}
 
-	virtual
-	~X3DFontStyleNodeEditor ();
+void
+X3DEditorInterface::initialize ()
+{
+	X3DDialogInterface::initialize ();
+	X3DEditorObject::initialize ();
 
+	getWidget () .signal_map ()   .connect (sigc::mem_fun (this, &X3DEditorInterface::on_map));
+	getWidget () .signal_unmap () .connect (sigc::mem_fun (this, &X3DEditorInterface::on_unmap));
 
-protected:
+	on_map ();
+}
 
-	///  @name Construction
+///  @name Event handler
 
-	X3DFontStyleNodeEditor ();
+void
+X3DEditorInterface::on_map ()
+{
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DEditorInterface::set_selection);
 
-	virtual
-	void
-	initialize () override;
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+}
 
-	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
+void
+X3DEditorInterface::on_unmap ()
+{
+	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &X3DEditorInterface::set_selection);
 
+	set_selection ({ });
+}
 
-private:
+///  @name Destruction
 
-	///  @name fontStyle
-	
-	virtual
-	void
-	on_fontStyle_unlink_clicked () final override;
+void
+X3DEditorInterface::dispose ()
+{
+	X3DEditorObject::dispose ();
+	X3DDialogInterface::dispose ();
+}
 
-	virtual
-	void
-	on_fontStyle_changed () final override;
-
-	void
-	set_fontStyle ();
-
-	void
-	connectFontStyle (const X3D::SFNode &);
-
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	///  @name style
-
-	virtual
-	void
-	on_style_toggled () final override;
-
-	void
-	set_style ();
-
-	void
-	connectStyle (const X3D::SFString & field);
-
-	///  @name size
-	
-	void
-	on_size_sensitive_changed ();
-	
-	void
-	on_point_size_sensitive_changed ();
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::Text>        texts;
-	X3D::SFTime                         fontStyleNodeBuffer;
-	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
-	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
-	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	X3D::UndoStepPtr                         undoStep;
-	X3D::UndoStepPtr                         styleUndoStep;
-	bool                                changing;
-
-	std::unique_ptr <MFStringFamilyWidget> family;
-	X3DFieldAdjustment <X3D::SFFloat>      size;
-	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
-	X3DFieldAdjustment <X3D::SFFloat>      spacing;
-	X3DFieldToggleButton <X3D::SFBool>     horizontal;
-	X3DFieldToggleButton <X3D::SFBool>     leftToRight;
-	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
-	MFStringComboBoxText                   majorAlignment;          
-	MFStringComboBoxText                   minorAlignment;          
-
-};
+X3DEditorInterface::~X3DEditorInterface ()
+{ }
 
 } // puck
 } // titania
-
-#endif

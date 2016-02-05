@@ -79,6 +79,15 @@ AppearanceEditor::initialize ()
 	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
+void
+AppearanceEditor::set_selection (const X3D::MFNode & selection)
+{
+	X3DAppearanceEditorInterface::set_selection (selection);
+	X3DMaterialEditor::set_selection (selection);
+	X3DFillPropertiesEditor::set_selection (selection);
+	X3DLinePropertiesEditor::set_selection (selection);
+}
+
 AppearanceEditor::~AppearanceEditor ()
 {
 	getConfig () -> setItem ("currentPage", getAppearanceChildNotebook () .get_current_page ());

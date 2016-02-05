@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Editors/GeometryTools/GeometryTools.h"
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
@@ -72,6 +73,7 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	X3DBrowserEditor (browser),
+	   geometryTools (new GeometryTools (this)),
 	         sidebar (new Sidebar (this)),
 	          footer (new Footer (this)),
 	        gridTool (new GridTool (this)),
@@ -85,8 +87,20 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
+	// GeometryTools
+	geometryTools -> getWidget () .unparent ();
+	getBrowserOverlay () .add_overlay (geometryTools -> getWidget ());
+
 	sidebar -> reparent (getSidebarBox (), getWindow ());
 	footer  -> reparent (getFooterBox (),  getWindow ());
+}
+
+void
+X3DBrowserWindow::isEditor (const bool value)
+{
+	X3DBrowserEditor::isEditor (value);
+
+	geometryTools -> getWidget () .set_reveal_child (value);
 }
 
 void

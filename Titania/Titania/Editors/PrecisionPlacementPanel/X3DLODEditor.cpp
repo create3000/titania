@@ -90,11 +90,7 @@ X3DLODEditor::X3DLODEditor () :
 
 void
 X3DLODEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLODEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
+{ }
 
 void
 X3DLODEditor::set_selection (const X3D::MFNode & selection)

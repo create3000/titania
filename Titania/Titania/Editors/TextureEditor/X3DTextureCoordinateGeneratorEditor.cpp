@@ -68,14 +68,10 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 
 void
 X3DTextureCoordinateGeneratorEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_selection);
-
-	set_selection ();
-}
+{ }
 
 void
-X3DTextureCoordinateGeneratorEditor::set_selection ()
+X3DTextureCoordinateGeneratorEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & geometry : geometryNodes)
 	{

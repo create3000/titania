@@ -64,41 +64,47 @@ class X3DEditorInterface :
 public:
 
 	///  @name Construction
-	
+
 	virtual
 	void
-	setup () override
-	{
-		X3DDialogInterface::setup ();
-		X3DEditorObject::setup ();
-	}
+	setup () override;
 
 	///  @name Destruction
-	
-	virtual
-	void
-	dispose () override
-	{
-		X3DEditorObject::dispose ();
-		X3DDialogInterface::dispose ();
-	}
 
 	virtual
-	~X3DEditorInterface ()
-	{ }
+	void
+	dispose () override;
+
+	virtual
+	~X3DEditorInterface ();
 
 
 protected:
 
 	/// @name Construction
 
-	X3DEditorInterface ()
+	X3DEditorInterface ();
+
+	X3DEditorInterface (const std::string &, const std::string &);
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode &)
 	{ }
 
-	X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
-		X3DDialogInterface (widgetName, configKey),
-		   X3DEditorObject ()
-	{ }
+
+private:
+
+	void
+	on_map ();
+
+	void
+	on_unmap ();
+
 
 };
 

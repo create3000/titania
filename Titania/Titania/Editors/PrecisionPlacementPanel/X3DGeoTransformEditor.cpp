@@ -120,13 +120,7 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 
 void
 X3DGeoTransformEditor::initialize ()
-{
-	getGeoTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("geoTransformUniformScale"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DGeoTransformEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
+{ }
 
 void
 X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)

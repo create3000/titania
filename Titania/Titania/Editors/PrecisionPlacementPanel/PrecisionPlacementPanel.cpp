@@ -100,15 +100,21 @@ PrecisionPlacementPanel::initialize ()
 	X3DGeoLocationEditor::initialize ();
 
 	getBBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("bboxUniformSize"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &PrecisionPlacementPanel::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void
 PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 {
+	X3DPrecisionPlacementPanelInterface::set_selection (selection);
+	X3DTransformEditor::set_selection (selection);
+	X3DSwitchEditor::set_selection (selection);
+	X3DBillboardEditor::set_selection (selection);
+	X3DLODEditor::set_selection (selection);
+	X3DLayoutEditor::set_selection (selection);
+	X3DViewportEditor::set_selection (selection);
+	X3DGeoTransformEditor::set_selection (selection);
+	X3DGeoLocationEditor::set_selection (selection);
+
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 
 	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();

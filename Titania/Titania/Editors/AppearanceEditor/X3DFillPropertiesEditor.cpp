@@ -76,14 +76,10 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 
 void
 X3DFillPropertiesEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DFillPropertiesEditor::set_selection);
-
-	set_selection ();
-}
+{ }
 
 void
-X3DFillPropertiesEditor::set_selection ()
+X3DFillPropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);

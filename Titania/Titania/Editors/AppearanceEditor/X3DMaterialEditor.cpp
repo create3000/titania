@@ -99,10 +99,6 @@ X3DMaterialEditor::initialize ()
 	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
 	preview -> set_opacity (0);
 	preview -> show ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DMaterialEditor::set_selection);
-
-	set_selection ();
 }
 
 void
@@ -137,7 +133,7 @@ X3DMaterialEditor::set_initialized ()
 }
 
 void
-X3DMaterialEditor::set_selection ()
+X3DMaterialEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
 		appearance -> material () .removeInterest (this, &X3DMaterialEditor::set_material);

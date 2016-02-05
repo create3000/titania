@@ -261,22 +261,22 @@ format_time (const time_type & time, const size_t fractions = 0)
 void
 RenderingProperties::build ()
 {
-	GLint sampleBuffers, samples;
-
-	glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
-	glGetIntegerv (GL_SAMPLES, &samples);
-
-	size_t numOpaqueShapes      = 0;
-	size_t numTransparentShapes = 0;
-
-	for (const auto & layer : getBrowser () -> getWorld () -> getLayerSet () -> getLayers ())
-	{
-		numOpaqueShapes      += layer -> getNumOpaqueShapes ();
-		numTransparentShapes += layer -> getNumTransparentShapes ();
-	}
-
 	try
 	{
+		GLint sampleBuffers, samples;
+	
+		glGetIntegerv (GL_SAMPLE_BUFFERS, &sampleBuffers);
+		glGetIntegerv (GL_SAMPLES, &samples);
+	
+		size_t numOpaqueShapes      = 0;
+		size_t numTransparentShapes = 0;
+	
+		for (const auto & layer : getBrowser () -> getWorld () -> getLayerSet () -> getLayers ())
+		{
+			numOpaqueShapes      += layer -> getNumOpaqueShapes ();
+			numTransparentShapes += layer -> getNumTransparentShapes ();
+		}
+	
 		const auto statistics = world -> getExecutionContext () -> getNamedNode ("RenderingProperties");
 		auto &     string     = statistics -> getField <MFString> ("string");
 
@@ -310,7 +310,7 @@ RenderingProperties::build ()
 	catch (const X3DError & error)
 	{
 		// Catch error from getNamedNode.
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

@@ -74,14 +74,10 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 
 void
 X3DLinePropertiesEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLinePropertiesEditor::set_selection);
-
-	set_selection ();
-}
+{ }
 
 void
-X3DLinePropertiesEditor::set_selection ()
+X3DLinePropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);

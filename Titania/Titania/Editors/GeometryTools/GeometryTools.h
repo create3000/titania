@@ -48,111 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_TOOLS_GEOMETRY_TOOLS_H__
+#define __TITANIA_EDITORS_GEOMETRY_TOOLS_GEOMETRY_TOOLS_H__
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-
-#include <Titania/X3D/Components/Text/Text.h>
-#include <Titania/X3D/Components/Text/FontStyle.h>
-#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
+#include "../../UserInterfaces/X3DGeometryToolsInterface.h"
 
 namespace titania {
 namespace puck {
 
-class MFStringFamilyWidget;
-
-class X3DFontStyleNodeEditor :
-	virtual public X3DTextEditorInterface
+class GeometryTools :
+	virtual public X3DGeometryToolsInterface
 {
 public:
+
+	///  @name Construction
+
+	GeometryTools (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~X3DFontStyleNodeEditor ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DFontStyleNodeEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
+	~GeometryTools ();
 
 
 private:
 
-	///  @name fontStyle
-	
-	virtual
-	void
-	on_fontStyle_unlink_clicked () final override;
+	///  @name Construction
 
 	virtual
 	void
-	on_fontStyle_changed () final override;
-
-	void
-	set_fontStyle ();
-
-	void
-	connectFontStyle (const X3D::SFNode &);
-
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	///  @name style
+	initialize () final override;
 
 	virtual
 	void
-	on_style_toggled () final override;
+	set_selection (const X3D::MFNode &) final override;
 
+	///  @name Geometry handling
+
+	virtual
 	void
-	set_style ();
-
-	void
-	connectStyle (const X3D::SFString & field);
-
-	///  @name size
-	
-	void
-	on_size_sensitive_changed ();
-	
-	void
-	on_point_size_sensitive_changed ();
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::Text>        texts;
-	X3D::SFTime                         fontStyleNodeBuffer;
-	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
-	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
-	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	X3D::UndoStepPtr                         undoStep;
-	X3D::UndoStepPtr                         styleUndoStep;
-	bool                                changing;
-
-	std::unique_ptr <MFStringFamilyWidget> family;
-	X3DFieldAdjustment <X3D::SFFloat>      size;
-	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
-	X3DFieldAdjustment <X3D::SFFloat>      spacing;
-	X3DFieldToggleButton <X3D::SFBool>     horizontal;
-	X3DFieldToggleButton <X3D::SFBool>     leftToRight;
-	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
-	MFStringComboBoxText                   majorAlignment;          
-	MFStringComboBoxText                   minorAlignment;          
+	on_hammer_clicked () final override;
 
 };
 

@@ -84,15 +84,13 @@ X3DTextureNodeEditor::initialize ()
 {
 	X3DEnvironmentTextureNodeEditor::initialize ();
 	X3DTexturePropertiesEditor::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureNodeEditor::set_selection);
-
-	set_selection ();
 }
 
 void
-X3DTextureNodeEditor::set_selection ()
+X3DTextureNodeEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DTexturePropertiesEditor::set_selection (selection);
+
 	for (const auto & appearance : appearances)
 		appearance -> texture () .removeInterest (this, &X3DTextureNodeEditor::set_texture);
 
@@ -197,7 +195,7 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
 
-	X3DTexturePropertiesEditor::set_selection ();
+	X3DTexturePropertiesEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 
 	preview -> setTexture (getTextureComboBoxText () .get_active_row_number () > 0 ? textureNode : nullptr);
 }
@@ -303,7 +301,7 @@ X3DTextureNodeEditor::set_node ()
 
 	changing = false;
 
-	X3DTexturePropertiesEditor::set_selection ();
+	X3DTexturePropertiesEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

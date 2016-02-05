@@ -99,10 +99,6 @@ void
 X3DTransformEditor::initialize ()
 {
 	getTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("transformUniformScale"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTransformEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

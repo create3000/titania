@@ -83,9 +83,11 @@ X3DViewportEditor::X3DViewportEditor () :
 
 void
 X3DViewportEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DViewportEditor::set_viewport);
+{ }
 
+void
+X3DViewportEditor::set_selection (const X3D::MFNode & selection)
+{
 	set_viewport ();
 }
 

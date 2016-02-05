@@ -87,9 +87,11 @@ X3DLayoutEditor::X3DLayoutEditor () :
 
 void
 X3DLayoutEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DLayoutEditor::set_layout);
+{ }
 
+void
+X3DLayoutEditor::set_selection (const X3D::MFNode & selection)
+{
 	set_layout ();
 }
 

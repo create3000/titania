@@ -117,10 +117,6 @@ BackgroundEditor::initialize ()
 
 	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
 	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &BackgroundEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

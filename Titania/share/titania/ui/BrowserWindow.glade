@@ -83,7 +83,7 @@
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
@@ -91,7 +91,7 @@
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
@@ -121,9 +121,9 @@
       <source stock-id="stock_new-tab" filename="icons/Faenza/16/stock_new-tab.png"/>
       <source stock-id="gtk-bold" filename="icons/Faenza/22/gtk-bold.png"/>
       <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
+      <source stock-id="Time" filename="icons/Time.svg"/>
       <source stock-id="gtk-cancel" filename="icons/Faenza/16/gtk-cancel.png"/>
       <source stock-id="gtk-ok" filename="icons/Faenza/16/gtk-ok.png"/>
-      <source stock-id="Time" filename="icons/Time.svg"/>
       <source stock-id="PrimitiveQuality" filename="icons/PrimitiveQuality.svg"/>
       <source stock-id="Navigation" filename="icons/Navigation.svg"/>
       <source stock-id="BlankIcon" filename="icons/blank-icon.svg"/>
@@ -940,8 +940,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2320,8 +2320,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -3853,31 +3853,6 @@
                             <property name="homogeneous">True</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem" id="separatortoolitem1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="HammerButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Smash Selection: converts the geometry to the next lower more primitive object.</property>
-                            <property name="label" translatable="yes">Smash</property>
-                            <property name="use_underline">True</property>
-                            <property name="stock_id">Hammer</property>
-                            <signal name="clicked" handler="on_hammer_clicked" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -3928,14 +3903,20 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkNotebook" id="BrowserNotebook">
-                            <property name="name">BrowserNotebook</property>
-                            <property name="can_focus">True</property>
-                            <property name="scrollable">True</property>
-                            <signal name="button-press-event" handler="on_notebook_button_press_event" after="yes" swapped="no"/>
-                            <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
-                            <signal name="page-reordered" handler="on_browser_reordered" swapped="no"/>
-                            <signal name="switch-page" handler="on_switch_browser" swapped="no"/>
+                          <object class="GtkOverlay" id="BrowserOverlay">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkNotebook" id="BrowserNotebook">
+                                <property name="name">BrowserNotebook</property>
+                                <property name="can_focus">True</property>
+                                <property name="scrollable">True</property>
+                                <signal name="button-press-event" handler="on_notebook_button_press_event" after="yes" swapped="no"/>
+                                <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
+                                <signal name="page-reordered" handler="on_browser_reordered" swapped="no"/>
+                                <signal name="switch-page" handler="on_switch_browser" swapped="no"/>
+                              </object>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">True</property>

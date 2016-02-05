@@ -47,116 +47,41 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_X3DFONT_STYLE_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-
-#include <Titania/X3D/Components/Text/Text.h>
-#include <Titania/X3D/Components/Text/FontStyle.h>
-#include <Titania/X3D/Components/Layout/ScreenFontStyle.h>
+#include "X3DGeometryToolsInterface.h"
 
 namespace titania {
 namespace puck {
 
-class MFStringFamilyWidget;
+const std::string X3DGeometryToolsInterface::m_widgetName = "GeometryTools";
 
-class X3DFontStyleNodeEditor :
-	virtual public X3DTextEditorInterface
+void
+X3DGeometryToolsInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Destruction
+	// Get objects.
 
-	virtual
-	~X3DFontStyleNodeEditor ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
+	m_builder -> get_widget ("HammerButton", m_HammerButton);
 
+	// Connect object Gtk::Button with id 'HammerButton'.
+	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_hammer_clicked)));
 
-protected:
+	// Call construct handler of base class.
+	construct ();
+}
 
-	///  @name Construction
+X3DGeometryToolsInterface::~X3DGeometryToolsInterface ()
+{
+	for (auto & connection : m_connections)
+		connection .disconnect ();
 
-	X3DFontStyleNodeEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
-
-
-private:
-
-	///  @name fontStyle
-	
-	virtual
-	void
-	on_fontStyle_unlink_clicked () final override;
-
-	virtual
-	void
-	on_fontStyle_changed () final override;
-
-	void
-	set_fontStyle ();
-
-	void
-	connectFontStyle (const X3D::SFNode &);
-
-	void
-	set_node ();
-
-	void
-	set_widgets ();
-
-	///  @name style
-
-	virtual
-	void
-	on_style_toggled () final override;
-
-	void
-	set_style ();
-
-	void
-	connectStyle (const X3D::SFString & field);
-
-	///  @name size
-	
-	void
-	on_size_sensitive_changed ();
-	
-	void
-	on_point_size_sensitive_changed ();
-
-	///  @name Members
-
-	X3D::X3DPtrArray <X3D::Text>        texts;
-	X3D::SFTime                         fontStyleNodeBuffer;
-	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
-	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
-	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	X3D::UndoStepPtr                         undoStep;
-	X3D::UndoStepPtr                         styleUndoStep;
-	bool                                changing;
-
-	std::unique_ptr <MFStringFamilyWidget> family;
-	X3DFieldAdjustment <X3D::SFFloat>      size;
-	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
-	X3DFieldAdjustment <X3D::SFFloat>      spacing;
-	X3DFieldToggleButton <X3D::SFBool>     horizontal;
-	X3DFieldToggleButton <X3D::SFBool>     leftToRight;
-	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
-	MFStringComboBoxText                   majorAlignment;          
-	MFStringComboBoxText                   minorAlignment;          
-
-};
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

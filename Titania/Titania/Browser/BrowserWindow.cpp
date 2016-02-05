@@ -165,9 +165,9 @@ BrowserWindow::initialize ()
 	Gtk::Clipboard::get () -> signal_owner_change () .connect (sigc::mem_fun (*this, &BrowserWindow::on_clipboard_owner_change));
 	updatePasteStatus ();
 
-	// Browser Events
-	getBrowsers ()         .addInterest (this, &BrowserWindow::set_browsers);
-	getCurrentScene ()     .addInterest (this, &BrowserWindow::set_scene);
+	// Browser events
+	getBrowsers ()       .addInterest (this, &BrowserWindow::set_browsers);
+	getCurrentScene ()   .addInterest (this, &BrowserWindow::set_scene);
 	getCurrentContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
 	getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
@@ -363,8 +363,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
 	getObjectMenuItem () .set_sensitive (haveSelection);
-
-	getHammerButton () .set_sensitive (haveSelection);
 
 	getSelectParentButton ()    .set_sensitive (haveSelection);
 	getSelectChildrenButton ()  .set_sensitive (haveSelection);
@@ -2237,69 +2235,6 @@ void
 BrowserWindow::on_node_index_clicked ()
 {
 	std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex")) -> setNamedNodes ();
-}
-
-// Geometry handling
-
-void
-BrowserWindow::on_hammer_clicked ()
-{
-	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
-	auto       selection = getSelection () -> getChildren ();
-
-	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
-	{
-		if (not shape -> geometry ())
-			continue;
-			
-		for (const auto & type : basic::make_reverse_range (shape -> geometry () -> getType ()))
-		{
-			switch (type)
-			{
-				case X3D::X3DConstants::X3DPrototypeInstance:
-				{
-					try
-					{
-						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry () -> getInnerNode ());
-						
-						if (geometry)
-						{
-							X3D::MFNode exports ({ geometry });
-							basic::ifilestream text (exportNodes (getCurrentContext (), exports));
-
-							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
-							const auto nodes = importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
-
-							addToGroup (getCurrentContext (), X3D::SFNode (shape), nodes, undoStep);
-						}
-					}
-					catch (const X3D::X3DError &)
-					{ }
-	
-					break;
-				}
-				case X3D::X3DConstants::X3DGeometryNode:
-				{
-					try
-					{
-						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
-
-						replaceNode (getCurrentContext (), X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
-					}
-					catch (const X3D::X3DError &)
-					{ }
-					
-					break;
-				}
-				default:
-					continue;
-			}
-			
-			break;
-		}
-	}
-
-	addUndoStep (undoStep);
 }
 
 // Browser dashboard handling

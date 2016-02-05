@@ -91,11 +91,7 @@ X3DGeoLocationEditor::X3DGeoLocationEditor () :
 
 void
 X3DGeoLocationEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DGeoLocationEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
+{ }
 
 void
 X3DGeoLocationEditor::set_selection (const X3D::MFNode & selection)

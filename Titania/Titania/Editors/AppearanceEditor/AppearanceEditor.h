@@ -61,6 +61,7 @@ namespace titania {
 namespace puck {
 
 class AppearanceEditor :
+	virtual public X3DAppearanceEditorInterface,
 	public X3DMaterialEditor,
 	public X3DFillPropertiesEditor,
 	public X3DLinePropertiesEditor,
@@ -85,6 +86,10 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode &) final override;
 
 };
 

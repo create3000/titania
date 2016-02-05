@@ -81,6 +81,15 @@ TextureEditor::initialize ()
 	getTextureChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
+void
+TextureEditor::set_selection (const X3D::MFNode & selection)
+{
+	X3DTextureEditorInterface::set_selection (selection);
+	X3DTextureNodeEditor::set_selection (selection);
+	X3DTextureTransformNodeEditor::set_selection (selection);
+	X3DTextureCoordinateGeneratorEditor::set_selection (selection);
+}
+
 TextureEditor::~TextureEditor ()
 {
 	getConfig () -> setItem ("currentPage", getTextureChildNotebook () .get_current_page ());

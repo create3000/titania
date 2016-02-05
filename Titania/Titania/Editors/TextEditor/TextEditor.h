@@ -24,7 +24,10 @@
  * restriction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
  * marked to indicate is contains 'non-military use only' components.
- *
+ *	virtual
+	void
+	set_selection (const X3D::MFNode &) final override;
+
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
@@ -80,8 +83,9 @@ private:
 	void
 	initialize () final override;
 
+	virtual
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &) final override;
 
 	///  @name text
 

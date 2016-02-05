@@ -86,13 +86,12 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	set_selection (const X3D::MFNode &) override;
+
 
 private:
-
-	///  @name Construction
-
-	void
-	set_selection ();
 
 	///  @name Preview
 

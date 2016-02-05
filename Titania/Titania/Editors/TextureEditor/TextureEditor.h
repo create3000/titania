@@ -89,6 +89,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	set_selection (const X3D::MFNode &) final override;
+
 };
 
 } // puck

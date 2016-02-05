@@ -111,8 +111,6 @@ ColorEditor::initialize ()
 	preview -> set_opacity (0);
 	preview -> show ();
 
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &ColorEditor::set_selection);
-
 	undoHistory .addInterest (this, &ColorEditor::set_undoHistory);
 }
 
@@ -137,7 +135,7 @@ ColorEditor::set_initialized ()
 		touchSensor -> touchTime ()        .addInterest (this, &ColorEditor::set_touchTime);
 
 		configure ();
-		set_selection ();
+		set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -177,7 +175,7 @@ ColorEditor::configure ()
 }
 
 void
-ColorEditor::set_selection ()
+ColorEditor::set_selection (const X3D::MFNode & selection)
 {
 	undoHistory .clear ();
 

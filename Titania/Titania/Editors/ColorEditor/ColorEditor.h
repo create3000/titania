@@ -104,8 +104,9 @@ private:
 	void
 	configure ();
 
+	virtual
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &) final override;
 	
 	void
 	disable ();

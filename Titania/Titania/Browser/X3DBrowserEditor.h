@@ -15,7 +15,10 @@
  * create3000.
  *
  * No permission is granted to copy, distribute, or create derivative works from
- * the contents of this software, in whole or in part, without the prior written
+ * the conten	virtual
+	void
+	isEditor (const bool) final override;
+ts of this software, in whole or in part, without the prior written
  * permission of create3000.
  *
  * NON-MILITARY USE ONLY

@@ -107,8 +107,9 @@ private:
 	getShapes () final override
 	{ return shapes; }
 
+	virtual
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode & selection) final override;
 
 	void
 	set_geometry ();

@@ -1353,10 +1353,6 @@ public:
 	getNodeIndexButton () const
 	{ return *m_NodeIndexButton; }
 
-	Gtk::ToolButton &
-	getHammerButton () const
-	{ return *m_HammerButton; }
-
 	Gtk::Paned &
 	getVPaned () const
 	{ return *m_VPaned; }
@@ -1364,6 +1360,10 @@ public:
 	Gtk::Paned &
 	getHPaned () const
 	{ return *m_HPaned; }
+
+	Gtk::Overlay &
+	getBrowserOverlay () const
+	{ return *m_BrowserOverlay; }
 
 	Gtk::Notebook &
 	getBrowserNotebook () const
@@ -1962,10 +1962,6 @@ public:
 	on_node_index_clicked () = 0;
 
 	virtual
-	void
-	on_hammer_clicked () = 0;
-
-	virtual
 	bool
 	on_notebook_button_press_event (GdkEventButton* event) = 0;
 
@@ -2356,9 +2352,9 @@ private:
 	Gtk::ToolButton*                 m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton*                 m_CreatePrototypeInstanceButton;
 	Gtk::ToolButton*                 m_NodeIndexButton;
-	Gtk::ToolButton*                 m_HammerButton;
 	Gtk::Paned*                      m_VPaned;
 	Gtk::Paned*                      m_HPaned;
+	Gtk::Overlay*                    m_BrowserOverlay;
 	Gtk::Notebook*                   m_BrowserNotebook;
 	Gtk::Box*                        m_Dashboard;
 	Gtk::Toolbar*                    m_DashboardToolBar;

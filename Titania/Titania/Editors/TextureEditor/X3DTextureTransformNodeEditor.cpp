@@ -77,14 +77,10 @@ X3DTextureTransformNodeEditor::initialize ()
 	X3DTextureTransformEditor::initialize ();
 	X3DTextureTransform3DEditor::initialize ();
 	X3DTextureTransformMatrix3DEditor::initialize ();
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DTextureTransformNodeEditor::set_selection);
-
-	set_selection ();
 }
 
 void
-X3DTextureTransformNodeEditor::set_selection ()
+X3DTextureTransformNodeEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);

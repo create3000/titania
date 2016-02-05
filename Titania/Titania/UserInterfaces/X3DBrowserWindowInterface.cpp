@@ -379,9 +379,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrecisionPlacementPanelButton", m_PrecisionPlacementPanelButton);
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
 	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
-	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_builder -> get_widget ("HPaned", m_HPaned);
+	m_builder -> get_widget ("BrowserOverlay", m_BrowserOverlay);
 	m_builder -> get_widget ("BrowserNotebook", m_BrowserNotebook);
 	m_builder -> get_widget ("Dashboard", m_Dashboard);
 	m_builder -> get_widget ("DashboardToolBar", m_DashboardToolBar);
@@ -683,7 +683,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_connections .emplace_back (m_PrecisionPlacementPanelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_precision_placement_panel_clicked)));
 	m_connections .emplace_back (m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked)));
 	m_connections .emplace_back (m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked)));
-	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_hammer_clicked)));
 
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
 	m_connections .emplace_back (m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_notebook_button_press_event), false));

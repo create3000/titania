@@ -7,6 +7,7 @@ bin_PROGRAMS =  \
 titania_SOURCES =  \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
+	Titania/Base/X3DEditorInterface.cpp \
 	Titania/Base/X3DEditorObject.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserEditorObject.cpp \
@@ -68,6 +69,7 @@ titania_SOURCES =  \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
+	Titania/Editors/GeometryTools/GeometryTools.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \
@@ -140,6 +142,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
+	Titania/UserInterfaces/X3DGeometryToolsInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \

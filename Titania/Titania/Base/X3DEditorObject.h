@@ -71,6 +71,14 @@ class X3DEditorObject :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	void
+	setup () override;
+
+	///  @name Member access
+
 	void
 	setUndo (const bool value)
 	{ undo = value; }
@@ -87,6 +95,11 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose () override
+	{ }
+
+	virtual
 	~X3DEditorObject ()
 	{ }
 
@@ -95,22 +108,14 @@ protected:
 
 	///  @name Construction
 
-	X3DEditorObject () :
-		X3DBaseInterface (),
-		            undo (true),
-             undoGroup (),
-             redoGroup (),
-	      lastUndoGroup (),
-		    currentField (),
-		          fields (new X3D::FieldSet (getCurrentBrowser ()))
-	{
-		fields -> hasEvents (false);
-		fields -> setup ();
-	}
+	X3DEditorObject ();
+
+	///  @name Construction
 
 	virtual
 	void
-	setup () override;
+	initialize ()
+	{ }
 
 	///  @name Operations
 
@@ -185,13 +190,6 @@ protected:
 
 	void
 	endRedoGroup (const std::string &, X3D::UndoStepPtr &);
-
-	/// @name Destuction
-	
-	virtual
-	void
-	dispose () override
-	{ }
 
 	/// @name Static members
 	

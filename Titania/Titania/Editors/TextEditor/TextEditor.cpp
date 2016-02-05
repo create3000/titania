@@ -88,15 +88,14 @@ TextEditor::initialize ()
 	X3DFontStyleNodeEditor::initialize ();
 
 	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &TextEditor::set_selection);
-
-	set_selection ();
 }
 
 void
-TextEditor::set_selection ()
+TextEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DTextEditorInterface::set_selection (selection);
+	X3DFontStyleNodeEditor::set_selection (selection);
+
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_geometry);
 
@@ -153,7 +152,7 @@ TextEditor::on_text_toggled ()
 
 	addRedoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 
-	X3DFontStyleNodeEditor::set_selection ();
+	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 
 	getTextUnlinkButton () .set_sensitive (getTextCheckButton () .get_active () and text -> getCloneCount () > 1);
 }
@@ -226,7 +225,7 @@ TextEditor::set_node ()
 	
 	maxExtent .setNodes ({ text });
 
-	X3DFontStyleNodeEditor::set_selection ();
+	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 /***********************************************************************************************************************

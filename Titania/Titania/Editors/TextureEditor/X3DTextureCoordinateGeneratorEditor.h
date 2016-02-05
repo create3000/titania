@@ -79,8 +79,9 @@ protected:
 	void
 	initialize () override;
 
+	virtual
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &) override;
 
 
 private:

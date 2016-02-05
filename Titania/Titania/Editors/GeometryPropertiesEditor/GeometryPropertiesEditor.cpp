@@ -101,15 +101,13 @@ GeometryPropertiesEditor::initialize ()
 	X3DPrimitiveCountEditor::initialize ();
 
 	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &GeometryPropertiesEditor::set_selection);
-
-	set_selection ();
 }
 
 void
-GeometryPropertiesEditor::set_selection ()
+GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DGeometryPropertiesEditorInterface::set_selection (selection);
+
 	for (const auto & shape : shapes)
 		shape -> geometry () .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
 

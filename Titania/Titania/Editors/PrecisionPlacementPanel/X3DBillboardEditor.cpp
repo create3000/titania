@@ -73,11 +73,7 @@ X3DBillboardEditor::X3DBillboardEditor () :
 
 void
 X3DBillboardEditor::initialize ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBillboardEditor::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
+{ }
 
 void
 X3DBillboardEditor::set_selection (const X3D::MFNode & selection)
