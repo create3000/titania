@@ -132,7 +132,7 @@ private:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	///  @name Event handlers
 

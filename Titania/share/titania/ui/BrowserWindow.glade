@@ -5,6 +5,7 @@
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
+      <source stock-id="Clone" filename="icons/Clone.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
       <source stock-id="IconBlackWhite" filename="icons/icon-bw.svg"/>
       <source stock-id="gtk-home" filename="icons/Faenza/16/gtk-home.png"/>
@@ -69,12 +70,11 @@
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
-      <source stock-id="emblem-shared-symbolic" filename="icons/Faenza/scalable/emblem-shared-symbolic.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
+      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
-      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
       <source stock-id="gtk-open" filename="icons/Faenza/16/gtk-open.png"/>
       <source stock-id="gtk-properties" filename="icons/Faenza/16/gtk-properties.png"/>
@@ -83,7 +83,7 @@
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
       <source stock-id="Green" filename="icons/Green.svg"/>
@@ -91,7 +91,7 @@
       <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
       <source stock-id="Texture" filename="icons/Texture.svg"/>
-      <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
       <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
@@ -120,8 +120,8 @@
       <source stock-id="gtk-yes" filename="icons/Faenza/16/gtk-yes.png"/>
       <source stock-id="stock_new-tab" filename="icons/Faenza/16/stock_new-tab.png"/>
       <source stock-id="gtk-bold" filename="icons/Faenza/22/gtk-bold.png"/>
-      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="Time" filename="icons/Time.svg"/>
+      <source stock-id="PaintBrush" filename="icons/PaintBrush.svg"/>
       <source stock-id="gtk-cancel" filename="icons/Faenza/16/gtk-cancel.png"/>
       <source stock-id="gtk-ok" filename="icons/Faenza/16/gtk-ok.png"/>
       <source stock-id="PrimitiveQuality" filename="icons/PrimitiveQuality.svg"/>
@@ -139,9 +139,10 @@
       <source stock-id="Inline" filename="icons/Inline.svg"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="gtk-zoom-100" filename="icons/Faenza/16/gtk-zoom-100.png"/>
-      <source stock-id="Scale" filename="icons/Scale.svg"/>
+      <source stock-id="Normal" filename="icons/Normal.svg"/>
       <source stock-id="gtk-fullscreen" filename="icons/Faenza/16/gtk-fullscreen.png"/>
       <source stock-id="Placement" filename="icons/Placement.svg"/>
+      <source stock-id="Scale" filename="icons/Scale.svg"/>
     </sources>
   </object>
   <object class="GtkToggleAction" id="AngleLayoutToolAction">
@@ -940,8 +941,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1720,9 +1721,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkMenuItem" id="BrowserObjectMenuItem">
+      <object class="GtkMenuItem" id="BrowserGeometryMenuItem">
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Object</property>
+        <property name="label" translatable="yes">_Geometry</property>
         <property name="use_underline">True</property>
         <child type="submenu">
           <object class="GtkMenu" id="menu27">
@@ -2320,8 +2321,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -3120,9 +3121,9 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="ObjectMenuItem">
+                      <object class="GtkMenuItem" id="GeometryMenuItem">
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">_Object</property>
+                        <property name="label" translatable="yes">_Geometry</property>
                         <property name="use_underline">True</property>
                         <child type="submenu">
                           <object class="GtkMenu" id="menu4">

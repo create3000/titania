@@ -490,7 +490,7 @@
                                   <object class="GtkImage" id="image3">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">emblem-shared-symbolic</property>
+                                    <property name="stock">Clone</property>
                                     <property name="pixel_size">12</property>
                                     <property name="icon_size">1</property>
                                   </object>
@@ -3222,7 +3222,7 @@
                                   <object class="GtkImage" id="image1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">emblem-shared-symbolic</property>
+                                    <property name="stock">Clone</property>
                                     <property name="pixel_size">12</property>
                                     <property name="icon_size">1</property>
                                   </object>
@@ -3698,7 +3698,7 @@
                                   <object class="GtkImage" id="image2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">emblem-shared-symbolic</property>
+                                    <property name="stock">Clone</property>
                                     <property name="pixel_size">12</property>
                                     <property name="icon_size">1</property>
                                   </object>
@@ -4807,7 +4807,7 @@
                                   <object class="GtkImage" id="image4">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">emblem-shared-symbolic</property>
+                                    <property name="stock">Clone</property>
                                     <property name="pixel_size">12</property>
                                     <property name="icon_size">1</property>
                                   </object>

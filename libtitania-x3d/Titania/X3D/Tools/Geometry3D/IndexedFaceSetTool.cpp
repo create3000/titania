@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,87 +48,47 @@
  *
  ******************************************************************************/
 
-#include "X3DActiveLayerTool.h"
+#include "IndexedFaceSetTool.h"
 
-#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Networking/config.h"
 
 namespace titania {
 namespace X3D {
 
-X3DActiveLayerTool::X3DActiveLayerTool () :
-	    X3DNode (),
-	       tool (new Tool (getBrowser ())),
-	activeLayer ()
+IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
+	                                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	                X3DBaseTool <IndexedFaceSet> (node),
+	X3DComposedGeometryNodeTool <IndexedFaceSet> ()
 {
-	addType (X3DConstants::X3DActiveLayerTool);
-
-	addChildren (tool, activeLayer);
+	addType (X3DConstants::IndexedFaceSetTool);
 }
 
 void
-X3DActiveLayerTool::initialize ()
+IndexedFaceSetTool::initialize ()
 {
-	X3DNode::initialize ();
+	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
 
-	tool -> setup ();
-
-	getInlineNode () -> checkLoadState () .addInterest (this, &X3DActiveLayerTool::set_loadState);
-	getBrowser () -> getActiveLayer ()    .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
-
-	set_activeLayer ();
+	requestAsyncLoad ({ get_tool ("IndexedFaceSetTool.x3dv") .str () });
 }
 
 void
-X3DActiveLayerTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-
-{
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DActiveLayerTool::set_activeLayer);
-
-	tool -> setExecutionContext (value -> getBrowser ());
-
-	X3DNode::setExecutionContext (value);
-
-	if (isInitialized ())
-	{
-		getBrowser () -> getActiveLayer () .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
-
-		set_activeLayer ();
-	}
-}
-
-void
-X3DActiveLayerTool::set_loadState (const LoadState loadState)
+IndexedFaceSetTool::realize ()
 {
 	try
 	{
-		if (loadState == COMPLETE_STATE)
-			realize ();
+//		getToolNode () -> setField <SFColor> ("color", color);
+//		getToolNode () -> setField <SFNode>  ("node",  getNode ());
+//
+//		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
+//		size () .addInterest (set_size);
+//		set_size = getNode () -> size ();
+//
+//		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
+//		center () .addInterest (set_center);
+//		set_center = getNode () -> center ();
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
-}
-
-void
-X3DActiveLayerTool::set_activeLayer ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool .getValue ());
-
-	activeLayer = getBrowser () -> getActiveLayer ();
-
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .emplace_back (tool);
-}
-
-void
-X3DActiveLayerTool::dispose ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool);
-
-	X3DNode::dispose ();
 }
 
 } // X3D

@@ -67,9 +67,15 @@ X3DGeometryToolsInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
+	m_builder -> get_widget ("EditButton", m_EditButton);
+	m_builder -> get_widget ("ShowNormalsToggleButton", m_ShowNormalsToggleButton);
 
 	// Connect object Gtk::Button with id 'HammerButton'.
 	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_hammer_clicked)));
+	m_connections .emplace_back (m_EditButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_edit_clicked)));
+
+	// Connect object Gtk::ToggleButton with id 'ShowNormalsToggleButton'.
+	m_connections .emplace_back (m_ShowNormalsToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_show_normals_toggled)));
 
 	// Call construct handler of base class.
 	construct ();

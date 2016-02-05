@@ -105,9 +105,25 @@ public:
 	getHammerButton () const
 	{ return *m_HammerButton; }
 
+	Gtk::Button &
+	getEditButton () const
+	{ return *m_EditButton; }
+
+	Gtk::ToggleButton &
+	getShowNormalsToggleButton () const
+	{ return *m_ShowNormalsToggleButton; }
+
 	virtual
 	void
 	on_hammer_clicked () = 0;
+
+	virtual
+	void
+	on_edit_clicked () = 0;
+
+	virtual
+	void
+	on_show_normals_toggled () = 0;
 
 	virtual
 	~X3DGeometryToolsInterface ();
@@ -132,6 +148,8 @@ private:
 	Gtk::Revealer*                m_Widget;
 	Gtk::Box*                     m_GeometryEditorBox;
 	Gtk::Button*                  m_HammerButton;
+	Gtk::Button*                  m_EditButton;
+	Gtk::ToggleButton*            m_ShowNormalsToggleButton;
 
 };
 

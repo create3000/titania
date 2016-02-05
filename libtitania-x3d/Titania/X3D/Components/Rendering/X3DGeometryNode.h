@@ -110,33 +110,41 @@ public:
 	getBBox () const
 	{ return bbox; }
 
+	virtual
 	bool
 	getSolid () const
 	{ return solid; }
 
+	virtual
 	bool
 	getCCW () const
 	{ return frontFace == GL_CCW; }
 
+	virtual
 	size_t
 	getMultiTexCoords () const
 	{ return texCoords .size (); }
 	
+	virtual
 	const std::vector <Element> &
 	getElements () const
 	{ return elements; }
 
 	///  @name Operations
 
+	virtual
 	bool
 	intersects (Line3f, std::vector <IntersectionPtr> &) const;
 
+	virtual
 	bool
 	intersects (CollisionSphere3f, const CollectableObjectArray &) const;
 
+	virtual
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
 
+	virtual
 	void
 	collision (const CollisionContainer* const);
 

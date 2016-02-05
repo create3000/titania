@@ -2413,6 +2413,8 @@
     <None Include="Titania\UserInterfaces\X3DGeometryToolsInterface.h" />
     <None Include="share\titania\ui\Editors\GeometryTools.glade" />
     <None Include="Titania\Editors\GeometryTools\GeometryTools.h" />
+    <None Include="share\titania\ui\icons\Normal.svg" />
+    <None Include="share\titania\ui\icons\Clone.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -205,6 +205,7 @@
                           <item translatable="yes">IndexedTriangleSet</item>
                           <item translatable="yes">IndexedTriangleStripSet</item>
                           <item translatable="yes">LineSet</item>
+                          <item translatable="yes">PointSet</item>
                           <item translatable="yes">QuadSet</item>
                           <item translatable="yes">Text</item>
                           <item translatable="yes">TriangleFanSet</item>
@@ -230,7 +231,7 @@
                           <object class="GtkImage" id="image4">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="stock">emblem-shared-symbolic</property>
+                            <property name="stock">Clone</property>
                             <property name="pixel_size">12</property>
                             <property name="icon_size">1</property>
                           </object>

@@ -59,6 +59,8 @@
 #include "../Rendering/Normal.h"
 #include "../Texturing/TextureCoordinate.h"
 
+#include "../../Tools/Geometry3D/IndexedFaceSetTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -103,7 +105,7 @@ IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "normal",            normal ());
 	addField (inputOutput,    "coord",             coord ());
 
-	creaseAngle ()  .setUnit (UnitCategory::ANGLE);
+	creaseAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*
@@ -652,6 +654,11 @@ throw (Error <NOT_SUPPORTED>,
 	return SFNode (geometry);
 }
 
-} // X3D
+void
+IndexedFaceSet::addTool ()
+{
+	X3DComposedGeometryNode::addTool (new IndexedFaceSetTool (this));
+}
 
+} // X3D
 } // titania

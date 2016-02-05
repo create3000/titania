@@ -686,8 +686,8 @@ public:
 	{ return *m_BrowserFollowPrimarySelectionMenuItem; }
 
 	Gtk::MenuItem &
-	getBrowserObjectMenuItem () const
-	{ return *m_BrowserObjectMenuItem; }
+	getBrowserGeometryMenuItem () const
+	{ return *m_BrowserGeometryMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserCombineMenuItem () const
@@ -1150,8 +1150,8 @@ public:
 	{ return *m_FollowPrimarySelectionMenuItem; }
 
 	Gtk::MenuItem &
-	getObjectMenuItem () const
-	{ return *m_ObjectMenuItem; }
+	getGeometryMenuItem () const
+	{ return *m_GeometryMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getCombineMenuItem () const
@@ -2185,7 +2185,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserSelectLowestMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFollowPrimarySelectionMenuItem;
-	Gtk::MenuItem*                   m_BrowserObjectMenuItem;
+	Gtk::MenuItem*                   m_BrowserGeometryMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTransformToZeroMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserColorPerVertexMenuItem;
@@ -2301,7 +2301,7 @@ private:
 	Gtk::MenuItem*                   m_ShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
-	Gtk::MenuItem*                   m_ObjectMenuItem;
+	Gtk::MenuItem*                   m_GeometryMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
 	Gtk::ImageMenuItem*              m_TransformToZeroMenuItem;
 	Gtk::ImageMenuItem*              m_ColorPerVertexEditorMenuItem;

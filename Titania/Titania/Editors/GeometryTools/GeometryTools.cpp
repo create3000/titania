@@ -54,17 +54,20 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "../../Base/X3DEditorObject.h"
-
+#include <Titania/X3D/Browser/Core/Cast.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
+#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h>
+#include <Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h>
 
 namespace titania {
 namespace puck {
 
 GeometryTools::GeometryTools (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGeometryToolsInterface (get_ui ("Editors/GeometryTools.glade"), gconf_dir ())
+	X3DGeometryToolsInterface (get_ui ("Editors/GeometryTools.glade"), gconf_dir ()),
+	            editableNodes ()
 {
 	setup ();
 }
@@ -73,6 +76,8 @@ void
 GeometryTools::initialize ()
 {
 	X3DGeometryToolsInterface::initialize ();
+
+	getShowNormalsToggleButton () .set_active (getConfig () -> getBoolean ("showNormals"));
 }
 
 void
@@ -82,9 +87,14 @@ GeometryTools::set_selection (const X3D::MFNode & selection)
 
 	const bool inScene        = not inPrototypeInstance ();
 	const bool haveSelection  = inScene and selection .size ();
-	const bool haveSelections = inScene and selection .size () > 1;
+	//const bool haveSelections = inScene and selection .size () > 1;
+
+	editableNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
 
 	getHammerButton () .set_sensitive (haveSelection);
+	getEditButton ()   .set_sensitive (not editableNodes .empty ());
+
+	on_show_normals_toggled ();
 }
 
 void
@@ -93,7 +103,7 @@ GeometryTools::on_hammer_clicked ()
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
 	auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
-	for (const auto & shape : X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
+	for (const auto & shape : getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
 	{
 		if (not shape -> geometry ())
 			continue;
@@ -148,8 +158,50 @@ GeometryTools::on_hammer_clicked ()
 	addUndoStep (undoStep);
 }
 
+void
+GeometryTools::on_edit_clicked ()
+{
+	getBrowserWindow () -> getSelection () -> setChildren (editableNodes);
+}
+
+void
+GeometryTools::on_show_normals_toggled ()
+{
+	__LOG__ << getShowNormalsToggleButton () .get_active () << std::endl;
+
+	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+	
+			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::IndexedFaceSetTool:
+					{
+						dynamic_cast <X3D::IndexedFaceSetTool*> (innerNode) -> setShowNormals (getShowNormalsToggleButton () .get_active ());
+						break;
+					}
+					default:
+						break;
+				}
+	
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+}
+
 GeometryTools::~GeometryTools ()
 {
+	getConfig () -> setItem ("showNormals", getShowNormalsToggleButton () .get_active ());
+
 	X3DGeometryToolsInterface::dispose ();
 }
 

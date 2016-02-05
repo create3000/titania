@@ -212,7 +212,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserShowAllObjectsMenuItem", m_BrowserShowAllObjectsMenuItem);
 	m_builder -> get_widget ("BrowserSelectLowestMenuItem", m_BrowserSelectLowestMenuItem);
 	m_builder -> get_widget ("BrowserFollowPrimarySelectionMenuItem", m_BrowserFollowPrimarySelectionMenuItem);
-	m_builder -> get_widget ("BrowserObjectMenuItem", m_BrowserObjectMenuItem);
+	m_builder -> get_widget ("BrowserGeometryMenuItem", m_BrowserGeometryMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
 	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
@@ -328,7 +328,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
 	m_builder -> get_widget ("SelectLowestMenuItem", m_SelectLowestMenuItem);
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
-	m_builder -> get_widget ("ObjectMenuItem", m_ObjectMenuItem);
+	m_builder -> get_widget ("GeometryMenuItem", m_GeometryMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
 	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);

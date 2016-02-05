@@ -101,50 +101,62 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	convex ()
 	{ return *fields .convex; }
 
+	virtual
 	const SFBool &
 	convex () const
 	{ return *fields .convex; }
 
+	virtual
 	SFFloat &
 	creaseAngle ()
 	{ return *fields .creaseAngle; }
 
+	virtual
 	const SFFloat &
 	creaseAngle () const
 	{ return *fields .creaseAngle; }
 
+	virtual
 	MFInt32 &
 	texCoordIndex ()
 	{ return *fields .texCoordIndex; }
 
+	virtual
 	const MFInt32 &
 	texCoordIndex () const
 	{ return *fields .texCoordIndex; }
 
+	virtual
 	MFInt32 &
 	colorIndex ()
 	{ return *fields .colorIndex; }
 
+	virtual
 	const MFInt32 &
 	colorIndex () const
 	{ return *fields .colorIndex; }
 
+	virtual
 	MFInt32 &
 	normalIndex ()
 	{ return *fields .normalIndex; }
 
+	virtual
 	const MFInt32 &
 	normalIndex () const
 	{ return *fields .normalIndex; }
 
+	virtual
 	MFInt32 &
 	coordIndex ()
 	{ return *fields .coordIndex; }
 
+	virtual
 	const MFInt32 &
 	coordIndex () const
 	{ return *fields .coordIndex; }
@@ -153,23 +165,28 @@ public:
 
 	virtual
 	bool
-	isLineGeometry () const final override
+	isLineGeometry () const override
 	{ return false; }
 
 	///  @name Operations
 
+	virtual
 	void
 	addTexCoords ();
 
 	virtual
 	void
-	addNormals () final override;
+	addNormals () override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

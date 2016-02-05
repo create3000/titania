@@ -510,6 +510,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \

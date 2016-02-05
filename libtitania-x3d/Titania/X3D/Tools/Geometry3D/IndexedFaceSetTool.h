@@ -48,88 +48,110 @@
  *
  ******************************************************************************/
 
-#include "X3DActiveLayerTool.h"
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
 
-#include "../../Browser/X3DBrowser.h"
+#include "../Rendering/X3DComposedGeometryNodeTool.h"
+
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
 
 namespace titania {
 namespace X3D {
 
-X3DActiveLayerTool::X3DActiveLayerTool () :
-	    X3DNode (),
-	       tool (new Tool (getBrowser ())),
-	activeLayer ()
+class IndexedFaceSetTool :
+	public X3DComposedGeometryNodeTool <IndexedFaceSet>
 {
-	addType (X3DConstants::X3DActiveLayerTool);
+public:
 
-	addChildren (tool, activeLayer);
-}
+	///  @name Construction
 
-void
-X3DActiveLayerTool::initialize ()
-{
-	X3DNode::initialize ();
+	IndexedFaceSetTool (IndexedFaceSet* const );
 
-	tool -> setup ();
+	///  @name Fields
 
-	getInlineNode () -> checkLoadState () .addInterest (this, &X3DActiveLayerTool::set_loadState);
-	getBrowser () -> getActiveLayer ()    .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
+	virtual
+	SFBool &
+	convex () final override
+	{ return getNode () -> convex (); }
 
-	set_activeLayer ();
-}
+	virtual
+	const SFBool &
+	convex () const final override
+	{ return getNode () -> convex (); }
 
-void
-X3DActiveLayerTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+	virtual
+	SFFloat &
+	creaseAngle () final override
+	{ return getNode () -> creaseAngle (); }
 
-{
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DActiveLayerTool::set_activeLayer);
+	virtual
+	const SFFloat &
+	creaseAngle () const final override
+	{ return getNode () -> creaseAngle (); }
 
-	tool -> setExecutionContext (value -> getBrowser ());
+	virtual
+	MFInt32 &
+	texCoordIndex () final override
+	{ return getNode () -> texCoordIndex (); }
 
-	X3DNode::setExecutionContext (value);
+	virtual
+	const MFInt32 &
+	texCoordIndex () const final override
+	{ return getNode () -> texCoordIndex (); }
 
-	if (isInitialized ())
-	{
-		getBrowser () -> getActiveLayer () .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
+	virtual
+	MFInt32 &
+	colorIndex () final override
+	{ return getNode () -> colorIndex (); }
 
-		set_activeLayer ();
-	}
-}
+	virtual
+	const MFInt32 &
+	colorIndex () const final override
+	{ return getNode () -> colorIndex (); }
 
-void
-X3DActiveLayerTool::set_loadState (const LoadState loadState)
-{
-	try
-	{
-		if (loadState == COMPLETE_STATE)
-			realize ();
-	}
-	catch (const X3DError &)
-	{ }
-}
+	virtual
+	MFInt32 &
+	normalIndex () final override
+	{ return getNode () -> normalIndex (); }
 
-void
-X3DActiveLayerTool::set_activeLayer ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool .getValue ());
+	virtual
+	const MFInt32 &
+	normalIndex () const final override
+	{ return getNode () -> normalIndex (); }
 
-	activeLayer = getBrowser () -> getActiveLayer ();
+	virtual
+	MFInt32 &
+	coordIndex () final override
+	{ return getNode () -> coordIndex (); }
 
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .emplace_back (tool);
-}
+	virtual
+	const MFInt32 &
+	coordIndex () const final override
+	{ return getNode () -> coordIndex (); }
 
-void
-X3DActiveLayerTool::dispose ()
-{
-	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool);
+	///  @name Operations
 
-	X3DNode::dispose ();
-}
+	virtual
+	void
+	addTexCoords () final override
+	{ getNode () -> addTexCoords (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	realize () final override;
+
+};
 
 } // X3D
 } // titania
+
+#endif

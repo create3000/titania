@@ -763,6 +763,9 @@
     <None Include="Titania\X3D\Browser\Tools\X3DToolContext.h" />
     <None Include="Titania\X3D\Browser\Tools\TransformToolOptions.h" />
     <None Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.h" />
+    <None Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1280,6 +1283,7 @@
     <Compile Include="Titania\X3D\Browser\Tools\X3DToolContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\TransformToolOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1348,6 +1352,8 @@
     <Folder Include="Titania\X3D\Browser\Geospatial\" />
     <Folder Include="Titania\X3D\Editing\" />
     <Folder Include="Titania\X3D\Browser\Tools\" />
+    <Folder Include="Titania\X3D\Tools\Rendering\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

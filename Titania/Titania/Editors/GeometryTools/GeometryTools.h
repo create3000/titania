@@ -54,6 +54,14 @@
 #include "../../UserInterfaces/X3DGeometryToolsInterface.h"
 
 namespace titania {
+namespace X3D {
+
+class X3DGeometryNode;
+
+} // X3D
+} // titania
+
+namespace titania {
 namespace puck {
 
 class GeometryTools :
@@ -88,6 +96,18 @@ private:
 	virtual
 	void
 	on_hammer_clicked () final override;
+
+	virtual
+	void
+	on_edit_clicked () final override;
+
+	virtual
+	void
+	on_show_normals_toggled () final override;
+
+	///  @name Members
+
+	X3D::MFNode editableNodes;
 
 };
 

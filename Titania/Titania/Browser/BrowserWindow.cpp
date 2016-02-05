@@ -295,18 +295,27 @@ BrowserWindow::set_executionContext ()
 {
 	const bool inScene = not inPrototypeInstance ();
 
+	// Window menu
+
 	getImportMenuItem ()                 .set_sensitive (inScene);
 	getSaveMenuItem ()                   .set_sensitive (inScene);
 	getSaveAsMenuItem ()                 .set_sensitive (inScene);
 	getRemoveUnusedPrototypesMenuItem () .set_sensitive (inScene);
+	getEditMenuItem ()                   .set_sensitive (inScene);
 
-	getEditMenuItem () .set_sensitive (inScene);
+	// Browser menu
+
+	getBrowserImportMenuItem ()                 .set_sensitive (inScene);
+	getBrowserSaveMenuItem ()                   .set_sensitive (inScene);
+	getBrowserSaveAsMenuItem ()                 .set_sensitive (inScene);
+	getBrowserRemoveUnusedPrototypesMenuItem () .set_sensitive (inScene);
+	getBrowserEditMenuItem ()                   .set_sensitive (inScene);
+
+	// Toolbar
 
 	getSaveButton ()                    .set_sensitive (inScene);
 	getImportButton ()                  .set_sensitive (inScene);
 	getCreatePrototypeInstanceButton () .set_sensitive (inScene);
-
-	set_selection (getSelection () -> getChildren ());
 
 	changing = true;
 
@@ -314,6 +323,10 @@ BrowserWindow::set_executionContext ()
 	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getCurrentContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
 
 	changing = false;
+
+	// Selection
+
+	set_selection (getSelection () -> getChildren ());
 }
 
 void
@@ -343,6 +356,8 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	const bool haveSelection  = inScene and selection .size ();
 	const bool haveSelections = inScene and selection .size () > 1;
 
+	// Window menu
+
 	getCutMenuItem ()    .set_sensitive (haveSelection);
 	getCopyMenuItem ()   .set_sensitive (haveSelection);
 	getDeleteMenuItem () .set_sensitive (haveSelection);
@@ -362,7 +377,32 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	getHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
 	getShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
 
-	getObjectMenuItem () .set_sensitive (haveSelection);
+	getGeometryMenuItem () .set_sensitive (haveSelection);
+
+	// Browser menu
+
+	getBrowserCutMenuItem ()    .set_sensitive (haveSelection);
+	getBrowserCopyMenuItem ()   .set_sensitive (haveSelection);
+	getBrowserDeleteMenuItem () .set_sensitive (haveSelection);
+
+	getBrowserCloneMenuItem ()       .set_sensitive (haveSelection);
+	getBrowserCreateCloneMenuItem () .set_sensitive (haveSelections);
+	getBrowserUnlinkCloneMenuItem () .set_sensitive (haveSelection);
+
+	getBrowserGroupSelectedNodesMenuItem () .set_sensitive (haveSelection);
+	getBrowserUngroupMenuItem ()            .set_sensitive (haveSelection);
+	getBrowserAddToGroupMenuItem ()         .set_sensitive (haveSelections);
+	getBrowserDetachFromGroupMenuItem ()    .set_sensitive (haveSelection);
+	getBrowserCreateParentMenuItem ()       .set_sensitive (haveSelection);
+
+	getBrowserDeselectAllMenuItem ()           .set_sensitive (selection .size ());
+	getBrowserHideSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
+	getBrowserHideUnselectedObjectsMenuItem () .set_sensitive (haveSelection);
+	getBrowserShowSelectedObjectsMenuItem ()   .set_sensitive (haveSelection);
+
+	getBrowserGeometryMenuItem () .set_sensitive (haveSelection);
+
+	// Dashboard
 
 	getSelectParentButton ()    .set_sensitive (haveSelection);
 	getSelectChildrenButton ()  .set_sensitive (haveSelection);
@@ -1208,7 +1248,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
 	getObjectIconsMenuItem ()                  .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
-	getObjectMenuItem ()                       .set_visible (enabled);
+	getGeometryMenuItem ()                     .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
 
 	getBrowserOpenRecentMenuItem ()                   .set_visible (enabled);
@@ -1222,7 +1262,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getBrowserShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
 	getBrowserObjectIconsMenuItem ()                  .set_visible (enabled);
 	getBrowserSelectionMenuItem ()                    .set_visible (enabled);
-	getBrowserObjectMenuItem ()                       .set_visible (enabled);
+	getBrowserGeometryMenuItem ()                     .set_visible (enabled);
 	getBrowserLayoutMenuItem ()                       .set_visible (enabled);
 
 	getLocationBar () .set_visible (not enabled);
