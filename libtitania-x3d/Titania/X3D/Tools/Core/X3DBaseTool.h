@@ -98,7 +98,7 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
 	virtual
@@ -166,7 +166,7 @@ public:
 	virtual
 	void
 	addEvent () final override
-	{ }
+	{ node -> addEvent (); }
 	
 	virtual
 	void
@@ -217,13 +217,19 @@ private:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const) final override
-	{ }
+	addEvent (X3DChildObject* const object) final override
+	{
+		if (getChildren () .count (object))
+			X3DBaseNode::addEvent (object);
+	}
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override
-	{ }
+	addEvent (X3DChildObject* const object, const EventPtr & event) final override
+	{
+		if (getChildren () .count (object))
+			X3DBaseNode::addEvent (object, event);
+	}
 
 	///  @name Members
 

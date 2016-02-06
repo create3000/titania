@@ -51,12 +51,11 @@
 #ifndef __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRY_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRY_NODE_TOOL_H__
 
-#include "../Core/Tool.h"
 #include "../Core/X3DNodeTool.h"
+#include "../Rendering/NormalTool.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -67,7 +66,22 @@ class X3DGeometryNodeTool :
 {
 public:
 
+	///  @name Private fields
+
+	SFBool &
+	showNormals ()
+	{ return fields .showNormals; }
+
+	const SFBool &
+	showNormals () const
+	{ return fields .showNormals; }
+
 	///  @name Member access
+
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
 
 	virtual
 	bool
@@ -105,15 +119,6 @@ public:
 	const std::vector <X3DGeometryNode::Element> &
 	getElements () const final override
 	{ return getNode () -> getElements (); }
-
-	///  @name Member access
-
-	void
-	setShowNormals (const bool);
-
-	bool
-	getShowNormals () const
-	{ return showNormals; }
 
 	///  @name Operations
 
@@ -163,88 +168,80 @@ protected:
 
 	X3DGeometryNodeTool ();
 
+	virtual
+	void
+	initialize () override;
+
 
 private:
 
-	void
-	addNormalTool ();
+	///  @name Operations
 
 	void
-	removeNormalTool ();
+	set_showNormals ();
 
 	///  @name Members
 
-	bool                            showNormals;
-	X3D::X3DPtr <Tool>              normalTool;
-	X3D::X3DPtrArray <X3DLayerNode> normalLayers;
+	struct Fields
+	{
+		Fields ();
+
+		SFBool showNormals;
+	};
+
+	Fields fields;
+
+	X3D::X3DPtr <NormalTool> normalTool;
 
 };
 
 template <class Type>
+X3DGeometryNodeTool <Type>::Fields::Fields () :
+	showNormals ()
+{ }
+
+template <class Type>
 X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	X3DNodeTool <Type> (),
-	       showNormals (false),
-	        normalTool (),
-	      normalLayers ()
+	            fields (),
+	        normalTool (new NormalTool (this -> getExecutionContext ()))
 {
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
-	this -> addChildren (normalTool, normalLayers);
+	this -> addChildren (showNormals (),
+                        normalTool);
 }
 
 template <class Type>
 void
-X3DGeometryNodeTool <Type>::setShowNormals (const bool value)
+X3DGeometryNodeTool <Type>::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	if (value == showNormals)
-		return;
+	normalTool -> setExecutionContext (executionContext);
 
-__LOG__ << value << std::endl;
-
-	showNormals = value;
-
-	if (showNormals)
-		addNormalTool ();
-	else
-		removeNormalTool ();
+	X3DNodeTool <Type>::setExecutionContext (executionContext);
 }
 
 template <class Type>
 void
-X3DGeometryNodeTool <Type>::addNormalTool ()
+X3DGeometryNodeTool <Type>::initialize ()
 {
-	if (not normalTool)
-	{
-		normalTool = new Tool (this -> getExecutionContext ());
-		normalTool -> setup ();
-		normalTool -> requestAsyncLoad ({ get_tool ("NormalTool.x3dv") .str () });
-	}
+	X3DNodeTool <Type>::initialize ();
 
-	// Add to current layers.
+	showNormals () .addInterest (normalTool -> enabled ());
 
-	const auto layers = this -> getLayers ();
-
-	normalLayers .assign (layers .begin (), layers .end ());
-
-	for (const auto & layer : normalLayers)
-		layer -> getFriends () -> children () .emplace_back (normalTool);
-}
-
-template <class Type>
-void
-X3DGeometryNodeTool <Type>::removeNormalTool ()
-{
-	for (const auto & layer : normalLayers)
-	{
-		if (layer)
-			layer -> getFriends () -> children () .remove (normalTool);
-	}
+	normalTool -> enabled () = showNormals ();
+	normalTool -> setup ();
 }
 
 template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
+	if (normalTool)
+		normalTool -> draw (container);
+
 	this -> getNode () -> draw (container);
 }
 
@@ -252,7 +249,7 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::dispose ()
 {
-	removeNormalTool ();
+	this -> getNode () -> removeUserDefinedField ("showNormals");
 
 	X3DNodeTool <Type>::dispose ();
 }

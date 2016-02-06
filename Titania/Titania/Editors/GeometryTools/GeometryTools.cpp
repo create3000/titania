@@ -174,20 +174,20 @@ GeometryTools::on_show_normals_toggled ()
 		try
 		{
 			const auto innerNode = node -> getInnerNode ();
-	
+
 			for (const auto & type : basic::make_reverse_range (node -> getType ()))
 			{
 				switch (type)
 				{
 					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
-						dynamic_cast <X3D::IndexedFaceSetTool*> (innerNode) -> setShowNormals (getShowNormalsToggleButton () .get_active ());
+						dynamic_cast <X3D::IndexedFaceSetTool*> (innerNode) -> showNormals () = getShowNormalsToggleButton () .get_active ();
 						break;
 					}
 					default:
 						break;
 				}
-	
+
 				break;
 			}
 		}

@@ -225,7 +225,9 @@ X3DBoundedObjectTool <Type>::reshape ()
 	   getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError &)
-	{ }
+	{
+		getBrowser () -> beginUpdateForFrame ();
+	}
 }
 
 template <class Type>

@@ -380,7 +380,9 @@ X3DTransformNodeTool <Type>::reshape ()
 		getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		getBrowser () -> beginUpdateForFrame ();
+	}
 }
 
 template <class Type>

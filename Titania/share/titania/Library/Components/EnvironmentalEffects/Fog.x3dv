@@ -1,7 +1,3 @@
 #X3D V3.3 utf8 Titania
 
-META "titania magic" "Fog"
-
-Fog {
-	visibilityRange 100
-}
+Fog { }

@@ -1,0 +1,143 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+META "comment" "World of Titania"
+META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Sat, 06 Feb 2016 13:35:54 GMT"
+
+EXTERNPROTO BooleanSwitch [
+  inputOutput    SFBool  whichChoice
+  initializeOnly SFVec3f bboxSize
+  initializeOnly SFVec3f bboxCenter
+  inputOnly      MFNode  addChildren
+  inputOnly      MFNode  removeChildren
+  inputOutput    MFNode  children
+]
+[
+  "library/BooleanSwitch.x3dv#BooleanSwitch",
+  "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/BooleanSwitch.x3dv#BooleanSwitch"
+]
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              5.5152587890625,
+              5.58559703826904,
+              6.19545316696167
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.642683088779449,
+              0.747864902019501,
+              0.16630282998085,
+              0.91634738445282
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF Tool Script {
+            inputOutput SFBool     enabled FALSE
+            inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+
+            url "ecmascript:
+// Leaves empty"
+          }
+        }
+      }
+    ]
+  }
+}
+
+DEF _1 BooleanSwitch {
+  children [
+    DEF _2 Group { }
+    DEF _3 TransformMatrix3D {
+      children DEF IndexedLineSet Transform {
+        scale 2 2 2
+        children Shape {
+          geometry IndexedLineSet {
+            colorPerVertex FALSE
+            colorIndex [
+              0,
+              1,
+              2
+            ]
+            coordIndex [
+              0,
+              1,
+              -1,
+              2,
+              3,
+              -1,
+              4,
+              5,
+              -1
+            ]
+            color Color {
+              color [
+                1 0 0,
+                0 1 0,
+                0 0 1
+              ]
+            }
+            coord Coordinate {
+              point [
+                -1 0 0,
+                1 0 0,
+                0 -1 0,
+                0 1 0,
+                0 0 -1,
+                0 0 1
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
+USE Tool
+
+ROUTE Tool.modelViewMatrix_changed TO _3.set_matrix
+ROUTE Tool.enabled_changed TO _1.set_whichChoice
+
+EXPORT Tool

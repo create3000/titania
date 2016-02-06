@@ -288,6 +288,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 
 	//  Non standard: Component »Titania«
 
+	add ("TransformMatrix3D",            new TransformMatrix3D            (executionContext));
 	add ("TouchGroup",                   new TouchGroup                   (executionContext));
 
 	//std::clog << "\tDone creating node index." << std::endl;

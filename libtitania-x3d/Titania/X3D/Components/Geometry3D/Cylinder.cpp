@@ -113,7 +113,8 @@ Cylinder::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getCylinderOptions () .removeInterest (this, &Cylinder::update);
+	if (isInitialized ())
+		getBrowser () -> getCylinderOptions () .removeInterest (this, &Cylinder::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

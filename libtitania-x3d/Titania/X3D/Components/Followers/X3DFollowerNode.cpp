@@ -71,14 +71,18 @@ X3DFollowerNode::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
+	if (isInitialized ())
+		getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
 
 	X3DChildNode::setExecutionContext (executionContext);
 
-	if (isActive ())
+	if (isInitialized ())
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
-		getBrowser () -> addEvent ();
+		if (isActive ())
+		{
+			getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
+			getBrowser () -> addEvent ();
+		}
 	}
 }
 

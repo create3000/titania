@@ -107,7 +107,8 @@ Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getDisk2DOptions () .removeInterest (this, &Disk2D::update);
+	if (isInitialized ())
+		getBrowser () -> getDisk2DOptions () .removeInterest (this, &Disk2D::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

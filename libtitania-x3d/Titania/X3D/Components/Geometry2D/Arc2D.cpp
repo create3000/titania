@@ -105,7 +105,8 @@ Arc2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getArcClose2DOptions () .removeInterest (this, &Arc2D::update);
+	if (isInitialized ())
+		getBrowser () -> getArcClose2DOptions () .removeInterest (this, &Arc2D::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

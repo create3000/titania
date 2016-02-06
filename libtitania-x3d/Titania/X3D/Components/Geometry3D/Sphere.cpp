@@ -99,7 +99,8 @@ Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getSphereOptions () .removeInterest (this, &Sphere::update);
+	if (isInitialized ())
+		getBrowser () -> getSphereOptions () .removeInterest (this, &Sphere::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

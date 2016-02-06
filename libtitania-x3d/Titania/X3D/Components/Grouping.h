@@ -55,6 +55,7 @@
 #include "Grouping/StaticGroup.h"
 #include "Grouping/Switch.h"
 #include "Grouping/Transform.h"
+#include "Grouping/TransformMatrix3D.h"
 #include "Grouping/X3DBoundedObject.h"
 #include "Grouping/X3DGroupingNode.h"
 

@@ -449,8 +449,10 @@ private:
 	static JSBool TextureTransformMatrix3D     (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TimeSensor                   (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TimeTrigger                  (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool TouchGroup                   (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TouchSensor                  (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool Transform                    (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool TransformMatrix3D            (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TransformSensor              (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TransmitterPdu               (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool TriangleFanSet               (JSContext *, JSObject *, jsid, jsval*);

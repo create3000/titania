@@ -538,7 +538,9 @@ throw (Error <INVALID_NAME>,
 	if (not private_)
 		field .addClones (1);
 
-	fieldDefinitions .emplace_back (&field);
+	if (not field .isHidden ())
+		fieldDefinitions .emplace_back (&field);
+
 	fields .emplace (name, &field);
 }
 
@@ -712,7 +714,8 @@ throw (Error <INVALID_NAME>,
 {
 	addField (accessType, name, *field);
 
-	++ numUserDefinedFields;
+	if (not field -> isHidden ())
+		++ numUserDefinedFields;
 
 	fieldsOutput = chrono::now ();
 }
@@ -787,8 +790,12 @@ X3DBaseNode::getChangedFields () const
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
+		if (field -> isHidden ())
+			continue;
+
 		if (field -> getReferences () .empty ())
 		{
+
 			if (not field -> isInitializable ())
 				continue;
 

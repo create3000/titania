@@ -199,8 +199,8 @@ LibraryView::append (const std::string & path) const
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania  = os::file_exists (directory -> get_path () + "/." + basename + "-Titania");
-					const bool cobweb   = os::file_exists (directory -> get_path () + "/." + basename + "-Cobweb");
+					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
 					const auto iter     = getTreeStore () -> append ();
 
 					iter -> set_value (Columns::ICON,    std::string ("gtk-file"));
@@ -243,8 +243,8 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
 					const auto basename = basic::uri (fileInfo -> get_name ()) .basename (false);
-					const bool titania  = os::file_exists (directory -> get_path () + "/." + basename + "-Titania");
-					const bool cobweb   = os::file_exists (directory -> get_path () + "/." + basename + "-Cobweb");
+					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
+					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
 					const auto iter     = getTreeStore () -> append (parent -> children ());
 
 					iter -> set_value (Columns::ICON,    std::string ("gtk-file"));

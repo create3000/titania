@@ -192,6 +192,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Grouping/StaticGroup.cpp \
 	Titania/X3D/Components/Grouping/Switch.cpp \
 	Titania/X3D/Components/Grouping/Transform.cpp \
+	Titania/X3D/Components/Grouping/TransformMatrix3D.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformMatrix4DNode.cpp \
@@ -520,6 +521,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
+	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

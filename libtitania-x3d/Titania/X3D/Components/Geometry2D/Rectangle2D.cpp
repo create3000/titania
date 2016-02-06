@@ -100,7 +100,8 @@ Rectangle2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getRectangle2DOptions () .removeInterest (this, &Rectangle2D::update);
+	if (isInitialized ())
+		getBrowser () -> getRectangle2DOptions () .removeInterest (this, &Rectangle2D::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

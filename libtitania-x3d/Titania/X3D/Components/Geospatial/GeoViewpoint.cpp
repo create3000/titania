@@ -85,6 +85,19 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::GeoViewpoint);
 
+	switch (getExecutionContext () -> getSpecificationVersion ())
+	{
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+			break;
+		default:
+			navType ()   .isHidden (true);
+			headlight () .isHidden (true);
+			break;
+	}
+
 	addField (inputOutput,    "metadata",          metadata ());
 	addField (inputOnly,      "set_bind",          set_bind ());
 	addField (inputOutput,    "description",       description ());
@@ -107,19 +120,6 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 	fieldOfView ()      .setUnit (UnitCategory::ANGLE);
 
 	position () .isGeospatial (true);
-
-	switch (getExecutionContext () -> getSpecificationVersion ())
-	{
-		case VRML_V2_0:
-		case X3D_V3_0:
-		case X3D_V3_1:
-		case X3D_V3_2:
-			break;
-		default:
-			navType ()   .isHidden (true);
-			headlight () .isHidden (true);
-			break;
-	}
 
 	addChildren (navigationInfoNode);
 }

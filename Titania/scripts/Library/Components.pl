@@ -246,10 +246,20 @@ foreach my $node ($nodes -> get_groups ())
 {
 	say $node;
 
+	my $componentName = $nodes -> get_string ($node, "componentName");
+
+	system "mkdir", "-p", "$components/$componentName/.Titania";
+	system "touch", "$components/$componentName/.Titania/$node";
+}
+
+foreach my $node ($nodes -> get_groups ())
+{
+	say $node;
+
 	next unless exists $cobweb {$node};
 
 	my $componentName = $nodes -> get_string ($node, "componentName");
 
-	system "mkdir", "-p", "$components/$componentName";
-	system "touch", "$components/$componentName/.$node-Cobweb";
+	system "mkdir", "-p", "$components/$componentName/.Cobweb";
+	system "touch", "$components/$componentName/.Cobweb/$node";
 }

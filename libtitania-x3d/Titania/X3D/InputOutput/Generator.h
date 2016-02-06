@@ -218,11 +218,11 @@ private:
 	getUniqueName ();
 
 	using ExecutionContextStack = std::vector <const X3DExecutionContext*>;
-	using NodeSet               = std::set <const X3DBaseNode*>;
+	using NodeIdSet             = std::set <size_t>;
 	using NameIndex             = std::map <std::string, const X3DBaseNode*>;
-	using NameIndexByNode       = std::map <const X3DBaseNode*, std::string>;
-	using LocalNodeSet          = std::map <const X3DExecutionContext*, NodeSet>;
-	using ImportedNamesIndex    = std::map <const X3DBaseNode*, std::string>;
+	using NameIndexByNode       = std::map <size_t, std::string>;
+	using LocalNodeSet          = std::map <const X3DExecutionContext*, NodeIdSet>;
+	using ImportedNamesIndex    = std::map <size_t, std::string>;
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
 	static StyleType                style;
@@ -232,7 +232,7 @@ private:
 	static size_t                level;
 	static LocalNodeSet          exportedNodesIndex;
 	static LocalNodeSet          importedNodesIndex;
-	static NodeSet               nodes;
+	static NodeIdSet             nodes;
 	static NameIndex             names;
 	static NameIndexByNode       namesByNode;
 	static size_t                newName;

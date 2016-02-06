@@ -171,7 +171,9 @@ private:
 	      getBrowser () -> beginUpdateForFrame ();
 		}
 		catch (const X3DError & error)
-		{ }
+		{
+			getBrowser () -> beginUpdateForFrame ();
+		}
 	}
 
 };

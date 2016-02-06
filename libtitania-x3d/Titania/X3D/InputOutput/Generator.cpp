@@ -68,7 +68,7 @@ Generator::ExecutionContextStack Generator::executionContextStack (1);
 size_t                           Generator::level = 0;
 Generator::LocalNodeSet          Generator::exportedNodesIndex;
 Generator::LocalNodeSet          Generator::importedNodesIndex;
-Generator::NodeSet               Generator::nodes;
+Generator::NodeIdSet             Generator::nodes;
 Generator::NameIndex             Generator::names;
 Generator::NameIndexByNode       Generator::namesByNode;
 size_t                           Generator::newName = 0;
@@ -189,8 +189,8 @@ Generator::PushExecutionContext (const X3DExecutionContext* const value)
 {
 	executionContextStack .emplace_back (value);
 
-	exportedNodesIndex .emplace (value, NodeSet ());
-	importedNodesIndex .emplace (value, NodeSet ());
+	exportedNodesIndex .emplace (value, NodeIdSet ());
+	importedNodesIndex .emplace (value, NodeIdSet ());
 }
 
 void
@@ -221,9 +221,9 @@ Generator::LeaveScope ()
 
 	if (level == 0)
 	{
-		nodes .clear ();
-		names .clear ();
-		namesByNode .clear ();
+		nodes         .clear ();
+		names         .clear ();
+		namesByNode   .clear ();
 		importedNames .clear ();
 	}
 }
@@ -237,7 +237,7 @@ Generator::ExportedNodes (const ExportedNodeIndex & exportedNodes)
 	{
 		try
 		{
-			index .emplace (exportedNode .second -> getLocalNode ());
+			index .emplace (exportedNode .second -> getLocalNode () -> getId ());
 		}
 		catch (...)
 		{ }
@@ -253,7 +253,7 @@ Generator::ImportedNodes (const ImportedNodeIndex & importedNodes)
 	{
 		try
 		{
-			index .emplace (importedNode .second -> getInlineNode ());
+			index .emplace (importedNode .second -> getInlineNode () -> getId ());
 		}
 		catch (...)
 		{ }
@@ -272,13 +272,13 @@ Generator::IsSharedNode (const X3DBaseNode* const baseNode)
 bool
 Generator::ExistsNode (const X3DBaseNode* const baseNode)
 {
-	return nodes .count (baseNode);
+	return nodes .count (baseNode -> getId ());
 }
 
 void
 Generator::AddNode (const X3DBaseNode* const baseNode)
 {
-	nodes .emplace (baseNode);
+	nodes .emplace (baseNode -> getId ());
 }
 
 const std::string &
@@ -286,7 +286,7 @@ Generator::Name (const X3DBaseNode* const baseNode)
 {
 	// Is the node already in index
 
-	const auto iter = namesByNode .find (baseNode);
+	const auto iter = namesByNode .find (baseNode -> getId ());
 
 	if (iter not_eq namesByNode .end ())
 		return iter -> second;
@@ -299,10 +299,10 @@ Generator::Name (const X3DBaseNode* const baseNode)
 		{
 			std::string name = getUniqueName ();
 
-			names [name]           = baseNode;
-			namesByNode [baseNode] = name;
+			names [name]                       = baseNode;
+			namesByNode [baseNode -> getId ()] = name;
 
-			return namesByNode [baseNode];
+			return namesByNode [baseNode -> getId ()];
 		}
 
 		// The node doesn't need a name
@@ -347,10 +347,10 @@ Generator::Name (const X3DBaseNode* const baseNode)
 		}
 	}
 
-	names [name]           = baseNode;
-	namesByNode [baseNode] = name;
+	names [name]                       = baseNode;
+	namesByNode [baseNode -> getId ()] = name;
 
-	return namesByNode [baseNode];
+	return namesByNode [baseNode -> getId ()];
 }
 
 bool
@@ -366,7 +366,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 	{
 		const auto & index = exportedNodesIndex .at (baseNode -> getExecutionContext ());
 
-		if (index .count (baseNode))
+		if (index .count (baseNode -> getId ()))
 			return true;
 	}
 	catch (...)
@@ -376,7 +376,7 @@ Generator::needsName (const X3DBaseNode* const baseNode)
 	{
 		const auto & index = importedNodesIndex .at (baseNode -> getExecutionContext ());
 
-		if (index .count (baseNode))
+		if (index .count (baseNode -> getId ()))
 			return true;
 	}
 	catch (...)
@@ -404,7 +404,7 @@ Generator::getUniqueName ()
 void
 Generator::AddImportedNode (const X3DBaseNode* const exportedNode, const std::string & importedName)
 {
-	importedNames [exportedNode] = importedName;
+	importedNames [exportedNode -> getId ()] = importedName;
 }
 
 const std::string &
@@ -412,7 +412,7 @@ Generator::LocalName (const X3DBaseNode* node)
 {
 	try
 	{
-		return importedNames .at (node);
+		return importedNames .at (node -> getId ());
 	}
 	catch (...)
 	{

@@ -366,8 +366,10 @@ JSPropertySpec X3DConstants::properties [ ] = {
 	{ "TextureTransformMatrix3D",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TextureTransformMatrix3D,     nullptr },
 	{ "TimeSensor",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeSensor,                   nullptr },
 	{ "TimeTrigger",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TimeTrigger,                  nullptr },
+	{ "TouchGroup",                   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchGroup,                   nullptr },
 	{ "TouchSensor",                  JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TouchSensor,                  nullptr },
 	{ "Transform",                    JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, Transform,                    nullptr },
+	{ "TransformMatrix3D",            JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformMatrix3D,            nullptr },
 	{ "TransformSensor",              JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransformSensor,              nullptr },
 	{ "TransmitterPdu",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TransmitterPdu,               nullptr },
 	{ "TriangleFanSet",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, TriangleFanSet,               nullptr },
@@ -2095,6 +2097,12 @@ X3DConstants::TimeTrigger (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
+X3DConstants::TouchGroup (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::TouchGroup, vp);
+}
+
+JSBool
 X3DConstants::TouchSensor (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::TouchSensor, vp);
@@ -2104,6 +2112,12 @@ JSBool
 X3DConstants::Transform (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::Transform, vp);
+}
+
+JSBool
+X3DConstants::TransformMatrix3D (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::TransformMatrix3D, vp);
 }
 
 JSBool

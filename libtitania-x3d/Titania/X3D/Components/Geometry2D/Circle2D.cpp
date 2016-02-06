@@ -99,7 +99,8 @@ Circle2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getCircle2DOptions () .removeInterest (this, &Circle2D::update);
+	if (isInitialized ())
+		getBrowser () -> getCircle2DOptions () .removeInterest (this, &Circle2D::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 

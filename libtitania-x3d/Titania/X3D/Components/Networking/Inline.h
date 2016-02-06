@@ -182,7 +182,7 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream & ostream) const final override
+	toStream (std::ostream & ostream) const override
 	{ X3DBaseNode::toStream (ostream); }
 
 	///  @name Destruction

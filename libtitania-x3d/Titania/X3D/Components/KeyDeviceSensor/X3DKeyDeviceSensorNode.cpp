@@ -77,14 +77,17 @@ X3DKeyDeviceSensorNode::setExecutionContext (X3DExecutionContext* const executio
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getExecutionContext () -> isLive () .removeInterest (this, &X3DKeyDeviceSensorNode::set_live);
-
-	if (executionContext -> getBrowser () not_eq getBrowser ())
+	if (isInitialized ())
 	{
-		if (isActive ())
+		getExecutionContext () -> isLive () .removeInterest (this, &X3DKeyDeviceSensorNode::set_live);
+	
+		if (executionContext -> getBrowser () not_eq getBrowser ())
 		{
-			getBrowser () -> setKeyDeviceSensorNode (nullptr);
-			executionContext -> getBrowser () -> setKeyDeviceSensorNode (this);
+			if (isActive ())
+			{
+				getBrowser () -> setKeyDeviceSensorNode (nullptr);
+				executionContext -> getBrowser () -> setKeyDeviceSensorNode (this);
+			}
 		}
 	}
 

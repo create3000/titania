@@ -263,7 +263,9 @@ X3DEnvironmentalSensorNodeTool <Type>::reshape ()
 	   getBrowser () -> beginUpdateForFrame ();
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		getBrowser () -> beginUpdateForFrame ();
+	}
 }
 
 template <class Type>

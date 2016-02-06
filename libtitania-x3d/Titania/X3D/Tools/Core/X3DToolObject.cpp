@@ -93,10 +93,7 @@ const SFNode &
 X3DToolObject::getToolNode () const
 throw (Error <DISPOSED>)
 {
-	if (toolNode)
-		return toolNode;
-
-	throw Error <DISPOSED> ("X3DToolObject: The toolNode is disposed.");
+	return toolNode;
 }
 
 void

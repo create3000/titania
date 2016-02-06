@@ -97,8 +97,11 @@ X3DEnvironmentalSensorNode::setExecutionContext (X3DExecutionContext* const exec
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> sensors ()         .removeInterest (this, &X3DEnvironmentalSensorNode::update);
-	getExecutionContext () -> isLive () .removeInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+	if (isInitialized ())
+	{
+		getBrowser () -> sensors ()         .removeInterest (this, &X3DEnvironmentalSensorNode::update);
+		getExecutionContext () -> isLive () .removeInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 

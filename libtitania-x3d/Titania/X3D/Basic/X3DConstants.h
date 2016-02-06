@@ -390,6 +390,11 @@ enum NodeType : uint16_t
 	WindPhysicsModel,
 	WorldInfo,
 
+	// Non statndard
+
+	TouchGroup,
+	TransformMatrix3D,
+
 	// Abstract node types
 
 	X3DAppearanceChildNode,

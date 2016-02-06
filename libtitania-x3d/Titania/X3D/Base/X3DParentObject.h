@@ -163,6 +163,11 @@ protected:
 	void
 	removeChild (X3DChildObject &);
 
+	// Internal used fields
+	const ChildObjectSet &
+	getChildren () const
+	{ return children; }
+
 	///  @name Event handling
 
 	///  If extended event handling is set to true, initializeOnly field behave like inputOutput fields.  Otherwise
