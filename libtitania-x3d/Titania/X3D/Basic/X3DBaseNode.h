@@ -260,7 +260,6 @@ public:
 	{ return false; }
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
-	virtual
 	void
 	setUserDefinedFields (const X3D::FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
@@ -494,6 +493,7 @@ protected:
 	///  @name Field handling
 
 	///  Adds @a field to the set of fields of this node.
+	virtual
 	void
 	addField (const AccessType, const std::string &, X3DFieldDefinition &)
 	throw (Error <INVALID_NAME>,
@@ -548,11 +548,11 @@ private:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
-	///  @name Field handling
-
 	///  Replace @a node by this node.
 	void
 	replace (X3DBaseNode* const);
+
+	///  @name Field handling
 
 	///  Remove field implementation.
 	void

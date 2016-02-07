@@ -77,11 +77,11 @@ Sidebar::initialize ()
 	X3DSidebarInterface::initialize ();
 	X3DNotebook <X3DSidebarInterface>::initialize ();
 
-	addPage ("ViewpointList", std::make_shared <ViewpointList> (getBrowserWindow ()), getViewpointListBox ());
-	addPage ("HistoryView",   std::make_shared <HistoryView>   (getBrowserWindow ()), getHistoryViewBox   ());
-	addPage ("LibraryView",   std::make_shared <LibraryView>   (getBrowserWindow ()), getLibraryViewBox   ());
-	addPage ("OutlineEditor", std::make_shared <OutlineEditor> (getBrowserWindow ()), getOutlineEditorBox ());
-	addPage ("NodeEditor",    std::make_shared <NodeEditor>    (getBrowserWindow ()), getNodeEditorBox    ());
+	addPage ("ViewpointList", getViewpointListBox ());
+	addPage ("HistoryView",   getHistoryViewBox   ());
+	addPage ("LibraryView",   getLibraryViewBox   ());
+	addPage ("OutlineEditor", getOutlineEditorBox ());
+	addPage ("NodeEditor",    getNodeEditorBox    ());
 
 	getPage <NodeEditor> ("NodeEditor") -> getNotebook () .set_tab_pos (Gtk::POS_RIGHT);
 }

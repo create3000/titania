@@ -79,6 +79,15 @@
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 
+#include "../Widgets/ViewpointList/ViewpointList.h"
+#include "../Widgets/HistoryView/HistoryView.h"
+#include "../Widgets/LibraryView/LibraryView.h"
+#include "../Widgets/OutlineEditor/OutlineEditor.h"
+
+#include "../Widgets/Console/Console.h"
+#include "../Widgets/ScriptEditor/ScriptEditor.h"
+#include "../Widgets/AnimationEditor/AnimationEditor.h"
+
 namespace titania {
 namespace puck {
 
@@ -115,6 +124,13 @@ public:
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
+		         std::make_pair ("ViewpointList",            constructDialog <ViewpointList>),
+		         std::make_pair ("HistoryView",              constructDialog <HistoryView>),
+		         std::make_pair ("LibraryView",              constructDialog <LibraryView>),
+		         std::make_pair ("OutlineEditor",            constructDialog <OutlineEditor>),
+		         std::make_pair ("Console",                  constructDialog <Console>),
+		         std::make_pair ("ScriptEditor",             constructDialog <ScriptEditor>),
+		         std::make_pair ("AnimationEditor",          constructDialog <AnimationEditor>),
 				         })
 	{ }
 
@@ -128,11 +144,11 @@ private:
 
 	///  @name Construction
 
-	template <class Dialog>
+	template <class Widget>
 	static
 	X3DUserInterface*
 	constructDialog (X3DBrowserWindow* const browserWindow)
-	{ return new Dialog (browserWindow); }
+	{ return new Widget (browserWindow); }
 
 	///  @name Members
 

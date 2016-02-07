@@ -75,9 +75,9 @@ Footer::initialize ()
 	X3DFooterInterface::initialize ();
 	X3DNotebook <X3DFooterInterface>::initialize ();
 
-	addPage ("Console",         std::make_shared <Console>         (getBrowserWindow ()), getConsoleBox         ());
-	addPage ("ScriptEditor",    std::make_shared <ScriptEditor>    (getBrowserWindow ()), getScriptEditorBox    ());
-	addPage ("AnimationEditor", std::make_shared <AnimationEditor> (getBrowserWindow ()), getAnimationEditorBox ());
+	addPage ("Console",         getConsoleBox         ());
+	addPage ("ScriptEditor",    getScriptEditorBox    ());
+	addPage ("AnimationEditor", getAnimationEditorBox ());
 }
 
 Footer::~Footer ()

@@ -85,18 +85,18 @@ NodeEditor::initialize ()
 	X3DNodeEditorInterface::initialize ();
 	X3DNotebook <X3DNodeEditorInterface>::initialize ();
 
-	addPage ("NodePropertiesEditor",     std::make_shared <NodePropertiesEditor>     (getBrowserWindow ()), getNodePropertiesEditorBox     ());
-	addPage ("AppearanceEditor",         std::make_shared <AppearanceEditor>         (getBrowserWindow ()), getAppearanceEditorBox         ());
-	addPage ("TextureEditor",            std::make_shared <TextureEditor>            (getBrowserWindow ()), getTextureEditorBox            ());
-	addPage ("GeometryPropertiesEditor", std::make_shared <GeometryPropertiesEditor> (getBrowserWindow ()), getGeometryPropertiesEditorBox ());
-	addPage ("TextEditor",               std::make_shared <TextEditor>               (getBrowserWindow ()), getTextEditorBox               ());
-	addPage ("LayerEditor",              std::make_shared <LayerEditor>              (getBrowserWindow ()), getLayerEditorBox              ());
-	addPage ("BackgroundEditor",         std::make_shared <BackgroundEditor>         (getBrowserWindow ()), getBackgroundEditorBox         ());
-	addPage ("NavigationInfoEditor",     std::make_shared <NavigationInfoEditor>     (getBrowserWindow ()), getNavigationInfoEditorBox     ());
-	addPage ("ViewpointEditor",          std::make_shared <ViewpointEditor>          (getBrowserWindow ()), getViewpointEditorBox          ());
-	addPage ("LightEditor",              std::make_shared <LightEditor>              (getBrowserWindow ()), getLightEditorBox              ());
-	addPage ("InlineEditor",             std::make_shared <InlineEditor>             (getBrowserWindow ()), getInlineEditorBox             ());
-	addPage ("PrecisionPlacementPanel",  std::make_shared <PrecisionPlacementPanel>  (getBrowserWindow ()), getPrecisionPlacementPanelBox  ());
+	addPage ("NodePropertiesEditor",     getNodePropertiesEditorBox     ());
+	addPage ("AppearanceEditor",         getAppearanceEditorBox         ());
+	addPage ("TextureEditor",            getTextureEditorBox            ());
+	addPage ("GeometryPropertiesEditor", getGeometryPropertiesEditorBox ());
+	addPage ("TextEditor",               getTextEditorBox               ());
+	addPage ("LayerEditor",              getLayerEditorBox              ());
+	addPage ("BackgroundEditor",         getBackgroundEditorBox         ());
+	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox     ());
+	addPage ("ViewpointEditor",          getViewpointEditorBox          ());
+	addPage ("LightEditor",              getLightEditorBox              ());
+	addPage ("InlineEditor",             getInlineEditorBox             ());
+	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
 }
 
 NodeEditor::~NodeEditor ()

@@ -159,8 +159,10 @@ X3DBaseNode::setup ()
 
 	executionContext -> addParent (this);
 
-	for (const auto & field : fieldDefinitions)
+	for (const auto & pair : fields)
 	{
+		const auto & field = pair .second;
+
 		field -> updateReferences ();
 		field -> isTainted (false);
 	}

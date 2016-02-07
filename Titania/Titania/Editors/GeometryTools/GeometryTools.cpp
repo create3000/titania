@@ -58,8 +58,6 @@
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
-#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h>
-#include <Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h>
 
 namespace titania {
 namespace puck {
@@ -179,13 +177,13 @@ GeometryTools::on_show_normals_toggled ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::IndexedFaceSetTool:
+					case X3D::X3DConstants::X3DGeometryNodeTool:
 					{
-						dynamic_cast <X3D::IndexedFaceSetTool*> (innerNode) -> showNormals () = getShowNormalsToggleButton () .get_active ();
+						innerNode -> setField <X3D::SFBool> ("showNormals", getShowNormalsToggleButton () .get_active ());
 						break;
 					}
 					default:
-						break;
+						continue;
 				}
 
 				break;

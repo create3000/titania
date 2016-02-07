@@ -150,6 +150,7 @@ protected:
 	{ basic::pass ((addChild (children), 1) ...); }
 
 	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
+	virtual
 	void
 	addChild (X3DChildObject &);
 
@@ -160,13 +161,9 @@ protected:
 	{ basic::pass ((removeChild (children), 1) ...); }
 
 	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
+	virtual
 	void
 	removeChild (X3DChildObject &);
-
-	// Internal used fields
-	const ChildObjectSet &
-	getChildren () const
-	{ return children; }
 
 	///  @name Event handling
 

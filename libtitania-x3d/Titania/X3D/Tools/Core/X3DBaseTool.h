@@ -100,15 +100,6 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
-	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
-	virtual
-	void
-	setUserDefinedFields (const X3D::FieldDefinitionArray & fields)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) final override
-	{ node -> setUserDefinedFields (fields); }
-
 	///  Adds @a field to the set of user defined fields of this node.
 	virtual
 	void
@@ -116,14 +107,20 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>) final override
-	{ node -> addUserDefinedField (accessType, name, field); }
+	{
+		node -> addUserDefinedField (accessType, name, field);
+		Type::addUserDefinedField (accessType, name, field);
+	}
 
 	///  Removes the field named @a name from the set of user defined fields of this node.
 	virtual
 	void
 	removeUserDefinedField (const std::string & name)
 	throw (Error <DISPOSED>) final override
-	{ node -> removeUserDefinedField (name); }
+	{
+		node -> removeUserDefinedField (name);
+		Type::removeUserDefinedField (name);
+	}
 
 	///  Field that processes its interests when the set of fields has changed.
 	virtual
@@ -200,6 +197,40 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Event handling
+
+	virtual
+	void
+	addChild (X3DChildObject & child) final override
+	{
+		Type::addChild (child);
+
+		children .emplace (&child);
+	}
+
+	virtual
+	void
+	removeChild (X3DChildObject & child) final override
+	{
+		Type::removeChild (child);
+
+		children .erase (&child);
+	}
+
+	virtual
+	void
+	addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>) final override
+	{
+		Type::addField (accessType, name, field);
+
+		children .emplace (&field);
+
+		//const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
+	}
+
 	///  @name Member access
 
 	Type*
@@ -219,7 +250,7 @@ private:
 	void
 	addEvent (X3DChildObject* const object) final override
 	{
-		if (getChildren () .count (object))
+		if (children .count (object))
 			X3DBaseNode::addEvent (object);
 	}
 
@@ -227,13 +258,14 @@ private:
 	void
 	addEvent (X3DChildObject* const object, const EventPtr & event) final override
 	{
-		if (getChildren () .count (object))
+		if (children .count (object))
 			X3DBaseNode::addEvent (object, event);
 	}
 
 	///  @name Members
 
-	Type* const node;
+	Type* const                node;
+	std::set <X3DChildObject*> children;
 
 };
 
@@ -241,7 +273,8 @@ template <class Type>
 X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	         Type (node -> getExecutionContext ()),
 	X3DToolObject (),
-	         node (node)
+	         node (node),
+	     children ()
 {
 	isPrivate (node -> isPrivate ());
 
@@ -249,10 +282,10 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	node -> isPrivate (true);
 
 	for (auto & field : node -> getPreDefinedFields ())
-		addField (field -> getAccessType (), field -> getName (), *field);
+		Type::addField (field -> getAccessType (), field -> getName (), *field);
 
 	for (auto & field : node -> getUserDefinedFields ())
-		addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+		Type::addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 }
 
 template <class Type>

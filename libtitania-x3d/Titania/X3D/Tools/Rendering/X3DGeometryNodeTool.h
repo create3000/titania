@@ -70,11 +70,11 @@ public:
 
 	SFBool &
 	showNormals ()
-	{ return fields .showNormals; }
+	{ return *fields .showNormals; }
 
 	const SFBool &
 	showNormals () const
-	{ return fields .showNormals; }
+	{ return *fields .showNormals; }
 
 	///  @name Member access
 
@@ -186,7 +186,7 @@ private:
 	{
 		Fields ();
 
-		SFBool showNormals;
+		SFBool* const showNormals;
 	};
 
 	Fields fields;
@@ -197,7 +197,7 @@ private:
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
-	showNormals ()
+	showNormals (new SFBool ())
 { }
 
 template <class Type>
@@ -206,10 +206,13 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	            fields (),
 	        normalTool (new NormalTool (this -> getExecutionContext ()))
 {
+	showNormals () .isHidden (true);
+
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
-	this -> addChildren (showNormals (),
-                        normalTool);
+	this -> addField (inputOutput, "showNormals", showNormals ());
+
+	this -> addChildren (normalTool);
 }
 
 template <class Type>

@@ -216,8 +216,8 @@ AnimationEditor::set_selection (const X3D::MFNode & selection)
 	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
 	const auto groups        = getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
 
-	getNewButton ()            .set_sensitive (not groups .empty ());
-	getAddMemberButton ()      .set_sensitive (animation and haveSelection);
+	getNewButton ()       .set_sensitive (not groups .empty ());
+	getAddMemberButton () .set_sensitive (animation and haveSelection);
 }
 
 int32_t

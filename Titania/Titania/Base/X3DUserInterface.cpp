@@ -202,7 +202,7 @@ X3DUserInterface::addDialog (const std::string & name, const bool present)
 	}
 	catch (const std::out_of_range &)
 	{
-		const auto dialog = dialogFactory -> createDialog (name, getBrowserWindow ());
+		const auto dialog = createDialog (name);
 
 		dialogs -> emplace (name, dialog);
 		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
@@ -212,6 +212,12 @@ X3DUserInterface::addDialog (const std::string & name, const bool present)
 
 		return dialog;
 	}
+}
+
+std::shared_ptr <X3DUserInterface>
+X3DUserInterface::createDialog (const std::string & name) const
+{
+	return dialogFactory -> createDialog (name, getBrowserWindow ());
 }
 
 void

@@ -110,9 +110,15 @@ NormalTool::realize ()
 		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
 		modelViewMatrix () .addInterest (set_modelViewMatrix);
 		set_modelViewMatrix = modelViewMatrix ();
+
+		auto & set_color = getToolNode () -> getField <SFColor> ("set_color");
+		color () .addInterest (set_color);
+		set_color = color ();
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

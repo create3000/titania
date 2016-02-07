@@ -99,6 +99,9 @@ public:
 	std::shared_ptr <X3DUserInterface>
 	addDialog (const std::string &, const bool = true);
 
+	std::shared_ptr <X3DUserInterface>
+	createDialog (const std::string &) const;
+
 	///  @name Operations
 
 	void
