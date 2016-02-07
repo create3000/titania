@@ -400,7 +400,7 @@ X3DBrowserEditor::setMetaData ()
 		{
 			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/LayerSet");
 
-			metadataSet -> createValue <X3D::MetadataInteger> ("activeLayer") -> value () = { layerSet -> getActiveLayerIndex () };
+			metadataSet -> createValue <X3D::MetadataInteger> ("activeLayer") -> value () = { layerSet -> privateActiveLayer () };
 		}
 		else
 			worldInfo -> removeMetaData ("/Titania/LayerSet/activeLayer");

@@ -113,7 +113,7 @@ BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & normals, std::vector
 	if (enabled () and geometryNode)
 	{
 		std::vector <Color4f> colors;
-		TexCoordArray         texCoords (geometryNode -> getMultiTexCoords ());
+		TexCoordArray         texCoords (geometryNode -> getPolygonTexCoords () .size ());
 
 		geometryNode -> triangulate (colors, texCoords, normals, vertices);
 	}

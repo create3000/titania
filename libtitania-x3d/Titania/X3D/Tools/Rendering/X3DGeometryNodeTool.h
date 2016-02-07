@@ -111,9 +111,24 @@ public:
 	{ return getNode () -> getCCW (); }
 
 	virtual
-	size_t
-	getMultiTexCoords () const final override
-	{ return getNode () -> getMultiTexCoords (); }
+	const std::vector <Color4f> &
+	getPolygonColors () const final override
+	{ return getNode () -> getPolygonColors (); }
+
+	virtual
+	const TexCoordArray &
+	getPolygonTexCoords () const final override
+	{ return getNode () -> getPolygonTexCoords (); }
+
+	virtual
+	const std::vector <Vector3f> &
+	getPolygonNormals () const final override
+	{ return getNode () -> getPolygonNormals (); }
+
+	virtual
+	const std::vector <Vector3f> &
+	getPolygonVertices () const final override
+	{ return getNode () -> getPolygonVertices (); }
 
 	virtual
 	const std::vector <X3DGeometryNode::Element> &
@@ -180,6 +195,9 @@ private:
 	void
 	set_showNormals ();
 
+	void
+	eventProcessed ();
+
 	///  @name Members
 
 	struct Fields
@@ -232,18 +250,39 @@ X3DGeometryNodeTool <Type>::initialize ()
 {
 	X3DNodeTool <Type>::initialize ();
 
+	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 	showNormals () .addInterest (normalTool -> enabled ());
 
 	normalTool -> enabled () = showNormals ();
 	normalTool -> setup ();
+
+	eventProcessed ();
+}
+
+template <class Type>
+void
+X3DGeometryNodeTool <Type>::eventProcessed ()
+{
+	const auto & normals  = this -> getNode () -> getPolygonNormals ();
+	const auto & vertices = this -> getNode () -> getPolygonVertices ();
+	const auto   size     = vertices .size ();
+
+	normalTool -> point () .resize (2 * size);
+
+	for (size_t i = 0; i < size; ++ i)
+	{
+		normalTool -> point () [2 * i + 0] = vertices [i];
+		normalTool -> point () [2 * i + 1] = vertices [i] + normals [i];
+	}
+
+	normalTool -> vertexCount () .resize (size, SFInt32 (2));
 }
 
 template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
-	if (normalTool)
-		normalTool -> draw (container);
+	normalTool -> draw (container);
 
 	this -> getNode () -> draw (container);
 }

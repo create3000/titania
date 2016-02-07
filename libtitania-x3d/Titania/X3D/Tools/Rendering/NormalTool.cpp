@@ -65,7 +65,9 @@ NormalTool::Fields::Fields () :
 	        enabled (new SFBool (true)),
 	modelViewMatrix (new SFMatrix4f ()),
 	         length (new SFFloat (1)),
-	          color (new SFColor (0.7, 0.85, 1))
+	          color (new SFColor (0.7, 0.85, 1)),
+	    vertexCount (new MFInt32 ()),
+	          point (new MFVec3f ())
 { }
 
 NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
@@ -78,6 +80,10 @@ NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
+	addField (inputOutput, "length",          length ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "vertexCount",     vertexCount ());
+	addField (inputOutput, "point",           point ());
 }
 
 X3DBaseNode*
@@ -114,6 +120,15 @@ NormalTool::realize ()
 		auto & set_color = getToolNode () -> getField <SFColor> ("set_color");
 		color () .addInterest (set_color);
 		set_color = color ();
+
+		auto & set_vertexCount = getToolNode () -> getField <MFInt32> ("set_vertexCount");
+		vertexCount () .addInterest (set_vertexCount);
+		set_vertexCount = vertexCount ();
+
+		length () .addInterest (this, &NormalTool::set_point);
+		point ()  .addInterest (this, &NormalTool::set_point);
+
+		set_point ();
 	}
 	catch (const X3DError & error)
 	{
@@ -129,6 +144,19 @@ NormalTool::set_enabled ()
 		enabled () .removeInterest (this, &NormalTool::set_enabled);
 
 		requestAsyncLoad ({ get_tool ("NormalTool.x3dv") .str () });
+	}
+}
+
+void
+NormalTool::set_point ()
+{
+	try
+	{
+		getToolNode () -> getField <MFVec3f> ("set_point") = point ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

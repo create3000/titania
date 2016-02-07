@@ -115,13 +115,13 @@ OutlineEditor::initialize ()
 	if (getConfig () -> hasItem ("useLocale"))
 	 getUseLocaleMenuItem () .set_active (getConfig () -> getBoolean ("useLocale"));
 
-	realized = true;
-
-	getCurrentScene ()     .addInterest (this, &OutlineEditor::set_scene);
+	getCurrentScene ()   .addInterest (this, &OutlineEditor::set_scene);
 	getCurrentContext () .addInterest (this, &OutlineEditor::set_executionContext);
 
 	set_scene ();
 	set_executionContext ();
+
+	realized = true;
 }
 
 void
@@ -136,9 +136,6 @@ OutlineEditor::set_scene ()
 void
 OutlineEditor::set_executionContext ()
 {
-	if (not realized)
-		return;
-
 	const auto menuItem = addSceneMenuItem (getCurrentContext ());
 	menuItem .first -> set_active (true);
 
@@ -155,7 +152,8 @@ OutlineEditor::set_executionContext ()
 
 	const auto & currentScene = treeView -> get_execution_context ();
 
-	saveExpanded (currentScene);
+	if (realized)
+		saveExpanded (currentScene);
 
 	treeView -> set_execution_context (getCurrentContext ());
 

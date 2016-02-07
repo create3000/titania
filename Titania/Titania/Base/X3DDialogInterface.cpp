@@ -89,11 +89,7 @@ X3DDialogInterface::saveSession ()
 void
 X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
 {
-	std::vector <Gtk::Expander*> expanders;
-
-	getWidgets <Gtk::Expander> (&widget, expanders);
-
-	for (auto & expander : expanders)
+	for (auto & expander : getWidgets <Gtk::Expander> (widget))
 	{
 		if (not expander -> get_name () .empty ())
 		{
@@ -106,11 +102,7 @@ X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
 void
 X3DDialogInterface::saveExpander (Gtk::Widget & widget)
 {
-	std::vector <Gtk::Expander*> expanders;
-
-	getWidgets <Gtk::Expander> (&widget, expanders);
-
-	for (auto & expander : expanders)
+	for (auto & expander : getWidgets <Gtk::Expander> (widget))
 	{
 		if (not expander -> get_name () .empty ())
 			getConfig () -> setItem (expander -> get_name (), expander -> get_expanded ());

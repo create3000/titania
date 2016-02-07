@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 07 Feb 2016 09:02:33 GMT"
+META "modified" "Sun, 07 Feb 2016 13:34:20 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -73,7 +73,40 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF _1 Coordinate {
+          value DEF Tool Script {
+            inputOutput SFBool     enabled FALSE
+            inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+            inputOutput SFColor    color 0 0 0
+            inputOutput MFInt32    vertexCount [ ]
+            inputOutput MFVec3f    point [ ]
+
+            url "ecmascript:
+// Leaves empty"
+          }
+        }
+      }
+    ]
+  }
+}
+
+DEF _1 BooleanSwitch {
+  children [
+    DEF _2 Group { }
+    DEF _3 TransformMatrix3D {
+      children Shape {
+        appearance Appearance {
+          material DEF _4 Material {
+            diffuseColor 0 0 0
+            emissiveColor 0.7 0.85 1
+          }
+        }
+        geometry DEF _5 LineSet {
+          vertexCount [
+            2,
+            2,
+            2
+          ]
+          coord DEF _6 Coordinate {
             point [
               -2 0 0,
               2 0 0,
@@ -85,48 +118,16 @@ WorldInfo {
           }
         }
       }
-    ]
-  }
-}
-
-DEF _2 BooleanSwitch {
-  children [
-    DEF _3 Group { }
-    DEF _4 TransformMatrix3D {
-      children DEF IndexedLineSet Transform {
-        scale 2 2 2
-        children Shape {
-          appearance Appearance {
-            material DEF _5 Material {
-              diffuseColor 0 0 0
-              emissiveColor 0.7 0.85 1
-            }
-          }
-          geometry LineSet {
-            vertexCount [
-              2,
-              2,
-              2
-            ]
-            coord USE _1
-          }
-        }
-      }
     }
   ]
 }
 
-DEF Tool Script {
-  inputOutput SFBool     enabled FALSE
-  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput SFColor    color 0 0 0
+USE Tool
 
-  url "ecmascript:
-// Leaves empty"
-}
-
-ROUTE Tool.modelViewMatrix_changed TO _4.set_matrix
-ROUTE Tool.enabled_changed TO _2.set_whichChoice
-ROUTE Tool.color_changed TO _5.set_emissiveColor
+ROUTE Tool.modelViewMatrix_changed TO _3.set_matrix
+ROUTE Tool.enabled_changed TO _1.set_whichChoice
+ROUTE Tool.color_changed TO _4.set_emissiveColor
+ROUTE Tool.point_changed TO _6.set_point
+ROUTE Tool.vertexCount_changed TO _5.set_vertexCount
 
 EXPORT Tool

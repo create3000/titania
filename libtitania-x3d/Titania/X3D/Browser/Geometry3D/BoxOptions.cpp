@@ -77,8 +77,8 @@ void
 BoxOptions::build ()
 {
 	getTexCoords () .reserve (24);
-	getNormals  () .reserve (24);
-	getVertices () .reserve (24);
+	getNormals  ()  .reserve (24);
+	getVertices ()  .reserve (24);
 
 	// Front Face
 	getTexCoords () .emplace_back (0, 0, 0, 1);

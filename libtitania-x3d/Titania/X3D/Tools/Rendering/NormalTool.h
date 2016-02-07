@@ -124,6 +124,22 @@ public:
 	color () const
 	{ return *fields .color; }
 
+	MFInt32 &
+	vertexCount ()
+	{ return *fields .vertexCount; }
+
+	const MFInt32 &
+	vertexCount () const
+	{ return *fields .vertexCount; }
+
+	MFVec3f &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec3f &
+	point () const
+	{ return *fields .point; }
+
 	///  @name Operations
 
 	void
@@ -147,6 +163,9 @@ private:
 	void
 	set_enabled ();
 
+	void
+	set_point ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -163,6 +182,8 @@ private:
 		SFMatrix4f* const modelViewMatrix;
 		SFFloat* const length;
 		SFColor* const color;
+		MFInt32* const vertexCount;
+		MFVec3f* const point;
 	};
 
 	Fields fields;

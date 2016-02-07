@@ -95,9 +95,6 @@ protected:
 	void
 	saveSession () override;
 
-
-protected:
-
 	///  @name Operations
 
 	static
@@ -119,32 +116,7 @@ private:
 	void
 	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels);
 
-	template <class Type>
-	static
-	void
-	getWidgets (Gtk::Widget*, std::vector <Type*> &);
-
 };
-
-template <class Type>
-void
-X3DDialogInterface::getWidgets (Gtk::Widget* widget, std::vector <Type*> & types)
-{
-	Type* const type = dynamic_cast <Type*> (widget);
-	
-	if (type)
-		types .emplace_back (type);
-
-	const auto container = dynamic_cast <Gtk::Container*> (widget);
-	
-	if (container)
-	{
-		for (auto & child : container -> get_children ())
-			getWidgets (child, types);
-
-		return;
-	}	
-}
 
 } // puck
 } // titania

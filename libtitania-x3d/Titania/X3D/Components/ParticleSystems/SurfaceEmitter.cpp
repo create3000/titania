@@ -199,7 +199,7 @@ SurfaceEmitter::set_geometry ()
 		// Triangulate
 
 		std::vector <Color4f>  colors;
-		TexCoordArray          texCoords (surfaceNode -> getMultiTexCoords ());
+		TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
 		std::vector <Vector3f> normals;
 		std::vector <Vector3f> vertices;
 

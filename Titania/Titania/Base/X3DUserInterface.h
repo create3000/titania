@@ -91,6 +91,11 @@ public:
 	Gtk::Widget &
 	getWidget () const = 0;
 
+	template <class Type>
+	static
+	std::vector <Type*>
+	getWidgets (Gtk::Widget &);
+
 	/// @name Dialog handling
 	
 	bool
@@ -208,6 +213,11 @@ private:
 	void
 	saveInterface ();
 
+	template <class Type>
+	static
+	void
+	getWidgets (Gtk::Widget*, std::vector <Type*> &);
+
 	///  @name Static members
 
 	static const std::unique_ptr <DialogFactory> dialogFactory;
@@ -221,8 +231,38 @@ private:
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;
 
-
 };
+
+template <class Type>
+std::vector <Type*>
+X3DUserInterface::getWidgets (Gtk::Widget & widget)
+{
+	std::vector <Type*> types;
+
+	getWidgets (&widget, types);
+
+	return types;
+}
+
+template <class Type>
+void
+X3DUserInterface::getWidgets (Gtk::Widget* widget, std::vector <Type*> & types)
+{
+	Type* const type = dynamic_cast <Type*> (widget);
+	
+	if (type)
+		types .emplace_back (type);
+
+	const auto container = dynamic_cast <Gtk::Container*> (widget);
+	
+	if (container)
+	{
+		for (auto & child : container -> get_children ())
+			getWidgets (child, types);
+
+		return;
+	}	
+}
 
 } // puck
 } // titania

@@ -119,11 +119,26 @@ public:
 	bool
 	getCCW () const
 	{ return frontFace == GL_CCW; }
+	
+	virtual
+	const std::vector <Color4f> &
+	getPolygonColors () const
+	{ return colors; }
 
 	virtual
-	size_t
-	getMultiTexCoords () const
-	{ return texCoords .size (); }
+	const TexCoordArray &
+	getPolygonTexCoords () const
+	{ return texCoords; }
+
+	virtual
+	const std::vector <Vector3f> &
+	getPolygonNormals () const
+	{ return normals; }
+
+	virtual
+	const std::vector <Vector3f> &
+	getPolygonVertices () const
+	{ return vertices; }
 	
 	virtual
 	const std::vector <Element> &
@@ -188,12 +203,12 @@ protected:
 	getColors () const
 	{ return colors; }
 
-	const TexCoordArray &
-	getTexCoords () const
-	{ return texCoords; }
-
 	TexCoordArray &
 	getTexCoords ()
+	{ return texCoords; }
+
+	const TexCoordArray &
+	getTexCoords () const
 	{ return texCoords; }
 
 	void
