@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 06 Feb 2016 13:35:54 GMT"
+META "modified" "Sun, 07 Feb 2016 06:06:33 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -41,28 +41,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              5.5152587890625,
-              5.58559703826904,
-              6.19545316696167
+              7.91699028015137,
+              2.7302520275116,
+              5.46532821655273
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.642683088779449,
-              0.747864902019501,
-              0.16630282998085,
-              0.91634738445282
+              -0.254005193710327,
+              0.957971334457397,
+              0.133312597870827,
+              1.00235295295715
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              0
+              3.33786010742188e-06,
+              4.76837158203125e-07,
+              -6.67572021484375e-06
             ]
           }
         ]
@@ -73,12 +73,48 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF Tool Script {
-            inputOutput SFBool     enabled FALSE
-            inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-
-            url "ecmascript:
-// Leaves empty"
+          value DEF _1 TransformMatrix3D {
+            children DEF IndexedLineSet Transform {
+              scale 2 2 2
+              children Shape {
+                geometry IndexedLineSet {
+                  colorPerVertex FALSE
+                  colorIndex [
+                    0,
+                    1,
+                    2
+                  ]
+                  coordIndex [
+                    0,
+                    1,
+                    -1,
+                    2,
+                    3,
+                    -1,
+                    4,
+                    5,
+                    -1
+                  ]
+                  color Color {
+                    color [
+                      1 0 0,
+                      0 1 0,
+                      0 0 1
+                    ]
+                  }
+                  coord Coordinate {
+                    point [
+                      -1 0 0,
+                      1 0 0,
+                      0 -1 0,
+                      0 1 0,
+                      0 0 -1,
+                      0 0 1
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -86,58 +122,22 @@ WorldInfo {
   }
 }
 
-DEF _1 BooleanSwitch {
+DEF _2 BooleanSwitch {
   children [
-    DEF _2 Group { }
-    DEF _3 TransformMatrix3D {
-      children DEF IndexedLineSet Transform {
-        scale 2 2 2
-        children Shape {
-          geometry IndexedLineSet {
-            colorPerVertex FALSE
-            colorIndex [
-              0,
-              1,
-              2
-            ]
-            coordIndex [
-              0,
-              1,
-              -1,
-              2,
-              3,
-              -1,
-              4,
-              5,
-              -1
-            ]
-            color Color {
-              color [
-                1 0 0,
-                0 1 0,
-                0 0 1
-              ]
-            }
-            coord Coordinate {
-              point [
-                -1 0 0,
-                1 0 0,
-                0 -1 0,
-                0 1 0,
-                0 0 -1,
-                0 0 1
-              ]
-            }
-          }
-        }
-      }
-    }
+    DEF _3 Group { }
+    USE _1
   ]
 }
 
-USE Tool
+DEF Tool Script {
+  inputOutput SFBool     enabled FALSE
+  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
 
-ROUTE Tool.modelViewMatrix_changed TO _3.set_matrix
-ROUTE Tool.enabled_changed TO _1.set_whichChoice
+  url "ecmascript:
+// Leaves empty"
+}
+
+ROUTE Tool.modelViewMatrix_changed TO _1.set_matrix
+ROUTE Tool.enabled_changed TO _2.set_whichChoice
 
 EXPORT Tool

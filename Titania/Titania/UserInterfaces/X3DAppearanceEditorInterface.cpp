@@ -86,6 +86,9 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("SphereButton", m_SphereButton);
 	m_builder -> get_widget ("ModelButton", m_ModelButton);
+	m_builder -> get_widget ("SelectAppearanceBox", m_SelectAppearanceBox);
+	m_builder -> get_widget ("AppearanceCheckButton", m_AppearanceCheckButton);
+	m_builder -> get_widget ("AppearanceUnlinkButton", m_AppearanceUnlinkButton);
 	m_builder -> get_widget ("AppearanceChildNotebook", m_AppearanceChildNotebook);
 	m_builder -> get_widget ("MaterialBox", m_MaterialBox);
 	m_builder -> get_widget ("SelectMaterialBox", m_SelectMaterialBox);
@@ -153,6 +156,12 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'SphereButton'.
 	m_connections .emplace_back (m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_sphere_clicked)));
 	m_connections .emplace_back (m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_model_clicked)));
+
+	// Connect object Gtk::CheckButton with id 'AppearanceCheckButton'.
+	m_connections .emplace_back (m_AppearanceCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_appearance_toggled)));
+
+	// Connect object Gtk::Button with id 'AppearanceUnlinkButton'.
+	m_connections .emplace_back (m_AppearanceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_appearance_unlink_clicked)));
 
 	// Connect object Gtk::ComboBoxText with id 'MaterialComboBoxText'.
 	m_connections .emplace_back (m_MaterialComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_material_changed)));

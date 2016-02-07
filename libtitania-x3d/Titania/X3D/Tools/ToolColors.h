@@ -67,7 +67,7 @@ static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
 
 static constexpr Color3f WHITE  (1, 1, 1);        // Inline
 static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.35, 0.35, 1);  // X3DPrototypeInstance
+static constexpr Color3f BLUE   (0.35, 0.35, 1);  // Normals
 static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
 
 static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly

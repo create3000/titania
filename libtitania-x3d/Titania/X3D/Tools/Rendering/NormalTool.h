@@ -100,6 +100,30 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
+	SFMatrix4f &
+	modelViewMatrix ()
+	{ return *fields .modelViewMatrix; }
+
+	const SFMatrix4f &
+	modelViewMatrix () const
+	{ return *fields .modelViewMatrix; }
+
+	SFFloat &
+	length ()
+	{ return *fields .length; }
+
+	const SFFloat &
+	length () const
+	{ return *fields .length; }
+
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
 	///  @name Operations
 
 	void
@@ -136,6 +160,9 @@ private:
 		Fields ();
 
 		SFBool* const enabled;
+		SFMatrix4f* const modelViewMatrix;
+		SFFloat* const length;
+		SFColor* const color;
 	};
 
 	Fields fields;

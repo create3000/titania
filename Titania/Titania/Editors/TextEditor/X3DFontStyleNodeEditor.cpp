@@ -106,7 +106,7 @@ X3DFontStyleNodeEditor::set_selection (const X3D::MFNode & selection)
 	for (const auto & text : texts)
 		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
 
-	texts = getSelection <X3D::Text> ({ X3D::X3DConstants::Text });
+	texts = getNodes <X3D::Text> (selection, { X3D::X3DConstants::Text });
 
 	for (const auto & text : texts)
 		text -> fontStyle () .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);

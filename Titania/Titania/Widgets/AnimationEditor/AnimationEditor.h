@@ -106,7 +106,7 @@ private:
 	on_unmap () final override;
 
 	void
-	set_selection ();
+	set_selection (const X3D::MFNode &);
 
 	/***
 	 *  @name Member access

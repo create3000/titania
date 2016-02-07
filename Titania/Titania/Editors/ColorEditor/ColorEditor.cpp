@@ -181,7 +181,7 @@ ColorEditor::set_selection (const X3D::MFNode & selection)
 
 	try
 	{
-		const auto shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
+		const auto shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 		if (shapes .empty ())
 			set_shape (nullptr);

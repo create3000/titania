@@ -62,7 +62,10 @@ const std::string   NormalTool::typeName       = "NormalTool";
 const std::string   NormalTool::containerField = "grid";
 
 NormalTool::Fields::Fields () :
-	enabled (new SFBool (true))
+	        enabled (new SFBool (true)),
+	modelViewMatrix (new SFMatrix4f ()),
+	         length (new SFFloat (1)),
+	          color (new SFColor (0.7, 0.85, 1))
 { }
 
 NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
@@ -72,8 +75,9 @@ NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 {
 	//addType (X3DConstants::NormalTool);
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "enabled",  enabled ());
+	addField (inputOutput, "metadata",        metadata ());
+	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
 }
 
 X3DBaseNode*
@@ -101,6 +105,11 @@ NormalTool::realize ()
 	{
 		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
 		enabled () .addInterest (set_enabled);
+		set_enabled = enabled ();
+
+		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
+		modelViewMatrix () .addInterest (set_modelViewMatrix);
+		set_modelViewMatrix = modelViewMatrix ();
 	}
 	catch (const X3DError & error)
 	{ }
@@ -120,21 +129,13 @@ NormalTool::set_enabled ()
 void
 NormalTool::draw (const ShapeContainer* const container)
 {
-	try
-	{
-		getBrowser () -> endUpdateForFrame ();
+	if (getCurrentLayer () != getActiveLayer ())
+		return;
 
-		getToolNode () -> template setField <SFMatrix4f> ("modelViewMatrix", container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix (), true);
+	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
 
-		getBrowser () -> processEvents ();
-		getBrowser () -> beginUpdateForFrame ();
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-
-		getBrowser () -> beginUpdateForFrame ();
-	}
+	if (mvm != modelViewMatrix ())
+		modelViewMatrix () = mvm;
 }
 
 } // X3D

@@ -104,12 +104,15 @@ protected:
 	getInlineNode () const
 	{ return tool -> getInlineNode (); }
 
-	///  @name Member acces
-
 	const SFNode &
 	getToolNode () const
 	throw (Error <DISPOSED>)
 	{ return tool -> getToolNode (); }
+
+	const X3DPtr <X3DLayerNode> &
+	getActiveLayer () const
+	throw (Error <DISPOSED>)
+	{ return activeLayer; }
 
 	///  @name Operations
 

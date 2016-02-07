@@ -58,6 +58,8 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                 appearances (),
 	              fillProperties (),
 	        fillPropertiesBuffer (),
+	                    undoStep (),
+	                    changing (false),
 	                      filled (this, getFillPropertiesFilledCheckButton (), "filled"),
 	                     hatched (this, getFillPropertiesHatchedCheckButton (), "hatched"),
 	                  hatchStyle (this,
@@ -84,7 +86,7 @@ X3DFillPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
 
-	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
+	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> fillProperties () .addInterest (this, &X3DFillPropertiesEditor::set_fillProperties);

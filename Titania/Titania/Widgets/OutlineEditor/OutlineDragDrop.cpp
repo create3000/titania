@@ -1003,8 +1003,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	if (destField == sourceField)
 	{
-	   __LOG__ << "destField == sourceField" << std::endl;
-		
+	   //__LOG__ << "destField == sourceField" << std::endl;
+
 		auto insertIndex = treeView -> get_index (destNodeIter);
 
 		switch (position)

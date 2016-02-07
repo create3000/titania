@@ -93,16 +93,16 @@ X3DTexturePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		{ }
 	}
 
-	textureNodes = getSelection <X3D::X3DTextureNode> ({
-	                                                      X3D::X3DConstants::ImageTexture,
-	                                                      X3D::X3DConstants::MovieTexture,
-	                                                      X3D::X3DConstants::PixelTexture,
-	                                                      X3D::X3DConstants::ComposedTexture3D,
-	                                                      X3D::X3DConstants::ImageTexture3D,
-	                                                      X3D::X3DConstants::PixelTexture3D,
-	                                                      X3D::X3DConstants::ComposedCubeMapTexture,
-	                                                      X3D::X3DConstants::ImageCubeMapTexture
-																		});
+	textureNodes = getNodes <X3D::X3DTextureNode> (selection, {
+	                                                            X3D::X3DConstants::ImageTexture,
+	                                                            X3D::X3DConstants::MovieTexture,
+	                                                            X3D::X3DConstants::PixelTexture,
+	                                                            X3D::X3DConstants::ComposedTexture3D,
+	                                                            X3D::X3DConstants::ImageTexture3D,
+	                                                            X3D::X3DConstants::PixelTexture3D,
+	                                                            X3D::X3DConstants::ComposedCubeMapTexture,
+	                                                            X3D::X3DConstants::ImageCubeMapTexture
+																		      });
 
 	for (const auto & textureNode : textureNodes)
 	{

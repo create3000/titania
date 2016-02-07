@@ -58,6 +58,8 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 	                 appearances (),
 	              lineProperties (),
 	        linePropertiesBuffer (),
+	                    undoStep (),
+	                    changing (false),
 	                     applied (this, getLinePropertiesFilledCheckButton (), "applied"),
 	                    linetype (this,
 	                              getLinePropertiesLinetypeAdjustment (),
@@ -82,7 +84,7 @@ X3DLinePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
 
-	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
+	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> lineProperties () .addInterest (this, &X3DLinePropertiesEditor::set_lineProperties);

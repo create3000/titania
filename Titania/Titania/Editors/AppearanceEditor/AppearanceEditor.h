@@ -91,6 +91,34 @@ private:
 	void
 	set_selection (const X3D::MFNode &) final override;
 
+	///  @name Event handler
+
+	virtual
+	void
+	on_appearance_unlink_clicked () final override;
+
+	virtual
+	void
+	on_appearance_toggled () final override;
+
+	void
+	set_appearance ();
+
+	void
+	set_node ();
+
+	void
+	connectAppearance (const X3D::SFNode &);
+
+	///  @name Members
+
+	X3D::MFNode                          selection;
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
+	X3D::X3DPtr <X3D::X3DAppearanceNode> appearanceNode;
+	X3D::SFTime                          appearanceBuffer;
+	X3D::UndoStepPtr                     undoStep;
+	bool                                 changing;
+
 };
 
 } // puck

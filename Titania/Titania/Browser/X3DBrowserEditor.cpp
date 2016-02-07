@@ -74,20 +74,22 @@
 #include <Titania/String.h>
 #include <Titania/Utility/Map.h>
 
+#include <Titania/X3D/Execution/BindableNodeStack.h>
+
 namespace titania {
 namespace puck {
 
 static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
-	 X3DBrowserWidget (browser),
-	   X3D::X3DEditor (),
-	          enabled (false),
-	        selection (new BrowserSelection (getBrowserWindow ())),
-	     undoMatrices (),
-	    nudgeUndoStep (),
-	         undoTime (0),
-	             tool (NONE_TOOL)
+	X3DBrowserWidget (browser),
+	  X3D::X3DEditor (),
+	         enabled (false),
+	       selection (new BrowserSelection (getBrowserWindow ())),
+	    undoMatrices (),
+	   nudgeUndoStep (),
+	        undoTime (0),
+	            tool (NONE_TOOL)
 {
 	addChildren (enabled);
 }
@@ -177,7 +179,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 			X3DBrowserWidget::setCurrentContext (value);
 		}
 		else
-			return;                    // Do nothing.
+			return;                                                        // Do nothing.
 
 	}
 
@@ -194,7 +196,7 @@ X3DBrowserEditor::set_shutdown ()
 		isModified (getCurrentBrowser (), false);
 	}
 	else
-		X3DBrowserWidget::setCurrentContext (getCurrentContext ());  // Cancel shutdown, there will be no further shutdown now.
+		X3DBrowserWidget::setCurrentContext (getCurrentContext ());                                                                                                                                        // Cancel shutdown, there will be no further shutdown now.
 
 }
 
@@ -393,7 +395,7 @@ X3DBrowserEditor::setMetaData ()
 		const auto   worldInfo = createWorldInfo ();
 		const auto & world     = getCurrentWorld ();
 		const auto & layerSet  = world -> getLayerSet ();
-		
+
 		if (layerSet not_eq world -> getDefaultLayerSet ())
 		{
 			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/LayerSet");
@@ -500,11 +502,14 @@ X3DBrowserEditor::getMetaData ()
 		const auto worldInfo   = getWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
 
-		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position") -> value ();
-		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation") -> value ();
+		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position")         -> value ();
+		auto & o = metadataSet -> getValue <X3D::MetadataDouble> ("orientation")      -> value ();
 		auto & c = metadataSet -> getValue <X3D::MetadataDouble> ("centerOfRotation") -> value ();
 
-		const auto viewpoint = getCurrentWorld () -> getActiveLayer () -> getViewpoint ();
+		const auto &  layerSet         = getCurrentWorld () -> getLayerSet ();
+		const int32_t activeLayerIndex = layerSet -> getActiveLayerIndex ();
+		const auto    activeLayer      = activeLayerIndex == 0 ? layerSet -> getLayer0 () : X3D::X3DPtr <X3D::X3DLayerNode> (layerSet -> layers () .at (activeLayerIndex - 1));
+		const auto    viewpoint        = activeLayer -> getViewpoint ();
 
 		viewpoint -> setUserPosition         (X3D::Vector3f (p .get1Value (0), p .get1Value (1), p .get1Value (2)));
 		viewpoint -> setUserOrientation      (X3D::Rotation4f (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
@@ -512,7 +517,7 @@ X3DBrowserEditor::getMetaData ()
 
 		viewpoint -> set_bind () = true;
 	}
-	catch (const X3D::X3DError & error)
+	catch (const std::exception & error)
 	{ }
 }
 
@@ -847,16 +852,16 @@ X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 		auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
 		                           ? activeLayer -> children ()
 											: getCurrentContext () -> getRootNodes ();
-	
+
 		undoStep -> addObjects (getCurrentContext (), activeLayer);
 
 		const auto importedNodes = importScene (executionContext,
-                                              X3D::SFNode (executionContext),
-                                              executionContext == getCurrentContext ()
-                                              ? children
-                                              : executionContext -> getRootNodes (),
-                                              scene,
-                                              undoStep);
+		                                        X3D::SFNode (executionContext),
+		                                        executionContext == getCurrentContext ()
+		                                        ? children
+															 : executionContext -> getRootNodes (),
+		                                        scene,
+		                                        undoStep);
 
 		getSelection () -> setChildren (importedNodes, undoStep);
 	}
@@ -899,7 +904,6 @@ X3DBrowserEditor::getPasteStatus () const
 
 // Edit operations
 
-
 /***
  *  Add node to current layer root nodes.
  */
@@ -930,6 +934,7 @@ X3D::SFNode
 X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep)
 {
 	const auto node = getCurrentContext () -> createNode (typeName);
+
 	getCurrentContext () -> addUninitializedNode (node);
 	getCurrentContext () -> realize ();
 

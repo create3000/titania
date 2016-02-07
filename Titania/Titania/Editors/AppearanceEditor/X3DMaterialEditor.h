@@ -155,7 +155,7 @@ private:
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
 	bool                               isTwoSidedMaterial;
-	X3D::UndoStepPtr                        undoStep;
+	X3D::UndoStepPtr                   undoStep;
 	bool                               changing;
 
 	SFColorButton diffuseColor;

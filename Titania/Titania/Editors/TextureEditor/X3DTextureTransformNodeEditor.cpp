@@ -85,7 +85,7 @@ X3DTextureTransformNodeEditor::set_selection (const X3D::MFNode & selection)
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
 
-	appearances = getSelection <X3D::Appearance> ({ X3D::X3DConstants::Appearance });
+	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
 		appearance -> textureTransform () .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);

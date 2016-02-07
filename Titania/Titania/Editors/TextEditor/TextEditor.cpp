@@ -99,7 +99,7 @@ TextEditor::set_selection (const X3D::MFNode & selection)
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_geometry);
 
-	shapeNodes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
+	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
 		shapeNode -> geometry () .addInterest (this, &TextEditor::set_geometry);

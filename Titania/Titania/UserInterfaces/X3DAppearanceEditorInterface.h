@@ -181,6 +181,18 @@ public:
 	getModelButton () const
 	{ return *m_ModelButton; }
 
+	Gtk::Box &
+	getSelectAppearanceBox () const
+	{ return *m_SelectAppearanceBox; }
+
+	Gtk::CheckButton &
+	getAppearanceCheckButton () const
+	{ return *m_AppearanceCheckButton; }
+
+	Gtk::Button &
+	getAppearanceUnlinkButton () const
+	{ return *m_AppearanceUnlinkButton; }
+
 	Gtk::Notebook &
 	getAppearanceChildNotebook () const
 	{ return *m_AppearanceChildNotebook; }
@@ -435,6 +447,14 @@ public:
 
 	virtual
 	void
+	on_appearance_toggled () = 0;
+
+	virtual
+	void
+	on_appearance_unlink_clicked () = 0;
+
+	virtual
+	void
 	on_material_changed () = 0;
 
 	virtual
@@ -515,6 +535,9 @@ private:
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::Button*                   m_SphereButton;
 	Gtk::Button*                   m_ModelButton;
+	Gtk::Box*                      m_SelectAppearanceBox;
+	Gtk::CheckButton*              m_AppearanceCheckButton;
+	Gtk::Button*                   m_AppearanceUnlinkButton;
 	Gtk::Notebook*                 m_AppearanceChildNotebook;
 	Gtk::Box*                      m_MaterialBox;
 	Gtk::Box*                      m_SelectMaterialBox;

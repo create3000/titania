@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType TouchGroup::component      = ComponentType::POINTING_DEVICE_SENSOR;
+const ComponentType TouchGroup::component      = ComponentType::TITANIA;
 const std::string   TouchGroup::typeName       = "TouchGroup";
 const std::string   TouchGroup::containerField = "children";
 

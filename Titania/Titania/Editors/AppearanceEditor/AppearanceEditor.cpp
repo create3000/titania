@@ -52,6 +52,9 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Browser/BrowserSelection.h"
+
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
@@ -62,8 +65,16 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor (),
-	    X3DMaterialPaletteEditor ()
+	    X3DMaterialPaletteEditor (),
+                      selection (),
+	                  shapeNodes (),
+	              appearanceNode (),
+	            appearanceBuffer (),
+	                    undoStep (),
+	                    changing (false)
 {
+	addChildren (appearanceBuffer);
+	appearanceBuffer .addInterest (this, &AppearanceEditor::set_node);
 	setup ();
 }
 
@@ -80,12 +91,101 @@ AppearanceEditor::initialize ()
 }
 
 void
-AppearanceEditor::set_selection (const X3D::MFNode & selection)
+AppearanceEditor::set_selection (const X3D::MFNode & selection_)
 {
-	X3DAppearanceEditorInterface::set_selection (selection);
-	X3DMaterialEditor::set_selection (selection);
+	X3DAppearanceEditorInterface::set_selection (selection_);
+
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> appearance () .removeInterest (this, &AppearanceEditor::set_appearance);
+
+	selection  = selection_;
+	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
+
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> appearance () .addInterest (this, &AppearanceEditor::set_appearance);
+
+	set_appearance ();
+}
+
+void
+AppearanceEditor::on_appearance_unlink_clicked ()
+{
+	unlinkClone (shapeNodes, "appearance", undoStep);
+}
+
+void
+AppearanceEditor::on_appearance_toggled ()
+{
+	if (changing)
+		return;
+
+	addUndoFunction <X3D::SFNode> (shapeNodes, "appearance", undoStep);
+
+	getAppearanceCheckButton () .set_inconsistent (false);
+
+	for (const auto & shapeNode : shapeNodes)
+	{
+		try
+		{
+			auto & field = shapeNode -> getField <X3D::SFNode> ("appearance");
+
+			field .removeInterest (this, &AppearanceEditor::set_appearance);
+			field .addInterest (this, &AppearanceEditor::connectAppearance);
+
+			if (getAppearanceCheckButton () .get_active ())
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, X3D::SFNode (appearanceNode), undoStep);
+			else
+				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, nullptr, undoStep);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunction <X3D::SFNode> (shapeNodes, "appearance", undoStep);
+
+	getAppearanceUnlinkButton () .set_sensitive (getAppearanceCheckButton () .get_active () and appearanceNode -> getCloneCount () > 1);
+}
+
+void
+AppearanceEditor::set_appearance ()
+{
+	appearanceBuffer .addEvent ();
+}
+
+void
+AppearanceEditor::set_node ()
+{
+	undoStep .reset ();
+
+	auto          tuple     = getSelection <X3D::X3DAppearanceNode> (shapeNodes, "appearance");
+	const int32_t active    = std::get <1> (tuple);
+	const bool    hasParent = std::get <2> (tuple);
+	const bool    hasField  = (active not_eq -2);
+
+	appearanceNode = std::move (std::get <0> (tuple));
+
+	if (not appearanceNode)
+		appearanceNode = getCurrentContext ()-> createNode <X3D::Appearance> ();
+
+	changing = true;
+
+	getSelectAppearanceBox ()    .set_sensitive (hasParent and hasField);
+	getAppearanceCheckButton ()  .set_active (active > 0);
+	getAppearanceCheckButton ()  .set_inconsistent (active < 0);
+	getAppearanceUnlinkButton () .set_sensitive (active > 0 and appearanceNode -> getCloneCount () > 1);
+
+	changing = false;
+
+	X3DMaterialEditor::set_selection       (selection);
 	X3DFillPropertiesEditor::set_selection (selection);
 	X3DLinePropertiesEditor::set_selection (selection);
+}
+
+void
+AppearanceEditor::connectAppearance (const X3D::SFNode & field)
+{
+	field .removeInterest (this, &AppearanceEditor::connectAppearance);
+	field .addInterest (this, &AppearanceEditor::set_appearance);
 }
 
 AppearanceEditor::~AppearanceEditor ()

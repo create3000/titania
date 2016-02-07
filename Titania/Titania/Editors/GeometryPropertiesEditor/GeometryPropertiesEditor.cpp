@@ -122,7 +122,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DExtrusionEditor::removeShapes ();
 	X3DSphereEditor::removeShapes ();
 
-	shapes = getSelection <X3D::X3DShapeNode> ({ X3D::X3DConstants::X3DShapeNode });
+	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 	
 	for (const auto & shape : shapes)
 		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_geometry);

@@ -83,7 +83,7 @@ X3DTextureCoordinateGeneratorEditor::set_selection (const X3D::MFNode & selectio
 		{ }
 	}
 
-	geometryNodes = getSelection <X3D::X3DGeometryNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	geometryNodes = getNodes <X3D::X3DGeometryNode> (selection, { X3D::X3DConstants::X3DGeometryNode });
 
 	for (const auto & geometry : geometryNodes)
 	{
