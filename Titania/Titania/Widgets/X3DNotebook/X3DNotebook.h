@@ -162,7 +162,7 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 	if (not userInterface)
 	{
 		userInterface = this -> createDialog (name);
-		userInterface -> setName (this -> getWidgetName () + "." + userInterface -> getName ());
+		userInterface -> setName (this -> getName () + "." + userInterface -> getName ());
 		userInterface -> reparent (*boxes .at (name), this -> getWindow ());
 	}
 
