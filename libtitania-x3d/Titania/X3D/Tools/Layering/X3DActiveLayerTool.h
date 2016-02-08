@@ -71,6 +71,27 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
+	///  @name Member access
+
+	const X3DPtr <Tool> &
+	getTool () const
+	throw (Error <DISPOSED>)
+	{ return tool; }
+
+	const X3DPtr <Inline> &
+	getInlineNode () const
+	{ return tool -> getInlineNode (); }
+
+	const SFNode &
+	getToolNode () const
+	throw (Error <DISPOSED>)
+	{ return tool -> getToolNode (); }
+
+	const X3DPtr <X3DLayerNode> &
+	getActiveLayer () const
+	throw (Error <DISPOSED>)
+	{ return activeLayer; }
+
 	///  @name Destruction
 
 	virtual
@@ -93,32 +114,16 @@ protected:
 	realize ()
 	{ }
 
-	///  @name Member access
-
-	const X3DPtr <Tool> &
-	getTool () const
-	throw (Error <DISPOSED>)
-	{ return tool; }
-
-	const X3DPtr <Inline> &
-	getInlineNode () const
-	{ return tool -> getInlineNode (); }
-
-	const SFNode &
-	getToolNode () const
-	throw (Error <DISPOSED>)
-	{ return tool -> getToolNode (); }
-
-	const X3DPtr <X3DLayerNode> &
-	getActiveLayer () const
-	throw (Error <DISPOSED>)
-	{ return activeLayer; }
-
 	///  @name Operations
 
 	void
 	requestAsyncLoad (const MFString & url)
 	{ tool -> requestAsyncLoad (url); }
+
+	///  @name Event handlers
+
+	void
+	set_activeLayer ();
 
 
 private:
@@ -127,9 +132,6 @@ private:
 
 	void
 	set_loadState (const LoadState);
-
-	void
-	set_activeLayer ();
 
 	///  @name Members
 

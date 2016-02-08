@@ -164,6 +164,9 @@ private:
 	prepareEvent ();
 
 	void
+	set_activeLayer ();
+
+	void
 	set_color ();
 
 	void

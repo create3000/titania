@@ -100,14 +100,6 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
-	SFMatrix4f &
-	modelViewMatrix ()
-	{ return *fields .modelViewMatrix; }
-
-	const SFMatrix4f &
-	modelViewMatrix () const
-	{ return *fields .modelViewMatrix; }
-
 	SFColorRGBA &
 	color ()
 	{ return *fields .color; }
@@ -172,6 +164,16 @@ public:
 
 private:
 
+	///  @name Private fields
+
+	SFMatrix4f &
+	modelViewMatrix ()
+	{ return *fields .modelViewMatrix; }
+
+	const SFMatrix4f &
+	modelViewMatrix () const
+	{ return *fields .modelViewMatrix; }
+
 	///  @name Construction
 
 	virtual
@@ -186,6 +188,9 @@ private:
 
 	void
 	prepareEvent ();
+
+	void
+	set_activeLayer ();
 
 	void
 	set_color ();

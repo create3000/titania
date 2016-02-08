@@ -104,6 +104,7 @@ CoordinateTool::initialize ()
 {
 	X3DCoordinateNodeTool::initialize ();
 
+	getActiveLayer () .addInterest (this, &CoordinateTool::set_activeLayer);
 	enabled () .addInterest (getInlineNode () -> load ());
 
 	getInlineNode () -> load () = enabled ();
@@ -158,6 +159,19 @@ CoordinateTool::prepareEvent ()
 	{
 		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (show), true);
 		show = false;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+CoordinateTool::set_activeLayer ()
+{
+	try
+	{
+		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", 0, true);
 	}
 	catch (const X3DError & error)
 	{

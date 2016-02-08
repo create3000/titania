@@ -4,20 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 08 Feb 2016 14:48:32 GMT"
-
-EXTERNPROTO BooleanSwitch [
-  inputOutput    SFBool  whichChoice
-  initializeOnly SFVec3f bboxSize
-  initializeOnly SFVec3f bboxCenter
-  inputOnly      MFNode  addChildren
-  inputOnly      MFNode  removeChildren
-  inputOutput    MFNode  children
-]
-[
-  "library/BooleanSwitch.x3dv#BooleanSwitch",
-  "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/BooleanSwitch.x3dv#BooleanSwitch"
-]
+META "modified" "Mon, 08 Feb 2016 15:02:49 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
