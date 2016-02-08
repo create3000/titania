@@ -166,8 +166,6 @@ NormalTool::set_point ()
 {
 	try
 	{
-		__LOG__ << length () << std::endl;
-
 		if (length () == 1.0f)
 			getToolNode () -> setField <MFVec3f> ("set_point", point ());
 

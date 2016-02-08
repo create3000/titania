@@ -150,7 +150,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 		try
 		{
-			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("enabled") -> value ();
+			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("snap") -> value ();
 	
 			getTool () -> enabled () = v .at (0);
 		}
@@ -231,7 +231,7 @@ void
 X3DGridTool::set_enabled ()
 {
 	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("enabled") -> value ();
+	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("snap") -> value ();
 
 	value = { getTool () -> enabled () };
 
