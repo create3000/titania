@@ -65,7 +65,7 @@ NormalTool::Fields::Fields () :
 	        enabled (new SFBool (true)),
 	modelViewMatrix (new SFMatrix4f ()),
 	         length (new SFFloat (1)),
-	          color (new SFColor (0.7, 0.85, 1)),
+	          color (new SFColorRGBA (0.7, 0.85, 1, 1)),
 	    vertexCount (new MFInt32 ()),
 	          point (new MFVec3f ())
 { }
@@ -73,7 +73,8 @@ NormalTool::Fields::Fields () :
 NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNormalNodeTool (),
-	           fields ()
+	           fields (),
+	             show (false)
 {
 	//addType (X3DConstants::NormalTool);
 
@@ -97,9 +98,10 @@ NormalTool::initialize ()
 {
 	X3DNormalNodeTool::initialize ();
 
-	enabled () .addInterest (this, &NormalTool::set_enabled);
+	enabled () .addInterest (getInlineNode () -> load ());
 
-	set_enabled ();
+	getInlineNode () -> load () = enabled ();
+	getInlineNode () -> url ()  = { get_tool ("NormalTool.x3dv") .str () };
 }
 
 void
@@ -109,23 +111,18 @@ NormalTool::realize ()
 
 	try
 	{
-		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
-		enabled () .addInterest (set_enabled);
-		set_enabled = enabled ();
+		getBrowser () -> prepareEvents () .addInterest (this, &NormalTool::prepareEvent);
 
 		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
 		modelViewMatrix () .addInterest (set_modelViewMatrix);
 		set_modelViewMatrix = modelViewMatrix ();
-
-		auto & set_color = getToolNode () -> getField <SFColor> ("set_color");
-		color () .addInterest (set_color);
-		set_color = color ();
 
 		auto & set_vertexCount = getToolNode () -> getField <MFInt32> ("set_vertexCount");
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
 
 		length () .addInterest (this, &NormalTool::set_point);
+		color ()  .addInterest (this, &NormalTool::set_color);
 		point ()  .addInterest (this, &NormalTool::set_point);
 
 		set_point ();
@@ -137,13 +134,30 @@ NormalTool::realize ()
 }
 
 void
-NormalTool::set_enabled ()
+NormalTool::prepareEvent ()
 {
-	if (enabled ())
+	try
 	{
-		enabled () .removeInterest (this, &NormalTool::set_enabled);
+		getToolNode () -> setField <SFBool> ("set_enabled", show, true);
+		show = false;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
-		requestAsyncLoad ({ get_tool ("NormalTool.x3dv") .str () });
+void
+NormalTool::set_color ()
+{
+	try
+	{
+		getToolNode () -> setField <SFColor> ("set_color", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
+		getToolNode () -> setField <SFFloat> ("set_transparency", color () .getAlpha ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -152,7 +166,23 @@ NormalTool::set_point ()
 {
 	try
 	{
-		getToolNode () -> getField <MFVec3f> ("set_point") = point ();
+		__LOG__ << length () << std::endl;
+
+		if (length () == 1.0f)
+			getToolNode () -> setField <MFVec3f> ("set_point", point ());
+
+		else
+		{
+			auto & set_point = getToolNode () -> getField <MFVec3f> ("set_point");
+			set_point = point ();
+
+			for (size_t i = 0, size = point () .size (); i < size; i += 2)
+			{
+				const auto normal = set_point [i + 1] .getValue () - set_point [i + 0] .getValue ();
+
+				set_point [i + 1] = set_point [i + 0] .getValue () + normal * length () .getValue ();
+			}
+		}
 	}
 	catch (const X3DError & error)
 	{
@@ -165,6 +195,8 @@ NormalTool::draw (const ShapeContainer* const container)
 {
 	if (getCurrentLayer () != getActiveLayer ())
 		return;
+
+	show = true;
 
 	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
 

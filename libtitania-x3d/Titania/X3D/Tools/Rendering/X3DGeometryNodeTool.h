@@ -68,6 +68,14 @@ public:
 
 	///  @name Private fields
 
+	SFNode &
+	normalTool ()
+	{ return *fields .normalTool; }
+
+	const SFNode &
+	normalTool () const
+	{ return *fields .normalTool; }
+
 	SFBool &
 	showNormals ()
 	{ return *fields .showNormals; }
@@ -168,6 +176,7 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getNode () -> toPrimitive (); }
 
+
 	///  @name Destruction
 
 	virtual
@@ -204,17 +213,19 @@ private:
 	{
 		Fields ();
 
+		SFNode* const normalTool;
 		SFBool* const showNormals;
 	};
 
 	Fields fields;
 
-	X3D::X3DPtr <NormalTool> normalTool;
+	X3DPtr <NormalTool> normalToolNode;
 
 };
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
+	 normalTool (new SFNode ()),
 	showNormals (new SFBool ())
 { }
 
@@ -222,15 +233,19 @@ template <class Type>
 X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	X3DNodeTool <Type> (),
 	            fields (),
-	        normalTool (new NormalTool (this -> getExecutionContext ()))
+	    normalToolNode (new NormalTool (this -> getExecutionContext ()))
 {
+	normalTool () = normalToolNode;
+
+	normalTool  () .isHidden (true);
 	showNormals () .isHidden (true);
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
+	this -> addField (inputOutput, "normalTool",  normalTool ());
 	this -> addField (inputOutput, "showNormals", showNormals ());
 
-	this -> addChildren (normalTool);
+	this -> addChildren (normalToolNode);
 }
 
 template <class Type>
@@ -239,7 +254,7 @@ X3DGeometryNodeTool <Type>::setExecutionContext (X3DExecutionContext* const exec
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	normalTool -> setExecutionContext (executionContext);
+	normalToolNode -> setExecutionContext (executionContext);
 
 	X3DNodeTool <Type>::setExecutionContext (executionContext);
 }
@@ -251,10 +266,10 @@ X3DGeometryNodeTool <Type>::initialize ()
 	X3DNodeTool <Type>::initialize ();
 
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
-	showNormals () .addInterest (normalTool -> enabled ());
+	showNormals () .addInterest (normalToolNode -> enabled ());
 
-	normalTool -> enabled () = showNormals ();
-	normalTool -> setup ();
+	normalToolNode -> enabled () = showNormals ();
+	normalToolNode -> setup ();
 
 	eventProcessed ();
 }
@@ -267,22 +282,22 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 	const auto & vertices = this -> getNode () -> getPolygonVertices ();
 	const auto   size     = vertices .size ();
 
-	normalTool -> point () .resize (2 * size);
+	normalToolNode -> point () .resize (2 * size);
 
 	for (size_t i = 0; i < size; ++ i)
 	{
-		normalTool -> point () [2 * i + 0] = vertices [i];
-		normalTool -> point () [2 * i + 1] = vertices [i] + normals [i];
+		normalToolNode -> point () [2 * i + 0] = vertices [i];
+		normalToolNode -> point () [2 * i + 1] = vertices [i] + normals [i];
 	}
 
-	normalTool -> vertexCount () .resize (size, SFInt32 (2));
+	normalToolNode -> vertexCount () .resize (size, SFInt32 (2));
 }
 
 template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
-	normalTool -> draw (container);
+	normalToolNode -> draw (container);
 
 	this -> getNode () -> draw (container);
 }

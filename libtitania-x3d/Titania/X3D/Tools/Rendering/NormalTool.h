@@ -116,11 +116,11 @@ public:
 	length () const
 	{ return *fields .length; }
 
-	SFColor &
+	SFColorRGBA &
 	color ()
 	{ return *fields .color; }
 
-	const SFColor &
+	const SFColorRGBA &
 	color () const
 	{ return *fields .color; }
 
@@ -161,7 +161,10 @@ private:
 	///  @name Event handler
 
 	void
-	set_enabled ();
+	prepareEvent ();
+
+	void
+	set_color ();
 
 	void
 	set_point ();
@@ -181,12 +184,14 @@ private:
 		SFBool* const enabled;
 		SFMatrix4f* const modelViewMatrix;
 		SFFloat* const length;
-		SFColor* const color;
+		SFColorRGBA* const color;
 		MFInt32* const vertexCount;
 		MFVec3f* const point;
 	};
 
 	Fields fields;
+	
+	bool show;
 
 };
 

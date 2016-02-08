@@ -48,55 +48,105 @@
  *
  ******************************************************************************/
 
-#include "GeometryTools.h"
+#include "GeometryEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Browser/Core/Cast.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
-GeometryTools::GeometryTools (X3DBrowserWindow* const browserWindow) :
-	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGeometryToolsInterface (get_ui ("Editors/GeometryTools.glade"), gconf_dir ()),
-	            editableNodes ()
+GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
+	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
+	             normalEnabled (this, getNormalEnabledToggleButton (), "enabled"),
+	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
+	             geometryNodes ()
 {
+	normalEnabled .setUndo (false);
+
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "enabled", new X3D::SFBool ());
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",   new X3D::SFColorRGBA (0.7, 0.85, 1, 1));
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "length",  new X3D::SFFloat (1));
+
 	setup ();
 }
 
 void
-GeometryTools::initialize ()
+GeometryEditor::initialize ()
 {
-	X3DGeometryToolsInterface::initialize ();
+	X3DGeometryEditorInterface::initialize ();
 
-	getShowNormalsToggleButton () .set_active (getConfig () -> getBoolean ("showNormals"));
+	normalEditor -> setField <X3D::SFBool> ("enabled", getConfig () -> getBoolean ("normalEnabled"), true);
+	normalEditor -> setup ();
+	normalEnabled .setNodes ({ normalEditor });
 }
 
 void
-GeometryTools::set_selection (const X3D::MFNode & selection)
+GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3DGeometryToolsInterface::set_selection (selection);
+	X3DGeometryEditorInterface::set_selection (selection);
 
-	const bool inScene        = not inPrototypeInstance ();
-	const bool haveSelection  = inScene and selection .size ();
+	const bool inScene       = not inPrototypeInstance ();
+	const bool haveSelection = inScene and selection .size ();
 	//const bool haveSelections = inScene and selection .size () > 1;
 
-	editableNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
+	geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
 
 	getHammerButton () .set_sensitive (haveSelection);
-	getEditButton ()   .set_sensitive (not editableNodes .empty ());
+	getEditButton ()   .set_sensitive (not geometryNodes .empty ());
 
-	on_show_normals_toggled ();
+	connect ();
 }
 
 void
-GeometryTools::on_hammer_clicked ()
+GeometryEditor::connect ()
+{
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGeometryNodeTool:
+					{
+						const auto & normalTool = innerNode -> getField <X3D::SFNode> ("normalTool");
+
+						normalEditor -> getField <X3D::SFBool>      ("enabled") .addInterest (normalTool -> getField <X3D::SFBool>      ("enabled"));
+						normalEditor -> getField <X3D::SFFloat>     ("length")  .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
+						normalEditor -> getField <X3D::SFColorRGBA> ("color")   .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+
+						normalTool -> setField <X3D::SFBool>      ("enabled", normalEditor -> getField <X3D::SFBool>      ("enabled"), true);
+						normalTool -> setField <X3D::SFFloat>     ("length",  normalEditor -> getField <X3D::SFFloat>     ("length"),  true);
+						normalTool -> setField <X3D::SFColorRGBA> ("color",   normalEditor -> getField <X3D::SFColorRGBA> ("color"),   true);
+						break;
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+}
+
+void
+GeometryEditor::on_hammer_clicked ()
 {
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
 	auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
@@ -157,50 +207,16 @@ GeometryTools::on_hammer_clicked ()
 }
 
 void
-GeometryTools::on_edit_clicked ()
+GeometryEditor::on_edit_clicked ()
 {
-	getBrowserWindow () -> getSelection () -> setChildren (editableNodes);
+	getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
 }
 
-void
-GeometryTools::on_show_normals_toggled ()
+GeometryEditor::~GeometryEditor ()
 {
-	__LOG__ << getShowNormalsToggleButton () .get_active () << std::endl;
+	getConfig () -> setItem ("normalEnabled", normalEditor -> getField <X3D::SFBool> ("enabled") .getValue ());
 
-	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
-	{
-		try
-		{
-			const auto innerNode = node -> getInnerNode ();
-
-			for (const auto & type : basic::make_reverse_range (node -> getType ()))
-			{
-				switch (type)
-				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
-					{
-						innerNode -> setField <X3D::SFBool> ("showNormals", getShowNormalsToggleButton () .get_active ());
-						break;
-					}
-					default:
-						continue;
-				}
-
-				break;
-			}
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-	}
-}
-
-GeometryTools::~GeometryTools ()
-{
-	getConfig () -> setItem ("showNormals", getShowNormalsToggleButton () .get_active ());
-
-	X3DGeometryToolsInterface::dispose ();
+	X3DGeometryEditorInterface::dispose ();
 }
 
 } // puck

@@ -91,6 +91,11 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="NormalLengthAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="Rectangle2DSizeXAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
@@ -1364,9 +1369,10 @@
                                 <property name="can_focus">False</property>
                                 <property name="spacing">8</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="CreaseAngleScaleSpinButton">
+                                  <object class="GtkSpinButton" id="CreaseAngleSpinButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="tooltip_text" translatable="yes">Crease Angle</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="input_purpose">number</property>
                                     <property name="adjustment">CreaseAngleAdjustment</property>
@@ -1520,7 +1526,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">4</property>
+                            <property name="top_attach">5</property>
                           </packing>
                         </child>
                         <child>
@@ -1530,7 +1536,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">5</property>
+                            <property name="top_attach">6</property>
                           </packing>
                         </child>
                         <child>
@@ -1545,7 +1551,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">4</property>
+                            <property name="top_attach">5</property>
                           </packing>
                         </child>
                         <child>
@@ -1560,7 +1566,38 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">5</property>
+                            <property name="top_attach">6</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label57">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Normal Length:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="NormalLengthSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="tooltip_text" translatable="yes">Adjust length of displayed normals.</property>
+                            <property name="halign">start</property>
+                            <property name="text" translatable="yes">0,000000</property>
+                            <property name="input_purpose">number</property>
+                            <property name="adjustment">NormalLengthAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                            <property name="numeric">True</property>
+                            <property name="value">1</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
                           </packing>
                         </child>
                       </object>

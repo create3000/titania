@@ -65,11 +65,10 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToggleButton" id="ShowNormalsToggleButton">
+                  <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="toggled" handler="on_show_normals_toggled" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image3">
                         <property name="visible">True</property>

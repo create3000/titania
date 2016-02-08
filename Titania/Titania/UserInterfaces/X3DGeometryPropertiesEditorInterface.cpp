@@ -78,6 +78,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CylinderRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
 	m_Disk2DInnerRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
 	m_Disk2DOuterRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
+	m_NormalLengthAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_Rectangle2DSizeXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
 	m_SphereRadiusAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
@@ -137,13 +138,14 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
 	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
-	m_builder -> get_widget ("CreaseAngleScaleSpinButton", m_CreaseAngleScaleSpinButton);
+	m_builder -> get_widget ("CreaseAngleSpinButton", m_CreaseAngleSpinButton);
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
 	m_builder -> get_widget ("NormalsBox", m_NormalsBox);
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
 	m_builder -> get_widget ("ColorPerVertexCheckButton", m_ColorPerVertexCheckButton);
 	m_builder -> get_widget ("NormalPerVertexCheckButton", m_NormalPerVertexCheckButton);
+	m_builder -> get_widget ("NormalLengthSpinButton", m_NormalLengthSpinButton);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);

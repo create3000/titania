@@ -158,6 +158,10 @@ public:
 	{ return m_Disk2DOuterRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getNormalLengthAdjustment () const
+	{ return m_NormalLengthAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getRectangle2DSizeXAdjustment () const
 	{ return m_Rectangle2DSizeXAdjustment; }
 
@@ -386,8 +390,8 @@ public:
 	{ return *m_CreaseAngleBox; }
 
 	Gtk::SpinButton &
-	getCreaseAngleScaleSpinButton () const
-	{ return *m_CreaseAngleScaleSpinButton; }
+	getCreaseAngleSpinButton () const
+	{ return *m_CreaseAngleSpinButton; }
 
 	Gtk::Scale &
 	getCreaseAngleScale () const
@@ -412,6 +416,10 @@ public:
 	Gtk::CheckButton &
 	getNormalPerVertexCheckButton () const
 	{ return *m_NormalPerVertexCheckButton; }
+
+	Gtk::SpinButton &
+	getNormalLengthSpinButton () const
+	{ return *m_NormalLengthSpinButton; }
 
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
@@ -537,6 +545,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
@@ -594,13 +603,14 @@ private:
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;
 	Gtk::Box*                      m_CreaseAngleBox;
-	Gtk::SpinButton*               m_CreaseAngleScaleSpinButton;
+	Gtk::SpinButton*               m_CreaseAngleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
 	Gtk::Box*                      m_NormalsBox;
 	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
 	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
 	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
+	Gtk::SpinButton*               m_NormalLengthSpinButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;

@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 07 Feb 2016 13:34:20 GMT"
+META "modified" "Mon, 08 Feb 2016 05:36:03 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -77,6 +77,7 @@ WorldInfo {
             inputOutput SFBool     enabled FALSE
             inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
             inputOutput SFColor    color 0 0 0
+            inputOutput SFFloat    transparency 0
             inputOutput MFInt32    vertexCount [ ]
             inputOutput MFVec3f    point [ ]
 
@@ -129,5 +130,6 @@ ROUTE Tool.enabled_changed TO _1.set_whichChoice
 ROUTE Tool.color_changed TO _4.set_emissiveColor
 ROUTE Tool.point_changed TO _6.set_point
 ROUTE Tool.vertexCount_changed TO _5.set_vertexCount
+ROUTE Tool.transparency_changed TO _4.set_transparency
 
 EXPORT Tool

@@ -51,6 +51,7 @@
 #include "GeometryPropertiesEditor.h"
 
 #include "../../Configuration/config.h"
+#include "../GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
@@ -78,6 +79,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
 	                               convex (this, getConvexCheckButton (), "convex"),
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
+	                         normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
 	                         geometryNode (),
@@ -90,6 +92,9 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	addChildren (nodesBuffer);
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI);
+
+	//normalLength .setUndo (false);
+	normalLength .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
 
 	setup ();
 }

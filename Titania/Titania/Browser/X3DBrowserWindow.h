@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 class Footer;
-class GeometryTools;
+class GeometryEditor;
 class OutlineTreeViewEditor;
 class Sidebar;
 class X3DGridTool;
@@ -94,6 +94,10 @@ public:
 	{ return accelerators; }
 
 	///  @name Tool handling
+
+	const std::shared_ptr <GeometryEditor> &
+	getGeometryEditor () const
+	{ return geometryEditor; }
 
 	const std::shared_ptr <Sidebar> &
 	getSidebar () const
@@ -156,11 +160,11 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <GeometryTools> geometryTools;
-	std::shared_ptr <Sidebar>       sidebar;
-	std::shared_ptr <Footer>        footer;
-	std::shared_ptr <X3DGridTool>   gridTool;
-	std::shared_ptr <X3DGridTool>   angleTool;
+	std::shared_ptr <GeometryEditor> geometryEditor;
+	std::shared_ptr <Sidebar>        sidebar;
+	std::shared_ptr <Footer>         footer;
+	std::shared_ptr <X3DGridTool>    gridTool;
+	std::shared_ptr <X3DGridTool>    angleTool;
 
 	X3D::Keys keys;
 	bool      accelerators;

@@ -50,7 +50,7 @@
 
 #include "X3DBrowserWindow.h"
 
-#include "../Editors/GeometryTools/GeometryTools.h"
+#include "../Editors/GeometryEditor/GeometryEditor.h"
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
@@ -73,13 +73,13 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	X3DBrowserEditor (browser),
-	   geometryTools (new GeometryTools (this)),
-	         sidebar (new Sidebar (this)),
-	          footer (new Footer (this)),
-	        gridTool (new GridTool (this)),
-	       angleTool (new AngleTool (this)),
-	            keys (),
-	    accelerators (true)
+	   geometryEditor (new GeometryEditor (this)),
+	          sidebar (new Sidebar (this)),
+	           footer (new Footer (this)),
+	         gridTool (new GridTool (this)),
+	        angleTool (new AngleTool (this)),
+	             keys (),
+	     accelerators (true)
 { }
 
 void
@@ -87,9 +87,12 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	// GeometryTools
-	geometryTools -> getWidget () .unparent ();
-	getBrowserOverlay () .add_overlay (geometryTools -> getWidget ());
+	// GeometryEditor
+	if (getConfig () -> hasItem ("normalLength"))
+		geometryEditor -> getNormalEditor () -> setField <X3D::SFFloat> ("length", (float) getConfig () -> getDouble ("normalLength"));
+
+	geometryEditor -> getWidget () .unparent ();
+	getBrowserOverlay () .add_overlay (geometryEditor -> getWidget ());
 
 	sidebar -> reparent (getSidebarBox (), getWindow ());
 	footer  -> reparent (getFooterBox (),  getWindow ());
@@ -100,7 +103,7 @@ X3DBrowserWindow::isEditor (const bool value)
 {
 	X3DBrowserEditor::isEditor (value);
 
-	geometryTools -> getWidget () .set_reveal_child (value);
+	geometryEditor -> getWidget () .set_reveal_child (value);
 }
 
 void
@@ -181,7 +184,9 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
-{ }
+{
+	getConfig () -> setItem ("normalLength", geometryEditor -> getNormalEditor () -> getField <X3D::SFFloat> ("length") .getValue ());
+}
 
 } // puck
 } // titania

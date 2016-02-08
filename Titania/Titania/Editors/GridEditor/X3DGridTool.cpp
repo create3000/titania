@@ -185,7 +185,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 	}
 	catch (const X3D::X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

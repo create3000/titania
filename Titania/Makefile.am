@@ -57,6 +57,7 @@ titania_SOURCES =  \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FaceSelection.cpp \
+	Titania/Editors/GeometryEditor/GeometryEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DCircle2DEditor.cpp \
@@ -69,7 +70,6 @@ titania_SOURCES =  \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
-	Titania/Editors/GeometryTools/GeometryTools.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \
@@ -141,8 +141,8 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
+	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
-	Titania/UserInterfaces/X3DGeometryToolsInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \

@@ -47,47 +47,109 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DGeometryToolsInterface.h"
+#ifndef __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
+#define __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
+
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DGeometryToolsInterface::m_widgetName = "GeometryTools";
-
-void
-X3DGeometryToolsInterface::create (const std::string & filename)
+class X3DGeometryEditorInterface :
+	public X3DEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
+	X3DGeometryEditorInterface () :
+		X3DEditorInterface ()
+	{ }
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
-	m_builder -> get_widget ("HammerButton", m_HammerButton);
-	m_builder -> get_widget ("EditButton", m_EditButton);
-	m_builder -> get_widget ("ShowNormalsToggleButton", m_ShowNormalsToggleButton);
+	template <class ... Arguments>
+	X3DGeometryEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
 
-	// Connect object Gtk::Button with id 'HammerButton'.
-	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_hammer_clicked)));
-	m_connections .emplace_back (m_EditButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_edit_clicked)));
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const { return m_builder; }
 
-	// Connect object Gtk::ToggleButton with id 'ShowNormalsToggleButton'.
-	m_connections .emplace_back (m_ShowNormalsToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryToolsInterface::on_show_normals_toggled)));
+	const std::string &
+	getWidgetName () const { return m_widgetName; }
 
-	// Call construct handler of base class.
-	construct ();
-}
+	template <class Type>
+	Type*
+	createWidget (const std::string & name) const
+	{
+		getBuilder () -> add_from_file (filename, name);
 
-X3DGeometryToolsInterface::~X3DGeometryToolsInterface ()
-{
-	for (auto & connection : m_connections)
-		connection .disconnect ();
+		Type* widget = nullptr;
+		m_builder -> get_widget (name, widget);
+		return widget;
+	}
 
-	delete m_Window;
-}
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Revealer &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getGeometryEditorBox () const
+	{ return *m_GeometryEditorBox; }
+
+	Gtk::Button &
+	getHammerButton () const
+	{ return *m_HammerButton; }
+
+	Gtk::Button &
+	getEditButton () const
+	{ return *m_EditButton; }
+
+	Gtk::ToggleButton &
+	getNormalEnabledToggleButton () const
+	{ return *m_NormalEnabledToggleButton; }
+
+	virtual
+	void
+	on_hammer_clicked () = 0;
+
+	virtual
+	void
+	on_edit_clicked () = 0;
+
+	virtual
+	~X3DGeometryEditorInterface ();
+
+
+private:
+
+	virtual
+	void
+	construct () final override
+	{ X3DEditorInterface::construct (); }
+
+	void
+	create (const std::string &);
+
+	static const std::string m_widgetName;
+
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::deque <sigc::connection> m_connections;
+	Gtk::Window*                  m_Window;
+	Gtk::Revealer*                m_Widget;
+	Gtk::Box*                     m_GeometryEditorBox;
+	Gtk::Button*                  m_HammerButton;
+	Gtk::Button*                  m_EditButton;
+	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
+
+};
 
 } // puck
 } // titania
+
+#endif

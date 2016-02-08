@@ -154,6 +154,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.$(OBJEXT) \
 	Titania/Editors/ColorEditor/ColorEditor.$(OBJEXT) \
 	Titania/Editors/FaceSelection.$(OBJEXT) \
+	Titania/Editors/GeometryEditor/GeometryEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DCircle2DEditor.$(OBJEXT) \
@@ -166,7 +167,6 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.$(OBJEXT) \
-	Titania/Editors/GeometryTools/GeometryTools.$(OBJEXT) \
 	Titania/Editors/GridEditor/AngleTool.$(OBJEXT) \
 	Titania/Editors/GridEditor/GridEditor.$(OBJEXT) \
 	Titania/Editors/GridEditor/GridTool.$(OBJEXT) \
@@ -238,8 +238,8 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DFooterInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DGeometryEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.$(OBJEXT) \
-	Titania/UserInterfaces/X3DGeometryToolsInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGridEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DHistoryViewInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DInlineEditorInterface.$(OBJEXT) \
@@ -591,6 +591,7 @@ titania_SOURCES = \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FaceSelection.cpp \
+	Titania/Editors/GeometryEditor/GeometryEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DCircle2DEditor.cpp \
@@ -603,7 +604,6 @@ titania_SOURCES = \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
-	Titania/Editors/GeometryTools/GeometryTools.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \
@@ -675,8 +675,8 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
+	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
-	Titania/UserInterfaces/X3DGeometryToolsInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
@@ -1074,6 +1074,15 @@ Titania/Editors/$(DEPDIR)/$(am__dirstamp):
 Titania/Editors/FaceSelection.$(OBJEXT):  \
 	Titania/Editors/$(am__dirstamp) \
 	Titania/Editors/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/GeometryEditor/$(am__dirstamp):
+	@$(MKDIR_P) Titania/Editors/GeometryEditor
+	@: > Titania/Editors/GeometryEditor/$(am__dirstamp)
+Titania/Editors/GeometryEditor/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/Editors/GeometryEditor/$(DEPDIR)
+	@: > Titania/Editors/GeometryEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/GeometryEditor/GeometryEditor.$(OBJEXT):  \
+	Titania/Editors/GeometryEditor/$(am__dirstamp) \
+	Titania/Editors/GeometryEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/GeometryPropertiesEditor/Geometry2D
 	@: > Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(am__dirstamp)
@@ -1118,15 +1127,6 @@ Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.$(OBJEXT):  \
 Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.$(OBJEXT):  \
 	Titania/Editors/GeometryPropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/$(am__dirstamp)
-Titania/Editors/GeometryTools/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Editors/GeometryTools
-	@: > Titania/Editors/GeometryTools/$(am__dirstamp)
-Titania/Editors/GeometryTools/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/Editors/GeometryTools/$(DEPDIR)
-	@: > Titania/Editors/GeometryTools/$(DEPDIR)/$(am__dirstamp)
-Titania/Editors/GeometryTools/GeometryTools.$(OBJEXT):  \
-	Titania/Editors/GeometryTools/$(am__dirstamp) \
-	Titania/Editors/GeometryTools/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GridEditor/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/GridEditor
 	@: > Titania/Editors/GridEditor/$(am__dirstamp)
@@ -1441,10 +1441,10 @@ Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DFooterInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
-Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.$(OBJEXT):  \
+Titania/UserInterfaces/X3DGeometryEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
-Titania/UserInterfaces/X3DGeometryToolsInterface.$(OBJEXT):  \
+Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DGridEditorInterface.$(OBJEXT):  \
@@ -1679,10 +1679,10 @@ mostlyclean-compile:
 	-rm -f Titania/Editors/AppearanceEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/BackgroundEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/ColorEditor/*.$(OBJEXT)
+	-rm -f Titania/Editors/GeometryEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry2D/*.$(OBJEXT)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry3D/*.$(OBJEXT)
-	-rm -f Titania/Editors/GeometryTools/*.$(OBJEXT)
 	-rm -f Titania/Editors/GridEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/InlineEditor/*.$(OBJEXT)
 	-rm -f Titania/Editors/LayerEditor/*.$(OBJEXT)
@@ -1766,6 +1766,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ColorEditor/$(DEPDIR)/ColorEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryEditor/$(DEPDIR)/GeometryEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/GeometryPropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/X3DPrimitiveCountEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR)/X3DArc2DEditor.Po@am__quote@
@@ -1778,7 +1779,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DCylinderEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DExtrusionEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DSphereEditor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryTools/$(DEPDIR)/GeometryTools.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/AngleTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/GridEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/GridTool.Po@am__quote@
@@ -1849,8 +1849,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveDialogInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFileSaveWarningDialogInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DFooterInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryPropertiesEditorInterface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryToolsInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGridEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DHistoryViewInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DInlineEditorInterface.Po@am__quote@
@@ -2077,14 +2077,14 @@ distclean-generic:
 	-rm -f Titania/Editors/BackgroundEditor/$(am__dirstamp)
 	-rm -f Titania/Editors/ColorEditor/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/ColorEditor/$(am__dirstamp)
+	-rm -f Titania/Editors/GeometryEditor/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/Editors/GeometryEditor/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(am__dirstamp)
-	-rm -f Titania/Editors/GeometryTools/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/Editors/GeometryTools/$(am__dirstamp)
 	-rm -f Titania/Editors/GridEditor/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Editors/GridEditor/$(am__dirstamp)
 	-rm -f Titania/Editors/InlineEditor/$(DEPDIR)/$(am__dirstamp)
@@ -2146,7 +2146,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Base/$(DEPDIR) Titania/Browser/$(DEPDIR) Titania/ComposedWidgets/$(DEPDIR) Titania/Configuration/$(DEPDIR) Titania/Dialogs/FileImportDialog/$(DEPDIR) Titania/Dialogs/FileOpenDialog/$(DEPDIR) Titania/Dialogs/FileSaveDialog/$(DEPDIR) Titania/Dialogs/FileSaveWarningDialog/$(DEPDIR) Titania/Dialogs/NodeIndex/$(DEPDIR) Titania/Dialogs/OpenLocationDialog/$(DEPDIR) Titania/Editors/$(DEPDIR) Titania/Editors/AppearanceEditor/$(DEPDIR) Titania/Editors/BackgroundEditor/$(DEPDIR) Titania/Editors/ColorEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR) Titania/Editors/GeometryTools/$(DEPDIR) Titania/Editors/GridEditor/$(DEPDIR) Titania/Editors/InlineEditor/$(DEPDIR) Titania/Editors/LayerEditor/$(DEPDIR) Titania/Editors/LightEditor/$(DEPDIR) Titania/Editors/MotionBlurEditor/$(DEPDIR) Titania/Editors/NavigationInfoEditor/$(DEPDIR) Titania/Editors/NodeEditor/$(DEPDIR) Titania/Editors/NodePropertiesEditor/$(DEPDIR) Titania/Editors/PrecisionPlacementPanel/$(DEPDIR) Titania/Editors/PrototypeEditor/$(DEPDIR) Titania/Editors/ScenePropertiesEditor/$(DEPDIR) Titania/Editors/TextEditor/$(DEPDIR) Titania/Editors/TextureEditor/$(DEPDIR) Titania/Editors/TextureMappingEditor/$(DEPDIR) Titania/Editors/ViewpointEditor/$(DEPDIR) Titania/UserInterfaces/$(DEPDIR) Titania/Widgets/AnimationEditor/$(DEPDIR) Titania/Widgets/Console/$(DEPDIR) Titania/Widgets/Footer/$(DEPDIR) Titania/Widgets/HistoryView/$(DEPDIR) Titania/Widgets/LibraryView/$(DEPDIR) Titania/Widgets/OutlineEditor/$(DEPDIR) Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR) Titania/Widgets/ScriptEditor/$(DEPDIR) Titania/Widgets/Sidebar/$(DEPDIR) Titania/Widgets/ViewpointList/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Base/$(DEPDIR) Titania/Browser/$(DEPDIR) Titania/ComposedWidgets/$(DEPDIR) Titania/Configuration/$(DEPDIR) Titania/Dialogs/FileImportDialog/$(DEPDIR) Titania/Dialogs/FileOpenDialog/$(DEPDIR) Titania/Dialogs/FileSaveDialog/$(DEPDIR) Titania/Dialogs/FileSaveWarningDialog/$(DEPDIR) Titania/Dialogs/NodeIndex/$(DEPDIR) Titania/Dialogs/OpenLocationDialog/$(DEPDIR) Titania/Editors/$(DEPDIR) Titania/Editors/AppearanceEditor/$(DEPDIR) Titania/Editors/BackgroundEditor/$(DEPDIR) Titania/Editors/ColorEditor/$(DEPDIR) Titania/Editors/GeometryEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR) Titania/Editors/GridEditor/$(DEPDIR) Titania/Editors/InlineEditor/$(DEPDIR) Titania/Editors/LayerEditor/$(DEPDIR) Titania/Editors/LightEditor/$(DEPDIR) Titania/Editors/MotionBlurEditor/$(DEPDIR) Titania/Editors/NavigationInfoEditor/$(DEPDIR) Titania/Editors/NodeEditor/$(DEPDIR) Titania/Editors/NodePropertiesEditor/$(DEPDIR) Titania/Editors/PrecisionPlacementPanel/$(DEPDIR) Titania/Editors/PrototypeEditor/$(DEPDIR) Titania/Editors/ScenePropertiesEditor/$(DEPDIR) Titania/Editors/TextEditor/$(DEPDIR) Titania/Editors/TextureEditor/$(DEPDIR) Titania/Editors/TextureMappingEditor/$(DEPDIR) Titania/Editors/ViewpointEditor/$(DEPDIR) Titania/UserInterfaces/$(DEPDIR) Titania/Widgets/AnimationEditor/$(DEPDIR) Titania/Widgets/Console/$(DEPDIR) Titania/Widgets/Footer/$(DEPDIR) Titania/Widgets/HistoryView/$(DEPDIR) Titania/Widgets/LibraryView/$(DEPDIR) Titania/Widgets/OutlineEditor/$(DEPDIR) Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR) Titania/Widgets/ScriptEditor/$(DEPDIR) Titania/Widgets/Sidebar/$(DEPDIR) Titania/Widgets/ViewpointList/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -2193,7 +2193,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Base/$(DEPDIR) Titania/Browser/$(DEPDIR) Titania/ComposedWidgets/$(DEPDIR) Titania/Configuration/$(DEPDIR) Titania/Dialogs/FileImportDialog/$(DEPDIR) Titania/Dialogs/FileOpenDialog/$(DEPDIR) Titania/Dialogs/FileSaveDialog/$(DEPDIR) Titania/Dialogs/FileSaveWarningDialog/$(DEPDIR) Titania/Dialogs/NodeIndex/$(DEPDIR) Titania/Dialogs/OpenLocationDialog/$(DEPDIR) Titania/Editors/$(DEPDIR) Titania/Editors/AppearanceEditor/$(DEPDIR) Titania/Editors/BackgroundEditor/$(DEPDIR) Titania/Editors/ColorEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR) Titania/Editors/GeometryTools/$(DEPDIR) Titania/Editors/GridEditor/$(DEPDIR) Titania/Editors/InlineEditor/$(DEPDIR) Titania/Editors/LayerEditor/$(DEPDIR) Titania/Editors/LightEditor/$(DEPDIR) Titania/Editors/MotionBlurEditor/$(DEPDIR) Titania/Editors/NavigationInfoEditor/$(DEPDIR) Titania/Editors/NodeEditor/$(DEPDIR) Titania/Editors/NodePropertiesEditor/$(DEPDIR) Titania/Editors/PrecisionPlacementPanel/$(DEPDIR) Titania/Editors/PrototypeEditor/$(DEPDIR) Titania/Editors/ScenePropertiesEditor/$(DEPDIR) Titania/Editors/TextEditor/$(DEPDIR) Titania/Editors/TextureEditor/$(DEPDIR) Titania/Editors/TextureMappingEditor/$(DEPDIR) Titania/Editors/ViewpointEditor/$(DEPDIR) Titania/UserInterfaces/$(DEPDIR) Titania/Widgets/AnimationEditor/$(DEPDIR) Titania/Widgets/Console/$(DEPDIR) Titania/Widgets/Footer/$(DEPDIR) Titania/Widgets/HistoryView/$(DEPDIR) Titania/Widgets/LibraryView/$(DEPDIR) Titania/Widgets/OutlineEditor/$(DEPDIR) Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR) Titania/Widgets/ScriptEditor/$(DEPDIR) Titania/Widgets/Sidebar/$(DEPDIR) Titania/Widgets/ViewpointList/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Base/$(DEPDIR) Titania/Browser/$(DEPDIR) Titania/ComposedWidgets/$(DEPDIR) Titania/Configuration/$(DEPDIR) Titania/Dialogs/FileImportDialog/$(DEPDIR) Titania/Dialogs/FileOpenDialog/$(DEPDIR) Titania/Dialogs/FileSaveDialog/$(DEPDIR) Titania/Dialogs/FileSaveWarningDialog/$(DEPDIR) Titania/Dialogs/NodeIndex/$(DEPDIR) Titania/Dialogs/OpenLocationDialog/$(DEPDIR) Titania/Editors/$(DEPDIR) Titania/Editors/AppearanceEditor/$(DEPDIR) Titania/Editors/BackgroundEditor/$(DEPDIR) Titania/Editors/ColorEditor/$(DEPDIR) Titania/Editors/GeometryEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry2D/$(DEPDIR) Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR) Titania/Editors/GridEditor/$(DEPDIR) Titania/Editors/InlineEditor/$(DEPDIR) Titania/Editors/LayerEditor/$(DEPDIR) Titania/Editors/LightEditor/$(DEPDIR) Titania/Editors/MotionBlurEditor/$(DEPDIR) Titania/Editors/NavigationInfoEditor/$(DEPDIR) Titania/Editors/NodeEditor/$(DEPDIR) Titania/Editors/NodePropertiesEditor/$(DEPDIR) Titania/Editors/PrecisionPlacementPanel/$(DEPDIR) Titania/Editors/PrototypeEditor/$(DEPDIR) Titania/Editors/ScenePropertiesEditor/$(DEPDIR) Titania/Editors/TextEditor/$(DEPDIR) Titania/Editors/TextureEditor/$(DEPDIR) Titania/Editors/TextureMappingEditor/$(DEPDIR) Titania/Editors/ViewpointEditor/$(DEPDIR) Titania/UserInterfaces/$(DEPDIR) Titania/Widgets/AnimationEditor/$(DEPDIR) Titania/Widgets/Console/$(DEPDIR) Titania/Widgets/Footer/$(DEPDIR) Titania/Widgets/HistoryView/$(DEPDIR) Titania/Widgets/LibraryView/$(DEPDIR) Titania/Widgets/OutlineEditor/$(DEPDIR) Titania/Widgets/OutlineEditor/CellRenderer/$(DEPDIR) Titania/Widgets/ScriptEditor/$(DEPDIR) Titania/Widgets/Sidebar/$(DEPDIR) Titania/Widgets/ViewpointList/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

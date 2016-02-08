@@ -172,6 +172,9 @@ template <class Type, class ToggleButtonType>
 void
 X3DFieldToggleButton <Type, ToggleButtonType>::on_toggled ()
 {
+	if (nodes .empty ())
+		return;
+
 	if (changing)
 		return;
 
