@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_TOOLS_RENDERING_X3DNORMAL_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DNORMAL_NODE_TOOL_H__
 
-#include "../Layering/X3DActiveLayerTool.h"
+#include "../Rendering/X3DGeometricPropertyNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DNormalNodeTool :
-	public X3DActiveLayerTool
+	public X3DGeometricPropertyNodeTool
 {
 public:
 

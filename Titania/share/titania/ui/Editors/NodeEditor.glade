@@ -16,6 +16,7 @@
         <child>
           <object class="GtkLabel" id="Label">
             <property name="can_focus">False</property>
+            <property name="ypad">2</property>
             <property name="label" translatable="yes">Notebook</property>
             <property name="xalign">0</property>
             <style>

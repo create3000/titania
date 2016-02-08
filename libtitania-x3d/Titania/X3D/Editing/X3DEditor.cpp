@@ -2003,16 +2003,13 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 
 	const SFNode group (executionContext -> createNode (typeName));
 
-	executionContext -> addUninitializedNode (group);
-	undoStep -> addObjects (group);
-
-	for (const auto & child : children)
+	if (not children .empty ())
 	{
-		if (not child)
-			continue;
-
-		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), child, undoStep);
-
+		executionContext -> addUninitializedNode (group);
+		undoStep -> addObjects (group);
+	
+		const auto & leader = children .back ();
+	
 		traverse (executionContext -> getRootNodes (), [&] (SFNode & parent)
 		          {
 		             for (auto & field: parent -> getFieldDefinitions ())
@@ -2022,42 +2019,47 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 								 case X3DConstants::SFNode:
 									 {
 									    const auto sfnode = static_cast <SFNode*> (field);
-
-									    if (*sfnode == child)
+	
+									    if (*sfnode == leader)
 									    {
 									       // Replace node with Transform
-
+	
 									       undoStep -> addObjects (parent);
-
-									       undoStep -> addUndoFunction (&SFNode::setValue, sfnode, child);
+	
+									       undoStep -> addUndoFunction (&SFNode::setValue, sfnode, leader);
 									       undoStep -> addRedoFunction (&SFNode::setValue, sfnode, group);
-
+	
 									       sfnode -> setValue (group);
 										 }
-
+	
 									    break;
 									 }
 								 case X3DConstants::MFNode:
 									 {
 									    const auto mfnode = static_cast <MFNode*> (field);
-
-									    createParentGroup (executionContext, group, *mfnode, child, parent, undoStep);
-
+	
+									    createParentGroup (executionContext, group, *mfnode, leader, parent, undoStep);
+	
 									    break;
 									 }
 								 default:
 									 break;
 							 }
 						 }
-
+	
 		             return true;
 					 });
-
-		createParentGroup (executionContext, group, executionContext -> getRootNodes (), child, SFNode (executionContext), undoStep);
+	
+		createParentGroup (executionContext, group, executionContext -> getRootNodes (), leader, SFNode (executionContext), undoStep);
+	
+		MFNode tail (children .begin (), children .end () - 1);
+	
+		addToGroup (executionContext, group, tail, undoStep);
+		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), leader, undoStep);
 	}
 
 	executionContext -> realize ();
-	return SFNode (group);
+	return group;
 }
 
 void

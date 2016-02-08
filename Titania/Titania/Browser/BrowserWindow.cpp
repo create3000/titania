@@ -1125,18 +1125,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
-
-	getSelection () -> clear (undoStep);
-
-	const auto leader = selection .back ();
-	selection .pop_back ();
-
-	const auto group = createParentGroup (getCurrentContext (), typeName, fieldName, { leader }, undoStep);
-
-	if (not selection .empty ())
-		addToGroup (getCurrentContext (), group, selection, undoStep);
-
-	getSelection () -> setChildren ({ group }, undoStep);
+	const auto group    = createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
 	addUndoStep (undoStep);
 

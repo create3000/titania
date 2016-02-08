@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 08 Feb 2016 05:36:03 GMT"
+META "modified" "Mon, 08 Feb 2016 14:48:32 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -67,47 +67,28 @@ WorldInfo {
           }
         ]
       }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF Tool Script {
-            inputOutput SFBool     enabled FALSE
-            inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-            inputOutput SFColor    color 0 0 0
-            inputOutput SFFloat    transparency 0
-            inputOutput MFInt32    vertexCount [ ]
-            inputOutput MFVec3f    point [ ]
-
-            url "ecmascript:
-// Leaves empty"
-          }
-        }
-      }
     ]
   }
 }
 
-DEF _1 BooleanSwitch {
+DEF Switch Switch {
   children [
-    DEF _2 Group { }
-    DEF _3 TransformMatrix3D {
+    Group { }
+    DEF TransformMatrix3D TransformMatrix3D {
       children Shape {
         appearance Appearance {
-          material DEF _4 Material {
+          material DEF Material Material {
             diffuseColor 0 0 0
             emissiveColor 0.7 0.85 1
           }
         }
-        geometry DEF _5 LineSet {
+        geometry DEF NormalsLineSet LineSet {
           vertexCount [
             2,
             2,
             2
           ]
-          coord DEF _6 Coordinate {
+          coord DEF NormalsCoord Coordinate {
             point [
               -2 0 0,
               2 0 0,
@@ -123,13 +104,8 @@ DEF _1 BooleanSwitch {
   ]
 }
 
-USE Tool
-
-ROUTE Tool.modelViewMatrix_changed TO _3.set_matrix
-ROUTE Tool.enabled_changed TO _1.set_whichChoice
-ROUTE Tool.color_changed TO _4.set_emissiveColor
-ROUTE Tool.point_changed TO _6.set_point
-ROUTE Tool.vertexCount_changed TO _5.set_vertexCount
-ROUTE Tool.transparency_changed TO _4.set_transparency
-
-EXPORT Tool
+EXPORT Material
+EXPORT NormalsCoord
+EXPORT NormalsLineSet
+EXPORT Switch
+EXPORT TransformMatrix3D

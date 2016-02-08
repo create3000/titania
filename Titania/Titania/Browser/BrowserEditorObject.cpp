@@ -127,7 +127,6 @@ BrowserEditorObject::set_viewer_active (const bool value)
 			addRedoFunction (activeViewpoint, activeViewpoint -> centerOfRotationOffset (), undoStep);
 			addRedoFunction (activeViewpoint, activeViewpoint -> fieldOfViewScale (),       undoStep);
 			endRedoGroup ("positionOffset", undoStep);
-			resetUndoGroup ("positionOffset", undoStep);
 	
 			set_offsets ();
 		}
@@ -190,6 +189,8 @@ BrowserEditorObject::set_offsets ()
 		orientationOffset      = activeViewpoint -> orientationOffset ();
 		centerOfRotationOffset = activeViewpoint -> centerOfRotationOffset ();
 		fieldOfViewScale       = activeViewpoint -> fieldOfViewScale ();
+
+		resetUndoGroup ("positionOffset", undoStep);
 	}
 	catch (const X3D::X3DError &)
 	{ }

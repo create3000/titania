@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DCoordinateNodeTool::X3DCoordinateNodeTool () :
-	X3DActiveLayerTool ()
+	X3DGeometricPropertyNodeTool ()
 {
 	//addType (X3DConstants::X3DCoordinateNodeTool);
 }

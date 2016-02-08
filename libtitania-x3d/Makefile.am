@@ -524,6 +524,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.cpp \
+	Titania/X3D/Tools/Rendering/X3DGeometricPropertyNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Types/Image.cpp
 

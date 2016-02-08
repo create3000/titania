@@ -773,6 +773,7 @@
     <None Include="Titania\X3D\Tools\Rendering\X3DNormalNodeTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\CoordinateTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1296,6 +1297,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\X3DNormalNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\CoordinateTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

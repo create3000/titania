@@ -113,11 +113,11 @@ NormalTool::realize ()
 	{
 		getBrowser () -> prepareEvents () .addInterest (this, &NormalTool::prepareEvent);
 
-		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
+		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
 		modelViewMatrix () .addInterest (set_modelViewMatrix);
 		set_modelViewMatrix = modelViewMatrix ();
 
-		auto & set_vertexCount = getToolNode () -> getField <MFInt32> ("set_vertexCount");
+		auto & set_vertexCount = getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
 
@@ -139,7 +139,7 @@ NormalTool::prepareEvent ()
 {
 	try
 	{
-		getToolNode () -> setField <SFBool> ("set_enabled", show, true);
+		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (show), true);
 		show = false;
 	}
 	catch (const X3DError & error)
@@ -153,8 +153,10 @@ NormalTool::set_color ()
 {
 	try
 	{
-		getToolNode () -> setField <SFColor> ("set_color", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
-		getToolNode () -> setField <SFFloat> ("set_transparency", 1 - color () .getAlpha ());
+		const auto material = getInlineNode () -> getExportedNode ("Material");
+
+		material -> setField <SFColor> ("emissiveColor", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
+		material -> setField <SFFloat> ("transparency", 1 - color () .getAlpha ());
 	}
 	catch (const X3DError & error)
 	{
@@ -167,12 +169,13 @@ NormalTool::set_point ()
 {
 	try
 	{
+		auto & set_point = getInlineNode () -> getExportedNode ("NormalsCoord") -> getField <MFVec3f> ("point");
+
 		if (length () == 1.0f)
-			getToolNode () -> setField <MFVec3f> ("set_point", point ());
+			set_point = point ();
 
 		else
 		{
-			auto & set_point = getToolNode () -> getField <MFVec3f> ("set_point");
 			set_point = point ();
 
 			for (size_t i = 0, size = point () .size (); i < size; i += 2)

@@ -132,6 +132,38 @@ public:
 	point () const
 	{ return *fields .point; }
 
+	SFNode &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const SFNode &
+	geometry () const
+	{ return *fields .geometry; }
+
+	SFVec3f &
+	hitPoint_changed ()
+	{ return *fields .hitPoint_changed; }
+
+	const SFVec3f &
+	hitPoint_changed () const
+	{ return *fields .hitPoint_changed; }
+
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFTime &
+	touchTime ()
+	{ return *fields .touchTime; }
+
+	const SFTime &
+	touchTime () const
+	{ return *fields .touchTime; }
+
 	///  @name Operations
 
 	void
@@ -175,6 +207,10 @@ private:
 		SFColorRGBA* const color;
 		MFInt32* const vertexCount;
 		MFVec3f* const point;
+		SFNode* const geometry;
+		SFVec3f* const hitPoint_changed;
+		SFBool* const isActive;
+		SFTime* const touchTime;
 	};
 
 	Fields fields;

@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#include "X3DNormalNodeTool.h"
+#include "X3DGeometricPropertyNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DNormalNodeTool::X3DNormalNodeTool () :
-	X3DGeometricPropertyNodeTool ()
+X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
+	X3DActiveLayerTool ()
 {
-	//addType (X3DConstants::X3DNormalNodeTool);
+	//addType (X3DConstants::X3DGeometricPropertyNodeTool);
 }
 
-X3DNormalNodeTool::~X3DNormalNodeTool ()
+X3DGeometricPropertyNodeTool::~X3DGeometricPropertyNodeTool ()
 { }
 
 } // X3D

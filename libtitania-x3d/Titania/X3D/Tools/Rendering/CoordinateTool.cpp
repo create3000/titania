@@ -62,11 +62,15 @@ const std::string   CoordinateTool::typeName       = "CoordinateTool";
 const std::string   CoordinateTool::containerField = "coordTool";
 
 CoordinateTool::Fields::Fields () :
-	        enabled (new SFBool (true)),
-	modelViewMatrix (new SFMatrix4f ()),
-	          color (new SFColorRGBA (0.7, 0.85, 1, 1)),
-	    vertexCount (new MFInt32 ()),
-	          point (new MFVec3f ())
+	         enabled (new SFBool (true)),
+	 modelViewMatrix (new SFMatrix4f ()),
+	           color (new SFColorRGBA (0.7, 0.85, 1, 1)),
+	     vertexCount (new MFInt32 ()),
+	           point (new MFVec3f ()),
+	        geometry (new SFNode ()),
+	hitPoint_changed (new SFVec3f ()),
+	        isActive (new SFBool ()),
+	        touchTime (new SFTime ())
 { }
 
 CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
@@ -77,12 +81,16 @@ CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 {
 	//addType (X3DConstants::CoordinateTool);
 
-	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "enabled",         enabled ());
-	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
-	addField (inputOutput, "color",           color ());
-	addField (inputOutput, "vertexCount",     vertexCount ());
-	addField (inputOutput, "point",           point ());
+	addField (inputOutput, "metadata",         metadata ());
+	addField (inputOutput, "enabled",          enabled ());
+	addField (inputOutput, "modelViewMatrix",  modelViewMatrix ());
+	addField (inputOutput, "color",            color ());
+	addField (inputOutput, "vertexCount",      vertexCount ());
+	addField (inputOutput, "point",            point ());
+	addField (inputOutput, "geometry",         geometry ());
+	addField (inputOutput, "hitPoint_changed", hitPoint_changed ());
+	addField (inputOutput, "isActive",         isActive ());
+	addField (inputOutput, "touchTime",        touchTime ());
 }
 
 X3DBaseNode*
@@ -111,17 +119,27 @@ CoordinateTool::realize ()
 	{
 		getBrowser () -> prepareEvents () .addInterest (this, &CoordinateTool::prepareEvent);
 
-		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
+		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
 		modelViewMatrix () .addInterest (set_modelViewMatrix);
 		set_modelViewMatrix = modelViewMatrix ();
 
-		auto & set_vertexCount = getToolNode () -> getField <MFInt32> ("set_vertexCount");
+		auto & set_vertexCount = getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
 
-		auto & set_point = getToolNode () -> getField <MFVec3f> ("set_point");
+		auto & set_point = getInlineNode () -> getExportedNode ("EdgesCoord") -> getField <MFVec3f> ("set_point");
 		point () .addInterest (set_point);
 		set_point = point ();
+
+		auto & set_geometry = getInlineNode () -> getExportedNode ("SelectionShape") -> getField <SFNode> ("geometry");
+		geometry () .addInterest (set_geometry);
+		set_geometry = geometry ();
+
+		const auto touchSensor = getInlineNode () -> getExportedNode ("TouchSensor");
+
+		touchSensor -> getField <SFVec3f> ("hitPoint_changed") .addInterest (hitPoint_changed ());
+		touchSensor -> getField <SFBool>  ("isActive")         .addInterest (isActive ());
+		touchSensor -> getField <SFTime>  ("touchTime")        .addInterest (touchTime ());
 
 		color () .addInterest (this, &CoordinateTool::set_color);
 
@@ -138,7 +156,7 @@ CoordinateTool::prepareEvent ()
 {
 	try
 	{
-		getToolNode () -> setField <SFBool> ("set_enabled", show, true);
+		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (show), true);
 		show = false;
 	}
 	catch (const X3DError & error)
@@ -152,8 +170,10 @@ CoordinateTool::set_color ()
 {
 	try
 	{
-		getToolNode () -> setField <SFColor> ("set_color", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
-		getToolNode () -> setField <SFFloat> ("set_transparency", 1 - color () .getAlpha ());
+		const auto material = getInlineNode () -> getExportedNode ("Material");
+
+		material -> setField <SFColor> ("emissiveColor", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
+		material -> setField <SFFloat> ("transparency", 1 - color () .getAlpha ());
 	}
 	catch (const X3DError & error)
 	{

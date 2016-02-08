@@ -148,8 +148,8 @@ public:
 
 	virtual
 	bool
-	intersects (Line3f line, std::vector <IntersectionPtr> & intersections) const final override
-	{ return getNode () -> intersects (line, intersections); }
+	intersects (Line3f, std::vector <IntersectionPtr> &) const final override
+	{ return false; }
 
 	virtual
 	bool
@@ -268,6 +268,8 @@ X3DGeometryNodeTool <Type>::initialize ()
 	X3DNodeTool <Type>::initialize ();
 
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+
+	coordToolNode -> geometry () = this -> getNode ();
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
