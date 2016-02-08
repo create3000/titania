@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "NormalTool.h"
+#include "CoordinateTool.h"
 
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
@@ -57,61 +57,59 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType NormalTool::component      = ComponentType::TITANIA;
-const std::string   NormalTool::typeName       = "NormalTool";
-const std::string   NormalTool::containerField = "normalTool";
+const ComponentType CoordinateTool::component      = ComponentType::TITANIA;
+const std::string   CoordinateTool::typeName       = "CoordinateTool";
+const std::string   CoordinateTool::containerField = "coordTool";
 
-NormalTool::Fields::Fields () :
+CoordinateTool::Fields::Fields () :
 	        enabled (new SFBool (true)),
 	modelViewMatrix (new SFMatrix4f ()),
-	         length (new SFFloat (1)),
 	          color (new SFColorRGBA (0.7, 0.85, 1, 1)),
 	    vertexCount (new MFInt32 ()),
 	          point (new MFVec3f ())
 { }
 
-NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
-	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DNormalNodeTool (),
-	           fields (),
-	             show (false)
+CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DCoordinateNodeTool (),
+	               fields (),
+	                 show (false)
 {
-	//addType (X3DConstants::NormalTool);
+	//addType (X3DConstants::CoordinateTool);
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
-	addField (inputOutput, "length",          length ());
 	addField (inputOutput, "color",           color ());
 	addField (inputOutput, "vertexCount",     vertexCount ());
 	addField (inputOutput, "point",           point ());
 }
 
 X3DBaseNode*
-NormalTool::create (X3DExecutionContext* const executionContext) const
+CoordinateTool::create (X3DExecutionContext* const executionContext) const
 {
-	return new NormalTool (executionContext);
+	return new CoordinateTool (executionContext);
 }
 
 void
-NormalTool::initialize ()
+CoordinateTool::initialize ()
 {
-	X3DNormalNodeTool::initialize ();
+	X3DCoordinateNodeTool::initialize ();
 
 	enabled () .addInterest (getInlineNode () -> load ());
 
 	getInlineNode () -> load () = enabled ();
-	getInlineNode () -> url ()  = { get_tool ("NormalTool.x3dv") .str () };
+	getInlineNode () -> url ()  = { get_tool ("CoordinateTool.x3dv") .str () };
 }
 
 void
-NormalTool::realize ()
+CoordinateTool::realize ()
 {
-	X3DNormalNodeTool::realize ();
+	X3DCoordinateNodeTool::realize ();
 
 	try
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &NormalTool::prepareEvent);
+		getBrowser () -> prepareEvents () .addInterest (this, &CoordinateTool::prepareEvent);
 
 		auto & set_modelViewMatrix = getToolNode () -> getField <SFMatrix4f> ("set_modelViewMatrix");
 		modelViewMatrix () .addInterest (set_modelViewMatrix);
@@ -121,12 +119,13 @@ NormalTool::realize ()
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
 
-		length () .addInterest (this, &NormalTool::set_point);
-		color ()  .addInterest (this, &NormalTool::set_color);
-		point ()  .addInterest (this, &NormalTool::set_point);
+		auto & set_point = getToolNode () -> getField <MFVec3f> ("set_point");
+		point () .addInterest (set_point);
+		set_point = point ();
+
+		color () .addInterest (this, &CoordinateTool::set_color);
 
 		set_color ();
-		set_point ();
 	}
 	catch (const X3DError & error)
 	{
@@ -135,7 +134,7 @@ NormalTool::realize ()
 }
 
 void
-NormalTool::prepareEvent ()
+CoordinateTool::prepareEvent ()
 {
 	try
 	{
@@ -149,7 +148,7 @@ NormalTool::prepareEvent ()
 }
 
 void
-NormalTool::set_color ()
+CoordinateTool::set_color ()
 {
 	try
 	{
@@ -163,34 +162,7 @@ NormalTool::set_color ()
 }
 
 void
-NormalTool::set_point ()
-{
-	try
-	{
-		if (length () == 1.0f)
-			getToolNode () -> setField <MFVec3f> ("set_point", point ());
-
-		else
-		{
-			auto & set_point = getToolNode () -> getField <MFVec3f> ("set_point");
-			set_point = point ();
-
-			for (size_t i = 0, size = point () .size (); i < size; i += 2)
-			{
-				const auto normal = set_point [i + 1] .getValue () - set_point [i + 0] .getValue ();
-
-				set_point [i + 1] = set_point [i + 0] .getValue () + normal * length () .getValue ();
-			}
-		}
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-NormalTool::draw (const ShapeContainer* const container)
+CoordinateTool::draw (const ShapeContainer* const container)
 {
 	if (getCurrentLayer () != getActiveLayer ())
 		return;

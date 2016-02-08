@@ -79,9 +79,11 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
 	                               convex (this, getConvexCheckButton (), "convex"),
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
-	                         normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
+	                         normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
+	                          normalColor (this, getNormalColorButton (), getNormalColorAdjustment (), getNormalColorBox (), "color"),
+	                            edgeColor (this, getEdgeColorButton (), getEdgeColorAdjustment (), getEdgeColorBox (), "color"),
 	                         geometryNode (),
 	                                nodes (),
 	                               shapes (),
@@ -93,8 +95,13 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI);
 
-	//normalLength .setUndo (false);
+	//	normalLength .setUndo (false);
+	//	normalColor  .setUndo (false);
+	//	edgeColor    .setUndo (false);
+
 	normalLength .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	normalColor  .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	edgeColor    .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
 
 	setup ();
 }

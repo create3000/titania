@@ -48,19 +48,142 @@
  *
  ******************************************************************************/
 
-#include "X3DNormalNodeTool.h"
+#ifndef __TITANIA_X3D_TOOLS_RENDERING_COORDINATE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_RENDERING_COORDINATE_TOOL_H__
+
+#include "../../Rendering/ShapeContainer.h"
+#include "../Rendering/X3DCoordinateNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DNormalNodeTool::X3DNormalNodeTool () :
-	X3DActiveLayerTool ()
+class CoordinateTool :
+	public X3DCoordinateNodeTool
 {
-	//addType (X3DConstants::X3DNormalNodeTool);
-}
+public:
 
-X3DNormalNodeTool::~X3DNormalNodeTool ()
-{ }
+	///  @name Construction
+
+	CoordinateTool (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFMatrix4f &
+	modelViewMatrix ()
+	{ return *fields .modelViewMatrix; }
+
+	const SFMatrix4f &
+	modelViewMatrix () const
+	{ return *fields .modelViewMatrix; }
+
+	SFColorRGBA &
+	color ()
+	{ return *fields .color; }
+
+	const SFColorRGBA &
+	color () const
+	{ return *fields .color; }
+
+	MFInt32 &
+	vertexCount ()
+	{ return *fields .vertexCount; }
+
+	const MFInt32 &
+	vertexCount () const
+	{ return *fields .vertexCount; }
+
+	MFVec3f &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec3f &
+	point () const
+	{ return *fields .point; }
+
+	///  @name Operations
+
+	void
+	draw (const ShapeContainer* const);
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	realize () final override;
+
+	///  @name Event handler
+
+	void
+	prepareEvent ();
+
+	void
+	set_color ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFMatrix4f* const modelViewMatrix;
+		SFColorRGBA* const color;
+		MFInt32* const vertexCount;
+		MFVec3f* const point;
+	};
+
+	Fields fields;
+
+	bool show;
+
+};
 
 } // X3D
 } // titania
+
+#endif

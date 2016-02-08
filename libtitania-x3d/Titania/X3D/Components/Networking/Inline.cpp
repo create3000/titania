@@ -342,6 +342,8 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
+	future .reset ();
+
 	setLoadState (NOT_STARTED_STATE);
 
 	setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));

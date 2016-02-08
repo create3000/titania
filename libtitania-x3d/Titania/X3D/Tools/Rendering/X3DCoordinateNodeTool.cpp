@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#include "X3DNormalNodeTool.h"
+#include "X3DCoordinateNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DNormalNodeTool::X3DNormalNodeTool () :
+X3DCoordinateNodeTool::X3DCoordinateNodeTool () :
 	X3DActiveLayerTool ()
 {
-	//addType (X3DConstants::X3DNormalNodeTool);
+	//addType (X3DConstants::X3DCoordinateNodeTool);
 }
 
-X3DNormalNodeTool::~X3DNormalNodeTool ()
+X3DCoordinateNodeTool::~X3DCoordinateNodeTool ()
 { }
 
 } // X3D

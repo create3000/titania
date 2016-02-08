@@ -48,19 +48,33 @@
  *
  ******************************************************************************/
 
-#include "X3DNormalNodeTool.h"
+#ifndef __TITANIA_X3D_TOOLS_RENDERING_X3DCOORDINATE_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_RENDERING_X3DCOORDINATE_NODE_TOOL_H__
+
+#include "../Layering/X3DActiveLayerTool.h"
 
 namespace titania {
 namespace X3D {
 
-X3DNormalNodeTool::X3DNormalNodeTool () :
-	X3DActiveLayerTool ()
+class X3DCoordinateNodeTool :
+	public X3DActiveLayerTool
 {
-	//addType (X3DConstants::X3DNormalNodeTool);
-}
+public:
 
-X3DNormalNodeTool::~X3DNormalNodeTool ()
-{ }
+	///  @name Destruction
+
+	~X3DCoordinateNodeTool ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DCoordinateNodeTool ();
+
+};
 
 } // X3D
 } // titania
+
+#endif

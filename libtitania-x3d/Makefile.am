@@ -521,7 +521,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
+	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Types/Image.cpp
 

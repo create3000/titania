@@ -583,27 +583,28 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 	                  ? std::find (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end (), field -> second)
 							: std::find (fieldDefinitions .begin (), fieldDefinitions .end (), field -> second);
 
-	if (iter == fieldDefinitions .end ())
-		return;
-
-	if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
+	if (iter not_eq fieldDefinitions .end ())
 	{
-		-- numUserDefinedFields;
-
-		//  If the field is added twice we must not remove the parent to prevent dispose.
-		if (removeParent)
-			field -> second -> removeParent (this);
+		if (fieldDefinitions .end () - iter <= FieldDefinitionArray::difference_type (numUserDefinedFields))
+		{
+			-- numUserDefinedFields;
+	
+			//  If the field is added twice we must not remove the parent to prevent dispose.
+			if (removeParent)
+				field -> second -> removeParent (this);
+		}
+		else
+		{
+			//  If field is a pre defined field, we defer dispose.
+			X3DParentObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
+		}
+	
+		if (not private_)
+			field -> second -> removeClones (1);
+	
+		fieldDefinitions .erase (iter);
 	}
-	else
-	{
-		//  If field is a pre defined field, we defer dispose.
-		X3DParentObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
-	}
 
-	if (not private_)
-		field -> second -> removeClones (1);
-
-	fieldDefinitions .erase (iter);
 	fields .erase (field);
 }
 
@@ -747,9 +748,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (field -> isHidden ())
-			continue;
-
 		try
 		{
 			getInterfaceDeclaration () -> getField (field -> getName ());
@@ -792,9 +790,6 @@ X3DBaseNode::getChangedFields () const
 
 	for (const auto & field : std::make_pair (fieldDefinitions .begin (), fieldDefinitions .end () - numUserDefinedFields))
 	{
-		if (field -> isHidden ())
-			continue;
-
 		if (field -> getReferences () .empty ())
 		{
 
@@ -871,13 +866,13 @@ X3DBaseNode::isPrivate (const bool value)
 
 	if (private_)
 	{
-		for (const auto & field : fieldDefinitions)
-			field -> removeClones (1);
+		for (const auto & pair : fields)
+			pair .second -> removeClones (1);
 	}
 	else
 	{
-		for (const auto & field : fieldDefinitions)
-			field -> addClones (1);
+		for (const auto & pair : fields)
+			pair .second -> addClones (1);
 	}
 }
 
@@ -1714,15 +1709,17 @@ X3DBaseNode::dispose ()
 {
 	X3DParentObject::dispose ();
 
-	for (const auto & field : fieldDefinitions)
+	for (const auto & pair : fields)
 	{
+		const auto & field = pair .second;
+
 		if (not private_)
 			field -> removeClones (1);
 
 		field -> removeParent (this);
 	}
 
-	fields .clear ();
+	fields           .clear ();
 	fieldDefinitions .clear ();
 
 	executionContext -> removeParent (this);

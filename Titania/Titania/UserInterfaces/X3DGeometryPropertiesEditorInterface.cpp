@@ -78,6 +78,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CylinderRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
 	m_Disk2DInnerRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
 	m_Disk2DOuterRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
+	m_EdgeColorAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EdgeColorAdjustment"));
+	m_NormalColorAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_Rectangle2DSizeXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
@@ -158,6 +160,14 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrimitiveCountQuadsLabel", m_PrimitiveCountQuadsLabel);
 	m_builder -> get_widget ("PrimitiveCountPolygonsLabel", m_PrimitiveCountPolygonsLabel);
 	m_builder -> get_widget ("PrimitiveCountCountButton", m_PrimitiveCountCountButton);
+	m_builder -> get_widget ("GeometryToolExpander", m_GeometryToolExpander);
+	m_builder -> get_widget ("NormalLengthSpinButton1", m_NormalLengthSpinButton1);
+	m_builder -> get_widget ("NormalColorBox", m_NormalColorBox);
+	m_builder -> get_widget ("NormalColorButton", m_NormalColorButton);
+	m_builder -> get_widget ("NormalColorScale", m_NormalColorScale);
+	m_builder -> get_widget ("EdgeColorBox", m_EdgeColorBox);
+	m_builder -> get_widget ("EdgeColorButton", m_EdgeColorButton);
+	m_builder -> get_widget ("EdgeColorScale", m_EdgeColorScale);
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
 	m_connections .emplace_back (m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed)));

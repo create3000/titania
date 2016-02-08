@@ -74,6 +74,7 @@ void
 X3DToolObject::initialize ()
 {
 	inlineNode -> checkLoadState () .addInterest (this, &X3DToolObject::set_loadState);
+	inlineNode -> load () = false;
 	inlineNode -> setup ();
 }
 
@@ -98,7 +99,8 @@ throw (Error <DISPOSED>)
 void
 X3DToolObject::requestAsyncLoad (const MFString & url)
 {
-	inlineNode -> url () = url;
+	inlineNode -> url ()  = url;
+	inlineNode -> load () = true;
 }
 
 void

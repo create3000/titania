@@ -158,6 +158,14 @@ public:
 	{ return m_Disk2DOuterRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getEdgeColorAdjustment () const
+	{ return m_EdgeColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNormalColorAdjustment () const
+	{ return m_NormalColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalLengthAdjustment () const
 	{ return m_NormalLengthAdjustment; }
 
@@ -469,6 +477,38 @@ public:
 	getPrimitiveCountCountButton () const
 	{ return *m_PrimitiveCountCountButton; }
 
+	Gtk::Expander &
+	getGeometryToolExpander () const
+	{ return *m_GeometryToolExpander; }
+
+	Gtk::SpinButton &
+	getNormalLengthSpinButton1 () const
+	{ return *m_NormalLengthSpinButton1; }
+
+	Gtk::Box &
+	getNormalColorBox () const
+	{ return *m_NormalColorBox; }
+
+	Gtk::Button &
+	getNormalColorButton () const
+	{ return *m_NormalColorButton; }
+
+	Gtk::Scale &
+	getNormalColorScale () const
+	{ return *m_NormalColorScale; }
+
+	Gtk::Box &
+	getEdgeColorBox () const
+	{ return *m_EdgeColorBox; }
+
+	Gtk::Button &
+	getEdgeColorButton () const
+	{ return *m_EdgeColorButton; }
+
+	Gtk::Scale &
+	getEdgeColorScale () const
+	{ return *m_EdgeColorScale; }
+
 	virtual
 	void
 	on_geometry_changed () = 0;
@@ -545,6 +585,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
@@ -623,6 +665,14 @@ private:
 	Gtk::Label*                    m_PrimitiveCountQuadsLabel;
 	Gtk::Label*                    m_PrimitiveCountPolygonsLabel;
 	Gtk::ComboBoxText*             m_PrimitiveCountCountButton;
+	Gtk::Expander*                 m_GeometryToolExpander;
+	Gtk::SpinButton*               m_NormalLengthSpinButton1;
+	Gtk::Box*                      m_NormalColorBox;
+	Gtk::Button*                   m_NormalColorButton;
+	Gtk::Scale*                    m_NormalColorScale;
+	Gtk::Box*                      m_EdgeColorBox;
+	Gtk::Button*                   m_EdgeColorButton;
+	Gtk::Scale*                    m_EdgeColorScale;
 
 };
 

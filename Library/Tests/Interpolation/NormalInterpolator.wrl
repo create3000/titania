@@ -1,17 +1,121 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V1.2.2
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 IndexedFaceSet {
+            normalPerVertex FALSE
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              -1
+            ]
+            normal DEF Normal Normal {
+              vector 0 0.867271 0.497836
+            }
+            coord DEF Coordinate Coordinate {
+              point [
+                -1 1 0,
+                -1 -1 0,
+                1 -1 0,
+                1 1 0
+              ]
+            }
+          }
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.19993662834167,
+              0.144914999604225,
+              4.8518238067627
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.124550737440586,
+              0.991447687149048,
+              -0.0389702655375004,
+              0.24433159828186
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "NormalInterpolator"
+}
 
 DEF Background Transform {
-  children DEF _12 Background {
-    skyAngle [ 0.8, 1.3, 1.4, 1.5708 ]
-    skyColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
-    groundAngle [ 0.6, 1.2, 1.3, 1.5708 ]
-    groundColor [ 0.21 0.31 0.59, 0.33 0.45 0.7, 0.57 0.66 0.85, 0.6 0.73 0.89, 0.7 0.83 0.98 ]
+  children Background {
+    skyAngle [
+      0.8,
+      1.3,
+      1.4,
+      1.5708
+    ]
+    skyColor [
+      0.21 0.31 0.59,
+      0.33 0.45 0.7,
+      0.57 0.66 0.85,
+      0.6 0.73 0.89,
+      0.7 0.83 0.98
+    ]
+    groundAngle [
+      0.6,
+      1.2,
+      1.3,
+      1.5708
+    ]
+    groundColor [
+      0.21 0.31 0.59,
+      0.33 0.45 0.7,
+      0.57 0.66 0.85,
+      0.6 0.73 0.89,
+      0.7 0.83 0.98
+    ]
   }
 }
 
 Viewpoint {
-  position 0 0 5
   description "Start"
+  position 0 0 5
 }
 
 DEF TouchSensor TouchSensor { }
@@ -22,8 +126,20 @@ DEF TimeSensor TimeSensor {
 }
 
 DEF NormalInterpolator NormalInterpolator {
-  key [ 0, 0.25, 0.5, 0.75, 1 ]
-  keyValue [ 0 0 1, 0 1 0, 0 0 -1, 0 -1 0, 0 0 1 ]
+  key [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ]
+  keyValue [
+    0 0 1,
+    0 1 0,
+    0 0 -1,
+    0 -1 0,
+    0 0 1
+  ]
 }
 
 Transform {
@@ -31,20 +147,9 @@ Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry IndexedFaceSet {
-      solid FALSE
-      normalPerVertex FALSE
-      coordIndex [ 0, 1, 2, 3, 0, -1 ]
-      coord DEF Coordinate Coordinate {
-        point [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
-      }
-      normal DEF Normal Normal {
-        vector 0 0 1
-      }
-    }
+    geometry USE _1
   }
 }
-
 
 ROUTE TouchSensor.touchTime TO TimeSensor.set_stopTime
 ROUTE TimeSensor.fraction_changed TO NormalInterpolator.set_fraction

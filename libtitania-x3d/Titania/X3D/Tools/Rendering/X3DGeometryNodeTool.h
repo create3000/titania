@@ -53,6 +53,7 @@
 
 #include "../Core/X3DNodeTool.h"
 #include "../Rendering/NormalTool.h"
+#include "../Rendering/CoordinateTool.h"
 
 #include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Rendering/ShapeContainer.h"
@@ -76,13 +77,13 @@ public:
 	normalTool () const
 	{ return *fields .normalTool; }
 
-	SFBool &
-	showNormals ()
-	{ return *fields .showNormals; }
+	SFNode &
+	coordTool ()
+	{ return *fields .coordTool; }
 
-	const SFBool &
-	showNormals () const
-	{ return *fields .showNormals; }
+	const SFNode &
+	coordTool () const
+	{ return *fields .coordTool; }
 
 	///  @name Member access
 
@@ -202,9 +203,6 @@ private:
 	///  @name Operations
 
 	void
-	set_showNormals ();
-
-	void
 	eventProcessed ();
 
 	///  @name Members
@@ -214,38 +212,42 @@ private:
 		Fields ();
 
 		SFNode* const normalTool;
-		SFBool* const showNormals;
+		SFNode* const coordTool;
 	};
 
 	Fields fields;
 
-	X3DPtr <NormalTool> normalToolNode;
+	X3DPtr <NormalTool>     normalToolNode;
+	X3DPtr <CoordinateTool> coordToolNode;
 
 };
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
 	 normalTool (new SFNode ()),
-	showNormals (new SFBool ())
+	  coordTool (new SFNode ())
 { }
 
 template <class Type>
 X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	X3DNodeTool <Type> (),
 	            fields (),
-	    normalToolNode (new NormalTool (this -> getExecutionContext ()))
+	    normalToolNode (new NormalTool (this -> getExecutionContext ())),
+	     coordToolNode (new CoordinateTool (this -> getExecutionContext ()))
 {
 	normalTool () = normalToolNode;
+	coordTool  () = coordToolNode;
 
-	normalTool  () .isHidden (true);
-	showNormals () .isHidden (true);
+	normalTool () .isHidden (true);
+	coordTool  () .isHidden (true);
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
-	this -> addField (inputOutput, "normalTool",  normalTool ());
-	this -> addField (inputOutput, "showNormals", showNormals ());
+	this -> addField (inputOutput, "normalTool", normalTool ());
+	this -> addField (inputOutput, "coordTool",  coordTool ());
 
-	this -> addChildren (normalToolNode);
+	this -> addChildren (normalToolNode,
+                        coordToolNode);
 }
 
 template <class Type>
@@ -266,10 +268,9 @@ X3DGeometryNodeTool <Type>::initialize ()
 	X3DNodeTool <Type>::initialize ();
 
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
-	showNormals () .addInterest (normalToolNode -> enabled ());
 
-	normalToolNode -> enabled () = showNormals ();
 	normalToolNode -> setup ();
+	coordToolNode  -> setup ();
 
 	eventProcessed ();
 }
@@ -280,9 +281,13 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 {
 	const auto & normals  = this -> getNode () -> getPolygonNormals ();
 	const auto & vertices = this -> getNode () -> getPolygonVertices ();
+	const auto & elements = this -> getNode () -> getElements ();
 	const auto   size     = vertices .size ();
 
-	normalToolNode -> point () .resize (2 * size);
+	// Normals
+
+	normalToolNode -> vertexCount () .resize (size, SFInt32 (2));
+	normalToolNode -> point ()       .resize (2 * size);
 
 	for (size_t i = 0; i < size; ++ i)
 	{
@@ -290,7 +295,77 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 		normalToolNode -> point () [2 * i + 1] = vertices [i] + normals [i];
 	}
 
-	normalToolNode -> vertexCount () .resize (size, SFInt32 (2));
+	// Points
+
+	size_t first = 0;
+	size_t p     = 0;
+	size_t v     = 0;
+
+	for (const auto & element : elements)
+	{
+		switch (element .vertexMode)
+		{
+			case GL_TRIANGLES :
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 3)
+				{
+					coordToolNode -> vertexCount () .set1Value (v ++, 4);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+				}
+
+				break;
+			}
+			case GL_QUADS:
+			{
+				for (size_t i = first, size = first + element .count; i < size; i += 4)
+				{
+					coordToolNode -> vertexCount () .set1Value (v ++, 5);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+				}
+
+				break;
+			}
+			case GL_QUAD_STRIP:
+			{
+				for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
+				{
+					coordToolNode -> vertexCount () .set1Value (v ++, 5);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+				}
+
+				break;
+			}
+			case GL_POLYGON:
+			{
+				coordToolNode -> vertexCount () .set1Value (v ++, element .count + 1);
+
+				for (size_t i = first, size = first + element .count; i < size; ++ i)
+					coordToolNode -> point () .set1Value (p ++, vertices [i]);
+
+				coordToolNode -> point () .set1Value (p ++, vertices [first]);
+
+				break;
+			}
+			default:
+				break;
+		}
+
+		first += element .count;
+	}
+
+	coordToolNode -> vertexCount () .resize (v);
+	coordToolNode -> point ()       .resize (p);
 }
 
 template <class Type>
@@ -298,6 +373,7 @@ void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
 	normalToolNode -> draw (container);
+	coordToolNode  -> draw (container);
 
 	this -> getNode () -> draw (container);
 }
@@ -306,8 +382,6 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::dispose ()
 {
-	this -> getNode () -> removeUserDefinedField ("showNormals");
-
 	X3DNodeTool <Type>::dispose ();
 }
 

@@ -160,7 +160,7 @@ template <class Type>
 Type
 Configuration::get (const std::string & key) const
 {
-	std::istringstream isstream (getString (name));
+	std::istringstream isstream (getString (key));
 
 	isstream .imbue (std::locale::classic ());
 

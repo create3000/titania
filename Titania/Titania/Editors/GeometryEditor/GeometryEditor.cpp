@@ -67,6 +67,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
 	             normalEnabled (this, getNormalEnabledToggleButton (), "enabled"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
+	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes ()
 {
 	normalEnabled .setUndo (false);
@@ -74,6 +75,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "enabled", new X3D::SFBool ());
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",   new X3D::SFColorRGBA (0.7, 0.85, 1, 1));
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length",  new X3D::SFFloat (1));
+
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "color", new X3D::SFColorRGBA (0.7, 0.85, 1, 1));
 
 	setup ();
 }
@@ -86,6 +89,8 @@ GeometryEditor::initialize ()
 	normalEditor -> setField <X3D::SFBool> ("enabled", getConfig () -> getBoolean ("normalEnabled"), true);
 	normalEditor -> setup ();
 	normalEnabled .setNodes ({ normalEditor });
+
+	coordEditor -> setup ();
 }
 
 void
@@ -121,6 +126,7 @@ GeometryEditor::connect ()
 					case X3D::X3DConstants::X3DGeometryNodeTool:
 					{
 						const auto & normalTool = innerNode -> getField <X3D::SFNode> ("normalTool");
+						const auto & coordTool  = innerNode -> getField <X3D::SFNode> ("coordTool");
 
 						normalEditor -> getField <X3D::SFBool>      ("enabled") .addInterest (normalTool -> getField <X3D::SFBool>      ("enabled"));
 						normalEditor -> getField <X3D::SFFloat>     ("length")  .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
@@ -129,6 +135,11 @@ GeometryEditor::connect ()
 						normalTool -> setField <X3D::SFBool>      ("enabled", normalEditor -> getField <X3D::SFBool>      ("enabled"), true);
 						normalTool -> setField <X3D::SFFloat>     ("length",  normalEditor -> getField <X3D::SFFloat>     ("length"),  true);
 						normalTool -> setField <X3D::SFColorRGBA> ("color",   normalEditor -> getField <X3D::SFColorRGBA> ("color"),   true);
+
+						// Coord
+
+						coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
 						break;
 					}
 					default:

@@ -638,7 +638,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Navigation/LODTool.lo \
 	Titania/X3D/Tools/Picking/PickableGroupTool.lo \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.lo \
+	Titania/X3D/Tools/Rendering/CoordinateTool.lo \
 	Titania/X3D/Tools/Rendering/NormalTool.lo \
+	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.lo \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.lo \
 	Titania/X3D/Types/Image.lo
 libtitania_x3d_la_OBJECTS = $(am_libtitania_x3d_la_OBJECTS)
@@ -1398,7 +1400,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
+	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
@@ -3496,7 +3500,13 @@ Titania/X3D/Tools/Rendering/$(am__dirstamp):
 Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Rendering/$(DEPDIR)
 	@: > Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Rendering/CoordinateTool.lo:  \
+	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
+	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/NormalTool.lo:  \
+	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
+	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.lo:  \
 	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
 	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/X3DNormalNodeTool.lo:  \
@@ -4206,7 +4216,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/LODTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/NormalTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DCoordinateNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DNormalNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Types/$(DEPDIR)/Image.Plo@am__quote@
 
