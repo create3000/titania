@@ -65,7 +65,7 @@ X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
 	X3DActiveLayerTool (),
 	          enabled (false)
 {
-	//addType (X3DConstants::X3DGeometricPropertyNodeTool);
+	addType (X3DConstants::X3DGeometricPropertyNodeTool);
 
 	addChildren (modelViewMatrix ());
 }

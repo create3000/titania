@@ -48,25 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_EDITOR_OBJECT_H__
-#define __TITANIA_BROWSER_BROWSER_EDITOR_OBJECT_H__
+#ifndef __TITANIA_BROWSER_VIEWPOINT_OBSERVER_H__
+#define __TITANIA_BROWSER_VIEWPOINT_OBSERVER_H__
 
 #include "../Base/X3DEditorObject.h"
+
+#include <Titania/X3D/Browser/Navigation/X3DViewer.h>
 
 namespace titania {
 namespace puck {
 
-class BrowserEditorObject :
+class ViewpointObserver :
 	public X3DEditorObject
 {
 public:
 
-	BrowserEditorObject (X3DBrowserWindow* const);
+	ViewpointObserver (X3DBrowserWindow* const);
 
 	void
 	setBrowser (const X3D::BrowserPtr &, const X3D::BrowserPtr &);
 
-	~BrowserEditorObject ()
+	~ViewpointObserver ()
 	{ dispose (); }
 
 

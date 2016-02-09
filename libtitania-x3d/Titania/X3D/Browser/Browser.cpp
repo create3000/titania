@@ -59,6 +59,7 @@
 #include "../Browser/Navigation/PlaneViewer.h"
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
+#include "../Browser/PointingDeviceSensor/LassoSelection.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -223,6 +224,11 @@ Browser::set_viewer ()
 			case X3DConstants::LookAtViewer:
 			{
 				viewer .setValue (new LookAtViewer (this));
+				break;
+			}
+			case X3DConstants::LassoSelection:
+			{
+				viewer .setValue (new LassoSelection (this));
 				break;
 			}
 			default:

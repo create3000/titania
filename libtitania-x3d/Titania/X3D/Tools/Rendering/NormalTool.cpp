@@ -71,7 +71,7 @@ NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 	X3DNormalNodeTool (),
 	           fields ()
 {
-	//addType (X3DConstants::NormalTool);
+	addType (X3DConstants::NormalTool);
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "load",     load ());

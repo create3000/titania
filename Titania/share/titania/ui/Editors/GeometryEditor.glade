@@ -13,6 +13,8 @@
         <property name="transition_type">slide-right</property>
         <property name="transition_duration">300</property>
         <property name="reveal_child">True</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkBox" id="GeometryEditorBox">
             <property name="visible">True</property>
@@ -96,9 +98,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Paint current celection.</property>
+                    <signal name="button-press-event" handler="on_selection_type_button_press_event" swapped="no"/>
+                    <signal name="toggled" handler="on_paint_selection_toggled" swapped="no"/>
                     <child>
-                      <object class="GtkImage" id="image4">
+                      <object class="GtkImage" id="PaintSelectionImage">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="stock">Brush</property>
@@ -146,6 +149,44 @@
             </child>
           </object>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Brush</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Lasso</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkMenu" id="SelectionTypeMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="BrushMenuItem">
+        <property name="label" translatable="yes">Brush</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image5</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_brush_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="LassoMenuItem">
+        <property name="label" translatable="yes">Lasso</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image6</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_lasso_activated" swapped="no"/>
       </object>
     </child>
   </object>

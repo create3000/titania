@@ -113,9 +113,33 @@ public:
 	getPaintSelectionToggleButton () const
 	{ return *m_PaintSelectionToggleButton; }
 
+	Gtk::Image &
+	getPaintSelectionImage () const
+	{ return *m_PaintSelectionImage; }
+
 	Gtk::ToggleButton &
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
+
+	Gtk::Menu &
+	getSelectionTypeMenu () const
+	{ return *m_SelectionTypeMenu; }
+
+	Gtk::ImageMenuItem &
+	getBrushMenuItem () const
+	{ return *m_BrushMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getLassoMenuItem () const
+	{ return *m_LassoMenuItem; }
+
+	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
 
 	virtual
 	void
@@ -124,6 +148,22 @@ public:
 	virtual
 	void
 	on_edit_toggled () = 0;
+
+	virtual
+	bool
+	on_selection_type_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_paint_selection_toggled () = 0;
+
+	virtual
+	void
+	on_brush_activated () = 0;
+
+	virtual
+	void
+	on_lasso_activated () = 0;
 
 	virtual
 	~X3DGeometryEditorInterface ();
@@ -150,7 +190,11 @@ private:
 	Gtk::Button*                  m_HammerButton;
 	Gtk::ToggleButton*            m_EditToggleButton;
 	Gtk::ToggleButton*            m_PaintSelectionToggleButton;
+	Gtk::Image*                   m_PaintSelectionImage;
 	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
+	Gtk::Menu*                    m_SelectionTypeMenu;
+	Gtk::ImageMenuItem*           m_BrushMenuItem;
+	Gtk::ImageMenuItem*           m_LassoMenuItem;
 
 };
 

@@ -455,8 +455,13 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
+	const auto   viewpoint      = this -> getCurrentLayer () -> getViewpoint ();
+	const auto   navigationInfo = this -> getCurrentLayer () -> getNavigationInfo ();
+	const double zNear          = navigationInfo -> getNearPlane ();
+	const double zFar           = navigationInfo -> getFarPlane (viewpoint);
+
 	viewport         = container -> getScissor ();
-	projectionMatrix = this -> getCurrentLayer () -> getViewpoint () -> getProjectionMatrix (1, -10, viewport);
+	projectionMatrix = this -> getCurrentLayer () -> getViewpoint () -> getProjectionMatrix (zNear, zFar, viewport);
 	modelViewMatrix  = container -> getModelViewMatrix ();
 
 	normalToolNode -> draw (container);

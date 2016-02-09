@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "BrowserEditorObject.h"
+#include "ViewpointObserver.h"
 
 #include "../Browser/X3DBrowserWindow.h"
 
@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-BrowserEditorObject::BrowserEditorObject (X3DBrowserWindow* const browserWindow) :
+ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	       X3DEditorObject (),
 	            viewerNode (),
@@ -72,38 +72,38 @@ BrowserEditorObject::BrowserEditorObject (X3DBrowserWindow* const browserWindow)
 }
 
 void
-BrowserEditorObject::setBrowser (const X3D::BrowserPtr & current, const X3D::BrowserPtr & value)
+ViewpointObserver::setBrowser (const X3D::BrowserPtr & current, const X3D::BrowserPtr & value)
 {
-	current -> getActiveViewpointEvent () .removeInterest (this, &BrowserEditorObject::set_offsets);
-	current -> getViewer ()               .removeInterest (this, &BrowserEditorObject::set_viewer);
+	current -> getActiveViewpointEvent () .removeInterest (this, &ViewpointObserver::set_offsets);
+	current -> getViewer ()               .removeInterest (this, &ViewpointObserver::set_viewer);
 
-	value -> getActiveViewpointEvent () .addInterest (this, &BrowserEditorObject::set_offsets);
-	value -> getViewer ()               .addInterest (this, &BrowserEditorObject::set_viewer);
+	value -> getActiveViewpointEvent () .addInterest (this, &ViewpointObserver::set_offsets);
+	value -> getViewer ()               .addInterest (this, &ViewpointObserver::set_viewer);
 
 	set_viewer (value -> getViewer ());
 	set_offsets ();
 }
 
 void
-BrowserEditorObject::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
+ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 {
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .removeInterest (this, &BrowserEditorObject::set_viewer_active);
-		viewerNode -> scrollTime () .removeInterest (this, &BrowserEditorObject::set_viewer_scrollTime);
+		viewerNode -> isActive ()   .removeInterest (this, &ViewpointObserver::set_viewer_active);
+		viewerNode -> scrollTime () .removeInterest (this, &ViewpointObserver::set_viewer_scrollTime);
 	}
 
 	viewerNode = value;
 
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .addInterest (this, &BrowserEditorObject::set_viewer_active);
-		viewerNode -> scrollTime () .addInterest (this, &BrowserEditorObject::set_viewer_scrollTime);
+		viewerNode -> isActive ()   .addInterest (this, &ViewpointObserver::set_viewer_active);
+		viewerNode -> scrollTime () .addInterest (this, &ViewpointObserver::set_viewer_scrollTime);
 	}
 }
 
 void
-BrowserEditorObject::set_viewer_active (const bool value)
+ViewpointObserver::set_viewer_active (const bool value)
 {
 	try
 	{
@@ -136,7 +136,7 @@ BrowserEditorObject::set_viewer_active (const bool value)
 }
 
 void
-BrowserEditorObject::set_viewer_scrollTime ()
+ViewpointObserver::set_viewer_scrollTime ()
 {
 	try
 	{
@@ -179,7 +179,7 @@ BrowserEditorObject::set_viewer_scrollTime ()
 }
 
 void
-BrowserEditorObject::set_offsets ()
+ViewpointObserver::set_offsets ()
 {
 	try
 	{

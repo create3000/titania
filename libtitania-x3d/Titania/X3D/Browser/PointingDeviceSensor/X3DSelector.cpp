@@ -54,7 +54,7 @@ namespace titania {
 namespace X3D {
 
 X3DSelector::X3DSelector () :
-	X3DBrowserObject ()
+	X3DViewer ()
 { }
 
 } // X3D

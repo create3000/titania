@@ -247,7 +247,6 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.cpp" />
-    <Compile Include="Titania\Browser\BrowserEditorObject.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DNodeEditorInterface.cpp" />
     <Compile Include="Titania\Editors\NodeEditor\NodeEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.cpp" />
@@ -258,6 +257,7 @@
     <Compile Include="Titania\Base\X3DEditorInterface.cpp" />
     <Compile Include="Titania\Editors\GeometryEditor\GeometryEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DGeometryEditorInterface.cpp" />
+    <Compile Include="Titania\Browser\ViewpointObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1870,7 +1870,6 @@
     <None Include="Titania\Editors\TextureEditor\X3DComposedCubeMapTextureEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DImageCubeMapTextureEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DMultiTextureEditor.h" />
-    <None Include="Titania\Browser\BrowserEditorObject.h" />
     <None Include="share\titania\ui\Editors\NodeEditor.glade" />
     <None Include="Titania\UserInterfaces\X3DNodeEditorInterface.h" />
     <None Include="Titania\Editors\NodeEditor\NodeEditor.h" />
@@ -2463,6 +2462,9 @@
     <None Include="Titania\Editors\GeometryEditor\GeometryEditor.h" />
     <None Include="Titania\UserInterfaces\X3DGeometryEditorInterface.h" />
     <None Include="share\titania\ui\Editors\GeometryEditor.glade" />
+    <None Include="share\titania\ui\icons\Brush.svg" />
+    <None Include="share\titania\ui\icons\Lasso.svg" />
+    <None Include="Titania\Browser\ViewpointObserver.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

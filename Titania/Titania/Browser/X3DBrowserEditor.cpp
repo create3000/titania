@@ -82,14 +82,14 @@ namespace puck {
 static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
-	X3DBrowserWidget (browser),
-	  X3D::X3DEditor (),
-	         enabled (false),
-	       selection (new BrowserSelection (getBrowserWindow ())),
-	    undoMatrices (),
-	   nudgeUndoStep (),
-	        undoTime (0),
-	            tool (NONE_TOOL)
+	 X3DBrowserWidget (browser),
+	   X3D::X3DEditor (),
+	          enabled (false),
+	        selection (new BrowserSelection (getBrowserWindow ())),
+	     undoMatrices (),
+	    nudgeUndoStep (),
+	         undoTime (0),
+	             tool (NONE_TOOL)
 {
 	addChildren (enabled);
 }

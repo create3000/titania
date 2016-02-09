@@ -60,7 +60,6 @@
 #include "../Widgets/Footer/Footer.h"
 #include "../Widgets/Sidebar/Sidebar.h"
 
-#include "../Browser/BrowserEditorObject.h"
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
@@ -98,8 +97,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBrowserWindow (browser),
 	      X3DObjectOperations (),
 	                 changing (false),
-	                   viewer (X3D::X3DConstants::NodeType::NoneViewer),
-	            browserEditor (new BrowserEditorObject (this)),
+	                   viewer (X3D::X3DConstants::NoneViewer),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
@@ -211,8 +209,6 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
 
 	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
-
-	browserEditor -> setBrowser (getCurrentBrowser (), value);
 
 	// Set browser
 
@@ -2282,7 +2278,10 @@ void
 BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
+	{
+		setViewer (viewer);
 		set_arrow_button (false);
+	}
 }
 
 void
@@ -2662,6 +2661,10 @@ BrowserWindow::set_viewer ()
 
 			break;
 		}
+
+		case X3D::X3DConstants::LassoSelection:
+			break;
+
 		default:
 		{
 			viewer = type;
@@ -2774,8 +2777,7 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::Node
 void
 BrowserWindow::on_viewer_clicked ()
 {
-	if (getLookAtButton () .get_active ())
-		setViewer (viewer);
+	setViewer (viewer);
 }
 
 void

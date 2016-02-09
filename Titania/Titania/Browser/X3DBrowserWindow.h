@@ -64,6 +64,8 @@ class OutlineTreeViewEditor;
 class Sidebar;
 class X3DGridTool;
 
+class ViewpointObserver;
+
 class X3DBrowserWindow :
 	public X3DBrowserEditor
 {
@@ -160,11 +162,12 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <GeometryEditor> geometryEditor;
-	std::shared_ptr <Sidebar>        sidebar;
-	std::shared_ptr <Footer>         footer;
-	std::shared_ptr <X3DGridTool>    gridTool;
-	std::shared_ptr <X3DGridTool>    angleTool;
+	std::shared_ptr <GeometryEditor>    geometryEditor;
+	std::shared_ptr <Sidebar>           sidebar;
+	std::shared_ptr <Footer>            footer;
+	std::shared_ptr <X3DGridTool>       gridTool;
+	std::shared_ptr <X3DGridTool>       angleTool;
+	std::unique_ptr <ViewpointObserver> viewpointObserver;
 
 	X3D::Keys keys;
 	bool      accelerators;

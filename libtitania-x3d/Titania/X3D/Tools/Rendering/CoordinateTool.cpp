@@ -70,7 +70,7 @@ CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 	X3DCoordinateNodeTool (),
 	               fields ()
 {
-	//addType (X3DConstants::CoordinateTool);
+	addType (X3DConstants::CoordinateTool);
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "load",     load ());

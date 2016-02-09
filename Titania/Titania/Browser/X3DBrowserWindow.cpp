@@ -50,6 +50,8 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Browser/ViewpointObserver.h"
+
 #include "../Editors/GeometryEditor/GeometryEditor.h"
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/GridTool.h"
@@ -78,6 +80,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	           footer (new Footer (this)),
 	         gridTool (new GridTool (this)),
 	        angleTool (new AngleTool (this)),
+	viewpointObserver (new ViewpointObserver (this)),
 	             keys (),
 	     accelerators (true)
 { }
@@ -105,6 +108,8 @@ X3DBrowserWindow::isEditor (const bool value)
 void
 X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
+	viewpointObserver -> setBrowser (getCurrentBrowser (), value); // XXX: put in observer itself
+
 	X3DBrowserEditor::setBrowser (value);
 }
 

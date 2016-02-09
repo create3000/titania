@@ -70,7 +70,12 @@ LassoSelection::LassoSelection (X3DExecutionContext* const executionContext) :
 	    pickable (executionContext -> getBrowser () -> isPickable ()),
 	      button (0),
 	      points ()
-{ }
+{
+	addType (X3DConstants::LassoSelection);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
+}
 
 X3DBaseNode*
 LassoSelection::create (X3DExecutionContext* const executionContext) const

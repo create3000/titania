@@ -69,13 +69,27 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
 	m_builder -> get_widget ("PaintSelectionToggleButton", m_PaintSelectionToggleButton);
+	m_builder -> get_widget ("PaintSelectionImage", m_PaintSelectionImage);
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
+	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
+	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
+	m_builder -> get_widget ("LassoMenuItem", m_LassoMenuItem);
+
+	// Connect object Gtk::Revealer with id 'Widget'.
+	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map)));
+	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap)));
 
 	// Connect object Gtk::Button with id 'HammerButton'.
 	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked)));
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
 	m_connections .emplace_back (m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled)));
+	m_connections .emplace_back (m_PaintSelectionToggleButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event)));
+	m_connections .emplace_back (m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled)));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
+	m_connections .emplace_back (m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated)));
+	m_connections .emplace_back (m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated)));
 
 	// Call construct handler of base class.
 	construct ();

@@ -795,3 +795,9 @@ ToggleButton::clicked
   virtual void on_clicked();
 Notebook::map
   virtual void on_map();
+ToggleButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+Revealer::map
+  virtual void on_map();
+Revealer::unmap
+  virtual void on_unmap();

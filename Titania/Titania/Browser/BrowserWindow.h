@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class BrowserEditorObject;
-
 class BrowserWindow :
 	public X3DBrowserWindow,
 	public X3DObjectOperations
@@ -794,9 +792,8 @@ private:
 
 	///  @name Members
 
-	bool                                  changing;
-	X3D::X3DConstants::NodeType           viewer;
-	std::unique_ptr <BrowserEditorObject> browserEditor;
+	bool                        changing;
+	X3D::X3DConstants::NodeType viewer;
 
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;

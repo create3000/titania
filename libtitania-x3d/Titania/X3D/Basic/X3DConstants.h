@@ -506,6 +506,7 @@ enum NodeType : uint16_t
 	NoneViewer,
 	PlaneViewer,
 	WalkViewer,
+	LassoSelection,
 
 	// Tool nodes
 
@@ -517,6 +518,7 @@ enum NodeType : uint16_t
 	CADLayerTool,
 	CADPartTool,
 	CollisionTool,
+	CoordinateTool,
 	DirectionalLightTool,
 	GeoLocationTool,
 	GeoLODTool,
@@ -528,6 +530,7 @@ enum NodeType : uint16_t
 	InlineTool,
 	LayoutGroupTool,
 	LODTool,
+	NormalTool,
 	OrthoViewpointTool,
 	ParticleSystemTool,
 	PickableGroupTool,
@@ -546,6 +549,7 @@ enum NodeType : uint16_t
 	X3DBoundedObjectTool,
 	X3DChildNodeTool,
 	X3DComposedGeometryNodeTool,
+	X3DGeometricPropertyNodeTool,
 	X3DEnvironmentalSensorNodeTool,
 	X3DGeometryNodeTool,
 	X3DGeospatialObjectTool,

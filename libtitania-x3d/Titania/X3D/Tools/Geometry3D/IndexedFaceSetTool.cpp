@@ -233,14 +233,17 @@ IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint)
 			{
 				if (int32_t (index) == coordIndex () [vertices [i]])
 				{
-					const auto point0 = getCoord () -> get1Point (coordIndex () [vertices [(i + vertices .size () - 1) % vertices .size ()]]);
-					const auto point1 = getCoord () -> get1Point (coordIndex () [vertices [(i + 1) % vertices .size ()]]);
-	
-					const auto line0 = Line3d (point0, point, math::point_type ());
-					const auto line1 = Line3d (point1, point, math::point_type ());
-	
-					const auto distance0 = get_distance (hitPoint, line0 .closest_point (hitPoint));
-					const auto distance1 = get_distance (hitPoint, line1 .closest_point (hitPoint));
+					const size_t index0    = vertices [(i + vertices .size () - 1) % vertices .size ()];
+					const size_t index1    = vertices [(i + 1) % vertices .size ()];
+
+					const auto   point0    = getCoord () -> get1Point (coordIndex () [index0]);
+					const auto   point1    = getCoord () -> get1Point (coordIndex () [index1]);
+
+					const auto   line0     = Line3d (point0, point, math::point_type ());
+					const auto   line1     = Line3d (point1, point, math::point_type ());
+
+					const auto   distance0 = get_distance (hitPoint, line0 .closest_point (hitPoint));
+					const auto   distance1 = get_distance (hitPoint, line1 .closest_point (hitPoint));
 	
 					if (distance0 > SELECTION_DISTANCE and distance1 > SELECTION_DISTANCE)
 					{

@@ -66,13 +66,17 @@ namespace puck {
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
-	            paintSelection (this, getPaintSelectionToggleButton (), "paintSelection"),
 	             normalEnabled (this, getNormalEnabledToggleButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
+	             selectionType (SelectionType::BRUSH),
+	             privateViewer (X3D::X3DConstants::X3DBaseNode),
+	                   browser (getCurrentBrowser ()),
 	                  changing (false)
 {
+	addChildren (browser);
+
 	normalEnabled .setUndo (false);
 
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "load",   new X3D::SFBool ());
@@ -81,6 +85,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection", new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",          new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
+
+	browserWindow -> getArrowButton () .signal_toggled () .connect (sigc::mem_fun (*this, &GeometryEditor::on_paint_selection_toggled));
 
 	setup ();
 }
@@ -100,6 +106,8 @@ GeometryEditor::configure ()
 
 	if (getConfig () -> hasItem ("edgeColor"))
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
+
+	set_selection_type (SelectionType (getConfig () -> get <size_t> ("selectionType")));
 }
 
 void
@@ -107,11 +115,10 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
-	paintSelection .setNodes ({ coordEditor });
-	normalEnabled  .setNodes ({ normalEditor });
 	normalEditor -> setup ();
+	coordEditor  -> setup ();
 
-	coordEditor -> setup ();
+	normalEnabled  .setNodes ({ normalEditor });
 }
 
 void
@@ -137,12 +144,20 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 
 		getHammerButton ()     .set_sensitive (haveSelection);
 		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
-		getEditToggleButton () .set_active (selection == geometryNodes);
+		getEditToggleButton () .set_active (selection == geometryNodes and not geometryNodes .empty  ());
+
+		if (previousSelection == geometryNodes)
+			previousSelection .clear ();
 
 		connect ();
 	}	
 
 	changing = false;
+
+	getPaintSelectionToggleButton () .set_sensitive (getEditToggleButton () .get_active ());
+
+	if (not getEditToggleButton () .get_active ())
+		getPaintSelectionToggleButton () .set_active (false);
 }
 
 void
@@ -192,6 +207,54 @@ GeometryEditor::connect ()
 			__LOG__ << error .what () << std::endl;
 		}
 	}
+}
+
+void
+GeometryEditor::on_map ()
+{
+	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
+
+	set_browser (getCurrentBrowser ());
+}
+
+void
+GeometryEditor::on_unmap ()
+{
+	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
+}
+
+void
+GeometryEditor::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+
+	browser = value;
+
+	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
+
+	set_viewer ();
+}
+
+void
+GeometryEditor::set_viewer ()
+{
+	changing = true;
+
+	if (getBrowserWindow () -> getArrowButton () .get_active ())
+	{
+		switch (getCurrentBrowser () -> getCurrentViewer ())
+		{
+			case X3D::X3DConstants::LassoSelection:
+				getPaintSelectionToggleButton () .set_active (true);
+				break;
+			default:
+				privateViewer = browser-> getPrivateViewer ();
+				getPaintSelectionToggleButton () .set_active (false);
+				break;
+		}
+	}
+
+	changing = false;
 }
 
 void
@@ -267,14 +330,110 @@ GeometryEditor::on_edit_toggled ()
 		getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
 }
 
-GeometryEditor::~GeometryEditor ()
+void
+GeometryEditor::on_paint_selection_toggled ()
+{
+	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active (), true);
+
+	if (getBrowserWindow () -> getArrowButton () .get_active ())
+	{
+		if (changing)
+			return;
+	
+		switch (selectionType)
+		{
+			case SelectionType::BRUSH:
+				break;
+	
+			case SelectionType::LASSO:
+			{
+				if (getPaintSelectionToggleButton () .get_active ())
+					getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
+				else
+					getCurrentBrowser () -> setPrivateViewer (privateViewer);
+	
+				break;
+			}
+		}
+	}
+}
+
+bool
+GeometryEditor::on_selection_type_button_press_event (GdkEventButton* event)
+{
+	__LOG__ << event -> button << std::endl;
+
+	if (event -> button == 3)
+	{
+		getSelectionTypeMenu () .popup (event -> button, event -> time);
+		return true;
+	}
+
+	return false;
+}
+
+void
+GeometryEditor::on_brush_activated ()
+{
+	set_selection_type (SelectionType::BRUSH);
+}
+
+void
+GeometryEditor::on_lasso_activated ()
+{
+	set_selection_type (SelectionType::LASSO);
+}
+
+void
+GeometryEditor::set_selection_type (const SelectionType & type)
+{
+	selectionType = type;
+
+	switch (type)
+	{
+		case SelectionType::BRUSH:
+			set_selection_brush ();
+			break;
+		case SelectionType::LASSO:
+			set_selection_lasso ();
+			break;
+	}
+}
+
+void
+GeometryEditor::set_selection_brush ()
+{
+	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Paint current celection."));
+	getPaintSelectionImage () .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+}
+
+void
+GeometryEditor::set_selection_lasso ()
+{
+	__LOG__ << std::endl;
+
+	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use lasso selection."));
+	getPaintSelectionImage () .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	on_paint_selection_toggled ();
+}
+
+void
+GeometryEditor::store ()
 {
 	getConfig () -> set ("normalEnabled", normalEditor -> getField <X3D::SFBool>       ("load"));
 	getConfig () -> set ("normalLength",  normalEditor  -> getField <X3D::SFFloat>     ("length"));
 	getConfig () -> set ("normalColor",   normalEditor  -> getField <X3D::SFColorRGBA> ("color"));
 	getConfig () -> set ("edgeColor",     coordEditor   -> getField <X3D::SFColorRGBA> ("color"));
 
-	X3DGeometryEditorInterface::dispose ();
+	getConfig () -> set ("selectionType",  size_t (selectionType));
+
+	X3DGeometryEditorInterface::store ();
+}
+
+GeometryEditor::~GeometryEditor ()
+{
+	dispose ();
 }
 
 } // puck
