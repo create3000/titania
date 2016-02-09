@@ -51,8 +51,8 @@
 #include "CoordinateTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -62,9 +62,7 @@ const std::string   CoordinateTool::typeName       = "CoordinateTool";
 const std::string   CoordinateTool::containerField = "coordTool";
 
 CoordinateTool::Fields::Fields () :
-	         enabled (new SFBool (true)),
-	 modelViewMatrix (new SFMatrix4f ()),
-	           color (new SFColorRGBA (0.7, 0.85, 1, 1)),
+	           color (new SFColorRGBA (ToolColors::BLUE_RGBA)),
 	     vertexCount (new MFInt32 ()),
 	           point (new MFVec3f ()),
 	        geometry (new SFNode ()),
@@ -76,13 +74,12 @@ CoordinateTool::Fields::Fields () :
 CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DCoordinateNodeTool (),
-	               fields (),
-	                 show (false)
+	               fields ()
 {
 	//addType (X3DConstants::CoordinateTool);
 
 	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "enabled",          enabled ());
+	addField (inputOutput, "load",             load ());
 	addField (inputOutput, "modelViewMatrix",  modelViewMatrix ());
 	addField (inputOutput, "color",            color ());
 	addField (inputOutput, "vertexCount",      vertexCount ());
@@ -104,11 +101,7 @@ CoordinateTool::initialize ()
 {
 	X3DCoordinateNodeTool::initialize ();
 
-	getActiveLayer () .addInterest (this, &CoordinateTool::set_activeLayer);
-	enabled () .addInterest (getInlineNode () -> load ());
-
-	getInlineNode () -> load () = enabled ();
-	getInlineNode () -> url ()  = { get_tool ("CoordinateTool.x3dv") .str () };
+	getInlineNode () -> url () = { get_tool ("CoordinateTool.x3dv") .str () };
 }
 
 void
@@ -118,12 +111,6 @@ CoordinateTool::realize ()
 
 	try
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &CoordinateTool::prepareEvent);
-
-		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
-		modelViewMatrix () .addInterest (set_modelViewMatrix);
-		set_modelViewMatrix = modelViewMatrix ();
-
 		auto & set_vertexCount = getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
@@ -153,33 +140,6 @@ CoordinateTool::realize ()
 }
 
 void
-CoordinateTool::prepareEvent ()
-{
-	try
-	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (show), true);
-		show = false;
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-CoordinateTool::set_activeLayer ()
-{
-	try
-	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", 0, true);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
 CoordinateTool::set_color ()
 {
 	try
@@ -193,20 +153,6 @@ CoordinateTool::set_color ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-CoordinateTool::draw (const ShapeContainer* const container)
-{
-	if (getCurrentLayer () != getActiveLayer ())
-		return;
-
-	show = true;
-
-	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
-
-	if (mvm != modelViewMatrix ())
-		modelViewMatrix () = mvm;
 }
 
 } // X3D

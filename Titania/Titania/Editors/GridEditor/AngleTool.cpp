@@ -94,7 +94,7 @@ AngleTool::getTool () const
 }
 
 void
-AngleTool::configure (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
+AngleTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 {
 	try
 	{

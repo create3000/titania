@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_FACE_SELECTION_H__
-#define __TITANIA_EDITORS_FACE_SELECTION_H__
+#ifndef __TITANIA_X3D_EDITING_FACE_SELECTION_H__
+#define __TITANIA_X3D_EDITING_FACE_SELECTION_H__
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
 class FaceSelection
 {
@@ -121,7 +121,7 @@ private:
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

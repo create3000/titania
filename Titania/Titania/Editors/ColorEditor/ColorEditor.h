@@ -60,9 +60,15 @@
 #include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
 class FaceSelection;
+
+} // X3D
+} // titania
+
+namespace titania {
+namespace puck {
 
 class ColorEditor :
 	public X3DColorEditorInterface
@@ -96,13 +102,14 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	void
 	set_initialized ();
-
-	void
-	configure ();
 
 	virtual
 	void
@@ -290,7 +297,7 @@ private:
 	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry;
 	X3D::X3DPtr <X3D::ColorRGBA>         previewColor;
-	std::unique_ptr <FaceSelection>      selection;         
+	std::unique_ptr <X3D::FaceSelection> selection;         
 	X3D::UndoHistory                     undoHistory;
 
 };

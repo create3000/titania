@@ -181,7 +181,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 			getTool () -> snapToCenter () = true;
 		}
 
-		configure (metadataSet);
+		fromMetadata (metadataSet);
 	}
 	catch (const X3D::X3DError & error)
 	{

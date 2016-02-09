@@ -77,7 +77,7 @@ public:
 
 	virtual
 	void
-	setName (const std::string &) override;
+	setName (const std::string &) final override; // must be final, called in constructor
 
 	virtual
 	const std::string &
@@ -119,6 +119,10 @@ public:
 	quit ();
 
 	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DUserInterface ();
 
 
@@ -136,16 +140,17 @@ protected:
 
 	virtual
 	void
+	configure ();
+
+	virtual
+	void
 	initialize ()
 	{ }
-
+	
 	virtual
 	void
-	restoreSession ();
-
-	virtual
-	void
-	saveSession ();
+	set_selection (const X3D::MFNode &)
+	{ }
 
 	bool
 	isInitialized () const
@@ -172,6 +177,10 @@ protected:
 	set_fullscreen (const bool)
 	{ }
 
+	virtual
+	void
+	store ();
+
 
 private:
 
@@ -189,7 +198,10 @@ private:
 
 	void
 	on_map ();
-	
+
+	void
+	on_unmap ();
+
 	bool
 	on_window_state_event (GdkEventWindowState*);
 

@@ -51,6 +51,7 @@
 #include "IndexedFaceSetTool.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Editing/FaceSelection.h"
 
 namespace titania {
 namespace X3D {
@@ -58,7 +59,8 @@ namespace X3D {
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                X3DBaseTool <IndexedFaceSet> (node),
-	X3DComposedGeometryNodeTool <IndexedFaceSet> ()
+	X3DComposedGeometryNodeTool <IndexedFaceSet> (),
+	                                   selection (new FaceSelection ())
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 }
@@ -67,28 +69,6 @@ void
 IndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
-
-	requestAsyncLoad ({ get_tool ("IndexedFaceSetTool.x3dv") .str () });
-}
-
-void
-IndexedFaceSetTool::realize ()
-{
-	try
-	{
-//		getToolNode () -> setField <SFColor> ("color", color);
-//		getToolNode () -> setField <SFNode>  ("node",  getNode ());
-//
-//		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
-//		size () .addInterest (set_size);
-//		set_size = getNode () -> size ();
-//
-//		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
-//		center () .addInterest (set_center);
-//		set_center = getNode () -> center ();
-	}
-	catch (const X3DError & error)
-	{ }
 }
 
 } // X3D

@@ -159,9 +159,9 @@ X3DBrowserWidget::set_initialized ()
 }
 
 void
-X3DBrowserWidget::restoreSession ()
+X3DBrowserWidget::configure ()
 {
-	X3DBrowserWindowInterface::restoreSession ();
+	X3DBrowserWindowInterface::configure ();
 
 	// Restore Menu Configuration from Config
 
@@ -264,12 +264,12 @@ X3DBrowserWidget::set_fullscreen (const bool value)
 }
 
 void
-X3DBrowserWidget::saveSession ()
+X3DBrowserWidget::store ()
 {
 	getConfig () -> setItem ("vPaned", getVPaned () .get_position ());
 	getConfig () -> setItem ("hPaned", getHPaned () .get_position ());
 
-	X3DBrowserWindowInterface::saveSession ();
+	X3DBrowserWindowInterface::store ();
 }
 
 void

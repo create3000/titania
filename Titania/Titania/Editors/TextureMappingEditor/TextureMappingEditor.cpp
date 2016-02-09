@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../FaceSelection.h"
 
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
@@ -65,6 +64,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Texturing/MultiTexture.h>
 #include <Titania/X3D/Components/Texturing/MultiTextureTransform.h>
+#include <Titania/X3D/Editing/FaceSelection.h>
 
 #include <complex>
 
@@ -104,7 +104,7 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                        texCoord (),
 	                           stage (0),
 	                            tool (ToolType::MOVE),
-	                  rightSelection (new FaceSelection ()),
+	                  rightSelection (new X3D::FaceSelection ()),
 	              rightPaintSelecion (false),
 	                   selectedFaces (),
 	                     activePoint (-1),
@@ -120,6 +120,12 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                        undoStep ()
 {
 	setup ();
+}
+
+void
+TextureMappingEditor::configure ()
+{
+	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
 }
 
 void
@@ -209,12 +215,6 @@ TextureMappingEditor::set_initialized ()
 
 	configure ();
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
-
-void
-TextureMappingEditor::configure ()
-{
-	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
 }
 
 void

@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../FaceSelection.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
@@ -65,6 +64,7 @@
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Components/Texturing/MultiTexture.h>
 #include <Titania/X3D/Components/Texturing/MultiTextureTransform.h>
+#include <Titania/X3D/Editing/FaceSelection.h>
 
 namespace titania {
 namespace puck {
@@ -90,7 +90,7 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	                  coord (),
 	        previewGeometry (),
 	           previewColor (),
-	              selection (new FaceSelection ()),
+	              selection (new X3D::FaceSelection ()),
 	            undoHistory ()
 {
 	preview -> setAntialiasing (4);
@@ -98,6 +98,39 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	getShadingButton () .set_menu (getShadingMenu ());
 
 	setup ();
+}
+
+void
+ColorEditor::configure ()
+{
+	getCheckerBoardButton () .set_active (getConfig () -> getBoolean ("checkerBoard"));
+	getTextureButton ()      .set_active (getConfig () -> getBoolean ("texture"));
+
+	switch (getConfig () -> getInteger ("mode"))
+	{
+		case SINGLE_VERTEX:
+		{
+			getSingleVertexButton () .set_active (true);
+			break;
+		}
+		case ADJACENT_VERTICES:
+		{
+			getAdjacentVerticesButton () .set_active (true);
+			break;
+		}
+		case SINGLE_FACE:
+		{
+			getSingleFaceButton () .set_active (true);
+			break;
+		}
+		case WHOLE_OBJECT:
+		{
+			getWholeObjectButton () .set_active (true);
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 void
@@ -139,39 +172,6 @@ ColorEditor::set_initialized ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
-}
-
-void
-ColorEditor::configure ()
-{
-	getCheckerBoardButton () .set_active (getConfig () -> getBoolean ("checkerBoard"));
-	getTextureButton ()      .set_active (getConfig () -> getBoolean ("texture"));
-
-	switch (getConfig () -> getInteger ("mode"))
-	{
-		case SINGLE_VERTEX:
-		{
-			getSingleVertexButton () .set_active (true);
-			break;
-		}
-		case ADJACENT_VERTICES:
-		{
-			getAdjacentVerticesButton () .set_active (true);
-			break;
-		}
-		case SINGLE_FACE:
-		{
-			getSingleFaceButton () .set_active (true);
-			break;
-		}
-		case WHOLE_OBJECT:
-		{
-			getWholeObjectButton () .set_active (true);
-			break;
-		}
-		default:
-			break;
-	}
 }
 
 void

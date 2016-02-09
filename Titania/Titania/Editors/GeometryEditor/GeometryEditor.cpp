@@ -58,6 +58,7 @@
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Tools/ToolColors.h>
 
 namespace titania {
 namespace puck {
@@ -65,20 +66,37 @@ namespace puck {
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
-	             normalEnabled (this, getNormalEnabledToggleButton (), "enabled"),
+	             normalEnabled (this, getNormalEnabledToggleButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes ()
 {
 	normalEnabled .setUndo (false);
 
-	normalEditor -> addUserDefinedField (X3D::inputOutput, "enabled", new X3D::SFBool ());
-	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",   new X3D::SFColorRGBA (0.7, 0.85, 1, 1));
-	normalEditor -> addUserDefinedField (X3D::inputOutput, "length",  new X3D::SFFloat (1));
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "load",   new X3D::SFBool ());
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
+	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "color", new X3D::SFColorRGBA (0.7, 0.85, 1, 1));
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "color", new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	setup ();
+}
+
+void
+GeometryEditor::configure ()
+{
+	X3DGeometryEditorInterface::configure ();
+
+	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
+
+	if (getConfig () -> hasItem ("normalLength"))
+		normalEditor -> setField <X3D::SFFloat> ("length", getConfig () -> get <X3D::SFFloat> ("normalLength"));
+
+	if (getConfig () -> hasItem ("normalColor"))
+		normalEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("normalColor"));
+
+	if (getConfig () -> hasItem ("edgeColor"))
+		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 }
 
 void
@@ -86,7 +104,6 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
-	normalEditor -> setField <X3D::SFBool> ("enabled", getConfig () -> getBoolean ("normalEnabled"), true);
 	normalEditor -> setup ();
 	normalEnabled .setNodes ({ normalEditor });
 
@@ -128,13 +145,13 @@ GeometryEditor::connect ()
 						const auto & normalTool = innerNode -> getField <X3D::SFNode> ("normalTool");
 						const auto & coordTool  = innerNode -> getField <X3D::SFNode> ("coordTool");
 
-						normalEditor -> getField <X3D::SFBool>      ("enabled") .addInterest (normalTool -> getField <X3D::SFBool>      ("enabled"));
-						normalEditor -> getField <X3D::SFFloat>     ("length")  .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
-						normalEditor -> getField <X3D::SFColorRGBA> ("color")   .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+						normalEditor -> getField <X3D::SFBool>      ("load")   .addInterest (normalTool -> getField <X3D::SFBool>      ("load"));
+						normalEditor -> getField <X3D::SFFloat>     ("length") .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
+						normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
 
-						normalTool -> setField <X3D::SFBool>      ("enabled", normalEditor -> getField <X3D::SFBool>      ("enabled"), true);
-						normalTool -> setField <X3D::SFFloat>     ("length",  normalEditor -> getField <X3D::SFFloat>     ("length"),  true);
-						normalTool -> setField <X3D::SFColorRGBA> ("color",   normalEditor -> getField <X3D::SFColorRGBA> ("color"),   true);
+						normalTool -> setField <X3D::SFBool>      ("load",   normalEditor -> getField <X3D::SFBool>      ("load"),   true);
+						normalTool -> setField <X3D::SFFloat>     ("length", normalEditor -> getField <X3D::SFFloat>     ("length"), true);
+						normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"),  true);
 
 						// Coord
 
@@ -225,7 +242,10 @@ GeometryEditor::on_edit_clicked ()
 
 GeometryEditor::~GeometryEditor ()
 {
-	getConfig () -> setItem ("normalEnabled", normalEditor -> getField <X3D::SFBool> ("enabled") .getValue ());
+	getConfig () -> set ("normalEnabled", normalEditor -> getField <X3D::SFBool>       ("load"));
+	getConfig () -> set ("normalLength",  normalEditor  -> getField <X3D::SFFloat>     ("length"));
+	getConfig () -> set ("normalColor",   normalEditor  -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("edgeColor",     coordEditor   -> getField <X3D::SFColorRGBA> ("color"));
 
 	X3DGeometryEditorInterface::dispose ();
 }

@@ -93,7 +93,7 @@ GridTool::getTool () const
 }
 
 void
-GridTool::configure (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
+GridTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 {
 	try
 	{

@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_TOOLS_RENDERING_COORDINATE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_RENDERING_COORDINATE_TOOL_H__
 
-#include "../../Rendering/ShapeContainer.h"
 #include "../Rendering/X3DCoordinateNodeTool.h"
 
 namespace titania {
@@ -91,14 +90,6 @@ public:
 	{ return containerField; }
 
 	///  @name Fields
-
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
 
 	SFColorRGBA &
 	color ()
@@ -156,23 +147,8 @@ public:
 	touchTime () const
 	{ return *fields .touchTime; }
 
-	///  @name Operations
-
-	void
-	draw (const ShapeContainer* const);
-
 
 private:
-
-	///  @name Private fields
-
-	SFMatrix4f &
-	modelViewMatrix ()
-	{ return *fields .modelViewMatrix; }
-
-	const SFMatrix4f &
-	modelViewMatrix () const
-	{ return *fields .modelViewMatrix; }
 
 	///  @name Construction
 
@@ -185,12 +161,6 @@ private:
 	realize () final override;
 
 	///  @name Event handler
-
-	void
-	prepareEvent ();
-
-	void
-	set_activeLayer ();
 
 	void
 	set_color ();
@@ -207,8 +177,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
-		SFMatrix4f* const modelViewMatrix;
 		SFColorRGBA* const color;
 		MFInt32* const vertexCount;
 		MFVec3f* const point;
@@ -219,8 +187,6 @@ private:
 	};
 
 	Fields fields;
-
-	bool show;
 
 };
 

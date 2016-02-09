@@ -70,14 +70,20 @@ NodePropertiesEditor::NodePropertiesEditor (X3DBrowserWindow* const browserWindo
 }
 
 void
+NodePropertiesEditor::configure ()
+{
+	X3DNodePropertiesEditorInterface::configure ();
+
+	getNodeChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+}
+
+void
 NodePropertiesEditor::initialize ()
 {
 	X3DNodePropertiesEditorInterface::initialize ();
 	X3DUserDefinedFieldsEditor::initialize ();
 	X3DImportedNodesEditor::initialize ();
 	X3DExportedNodesEditor::initialize ();
-
-	getNodeChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -130,10 +136,16 @@ NodePropertiesEditor::on_edit_cdata_clicked ()
 	getBrowserWindow () -> editCDATA (node);
 }
 
-NodePropertiesEditor::~NodePropertiesEditor ()
+void
+NodePropertiesEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getNodeChildNotebook () .get_current_page ());
 
+	X3DNodePropertiesEditorInterface::store ();
+}
+
+NodePropertiesEditor::~NodePropertiesEditor ()
+{
 	dispose ();
 }
 

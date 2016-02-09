@@ -48,23 +48,29 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_TEXTURE_COORDINATE_EDITOR_TEXTURE_COORDINATE_EDITOR_H__
-#define __TITANIA_EDITORS_TEXTURE_COORDINATE_EDITOR_TEXTURE_COORDINATE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_MAPPING_EDITOR_TEXTURE_MAPPING_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureMappingEditorInterface.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-#include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Texturing/TextureCoordinate.h>
-#include <Titania/X3D/Components/Texturing/MultiTextureCoordinate.h>
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Components/Texturing/MultiTextureCoordinate.h>
+#include <Titania/X3D/Components/Texturing/TextureCoordinate.h>
 #include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
 class FaceSelection;
+
+} // X3D
+} // titania
+
+namespace titania {
+namespace puck {
 
 class TextureMappingEditor :
 	public X3DTextureMappingEditorInterface
@@ -84,14 +90,19 @@ public:
 private:
 
 	///  @name Member types
-	
-	enum class ToolType {
+
+	enum class ToolType
+	{
 		MOVE,
 		ROTATE,
 		SCALE
 	};
 
 	///  @name Construction
+
+	virtual
+	void
+	configure () final override;
 
 	virtual
 	void
@@ -105,9 +116,6 @@ private:
 
 	void
 	set_initialized ();
-
-	void
-	configure ();
 
 	virtual
 	void
@@ -140,15 +148,15 @@ private:
 	on_remove_unused_texCoord_activate ();
 
 	///  @name Mappings
-	
+
 	virtual
 	void
 	on_x_plane_activate () final override;
-	
+
 	virtual
 	void
 	on_y_plane_activate () final override;
-	
+
 	virtual
 	void
 	on_z_plane_activate () final override;
@@ -159,19 +167,19 @@ private:
 	virtual
 	void
 	on_camera_activate () final override;
-	
+
 	virtual
 	void
 	on_box_activate () final override;
-	
+
 	virtual
 	void
 	on_cylinder_x_activate () final override;
-	
+
 	virtual
 	void
 	on_cylinder_y_activate () final override;
-	
+
 	virtual
 	void
 	on_cylinder_z_activate () final override;
@@ -259,7 +267,7 @@ private:
 	virtual
 	void
 	on_left_scale_toggled () final override;
-	
+
 	virtual
 	void
 	on_left_snap_center_toggled () final override;
@@ -331,7 +339,7 @@ private:
 
 	void
 	set_geometry (const X3D::SFNode &);
-	
+
 	void
 	set_texCoordIndex ();
 
@@ -347,13 +355,13 @@ private:
 	virtual
 	void
 	on_texture_stage_changed () final override;
-	
+
 	void
 	clear ();
-	
+
 	void
 	set_selected_faces ();
-	
+
 	void
 	set_left_coord ();
 
@@ -365,7 +373,7 @@ private:
 
 	void
 	set_left_active (const bool);
-	
+
 	void
 	set_startDrag ();
 
@@ -386,7 +394,7 @@ private:
 
 	void
 	set_left_point (const X3D::Vector3d &);
-	
+
 	int32_t
 	getNearestPoint (const X3D::Vector3d &) const;
 
@@ -395,7 +403,7 @@ private:
 
 	void
 	set_left_center (const X3D::Vector3f &);
-	
+
 	void
 	set_right_selection (const X3D::Vector3f &);
 
@@ -405,12 +413,12 @@ private:
 	void
 	set_right_touchTime ();
 
-	void	
+	void
 	set_right_selected_faces ();
 
 	void
 	set_right_hitPoint (const X3D::Vector3f &);
-	
+
 	X3D::Vector2d
 	projectPoint (const X3D::Vector3d &, const X3D::BrowserPtr &) const
 	throw (std::domain_error);
@@ -434,35 +442,35 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                                  left;
-	X3D::BrowserPtr                                  right;
-	int                                              initialized;
-	X3D::X3DPtr <X3D::X3DShapeNode>                  shape;
-	X3D::X3DPtr <X3D::Appearance>                    appearance;
-	X3D::SFNode                                      material;
-	X3D::SFNode                                      texture;
-	X3D::SFNode                                      textureTransform;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                geometry;
-	X3D::X3DPtr <X3D::MultiTextureCoordinate>        multiTexCoord;
-	X3D::X3DPtr <X3D::X3DCoordinateNode>             coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet>                previewGeometry; 
-	X3D::X3DPtr <X3D::TextureCoordinate>             texCoord; 
-	size_t                                           stage;
-	ToolType                                         tool;
-	std::unique_ptr <FaceSelection>                  rightSelection;
-	bool                                             rightPaintSelecion;
-	std::set <size_t>                                selectedFaces;
-	int32_t                                          activePoint;     // texCoord index of red point
-	int32_t                                          masterPoint;     // texCoord index of red point
-	std::set <int32_t>                               selectedPoints;  // texCoord indices of blue points
-	X3D::Vector2d                                    startHitPoint;
-	X3D::Vector2f                                    pointOffset;
-	X3D::Vector2f                                    startPosition;
-	std::vector <std::pair <int32_t, X3D::Vector2f>> startPositions;
-	X3D::Vector2f                                    startDistance;
-	X3D::Keys                                        keys;
-	X3D::UndoHistory                                 undoHistory;
-	X3D::UndoStepPtr                                 undoStep;
+	X3D::BrowserPtr                                   left;
+	X3D::BrowserPtr                                   right;
+	int                                               initialized;
+	X3D::X3DPtr <X3D::X3DShapeNode>                   shape;
+	X3D::X3DPtr <X3D::Appearance>                     appearance;
+	X3D::SFNode                                       material;
+	X3D::SFNode                                       texture;
+	X3D::SFNode                                       textureTransform;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                 geometry;
+	X3D::X3DPtr <X3D::MultiTextureCoordinate>         multiTexCoord;
+	X3D::X3DPtr <X3D::X3DCoordinateNode>              coord;
+	X3D::X3DPtr <X3D::IndexedFaceSet>                 previewGeometry;
+	X3D::X3DPtr <X3D::TextureCoordinate>              texCoord;
+	size_t                                            stage;
+	ToolType                                          tool;
+	std::unique_ptr <X3D::FaceSelection>              rightSelection;
+	bool                                              rightPaintSelecion;
+	std::set <size_t>                                 selectedFaces;
+	int32_t                                           activePoint;     // texCoord index of red point
+	int32_t                                           masterPoint;     // texCoord index of red point
+	std::set <int32_t>                                selectedPoints;  // texCoord indices of blue points
+	X3D::Vector2d                                     startHitPoint;
+	X3D::Vector2f                                     pointOffset;
+	X3D::Vector2f                                     startPosition;
+	std::vector <std::pair <int32_t, X3D::Vector2f>>  startPositions;
+	X3D::Vector2f                                     startDistance;
+	X3D::Keys                                         keys;
+	X3D::UndoHistory                                  undoHistory;
+	X3D::UndoStepPtr                                  undoStep;
 
 };
 

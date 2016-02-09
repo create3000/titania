@@ -78,6 +78,10 @@ public:
 	void
 	update ();
 
+	virtual
+	void
+	fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -91,10 +95,6 @@ protected:
 	X3DGridTool ();
 
 	///  @name Event handler
-
-	virtual
-	void
-	configure (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
 
 	virtual
 	void

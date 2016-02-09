@@ -67,13 +67,32 @@ static constexpr Color3f CYAN   (0.35, 1, 1);     // LOD
 
 static constexpr Color3f WHITE  (1, 1, 1);        // Inline
 static constexpr Color3f ORANGE (1, 0.7, 0.35);   // Shape
-static constexpr Color3f BLUE   (0.35, 0.35, 1);  // Normals
+static constexpr Color3f BLUE   (0.7, 0.85, 1);   // Normals, Edges
 static constexpr Color3f LIME   (0.35, 1, 0.35);  // ScreenGroup
 
 static constexpr Color3f DARK_GREEN  (0.175, 0.5, 0.35);    // CADAssembly
 static constexpr Color3f DARK_YELLOW (0.7, 0.7, 0.35);      // CADLayer
 static constexpr Color3f BROWN       (0.75, 0.525, 0.2625); // CADFace
 static constexpr Color3f DARK_CYAN   (0.35, 0.75, 0.75);    // GeoLOD
+static constexpr Color3f DARK_BLUE   (0.35, 0.35, 1);       // 
+
+static constexpr Color4f GREEN_RGBA  (0.35, 1, 0.7, 1);   // Group
+static constexpr Color4f YELLOW_RGBA (1, 1, 0.35, 1);     // Switch
+static constexpr Color4f LILA_RGBA   (0.7, 0.35, 1, 1);   // Anchor
+static constexpr Color4f PINK_RGBA   (1, 0.35, 0.7, 1);   // Billboard
+static constexpr Color4f RED_RGBA    (1, 0.35, 0.35, 1);  // Collision
+static constexpr Color4f CYAN_RGBA   (0.35, 1, 1, 1);     // LOD
+
+static constexpr Color4f WHITE_RGBA  (1, 1, 1, 1);        // Inline
+static constexpr Color4f ORANGE_RGBA (1, 0.7, 0.35, 1);   // Shape
+static constexpr Color4f BLUE_RGBA   (0.7, 0.85, 1, 1);   // Normals, Edges
+static constexpr Color4f LIME_RGBA   (0.35, 1, 0.35, 1);  // ScreenGroup
+
+static constexpr Color4f DARK_GREEN_RGBA  (0.175, 0.5, 0.35, 1);    // CADAssembly
+static constexpr Color4f DARK_YELLOW_RGBA (0.7, 0.7, 0.35, 1);      // CADLayer
+static constexpr Color4f BROWN_RGBA       (0.75, 0.525, 0.2625, 1); // CADFace
+static constexpr Color4f DARK_CYAN_RGBA   (0.35, 0.75, 0.75, 1);    // GeoLOD
+static constexpr Color4f DARK_BLUE_RGBA   (0.35, 0.35, 1, 1);       // 
 
 }
 

@@ -223,11 +223,11 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () final override;
 
 	virtual
 	void
-	restoreSession () final override;
+	initialize () override;
 
 	virtual
 	void

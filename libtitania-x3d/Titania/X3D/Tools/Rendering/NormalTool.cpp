@@ -51,8 +51,8 @@
 #include "NormalTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -62,10 +62,8 @@ const std::string   NormalTool::typeName       = "NormalTool";
 const std::string   NormalTool::containerField = "normalTool";
 
 NormalTool::Fields::Fields () :
-	        enabled (new SFBool (true)),
-	modelViewMatrix (new SFMatrix4f ()),
 	         length (new SFFloat (1)),
-	          color (new SFColorRGBA (0.7, 0.85, 1, 1)),
+	          color (new SFColorRGBA (ToolColors::BLUE_RGBA)),
 	    vertexCount (new MFInt32 ()),
 	          point (new MFVec3f ())
 { }
@@ -73,13 +71,12 @@ NormalTool::Fields::Fields () :
 NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNormalNodeTool (),
-	           fields (),
-	             show (false)
+	           fields ()
 {
 	//addType (X3DConstants::NormalTool);
 
 	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "load",            load ());
 	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
 	addField (inputOutput, "length",          length ());
 	addField (inputOutput, "color",           color ());
@@ -98,11 +95,7 @@ NormalTool::initialize ()
 {
 	X3DNormalNodeTool::initialize ();
 
-	getActiveLayer () .addInterest (this, &NormalTool::set_activeLayer);
-	enabled () .addInterest (getInlineNode () -> load ());
-
-	getInlineNode () -> load () = enabled ();
-	getInlineNode () -> url ()  = { get_tool ("NormalTool.x3dv") .str () };
+	getInlineNode () -> url () = { get_tool ("NormalTool.x3dv") .str () };
 }
 
 void
@@ -112,12 +105,6 @@ NormalTool::realize ()
 
 	try
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &NormalTool::prepareEvent);
-
-		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
-		modelViewMatrix () .addInterest (set_modelViewMatrix);
-		set_modelViewMatrix = modelViewMatrix ();
-
 		auto & set_vertexCount = getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
 		vertexCount () .addInterest (set_vertexCount);
 		set_vertexCount = vertexCount ();
@@ -128,33 +115,6 @@ NormalTool::realize ()
 
 		set_color ();
 		set_point ();
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-NormalTool::prepareEvent ()
-{
-	try
-	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (show), true);
-		show = false;
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-NormalTool::set_activeLayer ()
-{
-	try
-	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", 0, true);
 	}
 	catch (const X3DError & error)
 	{
@@ -204,20 +164,6 @@ NormalTool::set_point ()
 	{
 		__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-NormalTool::draw (const ShapeContainer* const container)
-{
-	if (getCurrentLayer () != getActiveLayer ())
-		return;
-
-	show = true;
-
-	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
-
-	if (mvm != modelViewMatrix ())
-		modelViewMatrix () = mvm;
 }
 
 } // X3D

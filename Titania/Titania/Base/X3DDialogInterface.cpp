@@ -79,11 +79,11 @@ X3DDialogInterface::initialize ()
 }
 
 void
-X3DDialogInterface::saveSession ()
+X3DDialogInterface::store ()
 {
 	saveExpander (getWidget ());
 
-	X3DUserInterface::saveSession ();
+	X3DUserInterface::store ();
 }
 
 void

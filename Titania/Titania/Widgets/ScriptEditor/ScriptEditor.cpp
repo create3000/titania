@@ -94,6 +94,28 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+ScriptEditor::configure ()
+{
+	X3DScriptEditorInterface::configure ();
+
+	try
+	{
+	   if (node)
+	   {
+			ScriptEditorDatabase database;
+
+			const auto item     = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
+			const auto nodeName = std::get <0> (item);
+
+			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
+			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
+		}
+	}
+	catch (...)
+	{ }
+}
+
+void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
@@ -202,7 +224,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		if (urlObject)
 			urlObject -> checkLoadState () .removeInterest (this, &ScriptEditor::set_loadState);
 
-		saveSession ();
+		store ();
 	}
 
 	node = value;
@@ -231,7 +253,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 			set_loadState (urlObject -> checkLoadState ());
 		}
 
-		restoreSession ();
+		configure ();
 	}
 	else
 	{
@@ -486,32 +508,8 @@ ScriptEditor::set_executionContext ()
 }
 
 void
-ScriptEditor::restoreSession ()
+ScriptEditor::store ()
 {
-	X3DScriptEditorInterface::restoreSession ();
-
-	try
-	{
-	   if (node)
-	   {
-			ScriptEditorDatabase database;
-
-			const auto item     = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
-			const auto nodeName = std::get <0> (item);
-
-			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
-			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
-		}
-	}
-	catch (...)
-	{ }
-}
-
-void
-ScriptEditor::saveSession ()
-{
-	X3DScriptEditorInterface::saveSession ();
-
 	if (node)
 	{
 		ScriptEditorDatabase database;
@@ -521,6 +519,11 @@ ScriptEditor::saveSession ()
 		                   getScrolledWindow () .get_hadjustment () -> get_value (),
 		                   getScrolledWindow () .get_vadjustment () -> get_value ());
 	}
+
+	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());
+	getConfig () -> setItem ("sidePaned", getSidePaned () .get_position ());
+
+	X3DScriptEditorInterface::store ();
 }
 
 /*
@@ -529,11 +532,6 @@ ScriptEditor::saveSession ()
 
 ScriptEditor::~ScriptEditor ()
 {
-	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());
-	getConfig () -> setItem ("sidePaned", getSidePaned () .get_position ());
-
-	saveSession ();
-
 	dispose ();
 }
 

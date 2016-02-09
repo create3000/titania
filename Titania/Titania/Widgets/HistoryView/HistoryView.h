@@ -80,11 +80,11 @@ private:
 
 	virtual
 	void
-	initialize () final override;
+	configure () final override;
 
 	virtual
 	void
-	restoreSession () final override;
+	initialize () final override;
 
 	virtual
 	void

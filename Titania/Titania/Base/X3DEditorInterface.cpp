@@ -80,29 +80,6 @@ X3DEditorInterface::initialize ()
 {
 	X3DDialogInterface::initialize ();
 	X3DEditorObject::initialize ();
-
-	getWidget () .signal_map ()   .connect (sigc::mem_fun (this, &X3DEditorInterface::on_map));
-	getWidget () .signal_unmap () .connect (sigc::mem_fun (this, &X3DEditorInterface::on_unmap));
-
-	on_map ();
-}
-
-///  @name Event handler
-
-void
-X3DEditorInterface::on_map ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DEditorInterface::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
-
-void
-X3DEditorInterface::on_unmap ()
-{
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &X3DEditorInterface::set_selection);
-
-	set_selection ({ });
 }
 
 ///  @name Destruction

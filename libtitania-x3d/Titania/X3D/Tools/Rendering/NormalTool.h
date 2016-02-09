@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_TOOLS_RENDERING_NORMAL_TOOL_H__
 
 #include "../Rendering/X3DNormalNodeTool.h"
-#include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -92,22 +91,6 @@ public:
 
 	///  @name Fields
 
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	SFMatrix4f &
-	modelViewMatrix ()
-	{ return *fields .modelViewMatrix; }
-
-	const SFMatrix4f &
-	modelViewMatrix () const
-	{ return *fields .modelViewMatrix; }
-
 	SFFloat &
 	length ()
 	{ return *fields .length; }
@@ -140,11 +123,6 @@ public:
 	point () const
 	{ return *fields .point; }
 
-	///  @name Operations
-
-	void
-	draw (const ShapeContainer* const);
-
 
 private:
 
@@ -159,12 +137,6 @@ private:
 	realize () final override;
 
 	///  @name Event handler
-
-	void
-	prepareEvent ();
-
-	void
-	set_activeLayer ();
 
 	void
 	set_color ();
@@ -184,8 +156,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
-		SFMatrix4f* const modelViewMatrix;
 		SFFloat* const length;
 		SFColorRGBA* const color;
 		MFInt32* const vertexCount;
@@ -193,8 +163,6 @@ private:
 	};
 
 	Fields fields;
-	
-	bool show;
 
 };
 

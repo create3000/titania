@@ -51,7 +51,7 @@
 #include "FaceSelection.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
 FaceSelection::FaceSelection ()
 { }
@@ -227,5 +227,5 @@ FaceSelection::getVertices (const size_t face) const
 FaceSelection::~FaceSelection ()
 { }
 
-} // puck
+} // X3D
 } // titania

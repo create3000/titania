@@ -121,6 +121,10 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	///  @name Member access
@@ -199,11 +203,7 @@ private:
 
 	virtual
 	void
-	restoreSession () final override;
-
-	virtual
-	void
-	saveSession () final override;
+	store () final override;
 
 	///  @name Members
 

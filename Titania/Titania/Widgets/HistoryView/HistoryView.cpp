@@ -73,17 +73,9 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-HistoryView::initialize ()
+HistoryView::configure ()
 {
-	X3DHistoryViewInterface::initialize ();
-
-	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
-}
-
-void
-HistoryView::restoreSession ()
-{
-	X3DHistoryViewInterface::restoreSession ();
+	X3DHistoryViewInterface::configure ();
 			
 	if (not getConfig () -> hasItem ("rememberHistory"))
 		getConfig () -> setItem ("rememberHistory", 12);
@@ -113,6 +105,14 @@ HistoryView::restoreSession ()
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
 		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
+}
+
+void
+HistoryView::initialize ()
+{
+	X3DHistoryViewInterface::initialize ();
+
+	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
 }
 
 void

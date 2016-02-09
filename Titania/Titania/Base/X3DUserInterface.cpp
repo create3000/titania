@@ -122,9 +122,11 @@ X3DUserInterface::construct ()
 void
 X3DUserInterface::setName (const std::string & value)
 {
+	store ();
 	X3DBaseInterface::setName (value);
 
 	gconf .reset (new Configuration (gconf -> getPath (), value));
+	configure ();
 }
 
 void
@@ -135,7 +137,8 @@ X3DUserInterface::on_constructed ()
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::TOP_LEFT_ARROW));
 
-	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
+	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
+	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
 
 	on_map ();
 
@@ -145,8 +148,6 @@ X3DUserInterface::on_constructed ()
 
 	initialize ();
 
-	restoreSession ();
-
 	if (isFullscreen ())
 	   getWindow () .fullscreen ();
 
@@ -154,9 +155,32 @@ X3DUserInterface::on_constructed ()
 }
 
 void
+X3DUserInterface::configure ()
+{
+	// Restore dialogs
+
+	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
+	{
+		if (restorableDialogs .count (dialogName))
+			addDialog (dialogName);
+	}
+}
+
+void
 X3DUserInterface::on_map ()
 {
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DEditorInterface::set_selection);
+
 	restoreInterface ();
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	configure ();
+}
+
+void
+X3DUserInterface::on_unmap ()
+{
+	store ();
+	set_selection ({ });
 }
 
 bool
@@ -289,20 +313,24 @@ X3DUserInterface::saveInterface ()
 	}
 }
 
-void
-X3DUserInterface::restoreSession ()
+bool
+X3DUserInterface::quit ()
 {
-	// Restore dialogs
+	// Save sessions
 
-	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
-	{
-		if (restorableDialogs .count (dialogName))
-			addDialog (dialogName);
-	}
+	if (this == userInterfaces .front ())
+		saveInterfaces ();
+	else
+		saveInterface ();
+
+	getWindow () .hide (); // Hide window as last command.
+
+	// Prevent destroying Window.
+	return true;
 }
 
 void
-X3DUserInterface::saveSession ()
+X3DUserInterface::store ()
 {
 	// Save dialogs
 
@@ -327,22 +355,10 @@ X3DUserInterface::saveSession ()
 	dialogs -> clear ();
 }
 
-bool
-X3DUserInterface::quit ()
+void
+X3DUserInterface::dispose ()
 {
-	// Save sessions
-
-	if (this == userInterfaces .front ())
-		saveInterfaces ();
-	else
-		saveInterface ();
-
-	saveSession ();
-
-	getWindow () .hide (); // Hide window as last command.
-
-	// Prevent destroying Window.
-	return true;
+	X3DBaseInterface::dispose ();
 }
 
 X3DUserInterface::~X3DUserInterface ()

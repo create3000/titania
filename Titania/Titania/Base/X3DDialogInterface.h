@@ -93,7 +93,7 @@ protected:
 
 	virtual
 	void
-	saveSession () override;
+	store () override;
 
 	///  @name Operations
 

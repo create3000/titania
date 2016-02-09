@@ -58,6 +58,8 @@
 namespace titania {
 namespace X3D {
 
+class FaceSelection;
+
 class IndexedFaceSetTool :
 	public X3DComposedGeometryNodeTool <IndexedFaceSet>
 {
@@ -145,9 +147,9 @@ protected:
 	void
 	initialize () final override;
 
-	virtual
-	void
-	realize () final override;
+	///  @name Members
+
+	std::unique_ptr <FaceSelection> selection;
 
 };
 

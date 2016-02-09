@@ -50,13 +50,90 @@
 
 #include "X3DGeometricPropertyNodeTool.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/ShapeContainer.h"
+
 namespace titania {
 namespace X3D {
 
+X3DGeometricPropertyNodeTool::Fields::Fields () :
+	           load (new SFBool (true)),
+	modelViewMatrix (new SFMatrix4f ())
+{ }
+
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
-	X3DActiveLayerTool ()
+	X3DActiveLayerTool (),
+	          enabled (false)
 {
 	//addType (X3DConstants::X3DGeometricPropertyNodeTool);
+}
+
+void
+X3DGeometricPropertyNodeTool::initialize ()
+{
+	X3DActiveLayerTool::initialize ();
+
+	getActiveLayer () .addInterest (this, &X3DGeometricPropertyNodeTool::set_activeLayer);
+	load () .addInterest (getInlineNode () -> load ());
+
+	getInlineNode () -> load () = load ();
+}
+
+void
+X3DGeometricPropertyNodeTool::realize ()
+{
+	X3DActiveLayerTool::realize ();
+
+	try
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &X3DGeometricPropertyNodeTool::prepareEvent);
+
+		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
+		modelViewMatrix () .addInterest (set_modelViewMatrix);
+		set_modelViewMatrix = modelViewMatrix ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DGeometricPropertyNodeTool::prepareEvent ()
+{
+	try
+	{
+		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (enabled), true);
+	}
+	catch (const X3DError & error)
+	{ }
+
+	enabled = false;
+}
+
+void
+X3DGeometricPropertyNodeTool::set_activeLayer ()
+{
+	try
+	{
+		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", 0, true);
+	}
+	catch (const X3DError & error)
+	{ }
+}
+
+void
+X3DGeometricPropertyNodeTool::draw (const ShapeContainer* const container)
+{
+	if (getCurrentLayer () != getActiveLayer ())
+		return;
+
+	enabled = true;
+
+	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
+
+	if (mvm != modelViewMatrix ())
+		modelViewMatrix () = mvm;
 }
 
 X3DGeometricPropertyNodeTool::~X3DGeometricPropertyNodeTool ()

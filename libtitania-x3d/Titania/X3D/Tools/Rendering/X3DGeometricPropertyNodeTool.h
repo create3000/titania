@@ -61,6 +61,29 @@ class X3DGeometricPropertyNodeTool :
 {
 public:
 
+	///  @name Fields
+
+	SFBool &
+	load ()
+	{ return *fields .load; }
+
+	const SFBool &
+	load () const
+	{ return *fields .load; }
+
+	SFMatrix4f &
+	modelViewMatrix ()
+	{ return *fields .modelViewMatrix; }
+
+	const SFMatrix4f &
+	modelViewMatrix () const
+	{ return *fields .modelViewMatrix; }
+
+	///  @name Operations
+
+	void
+	draw (const ShapeContainer* const);
+
 	///  @name Destruction
 
 	~X3DGeometricPropertyNodeTool ();
@@ -71,6 +94,39 @@ protected:
 	///  @name Construction
 
 	X3DGeometricPropertyNodeTool ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	realize () override;
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	prepareEvent ();
+
+	void
+	set_activeLayer ();
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const load;
+		SFMatrix4f* const modelViewMatrix;
+	};
+
+	Fields fields;
+	
+	bool enabled;
 
 };
 

@@ -168,6 +168,7 @@ void
 AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();
+	X3DEditorObject::initialize ();
 
 	getScaleKeyframesButton () .set_active (getConfig () -> getBoolean ("scaleKeyframes"));
 
@@ -3031,6 +3032,13 @@ AnimationEditor::getFrameParams () const
 		return iter -> second;
 
 	return std::make_pair (1, 5);
+}
+
+void
+AnimationEditor::dispose ()
+{
+	X3DEditorObject::dispose ();
+	X3DAnimationEditorInterface::dispose ();
 }
 
 AnimationEditor::~AnimationEditor ()

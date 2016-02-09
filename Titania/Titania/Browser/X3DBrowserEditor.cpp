@@ -95,17 +95,7 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 }
 
 void
-X3DBrowserEditor::initialize ()
-{
-	X3DBrowserWidget::initialize ();
-
-	getCurrentContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
-	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
-}
-
-void
-X3DBrowserEditor::restoreSession ()
+X3DBrowserEditor::configure ()
 {
 	// Workspace
 	if (not getConfig () -> hasItem ("environment"))
@@ -125,7 +115,17 @@ X3DBrowserEditor::restoreSession ()
 		getFollowPrimarySelectionAction () -> set_active (getConfig () -> getBoolean ("followPrimarySelection"));
 
 	// This must be done after.
-	X3DBrowserWidget::restoreSession ();
+	X3DBrowserWidget::configure ();
+}
+
+void
+X3DBrowserEditor::initialize ()
+{
+	X3DBrowserWidget::initialize ();
+
+	getCurrentContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
+	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 }
 
 void

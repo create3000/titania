@@ -91,20 +91,6 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	void
-	set_selection (const X3D::MFNode &)
-	{ }
-
-
-private:
-
-	void
-	on_map ();
-
-	void
-	on_unmap ();
-
 
 };
 

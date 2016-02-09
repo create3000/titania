@@ -193,11 +193,11 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	virtual
 	void
-	restoreSession () override;
+	initialize () override;
 
 	virtual
 	void
@@ -207,7 +207,7 @@ protected:
 
 	virtual
 	void
-	saveSession () override;
+	store () override;
 
 	///  @name Operations
 

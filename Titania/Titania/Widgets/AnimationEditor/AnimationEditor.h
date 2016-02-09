@@ -84,6 +84,10 @@ public:
 	 **/
 
 	virtual
+	void
+	dispose () final override;
+
+	virtual
 	~AnimationEditor ();
 
 

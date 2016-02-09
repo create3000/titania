@@ -71,6 +71,10 @@ public:
 	const X3D::X3DPtr <X3D::X3DGridTool> &
 	getTool () const final override;
 
+	virtual
+	void
+	fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> &) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -81,10 +85,6 @@ private:
 
 	void
 	realize ();
-
-	virtual
-	void
-	configure (const X3D::X3DPtr <X3D::MetadataSet> &) final override;
 
 	///  @name Members
 

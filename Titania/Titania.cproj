@@ -184,7 +184,6 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.cpp" />
     <Compile Include="Titania\Browser\X3DObjectOperations.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.cpp" />
-    <Compile Include="Titania\Editors\FaceSelection.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
@@ -1197,7 +1196,6 @@
     <None Include="share\titania\ui\icons\Arrow.svg" />
     <None Include="share\titania\ui\icons\Checkerboard.svg" />
     <None Include="share\titania\ui\icons\TextureCoordinate.svg" />
-    <None Include="Titania\Editors\FaceSelection.h" />
     <None Include="share\titania\ui\icons\Flip.svg" />
     <None Include="share\titania\ui\icons\Flop.svg" />
     <None Include="share\titania\ui\icons\Counterclockwise.svg" />

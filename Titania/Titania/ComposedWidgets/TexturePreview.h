@@ -105,7 +105,7 @@ private:
 	on_configure_event (GdkEventConfigure* const);
 
 	void
-	configure ();
+	set_camera ();
 	
 	void
 	set_camera (double, double);

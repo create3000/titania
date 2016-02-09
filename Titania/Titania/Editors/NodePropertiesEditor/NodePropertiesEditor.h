@@ -82,6 +82,10 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	virtual
@@ -96,6 +100,10 @@ private:
 	virtual
 	void
 	on_edit_cdata_clicked () final override;
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

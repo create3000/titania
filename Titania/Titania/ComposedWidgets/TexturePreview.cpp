@@ -207,7 +207,7 @@ TexturePreview::set_texture ()
 void
 TexturePreview::set_loadState ()
 {
-	configure ();
+	set_camera ();
 
 	// Set label
 
@@ -321,12 +321,12 @@ TexturePreview::set_loadState ()
 bool
 TexturePreview::on_configure_event (GdkEventConfigure* const)
 {
-	configure ();
+	set_camera ();
 	return false;
 }
 
 void
-TexturePreview::configure ()
+TexturePreview::set_camera ()
 {
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (textureNode);
 

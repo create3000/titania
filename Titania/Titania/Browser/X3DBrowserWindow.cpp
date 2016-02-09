@@ -87,16 +87,6 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	// GeometryEditor
-	if (getConfig () -> hasItem ("normalLength"))
-		geometryEditor -> getNormalEditor () -> setField <X3D::SFFloat> ("length", getConfig () -> get <X3D::SFFloat> ("normalLength"));
-
-	if (getConfig () -> hasItem ("normalColor"))
-		geometryEditor -> getNormalEditor () -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("normalColor"));
-
-	if (getConfig () -> hasItem ("edgeColor"))
-		geometryEditor -> getCoordinateEditor () -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
-
 	geometryEditor -> getWidget () .unparent ();
 	getBrowserOverlay () .add_overlay (geometryEditor -> getWidget ());
 
@@ -190,11 +180,7 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 }
 
 X3DBrowserWindow::~X3DBrowserWindow ()
-{
-	getConfig () -> set ("normalLength", geometryEditor -> getNormalEditor ()     -> getField <X3D::SFFloat> ("length"));
-	getConfig () -> set ("normalColor",  geometryEditor -> getNormalEditor ()     -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("edgeColor",    geometryEditor -> getCoordinateEditor () -> getField <X3D::SFColorRGBA> ("color"));
-}
+{ }
 
 } // puck
 } // titania
