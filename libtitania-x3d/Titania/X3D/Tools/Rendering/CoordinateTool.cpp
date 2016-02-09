@@ -80,7 +80,6 @@ CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",         metadata ());
 	addField (inputOutput, "load",             load ());
-	addField (inputOutput, "modelViewMatrix",  modelViewMatrix ());
 	addField (inputOutput, "color",            color ());
 	addField (inputOutput, "vertexCount",      vertexCount ());
 	addField (inputOutput, "point",            point ());

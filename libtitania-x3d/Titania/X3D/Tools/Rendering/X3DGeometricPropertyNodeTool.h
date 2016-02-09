@@ -71,14 +71,6 @@ public:
 	load () const
 	{ return *fields .load; }
 
-	SFMatrix4f &
-	modelViewMatrix ()
-	{ return *fields .modelViewMatrix; }
-
-	const SFMatrix4f &
-	modelViewMatrix () const
-	{ return *fields .modelViewMatrix; }
-
 	///  @name Operations
 
 	void
@@ -106,6 +98,16 @@ protected:
 
 private:
 
+	///  @name Private fields
+
+	SFMatrix4f &
+	modelViewMatrix ()
+	{ return fields .modelViewMatrix; }
+
+	const SFMatrix4f &
+	modelViewMatrix () const
+	{ return fields .modelViewMatrix; }
+
 	///  @name Event handler
 
 	void
@@ -121,7 +123,7 @@ private:
 		Fields ();
 
 		SFBool* const load;
-		SFMatrix4f* const modelViewMatrix;
+		SFMatrix4f modelViewMatrix;
 	};
 
 	Fields fields;

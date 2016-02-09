@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_TOOL_H__
 
 #include "../Rendering/X3DGeometryNodeTool.h"
+#include "../../Components/Rendering/X3DComposedGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -163,6 +164,33 @@ public:
 	const SFNode &
 	coord () const final override
 	{ return getNode () -> coord (); }
+
+	///  @name Member access
+
+	virtual
+	const X3DPtrArray <X3DVertexAttributeNode> &
+	getAttrib () const final override
+	{ return getNode () -> getAttrib (); }
+
+	virtual
+	const X3DPtr <X3DColorNode> &
+	getColor () const final override
+	{ return getNode () -> getColor (); }
+
+	virtual
+	const X3DPtr <X3DTextureCoordinateNode> &
+	getTexCoord () const final override
+	{ return getNode () -> getTexCoord (); }
+
+	virtual
+	const X3DPtr <X3DNormalNode> &
+	getNormal () const final override
+	{ return getNode () -> getNormal (); }
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const final override
+	{ return getNode () -> getCoord (); }
 
 	///  @name Operations
 

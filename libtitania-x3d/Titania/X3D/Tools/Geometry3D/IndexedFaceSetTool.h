@@ -138,6 +138,12 @@ public:
 	addTexCoords () final override
 	{ getNode () -> addTexCoords (); }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 protected:
 
@@ -146,6 +152,17 @@ protected:
 	virtual
 	void
 	initialize () final override;
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	set_coord ();
+
+	void
+	set_touchTime ();
 
 	///  @name Members
 

@@ -144,6 +144,14 @@ public:
 	getElements () const final override
 	{ return getNode () -> getElements (); }
 
+	const X3DPtr <NormalTool> &
+	getNormalTool () const
+	{ return normalToolNode; }
+
+	const X3DPtr <CoordinateTool> &
+	getCoordinateTool () const
+	{ return coordToolNode; }
+	
 	///  @name Operations
 
 	virtual
@@ -267,107 +275,123 @@ X3DGeometryNodeTool <Type>::initialize ()
 {
 	X3DNodeTool <Type>::initialize ();
 
+	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 
 	coordToolNode -> geometry () = this -> getNode ();
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
-
-	eventProcessed ();
 }
 
 template <class Type>
 void
 X3DGeometryNodeTool <Type>::eventProcessed ()
 {
-	const auto & normals  = this -> getNode () -> getPolygonNormals ();
-	const auto & vertices = this -> getNode () -> getPolygonVertices ();
-	const auto & elements = this -> getNode () -> getElements ();
-	const auto   size     = vertices .size ();
-
-	// Normals
-
-	normalToolNode -> vertexCount () .resize (size, SFInt32 (2));
-	normalToolNode -> point ()       .resize (2 * size);
-
-	for (size_t i = 0; i < size; ++ i)
+	try
 	{
-		normalToolNode -> point () [2 * i + 0] = vertices [i];
-		normalToolNode -> point () [2 * i + 1] = vertices [i] + normals [i];
-	}
-
-	// Points
-
-	size_t first = 0;
-	size_t p     = 0;
-	size_t v     = 0;
-
-	for (const auto & element : elements)
-	{
-		switch (element .vertexMode)
+		const auto & normals  = this -> getNode () -> getPolygonNormals ();
+		const auto & vertices = this -> getNode () -> getPolygonVertices ();
+		const auto & elements = this -> getNode () -> getElements ();
+		const auto   size     = vertices .size ();
+	
+		// Normals
+	
+		auto & normalVertexCount = normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
+		auto & normalPoint       = normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point");
+	
+		normalVertexCount .resize (size, SFInt32 (2));
+		normalPoint       .resize (2 * size);
+	
+		for (size_t i = 0; i < size; ++ i)
 		{
-			case GL_TRIANGLES :
-			{
-				for (size_t i = first, size = first + element .count; i < size; i += 3)
-				{
-					coordToolNode -> vertexCount () .set1Value (v ++, 4);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-				}
-
-				break;
-			}
-			case GL_QUADS:
-			{
-				for (size_t i = first, size = first + element .count; i < size; i += 4)
-				{
-					coordToolNode -> vertexCount () .set1Value (v ++, 5);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-				}
-
-				break;
-			}
-			case GL_QUAD_STRIP:
-			{
-				for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
-				{
-					coordToolNode -> vertexCount () .set1Value (v ++, 5);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-					coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-				}
-
-				break;
-			}
-			case GL_POLYGON:
-			{
-				coordToolNode -> vertexCount () .set1Value (v ++, element .count + 1);
-
-				for (size_t i = first, size = first + element .count; i < size; ++ i)
-					coordToolNode -> point () .set1Value (p ++, vertices [i]);
-
-				coordToolNode -> point () .set1Value (p ++, vertices [first]);
-
-				break;
-			}
-			default:
-				break;
+			normalPoint [2 * i + 0] = vertices [i];
+			normalPoint [2 * i + 1] = vertices [i] + normals [i] * normalToolNode -> length () .getValue ();
 		}
+	
+__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount") << std::endl;
+__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point") << std::endl;
+__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount") .isTainted () << std::endl;
+__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point") .isTainted () << std::endl;
 
-		first += element .count;
+		// Points
+	
+		size_t first = 0;
+		size_t p     = 0;
+		size_t v     = 0;
+	
+		for (const auto & element : elements)
+		{
+			switch (element .vertexMode)
+			{
+				case GL_TRIANGLES :
+				{
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					{
+						coordToolNode -> vertexCount () .set1Value (v ++, 4);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					}
+	
+					break;
+				}
+				case GL_QUADS:
+				{
+					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					{
+						coordToolNode -> vertexCount () .set1Value (v ++, 5);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					}
+	
+					break;
+				}
+				case GL_QUAD_STRIP:
+				{
+					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
+					{
+						coordToolNode -> vertexCount () .set1Value (v ++, 5);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
+						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+					}
+	
+					break;
+				}
+				case GL_POLYGON:
+				{
+					coordToolNode -> vertexCount () .set1Value (v ++, element .count + 1);
+	
+					for (size_t i = first, size = first + element .count; i < size; ++ i)
+						coordToolNode -> point () .set1Value (p ++, vertices [i]);
+	
+					coordToolNode -> point () .set1Value (p ++, vertices [first]);
+	
+					break;
+				}
+				default:
+					break;
+			}
+	
+			first += element .count;
+		}
+	
+		coordToolNode -> vertexCount () .resize (v);
+		coordToolNode -> point ()       .resize (p);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
-	coordToolNode -> vertexCount () .resize (v);
-	coordToolNode -> point ()       .resize (p);
 }
 
 template <class Type>

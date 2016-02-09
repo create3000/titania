@@ -125,7 +125,6 @@ X3DBrowserEditor::initialize ()
 
 	getCurrentContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
 	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DBrowserEditor::set_selection);
 }
 
 void
@@ -196,8 +195,8 @@ X3DBrowserEditor::set_shutdown ()
 		isModified (getCurrentBrowser (), false);
 	}
 	else
-		X3DBrowserWidget::setCurrentContext (getCurrentContext ());                                                                                                                                        // Cancel shutdown, there will be no further shutdown now.
-
+		// Cancel shutdown, there will be no further shutdown now.
+		X3DBrowserWidget::setCurrentContext (getCurrentContext ());
 }
 
 void
@@ -278,6 +277,8 @@ X3DBrowserEditor::set_selection_active (const bool value)
 void
 X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DBrowserWidget::set_selection (selection);
+
 	if (selection .empty ())
 		return;
 

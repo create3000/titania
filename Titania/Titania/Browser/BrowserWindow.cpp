@@ -170,9 +170,6 @@ BrowserWindow::initialize ()
 	getCurrentScene ()   .addInterest (this, &BrowserWindow::set_scene);
 	getCurrentContext () .addInterest (this, &BrowserWindow::set_executionContext);
 
-	getSelection () -> getChildren () .addInterest (this, &BrowserWindow::set_selection);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
@@ -352,6 +349,8 @@ BrowserWindow::set_touchTime ()
 void
 BrowserWindow::set_selection (const X3D::MFNode & selection)
 {
+	X3DBrowserWindow::set_selection (selection);
+
 	const bool inScene        = not inPrototypeInstance ();
 	const bool haveSelection  = inScene and selection .size ();
 	const bool haveSelections = inScene and selection .size () > 1;

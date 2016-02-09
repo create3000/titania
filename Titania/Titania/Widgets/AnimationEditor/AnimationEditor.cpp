@@ -214,6 +214,8 @@ AnimationEditor::on_unmap ()
 void
 AnimationEditor::set_selection (const X3D::MFNode & selection)
 {
+	X3DAnimationEditorInterface::set_selection (selection);
+
 	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
 	const auto groups        = getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
 

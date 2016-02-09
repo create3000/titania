@@ -63,9 +63,7 @@ const std::string   NormalTool::containerField = "normalTool";
 
 NormalTool::Fields::Fields () :
 	         length (new SFFloat (1)),
-	          color (new SFColorRGBA (ToolColors::BLUE_RGBA)),
-	    vertexCount (new MFInt32 ()),
-	          point (new MFVec3f ())
+	          color (new SFColorRGBA (ToolColors::BLUE_RGBA))
 { }
 
 NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
@@ -75,13 +73,10 @@ NormalTool::NormalTool (X3DExecutionContext* const executionContext) :
 {
 	//addType (X3DConstants::NormalTool);
 
-	addField (inputOutput, "metadata",        metadata ());
-	addField (inputOutput, "load",            load ());
-	addField (inputOutput, "modelViewMatrix", modelViewMatrix ());
-	addField (inputOutput, "length",          length ());
-	addField (inputOutput, "color",           color ());
-	addField (inputOutput, "vertexCount",     vertexCount ());
-	addField (inputOutput, "point",           point ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "load",     load ());
+	addField (inputOutput, "length",   length ());
+	addField (inputOutput, "color",    color ());
 }
 
 X3DBaseNode*
@@ -105,16 +100,9 @@ NormalTool::realize ()
 
 	try
 	{
-		auto & set_vertexCount = getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
-		vertexCount () .addInterest (set_vertexCount);
-		set_vertexCount = vertexCount ();
-
-		length () .addInterest (this, &NormalTool::set_point);
 		color ()  .addInterest (this, &NormalTool::set_color);
-		point ()  .addInterest (this, &NormalTool::set_point);
 
 		set_color ();
-		set_point ();
 	}
 	catch (const X3DError & error)
 	{
@@ -131,34 +119,6 @@ NormalTool::set_color ()
 
 		material -> setField <SFColor> ("emissiveColor", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
 		material -> setField <SFFloat> ("transparency", 1 - color () .getAlpha ());
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-NormalTool::set_point ()
-{
-	try
-	{
-		auto & set_point = getInlineNode () -> getExportedNode ("NormalsCoord") -> getField <MFVec3f> ("point");
-
-		if (length () == 1.0f)
-			set_point = point ();
-
-		else
-		{
-			set_point = point ();
-
-			for (size_t i = 0, size = point () .size (); i < size; i += 2)
-			{
-				const auto normal = set_point [i + 1] .getValue () - set_point [i + 0] .getValue ();
-
-				set_point [i + 1] = set_point [i + 0] .getValue () + normal * length () .getValue ();
-			}
-		}
 	}
 	catch (const X3DError & error)
 	{

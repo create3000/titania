@@ -58,7 +58,7 @@ namespace X3D {
 
 X3DGeometricPropertyNodeTool::Fields::Fields () :
 	           load (new SFBool (true)),
-	modelViewMatrix (new SFMatrix4f ())
+	modelViewMatrix ()
 { }
 
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
@@ -66,6 +66,8 @@ X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
 	          enabled (false)
 {
 	//addType (X3DConstants::X3DGeometricPropertyNodeTool);
+
+	addChildren (modelViewMatrix ());
 }
 
 void

@@ -175,6 +175,31 @@ public:
 	isTransparent () const override
 	{ return transparent; }
 
+	virtual
+	const X3DPtrArray <X3DVertexAttributeNode> &
+	getAttrib () const
+	{ return attribNodes; }
+
+	virtual
+	const X3DPtr <X3DColorNode> &
+	getColor () const
+	{ return colorNode; }
+
+	virtual
+	const X3DPtr <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoordNode; }
+
+	virtual
+	const X3DPtr <X3DNormalNode> &
+	getNormal () const
+	{ return normalNode; }
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const
+	{ return coordNode; }
+
 	///  @name Operations
 
 	virtual
@@ -213,26 +238,6 @@ protected:
 	set_coord ();
 
 	///  @name Member access
-
-	const X3DPtrArray <X3DVertexAttributeNode> &
-	getAttrib () const
-	{ return attribNodes; }
-
-	const X3DPtr <X3DColorNode> &
-	getColor () const
-	{ return colorNode; }
-
-	const X3DPtr <X3DTextureCoordinateNode> &
-	getTexCoord () const
-	{ return texCoordNode; }
-
-	const X3DPtr <X3DNormalNode> &
-	getNormal () const
-	{ return normalNode; }
-
-	const X3DPtr <X3DCoordinateNode> &
-	getCoord () const
-	{ return coordNode; }
 
 	virtual
 	size_t

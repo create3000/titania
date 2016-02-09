@@ -122,7 +122,6 @@ X3DUserInterface::construct ()
 void
 X3DUserInterface::setName (const std::string & value)
 {
-	store ();
 	X3DBaseInterface::setName (value);
 
 	gconf .reset (new Configuration (gconf -> getPath (), value));

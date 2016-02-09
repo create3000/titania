@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Mon, 08 Feb 2016 15:02:49 GMT"
+META "modified" "Tue, 09 Feb 2016 03:05:21 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -54,6 +54,41 @@ WorldInfo {
           }
         ]
       }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF TransformMatrix3D TransformMatrix3D {
+            children Shape {
+              appearance Appearance {
+                material DEF Material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.7 0.85 1
+                }
+              }
+              geometry DEF NormalsLineSet LineSet {
+                vertexCount [
+                  2,
+                  2,
+                  2
+                ]
+                coord DEF NormalsCoord Coordinate {
+                  point [
+                    -2 0 0,
+                    2 0 0,
+                    0 -2 0,
+                    0 2 0,
+                    0 0 -2,
+                    0 0 2
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
     ]
   }
 }
@@ -61,33 +96,7 @@ WorldInfo {
 DEF Switch Switch {
   children [
     Group { }
-    DEF TransformMatrix3D TransformMatrix3D {
-      children Shape {
-        appearance Appearance {
-          material DEF Material Material {
-            diffuseColor 0 0 0
-            emissiveColor 0.7 0.85 1
-          }
-        }
-        geometry DEF NormalsLineSet LineSet {
-          vertexCount [
-            2,
-            2,
-            2
-          ]
-          coord DEF NormalsCoord Coordinate {
-            point [
-              -2 0 0,
-              2 0 0,
-              0 -2 0,
-              0 2 0,
-              0 0 -2,
-              0 0 2
-            ]
-          }
-        }
-      }
-    }
+    USE TransformMatrix3D
   ]
 }
 

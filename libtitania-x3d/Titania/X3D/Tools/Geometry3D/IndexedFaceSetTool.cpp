@@ -69,6 +69,32 @@ void
 IndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
+
+	getCoord () .addInterest (this, &IndexedFaceSetTool::set_coord);
+	getCoordinateTool () -> touchTime () .addInterest (this, &IndexedFaceSetTool::set_touchTime);
+
+	selection -> setGeometry (getNode ());
+	set_coord ();
+}
+
+void
+IndexedFaceSetTool::set_coord ()
+{
+	selection -> setCoord (getCoord ());
+}
+
+void
+IndexedFaceSetTool::set_touchTime ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+IndexedFaceSetTool::dispose ()
+{
+	selection .reset  ();
+
+	X3DComposedGeometryNodeTool <IndexedFaceSet>::dispose ();
 }
 
 } // X3D

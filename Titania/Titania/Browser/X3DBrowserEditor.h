@@ -231,6 +231,10 @@ protected:
 
 	virtual
 	void
+	set_selection (const X3D::MFNode &) override;
+
+	virtual
+	void
 	setBrowser (const X3D::BrowserPtr &) override;
 
 	void
@@ -268,9 +272,6 @@ private:
 
 	void
 	set_selection_active (const bool);
-
-	void
-	set_selection (const X3D::MFNode &);
 
 	// File
 

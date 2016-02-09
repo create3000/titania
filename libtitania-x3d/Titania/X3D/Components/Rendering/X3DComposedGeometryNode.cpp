@@ -115,17 +115,13 @@ X3DComposedGeometryNode::set_attrib ()
 	for (const auto & node : attribNodes)
 		node -> removeInterest (this);
 
-	std::vector <X3DVertexAttributeNode*> value;
-
 	for (const auto & node : attrib ())
 	{
 		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
 		
 		if (attribNode)
-			value .emplace_back (attribNode);
+			attribNodes .emplace_back (attribNode);
 	}
-
-	attribNodes .set (value .begin (), value .end ());
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (this);
@@ -140,7 +136,7 @@ X3DComposedGeometryNode::set_color ()
 		colorNode -> removeInterest (this, &X3DComposedGeometryNode::set_transparency);
 	}
 
-	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
+	colorNode = x3d_cast <X3DColorNode*> (color ());
 
 	if (colorNode)
 	{
@@ -165,7 +161,7 @@ X3DComposedGeometryNode::set_texCoord ()
 	if (texCoordNode)
 		texCoordNode -> removeInterest (this);
 
-	texCoordNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoord ()));
+	texCoordNode = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
@@ -177,7 +173,7 @@ X3DComposedGeometryNode::set_normal ()
 	if (normalNode)
 		normalNode -> removeInterest (this);
 
-	normalNode .set (x3d_cast <X3DNormalNode*> (normal ()));
+	normalNode = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (normalNode)
 		normalNode -> addInterest (this);
@@ -189,7 +185,7 @@ X3DComposedGeometryNode::set_coord ()
 	if (coordNode)
 		coordNode -> removeInterest (this);
 
-	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
+	coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (coordNode)
 		coordNode -> addInterest (this);

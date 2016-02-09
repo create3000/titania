@@ -118,8 +118,9 @@ private:
 	void
 	set_touchTime ();
 
+	virtual
 	void
-	set_selection (const X3D::MFNode & children);
+	set_selection (const X3D::MFNode & children) final override;
 
 	///  @name Key events
 
