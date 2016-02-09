@@ -177,11 +177,12 @@ private:
 	set_touchTime ();
 
 	void
-	set_selection (const X3D::Vector3f &, const X3D::Vector3f &);
+	set_selection (const X3D::Vector3f &);
 
 	///  @name Members
 
 	std::unique_ptr <FaceSelection> selection;
+	std::set <size_t>               selectedEdges;
 
 };
 

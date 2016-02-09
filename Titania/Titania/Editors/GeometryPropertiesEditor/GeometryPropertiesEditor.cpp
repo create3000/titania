@@ -135,7 +135,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DSphereEditor::removeShapes ();
 
 	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
-	
+
 	for (const auto & shape : shapes)
 		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_geometry);
 
@@ -187,7 +187,7 @@ GeometryPropertiesEditor::set_buffer ()
 	const bool    hasField  = (active not_eq -2);
 
 	geometryNode = std::move (std::get <0> (tuple));
-	nodes        = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
+	nodes        = getNodes <X3D::X3DBaseNode> (X3D::MFNode (getShapes ()), { X3D::X3DConstants::X3DGeometryNode });
 
 	solid           .setNodes (nodes);
 	ccw             .setNodes (nodes);
@@ -201,14 +201,14 @@ GeometryPropertiesEditor::set_buffer ()
 	getGeometryComboBoxText () .set_sensitive (hasField);
 
 	if (active > 0)
-		getGeometryComboBoxText () .set_active_text (nodes [0] -> getTypeName ());
+		getGeometryComboBoxText () .set_active_text (geometryNode ? geometryNode -> getTypeName () : "None");
 	else if (active == 0)
 		getGeometryComboBoxText () .set_active_text ("None");
 	else
 		getGeometryComboBoxText () .set_active (-1);
 
 	getSelectGeometryBox ()    .set_sensitive (hasParent);
-	getGeometryUnlinkButton () .set_sensitive (active > 0 and nodes [0] -> getCloneCount () > 1);
+	getGeometryUnlinkButton () .set_sensitive (active > 0 and geometryNode and geometryNode -> getCloneCount () > 1);
 	getNormalsBox ()           .set_sensitive (false);
 
 	for (const auto & node : nodes)
@@ -263,7 +263,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			getCurrentContext () -> addUninitializedNode (node);
 			getCurrentContext () -> realize ();
 
-		   if (geometryNode -> getType () .back () == node -> getType () .back ())
+		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
 
 			for (const auto & shapeNode : getShapes ())
@@ -278,8 +278,10 @@ GeometryPropertiesEditor::on_geometry_changed ()
 
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
-		catch (const X3D::X3DError &)
-		{ }
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
 	}
 	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
 	{

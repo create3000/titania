@@ -65,7 +65,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                X3DBaseTool <IndexedFaceSet> (node),
 	X3DComposedGeometryNodeTool <IndexedFaceSet> (),
-	                                   selection (new FaceSelection ())
+	                                   selection (new FaceSelection ()),
+	                               selectedEdges ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 }
@@ -139,7 +140,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Set selected point
 
-		set_selection (hitPoint, getCoord () -> get1Point (selection -> getIndices () [0]));
+		set_selection (hitPoint);
 
 //		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
 //		{
@@ -163,10 +164,14 @@ IndexedFaceSetTool::set_touchTime ()
 	
 		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
 		const auto coord       = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("SelectionCoord");
-		const auto point       = getCoord () -> get1Point (selection -> getIndices () [0]);
+		const auto index       = selection -> getIndices () [0];
+		const auto point       = getCoord () -> get1Point (index);
 		const auto hitPoint    = touchSensor -> hitPoint_changed () .getValue ();
 
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+			return;
+
+		if (not selectedEdges .emplace (index) .second)
 			return;
 
 		coord -> point () .emplace_back (point);
@@ -176,14 +181,13 @@ IndexedFaceSetTool::set_touchTime ()
 }
 
 void
-IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint, const X3D::Vector3f & point)
+IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint)
 {
-	__LOG__ << point << std::endl;
-
 	try
 	{
 		const auto coord    = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
 		const auto vertices = selection -> getVertices (selection -> getFace () .first);
+		const auto point    = getCoord () -> get1Point (selection -> getIndices () [0]);
 
 		if (vertices .size () < 3)
 			return;
@@ -209,7 +213,6 @@ IndexedFaceSetTool::getDistance (const X3D::Vector3f & point1, const X3D::Vector
 	const auto p2 = X3D::ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 	return abs (X3D::Vector2d (p1. x (), p1 .y ()) - X3D::Vector2d (p2. x (), p2 .y ()));
-
 }
 
 void
