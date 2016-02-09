@@ -159,6 +159,9 @@ private:
 	///  @name Event handler
 
 	void
+	set_loadState ();
+
+	void
 	set_coord ();
 
 	void

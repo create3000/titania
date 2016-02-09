@@ -62,13 +62,7 @@ const std::string   CoordinateTool::typeName       = "CoordinateTool";
 const std::string   CoordinateTool::containerField = "coordTool";
 
 CoordinateTool::Fields::Fields () :
-	           color (new SFColorRGBA (ToolColors::BLUE_RGBA)),
-	     vertexCount (new MFInt32 ()),
-	           point (new MFVec3f ()),
-	        geometry (new SFNode ()),
-	hitPoint_changed (new SFVec3f ()),
-	        isActive (new SFBool ()),
-	        touchTime (new SFTime ())
+	color (new SFColorRGBA (ToolColors::BLUE_RGBA))
 { }
 
 CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
@@ -78,15 +72,9 @@ CoordinateTool::CoordinateTool (X3DExecutionContext* const executionContext) :
 {
 	//addType (X3DConstants::CoordinateTool);
 
-	addField (inputOutput, "metadata",         metadata ());
-	addField (inputOutput, "load",             load ());
-	addField (inputOutput, "color",            color ());
-	addField (inputOutput, "vertexCount",      vertexCount ());
-	addField (inputOutput, "point",            point ());
-	addField (inputOutput, "geometry",         geometry ());
-	addField (inputOutput, "hitPoint_changed", hitPoint_changed ());
-	addField (inputOutput, "isActive",         isActive ());
-	addField (inputOutput, "touchTime",        touchTime ());
+	addField (inputOutput, "metadata", metadata ());
+	addField (inputOutput, "load",     load ());
+	addField (inputOutput, "color",    color ());
 }
 
 X3DBaseNode*
@@ -102,7 +90,7 @@ CoordinateTool::initialize ()
 
 	getInlineNode () -> url () = { get_tool ("CoordinateTool.x3dv") .str () };
 }
-
+	
 void
 CoordinateTool::realize ()
 {
@@ -110,24 +98,6 @@ CoordinateTool::realize ()
 
 	try
 	{
-		auto & set_vertexCount = getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
-		vertexCount () .addInterest (set_vertexCount);
-		set_vertexCount = vertexCount ();
-
-		auto & set_point = getInlineNode () -> getExportedNode ("EdgesCoord") -> getField <MFVec3f> ("set_point");
-		point () .addInterest (set_point);
-		set_point = point ();
-
-		auto & set_geometry = getInlineNode () -> getExportedNode ("SelectionShape") -> getField <SFNode> ("geometry");
-		geometry () .addInterest (set_geometry);
-		set_geometry = geometry ();
-
-		const auto touchSensor = getInlineNode () -> getExportedNode ("TouchSensor");
-
-		touchSensor -> getField <SFVec3f> ("hitPoint_changed") .addInterest (hitPoint_changed ());
-		touchSensor -> getField <SFBool>  ("isActive")         .addInterest (isActive ());
-		touchSensor -> getField <SFTime>  ("touchTime")        .addInterest (touchTime ());
-
 		color () .addInterest (this, &CoordinateTool::set_color);
 
 		set_color ();

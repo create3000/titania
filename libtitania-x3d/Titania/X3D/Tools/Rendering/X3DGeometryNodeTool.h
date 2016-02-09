@@ -211,6 +211,9 @@ private:
 	///  @name Operations
 
 	void
+	set_loadState ();
+
+	void
 	eventProcessed ();
 
 	///  @name Members
@@ -275,14 +278,28 @@ X3DGeometryNodeTool <Type>::initialize ()
 {
 	X3DNodeTool <Type>::initialize ();
 
-	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 
-	coordToolNode -> geometry () = this -> getNode ();
-
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
+}
+
+template <class Type>
+void
+X3DGeometryNodeTool <Type>::set_loadState ()
+{
+	try
+	{
+		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", getNode (), true);
+
+		eventProcessed ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
@@ -309,14 +326,12 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 			normalPoint [2 * i + 0] = vertices [i];
 			normalPoint [2 * i + 1] = vertices [i] + normals [i] * normalToolNode -> length () .getValue ();
 		}
-	
-__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount") << std::endl;
-__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point") << std::endl;
-__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount") .isTainted () << std::endl;
-__LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point") .isTainted () << std::endl;
 
 		// Points
-	
+
+		auto & edgesVertexCount = coordToolNode -> getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
+		auto & edgesPoint       = coordToolNode -> getInlineNode () -> getExportedNode ("EdgesCoord")   -> getField <MFVec3f> ("point");
+
 		size_t first = 0;
 		size_t p     = 0;
 		size_t v     = 0;
@@ -329,11 +344,11 @@ __LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord"
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
-						coordToolNode -> vertexCount () .set1Value (v ++, 4);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						edgesVertexCount .set1Value (v ++, 4);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						edgesPoint       .set1Value (p ++, vertices [i + 1]);
+						edgesPoint       .set1Value (p ++, vertices [i + 2]);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
 	
 					break;
@@ -342,12 +357,12 @@ __LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord"
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
 					{
-						coordToolNode -> vertexCount () .set1Value (v ++, 5);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						edgesVertexCount .set1Value (v ++, 5);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						edgesPoint       .set1Value (p ++, vertices [i + 1]);
+						edgesPoint       .set1Value (p ++, vertices [i + 2]);
+						edgesPoint       .set1Value (p ++, vertices [i + 3]);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
 	
 					break;
@@ -356,25 +371,24 @@ __LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord"
 				{
 					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
 					{
-						coordToolNode -> vertexCount () .set1Value (v ++, 5);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 1]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 3]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 2]);
-						coordToolNode -> point ()       .set1Value (p ++, vertices [i + 0]);
+						edgesVertexCount .set1Value (v ++, 5);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						edgesPoint       .set1Value (p ++, vertices [i + 1]);
+						edgesPoint       .set1Value (p ++, vertices [i + 3]);
+						edgesPoint       .set1Value (p ++, vertices [i + 2]);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
 	
 					break;
 				}
 				case GL_POLYGON:
 				{
-					coordToolNode -> vertexCount () .set1Value (v ++, element .count + 1);
+					edgesVertexCount .set1Value (v ++, element .count + 1);
 	
 					for (size_t i = first, size = first + element .count; i < size; ++ i)
-						coordToolNode -> point () .set1Value (p ++, vertices [i]);
+						edgesPoint .set1Value (p ++, vertices [i]);
 	
-					coordToolNode -> point () .set1Value (p ++, vertices [first]);
-	
+					edgesPoint.set1Value (p ++, vertices [first]);
 					break;
 				}
 				default:
@@ -384,14 +398,13 @@ __LOG__ << normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord"
 			first += element .count;
 		}
 	
-		coordToolNode -> vertexCount () .resize (v);
-		coordToolNode -> point ()       .resize (p);
+		edgesVertexCount .resize (v);
+		edgesPoint       .resize (p);
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
-
 }
 
 template <class Type>

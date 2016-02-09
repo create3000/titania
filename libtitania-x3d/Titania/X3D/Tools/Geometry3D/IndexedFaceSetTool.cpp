@@ -53,6 +53,8 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Editing/FaceSelection.h"
 
+#include "../../Components/PointingDeviceSensor/TouchSensor.h"
+
 namespace titania {
 namespace X3D {
 
@@ -70,11 +72,26 @@ IndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
 
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 	getCoord () .addInterest (this, &IndexedFaceSetTool::set_coord);
-	getCoordinateTool () -> touchTime () .addInterest (this, &IndexedFaceSetTool::set_touchTime);
 
 	selection -> setGeometry (getNode ());
+
+	set_loadState ();
 	set_coord ();
+}
+
+void
+IndexedFaceSetTool::set_loadState ()
+{
+	try
+	{
+		const X3DPtr <TouchSensor> touchSensor (getCoordinateTool () -> getInlineNode () -> getExportedNode ("TouchSensor"));
+
+		touchSensor -> touchTime () .addInterest (this, &IndexedFaceSetTool::set_touchTime);
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
