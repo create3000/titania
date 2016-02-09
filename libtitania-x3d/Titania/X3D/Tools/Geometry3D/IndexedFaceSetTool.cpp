@@ -59,6 +59,8 @@
 namespace titania {
 namespace X3D {
 
+constexpr double SELECTION_DISTANCE = 6;
+
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                X3DBaseTool <IndexedFaceSet> (node),
@@ -89,8 +91,9 @@ IndexedFaceSetTool::set_loadState ()
 	{
 		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
 
+		touchSensor -> isOver ()           .addInterest (this, &IndexedFaceSetTool::set_over);
 		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_hitPoint);
-		touchSensor -> touchTime () .addInterest (this, &IndexedFaceSetTool::set_touchTime);
+		touchSensor -> touchTime ()        .addInterest (this, &IndexedFaceSetTool::set_touchTime);
 	}
 	catch (const X3DError &)
 	{ }
@@ -100,6 +103,22 @@ void
 IndexedFaceSetTool::set_coord ()
 {
 	selection -> setCoord (getCoord ());
+}
+
+void
+IndexedFaceSetTool::set_over (const bool over)
+{
+	try
+	{
+		if (not over)
+		{
+			const auto coord = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
+
+			coord -> point () .clear ();
+		}
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -120,7 +139,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Set selected point
 
-		set_selection (getCoord () -> get1Point (selection -> getIndices () [0]));
+		set_selection (hitPoint, getCoord () -> get1Point (selection -> getIndices () [0]));
 
 //		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
 //		{
@@ -136,10 +155,28 @@ void
 IndexedFaceSetTool::set_touchTime ()
 {
 	__LOG__ << std::endl;
+
+	try
+	{
+		if (selection -> isEmpty ())
+			return;
+	
+		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
+		const auto coord       = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("SelectionCoord");
+		const auto point       = getCoord () -> get1Point (selection -> getIndices () [0]);
+		const auto hitPoint    = touchSensor -> hitPoint_changed () .getValue ();
+
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+			return;
+
+		coord -> point () .emplace_back (point);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
-IndexedFaceSetTool::set_selection (const X3D::Vector3f & point)
+IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint, const X3D::Vector3f & point)
 {
 	__LOG__ << point << std::endl;
 
@@ -156,10 +193,23 @@ IndexedFaceSetTool::set_selection (const X3D::Vector3f & point)
 //		for (const auto & i : vertices)
 //			coord -> point () .set1Value (p ++, getCoord () -> get1Point (coordIndex () [i]));
 
-		coord -> point () .set1Value (0, point);
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+			coord -> point () .clear ();
+		else
+			coord -> point () .set1Value (0, point);
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+double
+IndexedFaceSetTool::getDistance (const X3D::Vector3f & point1, const X3D::Vector3f & point2)
+{
+	const auto p1 = X3D::ViewVolume::projectPoint (point1, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	const auto p2 = X3D::ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+	return abs (X3D::Vector2d (p1. x (), p1 .y ()) - X3D::Vector2d (p2. x (), p2 .y ()));
+
 }
 
 void

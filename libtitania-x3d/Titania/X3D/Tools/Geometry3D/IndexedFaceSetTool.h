@@ -156,6 +156,9 @@ protected:
 
 private:
 
+	double
+	getDistance (const X3D::Vector3f &, const X3D::Vector3f &);
+
 	///  @name Event handler
 
 	void
@@ -165,13 +168,16 @@ private:
 	set_coord ();
 
 	void
+	set_over (const bool);
+
+	void
 	set_hitPoint (const X3D::Vector3f &);
 
 	void
 	set_touchTime ();
 
 	void
-	set_selection (const X3D::Vector3f &);
+	set_selection (const X3D::Vector3f &, const X3D::Vector3f &);
 
 	///  @name Members
 

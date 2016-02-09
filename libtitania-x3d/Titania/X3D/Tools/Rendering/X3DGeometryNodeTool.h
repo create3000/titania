@@ -55,6 +55,8 @@
 #include "../Rendering/NormalTool.h"
 #include "../Rendering/CoordinateTool.h"
 
+#include "../../Browser/X3DBrowser.h"
+#include "../../Browser/Selection.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Rendering/ShapeContainer.h"
 
@@ -205,10 +207,25 @@ protected:
 	void
 	initialize () override;
 
+	const Vector4i &
+	getViewport () const
+	{ return viewport; }
+
+	const Matrix4d &
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
+
+	const Matrix4d &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
 
 private:
 
 	///  @name Operations
+
+	void
+	set_enabled (const bool);
 
 	void
 	set_loadState ();
@@ -231,6 +248,10 @@ private:
 	X3DPtr <NormalTool>     normalToolNode;
 	X3DPtr <CoordinateTool> coordToolNode;
 
+	Vector4i viewport;
+	Matrix4d projectionMatrix;
+	Matrix4d modelViewMatrix;
+
 };
 
 template <class Type>
@@ -244,7 +265,10 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	X3DNodeTool <Type> (),
 	            fields (),
 	    normalToolNode (new NormalTool (this -> getExecutionContext ())),
-	     coordToolNode (new CoordinateTool (this -> getExecutionContext ()))
+	     coordToolNode (new CoordinateTool (this -> getExecutionContext ())),
+             viewport (),
+     projectionMatrix (),
+      modelViewMatrix ()
 {
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
@@ -278,12 +302,28 @@ X3DGeometryNodeTool <Type>::initialize ()
 {
 	X3DNodeTool <Type>::initialize ();
 
+	this -> getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_enabled);
+
 	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
+}
+
+template <class Type>
+void
+X3DGeometryNodeTool <Type>::set_enabled (const bool enabled)
+{
+	try
+	{
+		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode () : nullptr, true);
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
@@ -306,13 +346,13 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::eventProcessed ()
 {
+	const auto & normals  = this -> getNode () -> getPolygonNormals ();
+	const auto & vertices = this -> getNode () -> getPolygonVertices ();
+	const auto & elements = this -> getNode () -> getElements ();
+	const auto   size     = vertices .size ();
+
 	try
 	{
-		const auto & normals  = this -> getNode () -> getPolygonNormals ();
-		const auto & vertices = this -> getNode () -> getPolygonVertices ();
-		const auto & elements = this -> getNode () -> getElements ();
-		const auto   size     = vertices .size ();
-	
 		// Normals
 	
 		auto & normalVertexCount = normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
@@ -326,7 +366,14 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 			normalPoint [2 * i + 0] = vertices [i];
 			normalPoint [2 * i + 1] = vertices [i] + normals [i] * normalToolNode -> length () .getValue ();
 		}
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 
+	try
+	{
 		// Points
 
 		auto & edgesVertexCount = coordToolNode -> getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
@@ -411,6 +458,10 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
+	viewport         = container -> getScissor ();
+	projectionMatrix = getProjectionMatrix ();
+	modelViewMatrix  = container -> getModelViewMatrix ();
+
 	normalToolNode -> draw (container);
 	coordToolNode  -> draw (container);
 
