@@ -70,9 +70,10 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	this -> addField (inputOutput, "paintSelection", paintSelection ());
-	this -> addField (inputOutput, "normalTool",     normalTool ());
-	this -> addField (inputOutput, "coordTool",      coordTool ());
+	this -> addField (inputOutput, "paintSelection",    paintSelection ());
+	this -> addField (inputOutput, "selection_changed", selection_changed ());
+	this -> addField (inputOutput, "normalTool",        normalTool ());
+	this -> addField (inputOutput, "coordTool",         coordTool ());
 }
 
 void
@@ -82,6 +83,7 @@ IndexedFaceSetTool::initialize ()
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 	getCoord () .addInterest (this, &IndexedFaceSetTool::set_coord);
+	selection_changed () .addInterest (this, &IndexedFaceSetTool::set_selection);
 
 	selection -> setGeometry (getNode ());
 
@@ -129,8 +131,6 @@ IndexedFaceSetTool::set_over (const bool over)
 void
 IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
-	__LOG__ << std::endl;
-
 	try
 	{
 		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
@@ -144,7 +144,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Set selected point
 
-		set_selection (hitPoint);
+		set_active_selection (hitPoint);
 
 		if (touchSensor -> isActive () and paintSelection ())
 			set_touchTime ();
@@ -154,10 +154,37 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 }
 
 void
-IndexedFaceSetTool::set_touchTime ()
+IndexedFaceSetTool::set_selection (const MFVec3f & vertices)
 {
 	__LOG__ << std::endl;
+	__LOG__ << getBrowser () -> hasControlKey () << std::endl;
+	__LOG__ << getBrowser () -> hasShiftKey () << std::endl;
+	__LOG__ << std::endl;
 
+	for (const auto & vertex : vertices)
+	{
+		selection -> setHitPoint (vertex .getValue ());
+		set_point (vertex);
+	}
+}
+
+void
+IndexedFaceSetTool::set_touchTime ()
+{
+	try
+	{
+		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
+		const auto hitPoint    = touchSensor -> hitPoint_changed () .getValue ();
+
+		set_point (hitPoint);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
+{
 	try
 	{
 		if (selection -> isEmpty ())
@@ -167,7 +194,6 @@ IndexedFaceSetTool::set_touchTime ()
 		const auto coord       = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("SelectionCoord");
 		const auto index       = selection -> getIndices () [0];
 		const auto point       = getCoord () -> get1Point (index);
-		const auto hitPoint    = touchSensor -> hitPoint_changed () .getValue ();
 
 		if (get_distance (hitPoint, point) > SELECTION_DISTANCE)
 			return;
@@ -198,7 +224,7 @@ IndexedFaceSetTool::set_touchTime ()
 }
 
 void
-IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint)
+IndexedFaceSetTool::set_active_selection (const X3D::Vector3f & hitPoint)
 {
 	try
 	{

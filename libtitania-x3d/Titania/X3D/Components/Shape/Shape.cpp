@@ -175,6 +175,12 @@ Shape::pointer ()
 
 	std::vector <IntersectionPtr> itersections;
 
+	if (getBrowser () -> getSelectionBuffer ())
+	{
+		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer ());
+		return;
+	}
+
 	if (not getGeometry () -> intersects (hitRay, itersections))
 		return;
 

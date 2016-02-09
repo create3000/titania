@@ -87,6 +87,9 @@ public:
 	void
 	get (std::vector <uint8_t> &) const;
 
+	bool
+	test (const size_t, const size_t) const;
+
 	///  @name Debug
 
 	void

@@ -66,6 +66,7 @@ namespace X3D {
 
 class ShapeContainer;
 class CollisionContainer;
+class FrameBuffer;
 
 class X3DGeometryNode :
 	virtual public X3DNode
@@ -150,6 +151,10 @@ public:
 	virtual
 	bool
 	intersects (Line3f, std::vector <IntersectionPtr> &) const;
+
+	virtual
+	void
+	intersects (const std::shared_ptr <FrameBuffer> &) const;
 
 	virtual
 	bool

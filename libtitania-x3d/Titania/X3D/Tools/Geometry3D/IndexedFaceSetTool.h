@@ -171,10 +171,16 @@ private:
 	set_hitPoint (const X3D::Vector3f &);
 
 	void
+	set_selection (const MFVec3f &);
+
+	void
 	set_touchTime ();
 
 	void
-	set_selection (const X3D::Vector3f &);
+	set_point (const X3D::Vector3f &);
+
+	void
+	set_active_selection (const X3D::Vector3f &);
 
 	double
 	get_distance (const X3D::Vector3d &, const X3D::Vector3d &);

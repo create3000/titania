@@ -126,6 +126,9 @@ private:
 	display ();
 
 	void
+	draw ();
+
+	void
 	polygon ();
 
 	///  @name Static members

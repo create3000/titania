@@ -181,6 +181,16 @@ FrameBuffer::get (std::vector <uint8_t> & pixels) const
 		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
 }
 
+bool
+FrameBuffer::test (const size_t x, const size_t y) const
+{
+	std::vector <uint8_t> pixels (4);
+
+	glReadPixels (x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+
+	return pixels [0];
+}
+
 // DEBUG
 
 void

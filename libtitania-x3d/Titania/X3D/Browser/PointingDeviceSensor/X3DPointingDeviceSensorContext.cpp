@@ -65,18 +65,19 @@ namespace X3D {
 static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELEASE_TIME here.
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
-	   X3DBaseNode (),
-	       pickable (true),
-	       pointer (),
-	        hitRay (),
-	          hits (),
-	enabledSensors ({ PointingDeviceSensorSet () }),
-	   overSensors (),
-	 activeSensors (),
-	 selectedLayer (),
-	   layerNumber (0),
-	     pressTime (0),
-	      hasMoved (false)
+	    X3DBaseNode (),
+	        pickable (true),
+	        pointer (),
+	         hitRay (),
+	           hits (),
+	 enabledSensors ({ PointingDeviceSensorSet () }),
+	    overSensors (),
+	  activeSensors (),
+	  selectedLayer (),
+	    layerNumber (0),
+	      pressTime (0),
+	       hasMoved (false),
+	selectionBuffer ()
 {
 	addChildren (pickable,
 	             overSensors,

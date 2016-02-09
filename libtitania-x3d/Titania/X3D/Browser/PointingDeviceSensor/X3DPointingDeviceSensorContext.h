@@ -61,6 +61,8 @@
 namespace titania {
 namespace X3D {
 
+class FrameBuffer;
+
 class X3DPointingDeviceSensorContext :
 	virtual public X3DBaseNode
 {
@@ -97,6 +99,14 @@ public:
 	size_t
 	getLayerNumber () const
 	{ return layerNumber; }
+
+	const std::shared_ptr <FrameBuffer> &
+	getSelectionBuffer () const
+	{ return selectionBuffer; }
+
+	std::shared_ptr <FrameBuffer> &
+	getSelectionBuffer ()
+	{ return selectionBuffer; }
 
 	///  @name Operations
 
@@ -186,6 +196,7 @@ private:
 	size_t                                    layerNumber;
 	time_type                                 pressTime;
 	bool                                      hasMoved;
+	std::shared_ptr <FrameBuffer>             selectionBuffer;
 
 };
 

@@ -130,8 +130,8 @@ FaceSelection::setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
 		pointIndex .emplace (coord -> get1Point (i), i);
 }
 
-std::vector <size_t>
-FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle) const
+void
+FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle)
 {
 	const std::array <float, 3> distances = {
 		math::abs (hitPoint - hitTriangle [0]),
@@ -143,19 +143,33 @@ FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f
 	const auto index = iter - distances .begin ();
 	const auto point = hitTriangle [index] .getValue ();
 	
-	std::vector <size_t> indices;
+	indices .clear ();
+
+	for (const auto & index : pointIndex .equal_range (point))
+		indices .emplace_back (index .second);
+}
+
+void
+FaceSelection::setHitPoint (const Vector3d & point)
+{
+	indices .clear ();
 
 	for (const auto & index : pointIndex .equal_range (point))
 		indices .emplace_back (index .second);
 
-	return indices;
+	createFaces (point);
 }
 
 void
-FaceSelection::setHitPoint (const X3D::Vector3d & hitPoint, const X3D::MFVec3f & hitTriangle)
+FaceSelection::setHitPoint (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
 {
-	indices = createIndices (hitPoint, hitTriangle);
+	createIndices (hitPoint, hitTriangle);
+	createFaces (hitPoint);
+}
 
+void
+FaceSelection::createFaces (const Vector3d & hitPoint)
+{
 	faces .clear ();
 
 	for (const auto & index : indices)

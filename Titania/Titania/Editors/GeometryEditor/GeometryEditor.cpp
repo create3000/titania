@@ -86,8 +86,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection", new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",          new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
-	browserWindow -> getArrowButton () .signal_toggled () .connect (sigc::mem_fun (*this, &GeometryEditor::on_paint_selection_toggled));
-
 	setup ();
 }
 
@@ -220,16 +218,20 @@ GeometryEditor::on_map ()
 void
 GeometryEditor::on_unmap ()
 {
+	getCurrentBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
 }
 
 void
 GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 {
+	browser -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 
 	browser = value;
 
+	browser -> getSelection () -> isEnabled () .addInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
 
 	set_viewer ();
@@ -240,7 +242,7 @@ GeometryEditor::set_viewer ()
 {
 	changing = true;
 
-	if (getBrowserWindow () -> getArrowButton () .get_active ())
+	if (getCurrentBrowser () -> getSelection () -> isEnabled ())
 	{
 		switch (getCurrentBrowser () -> getCurrentViewer ())
 		{
@@ -335,7 +337,7 @@ GeometryEditor::on_paint_selection_toggled ()
 {
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active (), true);
 
-	if (getBrowserWindow () -> getArrowButton () .get_active ())
+	if (getCurrentBrowser () -> getSelection () -> isEnabled ())
 	{
 		if (changing)
 			return;

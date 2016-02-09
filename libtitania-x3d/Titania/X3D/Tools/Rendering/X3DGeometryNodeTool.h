@@ -58,6 +58,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Browser/Selection.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
+#include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
@@ -70,6 +71,14 @@ class X3DGeometryNodeTool :
 public:
 
 	///  @name Private fields
+
+	MFVec3f &
+	selection_changed ()
+	{ return *fields .selection_changed; }
+
+	const MFVec3f &
+	selection_changed () const
+	{ return *fields .selection_changed; }
 
 	SFNode &
 	normalTool ()
@@ -162,6 +171,10 @@ public:
 	{ return false; }
 
 	virtual
+	void
+	intersects (const std::shared_ptr <FrameBuffer> &) const final override;
+
+	virtual
 	bool
 	intersects (CollisionSphere3f sphere, const CollectableObjectArray & collectables) const final override
 	{ return getNode () -> intersects (sphere, collectables); }
@@ -239,6 +252,7 @@ private:
 	{
 		Fields ();
 
+		MFVec3f* const selection_changed;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};
@@ -256,8 +270,9 @@ private:
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
-	 normalTool (new SFNode ()),
-	  coordTool (new SFNode ())
+	selection_changed (new MFVec3f ()),
+	       normalTool (new SFNode ()),
+	        coordTool (new SFNode ())
 { }
 
 template <class Type>
@@ -273,8 +288,9 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
 
-	normalTool () .isHidden (true);
-	coordTool  () .isHidden (true);
+	selection_changed () .isHidden (true);
+	normalTool ()        .isHidden (true);
+	coordTool  ()        .isHidden (true);
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
@@ -307,6 +323,23 @@ X3DGeometryNodeTool <Type>::initialize ()
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
+}
+
+template <class Type>
+void
+X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
+{
+	std::set <Vector3f> selection;
+
+	for (const auto & vertex : this -> getVertices ())
+	{
+		const auto point = ViewVolume::projectPoint (vertex, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+		if (frameBuffer -> test (point .x (), point .y ()))
+			selection .emplace (vertex);
+	}
+
+	const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), selection .end ());
 }
 
 template <class Type>

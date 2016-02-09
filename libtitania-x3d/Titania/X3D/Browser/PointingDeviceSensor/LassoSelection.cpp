@@ -53,7 +53,9 @@
 #include "LassoSelection.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/Tessellator.h"
+#include "../ContextLock.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -140,6 +142,16 @@ LassoSelection::on_button_release_event (GdkEventButton* event)
 	{
 		getBrowser () -> displayed () .removeInterest (this, &LassoSelection::display);
 
+		ContextLock lock (getBrowser ());
+
+		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), false));
+		getBrowser () -> getSelectionBuffer () -> bind ();
+
+		draw ();
+		getBrowser () -> touch (event -> x, getBrowser () -> get_height () - event -> y);
+
+		getBrowser () -> getSelectionBuffer () -> unbind ();
+		getBrowser () -> getSelectionBuffer () .reset ();
 		return true;
 	}
 
@@ -157,7 +169,6 @@ LassoSelection::on_motion_notify_event (GdkEventMotion* event)
 	if (button == 1)
 	{
 		addPoint (event -> x, event -> y);
-
 		return true;
 	}
 
@@ -221,6 +232,43 @@ LassoSelection::display ()
 
 		glDisableClientState (GL_VERTEX_ARRAY);
 		glEnable (GL_DEPTH_TEST);
+	}
+	catch (const std::domain_error &)
+	{
+		// unProjectPoint is not posible
+	}
+}
+
+void
+LassoSelection::draw ()
+{
+	try
+	{
+		// Configure HUD
+
+		const auto & viewport = getBrowser () -> getRectangle ();
+		const int    width    = viewport [2];
+		const int    height   = viewport [3];
+
+		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+
+		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (projection .data ());
+		glMatrixMode (GL_MODELVIEW);
+
+		// Display Lasso.
+		// Draw a black and a white line.
+
+		glDisable (GL_DEPTH_TEST);
+		glLoadIdentity ();
+
+		glEnable (GL_BLEND);
+		glDisable (GL_CULL_FACE);
+		glColor4f (1, 1, 1, 1);
+		polygon ();
+		glDisable (GL_BLEND);
 	}
 	catch (const std::domain_error &)
 	{

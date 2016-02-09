@@ -73,6 +73,9 @@ public:
 	setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> &);
 
 	void
+	setHitPoint (const X3D::Vector3d &);
+
+	void
 	setHitPoint (const X3D::Vector3d &, const X3D::MFVec3f &);
 
 	const std::vector <size_t> &
@@ -106,8 +109,11 @@ private:
 
 	///  @name Operations
 
-	std::vector <size_t>
-	createIndices (const X3D::Vector3f &, const X3D::MFVec3f &) const;
+	void
+	createIndices (const X3D::Vector3f &, const X3D::MFVec3f &);
+
+	void
+	createFaces (const Vector3d &);
 
 	///  @name Members
 

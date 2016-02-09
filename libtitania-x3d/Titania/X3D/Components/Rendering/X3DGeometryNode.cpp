@@ -264,6 +264,12 @@ X3DGeometryNode::isClipped (const Vector3f & point,
 	                    { return node -> isClipped (point, modelViewMatrix); });
 }
 
+void
+X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
+{
+	// Implemented in X3DGeometryNodeTool.
+}
+
 bool
 X3DGeometryNode::intersects (CollisionSphere3f sphere, const CollectableObjectArray & localObjects) const
 {
