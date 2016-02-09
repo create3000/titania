@@ -66,7 +66,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                X3DBaseTool <IndexedFaceSet> (node),
 	X3DComposedGeometryNodeTool <IndexedFaceSet> (),
 	                                   selection (new FaceSelection ()),
-	                               selectedEdges ()
+	                            selectedVertices (),
+	                               paintSelecion (false)
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 }
@@ -171,7 +172,23 @@ IndexedFaceSetTool::set_touchTime ()
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 			return;
 
-		if (not selectedEdges .emplace (index) .second)
+		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paintSelecion)
+		{
+			coord -> point () .clear ();
+			selectedVertices .clear ();
+		}
+
+		if (getBrowser () -> hasControlKey ())
+		{
+			const auto iter = std::find (coord -> point () .begin (), coord -> point () .end (), point);
+
+			if (iter not_eq coord -> point () .end ())
+				coord -> point () .erase (iter);
+
+			selectedVertices .erase (index);
+			return;
+		}
+		else if (not selectedVertices .emplace (index) .second)
 			return;
 
 		coord -> point () .emplace_back (point);

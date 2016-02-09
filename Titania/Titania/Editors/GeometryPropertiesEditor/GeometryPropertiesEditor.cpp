@@ -208,7 +208,7 @@ GeometryPropertiesEditor::set_buffer ()
 		getGeometryComboBoxText () .set_active (-1);
 
 	getSelectGeometryBox ()    .set_sensitive (hasParent);
-	getGeometryUnlinkButton () .set_sensitive (active > 0 and geometryNode and geometryNode -> getCloneCount () > 1);
+	getGeometryUnlinkButton () .set_sensitive (active > 0 and not nodes .empty () and nodes [0] -> getCloneCount () > 1);
 	getNormalsBox ()           .set_sensitive (false);
 
 	for (const auto & node : nodes)

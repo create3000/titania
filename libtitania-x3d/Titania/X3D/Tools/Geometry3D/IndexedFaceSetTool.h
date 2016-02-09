@@ -182,7 +182,8 @@ private:
 	///  @name Members
 
 	std::unique_ptr <FaceSelection> selection;
-	std::set <size_t>               selectedEdges;
+	std::set <size_t>               selectedVertices;
+	bool                            paintSelecion;
 
 };
 
