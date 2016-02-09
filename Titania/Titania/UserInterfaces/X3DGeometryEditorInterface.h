@@ -105,13 +105,13 @@ public:
 	getHammerButton () const
 	{ return *m_HammerButton; }
 
-	Gtk::Button &
-	getEditButton () const
-	{ return *m_EditButton; }
-
 	Gtk::ToggleButton &
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
+
+	Gtk::ToggleButton &
+	getEditToggleButton () const
+	{ return *m_EditToggleButton; }
 
 	virtual
 	void
@@ -119,7 +119,7 @@ public:
 
 	virtual
 	void
-	on_edit_clicked () = 0;
+	on_edit_toggled () = 0;
 
 	virtual
 	~X3DGeometryEditorInterface ();
@@ -144,8 +144,8 @@ private:
 	Gtk::Revealer*                m_Widget;
 	Gtk::Box*                     m_GeometryEditorBox;
 	Gtk::Button*                  m_HammerButton;
-	Gtk::Button*                  m_EditButton;
 	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
+	Gtk::ToggleButton*            m_EditToggleButton;
 
 };
 

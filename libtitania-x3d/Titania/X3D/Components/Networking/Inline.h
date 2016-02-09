@@ -145,6 +145,14 @@ public:
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	template <class Type>
+	X3DPtr <Type>
+	getExportedNode (const std::string &) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_NODE>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  @name Root node handling
 
 	virtual
@@ -260,6 +268,22 @@ private:
 	std::unique_ptr <SceneLoader> future;
 
 };
+
+template <class Type>
+X3DPtr <Type>
+Inline::getExportedNode (const std::string & name) const
+throw (Error <INVALID_NAME>,
+       Error <INVALID_NODE>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DPtr <Type> node (getExportedNode (name));
+
+	if (node)
+		return node;
+
+	throw Error <INVALID_NODE> ("Invalid node: node '" + name + "' has other type.");
+}
 
 } // X3D
 } // titania

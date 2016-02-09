@@ -67,12 +67,14 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
-	m_builder -> get_widget ("EditButton", m_EditButton);
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
+	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
 
 	// Connect object Gtk::Button with id 'HammerButton'.
 	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked)));
-	m_connections .emplace_back (m_EditButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_clicked)));
+
+	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
+	m_connections .emplace_back (m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled)));
 
 	// Call construct handler of base class.
 	construct ();

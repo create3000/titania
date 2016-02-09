@@ -69,7 +69,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	             normalEnabled (this, getNormalEnabledToggleButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
-	             geometryNodes ()
+	             geometryNodes (),
+	                  changing (false)
 {
 	normalEnabled .setUndo (false);
 
@@ -115,16 +116,30 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DGeometryEditorInterface::set_selection (selection);
 
-	const bool inScene       = not inPrototypeInstance ();
-	const bool haveSelection = inScene and selection .size ();
-	//const bool haveSelections = inScene and selection .size () > 1;
+	changing = true;
 
-	geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
+	if (selection == geometryNodes and not geometryNodes .empty  ())
+	{
+		getEditToggleButton () .set_active (true);
+	}
+	else
+	{
+		previousSelection = selection;
 
-	getHammerButton () .set_sensitive (haveSelection);
-	getEditButton ()   .set_sensitive (not geometryNodes .empty ());
+		const bool inScene       = not inPrototypeInstance ();
+		const bool haveSelection = inScene and selection .size ();
+		//const bool haveSelections = inScene and selection .size () > 1;
+	
+		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
 
-	connect ();
+		getHammerButton ()     .set_sensitive (haveSelection);
+		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
+		getEditToggleButton () .set_active (selection == geometryNodes);
+
+		connect ();
+	}	
+
+	changing = false;
 }
 
 void
@@ -235,9 +250,15 @@ GeometryEditor::on_hammer_clicked ()
 }
 
 void
-GeometryEditor::on_edit_clicked ()
+GeometryEditor::on_edit_toggled ()
 {
-	getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
+	if (changing)
+		return;
+
+	if (getEditToggleButton () .get_active ())
+		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
+	else
+		getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
 }
 
 GeometryEditor::~GeometryEditor ()

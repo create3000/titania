@@ -44,27 +44,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="EditButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Edit geometry.</property>
-                    <signal name="clicked" handler="on_edit_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">gtk-edit</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -109,6 +88,25 @@
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
                     <property name="width">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="EditToggleButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="toggled" handler="on_edit_toggled" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">gtk-edit</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>

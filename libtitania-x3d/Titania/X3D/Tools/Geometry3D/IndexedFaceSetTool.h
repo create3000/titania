@@ -165,7 +165,13 @@ private:
 	set_coord ();
 
 	void
+	set_hitPoint (const X3D::Vector3f &);
+
+	void
 	set_touchTime ();
+
+	void
+	set_selection (const X3D::Vector3f &);
 
 	///  @name Members
 

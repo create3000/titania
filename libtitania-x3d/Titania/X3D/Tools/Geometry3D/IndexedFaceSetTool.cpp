@@ -54,6 +54,7 @@
 #include "../../Editing/FaceSelection.h"
 
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../Components/Rendering/Coordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -86,8 +87,9 @@ IndexedFaceSetTool::set_loadState ()
 {
 	try
 	{
-		const X3DPtr <TouchSensor> touchSensor (getCoordinateTool () -> getInlineNode () -> getExportedNode ("TouchSensor"));
+		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
 
+		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_hitPoint);
 		touchSensor -> touchTime () .addInterest (this, &IndexedFaceSetTool::set_touchTime);
 	}
 	catch (const X3DError &)
@@ -101,9 +103,63 @@ IndexedFaceSetTool::set_coord ()
 }
 
 void
+IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
+{
+	__LOG__ << std::endl;
+
+	try
+	{
+		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
+
+		// Determine face and faces
+
+		selection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
+
+		if (selection -> isEmpty ())
+			return;
+
+		// Set selected point
+
+		set_selection (getCoord () -> get1Point (selection -> getIndices () [0]));
+
+//		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
+//		{
+//			rightPaintSelecion = true;
+//			set_right_touchTime ();
+//		}
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
 IndexedFaceSetTool::set_touchTime ()
 {
 	__LOG__ << std::endl;
+}
+
+void
+IndexedFaceSetTool::set_selection (const X3D::Vector3f & point)
+{
+	__LOG__ << point << std::endl;
+
+	try
+	{
+		const auto coord    = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
+		const auto vertices = selection -> getVertices (selection -> getFace () .first);
+
+		if (vertices .size () < 3)
+			return;
+
+//		size_t p = 0;
+//
+//		for (const auto & i : vertices)
+//			coord -> point () .set1Value (p ++, getCoord () -> get1Point (coordIndex () [i]));
+
+		coord -> point () .set1Value (0, point);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
