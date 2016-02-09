@@ -278,9 +278,6 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
-	this -> addField (inputOutput, "normalTool", normalTool ());
-	this -> addField (inputOutput, "coordTool",  coordTool ());
-
 	this -> addChildren (normalToolNode,
                         coordToolNode);
 }
@@ -459,7 +456,7 @@ void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
 	viewport         = container -> getScissor ();
-	projectionMatrix = getProjectionMatrix ();
+	projectionMatrix = this -> getCurrentLayer () -> getViewpoint () -> getProjectionMatrix (1, -10, viewport);
 	modelViewMatrix  = container -> getModelViewMatrix ();
 
 	normalToolNode -> draw (container);

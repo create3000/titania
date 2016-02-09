@@ -67,8 +67,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
-	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
+	m_builder -> get_widget ("PaintSelectionToggleButton", m_PaintSelectionToggleButton);
+	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
 
 	// Connect object Gtk::Button with id 'HammerButton'.
 	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked)));

@@ -106,12 +106,16 @@ public:
 	{ return *m_HammerButton; }
 
 	Gtk::ToggleButton &
-	getNormalEnabledToggleButton () const
-	{ return *m_NormalEnabledToggleButton; }
-
-	Gtk::ToggleButton &
 	getEditToggleButton () const
 	{ return *m_EditToggleButton; }
+
+	Gtk::ToggleButton &
+	getPaintSelectionToggleButton () const
+	{ return *m_PaintSelectionToggleButton; }
+
+	Gtk::ToggleButton &
+	getNormalEnabledToggleButton () const
+	{ return *m_NormalEnabledToggleButton; }
 
 	virtual
 	void
@@ -144,8 +148,9 @@ private:
 	Gtk::Revealer*                m_Widget;
 	Gtk::Box*                     m_GeometryEditorBox;
 	Gtk::Button*                  m_HammerButton;
-	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
 	Gtk::ToggleButton*            m_EditToggleButton;
+	Gtk::ToggleButton*            m_PaintSelectionToggleButton;
+	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
 
 };
 

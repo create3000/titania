@@ -66,6 +66,7 @@ namespace puck {
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
+	            paintSelection (this, getPaintSelectionToggleButton (), "paintSelection"),
 	             normalEnabled (this, getNormalEnabledToggleButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
@@ -78,7 +79,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "color", new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection", new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",          new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	setup ();
 }
@@ -105,8 +107,9 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
+	paintSelection .setNodes ({ coordEditor });
+	normalEnabled  .setNodes ({ normalEditor });
 	normalEditor -> setup ();
-	normalEnabled .setNodes ({ normalEditor });
 
 	coordEditor -> setup ();
 }
@@ -170,8 +173,11 @@ GeometryEditor::connect ()
 
 						// Coord
 
-						coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
-						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+						coordEditor -> getField <X3D::SFColorRGBA> ("color")          .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordEditor -> getField <X3D::SFBool>      ("paintSelection") .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
+
+						coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
+						innerNode -> setField <X3D::SFBool>      ("paintSelection", coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
 						break;
 					}
 					default:

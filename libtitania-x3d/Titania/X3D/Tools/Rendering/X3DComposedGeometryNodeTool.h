@@ -165,6 +165,14 @@ public:
 	coord () const final override
 	{ return getNode () -> coord (); }
 
+	SFBool &
+	paintSelection ()
+	{ return *fields .paintSelection; }
+
+	const SFBool &
+	paintSelection () const
+	{ return *fields .paintSelection; }
+
 	///  @name Member access
 
 	virtual
@@ -208,12 +216,35 @@ protected:
 	///  @name Construction
 
 	X3DComposedGeometryNodeTool () :
-		X3DGeometryNodeTool <Type> ()
+		X3DGeometryNodeTool <Type> (),
+	                       fields ()
 	{
 		addType (X3DConstants::X3DComposedGeometryNodeTool);
+
+		paintSelection () .isHidden (true);
 	}
 
+
+private:
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const paintSelection;
+	};
+
+	Fields fields;
+
 };
+;
+
+template <class Type>
+X3DComposedGeometryNodeTool <Type>::Fields::Fields () :
+	 paintSelection (new SFBool ())
+{ }
 
 } // X3D
 } // titania

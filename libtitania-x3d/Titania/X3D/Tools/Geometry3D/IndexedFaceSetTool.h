@@ -156,9 +156,6 @@ protected:
 
 private:
 
-	double
-	getDistance (const X3D::Vector3f &, const X3D::Vector3f &);
-
 	///  @name Event handler
 
 	void
@@ -179,11 +176,13 @@ private:
 	void
 	set_selection (const X3D::Vector3f &);
 
+	double
+	get_distance (const X3D::Vector3d &, const X3D::Vector3d &);
+
 	///  @name Members
 
 	std::unique_ptr <FaceSelection> selection;
 	std::set <size_t>               selectedVertices;
-	bool                            paintSelecion;
 
 };
 

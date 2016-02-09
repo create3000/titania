@@ -66,10 +66,13 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                X3DBaseTool <IndexedFaceSet> (node),
 	X3DComposedGeometryNodeTool <IndexedFaceSet> (),
 	                                   selection (new FaceSelection ()),
-	                            selectedVertices (),
-	                               paintSelecion (false)
+	                            selectedVertices ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
+
+	this -> addField (inputOutput, "paintSelection", paintSelection ());
+	this -> addField (inputOutput, "normalTool",     normalTool ());
+	this -> addField (inputOutput, "coordTool",      coordTool ());
 }
 
 void
@@ -143,11 +146,8 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		set_selection (hitPoint);
 
-//		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
-//		{
-//			rightPaintSelecion = true;
-//			set_right_touchTime ();
-//		}
+		if (touchSensor -> isActive () and paintSelection ())
+			set_touchTime ();
 	}
 	catch (const X3DError &)
 	{ }
@@ -169,10 +169,10 @@ IndexedFaceSetTool::set_touchTime ()
 		const auto point       = getCoord () -> get1Point (index);
 		const auto hitPoint    = touchSensor -> hitPoint_changed () .getValue ();
 
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+		if (get_distance (hitPoint, point) > SELECTION_DISTANCE)
 			return;
 
-		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paintSelecion)
+		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paintSelection ())
 		{
 			coord -> point () .clear ();
 			selectedVertices .clear ();
@@ -202,29 +202,74 @@ IndexedFaceSetTool::set_selection (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		const auto coord    = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
-		const auto vertices = selection -> getVertices (selection -> getFace () .first);
-		const auto point    = getCoord () -> get1Point (selection -> getIndices () [0]);
+		const auto lineCoord  = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActiveLineCoord");
+		const auto pointCoord = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
+		const auto vertices   = selection -> getVertices (selection -> getFace () .first);
+		const auto index      = selection -> getIndices () [0];
+		const auto point      = getCoord () -> get1Point (index);
 
 		if (vertices .size () < 3)
 			return;
 
-//		size_t p = 0;
-//
-//		for (const auto & i : vertices)
-//			coord -> point () .set1Value (p ++, getCoord () -> get1Point (coordIndex () [i]));
+		// Active point
 
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-			coord -> point () .clear ();
+		if (get_distance (hitPoint, point) > SELECTION_DISTANCE)
+			pointCoord -> point () .clear ();
 		else
-			coord -> point () .set1Value (0, point);
+		{
+			pointCoord -> point () .set1Value (0, point);
+			lineCoord  -> point () .clear ();
+			return;
+		}
+
+		// Active line
+
+		if (paintSelection ())
+			lineCoord -> point () .clear ();
+
+		else
+		{
+			for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+			{
+				if (int32_t (index) == coordIndex () [vertices [i]])
+				{
+					const auto point0 = getCoord () -> get1Point (coordIndex () [vertices [(i + vertices .size () - 1) % vertices .size ()]]);
+					const auto point1 = getCoord () -> get1Point (coordIndex () [vertices [(i + 1) % vertices .size ()]]);
+	
+					const auto line0 = Line3d (point0, point, math::point_type ());
+					const auto line1 = Line3d (point1, point, math::point_type ());
+	
+					const auto distance0 = get_distance (hitPoint, line0 .closest_point (hitPoint));
+					const auto distance1 = get_distance (hitPoint, line1 .closest_point (hitPoint));
+	
+					if (distance0 > SELECTION_DISTANCE and distance1 > SELECTION_DISTANCE)
+					{
+						lineCoord -> point () .clear ();
+						break;
+					}
+	
+					if (distance0 < distance1)
+					{
+						lineCoord -> point () .set1Value (0, point0);
+						lineCoord -> point () .set1Value (1, point);
+					}
+					else
+					{
+						lineCoord -> point () .set1Value (0, point1);
+						lineCoord -> point () .set1Value (1, point);
+					}
+	
+					break;
+				}
+			}
+		}
 	}
 	catch (const X3D::X3DError &)
 	{ }
 }
 
 double
-IndexedFaceSetTool::getDistance (const X3D::Vector3f & point1, const X3D::Vector3f & point2)
+IndexedFaceSetTool::get_distance (const X3D::Vector3d & point1, const X3D::Vector3d & point2)
 {
 	const auto p1 = X3D::ViewVolume::projectPoint (point1, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 	const auto p2 = X3D::ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
