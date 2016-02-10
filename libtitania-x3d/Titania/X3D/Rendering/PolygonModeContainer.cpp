@@ -57,8 +57,8 @@ namespace X3D {
 
 PolygonModeContainer::PolygonModeContainer (GLenum type) :
 	X3DCollectableObject (),
-	                   type (type),
-	            polygonMode ()
+	                type (type),
+	         polygonMode ()
 { }
 
 void

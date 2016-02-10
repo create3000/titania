@@ -59,6 +59,10 @@ namespace titania {
 namespace X3D {
 
 class FaceSelection;
+class PlaneSensor;
+class TouchSensor;
+class Coordinate;
+class IndexedLineSet;
 
 class IndexedFaceSetTool :
 	public X3DComposedGeometryNodeTool <IndexedFaceSet>
@@ -186,19 +190,30 @@ private:
 	set_active_selection (const Vector3f &);
 
 	void
-	set_active (const bool);
+	set_active_point (const int32_t);
 
 	void
-	set_translation (const Vector3f &);
+	set_plane_sensor_active (const bool);
+
+	void
+	set_plane_sensor_translation (const Vector3f &);
 
 	double
-	get_distance (const Vector3d &, const Vector3d &);
+	getDistance (const Vector3d &, const Vector3d &);
 
 	///  @name Members
+
+	X3DPtr <PlaneSensor>    planeSensor;
+	X3DPtr <TouchSensor>    touchSensor;
+	X3DPtr <Coordinate>     activePointCoord;
+	X3DPtr <IndexedLineSet> activeLineSet;
+	X3DPtr <Coordinate>     selectionCoord;
 
 	X3DPtr <X3DCoordinateNode>      coordNode;
 	std::unique_ptr <FaceSelection> selection;
 	std::map <size_t, Vector3d>     selectedPoints;
+	int32_t                         activePoint;
+
 
 };
 

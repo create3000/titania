@@ -187,6 +187,9 @@ GeometryPropertiesEditor::set_buffer ()
 	geometryNode = std::move (std::get <0> (tuple));
 	nodes        = getNodes <X3D::X3DBaseNode> (X3D::MFNode (getShapes ()), { X3D::X3DConstants::X3DGeometryNode });
 
+	if (nodes .empty () and geometryNode)
+		nodes = { geometryNode };
+
 	solid           .setNodes (nodes);
 	ccw             .setNodes (nodes);
 	convex          .setNodes (nodes);

@@ -55,6 +55,7 @@
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/Tessellator.h"
+#include "../../Rendering/OpenGL.h"
 #include "../ContextLock.h"
 
 #include <Titania/Math/Geometry/Camera.h>
@@ -176,6 +177,8 @@ X3DSelector::display ()
 {
 	try
 	{
+		PolygonMode polygonMode (GL_FILL);
+
 		// Configure HUD
 
 		const auto & viewport = getBrowser () -> getRectangle ();
@@ -225,6 +228,8 @@ X3DSelector::draw ()
 {
 	try
 	{
+		PolygonMode polygonMode (GL_FILL);
+
 		// Configure HUD
 
 		const auto & viewport = getBrowser () -> getRectangle ();

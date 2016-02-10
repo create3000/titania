@@ -54,6 +54,7 @@
 #include "../../Rendering/ViewVolume.h"
 #include "../Browser.h"
 #include "../BrowserOptions.h"
+#include "../../Rendering/OpenGL.h"
 
 #include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Camera.h>
@@ -438,6 +439,8 @@ X3DFlyViewer::display ()
 {
 	try
 	{
+		PolygonMode polygonMode (GL_FILL);
+
 		// Configure HUD
 
 		const auto & viewport = getBrowser () -> getRectangle ();

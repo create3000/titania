@@ -503,7 +503,11 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
-	this -> getNode () -> draw (container);
+	GLint polygonMode [2]; // Front and back value.
+	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+
+	if (polygonMode [0] == GL_FILL)
+		this -> getNode () -> draw (container);
 
 	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 		return;
