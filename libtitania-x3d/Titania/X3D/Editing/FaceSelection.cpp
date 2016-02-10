@@ -57,7 +57,7 @@ FaceSelection::FaceSelection ()
 { }
 
 void
-FaceSelection::setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> & value)
+FaceSelection::setGeometry (const X3DPtr <IndexedFaceSet> & value)
 {
 	geometry = value;
 	
@@ -117,7 +117,7 @@ FaceSelection::getFaces () const
 }
 
 void
-FaceSelection::setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
+FaceSelection::setCoord (const X3DPtr <X3DCoordinateNode> & value)
 {
 	coord = value;
 	
@@ -131,44 +131,32 @@ FaceSelection::setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> & value)
 }
 
 void
-FaceSelection::createIndices (const X3D::Vector3f & hitPoint, const X3D::MFVec3f & hitTriangle)
+FaceSelection::setIndices (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
 {
-	const std::array <float, 3> distances = {
-		math::abs (hitPoint - hitTriangle [0]),
-		math::abs (hitPoint - hitTriangle [1]),
-		math::abs (hitPoint - hitTriangle [2])
+	const std::array <double, 3> distances = {
+		math::abs (hitPoint - Vector3d (hitTriangle [0] .getValue ())),
+		math::abs (hitPoint - Vector3d (hitTriangle [1] .getValue ())),
+		math::abs (hitPoint - Vector3d (hitTriangle [2] .getValue ()))
 	};
 
 	const auto iter  = std::min_element (distances .begin (), distances .end ());
 	const auto index = iter - distances .begin ();
 	const auto point = hitTriangle [index] .getValue ();
-	
-	indices .clear ();
 
-	for (const auto & index : pointIndex .equal_range (point))
-		indices .emplace_back (index .second);
+	setIndices (point);
 }
 
 void
-FaceSelection::setHitPoint (const Vector3d & point)
+FaceSelection::setIndices (const Vector3d & point)
 {
 	indices .clear ();
 
 	for (const auto & index : pointIndex .equal_range (point))
 		indices .emplace_back (index .second);
-
-	createFaces (point);
 }
 
 void
-FaceSelection::setHitPoint (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
-{
-	createIndices (hitPoint, hitTriangle);
-	createFaces (hitPoint);
-}
-
-void
-FaceSelection::createFaces (const Vector3d & hitPoint)
+FaceSelection::setFaces (const Vector3d & hitPoint)
 {
 	faces .clear ();
 

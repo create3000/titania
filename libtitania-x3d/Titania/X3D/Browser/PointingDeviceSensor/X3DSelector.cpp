@@ -78,7 +78,7 @@ X3DSelector::initialize ()
 
 	pickable = getExecutionContext () -> getBrowser () -> isPickable ();
 
-	getBrowser () -> isPickable (false);
+	//getBrowser () -> isPickable (false);
 }
 
 bool
@@ -285,7 +285,7 @@ X3DSelector::polygon ()
 void
 X3DSelector::dispose ()
 {
-	getBrowser () -> isPickable (pickable);
+	//getBrowser () -> isPickable (pickable);
 
 	X3DExamineViewer::dispose ();
 }

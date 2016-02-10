@@ -67,16 +67,19 @@ public:
 	///  @name Member access
 
 	void
-	setGeometry (const X3D::X3DPtr <X3D::IndexedFaceSet> &);
+	setGeometry (const X3DPtr <IndexedFaceSet> &);
 
 	void
-	setCoord (const X3D::X3DPtr <X3D::X3DCoordinateNode> &);
+	setCoord (const X3DPtr <X3DCoordinateNode> &);
 
 	void
-	setHitPoint (const X3D::Vector3d &);
+	setIndices (const Vector3d &);
 
 	void
-	setHitPoint (const X3D::Vector3d &, const X3D::MFVec3f &);
+	setIndices (const Vector3d &, const MFVec3f &);
+
+	void
+	setFaces (const Vector3d &);
 
 	const std::vector <size_t> &
 	getIndices () const
@@ -96,10 +99,6 @@ public:
 	std::set <size_t>
 	getFaces () const;
 
-	bool
-	isEmpty () const
-	{ return indices .empty (); }
-
 	///  @name Destruction
 
 	~FaceSelection ();
@@ -107,20 +106,12 @@ public:
 
 private:
 
-	///  @name Operations
-
-	void
-	createIndices (const X3D::Vector3f &, const X3D::MFVec3f &);
-
-	void
-	createFaces (const Vector3d &);
-
 	///  @name Members
 
-	X3D::X3DPtr <X3D::IndexedFaceSet>                    geometry;
-	X3D::X3DPtr <X3D::X3DCoordinateNode>                 coord;
+	X3DPtr <IndexedFaceSet>                              geometry;
+	X3DPtr <X3DCoordinateNode>                           coord;
 	std::vector <size_t>                                 indices;
-	std::multimap <X3D::Vector3f, size_t>                pointIndex;
+	std::multimap <Vector3d, size_t>                     pointIndex;
 	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
 	std::pair <size_t, size_t>                           face;
 	std::vector <std::pair <size_t, size_t>>             faces;

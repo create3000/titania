@@ -137,12 +137,14 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Determine face and faces
 
-		selection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
+		selection -> setIndices (hitPoint, touchSensor -> hitTriangle_changed ());
 
-		if (selection -> isEmpty ())
+		if (selection -> getIndices () .empty ())
 			return;
 
 		// Set selected point
+
+		selection -> setFaces (hitPoint);
 
 		set_active_selection (hitPoint);
 
@@ -158,7 +160,7 @@ IndexedFaceSetTool::set_selection (const MFVec3f & vertices)
 {
 	for (const auto & vertex : vertices)
 	{
-		selection -> setHitPoint (vertex .getValue ());
+		selection -> setIndices (vertex .getValue ());
 		set_point (vertex);
 	}
 }
@@ -182,7 +184,7 @@ IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
 {
 	try
 	{
-		if (selection -> isEmpty ())
+		if (selection -> getIndices () .empty ())
 			return;
 	
 		const auto touchSensor = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");

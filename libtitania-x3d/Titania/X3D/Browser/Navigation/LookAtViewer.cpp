@@ -232,10 +232,16 @@ LookAtViewer::touch (const double x, const double y)
 	return not getBrowser () -> getHits () .empty ();
 }
 
-LookAtViewer::~LookAtViewer ()
+void
+LookAtViewer::dispose ()
 {
 	getBrowser () -> isPickable (pickable);
+
+	X3DViewer::dispose ();
 }
+
+LookAtViewer::~LookAtViewer ()
+{ }
 
 } // X3D
 } // titania

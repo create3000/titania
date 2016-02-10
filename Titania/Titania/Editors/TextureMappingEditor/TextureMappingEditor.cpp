@@ -2189,7 +2189,7 @@ TextureMappingEditor::set_right_active (const bool value)
 void
 TextureMappingEditor::set_right_touchTime ()
 {
-	if (rightSelection -> isEmpty ())
+	if (rightSelection -> getIndices () .empty ())
 		return;
 
 	if (not keys .shift () and not keys .control () and not rightPaintSelecion)
@@ -2242,9 +2242,10 @@ TextureMappingEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Determine face and faces
 
-		rightSelection -> setHitPoint (hitPoint, touchSensor -> hitTriangle_changed ());
+		rightSelection -> setIndices (hitPoint,touchSensor -> hitTriangle_changed ());
+		rightSelection -> setFaces (hitPoint);
 
-		if (rightSelection -> isEmpty ())
+		if (rightSelection -> getIndices () .empty ())
 			return;
 
 		// Setup cross hair
