@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DSELECTOR_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DSELECTOR_H__
 
-#include "../Navigation/X3DViewer.h"
+#include "../Navigation/X3DExamineViewer.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DSelector :
-	public X3DViewer
+	public X3DExamineViewer
 {
 protected:
 

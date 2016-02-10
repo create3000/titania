@@ -100,34 +100,35 @@ LassoSelection::initialize ()
 bool
 LassoSelection::on_button_press_event (GdkEventButton* event)
 {
-	if (button)
-		return false;
+	if (event -> button not_eq 1)
+		return X3DSelector::on_button_press_event (event);
 
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
-	if (event -> button == 1)
-	{
-		button = event -> button;
+	if (button)
+		return false;
 
-		if (getBrowser () -> getActiveLayer ())
-			getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
-		
-		getBrowser () -> displayed () .addInterest (this, &LassoSelection::display);
-		getBrowser () -> addEvent ();
-		
-		clear ();
-		addPoint (event -> x, event -> y);
+	button = event -> button;
 
-		return true;
-	}
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
+	
+	getBrowser () -> grab_focus ();
+	getBrowser () -> addEvent ();
+	getBrowser () -> displayed () .addInterest (this, &LassoSelection::display);
 
-	return false;
+	clear ();
+	addPoint (event -> x, event -> y);
+	return true;
 }
 
 bool
 LassoSelection::on_button_release_event (GdkEventButton* event)
 {
+	if (event -> button not_eq 1)
+		return X3DSelector::on_button_release_event (event);
+
 	if (event -> button not_eq button)
 		return false;
 
@@ -137,42 +138,35 @@ LassoSelection::on_button_release_event (GdkEventButton* event)
 		return false;
 
 	getBrowser () -> addEvent ();
+	getBrowser () -> displayed () .removeInterest (this, &LassoSelection::display);
 
-	if (event -> button == 1)
-	{
-		getBrowser () -> displayed () .removeInterest (this, &LassoSelection::display);
+	ContextLock lock (getBrowser ());
 
-		ContextLock lock (getBrowser ());
+	getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
+	getBrowser () -> getSelectionBuffer () -> bind ();
 
-		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), false));
-		getBrowser () -> getSelectionBuffer () -> bind ();
+	draw ();
+	getBrowser () -> getSelectionBuffer () -> read ();
+	getBrowser () -> touch (event -> x, getBrowser () -> get_height () - event -> y);
 
-		draw ();
-		getBrowser () -> touch (event -> x, getBrowser () -> get_height () - event -> y);
-
-		getBrowser () -> getSelectionBuffer () -> unbind ();
-		getBrowser () -> getSelectionBuffer () .reset ();
-		return true;
-	}
-
-	return false;
+	getBrowser () -> getSelectionBuffer () -> unbind ();
+	getBrowser () -> getSelectionBuffer () .reset ();
+	return true;
 }
 
 bool
 LassoSelection::on_motion_notify_event (GdkEventMotion* event)
 {
+	if (button not_eq 1)
+		return X3DSelector::on_motion_notify_event (event);
+
 	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
 		return false;
 
 	getBrowser () -> addEvent ();
 
-	if (button == 1)
-	{
-		addPoint (event -> x, event -> y);
-		return true;
-	}
-
-	return false;
+	addPoint (event -> x, event -> y);
+	return true;
 }
 
 void

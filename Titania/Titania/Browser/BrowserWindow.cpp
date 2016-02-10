@@ -2663,7 +2663,11 @@ BrowserWindow::set_viewer ()
 		}
 
 		case X3D::X3DConstants::LassoSelection:
+		{
+			getHandButton ()  .set_sensitive (true);
+			getArrowButton () .set_sensitive (true);
 			break;
+		}
 
 		default:
 		{

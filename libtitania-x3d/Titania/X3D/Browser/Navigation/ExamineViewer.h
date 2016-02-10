@@ -56,13 +56,13 @@
 #include "../../Components/Navigation/Viewpoint.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Fields/SFNode.h"
-#include "../Navigation/X3DViewer.h"
+#include "../Navigation/X3DExamineViewer.h"
 
 namespace titania {
 namespace X3D {
 
 class ExamineViewer :
-	public X3DViewer
+	public X3DExamineViewer
 {
 public:
 
@@ -71,7 +71,7 @@ public:
 	ExamineViewer (X3DExecutionContext* const);
 
 	virtual
-	X3DBaseNode*
+	ExamineViewer*
 	create (X3DExecutionContext* const) const final override;
 
 	///  @name Common members
@@ -97,53 +97,11 @@ public:
 
 private:
 
-	virtual
-	void
-	initialize () final override;
-
-	void
-	disconnect ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_scroll_event (GdkEventScroll*);
-
-	bool
-	spin ();
-
-	void
-	addSpinning ();
-
-	Vector3f
-	getPositionOffset () const;
-
-	Rotation4f
-	getOrientationOffset ();
-
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
-
-	///  @name Members
-
-	Rotation4f       orientationOffset;
-	Rotation4f       rotation;
-	Vector3f         fromVector;
-	Vector3f         fromPoint;
-	time_type        pressTime;
-	time_type        motionTime;
-	guint            button;
-	sigc::connection spin_id;
 
 };
 

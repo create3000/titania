@@ -775,6 +775,7 @@
     <None Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.h" />
     <None Include="Titania\X3D\Editing\FaceSelection.h" />
+    <None Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1300,6 +1301,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.cpp" />
     <Compile Include="Titania\X3D\Editing\FaceSelection.cpp" />
+    <Compile Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

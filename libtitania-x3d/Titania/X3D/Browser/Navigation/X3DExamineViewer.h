@@ -48,30 +48,96 @@
  *
  ******************************************************************************/
 
-#include "ExamineViewer.h"
+#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DEXAMINE_VIEWER_H__
+#define __TITANIA_X3D_BROWSER_NAVIGATION_X3DEXAMINE_VIEWER_H__
+
+#include <gdkmm.h>
+
+#include "../../Components/Navigation/Viewpoint.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
+#include "../../Fields/SFNode.h"
+#include "../Navigation/X3DViewer.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType ExamineViewer::component      = ComponentType::TITANIA;
-const std::string   ExamineViewer::typeName       = "ExamineViewer";
-const std::string   ExamineViewer::containerField = "viewer";
-
-ExamineViewer::ExamineViewer (X3DExecutionContext* const executionContext) :
-		  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DExamineViewer ()
+class X3DExamineViewer :
+	public X3DViewer
 {
-	addType (X3DConstants::ExamineViewer);
+public:
 
-	addField (outputOnly, "isActive",   isActive ());
-	addField (outputOnly, "scrollTime", scrollTime ());
-}
+	virtual
+	~X3DExamineViewer () = default;
 
-ExamineViewer*
-ExamineViewer::create (X3DExecutionContext* const executionContext) const
-{
-	return new ExamineViewer (executionContext);
-}
+
+protected:
+
+	///  @name Construction
+
+	X3DExamineViewer ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Event handler
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton*);
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion*);
+
+	virtual
+	bool
+	on_scroll_event (GdkEventScroll*);
+
+
+private:
+
+	///  @name Operations
+
+	void
+	disconnect ();
+
+	bool
+	spin ();
+
+	void
+	addSpinning ();
+
+	Vector3f
+	getPositionOffset () const;
+
+	Rotation4f
+	getOrientationOffset ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	Rotation4f       orientationOffset;
+	Rotation4f       rotation;
+	Vector3f         fromVector;
+	Vector3f         fromPoint;
+	time_type        pressTime;
+	time_type        motionTime;
+	guint            button;
+	sigc::connection spin_id;
+
+};
 
 } // X3D
 } // titania
+
+#endif

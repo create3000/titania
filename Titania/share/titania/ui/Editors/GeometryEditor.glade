@@ -27,7 +27,7 @@
                 <child>
                   <object class="GtkButton" id="HammerButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Smash Selection: converts the geometry to the next lower more primitive object.</property>
                     <signal name="clicked" handler="on_hammer_clicked" swapped="no"/>
@@ -76,7 +76,7 @@
                 <child>
                   <object class="GtkToggleButton" id="EditToggleButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Toggle editing of geometry.</property>
                     <signal name="toggled" handler="on_edit_toggled" swapped="no"/>
@@ -96,7 +96,7 @@
                 <child>
                   <object class="GtkToggleButton" id="PaintSelectionToggleButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <signal name="button-press-event" handler="on_selection_type_button_press_event" swapped="no"/>
                     <signal name="toggled" handler="on_paint_selection_toggled" swapped="no"/>
@@ -117,7 +117,7 @@
                 <child>
                   <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Enable display of normals.</property>
                     <child>

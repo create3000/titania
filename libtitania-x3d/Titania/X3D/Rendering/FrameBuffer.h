@@ -73,6 +73,18 @@ public:
 	setBrowser (const X3DBrowserContext* const value)
 	{ browser = value; }
 
+	size_t
+	getWidth () const
+	{ return width; }
+
+	size_t
+	getHeight () const
+	{ return height; }
+
+	const std::vector <uint8_t> &
+	getPixels () const
+	{ return pixels; }
+
 	///  @name Operations
 
 	double
@@ -85,18 +97,7 @@ public:
 	unbind ();
 
 	void
-	get (std::vector <uint8_t> &) const;
-
-	bool
-	test (const size_t, const size_t) const;
-
-	///  @name Debug
-
-	void
-	save ();
-
-	void
-	display ();
+	read ();
 
 	///  @name Destruction
 
@@ -114,9 +115,9 @@ private:
 	GLuint                   id;
 	GLuint                   colorBufferId;
 	GLuint                   depthBufferId;
-	std::vector <float>      color;
 	std::vector <float>      depth;
 	GLint                    viewport [4];
+	std::vector <uint8_t>    pixels;
 
 };
 

@@ -107,14 +107,17 @@ private:
 
 	///  @name Event handlers
 
+	virtual
 	bool
-	on_button_press_event (GdkEventButton*);
+	on_button_press_event (GdkEventButton*) final override;
 
+	virtual
 	bool
-	on_button_release_event (GdkEventButton*);
+	on_button_release_event (GdkEventButton*) final override;
 
+	virtual
 	bool
-	on_motion_notify_event (GdkEventMotion*);
+	on_motion_notify_event (GdkEventMotion*) final override;
 
 	void
 	addPoint (const double, const double);

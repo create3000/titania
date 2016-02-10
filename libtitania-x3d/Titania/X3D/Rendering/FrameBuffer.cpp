@@ -66,8 +66,8 @@ FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t w
 	           id (0),
 	colorBufferId (0),
 	depthBufferId (0),
-	        color (3 * width * height),  // DEBUG
-	        depth (width * height)
+	        depth (width * height),
+	       pixels ()
 {
 	if (not browser -> hasExtension ("GL_EXT_framebuffer_multisample"))
 		samples = 0;
@@ -161,7 +161,7 @@ FrameBuffer::unbind ()
 }
 
 void
-FrameBuffer::get (std::vector <uint8_t> & pixels) const
+FrameBuffer::read ()
 {
 	pixels .resize (4 * width * height);
 
@@ -181,42 +181,32 @@ FrameBuffer::get (std::vector <uint8_t> & pixels) const
 		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
 }
 
-bool
-FrameBuffer::test (const size_t x, const size_t y) const
-{
-	std::vector <uint8_t> pixels (4);
-
-	glReadPixels (x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
-
-	return pixels [0];
-}
-
-// DEBUG
-
-void
-FrameBuffer::save ()
-{
-	glBindFramebuffer (GL_FRAMEBUFFER, id);
-	glReadPixels (0, 0, width, height, GL_RGB, GL_FLOAT, color .data ());
-	glBindFramebuffer (GL_FRAMEBUFFER, 0);
-}
-
-// DEBUG
-
-void
-FrameBuffer::display ()
-{
-	glWindowPos2i (0, 0);
-	glDrawPixels (width, height, GL_RGB, GL_FLOAT, color .data ());
-
-	//	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-	//	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
-	//
-	//	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	//
-	//	// Bind frame buffer.
-	//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
-}
+//// DEBUG
+//
+//void
+//FrameBuffer::save ()
+//{
+//	glBindFramebuffer (GL_FRAMEBUFFER, id);
+//	glReadPixels (0, 0, width, height, GL_RGB, GL_FLOAT, color .data ());
+//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+//}
+//
+//// DEBUG
+//
+//void
+//FrameBuffer::display ()
+//{
+//	glWindowPos2i (0, 0);
+//	glDrawPixels (width, height, GL_RGB, GL_FLOAT, color .data ());
+//
+//	//	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+//	//	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
+//	//
+//	//	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+//	//
+//	//	// Bind frame buffer.
+//	//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+//}
 
 FrameBuffer::~FrameBuffer ()
 {

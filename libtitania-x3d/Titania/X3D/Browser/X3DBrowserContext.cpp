@@ -169,8 +169,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		// Render to frame buffer.
 
-		std::vector <uint8_t> pixels;
-		FrameBuffer           frameBuffer (this, width, height, antialiasing);
+		FrameBuffer frameBuffer (this, width, height, antialiasing);
 
 		frameBuffer .bind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
@@ -182,7 +181,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		getWorld () -> traverse (TraverseType::DISPLAY);
 
-		frameBuffer .get (pixels);
+		frameBuffer .read ();
 		frameBuffer .unbind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
@@ -190,10 +189,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		// Process image.
 
-		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, pixels .data ());
-
-		pixels .resize (0);
-		pixels .shrink_to_fit ();
+		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
 
 		if (alphaChannel)
 			image -> type (Magick::TrueColorMatteType);

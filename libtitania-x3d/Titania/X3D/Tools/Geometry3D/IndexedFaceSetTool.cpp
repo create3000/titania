@@ -156,11 +156,6 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 void
 IndexedFaceSetTool::set_selection (const MFVec3f & vertices)
 {
-	__LOG__ << std::endl;
-	__LOG__ << getBrowser () -> hasControlKey () << std::endl;
-	__LOG__ << getBrowser () -> hasShiftKey () << std::endl;
-	__LOG__ << std::endl;
-
 	for (const auto & vertex : vertices)
 	{
 		selection -> setHitPoint (vertex .getValue ());
@@ -204,11 +199,14 @@ IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
 			selectedVertices .clear ();
 		}
 
+		const auto iter = std::lower_bound (coord -> point () .begin (),
+                                          coord -> point () .end (),
+                                          point,
+                                          [ ] (const SFVec3f & value, const Vector3f & point) { return value .getValue () < point; });
+
 		if (getBrowser () -> hasControlKey ())
 		{
-			const auto iter = std::find (coord -> point () .begin (), coord -> point () .end (), point);
-
-			if (iter not_eq coord -> point () .end ())
+			if (iter not_eq coord -> point () .end () and *iter == point)
 				coord -> point () .erase (iter);
 
 			selectedVertices .erase (index);
@@ -217,7 +215,7 @@ IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
 		else if (not selectedVertices .emplace (index) .second)
 			return;
 
-		coord -> point () .emplace_back (point);
+		coord -> point () .emplace (iter, point);
 	}
 	catch (const X3D::X3DError &)
 	{ }

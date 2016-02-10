@@ -329,17 +329,29 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
 {
-	std::set <Vector3f> selection;
+	std::vector <Vector3f> selection;
 
 	for (const auto & vertex : this -> getVertices ())
 	{
 		const auto point = ViewVolume::projectPoint (vertex, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
-		if (frameBuffer -> test (point .x (), point .y ()))
-			selection .emplace (vertex);
+		if (point .x () < 0 or point .x () >= frameBuffer -> getWidth ())
+			continue;
+
+		if (point .y () < 0 or point .y () >= frameBuffer -> getHeight ())
+			continue;
+
+		const auto index = std::floor (point .x ()) * 4 + std::floor (point .y ()) * frameBuffer -> getWidth () * 4;
+
+		if (frameBuffer -> getPixels () [index])
+			selection .emplace_back (vertex);
 	}
 
-	const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), selection .end ());
+	std::sort (selection .begin (), selection .end ());
+
+	const auto last = std::unique (selection .begin (), selection .end ());
+
+	const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), last);
 }
 
 template <class Type>

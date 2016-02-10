@@ -184,6 +184,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Navigation/NoneViewer.lo \
 	Titania/X3D/Browser/Navigation/PlaneViewer.lo \
 	Titania/X3D/Browser/Navigation/WalkViewer.lo \
+	Titania/X3D/Browser/Navigation/X3DExamineViewer.lo \
 	Titania/X3D/Browser/Navigation/X3DFlyViewer.lo \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.lo \
 	Titania/X3D/Browser/Navigation/X3DViewer.lo \
@@ -938,6 +939,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Navigation/NoneViewer.cpp \
 	Titania/X3D/Browser/Navigation/PlaneViewer.cpp \
 	Titania/X3D/Browser/Navigation/WalkViewer.cpp \
+	Titania/X3D/Browser/Navigation/X3DExamineViewer.cpp \
 	Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp \
 	Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp \
 	Titania/X3D/Browser/Navigation/X3DViewer.cpp \
@@ -1712,6 +1714,9 @@ Titania/X3D/Browser/Navigation/PlaneViewer.lo:  \
 	Titania/X3D/Browser/Navigation/$(am__dirstamp) \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Navigation/WalkViewer.lo:  \
+	Titania/X3D/Browser/Navigation/$(am__dirstamp) \
+	Titania/X3D/Browser/Navigation/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Navigation/X3DExamineViewer.lo:  \
 	Titania/X3D/Browser/Navigation/$(am__dirstamp) \
 	Titania/X3D/Browser/Navigation/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Navigation/X3DFlyViewer.lo:  \
@@ -3767,6 +3772,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/NoneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/PlaneViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/WalkViewer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/X3DExamineViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/X3DFlyViewer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/X3DNavigationContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Navigation/$(DEPDIR)/X3DViewer.Plo@am__quote@
