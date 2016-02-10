@@ -198,6 +198,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo \
+	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.lo \
 	Titania/X3D/Browser/Rendering/MotionBlur.lo \
@@ -953,6 +954,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
@@ -1774,6 +1776,9 @@ Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.lo:  \
 	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo:  \
+	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
+	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.lo:  \
 	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo:  \
@@ -3785,6 +3790,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/HitArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/LassoSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/RectangleSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DSelector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo@am__quote@

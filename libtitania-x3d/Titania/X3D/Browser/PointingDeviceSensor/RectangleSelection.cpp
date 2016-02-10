@@ -48,19 +48,50 @@
  *
  ******************************************************************************/
 
-#include "X3DCoordinateNodeTool.h"
+#include "RectangleSelection.h"
 
 namespace titania {
 namespace X3D {
 
-X3DCoordinateNodeTool::X3DCoordinateNodeTool () :
-	X3DGeometricPropertyNodeTool ()
+const ComponentType RectangleSelection::component      = ComponentType::TITANIA;
+const std::string   RectangleSelection::typeName       = "RectangleSelection";
+const std::string   RectangleSelection::containerField = "viewer";
+
+RectangleSelection::RectangleSelection (X3DExecutionContext* const executionContext) :
+	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	 X3DSelector (),
+	  startPoint ()
 {
-	addType (X3DConstants::X3DCoordinateNodeTool);
+	addType (X3DConstants::RectangleSelection);
+
+	addField (outputOnly, "isActive",   isActive ());
+	addField (outputOnly, "scrollTime", scrollTime ());
 }
 
-X3DCoordinateNodeTool::~X3DCoordinateNodeTool ()
-{ }
+X3DBaseNode*
+RectangleSelection::create (X3DExecutionContext* const executionContext) const
+{
+	return new RectangleSelection (executionContext);
+}
+
+void
+RectangleSelection::addPoint (const double x, const double y)
+{
+	if (getPoints () .empty ())
+		startPoint = Vector2d (x, y);
+
+	X3DSelector::clear ();
+	X3DSelector::addPoint (startPoint .x (), startPoint .y ());
+	X3DSelector::addPoint (x, startPoint .y ());
+	X3DSelector::addPoint (x, y);
+	X3DSelector::addPoint (startPoint .x (), y);
+}
+
+void
+RectangleSelection::clear ()
+{
+	X3DSelector::clear ();
+}
 
 } // X3D
 } // titania

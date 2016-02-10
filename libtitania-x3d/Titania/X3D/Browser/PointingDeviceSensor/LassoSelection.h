@@ -91,60 +91,14 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	///  @name Destruction
-
-	virtual
-	~LassoSelection ();
-
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	virtual
-	bool
-	on_button_press_event (GdkEventButton*) final override;
-
-	virtual
-	bool
-	on_button_release_event (GdkEventButton*) final override;
-
-	virtual
-	bool
-	on_motion_notify_event (GdkEventMotion*) final override;
-
-	void
-	addPoint (const double, const double);
-
-	void
-	clear ();
-
-	void
-	display ();
-
-	void
-	draw ();
-
-	void
-	polygon ();
 
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
-
-	///  @name Members
-
-	bool                   pickable;
-	guint                  button;
-	std::vector <Vector3d> points;
 
 };
 

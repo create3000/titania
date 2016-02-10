@@ -48,19 +48,75 @@
  *
  ******************************************************************************/
 
-#include "X3DCoordinateNodeTool.h"
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_RECTANGLE_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_RECTANGLE_SELECTION_H__
+
+#include "../PointingDeviceSensor/X3DSelector.h"
 
 namespace titania {
 namespace X3D {
 
-X3DCoordinateNodeTool::X3DCoordinateNodeTool () :
-	X3DGeometricPropertyNodeTool ()
-{
-	addType (X3DConstants::X3DCoordinateNodeTool);
-}
+class Browser;
 
-X3DCoordinateNodeTool::~X3DCoordinateNodeTool ()
-{ }
+class RectangleSelection :
+	public X3DSelector
+{
+public:
+
+	///  @name Construction
+
+	RectangleSelection (X3DExecutionContext* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+
+private:
+
+	///  @name Operations
+
+	virtual
+	void
+	addPoint (const double, const double) final override;
+
+	virtual
+	void
+	clear () final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	//  @name Members
+
+	Vector2d startPoint;
+
+};
 
 } // X3D
 } // titania
+
+#endif

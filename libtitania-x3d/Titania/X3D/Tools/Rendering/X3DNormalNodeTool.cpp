@@ -56,7 +56,7 @@ namespace X3D {
 X3DNormalNodeTool::X3DNormalNodeTool () :
 	X3DGeometricPropertyNodeTool ()
 {
-	//addType (X3DConstants::X3DNormalNodeTool);
+	addType (X3DConstants::X3DNormalNodeTool);
 }
 
 X3DNormalNodeTool::~X3DNormalNodeTool ()

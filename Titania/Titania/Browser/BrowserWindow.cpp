@@ -2662,6 +2662,7 @@ BrowserWindow::set_viewer ()
 			break;
 		}
 
+		case X3D::X3DConstants::RectangleSelection:
 		case X3D::X3DConstants::LassoSelection:
 		{
 			getHandButton ()  .set_sensitive (true);

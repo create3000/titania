@@ -152,6 +152,12 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">Lasso</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkImage" id="image5">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -161,7 +167,7 @@
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">Lasso</property>
+    <property name="stock">RectangleSelection</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkMenu" id="SelectionTypeMenu">
@@ -179,11 +185,22 @@
       </object>
     </child>
     <child>
+      <object class="GtkImageMenuItem" id="RectangleMenuItem">
+        <property name="label" translatable="yes">Rectangle</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image6</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_rectangle_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="LassoMenuItem">
         <property name="label" translatable="yes">Lasso</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="image">image6</property>
+        <property name="image">image4</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_lasso_activated" swapped="no"/>

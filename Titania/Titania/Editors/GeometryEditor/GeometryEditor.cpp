@@ -246,6 +246,7 @@ GeometryEditor::set_viewer ()
 	{
 		switch (getCurrentBrowser () -> getCurrentViewer ())
 		{
+			case X3D::X3DConstants::RectangleSelection:
 			case X3D::X3DConstants::LassoSelection:
 				getPaintSelectionToggleButton () .set_active (true);
 				break;
@@ -347,6 +348,16 @@ GeometryEditor::on_paint_selection_toggled ()
 			case SelectionType::BRUSH:
 				break;
 	
+			case SelectionType::RECTANGLE:
+			{
+				if (getPaintSelectionToggleButton () .get_active ())
+					getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
+				else
+					getCurrentBrowser () -> setPrivateViewer (privateViewer);
+	
+				break;
+			}
+	
 			case SelectionType::LASSO:
 			{
 				if (getPaintSelectionToggleButton () .get_active ())
@@ -381,6 +392,12 @@ GeometryEditor::on_brush_activated ()
 }
 
 void
+GeometryEditor::on_rectangle_activated ()
+{
+	set_selection_type (SelectionType::RECTANGLE);
+}
+
+void
 GeometryEditor::on_lasso_activated ()
 {
 	set_selection_type (SelectionType::LASSO);
@@ -396,6 +413,9 @@ GeometryEditor::set_selection_type (const SelectionType & type)
 		case SelectionType::BRUSH:
 			set_selection_brush ();
 			break;
+		case SelectionType::RECTANGLE:
+			set_selection_rectangle ();
+			break;
 		case SelectionType::LASSO:
 			set_selection_lasso ();
 			break;
@@ -410,10 +430,17 @@ GeometryEditor::set_selection_brush ()
 }
 
 void
+GeometryEditor::set_selection_rectangle ()
+{
+	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use rectangle selection."));
+	getPaintSelectionImage () .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	on_paint_selection_toggled ();
+}
+
+void
 GeometryEditor::set_selection_lasso ()
 {
-	__LOG__ << std::endl;
-
 	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use lasso selection."));
 	getPaintSelectionImage () .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 

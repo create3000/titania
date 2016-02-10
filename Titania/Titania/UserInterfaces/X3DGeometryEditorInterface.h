@@ -130,6 +130,10 @@ public:
 	{ return *m_BrushMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getRectangleMenuItem () const
+	{ return *m_RectangleMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getLassoMenuItem () const
 	{ return *m_LassoMenuItem; }
 
@@ -160,6 +164,10 @@ public:
 	virtual
 	void
 	on_brush_activated () = 0;
+
+	virtual
+	void
+	on_rectangle_activated () = 0;
 
 	virtual
 	void
@@ -194,6 +202,7 @@ private:
 	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
 	Gtk::Menu*                    m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*           m_BrushMenuItem;
+	Gtk::ImageMenuItem*           m_RectangleMenuItem;
 	Gtk::ImageMenuItem*           m_LassoMenuItem;
 
 };

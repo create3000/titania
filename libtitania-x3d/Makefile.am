@@ -71,6 +71,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
+	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \

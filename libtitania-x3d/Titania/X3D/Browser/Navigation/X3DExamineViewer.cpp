@@ -81,7 +81,7 @@ X3DExamineViewer::X3DExamineViewer () :
 	           button (0),
 	          spin_id ()
 {
-	//addType (X3DConstants::X3DExamineViewer);
+	addType (X3DConstants::X3DExamineViewer);
 }
 
 void

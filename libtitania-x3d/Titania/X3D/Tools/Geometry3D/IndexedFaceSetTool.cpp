@@ -70,10 +70,10 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	this -> addField (inputOutput, "paintSelection",    paintSelection ());
-	this -> addField (inputOutput, "selection_changed", selection_changed ());
-	this -> addField (inputOutput, "normalTool",        normalTool ());
-	this -> addField (inputOutput, "coordTool",         coordTool ());
+	addField (inputOutput, "paintSelection",    paintSelection ());
+	addField (inputOutput, "selection_changed", selection_changed ());
+	addField (inputOutput, "normalTool",        normalTool ());
+	addField (inputOutput, "coordTool",         coordTool ());
 }
 
 void

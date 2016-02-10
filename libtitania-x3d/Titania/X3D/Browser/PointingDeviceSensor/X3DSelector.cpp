@@ -48,13 +48,249 @@
  *
  ******************************************************************************/
 
+#include "../Browser.h"
+
 #include "X3DSelector.h"
+
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Rendering/FrameBuffer.h"
+#include "../../Rendering/Tessellator.h"
+#include "../ContextLock.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
 
 X3DSelector::X3DSelector () :
-	X3DExamineViewer ()
+	X3DExamineViewer (),
+	        pickable (false),
+	          button (0),
+	          points ()
+{
+	addType (X3DConstants::X3DSelector);
+}
+
+void
+X3DSelector::initialize ()
+{
+	X3DExamineViewer::initialize ();
+
+	pickable = getExecutionContext () -> getBrowser () -> isPickable ();
+
+	getBrowser () -> isPickable (false);
+}
+
+bool
+X3DSelector::on_button_press_event (GdkEventButton* event)
+{
+	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
+		return X3DExamineViewer::on_button_press_event (event);
+
+	if (event -> button not_eq 1)
+		return X3DExamineViewer::on_button_press_event (event);
+
+	if (button)
+		return false;
+
+	button = event -> button;
+
+	if (getBrowser () -> getActiveLayer ())
+		getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
+	
+	getBrowser () -> grab_focus ();
+	getBrowser () -> addEvent ();
+	getBrowser () -> displayed () .addInterest (this, &X3DSelector::display);
+
+	clear ();
+	addPoint (event -> x, event -> y);
+	return true;
+}
+
+bool
+X3DSelector::on_button_release_event (GdkEventButton* event)
+{
+	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
+		return X3DExamineViewer::on_button_release_event (event);
+
+	if (event -> button not_eq 1)
+		return X3DExamineViewer::on_button_release_event (event);
+
+	if (event -> button not_eq button)
+		return false;
+
+	if (points .empty ())
+		return false;
+
+	button = 0;
+
+	getBrowser () -> addEvent ();
+	getBrowser () -> displayed () .removeInterest (this, &X3DSelector::display);
+
+	ContextLock lock (getBrowser ());
+
+	getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
+	getBrowser () -> getSelectionBuffer () -> bind ();
+
+	draw ();
+	getBrowser () -> getSelectionBuffer () -> read ();
+	getBrowser () -> touch (points [0] .x (), points [0] .y ());
+
+	getBrowser () -> getSelectionBuffer () -> unbind ();
+	getBrowser () -> getSelectionBuffer () .reset ();
+	return true;
+}
+
+bool
+X3DSelector::on_motion_notify_event (GdkEventMotion* event)
+{
+	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
+		return X3DExamineViewer::on_motion_notify_event (event);
+
+	if (button not_eq 1)
+		return X3DExamineViewer::on_motion_notify_event (event);
+
+	getBrowser () -> addEvent ();
+
+	addPoint (event -> x, event -> y);
+	return true;
+}
+
+void
+X3DSelector::addPoint (const double x, const double y)
+{
+	const auto & viewport = getBrowser () -> getRectangle ();
+	const double height   = viewport [3];
+
+	points .emplace_back (x, height - y, 0);
+}
+
+void
+X3DSelector::clear ()
+{
+	points .clear ();
+}
+
+void
+X3DSelector::display ()
+{
+	try
+	{
+		// Configure HUD
+
+		const auto & viewport = getBrowser () -> getRectangle ();
+		const int    width    = viewport [2];
+		const int    height   = viewport [3];
+
+		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (projection .data ());
+		glMatrixMode (GL_MODELVIEW);
+
+		// Display Lasso.
+		// Draw a black and a white line.
+
+		glDisable (GL_DEPTH_TEST);
+		glLoadIdentity ();
+
+		glEnable (GL_BLEND);
+		glDisable (GL_CULL_FACE);
+		glColor4f (1, 1, 1, 0.2);
+		polygon ();
+		glDisable (GL_BLEND);
+
+		glEnableClientState (GL_VERTEX_ARRAY);
+		glVertexPointer (3, GL_DOUBLE, 0, points .data ());
+
+		glLineWidth (2);
+		glColor3f (0, 0, 0);
+		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
+
+		glLineWidth (1);
+		glColor3f (1, 1, 1);
+		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
+
+		glDisableClientState (GL_VERTEX_ARRAY);
+		glEnable (GL_DEPTH_TEST);
+	}
+	catch (const std::domain_error &)
+	{
+		// unProjectPoint is not posible
+	}
+}
+
+void
+X3DSelector::draw ()
+{
+	try
+	{
+		// Configure HUD
+
+		const auto & viewport = getBrowser () -> getRectangle ();
+		const int    width    = viewport [2];
+		const int    height   = viewport [3];
+
+		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+
+		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (projection .data ());
+		glMatrixMode (GL_MODELVIEW);
+
+		// Display Lasso.
+		// Draw a black and a white line.
+
+		glDisable (GL_DEPTH_TEST);
+		glLoadIdentity ();
+
+		glEnable (GL_BLEND);
+		glDisable (GL_CULL_FACE);
+		glColor4f (1, 1, 1, 1);
+		polygon ();
+		glDisable (GL_BLEND);
+	}
+	catch (const std::domain_error &)
+	{
+		// unProjectPoint is not posible
+	}
+}
+
+void
+X3DSelector::polygon ()
+{
+	opengl::tessellator <int> tessellator;
+
+	tessellator .begin_polygon ();
+	tessellator .begin_contour ();
+
+	for (const auto & point : points)
+		tessellator .add_vertex (point, 0);
+
+	tessellator .end_contour ();
+	tessellator .end_polygon ();
+
+	for (const auto & element : tessellator .polygon ())
+	{
+		glBegin (element .type ());
+
+		for (const auto & vertex : element)
+			glVertex3dv (vertex .point () .data ());
+
+		glEnd ();
+	}
+}
+
+void
+X3DSelector::dispose ()
+{
+	getBrowser () -> isPickable (pickable);
+
+	X3DExamineViewer::dispose ();
+}
+
+X3DSelector::~X3DSelector ()
 { }
 
 } // X3D

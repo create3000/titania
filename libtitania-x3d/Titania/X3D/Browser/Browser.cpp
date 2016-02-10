@@ -60,6 +60,7 @@
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/PointingDeviceSensor/LassoSelection.h"
+#include "../Browser/PointingDeviceSensor/RectangleSelection.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
@@ -226,12 +227,18 @@ Browser::set_viewer ()
 				viewer .setValue (new LookAtViewer (this));
 				break;
 			}
+			case X3DConstants::RectangleSelection:
+			{
+				viewer .setValue (new RectangleSelection (this));
+				break;
+			}
 			case X3DConstants::LassoSelection:
 			{
 				viewer .setValue (new LassoSelection (this));
 				break;
 			}
 			default:
+				viewer .setValue (new NoneViewer (this));
 				break;
 		}
 

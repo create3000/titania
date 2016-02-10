@@ -73,6 +73,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
+	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
 	m_builder -> get_widget ("LassoMenuItem", m_LassoMenuItem);
 
 	// Connect object Gtk::Revealer with id 'Widget'.
@@ -89,6 +90,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_connections .emplace_back (m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated)));
+	m_connections .emplace_back (m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_rectangle_activated)));
 	m_connections .emplace_back (m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated)));
 
 	// Call construct handler of base class.

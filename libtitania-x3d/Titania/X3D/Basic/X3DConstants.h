@@ -500,13 +500,17 @@ enum NodeType : uint16_t
 
 	// Viewer
 
+	DefaultViewer,
 	ExamineViewer,
 	FlyViewer,
 	LookAtViewer,
 	NoneViewer,
 	PlaneViewer,
 	WalkViewer,
+	RectangleSelection,
 	LassoSelection,
+	X3DExamineViewer,
+	X3DSelector,
 
 	// Tool nodes
 
@@ -549,6 +553,7 @@ enum NodeType : uint16_t
 	X3DBoundedObjectTool,
 	X3DChildNodeTool,
 	X3DComposedGeometryNodeTool,
+	X3DCoordinateNodeTool,
 	X3DGeometricPropertyNodeTool,
 	X3DEnvironmentalSensorNodeTool,
 	X3DGeometryNodeTool,
@@ -557,6 +562,7 @@ enum NodeType : uint16_t
 	X3DGroupingNodeTool,
 	X3DLightNodeTool,
 	X3DNodeTool,
+	X3DNormalNodeTool,
 	X3DProductStructureChildNodeTool,
 	X3DSensorNodeTool,
 	X3DShapeNodeTool,

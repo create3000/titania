@@ -59,11 +59,71 @@ namespace X3D {
 class X3DSelector :
 	public X3DExamineViewer
 {
+public:
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~X3DSelector ();
+
+
 protected:
 
 	///  @name Constructors
 
 	X3DSelector ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	addPoint (const double, const double);
+
+	const std::vector <Vector3d> &
+	getPoints () const
+	{ return points; }
+
+	virtual
+	void
+	clear ();
+
+
+private:
+
+	///  @name Event handlers
+
+	virtual
+	bool
+	on_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_motion_notify_event (GdkEventMotion*) final override;
+
+	void
+	display ();
+
+	void
+	draw ();
+
+	void
+	polygon ();
+
+	///  @name Members
+
+	bool                   pickable;
+	guint                  button;
+	std::vector <Vector3d> points;
 
 };
 
