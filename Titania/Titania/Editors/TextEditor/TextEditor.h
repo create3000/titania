@@ -81,6 +81,10 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	virtual
@@ -133,6 +137,10 @@ private:
 
 	void
 	connectLength (const X3D::MFFloat &);
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

@@ -141,7 +141,7 @@ X3DTextureTransformMatrix3DEditor::X3DTextureTransformMatrix3DEditor () :
 }
 
 void
-X3DTextureTransformMatrix3DEditor::initialize ()
+X3DTextureTransformMatrix3DEditor::configure ()
 { }
 
 void
@@ -201,6 +201,10 @@ X3DTextureTransformMatrix3DEditor::getTextureTransformMatrix3D (const X3D::X3DPt
 
 	return textureTransform;
 }
+
+void
+X3DTextureTransformMatrix3DEditor::store ()
+{ }
 
 X3DTextureTransformMatrix3DEditor::~X3DTextureTransformMatrix3DEditor ()
 { }

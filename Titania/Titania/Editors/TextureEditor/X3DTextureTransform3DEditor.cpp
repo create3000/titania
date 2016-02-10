@@ -91,7 +91,7 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 { }
 
 void
-X3DTextureTransform3DEditor::initialize ()
+X3DTextureTransform3DEditor::configure ()
 {
 	getTextureTransform3DUniformScaleButton () .set_active (getConfig () -> getBoolean ("textureTransform3DUniformScale"));
 }
@@ -180,10 +180,14 @@ X3DTextureTransform3DEditor::on_texture_transform3D_uniform_scale_clicked ()
 	}
 }
 
-X3DTextureTransform3DEditor::~X3DTextureTransform3DEditor ()
+void
+X3DTextureTransform3DEditor::store ()
 {
 	getConfig () -> setItem ("textureTransform3DUniformScale", getTextureTransform3DUniformScaleButton () .get_active ());
 }
+
+X3DTextureTransform3DEditor::~X3DTextureTransform3DEditor ()
+{ }
 
 } // puck
 } // titania

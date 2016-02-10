@@ -82,12 +82,18 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+TextEditor::configure ()
+{
+	X3DTextEditorInterface::configure ();
+
+	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+}
+
+void
 TextEditor::initialize ()
 {
 	X3DTextEditorInterface::initialize ();
 	X3DFontStyleNodeEditor::initialize ();
-
-	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -370,9 +376,16 @@ TextEditor::connectLength (const X3D::MFFloat & field)
 	field .addInterest (this, &TextEditor::set_length);
 }
 
-TextEditor::~TextEditor ()
+void
+TextEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getTextNotebook () .get_current_page ());
+
+	X3DTextEditorInterface::store ();
+}
+
+TextEditor::~TextEditor ()
+{
 	dispose ();
 }
 

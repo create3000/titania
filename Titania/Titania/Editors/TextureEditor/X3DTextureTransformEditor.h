@@ -76,8 +76,9 @@ protected:
 
 	X3DTextureTransformEditor ();
 	
+	virtual
 	void
-	initialize ();
+	configure () override;
 
 	///  @name Construction
 
@@ -86,6 +87,10 @@ protected:
 
 	const X3D::X3DPtr <X3D::TextureTransform> &
 	getTextureTransform (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);	
+	
+	virtual
+	void
+	store () override;
 
 
 private:

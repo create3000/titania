@@ -72,11 +72,11 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 }
 
 void
-X3DTextureTransformNodeEditor::initialize ()
+X3DTextureTransformNodeEditor::configure ()
 {
-	X3DTextureTransformEditor::initialize ();
-	X3DTextureTransform3DEditor::initialize ();
-	X3DTextureTransformMatrix3DEditor::initialize ();
+	X3DTextureTransformEditor::configure ();
+	X3DTextureTransform3DEditor::configure ();
+	X3DTextureTransformMatrix3DEditor::configure ();
 }
 
 void
@@ -245,6 +245,14 @@ X3DTextureTransformNodeEditor::connectTextureTransform (const X3D::SFNode & fiel
 {
 	field .removeInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
 	field .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+}
+
+void
+X3DTextureTransformNodeEditor::store ()
+{
+	X3DTextureTransformMatrix3DEditor::store ();
+	X3DTextureTransform3DEditor::store ();
+	X3DTextureTransformEditor::store ();
 }
 
 } // puck

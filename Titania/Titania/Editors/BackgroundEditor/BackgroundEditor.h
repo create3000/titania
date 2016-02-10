@@ -87,6 +87,10 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	virtual
@@ -134,6 +138,10 @@ private:
 	virtual
 	void
 	on_index_clicked () final override;
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

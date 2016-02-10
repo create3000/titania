@@ -76,8 +76,9 @@ protected:
 
 	X3DTextureTransformMatrix3DEditor ();
 
+	virtual
 	void
-	initialize ();
+	configure ();
 
 	///  @name Construction
 
@@ -86,6 +87,10 @@ protected:
 
 	const X3D::X3DPtr <X3D::TextureTransformMatrix3D> &
 	getTextureTransformMatrix3D (const X3D::X3DPtr <X3D::X3DTextureTransformNode> &);
+
+	virtual
+	void
+	store ();
 
 
 private:

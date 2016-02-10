@@ -96,7 +96,7 @@ X3DTransformEditor::X3DTransformEditor () :
 { }
 
 void
-X3DTransformEditor::initialize ()
+X3DTransformEditor::configure ()
 {
 	getTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("transformUniformScale"));
 }
@@ -159,10 +159,14 @@ X3DTransformEditor::on_transform_move_center_button ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
-X3DTransformEditor::~X3DTransformEditor ()
+void
+X3DTransformEditor::store ()
 {
 	getConfig () -> setItem ("transformUniformScale", getTransformUniformScaleButton () .get_active ());
 }
+
+X3DTransformEditor::~X3DTransformEditor ()
+{ }
 
 } // puck
 } // titania

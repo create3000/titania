@@ -51,7 +51,6 @@
 #include "GeometryPropertiesEditor.h"
 
 #include "../../Configuration/config.h"
-#include "../GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
@@ -75,15 +74,13 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                   X3DExtrusionEditor (),
 	                      X3DSphereEditor (),
 	              X3DPrimitiveCountEditor (),
+	                      X3DGeometryTool (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
 	                               convex (this, getConvexCheckButton (), "convex"),
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
-	                         normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
-	                          normalColor (this, getNormalColorButton (), getNormalColorAdjustment (), getNormalColorBox (), "color"),
-	                            edgeColor (this, getEdgeColorButton (), getEdgeColorAdjustment (), getEdgeColorBox (), "color"),
 	                         geometryNode (),
 	                                nodes (),
 	                               shapes (),
@@ -95,15 +92,17 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	getCreaseAngleAdjustment () -> set_upper (M_PI);
 
-	//	normalLength .setUndo (false);
-	//	normalColor  .setUndo (false);
-	//	edgeColor    .setUndo (false);
-
-	normalLength .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
-	normalColor  .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
-	edgeColor    .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
-
 	setup ();
+}
+
+void
+GeometryPropertiesEditor::configure ()
+{
+	X3DGeometryPropertiesEditorInterface::configure ();
+	X3DPrimitiveCountEditor::configure ();
+	X3DGeometryTool::configure ();
+
+	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -111,8 +110,7 @@ GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
-
-	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	X3DGeometryTool::initialize ();
 }
 
 void
@@ -427,10 +425,18 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
-GeometryPropertiesEditor::~GeometryPropertiesEditor ()
+void
+GeometryPropertiesEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getGeometryChildNotebook () .get_current_page ());
 
+	X3DGeometryTool::store ();
+	X3DPrimitiveCountEditor::store ();
+	X3DGeometryPropertiesEditorInterface::store ();
+}
+
+GeometryPropertiesEditor::~GeometryPropertiesEditor ()
+{
 	dispose ();
 }
 

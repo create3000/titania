@@ -131,10 +131,14 @@ X3DAngleEditor::X3DAngleEditor () :
 }
 
 void
-X3DAngleEditor::initialize ()
+X3DAngleEditor::configure ()
 {
 	getAngleUniformScaleButton () .set_active (getConfig () -> getBoolean ("angleUniformScale"));
+}
 
+void
+X3DAngleEditor::initialize ()
+{
 	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	X3D::MFNode  angleTools = { angleTool };
 
@@ -315,10 +319,14 @@ X3DAngleEditor::set_majorLineEvery ()
 	on_angle_major_line_grid_upper_changed ();
 }
 
-X3DAngleEditor::~X3DAngleEditor ()
+void
+X3DAngleEditor::store ()
 {
 	getConfig () -> setItem ("angleUniformScale", getAngleUniformScaleButton () .get_active ());
 }
+
+X3DAngleEditor::~X3DAngleEditor ()
+{ }
 
 } // puck
 } // titania

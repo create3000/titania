@@ -62,9 +62,9 @@ X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
 { }
 
 void
-X3DEnvironmentTextureNodeEditor::initialize ()
+X3DEnvironmentTextureNodeEditor::configure ()
 {
-	X3DComposedCubeMapTextureEditor::initialize ();
+	X3DComposedCubeMapTextureEditor::configure ();
 }
 
 void
@@ -123,6 +123,12 @@ X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X
 //				break;
 //		}
 //	}
+}
+
+void
+X3DEnvironmentTextureNodeEditor::store ()
+{
+	X3DComposedCubeMapTextureEditor::store ();
 }
 
 X3DEnvironmentTextureNodeEditor::~X3DEnvironmentTextureNodeEditor ()

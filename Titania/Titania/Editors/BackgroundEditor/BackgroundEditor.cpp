@@ -110,13 +110,19 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+BackgroundEditor::configure ()
+{
+	X3DBackgroundEditorInterface::configure ();
+
+	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
+}
+
+void
 BackgroundEditor::initialize ()
 {
 	X3DBackgroundEditorInterface::initialize ();
 	X3DBackgroundEditor::initialize ();
-
-	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
-	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
 }
 
 void
@@ -318,11 +324,17 @@ BackgroundEditor::on_index_clicked ()
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Background, X3D::X3DConstants::TextureBackground });
 }
 
-BackgroundEditor::~BackgroundEditor ()
+void
+BackgroundEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getNotebook ()         .get_current_page ());
 	getConfig () -> setItem ("texturePage", getTexturesNotebook () .get_current_page ());
 
+	X3DBackgroundEditorInterface::store ();
+}
+
+BackgroundEditor::~BackgroundEditor ()
+{
 	dispose ();
 }
 

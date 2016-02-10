@@ -68,6 +68,7 @@ titania_SOURCES =  \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DExtrusionEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/X3DGeometryTool.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
 	Titania/Editors/GridEditor/GridEditor.cpp \

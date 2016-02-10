@@ -85,6 +85,10 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	virtual
@@ -109,6 +113,10 @@ private:
 
 	void
 	connectAppearance (const X3D::SFNode &);
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

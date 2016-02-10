@@ -67,18 +67,35 @@ GridEditor::GridEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-GridEditor::initialize ()
+GridEditor::configure ()
 {
-	X3DGridEditor::initialize ();
-	X3DAngleEditor::initialize ();
+	X3DGridEditorInterface::configure ();
+	X3DGridEditor::configure ();
+	X3DAngleEditor::configure ();
 
 	getGridNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
-GridEditor::~GridEditor ()
+void
+GridEditor::initialize ()
+{
+	X3DGridEditorInterface::initialize ();
+	X3DGridEditor::initialize ();
+	X3DAngleEditor::initialize ();
+}
+
+void
+GridEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getGridNotebook () .get_current_page ());
 
+	X3DAngleEditor::store ();
+	X3DGridEditor::store ();
+	X3DGridEditorInterface::store ();
+}
+
+GridEditor::~GridEditor ()
+{
 	dispose ();
 }
 

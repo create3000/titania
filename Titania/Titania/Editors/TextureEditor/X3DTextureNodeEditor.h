@@ -84,11 +84,15 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	virtual
 	void
 	set_selection (const X3D::MFNode &) override;
+
+	virtual
+	void
+	store () override;
 
 
 private:

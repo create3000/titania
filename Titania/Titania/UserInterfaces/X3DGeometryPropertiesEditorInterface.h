@@ -425,10 +425,6 @@ public:
 	getNormalPerVertexCheckButton () const
 	{ return *m_NormalPerVertexCheckButton; }
 
-	Gtk::SpinButton &
-	getNormalLengthSpinButton () const
-	{ return *m_NormalLengthSpinButton; }
-
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
 	{ return *m_PrimitiveCountEventBox; }
@@ -482,8 +478,8 @@ public:
 	{ return *m_GeometryToolExpander; }
 
 	Gtk::SpinButton &
-	getNormalLengthSpinButton1 () const
-	{ return *m_NormalLengthSpinButton1; }
+	getNormalLengthSpinButton () const
+	{ return *m_NormalLengthSpinButton; }
 
 	Gtk::Box &
 	getNormalColorBox () const
@@ -652,7 +648,6 @@ private:
 	Gtk::Button*                   m_RemoveNormalsButton;
 	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
 	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
-	Gtk::SpinButton*               m_NormalLengthSpinButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;
@@ -666,7 +661,7 @@ private:
 	Gtk::Label*                    m_PrimitiveCountPolygonsLabel;
 	Gtk::ComboBoxText*             m_PrimitiveCountCountButton;
 	Gtk::Expander*                 m_GeometryToolExpander;
-	Gtk::SpinButton*               m_NormalLengthSpinButton1;
+	Gtk::SpinButton*               m_NormalLengthSpinButton;
 	Gtk::Box*                      m_NormalColorBox;
 	Gtk::Button*                   m_NormalColorButton;
 	Gtk::Scale*                    m_NormalColorScale;

@@ -78,10 +78,14 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 }
 
 void
-X3DMaterialPaletteEditor::initialize ()
+X3DMaterialPaletteEditor::configure ()
 {
 	getPaletteFaceCombo () .set_active (getConfig () -> getInteger ("paletteFace"));
+}
 
+void
+X3DMaterialPaletteEditor::initialize ()
+{
 	// Find material folders.
 
 	try
@@ -252,10 +256,14 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 	{ }
 }
 
-X3DMaterialPaletteEditor::~X3DMaterialPaletteEditor ()
+void
+X3DMaterialPaletteEditor::store ()
 {
 	getConfig () -> setItem ("paletteFace", getPaletteFaceCombo () .get_active_row_number ());
 }
+
+X3DMaterialPaletteEditor::~X3DMaterialPaletteEditor ()
+{ }
 
 } // puck
 } // titania

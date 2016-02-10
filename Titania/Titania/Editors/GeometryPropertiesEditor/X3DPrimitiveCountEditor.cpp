@@ -72,7 +72,7 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 { }
 
 void
-X3DPrimitiveCountEditor::initialize ()
+X3DPrimitiveCountEditor::configure ()
 {
 	getPrimitiveCountCountButton () .set_active (getConfig () -> getInteger ("primitiveCount"));
 }
@@ -314,7 +314,7 @@ X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 			triangles += element .count / 3;
 			break;
 		case GL_QUADS:
-			++ quads;
+			quads += element .count / 4;
 			//triangles += 2 * element .count / 4;
 			break;
 		case GL_QUAD_STRIP:
@@ -353,10 +353,14 @@ X3DPrimitiveCountEditor::set_executionContext ()
 	executionContext -> sceneGraph_changed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 
-X3DPrimitiveCountEditor::~X3DPrimitiveCountEditor ()
+void
+X3DPrimitiveCountEditor::store ()
 {
 	getConfig () -> setItem ("primitiveCount", getPrimitiveCountCountButton () .get_active_row_number ());
 }
+
+X3DPrimitiveCountEditor::~X3DPrimitiveCountEditor ()
+{ }
 
 } // puck
 } // titania

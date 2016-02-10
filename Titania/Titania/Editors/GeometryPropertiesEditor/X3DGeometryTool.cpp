@@ -48,91 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#include "X3DGeometryTool.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DLayoutEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DBillboardEditor.h"
-#include "X3DLODEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
-#include "X3DSwitchEditor.h"
+#include "../GeometryEditor/GeometryEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DSwitchEditor,
-	public X3DBillboardEditor,
-	public X3DLODEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor
+X3DGeometryTool::X3DGeometryTool () :
+	X3DGeometryPropertiesEditorInterface (),
+	                        normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
+	                         normalColor (this, getNormalColorButton (), getNormalColorAdjustment (), getNormalColorBox (), "color"),
+	                           edgeColor (this, getEdgeColorButton (), getEdgeColorAdjustment (), getEdgeColorBox (), "color")
 {
-public:
+	//	normalLength .setUndo (false);
+	//	normalColor  .setUndo (false);
+	//	edgeColor    .setUndo (false);
 
-	///  @name Construction
+	normalLength .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	normalColor  .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	edgeColor    .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
+}
 
-	PrecisionPlacementPanel (X3DBrowserWindow* const);
+void
+X3DGeometryTool::initialize ()
+{
+}
 
-	///  @name Destruction
-
-	virtual
-	~PrecisionPlacementPanel ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	configure () final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) final override;
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	on_bbox_uniform_size_clicked () final override;
-
-	virtual
-	void
-	on_fill_bounding_box_fields_clicked () final override;
-
-	virtual
-	void
-	store () final override;
-
-	///  @name Members
-
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
-
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
-
-};
+X3DGeometryTool::~X3DGeometryTool ()
+{
+}
 
 } // puck
 } // titania
-
-#endif

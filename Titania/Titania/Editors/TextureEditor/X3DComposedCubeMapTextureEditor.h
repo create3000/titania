@@ -80,7 +80,7 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	///  @name Construction
 
@@ -90,6 +90,10 @@ protected:
 	virtual
 	const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
 	getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	virtual
+	void
+	store () override;
 
 
 private:

@@ -119,8 +119,10 @@ X3DGeoTransformEditor::X3DGeoTransformEditor () :
 }
 
 void
-X3DGeoTransformEditor::initialize ()
-{ }
+X3DGeoTransformEditor::configure ()
+{
+	getGeoTransformUniformScaleButton () .set_active (getConfig () -> getBoolean ("geoTransformUniformScale"));
+}
 
 void
 X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)
@@ -156,10 +158,14 @@ X3DGeoTransformEditor::on_geo_transform_uniform_scale_clicked ()
 	}
 }
 
-X3DGeoTransformEditor::~X3DGeoTransformEditor ()
+void
+X3DGeoTransformEditor::store ()
 {
 	getConfig () -> setItem ("geoTransformUniformScale", getGeoTransformUniformScaleButton () .get_active ());
 }
+
+X3DGeoTransformEditor::~X3DGeoTransformEditor ()
+{ }
 
 } // puck
 } // titania

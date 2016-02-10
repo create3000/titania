@@ -64,6 +64,7 @@
 #include "Geometry3D/X3DExtrusionEditor.h"
 #include "Geometry3D/X3DSphereEditor.h"
 #include "X3DPrimitiveCountEditor.h"
+#include "X3DGeometryTool.h"
 
 namespace titania {
 namespace puck {
@@ -80,7 +81,8 @@ class GeometryPropertiesEditor :
 	public X3DCylinderEditor,
 	public X3DExtrusionEditor,
 	public X3DSphereEditor,
-	public X3DPrimitiveCountEditor
+	public X3DPrimitiveCountEditor,
+	public X3DGeometryTool
 {
 public:
 
@@ -97,6 +99,10 @@ public:
 private:
 
 	///  @name Construction
+
+	virtual
+	void
+	configure () final override;
 
 	virtual
 	void
@@ -139,6 +145,10 @@ private:
 	void
 	on_remove_normals_clicked () final override;
 
+	virtual
+	void
+	store () final override;
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> solid;
@@ -147,10 +157,6 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
 	X3DFieldToggleButton <X3D::SFBool> colorPerVertex;
 	X3DFieldToggleButton <X3D::SFBool> normalPerVertex;
-
-	X3DFieldAdjustment <X3D::SFFloat>  normalLength;
-	SFColorRGBAButton                  normalColor;
-	SFColorRGBAButton                  edgeColor;
 
 	X3D::SFNode                          geometryNode;
 	X3D::MFNode                          nodes;

@@ -329,6 +329,9 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
 {
+	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+		return;
+
 	std::vector <Vector3f> selection;
 
 	for (const auto & vertex : this -> getVertices ())
@@ -500,6 +503,11 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
+	this -> getNode () -> draw (container);
+
+	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+		return;
+
 	const auto   viewpoint      = this -> getCurrentLayer () -> getViewpoint ();
 	const auto   navigationInfo = this -> getCurrentLayer () -> getNavigationInfo ();
 	const double zNear          = navigationInfo -> getNearPlane ();
@@ -511,8 +519,6 @@ X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 
 	normalToolNode -> draw (container);
 	coordToolNode  -> draw (container);
-
-	this -> getNode () -> draw (container);
 }
 
 template <class Type>

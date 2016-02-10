@@ -80,10 +80,9 @@ X3DTextureNodeEditor::X3DTextureNodeEditor () :
 }
 
 void
-X3DTextureNodeEditor::initialize ()
+X3DTextureNodeEditor::configure ()
 {
-	X3DEnvironmentTextureNodeEditor::initialize ();
-	X3DTexturePropertiesEditor::initialize ();
+	X3DEnvironmentTextureNodeEditor::configure ();
 }
 
 void
@@ -309,6 +308,12 @@ X3DTextureNodeEditor::connectTexture (const X3D::SFNode & field)
 {
 	field .removeInterest (this, &X3DTextureNodeEditor::connectTexture);
 	field .addInterest (this, &X3DTextureNodeEditor::set_texture);
+}
+
+void
+X3DTextureNodeEditor::store ()
+{
+	X3DEnvironmentTextureNodeEditor::store ();
 }
 
 X3DTextureNodeEditor::~X3DTextureNodeEditor ()

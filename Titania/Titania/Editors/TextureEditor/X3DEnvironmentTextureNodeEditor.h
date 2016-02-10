@@ -80,7 +80,7 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	///  @name Member access
 
@@ -95,8 +95,9 @@ protected:
 	const X3D::X3DPtr <X3D::ImageCubeMapTexture> &
 	getImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
 
-
-protected:
+	virtual
+	void
+	store () override;
 
 private:
 

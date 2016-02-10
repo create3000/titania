@@ -87,11 +87,20 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
 	virtual
 	void
 	set_selection (const X3D::MFNode &) final override;
+
+	virtual
+	void
+	store () final override;
+
 
 };
 

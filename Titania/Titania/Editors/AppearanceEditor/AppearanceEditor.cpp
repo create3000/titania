@@ -79,6 +79,15 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+AppearanceEditor::configure ()
+{
+	X3DAppearanceEditorInterface::configure ();
+	X3DMaterialPaletteEditor::configure ();
+
+	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+}
+
+void
 AppearanceEditor::initialize ()
 {
 	X3DAppearanceEditorInterface::initialize ();
@@ -86,8 +95,6 @@ AppearanceEditor::initialize ()
 	X3DFillPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
 	X3DMaterialPaletteEditor::initialize ();
-
-	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -188,10 +195,17 @@ AppearanceEditor::connectAppearance (const X3D::SFNode & field)
 	field .addInterest (this, &AppearanceEditor::set_appearance);
 }
 
-AppearanceEditor::~AppearanceEditor ()
+void
+AppearanceEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getAppearanceChildNotebook () .get_current_page ());
 
+	X3DMaterialPaletteEditor::store ();
+	X3DAppearanceEditorInterface::store ();
+}
+
+AppearanceEditor::~AppearanceEditor ()
+{
 	dispose ();
 }
 

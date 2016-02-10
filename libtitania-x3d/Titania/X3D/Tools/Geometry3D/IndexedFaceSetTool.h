@@ -165,10 +165,13 @@ private:
 	set_coord ();
 
 	void
+	set_coord_point ();
+
+	void
 	set_over (const bool);
 
 	void
-	set_hitPoint (const X3D::Vector3f &);
+	set_hitPoint (const Vector3f &);
 
 	void
 	set_selection (const MFVec3f &);
@@ -177,18 +180,25 @@ private:
 	set_touchTime ();
 
 	void
-	set_point (const X3D::Vector3f &);
+	set_point (const Vector3f &);
 
 	void
-	set_active_selection (const X3D::Vector3f &);
+	set_active_selection (const Vector3f &);
+
+	void
+	set_active (const bool);
+
+	void
+	set_translation (const Vector3f &);
 
 	double
-	get_distance (const X3D::Vector3d &, const X3D::Vector3d &);
+	get_distance (const Vector3d &, const Vector3d &);
 
 	///  @name Members
 
+	X3DPtr <X3DCoordinateNode>      coordNode;
 	std::unique_ptr <FaceSelection> selection;
-	std::set <size_t>               selectedVertices;
+	std::map <size_t, Vector3d>     selectedPoints;
 
 };
 

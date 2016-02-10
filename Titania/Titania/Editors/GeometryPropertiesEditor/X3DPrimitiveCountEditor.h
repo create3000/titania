@@ -75,7 +75,16 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	virtual
+	void
+	store () override;
 
 
 private:

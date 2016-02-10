@@ -258,6 +258,7 @@
     <Compile Include="Titania\Editors\GeometryEditor\GeometryEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DGeometryEditorInterface.cpp" />
     <Compile Include="Titania\Browser\ViewpointObserver.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2466,6 +2467,7 @@
     <None Include="share\titania\ui\icons\Lasso.svg" />
     <None Include="Titania\Browser\ViewpointObserver.h" />
     <None Include="share\titania\ui\icons\RectangleSelection.svg" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

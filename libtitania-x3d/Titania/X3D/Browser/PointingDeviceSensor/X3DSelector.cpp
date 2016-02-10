@@ -122,12 +122,12 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 	if (points .empty ())
 		return false;
 
+	ContextLock lock (getBrowser ());
+
 	button = 0;
 
 	getBrowser () -> addEvent ();
 	getBrowser () -> displayed () .removeInterest (this, &X3DSelector::display);
-
-	ContextLock lock (getBrowser ());
 
 	getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
 	getBrowser () -> getSelectionBuffer () -> bind ();

@@ -103,6 +103,8 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 void
 ColorEditor::configure ()
 {
+	X3DColorEditorInterface::configure ();
+
 	getCheckerBoardButton () .set_active (getConfig () -> getBoolean ("checkerBoard"));
 	getTextureButton ()      .set_active (getConfig () -> getBoolean ("texture"));
 
