@@ -75,10 +75,12 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                   coordNode (),
 	                                   selection (new FaceSelection ()),
 	                              selectedPoints (),
-	                                activePoints ()
+	                                activePoints (),
+	                                 translation ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
+	addField (inputOutput, "pickable",          pickable ());
 	addField (inputOutput, "paintSelection",    paintSelection ());
 	addField (inputOutput, "selection_changed", selection_changed ());
 	addField (inputOutput, "normalTool",        normalTool ());
@@ -91,7 +93,8 @@ IndexedFaceSetTool::initialize ()
 	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
-	getCoord () .addInterest (this, &IndexedFaceSetTool::set_coord);
+
+	getCoord ()          .addInterest (this, &IndexedFaceSetTool::set_coord);
 	selection_changed () .addInterest (this, &IndexedFaceSetTool::set_selection);
 
 	selection -> setGeometry (getNode ());
@@ -111,9 +114,10 @@ IndexedFaceSetTool::set_loadState ()
 		activeLineSet    = getCoordinateTool () -> getInlineNode () -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
 		selectionCoord   = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("SelectionCoord");
 
-		touchSensor -> isOver ()           .addInterest (this, &IndexedFaceSetTool::set_over);
-		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_hitPoint);
-		touchSensor -> touchTime ()        .addInterest (this, &IndexedFaceSetTool::set_touchTime);
+		touchSensor -> isOver ()           .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_over);
+		touchSensor -> isActive ()         .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_active);
+		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		touchSensor -> touchTime ()        .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_touchTime);
 
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
@@ -180,7 +184,7 @@ IndexedFaceSetTool::set_coord_point ()
 }
 
 void
-IndexedFaceSetTool::set_over (const bool over)
+IndexedFaceSetTool::set_touch_sensor_over (const bool over)
 {
 	if (not over)
 	{
@@ -190,7 +194,14 @@ IndexedFaceSetTool::set_over (const bool over)
 }
 
 void
-IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
+IndexedFaceSetTool::set_touch_sensor_active (const bool active)
+{
+	if (active)
+		translation = Vector3d ();
+}
+
+void
+IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	if (planeSensor -> isActive ())
 		return;
@@ -209,7 +220,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 	set_active_selection (hitPoint);
 
 	if (touchSensor -> isActive () and paintSelection ())
-		set_touchTime ();
+		set_touch_sensor_touchTime ();
 
 	// Setup PlaneSensor
 
@@ -224,7 +235,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 		const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
 		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-		planeSensor -> enabled ()      = true;
+		planeSensor -> enabled ()      = not paintSelection ();
 		planeSensor -> axisRotation () = axisRotation;
 		planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 	}
@@ -235,7 +246,7 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 		const auto vector       = getCoord () -> get1Point (activeLineSet -> coordIndex () [0]) - getCoord () -> get1Point (activeLineSet -> coordIndex () [1]);
 		const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-		planeSensor -> enabled ()      = true;
+		planeSensor -> enabled ()      = not paintSelection ();
 		planeSensor -> axisRotation () = axisRotation;
 		planeSensor -> maxPosition ()  = Vector2f (-1, 0);
 	}
@@ -257,9 +268,9 @@ IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 }
 
 void
-IndexedFaceSetTool::set_touchTime ()
+IndexedFaceSetTool::set_touch_sensor_touchTime ()
 {
-	if (planeSensor -> translation_changed () not_eq Vector3f ())
+	if (translation not_eq Vector3f ())
 		return;
 
 	bool first = true;
@@ -332,34 +343,31 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 	{
 		// Active points for near point or face
 	
-		if (not paintSelection ())
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 		{
-			if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-			{
-				const auto edge     = selection -> getEdge (vertices, index, hitPoint);
-				const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
+			const auto edge     = selection -> getEdge (vertices, index, hitPoint);
+			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
 
-				if (distance > SELECTION_DISTANCE)
-				{
-					// Face
-			
-					for (const auto & i : vertices)
-						activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
-				}
-				else
-				{
-					// Edge
-			
-					activePoints .emplace (edge .index0, edge .point0);
-					activePoints .emplace (edge .index1, edge .point1);
-				}
+			if (distance > SELECTION_DISTANCE)
+			{
+				// Face
+		
+				for (const auto & i : vertices)
+					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
 			}
 			else
 			{
-				// Point
+				// Edge
 		
-				activePoints = { std::make_pair (index, point) };
+				activePoints .emplace (edge .index0, edge .point0);
+				activePoints .emplace (edge .index1, edge .point1);
 			}
+		}
+		else
+		{
+			// Point
+	
+			activePoints = { std::make_pair (index, point) };
 		}
 	}
 
@@ -404,8 +412,10 @@ IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 }
 
 void
-IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & translation)
+IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
 {
+	translation = value;
+
 	for (const auto & pair : selectedPoints)
 		getCoord () -> set1Point (pair .first, pair .second + Vector3d (translation));
 }

@@ -164,7 +164,7 @@ private:
 
 	void
 	set_loadState ();
-
+	
 	void
 	set_coord ();
 
@@ -172,16 +172,19 @@ private:
 	set_coord_point ();
 
 	void
-	set_over (const bool);
+	set_touch_sensor_over (const bool);
 
 	void
-	set_hitPoint (const Vector3f &);
+	set_touch_sensor_active (const bool);
+
+	void
+	set_touch_sensor_hitPoint (const Vector3f &);
 
 	void
 	set_selection (const MFVec3d &);
 
 	void
-	set_touchTime ();
+	set_touch_sensor_touchTime ();
 
 	void
 	set_point (const Vector3d &, const bool);
@@ -213,6 +216,8 @@ private:
 	std::unique_ptr <FaceSelection> selection;
 	std::map <size_t, Vector3d>     selectedPoints;
 	std::map <size_t, Vector3d>     activePoints;
+
+	Vector3f translation;
 
 
 };

@@ -83,6 +83,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",       new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection", new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",          new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
@@ -187,9 +188,11 @@ GeometryEditor::connect ()
 						// Coord
 
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")          .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordEditor -> getField <X3D::SFBool>      ("pickable")       .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection") .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
 
 						coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
+						innerNode -> setField <X3D::SFBool>      ("pickable",       coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection", coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
 						break;
 					}
@@ -220,6 +223,7 @@ GeometryEditor::on_unmap ()
 {
 	getCurrentBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
 	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
 }
 
@@ -258,6 +262,13 @@ GeometryEditor::set_viewer ()
 	}
 
 	changing = false;
+}
+
+void
+GeometryEditor::connectViewer ()
+{
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 }
 
 void
@@ -346,18 +357,24 @@ GeometryEditor::on_paint_selection_toggled ()
 		switch (selectionType)
 		{
 			case SelectionType::BRUSH:
+			{
+				getCurrentBrowser () -> setPrivateViewer (privateViewer);
+				coordEditor -> setField <X3D::SFBool> ("pickable", true);
+
+				getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+				getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 				break;
-	
+			}
 			case SelectionType::RECTANGLE:
 			{
 				if (getPaintSelectionToggleButton () .get_active ())
 					getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
 				else
 					getCurrentBrowser () -> setPrivateViewer (privateViewer);
-	
+
+				coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
 				break;
 			}
-	
 			case SelectionType::LASSO:
 			{
 				if (getPaintSelectionToggleButton () .get_active ())
@@ -365,6 +382,7 @@ GeometryEditor::on_paint_selection_toggled ()
 				else
 					getCurrentBrowser () -> setPrivateViewer (privateViewer);
 	
+				coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
 				break;
 			}
 		}
@@ -374,15 +392,11 @@ GeometryEditor::on_paint_selection_toggled ()
 bool
 GeometryEditor::on_selection_type_button_press_event (GdkEventButton* event)
 {
-	__LOG__ << event -> button << std::endl;
+	if (event -> button not_eq 3)
+		return false;
 
-	if (event -> button == 3)
-	{
-		getSelectionTypeMenu () .popup (event -> button, event -> time);
-		return true;
-	}
-
-	return false;
+	getSelectionTypeMenu () .popup (event -> button, event -> time);
+	return true;
 }
 
 void
@@ -427,6 +441,8 @@ GeometryEditor::set_selection_brush ()
 {
 	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Paint current celection."));
 	getPaintSelectionImage () .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+
+	on_paint_selection_toggled ();
 }
 
 void

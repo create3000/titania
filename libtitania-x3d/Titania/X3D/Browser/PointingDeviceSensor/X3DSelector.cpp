@@ -92,7 +92,7 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 		return X3DExamineViewer::on_button_press_event (event);
 
 	if (button)
-		return false;
+		return true;
 
 	button = event -> button;
 
@@ -121,7 +121,7 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 		return false;
 
 	if (points .empty ())
-		return false;
+		return true;
 
 	ContextLock lock (getBrowser ());
 
