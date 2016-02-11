@@ -208,6 +208,9 @@ private:
 	void
 	removeSelectedFace (const size_t);
 
+	void
+	updateSelectedFaces ();
+
 	double
 	getDistance (const Vector3d &, const Vector3d &);
 

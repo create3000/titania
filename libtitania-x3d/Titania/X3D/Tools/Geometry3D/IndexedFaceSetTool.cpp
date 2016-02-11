@@ -277,6 +277,8 @@ IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 		selection -> setFaces (vertex);
 		set_point (vertex, paintSelection (), true, true);
 	}
+
+	updateSelectedFaces ();
 }
 
 void
@@ -293,6 +295,8 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 		set_point (activePoint .second, not first or paintSelection (), false, false);
 		first = false;
 	}
+
+	updateSelectedFaces ();
 }
 
 void
@@ -309,52 +313,87 @@ IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, cons
 	if (selection -> getIndices () .empty ())
 		return;
 
-	const auto index = selection -> getIndices () [0];
-	const auto point = getCoord () -> get1Point (index);
-
-	if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-		return;
-
-	if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
+	for (const auto & index : selection -> getIndices ())
 	{
-		selectionCoord -> point () .clear ();
-		selectedFacesGeometry -> coordIndex () .clear ();
-		selectedPoints .clear ();
-		selectedFaces .clear ();
-	}
-
-	const auto iter = std::lower_bound (selectionCoord -> point () .begin (),
-                                       selectionCoord -> point () .end (),
-                                       point,
-                                       PointComp ());
-
-	if (getBrowser () -> hasControlKey ())
-	{
-		if (iter not_eq selectionCoord -> point () .end () and *iter == point)
-			selectionCoord -> point () .erase (iter);
-
-		selectedPoints .erase (index);
-
-		if (adjacentFaces)
+		const auto point = getCoord () -> get1Point (index);
+	
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+			return;
+	
+		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
 		{
-			for (const auto & face : selection -> getAdjacentFaces ())
-				removeSelectedFace (face .first);
+			selectionCoord -> point () .clear ();
+			selectedFacesGeometry -> coordIndex () .clear ();
+			selectedPoints .clear ();
+			selectedFaces .clear ();
+		}
+	
+		const auto iter = std::lower_bound (selectionCoord -> point () .begin (),
+	                                       selectionCoord -> point () .end (),
+	                                       point,
+	                                       PointComp ());
+	
+		if (getBrowser () -> hasControlKey ())
+		{
+			if (adjacentFaces)
+			{
+				for (const auto & face : selection -> getAdjacentFaces ())
+				{
+					const auto index = coordIndex () [face .first];
+					const auto point = getCoord () -> get1Point (index);
+					const auto iter  = std::lower_bound (selectionCoord -> point () .begin (),
+				                                        selectionCoord -> point () .end (),
+				                                        point,
+				                                        PointComp ());
+
+					if (iter not_eq selectionCoord -> point () .end () and *iter == point)
+						selectionCoord -> point () .erase (iter);
+
+					selectedPoints .erase (index);
+
+					removeSelectedFace (face .first);
+				}
+			}
+			else
+			{
+				if (iter not_eq selectionCoord -> point () .end () and *iter == point)
+					selectionCoord -> point () .erase (iter);
+		
+				selectedPoints .erase (index);
+
+				removeSelectedFace (selection -> getFace () .first);
+			}
 		}
 		else
-			removeSelectedFace (selection -> getFace () .first);
-	}
-	else
-	{
-		if (selectedPoints .emplace (index, point) .second)
-			selectionCoord -> point () .emplace (iter, point);
-
-		if (adjacentFaces)
 		{
-			for (const auto & face : selection -> getAdjacentFaces ())
-				addSelectedFace (face .first);
+			if (adjacentFaces)
+			{
+				for (const auto & face : selection -> getAdjacentFaces ())
+				{
+					const auto index = coordIndex () [face .first];
+					const auto point = getCoord () -> get1Point (index);
+					const auto iter  = std::lower_bound (selectionCoord -> point () .begin (),
+				                                        selectionCoord -> point () .end (),
+				                                        point,
+				                                        PointComp ());
+	
+					if (selectedPoints .emplace (index, point) .second)
+						selectionCoord -> point () .emplace (iter, point);
+	
+					addSelectedFace (face .first);
+				}
+			}
+			else
+			{
+				if (selectedPoints .emplace (index, point) .second)
+					selectionCoord -> point () .emplace (iter, point);
+
+				addSelectedFace (selection -> getFace () .first);
+			}
 		}
-		else
-			addSelectedFace (selection -> getFace () .first);
+
+		if (not adjacentPoints)
+			break;
 	}
 }
 
@@ -376,6 +415,24 @@ void
 IndexedFaceSetTool::removeSelectedFace (const size_t index)
 {
 	selectedFaces .erase (index);
+}
+
+void
+IndexedFaceSetTool::updateSelectedFaces ()
+{
+	size_t i = 0;
+
+	for (const auto index : selectedFaces)
+	{
+		const auto vertices = selection -> getVertices (index);
+	
+		for (const auto v : vertices)
+			selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [v]);
+	
+		selectedFacesGeometry -> coordIndex () .set1Value (i ++, -1);
+	}
+
+	selectedFacesGeometry -> coordIndex () .resize (i);
 }
 
 void
