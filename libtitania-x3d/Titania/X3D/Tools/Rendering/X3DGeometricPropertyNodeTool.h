@@ -56,6 +56,9 @@
 namespace titania {
 namespace X3D {
 
+class Switch;
+class TransformMatrix3D;
+
 class X3DGeometricPropertyNodeTool :
 	public X3DActiveLayerTool
 {
@@ -74,7 +77,7 @@ public:
 	///  @name Operations
 
 	void
-	draw (const ShapeContainer* const);
+	traverse (const TraverseType);
 
 	///  @name Destruction
 
@@ -98,16 +101,6 @@ protected:
 
 private:
 
-	///  @name Private fields
-
-	SFMatrix4f &
-	modelViewMatrix ()
-	{ return fields .modelViewMatrix; }
-
-	const SFMatrix4f &
-	modelViewMatrix () const
-	{ return fields .modelViewMatrix; }
-
 	///  @name Event handler
 
 	void
@@ -123,12 +116,13 @@ private:
 		Fields ();
 
 		SFBool* const load;
-		SFMatrix4f modelViewMatrix;
 	};
 
 	Fields fields;
 	
-	bool enabled;
+	bool                       enabled;
+	X3DPtr <Switch>            switchNode;
+	X3DPtr <TransformMatrix3D> transformNode;
 
 };
 

@@ -105,6 +105,10 @@ public:
 	///  @name Member access
 
 	virtual
+	void
+	setMatrix (const Matrix4d & value) override;
+
+	virtual
 	Matrix4d
 	getCurrentMatrix () const;
 

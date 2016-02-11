@@ -63,6 +63,7 @@ class PlaneSensor;
 class TouchSensor;
 class Coordinate;
 class IndexedLineSet;
+class IndexedFaceSet;
 
 class IndexedFaceSetTool :
 	public X3DComposedGeometryNodeTool <IndexedFaceSet>
@@ -187,19 +188,25 @@ private:
 	set_touch_sensor_touchTime ();
 
 	void
-	set_point (const Vector3d &, const bool);
+	set_point (const Vector3d &, const bool, const bool, const bool);
 
 	void
 	set_active_selection (const Vector3f &);
 
 	void
-	set_active_points (const std::map <size_t, Vector3d> &);
+	set_active_points ();
 
 	void
 	set_plane_sensor_active (const bool);
 
 	void
 	set_plane_sensor_translation (const Vector3f &);
+
+	void
+	addSelectedFace (const size_t);
+
+	void
+	removeSelectedFace (const size_t);
 
 	double
 	getDistance (const Vector3d &, const Vector3d &);
@@ -211,11 +218,14 @@ private:
 	X3DPtr <Coordinate>     activePointCoord;
 	X3DPtr <IndexedLineSet> activeLineSet;
 	X3DPtr <Coordinate>     selectionCoord;
+	X3DPtr <IndexedFaceSet> selectedFacesGeometry;
 
 	X3DPtr <X3DCoordinateNode>      coordNode;
 	std::unique_ptr <FaceSelection> selection;
 	std::map <size_t, Vector3d>     selectedPoints;
+	std::set <size_t>               selectedFaces;
 	std::map <size_t, Vector3d>     activePoints;
+	std::vector <size_t>            activeFace;
 
 	Vector3f translation;
 

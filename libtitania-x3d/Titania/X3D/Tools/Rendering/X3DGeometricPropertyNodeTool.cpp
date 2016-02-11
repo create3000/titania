@@ -52,22 +52,23 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../../Components/Grouping/Switch.h"
+#include "../../Components/Grouping/TransformMatrix3D.h"
 
 namespace titania {
 namespace X3D {
 
 X3DGeometricPropertyNodeTool::Fields::Fields () :
-	           load (new SFBool (true)),
-	modelViewMatrix ()
+	load (new SFBool (true))
 { }
 
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
 	X3DActiveLayerTool (),
-	          enabled (false)
+	          enabled (false),
+	       switchNode (),
+	    transformNode ()
 {
 	addType (X3DConstants::X3DGeometricPropertyNodeTool);
-
-	addChildren (modelViewMatrix ());
 }
 
 void
@@ -90,9 +91,8 @@ X3DGeometricPropertyNodeTool::realize ()
 	{
 		getBrowser () -> prepareEvents () .addInterest (this, &X3DGeometricPropertyNodeTool::prepareEvent);
 
-		auto & set_modelViewMatrix = getInlineNode () -> getExportedNode ("TransformMatrix3D") -> getField <SFMatrix4f> ("matrix");
-		modelViewMatrix () .addInterest (set_modelViewMatrix);
-		set_modelViewMatrix = modelViewMatrix ();
+		switchNode    = getInlineNode () -> getExportedNode <Switch> ("Switch");
+		transformNode = getInlineNode () -> getExportedNode <TransformMatrix3D> ("TransformMatrix3D");
 	}
 	catch (const X3DError & error)
 	{
@@ -105,7 +105,7 @@ X3DGeometricPropertyNodeTool::prepareEvent ()
 {
 	try
 	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", int32_t (enabled), true);
+		switchNode -> setField <SFInt32> ("whichChoice", int32_t (enabled), true);
 	}
 	catch (const X3DError & error)
 	{ }
@@ -118,24 +118,26 @@ X3DGeometricPropertyNodeTool::set_activeLayer ()
 {
 	try
 	{
-		getInlineNode () -> getExportedNode ("Switch") -> setField <SFInt32> ("whichChoice", 0, true);
+		switchNode -> setField <SFInt32> ("whichChoice", 0, true);
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
 void
-X3DGeometricPropertyNodeTool::draw (const ShapeContainer* const container)
+X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
 {
-	if (getCurrentLayer () != getActiveLayer ())
-		return;
-
-	enabled = true;
-
-	const auto mvm = container -> getModelViewMatrix () * getCurrentViewpoint () -> getCameraSpaceMatrix ();
-
-	if (mvm != modelViewMatrix ())
-		modelViewMatrix () = mvm;
+	try
+	{
+		if (getCurrentLayer () != getActiveLayer ())
+			return;
+	
+		enabled = true;
+	
+		transformNode -> setMatrix (getModelViewMatrix () .get ());
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 X3DGeometricPropertyNodeTool::~X3DGeometricPropertyNodeTool ()

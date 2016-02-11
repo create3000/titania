@@ -129,29 +129,30 @@ Shape::intersects (const CollisionSphere3f & sphere, const CollectableObjectArra
 void
 Shape::traverse (const TraverseType type)
 {
-	switch (type)
+	if (getGeometry ())
 	{
-		case TraverseType::POINTER:
+
+		switch (type)
 		{
-			pointer ();
-			break;
-		}
-		case TraverseType::COLLISION:
-		{
-			if (getGeometry ())
+			case TraverseType::POINTER:
+			{
+				pointer ();
+				break;
+			}
+			case TraverseType::COLLISION:
+			{
 				getCurrentLayer () -> addCollision (this);
-
-			break;
-		}
-		case TraverseType::DISPLAY:
-		{
-			if (getGeometry ())
+				break;
+			}
+			case TraverseType::DISPLAY:
+			{
+				getGeometry () -> traverse (type);
 				getCurrentLayer () -> addShape (this);
-
-			break;
+				break;
+			}
+			default:
+				break;
 		}
-		default:
-			break;
 	}
 }
 
@@ -159,9 +160,6 @@ void
 Shape::pointer ()
 {
 	// All geometries must be picked
-
-	if (not getGeometry ())
-		return;
 
 	if (not getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
 		return;

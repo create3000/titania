@@ -199,6 +199,10 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType) final override;
+
+	virtual
+	void
 	draw (const ShapeContainer* const container) final override;
 
 	virtual
@@ -514,6 +518,16 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 
 template <class Type>
 void
+X3DGeometryNodeTool <Type>::traverse (const TraverseType type)
+{
+	this -> getNode () -> traverse (type);
+
+	normalToolNode -> traverse (type);
+	coordToolNode  -> traverse (type);
+}
+
+template <class Type>
+void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
 	GLint polygonMode [2]; // Front and back value.
@@ -533,9 +547,6 @@ X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 	viewport         = container -> getScissor ();
 	projectionMatrix = this -> getCurrentLayer () -> getViewpoint () -> getProjectionMatrix (zNear, zFar, viewport);
 	modelViewMatrix  = container -> getModelViewMatrix ();
-
-	normalToolNode -> draw (container);
-	coordToolNode  -> draw (container);
 }
 
 template <class Type>

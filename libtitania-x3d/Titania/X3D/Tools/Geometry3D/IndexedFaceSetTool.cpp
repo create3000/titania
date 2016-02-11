@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Editing/FaceSelection.h"
 
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../Components/Rendering/Coordinate.h"
@@ -72,10 +73,13 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                            activePointCoord (),
 	                               activeLineSet (),
 	                              selectionCoord (),
+	                       selectedFacesGeometry (),
 	                                   coordNode (),
 	                                   selection (new FaceSelection ()),
 	                              selectedPoints (),
+	                               selectedFaces (),
 	                                activePoints (),
+	                                  activeFace (),
 	                                 translation ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
@@ -108,11 +112,14 @@ IndexedFaceSetTool::set_loadState ()
 {
 	try
 	{
-		planeSensor      = getCoordinateTool () -> getInlineNode () -> getExportedNode <PlaneSensor> ("PlaneSensor");
-		touchSensor      = getCoordinateTool () -> getInlineNode () -> getExportedNode <TouchSensor> ("TouchSensor");
-		activePointCoord = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("ActivePointCoord");
-		activeLineSet    = getCoordinateTool () -> getInlineNode () -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
-		selectionCoord   = getCoordinateTool () -> getInlineNode () -> getExportedNode <Coordinate> ("SelectionCoord");
+		const auto inlineNode = getCoordinateTool () -> getInlineNode ();
+
+		planeSensor           = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
+		touchSensor           = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
+		activePointCoord      = inlineNode -> getExportedNode <Coordinate> ("ActivePointCoord");
+		activeLineSet         = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
+		selectionCoord        = inlineNode -> getExportedNode <Coordinate> ("SelectionCoord");
+		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("SelectedFacesGeometry");
 
 		touchSensor -> isOver ()           .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_over);
 		touchSensor -> isActive ()         .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_active);
@@ -127,9 +134,13 @@ IndexedFaceSetTool::set_loadState ()
 		activeLineSet -> isPrivate (true);
 		activeLineSet -> coord () = coord ();
 		set_coord_point ();
+
+		__LOG__ << std::endl;
 	}
-	catch (const X3DError &)
-	{ }
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -156,7 +167,7 @@ IndexedFaceSetTool::set_coord_point ()
 		for (auto & activePoint : activePoints)
 			activePoint .second = getCoord () -> get1Point (activePoint .first);
 
-		set_active_points (activePoints);
+		set_active_points ();
 	
 		// Update selected points
 	
@@ -260,10 +271,11 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 void
 IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 {
-	for (const auto & vertex : vertices)
+	for (const Vector3d & vertex : vertices)
 	{
-		selection -> setIndices (vertex .getValue ());
-		set_point (vertex .getValue (), paintSelection ());
+		selection -> setIndices (vertex);
+		selection -> setFaces (vertex);
+		set_point (vertex, paintSelection (), true, true);
 	}
 }
 
@@ -278,13 +290,13 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 	for (const auto & activePoint : activePoints)
 	{
 		selection -> setIndices (activePoint .second);
-		set_point (activePoint .second, not first or paintSelection ());
+		set_point (activePoint .second, not first or paintSelection (), false, false);
 		first = false;
 	}
 }
 
 void
-IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint)
+IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, const bool adjacentPoints, const bool adjacentFaces)
 {
 	struct PointComp
 	{
@@ -306,7 +318,9 @@ IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint)
 	if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
 	{
 		selectionCoord -> point () .clear ();
+		selectedFacesGeometry -> coordIndex () .clear ();
 		selectedPoints .clear ();
+		selectedFaces .clear ();
 	}
 
 	const auto iter = std::lower_bound (selectionCoord -> point () .begin (),
@@ -320,12 +334,48 @@ IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint)
 			selectionCoord -> point () .erase (iter);
 
 		selectedPoints .erase (index);
-		return;
-	}
-	else if (not selectedPoints .emplace (index, point) .second)
-		return;
 
-	selectionCoord -> point () .emplace (iter, point);
+		if (adjacentFaces)
+		{
+			for (const auto & face : selection -> getAdjacentFaces ())
+				removeSelectedFace (face .first);
+		}
+		else
+			removeSelectedFace (selection -> getFace () .first);
+	}
+	else
+	{
+		if (selectedPoints .emplace (index, point) .second)
+			selectionCoord -> point () .emplace (iter, point);
+
+		if (adjacentFaces)
+		{
+			for (const auto & face : selection -> getAdjacentFaces ())
+				addSelectedFace (face .first);
+		}
+		else
+			addSelectedFace (selection -> getFace () .first);
+	}
+}
+
+void
+IndexedFaceSetTool::addSelectedFace (const size_t index)
+{
+	if (selectedFaces .emplace (index) .second)
+	{
+		const auto vertices = selection -> getVertices (index);
+
+		for (const auto i : vertices)
+			selectedFacesGeometry -> coordIndex () .emplace_back (coordIndex () [i]);
+
+		selectedFacesGeometry -> coordIndex () .emplace_back (-1);
+	}
+}
+
+void
+IndexedFaceSetTool::removeSelectedFace (const size_t index)
+{
+	selectedFaces .erase (index);
 }
 
 void
@@ -337,6 +387,7 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 
 	// Active line
 
+	activeFace   .clear ();
 	activePoints .clear ();
 
 	if (vertices .size () >= 3)
@@ -351,6 +402,8 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 			if (distance > SELECTION_DISTANCE)
 			{
 				// Face
+
+				activeFace = vertices;
 		
 				for (const auto & i : vertices)
 					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
@@ -371,14 +424,12 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 		}
 	}
 
-	set_active_points (activePoints);
+	set_active_points ();
 }
 
 void
-IndexedFaceSetTool::set_active_points (const std::map <size_t, Vector3d> & value)
+IndexedFaceSetTool::set_active_points ()
 {
-	activePoints = value;
-
 	activeLineSet -> coordIndex () .clear ();
 
 	if (activePoints .size () == 2)

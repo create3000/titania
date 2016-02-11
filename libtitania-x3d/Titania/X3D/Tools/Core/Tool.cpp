@@ -50,6 +50,7 @@
 
 #include "Tool.h"
 
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,10 +61,11 @@ const std::string   Tool::typeName       = "Tool";
 const std::string   Tool::containerField = "children";
 
 Tool::Tool (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        X3DChildNode (),
-	       X3DToolObject (),
-	transformationMatrix ()
+	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	         X3DChildNode (),
+	        X3DToolObject (),
+	withCameraSpaceMatrix (false),
+	 transformationMatrix ()
 {
 	addType (X3DConstants::Tool);
 
@@ -86,10 +88,17 @@ Tool::initialize ()
 void
 Tool::traverse (const TraverseType type)
 {
+	getModelViewMatrix () .push ();
+
 	if (type == TraverseType::CAMERA)
 		transformationMatrix = getModelViewMatrix () .get ();
 
+	else if (withCameraSpaceMatrix)
+		getCurrentLayer () -> getViewpoint () -> transform ();
+
 	X3DToolObject::traverse (type);
+
+	getModelViewMatrix () .pop ();
 }
 
 void

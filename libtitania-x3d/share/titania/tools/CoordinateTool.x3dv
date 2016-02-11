@@ -1,0 +1,191 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+META "comment" "World of Titania"
+META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Thu, 11 Feb 2016 12:20:53 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              11.5042495727539,
+              10.5419139862061,
+              7.72311305999756
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.526414513587952,
+              0.810502231121063,
+              0.2568539083004,
+              1.15459656715393
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF SelectedFacesGeometry IndexedFaceSet {
+            solid FALSE
+          }
+        }
+      }
+    ]
+  }
+}
+
+Collision {
+  enabled FALSE
+  children DEF _1 Switch {
+    children [
+      Group { }
+      DEF _2 TransformMatrix3D {
+        children [
+          DEF SelectionGeometry Group {
+            children [
+              DEF SelectionShape Shape {
+                appearance Appearance {
+                  texture PixelTexture {
+                    image 1 1 2
+                      0
+                  }
+                }
+              }
+              DEF TouchSensor TouchSensor { }
+              DEF PlaneSensor PlaneSensor {
+                autoOffset FALSE
+                maxPosition -1 0
+              }
+            ]
+          }
+          Transform {
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.792 0.792 0.792
+                  transparency 0.5
+                }
+              }
+              geometry USE SelectedFacesGeometry
+            }
+          }
+          DEF Edges Shape {
+            appearance Appearance {
+              material DEF Material Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.702794 0.852152 1
+              }
+            }
+            geometry DEF EdgesLineSet LineSet {
+              vertexCount [
+                2,
+                2,
+                2
+              ]
+              coord DEF EdgesCoord Coordinate {
+                point [
+                  -2 0 0,
+                  2 0 0,
+                  0 -2 0,
+                  0 2 0,
+                  0 0 -2,
+                  0 0 2
+                ]
+              }
+            }
+          }
+          DEF Selection_1 Transform {
+            children Shape {
+              appearance Appearance {
+                lineProperties DEF _3 LineProperties {
+                  linewidthScaleFactor 8
+                }
+                material USE Material
+              }
+              geometry PointSet {
+                coord DEF SelectionCoord Coordinate { }
+              }
+            }
+          }
+          DEF ActiveLine Transform {
+            children Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linewidthScaleFactor 2
+                }
+                material DEF Material_1 Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0 0.25127 0.5
+                  transparency 0.635417
+                }
+              }
+              geometry DEF ActiveLineSet IndexedLineSet { }
+            }
+          }
+          DEF ActivePoint Transform {
+            children Shape {
+              appearance Appearance {
+                lineProperties USE _3
+                material USE Material_1
+              }
+              geometry PointSet {
+                coord DEF ActivePointCoord Coordinate { }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+ROUTE ActiveLineSet.coord_changed TO SelectedFacesGeometry.set_coord
+ROUTE SelectedFacesGeometry.coord_changed TO ActiveLineSet.set_coord
+
+EXPORT ActiveLineSet
+EXPORT ActivePointCoord
+EXPORT EdgesCoord
+EXPORT EdgesLineSet
+EXPORT Material
+EXPORT PlaneSensor
+EXPORT SelectedFacesGeometry
+EXPORT SelectionCoord
+EXPORT SelectionShape
+EXPORT _1 AS Switch
+EXPORT TouchSensor
+EXPORT _2 AS TransformMatrix3D

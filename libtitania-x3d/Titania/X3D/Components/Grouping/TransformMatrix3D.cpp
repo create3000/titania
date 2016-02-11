@@ -99,6 +99,14 @@ TransformMatrix3D::initialize ()
 }
 
 void
+TransformMatrix3D::setMatrix (const Matrix4d & value)
+{
+	matrix () .setValue (value);
+
+	X3DTransformMatrix4DNode::setMatrix (value);
+}
+
+void
 TransformMatrix3D::eventsProcessed ()
 {
 	X3DTransformMatrix4DNode::setMatrix (matrix () .getValue ());
