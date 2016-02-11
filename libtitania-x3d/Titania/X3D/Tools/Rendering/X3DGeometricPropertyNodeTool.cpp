@@ -134,7 +134,8 @@ X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
 	
 		enabled = true;
 	
-		transformNode -> setMatrix (getModelViewMatrix () .get ());
+		if (getModelViewMatrix () .get () not_eq transformNode -> getMatrix ())
+			transformNode -> setMatrix (getModelViewMatrix () .get ());
 	}
 	catch (const X3DError & error)
 	{ }

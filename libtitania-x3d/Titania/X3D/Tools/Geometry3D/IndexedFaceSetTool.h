@@ -203,6 +203,15 @@ private:
 	set_plane_sensor_translation (const Vector3f &);
 
 	void
+	addSelectedPoint (const int32_t);
+	
+	void
+	removeSelectedPoint (const int32_t);
+	
+	void
+	updateSelectedPoints ();
+
+	void
 	addSelectedFace (const size_t);
 
 	void

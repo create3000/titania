@@ -171,20 +171,13 @@ IndexedFaceSetTool::set_coord_point ()
 	
 		// Update selected points
 	
-		std::vector <Vector3d> points;
-	
-		for (auto & selectedPoint : selectedPoints)
-			points .emplace_back (getCoord () -> get1Point (selectedPoint .first));
-	
-		std::sort (points .begin (), points .end ());
-	
-		selectionCoord -> point () .assign (points .begin (), points .end ());
-	
+		updateSelectedPoints ();
+
 		if (planeSensor -> isActive ())
 			return;
 	
-		for (auto & pair : selectedPoints)
-			pair .second = getCoord () -> get1Point (pair .first);
+		for (auto & selectedPoint : selectedPoints)
+			selectedPoint .second = getCoord () -> get1Point (selectedPoint .first);
 	
 		// Update selection
 	
@@ -279,6 +272,7 @@ IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 	}
 
 	updateSelectedFaces ();
+	updateSelectedPoints ();
 }
 
 void
@@ -297,10 +291,11 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 	}
 
 	updateSelectedFaces ();
+	updateSelectedPoints ();
 }
 
 void
-IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, const bool adjacentPoints, const bool adjacentFaces)
+IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints, const bool adjacentFaces)
 {
 	struct PointComp
 	{
@@ -328,73 +323,60 @@ IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, cons
 			selectedFaces .clear ();
 		}
 	
-		const auto iter = std::lower_bound (selectionCoord -> point () .begin (),
-	                                       selectionCoord -> point () .end (),
-	                                       point,
-	                                       PointComp ());
-	
 		if (getBrowser () -> hasControlKey ())
 		{
+			removeSelectedPoint (index);
+			removeSelectedFace (selection -> getFace () .first);
+
 			if (adjacentFaces)
 			{
 				for (const auto & face : selection -> getAdjacentFaces ())
 				{
-					const auto index = coordIndex () [face .first];
-					const auto point = getCoord () -> get1Point (index);
-					const auto iter  = std::lower_bound (selectionCoord -> point () .begin (),
-				                                        selectionCoord -> point () .end (),
-				                                        point,
-				                                        PointComp ());
-
-					if (iter not_eq selectionCoord -> point () .end () and *iter == point)
-						selectionCoord -> point () .erase (iter);
-
-					selectedPoints .erase (index);
-
+					removeSelectedPoint (coordIndex () [face .first]);
 					removeSelectedFace (face .first);
 				}
-			}
-			else
-			{
-				if (iter not_eq selectionCoord -> point () .end () and *iter == point)
-					selectionCoord -> point () .erase (iter);
-		
-				selectedPoints .erase (index);
-
-				removeSelectedFace (selection -> getFace () .first);
 			}
 		}
 		else
 		{
+			addSelectedFace (selection -> getFace () .first);
+
 			if (adjacentFaces)
 			{
 				for (const auto & face : selection -> getAdjacentFaces ())
-				{
-					const auto index = coordIndex () [face .first];
-					const auto point = getCoord () -> get1Point (index);
-					const auto iter  = std::lower_bound (selectionCoord -> point () .begin (),
-				                                        selectionCoord -> point () .end (),
-				                                        point,
-				                                        PointComp ());
-	
-					if (selectedPoints .emplace (index, point) .second)
-						selectionCoord -> point () .emplace (iter, point);
-	
 					addSelectedFace (face .first);
-				}
-			}
-			else
-			{
-				if (selectedPoints .emplace (index, point) .second)
-					selectionCoord -> point () .emplace (iter, point);
-
-				addSelectedFace (selection -> getFace () .first);
 			}
 		}
 
-		if (not adjacentPoints)
+		if (not coincidentPoints)
 			break;
 	}
+}
+
+void
+IndexedFaceSetTool::addSelectedPoint (const int32_t index)
+{
+	const auto point = getCoord () -> get1Point (index);
+
+	if (selectedPoints .emplace (index, point) .second)
+		selectionCoord -> point () .emplace_back (point);
+}
+
+void
+IndexedFaceSetTool::removeSelectedPoint (const int32_t index)
+{
+	selectedPoints .erase (index);
+}
+
+void
+IndexedFaceSetTool::updateSelectedPoints ()
+{
+	size_t i = 0;
+
+	for (auto & selectedPoint : selectedPoints)
+		selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
+
+	selectionCoord -> point () .resize (i);
 }
 
 void
@@ -420,6 +402,12 @@ IndexedFaceSetTool::removeSelectedFace (const size_t index)
 void
 IndexedFaceSetTool::updateSelectedFaces ()
 {
+	for (const auto index : selectedFaces)
+	{
+		for (const auto v : selection -> getVertices (index))
+			addSelectedPoint (coordIndex () [v]);
+	}
+
 	size_t i = 0;
 
 	for (const auto index : selectedFaces)
