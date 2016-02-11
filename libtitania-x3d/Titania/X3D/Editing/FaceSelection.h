@@ -60,6 +60,14 @@ class FaceSelection
 {
 public:
 
+	struct Edge {
+		int32_t index0;
+		int32_t index1;
+		Vector3d point0;
+		Vector3d point1;
+		Line3d line;
+	};
+
 	///  @name Construction
 
 	FaceSelection ();
@@ -99,6 +107,12 @@ public:
 	std::set <size_t>
 	getFaces () const;
 
+	Edge
+	getEdge (const std::vector <size_t> & ,const int32_t, const Vector3d &) const;
+
+	bool
+	isEdge (const std::vector <size_t> &, const int32_t, const int32_t) const;
+
 	///  @name Destruction
 
 	~FaceSelection ();
@@ -115,6 +129,7 @@ private:
 	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
 	std::pair <size_t, size_t>                           face;
 	std::vector <std::pair <size_t, size_t>>             faces;
+	std::vector <int32_t>                                triangle;
 
 };
 

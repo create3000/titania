@@ -178,19 +178,19 @@ private:
 	set_hitPoint (const Vector3f &);
 
 	void
-	set_selection (const MFVec3f &);
+	set_selection (const MFVec3d &);
 
 	void
 	set_touchTime ();
 
 	void
-	set_point (const Vector3f &);
+	set_point (const Vector3d &, const bool);
 
 	void
 	set_active_selection (const Vector3f &);
 
 	void
-	set_active_point (const int32_t);
+	set_active_points (const std::map <size_t, Vector3d> &);
 
 	void
 	set_plane_sensor_active (const bool);
@@ -212,7 +212,7 @@ private:
 	X3DPtr <X3DCoordinateNode>      coordNode;
 	std::unique_ptr <FaceSelection> selection;
 	std::map <size_t, Vector3d>     selectedPoints;
-	int32_t                         activePoint;
+	std::map <size_t, Vector3d>     activePoints;
 
 
 };

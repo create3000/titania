@@ -1,9 +1,101 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V1.2.2
 
 META "title" "U"
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 IndexedFaceSet {
+            solid FALSE
+            convex FALSE
+            coordIndex [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                0 5 0,
+                0 1 0,
+                1 0 0,
+                5 0 0,
+                6 1 0,
+                6 5 0,
+                4 5 0,
+                4 2 0,
+                2 2 0,
+                2 5 0
+              ]
+            }
+          }
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              3,
+              2.5,
+              9.427809715271
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              3,
+              2.5,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "U"
+}
+
 Background {
-	skyColor 1 1 1
+  skyColor 1 1 1
 }
 
 Viewpoint {
@@ -18,13 +110,6 @@ Transform {
         diffuseColor 1 0 0
       }
     }
-    geometry IndexedFaceSet {
-      coord Coordinate {
-        point [ 0 5 0, 0 1 0, 1 0 0, 5 0 0, 6 1 0, 6 5 0, 4 5 0, 4 2 0, 2 2 0, 2 5 0 ]
-      }
-      coordIndex [ 0, 1, 2, 3, 4, 5, 6, 7 8 9 ]
-      solid FALSE
-      convex FALSE
-    }
+    geometry USE _1
   }
 }

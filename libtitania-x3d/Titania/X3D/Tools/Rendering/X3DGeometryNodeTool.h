@@ -72,11 +72,11 @@ public:
 
 	///  @name Private fields
 
-	MFVec3f &
+	MFVec3d &
 	selection_changed ()
 	{ return *fields .selection_changed; }
 
-	const MFVec3f &
+	const MFVec3d &
 	selection_changed () const
 	{ return *fields .selection_changed; }
 
@@ -252,7 +252,7 @@ private:
 	{
 		Fields ();
 
-		MFVec3f* const selection_changed;
+		MFVec3d* const selection_changed;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};
@@ -270,7 +270,7 @@ private:
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
-	selection_changed (new MFVec3f ()),
+	selection_changed (new MFVec3d ()),
 	       normalTool (new SFNode ()),
 	        coordTool (new SFNode ())
 { }
@@ -332,7 +332,7 @@ X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & fr
 	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 		return;
 
-	std::vector <Vector3f> selection;
+	std::vector <Vector3d> selection;
 
 	for (const auto & vertex : this -> getVertices ())
 	{

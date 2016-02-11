@@ -66,6 +66,7 @@
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
+#include <Titania/Math/Geometry/Triangle3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
@@ -601,31 +602,14 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// There should be a test were this url are tested, with assert and so. If anyone can write this please contact me.
+	Vector3d p1 (0, 0, 0);
+	Vector3d p2 (1, 0, 0);
+	Vector3d p3 (0, 1, 0);
+	Vector3d h (0.41, 0.4, 0);
 
-	basic::uri base = "http://x3dgraphics.com/examples/X3dForWebAuthors/KelpForestExhibit/KelpForestMain.x3d";
-	basic::uri uri  = "https://crossorigin.me/http://x3dgraphics.com/examples/X3dForWebAuthors/KelpForestExhibit/KelpForestMain.x3d";
+	auto d = math::triangle_distance_to_point (p1, p2, p3, h);
 
-
-	std::clog << uri .is_local () << std::endl;
-	std::clog << uri .scheme () << std::endl;
-	std::clog << uri .authority () << std::endl;
-
-	std::clog << base .transform (uri) << std::endl;
-	std::clog << base .transform (uri) .is_local () << std::endl;
-	std::clog << base .transform (uri) .scheme () << std::endl;
-	std::clog << base .transform (uri) .authority () << std::endl;
-
-	basic::iurlstream istream (uri, 10000);
-
-	__LOG__ << bool (istream) << std::endl;
-	istream .send ();
-	__LOG__ << istream .status () << std::endl;
-	__LOG__ << bool (istream) << std::endl;
-	
-	
-
-	//std::thread (f, std::move (a)) .join ();
+	__LOG__ << d << std::endl;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

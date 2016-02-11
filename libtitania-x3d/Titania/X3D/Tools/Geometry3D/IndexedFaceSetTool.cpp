@@ -75,7 +75,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                   coordNode (),
 	                                   selection (new FaceSelection ()),
 	                              selectedPoints (),
-	                                 activePoint (-1)
+	                                activePoints ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
@@ -120,6 +120,7 @@ IndexedFaceSetTool::set_loadState ()
 
 		coord () .addInterest (activeLineSet -> coord ());
 
+		activeLineSet -> isPrivate (true);
 		activeLineSet -> coord () = coord ();
 		set_coord_point ();
 	}
@@ -147,15 +148,18 @@ IndexedFaceSetTool::set_coord_point ()
 	try
 	{
 		// Update active point
-	
-		set_active_point (activePoint);
+
+		for (auto & activePoint : activePoints)
+			activePoint .second = getCoord () -> get1Point (activePoint .first);
+
+		set_active_points (activePoints);
 	
 		// Update selected points
 	
 		std::vector <Vector3d> points;
 	
-		for (auto & pair : selectedPoints)
-			points .emplace_back (getCoord () -> get1Point (pair .first));
+		for (auto & selectedPoint : selectedPoints)
+			points .emplace_back (getCoord () -> get1Point (selectedPoint .first));
 	
 		std::sort (points .begin (), points .end ());
 	
@@ -180,6 +184,7 @@ IndexedFaceSetTool::set_over (const bool over)
 {
 	if (not over)
 	{
+		activeLineSet -> coordIndex () .clear ();
 		activePointCoord -> point () .clear ();
 	}
 }
@@ -208,23 +213,11 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 	// Setup PlaneSensor
 
-	if (activePointCoord -> point () .empty ())
+	if (activePoints .size () == 0)
 	{
-		if (activeLineSet -> coordIndex () .empty ())
-			planeSensor -> enabled () = false;
-		else
-		{
-			// Translate along line
-
-			const auto vector       = getCoord () -> get1Point (activeLineSet -> coordIndex () [0]) - getCoord () -> get1Point (activeLineSet -> coordIndex () [1]);
-			const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-			planeSensor -> enabled ()      = true;
-			planeSensor -> axisRotation () = axisRotation;
-			planeSensor -> maxPosition ()  = Vector2f (-1, 0);
-		}
+		planeSensor -> enabled () = false;
 	}
-	else
+	else if (activePoints .size () == 1)
 	{
 		// Translate over screen plane
 
@@ -235,15 +228,31 @@ IndexedFaceSetTool::set_hitPoint (const X3D::Vector3f & hitPoint)
 		planeSensor -> axisRotation () = axisRotation;
 		planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 	}
+	else if (activePoints .size () == 2)
+	{
+		// Translate along edge
+
+		const auto vector       = getCoord () -> get1Point (activeLineSet -> coordIndex () [0]) - getCoord () -> get1Point (activeLineSet -> coordIndex () [1]);
+		const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
+
+		planeSensor -> enabled ()      = true;
+		planeSensor -> axisRotation () = axisRotation;
+		planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+	}
+	else
+	{
+		// Translate along face normal
+		planeSensor -> enabled () = false;
+	}
 }
 
 void
-IndexedFaceSetTool::set_selection (const MFVec3f & vertices)
+IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 {
 	for (const auto & vertex : vertices)
 	{
 		selection -> setIndices (vertex .getValue ());
-		set_point (vertex);
+		set_point (vertex .getValue (), paintSelection ());
 	}
 }
 
@@ -253,12 +262,27 @@ IndexedFaceSetTool::set_touchTime ()
 	if (planeSensor -> translation_changed () not_eq Vector3f ())
 		return;
 
-	set_point (touchSensor -> hitPoint_changed () .getValue ());
+	bool first = true;
+
+	for (const auto & activePoint : activePoints)
+	{
+		selection -> setIndices (activePoint .second);
+		set_point (activePoint .second, not first or paintSelection ());
+		first = false;
+	}
 }
 
 void
-IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
+IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint)
 {
+	struct PointComp
+	{
+		bool
+		operator () (const SFVec3f & value, const Vector3f & point)
+		{ return value .getValue () < point; }
+
+	};
+
 	if (selection -> getIndices () .empty ())
 		return;
 
@@ -268,16 +292,16 @@ IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
 	if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 		return;
 
-	if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paintSelection ())
+	if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
 	{
 		selectionCoord -> point () .clear ();
 		selectedPoints .clear ();
 	}
 
 	const auto iter = std::lower_bound (selectionCoord -> point () .begin (),
-                                  selectionCoord -> point () .end (),
-                                  point,
-                                  [ ] (const SFVec3f & value, const Vector3f & point) { return value .getValue () < point; });
+                                       selectionCoord -> point () .end (),
+                                       point,
+                                       PointComp ());
 
 	if (getBrowser () -> hasControlKey ())
 	{
@@ -293,7 +317,6 @@ IndexedFaceSetTool::set_point (const Vector3f & hitPoint)
 	selectionCoord -> point () .emplace (iter, point);
 }
 
-
 void
 IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 {
@@ -301,79 +324,65 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 	const auto index    = selection -> getIndices () [0];
 	const auto point    = getCoord () -> get1Point (index);
 
-	if (vertices .size () < 3)
-		return;
-
-	// Active point
-
-	if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-	{
-		set_active_point (-1);
-	}
-	else
-	{
-		set_active_point (index);
-		activeLineSet -> coordIndex () .clear ();
-		return;
-	}
-
 	// Active line
 
-	if (paintSelection ())
-		activeLineSet -> coordIndex () .clear ();
+	activePoints .clear ();
 
-	else
+	if (vertices .size () >= 3)
 	{
-		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+		// Active points for near point or face
+	
+		if (not paintSelection ())
 		{
-			if (int32_t (index) == coordIndex () [vertices [i]])
+			if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 			{
-				const size_t index0    = vertices [(i + vertices .size () - 1) % vertices .size ()];
-				const size_t index1    = vertices [(i + 1) % vertices .size ()];
+				const auto edge     = selection -> getEdge (vertices, index, hitPoint);
+				const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
 
-				const auto   point0    = getCoord () -> get1Point (coordIndex () [index0]);
-				const auto   point1    = getCoord () -> get1Point (coordIndex () [index1]);
-
-				const auto   line0     = Line3d (point0, point, math::point_type ());
-				const auto   line1     = Line3d (point1, point, math::point_type ());
-
-				const auto   distance0 = getDistance (hitPoint, line0 .closest_point (hitPoint));
-				const auto   distance1 = getDistance (hitPoint, line1 .closest_point (hitPoint));
-
-				if (distance0 > SELECTION_DISTANCE and distance1 > SELECTION_DISTANCE)
+				if (distance > SELECTION_DISTANCE)
 				{
-					activeLineSet -> coordIndex () .clear ();
-					break;
-				}
-
-				if (distance0 < distance1)
-				{
-					activeLineSet -> coordIndex () .set1Value (0, coordIndex () [index0]);
-					activeLineSet -> coordIndex () .set1Value (1, index);
+					// Face
+			
+					for (const auto & i : vertices)
+						activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
 				}
 				else
 				{
-					activeLineSet -> coordIndex () .set1Value (0, coordIndex () [index1]);
-					activeLineSet -> coordIndex () .set1Value (1, index);
+					// Edge
+			
+					activePoints .emplace (edge .index0, edge .point0);
+					activePoints .emplace (edge .index1, edge .point1);
 				}
-
-				break;
+			}
+			else
+			{
+				// Point
+		
+				activePoints = { std::make_pair (index, point) };
 			}
 		}
 	}
+
+	set_active_points (activePoints);
 }
 
 void
-IndexedFaceSetTool::set_active_point (const int32_t value)
+IndexedFaceSetTool::set_active_points (const std::map <size_t, Vector3d> & value)
 {
-	activePoint = value;
+	activePoints = value;
 
-	const auto point = getCoord () -> get1Point (activePoint);
-	
-	if (activePoint > 0)
-		activePointCoord -> point () .set1Value (0, point);
-	else
-		activePointCoord -> point () .clear ();
+	activeLineSet -> coordIndex () .clear ();
+
+	if (activePoints .size () == 2)
+	{
+		for (const auto activePoint : activePoints)
+			activeLineSet -> coordIndex () .emplace_back (activePoint .first);
+	}
+
+	activePointCoord -> point () .clear ();
+
+	for (const auto activePoint : activePoints)
+		activePointCoord -> point () .emplace_back (getCoord () -> get1Point (activePoint .first));
 }
 
 void

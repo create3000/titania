@@ -2242,7 +2242,7 @@ TextureMappingEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Determine face and faces
 
-		rightSelection -> setIndices (hitPoint,touchSensor -> hitTriangle_changed ());
+		rightSelection -> setIndices (hitPoint, touchSensor -> hitTriangle_changed ());
 		rightSelection -> setFaces (hitPoint);
 
 		if (rightSelection -> getIndices () .empty ())

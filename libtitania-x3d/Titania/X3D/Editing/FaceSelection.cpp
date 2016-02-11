@@ -50,6 +50,8 @@
 
 #include "FaceSelection.h"
 
+#include "../Rendering/Tessellator.h"
+
 namespace titania {
 namespace X3D {
 
@@ -187,19 +189,59 @@ FaceSelection::setFaces (const Vector3d & hitPoint)
 			continue;
 		}
 
-		const auto vertex   = face .second;
-		const auto i1       = geometry -> coordIndex () [vertices [vertex == 0 ? vertices .size () - 1 : vertex - 1]];
-		const auto i2       = geometry -> coordIndex () [vertices [vertex]];
-		const auto i3       = geometry -> coordIndex () [vertices [(vertex + 1) % vertices .size ()]];
-		const auto p1       = coord -> get1Point (i1);
-		const auto p2       = coord -> get1Point (i2);
-		const auto p3       = coord -> get1Point (i3);
-		const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
-		
-		if (distance < minDistance)
+		if (geometry -> convex () or vertices .size () == 3)
 		{
-			minDistance = distance;
-			minIndex    = i;
+			for (size_t v = 0, size = vertices .size (); v < size; ++ v)
+			{
+				const auto i1       = geometry -> coordIndex () [vertices [v == 0 ? vertices .size () - 1 : v - 1]];
+				const auto i2       = geometry -> coordIndex () [vertices [v]];
+				const auto i3       = geometry -> coordIndex () [vertices [(v + 1) % vertices .size ()]];
+				const auto p1       = coord -> get1Point (i1);
+				const auto p2       = coord -> get1Point (i2);
+				const auto p3       = coord -> get1Point (i3);
+				const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
+	
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					minIndex    = i;
+					triangle    = { i1, i2, i3 };
+				}
+			}
+		}
+		else
+		{
+			opengl::tessellator <size_t> tessellator;
+		
+			tessellator .begin_polygon ();
+			tessellator .begin_contour ();
+		
+			for (const auto & vertex : vertices)
+				tessellator .add_vertex (coord -> get1Point (geometry -> coordIndex () [vertex]), geometry -> coordIndex () [vertex]);
+		
+			tessellator .end_contour ();
+			tessellator .end_polygon ();
+		
+			const auto triangles = tessellator .triangles ();
+	
+			for (size_t v = 0, size = triangles .size (); v < size; v += 3)
+			{
+				const auto p1       = triangles [v + 0] .point ();
+				const auto p2       = triangles [v + 1] .point ();
+				const auto p3       = triangles [v + 2] .point ();
+				const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
+
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					minIndex    = i;
+					triangle    = {
+						std::get <0> (triangles [v + 0] .data ()),
+						std::get <0> (triangles [v + 1] .data ()),
+						std::get <0> (triangles [v + 2] .data ())
+					};
+				}
+			}
 		}
 
 		++ i;
@@ -224,6 +266,81 @@ FaceSelection::getVertices (const size_t face) const
 	}
 
 	return vertices;
+}
+
+FaceSelection::Edge
+FaceSelection::getEdge (const std::vector <size_t> & vertices,
+                        const int32_t index,
+                        const Vector3d & hitPoint) const
+{
+	const auto point0 = coord -> get1Point (triangle [0]);
+	const auto point1 = coord -> get1Point (triangle [1]);
+	const auto point2 = coord -> get1Point (triangle [2]);
+
+	const auto line0 = Line3d (point0, point1, math::point_type ());
+	const auto line1 = Line3d (point1, point2, math::point_type ());
+	const auto line2 = Line3d (point2, point0, math::point_type ());
+
+	const std::vector <double> distances = {
+		not geometry -> convex () or isEdge (vertices, triangle [0], triangle [1]) ? abs (hitPoint - line0 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
+		not geometry -> convex () or isEdge (vertices, triangle [1], triangle [2]) ? abs (hitPoint - line1 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
+		not geometry -> convex () or isEdge (vertices, triangle [2], triangle [0]) ? abs (hitPoint - line2 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity ()
+	};
+
+	const auto iter = std::min_element (distances .begin (), distances .end ());
+	const auto min  = iter - distances .begin ();
+
+	if (min == 0)
+		return Edge { triangle [0], triangle [1], point0, point1, line0 };
+
+	if (min == 1)
+		return Edge { triangle [1], triangle [2], point1, point2, line1 };
+
+	return Edge { triangle [2], triangle [0], point2, point0, line2 };
+
+//	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+//	{
+//		// Edge
+//
+//		if (index == geometry -> coordIndex () [vertices [i]])
+//		{
+//			const size_t index0 = geometry -> coordIndex () [vertices [(i + vertices .size () - 1) % vertices .size ()]];
+//			const size_t index1 = geometry -> coordIndex () [vertices [i]];
+//			const size_t index2 = geometry -> coordIndex () [vertices [(i + 1) % vertices .size ()]];
+//
+//			const auto point0 = coord -> get1Point (index0);
+//			const auto point1 = coord -> get1Point (index1);
+//			const auto point2 = coord -> get1Point (index2);
+//
+//			const auto line0 = Line3d (point0, point1, math::point_type ());
+//			const auto line1 = Line3d (point2, point1, math::point_type ());
+//
+//			const auto distance0 = abs (hitPoint - line0 .closest_point (hitPoint));
+//			const auto distance1 = abs (hitPoint - line1 .closest_point (hitPoint));
+//
+//			if (distance0 < distance1)
+//				return Edge { index0, index1, point0, point1, line0 };
+//			
+//			return Edge { index2, index1, point2, point1, line1 };
+//		}
+//	}
+//
+//	throw std::domain_error ("FaceSelection::getEdge");
+}
+
+bool
+FaceSelection::isEdge (const std::vector <size_t> & vertices, const int32_t index1, const int32_t index2) const
+{
+	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	{
+		if (geometry -> coordIndex () [vertices [i]] == index1)
+		{
+			if (geometry -> coordIndex () [vertices [(i + 1) % size]] == index2)
+				return true;
+		}
+	}
+
+	return false;
 }
 
 FaceSelection::~FaceSelection ()

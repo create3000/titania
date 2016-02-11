@@ -151,8 +151,9 @@ class tessellator
 {
 public:
 
-	using Polygon = std::vector <polygon_element <Args ...>>;
-	using Vertex  = tessellator_vertex <Args ...>;
+	using PolygonElement = polygon_element <Args ...>;
+	using Polygon        = std::vector <PolygonElement>;
+	using Vertex         = tessellator_vertex <Args ...>;
 
 	tessellator (const bool = false);
 
@@ -180,7 +181,11 @@ public:
 	add_vertex (const math::vector3 <float> &, A && ... args);
 
 	const Polygon &
-	polygon () const { return m_polygon; }
+	polygon () const
+	{ return m_polygon; }
+
+	PolygonElement
+	triangles () const;
 
 	~tessellator ();
 
@@ -327,6 +332,62 @@ tessellator <Args ...>::tessError (const GLenum err_no)
 	#ifdef TITANIA_DEBUG
 	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
 	#endif
+}
+
+template <class ... Args>
+typename tessellator <Args ...>::PolygonElement
+tessellator <Args ...>::triangles () const
+{
+	PolygonElement element (GL_TRIANGLES);
+
+	auto & vertices = element .m_vertices;
+
+	for (const auto & polygonElement : this -> polygon ())
+	{
+		switch (polygonElement .type ())
+		{
+			case GL_TRIANGLE_FAN:
+			{
+				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+				{
+					// Add triangle to polygon.
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [0]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 1]));
+				}
+
+				break;
+			}
+			case GL_TRIANGLE_STRIP:
+			{
+				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+				{
+					// Add triangle to polygon.
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [math::is_odd (i) ? i + 1 : i]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [math::is_odd (i) ? i : i + 1]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 2]));
+				}
+
+				break;
+			}
+			case GL_TRIANGLES:
+			{
+				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+				{
+					// Add triangle to polygon.
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 1]));
+					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 2]));
+				}
+
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	return element;
 }
 
 template <class ... Args>
