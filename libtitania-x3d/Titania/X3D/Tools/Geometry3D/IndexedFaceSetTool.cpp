@@ -378,6 +378,15 @@ IndexedFaceSetTool::set_active_points (const std::map <size_t, Vector3d> & value
 		for (const auto activePoint : activePoints)
 			activeLineSet -> coordIndex () .emplace_back (activePoint .first);
 	}
+	else if (activePoints .size () > 2)
+	{
+		const auto vertices = selection -> getVertices (selection -> getFace () .first);
+
+		for (const auto vertex : vertices)
+			activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertex]);
+
+		activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertices [0]]);
+	}
 
 	activePointCoord -> point () .clear ();
 
