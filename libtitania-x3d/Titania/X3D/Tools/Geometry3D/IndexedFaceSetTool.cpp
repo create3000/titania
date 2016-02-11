@@ -268,11 +268,12 @@ IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 	{
 		selection -> setIndices (vertex);
 		selection -> setFaces (vertex);
-		set_point (vertex, paintSelection (), true, true);
+		selectPoints (vertex, paintSelection (), true);
+		selectFaces (vertex, paintSelection (), true, true);
 	}
 
-	updateSelectedFaces ();
 	updateSelectedPoints ();
+	updateSelectedFaces ();
 }
 
 void
@@ -286,16 +287,20 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 	for (const auto & activePoint : activePoints)
 	{
 		selection -> setIndices (activePoint .second);
-		set_point (activePoint .second, not first or paintSelection (), false, false);
+		selectPoints (activePoint .second, not first or paintSelection (), false);
+
+		if (first)
+			selectFaces (activePoint .second, not first or paintSelection (), false, false);
+
 		first = false;
 	}
 
-	updateSelectedFaces ();
 	updateSelectedPoints ();
+	updateSelectedFaces ();
 }
 
 void
-IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints, const bool adjacentFaces)
+IndexedFaceSetTool::selectPoints (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints)
 {
 	struct PointComp
 	{
@@ -318,23 +323,55 @@ IndexedFaceSetTool::set_point (const Vector3d & hitPoint, const bool paint, cons
 		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
 		{
 			selectionCoord -> point () .clear ();
-			selectedFacesGeometry -> coordIndex () .clear ();
 			selectedPoints .clear ();
+		}
+	
+		if (getBrowser () -> hasControlKey ())
+			removeSelectedPoint (index);
+
+		else
+			addSelectedPoint (index);
+
+		if (not coincidentPoints)
+			break;
+	}
+}
+
+void
+IndexedFaceSetTool::selectFaces (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints, const bool adjacentFaces)
+{
+	struct PointComp
+	{
+		bool
+		operator () (const SFVec3f & value, const Vector3f & point)
+		{ return value .getValue () < point; }
+
+	};
+
+	if (selection -> getIndices () .empty ())
+		return;
+
+	for (const auto & index : selection -> getIndices ())
+	{
+		const auto point = getCoord () -> get1Point (index);
+	
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+			return;
+	
+		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
+		{
+			selectedFacesGeometry -> coordIndex () .clear ();
 			selectedFaces .clear ();
 		}
 	
 		if (getBrowser () -> hasControlKey ())
 		{
-			removeSelectedPoint (index);
 			removeSelectedFace (selection -> getFace () .first);
 
 			if (adjacentFaces)
 			{
 				for (const auto & face : selection -> getAdjacentFaces ())
-				{
-					removeSelectedPoint (coordIndex () [face .first]);
 					removeSelectedFace (face .first);
-				}
 			}
 		}
 		else
@@ -402,12 +439,6 @@ IndexedFaceSetTool::removeSelectedFace (const size_t index)
 void
 IndexedFaceSetTool::updateSelectedFaces ()
 {
-	for (const auto index : selectedFaces)
-	{
-		for (const auto v : selection -> getVertices (index))
-			addSelectedPoint (coordIndex () [v]);
-	}
-
 	size_t i = 0;
 
 	for (const auto index : selectedFaces)

@@ -203,6 +203,12 @@ private:
 	set_plane_sensor_translation (const Vector3f &);
 
 	void
+	selectPoints (const Vector3d &, const bool, const bool);
+
+	void
+	selectFaces (const Vector3d &, const bool, const bool, const bool);
+
+	void
 	addSelectedPoint (const int32_t);
 	
 	void
