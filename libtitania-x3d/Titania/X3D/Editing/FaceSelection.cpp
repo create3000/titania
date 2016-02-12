@@ -152,7 +152,7 @@ FaceSelection::setCoincidentPoints (const Vector3d & hitPoint, const MFVec3f & h
 	setCoincidentPoints (point);
 }
 
-///  Finds the all points that are equal to point.
+///  Finds the all points that are equal to point, the result is an array of point indices.
 void
 FaceSelection::setCoincidentPoints (const Vector3d & point)
 {

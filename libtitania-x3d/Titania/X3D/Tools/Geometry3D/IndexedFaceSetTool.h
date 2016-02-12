@@ -191,16 +191,16 @@ private:
 	set_point (const Vector3d &, const bool, const bool, const bool);
 
 	void
-	setActiveSelection (const Vector3f &);
-
-	void
-	setActivePoints ();
-
-	void
 	set_plane_sensor_active (const bool);
 
 	void
 	set_plane_sensor_translation (const Vector3f &);
+
+	void
+	setActiveSelection (const Vector3f &);
+
+	void
+	setActivePoints ();
 
 	void
 	selectPoints (const Vector3d &, const bool, const bool);
@@ -226,6 +226,9 @@ private:
 	void
 	updateSelectedFaces ();
 
+	bool
+	isInSelection (const std::vector <size_t> &) const;
+
 	double
 	getDistance (const Vector3d &, const Vector3d &);
 
@@ -237,14 +240,14 @@ private:
 	X3DPtr <IndexedLineSet> activeLineSet;
 	X3DPtr <Coordinate>     selectionCoord;
 	X3DPtr <IndexedFaceSet> selectedFacesGeometry;
-
 	X3DPtr <X3DCoordinateNode>      coordNode;
-	std::unique_ptr <FaceSelection> selection;
-	std::map <size_t, Vector3d>     selectedPoints;
-	std::set <size_t>               selectedFaces;
 
-	std::map <size_t, Vector3d>     activePoints;
+	std::map <int32_t, Vector3d>    activePoints;
 	std::vector <size_t>            activeFace;
+
+	std::unique_ptr <FaceSelection> selection;
+	std::map <int32_t, Vector3d>    selectedPoints;
+	std::set <size_t>               selectedFaces;
 
 	Vector3f translation;
 

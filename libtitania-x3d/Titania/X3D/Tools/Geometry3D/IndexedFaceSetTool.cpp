@@ -75,11 +75,11 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                              selectionCoord (),
 	                       selectedFacesGeometry (),
 	                                   coordNode (),
+	                                activePoints (),
+	                                  activeFace (),
 	                                   selection (new FaceSelection ()),
 	                              selectedPoints (),
 	                               selectedFaces (),
-	                                activePoints (),
-	                                  activeFace (),
 	                                 translation ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
@@ -308,6 +308,81 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 }
 
 void
+IndexedFaceSetTool::setActiveSelection (const Vector3f & hitPoint)
+{
+	const auto vertices = selection -> getVertices (selection -> getFace () .first);
+	const auto index    = selection -> getCoincidentPoints () [0];
+	const auto point    = getCoord () -> get1Point (index);
+
+	// Active line
+
+	activeFace   .clear ();
+	activePoints .clear ();
+
+	if (vertices .size () >= 3)
+	{
+		// Active points for near point or face
+	
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+		{
+			const auto edge     = selection -> getEdge (vertices, hitPoint);
+			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
+
+			if (distance > SELECTION_DISTANCE)
+			{
+				// Face
+
+				activeFace = vertices;
+		
+				for (const auto & i : vertices)
+					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
+			}
+			else
+			{
+				// Edge
+		
+				activePoints .emplace (edge .index0, edge .point0);
+				activePoints .emplace (edge .index1, edge .point1);
+			}
+		}
+		else
+		{
+			// Point
+	
+			activePoints = { std::make_pair (index, point) };
+		}
+	}
+
+	setActivePoints ();
+}
+
+void
+IndexedFaceSetTool::setActivePoints ()
+{
+	activeLineSet -> coordIndex () .clear ();
+
+	if (activePoints .size () == 2)
+	{
+		for (const auto activePoint : activePoints)
+			activeLineSet -> coordIndex () .emplace_back (activePoint .first);
+	}
+	else if (activePoints .size () > 2)
+	{
+		const auto vertices = selection -> getVertices (selection -> getFace () .first);
+
+		for (const auto vertex : vertices)
+			activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertex]);
+
+		activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertices [0]]);
+	}
+
+	activePointCoord -> point () .clear ();
+
+	for (const auto activePoint : activePoints)
+		activePointCoord -> point () .emplace_back (getCoord () -> get1Point (activePoint .first));
+}
+
+void
 IndexedFaceSetTool::selectPoints (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints)
 {
 	struct PointComp
@@ -427,24 +502,27 @@ IndexedFaceSetTool::updateSelectedPoints ()
 void
 IndexedFaceSetTool::addSelectedFace (const size_t index)
 {
-	if (selectedFaces .emplace (index) .second)
+	const auto vertices = selection -> getVertices (index);
+
+	if (isInSelection (vertices))
 	{
-		const auto vertices = selection -> getVertices (index);
-
-		for (const auto i : vertices)
-			selectedFacesGeometry -> coordIndex () .emplace_back (coordIndex () [i]);
-
-		selectedFacesGeometry -> coordIndex () .emplace_back (-1);
+		if (selectedFaces .emplace (index) .second)
+		{
+			for (const auto i : vertices)
+				selectedFacesGeometry -> coordIndex () .emplace_back (coordIndex () [i]);
+		
+			selectedFacesGeometry -> coordIndex () .emplace_back (-1);
+		}
 	}
 }
 
 void
 IndexedFaceSetTool::removeSelectedFace (const size_t index)
 {
-	for (const auto v : selection -> getVertices (index))
-		removeSelectedPoint (coordIndex () [v]);
+	const auto vertices = selection -> getVertices (index);
 
-	selectedFaces .erase (index);
+	if (not isInSelection (vertices))
+		selectedFaces .erase (index);
 }
 
 void
@@ -471,79 +549,16 @@ IndexedFaceSetTool::updateSelectedFaces ()
 	selectedFacesGeometry -> coordIndex () .resize (i);
 }
 
-void
-IndexedFaceSetTool::setActiveSelection (const Vector3f & hitPoint)
+bool
+IndexedFaceSetTool::isInSelection (const std::vector <size_t> & vertices) const
 {
-	const auto vertices = selection -> getVertices (selection -> getFace () .first);
-	const auto index    = selection -> getCoincidentPoints () [0];
-	const auto point    = getCoord () -> get1Point (index);
-
-	// Active line
-
-	activeFace   .clear ();
-	activePoints .clear ();
-
-	if (vertices .size () >= 3)
+	for (const auto & v : vertices)
 	{
-		// Active points for near point or face
-	
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-		{
-			const auto edge     = selection -> getEdge (vertices, hitPoint);
-			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
-
-			if (distance > SELECTION_DISTANCE)
-			{
-				// Face
-
-				activeFace = vertices;
-		
-				for (const auto & i : vertices)
-					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
-			}
-			else
-			{
-				// Edge
-		
-				activePoints .emplace (edge .index0, edge .point0);
-				activePoints .emplace (edge .index1, edge .point1);
-			}
-		}
-		else
-		{
-			// Point
-	
-			activePoints = { std::make_pair (index, point) };
-		}
+		if (not selectedPoints .count (coordIndex () [v]))
+			return false;
 	}
 
-	setActivePoints ();
-}
-
-void
-IndexedFaceSetTool::setActivePoints ()
-{
-	activeLineSet -> coordIndex () .clear ();
-
-	if (activePoints .size () == 2)
-	{
-		for (const auto activePoint : activePoints)
-			activeLineSet -> coordIndex () .emplace_back (activePoint .first);
-	}
-	else if (activePoints .size () > 2)
-	{
-		const auto vertices = selection -> getVertices (selection -> getFace () .first);
-
-		for (const auto vertex : vertices)
-			activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertex]);
-
-		activeLineSet -> coordIndex () .emplace_back (coordIndex () [vertices [0]]);
-	}
-
-	activePointCoord -> point () .clear ();
-
-	for (const auto activePoint : activePoints)
-		activePointCoord -> point () .emplace_back (getCoord () -> get1Point (activePoint .first));
+	return true;
 }
 
 void
