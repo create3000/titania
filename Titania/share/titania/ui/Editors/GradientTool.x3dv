@@ -6,7 +6,7 @@ META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 29 Jan 2016 12:11:21 GMT"
+META "modified" "Fri, 12 Feb 2016 03:47:25 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -342,147 +342,171 @@ WorldInfo {
 
 LayerSet {
   activeLayer -1
-  order 1
-  layers DEF HUD LayoutLayer {
-    metadata DEF Titania_1 MetadataSet {
-      name "Titania"
-      reference "http://titania.create3000.de"
-      value [
-        DEF AngleGrid MetadataSet {
-          name "AngleGrid"
-          reference "http://titania.create3000.de"
-          value [
-            DEF enabled MetadataBoolean {
-              name "enabled"
-              reference "http://titania.create3000.de"
-              value FALSE
-            }
-            DEF rotation MetadataFloat {
-              name "rotation"
-              reference "http://titania.create3000.de"
-              value [
-                1,
-                0,
-                0,
-                1.5708
-              ]
-            }
-            DEF scale MetadataFloat {
-              name "scale"
-              reference "http://titania.create3000.de"
-              value [
-                0.1,
-                0.1,
-                0.1
-              ]
-            }
-          ]
-        }
-        DEF Grid MetadataSet {
-          name "Grid"
-          reference "http://titania.create3000.de"
-          value [
-            DEF enabled_1 MetadataBoolean {
-              name "enabled"
-              reference "http://titania.create3000.de"
-              value TRUE
-            }
-            DEF rotation_1 MetadataFloat {
-              name "rotation"
-              reference "http://titania.create3000.de"
-              value [
-                1,
-                0,
-                0,
-                1.5708
-              ]
-            }
-            DEF scale_1 MetadataFloat {
-              name "scale"
-              reference "http://titania.create3000.de"
-              value [
-                0.25,
-                0.25,
-                0.25
-              ]
-            }
-            DEF dimension MetadataInteger {
-              name "dimension"
-              reference "http://titania.create3000.de"
-              value [
-                4,
-                10,
-                4
-              ]
-            }
-            DEF snapDistance MetadataDouble {
-              name "snapDistance"
-              reference "http://titania.create3000.de"
-              value 0.6
-            }
-          ]
-        }
-      ]
-    }
-    layout Layout { }
-    viewport Viewport { }
-    children [
-      DEF Colors Group {
-        children [
-          DEF _11 Arrow {
-            color 0.844259 0.651834 0.281599
+  order [
+    1,
+    2
+  ]
+  layers [
+    DEF Gradient LayoutLayer {
+      metadata DEF Titania_1 MetadataSet {
+        name "Titania"
+        reference "http://titania.create3000.de"
+        value [
+          DEF AngleGrid MetadataSet {
+            name "AngleGrid"
+            reference "http://titania.create3000.de"
+            value [
+              DEF enabled MetadataBoolean {
+                name "enabled"
+                reference "http://titania.create3000.de"
+                value FALSE
+              }
+              DEF rotation MetadataFloat {
+                name "rotation"
+                reference "http://titania.create3000.de"
+                value [
+                  1,
+                  0,
+                  0,
+                  1.5708
+                ]
+              }
+              DEF scale MetadataFloat {
+                name "scale"
+                reference "http://titania.create3000.de"
+                value [
+                  0.1,
+                  0.1,
+                  0.1
+                ]
+              }
+            ]
           }
-          DEF _12 Arrow {
-            color 0.643032 0.378889 0.422449
+          DEF Grid MetadataSet {
+            name "Grid"
+            reference "http://titania.create3000.de"
+            value [
+              DEF enabled_1 MetadataBoolean {
+                name "enabled"
+                reference "http://titania.create3000.de"
+                value TRUE
+              }
+              DEF rotation_1 MetadataFloat {
+                name "rotation"
+                reference "http://titania.create3000.de"
+                value [
+                  1,
+                  0,
+                  0,
+                  1.5708
+                ]
+              }
+              DEF scale_1 MetadataFloat {
+                name "scale"
+                reference "http://titania.create3000.de"
+                value [
+                  0.25,
+                  0.25,
+                  0.25
+                ]
+              }
+              DEF dimension MetadataInteger {
+                name "dimension"
+                reference "http://titania.create3000.de"
+                value [
+                  4,
+                  10,
+                  4
+                ]
+              }
+              DEF snapDistance MetadataDouble {
+                name "snapDistance"
+                reference "http://titania.create3000.de"
+                value 0.6
+              }
+            ]
           }
         ]
       }
-      DEF Gradient Transform {
-        translation -0.5 -0.25 0
-        scale 1 0.25 1
-        children [
-          DEF _13 Gradient {
-            position [
-              0.147972,
-              0.850492
-            ]
-            color [
-              0.643032 0.378889 0.422449,
-              0.844259 0.651834 0.281599
-            ]
-          }
-          DEF _14 TouchSensor { }
-          DEF _15 DoubleClick { }
+      layout Layout {
+        align [
+          "CENTER",
+          "BOTTOM"
+        ]
+        offsetUnits [
+          "FRACTION",
+          "PIXEL"
+        ]
+        offset [
+          0,
+          -16
+        ]
+        sizeUnits [
+          "FRACTION",
+          "FRACTION"
+        ]
+        scaleMode [
+          "FRACTION",
+          "FRACTION"
         ]
       }
-      DEF GradientEditorScript Script {
-        inputOnly      MFFloat inputPosition
-        inputOnly      MFColor inputColor
-        inputOnly      SFInt32 inputWhichChoice
-        inputOnly      SFBool  set_active
-        inputOnly      SFVec3f set_translation
-        inputOutput    SFBool  enableFirst TRUE
-        inputOutput    SFTime  addTime nan
-        inputOutput    SFTime  removeTime nan
-        inputOutput    MFFloat position [
-          0.147972,
-          0.850492
-        ]
-        inputOutput    MFColor color [
-          0.643032 0.378889 0.422449,
-          0.844259 0.651834 0.281599
-        ]
-        outputOnly     SFBool  isActive
-        outputOnly     SFInt32 outputWhichChoice
-        outputOnly     MFFloat outputPosition
-        outputOnly     MFColor outputColor
-        outputOnly     SFTime  outputAddTime
-        outputOnly     SFTime  outputRemoveTime
-        initializeOnly SFInt32 whichChoice 0
-        initializeOnly SFNode  arrows USE Colors
-        initializeOnly SFNode  gradientTouch USE _14
+      viewport Viewport { }
+      children [
+        DEF Gradient_1 Transform {
+          translation -0.5 0 0
+          scale 1 0.5 1
+          children [
+            DEF _11 Gradient {
+              position [
+                0.147972,
+                0.850492
+              ]
+              color [
+                0.643032 0.378889 0.422449,
+                0.844259 0.651834 0.281599
+              ]
+            }
+            DEF _12 TouchSensor { }
+            DEF _13 DoubleClick { }
+          ]
+        }
+        DEF GradientEditorScript Script {
+          inputOnly      MFFloat inputPosition
+          inputOnly      MFColor inputColor
+          inputOnly      SFInt32 inputWhichChoice
+          inputOnly      SFBool  set_active
+          inputOnly      SFVec3f set_translation
+          inputOutput    SFBool  enableFirst TRUE
+          inputOutput    SFTime  addTime nan
+          inputOutput    SFTime  removeTime nan
+          inputOutput    MFFloat position [
+            0.147972,
+            0.850492
+          ]
+          inputOutput    MFColor color [
+            0.643032 0.378889 0.422449,
+            0.844259 0.651834 0.281599
+          ]
+          outputOnly     SFBool  isActive
+          outputOnly     SFInt32 outputWhichChoice
+          outputOnly     MFFloat outputPosition
+          outputOnly     MFColor outputColor
+          outputOnly     SFTime  outputAddTime
+          outputOnly     SFTime  outputRemoveTime
+          initializeOnly SFInt32 whichChoice 0
+          initializeOnly SFNode  arrows DEF Colors Group {
+            children [
+              DEF _14 Arrow {
+                color 0.844259 0.651834 0.281599
+              }
+              DEF _15 Arrow {
+                color 0.643032 0.378889 0.422449
+              }
+            ]
+          }
+          initializeOnly SFNode  gradientTouch USE _12
 
-        url "ecmascript:
+          url "ecmascript:
 
 function set_enableFirst (value)
 {
@@ -774,18 +798,50 @@ function lowerBound (array, first, last, value, comp)
 	return first;
 }
 "
+        }
+      ]
+    }
+    DEF Arrows LayoutLayer {
+      layout Layout {
+        align [
+          "CENTER",
+          "TOP"
+        ]
+        offsetUnits [
+          "FRACTION",
+          "PIXEL"
+        ]
+        offset [
+          0,
+          -6
+        ]
+        sizeUnits [
+          "FRACTION",
+          "PIXEL"
+        ]
+        size [
+          1,
+          16
+        ]
+        scaleMode [
+          "FRACTION",
+          "PIXEL"
+        ]
       }
-    ]
-  }
+      children Transform {
+        children USE Colors
+      }
+    }
+  ]
 }
 
-ROUTE _14.touchTime TO _15.set_time
-ROUTE GradientEditorScript.position_changed TO _13.set_position
-ROUTE GradientEditorScript.color_changed TO _13.set_color
-ROUTE _11.isActive TO GradientEditorScript.set_active
-ROUTE _12.isActive TO GradientEditorScript.set_active
-ROUTE _15.doubleClickTime TO GradientEditorScript.set_addTime
-ROUTE _12.doubleClickTime TO GradientEditorScript.set_removeTime
-ROUTE _11.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _12.touchTime TO _13.set_time
+ROUTE GradientEditorScript.position_changed TO _11.set_position
+ROUTE GradientEditorScript.color_changed TO _11.set_color
+ROUTE _14.isActive TO GradientEditorScript.set_active
+ROUTE _15.isActive TO GradientEditorScript.set_active
+ROUTE _13.doubleClickTime TO GradientEditorScript.set_addTime
+ROUTE _15.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _14.doubleClickTime TO GradientEditorScript.set_removeTime
 
 EXPORT GradientEditorScript AS Tool

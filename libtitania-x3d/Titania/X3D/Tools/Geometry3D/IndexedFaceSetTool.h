@@ -191,10 +191,10 @@ private:
 	set_point (const Vector3d &, const bool, const bool, const bool);
 
 	void
-	set_active_selection (const Vector3f &);
+	setActiveSelection (const Vector3f &);
 
 	void
-	set_active_points ();
+	setActivePoints ();
 
 	void
 	set_plane_sensor_active (const bool);

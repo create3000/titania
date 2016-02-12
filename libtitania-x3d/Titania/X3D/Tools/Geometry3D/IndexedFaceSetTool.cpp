@@ -175,7 +175,7 @@ IndexedFaceSetTool::set_coord_point ()
 		for (auto & activePoint : activePoints)
 			activePoint .second = getCoord () -> get1Point (activePoint .first);
 
-		set_active_points ();
+		setActivePoints ();
 	
 		// Update selected points
 	
@@ -229,7 +229,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 
 	selection -> setAdjacentFaces (hitPoint);
 
-	set_active_selection (hitPoint);
+	setActiveSelection (hitPoint);
 
 	if (touchSensor -> isActive () and paintSelection ())
 		set_touch_sensor_touchTime ();
@@ -472,7 +472,7 @@ IndexedFaceSetTool::updateSelectedFaces ()
 }
 
 void
-IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
+IndexedFaceSetTool::setActiveSelection (const Vector3f & hitPoint)
 {
 	const auto vertices = selection -> getVertices (selection -> getFace () .first);
 	const auto index    = selection -> getCoincidentPoints () [0];
@@ -517,11 +517,11 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 		}
 	}
 
-	set_active_points ();
+	setActivePoints ();
 }
 
 void
-IndexedFaceSetTool::set_active_points ()
+IndexedFaceSetTool::setActivePoints ()
 {
 	activeLineSet -> coordIndex () .clear ();
 
