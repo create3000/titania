@@ -314,7 +314,12 @@ X3DLayerNode::traverse (const TraverseType type)
 		}
 		case TraverseType::DISPLAY:
 		{
-			display ();
+			display (type);
+			break;
+		}
+		case TraverseType::DEPTH:
+		{
+			display (type);
 			break;
 		}
 	}
@@ -389,7 +394,7 @@ X3DLayerNode::collision ()
 }
 
 void
-X3DLayerNode::display ()
+X3DLayerNode::display (const TraverseType type)
 {
 	glClear (GL_DEPTH_BUFFER_BIT);
 
@@ -401,7 +406,7 @@ X3DLayerNode::display ()
 	getViewpoint ()      -> transform ();
 
 	currentViewport -> push ();
-	render (TraverseType::DISPLAY);
+	render (type);
 	currentViewport -> pop ();
 
 	getNavigationInfo () -> disable ();

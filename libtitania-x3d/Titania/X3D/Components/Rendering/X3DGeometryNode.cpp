@@ -265,7 +265,7 @@ X3DGeometryNode::isClipped (const Vector3f & point,
 }
 
 void
-X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
+X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer) const
 {
 	// Implemented in X3DGeometryNodeTool.
 }

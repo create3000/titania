@@ -59,15 +59,20 @@ namespace titania {
 namespace X3D {
 
 FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
-	      browser (browser),
-	        width (width),
-	       height (height),
-	      samples (samples_),
-	           id (0),
-	colorBufferId (0),
-	depthBufferId (0),
-	        depth (width * height),
-	       pixels ()
+	        browser (browser),
+	          width (width),
+	         height (height),
+	        samples (samples_),
+	withColorBuffer (withColorBuffer),
+	             id (0),
+	  colorBufferId (0),
+	  depthBufferId (0),
+	          depth (width * height),
+	         pixels ()
+{ }
+
+void
+FrameBuffer::setup ()
 {
 	if (not browser -> hasExtension ("GL_EXT_framebuffer_multisample"))
 		samples = 0;
@@ -161,13 +166,15 @@ FrameBuffer::unbind ()
 }
 
 void
-FrameBuffer::read ()
+FrameBuffer::readPixels ()
 {
 	pixels .resize (4 * width * height);
 
 	if (samples)
 	{
 		FrameBuffer frameBuffer (browser, width, height, 0, colorBufferId);
+
+		frameBuffer .setup ();
 
 		glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
 		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
@@ -179,6 +186,29 @@ FrameBuffer::read ()
 	}
 	else
 		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+}
+
+void
+FrameBuffer::readDepth ()
+{
+	depth .resize (width * height);
+
+	if (samples)
+	{
+		FrameBuffer frameBuffer (browser, width, height, 0, false);
+
+		frameBuffer .setup ();
+
+		glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
+		glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
+
+		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+		glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+	}
+	else
+		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 }
 
 //// DEBUG

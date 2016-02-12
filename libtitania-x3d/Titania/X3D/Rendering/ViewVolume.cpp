@@ -142,7 +142,7 @@ throw (std::domain_error)
 }
 
 Vector3d
-ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & matrix, const Vector4i & viewport)
+ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
 throw (std::domain_error)
 {
 	// Transformation of normalized coordinates between -1 and 1
@@ -152,7 +152,7 @@ throw (std::domain_error)
 	             1);
 
 	//Objects coordinates
-	in = in * matrix;
+	in = in * invModelViewProjection;
 
 	if (in .w () == 0)
 		throw std::domain_error ("Couldn't unproject point: divisor is 0.");
@@ -163,10 +163,10 @@ throw (std::domain_error)
 }
 
 Line3d
-ViewVolume::unProjectLine (double winx, double winy, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::unProjectLine (double winx, double winy, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	const Matrix4d matrix = ~(modelview * projection);
+	const Matrix4d matrix = ~(modelView * projection);
 
 	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
 	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
@@ -175,12 +175,30 @@ throw (std::domain_error)
 }
 
 Vector3d
-ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
 	Vector4d in (point .x (), point .y (), point .z (), 1);
 
-	in = in * modelview * projection;
+	in = in * modelView * projection;
+
+	if (in .w () == 0)
+		throw std::domain_error ("Couldn't project point: divisor is 0.");
+
+	const double d = 1 / in .w ();
+
+	return Vector3d ((in .x () * d / 2 + 0.5) * viewport [2] + viewport [0],
+	                 (in .y () * d / 2 + 0.5) * viewport [3] + viewport [1],
+	                 (1 + in .z () * d) / 2);
+}
+
+Vector3d
+ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
+throw (std::domain_error)
+{
+	Vector4d in (point .x (), point .y (), point .z (), 1);
+
+	in = in * modelViewProjection;
 
 	if (in .w () == 0)
 		throw std::domain_error ("Couldn't project point: divisor is 0.");

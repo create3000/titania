@@ -111,43 +111,57 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 bool
 X3DSelector::on_button_release_event (GdkEventButton* event)
 {
-	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
-		return X3DExamineViewer::on_button_release_event (event);
+	try
+	{
+		if (event -> button not_eq button)
+			return X3DExamineViewer::on_button_release_event (event);
+	
+		button = 0;
+	
+		if (points .empty ())
+			return true;
+	
+		ContextLock lock (getBrowser ());
+	
+		getBrowser () -> addEvent ();
+		getBrowser () -> displayed () .removeInterest (this, &X3DSelector::display);
+	
+		// Depth buffer
+	
+		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0, false));
+		getBrowser () -> getDepthBuffer () -> setup ();
+		getBrowser () -> getDepthBuffer () -> bind ();
+	
+		getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH);
+	
+		getBrowser () -> getDepthBuffer () -> readDepth ();
+		getBrowser () -> getDepthBuffer () -> unbind ();
 
-	if (event -> button not_eq 1)
-		return X3DExamineViewer::on_button_release_event (event);
+		// Selection buffer
+	
+		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
+		getBrowser () -> getSelectionBuffer () -> setup ();
+		getBrowser () -> getSelectionBuffer () -> bind ();
+	
+		draw ();
+		getBrowser () -> getSelectionBuffer () -> readPixels ();
+		getBrowser () -> touch (points [0] .x (), points [0] .y ());
 
-	if (event -> button not_eq button)
-		return false;
-
-	if (points .empty ())
+		getBrowser () -> getSelectionBuffer () -> unbind ();
+		getBrowser () -> getSelectionBuffer () .reset ();
+		getBrowser () -> getDepthBuffer () .reset ();
 		return true;
-
-	ContextLock lock (getBrowser ());
-
-	button = 0;
-
-	getBrowser () -> addEvent ();
-	getBrowser () -> displayed () .removeInterest (this, &X3DSelector::display);
-
-	getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
-	getBrowser () -> getSelectionBuffer () -> bind ();
-
-	draw ();
-	getBrowser () -> getSelectionBuffer () -> read ();
-	getBrowser () -> touch (points [0] .x (), points [0] .y ());
-
-	getBrowser () -> getSelectionBuffer () -> unbind ();
-	getBrowser () -> getSelectionBuffer () .reset ();
-	return true;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return true;
+	}
 }
 
 bool
 X3DSelector::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
-		return X3DExamineViewer::on_motion_notify_event (event);
-
 	if (button not_eq 1)
 		return X3DExamineViewer::on_motion_notify_event (event);
 

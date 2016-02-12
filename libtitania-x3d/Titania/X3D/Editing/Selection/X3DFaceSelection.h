@@ -48,74 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITING_X3DFACE_SELECTION_H__
-#define __TITANIA_X3D_EDITING_X3DFACE_SELECTION_H__
+#ifndef __TITANIA_X3D_EDITING_SELECTION_X3DFACE_SELECTION_H__
+#define __TITANIA_X3D_EDITING_SELECTION_X3DFACE_SELECTION_H__
 
-#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DCoordinateNode;
-
 class X3DFaceSelection
 {
 public:
-	
-	struct Edge
-	{
-		int32_t index0;
-		int32_t index1;
-		Vector3d point0;
-		Vector3d point1;
-		Line3d line;
-	};
-
-	///  @name Member access
-
-	virtual
-	void
-	setCoord (const X3DPtr <X3DCoordinateNode> &) = 0;
-
-	virtual
-	void
-	setCoincidentPoints (const Vector3d &) = 0;
-
-	virtual
-	void
-	setCoincidentPoints (const Vector3d &, const MFVec3f &) = 0;
-
-	virtual
-	void
-	setAdjacentFaces (const Vector3d &) = 0;
-
-	virtual
-	const std::vector <size_t> &
-	getCoincidentPoints () const = 0;
-
-	virtual
-	std::vector <size_t>
-	getVertices (const size_t) const = 0;
-
-	virtual
-	const std::pair <size_t, size_t> &
-	getFace () const = 0;
-
-	virtual
-	const std::vector <std::pair <size_t, size_t>> &
-	getAdjacentFaces () const = 0;
-
-	virtual
-	std::set <size_t>
-	getFaces () const = 0;
-
-	virtual
-	Edge
-	getEdge (const std::vector <size_t> &, const Vector3d &) const = 0;
-
-	virtual
-	bool
-	isEdge (const std::vector <size_t> &, const int32_t, const int32_t) const = 0;
 
 	///  @name Destruction
 

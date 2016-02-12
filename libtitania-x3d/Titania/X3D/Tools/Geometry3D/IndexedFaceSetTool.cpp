@@ -51,7 +51,7 @@
 #include "IndexedFaceSetTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Editing/FaceSelection.h"
+#include "../../Editing/Selection/FaceSelection.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
@@ -272,16 +272,26 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 void
 IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 {
+	FrameBuffer depthBuffer (getBrowser (), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3], 0, false);
+
+	depthBuffer .setup ();
+	depthBuffer .bind ();
+	getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH);
+	depthBuffer .readDepth ();
+	depthBuffer .unbind ();
+
 	for (const Vector3d & vertex : vertices)
 	{
+		// In this order.
 		selection -> setCoincidentPoints (vertex);
 		selection -> setAdjacentFaces (vertex);
 		selectPoints (vertex, paintSelection (), true);
 		selectFaces (vertex, paintSelection (), true, true);
 	}
 
-	updateSelectedPoints ();
+	// In this order.
 	updateSelectedFaces ();
+	updateSelectedPoints ();
 }
 
 void
@@ -294,17 +304,16 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 
 	for (const auto & activePoint : activePoints)
 	{
+		// In this order.
 		selection -> setCoincidentPoints (activePoint .second);
 		selectPoints (activePoint .second, not first or paintSelection (), false);
-
-		if (first)
-			selectFaces (activePoint .second, not first or paintSelection (), false, false);
-
+		selectFaces  (activePoint .second, not first or paintSelection (), false, false);
 		first = false;
 	}
 
-	updateSelectedPoints ();
+	// In this order.
 	updateSelectedFaces ();
+	updateSelectedPoints ();
 }
 
 void
@@ -393,13 +402,10 @@ IndexedFaceSetTool::selectPoints (const Vector3d & hitPoint, const bool paint, c
 
 	};
 
-	if (selection -> getCoincidentPoints () .empty ())
-		return;
-
 	for (const auto & index : selection -> getCoincidentPoints ())
 	{
 		const auto point = getCoord () -> get1Point (index);
-	
+
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 			return;
 	
@@ -430,9 +436,6 @@ IndexedFaceSetTool::selectFaces (const Vector3d & hitPoint, const bool paint, co
 		{ return value .getValue () < point; }
 
 	};
-
-	if (selection -> getCoincidentPoints () .empty ())
-		return;
 
 	for (const auto & index : selection -> getCoincidentPoints ())
 	{
@@ -478,8 +481,7 @@ IndexedFaceSetTool::addSelectedPoint (const int32_t index)
 {
 	const auto point = getCoord () -> get1Point (index);
 
-	if (selectedPoints .emplace (index, point) .second)
-		selectionCoord -> point () .emplace_back (point);
+	selectedPoints .emplace (index, point);
 }
 
 void
@@ -505,15 +507,7 @@ IndexedFaceSetTool::addSelectedFace (const size_t index)
 	const auto vertices = selection -> getVertices (index);
 
 	if (isInSelection (vertices))
-	{
-		if (selectedFaces .emplace (index) .second)
-		{
-			for (const auto i : vertices)
-				selectedFacesGeometry -> coordIndex () .emplace_back (coordIndex () [i]);
-		
-			selectedFacesGeometry -> coordIndex () .emplace_back (-1);
-		}
-	}
+		selectedFaces .emplace (index);
 }
 
 void

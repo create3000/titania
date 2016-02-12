@@ -171,6 +171,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		FrameBuffer frameBuffer (this, width, height, antialiasing);
 
+		frameBuffer .setup ();
 		frameBuffer .bind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
@@ -181,7 +182,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		getWorld () -> traverse (TraverseType::DISPLAY);
 
-		frameBuffer .read ();
+		frameBuffer .readPixels ();
 		frameBuffer .unbind ();
 		const_cast <X3DBrowserContext*> (this) -> reshape ();
 

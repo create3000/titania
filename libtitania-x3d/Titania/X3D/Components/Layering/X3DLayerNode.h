@@ -229,7 +229,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	traverse (const TraverseType) final override;
 
 	///  @name Destruction
 
@@ -279,7 +279,7 @@ private:
 	collision ();
 
 	void
-	display ();
+	display (const TraverseType);
 
 	virtual
 	void

@@ -108,6 +108,14 @@ public:
 	getSelectionBuffer ()
 	{ return selectionBuffer; }
 
+	const std::shared_ptr <FrameBuffer> &
+	getDepthBuffer () const
+	{ return depthBuffer; }
+
+	std::shared_ptr <FrameBuffer> &
+	getDepthBuffer ()
+	{ return depthBuffer; }
+
 	///  @name Operations
 
 	void
@@ -197,6 +205,7 @@ private:
 	time_type                                 pressTime;
 	bool                                      hasMoved;
 	std::shared_ptr <FrameBuffer>             selectionBuffer;
+	std::shared_ptr <FrameBuffer>             depthBuffer;
 
 };
 

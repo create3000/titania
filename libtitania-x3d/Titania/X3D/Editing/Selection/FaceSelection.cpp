@@ -50,7 +50,9 @@
 
 #include "FaceSelection.h"
 
-#include "../Rendering/Tessellator.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {

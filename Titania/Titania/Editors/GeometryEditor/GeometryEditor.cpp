@@ -246,6 +246,9 @@ GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 void
 GeometryEditor::set_viewer ()
 {
+	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
+		return;
+
 	changing = true;
 
 	switch (getCurrentBrowser () -> getCurrentViewer ())
@@ -253,9 +256,7 @@ GeometryEditor::set_viewer ()
 		case X3D::X3DConstants::RectangleSelection:
 		case X3D::X3DConstants::LassoSelection:
 		{
-			if (getCurrentBrowser () -> getSelection () -> isEnabled ())
-				getPaintSelectionToggleButton () .set_active (true);
-
+			getPaintSelectionToggleButton () .set_active (true);
 			break;
 		}
 		default:
@@ -354,42 +355,42 @@ GeometryEditor::on_paint_selection_toggled ()
 {
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active (), true);
 
-	if (getCurrentBrowser () -> getSelection () -> isEnabled ())
+	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
+		return;
+
+	if (changing)
+		return;
+
+	switch (selectionType)
 	{
-		if (changing)
-			return;
-	
-		switch (selectionType)
+		case SelectionType::BRUSH:
 		{
-			case SelectionType::BRUSH:
-			{
+			getCurrentBrowser () -> setPrivateViewer (privateViewer);
+			coordEditor -> setField <X3D::SFBool> ("pickable", true);
+
+			getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+			getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
+			break;
+		}
+		case SelectionType::RECTANGLE:
+		{
+			if (getPaintSelectionToggleButton () .get_active ())
+				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
+			else
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
-				coordEditor -> setField <X3D::SFBool> ("pickable", true);
 
-				getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-				getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
-				break;
-			}
-			case SelectionType::RECTANGLE:
-			{
-				if (getPaintSelectionToggleButton () .get_active ())
-					getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
-				else
-					getCurrentBrowser () -> setPrivateViewer (privateViewer);
+			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+			break;
+		}
+		case SelectionType::LASSO:
+		{
+			if (getPaintSelectionToggleButton () .get_active ())
+				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
+			else
+				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 
-				coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
-				break;
-			}
-			case SelectionType::LASSO:
-			{
-				if (getPaintSelectionToggleButton () .get_active ())
-					getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
-				else
-					getCurrentBrowser () -> setPrivateViewer (privateViewer);
-	
-				coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
-				break;
-			}
+			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+			break;
 		}
 	}
 }

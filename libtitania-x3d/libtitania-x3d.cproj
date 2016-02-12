@@ -774,11 +774,11 @@
     <None Include="Titania\X3D\Tools\Rendering\CoordinateTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.h" />
-    <None Include="Titania\X3D\Editing\FaceSelection.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\RectangleSelection.h" />
     <None Include="share\titania\tools\CoordinateTool.x3dv" />
-    <None Include="Titania\X3D\Editing\X3DFaceSelection.h" />
+    <None Include="Titania\X3D\Editing\Selection\FaceSelection.h" />
+    <None Include="Titania\X3D\Editing\Selection\X3DFaceSelection.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1303,9 +1303,9 @@
     <Compile Include="Titania\X3D\Tools\Rendering\CoordinateTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.cpp" />
-    <Compile Include="Titania\X3D\Editing\FaceSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.cpp" />
     <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\RectangleSelection.cpp" />
+    <Compile Include="Titania\X3D\Editing\Selection\FaceSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1376,6 +1376,7 @@
     <Folder Include="Titania\X3D\Browser\Tools\" />
     <Folder Include="Titania\X3D\Tools\Rendering\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\" />
+    <Folder Include="Titania\X3D\Editing\Selection\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

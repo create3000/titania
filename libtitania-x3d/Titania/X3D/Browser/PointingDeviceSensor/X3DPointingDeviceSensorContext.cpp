@@ -77,7 +77,8 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	    layerNumber (0),
 	      pressTime (0),
 	       hasMoved (false),
-	selectionBuffer ()
+	selectionBuffer (),
+	    depthBuffer ()
 {
 	addChildren (pickable,
 	             overSensors,

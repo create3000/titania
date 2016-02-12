@@ -1217,6 +1217,7 @@ ParticleSystem::traverse (const TraverseType type)
 			break;
 		}
 		case TraverseType::DISPLAY:
+		case TraverseType::DEPTH:
 		{
 			if (isHidden ())
 				break;

@@ -180,7 +180,7 @@ public:
 
 	virtual
 	void
-	intersects (const std::shared_ptr <FrameBuffer> &) const final override;
+	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &) const final override;
 
 	virtual
 	bool
@@ -343,34 +343,50 @@ X3DGeometryNodeTool <Type>::initialize ()
 
 template <class Type>
 void
-X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer) const
+X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer) const
 {
-	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
-		return;
-
-	std::vector <Vector3d> selection;
-
-	for (const auto & vertex : this -> getVertices ())
+	try
 	{
-		const auto point = ViewVolume::projectPoint (vertex, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+			return;
 
-		if (point .x () < 0 or point .x () >= frameBuffer -> getWidth ())
-			continue;
+		std::vector <Vector3d> selection;
+	
+		const auto & depth               = depthBuffer -> getDepth ();
+		const auto   modelViewProjection = getModelViewMatrix () * getProjectionMatrix ();
+		const auto   invProjection       = inverse (getProjectionMatrix ());
 
-		if (point .y () < 0 or point .y () >= frameBuffer -> getHeight ())
-			continue;
+		for (const Vector3d & vertex : this -> getVertices ())
+		{
+			const auto screen = ViewVolume::projectPoint (vertex, modelViewProjection, getViewport ());
+			const auto world  = vertex * getModelViewMatrix ();
+			const auto x      = std::floor (screen .x ());
+			const auto y      = std::floor (screen .y ());
+			const auto index  = x * 4 + y * frameBuffer -> getWidth () * 4;
 
-		const auto index = std::floor (point .x ()) * 4 + std::floor (point .y ()) * frameBuffer -> getWidth () * 4;
+			if (index < 0 or index >= frameBuffer -> getPixels () .size ())
+				continue;
 
-		if (frameBuffer -> getPixels () [index])
-			selection .emplace_back (vertex);
+			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
+			const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, getViewport ());
+	
+			if (world .z () - zWorld .z () < -0.05)
+				continue;
+	
+			if (frameBuffer -> getPixels () [index])
+				selection .emplace_back (vertex);
+		}
+	
+		std::sort (selection .begin (), selection .end ());
+	
+		const auto last = std::unique (selection .begin (), selection .end ());
+	
+		const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), last);
 	}
-
-	std::sort (selection .begin (), selection .end ());
-
-	const auto last = std::unique (selection .begin (), selection .end ());
-
-	const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), last);
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 template <class Type>
@@ -530,22 +546,14 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 {
-	GLint polygonMode [2]; // Front and back value.
-	glGetIntegerv (GL_POLYGON_MODE, polygonMode);
-
-	if (polygonMode [0] == GL_FILL)
+	if (PolygonMode (GL_FILL) .front () == GL_FILL)
 		this -> getNode () -> draw (container);
 
 	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 		return;
 
-	const auto   viewpoint      = this -> getCurrentLayer () -> getViewpoint ();
-	const auto   navigationInfo = this -> getCurrentLayer () -> getNavigationInfo ();
-	const double zNear          = navigationInfo -> getNearPlane ();
-	const double zFar           = navigationInfo -> getFarPlane (viewpoint);
-
-	viewport         = container -> getScissor ();
-	projectionMatrix = this -> getCurrentLayer () -> getViewpoint () -> getProjectionMatrix (zNear, zFar, viewport);
+	viewport         = Viewport4i ();
+	projectionMatrix = ProjectionMatrix4d ();
 	modelViewMatrix  = container -> getModelViewMatrix ();
 }
 

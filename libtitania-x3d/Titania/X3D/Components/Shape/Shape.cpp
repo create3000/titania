@@ -145,6 +145,7 @@ Shape::traverse (const TraverseType type)
 				break;
 			}
 			case TraverseType::DISPLAY:
+			case TraverseType::DEPTH:
 			{
 				getGeometry () -> traverse (type);
 				getCurrentLayer () -> addShape (this);
@@ -175,7 +176,7 @@ Shape::pointer ()
 
 	if (getBrowser () -> getSelectionBuffer ())
 	{
-		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer ());
+		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer ());
 		return;
 	}
 

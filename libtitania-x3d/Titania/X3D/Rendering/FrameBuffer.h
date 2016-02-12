@@ -67,6 +67,9 @@ public:
 
 	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
 
+	void
+	setup ();
+
 	///  @name Member access
 
 	void
@@ -85,6 +88,16 @@ public:
 	getPixels () const
 	{ return pixels; }
 
+	void
+	readPixels ();
+
+	const std::vector <float> &
+	getDepth () const
+	{ return depth; }
+
+	void
+	readDepth ();
+
 	///  @name Operations
 
 	double
@@ -95,9 +108,6 @@ public:
 
 	void
 	unbind ();
-
-	void
-	read ();
 
 	///  @name Destruction
 
@@ -112,6 +122,7 @@ private:
 	size_t                   width;
 	size_t                   height;
 	size_t                   samples;
+	bool                     withColorBuffer;
 	GLuint                   id;
 	GLuint                   colorBufferId;
 	GLuint                   depthBufferId;

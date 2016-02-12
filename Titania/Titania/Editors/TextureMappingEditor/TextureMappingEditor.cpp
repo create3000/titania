@@ -64,7 +64,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Texturing/MultiTexture.h>
 #include <Titania/X3D/Components/Texturing/MultiTextureTransform.h>
-#include <Titania/X3D/Editing/FaceSelection.h>
+#include <Titania/X3D/Editing/Selection/FaceSelection.h>
 
 #include <complex>
 

@@ -48,20 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITING_FACE_SELECTION_H__
-#define __TITANIA_X3D_EDITING_FACE_SELECTION_H__
+#ifndef __TITANIA_X3D_EDITING_SELECTION_FACE_SELECTION_H__
+#define __TITANIA_X3D_EDITING_SELECTION_FACE_SELECTION_H__
 
-#include "../Editing/X3DFaceSelection.h"
-
-#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
+#include "../../Editing/Selection/X3DFaceSelection.h"
+#include "../../Fields/X3DPtr.h"
+#include "../../Types/Geometry.h"
+#include "../../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
+
+class IndexedFaceSet;
+class X3DCoordinateNode;
 
 class FaceSelection :
 	public X3DFaceSelection
 {
 public:
+
+	///  @name Member types
+
+	struct Edge
+	{
+		int32_t index0;
+		int32_t index1;
+		Vector3d point0;
+		Vector3d point1;
+		Line3d line;
+	};
 
 	///  @name Construction
 
@@ -72,55 +87,45 @@ public:
 	void
 	setGeometry (const X3DPtr <IndexedFaceSet> &);
 
-	virtual
 	void
-	setCoord (const X3DPtr <X3DCoordinateNode> &) final override;
+	setCoord (const X3DPtr <X3DCoordinateNode> &);
 
-	virtual
 	void
-	setCoincidentPoints (const Vector3d &) final override;
+	setCoincidentPoints (const Vector3d &);
 
-	virtual
 	void
-	setCoincidentPoints (const Vector3d &, const MFVec3f &) final override;
+	setCoincidentPoints (const Vector3d &, const MFVec3f &);
 
-	virtual
 	void
-	setAdjacentFaces (const Vector3d &) final override;
+	setAdjacentFaces (const Vector3d &);
 
-	virtual
 	const std::vector <size_t> &
-	getCoincidentPoints () const final override
+	getCoincidentPoints () const
 	{ return indices; }
 
-	virtual
 	std::vector <size_t>
-	getVertices (const size_t) const final override;
+	getVertices (const size_t) const;
 
-	virtual
 	const std::pair <size_t, size_t> &
-	getFace () const final override
+	getFace () const
 	{ return face; }
 
-	virtual
 	const std::vector <std::pair <size_t, size_t>> &
-	getAdjacentFaces () const final override
+	getAdjacentFaces () const
 	{ return faces; }
 
-	virtual
 	std::set <size_t>
-	getFaces () const final override;
+	getFaces () const;
 
-	virtual
 	Edge
-	getEdge (const std::vector <size_t> &, const Vector3d &) const final override;
+	getEdge (const std::vector <size_t> &, const Vector3d &) const;
 
-	virtual
 	bool
-	isEdge (const std::vector <size_t> &, const int32_t, const int32_t) const final override;
+	isEdge (const std::vector <size_t> &, const int32_t, const int32_t) const;
 
 	///  @name Destruction
 
+	virtual
 	~FaceSelection ();
 
 

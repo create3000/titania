@@ -83,7 +83,7 @@ X3DRenderer::X3DRenderer () :
 	   transparentShapes (),
 	     collisionShapes (),
 	    activeCollisions (),
-	         depthBuffer (),
+	         depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
 	               speed (),
 	     numOpaqueShapes (0),
 	numTransparentShapes (0),
@@ -95,7 +95,7 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::initialize ()
 {
-	depthBuffer .reset (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true));
+	depthBuffer -> setup ();
 }
 
 void
@@ -308,7 +308,16 @@ X3DRenderer::render (const TraverseType type)
 			numTransparentShapes = 0;
 
 			collect (type);
-			display ();
+			display (true);
+			break;
+		}
+		case TraverseType::DEPTH:
+		{
+			numOpaqueShapes      = 0;
+			numTransparentShapes = 0;
+
+			collect (type);
+			display (false);
 			break;
 		}
 		default:
@@ -484,7 +493,7 @@ X3DRenderer::gravite ()
 }
 
 void
-X3DRenderer::display ()
+X3DRenderer::display (const bool transparent)
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
@@ -506,10 +515,13 @@ X3DRenderer::display ()
 
 	// Render transparent objects
 
-	glDepthMask (GL_FALSE);
-	glEnable (GL_BLEND);
+	if (transparent)
+	{
+		glDepthMask (GL_FALSE);
+		glEnable (GL_BLEND);
 
-	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
+		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
+	}
 
 	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 		context -> display ();
