@@ -220,14 +220,14 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 
 	// Determine face and faces
 
-	selection -> setIndices (hitPoint, touchSensor -> hitTriangle_changed ());
+	selection -> setCoincidentPoints (hitPoint, touchSensor -> hitTriangle_changed ());
 
-	if (selection -> getIndices () .empty ())
+	if (selection -> getCoincidentPoints () .empty ())
 		return;
 
 	// Set selected point
 
-	selection -> setFaces (hitPoint);
+	selection -> setAdjacentFaces (hitPoint);
 
 	set_active_selection (hitPoint);
 
@@ -274,8 +274,8 @@ IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
 {
 	for (const Vector3d & vertex : vertices)
 	{
-		selection -> setIndices (vertex);
-		selection -> setFaces (vertex);
+		selection -> setCoincidentPoints (vertex);
+		selection -> setAdjacentFaces (vertex);
 		selectPoints (vertex, paintSelection (), true);
 		selectFaces (vertex, paintSelection (), true, true);
 	}
@@ -294,7 +294,7 @@ IndexedFaceSetTool::set_touch_sensor_touchTime ()
 
 	for (const auto & activePoint : activePoints)
 	{
-		selection -> setIndices (activePoint .second);
+		selection -> setCoincidentPoints (activePoint .second);
 		selectPoints (activePoint .second, not first or paintSelection (), false);
 
 		if (first)
@@ -318,10 +318,10 @@ IndexedFaceSetTool::selectPoints (const Vector3d & hitPoint, const bool paint, c
 
 	};
 
-	if (selection -> getIndices () .empty ())
+	if (selection -> getCoincidentPoints () .empty ())
 		return;
 
-	for (const auto & index : selection -> getIndices ())
+	for (const auto & index : selection -> getCoincidentPoints ())
 	{
 		const auto point = getCoord () -> get1Point (index);
 	
@@ -356,10 +356,10 @@ IndexedFaceSetTool::selectFaces (const Vector3d & hitPoint, const bool paint, co
 
 	};
 
-	if (selection -> getIndices () .empty ())
+	if (selection -> getCoincidentPoints () .empty ())
 		return;
 
-	for (const auto & index : selection -> getIndices ())
+	for (const auto & index : selection -> getCoincidentPoints ())
 	{
 		const auto point = getCoord () -> get1Point (index);
 	
@@ -475,7 +475,7 @@ void
 IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 {
 	const auto vertices = selection -> getVertices (selection -> getFace () .first);
-	const auto index    = selection -> getIndices () [0];
+	const auto index    = selection -> getCoincidentPoints () [0];
 	const auto point    = getCoord () -> get1Point (index);
 
 	// Active line

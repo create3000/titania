@@ -858,15 +858,15 @@ ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Determine face and faces
 
-		selection -> setIndices (hitPoint, touchSensor -> hitTriangle_changed ());
-		selection -> setFaces (hitPoint);
+		selection -> setCoincidentPoints (hitPoint, touchSensor -> hitTriangle_changed ());
+		selection -> setAdjacentFaces (hitPoint);
 
-		if (selection -> getIndices () .empty ())
+		if (selection -> getCoincidentPoints () .empty ())
 			return;
 
 		// Setup cross hair
 
-		set_triangle (coord -> get1Point (selection -> getIndices () [0]));
+		set_triangle (coord -> get1Point (selection -> getCoincidentPoints () [0]));
 
 		// Colorize vertices
 

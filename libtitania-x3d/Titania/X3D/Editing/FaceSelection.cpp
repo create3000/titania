@@ -58,6 +58,7 @@ namespace X3D {
 FaceSelection::FaceSelection ()
 { }
 
+///  Updates the geometry node of this selection.
 void
 FaceSelection::setGeometry (const X3DPtr <IndexedFaceSet> & value)
 {
@@ -86,6 +87,7 @@ FaceSelection::setGeometry (const X3DPtr <IndexedFaceSet> & value)
 	}
 }
 
+///  Returns a set of all faces in geometry.
 std::set <size_t>
 FaceSelection::getFaces () const
 {
@@ -118,6 +120,7 @@ FaceSelection::getFaces () const
 	return faces;
 }
 
+///  Updates the coordinate node of this selection.
 void
 FaceSelection::setCoord (const X3DPtr <X3DCoordinateNode> & value)
 {
@@ -132,8 +135,9 @@ FaceSelection::setCoord (const X3DPtr <X3DCoordinateNode> & value)
 		pointIndex .emplace (coord -> get1Point (i), i);
 }
 
+///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
 void
-FaceSelection::setIndices (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
+FaceSelection::setCoincidentPoints (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
 {
 	const std::array <double, 3> distances = {
 		math::abs (hitPoint - Vector3d (hitTriangle [0] .getValue ())),
@@ -145,11 +149,12 @@ FaceSelection::setIndices (const Vector3d & hitPoint, const MFVec3f & hitTriangl
 	const auto index = iter - distances .begin ();
 	const auto point = hitTriangle [index] .getValue ();
 
-	setIndices (point);
+	setCoincidentPoints (point);
 }
 
+///  Finds the all points that are equal to point.
 void
-FaceSelection::setIndices (const Vector3d & point)
+FaceSelection::setCoincidentPoints (const Vector3d & point)
 {
 	indices .clear ();
 
@@ -157,8 +162,9 @@ FaceSelection::setIndices (const Vector3d & point)
 		indices .emplace_back (index .second);
 }
 
+///  Finds the nearest face for hitPoint and all adjacent faces.
 void
-FaceSelection::setFaces (const Vector3d & hitPoint)
+FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 {
 	faces .clear ();
 
@@ -300,7 +306,7 @@ FaceSelection::getEdge (const std::vector <size_t> & vertices,
 	return Edge { triangle [2], triangle [0], point2, point0, line2 };
 }
 
-///  Returns true if index1 and index2 are edges in vertices, where the vertices form a face.
+///  Returns true if index1 and index2 form a edge in vertices, where the vertices form a face.
 bool
 FaceSelection::isEdge (const std::vector <size_t> & vertices, const int32_t index1, const int32_t index2) const
 {

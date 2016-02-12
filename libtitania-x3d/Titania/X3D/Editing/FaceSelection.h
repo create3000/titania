@@ -78,19 +78,19 @@ public:
 
 	virtual
 	void
-	setIndices (const Vector3d &) final override;
+	setCoincidentPoints (const Vector3d &) final override;
 
 	virtual
 	void
-	setIndices (const Vector3d &, const MFVec3f &) final override;
+	setCoincidentPoints (const Vector3d &, const MFVec3f &) final override;
 
 	virtual
 	void
-	setFaces (const Vector3d &) final override;
+	setAdjacentFaces (const Vector3d &) final override;
 
 	virtual
 	const std::vector <size_t> &
-	getIndices () const final override
+	getCoincidentPoints () const final override
 	{ return indices; }
 
 	virtual

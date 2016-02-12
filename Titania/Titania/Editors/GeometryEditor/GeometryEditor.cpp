@@ -106,6 +106,8 @@ GeometryEditor::configure ()
 	if (getConfig () -> hasItem ("edgeColor"))
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 
+	coordEditor -> setField <X3D::SFBool> ("paintSelection", getConfig () -> get <X3D::SFBool> ("paintSelection"));
+
 	set_selection_type (SelectionType (getConfig () -> get <size_t> ("selectionType")));
 }
 
@@ -469,10 +471,11 @@ GeometryEditor::set_selection_lasso ()
 void
 GeometryEditor::store ()
 {
-	getConfig () -> set ("normalEnabled", normalEditor -> getField <X3D::SFBool>       ("load"));
-	getConfig () -> set ("normalLength",  normalEditor  -> getField <X3D::SFFloat>     ("length"));
-	getConfig () -> set ("normalColor",   normalEditor  -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("edgeColor",     coordEditor   -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("normalEnabled",  normalEditor -> getField <X3D::SFBool>       ("load"));
+	getConfig () -> set ("normalLength",   normalEditor  -> getField <X3D::SFFloat>     ("length"));
+	getConfig () -> set ("normalColor",    normalEditor  -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("edgeColor",      coordEditor   -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("paintSelection", coordEditor -> getField <X3D::SFBool>       ("paintSelection"));
 
 	getConfig () -> set ("selectionType",  size_t (selectionType));
 

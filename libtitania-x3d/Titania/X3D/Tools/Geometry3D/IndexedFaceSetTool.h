@@ -242,6 +242,7 @@ private:
 	std::unique_ptr <FaceSelection> selection;
 	std::map <size_t, Vector3d>     selectedPoints;
 	std::set <size_t>               selectedFaces;
+
 	std::map <size_t, Vector3d>     activePoints;
 	std::vector <size_t>            activeFace;
 

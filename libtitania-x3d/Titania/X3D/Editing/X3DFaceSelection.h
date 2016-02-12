@@ -79,19 +79,19 @@ public:
 
 	virtual
 	void
-	setIndices (const Vector3d &) = 0;
+	setCoincidentPoints (const Vector3d &) = 0;
 
 	virtual
 	void
-	setIndices (const Vector3d &, const MFVec3f &) = 0;
+	setCoincidentPoints (const Vector3d &, const MFVec3f &) = 0;
 
 	virtual
 	void
-	setFaces (const Vector3d &) = 0;
+	setAdjacentFaces (const Vector3d &) = 0;
 
 	virtual
 	const std::vector <size_t> &
-	getIndices () const = 0;
+	getCoincidentPoints () const = 0;
 
 	virtual
 	std::vector <size_t>
