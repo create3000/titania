@@ -69,6 +69,9 @@ X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
 	    transformNode ()
 {
 	addType (X3DConstants::X3DGeometricPropertyNodeTool);
+
+	addChildren (switchNode,
+                transformNode);
 }
 
 void

@@ -2,7 +2,7 @@
  *******************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ *zz
  * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
@@ -89,6 +89,14 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "selection_changed", selection_changed ());
 	addField (inputOutput, "normalTool",        normalTool ());
 	addField (inputOutput, "coordTool",         coordTool ());
+
+	addChildren (planeSensor,
+	             touchSensor,
+	             activePointCoord,
+	             activeLineSet,
+	             selectionCoord,
+	             selectedFacesGeometry);
+
 }
 
 void
@@ -433,12 +441,21 @@ IndexedFaceSetTool::addSelectedFace (const size_t index)
 void
 IndexedFaceSetTool::removeSelectedFace (const size_t index)
 {
+	for (const auto v : selection -> getVertices (index))
+		removeSelectedPoint (coordIndex () [v]);
+
 	selectedFaces .erase (index);
 }
 
 void
 IndexedFaceSetTool::updateSelectedFaces ()
 {
+	for (const auto index : selectedFaces)
+	{
+		for (const auto v : selection -> getVertices (index))
+			addSelectedPoint (coordIndex () [v]);
+	}
+
 	size_t i = 0;
 
 	for (const auto index : selectedFaces)

@@ -246,18 +246,21 @@ GeometryEditor::set_viewer ()
 {
 	changing = true;
 
-	if (getCurrentBrowser () -> getSelection () -> isEnabled ())
+	switch (getCurrentBrowser () -> getCurrentViewer ())
 	{
-		switch (getCurrentBrowser () -> getCurrentViewer ())
+		case X3D::X3DConstants::RectangleSelection:
+		case X3D::X3DConstants::LassoSelection:
 		{
-			case X3D::X3DConstants::RectangleSelection:
-			case X3D::X3DConstants::LassoSelection:
+			if (getCurrentBrowser () -> getSelection () -> isEnabled ())
 				getPaintSelectionToggleButton () .set_active (true);
-				break;
-			default:
-				privateViewer = browser-> getPrivateViewer ();
-				getPaintSelectionToggleButton () .set_active (false);
-				break;
+
+			break;
+		}
+		default:
+		{
+			privateViewer = browser-> getPrivateViewer ();
+			getPaintSelectionToggleButton () .set_active (false);
+			break;
 		}
 	}
 

@@ -268,7 +268,7 @@ FaceSelection::getVertices (const size_t face) const
 	return vertices;
 }
 
-FaceSelection::Edge
+FaceEdge
 FaceSelection::getEdge (const std::vector <size_t> & vertices,
                         const int32_t index,
                         const Vector3d & hitPoint) const
@@ -291,12 +291,12 @@ FaceSelection::getEdge (const std::vector <size_t> & vertices,
 	const auto min  = iter - distances .begin ();
 
 	if (min == 0)
-		return Edge { triangle [0], triangle [1], point0, point1, line0 };
+		return FaceEdge { triangle [0], triangle [1], point0, point1, line0 };
 
 	if (min == 1)
-		return Edge { triangle [1], triangle [2], point1, point2, line1 };
+		return FaceEdge { triangle [1], triangle [2], point1, point2, line1 };
 
-	return Edge { triangle [2], triangle [0], point2, point0, line2 };
+	return FaceEdge { triangle [2], triangle [0], point2, point0, line2 };
 
 //	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 //	{

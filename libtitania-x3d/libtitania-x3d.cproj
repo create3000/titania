@@ -778,6 +778,7 @@
     <None Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\RectangleSelection.h" />
     <None Include="share\titania\tools\CoordinateTool.x3dv" />
+    <None Include="Titania\X3D\Editing\X3DFaceSelection.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
