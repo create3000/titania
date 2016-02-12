@@ -250,6 +250,7 @@ FaceSelection::setFaces (const Vector3d & hitPoint)
 	face = faces [minIndex];
 }
 
+///  Returns all indices to the coordIndex for this face.
 std::vector <size_t>
 FaceSelection::getVertices (const size_t face) const
 {
@@ -268,9 +269,9 @@ FaceSelection::getVertices (const size_t face) const
 	return vertices;
 }
 
-FaceEdge
+///  Return the nearest edge for hitPoint.
+FaceSelection::Edge
 FaceSelection::getEdge (const std::vector <size_t> & vertices,
-                        const int32_t index,
                         const Vector3d & hitPoint) const
 {
 	const auto point0 = coord -> get1Point (triangle [0]);
@@ -291,43 +292,15 @@ FaceSelection::getEdge (const std::vector <size_t> & vertices,
 	const auto min  = iter - distances .begin ();
 
 	if (min == 0)
-		return FaceEdge { triangle [0], triangle [1], point0, point1, line0 };
+		return Edge { triangle [0], triangle [1], point0, point1, line0 };
 
 	if (min == 1)
-		return FaceEdge { triangle [1], triangle [2], point1, point2, line1 };
+		return Edge { triangle [1], triangle [2], point1, point2, line1 };
 
-	return FaceEdge { triangle [2], triangle [0], point2, point0, line2 };
-
-//	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
-//	{
-//		// Edge
-//
-//		if (index == geometry -> coordIndex () [vertices [i]])
-//		{
-//			const size_t index0 = geometry -> coordIndex () [vertices [(i + vertices .size () - 1) % vertices .size ()]];
-//			const size_t index1 = geometry -> coordIndex () [vertices [i]];
-//			const size_t index2 = geometry -> coordIndex () [vertices [(i + 1) % vertices .size ()]];
-//
-//			const auto point0 = coord -> get1Point (index0);
-//			const auto point1 = coord -> get1Point (index1);
-//			const auto point2 = coord -> get1Point (index2);
-//
-//			const auto line0 = Line3d (point0, point1, math::point_type ());
-//			const auto line1 = Line3d (point2, point1, math::point_type ());
-//
-//			const auto distance0 = abs (hitPoint - line0 .closest_point (hitPoint));
-//			const auto distance1 = abs (hitPoint - line1 .closest_point (hitPoint));
-//
-//			if (distance0 < distance1)
-//				return Edge { index0, index1, point0, point1, line0 };
-//			
-//			return Edge { index2, index1, point2, point1, line1 };
-//		}
-//	}
-//
-//	throw std::domain_error ("FaceSelection::getEdge");
+	return Edge { triangle [2], triangle [0], point2, point0, line2 };
 }
 
+///  Returns true if index1 and index2 are edges in vertices, where the vertices form a face.
 bool
 FaceSelection::isEdge (const std::vector <size_t> & vertices, const int32_t index1, const int32_t index2) const
 {

@@ -63,15 +63,6 @@ class FaceSelection :
 {
 public:
 
-	struct Edge
-	{
-		int32_t index0;
-		int32_t index1;
-		Vector3d point0;
-		Vector3d point1;
-		Line3d line;
-	};
-
 	///  @name Construction
 
 	FaceSelection ();
@@ -121,8 +112,8 @@ public:
 	getFaces () const final override;
 
 	virtual
-	FaceEdge
-	getEdge (const std::vector <size_t> &, const int32_t, const Vector3d &) const final override;
+	Edge
+	getEdge (const std::vector <size_t> &, const Vector3d &) const final override;
 
 	virtual
 	bool

@@ -489,7 +489,7 @@ IndexedFaceSetTool::set_active_selection (const Vector3f & hitPoint)
 	
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 		{
-			const auto edge     = selection -> getEdge (vertices, index, hitPoint);
+			const auto edge     = selection -> getEdge (vertices, hitPoint);
 			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
 
 			if (distance > SELECTION_DISTANCE)

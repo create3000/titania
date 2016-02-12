@@ -58,18 +58,18 @@ namespace X3D {
 
 class X3DCoordinateNode;
 
-struct FaceEdge
-{
-	int32_t index0;
-	int32_t index1;
-	Vector3d point0;
-	Vector3d point1;
-	Line3d line;
-};
-
 class X3DFaceSelection
 {
 public:
+	
+	struct Edge
+	{
+		int32_t index0;
+		int32_t index1;
+		Vector3d point0;
+		Vector3d point1;
+		Line3d line;
+	};
 
 	///  @name Member access
 
@@ -110,8 +110,8 @@ public:
 	getFaces () const = 0;
 
 	virtual
-	FaceEdge
-	getEdge (const std::vector <size_t> &, const int32_t, const Vector3d &) const = 0;
+	Edge
+	getEdge (const std::vector <size_t> &, const Vector3d &) const = 0;
 
 	virtual
 	bool
