@@ -62,11 +62,16 @@ const ComponentType FaceSelection::component      = ComponentType::TITANIA;
 const std::string   FaceSelection::typeName       = "FaceSelection";
 const std::string   FaceSelection::containerField = "selection";
 
+FaceSelection::Fields::Fields () :
+	geometry (new SFNode ())
+{ }
+
 FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFaceSelection (),
-	        geometry (),
-	           coord (),
+	          fields (),
+	    geometryNode (),
+	       coordNode (),
 	         indices (),
 	      pointIndex (),
 	       faceIndex (),
@@ -76,8 +81,10 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 {
 	//addType (X3DConstants::FaceSelection);
 
-	addChildren (geometry,
-                coord);
+	addField (inputOutput, "geometry", geometry ());
+
+	addChildren (geometryNode,
+                coordNode);
 }
 
 FaceSelection*
@@ -86,21 +93,53 @@ FaceSelection::create (X3DExecutionContext* const executionContext) const
 	return new FaceSelection (executionContext);
 }
 
-///  Updates the geometry node of this selection.
 void
-FaceSelection::setGeometry (const X3DPtr <IndexedFaceSet> & value)
+FaceSelection::initialize ()
 {
-	geometry = value;
-	
-	if (not geometry)
-		return;
+	X3DFaceSelection::initialize ();
+
+	geometry () .addInterest (this, &FaceSelection::set_geometry);
+
+	set_geometry (geometry ());
+}
+
+void
+FaceSelection::set_geometry (const SFNode & value)
+{
+	if (geometryNode)
+	{
+		geometryNode -> coordIndex () .removeInterest (this, &FaceSelection::set_coordIndex);
+		geometryNode -> getCoord ()   .removeInterest (this, &FaceSelection::set_coord);
+	}
+
+	geometryNode = value;
+
+	if (geometryNode)
+	{
+		geometryNode -> coordIndex () .addInterest (this, &FaceSelection::set_coordIndex);
+		geometryNode -> getCoord ()   .addInterest (this, &FaceSelection::set_coord);
+
+		set_coordIndex (geometryNode -> coordIndex ());
+		set_coord (geometryNode -> getCoord ());
+	}
+	else
+	{
+		set_coordIndex (MFInt32 ());
+		set_coord (nullptr);
+	}
+}
+
+void
+FaceSelection::set_coordIndex (const MFInt32 & coordIndex)
+{
+	// Update face index
 
 	faceIndex .clear ();
 
 	size_t face   = 0;
 	size_t vertex = 0;
 
-	for (const int32_t index : geometry -> coordIndex ())
+	for (const int32_t index : coordIndex)
 	{
 		if (index < 0)
 		{
@@ -115,19 +154,47 @@ FaceSelection::setGeometry (const X3DPtr <IndexedFaceSet> & value)
 	}
 }
 
+///  Updates the coordinate node of this selection.
+void
+FaceSelection::set_coord (const X3DPtr <X3DCoordinateNode> & value)
+{
+	if (coordNode)
+		coordNode -> removeInterest (this, &FaceSelection::set_point);
+
+	coordNode = value;
+	
+	if (coordNode)
+		coordNode -> addInterest (this, &FaceSelection::set_point);
+
+	set_point ();
+}
+
+///  Updates the coordinate node of this selection.
+void
+FaceSelection::set_point ()
+{
+	pointIndex .clear ();
+
+	if (coordNode)
+	{
+		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+			pointIndex .emplace (coordNode -> get1Point (i), i);
+	}
+}
+
 ///  Returns a set of all faces in geometry.
 std::set <size_t>
 FaceSelection::getFaces () const
 {
 	std::set <size_t> faces;
 
-	if (not geometry)
+	if (not geometryNode)
 		return faces;
 
 	size_t face   = 0;
 	size_t vertex = 0;
 
-	for (const int32_t index : geometry -> coordIndex ())
+	for (const int32_t index : geometryNode -> coordIndex ())
 	{
 		if (index < 0)
 		{
@@ -146,21 +213,6 @@ FaceSelection::getFaces () const
 	}
 
 	return faces;
-}
-
-///  Updates the coordinate node of this selection.
-void
-FaceSelection::setCoord (const X3DPtr <X3DCoordinateNode> & value)
-{
-	coord = value;
-	
-	if (not coord)
-		return;
-
-	pointIndex .clear ();
-
-	for (size_t i = 0, size = coord -> getSize (); i < size; ++ i)
-		pointIndex .emplace (coord -> get1Point (i), i);
 }
 
 ///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
@@ -223,16 +275,16 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 			continue;
 		}
 
-		if (geometry -> convex () or vertices .size () == 3)
+		if (geometryNode -> convex () or vertices .size () == 3)
 		{
 			for (size_t v = 0, size = vertices .size (); v < size; ++ v)
 			{
-				const auto i1       = geometry -> coordIndex () [vertices [v == 0 ? vertices .size () - 1 : v - 1]];
-				const auto i2       = geometry -> coordIndex () [vertices [v]];
-				const auto i3       = geometry -> coordIndex () [vertices [(v + 1) % vertices .size ()]];
-				const auto p1       = coord -> get1Point (i1);
-				const auto p2       = coord -> get1Point (i2);
-				const auto p3       = coord -> get1Point (i3);
+				const auto i1       = geometryNode -> coordIndex () [vertices [v == 0 ? vertices .size () - 1 : v - 1]];
+				const auto i2       = geometryNode -> coordIndex () [vertices [v]];
+				const auto i3       = geometryNode -> coordIndex () [vertices [(v + 1) % vertices .size ()]];
+				const auto p1       = coordNode -> get1Point (i1);
+				const auto p2       = coordNode -> get1Point (i2);
+				const auto p3       = coordNode -> get1Point (i3);
 				const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
 	
 				if (distance < minDistance)
@@ -251,7 +303,7 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 			tessellator .begin_contour ();
 		
 			for (const auto & vertex : vertices)
-				tessellator .add_vertex (coord -> get1Point (geometry -> coordIndex () [vertex]), geometry -> coordIndex () [vertex]);
+				tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), geometryNode -> coordIndex () [vertex]);
 		
 			tessellator .end_contour ();
 			tessellator .end_polygon ();
@@ -290,9 +342,9 @@ FaceSelection::getVertices (const size_t face) const
 {
 	std::vector <size_t> vertices;
 
-	for (size_t i = face, size = geometry -> coordIndex () .size (); i < size; ++ i)
+	for (size_t i = face, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 	{
-		const auto index = geometry -> coordIndex () [i];
+		const auto index = geometryNode -> coordIndex () [i];
 
 		if (index < 0)
 			break;
@@ -308,18 +360,18 @@ FaceSelection::Edge
 FaceSelection::getEdge (const std::vector <size_t> & vertices,
                         const Vector3d & hitPoint) const
 {
-	const auto point0 = coord -> get1Point (triangle [0]);
-	const auto point1 = coord -> get1Point (triangle [1]);
-	const auto point2 = coord -> get1Point (triangle [2]);
+	const auto point0 = coordNode -> get1Point (triangle [0]);
+	const auto point1 = coordNode -> get1Point (triangle [1]);
+	const auto point2 = coordNode -> get1Point (triangle [2]);
 
 	const auto line0 = Line3d (point0, point1, math::point_type ());
 	const auto line1 = Line3d (point1, point2, math::point_type ());
 	const auto line2 = Line3d (point2, point0, math::point_type ());
 
 	const std::vector <double> distances = {
-		not geometry -> convex () or isEdge (vertices, triangle [0], triangle [1]) ? abs (hitPoint - line0 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
-		not geometry -> convex () or isEdge (vertices, triangle [1], triangle [2]) ? abs (hitPoint - line1 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
-		not geometry -> convex () or isEdge (vertices, triangle [2], triangle [0]) ? abs (hitPoint - line2 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity ()
+		not geometryNode -> convex () or isEdge (vertices, triangle [0], triangle [1]) ? abs (hitPoint - line0 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
+		not geometryNode -> convex () or isEdge (vertices, triangle [1], triangle [2]) ? abs (hitPoint - line1 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
+		not geometryNode -> convex () or isEdge (vertices, triangle [2], triangle [0]) ? abs (hitPoint - line2 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity ()
 	};
 
 	const auto iter = std::min_element (distances .begin (), distances .end ());
@@ -340,9 +392,9 @@ FaceSelection::isEdge (const std::vector <size_t> & vertices, const int32_t inde
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		if (geometry -> coordIndex () [vertices [i]] == index1)
+		if (geometryNode -> coordIndex () [vertices [i]] == index1)
 		{
-			if (geometry -> coordIndex () [vertices [(i + 1) % size]] == index2)
+			if (geometryNode -> coordIndex () [vertices [(i + 1) % size]] == index2)
 				return true;
 		}
 	}

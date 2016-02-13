@@ -52,6 +52,9 @@
 #define __TITANIA_X3D_EDITING_SELECTION_X3DFACE_SELECTION_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Fields.h"
+#include "../../Types/Geometry.h"
+#include "../../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {

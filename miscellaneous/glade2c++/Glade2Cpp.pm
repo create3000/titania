@@ -801,3 +801,5 @@ Revealer::map
   virtual void on_map();
 Revealer::unmap
   virtual void on_unmap();
+Box::event
+  virtual bool on_event(GdkEvent* event);

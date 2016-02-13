@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_TOOL_H__
 
 #include "../Rendering/X3DGeometryNodeTool.h"
+
+#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Rendering/X3DComposedGeometryNode.h"
 
 namespace titania {
@@ -215,17 +217,19 @@ protected:
 
 	///  @name Construction
 
-	X3DComposedGeometryNodeTool () :
-		X3DGeometryNodeTool <Type> (),
-	                       fields ()
-	{
-		addType (X3DConstants::X3DComposedGeometryNodeTool);
+	X3DComposedGeometryNodeTool ();
 
-		paintSelection () .isHidden (true);
-	}
+	virtual
+	void
+	initialize () override;
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_loadState ();
 
 	///  @name Members
 
@@ -245,6 +249,47 @@ template <class Type>
 X3DComposedGeometryNodeTool <Type>::Fields::Fields () :
 	 paintSelection (new SFBool ())
 { }
+
+template <class Type>
+X3DComposedGeometryNodeTool <Type>::X3DComposedGeometryNodeTool () :
+	X3DGeometryNodeTool <Type> (),
+                       fields ()
+{
+	addType (X3DConstants::X3DComposedGeometryNodeTool);
+
+	paintSelection () .isHidden (true);
+}
+
+template <class Type>
+void
+X3DComposedGeometryNodeTool <Type>::initialize ()
+{
+	X3DGeometryNodeTool <Type>::initialize ();
+
+	this -> getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DComposedGeometryNodeTool::set_loadState);
+
+	set_loadState ();
+}
+
+template <class Type>
+void
+X3DComposedGeometryNodeTool <Type>::set_loadState ()
+{
+	try
+	{
+		const X3DPtr <Inline> & inlineNode = this -> getCoordinateTool () -> getInlineNode ();
+
+		const auto activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
+
+		this -> coord () .addInterest (activeLineSet -> coord ());
+
+		activeLineSet -> coord () = this -> coord ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
 } // X3D
 } // titania

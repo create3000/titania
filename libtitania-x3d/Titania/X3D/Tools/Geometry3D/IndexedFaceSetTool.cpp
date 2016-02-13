@@ -84,11 +84,11 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	addField (inputOutput, "pickable",          pickable ());
-	addField (inputOutput, "paintSelection",    paintSelection ());
-	addField (inputOutput, "selection_changed", selection_changed ());
-	addField (inputOutput, "normalTool",        normalTool ());
-	addField (inputOutput, "coordTool",         coordTool ());
+	addField (inputOutput, "pickable",       pickable ());
+	addField (inputOutput, "paintSelection", paintSelection ());
+	addField (inputOutput, "set_selection",  set_selection ());
+	addField (inputOutput, "normalTool",     normalTool ());
+	addField (inputOutput, "coordTool",      coordTool ());
 
 	addChildren (planeSensor,
 	             touchSensor,
@@ -106,11 +106,11 @@ IndexedFaceSetTool::initialize ()
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 
-	getCoord ()          .addInterest (this, &IndexedFaceSetTool::set_coord);
-	selection_changed () .addInterest (this, &IndexedFaceSetTool::set_selection);
+	getCoord ()      .addInterest (this, &IndexedFaceSetTool::set_coord);
+	set_selection () .addInterest (this, &IndexedFaceSetTool::set_selection_);
 
+	selection -> geometry () = getNode ();
 	selection -> setup ();
-	selection -> setGeometry (getNode ());
 
 	set_loadState ();
 	set_coord ();
@@ -121,7 +121,7 @@ IndexedFaceSetTool::set_loadState ()
 {
 	try
 	{
-		const auto inlineNode = getCoordinateTool () -> getInlineNode ();
+		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
 
 		planeSensor           = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
 		touchSensor           = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
@@ -138,10 +138,6 @@ IndexedFaceSetTool::set_loadState ()
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
 
-		coord () .addInterest (activeLineSet -> coord ());
-
-		activeLineSet -> isPrivate (true);
-		activeLineSet -> coord () = coord ();
 		set_coord_point ();
 
 		__LOG__ << std::endl;
@@ -187,10 +183,6 @@ IndexedFaceSetTool::set_coord_point ()
 	
 		for (auto & selectedPoint : selectedPoints)
 			selectedPoint .second = getCoord () -> get1Point (selectedPoint .first);
-	
-		// Update selection
-	
-		selection -> setCoord (getCoord ());
 	}
 	catch (const X3DError &)
 	{ }
@@ -271,7 +263,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 }
 
 void
-IndexedFaceSetTool::set_selection (const MFVec3d & vertices)
+IndexedFaceSetTool::set_selection_ (const MFVec3d & vertices)
 {
 	FrameBuffer depthBuffer (getBrowser (), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3], 0, false);
 

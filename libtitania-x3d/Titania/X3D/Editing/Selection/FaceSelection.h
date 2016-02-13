@@ -52,9 +52,6 @@
 #define __TITANIA_X3D_EDITING_SELECTION_FACE_SELECTION_H__
 
 #include "../../Editing/Selection/X3DFaceSelection.h"
-#include "../../Fields/X3DPtr.h"
-#include "../../Types/Geometry.h"
-#include "../../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
@@ -106,13 +103,17 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	///  @name Fields
+
+	SFNode &
+	geometry ()
+	{ return *fields .geometry; }
+
+	const SFNode &
+	geometry () const
+	{ return *fields .geometry; }
+
 	///  @name Member access
-
-	void
-	setGeometry (const X3DPtr <IndexedFaceSet> &);
-
-	void
-	setCoord (const X3DPtr <X3DCoordinateNode> &);
 
 	void
 	setCoincidentPoints (const Vector3d &);
@@ -155,6 +156,26 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handler
+
+	void
+	set_geometry (const SFNode &);
+
+	void
+	set_coordIndex (const MFInt32 &);
+
+	void
+	set_coord (const X3DPtr <X3DCoordinateNode> &);
+
+	void
+	set_point ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -163,8 +184,17 @@ private:
 
 	///  @name Members
 
-	X3DPtr <IndexedFaceSet>                              geometry;
-	X3DPtr <X3DCoordinateNode>                           coord;
+	struct Fields
+	{
+		Fields ();
+
+		SFNode* const geometry;
+	};
+
+	Fields fields;
+
+	X3DPtr <IndexedFaceSet>                              geometryNode;
+	X3DPtr <X3DCoordinateNode>                           coordNode;
 	std::vector <size_t>                                 indices;
 	std::multimap <Vector3d, size_t>                     pointIndex;
 	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;

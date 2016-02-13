@@ -101,10 +101,6 @@ public:
 	getGeometryEditorBox () const
 	{ return *m_GeometryEditorBox; }
 
-	Gtk::Button &
-	getHammerButton () const
-	{ return *m_HammerButton; }
-
 	Gtk::ToggleButton &
 	getEditToggleButton () const
 	{ return *m_EditToggleButton; }
@@ -117,9 +113,21 @@ public:
 	getPaintSelectionImage () const
 	{ return *m_PaintSelectionImage; }
 
+	Gtk::Button &
+	getSplitPointButton () const
+	{ return *m_SplitPointButton; }
+
+	Gtk::Button &
+	getMergePointsButton () const
+	{ return *m_MergePointsButton; }
+
 	Gtk::ToggleButton &
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
+
+	Gtk::Button &
+	getHammerButton () const
+	{ return *m_HammerButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -147,10 +155,6 @@ public:
 
 	virtual
 	void
-	on_hammer_clicked () = 0;
-
-	virtual
-	void
 	on_edit_toggled () = 0;
 
 	virtual
@@ -160,6 +164,18 @@ public:
 	virtual
 	void
 	on_paint_selection_toggled () = 0;
+
+	virtual
+	void
+	on_split_point_clicked () = 0;
+
+	virtual
+	void
+	on_merge_points_clicked () = 0;
+
+	virtual
+	void
+	on_hammer_clicked () = 0;
 
 	virtual
 	void
@@ -195,11 +211,13 @@ private:
 	Gtk::Window*                  m_Window;
 	Gtk::Revealer*                m_Widget;
 	Gtk::Box*                     m_GeometryEditorBox;
-	Gtk::Button*                  m_HammerButton;
 	Gtk::ToggleButton*            m_EditToggleButton;
 	Gtk::ToggleButton*            m_PaintSelectionToggleButton;
 	Gtk::Image*                   m_PaintSelectionImage;
+	Gtk::Button*                  m_SplitPointButton;
+	Gtk::Button*                  m_MergePointsButton;
 	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
+	Gtk::Button*                  m_HammerButton;
 	Gtk::Menu*                    m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*           m_BrushMenuItem;
 	Gtk::ImageMenuItem*           m_RectangleMenuItem;

@@ -81,12 +81,12 @@ public:
 	{ return *fields .pickable; }
 
 	MFVec3d &
-	selection_changed ()
-	{ return *fields .selection_changed; }
+	set_selection ()
+	{ return *fields .set_selection; }
 
 	const MFVec3d &
-	selection_changed () const
-	{ return *fields .selection_changed; }
+	set_selection () const
+	{ return *fields .set_selection; }
 
 	SFNode &
 	normalTool ()
@@ -265,7 +265,7 @@ private:
 		Fields ();
 
 		SFBool* const pickable;
-		MFVec3d* const selection_changed;
+		MFVec3d* const set_selection;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};
@@ -284,7 +284,7 @@ private:
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
 	         pickable (new SFBool (true)),
-	selection_changed (new MFVec3d ()),
+	    set_selection (new MFVec3d ()),
 	       normalTool (new SFNode ()),
 	        coordTool (new SFNode ())
 { }
@@ -302,10 +302,10 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
 
-	pickable ()          .isHidden (true);
-	selection_changed () .isHidden (true);
-	normalTool ()        .isHidden (true);
-	coordTool  ()        .isHidden (true);
+//	pickable ()      .isHidden (true);
+//	set_selection () .isHidden (true);
+//	normalTool ()    .isHidden (true);
+//	coordTool  ()    .isHidden (true);
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
@@ -381,7 +381,7 @@ X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & fr
 	
 		const auto last = std::unique (selection .begin (), selection .end ());
 	
-		const_cast <X3DGeometryNodeTool*> (this) -> selection_changed () .assign (selection .begin (), last);
+		const_cast <X3DGeometryNodeTool*> (this) -> set_selection () .assign (selection .begin (), last);
 	}
 	catch (const std::exception & error)
 	{

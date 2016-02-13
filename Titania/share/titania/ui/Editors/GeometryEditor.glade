@@ -25,27 +25,8 @@
               <object class="GtkGrid" id="grid2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkButton" id="HammerButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Smash Selection: converts the geometry to the next lower more primitive object.</property>
-                    <signal name="clicked" handler="on_hammer_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image2">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">Hammer</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
+                <property name="row_spacing">1</property>
+                <property name="column_spacing">1</property>
                 <child>
                   <object class="GtkBox" id="box1">
                     <property name="visible">True</property>
@@ -115,6 +96,48 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkButton" id="SplitPointButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Split selected points.</property>
+                    <signal name="clicked" handler="on_split_point_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">SplitPoint</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="MergePointsButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Merge selected points.</property>
+                    <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">MergePoints</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -132,6 +155,27 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="HammerButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Smash Selection: converts the geometry to the next lower more primitive object.</property>
+                    <signal name="clicked" handler="on_hammer_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">Hammer</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>

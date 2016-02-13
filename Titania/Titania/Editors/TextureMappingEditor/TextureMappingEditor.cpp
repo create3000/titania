@@ -209,14 +209,12 @@ TextureMappingEditor::set_initialized ()
 
 	try
 	{
-		const auto transform         = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto shape             = right -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance        = right -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor       = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 		const auto selectedGeometry  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 
-		transform -> addInterest (this, &TextureMappingEditor::set_right_viewer);
 		shape -> geometry ()               .addInterest (this, &TextureMappingEditor::set_right_viewer);
 		touchSensor -> isActive ()         .addInterest (this, &TextureMappingEditor::set_right_active);
 		touchSensor -> touchTime ()        .addInterest (this, &TextureMappingEditor::set_right_touchTime);
@@ -1506,15 +1504,13 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 			rightSelectedGeometry  -> coord () = coord;
 			rightSelectionGeometry -> coord () = coord;
 
-			rightSelection -> setGeometry (geometry);
-			rightSelection -> setCoord (coord);
+			rightSelection -> geometry () = geometry;
 
 			getWidget () .set_sensitive (true);
 		}
 		else
 		{
-			rightSelection -> setGeometry (nullptr);
-			rightSelection -> setCoord (nullptr);
+			rightSelection -> geometry () = nullptr;
 
 			set_texCoord (nullptr);
 			set_coord (nullptr);
@@ -1561,8 +1557,6 @@ TextureMappingEditor::set_texCoordIndex ()
 void
 TextureMappingEditor::set_coordIndex ()
 {
-	rightSelection -> setGeometry (previewGeometry);
-
 	set_texCoordIndex ();
 }
 
@@ -1641,16 +1635,7 @@ TextureMappingEditor::on_texture_stage_changed ()
 	}
 
 	if (geometry)
-	{
-		try
-		{
-			set_texCoord (geometry -> getField <X3D::SFNode> ("texCoord"));
-		}
-		catch (const X3D::X3DError &)
-		{
-			set_texCoord (nullptr);
-		}
-	}
+		set_texCoord (geometry -> texCoord ());
 	else
 		set_texCoord (nullptr);
 }
@@ -1659,8 +1644,6 @@ void
 TextureMappingEditor::set_coord (const X3D::SFNode & value)
 {
 	coord = value;
-
-	rightSelection -> setCoord (coord);
 }
 
 void

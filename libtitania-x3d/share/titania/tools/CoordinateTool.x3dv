@@ -4,7 +4,7 @@ META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 12 Feb 2016 02:52:52 GMT"
+META "modified" "Sat, 13 Feb 2016 06:43:47 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -60,17 +60,8 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF ActiveFace Shape {
-            appearance Appearance {
-              material DEF Material Material {
-                diffuseColor 0 0 0
-                emissiveColor 0.5 0.0792565 0
-                transparency 0.635417
-              }
-            }
-            geometry DEF SelectedFacesGeometry IndexedFaceSet {
-              solid FALSE
-            }
+          value DEF SelectedFacesGeometry IndexedFaceSet {
+            solid FALSE
           }
         }
       }
@@ -109,11 +100,20 @@ Collision {
                 transparency 0.5
               }
             }
-            geometry DEF SelectedFacesGeometry_1 IndexedFaceSet {
+            geometry USE SelectedFacesGeometry
+          }
+          DEF ActiveFace Shape {
+            appearance Appearance {
+              material DEF Material Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.5 0.0792565 0
+                transparency 0.635417
+              }
+            }
+            geometry DEF ActiveFaceGeometry IndexedFaceSet {
               solid FALSE
             }
           }
-          USE ActiveFace
           DEF Edges Shape {
             appearance Appearance {
               material DEF Material_1 Material {
@@ -176,17 +176,18 @@ Collision {
   }
 }
 
-ROUTE ActiveLineSet.coord_changed TO SelectedFacesGeometry_1.set_coord
-ROUTE ActiveLineSet.coordIndex_changed TO SelectedFacesGeometry.set_coordIndex
 ROUTE ActiveLineSet.coord_changed TO SelectedFacesGeometry.set_coord
+ROUTE ActiveLineSet.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
+ROUTE ActiveLineSet.coord_changed TO ActiveFaceGeometry.set_coord
 
+EXPORT ActiveFaceGeometry
 EXPORT ActiveLineSet
 EXPORT ActivePointCoord
 EXPORT EdgesCoord
 EXPORT EdgesLineSet
 EXPORT Material_1 AS Material
 EXPORT PlaneSensor
-EXPORT SelectedFacesGeometry_1 AS SelectedFacesGeometry
+EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord
 EXPORT SelectionShape
 EXPORT _1 AS Switch

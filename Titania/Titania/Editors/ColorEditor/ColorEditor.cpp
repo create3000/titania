@@ -169,14 +169,12 @@ ColorEditor::set_initialized ()
 
 	try
 	{
-		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
 
-		transform -> addInterest (this, &ColorEditor::set_viewer);
 		shape -> geometry ()               .addInterest (this, &ColorEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorEditor::set_touchTime);
@@ -191,7 +189,7 @@ ColorEditor::set_initialized ()
 void
 ColorEditor::set_selection (const X3D::MFNode & selection)
 {
-	undoHistory .clear ();
+__LOG__ << std::endl;
 
 	try
 	{
@@ -514,8 +512,6 @@ ColorEditor::on_apply_clicked ()
 		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 
-	geometry -> getExecutionContext () -> realize ();
-
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -677,7 +673,6 @@ ColorEditor::set_multi_texture ()
 	{
 		previewAppearance -> texture () = appearance -> texture () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
 		previewAppearance -> texture () -> isPrivate (true);
-		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
 		previewAppearance -> texture () = appearance -> texture ();
@@ -694,7 +689,6 @@ ColorEditor::set_multi_textureTransform ()
 	{
 		previewAppearance -> textureTransform () = appearance -> textureTransform () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
 		previewAppearance -> textureTransform () -> isPrivate (true);
-		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
 		previewAppearance -> textureTransform () = appearance -> textureTransform ();
@@ -743,15 +737,9 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> coord ()      .addInterest (this, &ColorEditor::set_coord);
 
 			previewShape -> geometry () = previewGeometry;
-
-			selection -> setGeometry (previewGeometry);
-			selection -> setCoord (coord);
+			selection    -> geometry () = previewGeometry;
 
 			set_colorIndex ();
-
-			// Initialize all.
-
-			preview -> getExecutionContext () -> realize ();
 		}
 		else
 		{
@@ -759,10 +747,8 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			geometry                    = nullptr;
 			previewGeometry             = nullptr;
 			previewShape -> geometry () = nullptr;
+			selection -> geometry ()    = nullptr;
 			colorButton .setNodes ({ });
-
-			selection -> setGeometry (nullptr);
-			selection -> setCoord (nullptr);
 		}
 	}
 	catch (const X3D::X3DError &)
@@ -839,17 +825,11 @@ ColorEditor::set_colorIndex ()
 
 	colorButton .setIndex (0);
 	colorButton .setNodes ({ previewColor });
-
-	preview -> getExecutionContext () -> realize ();
-
-	__LOG__ << previewColor -> isTransparent () << std::endl;
 }
 
 void
 ColorEditor::set_coordIndex ()
 {
-	selection -> setGeometry (previewGeometry);
-
 	set_colorIndex ();
 }
 
@@ -857,8 +837,6 @@ void
 ColorEditor::set_coord (const X3D::SFNode & value)
 {
 	coord = value;
-
-	selection -> setCoord (coord);
 }
 
 void

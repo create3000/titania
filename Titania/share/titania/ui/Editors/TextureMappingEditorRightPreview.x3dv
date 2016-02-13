@@ -1,10 +1,83 @@
-#X3D V3.3 utf8 Titania V0.7.6
+#X3D V3.3 utf8 Titania V1.2.2
 
 META "comment" "World of Titania"
 META "created" "Thu, 13 Nov 2014 02:51:15 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.6, http://titania.create3000.de"
-META "modified" "Mon, 08 Dec 2014 15:17:24 GMT"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "modified" "Sat, 13 Feb 2016 10:19:22 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 NavigationInfo {
+            transitionType "TELEPORT"
+          }
+        }
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "TextureMappingEditorRightPreview"
+}
 
 LayerSet {
   activeLayer 2
@@ -16,14 +89,17 @@ LayerSet {
   layers [
     DEF Background Layer {
       isPickable FALSE
-      children DEF Gray_1 Background {
+      children DEF Gray Background {
         skyColor 0.5 0.5 0.5
       }
     }
     DEF Object Layer {
       children [
         DEF Navigation Group {
-          children Viewpoint { }
+          children [
+            USE _1
+            Viewpoint { }
+          ]
         }
         DEF Transform Transform {
           children [
@@ -34,7 +110,7 @@ LayerSet {
             }
             DEF SelectedFaces Group {
               children [
-                DEF _1 Switch {
+                DEF _2 Switch {
                   whichChoice 1
                   children [
                     Group { }
@@ -65,7 +141,7 @@ LayerSet {
             DEF ActiveFace Switch {
               whichChoice 0
               children [
-                DEF CrossScript_1 Script {
+                DEF CrossScript Script {
                   inputOnly  SFBool  set_active
                   outputOnly SFInt32 whichChoice_changed
 
@@ -81,9 +157,9 @@ function set_active (value)
 	whichChoice_changed = value;
 }"
                 }
-                DEF Selection Group {
+                DEF Selection_1 Group {
                   children [
-                    DEF _2 Switch {
+                    DEF _3 Switch {
                       whichChoice 1
                       children [
                         Group { }
@@ -133,7 +209,7 @@ function initialize ()
 "
 }
 
-ROUTE TouchSensor.isOver TO CrossScript_1.set_active
-ROUTE CrossScript_1.whichChoice_changed TO ActiveFace.set_whichChoice
+ROUTE TouchSensor.isOver TO CrossScript.set_active
+ROUTE CrossScript.whichChoice_changed TO ActiveFace.set_whichChoice
+ROUTE BackScript.whichChoice_changed TO _3.set_whichChoice
 ROUTE BackScript.whichChoice_changed TO _2.set_whichChoice
-ROUTE BackScript.whichChoice_changed TO _1.set_whichChoice

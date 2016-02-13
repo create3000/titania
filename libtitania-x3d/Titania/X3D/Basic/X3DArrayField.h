@@ -824,6 +824,9 @@ template <class ValueType>
 typename X3DArrayField <ValueType>::iterator
 X3DArrayField <ValueType>::erase (const iterator & first, const iterator & last)
 {
+	if (first == last)
+		return first;
+
 	removeChildren (first .base (), last .base ());
 
 	const auto iter = get () .erase (first .base (), last .base ());

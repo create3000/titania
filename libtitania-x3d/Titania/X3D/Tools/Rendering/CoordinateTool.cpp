@@ -98,6 +98,14 @@ CoordinateTool::realize ()
 
 	try
 	{
+		const auto activeLineSet         = getInlineNode () -> getExportedNode ("ActiveLineSet");
+		const auto activeFaceGeometry    = getInlineNode () -> getExportedNode ("ActiveFaceGeometry");
+		const auto selectedFacesGeometry = getInlineNode () -> getExportedNode ("SelectedFacesGeometry");
+
+		activeLineSet         -> isPrivate (true);
+		activeFaceGeometry    -> isPrivate (true);
+		selectedFacesGeometry -> isPrivate (true);
+
 		color () .addInterest (this, &CoordinateTool::set_color);
 
 		set_color ();

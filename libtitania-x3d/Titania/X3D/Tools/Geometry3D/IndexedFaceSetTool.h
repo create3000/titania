@@ -182,7 +182,7 @@ private:
 	set_touch_sensor_hitPoint (const Vector3f &);
 
 	void
-	set_selection (const MFVec3d &);
+	set_selection_ (const MFVec3d &);
 
 	void
 	set_touch_sensor_touchTime ();

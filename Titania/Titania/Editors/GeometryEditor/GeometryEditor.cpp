@@ -470,6 +470,18 @@ GeometryEditor::set_selection_lasso ()
 }
 
 void
+GeometryEditor::on_merge_points_clicked ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+GeometryEditor::on_split_point_clicked ()
+{
+	__LOG__ << std::endl;
+}
+
+void
 GeometryEditor::store ()
 {
 	getConfig () -> set ("normalEnabled",  normalEditor -> getField <X3D::SFBool>       ("load"));
