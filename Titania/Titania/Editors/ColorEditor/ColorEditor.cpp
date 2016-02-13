@@ -90,9 +90,19 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	                  coord (),
 	        previewGeometry (),
 	           previewColor (),
-	              selection (new X3D::FaceSelection ()),
+	              selection (new X3D::FaceSelection (getBrowserWindow () -> getMasterBrowser ())),
 	            undoHistory ()
 {
+	addChildren (shape,
+	             appearance,
+	             texture,
+	             textureTransform,
+	             geometry,
+	             coord,
+	             previewGeometry,
+	             previewColor,
+	             selection);
+
 	preview -> setAntialiasing (4);
 
 	getShadingButton () .set_menu (getShadingMenu ());
@@ -140,11 +150,13 @@ ColorEditor::initialize ()
 {
 	X3DColorEditorInterface::initialize ();
 
-	getPreviewBox () .pack_start (*preview, true, true, 0);
-
 	preview -> initialized () .addInterest (this, &ColorEditor::set_initialized);
 	preview -> set_opacity (0);
 	preview -> show ();
+
+	getPreviewBox () .pack_start (*preview, true, true, 0);
+
+	selection -> setup ();
 
 	undoHistory .addInterest (this, &ColorEditor::set_undoHistory);
 }

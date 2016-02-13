@@ -444,7 +444,6 @@ private:
 
 	X3D::BrowserPtr                                   left;
 	X3D::BrowserPtr                                   right;
-	int                                               initialized;
 	X3D::X3DPtr <X3D::X3DShapeNode>                   shape;
 	X3D::X3DPtr <X3D::Appearance>                     appearance;
 	X3D::SFNode                                       material;
@@ -455,9 +454,10 @@ private:
 	X3D::X3DPtr <X3D::X3DCoordinateNode>              coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>                 previewGeometry;
 	X3D::X3DPtr <X3D::TextureCoordinate>              texCoord;
+	int                                               initialized;
 	size_t                                            stage;
 	ToolType                                          tool;
-	std::unique_ptr <X3D::FaceSelection>              rightSelection;
+	X3D::X3DPtr <X3D::FaceSelection>                  rightSelection;
 	bool                                              rightPaintSelecion;
 	std::set <size_t>                                 selectedFaces;
 	int32_t                                           activePoint;     // texCoord index of red point

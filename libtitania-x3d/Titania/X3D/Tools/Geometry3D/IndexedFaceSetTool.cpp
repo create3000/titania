@@ -77,7 +77,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                                   coordNode (),
 	                                activePoints (),
 	                                  activeFace (),
-	                                   selection (new FaceSelection ()),
+	                                   selection (new FaceSelection (node -> getExecutionContext ())),
 	                              selectedPoints (),
 	                               selectedFaces (),
 	                                 translation ()
@@ -95,8 +95,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	             activePointCoord,
 	             activeLineSet,
 	             selectionCoord,
-	             selectedFacesGeometry);
-
+	             selectedFacesGeometry,
+	             selection);
 }
 
 void
@@ -109,6 +109,7 @@ IndexedFaceSetTool::initialize ()
 	getCoord ()          .addInterest (this, &IndexedFaceSetTool::set_coord);
 	selection_changed () .addInterest (this, &IndexedFaceSetTool::set_selection);
 
+	selection -> setup ();
 	selection -> setGeometry (getNode ());
 
 	set_loadState ();
@@ -585,8 +586,6 @@ IndexedFaceSetTool::getDistance (const Vector3d & point1, const Vector3d & point
 void
 IndexedFaceSetTool::dispose ()
 {
-	selection .reset ();
-
 	X3DComposedGeometryNodeTool <IndexedFaceSet>::dispose ();
 }
 

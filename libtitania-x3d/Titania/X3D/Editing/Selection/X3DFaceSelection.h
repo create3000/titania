@@ -56,7 +56,8 @@
 namespace titania {
 namespace X3D {
 
-class X3DFaceSelection
+class X3DFaceSelection :
+	virtual public X3DBaseNode
 {
 public:
 
@@ -70,7 +71,11 @@ protected:
 
 	///  @name Construction
 
-	X3DFaceSelection () = default;
+	X3DFaceSelection () :
+		X3DBaseNode ()
+	{
+		//addType (X3DConstants::X3DFaceSelection);
+	}
 
 };
 

@@ -91,7 +91,6 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	X3DTextureMappingEditorInterface (get_ui ("Editors/TextureMappingEditor.glade"), gconf_dir ()),
 	                            left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorLeftPreview.x3dv") })),
 	                           right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/TextureMappingEditorRightPreview.x3dv") })),
-	                     initialized (0),
 	                           shape (),
 	                      appearance (),
 	                        material (),
@@ -102,9 +101,10 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                           coord (),
 	                 previewGeometry (),
 	                        texCoord (),
+	                     initialized (0),
 	                           stage (0),
 	                            tool (ToolType::MOVE),
-	                  rightSelection (new X3D::FaceSelection ()),
+	                  rightSelection (new X3D::FaceSelection (getBrowserWindow () -> getMasterBrowser ())),
 	              rightPaintSelecion (false),
 	                   selectedFaces (),
 	                     activePoint (-1),
@@ -119,6 +119,20 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                     undoHistory (),
 	                        undoStep ()
 {
+	addChildren (left,
+	             right,
+	             shape,
+	             appearance,
+	             material,
+	             texture,
+	             textureTransform,
+	             geometry,
+	             multiTexCoord,
+	             coord,
+	             previewGeometry,
+	             texCoord,
+                rightSelection);
+
 	setup ();
 }
 
@@ -143,8 +157,10 @@ TextureMappingEditor::initialize ()
 	left  -> show ();
 	right -> show ();
 
-	getLeftBox ()  .pack_start (*left, true, true, 0);
+	getLeftBox ()  .pack_start (*left,  true, true, 0);
 	getRightBox () .pack_start (*right, true, true, 0);
+
+	rightSelection -> setup ();
 
 	undoHistory .addInterest (this, &TextureMappingEditor::set_undoHistory);
 }

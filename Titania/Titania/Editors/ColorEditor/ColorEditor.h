@@ -297,7 +297,7 @@ private:
 	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
 	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry;
 	X3D::X3DPtr <X3D::ColorRGBA>         previewColor;
-	std::unique_ptr <X3D::FaceSelection> selection;         
+	X3D::X3DPtr <X3D::FaceSelection>     selection;         
 	X3D::UndoHistory                     undoHistory;
 
 };

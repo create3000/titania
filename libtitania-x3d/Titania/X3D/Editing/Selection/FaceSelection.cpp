@@ -50,6 +50,7 @@
 
 #include "FaceSelection.h"
 
+#include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../Rendering/Tessellator.h"
@@ -57,8 +58,33 @@
 namespace titania {
 namespace X3D {
 
-FaceSelection::FaceSelection ()
-{ }
+const ComponentType FaceSelection::component      = ComponentType::TITANIA;
+const std::string   FaceSelection::typeName       = "FaceSelection";
+const std::string   FaceSelection::containerField = "selection";
+
+FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
+	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DFaceSelection (),
+	        geometry (),
+	           coord (),
+	         indices (),
+	      pointIndex (),
+	       faceIndex (),
+	            face (),
+	           faces (),
+	        triangle ()
+{
+	//addType (X3DConstants::FaceSelection);
+
+	addChildren (geometry,
+                coord);
+}
+
+FaceSelection*
+FaceSelection::create (X3DExecutionContext* const executionContext) const
+{
+	return new FaceSelection (executionContext);
+}
 
 ///  Updates the geometry node of this selection.
 void

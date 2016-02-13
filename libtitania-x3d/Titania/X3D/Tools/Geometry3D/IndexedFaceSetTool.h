@@ -245,9 +245,9 @@ private:
 	std::map <int32_t, Vector3d>    activePoints;
 	std::vector <size_t>            activeFace;
 
-	std::unique_ptr <FaceSelection> selection;
-	std::map <int32_t, Vector3d>    selectedPoints;
-	std::set <size_t>               selectedFaces;
+	X3DPtr <FaceSelection>       selection;
+	std::map <int32_t, Vector3d> selectedPoints;
+	std::set <size_t>            selectedFaces;
 
 	Vector3f translation;
 
