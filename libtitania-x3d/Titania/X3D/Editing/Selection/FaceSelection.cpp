@@ -72,7 +72,7 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	          fields (),
 	    geometryNode (),
 	       coordNode (),
-	         indices (),
+	coincidentPoints (),
 	      pointIndex (),
 	       faceIndex (),
 	            face (),
@@ -215,31 +215,34 @@ FaceSelection::getFaces () const
 	return faces;
 }
 
-///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
-void
-FaceSelection::setCoincidentPoints (const Vector3d & hitPoint, const MFVec3f & hitTriangle)
-{
-	const std::array <double, 3> distances = {
-		math::abs (hitPoint - Vector3d (hitTriangle [0] .getValue ())),
-		math::abs (hitPoint - Vector3d (hitTriangle [1] .getValue ())),
-		math::abs (hitPoint - Vector3d (hitTriangle [2] .getValue ()))
-	};
-
-	const auto iter  = std::min_element (distances .begin (), distances .end ());
-	const auto index = iter - distances .begin ();
-	const auto point = hitTriangle [index] .getValue ();
-
-	setCoincidentPoints (point);
-}
-
 ///  Finds the all points that are equal to point, the result is an array of point indices.
 void
 FaceSelection::setCoincidentPoints (const Vector3d & point)
 {
-	indices .clear ();
+	coincidentPoints .clear ();
 
 	for (const auto & index : pointIndex .equal_range (point))
-		indices .emplace_back (index .second);
+		coincidentPoints .emplace_back (index .second);
+}
+
+///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
+void
+FaceSelection::findCoincidentPoints (const Vector3d & hitPoint)
+{
+	coincidentPoints .clear ();
+
+	if (pointIndex .empty ())
+		return;
+
+	auto iter = std::min_element (pointIndex .begin (),
+                                 pointIndex .end (),
+                                 [&hitPoint] (const PointIndex::value_type & lhs, const PointIndex::value_type & rhs)
+                                 {
+                                   return math::abs (hitPoint - lhs .first) < math::abs (hitPoint - rhs .first);
+                                 });
+
+	for (const auto & index : pointIndex .equal_range (iter -> first))
+		coincidentPoints .emplace_back (index .second);
 }
 
 ///  Finds the nearest face for hitPoint and all adjacent faces.
@@ -248,7 +251,7 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 {
 	faces .clear ();
 
-	for (const auto & index : indices)
+	for (const auto & index : coincidentPoints)
 	{
 		const auto range = faceIndex .equal_range (index);
 

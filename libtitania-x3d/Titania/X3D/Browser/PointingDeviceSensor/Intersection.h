@@ -62,10 +62,9 @@ class Intersection
 {
 public:
 
-	Vector4f                 texCoord;
-	Vector3f                 normal;
-	Vector3f                 point;
-	std::array <Vector3f, 3> triangle;
+	Vector4f texCoord;
+	Vector3f normal;
+	Vector3f point;
 
 };
 

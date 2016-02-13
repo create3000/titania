@@ -169,12 +169,14 @@ ColorEditor::set_initialized ()
 
 	try
 	{
+		const auto transform   = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
 		const auto shape       = preview -> getExecutionContext () -> getNamedNode <X3D::Shape> ("Shape");
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
 		appearance -> isPrivate (true);
 
+		transform -> addInterest (this, &ColorEditor::set_viewer);
 		shape -> geometry ()               .addInterest (this, &ColorEditor::set_viewer);
 		touchSensor -> hitPoint_changed () .addInterest (this, &ColorEditor::set_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &ColorEditor::set_touchTime);
@@ -189,7 +191,7 @@ ColorEditor::set_initialized ()
 void
 ColorEditor::set_selection (const X3D::MFNode & selection)
 {
-__LOG__ << std::endl;
+	undoHistory .clear ();
 
 	try
 	{
@@ -512,6 +514,8 @@ ColorEditor::on_apply_clicked ()
 		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> color (), X3D::SFNode (color), undoStep);
 	}
 
+	geometry -> getExecutionContext () -> realize ();
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -673,6 +677,7 @@ ColorEditor::set_multi_texture ()
 	{
 		previewAppearance -> texture () = appearance -> texture () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
 		previewAppearance -> texture () -> isPrivate (true);
+		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
 		previewAppearance -> texture () = appearance -> texture ();
@@ -689,6 +694,7 @@ ColorEditor::set_multi_textureTransform ()
 	{
 		previewAppearance -> textureTransform () = appearance -> textureTransform () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
 		previewAppearance -> textureTransform () -> isPrivate (true);
+		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
 		previewAppearance -> textureTransform () = appearance -> textureTransform ();
@@ -740,6 +746,10 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			selection    -> geometry () = previewGeometry;
 
 			set_colorIndex ();
+
+			// Initialize all.
+
+			preview -> getExecutionContext () -> realize ();
 		}
 		else
 		{
@@ -825,6 +835,8 @@ ColorEditor::set_colorIndex ()
 
 	colorButton .setIndex (0);
 	colorButton .setNodes ({ previewColor });
+
+	preview -> getExecutionContext () -> realize ();
 }
 
 void
@@ -848,7 +860,7 @@ ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 		// Determine face and faces
 
-		selection -> setCoincidentPoints (hitPoint, touchSensor -> hitTriangle_changed ());
+		selection -> findCoincidentPoints (hitPoint);
 		selection -> setAdjacentFaces (hitPoint);
 
 		if (selection -> getCoincidentPoints () .empty ())

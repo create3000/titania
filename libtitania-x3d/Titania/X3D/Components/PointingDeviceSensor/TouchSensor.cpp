@@ -70,8 +70,7 @@ TouchSensor::Fields::Fields () :
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTouchSensorNode (),
-	            fields (),
-	       hitTriangle ()
+	            fields ()
 {
 	addType (X3DConstants::TouchSensor);
 
@@ -86,8 +85,6 @@ TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "touchTime",           touchTime ());
 
 	hitPoint_changed () .setUnit (UnitCategory::LENGTH);
-
-	addChildren (hitTriangle);
 }
 
 X3DBaseNode*
@@ -112,8 +109,6 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
 			hitPoint_changed ()    = Vector3d (intersection -> point) * invModelViewMatrix;
-
-			hitTriangle_changed () .assign (intersection -> triangle .begin (), intersection -> triangle .end ());
 		}
 	}
 	catch (const std::exception &)

@@ -1,17 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="35" Column="35" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h" Line="37" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" Line="81" Column="81" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/X3DFaceSelection.h" Line="36" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.h" Line="30" Column="30" />
-      <File FileName="Titania/Titania/Editors/ColorEditor/ColorEditor.cpp" Line="41" Column="41" />
-      <File FileName="Titania/Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp" Line="41" Column="41" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h" Line="16" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="39" Column="39" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="24" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DComposedGeometryNodeTool.h" Line="52" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -20,6 +16,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" line="99" column="2" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

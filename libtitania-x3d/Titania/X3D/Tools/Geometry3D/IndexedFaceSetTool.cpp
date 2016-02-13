@@ -213,7 +213,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
 
 	// Determine face and faces
 
-	selection -> setCoincidentPoints (hitPoint, touchSensor -> hitTriangle_changed ());
+	selection -> findCoincidentPoints (hitPoint);
 
 	if (selection -> getCoincidentPoints () .empty ())
 		return;

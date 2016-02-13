@@ -66,6 +66,12 @@ public:
 
 	///  @name Member types
 
+	using PointIndex = std::multimap <Vector3d, size_t>;
+	using Face       = std::pair <size_t, size_t>;
+	using FaceIndex  = std::multimap <int32_t, Face>;
+	using Faces      = std::vector <Face>;
+	using Triangle   = std::vector <int32_t>;
+
 	struct Edge
 	{
 		int32_t index0;
@@ -119,23 +125,23 @@ public:
 	setCoincidentPoints (const Vector3d &);
 
 	void
-	setCoincidentPoints (const Vector3d &, const MFVec3f &);
+	findCoincidentPoints (const Vector3d &);
 
 	void
 	setAdjacentFaces (const Vector3d &);
 
 	const std::vector <size_t> &
 	getCoincidentPoints () const
-	{ return indices; }
+	{ return coincidentPoints; }
 
 	std::vector <size_t>
 	getVertices (const size_t) const;
 
-	const std::pair <size_t, size_t> &
+	const Face &
 	getFace () const
 	{ return face; }
 
-	const std::vector <std::pair <size_t, size_t>> &
+	const Faces &
 	getAdjacentFaces () const
 	{ return faces; }
 
@@ -193,14 +199,14 @@ private:
 
 	Fields fields;
 
-	X3DPtr <IndexedFaceSet>                              geometryNode;
-	X3DPtr <X3DCoordinateNode>                           coordNode;
-	std::vector <size_t>                                 indices;
-	std::multimap <Vector3d, size_t>                     pointIndex;
-	std::multimap <int32_t, std::pair <size_t, size_t>>  faceIndex;
-	std::pair <size_t, size_t>                           face;
-	std::vector <std::pair <size_t, size_t>>             faces;
-	std::vector <int32_t>                                triangle;
+	X3DPtr <IndexedFaceSet>    geometryNode;
+	X3DPtr <X3DCoordinateNode> coordNode;
+	std::vector <size_t>       coincidentPoints;
+	PointIndex                 pointIndex;
+	FaceIndex                  faceIndex;
+	Face                       face;
+	Faces                      faces;
+	Triangle                   triangle;
 
 };
 
