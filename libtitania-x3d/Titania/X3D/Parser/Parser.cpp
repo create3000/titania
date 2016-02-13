@@ -2913,15 +2913,15 @@ Parser::sfrotationValue (SFRotation* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float x, y, z, angle;
+	double x, y, z, angle;
 
-	if (Float (x))
+	if (Double (x))
 	{
-		if (Float (y))
+		if (Double (y))
 		{
-			if (Float (z))
+			if (Double (z))
 			{
-				if (Float (angle))
+				if (Double (angle))
 				{
 					_field -> setValue (x, y, z, angle);
 					return true;
