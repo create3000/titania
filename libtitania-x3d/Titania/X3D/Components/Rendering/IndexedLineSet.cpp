@@ -196,12 +196,12 @@ IndexedLineSet::getColorIndex (const size_t index) const
 	return index;
 }
 
-std::vector <Vector3f>
+std::vector <Vector3d>
 IndexedLineSet::getPolylines () const
 {
 	// Polyline map
 
-	std::vector <Vector3f> polylines;
+	std::vector <Vector3d> polylines;
 
 	if (not coordNode or coordNode -> isEmpty ())
 		return polylines;

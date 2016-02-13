@@ -77,7 +77,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 

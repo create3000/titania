@@ -182,15 +182,15 @@ throw (std::domain_error)
 	const float e = a - back;
 	const float b = std::sqrt (a * a - e * e);
 
-	Matrix4f transformationMatrix = getModelViewMatrix () .get ();
+	Matrix4d transformationMatrix = getModelViewMatrix () .get ();
 
 	transformationMatrix .translate (location () .getValue ());
-	transformationMatrix .rotate (Rotation4f (Vector3f (0, 0, 1), direction () .getValue ()));
+	transformationMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
 
-	transformationMatrix .translate (Vector3f (0, 0, e));
-	transformationMatrix .scale (Vector3f (1, 1, b / a));
+	transformationMatrix .translate (Vector3d (0, 0, e));
+	transformationMatrix .scale (Vector3d (1, 1, b / a));
 
-	const Vector3f viewer = inverse (transformationMatrix) .origin ();
+	const Vector3d viewer = inverse (transformationMatrix) .origin ();
 
 	radius   = b;
 	distance = abs (viewer);

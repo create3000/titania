@@ -177,7 +177,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const Box3f &
+	const Box3d &
 	getBBox () const final override;
 
 	float
@@ -226,7 +226,7 @@ private:
 	///  @name Operations
 
 	virtual
-	Matrix4f
+	Matrix4d
 	getMatrix () const final override;
 
 	virtual

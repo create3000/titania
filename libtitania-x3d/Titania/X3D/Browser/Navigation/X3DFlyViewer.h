@@ -101,8 +101,8 @@ protected:
 	{ }
 
 	virtual
-	Vector3f
-	getTranslationOffset (const Vector3f &) = 0;
+	Vector3d
+	getTranslationOffset (const Vector3d &) = 0;
 
 
 private:
@@ -150,11 +150,11 @@ private:
 
 	///  @name Members
 
-	Vector3f         fromVector;
-	Vector3f         toVector;
-	Vector3f         direction;
-	Rotation4f       sourceRotation;
-	Rotation4f       destinationRotation;
+	Vector3d         fromVector;
+	Vector3d         toVector;
+	Vector3d         direction;
+	Rotation4d       sourceRotation;
+	Rotation4d       destinationRotation;
 	time_type        startTime;
 	guint            button;
 	sigc::connection fly_id;

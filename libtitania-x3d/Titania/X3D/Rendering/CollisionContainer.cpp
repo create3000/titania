@@ -64,7 +64,7 @@ CollisionContainer::CollisionContainer () :
 { }
 
 bool
-CollisionContainer::intersects (CollisionSphere3f sphere) const
+CollisionContainer::intersects (CollisionSphere3d sphere) const
 {
 	if (collisions .empty ())
 		return false;
@@ -85,7 +85,7 @@ CollisionContainer::draw ()
 	for (const auto & localObject : localObjects)
 		localObject -> enable ();
 
-	glLoadMatrixf (modelViewMatrix .data ());
+	glLoadMatrixd (modelViewMatrix .data ());
 
 	shape -> collision (this);
 

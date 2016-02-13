@@ -74,7 +74,7 @@ LightContainer::enable ()
 
 		glEnable (lightId);
 
-		glLoadMatrixf (modelViewMatrix .data ());
+		glLoadMatrixd (modelViewMatrix .data ());
 
 		node -> draw (lightId);
 	}

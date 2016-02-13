@@ -86,10 +86,10 @@ public:
 	{ return scissor; }
 
 	void
-	setModelViewMatrix (const Matrix4f & value)
+	setModelViewMatrix (const Matrix4d & value)
 	{ modelViewMatrix = value; }
 
-	const Matrix4f &
+	const Matrix4d &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -137,7 +137,7 @@ private:
 
 	bool                   transparent;
 	Vector4i               scissor;
-	Matrix4f               modelViewMatrix;
+	Matrix4d               modelViewMatrix;
 	X3DShapeNode*          shape;
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;

@@ -221,35 +221,35 @@ ElevationGrid::set_normal ()
 		normalNode -> addInterest (this);
 }
 
-Box3f
+Box3d
 ElevationGrid::createBBox ()
 {
 	if (xDimension () < 2 or zDimension () < 2)
-		return Box3f ();
+		return Box3d ();
 
 	const size_t vertices = xDimension () * zDimension ();
 
-	const float x = xSpacing () * (xDimension () - 1);
-	const float z = zSpacing () * (zDimension () - 1);
+	const double x = xSpacing () * (xDimension () - 1);
+	const double z = zSpacing () * (zDimension () - 1);
 
-	float miny = getHeight (0);
-	float maxy = getHeight (0);
+	double miny = getHeight (0);
+	double maxy = getHeight (0);
 
 	for (size_t i = 1; i < vertices; ++ i)
 	{
-		miny = std::min <float> (miny, getHeight (i));
-		maxy = std::max <float> (maxy, getHeight (i));
+		miny = std::min <double> (miny, getHeight (i));
+		maxy = std::max <double> (maxy, getHeight (i));
 	}
 
-	const float y = maxy - miny;
+	const double y = maxy - miny;
 
-	const Vector3f size   = Vector3f (x, y, z);
-	const Vector3f center = Vector3f (x / 2, miny + y / 2, z / 2);
+	const Vector3d size   = Vector3d (x, y, z);
+	const Vector3d center = Vector3d (x / 2, miny + y / 2, z / 2);
 
-	return Box3f (size, center);
+	return Box3d (size, center);
 }
 
-float
+double
 ElevationGrid::getHeight (const size_t index) const
 {
 	if (index < height () .size ())
@@ -282,7 +282,7 @@ ElevationGrid::createTexCoord () const
 }
 
 std::vector <Vector3f>
-ElevationGrid::createNormals (const std::vector <Vector3f> & points, const std::vector <size_t> & coordIndex, const float creaseAngle) const
+ElevationGrid::createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const double creaseAngle) const
 {
 	std::vector <Vector3f> normals;
 	normals .reserve (coordIndex .size ());
@@ -338,10 +338,10 @@ ElevationGrid::createCoordIndex () const
 	return coordIndex;
 }
 
-std::vector <Vector3f>
+std::vector <Vector3d>
 ElevationGrid::createPoints () const
 {
-	std::vector <Vector3f> points;
+	std::vector <Vector3d> points;
 	points .reserve (xDimension () * zDimension ());
 
 	for (int32_t z = 0; z < zDimension (); ++ z)
@@ -364,7 +364,7 @@ ElevationGrid::build ()
 		return;
 
 	const std::vector <size_t>   coordIndex = createCoordIndex ();
-	const std::vector <Vector3f> points     = createPoints ();
+	const std::vector <Vector3d> points     = createPoints ();
 
 	getVertices () .reserve (coordIndex .size ());
 
@@ -398,7 +398,7 @@ ElevationGrid::build ()
 	if (normalNode)
 		getNormals () .reserve (coordIndex .size ());
 	else
-		getNormals () = createNormals (points, coordIndex, creaseAngle ());
+		getNormals () = createNormals (points, coordIndex, creaseAngle () .getValue ());
 
 	// Build geometry
 

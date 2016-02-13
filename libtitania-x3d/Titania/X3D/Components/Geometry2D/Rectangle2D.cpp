@@ -109,10 +109,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getRectangle2DOptions () .addInterest (this, &Rectangle2D::update);
 }
 
-Box3f
+Box3d
 Rectangle2D::createBBox ()
 {
-	return Box3f (Vector3f (size () .getX (), size () .getY (), 0), Vector3f ());
+	return Box3d (Vector3d (size () .getX (), size () .getY (), 0), Vector3d ());
 }
 
 void
@@ -138,7 +138,7 @@ Rectangle2D::build ()
 	{
 		getVertices () .reserve (options -> getVertices () .size ());
 
-		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
+		const auto size1_2 = Vector3d (size () .getX (), size () .getY (), 0) / 2.0;
 
 		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);
@@ -173,7 +173,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (size () not_eq Vector2f (2, 2))
 	{
-		const auto size1_2 = Vector3f (size () .getX (), size () .getY (), 0) / 2.0f;
+		const auto size1_2 = Vector3d (size () .getX (), size () .getY (), 0) / 2.0;
 
 		for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
 			point *= size1_2;

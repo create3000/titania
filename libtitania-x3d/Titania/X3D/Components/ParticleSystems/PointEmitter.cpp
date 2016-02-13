@@ -89,10 +89,10 @@ PointEmitter::create (X3DExecutionContext* const executionContext) const
 	return new PointEmitter (executionContext);
 }
 
-Box3f
+Box3d
 PointEmitter::getBBox ()
 {
-	return Box3f (Vector3f (1, 1, 1), position ());
+	return Box3d (Vector3d (1, 1, 1), position () .getValue ());
 }
 
 MFString

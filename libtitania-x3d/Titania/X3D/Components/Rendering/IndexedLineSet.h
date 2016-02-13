@@ -163,7 +163,7 @@ public:
 
 	///  @name Operations
 
-	std::vector <Vector3f>
+	std::vector <Vector3d>
 	getPolylines () const;
 
 	virtual

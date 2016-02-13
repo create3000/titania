@@ -71,7 +71,7 @@ public:
 	{ return *fields .enabled; }
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override;
 
 	virtual

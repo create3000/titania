@@ -267,22 +267,22 @@ private:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	createBBox () final override;
 
-	float
+	double
 	getHeight (const size_t) const;
 
 	std::vector <Vector4f>
 	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3f> &, const std::vector <size_t> &, const float) const;
+	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &, const double) const;
 
 	std::vector <size_t>
 	createCoordIndex () const;
 
-	std::vector <Vector3f>
+	std::vector <Vector3d>
 	createPoints () const;
 
 	virtual

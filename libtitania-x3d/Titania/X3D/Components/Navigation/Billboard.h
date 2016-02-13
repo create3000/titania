@@ -104,10 +104,10 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const
 	{ return matrix; }
 
@@ -145,7 +145,7 @@ private:
 
 	Fields fields;
 	
-	Matrix4f matrix;
+	Matrix4d matrix;
 
 };
 

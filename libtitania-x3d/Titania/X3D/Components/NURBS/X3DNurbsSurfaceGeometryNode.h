@@ -284,7 +284,7 @@ private:
 	GLenum type;
 	std::vector <Vector4f> texCoords;
 	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	std::vector <Vector3d> vertices;
 	
 	GLenum vertexMode;
 	size_t numVertices;

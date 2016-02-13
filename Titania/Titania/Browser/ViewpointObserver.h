@@ -90,10 +90,10 @@ private:
 
 	X3D::X3DPtr <X3D::X3DViewer> viewerNode;
 	X3D::UndoStepPtr             undoStep;
-	X3D::Vector3f                positionOffset;
-	X3D::Rotation4f              orientationOffset;
-	X3D::Vector3f                centerOfRotationOffset;
-	float                        fieldOfViewScale;
+	X3D::Vector3d                positionOffset;
+	X3D::Rotation4d              orientationOffset;
+	X3D::Vector3d                centerOfRotationOffset;
+	double                       fieldOfViewScale;
 
 };
 

@@ -146,7 +146,7 @@ NavigationInfo::set_headlight ()
 		light .reset ();
 }
 
-float
+double
 NavigationInfo::getCollisionRadius () const
 {
 	if (avatarSize () .size () > 0)
@@ -158,7 +158,7 @@ NavigationInfo::getCollisionRadius () const
 	return 0.25;
 }
 
-float
+double
 NavigationInfo::getAvatarHeight () const
 {
 	if (avatarSize () .size () > 1)
@@ -167,7 +167,7 @@ NavigationInfo::getAvatarHeight () const
 	return 1.6;
 }
 
-float
+double
 NavigationInfo::getStepHeight () const
 {
 	if (avatarSize () .size () > 2)
@@ -176,10 +176,10 @@ NavigationInfo::getStepHeight () const
 	return 0.75;
 }
 
-float
+double
 NavigationInfo::getNearPlane () const
 {
-	const float zNear = getCollisionRadius ();
+	const double zNear = getCollisionRadius ();
 
 	if (zNear == 0)
 		return std::numeric_limits <float>::epsilon () * 100;
@@ -188,7 +188,7 @@ NavigationInfo::getNearPlane () const
 		return zNear / 2;
 }
 
-float
+double
 NavigationInfo::getFarPlane (X3DViewpointNode* const viewpoint) const
 {
 	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxZFar ();

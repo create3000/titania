@@ -170,10 +170,10 @@ TransmitterPdu::initialize ()
 	X3DBoundedObject::initialize ();
 }
 
-Box3f
+Box3d
 TransmitterPdu::getBBox () const
 {
-	return Box3f ();
+	return Box3d ();
 }
 
 void

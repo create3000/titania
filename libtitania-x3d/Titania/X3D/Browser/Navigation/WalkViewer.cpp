@@ -81,16 +81,16 @@ WalkViewer::initialize ()
 	getBrowser () -> addCollision (this);
 }
 
-Vector3f
-WalkViewer::getTranslationOffset (const Vector3f & velocity)
+Vector3d
+WalkViewer::getTranslationOffset (const Vector3d & velocity)
 {
-	static constexpr Vector3f yAxis (0, 1, 0);
+	static constexpr Vector3d yAxis (0, 1, 0);
 
 	const auto & viewpoint = getActiveViewpoint ();
 	const auto   upVector  = viewpoint -> getUpVector ();
 
 	const auto userOrientation = viewpoint -> getUserOrientation ();
-	const auto orientation     = userOrientation * Rotation4f (yAxis * userOrientation, upVector);
+	const auto orientation     = userOrientation * Rotation4d (yAxis * userOrientation, upVector);
 
 	return velocity * orientation;
 }

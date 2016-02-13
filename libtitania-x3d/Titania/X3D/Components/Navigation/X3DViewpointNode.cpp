@@ -65,8 +65,8 @@
 namespace titania {
 namespace X3D {
 
-static constexpr Vector3f yAxis (0, 1, 0);
-static constexpr Vector3f zAxis (0, 0, 1);
+static constexpr Vector3d yAxis (0, 1, 0);
+static constexpr Vector3d zAxis (0, 0, 1);
 
 X3DViewpointNode::Fields::Fields () :
 	           orientation (new SFRotation ()),
@@ -165,49 +165,49 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DViewpointNode::setUserPosition (const Vector3f & userPosition)
+X3DViewpointNode::setUserPosition (const Vector3d & userPosition)
 {
 	positionOffset () = userPosition - getPosition ();
 }
 
-Vector3f
+Vector3d
 X3DViewpointNode::getUserPosition () const
 {
 	return getPosition () + positionOffset ();
 }
 
 void
-X3DViewpointNode::setUserOrientation (const Rotation4f & userOrientation)
+X3DViewpointNode::setUserOrientation (const Rotation4d & userOrientation)
 {
 	orientationOffset () = ~getOrientation () * userOrientation;
 }
 
-Rotation4f
+Rotation4d
 X3DViewpointNode::getUserOrientation () const
 {
 	return getOrientation () * orientationOffset ();
 }
 
-Vector3f
+Vector3d
 X3DViewpointNode::getUserCenterOfRotation () const
 {
 	return getCenterOfRotation () + centerOfRotationOffset ();
 }
 
 void
-X3DViewpointNode::setUserCenterOfRotation (const Vector3f & userCenterOfRotation)
+X3DViewpointNode::setUserCenterOfRotation (const Vector3d & userCenterOfRotation)
 {
 	centerOfRotationOffset () = userCenterOfRotation - getCenterOfRotation ();
 }
 
 void
 X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
-                                             Vector3f & relativePosition,
-                                             Rotation4f & relativeOrientation,
-                                             Vector3f & relativeScale,
-                                             Rotation4f & relativeScaleOrientation) const
+                                             Vector3d & relativePosition,
+                                             Rotation4d & relativeOrientation,
+                                             Vector3d & relativeScale,
+                                             Rotation4d & relativeScaleOrientation) const
 {
-	const Matrix4f differenceMatrix = ~(getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
+	const Matrix4d differenceMatrix = ~(getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
 
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -216,7 +216,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 }
 
 void
-X3DViewpointNode::setCameraSpaceMatrix (const Matrix4f & value)
+X3DViewpointNode::setCameraSpaceMatrix (const Matrix4d & value)
 {
 	try
 	{
@@ -272,33 +272,33 @@ X3DViewpointNode::applyUserOffsets ()
 	if (timeSensor -> isActive ())
 		return;
 
-	if (positionOffset () not_eq Vector3f ())
+	if (positionOffset () not_eq Vector3d ())
 	{
 		setPosition (getUserPosition ());
-		positionOffset () = Vector3f ();
+		positionOffset () = Vector3d ();
 	}
 
-	if (orientationOffset () not_eq Rotation4f ())
+	if (orientationOffset () not_eq Rotation4d ())
 	{
 		setOrientation (getUserOrientation ());
-		orientationOffset () = Rotation4f ();
+		orientationOffset () = Rotation4d ();
 	}
 
-	if (centerOfRotationOffset () not_eq Vector3f ())
+	if (centerOfRotationOffset () not_eq Vector3d ())
 	{
 		setCenterOfRotation (getUserCenterOfRotation ());
-		centerOfRotationOffset () = Vector3f ();
+		centerOfRotationOffset () = Vector3d ();
 	}
 }
 
 void
 X3DViewpointNode::resetUserOffsets ()
 {
-	positionOffset ()         = Vector3f ();
-	orientationOffset ()      = Rotation4f ();
-	scaleOffset ()            = Vector3f (1, 1, 1);
-	scaleOrientationOffset () = Rotation4f ();
-	centerOfRotationOffset () = Vector3f ();
+	positionOffset ()         = Vector3d ();
+	orientationOffset ()      = Rotation4d ();
+	scaleOffset ()            = Vector3d (1, 1, 1);
+	scaleOrientationOffset () = Rotation4d ();
+	centerOfRotationOffset () = Vector3d ();
 	fieldOfViewScale ()       = 1;
 }
 
@@ -315,48 +315,48 @@ X3DViewpointNode::straighten (const bool horizon)
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	const Rotation4f rotation = orientationOffset () * (horizon
+	const Rotation4d rotation = orientationOffset () * (horizon
 	                                                    ? straightenHorizon (getUserOrientation ())
 																		 : straightenView (getUserOrientation ()));
 
-	positionInterpolator         -> keyValue () = { positionOffset (), positionOffset () };
-	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
-	scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
-	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
+	positionInterpolator         -> keyValue () = { positionOffset () .getValue (),         positionOffset () .getValue () };
+	orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
+	scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
+	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
 
 	const auto distanceToCenter = abs (getUserCenterOfRotation () - getUserPosition ());
 
-	centerOfRotationOffset () = getUserPosition () + (Vector3f (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - getCenterOfRotation ();
+	centerOfRotationOffset () = getUserPosition () + (Vector3d (0, 0, -1) * distanceToCenter) * (getOrientation () * rotation) - getCenterOfRotation ();
 
 	set_bind () = true;
 }
 
 ///  Returns a relative rotation that can right multiplied with @a orientation to get a straighten horizon.
-Rotation4f
-X3DViewpointNode::straightenHorizon (const Rotation4f & orientation) const
+Rotation4d
+X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 {
 	// Taken from Billboard
 
-	Vector3f direction = zAxis * orientation;
-	Vector3f normal    = cross (direction, getUpVector ());
-	Vector3f vector    = cross (direction, yAxis * orientation);
+	Vector3d direction = zAxis * orientation;
+	Vector3d normal    = cross (direction, getUpVector ());
+	Vector3d vector    = cross (direction, yAxis * orientation);
 
-	return Rotation4f (vector, normal);
+	return Rotation4d (vector, normal);
 }
 
 ///  This function straightens the view in a way that the viewpoint looks along the upVector plane.
 ///  Returns a relative rotation that can right multiplied with @a orientation to get a straighten view.
-Rotation4f
-X3DViewpointNode::straightenView (const Rotation4f & orientation) const
+Rotation4d
+X3DViewpointNode::straightenView (const Rotation4d & orientation) const
 {
-	return Rotation4f (yAxis * orientation, getUpVector ());
+	return Rotation4d (yAxis * orientation, getUpVector ());
 }
 
 ///  Flys to @a point in world coordinates to a distance of @a factor and centers the point within the browser surface.
 ///  If @a straighten is true the camera up vector is rotate into the plane defined by the local y-axis and the cameras
 ///  direction vector.
 void
-X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straighten)
+X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straighten)
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
@@ -365,7 +365,7 @@ X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straigh
 	{
 		point = point * ~getTransformationMatrix ();
 
-		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		lookAt (point, minDistance, factor, straighten);
 	}
@@ -377,7 +377,7 @@ X3DViewpointNode::lookAt (Vector3f point, const float factor, const bool straigh
 ///  within the browser surface.  If @a straighten is true the camera up vector is rotate into the plane defined by the
 ///  local y-axis and the cameras direction vector.
 void
-X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
+X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten)
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
@@ -386,7 +386,7 @@ X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
 	{
 		bbox *= ~getTransformationMatrix ();
 
-		const float minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
 		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten);
 	}
@@ -395,9 +395,9 @@ X3DViewpointNode::lookAt (Box3f bbox, const float factor, const bool straighten)
 }
 
 void
-X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const float factor, const bool straighten)
+X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten)
 {
-   const auto offset = point + Vector3f (0, 0, distance) * getUserOrientation () - getPosition ();
+   const auto offset = point + Vector3d (0, 0, distance) * getUserOrientation () - getPosition ();
 
 	for (const auto & layer : getLayers ())
 		layer -> getNavigationInfo () -> transitionStart () = true;
@@ -409,17 +409,17 @@ X3DViewpointNode::lookAt (const Vector3f & point, const float distance, const fl
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
-	const auto translation = lerp <Vector3f> (positionOffset (), offset, factor);
+	const auto translation = lerp <Vector3d> (positionOffset (), offset, factor);
 	const auto direction   = getPosition () + translation - point;
-	auto       rotation    = orientationOffset () * Rotation4f (zAxis * getUserOrientation (), direction);
+	auto       rotation    = orientationOffset () * Rotation4d (zAxis * getUserOrientation (), direction);
 
 	if (straighten)
 		rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
 
-	positionInterpolator         -> keyValue () = { positionOffset (), translation };
-	orientationInterpolator      -> keyValue () = { orientationOffset (), rotation };
-	scaleInterpolator            -> keyValue () = { scaleOffset (), scaleOffset () };
-	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset (), scaleOrientationOffset () };
+	positionInterpolator         -> keyValue () = { positionOffset () .getValue (),         translation };
+	orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
+	scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
+	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
 
 	centerOfRotationOffset () = point - getCenterOfRotation ();
 	set_bind ()               = true;
@@ -478,20 +478,20 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			timeSensor -> startTime ()     = getCurrentTime ();
 			timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
 
-			Vector3f   relativePosition, relativeScale;
-			Rotation4f relativeOrientation, relativeScaleOrientation;
+			Vector3d   relativePosition, relativeScale;
+			Rotation4d relativeOrientation, relativeScaleOrientation;
 
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
-			const Vector3f   startPosition         = relativePosition;
-			const Rotation4f startOrientation      = relativeOrientation;
-			const Vector3f   startScale            = relativeScale;
-			const Rotation4f startScaleOrientation = relativeScaleOrientation;
+			const Vector3d   startPosition         = relativePosition;
+			const Rotation4d startOrientation      = relativeOrientation;
+			const Vector3d   startScale            = relativeScale;
+			const Rotation4d startScaleOrientation = relativeScaleOrientation;
 
-			const Vector3f   endPosition         = positionOffset ();
-			const Rotation4f endOrientation      = orientationOffset ();
-			const Vector3f   endScale            = scaleOffset ();
-			const Rotation4f endScaleOrientation = scaleOrientationOffset ();
+			const Vector3d   endPosition         = positionOffset ();
+			const Rotation4d endOrientation      = orientationOffset ();
+			const Vector3d   endScale            = scaleOffset ();
+			const Rotation4d endScaleOrientation = scaleOrientationOffset ();
 
 			positionOffset ()         = startPosition;
 			orientationOffset ()      = startOrientation;
@@ -505,8 +505,8 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 		}
 		else
 		{
-			Vector3f   relativePosition, relativeScale;
-			Rotation4f relativeOrientation, relativeScaleOrientation;
+			Vector3d   relativePosition, relativeScale;
+			Rotation4d relativeOrientation, relativeScaleOrientation;
 
 			getRelativeTransformation (fromViewpoint, relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -562,7 +562,7 @@ X3DViewpointNode::traverse (const TraverseType type)
 
 			if (isBound ())
 			{
-				Matrix4f matrix;
+				Matrix4d matrix;
 				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
 				setCameraSpaceMatrix (matrix * getModelViewMatrix () .get ());

@@ -140,13 +140,13 @@ TransformSensor::set_targetObject ()
 void
 TransformSensor::update ()
 {
-	const auto sourceBox = Box3f (size (), center ());
+	const auto sourceBox = Box3d (size () .getValue (), center () .getValue ());
 	const auto targetBox = targetObjectNode -> getBBox ();
 
 	if (size () == Vector3f (-1, -1, -1) or sourceBox .intersects (targetBox))
 	{
-		Vector3f   translation;
-		Rotation4f rotation;
+		Vector3d   translation;
+		Rotation4d rotation;
 
 		targetBox .matrix () .get (translation, rotation);
 

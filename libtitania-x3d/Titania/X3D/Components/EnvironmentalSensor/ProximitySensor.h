@@ -173,7 +173,7 @@ private:
 	Fields fields;
 
 	X3DViewpointNode* viewpointNode;
-	Matrix4f          modelViewMatrix;
+	Matrix4d          modelViewMatrix;
 	bool              inside;
 
 };

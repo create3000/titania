@@ -111,13 +111,13 @@ LayoutGroup::initialize ()
 	set_layout ();
 }
 
-Box3f
+Box3d
 LayoutGroup::getBBox () const
 {
 	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
-Box3f
+Box3d
 LayoutGroup::getRectangleBBox () const
 {
 	if (layoutNode)
@@ -125,18 +125,18 @@ LayoutGroup::getRectangleBBox () const
 		const auto & size   = layoutNode -> getRectangleSize ();
 		const auto & center = layoutNode -> getRectangleCenter ();
 
-		Vector3f t, s;
-		Rotation4f r;
+		Vector3d t, s;
+		Rotation4d r;
 		
 		modelViewMatrix .get (t, r, s);
 
-		return Box3f (Vector3f (size .x (), size .y (), 0) / s, Vector3f (center .x (), center .y (), 0) / s);
+		return Box3d (Vector3d (size .x (), size .y (), 0) / s, Vector3d (center .x (), center .y (), 0) / s);
 	}
 
-	return Box3f ();
+	return Box3d ();
 }
 
-const Matrix4f &
+const Matrix4d &
 LayoutGroup::getMatrix () const
 {
 	try
@@ -144,7 +144,7 @@ LayoutGroup::getMatrix () const
 		if (layoutNode)
 			const_cast <LayoutGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
 		else
-			const_cast <LayoutGroup*> (this) -> matrix = Matrix4f ();
+			const_cast <LayoutGroup*> (this) -> matrix = Matrix4d ();
 	}
 	catch (const std::domain_error &)
 	{ }

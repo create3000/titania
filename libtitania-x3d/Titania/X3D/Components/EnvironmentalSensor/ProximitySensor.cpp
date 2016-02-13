@@ -121,19 +121,19 @@ ProximitySensor::update ()
 	{
 		if (inside and getTraversed ())
 		{
-			Matrix4f centerOfRotationMatrix = viewpointNode -> getTransformationMatrix ();
+			Matrix4d centerOfRotationMatrix = viewpointNode -> getTransformationMatrix ();
 			centerOfRotationMatrix .translate (viewpointNode -> getUserCenterOfRotation ());
 			centerOfRotationMatrix *= inverse (modelViewMatrix);
 
 			modelViewMatrix *= viewpointNode -> getInverseCameraSpaceMatrix ();
 
-			Vector3f   translation, scale;
-			Rotation4f rotation;
+			Vector3d   translation, scale;
+			Rotation4d rotation;
 			modelViewMatrix .get (translation, rotation, scale);
 
-			const Vector3f   position         = inverse (modelViewMatrix) .origin ();
-			const Rotation4f orientation      = ~rotation;
-			const Vector3f   centerOfRotation = centerOfRotationMatrix .origin ();
+			const Vector3d   position         = inverse (modelViewMatrix) .origin ();
+			const Rotation4d orientation      = ~rotation;
+			const Vector3d   centerOfRotation = centerOfRotationMatrix .origin ();
 
 			if (isActive ())
 			{
@@ -199,7 +199,7 @@ ProximitySensor::traverse (const TraverseType type)
 						inside = true;
 	
 					else
-						inside = Box3f (size (), center ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
+						inside = Box3d (size () .getValue (), center () .getValue ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
 	
 					return;
 				}

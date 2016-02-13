@@ -99,12 +99,12 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getRectangleBBox () const final override
 	{ return getNode () -> getRectangleBBox (); }
 
 	virtual
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 
@@ -143,7 +143,7 @@ inline
 void
 LayoutGroupTool::reshape ()
 {
-	Box3f bbox = getNode () -> getRectangleBBox ();
+	Box3d bbox = getNode () -> getRectangleBBox ();
 	
 	try
 	{
@@ -151,7 +151,7 @@ LayoutGroupTool::reshape ()
 	}
 	catch (const std::domain_error &)
 	{
-		bbox = Box3f (Vector3f (), Vector3f ());
+		bbox = Box3d (Vector3f (), Vector3f ());
 	}
 
 	try

@@ -108,12 +108,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
 }
 
-Box3f
+Box3d
 Circle2D::createBBox ()
 {
-	const float diameter = std::abs (radius ()) * 2;
+	const double diameter = std::abs (radius ()) * 2;
 
-	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
+	return Box3d (Vector3d (diameter, diameter, 0), Vector3d ());
 }
 
 void
@@ -129,7 +129,7 @@ Circle2D::build ()
 		getVertices () .reserve (options -> getVertices () .size ());
 
 		for (const auto & vertex : options -> getVertices ())
-			getVertices () .emplace_back (vertex * std::abs (radius ()));
+			getVertices () .emplace_back (vertex * std::abs <double> (radius () .getValue ()));
 	}
 
 	addElements (options -> getVertexMode (), getVertices () .size ());

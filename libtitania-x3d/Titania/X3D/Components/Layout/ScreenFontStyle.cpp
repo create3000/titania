@@ -160,7 +160,7 @@ ScreenText::setTextBounds ()
 
 	text -> origin () = Vector3f (min .x (), max .y (), 0);
 
-	setBBox (Box3f (min, max, extents_type ()));
+	setBBox (Box3d (min, max, extents_type ()));
 }
 
 void
@@ -371,7 +371,7 @@ ScreenText::draw ()
 	glDisable (GL_TEXTURE_2D);
 }
 
-const Box3f &
+const Box3d &
 ScreenText::getBBox () const
 {
 	const_cast <ScreenText*> (this) -> bbox = X3DTextGeometry::getBBox () * getMatrix ();

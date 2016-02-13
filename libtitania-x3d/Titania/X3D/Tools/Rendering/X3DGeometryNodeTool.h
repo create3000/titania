@@ -57,6 +57,8 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Browser/Selection.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
+#include "../../Components/Rendering/LineSet.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
@@ -124,7 +126,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const Box3f &
+	const Box3d &
 	getBBox () const final override
 	{ return getNode () -> getBBox (); }
 
@@ -154,7 +156,7 @@ public:
 	{ return getNode () -> getPolygonNormals (); }
 
 	virtual
-	const std::vector <Vector3f> &
+	const std::vector <Vector3d> &
 	getPolygonVertices () const final override
 	{ return getNode () -> getPolygonVertices (); }
 
@@ -175,7 +177,7 @@ public:
 
 	virtual
 	bool
-	intersects (Line3f, std::vector <IntersectionPtr> &) const final override
+	intersects (Line3d, std::vector <IntersectionPtr> &) const final override
 	{ return false; }
 
 	virtual
@@ -184,12 +186,12 @@ public:
 
 	virtual
 	bool
-	intersects (CollisionSphere3f sphere, const CollectableObjectArray & collectables) const final override
+	intersects (CollisionSphere3d sphere, const CollectableObjectArray & collectables) const final override
 	{ return getNode () -> intersects (sphere, collectables); }
 
 	virtual
 	void
-	triangulate (std::vector <Color4f> & colors, TexCoordArray & texCoords, std::vector <Vector3f> & normals, std::vector <Vector3f> & vertices) const final override
+	triangulate (std::vector <Color4f> & colors, TexCoordArray & texCoords, std::vector <Vector3f> & normals, std::vector <Vector3d> & vertices) const final override
 	{ getNode () -> triangulate (colors, texCoords, normals, vertices); }
 
 	virtual
@@ -424,6 +426,7 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::eventProcessed ()
 {
+
 	const auto & normals  = this -> getNode () -> getPolygonNormals ();
 	const auto & vertices = this -> getNode () -> getPolygonVertices ();
 	const auto & elements = this -> getNode () -> getElements ();
@@ -433,8 +436,9 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 	{
 		// Normals
 	
-		auto & normalVertexCount = normalToolNode -> getInlineNode () -> getExportedNode ("NormalsLineSet") -> getField <MFInt32> ("vertexCount");
-		auto & normalPoint       = normalToolNode -> getInlineNode () -> getExportedNode ("NormalsCoord")   -> getField <MFVec3f> ("point");
+		const X3DPtr <Inline> & inlineNode        = normalToolNode -> getInlineNode ();
+		auto &                  normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
+		auto &                  normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
 	
 		normalVertexCount .resize (size, SFInt32 (2));
 		normalPoint       .resize (2 * size);
@@ -442,7 +446,7 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 		for (size_t i = 0; i < size; ++ i)
 		{
 			normalPoint [2 * i + 0] = vertices [i];
-			normalPoint [2 * i + 1] = vertices [i] + normals [i] * normalToolNode -> length () .getValue ();
+			normalPoint [2 * i + 1] = vertices [i] + Vector3d (normals [i] * normalToolNode -> length () .getValue ());
 		}
 	}
 	catch (const X3DError & error)
@@ -454,8 +458,9 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 	{
 		// Points
 
-		auto & edgesVertexCount = coordToolNode -> getInlineNode () -> getExportedNode ("EdgesLineSet") -> getField <MFInt32> ("vertexCount");
-		auto & edgesPoint       = coordToolNode -> getInlineNode () -> getExportedNode ("EdgesCoord")   -> getField <MFVec3f> ("point");
+		const X3DPtr <Inline> & inlineNode       = coordToolNode -> getInlineNode ();
+		auto &                  edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
+		auto &                  edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
 
 		size_t first = 0;
 		size_t p     = 0;

@@ -75,7 +75,7 @@ static constexpr double    ROLL_ANGLE             = M_PI / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
 static constexpr time_type FRAME_RATE             = 60;
 
-static constexpr Vector3f yAxis (0, 1, 0);
+static constexpr Vector3d yAxis (0, 1, 0);
 
 X3DFlyViewer::X3DFlyViewer () :
 	          X3DViewer (),
@@ -137,7 +137,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				{
 					// Move.
 
-					fromVector = toVector = Vector3f (event -> x, 0, event -> y);
+					fromVector = toVector = Vector3d (event -> x, 0, event -> y);
 
 					if (getBrowser () -> getBrowserOptions () -> RubberBand ())
 						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
@@ -158,7 +158,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				getActiveViewpoint () -> transitionStop ();
 				addCollision ();
 
-				fromVector = toVector = Vector3f (event -> x, -event -> y, 0);
+				fromVector = toVector = Vector3d (event -> x, -event -> y, 0);
 
 				isActive () = true;
 				return false;
@@ -209,7 +209,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 					auto       orientation = getActiveViewpoint () -> getUserOrientation ();
 					const auto toVector    = trackballProjectToSphere (event -> x, event -> y);
 
-					orientation  = Rotation4f (toVector, fromVector) * orientation;
+					orientation  = Rotation4d (toVector, fromVector) * orientation;
 					orientation *= viewpoint -> straightenHorizon (orientation);
 
 					getActiveViewpoint () -> orientationOffset () = ~getActiveViewpoint () -> getOrientation () * orientation;
@@ -220,7 +220,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 				{
 					// Fly
 
-					toVector  = Vector3f (event -> x, 0, event -> y);
+					toVector  = Vector3d (event -> x, 0, event -> y);
 					direction = toVector - fromVector;
 
 					addFly ();
@@ -233,7 +233,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 			{
 				// Pan
 
-				toVector  = Vector3f (event -> x, -event -> y, 0);
+				toVector  = Vector3d (event -> x, -event -> y, 0);
 				direction = toVector - fromVector;
 
 				addPan ();
@@ -260,14 +260,14 @@ X3DFlyViewer::on_scroll_event (GdkEventScroll* event)
 		if (event -> direction == GDK_SCROLL_UP)
 		{
 			sourceRotation      = viewpoint -> orientationOffset ();
-			destinationRotation = sourceRotation * Rotation4f (Vector3f (-1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
+			destinationRotation = sourceRotation * Rotation4d (Vector3d (-1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 			addRoll ();
 		}
 
 		else if (event -> direction == GDK_SCROLL_DOWN)
 		{
 			sourceRotation      = viewpoint -> orientationOffset ();
-			destinationRotation = sourceRotation * Rotation4f (Vector3f (1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
+			destinationRotation = sourceRotation * Rotation4d (Vector3d (1, 0, 0) * viewpoint -> getUserOrientation (), ROLL_ANGLE);
 			addRoll ();
 		}
 
@@ -292,17 +292,17 @@ X3DFlyViewer::fly ()
 
 		// Rubberband values
 
-		const Rotation4f up (yAxis, upVector);
+		const Rotation4d up (yAxis, upVector);
 
-		const Rotation4f rubberBandRotation = direction .z () > 0
-		                                      ? Rotation4f (direction * up, Vector3f (0, 0, 1) * up)
-														  : Rotation4f (Vector3f (0, 0, -1) * up, direction * up);
+		const Rotation4d rubberBandRotation = direction .z () > 0
+		                                      ? Rotation4d (direction * up, Vector3d (0, 0, 1) * up)
+														  : Rotation4d (Vector3d (0, 0, -1) * up, direction * up);
 
 		const double rubberBandLength = abs (direction);
 
 		// Position offset
 
-		float speedFactor = 1 - rubberBandRotation .angle () / M_PI1_2;
+		double speedFactor = 1 - rubberBandRotation .angle () / M_PI1_2;
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();
@@ -315,15 +315,15 @@ X3DFlyViewer::fly ()
 
 		// Rotation
 
-		float weight = ROTATION_SPEED_FACTOR * dt;
+		double weight = ROTATION_SPEED_FACTOR * dt;
 
 		weight *= std::pow (rubberBandLength / (rubberBandLength + ROTATION_LIMIT), 2);
 
-		viewpoint -> orientationOffset () *= slerp (Rotation4f (), rubberBandRotation, weight);
+		viewpoint -> orientationOffset () *= slerp (Rotation4d (), rubberBandRotation, weight);
 
 		// GeoRotation
 
-		const auto geoRotation = Rotation4f (upVector, viewpoint -> getUpVector ());
+		const auto geoRotation = Rotation4d (upVector, viewpoint -> getUpVector ());
 
 		viewpoint -> orientationOffset () *= geoRotation;
 
@@ -347,14 +347,14 @@ X3DFlyViewer::pan ()
 		const auto & viewpoint = getActiveViewpoint ();
 		const auto   upVector  = viewpoint -> getUpVector ();
 
-		float speedFactor = 1.0;
+		double speedFactor = 1.0;
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();
 		speedFactor *= getBrowser () -> hasShiftKey () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
 		speedFactor *= dt;
 
-		const auto orientation = viewpoint -> getUserOrientation () * Rotation4f (yAxis * viewpoint -> getUserOrientation (), upVector);
+		const auto orientation = viewpoint -> getUserOrientation () * Rotation4d (yAxis * viewpoint -> getUserOrientation (), upVector);
 		const auto translation = speedFactor * direction * orientation;
 
 		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
@@ -380,7 +380,7 @@ X3DFlyViewer::roll ()
 
 		const auto & viewpoint = getActiveViewpoint ();
 
-		viewpoint -> orientationOffset () = slerp <float> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
+		viewpoint -> orientationOffset () = slerp <double> (sourceRotation, destinationRotation, elapsedTime / ROLL_TIME);
 
 		return true;
 	}

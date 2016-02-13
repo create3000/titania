@@ -70,7 +70,7 @@ public:
 	{ return getNode () -> setMatrix (matrix); }
 
 	virtual
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const final override
 	{ return getNode () -> getMatrix (); }
 

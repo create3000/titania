@@ -127,7 +127,7 @@ private:
 
 	///  @name Members
 
-	Vector3f fromPoint;
+	Vector3d fromPoint;
 	guint    button;
 
 };

@@ -96,14 +96,14 @@ public:
 	isTransparent () const override;
 	
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	bool
-	intersects (const CollisionSphere3f &, const CollectableObjectArray &) override;
+	intersects (const CollisionSphere3d &, const CollectableObjectArray &) override;
 
 	virtual
 	void

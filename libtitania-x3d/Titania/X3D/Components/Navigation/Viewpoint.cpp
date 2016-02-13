@@ -126,8 +126,8 @@ Viewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) co
 	return Vector3d (size, size, size);
 }
 
-float
-Viewpoint::getLookAtDistance (const Box3f & bbox) const
+double
+Viewpoint::getLookAtDistance (const Box3d & bbox) const
 {
 	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 }

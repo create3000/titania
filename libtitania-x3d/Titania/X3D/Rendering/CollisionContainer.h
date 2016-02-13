@@ -77,10 +77,10 @@ public:
 	{ scissor = value; }
 
 	void
-	setModelViewMatrix (const Matrix4f & value)
+	setModelViewMatrix (const Matrix4d & value)
 	{ modelViewMatrix = value; }
 
-	const Matrix4f &
+	const Matrix4d &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -103,7 +103,7 @@ public:
    ///  @name Operations
 
 	bool
-	intersects (CollisionSphere3f) const;
+	intersects (CollisionSphere3d) const;
 
 	void
 	draw ();
@@ -114,7 +114,7 @@ private:
    ///  @name Members
 
 	Vector4i               scissor;
-	Matrix4f               modelViewMatrix;
+	Matrix4d               modelViewMatrix;
 	X3DShapeNode*          shape;
 	CollisionArray         collisions;
 	CollectableObjectArray localObjects;

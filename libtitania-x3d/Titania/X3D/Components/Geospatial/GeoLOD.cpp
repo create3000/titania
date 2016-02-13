@@ -179,7 +179,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DChildNode::setExecutionContext (executionContext);
 }
 
-Box3f
+Box3d
 GeoLOD::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
@@ -197,7 +197,7 @@ GeoLOD::getBBox () const
 			}
 			case 1:
 			{
-				Box3f bbox;
+				Box3d bbox;
 				
 				bbox += child1Inline -> getBBox ();
 				bbox += child2Inline -> getBBox ();
@@ -207,11 +207,11 @@ GeoLOD::getBBox () const
 				return bbox;
 			}
 			default:
-				return Box3f ();
+				return Box3d ();
 		}
 	}
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 void

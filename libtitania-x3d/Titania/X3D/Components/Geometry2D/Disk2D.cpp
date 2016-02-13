@@ -116,12 +116,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
 }
 
-Box3f
+Box3d
 Disk2D::createBBox ()
 {
 	const auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 
-	return Box3f (Vector3f (diameter, diameter, 0), Vector3f ());
+	return Box3d (Vector3d (diameter, diameter, 0), Vector3d ());
 }
 
 void
@@ -133,7 +133,7 @@ Disk2D::build ()
 	{
 		// Circle
 
-		const auto radius = std::abs (outerRadius ());
+		const double radius = std::abs (outerRadius ());
 
 		if (radius == 1)
 			getVertices () = options -> getVertices ();
@@ -158,8 +158,7 @@ Disk2D::build ()
 	{
 		// Disk
 
-		const auto radius = std::abs (std::max (innerRadius (), outerRadius ()));
-
+		const double radius   = std::abs (std::max (innerRadius (), outerRadius ()));
 		const size_t elements = solid () ? 1 : 2;
 
 		getTexCoords () .emplace_back ();
@@ -206,9 +205,9 @@ Disk2D::build ()
 
 	// Texture Coordinates
 
-	const auto maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
-	const auto minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
-	const auto scale     = minRadius / maxRadius;
+	const double maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
+	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
+	const double scale     = minRadius / maxRadius;
 
 	for (const auto & texCoord : options -> getTexCoords ())
 	{

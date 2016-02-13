@@ -63,7 +63,7 @@ ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 { }
 
 bool
-ClipPlaneContainer::isClipped (const Vector3f & point, const Matrix4f & matrix) const
+ClipPlaneContainer::isClipped (const Vector3d & point, const Matrix4d & matrix) const
 {
 	return node -> isClipped (modelViewMatrix, point * matrix);
 }
@@ -78,7 +78,7 @@ ClipPlaneContainer::enable ()
 		planeId = clipPlanes .top ();
 		clipPlanes .pop ();
 
-		glLoadMatrixf (modelViewMatrix .data ());
+		glLoadMatrixd (modelViewMatrix .data ());
 
 		glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
 		glEnable (planeId);

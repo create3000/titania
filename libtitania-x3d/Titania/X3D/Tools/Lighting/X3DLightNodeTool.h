@@ -123,7 +123,7 @@ public:
 	///  @name Operations
 	
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override
 	{ return getInlineNode () -> getBBox (); }
 

@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SCROLL_FACTOR = 0.05;
+static constexpr double SCROLL_FACTOR = 0.05;
 
 const ComponentType PlaneViewer::component      = ComponentType::TITANIA;
 const std::string   PlaneViewer::typeName       = "PlaneViewer";
@@ -172,7 +172,7 @@ PlaneViewer::on_scroll_event (GdkEventScroll* event)
 
 		if (event -> direction == GDK_SCROLL_UP)      // Move backwards.
 		{
-			viewpoint -> fieldOfViewScale () = std::max (0.00001f, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
+			viewpoint -> fieldOfViewScale () = std::max (0.00001, viewpoint -> fieldOfViewScale () * (1 - SCROLL_FACTOR));
 		}
 
 		else if (event -> direction == GDK_SCROLL_DOWN) // Move forwards.

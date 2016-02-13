@@ -149,13 +149,13 @@ Text::getLength (const size_t index)
 	return 0;
 }
 
-const Box3f &
+const Box3d &
 Text::getBBox () const
 {
 	return textGeometry -> getBBox ();
 }
 
-Matrix4f
+Matrix4d
 Text::getMatrix () const
 {
 	return textGeometry -> getMatrix ();
@@ -172,9 +172,9 @@ Text::build ()
 	
 		// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 	
-		const Box3f bbox = textGeometry -> X3DTextGeometry::getBBox ();
+		const Box3d bbox = textGeometry -> X3DTextGeometry::getBBox ();
 	
-		/* const */ Vector3f min, max;
+		/* const */ Vector3d min, max;
 		bbox .extents (min, max);
 	
 		getTexCoords () .emplace_back ();

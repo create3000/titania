@@ -108,7 +108,7 @@ public:
 
 	virtual
 	bool
-	intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & clipPlanes) final override
+	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) final override
 	{ return getNode () -> intersects (sphere, clipPlanes); }
 
 	/// @name Operations

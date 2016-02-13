@@ -184,19 +184,19 @@ public:
 
 	///  @name Member access
 
-	float
+	double
 	getCollisionRadius () const;
 
-	float
+	double
 	getAvatarHeight () const;
 
-	float
+	double
 	getStepHeight () const;
 
-	float
+	double
 	getNearPlane () const;
 
-	float
+	double
 	getFarPlane (X3DViewpointNode* const) const;
 
 	TransitionType

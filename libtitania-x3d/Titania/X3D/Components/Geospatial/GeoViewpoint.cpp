@@ -172,12 +172,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-GeoViewpoint::setPosition (const Vector3f & value)
+GeoViewpoint::setPosition (const Vector3d & value)
 {
 	position () = getGeoCoord (value);
 }
 
-Vector3f
+Vector3d
 GeoViewpoint::getPosition () const
 {
 	return getCoord (position ());
@@ -191,7 +191,7 @@ GeoViewpoint::set_position ()
 }
 
 void
-GeoViewpoint::setOrientation (const Rotation4f & value)
+GeoViewpoint::setOrientation (const Rotation4d & value)
 {
 	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
 
@@ -199,7 +199,7 @@ GeoViewpoint::setOrientation (const Rotation4f & value)
 }
 
 ///  Returns the resulting orientation for this viewpoint.
-Rotation4f
+Rotation4d
 GeoViewpoint::getOrientation () const
 {
 	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
@@ -216,13 +216,13 @@ GeoViewpoint::getFieldOfView () const
 	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
 }
 
-Vector3f
+Vector3d
 GeoViewpoint::getUpVector () const
 {
 	return X3DGeospatialObject::getUpVector (coord + Vector3d (positionOffset () .getValue ()));
 }
 
-float
+double
 GeoViewpoint::getSpeedFactor () const
 {
 	return (std::max (elevation, 0.0) + 10) / 10 * speedFactor ();
@@ -248,8 +248,8 @@ GeoViewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport)
 }
 
 ///  Same as in Viewpoint
-float
-GeoViewpoint::getLookAtDistance (const Box3f & bbox) const
+double
+GeoViewpoint::getLookAtDistance (const Box3d & bbox) const
 {
 	return (abs (bbox .size ()) / 2) / std::tan (getFieldOfView () / 2);
 }

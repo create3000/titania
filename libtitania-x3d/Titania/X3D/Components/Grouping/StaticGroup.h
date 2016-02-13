@@ -111,7 +111,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override;
 
 	///  @name Operations
@@ -166,7 +166,7 @@ private:
 	Fields fields;
 
 	GroupPtr group;
-	Box3f    bbox;
+	Box3d    bbox;
 
 };
 

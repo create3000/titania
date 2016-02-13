@@ -102,7 +102,7 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () = 0;
 
 	virtual

@@ -143,41 +143,41 @@ public:
 
 	virtual
 	void
-	setPosition (const Vector3f &) final override;
+	setPosition (const Vector3d &) final override;
 
 	virtual
-	Vector3f
+	Vector3d
 	getPosition () const final override;
 
 	virtual
 	void
-	setOrientation (const Rotation4f &) final override;
+	setOrientation (const Rotation4d &) final override;
 
 	virtual
-	Rotation4f
+	Rotation4d
 	getOrientation () const final override;
 
 	virtual
 	void
-	setCenterOfRotation (const Vector3f & value) final override
+	setCenterOfRotation (const Vector3d & value) final override
 	{ centerOfRotation () = value; }
 
 	virtual
-	Vector3f
+	Vector3d
 	getCenterOfRotation () const final override
 	{ return centerOfRotation () .getValue (); }
 
 	virtual
-	Vector3f
+	Vector3d
 	getUpVector () const final override;
 
 	virtual
-	float
+	double
 	getMaxZFar () const final override
 	{ return 1e9; }
 
 	virtual
-	float
+	double
 	getSpeedFactor () const final override;
 
 	virtual
@@ -249,8 +249,8 @@ private:
 	getFieldOfView () const;
 
 	virtual
-	float
-	getLookAtDistance (const Box3f &) const final override;
+	double
+	getLookAtDistance (const Box3d &) const final override;
 
 	virtual
 	void

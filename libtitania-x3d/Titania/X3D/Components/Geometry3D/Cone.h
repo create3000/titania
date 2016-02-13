@@ -164,7 +164,7 @@ private:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	createBBox () final override;
 
 	virtual

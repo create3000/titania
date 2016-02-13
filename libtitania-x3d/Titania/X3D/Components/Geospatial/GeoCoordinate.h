@@ -103,7 +103,7 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override;
 
 	virtual
@@ -128,10 +128,10 @@ public:
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, const size_t) const final override;
+	addVertex (std::vector <Vector3d>&, const size_t) const final override;
 
 	virtual
-	std::vector <Vector4f>
+	std::vector <Vector4d>
 	getControlPoints (const MFDouble & weight) const final override;
 
 	virtual

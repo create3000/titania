@@ -73,11 +73,11 @@ public:
 	{ return true; }
 
 	virtual
-	const Box3f &
+	const Box3d &
 	getBBox () const final override;
 
 	virtual
-	Matrix4f
+	Matrix4d
 	getMatrix () const final override
 	{ return matrix; }
 
@@ -116,9 +116,9 @@ private:
 	Cairo::RefPtr <Cairo::Context> context;
 	GLuint                         textureId;
 	
-	Vector3f min;
-	Vector3f max;
-	Box3f    bbox;
+	Vector3d min;
+	Vector3d max;
+	Box3d    bbox;
 	
 	Matrix4d matrix;
 

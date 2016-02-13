@@ -117,7 +117,7 @@ GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
 		{
 			const auto &     intersection    = hit -> intersection;
 			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
-			const Vector3d   hitPoint        = Vector3d (intersection -> point) * ~modelViewMatrix;
+			const Vector3d   hitPoint        = intersection -> point * ~modelViewMatrix;
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = intersection -> normal;

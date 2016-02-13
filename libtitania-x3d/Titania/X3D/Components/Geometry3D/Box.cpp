@@ -107,10 +107,10 @@ Box::initialize ()
 //		getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
 //}
 
-Box3f
+Box3d
 Box::createBBox ()
 {
-	return Box3f (size (), Vector3f ());
+	return Box3d (size () .getValue (), Vector3d ());
 }
 
 void
@@ -132,7 +132,7 @@ Box::build ()
 	{
 		getVertices () .reserve (options -> getVertices () .size ());
 
-		const auto size1_2 = size () / 2.0f;
+		const auto size1_2 = Vector3d (size () .getValue ()) / 2.0;
 
 		for (const auto & vertex : options -> getVertices ())
 			getVertices () .emplace_back (vertex * size1_2);

@@ -65,10 +65,10 @@ X3DNBodyCollisionSpaceNode::X3DNBodyCollisionSpaceNode () :
 	addType (X3DConstants::X3DNBodyCollisionSpaceNode);
 }
 
-Box3f
+Box3d
 X3DNBodyCollisionSpaceNode::getBBox () const
 {
-	return Box3f ();
+	return Box3d ();
 }
 
 void

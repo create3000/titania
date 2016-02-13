@@ -54,9 +54,9 @@
 #include "../../Editing/Selection/FaceSelection.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 
 namespace titania {
@@ -125,9 +125,9 @@ IndexedFaceSetTool::set_loadState ()
 
 		planeSensor           = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
 		touchSensor           = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
-		activePointCoord      = inlineNode -> getExportedNode <Coordinate> ("ActivePointCoord");
+		activePointCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("ActivePointCoord");
 		activeLineSet         = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
-		selectionCoord        = inlineNode -> getExportedNode <Coordinate> ("SelectionCoord");
+		selectionCoord        = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("SelectedFacesGeometry");
 
 		touchSensor -> isOver ()           .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_over);

@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t FRAMES         = 180; // Number of frames after wich a level change takes in affect.
-static constexpr float  FRAME_RATE_MIN = 20;  // Lowest level of detail.
-static constexpr float  FRAME_RATE_MAX = 55;  // Highest level of detail.
+static constexpr size_t  FRAMES         = 180; // Number of frames after wich a level change takes in affect.
+static constexpr double  FRAME_RATE_MIN = 20;  // Lowest level of detail.
+static constexpr double  FRAME_RATE_MAX = 55;  // Highest level of detail.
 
 const ComponentType LOD::component      = ComponentType::NAVIGATION;
 const std::string   LOD::typeName       = "LOD";
@@ -110,7 +110,7 @@ LOD::create (X3DExecutionContext* const executionContext) const
 	return new LOD (executionContext);
 }
 
-Box3f
+Box3d
 LOD::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
@@ -120,10 +120,10 @@ LOD::getBBox () const
 		if (boundedObject)
 			return boundedObject -> getBBox ();
 		
-		return Box3f ();
+		return Box3d ();
 	}
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 void
@@ -149,24 +149,24 @@ LOD::getLevel (const TraverseType type) const
 		if (size == 2)
 			return frameRate > FRAME_RATE_MAX;
 
-		const auto  n        = size - 1;
-		const float fraction = std::max ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0f);
+		const auto   n        = size - 1;
+		const double fraction = std::max ((frameRate - FRAME_RATE_MIN) / (FRAME_RATE_MAX - FRAME_RATE_MIN), 0.0);
 
 		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
 	}
 
-	const float distance = getDistance (type);
-	const auto  iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
+	const double distance = getDistance (type);
+	const auto   iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }
 
-float
+double
 LOD::getDistance (const TraverseType type) const
 {
-	Matrix4f modelViewMatrix = getModelViewMatrix (type);
+	Matrix4d modelViewMatrix = getModelViewMatrix (type);
 
-	modelViewMatrix .translate (center ());
+	modelViewMatrix .translate (center () .getValue ());
 
 	return math::abs (modelViewMatrix .origin ());
 }

@@ -115,9 +115,9 @@ public:
 	///  @name Operations
 	
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override
-	{ return Box3f (size (), center ()); }
+	{ return Box3d (size () .getValue (), center () .getValue ()); }
 
 	virtual
 	void

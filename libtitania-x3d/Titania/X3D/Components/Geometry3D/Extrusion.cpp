@@ -116,7 +116,7 @@ Extrusion::initialize ()
 	X3DGeometryNode::initialize ();
 }
 
-std::vector <Vector3f>
+std::vector <Vector3d>
 Extrusion::createPoints (const bool hasCaps)
 {
 	size_t reserve = spine () .size () * crossSection () .size ();
@@ -130,23 +130,23 @@ Extrusion::createPoints (const bool hasCaps)
 			reserve += crossSection () .size ();
 	}
 
-	std::vector <Vector3f> points;
+	std::vector <Vector3d> points;
 	points .reserve (reserve);
 
 	// calculate SCP rotations
 
-	std::vector <Matrix4f> rotations = createRotations ();
+	std::vector <Matrix4d> rotations = createRotations ();
 
 	// calculate vertices.
 
 	for (size_t i = 0, size = spine () .size (); i < size; i ++)
 	{
-		Matrix4f matrix;
+		Matrix4d matrix;
 
-		matrix .translate (spine () [i]);
+		matrix .translate (spine () [i] .getValue ());
 
 		if (orientation () .size ())
-			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)]);
+			matrix .rotate (orientation () [std::min (i, orientation () .size () - 1)] .getValue ());
 
 		matrix .mult_left (rotations [i]);
 
@@ -158,8 +158,7 @@ Extrusion::createPoints (const bool hasCaps)
 		}
 
 		for (const auto & vector : crossSection ())
-			points .emplace_back (Vector3f (vector .getX (), 0, vector .getY ()) * matrix);
-
+			points .emplace_back (Vector3d (vector .getX (), 0, vector .getY ()) * matrix);
 	}
 
 	// Copy points for caps
@@ -184,10 +183,10 @@ Extrusion::createPoints (const bool hasCaps)
 	return points;
 }
 
-std::vector <Matrix4f>
+std::vector <Matrix4d>
 Extrusion::createRotations ()
 {
-	std::vector <Matrix4f> rotations;
+	std::vector <Matrix4d> rotations;
 	rotations .reserve (spine () .size ());
 
 	// calculate SCP rotations
@@ -329,7 +328,7 @@ Extrusion::build ()
 
 	// Create
 
-	const std::vector <Vector3f> points = createPoints (capMax);
+	const auto points = createPoints (capMax);
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 
@@ -505,7 +504,7 @@ Extrusion::build ()
 
 void
 Extrusion::tessellateCap (const Tessellator & tessellator,
-                          const std::vector <Vector3f> & points,
+                          const std::vector <Vector3d> & points,
                           const Vector2f & min,
                           const float capMax)
 {

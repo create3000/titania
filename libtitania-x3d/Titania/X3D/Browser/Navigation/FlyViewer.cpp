@@ -85,8 +85,8 @@ FlyViewer::removeCollision ()
 	getBrowser () -> removeCollision (this);
 }
 
-Vector3f
-FlyViewer::getTranslationOffset (const Vector3f & velocity)
+Vector3d
+FlyViewer::getTranslationOffset (const Vector3d & velocity)
 {
 	return velocity * getActiveViewpoint () -> getUserOrientation ();
 }

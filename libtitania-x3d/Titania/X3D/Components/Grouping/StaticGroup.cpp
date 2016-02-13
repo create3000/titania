@@ -126,7 +126,7 @@ StaticGroup::set_children ()
 	bbox = group -> getBBox ();
 }
 
-Box3f
+Box3d
 StaticGroup::getBBox () const
 {
 	return bbox;

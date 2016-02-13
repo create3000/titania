@@ -76,7 +76,7 @@ public:
 	{ return scissor; }
 
 	bool
-	intersects (const Box3f &) const;
+	intersects (const Box3d &) const;
 
 	static
 	Vector3d
@@ -112,7 +112,7 @@ public:
 private:
 
 	const Vector4i        scissor;
-	std::vector <Plane3f> planes;
+	std::vector <Plane3d> planes;
 	bool                  valid;
 
 };

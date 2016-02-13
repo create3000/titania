@@ -242,8 +242,8 @@ X3DBrowserEditor::set_selection_active (const bool value)
 			{
 				try
 				{
-					const X3D::Matrix4f matrix = undoMatrices .at (transform) .first;
-					const X3D::Vector3f center = undoMatrices .at (transform) .second;
+					const X3D::Matrix4d matrix = undoMatrices .at (transform) .first;
+					const X3D::Vector3d center = undoMatrices .at (transform) .second;
 
 					if (matrix not_eq transform -> getMatrix () or center not_eq transform -> center ())
 					{

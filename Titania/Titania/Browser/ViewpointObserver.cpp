@@ -144,10 +144,10 @@ ViewpointObserver::set_viewer_scrollTime ()
 	
 		if (getUndoStep () != undoStep or not undoStep)
 		{
-			const X3D::Vector3f   positionAux         = activeViewpoint -> positionOffset ();
-			const X3D::Rotation4f orientationAux      = activeViewpoint -> orientationOffset ();
-			const X3D::Vector3f   centerOfRotationAux = activeViewpoint -> centerOfRotationOffset ();
-			const float           fieldOfViewAux      = activeViewpoint -> fieldOfViewScale ();
+			const X3D::Vector3d   positionAux         = activeViewpoint -> positionOffset ();
+			const X3D::Rotation4d orientationAux      = activeViewpoint -> orientationOffset ();
+			const X3D::Vector3d   centerOfRotationAux = activeViewpoint -> centerOfRotationOffset ();
+			const auto            fieldOfViewAux      = activeViewpoint -> fieldOfViewScale ();
 	
 			activeViewpoint -> positionOffset ()         = positionOffset;
 			activeViewpoint -> orientationOffset ()      = orientationOffset;

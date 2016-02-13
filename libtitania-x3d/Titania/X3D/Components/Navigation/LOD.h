@@ -134,7 +134,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 	
 	virtual
@@ -164,7 +164,7 @@ private:
 	size_t
 	getLevel (const TraverseType) const;
 
-	float
+	double
 	getDistance (const TraverseType) const;
 
 	///  @name Event handlers

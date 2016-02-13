@@ -254,13 +254,13 @@ throw (Error <NODE_NOT_AVAILABLE>,
 	return scene;
 }
 
-Box3f
+Box3d
 Inline::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 		return group -> getBBox ();
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 SFNode

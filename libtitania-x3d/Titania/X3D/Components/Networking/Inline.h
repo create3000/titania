@@ -116,7 +116,7 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
 	virtual

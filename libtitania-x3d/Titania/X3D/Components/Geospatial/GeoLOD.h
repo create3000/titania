@@ -204,7 +204,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 	
 	virtual

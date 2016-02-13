@@ -108,7 +108,7 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
-			hitPoint_changed ()    = Vector3d (intersection -> point) * invModelViewMatrix;
+			hitPoint_changed ()    = intersection -> point * invModelViewMatrix;
 		}
 	}
 	catch (const std::exception &)

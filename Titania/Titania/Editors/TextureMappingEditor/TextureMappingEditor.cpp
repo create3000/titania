@@ -532,7 +532,7 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 	const auto bbox   = previewGeometry -> getBBox ();
 	const auto center = bbox .center ();
 
-	X3D::Vector3f min, max;
+	X3D::Vector3d min, max;
 	bbox .extents (min, max);
 
 	const auto size = bbox .size ();
@@ -1701,9 +1701,9 @@ TextureMappingEditor::set_left_image ()
 		auto bbox = selectedGeometry -> getBBox ();
 
 		if (bbox .empty ())
-			bbox = X3D::Box3f (X3D::Vector3f (1, 1, 0), X3D::Vector3f (0.5, 0.5, 0));
+			bbox = X3D::Box3d (X3D::Vector3d (1, 1, 0), X3D::Vector3d (0.5, 0.5, 0));
 
-		X3D::Vector3f min, max;
+		X3D::Vector3d min, max;
 		bbox .extents (min, max);
 
 		min .x (std::floor (min .x () - 0.5));

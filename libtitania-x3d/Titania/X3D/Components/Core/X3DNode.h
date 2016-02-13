@@ -146,11 +146,11 @@ public:
 	std::vector <X3DLayerNode*>
 	getLayers () const;
 
-	Matrix4fStack &
+	Matrix4dStack &
 	getModelViewMatrix ()
 	{ return modelViewMatrix; }
 
-	const Matrix4fStack &
+	const Matrix4dStack &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -172,13 +172,13 @@ protected:
 	X3DViewpointNode*
 	getCurrentViewpoint () const;
 
-	const Matrix4f &
+	const Matrix4d &
 	getCameraSpaceMatrix () const;
 
-	const Matrix4f &
+	const Matrix4d &
 	getInverseCameraSpaceMatrix () const;
 
-	Matrix4f
+	Matrix4d
 	getModelViewMatrix (const TraverseType) const;
 
 
@@ -198,7 +198,7 @@ private:
 	
 	///  @name Static members
 
-	static Matrix4fStack modelViewMatrix;
+	static Matrix4dStack modelViewMatrix;
 
 	///  @name Members
 

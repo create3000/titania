@@ -74,10 +74,10 @@ X3DNBodyCollidableNode::initialize ()
 	X3DBoundedObject::initialize ();
 }
 
-Box3f
+Box3d
 X3DNBodyCollidableNode::getBBox () const
 {
-	return Box3f ();
+	return Box3d ();
 }
 
 void

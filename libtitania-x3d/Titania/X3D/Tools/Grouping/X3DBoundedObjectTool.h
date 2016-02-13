@@ -92,7 +92,7 @@ public:
 	///  @name Operatations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override
 	{ return getNode () -> getBBox (); }
 
@@ -139,7 +139,7 @@ protected:
 	{ linetype = value; }
 
 	virtual
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const
 	{ return matrix; }
 
@@ -160,7 +160,7 @@ private:
 	int32_t  linetype;
 	bool     displayCenter;
 	Color3f  color;
-	Matrix4f matrix;
+	Matrix4d matrix;
 
 };
 
@@ -201,7 +201,7 @@ template <class Type>
 void
 X3DBoundedObjectTool <Type>::reshape ()
 {
-	Box3f bbox = getNode () -> getBBox ();
+	Box3d bbox = getNode () -> getBBox ();
 	
 	try
 	{
@@ -209,7 +209,7 @@ X3DBoundedObjectTool <Type>::reshape ()
 	}
 	catch (const std::domain_error &)
 	{
-		bbox = Box3f (Vector3f (), Vector3f ());
+		bbox = Box3d (Vector3d (), Vector3d ());
 	}
 
 	try

@@ -74,7 +74,7 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const = 0;
 	
 	virtual
@@ -99,10 +99,10 @@ public:
 
 	virtual
 	void
-	addVertex (std::vector <Vector3f>&, const size_t) const = 0;
+	addVertex (std::vector <Vector3d>&, const size_t) const = 0;
 
 	virtual
-	std::vector <Vector4f>
+	std::vector <Vector4d>
 	getControlPoints (const MFDouble & weight) const = 0;
 
 	virtual

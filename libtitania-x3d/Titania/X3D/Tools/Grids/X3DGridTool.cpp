@@ -530,7 +530,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 
 	const auto currentMatrix  = master -> getCurrentMatrix ();
 	const auto absoluteMatrix = currentMatrix * master -> getTransformationMatrix ();
-	const auto geometry       = Box3d (master -> X3DGroupingNode::getBBox ());  // BBox of the geometry.
+	const auto geometry       = master -> X3DGroupingNode::getBBox ();          // BBox of the geometry.
 	const auto shape          = Box3d (geometry .size (), geometry .center ()); // AABB BBox
 	const auto bbox           = shape * absoluteMatrix;                         // Absolute OBB of AABB
 	const auto position       = bbox .center ();                                // Absolute position

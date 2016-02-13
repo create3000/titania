@@ -517,7 +517,7 @@ X3DTextGeometry::compile (Text* const text)
 void
 X3DTextGeometry::display ()
 {
-	glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? GL_CCW : GL_CW);
+	glFrontFace (ModelViewMatrix4d () .determinant3 () > 0 ? GL_CCW : GL_CW);
 
 	glCallList (listId);
 }

@@ -464,8 +464,8 @@ IndexedFaceSet::addTexCoords ()
 	texCoordIndex () .clear ();
 	texCoord () = texCoordNode;
 
-	Vector3f min;
-	float    Ssize;
+	Vector3d min;
+	double   Ssize;
 	int      Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);

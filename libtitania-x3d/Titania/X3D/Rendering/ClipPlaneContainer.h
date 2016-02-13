@@ -66,7 +66,7 @@ public:
 
 	virtual
 	bool
-	isClipped (const Vector3f &, const Matrix4f &) const final override;
+	isClipped (const Vector3d &, const Matrix4d &) const final override;
 
 	virtual
 	void
@@ -80,7 +80,7 @@ public:
 private:
 
 	ClipPlane* const node;
-	const Matrix4f   modelViewMatrix;
+	const Matrix4d   modelViewMatrix;
 	GLenum           planeId;
 
 };

@@ -156,6 +156,8 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	changing = false;
 
 	getPaintSelectionToggleButton () .set_sensitive (getEditToggleButton () .get_active ());
+	getMergePointsButton ()          .set_sensitive (getEditToggleButton () .get_active ());
+	getSplitPointButton ()           .set_sensitive (getEditToggleButton () .get_active ());
 
 	if (not getEditToggleButton () .get_active ())
 		getPaintSelectionToggleButton () .set_active (false);

@@ -118,10 +118,10 @@ Contour2D::isClosed () const
 	return true;
 }
 
-Box2f
+Box2d
 Contour2D::getBBox () const
 {
-	Box2f bbox;
+	Box2d bbox;
 
 	for (const auto & curve : curves)
 		bbox += curve -> getBBox ();

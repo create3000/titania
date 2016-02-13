@@ -122,48 +122,48 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
 }
 
-Box3f
+Box3d
 Cylinder::createBBox ()
 {
-	const float diameter = radius () * 2;
+	const double diameter = radius () * 2;
 
 	if (not top () and not side () and not bottom ())
-		return Box3f ();
+		return Box3d ();
 
 	else if (not top () and not side ())
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height () / 2, 0));
+		return Box3d (Vector3d (diameter, 0, diameter), Vector3d (0, -height () / 2, 0));
 
 	else if (not bottom () and not side ())
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, height () / 2, 0));
+		return Box3d (Vector3d (diameter, 0, diameter), Vector3d (0, height () / 2, 0));
 
 	else
-		return Box3f (Vector3f (diameter, height (), diameter), Vector3f ());
+		return Box3d (Vector3d (diameter, height (), diameter), Vector3d ());
 }
 
 void
 Cylinder::build ()
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const float  vDimension = options -> vDimension ();
+	const double vDimension = options -> vDimension ();
 
 	getTexCoords () .emplace_back ();
 
-	const float y1 = height () / 2;
-	const float y2 = -y1;
+	const double y1 = height () / 2;
+	const double y2 = -y1;
 
 	if (side ())
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u1     = i / vDimension;
-			const float theta1 = 2 * M_PI * u1;
-			const auto  n1     = std::polar <float> (-1, theta1);
-			const auto  p1     = n1 * radius () .getValue ();
+			const double u1     = i / vDimension;
+			const double theta1 = 2 * M_PI * u1;
+			const auto   n1     = std::polar <double> (-1, theta1);
+			const auto   p1     = n1 * double (radius () .getValue ());
 
-			const float u2     = (i + 1) / vDimension;
-			const float theta2 = 2 * M_PI * u2;
-			const auto  n2     = std::polar <float> (-1, theta2);
-			const auto  p2     = n2 * radius () .getValue ();
+			const double u2     = (i + 1) / vDimension;
+			const double theta2 = 2 * M_PI * u2;
+			const auto   n2     = std::polar <double> (-1, theta2);
+			const auto   p2     = n2 * double (radius () .getValue ());
 
 			// p1 - p4
 			//  |   |
@@ -197,10 +197,10 @@ Cylinder::build ()
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * radius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto   t     = std::polar <double> (-1, theta);
+			const auto   p     = t * double (radius () .getValue ());
 
 			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
@@ -214,10 +214,10 @@ Cylinder::build ()
 	{
 		for (int32_t i = vDimension - 1; i > -1; -- i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * radius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto   t     = std::polar <double> (-1, theta);
+			const auto   p     = t * double (radius () .getValue ());
 
 			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
@@ -237,7 +237,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const float  vDimension = options -> vDimension ();
+	const double vDimension = options -> vDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -249,17 +249,17 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord ()    = texCoord;
 	geometry -> coord ()       = coord;
 
-	const float y1 = height () / 2;
-	const float y2 = -y1;
+	const double y1 = height () / 2;
+	const double y2 = -y1;
 
 	if (top () or side ())
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * radius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto  t     = std::polar <double> (-1, theta);
+			const auto  p     = t * double (radius () .getValue ());
 
 			if (top ())
 				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2);
@@ -272,10 +272,10 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * radius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto   t     = std::polar <double> (-1, theta);
+			const auto   p     = t * double (radius () .getValue ());
 
 			if (bottom ())
 				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);
@@ -288,7 +288,7 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u = i / vDimension;
+			const double u = i / vDimension;
 
 			texCoord -> point () .emplace_back (u, 1);
 			texCoord -> point () .emplace_back (u, 0);
@@ -370,10 +370,10 @@ throw (Error <NOT_SUPPORTED>,
 //	{
 //		for (int32_t i = 0; i < vDimension; ++ i)
 //		{
-//			const float u     = i / vDimension;
-//			const float theta = 2 * M_PI * u;
-//			const float x     = -std::sin (theta);
-//			const float z     = -std::cos (theta);
+//			const double u     = i / vDimension;
+//			const double theta = 2 * M_PI * u;
+//			const double x     = -std::sin (theta);
+//			const double z     = -std::cos (theta);
 //
 //			texCoord -> point () .emplace_back ((x + 1) / 2, -(z - 1) / 2);
 //			coord -> point ()    .emplace_back (x * radius (), y1, z * radius ());
@@ -384,10 +384,10 @@ throw (Error <NOT_SUPPORTED>,
 //	{
 //		for (int32_t i = 0; i < vDimension; ++ i)
 //		{
-//			const float u     = i / vDimension;
-//			const float theta = 2 * M_PI * u;
-//			const float x     = -std::sin (theta);
-//			const float z     = -std::cos (theta);
+//			const double u     = i / vDimension;
+//			const double theta = 2 * M_PI * u;
+//			const double x     = -std::sin (theta);
+//			const double z     = -std::cos (theta);
 //
 //			texCoord -> point () .emplace_back ((x + 1) / 2, (z + 1) / 2);
 //			coord -> point ()    .emplace_back (x * radius (), y2, z * radius ());
@@ -398,10 +398,10 @@ throw (Error <NOT_SUPPORTED>,
 //	{
 //		for (int32_t i = 0; i < vDimension; ++ i)
 //		{
-//			const float u     = i / vDimension;
-//			const float theta = 2 * M_PI * u;
-//			const float x     = -std::sin (theta);
-//			const float z     = -std::cos (theta);
+//			const double u     = i / vDimension;
+//			const double theta = 2 * M_PI * u;
+//			const double x     = -std::sin (theta);
+//			const double z     = -std::cos (theta);
 //
 //			texCoord -> point () .emplace_back (u, 1);
 //			texCoord -> point () .emplace_back (u, 0);

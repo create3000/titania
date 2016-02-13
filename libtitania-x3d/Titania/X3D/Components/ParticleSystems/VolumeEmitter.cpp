@@ -159,13 +159,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DParticleEmitterNode::setExecutionContext (executionContext);
 }
 
-Box3f
+Box3d
 VolumeEmitter::getBBox ()
 {
 	if (coord ())
 		return surfaceNode -> getBBox ();
 
-	return Box3f ();
+	return Box3d ();
 }
 
 MFString
@@ -216,9 +216,11 @@ VolumeEmitter::set_geometry ()
 	std::vector <Color4f>  colors;
 	TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
 	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	std::vector <Vector3d> vertices_;
 
-	surfaceNode -> triangulate (colors, texCoords, normals, vertices);
+	surfaceNode -> triangulate (colors, texCoords, normals, vertices_);
+
+	std::vector <Vector3f> vertices (vertices .begin (), vertices .end ());
 
 	float               surfaceArea = 0;
 	std::vector <float> surfaceAreas (1);

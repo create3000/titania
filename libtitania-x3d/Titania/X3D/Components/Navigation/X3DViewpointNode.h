@@ -100,42 +100,42 @@ public:
 	{ return *fields .jump; }
 
 	virtual
-	SFVec3f &
+	SFVec3d &
 	positionOffset ()
 	{ return fields .positionOffset; }
 
 	virtual
-	const SFVec3f &
+	const SFVec3d &
 	positionOffset () const
 	{ return fields .positionOffset; }
 
 	virtual
-	SFRotation &
+	SFRotation4d &
 	orientationOffset ()
 	{ return fields .orientationOffset; }
 
 	virtual
-	const SFRotation &
+	const SFRotation4d &
 	orientationOffset () const
 	{ return fields .orientationOffset; }
 
 	virtual
-	SFVec3f &
+	SFVec3d &
 	centerOfRotationOffset ()
 	{ return fields .centerOfRotationOffset; }
 
 	virtual
-	const SFVec3f &
+	const SFVec3d &
 	centerOfRotationOffset () const
 	{ return fields .centerOfRotationOffset; }
 
 	virtual
-	SFFloat &
+	SFDouble &
 	fieldOfViewScale ()
 	{ return fields .fieldOfViewScale; }
 
 	virtual
-	const SFFloat &
+	const SFDouble &
 	fieldOfViewScale () const
 	{ return fields .fieldOfViewScale; }
 
@@ -143,60 +143,60 @@ public:
 
 	virtual
 	void
-	setPosition (const Vector3f &) = 0;
+	setPosition (const Vector3d &) = 0;
 
 	virtual
-	Vector3f
+	Vector3d
 	getPosition () const = 0;
 
 	void
-	setUserPosition (const Vector3f &);
+	setUserPosition (const Vector3d &);
 
-	Vector3f
+	Vector3d
 	getUserPosition () const;
 
 	virtual
 	void
-	setOrientation (const Rotation4f & value)
+	setOrientation (const Rotation4d & value)
 	{ orientation () = value; }
 
 	virtual
-	Rotation4f
+	Rotation4d
 	getOrientation () const
-	{ return orientation (); }
+	{ return orientation () .getValue (); }
 
 	void
-	setUserOrientation (const Rotation4f &);
+	setUserOrientation (const Rotation4d &);
 
-	Rotation4f
+	Rotation4d
 	getUserOrientation () const;
 
 	virtual
 	void
-	setCenterOfRotation (const Vector3f &) = 0;
+	setCenterOfRotation (const Vector3d &) = 0;
 
 	virtual
-	Vector3f
+	Vector3d
 	getCenterOfRotation () const = 0;
 
 	void
-	setUserCenterOfRotation (const Vector3f &);
+	setUserCenterOfRotation (const Vector3d &);
 
-	Vector3f
+	Vector3d
 	getUserCenterOfRotation () const;
 
 	virtual
-	Vector3f
+	Vector3d
 	getUpVector () const
-	{ return Vector3f (0, 1, 0); }
+	{ return Vector3d (0, 1, 0); }
 
 	virtual
-	float
+	double
 	getMaxZFar () const
 	{ return 1e5; }
 
 	virtual
-	float
+	double
 	getSpeedFactor () const
 	{ return 1; }
 
@@ -204,15 +204,15 @@ public:
 	Matrix4d
 	getProjectionMatrix (const double, const double, const Vector4i &) = 0;
 
-	const Matrix4f &
+	const Matrix4d &
 	getCameraSpaceMatrix () const
 	{ return cameraSpaceMatrix; }
 
-	const Matrix4f &
+	const Matrix4d &
 	getInverseCameraSpaceMatrix () const
 	{ return inverseCameraSpaceMatrix; }
 
-	const Matrix4f &
+	const Matrix4d &
 	getTransformationMatrix () const
 	{ return transformationMatrix; }
 
@@ -238,17 +238,17 @@ public:
 	void
 	straighten (const bool = false);
 
-	Rotation4f
-	straightenHorizon (const Rotation4f &) const;
+	Rotation4d
+	straightenHorizon (const Rotation4d &) const;
 
-	Rotation4f
-	straightenView (const Rotation4f &) const;
-
-	void
-	lookAt (Vector3f, const float = 1, const bool = false);
+	Rotation4d
+	straightenView (const Rotation4d &) const;
 
 	void
-	lookAt (Box3f, const float = 1, const bool = false);
+	lookAt (Vector3d, const double = 1, const bool = false);
+
+	void
+	lookAt (Box3d, const double = 1, const bool = false);
 
 	void
 	transitionStart (X3DViewpointNode* const);
@@ -316,42 +316,42 @@ private:
 
 	///  @name Protected fields
 
-	SFVec3f &
+	SFVec3d &
 	scaleOffset ()
 	{ return fields .scaleOffset; }
 
-	const SFVec3f &
+	const SFVec3d &
 	scaleOffset () const
 	{ return fields .scaleOffset; }
 
-	SFRotation &
+	SFRotation4d &
 	scaleOrientationOffset ()
 	{ return fields .scaleOrientationOffset; }
 
-	const SFRotation &
+	const SFRotation4d &
 	scaleOrientationOffset () const
 	{ return fields .scaleOrientationOffset; }
 
 	///  @name Member access
 
 	void
-	setCameraSpaceMatrix (const Matrix4f &);
+	setCameraSpaceMatrix (const Matrix4d &);
 
 	void
-	setTransformationMatrix (const Matrix4f & value)
+	setTransformationMatrix (const Matrix4d & value)
 	{ transformationMatrix = value; }
 
 	///  @name Operations
 
 	void
-	getRelativeTransformation (X3DViewpointNode* const, Vector3f &, Rotation4f &, Vector3f &, Rotation4f &) const;
+	getRelativeTransformation (X3DViewpointNode* const, Vector3d &, Rotation4d &, Vector3d &, Rotation4d &) const;
 
 	void
-	lookAt (const Vector3f &, const float, const float, const bool);
+	lookAt (const Vector3d &, const double, const double, const bool);
 
 	virtual
-	float
-	getLookAtDistance (const Box3f &) const = 0;
+	double
+	getLookAtDistance (const Box3d &) const = 0;
 
 	void
 	set_isActive (const bool);
@@ -367,19 +367,19 @@ private:
 
 		SFRotation* const orientation;
 		SFBool* const jump;
-		SFVec3f positionOffset;
-		SFRotation orientationOffset;
-		SFVec3f scaleOffset;
-		SFRotation scaleOrientationOffset;
-		SFVec3f centerOfRotationOffset;
-		SFFloat fieldOfViewScale;
+		SFVec3d positionOffset;
+		SFRotation4d orientationOffset;
+		SFVec3d scaleOffset;
+		SFRotation4d scaleOrientationOffset;
+		SFVec3d centerOfRotationOffset;
+		SFDouble fieldOfViewScale;
 	};
 
 	Fields fields;
 
-	Matrix4f transformationMatrix;
-	Matrix4f cameraSpaceMatrix;
-	Matrix4f inverseCameraSpaceMatrix;
+	Matrix4d transformationMatrix;
+	Matrix4d cameraSpaceMatrix;
+	Matrix4d inverseCameraSpaceMatrix;
 
 	X3DPtr <TimeSensor>              timeSensor;
 	X3DPtr <EaseInEaseOut>           easeInEaseOut;

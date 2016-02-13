@@ -150,7 +150,7 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 			{
 				// Look at as specification say.
 
-				const auto modelViewMatrix = Matrix4f (hit -> modelViewMatrix) * getActiveViewpoint () -> getCameraSpaceMatrix ();
+				const auto modelViewMatrix = hit -> modelViewMatrix * getActiveViewpoint () -> getCameraSpaceMatrix ();
 				const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
 
 				getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
@@ -194,7 +194,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 			const auto & viewpoint = getActiveViewpoint ();
 			const auto   toVector  = trackballProjectToSphere (event -> x, event -> y);
 
-			rotation = Rotation4f (toVector, fromVector);
+			rotation = Rotation4d (toVector, fromVector);
 
 			viewpoint -> orientationOffset () = getOrientationOffset ();
 
@@ -207,7 +207,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 	return true;
 }
 
-Rotation4f
+Rotation4d
 LookAtViewer::getOrientationOffset ()
 {
 	try
@@ -220,7 +220,7 @@ LookAtViewer::getOrientationOffset ()
 	}
 	catch (const X3DError &)
 	{
-	   return Rotation4f ();
+	   return Rotation4d ();
 	}
 }
 

@@ -90,12 +90,12 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const = 0;
 
 	template <class Type>
 	static
-	Box3f
+	Box3d
 	getBBox (const X3DPtrArray <Type> &);
 
 	///  @name Destruction
@@ -135,10 +135,10 @@ private:
 };
 
 template <class Type>
-Box3f
+Box3d
 X3DBoundedObject::getBBox (const X3DPtrArray <Type> & nodes)
 {
-	Box3f bbox;
+	Box3d bbox;
 
 	// Add bounding boxes
 

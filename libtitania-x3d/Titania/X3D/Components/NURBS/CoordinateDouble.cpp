@@ -82,7 +82,7 @@ CoordinateDouble::create (X3DExecutionContext* const executionContext) const
 	return new CoordinateDouble (executionContext);
 }
 
-Box3f
+Box3d
 CoordinateDouble::getBBox () const
 {
 	return Box3d (point () .begin (), point () .end (), math::iterator_type ());
@@ -141,19 +141,19 @@ CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, const s
 }
 
 void
-CoordinateDouble::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
+CoordinateDouble::addVertex (std::vector <Vector3d> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
-		vertices .emplace_back (point () [index] .getValue ());
+		vertices .emplace_back (point () [index]);
 
 	else
 		vertices .emplace_back ();
 }
 
-std::vector <Vector4f>
+std::vector <Vector4d>
 CoordinateDouble::getControlPoints (const MFDouble & weight) const
 {
-	std::vector <Vector4f> controlPoints;
+	std::vector <Vector4d> controlPoints;
 
 	controlPoints .reserve (point () .size ());
 

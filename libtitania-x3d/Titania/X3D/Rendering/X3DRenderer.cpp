@@ -71,7 +71,7 @@ namespace X3D {
 static constexpr size_t DEPTH_BUFFER_WIDTH  = 16;
 static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 
-static constexpr auto zAxis = Vector3f (0, 0, 1);
+static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderer::X3DRenderer () :
 	             X3DNode (),
@@ -110,10 +110,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DRenderer::addShape (X3DShapeNode* const shape)
 {
-	const Box3f bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
-	const float depth  = bbox .size () .z () / 2;
-	const float min    = bbox .center () .z () - depth;
-	const float center = bbox .center () .z ();
+	const Box3d  bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const double depth  = bbox .size () .z () / 2;
+	const double min    = bbox .center () .z () - depth;
+	const double center = bbox .center () .z ();
 
 	if (min > 0)
 	   return;
@@ -171,11 +171,11 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 	context -> setLocalObjects (getLocalObjects ());
 }
 
-Vector3f
-X3DRenderer::constrainTranslation (const Vector3f & translation) const
+Vector3d
+X3DRenderer::constrainTranslation (const Vector3d & translation) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
-	float      distance        = getDistance (translation);
+	double     distance        = getDistance (translation);
 	const auto zFar            = navigationInfo -> getFarPlane (getViewpoint ());
 
 	// Constrain translation when the viewer collides with a wall.
@@ -209,7 +209,7 @@ X3DRenderer::constrainTranslation (const Vector3f & translation) const
 }
 
 double
-X3DRenderer::getDistance (const Vector3f & translation) const
+X3DRenderer::getDistance (const Vector3d & translation) const
 {
 	try
 	{
@@ -232,8 +232,8 @@ X3DRenderer::getDistance (const Vector3f & translation) const
 
 			// Translate camera to user position and to look in the direction of the translation.
 
-			const auto localOrientation = ~viewpoint -> orientation () * viewpoint -> getOrientation ();
-			auto       rotation         = Rotation4f (zAxis, -translation) * localOrientation;
+			const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
+			auto       rotation         = Rotation4d (zAxis, -translation) * localOrientation;
 		
 			// The viewer is alway a straight box depending on the upVector.
 			// rotation *= viewpoint -> straightenHorizon (rotation);
@@ -246,7 +246,7 @@ X3DRenderer::getDistance (const Vector3f & translation) const
 			modelViewMatrix .mult_right (projectionMatrix);
 		
 			glMatrixMode (GL_PROJECTION);
-			glLoadMatrixf (modelViewMatrix .data ());
+			glLoadMatrixd (modelViewMatrix .data ());
 			glMatrixMode (GL_MODELVIEW);
 
 			return getDepth ();
@@ -332,9 +332,9 @@ X3DRenderer::collide ()
 {
 	// Collision
 
-	const auto collisionSphere = CollisionSphere3f (/* inverse ??? getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
+	const auto collisionSphere = CollisionSphere3d (/* inverse ??? getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
 	                                                getNavigationInfo () -> getCollisionRadius () * 1.2f,
-	                                                Vector3f ());
+	                                                Vector3d ());
 
 	std::vector <Collision*> collisions;
 
@@ -412,7 +412,7 @@ X3DRenderer::gravite ()
 		// Transform viewpoint to look down the up vector
 
 		const auto upVector = viewpoint -> getUpVector ();
-		const auto down     = Rotation4f (zAxis, upVector);
+		const auto down     = Rotation4d (zAxis, upVector);
 
 		auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
 		modelViewMatrix .translate (viewpoint -> getUserPosition ());
@@ -422,7 +422,7 @@ X3DRenderer::gravite ()
 		modelViewMatrix .mult_right (projectionMatrix);
 
 		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixf (modelViewMatrix .data ());
+		glLoadMatrixd (modelViewMatrix .data ());
 		glMatrixMode (GL_MODELVIEW);
 
 		auto distance = getDepth ();
@@ -433,7 +433,7 @@ X3DRenderer::gravite ()
 		{
 			distance -= height;
 
-			const Rotation4f up (Vector3f (0, 1, 0), upVector);
+			const Rotation4d up (Vector3d (0, 1, 0), upVector);
 
 			if (distance > 0)
 			{
@@ -452,7 +452,7 @@ X3DRenderer::gravite ()
 					speed       = 0;
 				}
 
-				getViewpoint () -> positionOffset () += Vector3f (0, translation, 0) * up;
+				getViewpoint () -> positionOffset () += Vector3d (0, translation, 0) * up;
 			}
 			else
 			{
@@ -463,15 +463,15 @@ X3DRenderer::gravite ()
 				if (distance > 0.01 and distance < stepHeight)
 				{
 					// Step up
-					const auto translation = constrainTranslation (Vector3f (0, distance, 0) * up);
+					const auto translation = constrainTranslation (Vector3d (0, distance, 0) * up);
 
 					if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
 					{
 						auto step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
 
-						step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3f (0, step, 0) * up));
+						step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3d (0, step, 0) * up));
 
-						Vector3f offset = Vector3f (0, step, 0) * up;
+						Vector3d offset = Vector3d (0, step, 0) * up;
 
 						if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
 							offset = translation;

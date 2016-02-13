@@ -112,10 +112,10 @@ private:
 	void
 	addSpinning ();
 
-	Vector3f
+	Vector3d
 	getPositionOffset () const;
 
-	Rotation4f
+	Rotation4d
 	getOrientationOffset ();
 
 	///  @name Static members
@@ -126,10 +126,10 @@ private:
 
 	///  @name Members
 
-	Rotation4f       orientationOffset;
-	Rotation4f       rotation;
-	Vector3f         fromVector;
-	Vector3f         fromPoint;
+	Rotation4d       orientationOffset;
+	Rotation4d       rotation;
+	Vector3d         fromVector;
+	Vector3d         fromPoint;
 	time_type        pressTime;
 	time_type        motionTime;
 	guint            button;

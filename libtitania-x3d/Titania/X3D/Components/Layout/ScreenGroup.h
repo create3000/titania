@@ -92,10 +92,10 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const;
 
 	///  @name Operations
@@ -122,9 +122,9 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	Matrix4f modelViewMatrix;
-	Matrix4f screenMatrix;
-	Matrix4f matrix;
+	Matrix4d modelViewMatrix;
+	Matrix4d screenMatrix;
+	Matrix4d matrix;
 
 };
 

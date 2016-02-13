@@ -85,11 +85,11 @@ ClipPlane::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-ClipPlane::isClipped (const Matrix4f & matrix, const Vector3f & point)
+ClipPlane::isClipped (const Matrix4d & matrix, const Vector3d & point)
 {
 	try
 	{
-		auto clipPlane = Plane3f (Vector3f (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
+		auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
 
 		clipPlane .mult_plane_matrix (matrix);
 

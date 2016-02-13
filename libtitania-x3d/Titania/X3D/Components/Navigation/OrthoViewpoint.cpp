@@ -170,8 +170,8 @@ OrthoViewpoint::getViewportSize (const Vector4i & viewport) const
 	return Vector2d (sizeX, sizeX / aspect);
 }
 
-float
-OrthoViewpoint::getLookAtDistance (const Box3f & bbox) const
+double
+OrthoViewpoint::getLookAtDistance (const Box3d & bbox) const
 {
 	return abs (bbox .size ()) / 2 + 10;
 }

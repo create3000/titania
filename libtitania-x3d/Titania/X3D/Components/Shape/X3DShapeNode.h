@@ -129,7 +129,7 @@ public:
 	
 	virtual
 	bool
-	intersects (const CollisionSphere3f &, const CollectableObjectArray &) = 0;
+	intersects (const CollisionSphere3d &, const CollectableObjectArray &) = 0;
 
 	virtual
 	void

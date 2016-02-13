@@ -109,13 +109,13 @@ X3DGroupingNode::initialize ()
 	set_children ();
 }
 
-Box3f
+Box3d
 X3DGroupingNode::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 		return X3DBoundedObject::getBBox (children ());
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 void

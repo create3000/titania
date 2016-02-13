@@ -74,7 +74,7 @@ WorldInfo {
                   2,
                   2
                 ]
-                coord DEF NormalsCoord Coordinate {
+                coord DEF NormalsCoord CoordinateDouble {
                   point [
                     -2 0 0,
                     2 0 0,

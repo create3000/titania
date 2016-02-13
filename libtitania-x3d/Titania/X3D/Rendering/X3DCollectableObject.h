@@ -65,7 +65,7 @@ public:
 
 	virtual
 	bool
-	isClipped (const Vector3f &, const Matrix4f &) const
+	isClipped (const Vector3d &, const Matrix4d &) const
 	{ return false; }
 
 	virtual

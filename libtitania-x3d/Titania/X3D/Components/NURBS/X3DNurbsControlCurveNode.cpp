@@ -64,7 +64,7 @@ X3DNurbsControlCurveNode::X3DNurbsControlCurveNode () :
 	addType (X3DConstants::X3DNurbsControlCurveNode);
 }
 
-Box2f
+Box2d
 X3DNurbsControlCurveNode::getBBox () const
 {
 	return Box2d (controlPoint () .begin (), controlPoint () .end (), iterator_type ());

@@ -70,12 +70,12 @@ public:
 	isTransparent () const = 0;
 
 	virtual
-	Matrix4f
+	Matrix4d
 	getMatrix () const
-	{ return Matrix4f (); }
+	{ return Matrix4d (); }
 
 	virtual
-	const Box3f &
+	const Box3d &
 	getBBox () const
 	{ return bbox; }
 
@@ -95,7 +95,7 @@ protected:
 	initialize (Text* const, const X3DFontStyleNode* const);
 
 	void
-	setBBox (const Box3f & value)
+	setBBox (const Box3d & value)
 	{ bbox = value; }
 
 	const std::vector <double> &
@@ -141,7 +141,7 @@ private:
 	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
 
 	const X3DFontStyleNode* const fontStyle;
-	Box3f                         bbox;
+	Box3d                         bbox;
 	std::vector <double>          charSpacings;
 	Vector2d                      bearing;
 	Vector2d                      minorAlignment;

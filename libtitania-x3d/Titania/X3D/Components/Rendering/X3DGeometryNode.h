@@ -107,7 +107,7 @@ public:
 	///  @name Member access
 
 	virtual
-	const Box3f &
+	const Box3d &
 	getBBox () const
 	{ return bbox; }
 
@@ -137,7 +137,7 @@ public:
 	{ return normals; }
 
 	virtual
-	const std::vector <Vector3f> &
+	const std::vector <Vector3d> &
 	getPolygonVertices () const
 	{ return vertices; }
 	
@@ -150,7 +150,7 @@ public:
 
 	virtual
 	bool
-	intersects (Line3f, std::vector <IntersectionPtr> &) const;
+	intersects (Line3d, std::vector <IntersectionPtr> &) const;
 
 	virtual
 	void
@@ -158,11 +158,11 @@ public:
 
 	virtual
 	bool
-	intersects (CollisionSphere3f, const CollectableObjectArray &) const;
+	intersects (CollisionSphere3d, const CollectableObjectArray &) const;
 
 	virtual
 	void
-	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3f> &) const;
+	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3d> &) const;
 
 	virtual
 	void
@@ -227,11 +227,11 @@ protected:
 	getNormals () const
 	{ return normals; }
 
-	std::vector <Vector3f> &
+	std::vector <Vector3d> &
 	getVertices ()
 	{ return vertices; }
 
-	const std::vector <Vector3f> &
+	const std::vector <Vector3d> &
 	getVertices () const
 	{ return vertices; }
 
@@ -265,16 +265,16 @@ protected:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	createBBox ();
 
 	virtual
-	Matrix4f
+	Matrix4d
 	getMatrix () const
-	{ return Matrix4f (); }
+	{ return Matrix4d (); }
 
 	void
-	getTexCoordParams (Vector3f &, float &, int &, int &);
+	getTexCoordParams (Vector3d &, double &, int &, int &);
 
 	void
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &, const float, const bool) const;
@@ -295,16 +295,16 @@ private:
 	///  @name Operations
 
 	bool
-	intersects (const Line3f &, const size_t, const size_t, const size_t, const Matrix4f &, std::vector <IntersectionPtr>&) const;
+	intersects (const Line3d &, const size_t, const size_t, const size_t, const Matrix4d &, std::vector <IntersectionPtr>&) const;
 
 	bool
-	isClipped (const Vector3f &, const Matrix4f &) const;
+	isClipped (const Vector3d &, const Matrix4d &) const;
 
 	bool
-	isClipped (const Vector3f &, const Matrix4f &, const CollectableObjectArray &) const;
+	isClipped (const Vector3d &, const Matrix4d &, const CollectableObjectArray &) const;
 
 	void
-	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3f>&) const;
+	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3d>&) const;
 
 	void
 	clear ();
@@ -318,13 +318,13 @@ private:
 
 	///  @name Members
 
-	Box3f                                 bbox;
+	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;
 	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
-	std::vector <Vector3f>                vertices;
+	std::vector <Vector3d>                vertices;
 	bool                                  solid;
 	GLenum                                frontFace;
 	std::vector <Element>                 elements;

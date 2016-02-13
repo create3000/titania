@@ -96,10 +96,10 @@ NurbsSet::initialize ()
 	X3DBoundedObject::initialize ();
 }
 
-Box3f
+Box3d
 NurbsSet::getBBox () const
 {
-	return Box3f ();
+	return Box3d ();
 }
 
 void

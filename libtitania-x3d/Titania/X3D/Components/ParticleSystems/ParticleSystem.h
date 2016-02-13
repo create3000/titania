@@ -252,14 +252,14 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
 	///  @name Operations
 
 	virtual
 	bool
-	intersects (const CollisionSphere3f &, const CollectableObjectArray &) override;
+	intersects (const CollisionSphere3d &, const CollectableObjectArray &) override;
 
 	virtual
 	void
@@ -395,7 +395,7 @@ private:
 	void
 	draw (const ShapeContainer* const) final override;
 
-	Matrix3f
+	Matrix3d
 	getScreenAlignedRotation () const
 	throw (std::domain_error);
 

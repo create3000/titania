@@ -125,7 +125,7 @@ public:
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () final override;
 
 	virtual

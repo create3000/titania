@@ -111,7 +111,7 @@ GeoCoordinate::eventsProcessed ()
 	origin = getCoord (Vector3f ());
 }
 
-Box3f
+Box3d
 GeoCoordinate::getBBox () const
 {
 	return Box3d (points .begin (), points .end (), math::iterator_type ());
@@ -172,7 +172,7 @@ GeoCoordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size
 }
 
 void
-GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
+GeoCoordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index) const
 {
 	if (index < points .size ())
 		vertices .emplace_back (points [index]);
@@ -181,10 +181,10 @@ GeoCoordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index)
 		vertices .emplace_back (origin);
 }
 
-std::vector <Vector4f>
+std::vector <Vector4d>
 GeoCoordinate::getControlPoints (const MFDouble & weight) const
 {
-	std::vector <Vector4f> controlPoints;
+	std::vector <Vector4d> controlPoints;
 
 	controlPoints .reserve (points .size ());
 

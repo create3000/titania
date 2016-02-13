@@ -102,10 +102,10 @@ X3DGeometryNode::setup ()
 	}
 }
 
-Box3f
+Box3d
 X3DGeometryNode::createBBox ()
 {
-	return Box3f (vertices .begin (), vertices .end (), math::iterator_type ());
+	return Box3d (vertices .begin (), vertices .end (), math::iterator_type ());
 }
 
 void
@@ -141,15 +141,15 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 }
 
 bool
-X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
 {
 	try
 	{
 		if (isLineGeometry ())
 			return false;
 
-		const Matrix4f matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
-		const Matrix4f modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
+		const Matrix4d matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
+		const Matrix4d modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
 
 		line *= ~matrix;
 
@@ -217,14 +217,14 @@ X3DGeometryNode::intersects (Line3f line, std::vector <IntersectionPtr> & inters
 }
 
 bool
-X3DGeometryNode::intersects (const Line3f & line,
+X3DGeometryNode::intersects (const Line3d & line,
 	                          const size_t i1,
 	                          const size_t i2,
 	                          const size_t i3,
-	                          const Matrix4f & modelViewMatrix,
+	                          const Matrix4d & modelViewMatrix,
 	                          std::vector <IntersectionPtr> & intersections) const
 {
-	float u, v, t;
+	double u, v, t;
 
 	if (not line .intersects (vertices [i1], vertices [i2], vertices [i3], u, v, t))
 		return false;
@@ -235,10 +235,10 @@ X3DGeometryNode::intersects (const Line3f & line,
 	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 	if (i1 < texCoordSize)
-		texCoord = t * texCoords [0] [i1] + u * texCoords [0] [i2] + v * texCoords [0] [i3];
+		texCoord = float (t) * texCoords [0] [i1] + float (u) * texCoords [0] [i2] + float (v) * texCoords [0] [i3];
 
-	const Vector3f normal = normalize (t * normals  [i1] + u * normals  [i2] + v * normals  [i3]);
-	const Vector3f point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+	const Vector3f normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
+	const Vector3d point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
 	if (isClipped (point, modelViewMatrix))
 		return false;
@@ -248,14 +248,14 @@ X3DGeometryNode::intersects (const Line3f & line,
 }
 
 bool
-X3DGeometryNode::isClipped (const Vector3f & point, const Matrix4f & modelViewMatrix) const
+X3DGeometryNode::isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix) const
 {
 	return isClipped (point, modelViewMatrix, getCurrentLayer () -> getLocalObjects ());
 }
 
 bool
-X3DGeometryNode::isClipped (const Vector3f & point,
-	                         const Matrix4f & modelViewMatrix,
+X3DGeometryNode::isClipped (const Vector3d & point,
+	                         const Matrix4d & modelViewMatrix,
 	                         const CollectableObjectArray & localObjects) const
 {
 	return std::any_of (localObjects .begin (),
@@ -271,7 +271,7 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, 
 }
 
 bool
-X3DGeometryNode::intersects (CollisionSphere3f sphere, const CollectableObjectArray & localObjects) const
+X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectArray & localObjects) const
 {
 	if (not sphere .intersects (getBBox ()))
 		return false;
@@ -356,7 +356,7 @@ void
 X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 	                          TexCoordArray & texCoords_,
 	                          std::vector <Vector3f> & normals_,
-	                          std::vector <Vector3f> & vertices_) const
+	                          std::vector <Vector3d> & vertices_) const
 {
 	size_t first = 0;
 
@@ -417,7 +417,7 @@ X3DGeometryNode::triangulate (const size_t i1,
 	                           std::vector <Color4f> & colors_,
 	                           TexCoordArray & texCoords_,
 	                           std::vector <Vector3f> & normals_,
-	                           std::vector <Vector3f> & vertices_) const
+	                           std::vector <Vector3d> & vertices_) const
 {
 	if (not colors .empty ())
 	{
@@ -445,8 +445,8 @@ X3DGeometryNode::triangulate (const size_t i1,
 void
 X3DGeometryNode::buildTexCoords ()
 {
-	Vector3f min;
-	float    Ssize;
+	Vector3d min;
+	double   Ssize;
 	int      Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
@@ -465,18 +465,18 @@ X3DGeometryNode::buildTexCoords ()
 
 ///  Determine the min extent of the bbox, the largest size of the bbox and the two largest indices.
 void
-X3DGeometryNode::getTexCoordParams (Vector3f & min, float & Ssize, int & Sindex, int & Tindex)
+X3DGeometryNode::getTexCoordParams (Vector3d & min, double & Ssize, int & Sindex, int & Tindex)
 {
 	// Thanks to H3D.
 
-	const Box3f bbox = getBBox ();
+	const Box3d bbox = getBBox ();
 	const auto  size = bbox .size ();
 
-	min = bbox .center () - size / 2.0f;
+	min = bbox .center () - size / 2.0;
 
-	const float Xsize = size .x ();
-	const float Ysize = size .y ();
-	const float Zsize = size .z ();
+	const auto Xsize = size .x ();
+	const auto Ysize = size .y ();
+	const auto Zsize = size .z ();
 
 	if ((Xsize >= Ysize) and (Xsize >= Zsize))
 	{
@@ -711,7 +711,7 @@ X3DGeometryNode::transfer ()
 	if (not vertices .empty ())
 	{
 		glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3f) * vertices .size (), vertices .data (), GL_STATIC_COPY);
+		glBufferData (GL_ARRAY_BUFFER, sizeof (Vector3d) * vertices .size (), vertices .data (), GL_STATIC_COPY);
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
@@ -724,7 +724,7 @@ X3DGeometryNode::collision (const CollisionContainer* const context)
 
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, 0);
+	glVertexPointer (3, GL_DOUBLE, 0, 0);
 
 	size_t first = 0;
 
@@ -782,9 +782,9 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_FLOAT, 0, 0);
+	glVertexPointer (3, GL_DOUBLE, 0, 0);
 
-	const auto positiveScale = determinant3 (ModelViewMatrix4f ()) > 0;
+	const auto positiveScale = determinant3 (ModelViewMatrix4d ()) > 0;
 
 	if (context -> isTransparent () && not solid)
 	{

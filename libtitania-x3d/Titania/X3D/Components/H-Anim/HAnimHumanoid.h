@@ -219,7 +219,7 @@ public:
 	{ return *fields .viewpoints; }
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override;
 
 	virtual

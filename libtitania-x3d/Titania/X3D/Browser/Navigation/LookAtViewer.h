@@ -120,7 +120,7 @@ private:
 	bool
 	on_motion_notify_event (GdkEventMotion*);
 
-	Rotation4f
+	Rotation4d
 	getOrientationOffset ();
 
 	bool
@@ -136,9 +136,9 @@ private:
 
 	bool       pickable;
 	bool       isOver;
-	Rotation4f orientation;
-	Rotation4f rotation;
-	Vector3f   fromVector;
+	Rotation4d orientation;
+	Rotation4d rotation;
+	Vector3d   fromVector;
 	guint      button;
 	bool       motion;
 

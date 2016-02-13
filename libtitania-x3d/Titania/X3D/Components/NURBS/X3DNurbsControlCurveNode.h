@@ -74,7 +74,7 @@ public:
 
 	///  @name Operations
 
-	Box2f
+	Box2d
 	getBBox () const;
 
 	virtual

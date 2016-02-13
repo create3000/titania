@@ -105,7 +105,7 @@ Shape::isLineGeometry () const
 	return getGeometry () -> isLineGeometry ();
 }
 
-Box3f
+Box3d
 Shape::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
@@ -114,14 +114,14 @@ Shape::getBBox () const
 			return getGeometry () -> getBBox ();
 
 		else
-			return Box3f ();
+			return Box3d ();
 	}
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 bool
-Shape::intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & localObjects)
+Shape::intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & localObjects)
 {
 	return getGeometry () -> intersects (sphere, localObjects);
 }
@@ -165,20 +165,20 @@ Shape::pointer ()
 	if (not getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
 		return;
 
-	const Box3f bbox = getBBox () * getModelViewMatrix () .get ();
+	const Box3d bbox = getBBox () * getModelViewMatrix () .get ();
 
 	if (not getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
 		return;
-
-	const Line3f hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ()); // Attention: returns a Line3d.
-
-	std::vector <IntersectionPtr> itersections;
 
 	if (getBrowser () -> getSelectionBuffer ())
 	{
 		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer ());
 		return;
 	}
+
+	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ());
+
+	std::vector <IntersectionPtr> itersections;
 
 	if (not getGeometry () -> intersects (hitRay, itersections))
 		return;

@@ -143,13 +143,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DParticleEmitterNode::setExecutionContext (executionContext);
 }
 
-Box3f
+Box3d
 PolylineEmitter::getBBox ()
 {
 	if (coord ())
 		return polylineNode -> getBBox ();
 
-	return Box3f ();
+	return Box3d ();
 }
 
 MFString

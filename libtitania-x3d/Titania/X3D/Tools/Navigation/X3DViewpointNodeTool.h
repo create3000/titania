@@ -91,49 +91,49 @@ public:
 	{ return getNode () -> jump (); }
 
 	virtual
-	SFVec3f &
+	SFVec3d &
 	positionOffset () final override
 	{ return getNode () -> positionOffset (); }
 
 	virtual
-	const SFVec3f &
+	const SFVec3d &
 	positionOffset () const final override
 	{ return getNode () -> positionOffset (); }
 
 	virtual
-	SFRotation &
+	SFRotation4d &
 	orientationOffset () final override
 	{ return getNode () -> orientationOffset (); }
 
 	virtual
-	const SFRotation &
+	const SFRotation4d &
 	orientationOffset () const final override
 	{ return getNode () -> orientationOffset (); }
 
 	virtual
-	SFVec3f &
+	SFVec3d &
 	centerOfRotationOffset () final override
 	{ return getNode () -> centerOfRotationOffset (); }
 
 	virtual
-	const SFVec3f &
+	const SFVec3d &
 	centerOfRotationOffset () const final override
 	{ return getNode () -> centerOfRotationOffset (); }
 
 	virtual
-	SFFloat &
+	SFDouble &
 	fieldOfViewScale () final override
 	{ return getNode () -> fieldOfViewScale (); }
 
 	virtual
-	const SFFloat &
+	const SFDouble &
 	fieldOfViewScale () const final override
 	{ return getNode () -> fieldOfViewScale (); }
 
 	///  @name Operations
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override
 	{ return getInlineNode () -> getBBox (); }
 

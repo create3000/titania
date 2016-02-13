@@ -84,13 +84,13 @@ ScreenGroup::create (X3DExecutionContext* const executionContext) const
 	return new ScreenGroup (executionContext);
 }
 
-Box3f
+Box3d
 ScreenGroup::getBBox () const
 {
 	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
-const Matrix4f &
+const Matrix4d &
 ScreenGroup::getMatrix () const
 {
 	try

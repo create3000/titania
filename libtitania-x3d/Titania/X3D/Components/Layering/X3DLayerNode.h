@@ -134,7 +134,7 @@ public:
 	isLayer0 () const
 	{ return layer0; }
 
-	Box3f
+	Box3d
 	getBBox () const;
 
 	///  @name Bindable node stack handling

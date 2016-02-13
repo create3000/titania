@@ -88,7 +88,7 @@ X3DViewer::getActiveViewpoint () const
 }
 
 /// Returns the picking point on the center plane.
-Vector3f
+Vector3d
 X3DViewer::getPointOnCenterPlane (const double x, const double y)
 {
 	try
@@ -102,19 +102,19 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 		const Vector3d far = ViewVolume::unProjectPoint (x, getBrowser () -> get_height () - y, 0.9, modelview, projection, viewport);
 
 		if (dynamic_cast <OrthoViewpoint*> (viewpoint))
-			return Vector3f (far .x (), far .y (), -abs (getDistanceToCenter ()));
+			return Vector3d (far .x (), far .y (), -abs (getDistanceToCenter ()));
 
-		const Vector3f direction = normalize (far);
+		const Vector3d direction = normalize (far);
 
-		return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3f (0, 0, -1));
+		return direction * abs (getDistanceToCenter ()) / dot (direction, Vector3d (0, 0, -1));
 	}
 	catch (const std::exception & error)
 	{
-		return Vector3f ();
+		return Vector3d ();
 	}
 }
 
-Vector3f
+Vector3d
 X3DViewer::getDistanceToCenter () const
 {
 	const auto & viewpoint = getActiveViewpoint ();
@@ -122,13 +122,13 @@ X3DViewer::getDistanceToCenter () const
 	return viewpoint -> getUserPosition () - viewpoint -> getUserCenterOfRotation ();
 }
 
-Vector3f
+Vector3d
 X3DViewer::trackballProjectToSphere (double x, double y) const
 {
 	x = x / getBrowser () -> get_width () - 0.5;
 	y = -y / getBrowser () -> get_height () + 0.5;
 
-	return Vector3f (x, y, tb_project_to_sphere (0.5, x, y));
+	return Vector3d (x, y, tb_project_to_sphere (0.5, x, y));
 }
 
 double

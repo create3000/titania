@@ -350,16 +350,16 @@ X3DBackgroundNode::draw ()
 
 	// Rotate and scale background
 
-	Vector3f   translation;
-	Rotation4f rotation;
+	Vector3d   translation;
+	Rotation4d rotation;
 
 	matrix .get (translation, rotation);
 
-	Matrix4f modelViewMatrix;
+	Matrix4d modelViewMatrix;
 	modelViewMatrix .scale (scale);
 	modelViewMatrix .rotate (rotation);
 
-	glLoadMatrixf (modelViewMatrix .data ());
+	glLoadMatrixd (modelViewMatrix .data ());
 
 	// Draw
 

@@ -76,7 +76,7 @@ ShapeContainer::display ()
 	for (const auto & object : localObjects)
 		object -> enable ();
 
-	glLoadMatrixf (modelViewMatrix .data ());
+	glLoadMatrixd (modelViewMatrix .data ());
 
 	fog -> enable ();
 

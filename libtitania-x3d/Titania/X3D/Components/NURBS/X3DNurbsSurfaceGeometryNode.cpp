@@ -190,13 +190,13 @@ X3DNurbsSurfaceGeometryNode::getKnots (const MFDouble & knot, const int32_t orde
 		knots .resize (dimension + order);
 
 		for (size_t i = 0, size = knots .size (); i < size; ++ i)
-			knots [i] = (float) i / (size - 1);
+			knots [i] = (double) i / (size - 1);
 	}
 //	else
 //	{
 //		// Scale to one unit length for correct tessellation.
 //
-//		float scale = knots .back () - knots .front ();
+//		double scale = knots .back () - knots .front ();
 //
 //		if (scale)
 //		{
@@ -233,15 +233,17 @@ X3DNurbsSurfaceGeometryNode::build ()
 
 	// ControlPoints
 
-	std::vector <Vector4f> controlPoints = controlPointNode -> getControlPoints (weight ());
+	const auto cp = controlPointNode -> getControlPoints (weight ());
+
+	std::vector <Vector4f> controlPoints (cp .begin (), cp .end ());
 
 	// Knots
 
 	std::vector <float> uKnots = getKnots (uKnot (), uOrder (), uDimension ());
 	std::vector <float> vKnots = getKnots (vKnot (), vOrder (), vDimension ());
 
-	const float uScale = uKnots .back () - uKnots .front ();
-	const float vScale = vKnots .back () - vKnots .front ();
+	const double uScale = uKnots .back () - uKnots .front ();
+	const double vScale = vKnots .back () - vKnots .front ();
 
 	// TextureCoordinate
 

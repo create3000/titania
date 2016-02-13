@@ -140,8 +140,8 @@ public:
 	void
 	addCollision (X3DShapeNode* const);
 
-	Vector3f
-	constrainTranslation (const Vector3f &) const;
+	Vector3d
+	constrainTranslation (const Vector3d &) const;
 
 	///  @name Destruction
 
@@ -178,7 +178,7 @@ private:
 	///  @name Operations
 
 	double
-	getDistance (const Vector3f &) const;
+	getDistance (const Vector3d &) const;
 
 	double
 	getDepth () const;

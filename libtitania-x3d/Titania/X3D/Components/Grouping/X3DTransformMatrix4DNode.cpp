@@ -60,11 +60,11 @@ X3DTransformMatrix4DNode::X3DTransformMatrix4DNode () :
 	addType (X3DConstants::X3DTransformMatrix4DNode);
 }
 
-Box3f
+Box3d
 X3DTransformMatrix4DNode::getBBox () const
 {
 	if (isHidden ())
-		return Box3f ();
+		return Box3d ();
 
 	return X3DGroupingNode::getBBox () * matrix;
 }

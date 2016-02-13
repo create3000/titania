@@ -112,11 +112,11 @@ ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & scissor) :
 }
 
 bool
-ViewVolume::intersects (const Box3f & bbox) const
+ViewVolume::intersects (const Box3d & bbox) const
 {
 	if (valid)
 	{
-		const float nradius = math::abs (bbox .size ()) / 2;
+		const double nradius = math::abs (bbox .size ()) / 2;
 
 		for (const auto & plane : planes)
 		{

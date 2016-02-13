@@ -104,8 +104,8 @@ private:
 
 
 	virtual
-	Vector3f
-	getTranslationOffset (const Vector3f &) final override;
+	Vector3d
+	getTranslationOffset (const Vector3d &) final override;
 
 	///  @name Static members
 

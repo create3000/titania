@@ -208,10 +208,10 @@ private:
 
 	///  @name Operations
 
-	std::vector <Vector3f>
+	std::vector <Vector3d>
 	createPoints (const bool);
 
-	std::vector <Matrix4f>
+	std::vector <Matrix4d>
 	createRotations ();
 
 	virtual
@@ -220,7 +220,7 @@ private:
 
 	void
 	tessellateCap (const Tessellator &,
-	               const std::vector <Vector3f> &,
+	               const std::vector <Vector3d> &,
 	               const Vector2f &,
 	               const float);
 

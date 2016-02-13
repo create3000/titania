@@ -121,16 +121,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getArcClose2DOptions () .addInterest (this, &ArcClose2D::update);
 }
 
-float
+double
 ArcClose2D::getAngle ()
 {
-	const float start = math::interval <float> (startAngle (), 0, M_PI2);
-	const float end   = math::interval <float> (endAngle (),   0, M_PI2);
+	const double start = math::interval <double> (startAngle (), 0, M_PI2);
+	const double end   = math::interval <double> (endAngle (),   0, M_PI2);
 
 	if (start == end)
 		return M_PI2;
 
-	const float difference = std::abs (end - start);
+	const double difference = std::abs (end - start);
 
 	if (start > end)
 		return M_PI2 - difference;
@@ -147,9 +147,9 @@ ArcClose2D::build ()
 {
 	const ArcClose2DOptions* const options = getBrowser () -> getArcClose2DOptions ();
 
-	const float difference = getAngle ();
-	size_t      segments   = std::ceil (difference / options -> minAngle ());
-	const float angle      = difference / segments;
+	const double difference = getAngle ();
+	size_t       segments   = std::ceil (difference / options -> minAngle ());
+	const double angle      = difference / segments;
 
 	const size_t elements = solid () ? 1 : 2;
 	const size_t vertices = segments + 2;
@@ -161,7 +161,7 @@ ArcClose2D::build ()
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
-	if (difference < float (M_PI2))
+	if (difference < M_PI2)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
@@ -177,10 +177,9 @@ ArcClose2D::build ()
 
 	for (size_t n = 0; n < segments; ++ n)
 	{
-		const float theta = startAngle () + angle * n;
-
-		const auto texCoord = std::polar (0.5f, theta) + std::complex <float> (0.5f, 0.5f);
-		const auto point    = std::polar (std::abs (radius ()), theta);
+		const double theta    = startAngle () + angle * n;
+		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
 
 		getTexCoords () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals  () .emplace_back (0, 0, 1);

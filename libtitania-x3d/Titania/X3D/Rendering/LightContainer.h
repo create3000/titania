@@ -76,7 +76,7 @@ public:
 private:
 
 	X3DLightNode* const node;
-	const Matrix4f      modelViewMatrix;
+	const Matrix4d      modelViewMatrix;
 	GLenum              lightId;
 
 };

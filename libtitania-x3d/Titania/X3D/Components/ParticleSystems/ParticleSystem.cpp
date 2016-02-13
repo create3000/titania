@@ -506,16 +506,15 @@ ParticleSystem::isLineGeometry () const
 	return false;
 }
 
-Box3f
+Box3d
 ParticleSystem::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
-	{
 		return emitterNode -> getBBox ();
-	}
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
+
 
 void
 ParticleSystem::set_live ()
@@ -1198,7 +1197,7 @@ ParticleSystem::set_geometry_shader_texture_buffers ()
 }
 
 bool
-ParticleSystem::intersects (const CollisionSphere3f & sphere, const CollectableObjectArray & localObjects)
+ParticleSystem::intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & localObjects)
 {
 	return false;
 }
@@ -1424,7 +1423,7 @@ ParticleSystem::draw (const ShapeContainer* const context)
 		else
 			glDisable (GL_CULL_FACE);
 
-		glFrontFace (ModelViewMatrix4f () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+		glFrontFace (ModelViewMatrix4d () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 		glNormal3f (0, 0, 1);
 
@@ -1549,18 +1548,18 @@ ParticleSystem::draw (const ShapeContainer* const context)
 	}
 }
 
-Matrix3f
+Matrix3d
 ParticleSystem::getScreenAlignedRotation () const
 throw (std::domain_error)
 {
-	const Matrix4f inverseModelViewMatrix = ~ModelViewMatrix4f ();
+	const Matrix4d inverseModelViewMatrix = ~ModelViewMatrix4d ();
 
-	const Vector3f billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
-	const Vector3f viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);
+	const Vector3d billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
+	const Vector3d viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);
 
-	Vector3f x = cross (viewerYAxis, billboardToScreen);
-	Vector3f y = cross (billboardToScreen, x);
-	Vector3f z = billboardToScreen;
+	Vector3d x = cross (viewerYAxis, billboardToScreen);
+	Vector3d y = cross (billboardToScreen, x);
+	Vector3d z = billboardToScreen;
 
 	// Compose rotation
 
@@ -1568,7 +1567,7 @@ throw (std::domain_error)
 	y .normalize ();
 	z .normalize ();
 
-	return Matrix3f (x [0], x [1], x [2],
+	return Matrix3d (x [0], x [1], x [2],
 	                 y [0], y [1], y [2],
 	                 z [0], z [1], z [2]);
 }

@@ -108,12 +108,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
 }
 
-Box3f
+Box3d
 Sphere::createBBox ()
 {
-	const float diameter = 2 * radius ();
+	const double diameter = 2 * radius ();
 
-	return Box3f (Vector3f (diameter, diameter, diameter), Vector3f ());
+	return Box3d (Vector3d (diameter, diameter, diameter), Vector3d ());
 }
 
 void
@@ -136,7 +136,7 @@ Sphere::build ()
 		getVertices () .reserve (options -> getVertices () .size ());
 
 		for (const auto & vertex : options -> getVertices ())
-			getVertices () .emplace_back (vertex * radius () .getValue ());
+			getVertices () .emplace_back (vertex * double (radius () .getValue ()));
 	}
 
 	addElements (options -> getVertexMode (), getVertices () .size ());

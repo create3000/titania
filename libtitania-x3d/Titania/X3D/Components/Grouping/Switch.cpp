@@ -101,7 +101,7 @@ Switch::initialize ()
 	whichChoice () .addInterest (this, &Switch::setWhichChoice, -1);
 }
 
-Box3f
+Box3d
 Switch::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
@@ -111,10 +111,10 @@ Switch::getBBox () const
 		if (boundedObject)
 			return boundedObject -> getBBox ();
 		
-		return Box3f ();
+		return Box3d ();
 	}
 
-	return Box3f (bboxSize (), bboxCenter ());
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }
 
 void

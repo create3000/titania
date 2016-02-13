@@ -126,7 +126,7 @@ public:
 	bool
 	isClosed () const;
 	
-	Box2f
+	Box2d
 	getBBox () const;
 
 	void
@@ -173,7 +173,7 @@ private:
 
 	std::vector <X3DNurbsControlCurveNode*> curves;
 	
-	Box2f bbox;
+	Box2d bbox;
 
 };
 

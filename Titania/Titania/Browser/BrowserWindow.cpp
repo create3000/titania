@@ -2844,19 +2844,19 @@ BrowserWindow::on_look_at_selection_clicked ()
 
 	const auto activeViewpoint = getCurrentBrowser () -> getActiveLayer () -> getViewpoint ();
 
-	X3D::Box3f bbox;
+	X3D::Box3d bbox;
 
 	for (const auto & node : selection)
 	{
 		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
 
 		if (boundedObject)
-			bbox += boundedObject -> getBBox () * X3D::Matrix4f (getModelViewMatrix (getCurrentContext (), node));
+			bbox += boundedObject -> getBBox () * getModelViewMatrix (getCurrentContext (), node);
 
 		const auto geometryNode = X3D::x3d_cast <X3D::X3DGeometryNode*> (node);
 
 		if (geometryNode)
-			bbox += geometryNode -> getBBox () * X3D::Matrix4f (getModelViewMatrix (getCurrentContext (), node));
+			bbox += geometryNode -> getBBox () * getModelViewMatrix (getCurrentContext (), node);
 	}
 
 	activeViewpoint -> lookAt (bbox);

@@ -64,7 +64,7 @@ public:
 
 	Vector4f texCoord;
 	Vector3f normal;
-	Vector3f point;
+	Vector3d point;
 
 };
 

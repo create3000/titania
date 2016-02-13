@@ -64,7 +64,7 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
 	virtual
@@ -73,7 +73,7 @@ public:
 	{ matrix = value; }
 
 	virtual
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const
 	{ return matrix; }
 
@@ -105,7 +105,7 @@ private:
 
 	///  @name Members
 
-	Matrix4f matrix;
+	Matrix4d matrix;
 
 };
 

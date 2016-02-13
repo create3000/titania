@@ -87,7 +87,7 @@ public:
 	{ return *fields .translation; }
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const final override;
 
 	virtual

@@ -117,14 +117,14 @@ public:
 	///  @name Member access
 
 	virtual
-	Box3f
+	Box3d
 	getBBox () const override;
 
 	virtual
-	Box3f
+	Box3d
 	getRectangleBBox () const;
 
-	const Matrix4f &
+	const Matrix4d &
 	getMatrix () const;
 
 	///  @name Operations
@@ -175,9 +175,9 @@ private:
 
 	X3DViewportNodePtr viewportNode;
 	X3DLayoutNodePtr   layoutNode;
-	Matrix4f           modelViewMatrix;
-	Matrix4f           screenMatrix;
-	Matrix4f           matrix;
+	Matrix4d           modelViewMatrix;
+	Matrix4d           screenMatrix;
+	Matrix4d           matrix;
 
 };
 

@@ -84,7 +84,7 @@ Coordinate::create (X3DExecutionContext* const executionContext) const
 	return new Coordinate (executionContext);
 }
 
-Box3f
+Box3d
 Coordinate::getBBox () const
 {
 	return Box3f (point () .begin (), point () .end (), math::iterator_type ());
@@ -139,23 +139,23 @@ Coordinate::addVertex (opengl::tessellator <size_t> & tessellator, const size_t 
 		tessellator .add_vertex (point () [index], i);
 
 	else
-		tessellator .add_vertex (Vector3f (), i);
+		tessellator .add_vertex (Vector3d (), i);
 }
 
 void
-Coordinate::addVertex (std::vector <Vector3f> & vertices, const size_t index) const
+Coordinate::addVertex (std::vector <Vector3d> & vertices, const size_t index) const
 {
 	if (index < point () .size ())
-		vertices .emplace_back (point () [index]);
+		vertices .emplace_back (point () [index] .getValue ());
 
 	else
 		vertices .emplace_back ();
 }
 
-std::vector <Vector4f>
+std::vector <Vector4d>
 Coordinate::getControlPoints (const MFDouble & weight) const
 {
-	std::vector <Vector4f> controlPoints;
+	std::vector <Vector4d> controlPoints;
 
 	controlPoints .reserve (point () .size ());
 

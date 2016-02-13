@@ -106,13 +106,13 @@ protected:
 
 	///  @name Operations
 
-	Vector3f
+	Vector3d
 	getPointOnCenterPlane (const double, const double);
 
-	Vector3f
+	Vector3d
 	getDistanceToCenter () const;
 
-	Vector3f
+	Vector3d
 	trackballProjectToSphere (double, double) const;
 
 

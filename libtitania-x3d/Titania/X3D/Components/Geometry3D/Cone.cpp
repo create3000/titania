@@ -119,50 +119,50 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		getBrowser () -> getCylinderOptions () .addInterest (this, &Cone::update);
 }
 
-Box3f
+Box3d
 Cone::createBBox ()
 {
-	const float diameter = bottomRadius () * 2;
+	const double diameter = bottomRadius () * 2;
 
 	if (not side () and not bottom ())
-		return Box3f ();
+		return Box3d ();
 
 	else if (not side ())
-		return Box3f (Vector3f (diameter, 0, diameter), Vector3f (0, -height () / 2, 0));
+		return Box3d (Vector3d (diameter, 0, diameter), Vector3d (0, -height () / 2, 0));
 
 	else
-		return Box3f (Vector3f (diameter, height (), diameter), Vector3f ());
+		return Box3d (Vector3d (diameter, height (), diameter), Vector3d ());
 }
 
 void
 Cone::build ()
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const float  vDimension = options -> vDimension ();
+	const double vDimension = options -> vDimension ();
 
 	getTexCoords () .emplace_back ();
 
-	const float y1 = height () / 2;
-	const float y2 = -y1;
-	const auto  nz = std::polar <float> (1, -M_PI / 2 + std::atan (bottomRadius () / height ()));
+	const double y1 = height () / 2;
+	const double y2 = -y1;
+	const auto   nz = std::polar <double> (1, -M_PI / 2 + std::atan (bottomRadius () / height ()));
 
 	if (side ())
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u1     = (i + 0.5f) / vDimension;
-			const float theta1 = 2 * M_PI * u1;
-			const auto  n1     = std::polar <float> (nz .imag (), theta1);
+			const double u1     = (i + 0.5f) / vDimension;
+			const double theta1 = 2 * M_PI * u1;
+			const auto   n1     = std::polar <double> (nz .imag (), theta1);
 
-			const float u2     = i / vDimension;
-			const float theta2 = 2 * M_PI * u2;
-			const auto  p2     = std::polar <float> (-bottomRadius (), theta2);
-			const auto  n2     = std::polar <float> (nz .imag (), theta2);
+			const double u2     = i / vDimension;
+			const double theta2 = 2 * M_PI * u2;
+			const auto   p2     = std::polar <double> (-bottomRadius (), theta2);
+			const auto   n2     = std::polar <double> (nz .imag (), theta2);
 
-			const float u3     = (i + 1) / vDimension;
-			const float theta3 = 2 * M_PI * u3;
-			const auto  p3     = std::polar <float> (-bottomRadius (), theta3);
-			const auto  n3     = std::polar <float> (nz .imag (), theta3);
+			const double u3     = (i + 1) / vDimension;
+			const double theta3 = 2 * M_PI * u3;
+			const auto   p3     = std::polar <double> (-bottomRadius (), theta3);
+			const auto   n3     = std::polar <double> (nz .imag (), theta3);
 
 			/*    p1
 			 *   /  \
@@ -193,10 +193,10 @@ Cone::build ()
 	{
 		for (int32_t i = vDimension - 1; i > -1; -- i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * bottomRadius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto   t     = std::polar <double> (-1, theta);
+			const auto   p     = t * double (bottomRadius () .getValue ());
 
 			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
@@ -216,7 +216,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const float  vDimension = options -> vDimension ();
+	const double vDimension = options -> vDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -228,8 +228,8 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord ()    = texCoord;
 	geometry -> coord ()       = coord;
 
-	const float y1 = height () / 2;
-	const float y2 = -y1;
+	const double y1 = height () / 2;
+	const double y2 = -y1;
 
 	if (side ())
 	{
@@ -237,8 +237,8 @@ throw (Error <NOT_SUPPORTED>,
 
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u1 = (i + 0.5f) / vDimension;
-			const float u2 = i / vDimension;
+			const double u1 = (i + 0.5f) / vDimension;
+			const double u2 = i / vDimension;
 
 			texCoord -> point () .emplace_back (u1, 1);
 			texCoord -> point () .emplace_back (u2, 0);
@@ -251,10 +251,10 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < vDimension; ++ i)
 		{
-			const float u     = i / vDimension;
-			const float theta = 2 * M_PI * u;
-			const auto  t     = std::polar <float> (-1, theta);
-			const auto  p     = t * bottomRadius () .getValue ();
+			const double u     = i / vDimension;
+			const double theta = 2 * M_PI * u;
+			const auto   t     = std::polar <double> (-1, theta);
+			const auto   p     = t * double (bottomRadius () .getValue ());
 
 			if (bottom ())
 				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);

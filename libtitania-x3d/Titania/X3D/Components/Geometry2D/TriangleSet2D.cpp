@@ -118,8 +118,8 @@ TriangleSet2D::buildTexCoords ()
 	getTexCoords () .emplace_back ();
 	getTexCoords () [0] .reserve (getVertices () .size ());
 
-	Vector3f min;
-	float    Ssize;
+	Vector3d min;
+	double   Ssize;
 	int      Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);

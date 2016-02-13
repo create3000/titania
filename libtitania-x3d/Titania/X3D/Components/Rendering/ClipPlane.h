@@ -108,7 +108,7 @@ public:
 	///  @name Operations
 
 	bool
-	isClipped (const Matrix4f &, const Vector3f &);
+	isClipped (const Matrix4d &, const Vector3d &);
 
 	void
 	push ();

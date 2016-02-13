@@ -82,11 +82,11 @@ public:
 	getNormals () const
 	{ return normals; }
 
-	std::vector <Vector3f> &
+	std::vector <Vector3d> &
 	getVertices ()
 	{ return vertices; }
 
-	const std::vector <Vector3f> &
+	const std::vector <Vector3d> &
 	getVertices () const
 	{ return vertices; }
 
@@ -128,7 +128,7 @@ private:
 
 	std::vector <Vector4f> texCoord;
 	std::vector <Vector3f> normals;
-	std::vector <Vector3f> vertices;
+	std::vector <Vector3d> vertices;
 
 };
 

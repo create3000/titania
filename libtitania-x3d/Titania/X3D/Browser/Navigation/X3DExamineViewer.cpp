@@ -61,9 +61,9 @@ namespace X3D {
 
 static constexpr time_type MOTION_TIME       = 0.05;
 static constexpr time_type SPIN_RELEASE_TIME = 0.01;
-static constexpr float     SPIN_ANGLE        = 0.006;
-static constexpr float     SPIN_FACTOR       = 0.6;
-static constexpr float     SCROLL_FACTOR     = 1.0f / 50.0f;
+static constexpr double    SPIN_ANGLE        = 0.006;
+static constexpr double    SPIN_FACTOR       = 0.6;
+static constexpr double    SCROLL_FACTOR     = 1.0 / 50.0;
 static constexpr time_type FRAME_RATE        = 60;
 
 const ComponentType X3DExamineViewer::component      = ComponentType::TITANIA;
@@ -135,7 +135,7 @@ X3DExamineViewer::on_button_press_event (GdkEventButton* event)
 				getActiveViewpoint () -> transitionStop ();
 
 				fromVector = trackballProjectToSphere (event -> x, event -> y);
-				rotation   = Rotation4f ();
+				rotation   = Rotation4d ();
 
 				motionTime = 0;
 
@@ -181,7 +181,7 @@ X3DExamineViewer::on_button_release_event (GdkEventButton* event)
 
 			if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
 			{
-				rotation = slerp (Rotation4f (), rotation, SPIN_FACTOR);
+				rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
 
 				addSpinning ();
 			}
@@ -214,7 +214,7 @@ X3DExamineViewer::on_motion_notify_event (GdkEventMotion* event)
 				const auto & viewpoint = getActiveViewpoint ();
 				const auto   toVector  = trackballProjectToSphere (event -> x, event -> y);
 
-				rotation = Rotation4f (toVector, fromVector);
+				rotation = Rotation4d (toVector, fromVector);
 
 				if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
 					return false;
@@ -260,7 +260,7 @@ X3DExamineViewer::on_scroll_event (GdkEventScroll* event)
 		viewpoint -> transitionStop ();
 
 		const auto step           = getDistanceToCenter () * SCROLL_FACTOR;
-		const auto positionOffset = Vector3f (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
+		const auto positionOffset = Vector3d (0, 0, abs (step)) * viewpoint -> getUserOrientation ();
 
 		if (event -> direction == GDK_SCROLL_DOWN)    // Move backwards.
 		{
@@ -305,7 +305,7 @@ X3DExamineViewer::addSpinning ()
 		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DExamineViewer::spin), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
-Vector3f
+Vector3d
 X3DExamineViewer::getPositionOffset () const
 {
 	const auto & viewpoint = getActiveViewpoint ();
@@ -314,7 +314,7 @@ X3DExamineViewer::getPositionOffset () const
 	return distance * (~orientationOffset * viewpoint -> orientationOffset ()) - distance + viewpoint -> positionOffset ();
 }
 
-Rotation4f
+Rotation4d
 X3DExamineViewer::getOrientationOffset ()
 {
 	const auto & viewpoint = getActiveViewpoint ();

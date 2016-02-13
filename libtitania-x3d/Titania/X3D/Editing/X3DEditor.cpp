@@ -2212,13 +2212,13 @@ throw (Error <INVALID_NODE>)
 void
 X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoStep) const
 {
-	Matrix4fStack modelViewMatrix;
+	Matrix4dStack modelViewMatrix;
 
 	transformToZero (children, modelViewMatrix, undoStep);
 }
 
 void
-X3DEditor::transformToZero (const MFNode & children, Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const MFNode & children, Matrix4dStack & modelViewMatrix, const UndoStepPtr & undoStep) const
 {
 	for (const auto & child : children)
 	{
@@ -2228,7 +2228,7 @@ X3DEditor::transformToZero (const MFNode & children, Matrix4fStack & modelViewMa
 }
 
 void
-X3DEditor::transformToZero (const SFNode & child, Matrix4fStack & modelViewMatrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatrix, const UndoStepPtr & undoStep) const
 {
 	for (const auto & type : basic::make_reverse_range (child -> getType ()))
 	{
@@ -2294,7 +2294,7 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4fStack & modelViewMatri
 }
 
 void
-X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Matrix4f & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
 {
 	for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
 	{
@@ -2317,7 +2317,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Mat
 }
 
 void
-X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matrix4f & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
 {
 	switch (coord -> getType () .back ())
 	{
@@ -2329,7 +2329,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
 			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 
 			for (auto & point : coordinate -> point ())
-				point = matrix .mult_vec_matrix (point);
+				point = matrix .mult_vec_matrix (point .getValue ());
 
 			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 			return;

@@ -63,9 +63,9 @@ const std::string   Billboard::containerField = "children";
 
 // https://bitbucket.org/Coin3D/coin/src/abc9f50968c9/src/vrml97/Billboard.cpp
 
-static constexpr Vector3f xAxis (1, 0, 0);
-static constexpr Vector3f yAxis (0, 1, 0);
-static constexpr Vector3f zAxis (0, 0, 1);
+static constexpr Vector3d xAxis (1, 0, 0);
+static constexpr Vector3d yAxis (0, 1, 0);
+static constexpr Vector3d zAxis (0, 0, 1);
 
 Billboard::Fields::Fields () :
 	axisOfRotation (new SFVec3f (yAxis))
@@ -94,7 +94,7 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 	return new Billboard (executionContext);
 }
 
-Box3f
+Box3d
 Billboard::getBBox () const
 {
 	return X3DGroupingNode::getBBox () * matrix;
@@ -105,34 +105,34 @@ Billboard::rotate (const TraverseType type)
 {
 	try
 	{
-		const Matrix4f modelViewMatrix        = getModelViewMatrix (type);
-		const Matrix4f inverseModelViewMatrix = ~modelViewMatrix;
-		const Vector3f billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
+		const Matrix4d modelViewMatrix        = getModelViewMatrix (type);
+		const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
+		const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 		if (axisOfRotation () == Vector3f ())
 		{
-			const Vector3f viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
+			const Vector3d viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
 
-			Vector3f x = cross (viewerYAxis, billboardToViewer);
-			Vector3f y = cross (billboardToViewer, x);
-			Vector3f z = billboardToViewer;
+			Vector3d x = cross (viewerYAxis, billboardToViewer);
+			Vector3d y = cross (billboardToViewer, x);
+			Vector3d z = billboardToViewer;
 
 			// Compose rotation
 
 			x .normalize ();
 			y .normalize ();
 
-			matrix = Matrix4f (x [0], x [1], x [2], 0,
+			matrix = Matrix4d (x [0], x [1], x [2], 0,
 			                   y [0], y [1], y [2], 0,
 			                   z [0], z [1], z [2], 0,
 			                   0,     0,     0,     1);
 		}
 		else
 		{
-			const Vector3f N1 = cross (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
-			const Vector3f N2 = cross (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
+			const Vector3d N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
+			const Vector3d N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
 
-			matrix = Matrix4f (Rotation4f (N2, N1));                                       // Rotate zAxis in plane
+			matrix = Matrix4d (Rotation4d (N2, N1));                                       // Rotate zAxis in plane
 		}
 
 		getModelViewMatrix () .mult_left (matrix);

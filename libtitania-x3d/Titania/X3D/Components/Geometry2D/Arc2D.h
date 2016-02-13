@@ -151,7 +151,7 @@ private:
 
 	///  @name Operations
 
-	float
+	double
 	getAngle ();
 
 	virtual

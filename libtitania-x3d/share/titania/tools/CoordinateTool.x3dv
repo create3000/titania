@@ -127,7 +127,7 @@ Collision {
                 2,
                 2
               ]
-              coord DEF EdgesCoord Coordinate {
+              coord DEF EdgesCoord CoordinateDouble {
                 point [
                   -2 0 0,
                   2 0 0,
@@ -147,7 +147,7 @@ Collision {
               material USE Material_1
             }
             geometry PointSet {
-              coord DEF SelectionCoord Coordinate { }
+              coord DEF SelectionCoord CoordinateDouble { }
             }
           }
           DEF ActiveLines Shape {
@@ -166,7 +166,7 @@ Collision {
                 material USE Material
               }
               geometry PointSet {
-                coord DEF ActivePointCoord Coordinate { }
+                coord DEF ActivePointCoord CoordinateDouble { }
               }
             }
           }

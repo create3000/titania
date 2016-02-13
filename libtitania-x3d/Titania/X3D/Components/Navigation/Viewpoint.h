@@ -125,23 +125,23 @@ public:
 
 	virtual
 	void
-	setPosition (const Vector3f & value) final override
+	setPosition (const Vector3d & value) final override
 	{ position () = value; }
 
 	virtual
-	Vector3f
+	Vector3d
 	getPosition () const
-	{ return position (); }
+	{ return position () .getValue (); }
 
 	virtual
 	void
-	setCenterOfRotation (const Vector3f & value) final override
+	setCenterOfRotation (const Vector3d & value) final override
 	{ centerOfRotation () = value; }
 
 	virtual
-	Vector3f
+	Vector3d
 	getCenterOfRotation () const final override
-	{ return centerOfRotation (); }
+	{ return centerOfRotation () .getValue (); }
 
 	virtual
 	Vector3d
@@ -165,8 +165,8 @@ private:
 	double
 	getFieldOfView () const;
 
-	float
-	getLookAtDistance (const Box3f &) const;
+	double
+	getLookAtDistance (const Box3d &) const;
 
 	///  @name Static members
 

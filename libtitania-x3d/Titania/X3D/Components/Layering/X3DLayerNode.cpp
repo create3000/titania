@@ -192,7 +192,7 @@ X3DLayerNode::isLayer0 (const bool value)
 	defaultBackground -> isHidden (not value);
 }
 
-Box3f
+Box3d
 X3DLayerNode::getBBox () const
 {
 	return group -> getBBox ();

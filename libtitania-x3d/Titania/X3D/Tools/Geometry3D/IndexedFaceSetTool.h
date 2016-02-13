@@ -234,13 +234,13 @@ private:
 
 	///  @name Members
 
-	X3DPtr <PlaneSensor>    planeSensor;
-	X3DPtr <TouchSensor>    touchSensor;
-	X3DPtr <Coordinate>     activePointCoord;
-	X3DPtr <IndexedLineSet> activeLineSet;
-	X3DPtr <Coordinate>     selectionCoord;
-	X3DPtr <IndexedFaceSet> selectedFacesGeometry;
-	X3DPtr <X3DCoordinateNode>      coordNode;
+	X3DPtr <PlaneSensor>        planeSensor;
+	X3DPtr <TouchSensor>        touchSensor;
+	X3DPtr <CoordinateDouble>   activePointCoord;
+	X3DPtr <IndexedLineSet>     activeLineSet;
+	X3DPtr <CoordinateDouble>   selectionCoord;
+	X3DPtr <IndexedFaceSet>     selectedFacesGeometry;
+	X3DPtr <X3DCoordinateNode>  coordNode;
 
 	std::map <int32_t, Vector3d>    activePoints;
 	std::vector <size_t>            activeFace;

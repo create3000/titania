@@ -138,7 +138,7 @@ private:
 	std::vector <int32_t>
 	createCoordIndex () const;
 
-	std::vector <Vector3f>
+	std::vector <Vector3d>
 	createPoints () const;
 
 	virtual

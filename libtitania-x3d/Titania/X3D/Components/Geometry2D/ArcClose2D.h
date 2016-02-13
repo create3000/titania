@@ -163,7 +163,7 @@ private:
 
 	///  @name Tests
 
-	float
+	double
 	getAngle ();
 
 	virtual

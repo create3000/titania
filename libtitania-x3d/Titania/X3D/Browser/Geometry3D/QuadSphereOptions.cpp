@@ -131,21 +131,21 @@ QuadSphereOptions::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
 
-	const auto polOffset = 1 / (2 * float (uDimension () - 1));
+	const auto polOffset = 1 / (2 * double (uDimension () - 1));
 
 	for (int u = 0; u < uDimension () - 1; ++ u)
 	{
-		const float x = u / float (uDimension () - 1) + polOffset;
+		const double x = u / double (uDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 1, 0, 1);
 	}
 
 	for (int32_t v = 1; v < vDimension () - 1; ++ v)
 	{
-		const float y = v / float (vDimension () - 1);
+		const double y = v / double (vDimension () - 1);
 
 		for (int u = 0; u < uDimension () - 1; ++ u)
 		{
-			const float x = u / float (uDimension () - 1);
+			const double x = u / double (uDimension () - 1);
 			texCoord .emplace_back (x, 1 - y, 0, 1);
 		}
 
@@ -154,7 +154,7 @@ QuadSphereOptions::createTexCoord () const
 
 	for (int u = 0; u < uDimension () - 1; ++ u)
 	{
-		const float x = u / float (uDimension () - 1) + polOffset;
+		const double x = u / double (uDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 0, 0, 1);
 	}
 
@@ -185,10 +185,10 @@ QuadSphereOptions::createCoordIndex () const
 	return coordIndices;
 }
 
-std::vector <Vector3f>
+std::vector <Vector3d>
 QuadSphereOptions::createPoints () const
 {
-	std::vector <Vector3f> points;
+	std::vector <Vector3d> points;
 
 	// north pole
 	for (int32_t u = 0; u < uDimension () - 1; ++ u)
@@ -197,11 +197,11 @@ QuadSphereOptions::createPoints () const
 	// sphere segments
 	for (int32_t v = 1; v < vDimension () - 1; ++ v)
 	{
-		const auto zPlane = std::polar <float> (1, -M_PI * (v / float (vDimension () - 1)));
+		const auto zPlane = std::polar <double> (1, -M_PI * (v / double (vDimension () - 1)));
 
 		for (int32_t u = 0; u < uDimension () - 1; ++ u)
 		{
-			const auto yPlane = std::polar <float> (zPlane .imag (), 2 * M_PI * (u / float (uDimension () - 1)));
+			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * M_PI * (u / double (uDimension () - 1)));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
@@ -220,7 +220,7 @@ QuadSphereOptions::build ()
 	const std::vector <int32_t>  texCoordIndices = createTexCoordIndex ();
 	const std::vector <Vector4f> texCoords       = createTexCoord ();
 	const std::vector <int32_t>  coordIndices    = createCoordIndex ();
-	const std::vector <Vector3f> points          = createPoints ();
+	const std::vector <Vector3d> points          = createPoints ();
 
 	auto texCoordIndex = texCoordIndices .begin ();
 	auto coordIndex    = coordIndices .begin ();
