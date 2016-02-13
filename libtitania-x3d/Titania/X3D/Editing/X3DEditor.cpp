@@ -2250,17 +2250,17 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 				const auto matrix = transform -> getCurrentMatrix ();
 
 				undoStep -> addObjects (transform);
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),      transform -> translation ());
+				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),         transform -> translation ());
 				undoStep -> addUndoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> rotation ()),         transform -> rotation ());
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),            transform -> scale ());
+				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),               transform -> scale ());
 				undoStep -> addUndoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> scaleOrientation ()), transform -> scaleOrientation ());
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),           transform -> center ());
+				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),              transform -> center ());
 
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),      Vector3f ());
-				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> rotation ()),         Rotation4f ());
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),            Vector3f (1, 1, 1));
-				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> scaleOrientation ()), Rotation4f ());
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),           Vector3f ());
+				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),         Vector3f ());
+				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> rotation ()),         Rotation4d ());
+				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),               Vector3f (1, 1, 1));
+				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> scaleOrientation ()), Rotation4d ());
+				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),              Vector3f ());
 
 				undoStep -> redo ();
 

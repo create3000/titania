@@ -185,7 +185,7 @@ private:
 
 	Fields fields;
 
-	const std::unique_ptr <math::squad_interpolator <Rotation4f, float>> squad;
+	const std::unique_ptr <math::squad_interpolator <Rotation4d, double>> squad;
 
 };
 

@@ -151,13 +151,11 @@ void
 ScalarChaser::prepareEvents ()
 {
 	const float fraction = updateBuffer ();
-
-	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+	auto        output   = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
-		auto deltaIn = buffer [i] - buffer [i + 1];
-
+		auto deltaIn  = buffer [i] - buffer [i + 1];
 		auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
 
 		output += deltaOut;

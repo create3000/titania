@@ -143,7 +143,7 @@ SFRotationAdjustment::on_value_changed (const int id)
 			field .removeInterest (this, &SFRotationAdjustment::set_field);
 			field .addInterest (this, &SFRotationAdjustment::connect);
 
-			X3D::Rotation4f rotation (adjustments [0] -> get_value (),
+			X3D::Rotation4d rotation (adjustments [0] -> get_value (),
 			                          adjustments [1] -> get_value (),
 			                          adjustments [2] -> get_value (),
 			                          getCurrentScene () -> fromUnit (X3D::UnitCategory::ANGLE, adjustments [3] -> get_value ()));

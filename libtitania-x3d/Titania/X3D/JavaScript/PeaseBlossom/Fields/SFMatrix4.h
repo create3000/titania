@@ -290,9 +290,9 @@ SFMatrix4 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto lhs  = getThis <SFMatrix4> (ec, object);
 
 		typename Type::vector3_type translation;
-		typename Type::rotation4f_type rotation;
+		typename Type::rotation4_type rotation;
 		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4f_type scaleOrientation;
+		typename Type::rotation4_type scaleOrientation;
 		typename Type::vector3_type center;
 
 		if (argc > 0 and not args [0] .isNull ())
@@ -333,9 +333,9 @@ SFMatrix4 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto lhs  = getThis <SFMatrix4> (ec, object);
 
 		typename Type::vector3_type translation;
-		typename Type::rotation4f_type rotation;
+		typename Type::rotation4_type rotation;
 		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4f_type scaleOrientation;
+		typename Type::rotation4_type scaleOrientation;
 		typename Type::vector3_type center;
 
 		if (argc > 4 and not args [4] .isNull ())

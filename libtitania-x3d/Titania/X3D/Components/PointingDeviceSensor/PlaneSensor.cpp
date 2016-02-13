@@ -265,7 +265,7 @@ PlaneSensor::set_motion (const HitPtr & hit)
 void
 PlaneSensor::track (const Vector3d & endPoint, const Vector3d & trackPoint)
 {
-	Vector3d translation = (startOffset + endPoint - startPoint) * Rotation4d (~axisRotation ());
+	Vector3d translation = (startOffset + endPoint - startPoint) * ~axisRotation ();
 
 	// X component
 

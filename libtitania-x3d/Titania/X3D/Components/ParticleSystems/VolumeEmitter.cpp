@@ -216,11 +216,11 @@ VolumeEmitter::set_geometry ()
 	std::vector <Color4f>  colors;
 	TexCoordArray          texCoords (surfaceNode -> getPolygonTexCoords () .size ());
 	std::vector <Vector3f> normals;
-	std::vector <Vector3d> vertices_;
+	std::vector <Vector3d> verticesAux;
 
-	surfaceNode -> triangulate (colors, texCoords, normals, vertices_);
+	surfaceNode -> triangulate (colors, texCoords, normals, verticesAux);
 
-	std::vector <Vector3f> vertices (vertices .begin (), vertices .end ());
+	std::vector <Vector3f> vertices (verticesAux .begin (), verticesAux .end ());
 
 	float               surfaceArea = 0;
 	std::vector <float> surfaceAreas (1);

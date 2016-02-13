@@ -85,7 +85,7 @@ private:
 	bool
 	hasKey (const std::string &, const std::string &) const;
 
-	double
+	long double
 	getKey (const std::string &, const std::string &) const;
 
 	///  @name Event handlers

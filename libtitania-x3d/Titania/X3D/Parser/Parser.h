@@ -196,8 +196,8 @@ private:
 	unitStatement ();
 
 	bool
-	unitConversionFactor (double & value)
-	{ return Double (value); }
+	unitConversionFactor (long double & value)
+	{ return LongDouble (value); }
 
 	bool
 	exportStatement ();
@@ -340,6 +340,9 @@ private:
 
 	bool
 	fieldValue (X3DFieldDefinition*);
+
+	bool
+	LongDouble (long double &);
 
 	bool
 	Double (double &);

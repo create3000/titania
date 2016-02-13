@@ -83,7 +83,7 @@ X3DUnitContext::initialize ()
 { }
 
 void
-X3DUnitContext::updateUnit (const std::string & category, const std::string & name, const double conversionFactor)
+X3DUnitContext::updateUnit (const std::string & category, const std::string & name, const long double conversionFactor)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -110,8 +110,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	return units [size_t (category)];
 }
 
-double
-X3DUnitContext::fromUnit (const UnitCategory category, const double value) const
+long double
+X3DUnitContext::fromUnit (const UnitCategory category, const long double value) const
 throw (Error <DISPOSED>)
 {
 	switch (category)
@@ -142,8 +142,8 @@ throw (Error <DISPOSED>)
 	return value;
 }
 
-double
-X3DUnitContext::toUnit (const UnitCategory category, const double value) const
+long double
+X3DUnitContext::toUnit (const UnitCategory category, const long double value) const
 throw (Error <DISPOSED>)
 {
 	switch (category)

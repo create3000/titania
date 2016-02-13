@@ -94,9 +94,9 @@ protected:
 
 	void
 	setMatrix (const Vector3f & t,
-	           const Rotation4f & r,
+	           const Rotation4d & r,
 	           const Vector3f & s,
-	           const Rotation4f & so,
+	           const Rotation4d & so,
 	           const Vector3f & c)
 	{ matrix .set (t, r, s, so, c); }
 

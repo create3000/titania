@@ -72,7 +72,7 @@ X3DDamperNode::getOrder () const
 	return clamp <int32_t> (order (), 0, 5);
 }
 
-float
+double
 X3DDamperNode::getTolerance () const
 {
 	if (tolerance () < 0)

@@ -197,7 +197,7 @@ NormalTool::set_value (const X3D::SFVec3f & value)
 	{
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
-		tool -> setField <X3D::SFRotation> ("inputRotation", X3D::Rotation4f (X3D::Vector3f (0, 0, 1), negate (value .getValue ())));
+		tool -> setField <X3D::SFRotation> ("inputRotation", X3D::Rotation4d (X3D::Vector3d (0, 0, 1), X3D::Vector3d (negate (value .getValue ()))));
 	}
 	catch (const X3D::X3DError & error)
 	{ }

@@ -333,9 +333,9 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
 		typename Type::vector3_type translation;
-		typename Type::rotation4f_type rotation;
+		typename Type::rotation4_type rotation;
 		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4f_type scaleOrientation;
+		typename Type::rotation4_type scaleOrientation;
 		typename Type::vector3_type center;
 
 		try
@@ -402,9 +402,9 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
 		typename Type::vector3_type translation;
-		typename Type::rotation4f_type rotation;
+		typename Type::rotation4_type rotation;
 		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4f_type scaleOrientation;
+		typename Type::rotation4_type scaleOrientation;
 		typename Type::vector3_type center;
 
 		try

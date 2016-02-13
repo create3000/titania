@@ -65,7 +65,7 @@ public:
 	///  @name Unit handling
 
 	void
-	updateUnit (const std::string &, const std::string &, const double)
+	updateUnit (const std::string &, const std::string &, const long double)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -81,12 +81,12 @@ public:
 	       Error <DISPOSED>)
 	{ return units; }
 
-	double
-	fromUnit (const UnitCategory, const double) const
+	long double
+	fromUnit (const UnitCategory, const long double) const
 	throw (Error <DISPOSED>);
 
-	double
-	toUnit (const UnitCategory, const double) const
+	long double
+	toUnit (const UnitCategory, const long double) const
 	throw (Error <DISPOSED>);
 
 	const SFTime &

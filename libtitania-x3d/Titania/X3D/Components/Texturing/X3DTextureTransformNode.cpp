@@ -84,7 +84,7 @@ X3DTextureTransformNode::draw (const int32_t unit)
 
 	glMatrixMode (GL_TEXTURE);
 
-	glLoadMatrixf (matrix .data ());
+	glLoadMatrixd (matrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }

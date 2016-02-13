@@ -101,22 +101,22 @@ TextureTransform3D::eventsProcessed ()
 {
 	// Tc' = -C × S × R × C × T × Tc
 
-	Matrix4f matrix;
+	Matrix4d matrix;
 
 	if (center () not_eq Vector3f ())
 		matrix .translate (-center ());
 
 	if (scale () not_eq Vector3f (1, 1, 1))
-		matrix .scale (scale ());
+		matrix .scale (scale () .getValue ());
 
-	if (rotation () not_eq Rotation4f ())
-		matrix .rotate (rotation ());
+	if (rotation () not_eq Rotation4d ())
+		matrix .rotate (rotation () .getValue ());
 
 	if (center () not_eq Vector3f ())
-		matrix .translate (center ());
+		matrix .translate (center () .getValue ());
 
 	if (translation () not_eq Vector3f ())
-		matrix .translate (translation ());
+		matrix .translate (translation () .getValue ());
 
 	setMatrix (matrix);
 }

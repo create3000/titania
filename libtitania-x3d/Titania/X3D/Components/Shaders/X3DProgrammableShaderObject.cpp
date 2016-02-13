@@ -243,7 +243,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFRotation:
 		{
-			glUniform4fv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
+			glUniform4dv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
 			break;
 		}
 		case X3DConstants::SFString:
@@ -447,7 +447,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFRotation*> (field);
 
-			std::vector <Vector4f> vector;
+			std::vector <Vector4d> vector;
 			vector .reserve (array -> size ());
 
 			for (const auto & value : *array)
@@ -456,7 +456,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
 			}
 
-			glUniform4fv (location, vector .size (), vector [0] .data ());
+			glUniform4dv (location, vector .size (), vector [0] .data ());
 			break;
 		}
 		case X3DConstants::MFString:

@@ -126,13 +126,13 @@ SFRotation::construct (JSContext* cx, uint32_t argc, jsval* vp)
 				{
 					const auto arg2 = getArgument <SFVec3f> (cx, argv, 1);
 
-					return create <SFRotation> (cx, new X3D::SFRotation (*arg1, *arg2), &JS_RVAL (cx, vp));
+					return create <SFRotation> (cx, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), X3D::SFVec3d (arg2 -> getValue ())), &JS_RVAL (cx, vp));
 				}
 				catch (const std::exception &)
 				{
 					const auto arg2 = getArgument <value_type> (cx, argv, 1);
 
-					return create <SFRotation> (cx, new X3D::SFRotation (*arg1, arg2), &JS_RVAL (cx, vp));				
+					return create <SFRotation> (cx, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), arg2), &JS_RVAL (cx, vp));				
 				}
 			}
 			case 4:
@@ -250,7 +250,7 @@ SFRotation::setAxis (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFRotation> (cx, vp);
 		const auto rhs  = getArgument <SFVec3f> (cx, argv, 0);
 
-		lhs -> setAxis (*rhs);
+		lhs -> setAxis (X3D::SFVec3d (rhs -> getValue ()));
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
@@ -269,9 +269,14 @@ SFRotation::getAxis (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (cx, vp);
+		const auto lhs    = getThis <SFRotation> (cx, vp);
+		const auto axis   = lhs -> getAxis ();
+		const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (axis -> getValue ()), &JS_RVAL (cx, vp));
 
-		return create <SFVec3f> (cx, lhs -> getAxis (), &JS_RVAL (cx, vp));
+		axis -> dispose ();
+		axis -> addDisposedObject (axis);
+
+		return result;
 	}
 	catch (const std::exception & error)
 	{
@@ -330,9 +335,14 @@ SFRotation::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 		
 		try
 		{
-			const auto rhs = getArgument <SFVec3f> (cx, argv, 0);
+			const auto rhs    = getArgument <SFVec3f> (cx, argv, 0);
+			const auto vector = lhs -> multVec (X3D::SFVec3d (rhs -> getValue ()));
+			const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (vector -> getValue ()), &JS_RVAL (cx, vp));
 
-			return create <SFVec3f> (cx, lhs -> multVec (*rhs), &JS_RVAL (cx, vp));
+			vector -> dispose ();
+			vector -> addDisposedObject (vector);
+
+			return result;
 		}
 		catch (const std::exception &)
 		{

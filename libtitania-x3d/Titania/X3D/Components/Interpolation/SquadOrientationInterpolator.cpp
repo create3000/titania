@@ -72,7 +72,7 @@ SquadOrientationInterpolator::SquadOrientationInterpolator (X3DExecutionContext*
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DInterpolatorNode (),
 	             fields (),
-	              squad (new math::squad_interpolator <Rotation4f, float> ())
+	              squad (new math::squad_interpolator <Rotation4d, double> ())
 {
 	addType (X3DConstants::SquadOrientationInterpolator);
 

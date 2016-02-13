@@ -141,7 +141,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Rotation4f &, const Rotation4f &, const float) const;
+	equals (const Rotation4d &, const Rotation4d &, const double) const;
 
 	///  @name Event handlers
 	
@@ -179,7 +179,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Rotation4f> buffer;
+	std::vector <Rotation4d> buffer;
 
 };
 

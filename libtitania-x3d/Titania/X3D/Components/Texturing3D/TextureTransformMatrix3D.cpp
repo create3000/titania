@@ -93,7 +93,7 @@ TextureTransformMatrix3D::initialize ()
 void
 TextureTransformMatrix3D::eventsProcessed ()
 {
-	setMatrix (matrix ());
+	setMatrix (matrix () .getValue ());
 }
 
 } // X3D

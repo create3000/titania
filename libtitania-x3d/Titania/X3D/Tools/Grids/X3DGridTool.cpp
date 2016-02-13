@@ -395,7 +395,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
 
 		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * ~gridRotation * rotationPlane;
-		const auto snapRotation = Rotation4f (inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (vectorToSnap),
+		const auto snapRotation = Rotation4d (inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (vectorToSnap),
                                             inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (snapVector));
 
 		Matrix4d currentMatrix;

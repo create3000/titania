@@ -378,7 +378,7 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
-X3DNode::setMetaData <Rotation4f> (const std::string &, const Rotation4f &)
+X3DNode::setMetaData <Rotation4d> (const std::string &, const Rotation4d &)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);

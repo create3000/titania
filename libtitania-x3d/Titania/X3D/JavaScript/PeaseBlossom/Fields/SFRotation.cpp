@@ -145,14 +145,14 @@ SFRotation::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 			{
 				const auto arg2 = get1Argument <SFVec3f> (args, 1);
 
-				setUserData <SFRotation> (ec, object, new X3D::SFRotation (*arg1, *arg2));
+				setUserData <SFRotation> (ec, object, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), X3D::SFVec3d (arg2 -> getValue ())));
 				break;
 			}
 			catch (const pb::TypeError &)
 			{
 				const auto arg2 = get1Argument <double> (args, 1);
 
-				setUserData <SFRotation> (ec, object, new X3D::SFRotation (*arg1, arg2));
+				setUserData <SFRotation> (ec, object, new X3D::SFRotation (X3D::SFVec3d (arg1 -> getValue ()), arg2));
 				break;
 			}
 		}
@@ -214,7 +214,7 @@ SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFVec3f> (args, 0);
 
-		lhs -> setAxis (*rhs);
+		lhs -> setAxis (X3D::SFVec3d (rhs -> getValue ()));
 
 		return pb::undefined;
 	}
@@ -232,9 +232,14 @@ SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (ec, object);
+		const auto lhs    = getThis <SFRotation> (ec, object);
+		const auto axis   = lhs -> getAxis ();
+		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (lhs -> getAxis () -> getValue ()));
 
-		return create <SFVec3f> (ec, lhs -> getAxis ());
+		axis -> dispose ();
+		axis -> addDisposedObject (axis);
+
+		return result;
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -287,10 +292,15 @@ SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 
 	try
 	{
-		const auto lhs = getThis <SFRotation> (ec, object);
-		const auto rhs = get1Argument <SFVec3f> (args, 0);
+		const auto lhs    = getThis <SFRotation> (ec, object);
+		const auto rhs    = get1Argument <SFVec3f> (args, 0);
+		const auto vector = lhs -> multVec (X3D::SFVec3d (rhs -> getValue ()));
+		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (vector -> getValue ()));
 
-		return create <SFVec3f> (ec, lhs -> multVec (*rhs));
+		vector -> dispose ();
+		vector -> addDisposedObject (vector);
+
+		return result;
 	}
 	catch (const std::invalid_argument &)
 	{

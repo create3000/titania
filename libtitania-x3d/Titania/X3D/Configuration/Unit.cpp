@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-Unit::Unit (const std::string & category, const std::string & name, const double conversionFactor) :
+Unit::Unit (const std::string & category, const std::string & name, const long double conversionFactor) :
 	        category (category),
 	            name (name),
 	conversionFactor (conversionFactor)
@@ -90,7 +90,7 @@ Unit::toStream (std::ostream & ostream) const
 		<< Generator::Space
 		<< name
 		<< Generator::Space
-		<< Generator::Precision <double>
+		<< Generator::Precision <long double>
 		<< conversionFactor;
 }
 
@@ -112,7 +112,7 @@ Unit::toXMLStream (std::ostream & ostream) const
 		<< "'"
 		<< Generator::Space
 		<< "conversionFactor='"
-		<< Generator::Precision <double>
+		<< Generator::Precision <long double>
 		<< conversionFactor
 		<< "'"
 		<< "/>";

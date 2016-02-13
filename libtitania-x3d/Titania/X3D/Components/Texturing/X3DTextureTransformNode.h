@@ -87,7 +87,7 @@ protected:
 	///  @name Member access
 
 	void
-	setMatrix (const Matrix4f & value)
+	setMatrix (const Matrix4d & value)
 	{ matrix = value; }
 
 
@@ -95,7 +95,7 @@ private:
 
 	///  @name Members
 
-	Matrix4f matrix;
+	Matrix4d matrix;
 
 };
 

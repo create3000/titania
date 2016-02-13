@@ -124,7 +124,7 @@ void
 X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & c)
 {
 	Vector3f   t, s;
-	Rotation4f r, so;
+	Rotation4d r, so;
 
 	matrix .get (t, r, s, so, c);
 

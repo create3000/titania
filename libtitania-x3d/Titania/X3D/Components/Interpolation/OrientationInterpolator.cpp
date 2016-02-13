@@ -104,7 +104,7 @@ OrientationInterpolator::interpolate (size_t index0, size_t index1, const float 
 {
 	try
 	{
-		value_changed () = slerp <float> (keyValue () [index0], keyValue () [index1], weight);
+		value_changed () = slerp <double> (keyValue () [index0], keyValue () [index1], weight);
 	}
 	catch (const std::domain_error &)
 	{

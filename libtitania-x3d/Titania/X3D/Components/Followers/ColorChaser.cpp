@@ -154,7 +154,7 @@ ColorChaser::prepareEvents ()
 {
 	const float fraction = updateBuffer ();
 
-	auto output = clerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+	auto output = clerp <float> (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 	
 	float ho, so, vo;
 	

@@ -505,7 +505,7 @@ Parser::unitStatement ()
 
 			if (unitNameId (_unitNameId))
 			{
-				double _unitConversionFactor;
+				long double _unitConversionFactor;
 
 				if (unitConversionFactor (_unitConversionFactor))
 				{
@@ -1962,6 +1962,21 @@ Parser::fieldValue (X3DFieldDefinition* _field)
 }
 
 // fieldValues
+
+bool
+Parser::LongDouble (long double & _value)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (Grammar::LongDouble (istream, _value))
+		return true;
+
+	istream .clear ();
+
+	return false;
+}
 
 bool
 Parser::Double (double & _value)

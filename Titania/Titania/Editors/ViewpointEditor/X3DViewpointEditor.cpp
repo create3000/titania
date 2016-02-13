@@ -119,7 +119,7 @@ X3DViewpointEditor::on_new_viewpoint_activated ()
 		const auto & cameraSpaceMatrix = activeViewpoint -> getCameraSpaceMatrix ();
 
 		X3D::Vector3f   position;
-		X3D::Rotation4f orientation;
+		X3D::Rotation4d orientation;
 
 		cameraSpaceMatrix .get (position, orientation);
 		node -> setPosition (position);

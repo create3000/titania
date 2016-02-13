@@ -513,7 +513,7 @@ X3DBrowserEditor::getMetaData ()
 		const auto    viewpoint        = activeLayer -> getViewpoint ();
 
 		viewpoint -> setUserPosition         (X3D::Vector3f (p .get1Value (0), p .get1Value (1), p .get1Value (2)));
-		viewpoint -> setUserOrientation      (X3D::Rotation4f (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
+		viewpoint -> setUserOrientation      (X3D::Rotation4d (o .get1Value (0), o .get1Value (1), o .get1Value (2), o .get1Value (3)));
 		viewpoint -> setUserCenterOfRotation (X3D::Vector3f (c .get1Value (0), c .get1Value (1), c .get1Value (2)));
 
 		viewpoint -> set_bind () = true;

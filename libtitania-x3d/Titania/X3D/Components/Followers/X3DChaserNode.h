@@ -88,15 +88,15 @@ protected:
 	size_t
 	getNumBuffers () const;
 	
-	float
+	double
 	getTolerance () const;
 
 	time_type
 	getStepTime () const
 	{ return stepTime; }
 
-	float
-	stepResponse (time_type) const;
+	double
+	stepResponse (const time_type &) const;
 
 
 private:

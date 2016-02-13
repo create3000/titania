@@ -520,7 +520,7 @@ extern template class SFRotation4 <Rotation4f>;
 
 typedef SFRotation4 <Rotation4d> SFRotation4d;
 typedef SFRotation4 <Rotation4f> SFRotation4f;
-typedef SFRotation4 <Rotation4f> SFRotation;
+typedef SFRotation4 <Rotation4d> SFRotation;
 
 } // X3D
 } // titania

@@ -125,9 +125,9 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 		{
 			const X3D::X3DPtr <X3D::TextureTransform3D> last (value);
 
-			auto proj = last -> rotation () .getValue () .mult_vec_rot (X3D::Vector3f (1, 0, 0));
+			auto proj = last -> rotation () .getValue () .mult_vec_rot (X3D::Vector3d (1, 0, 0));
 			proj .z (0);
-			const auto r = X3D::Rotation4f (X3D::Vector3f (1, 0, 0), proj);
+			const auto r = X3D::Rotation4d (X3D::Vector3d (1, 0, 0), proj);
 
 			textureTransform -> translation () = X3D::Vector2f (last -> translation () .getX (), last -> translation () .getY ());
 			textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : M_PI * 2 - r .angle ();
@@ -140,9 +140,9 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 			const X3D::X3DPtr <X3D::TextureTransformMatrix3D> last (value);
 
 			X3D::Vector3f   translation;
-			X3D::Rotation4f rotation;
+			X3D::Rotation4d rotation;
 			X3D::Vector3f   scale;
-			X3D::Rotation4f scaleOrientation;
+			X3D::Rotation4d scaleOrientation;
 
 			math::inverse (last -> matrix () .getValue ()) .get (translation, rotation, scale, scaleOrientation);
 
@@ -150,9 +150,9 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 			rotation .inverse ();
 			scale = 1.0f / scale;
 
-			auto proj = rotation .mult_vec_rot (X3D::Vector3f (1, 0, 0));
+			auto proj = rotation .mult_vec_rot (X3D::Vector3d (1, 0, 0));
 			proj .z (0);
-			const auto r = X3D::Rotation4f (X3D::Vector3f (1, 0, 0), proj);
+			const auto r = X3D::Rotation4d (X3D::Vector3d (1, 0, 0), proj);
 
 			textureTransform -> translation () = X3D::Vector2f (translation .x (), translation .y ());
 			textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : M_PI * 2 - r .angle ();

@@ -120,7 +120,7 @@ TextureTransform::eventsProcessed ()
 	if (translation () not_eq Vector2f (0, 0))
 		matrix .translate (translation ());
 
-	setMatrix (Matrix4f (matrix [0] [0],
+	setMatrix (Matrix4d (matrix [0] [0],
 	                     matrix [0] [1],
 	                     0,
 	                     matrix [0] [2],

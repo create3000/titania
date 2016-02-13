@@ -320,7 +320,7 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
-X3DNode::setMetaData <Rotation4f> (const std::string & key, const Rotation4f & value)
+X3DNode::setMetaData <Rotation4d> (const std::string & key, const Rotation4d & value)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
@@ -329,7 +329,7 @@ throw (Error <INVALID_NODE>,
 	
 	value .get (x, y, z, angle);
 
-	setMetaData (key, MFFloat ({ x, y, z, angle }));
+	setMetaData (key, MFDouble ({ x, y, z, angle }));
 }
 
 template <>

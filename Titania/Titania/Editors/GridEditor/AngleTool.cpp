@@ -111,11 +111,11 @@ AngleTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 	{
 		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("rotation") -> value ();
 
-		getTool () -> rotation () = X3D::Rotation4f (v .at (0), v .at (1), v .at (2), v .at (3));
+		getTool () -> rotation () = X3D::Rotation4d (v .at (0), v .at (1), v .at (2), v .at (3));
 	}
 	catch (...)
 	{
-		getTool () -> rotation () = X3D::Rotation4f ();
+		getTool () -> rotation () = X3D::Rotation4d ();
 	}
 
 	try

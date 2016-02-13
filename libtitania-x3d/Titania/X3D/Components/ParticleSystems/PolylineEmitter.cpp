@@ -193,7 +193,9 @@ PolylineEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 void
 PolylineEmitter::set_polyline ()
 {
-	const auto polylineArray = polylineNode -> getPolylines ();
+	const auto polylineArrayAux = polylineNode -> getPolylines ();
+
+	const std::vector <Vector3f> polylineArray (polylineArrayAux .begin (), polylineArrayAux .end ());
 
 	if (polylineArray .empty ())
 	{

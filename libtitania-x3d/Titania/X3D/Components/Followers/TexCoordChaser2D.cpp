@@ -159,8 +159,7 @@ TexCoordChaser2D::prepareEvents ()
 	std::vector <Vector2f> output (set_destination () .size ());
 
 	const float fraction = updateBuffer ();
-
-	const float alpha = stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
+	const float alpha    = stepResponse ((buffer .size () - 1 + fraction) * getStepTime ());
 
 	for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 		output [j] = lerp (previousValue [j], buffer [buffer .size () - 1] [j], alpha);
@@ -171,8 +170,7 @@ TexCoordChaser2D::prepareEvents ()
 	
 		for (size_t j = 0, size = set_destination () .size (); j < size; ++ j)
 		{
-			const auto deltaIn = buffer [i] [j] - buffer [i + 1] [j];
-
+			const auto deltaIn  = buffer [i] [j] - buffer [i + 1] [j];
 			const auto deltaOut = deltaIn * alpha;
 
 			output [j] += deltaOut;

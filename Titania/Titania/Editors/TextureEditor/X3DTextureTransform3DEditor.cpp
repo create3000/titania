@@ -127,7 +127,7 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 			const X3D::X3DPtr <X3D::TextureTransform> last (value);
 
 			textureTransform -> translation () = X3D::Vector3f (last -> translation () .getX (), last -> translation () .getY (), 0);
-			textureTransform -> rotation ()    = X3D::Rotation4f (0, 0, 1, last -> rotation ());
+			textureTransform -> rotation ()    = X3D::Rotation4d (0, 0, 1, last -> rotation ());
 			textureTransform -> scale ()       = X3D::Vector3f (last -> scale ()  .getX (), last -> scale ()  .getY (), 1);
 			textureTransform -> center ()      = X3D::Vector3f (last -> center () .getX (), last -> center () .getY (), 0);
 			break;
@@ -147,9 +147,9 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 			const X3D::X3DPtr <X3D::TextureTransformMatrix3D> last (value);
 
 			X3D::Vector3f   translation;
-			X3D::Rotation4f rotation;
+			X3D::Rotation4d rotation;
 			X3D::Vector3f   scale;
-			X3D::Rotation4f scaleOrientation;
+			X3D::Rotation4d scaleOrientation;
 
 			math::inverse (last -> matrix () .getValue ()) .get (translation, rotation, scale, scaleOrientation);
 

@@ -71,6 +71,10 @@ public:
 
 	static
 	bool
+	LongDouble (std::istream &, long double &);
+
+	static
+	bool
 	Double (std::istream &, double &);
 
 	static

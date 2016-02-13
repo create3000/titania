@@ -158,8 +158,7 @@ CoordinateDamper::prepareEvents ()
 	if (tau ())
 	{
 		const time_type delta = 1 / getBrowser () -> getCurrentFrameRate ();
-
-		const float alpha = std::exp (-delta / tau ());
+		const float     alpha = std::exp (-delta / tau ());
 		
 		for (size_t i = 0; i < order; ++ i)
 		{

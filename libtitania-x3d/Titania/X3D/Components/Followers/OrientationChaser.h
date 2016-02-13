@@ -141,7 +141,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Rotation4f &, const Rotation4f &, const float) const;
+	equals (const Rotation4d &, const Rotation4d &, const double) const;
 
 	///  @name Event handlers
 
@@ -158,7 +158,7 @@ private:
 	void
 	prepareEvents () final override;
 
-	float
+	double
 	updateBuffer ();
 
 	///  @name Static members
@@ -183,8 +183,8 @@ private:
 	Fields fields;
 
 	time_type                bufferEndTime;
-	Rotation4f               previousValue;
-	std::vector <Rotation4f> buffer;
+	Rotation4d               previousValue;
+	std::vector <Rotation4d> buffer;
 
 };
 

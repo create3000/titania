@@ -61,9 +61,9 @@ e Foundation.
 namespace titania {
 namespace puck {
 
-static const auto X_PLANE_ROTATION = X3D::Rotation4f (0, 0, -1, M_PI / 2) * X3D::Rotation4f (1, 0, 0, M_PI / 2);
-static const auto Y_PLANE_ROTATION = X3D::Rotation4f ();
-static const auto Z_PLANE_ROTATION = X3D::Rotation4f (1, 0, 0, M_PI / 2);
+static const auto X_PLANE_ROTATION = X3D::Rotation4d (0, 0, -1, M_PI / 2) * X3D::Rotation4d (1, 0, 0, M_PI / 2);
+static const auto Y_PLANE_ROTATION = X3D::Rotation4d ();
+static const auto Z_PLANE_ROTATION = X3D::Rotation4d (1, 0, 0, M_PI / 2);
 
 static constexpr int INDICES = 3;
 

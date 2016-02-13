@@ -124,10 +124,18 @@ X3DUnitEditor::hasKey (const std::string & group, const std::string & key) const
 	return keyfile .has_group (group) and keyfile .has_key (group, key);
 }
 
-double
+long double
 X3DUnitEditor::getKey (const std::string & group, const std::string & key) const
 {
-	return keyfile .get_double (group, key);
+	std::istringstream isstream (keyfile .get_string (group, key));
+
+	isstream .imbue (std::locale::classic ());
+
+	long double value = 0;
+
+	isstream >> value;
+
+	return value;
 }
 
 /*
@@ -221,7 +229,8 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 
 	changing = true;
 
-	std::string name;
+	std::string name  = "";
+	long double value = adjustment -> get_value ();
 
 	if (combo .get_active_row_number () < 0)
 		name = combo .get_entry () -> get_text ();
@@ -230,13 +239,17 @@ X3DUnitEditor::on_unit_changed (const Gtk::ComboBoxText & combo,
 
 	if (name .empty ())
 	{
-	   name = defaultUnit;
+		name  = defaultUnit;
+		value = 1;
 		adjustment -> set_value (1);
 	}
 	else if (hasKey (category, name))
-		adjustment -> set_value (getKey (category, name));
+	{
+		value = getKey (category, name);
+		adjustment -> set_value (value);
+	}
 	
-	getCurrentScene () -> updateUnit (category, name, adjustment -> get_value ());
+	getCurrentScene () -> updateUnit (category, name, value);
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 

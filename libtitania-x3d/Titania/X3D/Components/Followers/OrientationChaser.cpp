@@ -117,9 +117,9 @@ OrientationChaser::initialize ()
 }
 
 bool
-OrientationChaser::equals (const Rotation4f & lhs, const Rotation4f & rhs, const float tolerance) const
+OrientationChaser::equals (const Rotation4d & lhs, const Rotation4d & rhs, const double tolerance) const
 {
-	const Rotation4f d = ~rhs * lhs;
+	const Rotation4d d = ~rhs * lhs;
 
 	return abs (d .angle ()) < tolerance;
 }
@@ -155,7 +155,7 @@ OrientationChaser::prepareEvents ()
 {
 	try
 	{
-		const float fraction = updateBuffer ();
+		const double fraction = updateBuffer ();
 	
 		auto output = slerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 	
@@ -175,14 +175,14 @@ OrientationChaser::prepareEvents ()
 	{ }
 }
 
-float
+double
 OrientationChaser::updateBuffer ()
 {
-	float fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
+	double fraction = (getCurrentTime () - bufferEndTime) / getStepTime ();
 
 	if (fraction >= 1)
 	{
-		float seconds;
+		double seconds;
 		fraction = std::modf (fraction, &seconds);
 
 		if (seconds < buffer .size ())
@@ -198,7 +198,7 @@ OrientationChaser::updateBuffer ()
 			{
 				try
 				{
-					const float alpha = i / seconds;
+					const double alpha = i / seconds;
 	
 					buffer [i] = slerp (set_destination () .getValue (), buffer [seconds], alpha);
 				}

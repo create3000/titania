@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	Unit (const std::string &, const std::string &, const double);
+	Unit (const std::string &, const std::string &, const long double);
 
 	Unit (const Unit &);
 
@@ -80,7 +80,7 @@ public:
 	getName () const
 	{ return name; }
 
-	double
+	long double
 	getConversionFactor () const
 	{ return conversionFactor; }
 
@@ -99,7 +99,7 @@ private:
 
 	std::string category;
 	std::string name;
-	double      conversionFactor;
+	long double conversionFactor;
 
 };
 

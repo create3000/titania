@@ -81,14 +81,14 @@ X3DChaserNode::getNumBuffers () const
 	return 60;
 }
 
-float
+double
 X3DChaserNode::getTolerance () const
 {
-	return std::numeric_limits <float>::epsilon ();
+	return std::numeric_limits <double>::epsilon ();
 }
 
-float
-X3DChaserNode::stepResponse (time_type t) const
+double
+X3DChaserNode::stepResponse (const time_type & t) const
 {
 	if (t <= 0)
 		return 0;

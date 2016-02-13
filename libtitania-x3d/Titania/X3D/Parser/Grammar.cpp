@@ -119,6 +119,45 @@ const io::string Grammar::HEX ("0X");
 const io::sequence Grammar::WhiteSpacesNoCommaSequence ("\r\n \t");
 
 bool
+Grammar::LongDouble (std::istream & istream, long double & value)
+{
+	const auto pos = istream .tellg ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear ();
+	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	if (inf (istream))
+	{
+		value = std::numeric_limits <long double>::infinity ();
+		return true;
+	}
+
+	if (neg_inf (istream))
+	{
+		value = -std::numeric_limits <long double>::infinity ();
+		return true;
+	}
+
+	if (nan (istream))
+	{
+		value = std::numeric_limits <long double>::quiet_NaN ();
+		return true;
+	}
+
+	if (neg_nan (istream))
+	{
+		value = -std::numeric_limits <long double>::quiet_NaN ();
+		return true;
+	}
+
+	istream .setstate (std::ios::failbit);
+	return false;
+}
+
+bool
 Grammar::Double (std::istream & istream, double & value)
 {
 	const auto pos = istream .tellg ();

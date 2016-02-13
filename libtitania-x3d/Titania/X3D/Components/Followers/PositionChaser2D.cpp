@@ -151,14 +151,12 @@ void
 PositionChaser2D::prepareEvents ()
 {
 	const float fraction = updateBuffer ();
-
-	auto output = lerp (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
+	auto        output   = lerp (previousValue, buffer [buffer .size () - 1], (float) stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
-		const auto deltaIn = buffer [i] - buffer [i + 1];
-
-		const auto deltaOut = deltaIn * stepResponse ((i + fraction) * getStepTime ());
+		const auto deltaIn  = buffer [i] - buffer [i + 1];
+		const auto deltaOut = deltaIn * (float) stepResponse ((i + fraction) * getStepTime ());
 
 		output += deltaOut;
 	}

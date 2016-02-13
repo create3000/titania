@@ -99,7 +99,7 @@ protected:
 	size_t
 	getOrder () const;
 
-	float
+	double
 	getTolerance () const;
 
 private:
