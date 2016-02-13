@@ -602,13 +602,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Vector3d p1 (0, 0, 0);
-	Vector3d p2 (1, 0, 0);
-	Vector3d p3 (0, 1, 0);
-	Vector3d h (0.41, 0.4, 0);
+	long double d = 0.017453292519943295769236907684886127134428718885417254560971L;
 
-	auto d = math::triangle_distance_to_point (p1, p2, p3, h);
-
+	__LOG__ << std::numeric_limits <long double>::digits10 << std::endl;
+	__LOG__ << std::setprecision (2 * std::numeric_limits <long double>::digits10) << std::endl;
 	__LOG__ << d << std::endl;
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
