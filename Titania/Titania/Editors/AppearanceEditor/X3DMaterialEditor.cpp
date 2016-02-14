@@ -97,7 +97,7 @@ X3DMaterialEditor::X3DMaterialEditor () :
 
 	preview -> setAntialiasing (4);
 
-	clipboard -> target () = "model/x3d+vrml+color";
+	clipboard -> target () = "model/x3d+vrml+material";
 }
 
 void
