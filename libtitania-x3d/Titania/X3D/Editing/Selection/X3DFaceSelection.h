@@ -77,7 +77,7 @@ protected:
 	X3DFaceSelection () :
 		X3DBaseNode ()
 	{
-		//addType (X3DConstants::X3DFaceSelection);
+		addType (X3DConstants::X3DFaceSelection);
 	}
 
 };

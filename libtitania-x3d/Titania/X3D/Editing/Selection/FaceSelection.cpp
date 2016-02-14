@@ -79,7 +79,7 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	           faces (),
 	        triangle ()
 {
-	//addType (X3DConstants::FaceSelection);
+	addType (X3DConstants::FaceSelection);
 
 	addField (inputOutput, "geometry", geometry ());
 

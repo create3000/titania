@@ -58,14 +58,6 @@
 #include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
 
 namespace titania {
-namespace X3D {
-
-class Clipboard;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class BrowserWindow;
@@ -185,9 +177,9 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat> backShininess;
 	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
 
-	X3D::X3DPtr <X3D::Clipboard> clipboard;
-	X3D::UndoStepPtr             undoStep;
-	bool                         changing;
+	X3D::ClipboardPtr clipboard;
+	X3D::UndoStepPtr  undoStep;
+	bool              changing;
 
 };
 

@@ -56,14 +56,6 @@
 #include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
 
 namespace titania {
-namespace X3D {
-
-class Clipboard;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class Footer;
@@ -192,7 +184,7 @@ private:
 	std::shared_ptr <X3DGridTool>       gridTool;
 	std::shared_ptr <X3DGridTool>       angleTool;
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
-	X3D::X3DPtr <X3D::Clipboard>        clipboard;
+	X3D::ClipboardPtr                   clipboard;
 
 	X3D::Keys keys;
 	bool      accelerators;

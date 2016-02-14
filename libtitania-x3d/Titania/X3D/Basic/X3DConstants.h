@@ -390,11 +390,6 @@ enum NodeType : uint16_t
 	WindPhysicsModel,
 	WorldInfo,
 
-	// Non statndard
-
-	TouchGroup,
-	TransformMatrix3D,
-
 	// Abstract node types
 
 	X3DAppearanceChildNode,
@@ -465,6 +460,14 @@ enum NodeType : uint16_t
 	X3DViewpointNode,
 	X3DViewpointObject,
 	X3DViewportNode,
+
+	// Non statndard
+
+	Clipboard,
+	FaceSelection,
+	TouchGroup,
+	TransformMatrix3D,
+	X3DFaceSelection,
 
 	// Browser node types
 
@@ -545,7 +548,9 @@ enum NodeType : uint16_t
 	SpotLightTool,
 	SwitchTool,
 	Tool,
+	TouchGroupTool,
 	TransformTool,
+	TransformSensorTool,
 	ViewpointTool,
 	VisibilitySensorTool,
 	X3DActiveLayerTool,

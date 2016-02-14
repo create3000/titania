@@ -68,6 +68,7 @@ class X3DJavaScriptEngine;
 class Notification;
 class Selection;
 class Console;
+class Clipboard;
 
 //
 class World;
@@ -136,6 +137,7 @@ using X3DJavaScriptEnginePtr = X3DPtr <X3DJavaScriptEngine>;
 using SelectionPtr           = X3DPtr <Selection>;
 using NotificationPtr        = X3DPtr <Notification>;
 using ConsolePtr             = X3DPtr <Console>;
+using ClipboardPtr           = X3DPtr <Clipboard>;
 
 using WorldPtr                   = X3DPtr <World>;
 using ScenePtr                   = X3DPtr <Scene>;

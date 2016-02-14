@@ -70,7 +70,7 @@ Clipboard::Clipboard (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields ()
 {
-	//addType (X3DConstants::Clipboard);
+	addType (X3DConstants::Clipboard);
 
 	addField (inputOnly,   "set_string",     set_string ());
 	addField (inputOutput, "target",         target ());

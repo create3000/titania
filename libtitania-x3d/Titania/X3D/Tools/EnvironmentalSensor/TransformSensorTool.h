@@ -71,7 +71,7 @@ public:
 		                   X3DBaseTool <TransformSensor> (node),
 		X3DEnvironmentalSensorNodeTool <TransformSensor> (Color3f (0, 1, 0))
 	{
-		//addType (X3DConstants::TransformSensorTool);
+		addType (X3DConstants::TransformSensorTool);
 	}
 
 };

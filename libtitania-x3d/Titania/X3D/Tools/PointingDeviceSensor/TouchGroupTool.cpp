@@ -62,7 +62,7 @@ TouchGroupTool::TouchGroupTool (TouchGroup* const node) :
 	X3DGroupingNodeTool <TouchGroup> (ToolColors::RED),
 	  X3DSensorNodeTool <TouchGroup> ()
 {
-	//addType (X3DConstants::TouchGroupTool);
+	addType (X3DConstants::TouchGroupTool);
 }
 
 void
