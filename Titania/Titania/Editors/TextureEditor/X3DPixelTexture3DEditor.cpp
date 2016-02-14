@@ -59,7 +59,9 @@ X3DPixelTexture3DEditor::X3DPixelTexture3DEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
 	             pixelTexture ()
-{ }
+{
+	addChildren (pixelTexture);
+}
 
 void
 X3DPixelTexture3DEditor::setPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

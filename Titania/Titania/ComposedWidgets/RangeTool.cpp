@@ -60,7 +60,9 @@ RangeTool::RangeTool (X3DBaseInterface* const editor,
 	 X3DGradientTool (editor, name, box, "range", "color"),
 	         auxNode (),
 	  positionFactor (1)
-{ }
+{
+	addChildren (auxNode);
+}
 
 void
 RangeTool::setNodes (const X3D::MFNode & nodes)

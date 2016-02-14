@@ -88,7 +88,9 @@ X3DTextureTransform3DEditor::X3DTextureTransform3DEditor () :
 	                           getTextureTransform3DCenterZAdjustment (),
 	                           getTextureTransform3DCenterBox (),
 	                           "center")
-{ }
+{
+	addChildren (textureTransform);
+}
 
 void
 X3DTextureTransform3DEditor::configure ()

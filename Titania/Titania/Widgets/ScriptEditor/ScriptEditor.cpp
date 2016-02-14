@@ -90,6 +90,9 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	               vadjustment (new AdjustmentObject ())
 {
 	Gsv::init ();
+
+	addChildren (node);
+
 	setup ();
 }
 

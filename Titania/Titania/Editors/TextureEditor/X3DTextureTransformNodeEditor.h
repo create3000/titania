@@ -124,7 +124,7 @@ private:
 	X3D::X3DPtrArray <X3D::Appearance>         appearances;
 	X3D::SFTime                                textureTransformBuffer;
 	X3D::X3DPtr <X3D::X3DTextureTransformNode> textureTransformNode;
-	X3D::UndoStepPtr                                undoStep;
+	X3D::UndoStepPtr                           undoStep;
 	bool                                       changing;
 
 };

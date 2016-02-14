@@ -205,8 +205,8 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	            upper (),
                empty ()
 {
-	addChildren (buffer);
-	
+	addChildren (nodes, buffer);
+
 	setup ();
 
 	buffer               .addInterest (this, &X3DFieldAdjustment3::set_buffer);

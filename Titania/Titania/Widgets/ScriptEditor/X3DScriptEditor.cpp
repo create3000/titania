@@ -59,6 +59,7 @@ X3DScriptEditor::X3DScriptEditor () :
 	                 mustEvaluate (this, getMustEvaluateToggleButton (), "mustEvaluate"),
 	                   scriptNode ()
 {
+	addChildren (scriptNode);
 }
 
 void

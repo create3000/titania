@@ -70,6 +70,8 @@ GridTool::GridTool (X3DBrowserWindow* const browserWindow) :
 {
 	setName ("Grid");
 
+	addChildren (tool);
+
 	setup ();
 }
 

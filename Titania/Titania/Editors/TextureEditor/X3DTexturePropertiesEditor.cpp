@@ -72,7 +72,8 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	       textureCompression (this, getTexturePropertiesTextureCompressionComboBoxText (), "textureCompression"),
 	          texturePriority (this, getTexturePropertiesTexturePriorityAdjustment (), getTexturePropertiesTexturePrioritySpinButton (), "texturePriority")
 {
-	addChildren (texturePropertiesBuffer);
+	addChildren (textureNodes, texturePropertiesBuffer, textureProperties);
+
 	texturePropertiesBuffer .addInterest (this, &X3DTexturePropertiesEditor::set_node);
 }
 

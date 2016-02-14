@@ -94,6 +94,8 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	              backgroundNode (),
 	                    changing (false)
 {
+	addChildren (backgroundNode);
+
 	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
 	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
 

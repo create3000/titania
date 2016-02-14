@@ -21,9 +21,15 @@
  * NON-MILITARY USE ONLY
  *
  * All create3000 software are effectively free software with a non-military use
- * restriction. It is free. Well commented source is provided. You may reuse the
+ * res{
+	addChildren (pixelTexture);
+}
+triction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
- * marked to indicate is contains 'non-military use only' components.
+ * mar{
+	addChildren (pixelTexture);
+}
+ked to indicate is contains 'non-military use only' components.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -59,7 +65,9 @@ X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
 	             pixelTexture ()
-{ }
+{
+	addChildren (pixelTexture);
+}
 
 void
 X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

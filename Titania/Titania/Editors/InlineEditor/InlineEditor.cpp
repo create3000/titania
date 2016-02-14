@@ -80,7 +80,10 @@ InlineEditor::InlineEditor (X3DBrowserWindow* const browserWindow) :
 	              inlineNode (),
 	               loadState (false)
 {
+	addChildren (inlineNode);
+
 	getLoadCheckButton () .signal_clicked () .connect (sigc::mem_fun (this, &InlineEditor::on_load_clicked));
+
 	setup ();
 }
 

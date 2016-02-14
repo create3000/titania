@@ -73,8 +73,8 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	            lower (0),
 	            upper (0)
 {
-	addChildren (buffer);
-
+	addChildren (nodes, buffer);
+	            
 	setup ();
 
 	buffer .addInterest (this, &SFRotationAdjustment::set_buffer);

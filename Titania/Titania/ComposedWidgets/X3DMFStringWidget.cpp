@@ -75,7 +75,8 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	         undoStep (),
 	           buffer ()
 {
-	addChildren (buffer);
+	addChildren (nodes, string, buffer);
+
 	buffer .addInterest (this, &X3DMFStringWidget::set_buffer);
 
 	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_drag_data_received));

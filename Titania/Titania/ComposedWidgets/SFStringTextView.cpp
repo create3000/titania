@@ -65,7 +65,8 @@ SFStringTextView::SFStringTextView (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
+
 	buffer .addInterest (this, &SFStringTextView::set_buffer);
 
 	textView .get_buffer () -> signal_changed () .connect (sigc::mem_fun (*this, &SFStringTextView::on_changed));

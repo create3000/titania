@@ -112,7 +112,7 @@ private:
 	ToggleButtonType & toggleButton;
 	X3D::MFNode        nodes;
 	const std::string  name;
-	X3D::UndoStepPtr        undoStep;
+	X3D::UndoStepPtr   undoStep;
 	bool               changing;
 	X3D::SFTime        buffer;
 
@@ -131,7 +131,8 @@ X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInte
 	         changing (false),
 	           buffer ()
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
+
 	buffer .addInterest (this, &X3DFieldToggleButton::set_buffer);
 
 	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));

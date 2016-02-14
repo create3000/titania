@@ -68,6 +68,8 @@ X3DGridTool::X3DGridTool () :
 	          browser (),
 	         undoStep ()
 {
+	addChildren (browser);
+
 	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::update);
 }
 

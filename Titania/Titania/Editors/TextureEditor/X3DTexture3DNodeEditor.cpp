@@ -63,7 +63,9 @@ X3DTexture3DNodeEditor::X3DTexture3DNodeEditor () :
 	                   repeatS (this, getTexture3DNodeRepeatSCheckButton (), "repeatS"),
 	                   repeatT (this, getTexture3DNodeRepeatTCheckButton (), "repeatT"),
 	                   repeatR (this, getTexture3DNodeRepeatRCheckButton (), "repeatR")
-{ }
+{
+	addChildren (texture3DNode);
+}
 
 void
 X3DTexture3DNodeEditor::setTexture3DNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

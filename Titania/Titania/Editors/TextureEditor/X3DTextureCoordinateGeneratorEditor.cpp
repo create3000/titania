@@ -62,7 +62,8 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	                        changing (false),
 	                            mode (this, getTextureCoordinateGeneratorModeComboBoxText (), "mode")
 {
-	addChildren (textureCoordinateGeneratorBuffer);
+	addChildren (geometryNodes, textureCoordinateGeneratorBuffer, textureCoordinateGenerator);
+
 	textureCoordinateGeneratorBuffer .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_node);
 }
 

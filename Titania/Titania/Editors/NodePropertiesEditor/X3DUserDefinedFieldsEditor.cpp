@@ -67,6 +67,8 @@ X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
 	                         editing (false),
 	                   isExternproto (false)
 {
+	addChildren (node);
+
 	getInitializeOnlyMenuItem () .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_access_type_activate), "initializeOnly"));
 	getInputOnlyMenuItem ()      .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_access_type_activate), "inputOnly"));
 	getOutputOnlyMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_access_type_activate), "outputOnly"));

@@ -93,7 +93,8 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	              selection (new X3D::FaceSelection (getBrowserWindow () -> getMasterBrowser ())),
 	            undoHistory ()
 {
-	addChildren (shape,
+	addChildren (preview,
+	             shape,
 	             appearance,
 	             texture,
 	             textureTransform,

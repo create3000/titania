@@ -69,7 +69,9 @@ X3DImageTexture3DEditor::X3DImageTexture3DEditor () :
 	                           getImageTexture3DURLChooserColumn (),
 	                           "url")),
 	             imageTexture ()
-{ }
+{
+	addChildren (imageTexture);
+}
 
 void
 X3DImageTexture3DEditor::setImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

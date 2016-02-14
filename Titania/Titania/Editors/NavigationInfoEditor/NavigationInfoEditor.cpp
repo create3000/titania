@@ -88,6 +88,8 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
                  navigationInfoNode (),
                            changing (false)
 {
+	addChildren (navigationInfoNode);
+
 	avatarSize0 .setIndex (0);
 	avatarSize1 .setIndex (1);
 	avatarSize2 .setIndex (2);

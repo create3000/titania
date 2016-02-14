@@ -80,6 +80,8 @@ OutlineTreeViewEditor::OutlineTreeViewEditor (X3DBrowserWindow* const browserWin
 	        destinationField (),
 	motion_notify_connection ()
 {
+	addChildren (sourceNode, destinationNode);
+
 	set_name ("OutlineTreeViewEditor");
 
 	watch_motion (true);

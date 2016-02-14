@@ -88,6 +88,8 @@ ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool 
 	              hadjustment (new AdjustmentObject ()),
 	              vadjustment (new AdjustmentObject ())
 {
+	addChildren (browser, activeLayer);
+
 	setup ();
 }
 

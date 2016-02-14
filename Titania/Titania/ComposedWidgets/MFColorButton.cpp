@@ -86,9 +86,10 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 	           colorsGap (2),
 	        colorsBorder (2, 2, 2, 2)
 {
+	addChildren (node, nodes, buffer);
+
 	// Buffer
 
-	addChildren (buffer);
 	buffer .addInterest (this, &MFColorButton::set_buffer);
 
 	// Button

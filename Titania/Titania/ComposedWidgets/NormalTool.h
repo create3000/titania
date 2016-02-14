@@ -113,7 +113,7 @@ private:
 	X3D::BrowserPtr   browser;
 	X3D::MFNode       nodes;
 	const std::string name;
-	X3D::UndoStepPtr       undoStep;
+	X3D::UndoStepPtr  undoStep;
 	X3D::SFVec3f      buffer;
 
 };

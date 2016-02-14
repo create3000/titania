@@ -122,6 +122,8 @@ X3DTextureTransformMatrix3DEditor::X3DTextureTransformMatrix3DEditor () :
 	                           getTextureTransformMatrix3DMatrixGrid (),
 	                           "matrix")
 {
+	addChildren (textureTransform);
+
 	value00 .setIndex ( 0);
 	value01 .setIndex ( 1);
 	value02 .setIndex ( 2);

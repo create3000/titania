@@ -69,7 +69,9 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          getMovieTextureURLChooserColumn (),
 	                          "url")),
 	             movieTexture ()
-{ }
+{
+	addChildren (movieTexture);
+}
 
 void
 X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

@@ -73,9 +73,10 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 	           buffer (),
 	             hsva ()
 {
+	addChildren (nodes, buffer);
+
 	// Buffer
 
-	addChildren (buffer);
 	buffer .addInterest (this, &SFColorRGBAButton::set_buffer);
 
 	// Button

@@ -76,6 +76,8 @@ X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
 	                  folders (),
 	                    files ()
 {
+	addChildren (preview);
+
 	preview -> setAntialiasing (4);
 }
 

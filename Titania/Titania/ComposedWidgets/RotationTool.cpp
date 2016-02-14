@@ -67,9 +67,10 @@ RotationTool::RotationTool (X3DBaseInterface* const editor,
 	         undoStep (),
 	           buffer ()
 {
+	addChildren (browser, nodes, buffer);
+
 	// Buffer
 
-	addChildren (buffer);
 	buffer .addInterest (this, &RotationTool::set_buffer);
 
 	// Browser

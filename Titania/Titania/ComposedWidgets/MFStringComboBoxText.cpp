@@ -69,7 +69,8 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
+
 	buffer .addInterest (this, &MFStringComboBoxText::set_buffer);
 
 	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &MFStringComboBoxText::on_changed));

@@ -74,13 +74,13 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	          retainUserOffsets (this, getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets"),
 	              viewpointNode ()
 {
-	setup ();
+	addChildren (browser, viewpointNode);
 
 	viewpointList -> setUserViewpoints (false);
 	viewpointList -> getTreeView () .set_headers_visible (true);
 	viewpointList -> reparent (getViewpointListBox (), getWindow ());
 
-	// In Scene
+	setup ();
 }
 
 void

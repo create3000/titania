@@ -74,7 +74,9 @@ X3DImageCubeMapTextureEditor::X3DImageCubeMapTextureEditor () :
 	                           getImageCubeMapTextureURLChooserColumn (),
 	                           "url")),
 	           cubeMapTexture ()
-{ }
+{
+	addChildren (cubeMapTexture);
+}
 
 void
 X3DImageCubeMapTextureEditor::setImageCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

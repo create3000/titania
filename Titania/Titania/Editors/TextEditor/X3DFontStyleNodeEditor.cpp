@@ -89,7 +89,8 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	        majorAlignment (this, getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
 	        minorAlignment (this, getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST")
 {
-	addChildren (fontStyleNodeBuffer);
+	addChildren (texts, fontStyleNodeBuffer, fontStyleNode, fontStyle, screenFontStyle);
+
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
 	
 	getFontStyleSizeSpinButton ()      .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_size_sensitive_changed));

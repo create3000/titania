@@ -71,7 +71,9 @@ enum ImportedNodesEditorColumns
 X3DImportedNodesEditor::X3DImportedNodesEditor () :
 	X3DNodePropertiesEditorInterface (),
 	                      inlineNode ()
-{ }
+{
+	addChildren (inlineNode);
+}
 
 void
 X3DImportedNodesEditor::setNode (const X3D::SFNode & value)

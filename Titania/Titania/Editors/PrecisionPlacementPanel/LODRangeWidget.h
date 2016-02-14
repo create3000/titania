@@ -115,7 +115,7 @@ private:
 	Gtk::CheckButton &                   maxButton;
 	Gtk::Widget &                        widget;
 	X3D::MFNode                          nodes;
-	X3D::UndoStepPtr                          undoStep;
+	X3D::UndoStepPtr                     undoStep;
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
@@ -146,7 +146,8 @@ LODRangeWidget::LODRangeWidget (X3DBaseInterface* const editor,
 	           buffer (),
 	        normalize (false)
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
+
 	buffer .addInterest (this, &LODRangeWidget::set_buffer);
 
 	maxButton .signal_toggled () .connect (sigc::bind (sigc::mem_fun (*this, &LODRangeWidget::on_max_toggled), 2));

@@ -65,9 +65,10 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 	         undoStep (),
 	           buffer ()
 {
+	addChildren (browser, nodes, buffer);
+
 	// Buffer
 
-	addChildren (buffer);
 	buffer .addInterest (this, &NormalTool::set_buffer);
 
 	// Browser

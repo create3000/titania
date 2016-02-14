@@ -73,9 +73,10 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
 	           buffer (),
 	              hsv ()
 {
+	addChildren (nodes, buffer);
+
 	// Buffer
 
-	addChildren (buffer);
 	buffer .addInterest (this, &SFColorButton::set_buffer);
 
 	// Button

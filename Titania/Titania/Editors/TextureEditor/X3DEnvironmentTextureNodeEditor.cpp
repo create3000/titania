@@ -59,7 +59,9 @@ X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
 	X3DComposedCubeMapTextureEditor (),
 	   X3DImageCubeMapTextureEditor (),
 	         environmentTextureNode ()
-{ }
+{
+	addChildren (environmentTextureNode);
+}
 
 void
 X3DEnvironmentTextureNodeEditor::configure ()

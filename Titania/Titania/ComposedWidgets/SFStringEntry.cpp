@@ -65,7 +65,8 @@ SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
+
 	buffer .addInterest (this, &SFStringEntry::set_buffer);
 
 	entry .signal_changed () .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));

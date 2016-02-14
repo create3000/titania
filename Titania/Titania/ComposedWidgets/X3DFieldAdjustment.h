@@ -197,7 +197,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
                empty (0),
                index (-1)
 {
-	addChildren (buffer);
+	addChildren (nodes, buffer);
 
 	setup ();
 

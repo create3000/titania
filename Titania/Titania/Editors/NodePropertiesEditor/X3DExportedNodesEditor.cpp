@@ -67,7 +67,9 @@ X3DExportedNodesEditor::X3DExportedNodesEditor () :
 	                            node (),
 	                    selectedPath (),
 	                         editing (false)
-{ }
+{
+	addChildren (scene, node);
+}
 
 void
 X3DExportedNodesEditor::setNode (const X3D::SFNode & value)

@@ -59,7 +59,9 @@ X3DComposedTexture3DEditor::X3DComposedTexture3DEditor () :
 	         X3DBaseInterface (),
 	X3DTextureEditorInterface (),
 	          composedTexture ()
-{ }
+{
+	addChildren (composedTexture);
+}
 
 void
 X3DComposedTexture3DEditor::setComposedTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> & value)

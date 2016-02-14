@@ -58,12 +58,14 @@ namespace puck {
 X3DEditorObject::X3DEditorObject () :
 	X3DBaseInterface (),
 	            undo (true),
-     undoGroup (),
-     redoGroup (),
+          undoGroup (),
+          redoGroup (),
       lastUndoGroup (),
 	    currentField (),
 	          fields (new X3D::FieldSet (getCurrentBrowser ()))
 {
+	addChildren (fields);
+
 	fields -> hasEvents (false);
 	fields -> setup ();
 }

@@ -91,6 +91,8 @@ LayerEditor::LayerEditor (X3DBrowserWindow* const browserWindow) :
 	               layerSet (),
 	                 layers ()
 {
+	addChildren (world, layerSet, layers);
+
 	setup ();
 }
 

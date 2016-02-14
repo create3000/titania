@@ -77,6 +77,8 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	      textureNode (),
 	     textureNodes ()
 {
+	addChildren (preview, textureNode, textureNodes);
+
 	// Browser
 
 	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &TexturePreview::on_configure_event));

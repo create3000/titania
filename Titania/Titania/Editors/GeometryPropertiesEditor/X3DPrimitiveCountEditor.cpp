@@ -69,7 +69,9 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 			                     triangles (0),
 			                         lines (0),
 			                        points (0)
-{ }
+{
+	addChildren (browser, executionContext);
+}
 
 void
 X3DPrimitiveCountEditor::configure ()
