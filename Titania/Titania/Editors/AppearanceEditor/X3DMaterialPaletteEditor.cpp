@@ -74,6 +74,8 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	                       files (),
 	               frontMaterial (true)
 {
+	addChildren (preview);
+
 	preview -> setAntialiasing (4);
 }
 
@@ -106,10 +108,10 @@ X3DMaterialPaletteEditor::initialize ()
 
 	// Show browser.
 
-	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
-
-	preview -> show ();
 	preview -> initialized () .addInterest (this, &X3DMaterialPaletteEditor::set_browser);
+	preview -> show ();
+
+	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
 }
 
 void

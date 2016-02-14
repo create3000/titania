@@ -58,8 +58,6 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                 appearances (),
 	              fillProperties (),
 	        fillPropertiesBuffer (),
-	                    undoStep (),
-	                    changing (false),
 	                      filled (this, getFillPropertiesFilledCheckButton (), "filled"),
 	                     hatched (this, getFillPropertiesHatchedCheckButton (), "hatched"),
 	                  hatchStyle (this,
@@ -70,15 +68,20 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                              getFillPropertiesHatchColorButton (),
 	                              getFillPropertiesHatchColorAdjustment (),
 	                              getFillPropertiesHatchColorBox (),
-	                              "hatchColor")
+	                              "hatchColor"),
+	                    undoStep (),
+	                    changing (false)
 {
-	addChildren (fillPropertiesBuffer);
-	fillPropertiesBuffer .addInterest (this, &X3DFillPropertiesEditor::set_node);
+	addChildren (appearances,
+	             fillProperties,
+	             fillPropertiesBuffer);
 }
 
 void
 X3DFillPropertiesEditor::initialize ()
-{ }
+{
+	fillPropertiesBuffer .addInterest (this, &X3DFillPropertiesEditor::set_node);
+}
 
 void
 X3DFillPropertiesEditor::set_selection (const X3D::MFNode & selection)

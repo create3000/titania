@@ -58,6 +58,14 @@
 #include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
 
 namespace titania {
+namespace X3D {
+
+class Clipboard;
+
+} // X3D
+} // titania
+
+namespace titania {
 namespace puck {
 
 class BrowserWindow;
@@ -108,6 +116,9 @@ private:
 	void
 	on_paste () final override;
 
+	void
+	set_clipboard (const X3D::SFString &);
+
 	///  @name preview
 
 	void
@@ -155,8 +166,6 @@ private:
 	X3D::MaterialPtr                   material;
 	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
 	bool                               isTwoSidedMaterial;
-	X3D::UndoStepPtr                   undoStep;
-	bool                               changing;
 
 	SFColorButton diffuseColor;
 	SFColorButton specularColor;
@@ -175,6 +184,10 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat> backAmbientIntensity;
 	X3DFieldAdjustment <X3D::SFFloat> backShininess;
 	X3DFieldAdjustment <X3D::SFFloat> backTransparency;
+
+	X3D::X3DPtr <X3D::Clipboard> clipboard;
+	X3D::UndoStepPtr             undoStep;
+	bool                         changing;
 
 };
 

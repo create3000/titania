@@ -112,13 +112,14 @@ private:
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::X3DPtr <X3D::FillProperties>  fillProperties;
 	X3D::SFTime                        fillPropertiesBuffer;
-	X3D::UndoStepPtr                   undoStep;
-	bool                               changing;
 
 	X3DFieldToggleButton <X3D::SFBool> filled;
 	X3DFieldToggleButton <X3D::SFBool> hatched;
 	X3DFieldAdjustment <X3D::SFInt32>  hatchStyle;
 	SFColorButton                      hatchColor;
+
+	X3D::UndoStepPtr undoStep;
+	bool             changing;
 
 };
 

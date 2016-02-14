@@ -50,9 +50,10 @@
 
 #include "X3DMaterialEditor.h"
 
-#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Browser/MagicImport.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
@@ -62,15 +63,13 @@ namespace puck {
 
 X3DMaterialEditor::X3DMaterialEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	                     preview (X3D::createBrowser (getMasterBrowser ())),
 	                 appearances (),
 	                materialNode (),
 	          materialNodeBuffer (),
 	                    material (),
 	            twoSidedMaterial (),
 	          isTwoSidedMaterial (false),
-	                    undoStep (),
-	                    changing (false),
 	                diffuseColor (this, getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
 	               specularColor (this, getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
 	               emissiveColor (this, getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
@@ -83,22 +82,36 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	           backEmissiveColor (this, getBackEmissiveColorButton (), getBackEmissiveColorAdjustment (), getBackEmissiveColorBox (), "backEmissiveColor"),
 	        backAmbientIntensity (this, getBackAmbientIntensityAdjustment (), getBackAmbientIntensityBox (), "backAmbientIntensity"),
 	               backShininess (this, getBackShininessAdjustment (), getBackShininessBox (), "backShininess"),
-	            backTransparency (this, getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency")
+	            backTransparency (this, getBackTransparencyAdjustment (), getBackTransparencyBox (), "backTransparency"),
+	                   clipboard (getMasterBrowser () -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
+	                    undoStep (),
+	                    changing (false)
 {
-	addChildren (materialNodeBuffer);
-	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
+	addChildren (preview,
+	             appearances,
+	             materialNode,
+	             materialNodeBuffer,
+	             material,
+	             twoSidedMaterial,
+                clipboard);
 
 	preview -> setAntialiasing (4);
+
+	clipboard -> target () = "model/x3d+vrml+color";
 }
 
 void
 X3DMaterialEditor::initialize ()
 {
-	getPreviewBox () .pack_start (*preview, true, true, 0);
+	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
 	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
 	preview -> set_opacity (0);
 	preview -> show ();
+
+	getPreviewBox () .pack_start (*preview, true, true, 0);
+
+	clipboard -> string_changed () .addInterest (this, &X3DMaterialEditor::set_clipboard);
 }
 
 void
@@ -155,30 +168,50 @@ X3DMaterialEditor::set_selection (const X3D::MFNode & selection)
 void
 X3DMaterialEditor::on_copy ()
 {
-	std::string text;
+	std::string string;
 
-	text += "#X3D V3.3 utf8 Titania\n";
-	text += "\n";
-	text += "# " + getCurrentContext () -> getWorldURL () + "\n";
-	text += "\n";
-	text += "META \"titania magic\" \"Material\"\n";
-	text += "\n";
-	text += "Transform {\n";
-	text += "  children Shape {\n";
-	text += "    appearance Appearance {\n";
-	text += "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n";
-	text += "    }\n";
-	text += "    geometry Sphere { }\n";
-	text += "  }\n";
-	text += "}";
+	string += "#X3D V3.3 utf8 Titania\n";
+	string += "\n";
+	string += "# " + getCurrentContext () -> getWorldURL () + "\n";
+	string += "\n";
+	string += "META \"titania magic\" \"Material\"\n";
+	string += "\n";
+	string += "Transform {\n";
+	string += "  children Shape {\n";
+	string += "    appearance Appearance {\n";
+	string += "      material " + (isTwoSidedMaterial ? twoSidedMaterial -> toString () : material -> toString ()) + "\n";
+	string += "    }\n";
+	string += "    geometry Sphere { }\n";
+	string += "  }\n";
+	string += "}";
 
-	Gtk::Clipboard::get () -> set_text (text);
+	clipboard -> set_string () = string;
 }
 
 void
 X3DMaterialEditor::on_paste ()
 {
-	getBrowserWindow () -> getPasteMenuItem () .activate ();
+	try
+	{
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Paste"));
+		const auto scene     = getBrowserWindow () -> X3D::X3DEditor::pasteNodes (getCurrentBrowser (), clipboard -> string_changed ());
+		auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
+			return;
+
+		addUndoStep (undoStep);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DMaterialEditor::set_clipboard (const X3D::SFString & string)
+{
+	getPasteMenuItem () .set_sensitive (not string .empty ());
 }
 
 /***********************************************************************************************************************

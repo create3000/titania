@@ -58,8 +58,6 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 	                 appearances (),
 	              lineProperties (),
 	        linePropertiesBuffer (),
-	                    undoStep (),
-	                    changing (false),
 	                     applied (this, getLinePropertiesFilledCheckButton (), "applied"),
 	                    linetype (this,
 	                              getLinePropertiesLinetypeAdjustment (),
@@ -68,15 +66,20 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 	        linewidthScaleFactor (this,
 	                              getLinePropertiesLinewidthScaleFactorAdjustment (),
 	                              getLinePropertiesLinewidthScaleFactorSpinButton (),
-	                              "linewidthScaleFactor")
+	                              "linewidthScaleFactor"),
+	                    undoStep (),
+	                    changing (false)
 {
-	addChildren (linePropertiesBuffer);
-	linePropertiesBuffer .addInterest (this, &X3DLinePropertiesEditor::set_node);
+	addChildren (appearances,
+	             lineProperties,
+	             linePropertiesBuffer);
 }
 
 void
 X3DLinePropertiesEditor::initialize ()
-{ }
+{
+	linePropertiesBuffer .addInterest (this, &X3DLinePropertiesEditor::set_node);
+}
 
 void
 X3DLinePropertiesEditor::set_selection (const X3D::MFNode & selection)

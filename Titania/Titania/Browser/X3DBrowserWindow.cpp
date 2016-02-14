@@ -87,6 +87,8 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	     accelerators (true)
 {
 	addChildren (clipboard);
+
+	clipboard -> target () = "model/x3d+vrml";
 }
 
 void
@@ -100,7 +102,6 @@ X3DBrowserWindow::initialize ()
 	sidebar -> reparent (getSidebarBox (), getWindow ());
 	footer  -> reparent (getFooterBox (),  getWindow ());
 
-	clipboard -> target () = "model/x3d+vrml";
 	clipboard -> string_changed () .addInterest (this, &X3DBrowserWindow::set_clipboard);
 }
 
@@ -216,8 +217,6 @@ X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 void
 X3DBrowserWindow::set_clipboard (const X3D::SFString & string)
 {
-	__LOG__ << string .length () << std::endl;
-
 	getPasteMenuItem () .set_sensitive (not string .empty ());
 }
 
