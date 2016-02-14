@@ -55,8 +55,10 @@
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
+
 #include "../Editors/GridEditor/X3DGridTool.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
+
 #include "../Widgets/Footer/Footer.h"
 #include "../Widgets/Sidebar/Sidebar.h"
 
@@ -96,13 +98,13 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.glade"), gconf_dir ()),
 	         X3DBrowserWindow (browser),
 	      X3DObjectOperations (),
-	                 changing (false),
-	                   viewer (X3D::X3DConstants::NoneViewer),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
 	  primitiveQualityActions (),
-	    textureQualityActions ()
+	    textureQualityActions (),
+	                   viewer (X3D::X3DConstants::NoneViewer),
+	                 changing (false)
 {
 	environmentActions = {
 		getEditorAction (),
@@ -157,11 +159,6 @@ BrowserWindow::initialize ()
 
 	getToolbar ()         .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
-
-	// Clipboard
-	// Gtk::Clipboard::get () -> set_can_store (); // not needed
-	Gtk::Clipboard::get () -> signal_owner_change () .connect (sigc::mem_fun (*this, &BrowserWindow::on_clipboard_owner_change));
-	updatePasteStatus ();
 
 	// Browser events
 	getBrowsers ()       .addInterest (this, &BrowserWindow::set_browsers);
@@ -809,14 +806,6 @@ void
 BrowserWindow::on_redo_activated ()
 {
 	redo ();
-}
-
-// Clipboard
-
-void
-BrowserWindow::on_clipboard_owner_change (GdkEventOwnerChange*)
-{
-	updatePasteStatus ();
 }
 
 void

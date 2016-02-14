@@ -157,6 +157,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/BrowserOptions.lo \
 	Titania/X3D/Browser/BrowserProperties.lo \
 	Titania/X3D/Browser/Console.lo \
+	Titania/X3D/Browser/Core/Clipboard.lo \
 	Titania/X3D/Browser/Core/X3DCoreContext.lo \
 	Titania/X3D/Browser/Core/X3DOptionNode.lo \
 	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.lo \
@@ -913,6 +914,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/Core/Clipboard.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
 	Titania/X3D/Browser/CubeMapTexturing/X3DCubeMapTexturingContext.cpp \
@@ -1589,6 +1591,9 @@ Titania/X3D/Browser/Core/$(am__dirstamp):
 Titania/X3D/Browser/Core/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Core/$(DEPDIR)
 	@: > Titania/X3D/Browser/Core/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Core/Clipboard.lo:  \
+	Titania/X3D/Browser/Core/$(am__dirstamp) \
+	Titania/X3D/Browser/Core/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Core/X3DCoreContext.lo:  \
 	Titania/X3D/Browser/Core/$(am__dirstamp) \
 	Titania/X3D/Browser/Core/$(DEPDIR)/$(am__dirstamp)
@@ -3758,6 +3763,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Selection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/X3DBrowser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/X3DBrowserContext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Core/$(DEPDIR)/Clipboard.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Core/$(DEPDIR)/X3DCoreContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Core/$(DEPDIR)/X3DOptionNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR)/X3DCubeMapTexturingContext.Plo@am__quote@

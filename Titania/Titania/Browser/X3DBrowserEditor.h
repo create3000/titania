@@ -160,17 +160,6 @@ public:
 	void
 	redo ();
 
-	/// @name Clipboard operations
-
-	void
-	cutNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	copyNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &);
-
-	void
-	pasteNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::UndoStepPtr &);
-
 	/// @name Edit operations
 
 	void
@@ -245,13 +234,7 @@ protected:
 	void
 	set_undoHistory ();
 
-	/// @name Clipboard operations
-
-	void
-	updatePasteStatus ();
-
-	bool
-	getPasteStatus () const;
+	/// @name Operations
 
 	void
 	translateSelection (const X3D::Vector3f &, const bool, const ToolType);

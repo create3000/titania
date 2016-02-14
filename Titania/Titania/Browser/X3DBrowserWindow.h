@@ -56,6 +56,14 @@
 #include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
 
 namespace titania {
+namespace X3D {
+
+class Clipboard;
+
+} // X3D
+} // titania
+
+namespace titania {
 namespace puck {
 
 class Footer;
@@ -117,11 +125,24 @@ public:
 	getAngleTool () const
 	{ return angleTool; }
 
-	/// @name Operations
+	/// @name File oerations
 
 	virtual
 	bool
 	save (const basic::uri &, const bool, const bool) final override;
+
+	/// @name Clipboard handling
+
+	void
+	cutNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &);
+
+	void
+	copyNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &);
+
+	void
+	pasteNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::UndoStepPtr &);
+
+	///  @name Outline Editor
 
 	void
 	expandNodes (const X3D::MFNode &);
@@ -158,6 +179,9 @@ private:
 	/// @name Operations
 
 	void
+	set_clipboard (const X3D::SFString &);
+
+	void
 	expandNodesImpl (const X3D::MFNode &);
 
 	///  @name Members
@@ -168,6 +192,7 @@ private:
 	std::shared_ptr <X3DGridTool>       gridTool;
 	std::shared_ptr <X3DGridTool>       angleTool;
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
+	X3D::X3DPtr <X3D::Clipboard>        clipboard;
 
 	X3D::Keys keys;
 	bool      accelerators;

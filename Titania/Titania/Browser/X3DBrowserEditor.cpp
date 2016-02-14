@@ -54,7 +54,9 @@
 #include "../Browser/BrowserUserData.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
+
 #include "../Configuration/config.h"
+
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
@@ -797,110 +799,6 @@ X3DBrowserEditor::set_undoHistory ()
 	}
 
 	setTitle ();
-}
-
-void
-X3DBrowserEditor::cutNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
-{
-	Gtk::Clipboard::get () -> set_text (X3D::X3DEditor::cutNodes (executionContext, nodes, undoStep));
-}
-
-void
-X3DBrowserEditor::copyNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes)
-{
-	Gtk::Clipboard::get () -> set_text (X3D::X3DEditor::copyNodes (executionContext, nodes));
-}
-
-void
-X3DBrowserEditor::pasteNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
-{
-	try
-	{
-		const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
-
-		if (not clipboard -> wait_is_text_available ())
-			return;
-
-		basic::ifilestream text (clipboard -> wait_for_text ());
-
-		text .imbue (std::locale::classic ());
-
-		std::string header;
-
-		if (not X3D::Grammar::Comment (text, header))
-			return;
-
-		std::string encoding, specificationVersion, characterEncoding, comment;
-
-		if (not X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
-			return;
-
-		std::string whiteSpaces;
-
-		X3D::Grammar::WhiteSpaces (text, whiteSpaces);
-
-		std::string worldURL;
-
-		if (not X3D::Grammar::Comment (text, worldURL))
-			return;
-
-		const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, text);
-
-		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
-			return;
-
-		const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
-		auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
-		                           ? activeLayer -> children ()
-											: getCurrentContext () -> getRootNodes ();
-
-		undoStep -> addObjects (getCurrentContext (), activeLayer);
-
-		const auto importedNodes = importScene (executionContext,
-		                                        X3D::SFNode (executionContext),
-		                                        executionContext == getCurrentContext ()
-		                                        ? children
-															 : executionContext -> getRootNodes (),
-		                                        scene,
-		                                        undoStep);
-
-		getSelection () -> setChildren (importedNodes, undoStep);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DBrowserEditor::updatePasteStatus ()
-{
-	getPasteMenuItem () .set_sensitive (getPasteStatus ());
-}
-
-bool
-X3DBrowserEditor::getPasteStatus () const
-{
-	const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
-
-	if (clipboard -> wait_is_text_available ())
-	{
-		std::istringstream text (clipboard -> wait_for_text ());
-
-		text .imbue (std::locale::classic ());
-
-		std::string header;
-
-		if (X3D::Grammar::Comment (text, header))
-		{
-			std::string encoding, specificationVersion, characterEncoding, comment;
-
-			if (X3D::Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
-				return true;
-		}
-	}
-
-	return false;
 }
 
 // Edit operations

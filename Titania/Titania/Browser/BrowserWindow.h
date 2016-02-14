@@ -229,9 +229,6 @@ private:
 
 	///  @name Clipboard handling
 
-	void
-	on_clipboard_owner_change (GdkEventOwnerChange*);
-
 	virtual
 	void
 	on_cut_activated () final override;
@@ -792,14 +789,14 @@ private:
 
 	///  @name Members
 
-	bool                        changing;
-	X3D::X3DConstants::NodeType viewer;
-
 	Glib::RefPtr <Gtk::CssProvider>                cssProvider;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> environmentActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> shadingActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;
+
+	X3D::X3DConstants::NodeType viewer;
+	bool                        changing;
 };
 
 } // puck

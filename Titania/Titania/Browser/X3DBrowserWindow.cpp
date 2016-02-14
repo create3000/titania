@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Browser/MagicImport.h"
 #include "../Browser/ViewpointObserver.h"
 
 #include "../Editors/GeometryEditor/GeometryEditor.h"
@@ -63,12 +64,12 @@
 #include "../Widgets/OutlineEditor/OutlineTreeViewEditor.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 
+#include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
-
-#include <Titania/Backtrace.h>
+#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {
@@ -81,9 +82,12 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	         gridTool (new GridTool (this)),
 	        angleTool (new AngleTool (this)),
 	viewpointObserver (new ViewpointObserver (this)),
+	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	             keys (),
 	     accelerators (true)
-{ }
+{
+	addChildren (clipboard);
+}
 
 void
 X3DBrowserWindow::initialize ()
@@ -95,6 +99,9 @@ X3DBrowserWindow::initialize ()
 
 	sidebar -> reparent (getSidebarBox (), getWindow ());
 	footer  -> reparent (getFooterBox (),  getWindow ());
+
+	clipboard -> target () = "model/x3d+vrml";
+	clipboard -> string_changed () .addInterest (this, &X3DBrowserWindow::set_clipboard);
 }
 
 void
@@ -159,6 +166,59 @@ X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 		getCurrentBrowser () -> addEvent ();
 		getCurrentBrowser () -> finished () .addInterest (this, &X3DBrowserWindow::expandNodesImpl, nodes);
 	}
+}
+
+void
+X3DBrowserWindow::cutNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
+{
+	clipboard -> set_string () = X3D::X3DEditor::cutNodes (executionContext, nodes, undoStep);
+}
+
+void
+X3DBrowserWindow::copyNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes)
+{
+	clipboard -> set_string () = X3D::X3DEditor::copyNodes (executionContext, nodes);
+}
+
+void
+X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
+{
+	try
+	{
+		const auto scene = X3D::X3DEditor::pasteNodes (getCurrentBrowser (), clipboard -> string_changed ());
+
+		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
+			return;
+
+		const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
+		auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
+		                           ? activeLayer -> children ()
+											: getCurrentContext () -> getRootNodes ();
+
+		undoStep -> addObjects (getCurrentContext (), activeLayer);
+
+		const auto importedNodes = importScene (executionContext,
+		                                        X3D::SFNode (executionContext),
+		                                        executionContext == getCurrentContext ()
+		                                        ? children
+															 : executionContext -> getRootNodes (),
+		                                        scene,
+		                                        undoStep);
+
+		getSelection () -> setChildren (importedNodes, undoStep);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DBrowserWindow::set_clipboard (const X3D::SFString & string)
+{
+	__LOG__ << string .length () << std::endl;
+
+	getPasteMenuItem () .set_sensitive (not string .empty ());
 }
 
 void
