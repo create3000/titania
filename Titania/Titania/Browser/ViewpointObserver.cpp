@@ -121,7 +121,7 @@ ViewpointObserver::set_viewer_active (const bool value)
 			addUndoFunction (activeViewpoint, activeViewpoint -> fieldOfViewScale (),       undoStep);
 			endUndoGroup ("positionOffset", undoStep);
 		}
-		else
+		else if (undoStep)
 		{
 			beginRedoGroup ("positionOffset", undoStep);
 			addRedoFunction (activeViewpoint, activeViewpoint -> positionOffset (),         undoStep);
