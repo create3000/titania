@@ -613,10 +613,10 @@ set_field_value_from_string (const X3D::X3DScene* const scene,
 
 			auto & field = *static_cast <X3D::SFRotation*> (fieldDefinition);
 
-			field .setValue (vector .getX (),
-			                 vector .getY (),
-			                 vector .getZ (),
-			                 scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
+			field = X3D::Rotation4d (vector .getX (),
+			                         vector .getY (),
+			                         vector .getZ (),
+			                         scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
 		   return true;
 		}
 		case X3D::X3DConstants::MFRotation:
@@ -634,10 +634,10 @@ set_field_value_from_string (const X3D::X3DScene* const scene,
 
 			for (const auto & vector : array)
 			{
-				field [i] .setValue (vector .getX (),
-				                     vector .getY (),
-				                     vector .getZ (),
-				                     scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
+				field [i] = X3D::Rotation4d (vector .getX (),
+				                             vector .getY (),
+				                             vector .getZ (),
+				                             scene -> fromUnit (X3D::UnitCategory::ANGLE, vector .getW ()));
 			
 			   ++ i;
 			}

@@ -1504,6 +1504,8 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
+	const auto specificationVersion = getSpecificationVersion ();
+
 	Generator::PushExecutionContext (this);
 	Generator::EnterScope ();
 	Generator::ImportedNodes (getImportedNodes ());
@@ -1529,16 +1531,19 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 			<< Generator::Break;
 	}
 
-	for (const auto & importedNode : getImportedNodes ())
+	if (specificationVersion not_eq VRML_V2_0)
 	{
-		try
+		for (const auto & importedNode : getImportedNodes ())
 		{
-			ostream
-				<< XMLEncode (importedNode .second)
-				<< Generator::Break;
+			try
+			{
+				ostream
+					<< XMLEncode (importedNode .second)
+					<< Generator::Break;
+			}
+			catch (const X3DError &)
+			{ }
 		}
-		catch (const X3DError &)
-		{ }
 	}
 
 	for (const auto & route : getRoutes ())

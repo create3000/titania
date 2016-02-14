@@ -321,6 +321,14 @@ Parser::x3dScene ()
 	unitStatements ();
 	metaStatements ();
 
+	try
+	{
+		if (scene -> getWorldURL () .empty ())
+			scene -> setWorldURL (scene -> getMetaData ("identifier"));
+	}
+	catch (const X3DError &)
+	{ }
+
 	statements ();
 
 	scene -> addInnerComments (getComments ());
@@ -2108,7 +2116,7 @@ Parser::sfcolorValue (SFColor* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float r, g, b;
+	SFColor::value_type r, g, b;
 
 	if (Float (r))
 	{
@@ -2116,7 +2124,7 @@ Parser::sfcolorValue (SFColor* _field)
 		{
 			if (Float (b))
 			{
-				_field -> setValue (r, g, b);
+				_field -> setValue (Color3f (r, g, b));
 				return true;
 			}
 		}
@@ -2173,7 +2181,7 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float r, g, b, a;
+	SFColorRGBA::value_type r, g, b, a;
 
 	if (Float (r))
 	{
@@ -2183,7 +2191,7 @@ Parser::sfcolorRGBAValue (SFColorRGBA* _field)
 			{
 				if (Float (a))
 				{
-					_field -> setValue (r, g, b, a);
+					_field -> setValue (Color4f (r, g, b, a));
 					return true;
 				}
 			}
@@ -2241,7 +2249,7 @@ Parser::sfdoubleValue (SFDouble* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double value;
+	SFDouble::value_type value;
 
 	if (Double (value))
 	{
@@ -2299,7 +2307,7 @@ Parser::sffloatValue (SFFloat* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float value;
+	SFFloat::value_type value;
 
 	if (Float (value))
 	{
@@ -2357,7 +2365,6 @@ Parser::sfimageValue (SFImage* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	int32_t width, height, components, pixel;
-	MFInt32 array;
 
 	if (Int32 (width))
 	{
@@ -2365,20 +2372,21 @@ Parser::sfimageValue (SFImage* _field)
 		{
 			if (Int32 (components))
 			{
-				const int32_t size = height * width;
+				_field -> setWidth (width);
+				_field -> setHeight (height);
+				_field -> setComponents (components);
+		
+				MFInt32 & array = _field -> getArray ();
 
-				array .reserve (size);
-
-				for (int32_t i = 0; i < size; ++ i)
+				for (size_t i = 0, size = array .size (); i < size; ++ i)
 				{
 					if (Int32 (pixel))
-						array .emplace_back (pixel);
-
+						array [i] = pixel;
+				
 					else
 						throw Error <INVALID_X3D> ("Expected more pixel values.");
 				}
 
-				_field -> setValue (width, height, components, std::move (array));
 				return true;
 			}
 		}
@@ -2433,7 +2441,7 @@ Parser::sfint32Value (SFInt32* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	int32_t value;
+	SFInt32::value_type value;
 
 	if (Int32 (value))
 	{
@@ -2490,7 +2498,7 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
+	SFMatrix3d::value_type e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
 	if (Double (e11))
 	{
@@ -2510,7 +2518,7 @@ Parser::sfmatrix3dValue (SFMatrix3d* _field)
 								{
 									if (Double (e33))
 									{
-										_field -> setValue (e11, e12, e13, e21, e22, e23, e31, e32, e33);
+										_field -> setValue (Matrix3d (e11, e12, e13, e21, e22, e23, e31, e32, e33));
 										return true;
 									}
 								}
@@ -2573,7 +2581,7 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float e11, e12, e13, e21, e22, e23, e31, e32, e33;
+	SFMatrix3f::value_type e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
 	if (Float (e11))
 	{
@@ -2593,7 +2601,7 @@ Parser::sfmatrix3fValue (SFMatrix3f* _field)
 								{
 									if (Float (e33))
 									{
-										_field -> setValue (e11, e12, e13, e21, e22, e23, e31, e32, e33);
+										_field -> setValue (Matrix3f (e11, e12, e13, e21, e22, e23, e31, e32, e33));
 										return true;
 									}
 								}
@@ -2656,7 +2664,7 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
+	SFMatrix4d::value_type e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
 	if (Double (e11))
 	{
@@ -2690,7 +2698,7 @@ Parser::sfmatrix4dValue (SFMatrix4d* _field)
 															{
 																if (Double (e44))
 																{
-																	_field -> setValue (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+																	_field -> setValue (Matrix4d (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44));
 																	return true;
 																}
 															}
@@ -2760,7 +2768,7 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
+	SFMatrix4f::value_type e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
 	if (Float (e11))
 	{
@@ -2794,7 +2802,7 @@ Parser::sfmatrix4fValue (SFMatrix4f* _field)
 															{
 																if (Float (e44))
 																{
-																	_field -> setValue (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+																	_field -> setValue (Matrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44));
 																	return true;
 																}
 															}
@@ -2913,7 +2921,7 @@ Parser::sfrotationValue (SFRotation* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double x, y, z, angle;
+	SFRotation::value_type x, y, z, angle;
 
 	if (Double (x))
 	{
@@ -2923,7 +2931,7 @@ Parser::sfrotationValue (SFRotation* _field)
 			{
 				if (Double (angle))
 				{
-					_field -> setValue (x, y, z, angle);
+					_field -> setValue (Rotation4d (x, y, z, angle));
 					return true;
 				}
 			}
@@ -3036,7 +3044,7 @@ Parser::sftimeValue (SFTime* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double value;
+	SFTime::value_type value;
 
 	if (Double (value))
 	{
@@ -3093,13 +3101,13 @@ Parser::sfvec2dValue (SFVec2d* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double x, y;
+	SFVec2d::value_type x, y;
 
 	if (Double (x))
 	{
 		if (Double (y))
 		{
-			_field -> setValue (x, y);
+			_field -> setValue (Vector2d (x, y));
 			return true;
 		}
 
@@ -3155,13 +3163,13 @@ Parser::sfvec2fValue (SFVec2f* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float x, y;
+	SFVec2f::value_type x, y;
 
 	if (Float (x))
 	{
 		if (Float (y))
 		{
-			_field -> setValue (x, y);
+			_field -> setValue (Vector2f (x, y));
 			return true;
 		}
 
@@ -3217,7 +3225,7 @@ Parser::sfvec3dValue (SFVec3d* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double x, y, z;
+	SFVec3d::value_type x, y, z;
 
 	if (Double (x))
 	{
@@ -3225,7 +3233,7 @@ Parser::sfvec3dValue (SFVec3d* _field)
 		{
 			if (Double (z))
 			{
-				_field -> setValue (x, y, z);
+				_field -> setValue (Vector3d (x, y, z));
 				return true;
 			}
 		}
@@ -3282,7 +3290,7 @@ Parser::sfvec3fValue (SFVec3f* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float x, y, z;
+	SFVec3f::value_type x, y, z;
 
 	if (Float (x))
 	{
@@ -3290,7 +3298,7 @@ Parser::sfvec3fValue (SFVec3f* _field)
 		{
 			if (Float (z))
 			{
-				_field -> setValue (x, y, z);
+				_field -> setValue (Vector3f (x, y, z));
 				return true;
 			}
 		}
@@ -3347,7 +3355,7 @@ Parser::sfvec4dValue (SFVec4d* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	double x, y, z, w;
+	SFVec4d::value_type x, y, z, w;
 
 	if (Double (x))
 	{
@@ -3357,7 +3365,7 @@ Parser::sfvec4dValue (SFVec4d* _field)
 			{
 				if (Double (w))
 				{
-					_field -> setValue (x, y, z, w);
+					_field -> setValue (Vector4d (x, y, z, w));
 					return true;
 				}
 			}
@@ -3415,7 +3423,7 @@ Parser::sfvec4fValue (SFVec4f* _field)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	float x, y, z, w;
+	SFVec4f::value_type x, y, z, w;
 
 	if (Float (x))
 	{
@@ -3425,7 +3433,7 @@ Parser::sfvec4fValue (SFVec4f* _field)
 			{
 				if (Float (w))
 				{
-					_field -> setValue (x, y, z, w);
+					_field -> setValue (Vector4f (x, y, z, w));
 					return true;
 				}
 			}

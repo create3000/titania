@@ -8,6 +8,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
 	Titania/X3D/Base/ChildObjectSet.cpp \
 	Titania/X3D/Base/Error.cpp \
+	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \

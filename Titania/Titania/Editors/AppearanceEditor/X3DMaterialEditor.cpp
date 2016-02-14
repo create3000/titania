@@ -194,7 +194,7 @@ X3DMaterialEditor::on_paste ()
 	try
 	{
 		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Paste"));
-		const auto scene     = getBrowserWindow () -> X3D::X3DEditor::pasteNodes (getCurrentBrowser (), clipboard -> string_changed ());
+		const auto scene     = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
 		auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))

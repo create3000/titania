@@ -151,7 +151,12 @@ AngleTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 		getTool () -> dimension () = { 5, 16, 10 };
 	}
 
-	getBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+	try
+	{
+		getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+	}
+	catch (...)
+	{ }
 
 	try
 	{
@@ -214,7 +219,7 @@ AngleTool::set_dimension ()
 {
 	X3DGridTool::set_dimension ();
 
-	getBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
 }
 
 

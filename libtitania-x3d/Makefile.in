@@ -139,7 +139,8 @@ libtitania_x3d_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Base/ChildObjectSet.lo Titania/X3D/Base/Error.lo \
-	Titania/X3D/Base/Output.lo Titania/X3D/Base/X3DChildObject.lo \
+	Titania/X3D/Base/International.lo Titania/X3D/Base/Output.lo \
+	Titania/X3D/Base/X3DChildObject.lo \
 	Titania/X3D/Base/X3DGarbargeCollector.lo \
 	Titania/X3D/Base/X3DInput.lo Titania/X3D/Base/X3DObject.lo \
 	Titania/X3D/Base/X3DOutput.lo \
@@ -892,6 +893,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D.cpp \
 	Titania/X3D/Base/ChildObjectSet.cpp \
 	Titania/X3D/Base/Error.cpp \
+	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
 	Titania/X3D/Base/X3DGarbargeCollector.cpp \
@@ -1521,6 +1523,8 @@ Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Base/ChildObjectSet.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Base/Error.lo: Titania/X3D/Base/$(am__dirstamp) \
+	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Base/International.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Base/Output.lo: Titania/X3D/Base/$(am__dirstamp) \
 	Titania/X3D/Base/$(DEPDIR)/$(am__dirstamp)
@@ -3736,6 +3740,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/$(DEPDIR)/X3D.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/ChildObjectSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/Error.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/International.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/Output.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DChildObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DGarbargeCollector.Plo@am__quote@

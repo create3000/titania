@@ -539,6 +539,7 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 	const auto   undoStep = std::make_shared <X3D::UndoStep> ("");
 
 	scene -> isCompressed (compress);
+	scene -> addStandardMetaData ();
 
 	// Save
 
@@ -599,13 +600,22 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 				scene -> setSpecificationVersion (X3D::VRML_V2_0);
 			}
 		}
-		else  // ".x3dv"
+		else if (suffix == ".x3dv")
 		{
 			if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 			{
 				scene -> setEncoding ("X3D");
 				scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 			}
+		}
+		else
+		{
+			getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
+			getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't save file!") + "</b></big>", true);
+			getMessageDialog () .set_secondary_text (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."), false);
+			getMessageDialog () .run ();
+			getMessageDialog () .hide ();
+			return false;
 		}
 
 		if (compress)
@@ -649,8 +659,8 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const 
 	}
 
 	getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-	getMessageDialog () .set_message ("<big><b>Couldn't save file!</b></big>", true);
-	getMessageDialog () .set_secondary_text ("Tip: check file and folder permissions.", false);
+	getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't save file!") + "</b></big>", true);
+	getMessageDialog () .set_secondary_text (_ ("Tip: check file and folder permissions."), false);
 	getMessageDialog () .run ();
 	getMessageDialog () .hide ();
 
@@ -775,7 +785,7 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 
 	getUserData (browser) -> dispose ();
 
-	browsers .remove (browser);
+	browsers       .remove (browser);
 	recentBrowsers .remove (browser);
 
 	if (browsers .empty ())
@@ -832,12 +842,12 @@ X3DBrowserWidget::quit ()
 void
 X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 {
-	recentBrowsers .remove (getCurrentBrowser ());
-	recentBrowsers .emplace_back (getCurrentBrowser ());
-
 	recentView -> loadPreview (getCurrentBrowser ());
 
 	setBrowser (browsers [pageNumber]);
+
+	recentBrowsers .remove (getCurrentBrowser ());
+	recentBrowsers .emplace_back (getCurrentBrowser ());
 }
 
 void

@@ -57,6 +57,9 @@ namespace titania {
 namespace basic {
 
 std::string
+sprintf (const std::string &, ...);
+
+std::string
 sprintf (const char* const, ...);
 
 } // basic

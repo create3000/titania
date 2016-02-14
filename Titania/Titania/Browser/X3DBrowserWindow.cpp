@@ -186,7 +186,7 @@ X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 {
 	try
 	{
-		const auto scene = X3D::X3DEditor::pasteNodes (getCurrentBrowser (), clipboard -> string_changed ());
+		const auto scene = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
 
 		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
 			return;

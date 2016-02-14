@@ -141,9 +141,9 @@ X3DViewpointNode::initialize ()
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleInterpolator            -> set_fraction ());
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleOrientationInterpolator -> set_fraction ());
 
-	positionInterpolator         -> value_changed () .addInterest (positionOffset ());
+	positionInterpolator         -> value_changed () .addInterest (this, &X3DViewpointNode::set_positionOffset);
 	orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
-	scaleInterpolator            -> value_changed () .addInterest (scaleOffset ());
+	scaleInterpolator            -> value_changed () .addInterest (this, &X3DViewpointNode::set_scaleOffset);
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
 	isBound () .addInterest (this, &X3DViewpointNode::set_bind_);
@@ -201,6 +201,18 @@ X3DViewpointNode::setUserCenterOfRotation (const Vector3d & userCenterOfRotation
 }
 
 void
+X3DViewpointNode::set_positionOffset ()
+{
+	positionOffset () = positionInterpolator -> value_changed () .getValue ();
+}
+
+void
+X3DViewpointNode::set_scaleOffset ()
+{
+	scaleOffset () = scaleInterpolator -> value_changed () .getValue ();
+}
+
+void
 X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
                                              Vector3d & relativePosition,
                                              Rotation4d & relativeOrientation,
@@ -228,8 +240,10 @@ X3DViewpointNode::setCameraSpaceMatrix (const Matrix4d & value)
 			getBrowser () -> addEvent ();
 		}
 	}
-	catch (const std::domain_error &)
-	{ }
+	catch (const std::domain_error & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
 }
 
 void

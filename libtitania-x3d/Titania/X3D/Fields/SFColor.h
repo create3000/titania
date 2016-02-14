@@ -139,12 +139,6 @@ public:
 	value_type
 	get1Value (const size_type &) const;
 
-	void
-	setValue (const value_type &, const value_type &, const value_type &);
-
-	void
-	getValue (value_type &, value_type &, value_type &) const;
-
 	///  @name Operations
 
 	void

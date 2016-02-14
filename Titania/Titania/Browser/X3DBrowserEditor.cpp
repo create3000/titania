@@ -706,10 +706,7 @@ X3DBrowserEditor::quit ()
 {
 	getWidget () .grab_focus ();
 
-	auto browsers = getRecentBrowsers ();
-
-	browsers .remove (getCurrentBrowser ());
-	browsers .emplace_back (getCurrentBrowser ());
+	const auto browsers = getRecentBrowsers ();
 
 	for (const auto & browser : browsers)
 	{

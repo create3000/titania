@@ -186,24 +186,6 @@ SFImage::getArray () const
 }
 
 void
-SFImage::setValue (const size_type width, const size_type height, const size_type components, const MFInt32 & array)
-{
-	get () .set (width, height, components, array);
-}
-
-void
-SFImage::setValue (const size_type width, const size_type height, const size_type components, MFInt32 && array)
-{
-	get () .set (width, height, components, std::move (array));
-}
-
-void
-SFImage::getValue (size_type & width, size_type & height, size_type & components, MFInt32 & array) const
-{
-	getValue () .get (width, height, components, array);
-}
-
-void
 SFImage::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
@@ -239,7 +221,7 @@ throw (Error <INVALID_X3D>,
 						}
 
 						if (istream)
-							setValue (width, height, components, std::move (array));
+							*this = SFImage (width, height, components, std::move (array));
 					}
 				}
 			}

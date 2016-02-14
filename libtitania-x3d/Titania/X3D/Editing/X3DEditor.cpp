@@ -168,38 +168,6 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 	return string;
 }
 
-X3DScenePtr
-X3DEditor::pasteNodes (const BrowserPtr & browser, const std::string & vrmlSyntax)
-throw (Error <INVALID_X3D>,
-       Error <NOT_SUPPORTED>,
-       Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	basic::ifilestream text (vrmlSyntax);
-
-	text .imbue (std::locale::classic ());
-
-	std::string header;
-
-	if (not Grammar::Comment (text, header))
-		throw Error <INVALID_X3D> ("Invalid X3D");
-
-	std::string encoding, specificationVersion, characterEncoding, comment;
-
-	if (not Grammar::Header .FullMatch (header, &encoding, &specificationVersion, &characterEncoding, &comment))
-		throw Error <INVALID_X3D> ("Invalid X3D");
-
-	std::string whiteSpaces;
-
-	Grammar::WhiteSpaces (text, whiteSpaces);
-
-	std::string worldURL;
-
-	Grammar::Comment (text, worldURL);
-
-	return browser -> createX3DFromStream (worldURL, text);
-}
-
 std::string
 X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
 {
@@ -208,7 +176,6 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode 
 	exportNodes (executionContext, osstream, nodes);
 
 	return osstream .str ();
-
 }
 
 void
@@ -227,7 +194,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 		<< "#" << LATEST_VERSION << " utf8 " << executionContext -> getBrowser () -> getName ()
 		<< std::endl
 		<< std::endl
-		<< '#' << executionContext -> getWorldURL ()
+		<< "META \"identifier\" " << SFString (executionContext -> getWorldURL () .str ())
 		<< std::endl
 		<< std::endl;
 

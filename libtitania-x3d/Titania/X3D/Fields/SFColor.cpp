@@ -112,20 +112,6 @@ SFColor::get1Value (const size_type & index) const
 }
 
 void
-SFColor::setValue (const value_type & r, const value_type & g, const value_type & b)
-{
-	setValue (Color3f (r, g, b));
-}
-
-void
-SFColor::getValue (value_type & r, value_type & g, value_type & b) const
-{
-	r = getRed ();
-	g = getGreen ();
-	b = getBlue ();
-}
-
-void
 SFColor::setHSV (const value_type & h, const value_type & s, const value_type & v)
 {
 	get () .set_hsv (h, s, v);
@@ -182,7 +168,7 @@ throw (Error <INVALID_X3D>,
 				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 				if (Grammar::Number <value_type> (istream, b))
-					setValue (r, g, b);
+					setValue (internal_type (r, g, b));
 		   }
 		}
 	}

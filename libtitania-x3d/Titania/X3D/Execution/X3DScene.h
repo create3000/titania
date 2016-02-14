@@ -187,6 +187,11 @@ public:
 	///  @name MetaData handling
 
 	void
+	addStandardMetaData ()
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
 	addMetaData (const std::string &, const std::string &)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

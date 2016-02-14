@@ -344,7 +344,7 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		{
 			const auto complex = std::polar <typename Type::value_type> (1, rotation);
 
-			get1Argument <vector3_type> (args, 1) -> setValue (std::real (complex), std::imag (complex), rotation);
+			get1Argument <vector3_type> (args, 1) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), rotation));
 		}
 
 		if (argc > 2 and not args [2] .isNull ())
@@ -354,7 +354,7 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		{
 			const auto complex = std::polar <typename Type::value_type> (1, scaleOrientation);
 
-			get1Argument <vector3_type> (args, 3) -> setValue (std::real (complex), std::imag (complex), scaleOrientation);
+			get1Argument <vector3_type> (args, 3) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
 		}
 
 		return pb::undefined;

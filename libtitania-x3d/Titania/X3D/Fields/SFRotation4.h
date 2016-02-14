@@ -162,9 +162,6 @@ public:
 	get1Value (const size_type &) const;
 
 	void
-	setValue (const value_type &, const value_type &, const value_type &, const value_type &);
-
-	void
 	getValue (value_type &, value_type &, value_type &, value_type &) const;
 
 	///  @name Arithmetic operations
@@ -351,14 +348,6 @@ SFRotation4 <ValueType>::get1Value (const size_type & index) const
 template <class ValueType>
 inline
 void
-SFRotation4 <ValueType>::setValue (const value_type & x, const value_type & y, const value_type & z, const value_type & angle)
-{
-	setValue (ValueType (x, y, z, angle));
-}
-
-template <class ValueType>
-inline
-void
 SFRotation4 <ValueType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
 {
 	getValue () .get (x, y, z, angle);
@@ -442,7 +431,7 @@ throw (Error <INVALID_X3D>,
 				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 				if (Grammar::Number <value_type> (istream, angle))
-					setValue (x, y, z, angle);
+					setValue (ValueType (x, y, z, angle));
 			}
 	   }
 	}

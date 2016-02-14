@@ -398,7 +398,7 @@ throw (Error <INVALID_NODE>,
 			break;
 	}
 
-	image () .setValue (width, height, components, std::move (array));
+	image () = SFImage (width, height, components, std::move (array));
 }
 
 } // X3D

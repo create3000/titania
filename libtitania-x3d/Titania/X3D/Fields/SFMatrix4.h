@@ -140,18 +140,6 @@ public:
 	value_type
 	get1Value (const size_type &) const;
 
-	void
-	setValue (const value_type &, const value_type &, const value_type &, const value_type &,
-	          const value_type &, const value_type &, const value_type &, const value_type &,
-	          const value_type &, const value_type &, const value_type &, const value_type &,
-	          const value_type &, const value_type &, const value_type &, const value_type &);
-
-	void
-	getValue (value_type &, value_type &, value_type &, value_type &,
-	          value_type &, value_type &, value_type &, value_type &,
-	          value_type &, value_type &, value_type &, value_type &,
-	          value_type &, value_type &, value_type &, value_type &) const;
-
 	///  @name Arithmetic operations
 
 	void
@@ -289,48 +277,6 @@ typename SFMatrix4 <ValueType>::value_type
 SFMatrix4 <ValueType>::get1Value (const size_type & index) const
 {
 	return getValue () .data () [index];
-}
-
-template <class ValueType>
-inline
-void
-SFMatrix4 <ValueType>::setValue (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
-                                 const value_type & e21, const value_type & e22, const value_type & e23, const value_type & e24,
-                                 const value_type & e31, const value_type & e32, const value_type & e33, const value_type & e34,
-                                 const value_type & e41, const value_type & e42, const value_type & e43, const value_type & e44)
-{
-	setValue (ValueType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44));
-}
-
-template <class ValueType>
-inline
-void
-SFMatrix4 <ValueType>::getValue (value_type & e11, value_type & e12, value_type & e13, value_type & e14,
-                                 value_type & e21, value_type & e22, value_type & e23, value_type & e24,
-                                 value_type & e31, value_type & e32, value_type & e33, value_type & e34,
-                                 value_type & e41, value_type & e42, value_type & e43, value_type & e44) const
-{
-	const auto & data = getValue () .data ();
-
-	e11 = data [ 0];
-	e12 = data [ 1];
-	e13 = data [ 2];
-	e14 = data [ 3];
-
-	e21 = data [ 4];
-	e22 = data [ 5];
-	e23 = data [ 6];
-	e24 = data [ 7];
-
-	e31 = data [ 8];
-	e32 = data [ 9];
-	e33 = data [10];
-	e34 = data [11];
-
-	e41 = data [12];
-	e42 = data [13];
-	e43 = data [14];
-	e44 = data [15];
 }
 
 template <class ValueType>
@@ -617,10 +563,10 @@ throw (Error <INVALID_X3D>,
 
 																if (Grammar::Number <value_type> (istream, e44))
 																{
-																	setValue (e11, e12, e13, e14,
-																	          e21, e22, e23, e24,
-																	          e31, e32, e33, e34,
-																	          e41, e42, e43, e44);
+																	setValue (ValueType (e11, e12, e13, e14,
+																	                     e21, e22, e23, e24,
+																	                     e31, e32, e33, e34,
+																	                     e41, e42, e43, e44));
 																}
 															}
 														}

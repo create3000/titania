@@ -159,12 +159,6 @@ public:
 	value_type
 	get1Value (const size_type &) const;
 
-	void
-	setValue (const value_type &, const value_type &, const value_type &);
-
-	void
-	getValue (value_type &, value_type &, value_type &) const;
-
 	///  @name Arithmetic operations
 
 	SFVec3 &
@@ -326,22 +320,6 @@ typename SFVec3 <ValueType>::value_type
 SFVec3 <ValueType>::get1Value (const size_type  & index) const
 {
 	return getValue () [index];
-}
-
-template <class ValueType>
-void
-SFVec3 <ValueType>::setValue (const value_type & x, const value_type & y, const value_type & z)
-{
-	setValue (ValueType (x, y, z));
-}
-
-template <class ValueType>
-void
-SFVec3 <ValueType>::getValue (value_type & x, value_type & y, value_type & z) const
-{
-	x = getValue () .x ();
-	y = getValue () .y ();
-	z = getValue () .z ();
 }
 
 template <class ValueType>
@@ -556,7 +534,7 @@ throw (Error <INVALID_X3D>,
 			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 			if (Grammar::Number <value_type> (istream, z))
-				setValue (x, y, z);
+				setValue (ValueType (x, y, z));
 	   }
 	}
 }

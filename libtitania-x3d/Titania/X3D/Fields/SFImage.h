@@ -147,15 +147,6 @@ public:
 	const MFInt32 &
 	getArray () const;
 
-	void
-	setValue (const size_type, const size_type, const size_type, const MFInt32 &);
-
-	void
-	setValue (const size_type, const size_type, const size_type, MFInt32 &&);
-
-	void
-	getValue (size_type &, size_type &, size_type &, MFInt32 &) const;
-
 	///  @name Interest service
 
 	template <class Class>

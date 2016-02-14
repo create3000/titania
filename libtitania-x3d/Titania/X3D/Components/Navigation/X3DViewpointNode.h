@@ -332,6 +332,12 @@ private:
 	scaleOrientationOffset () const
 	{ return fields .scaleOrientationOffset; }
 
+	void
+	set_positionOffset ();
+
+	void
+	set_scaleOffset ();
+
 	///  @name Member access
 
 	void

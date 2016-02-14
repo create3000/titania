@@ -119,21 +119,6 @@ SFColorRGBA::get1Value (const size_type & index) const
 }
 
 void
-SFColorRGBA::setValue (const value_type & r, const value_type & g, const value_type & b, const value_type & a)
-{
-	setValue (Color4f (r, g, b, a));
-}
-
-void
-SFColorRGBA::getValue (value_type & r, value_type & g, value_type & b, value_type & a) const
-{
-	r = getRed ();
-	g = getGreen ();
-	b = getBlue ();
-	a = getAlpha ();
-}
-
-void
 SFColorRGBA::setHSV (const value_type  & h, const value_type  & s, const value_type  & v)
 {
 	get () .set_hsv (h, s, v);
@@ -195,7 +180,7 @@ throw (Error <INVALID_X3D>,
 					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 					if (Grammar::Number <value_type> (istream, a))
-						setValue (r, g, b, a);
+						setValue (internal_type (r, g, b, a));
 				}
 		   }
 		}

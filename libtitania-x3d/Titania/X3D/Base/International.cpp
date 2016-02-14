@@ -48,15 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASE_INTERNATIONAL_H__
-#define __TITANIA_X3D_BASE_INTERNATIONAL_H__
+#include "International.h"
 
-#include <string>
-
-std::string
-_ (const std::string & msgid);
+#include <libintl.h>
 
 std::string
-_ (const char* msgid);
+_ (const std::string & msgid)
+{
+	return gettext (msgid .c_str ());
+}
 
-#endif
+std::string
+_ (const char* msgid)
+{
+	return gettext (msgid);
+}
+

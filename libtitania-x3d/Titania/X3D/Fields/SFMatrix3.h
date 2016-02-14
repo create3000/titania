@@ -137,16 +137,6 @@ public:
 	value_type
 	get1Value (const size_type &) const;
 
-	void
-	setValue (const value_type &, const value_type &, const value_type &,
-	          const value_type &, const value_type &, const value_type &,
-	          const value_type &, const value_type &, const value_type &);
-
-	void
-	getValue (value_type &, value_type &, value_type &,
-	          value_type &, value_type &, value_type &,
-	          value_type &, value_type &, value_type &) const;
-
 	///  @name Arithmetic operations
 
 	void
@@ -281,38 +271,6 @@ typename SFMatrix3 <ValueType>::value_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 {
 	return getValue () .data () [index];
-}
-
-template <class ValueType>
-inline
-void
-SFMatrix3 <ValueType>::setValue (const value_type & e11, const value_type & e12, const value_type & e13,
-                                 const value_type & e21, const value_type & e22, const value_type & e23,
-                                 const value_type & e31, const value_type & e32, const value_type & e33)
-{
-	setValue (ValueType (e11, e12, e13, e21, e22, e23, e31, e32, e33));
-}
-
-template <class ValueType>
-inline
-void
-SFMatrix3 <ValueType>::getValue (value_type & e11, value_type & e12, value_type & e13,
-                                 value_type & e21, value_type & e22, value_type & e23,
-                                 value_type & e31, value_type & e32, value_type & e33) const
-{
-	const auto & data = getValue () .data ();
-
-	e11 = data [0];
-	e12 = data [1];
-	e13 = data [2];
-
-	e21 = data [3];
-	e22 = data [4];
-	e23 = data [5];
-
-	e31 = data [6];
-	e32 = data [7];
-	e33 = data [8];
 }
 
 template <class ValueType>
@@ -561,9 +519,9 @@ throw (Error <INVALID_X3D>,
 
 									if (Grammar::Number <value_type> (istream, e33))
 									{
-										setValue (e11, e12, e13,
-										          e21, e22, e23,
-										          e31, e32, e33);
+										setValue (ValueType (e11, e12, e13,
+										                     e21, e22, e23,
+										                     e31, e32, e33));
 									}
 								}
 							}
