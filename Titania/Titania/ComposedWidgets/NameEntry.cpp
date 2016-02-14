@@ -62,8 +62,6 @@ NameEntry::NameEntry (X3DBaseInterface* const editor,
 	           button (button),
 	             node ()
 {
-	entry  .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &NameEntry::on_focus_in_event));
-	entry  .signal_focus_out_event () .connect (sigc::mem_fun (*this, &NameEntry::on_focus_out_event));
 	entry  .signal_insert_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_insert_text), false);
 	entry  .signal_delete_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_delete_text), false);
 	entry  .signal_key_press_event () .connect (sigc::mem_fun (*this, &NameEntry::on_key_press_event), false);
@@ -73,20 +71,6 @@ NameEntry::NameEntry (X3DBaseInterface* const editor,
 	button .set_sensitive (false);
 
 	setup ();
-}
-
-bool
-NameEntry::on_focus_in_event (GdkEventFocus* event)
-{
-	getBrowserWindow () -> hasAccelerators (false);
-	return false;
-}
-
-bool
-NameEntry::on_focus_out_event (GdkEventFocus* event)
-{
-	getBrowserWindow () -> hasAccelerators (true);
-	return false;
 }
 
 void

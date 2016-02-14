@@ -191,6 +191,9 @@ private:
 
 	X3DUserInterface (const X3DUserInterface &) = delete;
 
+	void
+	connectFocusEvent (Gtk::Widget &);
+
 	///  @name Event handlers
 
 	void
@@ -207,6 +210,12 @@ private:
 
 	bool
 	on_delete_event (GdkEventAny*);
+
+	bool
+	on_remove_accelerators (GdkEventFocus*);
+
+	bool
+	on_add_accelerators (GdkEventFocus*);
 
 	///  @name Operations
 

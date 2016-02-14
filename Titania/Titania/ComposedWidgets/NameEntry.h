@@ -86,12 +86,6 @@ public:
 private:
 
 	///  @name Event handler
-	
-	bool
-	on_focus_in_event (GdkEventFocus*);
-	
-	bool
-	on_focus_out_event (GdkEventFocus*);
 
 	void
 	on_insert_text (const Glib::ustring &, int*);

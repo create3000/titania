@@ -145,12 +145,30 @@ X3DUserInterface::on_constructed ()
 	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
 	#endif
 
+   connectFocusEvent (getWidget ());
+
 	initialize ();
 
 	if (isFullscreen ())
 	   getWindow () .fullscreen ();
 
 	 set_fullscreen (isFullscreen ());
+}
+
+void
+X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
+{
+	for (auto & widget : getWidgets <Gtk::Widget> (parent))
+	{
+		const auto instance = widget -> gobj ();
+
+		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
+		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
+		{
+			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DUserInterface::on_remove_accelerators));
+			widget -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_add_accelerators));
+		}
+	}
 }
 
 void
@@ -196,6 +214,20 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 		set_fullscreen (fullscreen);
 	}
 
+	return false;
+}
+
+bool
+X3DUserInterface::on_add_accelerators (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
+
+bool
+X3DUserInterface::on_remove_accelerators (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (false);
 	return false;
 }
 
