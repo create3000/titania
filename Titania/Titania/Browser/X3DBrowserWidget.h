@@ -72,10 +72,6 @@ public:
 
 	///  @name Member access
 
-	const X3D::X3DPtrArray <X3D::Browser> &
-	getBrowsers () const
-	{ return browsers; }
-
 	const X3D::BrowserPtr &
 	getMasterBrowser () const
 	{ return masterBrowser; }
@@ -87,6 +83,14 @@ public:
 	const X3D::BrowserPtr &
 	getCurrentBrowser () const final override
 	{ return browser; }
+
+	const X3D::X3DPtrArray <X3D::Browser> &
+	getBrowsers () const
+	{ return browsers; }
+
+	const X3D::X3DPtrArray <X3D::Browser> &
+	getRecentBrowsers () const
+	{ return recentBrowsers; }
 
 	virtual
 	const X3D::X3DScenePtr &

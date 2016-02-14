@@ -706,7 +706,12 @@ X3DBrowserEditor::quit ()
 {
 	getWidget () .grab_focus ();
 
-	for (const auto & browser : getBrowsers ())
+	auto browsers = getRecentBrowsers ();
+
+	browsers .remove (getCurrentBrowser ());
+	browsers .emplace_back (getCurrentBrowser ());
+
+	for (const auto & browser : browsers)
 	{
 		if (isSaved (browser))
 			continue;
