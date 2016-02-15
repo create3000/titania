@@ -195,7 +195,11 @@ X3DTextureNodeEditor::on_texture_changed ()
 
 	getTextureUnlinkButton () .set_sensitive (getTextureComboBoxText () .get_active_row_number () > 0 and textureNode -> getCloneCount () > 1);
 
-	X3DTexturePropertiesEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	setMultiTexture           (textureNode);
+	setTexture2DNode          (textureNode);
+	setTexture3DNode          (textureNode);
+	setEnvironmentTextureNode (textureNode);
+	X3DTexturePropertiesEditor::set_selection (X3D::MFNode (appearances));
 
 	preview -> setTexture (getTextureComboBoxText () .get_active_row_number () > 0 ? textureNode : nullptr);
 }

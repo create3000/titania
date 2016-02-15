@@ -304,10 +304,12 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
 
-//	pickable ()      .isHidden (true);
-//	set_selection () .isHidden (true);
-//	normalTool ()    .isHidden (true);
-//	coordTool  ()    .isHidden (true);
+	#ifndef DEBUG
+	pickable ()      .isHidden (true);
+	set_selection () .isHidden (true);
+	normalTool ()    .isHidden (true);
+	coordTool  ()    .isHidden (true);
+	#endif
 
 	this -> addType (X3DConstants::X3DGeometryNodeTool);
 
