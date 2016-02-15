@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,47 +47,30 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DViewpointListInterface.h"
+
+#include "BackgroundList.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DViewpointListInterface::m_widgetName = "ViewpointList";
+template <>
+const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::name = "BackgroundList";
 
-void
-X3DViewpointListInterface::create (const std::string & filename)
+template <>
+const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::description = _ ("Default Background");
+
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DBackgroundNode>> &
+BackgroundList::getStack (const X3D::X3DLayerNodePtr & layer) const
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
-
-	// Get objects.
-	m_ListStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
-	m_TypeNameColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
-	m_TypeNameCellRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TypeNameCellRenderer"));
-	m_NameColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
-	m_NameCellRenderer        = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameCellRenderer"));
-	m_DescriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
-	m_DescriptionCellRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("DescriptionCellRenderer"));
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
-	m_builder -> get_widget ("TreeView", m_TreeView);
-
-	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_connections .emplace_back (m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DViewpointListInterface::on_row_activated)));
-
-	// Call construct handler of base class.
-	construct ();
+	return layer -> getBackgroundStack ();
 }
 
-X3DViewpointListInterface::~X3DViewpointListInterface ()
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DBackgroundNode>> &
+BackgroundList::getList (const X3D::X3DLayerNodePtr & layer) const
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
-	delete m_Window;
+	return layer -> getBackgrounds ();
 }
 
 } // puck

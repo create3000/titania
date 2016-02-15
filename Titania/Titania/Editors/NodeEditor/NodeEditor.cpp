@@ -60,10 +60,7 @@
 #include "../TextureEditor/TextureEditor.h"
 #include "../TextEditor/TextEditor.h"
 #include "../LayerEditor/LayerEditor.h"
-#include "../BackgroundEditor/BackgroundEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "../BindableNodeEditor/BindableNodeEditor.h"
 #include "../LightEditor/LightEditor.h"
 #include "../InlineEditor/InlineEditor.h"
 #include "../PrecisionPlacementPanel/PrecisionPlacementPanel.h"
@@ -86,17 +83,23 @@ NodeEditor::initialize ()
 	X3DNotebook <X3DNodeEditorInterface>::initialize ();
 
 	addPage ("NodePropertiesEditor",     getNodePropertiesEditorBox     ());
+
 	addPage ("AppearanceEditor",         getAppearanceEditorBox         ());
 	addPage ("TextureEditor",            getTextureEditorBox            ());
 	addPage ("GeometryPropertiesEditor", getGeometryPropertiesEditorBox ());
 	addPage ("TextEditor",               getTextEditorBox               ());
+
 	addPage ("LayerEditor",              getLayerEditorBox              ());
-	addPage ("BackgroundEditor",         getBackgroundEditorBox         ());
-	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox     ());
-	addPage ("ViewpointEditor",          getViewpointEditorBox          ());
+	addPage ("BindableNodeEditor",       getBindableNodeEditorBox       ());
 	addPage ("LightEditor",              getLightEditorBox              ());
 	addPage ("InlineEditor",             getInlineEditorBox             ());
 	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
+}
+
+void
+NodeEditor::on_map_window ()
+{
+	getNotebook () .set_tab_pos (Gtk::POS_LEFT);
 }
 
 NodeEditor::~NodeEditor ()

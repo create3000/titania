@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,98 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
-#define __TITANIA_VIEWPOINT_LIST_VIEWPOINT_LIST_H__
+#ifndef __TITANIA_WIDGETS_BINDABLE_NODE_LIST_FOG_LIST_H__
+#define __TITANIA_WIDGETS_BINDABLE_NODE_LIST_FOG_LIST_H__
 
-#include "../../UserInterfaces/X3DViewpointListInterface.h"
+#include "X3DBindableNodeList.h"
 
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Execution/BindableNodeStack.h>
+#include <Titania/X3D/Components/EnvironmentalEffects/Fog.h>
 
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
+using FogList = X3DBindableNodeList <X3D::Fog>;
 
-class ViewpointList :
-	public X3DViewpointListInterface
-{
-public:
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::Fog>> &
+FogList::getStack (const X3D::X3DLayerNodePtr &) const;
 
-	///  @name Construction
-
-	ViewpointList (X3DBrowserWindow* const);
-
-	///  @name Member acccess
-
-	void
-	isEditor (const bool);
-
-	bool
-	isEditor () const
-	{ return editor; }
-
-	///  @name Destruction
-
-	virtual
-	~ViewpointList ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Member acccess
-
-	const X3D::ViewpointStackPtr &
-	getStack ();
-
-	const X3D::ViewpointListPtr &
-	getList () const;
-
-	///  @name Event handlers
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_activeLayer ();
-
-	void
-	set_viewpoints ();
-
-	void
-	set_currentViewpoint ();
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	virtual
-	bool
-	on_button_release_event (GdkEventButton*) final override;
-
-	void
-	on_bind_toggled (const Gtk::TreePath &);
-
-	static
-	void
-	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> &, const double);
-
-	///  @name Members
-
-	X3D::BrowserPtr      browser;
-	X3D::X3DLayerNodePtr activeLayer;
-	bool                 editor;
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
-
-};
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::Fog>> &
+FogList::getList (const X3D::X3DLayerNodePtr &) const;
 
 } // puck
 } // titania

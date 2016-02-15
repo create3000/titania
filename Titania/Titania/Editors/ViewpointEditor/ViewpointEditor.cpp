@@ -52,10 +52,10 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Widgets/ViewpointList/ViewpointList.h"
 
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/X3DViewpointNode.h>
+#include <Titania/X3D/Execution/BindableNodeList.h>
 
 namespace titania {
 namespace puck {
@@ -76,10 +76,6 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildren (browser, viewpointNode);
 
-	viewpointList -> isEditor (true);
-	viewpointList -> getTreeView () .set_headers_visible (true);
-	viewpointList -> reparent (getViewpointListBox (), getWindow ());
-
 	setup ();
 }
 
@@ -91,35 +87,12 @@ ViewpointEditor::initialize ()
 	X3DOrthoViewpointEditor::initialize ();
 	X3DGeoViewpointEditor::initialize ();
 
-	getCurrentBrowser () .addInterest (this, &ViewpointEditor::set_browser);
+	viewpointList -> getSelection () .addInterest (this, &ViewpointEditor::set_viewpoint);
 
-	set_browser (getCurrentBrowser ());
-}
-
-void
-ViewpointEditor::set_browser (const X3D::BrowserPtr & value)
-{
-	browser -> getActiveViewpointEvent () .removeInterest (this, &ViewpointEditor::set_active_viewpoint);
-
-	browser = value;
-
-	browser -> getActiveViewpointEvent () .addInterest (this, &ViewpointEditor::set_active_viewpoint);
-
-	// We shouldn't store the viewpoint in X3DPtr better would be a X3DWeakPtr inbeteen we use:
-
-	set_active_viewpoint ();
-}
-
-void
-ViewpointEditor::set_active_viewpoint ()
-{
-	const auto activeLayer = getCurrentBrowser () -> getActiveLayer ();
-
-	if (activeLayer and activeLayer -> getViewpointStack () -> bottom () not_eq activeLayer -> getViewpoint ())
-		set_viewpoint (activeLayer -> getViewpointStack () -> top ());
-
-	else
-		set_viewpoint (nullptr);
+	viewpointList -> isEditor (true);
+	viewpointList -> getLabel ()    .set_visible (true);
+	viewpointList -> getTreeView () .set_headers_visible (true);
+	viewpointList -> reparent (getViewpointListBox (), getWindow ());
 }
 
 void

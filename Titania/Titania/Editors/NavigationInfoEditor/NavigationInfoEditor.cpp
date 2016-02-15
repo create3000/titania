@@ -63,6 +63,7 @@ namespace puck {
 NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.glade"), gconf_dir ()),
+	              navigationInfoList (new NavigationInfoList (browserWindow)),
 	                        nodeName (this, getNameEntry (), getRenameButton ()),
 	                            type (new MFStringWidget (browserWindow,
 	                                  getTypeTreeView (),
@@ -85,14 +86,9 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                                  "transitionType",
 	                                  "LINEAR")),
 	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime"),
-                 navigationInfoNode (),
-                           changing (false)
+                 navigationInfoNode ()
 {
 	addChildren (navigationInfoNode);
-
-	avatarSize0 .setIndex (0);
-	avatarSize1 .setIndex (1);
-	avatarSize2 .setIndex (2);
 
 	setup ();
 }
@@ -101,16 +97,29 @@ void
 NavigationInfoEditor::initialize ()
 {
 	X3DNavigationInfoEditorInterface::initialize ();
+
+	navigationInfoList -> getSelection () .addInterest (this, &NavigationInfoEditor::set_navigationInfo);
+
+	navigationInfoList -> isEditor (true);
+	navigationInfoList -> getLabel ()    .set_visible (true);
+	navigationInfoList -> getTreeView () .set_headers_visible (true);
+	navigationInfoList -> reparent (getNavigationInfoListBox (), getWindow ());
+
+	avatarSize0 .setIndex (0);
+	avatarSize1 .setIndex (1);
+	avatarSize2 .setIndex (2);
 }
 
 void
-NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
+NavigationInfoEditor::set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo> & value)
 {
-	if (navigationInfoNode)
-		navigationInfoNode -> isBound () .removeInterest (this, &NavigationInfoEditor::set_bind);
+	navigationInfoNode = value;
 
-	navigationInfoNode = selection .empty () ? nullptr : selection .back ();
+	const bool inScene = (navigationInfoNode and navigationInfoNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
 	const auto nodes   = navigationInfoNode ? X3D::MFNode ({ navigationInfoNode }) : X3D::MFNode ();
+
+	getRemoveNavigationInfoButton () .set_sensitive (inScene and navigationInfoNode);
+	getNavigationInfoBox ()          .set_sensitive (inScene);
 
 	nodeName .setNode  (X3D::SFNode (navigationInfoNode));
 	type ->           setNodes (nodes);
@@ -122,23 +131,17 @@ NavigationInfoEditor::set_selection (const X3D::MFNode & selection)
 	visibilityLimit  .setNodes (nodes);
 	transitionType -> setNodes (nodes);
 	transitionTime   .setNodes (nodes);
-
-	getRemoveNavigationInfoButton () .set_sensitive (navigationInfoNode);
-	getBindToggleButton ()           .set_sensitive (navigationInfoNode);
-
-	if (navigationInfoNode)
-		navigationInfoNode -> isBound () .addInterest (this, &NavigationInfoEditor::set_bind);
-
-	set_bind ();
 }
 
 void
 NavigationInfoEditor::on_new_navigation_info_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Navigation"));
-	const X3D::X3DPtr <X3D::X3DBindableNode> node (getBrowserWindow () -> createNode ("NavigationInfo", undoStep));
+	const X3D::X3DPtr <X3D::NavigationInfo> node (getBrowserWindow () -> createNode ("NavigationInfo", undoStep));
 	node -> set_bind () = true;
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	navigationInfoList -> setSelection (node);
 }
 
 void
@@ -148,43 +151,6 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
-}
-
-void
-NavigationInfoEditor::on_bind_toggled ()
-{
-	if (changing)
-		return;
-
-	if (navigationInfoNode)
-		navigationInfoNode -> set_bind () = not navigationInfoNode -> isBound ();
-}
-
-void
-NavigationInfoEditor::set_bind ()
-{
-	changing = true;
-
-	if (navigationInfoNode)
-	{
-		getBindToggleButton () .set_active (navigationInfoNode -> isBound ());
-		getBindImage () .set (Gtk::StockID (navigationInfoNode -> isBound () ? "Bound" : "Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
-	}
-	else
-	{
-		getBindToggleButton () .set_active (false);
-		getBindImage () .set (Gtk::StockID ("Bind"), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
-	}
-
-	changing = false;
-}
-
-void
-NavigationInfoEditor::on_index_clicked ()
-{
-	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
-
-	nodeIndex -> setTypes ({ X3D::X3DConstants::NavigationInfo });
 }
 
 NavigationInfoEditor::~NavigationInfoEditor ()

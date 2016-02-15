@@ -79,7 +79,6 @@
     <Compile Include="Titania\UserInterfaces\X3DConsoleInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DMotionBlurEditorInterface.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DOutlineEditorInterface.cpp" />
-    <Compile Include="Titania\UserInterfaces\X3DViewpointListInterface.cpp" />
     <Compile Include="Titania\Browser\X3DBrowserWidget.cpp" />
     <Compile Include="Titania\Browser\X3DBrowserEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DLibraryViewInterface.cpp" />
@@ -118,7 +117,6 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DTexturePropertiesEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTextureTransformEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTextureTransformNodeEditor.cpp" />
-    <Compile Include="Titania\Widgets\ViewpointList\ViewpointList.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineCellRenderer.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineSeparator.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\CellRenderer\TextViewEditable.cpp" />
@@ -259,6 +257,13 @@
     <Compile Include="Titania\UserInterfaces\X3DGeometryEditorInterface.cpp" />
     <Compile Include="Titania\Browser\ViewpointObserver.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.cpp" />
+    <Compile Include="Titania\Editors\BindableNodeEditor\BindableNodeEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.cpp" />
+    <Compile Include="Titania\Widgets\BindableNodeList\ViewpointList.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DBindableNodeListInterface.cpp" />
+    <Compile Include="Titania\Widgets\BindableNodeList\NavigationInfoList.cpp" />
+    <Compile Include="Titania\Widgets\BindableNodeList\FogList.cpp" />
+    <Compile Include="Titania\Widgets\BindableNodeList\BackgroundList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -274,7 +279,6 @@
     <None Include="Titania\UserInterfaces\X3DMotionBlurEditorInterface.h" />
     <None Include="Titania\UserInterfaces\X3DOutlineEditorInterface.h" />
     <None Include="config\history.db" />
-    <None Include="Titania\UserInterfaces\X3DViewpointListInterface.h" />
     <None Include="Titania\Browser\X3DBrowserWidget.h" />
     <None Include="Titania\Browser\X3DBrowserEditor.h" />
     <None Include="share\titania\ui\icons\FlyViewer.svg" />
@@ -997,7 +1001,6 @@
     <None Include="Titania\Editors\TextureEditor\X3DTexturePropertiesEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DTextureTransformEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DTextureTransformNodeEditor.h" />
-    <None Include="Titania\Widgets\ViewpointList\ViewpointList.h" />
     <None Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineCellRenderer.h" />
     <None Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineFields.h" />
     <None Include="Titania\Widgets\OutlineEditor\CellRenderer\OutlineSeparator.h" />
@@ -2468,6 +2471,15 @@
     <None Include="Titania\Browser\ViewpointObserver.h" />
     <None Include="share\titania\ui\icons\RectangleSelection.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DGeometryTool.h" />
+    <None Include="Titania\Editors\BindableNodeEditor\BindableNodeEditor.h" />
+    <None Include="share\titania\ui\Editors\BindableNodeEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DBindableNodeEditorInterface.h" />
+    <None Include="Titania\Widgets\BindableNodeList\ViewpointList.h" />
+    <None Include="Titania\Widgets\BindableNodeList\X3DBindableNodeList.h" />
+    <None Include="Titania\UserInterfaces\X3DBindableNodeListInterface.h" />
+    <None Include="Titania\Widgets\BindableNodeList\NavigationInfoList.h" />
+    <None Include="Titania\Widgets\BindableNodeList\FogList.h" />
+    <None Include="Titania\Widgets\BindableNodeList\BackgroundList.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2554,6 +2566,8 @@
     <Folder Include="Titania\Widgets\Footer\" />
     <Folder Include="Titania\Widgets\X3DNotebook\" />
     <Folder Include="share\titania\Library\Components\" />
+    <Folder Include="Titania\Editors\BindableNodeEditor\" />
+    <Folder Include="Titania\Widgets\BindableNodeList\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
@@ -2596,7 +2610,7 @@
     <Content Include="share\titania\ui\HistoryView.glade" />
     <Content Include="share\titania\ui\MotionBlurEditor.glade" />
     <Content Include="share\titania\ui\OutlineEditor.glade" />
-    <Content Include="share\titania\ui\ViewpointList.glade" />
+    <Content Include="share\titania\ui\BindableNodeList.glade" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -2609,7 +2623,7 @@
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(error|fatal error)\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(warning|error|fatal error)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(error|fatal error)\s*:\s(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(note|warning|error|fatal error)\s*:\s(?&lt;message&gt;.*)" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>

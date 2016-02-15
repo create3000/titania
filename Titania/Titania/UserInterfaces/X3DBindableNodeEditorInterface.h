@@ -47,36 +47,39 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
-#define __TMP_GLAD2CPP_VIEWPOINT_LIST_H__
+#ifndef __TMP_GLAD2CPP_BINDABLE_NODE_EDITOR_H__
+#define __TMP_GLAD2CPP_BINDABLE_NODE_EDITOR_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DViewpointListInterface :
-	public X3DUserInterface
+class X3DBindableNodeEditorInterface :
+	public X3DEditorInterface
 {
 public:
 
-	X3DViewpointListInterface () :
-		X3DUserInterface ()
+	X3DBindableNodeEditorInterface () :
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DViewpointListInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename)
+	X3DBindableNodeEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	getBuilder () const
+	{ return m_builder; }
 
+	virtual
 	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	getWidgetName () const
+	{ return m_widgetName; }
 
 	template <class Type>
 	Type*
@@ -89,34 +92,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::ListStore> &
-	getListStore () const
-	{ return m_ListStore; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getTypeNameColumn () const
-	{ return m_TypeNameColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getTypeNameCellRenderer () const
-	{ return m_TypeNameCellRenderer; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getNameColumn () const
-	{ return m_NameColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getNameCellRenderer () const
-	{ return m_NameCellRenderer; }
-
-	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getDescriptionColumn () const
-	{ return m_DescriptionColumn; }
-
-	const Glib::RefPtr <Gtk::CellRendererText> &
-	getDescriptionCellRenderer () const
-	{ return m_DescriptionCellRenderer; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -125,20 +100,32 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::ScrolledWindow &
-	getScrolledWindow () const
-	{ return *m_ScrolledWindow; }
+	Gtk::Label &
+	getLabel () const
+	{ return *m_Label; }
 
-	Gtk::TreeView &
-	getTreeView () const
-	{ return *m_TreeView; }
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
+	Gtk::Box &
+	getBackgroundEditorBox () const
+	{ return *m_BackgroundEditorBox; }
+
+	Gtk::Box &
+	getNavigationInfoEditorBox () const
+	{ return *m_NavigationInfoEditorBox; }
+
+	Gtk::Box &
+	getViewpointEditorBox () const
+	{ return *m_ViewpointEditorBox; }
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
 
 	virtual
-	~X3DViewpointListInterface ();
+	~X3DBindableNodeEditorInterface ();
 
 
 private:
@@ -146,27 +133,23 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DUserInterface::construct (); }
+	{ X3DEditorInterface::construct (); }
 
 	void
 	create (const std::string &);
 
 	static const std::string m_widgetName;
 
-	std::string                          filename;
-	Glib::RefPtr <Gtk::Builder>          m_builder;
-	std::deque <sigc::connection>        m_connections;
-	Glib::RefPtr <Gtk::ListStore>        m_ListStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_TypeNameColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_TypeNameCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_NameColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_NameCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>   m_DescriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_DescriptionCellRenderer;
-	Gtk::Window*                         m_Window;
-	Gtk::Box*                            m_Widget;
-	Gtk::ScrolledWindow*                 m_ScrolledWindow;
-	Gtk::TreeView*                       m_TreeView;
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::deque <sigc::connection> m_connections;
+	Gtk::Window*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::Label*                   m_Label;
+	Gtk::Notebook*                m_Notebook;
+	Gtk::Box*                     m_BackgroundEditorBox;
+	Gtk::Box*                     m_NavigationInfoEditorBox;
+	Gtk::Box*                     m_ViewpointEditorBox;
 
 };
 

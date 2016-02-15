@@ -419,12 +419,13 @@ sub generate
 	say OUT "";
 
 	# Builder
-	say OUT "  const Glib::RefPtr <Gtk::Builder> & getBuilder () const { return m_builder; }";
-	say OUT "";
+	say OUT "  const Glib::RefPtr <Gtk::Builder> & getBuilder () const";
+	say OUT "  { return m_builder; }";
 
 	# Name
-	say OUT "  const std::string & getWidgetName () const { return m_widgetName; }";
-	say OUT "";
+	say OUT "  virtual";
+	say OUT "  const std::string & getWidgetName () const";
+	say OUT "  { return m_widgetName; }";
 
 	#say OUT "  void updateWidgets (const std::vector <Glib::ustring> & names) const";
 	#say OUT "  { getBuilder () -> add_from_file (filename, names); }";
@@ -803,3 +804,5 @@ Revealer::unmap
   virtual void on_unmap();
 Box::event
   virtual bool on_event(GdkEvent* event);
+Window::map
+  virtual void on_map();

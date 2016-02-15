@@ -71,6 +71,7 @@
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
+#include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
@@ -79,7 +80,10 @@
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 
-#include "../Widgets/ViewpointList/ViewpointList.h"
+#include "../Widgets/BindableNodeList/BackgroundList.h"
+#include "../Widgets/BindableNodeList/FogList.h"
+#include "../Widgets/BindableNodeList/NavigationInfoList.h"
+#include "../Widgets/BindableNodeList/ViewpointList.h"
 #include "../Widgets/HistoryView/HistoryView.h"
 #include "../Widgets/LibraryView/LibraryView.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
@@ -116,6 +120,7 @@ public:
 		         std::make_pair ("ColorEditor",              constructDialog <ColorEditor>),
 		         std::make_pair ("TextureMappingEditor",     constructDialog <TextureMappingEditor>),
 		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
+		         std::make_pair ("BindableNodeEditor",       constructDialog <BindableNodeEditor>),
 		         std::make_pair ("BackgroundEditor",         constructDialog <BackgroundEditor>),
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
@@ -124,6 +129,9 @@ public:
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),
 		         std::make_pair ("NodeIndex",                constructDialog <NodeIndex>),
+		         std::make_pair ("BackgroundList",           constructDialog <BackgroundList>),
+		         std::make_pair ("FogList",                  constructDialog <FogList>),
+		         std::make_pair ("NavigationInfoList",       constructDialog <NavigationInfoList>),
 		         std::make_pair ("ViewpointList",            constructDialog <ViewpointList>),
 		         std::make_pair ("HistoryView",              constructDialog <HistoryView>),
 		         std::make_pair ("LibraryView",              constructDialog <LibraryView>),

@@ -51,17 +51,19 @@
 #ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
 #define __TITANIA_EDITORS_VIEWPOINT_EDITOR_VIEWPOINT_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
 #include "X3DViewpointEditor.h"
 #include "X3DOrthoViewpointEditor.h"
 #include "X3DGeoViewpointEditor.h"
 
+#include "../../Widgets/BindableNodeList/ViewpointList.h"
+
+#include "../../ComposedWidgets.h"
+
 namespace titania {
 namespace puck {
 
 class BrowserWindow;
-class ViewpointList;
 
 class ViewpointEditor :
 	public X3DViewpointEditor,
@@ -79,6 +81,13 @@ public:
 	virtual
 	~ViewpointEditor ();
 
+protected:
+
+	virtual
+	const std::unique_ptr <ViewpointList> &
+	getViewpointList () const final override
+	{ return viewpointList; }
+
 
 private:
 
@@ -87,12 +96,6 @@ private:
 	virtual
 	void
 	initialize () final override;
-
-	void
-	set_browser (const X3D::BrowserPtr &);
-
-	void
-	set_active_viewpoint ();
 
 	void
 	set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);

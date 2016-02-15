@@ -81,6 +81,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	on_map_window () final override;
+
 };
 
 } // puck

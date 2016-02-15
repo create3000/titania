@@ -47,48 +47,51 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DNodeEditorInterface.h"
+#include "X3DBindableNodeListInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeEditorInterface::m_widgetName = "NodeEditor";
+const std::string X3DBindableNodeListInterface::m_widgetName = "BindableNodeList";
 
 void
-X3DNodeEditorInterface::create (const std::string & filename)
+X3DBindableNodeListInterface::create (const std::string & filename)
 {
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
+	m_ListStore               = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_TypeNameColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
+	m_TypeNameCellRenderer    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("TypeNameCellRenderer"));
+	m_NameColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_NameCellRenderer        = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("NameCellRenderer"));
+	m_DescriptionColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
+	m_DescriptionCellRenderer = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("DescriptionCellRenderer"));
+	m_PadColumn               = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("PadColumn"));
+	m_BindColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("BindColumn"));
+	m_BindCellRenderer        = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("BindCellRenderer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Label", m_Label);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("NodePropertiesEditorBox", m_NodePropertiesEditorBox);
-	m_builder -> get_widget ("AppearanceEditorBox", m_AppearanceEditorBox);
-	m_builder -> get_widget ("TextureEditorBox", m_TextureEditorBox);
-	m_builder -> get_widget ("GeometryPropertiesEditorBox", m_GeometryPropertiesEditorBox);
-	m_builder -> get_widget ("TextEditorBox", m_TextEditorBox);
-	m_builder -> get_widget ("LayerEditorBox", m_LayerEditorBox);
-	m_builder -> get_widget ("BindableNodeEditorBox", m_BindableNodeEditorBox);
-	m_builder -> get_widget ("LightEditorBox", m_LightEditorBox);
-	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
-	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("TreeView", m_TreeView);
 
-	// Connect object Gtk::Window with id 'Window'.
-	m_connections .emplace_back (m_Window -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_map_window)));
+	// Connect object Gtk::Box with id 'Widget'.
+	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_map)));
+	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_unmap)));
 
-	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page)));
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_connections .emplace_back (m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_button_release_event)));
+	m_connections .emplace_back (m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_row_activated)));
 
 	// Call construct handler of base class.
 	construct ();
 }
 
-X3DNodeEditorInterface::~X3DNodeEditorInterface ()
+X3DBindableNodeListInterface::~X3DBindableNodeListInterface ()
 {
 	for (auto & connection : m_connections)
 		connection .disconnect ();

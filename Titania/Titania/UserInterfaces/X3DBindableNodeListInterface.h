@@ -47,29 +47,29 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_FILE_SAVE_WARNING_DIALOG_H__
-#define __TMP_GLAD2CPP_FILE_SAVE_WARNING_DIALOG_H__
+#ifndef __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
+#define __TMP_GLAD2CPP_BINDABLE_NODE_LIST_H__
 
-#include "../Base/X3DDialogInterface.h"
+#include "../Base/X3DUserInterface.h"
 #include <gtkmm.h>
 #include <string>
 
 namespace titania {
 namespace puck {
 
-class X3DFileSaveWarningDialogInterface :
-	public X3DDialogInterface
+class X3DBindableNodeListInterface :
+	public X3DUserInterface
 {
 public:
 
-	X3DFileSaveWarningDialogInterface () :
-		X3DDialogInterface ()
+	X3DBindableNodeListInterface () :
+		X3DUserInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DFileSaveWarningDialogInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DDialogInterface (m_widgetName, arguments ...),
-		          filename (filename)
+	X3DBindableNodeListInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DUserInterface (m_widgetName, arguments ...),
+		        filename (filename)
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
@@ -96,7 +96,43 @@ public:
 	getListStore () const
 	{ return m_ListStore; }
 
-	Gtk::Dialog &
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTypeNameColumn () const
+	{ return m_TypeNameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getTypeNameCellRenderer () const
+	{ return m_TypeNameCellRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getNameColumn () const
+	{ return m_NameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getNameCellRenderer () const
+	{ return m_NameCellRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getDescriptionColumn () const
+	{ return m_DescriptionColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getDescriptionCellRenderer () const
+	{ return m_DescriptionCellRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getPadColumn () const
+	{ return m_PadColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getBindColumn () const
+	{ return m_BindColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getBindCellRenderer () const
+	{ return m_BindCellRenderer; }
+
+	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
 
@@ -105,19 +141,35 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Label &
-	getMessage () const
-	{ return *m_Message; }
+	getLabel () const
+	{ return *m_Label; }
 
-	Gtk::Box &
-	getFilesBox () const
-	{ return *m_FilesBox; }
+	Gtk::ScrolledWindow &
+	getScrolledWindow () const
+	{ return *m_ScrolledWindow; }
 
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
 
 	virtual
-	~X3DFileSaveWarningDialogInterface ();
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	bool
+	on_button_release_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	~X3DBindableNodeListInterface ();
 
 
 private:
@@ -125,22 +177,31 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DDialogInterface::construct (); }
+	{ X3DUserInterface::construct (); }
 
 	void
 	create (const std::string &);
 
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Glib::RefPtr <Gtk::ListStore> m_ListStore;
-	Gtk::Dialog*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Label*                   m_Message;
-	Gtk::Box*                     m_FilesBox;
-	Gtk::TreeView*                m_TreeView;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	std::deque <sigc::connection>          m_connections;
+	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_TypeNameColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_TypeNameCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_NameCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_DescriptionColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_DescriptionCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_PadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_BindColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BindCellRenderer;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::Label*                            m_Label;
+	Gtk::ScrolledWindow*                   m_ScrolledWindow;
+	Gtk::TreeView*                         m_TreeView;
 
 };
 

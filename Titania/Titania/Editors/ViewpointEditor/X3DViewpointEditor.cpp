@@ -93,7 +93,7 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 {
 	const X3D::X3DPtr <X3D::Viewpoint> viewpoint (viewpointNode);
 
-	getPerspectiveViewpointBox () .set_sensitive (inScene);
+	getPerspectiveViewpointBox ()      .set_sensitive (inScene);
 	getPerspectiveViewpointExpander () .set_visible (viewpoint);
 
 	const auto viewpoints = viewpoint ? X3D::MFNode ({ viewpoint }) : X3D::MFNode ();
@@ -135,6 +135,8 @@ X3DViewpointEditor::on_new_viewpoint_activated ()
 	{ }	
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node));
 }
 
 X3DViewpointEditor::~X3DViewpointEditor ()

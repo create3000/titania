@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DNavigationInfoEditorInterface.h"
 
+#include "../../Widgets/BindableNodeList/NavigationInfoList.h"
+
 #include <Titania/X3D/Components/Navigation/NavigationInfo.h>
 
 namespace titania {
@@ -84,9 +86,8 @@ private:
 	void
 	initialize () final override;
 
-	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo> &);
 
 	///  @name Event handlers
 
@@ -98,31 +99,20 @@ private:
 	void
 	on_remove_navigation_info_clicked () final override;
 
-	virtual
-	void
-	on_bind_toggled () final override;
-	
-	void
-	set_bind ();
-
-	virtual
-	void
-	on_index_clicked () final override;
-
 	///  @name Members
 
-	NameEntry                          nodeName;
-	std::unique_ptr <MFStringWidget>   type;
-	X3DFieldAdjustment <X3D::MFFloat>  avatarSize0;
-	X3DFieldAdjustment <X3D::MFFloat>  avatarSize1;
-	X3DFieldAdjustment <X3D::MFFloat>  avatarSize2;
-	X3DFieldAdjustment <X3D::SFFloat>  speed;
-	X3DFieldToggleButton <X3D::SFBool> headlight;
-	X3DFieldAdjustment <X3D::SFFloat>  visibilityLimit;
-	std::unique_ptr <MFStringWidget>   transitionType;
-	X3DFieldAdjustment <X3D::SFTime>   transitionTime;
-	X3D::X3DPtr <X3D::NavigationInfo>  navigationInfoNode;
-	bool                               changing;
+	std::unique_ptr <NavigationInfoList> navigationInfoList;
+	NameEntry                            nodeName;
+	std::unique_ptr <MFStringWidget>     type;
+	X3DFieldAdjustment <X3D::MFFloat>    avatarSize0;
+	X3DFieldAdjustment <X3D::MFFloat>    avatarSize1;
+	X3DFieldAdjustment <X3D::MFFloat>    avatarSize2;
+	X3DFieldAdjustment <X3D::SFFloat>    speed;
+	X3DFieldToggleButton <X3D::SFBool>   headlight;
+	X3DFieldAdjustment <X3D::SFFloat>    visibilityLimit;
+	std::unique_ptr <MFStringWidget>     transitionType;
+	X3DFieldAdjustment <X3D::SFTime>     transitionTime;
+	X3D::X3DPtr <X3D::NavigationInfo>    navigationInfoNode;
 
 };
 

@@ -75,13 +75,12 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("NavigationInfoListBox", m_NavigationInfoListBox);
 	m_builder -> get_widget ("NavigationInfoActionBox", m_NavigationInfoActionBox);
 	m_builder -> get_widget ("NewNavigationInfoButton", m_NewNavigationInfoButton);
 	m_builder -> get_widget ("RemoveNavigationInfoButton", m_RemoveNavigationInfoButton);
-	m_builder -> get_widget ("BindToggleButton", m_BindToggleButton);
-	m_builder -> get_widget ("BindImage", m_BindImage);
-	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("NavigationInfoExpander", m_NavigationInfoExpander);
+	m_builder -> get_widget ("NavigationInfoBox", m_NavigationInfoBox);
 	m_builder -> get_widget ("AvatarSizeBox", m_AvatarSizeBox);
 	m_builder -> get_widget ("AvatarSizeSpinButton0", m_AvatarSizeSpinButton0);
 	m_builder -> get_widget ("AvatarSizeSpinButton1", m_AvatarSizeSpinButton1);
@@ -103,12 +102,6 @@ X3DNavigationInfoEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_connections .emplace_back (m_NewNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_new_navigation_info_clicked)));
 	m_connections .emplace_back (m_RemoveNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_remove_navigation_info_clicked)));
-
-	// Connect object Gtk::ToggleButton with id 'BindToggleButton'.
-	m_connections .emplace_back (m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_bind_toggled)));
-
-	// Connect object Gtk::Button with id 'IndexButton'.
-	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNavigationInfoEditorInterface::on_index_clicked)));
 
 	// Call construct handler of base class.
 	construct ();

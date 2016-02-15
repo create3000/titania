@@ -58,7 +58,7 @@
 #include "../HistoryView/HistoryView.h"
 #include "../LibraryView/LibraryView.h"
 #include "../OutlineEditor/OutlineEditor.h"
-#include "../ViewpointList/ViewpointList.h"
+#include "../BindableNodeList/ViewpointList.h"
 
 namespace titania {
 namespace puck {
@@ -82,8 +82,6 @@ Sidebar::initialize ()
 	addPage ("LibraryView",   getLibraryViewBox   ());
 	addPage ("OutlineEditor", getOutlineEditorBox ());
 	addPage ("NodeEditor",    getNodeEditorBox    ());
-
-	getPage <NodeEditor> ("NodeEditor") -> getNotebook () .set_tab_pos (Gtk::POS_RIGHT);
 }
 
 Sidebar::~Sidebar ()

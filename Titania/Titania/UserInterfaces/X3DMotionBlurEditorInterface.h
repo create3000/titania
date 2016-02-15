@@ -73,10 +73,13 @@ public:
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	getBuilder () const
+	{ return m_builder; }
 
+	virtual
 	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	getWidgetName () const
+	{ return m_widgetName; }
 
 	template <class Type>
 	Type*

@@ -47,72 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
-#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "X3DBindableNodeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class RotationTool;
+const std::string X3DBindableNodeEditorInterface::m_widgetName = "BindableNodeEditor";
 
-class X3DOrthoViewpointEditor :
-	virtual public X3DViewpointEditorInterface
+void
+X3DBindableNodeEditorInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Destruction
+	// Get objects.
 
-	virtual
-	~X3DOrthoViewpointEditor ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Label", m_Label);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("BackgroundEditorBox", m_BackgroundEditorBox);
+	m_builder -> get_widget ("NavigationInfoEditorBox", m_NavigationInfoEditorBox);
+	m_builder -> get_widget ("ViewpointEditorBox", m_ViewpointEditorBox);
 
+	// Connect object Gtk::Notebook with id 'Notebook'.
+	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBindableNodeEditorInterface::on_switch_page)));
 
-protected:
+	// Call construct handler of base class.
+	construct ();
+}
 
-	///  @name Construction
+X3DBindableNodeEditorInterface::~X3DBindableNodeEditorInterface ()
+{
+	for (auto & connection : m_connections)
+		connection .disconnect ();
 
-	X3DOrthoViewpointEditor ();
-
-	virtual
-	void
-	initialize () override
-	{ }
-
-	virtual
-	const std::unique_ptr <ViewpointList> &
-	getViewpointList () const = 0;
-
-	void
-	setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_new_ortho_viewpoint_activated () final override;
-
-	///  @name Members
-
-	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
-	SFRotationAdjustment                  orientation;
-	std::unique_ptr <RotationTool>        orientationTool;	
-	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView0;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView1;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView2;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView3;
-
-};
+	delete m_Window;
+}
 
 } // puck
 } // titania
-
-#endif

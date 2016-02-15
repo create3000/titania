@@ -73,10 +73,13 @@ public:
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	getBuilder () const
+	{ return m_builder; }
 
+	virtual
 	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	getWidgetName () const
+	{ return m_widgetName; }
 
 	template <class Type>
 	Type*
@@ -130,16 +133,8 @@ public:
 	{ return *m_LayerEditorBox; }
 
 	Gtk::Box &
-	getBackgroundEditorBox () const
-	{ return *m_BackgroundEditorBox; }
-
-	Gtk::Box &
-	getNavigationInfoEditorBox () const
-	{ return *m_NavigationInfoEditorBox; }
-
-	Gtk::Box &
-	getViewpointEditorBox () const
-	{ return *m_ViewpointEditorBox; }
+	getBindableNodeEditorBox () const
+	{ return *m_BindableNodeEditorBox; }
 
 	Gtk::Box &
 	getLightEditorBox () const
@@ -152,6 +147,10 @@ public:
 	Gtk::Box &
 	getPrecisionPlacementPanelBox () const
 	{ return *m_PrecisionPlacementPanelBox; }
+
+	virtual
+	void
+	on_map_window () = 0;
 
 	virtual
 	void
@@ -186,9 +185,7 @@ private:
 	Gtk::Box*                     m_GeometryPropertiesEditorBox;
 	Gtk::Box*                     m_TextEditorBox;
 	Gtk::Box*                     m_LayerEditorBox;
-	Gtk::Box*                     m_BackgroundEditorBox;
-	Gtk::Box*                     m_NavigationInfoEditorBox;
-	Gtk::Box*                     m_ViewpointEditorBox;
+	Gtk::Box*                     m_BindableNodeEditorBox;
 	Gtk::Box*                     m_LightEditorBox;
 	Gtk::Box*                     m_InlineEditorBox;
 	Gtk::Box*                     m_PrecisionPlacementPanelBox;

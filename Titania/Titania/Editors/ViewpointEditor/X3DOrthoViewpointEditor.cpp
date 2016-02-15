@@ -106,7 +106,7 @@ X3DOrthoViewpointEditor::setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpoint
 		};
 	}
 
-	getOrthoViewpointBox () .set_sensitive (inScene);
+	getOrthoViewpointBox ()      .set_sensitive (inScene);
 	getOrthoViewpointExpander () .set_visible (orthoViewpoint);
 
 	const auto orthoViewpoints = orthoViewpoint ? X3D::MFNode ({ orthoViewpoint }) : X3D::MFNode ();
@@ -151,6 +151,8 @@ X3DOrthoViewpointEditor::on_new_ortho_viewpoint_activated ()
 	{ }	
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	getViewpointList () -> setSelection (X3D::X3DPtr <X3D::X3DViewpointNode> (node));
 }
 
 X3DOrthoViewpointEditor::~X3DOrthoViewpointEditor ()

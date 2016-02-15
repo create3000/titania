@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,71 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
-#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
-
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "ViewpointList.h"
 
 namespace titania {
 namespace puck {
 
-class RotationTool;
+template <>
+const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::name = "Viewpoint List";
 
-class X3DOrthoViewpointEditor :
-	virtual public X3DViewpointEditorInterface
+template <>
+const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::description = _ ("Default Viewpoint");
+
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DViewpointNode>> &
+ViewpointList::getStack (const X3D::X3DLayerNodePtr & layer) const
 {
-public:
+	return layer -> getViewpointStack ();
+}
 
-	///  @name Destruction
+template <>
+const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DViewpointNode>> &
+ViewpointList::getList (const X3D::X3DLayerNodePtr & layer) const
+{
+	return layer -> getViewpoints ();
+}
 
-	virtual
-	~X3DOrthoViewpointEditor ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DOrthoViewpointEditor ();
-
-	virtual
-	void
-	initialize () override
-	{ }
-
-	virtual
-	const std::unique_ptr <ViewpointList> &
-	getViewpointList () const = 0;
-
-	void
-	setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_new_ortho_viewpoint_activated () final override;
-
-	///  @name Members
-
-	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
-	SFRotationAdjustment                  orientation;
-	std::unique_ptr <RotationTool>        orientationTool;	
-	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView0;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView1;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView2;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView3;
-
-};
+template <>
+std::string
+ViewpointList::getDescription (const X3D::X3DViewpointNode* const viewpoint) const
+{ return viewpoint -> description (); }
 
 } // puck
 } // titania
-
-#endif

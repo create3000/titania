@@ -73,10 +73,13 @@ public:
 	{ create (filename); }
 
 	const Glib::RefPtr <Gtk::Builder> &
-	getBuilder () const { return m_builder; }
+	getBuilder () const
+	{ return m_builder; }
 
+	virtual
 	const std::string &
-	getWidgetName () const { return m_widgetName; }
+	getWidgetName () const
+	{ return m_widgetName; }
 
 	template <class Type>
 	Type*
@@ -138,6 +141,10 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Box &
+	getNavigationInfoListBox () const
+	{ return *m_NavigationInfoListBox; }
+
+	Gtk::Box &
 	getNavigationInfoActionBox () const
 	{ return *m_NavigationInfoActionBox; }
 
@@ -149,21 +156,13 @@ public:
 	getRemoveNavigationInfoButton () const
 	{ return *m_RemoveNavigationInfoButton; }
 
-	Gtk::ToggleButton &
-	getBindToggleButton () const
-	{ return *m_BindToggleButton; }
-
-	Gtk::Image &
-	getBindImage () const
-	{ return *m_BindImage; }
-
-	Gtk::Button &
-	getIndexButton () const
-	{ return *m_IndexButton; }
-
 	Gtk::Expander &
 	getNavigationInfoExpander () const
 	{ return *m_NavigationInfoExpander; }
+
+	Gtk::Grid &
+	getNavigationInfoBox () const
+	{ return *m_NavigationInfoBox; }
 
 	Gtk::Box &
 	getAvatarSizeBox () const
@@ -250,14 +249,6 @@ public:
 	on_remove_navigation_info_clicked () = 0;
 
 	virtual
-	void
-	on_bind_toggled () = 0;
-
-	virtual
-	void
-	on_index_clicked () = 0;
-
-	virtual
 	~X3DNavigationInfoEditorInterface ();
 
 
@@ -288,13 +279,12 @@ private:
 	Glib::RefPtr <Gtk::CellRendererCombo> m_TransitionTypeCellRendererCombo;
 	Gtk::Window*                          m_Window;
 	Gtk::Box*                             m_Widget;
+	Gtk::Box*                             m_NavigationInfoListBox;
 	Gtk::Box*                             m_NavigationInfoActionBox;
 	Gtk::Button*                          m_NewNavigationInfoButton;
 	Gtk::Button*                          m_RemoveNavigationInfoButton;
-	Gtk::ToggleButton*                    m_BindToggleButton;
-	Gtk::Image*                           m_BindImage;
-	Gtk::Button*                          m_IndexButton;
 	Gtk::Expander*                        m_NavigationInfoExpander;
+	Gtk::Grid*                            m_NavigationInfoBox;
 	Gtk::Box*                             m_AvatarSizeBox;
 	Gtk::SpinButton*                      m_AvatarSizeSpinButton0;
 	Gtk::SpinButton*                      m_AvatarSizeSpinButton1;

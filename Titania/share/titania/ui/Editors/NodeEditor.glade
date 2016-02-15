@@ -7,6 +7,7 @@
     <property name="height_request">400</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Node Editor</property>
+    <signal name="map" handler="on_map_window" swapped="no"/>
     <child>
       <object class="GtkBox" id="Widget">
         <property name="visible">True</property>
@@ -33,7 +34,7 @@
           <object class="GtkNotebook" id="Notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="tab_pos">left</property>
+            <property name="tab_pos">right</property>
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <child>
               <object class="GtkBox" id="NodePropertiesEditorBox">
@@ -185,7 +186,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="BackgroundEditorBox">
+              <object class="GtkBox" id="BindableNodeEditorBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -200,59 +201,11 @@
               <object class="GtkImage" id="image4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Background Editor</property>
-                <property name="stock">Background</property>
+                <property name="tooltip_text" translatable="yes">Bindable Node Editor</property>
+                <property name="stock">Bound</property>
               </object>
               <packing>
                 <property name="position">6</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="NavigationInfoEditorBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">7</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkImage" id="image6">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Navigation Info Editor</property>
-                <property name="stock">Navigation</property>
-              </object>
-              <packing>
-                <property name="position">7</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="ViewpointEditorBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="position">8</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkImage" id="image7">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Viewpoint Editor</property>
-                <property name="stock">Viewpoint</property>
-              </object>
-              <packing>
-                <property name="position">8</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -265,7 +218,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">9</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child type="tab">
@@ -276,7 +229,7 @@
                 <property name="stock">Light</property>
               </object>
               <packing>
-                <property name="position">9</property>
+                <property name="position">7</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -289,7 +242,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">10</property>
+                <property name="position">8</property>
               </packing>
             </child>
             <child type="tab">
@@ -300,7 +253,7 @@
                 <property name="stock">Inline</property>
               </object>
               <packing>
-                <property name="position">10</property>
+                <property name="position">8</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -313,7 +266,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">11</property>
+                <property name="position">9</property>
               </packing>
             </child>
             <child type="tab">
@@ -324,7 +277,7 @@
                 <property name="stock">Placement</property>
               </object>
               <packing>
-                <property name="position">11</property>
+                <property name="position">9</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

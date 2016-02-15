@@ -48,71 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
-#define __TITANIA_EDITORS_VIEWPOINT_EDITOR_X3DORTHO_VIEWPOINT_EDITOR_H__
+#include "BindableNodeEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DViewpointEditorInterface.h"
+#include "../../Browser/BrowserSelection.h"
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
-#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "../BackgroundEditor/BackgroundEditor.h"
+#include "../NavigationInfoEditor/NavigationInfoEditor.h"
+#include "../ViewpointEditor/ViewpointEditor.h"
 
 namespace titania {
 namespace puck {
 
-class RotationTool;
-
-class X3DOrthoViewpointEditor :
-	virtual public X3DViewpointEditorInterface
+BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
+	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade"), gconf_dir ()),
+	X3DNotebook <X3DBindableNodeEditorInterface> ()
 {
-public:
+	setup ();
+}
 
-	///  @name Destruction
+void
+BindableNodeEditor::initialize ()
+{
+	X3DBindableNodeEditorInterface::initialize ();
+	X3DNotebook <X3DBindableNodeEditorInterface>::initialize ();
 
-	virtual
-	~X3DOrthoViewpointEditor ();
+	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
+	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
+	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
+}
 
-
-protected:
-
-	///  @name Construction
-
-	X3DOrthoViewpointEditor ();
-
-	virtual
-	void
-	initialize () override
-	{ }
-
-	virtual
-	const std::unique_ptr <ViewpointList> &
-	getViewpointList () const = 0;
-
-	void
-	setOrthoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_new_ortho_viewpoint_activated () final override;
-
-	///  @name Members
-
-	X3DFieldAdjustment3 <X3D::SFVec3f>    position;
-	SFRotationAdjustment                  orientation;
-	std::unique_ptr <RotationTool>        orientationTool;	
-	X3DFieldAdjustment3 <X3D::SFVec3f>    centerOfRotation;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView0;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView1;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView2;
-	X3DFieldAdjustment <X3D::MFFloat>     fieldOfView3;
-
-};
+BindableNodeEditor::~BindableNodeEditor ()
+{
+	X3DNotebook <X3DBindableNodeEditorInterface>::dispose ();
+	X3DBindableNodeEditorInterface::dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

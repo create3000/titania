@@ -54,6 +54,8 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DViewpointEditorInterface.h"
 
+#include "../../Widgets/BindableNodeList/ViewpointList.h"
+
 namespace titania {
 namespace puck {
 
@@ -81,6 +83,10 @@ protected:
 	void
 	initialize () override
 	{ }
+
+	virtual
+	const std::unique_ptr <ViewpointList> &
+	getViewpointList () const = 0;
 
 	void
 	setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &, const bool);

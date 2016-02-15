@@ -55,6 +55,7 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
+	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/GeometryEditor/GeometryEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
@@ -133,6 +134,8 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
+	Titania/UserInterfaces/X3DBindableNodeEditorInterface.cpp \
+	Titania/UserInterfaces/X3DBindableNodeListInterface.cpp \
 	Titania/UserInterfaces/X3DBrowserWindowInterface.cpp \
 	Titania/UserInterfaces/X3DColorEditorInterface.cpp \
 	Titania/UserInterfaces/X3DConsoleInterface.cpp \
@@ -165,8 +168,11 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
-	Titania/UserInterfaces/X3DViewpointListInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
+	Titania/Widgets/BindableNodeList/BackgroundList.cpp \
+	Titania/Widgets/BindableNodeList/FogList.cpp \
+	Titania/Widgets/BindableNodeList/NavigationInfoList.cpp \
+	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/HistoryView/History.cpp \
@@ -191,8 +197,7 @@ titania_SOURCES =  \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp \
 	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
-	Titania/Widgets/Sidebar/Sidebar.cpp \
-	Titania/Widgets/ViewpointList/ViewpointList.cpp
+	Titania/Widgets/Sidebar/Sidebar.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \
 	$(TITANIA_GZSTREAM_LIBS) \
