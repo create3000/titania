@@ -91,13 +91,11 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NewTextureBackgroundMenuItem", m_NewTextureBackgroundMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("BackgroundListBox", m_BackgroundListBox);
 	m_builder -> get_widget ("ActionBox", m_ActionBox);
 	m_builder -> get_widget ("RemoveBackgroundButton", m_RemoveBackgroundButton);
-	m_builder -> get_widget ("BindToggleButton", m_BindToggleButton);
-	m_builder -> get_widget ("BindImage", m_BindImage);
-	m_builder -> get_widget ("IndexButton", m_IndexButton);
 	m_builder -> get_widget ("BackgroundExpander", m_BackgroundExpander);
-	m_builder -> get_widget ("LightBox", m_LightBox);
+	m_builder -> get_widget ("BackgroundBox", m_BackgroundBox);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
@@ -187,12 +185,6 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'RemoveBackgroundButton'.
 	m_connections .emplace_back (m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_remove_background_clicked)));
-
-	// Connect object Gtk::ToggleButton with id 'BindToggleButton'.
-	m_connections .emplace_back (m_BindToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_bind_toggled)));
-
-	// Connect object Gtk::Button with id 'IndexButton'.
-	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_index_clicked)));
 
 	// Call construct handler of base class.
 	construct ();

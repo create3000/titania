@@ -60,6 +60,22 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
+          <object class="GtkBox" id="BackgroundListBox">
+            <property name="height_request">96</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkBox" id="box3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -146,54 +162,11 @@
                 <property name="position">2</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkToggleButton" id="BindToggleButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Toggles the bind state of the node.</property>
-                <signal name="toggled" handler="on_bind_toggled" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="BindImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="stock">Bind</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="IndexButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Node Index</property>
-                <signal name="clicked" handler="on_index_clicked" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="image26">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="stock">Index</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -205,7 +178,7 @@
             <property name="spacing">8</property>
             <property name="resize_toplevel">True</property>
             <child>
-              <object class="GtkGrid" id="LightBox">
+              <object class="GtkGrid" id="BackgroundBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_spacing">8</property>
@@ -271,7 +244,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -2714,7 +2687,7 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>

@@ -135,7 +135,7 @@ private:
 	set_browser (const X3D::BrowserPtr &);
 
 	void
-	set_activeLayer ();
+	set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNode> &);
 
 	void
 	set_list ();
@@ -249,6 +249,8 @@ void
 X3DBindableNodeList <Type>::on_unmap ()
 {
 	getCurrentBrowser () .removeInterest (this, &X3DBindableNodeList::set_browser);
+
+	set_browser (nullptr);
 }
 
 template <class Type>
@@ -280,18 +282,24 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::set_browser (const X3D::BrowserPtr & value)
 {
-	browser -> getActiveLayer () .removeInterest (this, &X3DBindableNodeList::set_activeLayer);
+	if (browser)
+		browser -> getActiveLayer () .removeInterest (this, &X3DBindableNodeList::set_activeLayer);
 
 	browser = value;
 
-	browser -> getActiveLayer () .addInterest (this, &X3DBindableNodeList::set_activeLayer);
+	if (browser)
+	{
+		browser -> getActiveLayer () .addInterest (this, &X3DBindableNodeList::set_activeLayer);
 
-	set_activeLayer ();
+		set_activeLayer (browser -> getActiveLayer ());
+	}
+	else
+	   set_activeLayer (nullptr);
 }
 
 template <class Type>
 void
-X3DBindableNodeList <Type>::set_activeLayer ()
+X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNode> & value)
 {
 	if (activeLayer)
 	{
@@ -299,7 +307,7 @@ X3DBindableNodeList <Type>::set_activeLayer ()
 		getStack (activeLayer) -> removeInterest (this, &X3DBindableNodeList::set_stack);
 	}
 
-	activeLayer = browser -> getActiveLayer ();
+	activeLayer = value;
 
 	if (activeLayer)
 	{

@@ -58,6 +58,8 @@
 #include "../../ComposedWidgets/MFColorButton.h"
 #include "../../ComposedWidgets/BackgroundTool.h"
 
+#include "../../Widgets/BindableNodeList/BackgroundList.h"
+
 #include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
 
 namespace titania {
@@ -93,9 +95,8 @@ private:
 	void
 	initialize () final override;
 
-	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> &);
 
 	///  @name Event handler
 
@@ -130,21 +131,11 @@ private:
 
 	virtual
 	void
-	on_bind_toggled () final override;
-	
-	void
-	set_bind ();
-
-	virtual
-	void
-	on_index_clicked () final override;
-
-	virtual
-	void
 	store () final override;
 
 	///  @name Members
 
+	std::unique_ptr <BackgroundList>     backgroundList;
 	NameEntry                            nodeName;
 	BackgroundTool                       sky;
 	MFColorButton                        skyColor;

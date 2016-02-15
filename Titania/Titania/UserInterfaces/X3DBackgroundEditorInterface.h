@@ -205,6 +205,10 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Box &
+	getBackgroundListBox () const
+	{ return *m_BackgroundListBox; }
+
+	Gtk::Box &
 	getActionBox () const
 	{ return *m_ActionBox; }
 
@@ -212,25 +216,13 @@ public:
 	getRemoveBackgroundButton () const
 	{ return *m_RemoveBackgroundButton; }
 
-	Gtk::ToggleButton &
-	getBindToggleButton () const
-	{ return *m_BindToggleButton; }
-
-	Gtk::Image &
-	getBindImage () const
-	{ return *m_BindImage; }
-
-	Gtk::Button &
-	getIndexButton () const
-	{ return *m_IndexButton; }
-
 	Gtk::Expander &
 	getBackgroundExpander () const
 	{ return *m_BackgroundExpander; }
 
 	Gtk::Grid &
-	getLightBox () const
-	{ return *m_LightBox; }
+	getBackgroundBox () const
+	{ return *m_BackgroundBox; }
 
 	Gtk::Box &
 	getNameBox () const
@@ -573,14 +565,6 @@ public:
 	on_remove_background_clicked () = 0;
 
 	virtual
-	void
-	on_bind_toggled () = 0;
-
-	virtual
-	void
-	on_index_clicked () = 0;
-
-	virtual
 	~X3DBackgroundEditorInterface ();
 
 
@@ -627,13 +611,11 @@ private:
 	Gtk::MenuItem*                         m_NewTextureBackgroundMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Box*                              m_BackgroundListBox;
 	Gtk::Box*                              m_ActionBox;
 	Gtk::Button*                           m_RemoveBackgroundButton;
-	Gtk::ToggleButton*                     m_BindToggleButton;
-	Gtk::Image*                            m_BindImage;
-	Gtk::Button*                           m_IndexButton;
 	Gtk::Expander*                         m_BackgroundExpander;
-	Gtk::Grid*                             m_LightBox;
+	Gtk::Grid*                             m_BackgroundBox;
 	Gtk::Box*                              m_NameBox;
 	Gtk::Entry*                            m_NameEntry;
 	Gtk::Button*                           m_RenameButton;
