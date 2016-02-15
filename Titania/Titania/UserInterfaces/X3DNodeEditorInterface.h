@@ -141,6 +141,10 @@ public:
 	{ return *m_LightEditorBox; }
 
 	Gtk::Box &
+	getSoundEditorBox () const
+	{ return *m_SoundEditorBox; }
+
+	Gtk::Box &
 	getInlineEditorBox () const
 	{ return *m_InlineEditorBox; }
 
@@ -187,6 +191,7 @@ private:
 	Gtk::Box*                     m_LayerEditorBox;
 	Gtk::Box*                     m_BindableNodeEditorBox;
 	Gtk::Box*                     m_LightEditorBox;
+	Gtk::Box*                     m_SoundEditorBox;
 	Gtk::Box*                     m_InlineEditorBox;
 	Gtk::Box*                     m_PrecisionPlacementPanelBox;
 

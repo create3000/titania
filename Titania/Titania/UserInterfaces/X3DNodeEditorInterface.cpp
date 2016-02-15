@@ -75,6 +75,7 @@ X3DNodeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayerEditorBox", m_LayerEditorBox);
 	m_builder -> get_widget ("BindableNodeEditorBox", m_BindableNodeEditorBox);
 	m_builder -> get_widget ("LightEditorBox", m_LightEditorBox);
+	m_builder -> get_widget ("SoundEditorBox", m_SoundEditorBox);
 	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
 	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
 

@@ -234,7 +234,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="InlineEditorBox">
+              <object class="GtkBox" id="SoundEditorBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -246,6 +246,30 @@
               </packing>
             </child>
             <child type="tab">
+              <object class="GtkImage" id="image6">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Light Editor</property>
+                <property name="stock">audio-volume-high</property>
+              </object>
+              <packing>
+                <property name="position">8</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="InlineEditorBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="position">9</property>
+              </packing>
+            </child>
+            <child type="tab">
               <object class="GtkImage" id="image9">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -253,7 +277,7 @@
                 <property name="stock">Inline</property>
               </object>
               <packing>
-                <property name="position">8</property>
+                <property name="position">9</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -266,7 +290,7 @@
                 </child>
               </object>
               <packing>
-                <property name="position">9</property>
+                <property name="position">10</property>
               </packing>
             </child>
             <child type="tab">
@@ -277,7 +301,7 @@
                 <property name="stock">Placement</property>
               </object>
               <packing>
-                <property name="position">9</property>
+                <property name="position">10</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

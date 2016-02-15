@@ -266,6 +266,8 @@
     <Compile Include="Titania\Widgets\BindableNodeList\BackgroundList.cpp" />
     <Compile Include="Titania\Editors\FogEditor\FogEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DFogEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\SoundEditor\SoundEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DSoundEditorInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2485,6 +2487,13 @@
     <None Include="Titania\Editors\FogEditor\FogEditor.h" />
     <None Include="Titania\UserInterfaces\X3DFogEditorInterface.h" />
     <None Include="share\titania\ui\icons\Fog.svg" />
+    <None Include="share\titania\ui\icons\Faenza\16\audio-volume-high.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\audio-volume-low.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\audio-volume-medium.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\audio-volume-muted.png" />
+    <None Include="Titania\Editors\SoundEditor\SoundEditor.h" />
+    <None Include="share\titania\ui\Editors\SoundEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DSoundEditorInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2573,6 +2582,7 @@
     <Folder Include="share\titania\Library\Components\" />
     <Folder Include="Titania\Editors\BindableNodeEditor\" />
     <Folder Include="Titania\Widgets\BindableNodeList\" />
+    <Folder Include="Titania\Editors\SoundEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

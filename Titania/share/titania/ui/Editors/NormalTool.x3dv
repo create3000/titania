@@ -1,10 +1,85 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.2.2
 
 META "comment" "World of Titania"
 META "created" "Thu, 07 Aug 2014 10:10:14 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 25 Aug 2014 16:36:18 GMT"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/NormalTool.x3dv"
+META "modified" "Mon, 15 Feb 2016 12:22:16 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF Sphere Transform {
+            children Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.618 0.618 0.618
+                  specularColor 0.382 0.382 0.382
+                  shininess 0.62
+                  transparency 0.2
+                }
+              }
+              geometry Sphere { }
+            }
+          }
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0.0724355831778646,
+              0.000138152165285751,
+              38.1965331843734
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.00191338595778256,
+              0.999976871986456,
+              -0.00652644209041431,
+              0.00189643312556132
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "NormalTool"
+}
 
 DEF Gray Background {
   skyColor 0.381966 0.381966 0.381966
@@ -27,7 +102,7 @@ DEF GlobalLight DirectionalLight {
 DEF _1 SphereSensor { }
 
 DEF _2 Transform {
-  scaleOrientation 0.707716 -0.687129 0.16429 0.327699
+  scaleOrientation 0.707716211112839 -0.687129204971703 0.164290049007975 0.327699000000001
   children [
     DEF Vector Transform {
       translation 0 0 1.38197
@@ -35,7 +110,7 @@ DEF _2 Transform {
       children [
         DEF Cylinder Transform {
           translation 0 0 2
-          rotation 1 3.62543e-06 -1.04112e-09 4.71239
+          rotation 0.999999999993428 3.62542999997617e-06 -1.04111999999316e-09 4.71239
           scale 0.381966 1 0.381966
           children Shape {
             appearance DEF _3 Appearance {
@@ -48,8 +123,8 @@ DEF _2 Transform {
         }
         DEF Cone Transform {
           translation 0 0.000199281 0.0113441
-          rotation 1 3.62607e-06 -3.07409e-10 4.71239
-          scaleOrientation -0.679707 -0.296295 -0.670975 1.08482
+          rotation 0.999999999993426 3.62606999997616e-06 -3.07408999997979e-10 4.71239
+          scaleOrientation -0.679707073578635 -0.296295032074087 -0.670975072633391 1.08482
           children Shape {
             appearance USE _3
             geometry Cone { }
@@ -57,18 +132,7 @@ DEF _2 Transform {
         }
       ]
     }
-    DEF Sphere Transform {
-      children Shape {
-        appearance Appearance {
-          material Material {
-            diffuseColor 0.618 0.618 0.618
-            specularColor 0.382 0.382 0.382
-            shininess 0.62
-          }
-        }
-        geometry Sphere { }
-      }
-    }
+    USE Sphere
     DEF LocalLight DirectionalLight { }
   ]
 }

@@ -4,6 +4,10 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="audio-volume-high" filename="icons/Faenza/16/audio-volume-high.png"/>
+      <source stock-id="audio-volume-medium" filename="icons/Faenza/16/audio-volume-medium.png"/>
+      <source stock-id="audio-volume-low" filename="icons/Faenza/16/audio-volume-low.png"/>
+      <source stock-id="audio-volume-muted" filename="icons/Faenza/16/audio-volume-muted.png"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Clone" filename="icons/Clone.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>

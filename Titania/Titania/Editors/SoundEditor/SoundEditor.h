@@ -48,67 +48,75 @@
  *
  ******************************************************************************/
 
-#include "NodeEditor.h"
+#ifndef __TITANIA_EDITORS_SOUND_EDITOR_SOUND_EDITOR_H__
+#define __TITANIA_EDITORS_SOUND_EDITOR_SOUND_EDITOR_H__
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-
-#include "../AppearanceEditor/AppearanceEditor.h"
-#include "../BindableNodeEditor/BindableNodeEditor.h"
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
-#include "../InlineEditor/InlineEditor.h"
-#include "../LayerEditor/LayerEditor.h"
-#include "../LightEditor/LightEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../PrecisionPlacementPanel/PrecisionPlacementPanel.h"
-#include "../SoundEditor/SoundEditor.h"
-#include "../TextEditor/TextEditor.h"
-#include "../TextureEditor/TextureEditor.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DSoundEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ()),
-	X3DNotebook <X3DNodeEditorInterface> ()
+class NormalTool;
+
+class SoundEditor :
+	virtual public X3DSoundEditorInterface
 {
-	setup ();
-}
+public:
 
-void
-NodeEditor::initialize ()
-{
-	X3DNodeEditorInterface::initialize ();
-	X3DNotebook <X3DNodeEditorInterface>::initialize ();
+	///  @name Construction
 
-	addPage ("NodePropertiesEditor",     getNodePropertiesEditorBox     ());
+	SoundEditor (X3DBrowserWindow* const);
 
-	addPage ("AppearanceEditor",         getAppearanceEditorBox         ());
-	addPage ("TextureEditor",            getTextureEditorBox            ());
-	addPage ("GeometryPropertiesEditor", getGeometryPropertiesEditorBox ());
-	addPage ("TextEditor",               getTextEditorBox               ());
+	///  @name Destruction
 
-	addPage ("LayerEditor",              getLayerEditorBox              ());
-	addPage ("BindableNodeEditor",       getBindableNodeEditorBox       ());
-	addPage ("LightEditor",              getLightEditorBox              ());
-	addPage ("SoundEditor",              getSoundEditorBox              ());
-	addPage ("InlineEditor",             getInlineEditorBox             ());
-	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
-}
+	virtual
+	~SoundEditor ();
 
-void
-NodeEditor::on_map_window ()
-{
-	//getNotebook () .set_tab_pos (Gtk::POS_LEFT);
-}
 
-NodeEditor::~NodeEditor ()
-{
-	X3DNotebook <X3DNodeEditorInterface>::dispose ();
-	X3DNodeEditorInterface::dispose ();
-}
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode &) final override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_new_sound_clicked () final override;
+
+	virtual
+	void
+	on_remove_sound_clicked () final override;
+
+	virtual
+	void
+	on_index_clicked () final override;
+
+	///  @name Members
+
+	NameEntry                          nodeName;
+	X3DFieldAdjustment <X3D::SFFloat>  intensity;
+	X3DFieldToggleButton <X3D::SFBool> spatialize;
+	X3DFieldAdjustment3 <X3D::SFVec3f> location;
+	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
+	std::unique_ptr <NormalTool>       directionTool;	
+	X3DFieldAdjustment <X3D::SFFloat>  minBack;
+	X3DFieldAdjustment <X3D::SFFloat>  minFront;
+	X3DFieldAdjustment <X3D::SFFloat>  maxBack;
+	X3DFieldAdjustment <X3D::SFFloat>  maxFront;
+	X3DFieldAdjustment <X3D::SFFloat>  priority;
+
+};
 
 } // puck
 } // titania
+
+#endif

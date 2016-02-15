@@ -80,6 +80,7 @@
 #include "../Editors/TextureEditor/TextureEditor.h"
 #include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
+#include "../Editors/SoundEditor/SoundEditor.h"
 
 #include "../Widgets/BindableNodeList/BackgroundList.h"
 #include "../Widgets/BindableNodeList/FogList.h"
@@ -127,6 +128,7 @@ public:
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
+		         std::make_pair ("SoundEditor",              constructDialog <SoundEditor>),
 		         std::make_pair ("InlineEditor",             constructDialog <InlineEditor>),
 		         std::make_pair ("PrecisionPlacementPanel",  constructDialog <PrecisionPlacementPanel>),
 		         std::make_pair ("PrototypeEditor",          constructDialog <PrototypeEditor>),
