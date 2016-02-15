@@ -390,6 +390,10 @@ SFColorRGBAButton::on_paste ()
 	      return;
 	}
 
+	undoStep .reset ();
+
+	addUndoFunction <X3D::SFColorRGBA> (nodes, name, undoStep);
+
 	for (const auto & node : nodes)
 	{
 		try
@@ -399,6 +403,8 @@ SFColorRGBAButton::on_paste ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
+
+	addRedoFunction <X3D::SFColorRGBA> (nodes, name, undoStep);
 }
 
 SFColorRGBAButton::~SFColorRGBAButton ()

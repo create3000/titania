@@ -382,6 +382,10 @@ SFColorButton::on_paste ()
 		   return;
 	}
 
+	undoStep .reset ();
+
+	addUndoFunction <X3D::SFColor> (nodes, name, undoStep);
+
 	for (const auto & node : nodes)
 	{
 		try
@@ -391,6 +395,8 @@ SFColorButton::on_paste ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
+
+	addRedoFunction <X3D::SFColor> (nodes, name, undoStep);
 }
 
 SFColorButton::~SFColorButton ()
