@@ -186,10 +186,11 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr      browser;
-	X3D::X3DLayerNodePtr activeLayer;
-	X3D::X3DPtr <Type>   selection;
-	bool                 editor;
+	X3D::BrowserPtr         browser;
+	X3D::X3DLayerNodePtr    activeLayer;
+	X3D::X3DPtrArray <Type> nodes;
+	X3D::X3DPtr <Type>      selection;
+	bool                    editor;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
@@ -208,6 +209,7 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	X3DBindableNodeListInterface (get_ui ("BindableNodeList.glade"), gconf_dir ()),
 	                     browser (getCurrentBrowser ()),
 	                 activeLayer (),
+	                       nodes (),
 	                   selection (),
 	                      editor (false),
 	                 hadjustment (new AdjustmentObject ()),
@@ -269,7 +271,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value)
 {
-	if (value == getList (activeLayer) -> at (0))
+	if (not editor or value == getList (activeLayer) -> at (0))
 		selection = nullptr;
 	else
 		selection = value;
@@ -315,7 +317,6 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 		getStack (activeLayer) -> addInterest (this, &X3DBindableNodeList::set_stack);
 
 		set_list ();
-		set_stack ();
 
 		setSelection (getStack (activeLayer) -> top ());
 	}
@@ -330,6 +331,14 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::set_list ()
 {
+	if (editor)
+	{
+		for (const auto & node : nodes)
+		   node -> name_changed () .removeInterest (this, &X3DBindableNodeList::set_stack);
+	 
+		nodes .clear ();
+	}
+
 	// Clear
 
 	hadjustment -> preserve (getTreeView () .get_hadjustment ());
@@ -346,37 +355,25 @@ X3DBindableNodeList <Type>::set_list ()
 	{
 		for (size_t i = 0, size = list -> size (); i < size; ++ i)
 		{
-		   const X3D::X3DPtr <Type> node = list -> at (i);
+		   X3D::X3DPtr <Type> node = list -> at (i);
 
 			if (not editor and getDescription (node) .empty ())
 			   continue;
 
-			auto name = node -> getName ();
+			getListStore () -> append () -> set_value (Columns::INDEX, i);
 
-			X3D::RegEx::LastNumber_ .Replace ("", &name);
-
-			const auto row = getListStore () -> append ();
-			row -> set_value (Columns::INDEX,       i);
-			row -> set_value (Columns::NAME       , name);
-			row -> set_value (Columns::DESCRIPTION, i ? getDescription (node) : description);
-			row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
-			row -> set_value (Columns::BIND,        node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
-
-			if ((editor and node == selection) || (not editor and node -> isBound ()))
+			if (editor)
 			{
-				row -> set_value (Columns::WEIGHT, Weight::BOLD);
-				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
-			}
-			else
-			{
-				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
-				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+				node -> name_changed () .addInterest (this, &X3DBindableNodeList::set_stack);
+				nodes .emplace_back (std::move (node));
 			}
 		}
 	}
 
 	getTreeView () .set_model (getListStore ());
 	getTreeView () .set_search_column (Columns::DESCRIPTION);
+
+	set_stack ();
 
 	processInterests ();
 }
@@ -397,9 +394,16 @@ X3DBindableNodeList <Type>::set_stack ()
 		if (not editor and getDescription (node) .empty ())
 		   continue;
 
-		row -> set_value (Columns::BIND, node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
+		auto name = node -> getName ();
 
-		if ((editor and node == selection) || (not editor and node -> isBound ()))
+		X3D::RegEx::LastNumber_ .Replace ("", &name);
+
+		row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
+		row -> set_value (Columns::NAME,        name);
+		row -> set_value (Columns::DESCRIPTION, i ? getDescription (node) : description);
+		row -> set_value (Columns::BIND,        node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
+
+		if ((editor and node == selection) or (not editor and node -> isBound ()))
 		{
 			row -> set_value (Columns::WEIGHT, Weight::BOLD);
 			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);

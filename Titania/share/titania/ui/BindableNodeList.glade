@@ -125,7 +125,7 @@
                   <object class="GtkTreeViewColumn" id="BindColumn">
                     <property name="visible">False</property>
                     <property name="sizing">autosize</property>
-                    <property name="title" translatable="yes">Bind</property>
+                    <property name="title" translatable="yes">Bound</property>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="BindCellRenderer"/>
                       <attributes>

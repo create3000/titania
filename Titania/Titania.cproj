@@ -2484,6 +2484,7 @@
     <None Include="Titania\Widgets\BindableNodeList\BackgroundList.h" />
     <None Include="Titania\Editors\FogEditor\FogEditor.h" />
     <None Include="Titania\UserInterfaces\X3DFogEditorInterface.h" />
+    <None Include="share\titania\ui\icons\Fog.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
