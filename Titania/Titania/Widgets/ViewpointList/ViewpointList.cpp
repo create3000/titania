@@ -68,6 +68,7 @@ static constexpr int DESCRIPTION = 2;
 static constexpr int TYPE_NAME   = 3;
 static constexpr int WEIGHT      = 4;
 static constexpr int STYLE       = 5;
+static constexpr int BIND        = 6;
 
 };
 
@@ -78,13 +79,12 @@ static constexpr int BOLD   = 700;
 
 };
 
-ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow, const bool label) :
+ViewpointList::ViewpointList (X3DBrowserWindow* const browserWindow) :
 	         X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DViewpointListInterface (get_ui ("ViewpointList.glade"), gconf_dir ()),
 	                  browser (getCurrentBrowser ()),
 	              activeLayer (),
-	           userViewpoints (true),
-	                    label (label),
+	                   editor (false),
 	              hadjustment (new AdjustmentObject ()),
 	              vadjustment (new AdjustmentObject ())
 {
@@ -112,30 +112,26 @@ ViewpointList::initialize ()
 }
 
 void
-ViewpointList::setUserViewpoints (const bool value)
+ViewpointList::isEditor (const bool value)
 {
-	userViewpoints = value;
+	editor = value;
 
-	getNameColumn ()     -> set_visible (not userViewpoints);
-	getTypeNameColumn () -> set_visible (not userViewpoints);
+	getNameColumn ()     -> set_visible (editor);
+	getTypeNameColumn () -> set_visible (editor);
+	getPadColumn ()      -> set_visible (editor);
+	getBindColumn ()     -> set_visible (editor);
 }
 
 const X3D::ViewpointStackPtr &
-ViewpointList::getViewpointStack ()
+ViewpointList::getStack ()
 {
 	return activeLayer -> getViewpointStack ();
 }
 
 const X3D::ViewpointListPtr &
-ViewpointList::getViewpoints () const
+ViewpointList::getList () const
 {
 	return activeLayer -> getViewpoints ();
-}
-
-X3D::UserViewpointList
-ViewpointList::getUserViewpoints ()
-{
-	return activeLayer -> getUserViewpoints ();
 }
 
 void
@@ -155,16 +151,16 @@ ViewpointList::set_activeLayer ()
 {
 	if (activeLayer)
 	{
-		getViewpoints ()     -> removeInterest (this, &ViewpointList::set_viewpoints);
-		getViewpointStack () -> removeInterest (this, &ViewpointList::set_currentViewpoint);
+		getList ()  -> removeInterest (this, &ViewpointList::set_viewpoints);
+		getStack () -> removeInterest (this, &ViewpointList::set_currentViewpoint);
 	}
 
 	activeLayer = browser -> getActiveLayer ();
 
 	if (activeLayer)
 	{
-		getViewpoints ()     -> addInterest (this, &ViewpointList::set_viewpoints);
-		getViewpointStack () -> addInterest (this, &ViewpointList::set_currentViewpoint);
+		getList ()  -> addInterest (this, &ViewpointList::set_viewpoints);
+		getStack () -> addInterest (this, &ViewpointList::set_currentViewpoint);
 
 		set_viewpoints ();
 		set_currentViewpoint ();
@@ -186,40 +182,39 @@ ViewpointList::set_viewpoints ()
 
 	// Fill the TreeView's model
 
-	if (not getViewpoints () -> empty ())
-	{
-		guint index = 1;
+	const auto & list = getList ();
 
-		for (const auto & viewpoint : std::make_pair (getViewpoints () -> begin () + 1, getViewpoints () -> end ()))
+	if (not list -> empty ())
+	{
+		for (size_t i = 0, size = list -> size (); i < size; ++ i)
 		{
-			if (userViewpoints and not viewpoint -> description () .length ())
-			{
-				++ index;
-				continue;
-			}
-		
+		   const auto & viewpoint = list -> at (i);
+
+			if (not editor and viewpoint -> description () .empty ())
+			   continue;
+
 			auto name = viewpoint -> getName ();
 
 			X3D::RegEx::LastNumber_ .Replace ("", &name);
 
 			const auto row = getListStore () -> append ();
-			row -> set_value (Columns::INDEX,       index);
+			row -> set_value (Columns::INDEX,       i);
 			row -> set_value (Columns::NAME       , name);
-			row -> set_value (Columns::DESCRIPTION, viewpoint -> description () .str ());
+			row -> set_value (Columns::DESCRIPTION, i ? viewpoint -> description () .str () : _ ("Default Viewpoint"));
 			row -> set_value (Columns::TYPE_NAME,   viewpoint -> getTypeName ());
 
 			if (viewpoint -> isBound ())
 			{
+				row -> set_value (Columns::BIND,   std::string ("Bound"));
 				row -> set_value (Columns::WEIGHT, Weight::BOLD);
 				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 			}
 			else
 			{
+				row -> set_value (Columns::BIND,   std::string ("Bind"));
 				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
 				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 			}
-
-			++ index;
 		}
 	}
 
@@ -234,35 +229,42 @@ ViewpointList::set_currentViewpoint ()
 {
 	// Update list store
 
-	if (userViewpoints)
-	{
-		const auto viewpoints = getUserViewpoints ();
-		const auto rows       = getListStore () -> children ();
+	const auto & list = getList ();
+	const auto   rows = getListStore () -> children ();
 
-		for (size_t i = 0, size = rows .size (); i < size; ++ i)
+	if (editor)
+	{
+		for (size_t i = 0, size = list -> size (); i < size; ++ i)
 		{
-			if (viewpoints [i] -> isBound ())
+		   const auto & node = list -> at (i);
+		   const auto & row  = rows [i];
+
+			if (node -> isBound ())
 			{
-				rows [i] -> set_value (Columns::WEIGHT, Weight::BOLD);
-				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
+				row -> set_value (Columns::BIND,   std::string ("Bound"));
+				row -> set_value (Columns::WEIGHT, Weight::BOLD);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
 			}
 			else
 			{
-				rows [i] -> set_value (Columns::WEIGHT, Weight::NORMAL);
-				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
+				row -> set_value (Columns::BIND,   std::string ("Bind"));
+				row -> set_value (Columns::WEIGHT, Weight::NORMAL);
+				row -> set_value (Columns::STYLE,  Pango::STYLE_NORMAL);
 			}
 
-			getListStore () -> row_changed (getListStore () -> get_path (rows [i]), rows [i]);
+			getListStore () -> row_changed (getListStore () -> get_path (row), row);
 		}
 	}
 	else
 	{
-		const auto & viewpoints = *getViewpoints ();
-		const auto   rows       = getListStore () -> children ();
-
-		for (size_t i = 0, size = rows .size (); i < size; ++ i)
+		for (size_t i = 0, size = list -> size (); i < size; ++ i)
 		{
-			if (viewpoints [i + 1] -> isBound ())
+		   const auto & node = list -> at (i);
+
+			if (node -> description () .empty ())
+			   continue;
+
+			if (node -> isBound ())
 			{
 				rows [i] -> set_value (Columns::WEIGHT, Weight::BOLD);
 				rows [i] -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -285,13 +287,56 @@ ViewpointList::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeVie
 
 	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
 
-	const auto viewpoint = getViewpoints () -> at (index);
+	const auto node = getList () -> at (index);
 
-	if (viewpoint -> isBound ())
-		viewpoint -> transitionStart (viewpoint);
+	if (node -> isBound ())
+		node -> transitionStart (node);
 
 	else
-		viewpoint -> set_bind () = true;
+		node -> set_bind () = true;
+}
+
+bool
+ViewpointList::on_button_release_event (GdkEventButton* event)
+{
+	Gtk::TreePath        path;
+	Gtk::TreeViewColumn* column = nullptr;
+	int                  cell_x = 0;
+	int                  cell_y = 0;
+
+	getTreeView () .get_path_at_pos (event -> x, event -> y, path, column, cell_x, cell_y);
+
+	const auto row = getListStore () -> get_iter (path);
+
+	if (getListStore () -> iter_is_valid (row))
+	{
+		if (column == getBindColumn () .operator -> ())
+		{
+			on_bind_toggled (path);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void
+ViewpointList::on_bind_toggled (const Gtk::TreePath & path)
+{
+	// Get Node
+
+	const auto node = getList () -> at (path [0]);
+
+	if (node -> isBound ())
+	   return;
+
+	// Change Bind State Of Node
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Bind State Of Node"));
+
+	node -> set_bind () = true;
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void

@@ -76,7 +76,7 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildren (browser, viewpointNode);
 
-	viewpointList -> setUserViewpoints (false);
+	viewpointList -> isEditor (true);
 	viewpointList -> getTreeView () .set_headers_visible (true);
 	viewpointList -> reparent (getViewpointListBox (), getWindow ());
 

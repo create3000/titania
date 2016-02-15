@@ -68,16 +68,16 @@ public:
 
 	///  @name Construction
 
-	ViewpointList (X3DBrowserWindow* const, const bool = false);
+	ViewpointList (X3DBrowserWindow* const);
 
 	///  @name Member acccess
 
 	void
-	setUserViewpoints (const bool);
+	isEditor (const bool);
 
 	bool
-	getUserViewpoints () const
-	{ return userViewpoints; }
+	isEditor () const
+	{ return editor; }
 
 	///  @name Destruction
 
@@ -96,13 +96,10 @@ private:
 	///  @name Member acccess
 
 	const X3D::ViewpointStackPtr &
-	getViewpointStack ();
+	getStack ();
 
 	const X3D::ViewpointListPtr &
-	getViewpoints () const;
-
-	X3D::UserViewpointList
-	getUserViewpoints ();
+	getList () const;
 
 	///  @name Event handlers
 
@@ -122,6 +119,13 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
+	virtual
+	bool
+	on_button_release_event (GdkEventButton*) final override;
+
+	void
+	on_bind_toggled (const Gtk::TreePath &);
+
 	static
 	void
 	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> &, const double);
@@ -130,8 +134,7 @@ private:
 
 	X3D::BrowserPtr      browser;
 	X3D::X3DLayerNodePtr activeLayer;
-	bool                 userViewpoints;
-	bool                 label;
+	bool                 editor;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
