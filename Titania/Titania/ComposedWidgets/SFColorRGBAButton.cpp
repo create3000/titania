@@ -50,6 +50,8 @@
 
 #include "SFColorRGBAButton.h"
 
+#include <Titania/X3D/Browser/Core/Clipboard.h>
+
 namespace titania {
 namespace puck {
 
@@ -65,15 +67,17 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 	           widget (widget),
 	      drawingArea (),
 	           dialog (),
+	             menu (),
 	            nodes (),
 	             name (name),
 	         undoStep (),
 	            input (-1),
 	         changing (false),
 	           buffer (),
-	             hsva ()
+	             hsva (),
+	        clipboard (new X3D::Clipboard (getMasterBrowser () -> getExecutionContext ()))
 {
-	addChildren (nodes, buffer);
+	addChildren (nodes, buffer, clipboard);
 
 	// Buffer
 
@@ -81,7 +85,8 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Button
 
-	colorButton .signal_clicked () .connect (sigc::mem_fun (*this, &SFColorRGBAButton::on_clicked));
+	colorButton .signal_button_press_event () .connect (sigc::mem_fun (*this, &SFColorRGBAButton::on_button_press_event));
+	colorButton .signal_clicked ()            .connect (sigc::mem_fun (*this, &SFColorRGBAButton::on_clicked));
 	colorButton .add (drawingArea);
 
 	// Drawing Area
@@ -100,8 +105,28 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 	dialog .get_color_selection () -> set_has_opacity_control (true);
 	dialog .get_color_selection () -> set_has_palette (true);
 
-	dialog .property_ok_button () .get_value () -> hide ();
+	dialog .property_ok_button ()     .get_value () -> hide ();
 	dialog .property_cancel_button () .get_value () -> hide ();
+
+	// Menu
+
+	const auto copyMenuItem  = Gtk::manage (new Gtk::ImageMenuItem (Gtk::StockID ("gtk-copy")));
+	const auto pasteMenuItem = Gtk::manage (new Gtk::ImageMenuItem (Gtk::StockID ("gtk-paste")));
+
+	copyMenuItem  -> signal_activate () .connect (sigc::mem_fun (this, &SFColorRGBAButton::on_copy));
+	pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &SFColorRGBAButton::on_paste));
+
+	copyMenuItem  -> set_always_show_image (true);
+	pasteMenuItem -> set_always_show_image (true);
+	pasteMenuItem -> set_sensitive (false);
+
+	menu .append (*copyMenuItem);
+	menu .append (*pasteMenuItem);
+	menu .show_all ();
+
+	clipboard -> string_changed () .addInterest (pasteMenuItem, &Gtk::ImageMenuItem::set_sensitive, true);
+	clipboard -> target () = "model/x3d+vrml+color";
+	clipboard -> setup ();
 
 	// Setup
 
@@ -312,6 +337,68 @@ SFColorRGBAButton::to_rgba (const X3D::Color4f & value)
 
 	color .set_rgba (value .r (), value .g (), value .b (), value .a ());
 	return color;
+}
+
+bool
+SFColorRGBAButton::on_button_press_event (GdkEventButton* event)
+{
+	switch (event -> button)
+	{
+		case 3:
+		{
+			menu .popup (event -> button, event -> time);
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+SFColorRGBAButton::on_copy ()
+{
+	for (const auto & node : basic::make_reverse_range (nodes))
+	{
+		try
+		{
+			const auto & field = node -> getField <X3D::SFColorRGBA> (name);
+			clipboard -> set_string () = field .toString ();
+			break;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+}
+
+void
+SFColorRGBAButton::on_paste ()
+{
+	X3D::Color4f     value;
+	X3D::SFColorRGBA color;
+
+	if (color .fromString (clipboard -> string_changed ()))
+		value = color;
+	else
+	{
+		X3D::SFColor color;
+
+		if (color .fromString (clipboard -> string_changed ()))
+		   value = X3D::Color4f (color .getRed (), color .getGreen (), color .getBlue (), 1);
+	   else
+	      return;
+	}
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> setField <X3D::SFColorRGBA> (name, value);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
 }
 
 SFColorRGBAButton::~SFColorRGBAButton ()

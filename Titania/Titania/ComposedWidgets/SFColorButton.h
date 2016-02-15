@@ -116,6 +116,15 @@ private:
 	Gdk::RGBA
 	to_rgba (const X3D::Color3f &);
 
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	void
+	on_copy ();
+
+	void
+	on_paste ();
+
 	///  @name Members
 
 	Gtk::Button &                        colorButton;
@@ -123,6 +132,7 @@ private:
 	Gtk::Widget &                        widget;
 	Gtk::DrawingArea                     drawingArea;
 	Gtk::ColorSelectionDialog            dialog;
+	Gtk::Menu                            menu;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
 	X3D::UndoStepPtr                     undoStep;
@@ -130,7 +140,7 @@ private:
 	bool                                 changing;
 	X3D::SFTime                          buffer;
 	float                                hsv [3];
-
+	X3D::ClipboardPtr                    clipboard;
 };
 
 } // puck
