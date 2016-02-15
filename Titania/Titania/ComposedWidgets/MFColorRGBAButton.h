@@ -181,6 +181,15 @@ private:
 	size_t
 	getColumns (const double, const double, const double, const X3D::Vector4i &);
 
+	bool
+	on_button_press_event (GdkEventButton*);
+
+	void
+	on_copy ();
+
+	void
+	on_paste ();
+
 	///  @name Members
 
 	sigc::signal<void>                   index_changed;
@@ -193,6 +202,7 @@ private:
 	Gtk::DrawingArea                     drawingArea;
 	Gtk::ColorSelectionDialog            dialog;
 	Gtk::DrawingArea                     colorsDrawingArea;
+	Gtk::Menu                            menu;
 	X3D::MFNode                          nodes;
 	X3D::SFNode                          node;
 	const std::string                    name;
@@ -205,6 +215,7 @@ private:
 	int                                  colorsSize;
 	int                                  colorsGap;
 	X3D::Vector4i                        colorsBorder;
+	X3D::ClipboardPtr                    clipboard;
 
 };
 

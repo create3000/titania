@@ -50,6 +50,8 @@
 
 #include "MFColorRGBAButton.h"
 
+#include <Titania/X3D/Browser/Core/Clipboard.h>
+
 namespace titania {
 namespace puck {
 
@@ -73,6 +75,7 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 	         drawingArea (),
 	              dialog (),
 	   colorsDrawingArea (),
+	                menu (),
 	               nodes (),
 	                node (),
 	                name (name),
@@ -84,7 +87,8 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 	                hsva (),
 	          colorsSize (32),
 	           colorsGap (2),
-	        colorsBorder (2, 2, 2, 2)
+	        colorsBorder (2, 2, 2, 2),
+	           clipboard (new X3D::Clipboard (getMasterBrowser () -> getExecutionContext ()))
 {
 	addChildren (node, nodes, buffer);
 
@@ -94,7 +98,8 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Button
 
-	colorButton .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_clicked));
+	colorButton .signal_button_press_event () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_button_press_event));
+	colorButton .signal_clicked ()            .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_clicked));
 	colorButton .add (drawingArea);
 
 	// Drawing Area
@@ -134,6 +139,26 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 	colorsDrawingArea .show ();
 
 	colorsScrolledWindow .add (colorsDrawingArea);
+
+	// Menu
+
+	const auto copyMenuItem  = Gtk::manage (new Gtk::ImageMenuItem (Gtk::StockID ("gtk-copy")));
+	const auto pasteMenuItem = Gtk::manage (new Gtk::ImageMenuItem (Gtk::StockID ("gtk-paste")));
+
+	copyMenuItem  -> signal_activate () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_copy));
+	pasteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_paste));
+
+	copyMenuItem  -> set_always_show_image (true);
+	pasteMenuItem -> set_always_show_image (true);
+	pasteMenuItem -> set_sensitive (false);
+
+	menu .append (*copyMenuItem);
+	menu .append (*pasteMenuItem);
+	menu .show_all ();
+
+	clipboard -> string_changed () .addInterest (pasteMenuItem, &Gtk::ImageMenuItem::set_sensitive, true);
+	clipboard -> target () = "model/x3d+vrml+color";
+	clipboard -> setup ();
 
 	// Setup
 
@@ -609,6 +634,74 @@ size_t
 MFColorRGBAButton::getColumns (const double width, const double size, const double gap, const X3D::Vector4i & border)
 {
 	return ((width / gap + 1 - border [0] + border [1]) * gap) / (size + gap);
+}
+
+bool
+MFColorRGBAButton::on_button_press_event (GdkEventButton* event)
+{
+	switch (event -> button)
+	{
+		case 3:
+		{
+			menu .popup (event -> button, event -> time);
+			return true;
+		}
+		default:
+			break;
+	}
+
+	return false;
+}
+
+void
+MFColorRGBAButton::on_copy ()
+{
+	for (const auto & node : basic::make_reverse_range (nodes))
+	{
+		try
+		{
+			auto & field = node -> getField <X3D::MFColorRGBA> (name);
+			clipboard -> set_string () = field .get1Value (index) .toString ();
+			break;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+}
+
+void
+MFColorRGBAButton::on_paste ()
+{
+	X3D::Color4f     value;
+	X3D::SFColorRGBA color;
+
+	if (color .fromString (clipboard -> string_changed ()))
+		value = color;
+	else
+	{
+		X3D::SFColor color;
+
+		if (color .fromString (clipboard -> string_changed ()))
+		   value = X3D::Color4f (color .getRed (), color .getGreen (), color .getBlue (), 1);
+	   else
+	      return;
+	}
+
+	undoStep .reset ();
+
+	addUndoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			node -> getField <X3D::MFColorRGBA> (name) .set1Value (index, value);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunction <X3D::MFColorRGBA> (nodes, name, undoStep);
 }
 
 MFColorRGBAButton::~MFColorRGBAButton ()
