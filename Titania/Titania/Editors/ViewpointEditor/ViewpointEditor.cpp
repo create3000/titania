@@ -133,6 +133,8 @@ ViewpointEditor::on_remove_viewpoint_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { viewpointNode }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_viewpoint (nullptr);
 }
 
 void

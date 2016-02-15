@@ -147,6 +147,8 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_navigationInfo (nullptr);
 }
 
 NavigationInfoEditor::~NavigationInfoEditor ()

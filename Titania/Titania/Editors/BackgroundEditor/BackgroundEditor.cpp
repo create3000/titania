@@ -296,6 +296,8 @@ BackgroundEditor::on_remove_background_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_background (nullptr);
 }
 
 void

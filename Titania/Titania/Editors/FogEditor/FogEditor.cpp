@@ -122,6 +122,8 @@ FogEditor::on_remove_fog_clicked ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { nodeName .getNode () }, true, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
+
+	set_fog (nullptr);
 }
 
 FogEditor::~FogEditor ()
