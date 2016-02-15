@@ -68,6 +68,7 @@ X3DBindableNodeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Label", m_Label);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("BackgroundEditorBox", m_BackgroundEditorBox);
+	m_builder -> get_widget ("FogEditorBox", m_FogEditorBox);
 	m_builder -> get_widget ("NavigationInfoEditorBox", m_NavigationInfoEditorBox);
 	m_builder -> get_widget ("ViewpointEditorBox", m_ViewpointEditorBox);
 

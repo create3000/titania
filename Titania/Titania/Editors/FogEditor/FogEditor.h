@@ -48,44 +48,69 @@
  *
  ******************************************************************************/
 
-#include "BindableNodeEditor.h"
+#ifndef __TITANIA_EDITORS_FOG_EDITOR_FOG_EDITOR_H__
+#define __TITANIA_EDITORS_FOG_EDITOR_FOG_EDITOR_H__
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DFogEditorInterface.h"
 
-#include "../BackgroundEditor/BackgroundEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "../../Widgets/BindableNodeList/FogList.h"
+
+#include <Titania/X3D/Components/EnvironmentalEffects/Fog.h>
 
 namespace titania {
 namespace puck {
 
-BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade"), gconf_dir ()),
-	X3DNotebook <X3DBindableNodeEditorInterface> ()
-{
-	setup ();
-}
+class MFStringWidget;
 
-void
-BindableNodeEditor::initialize ()
+class FogEditor :
+	virtual public X3DFogEditorInterface
 {
-	X3DBindableNodeEditorInterface::initialize ();
-	X3DNotebook <X3DBindableNodeEditorInterface>::initialize ();
+public:
 
-	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
-	addPage ("FogEditor",                getFogEditorBox            ());
-	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
-	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
-}
+	///  @name Construction
 
-BindableNodeEditor::~BindableNodeEditor ()
-{
-	X3DNotebook <X3DBindableNodeEditorInterface>::dispose ();
-	X3DBindableNodeEditorInterface::dispose ();
-}
+	FogEditor (X3DBrowserWindow* const);
+
+	///  @name Destruction
+
+	virtual
+	~FogEditor ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	void
+	set_fog (const X3D::X3DPtr <X3D::Fog> &);
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_new_fog_clicked () final override;
+
+	virtual
+	void
+	on_remove_fog_clicked () final override;
+
+	///  @name Members
+
+	std::unique_ptr <FogList>          fogList;
+	NameEntry                          nodeName;
+	SFColorButton                      color;
+	SFStringComboBoxText               fogType;
+	X3DFieldAdjustment <X3D::SFFloat>  visibilityRange;
+	X3D::X3DPtr <X3D::Fog>             fogNode;
+
+};
 
 } // puck
 } // titania
+
+#endif

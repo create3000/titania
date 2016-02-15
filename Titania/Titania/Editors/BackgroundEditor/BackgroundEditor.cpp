@@ -51,7 +51,6 @@
 #include "BackgroundEditor.h"
 
 #include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/TexturePreview.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>

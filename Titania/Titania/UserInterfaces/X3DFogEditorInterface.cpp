@@ -47,44 +47,53 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#include "BindableNodeEditor.h"
-
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-
-#include "../BackgroundEditor/BackgroundEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "X3DFogEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
-	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade"), gconf_dir ()),
-	X3DNotebook <X3DBindableNodeEditorInterface> ()
-{
-	setup ();
-}
+const std::string X3DFogEditorInterface::m_widgetName = "FogEditor";
 
 void
-BindableNodeEditor::initialize ()
+X3DFogEditorInterface::create (const std::string & filename)
 {
-	X3DBindableNodeEditorInterface::initialize ();
-	X3DNotebook <X3DBindableNodeEditorInterface>::initialize ();
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
-	addPage ("FogEditor",                getFogEditorBox            ());
-	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
-	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
+	// Get objects.
+	m_ColorAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
+	m_FogTypeListStore          = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FogTypeListStore"));
+	m_VisibilityRangeAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("VisibilityRangeAdjustment"));
+
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("FogListBox", m_FogListBox);
+	m_builder -> get_widget ("FogActionBox", m_FogActionBox);
+	m_builder -> get_widget ("NewFogButton", m_NewFogButton);
+	m_builder -> get_widget ("RemoveFogButton", m_RemoveFogButton);
+	m_builder -> get_widget ("FogExpander", m_FogExpander);
+	m_builder -> get_widget ("FogBox", m_FogBox);
+	m_builder -> get_widget ("VisibilityRangeSpinButton", m_VisibilityRangeSpinButton);
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("ColorBox", m_ColorBox);
+	m_builder -> get_widget ("ColorButton", m_ColorButton);
+	m_builder -> get_widget ("FogTypeComboBoxText", m_FogTypeComboBoxText);
+	m_connections .emplace_back (m_NewFogButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFogEditorInterface::on_new_fog_clicked)));
+	m_connections .emplace_back (m_RemoveFogButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFogEditorInterface::on_remove_fog_clicked)));
+
+	// Call construct handler of base class.
+	construct ();
 }
 
-BindableNodeEditor::~BindableNodeEditor ()
+X3DFogEditorInterface::~X3DFogEditorInterface ()
 {
-	X3DNotebook <X3DBindableNodeEditorInterface>::dispose ();
-	X3DBindableNodeEditorInterface::dispose ();
+	for (auto & connection : m_connections)
+		connection .disconnect ();
+
+	delete m_Window;
 }
 
 } // puck

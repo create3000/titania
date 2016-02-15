@@ -51,11 +51,7 @@
 #include "NavigationInfoEditor.h"
 
 #include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/MFStringWidget.h"
-
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Execution/World.h>
 
 namespace titania {
 namespace puck {

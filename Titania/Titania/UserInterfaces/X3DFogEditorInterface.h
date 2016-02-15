@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_BINDABLE_NODE_EDITOR_H__
-#define __TMP_GLAD2CPP_BINDABLE_NODE_EDITOR_H__
+#ifndef __TMP_GLAD2CPP_FOG_EDITOR_H__
+#define __TMP_GLAD2CPP_FOG_EDITOR_H__
 
 #include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
@@ -57,17 +57,17 @@
 namespace titania {
 namespace puck {
 
-class X3DBindableNodeEditorInterface :
+class X3DFogEditorInterface :
 	public X3DEditorInterface
 {
 public:
 
-	X3DBindableNodeEditorInterface () :
+	X3DFogEditorInterface () :
 		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DBindableNodeEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DFogEditorInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -92,6 +92,18 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorAdjustment () const
+	{ return m_ColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getFogTypeListStore () const
+	{ return m_FogTypeListStore; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getVisibilityRangeAdjustment () const
+	{ return m_VisibilityRangeAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -100,36 +112,68 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
+	Gtk::Box &
+	getFogListBox () const
+	{ return *m_FogListBox; }
 
 	Gtk::Box &
-	getBackgroundEditorBox () const
-	{ return *m_BackgroundEditorBox; }
+	getFogActionBox () const
+	{ return *m_FogActionBox; }
+
+	Gtk::Button &
+	getNewFogButton () const
+	{ return *m_NewFogButton; }
+
+	Gtk::Button &
+	getRemoveFogButton () const
+	{ return *m_RemoveFogButton; }
+
+	Gtk::Expander &
+	getFogExpander () const
+	{ return *m_FogExpander; }
+
+	Gtk::Grid &
+	getFogBox () const
+	{ return *m_FogBox; }
+
+	Gtk::SpinButton &
+	getVisibilityRangeSpinButton () const
+	{ return *m_VisibilityRangeSpinButton; }
 
 	Gtk::Box &
-	getFogEditorBox () const
-	{ return *m_FogEditorBox; }
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
 
 	Gtk::Box &
-	getNavigationInfoEditorBox () const
-	{ return *m_NavigationInfoEditorBox; }
+	getColorBox () const
+	{ return *m_ColorBox; }
 
-	Gtk::Box &
-	getViewpointEditorBox () const
-	{ return *m_ViewpointEditorBox; }
+	Gtk::Button &
+	getColorButton () const
+	{ return *m_ColorButton; }
+
+	Gtk::ComboBoxText &
+	getFogTypeComboBoxText () const
+	{ return *m_FogTypeComboBoxText; }
 
 	virtual
 	void
-	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+	on_new_fog_clicked () = 0;
 
 	virtual
-	~X3DBindableNodeEditorInterface ();
+	void
+	on_remove_fog_clicked () = 0;
+
+	virtual
+	~X3DFogEditorInterface ();
 
 
 private:
@@ -144,17 +188,27 @@ private:
 
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Window*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Label*                   m_Label;
-	Gtk::Notebook*                m_Notebook;
-	Gtk::Box*                     m_BackgroundEditorBox;
-	Gtk::Box*                     m_FogEditorBox;
-	Gtk::Box*                     m_NavigationInfoEditorBox;
-	Gtk::Box*                     m_ViewpointEditorBox;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::deque <sigc::connection>  m_connections;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
+	Glib::RefPtr <Gtk::ListStore>  m_FogTypeListStore;
+	Glib::RefPtr <Gtk::Adjustment> m_VisibilityRangeAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_FogListBox;
+	Gtk::Box*                      m_FogActionBox;
+	Gtk::Button*                   m_NewFogButton;
+	Gtk::Button*                   m_RemoveFogButton;
+	Gtk::Expander*                 m_FogExpander;
+	Gtk::Grid*                     m_FogBox;
+	Gtk::SpinButton*               m_VisibilityRangeSpinButton;
+	Gtk::Box*                      m_NameBox;
+	Gtk::Entry*                    m_NameEntry;
+	Gtk::Button*                   m_RenameButton;
+	Gtk::Box*                      m_ColorBox;
+	Gtk::Button*                   m_ColorButton;
+	Gtk::ComboBoxText*             m_FogTypeComboBoxText;
 
 };
 

@@ -57,6 +57,7 @@ titania_SOURCES =  \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
 	Titania/Editors/ColorEditor/ColorEditor.cpp \
+	Titania/Editors/FogEditor/FogEditor.cpp \
 	Titania/Editors/GeometryEditor/GeometryEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
@@ -143,6 +144,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DFileOpenDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveDialogInterface.cpp \
 	Titania/UserInterfaces/X3DFileSaveWarningDialogInterface.cpp \
+	Titania/UserInterfaces/X3DFogEditorInterface.cpp \
 	Titania/UserInterfaces/X3DFooterInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \

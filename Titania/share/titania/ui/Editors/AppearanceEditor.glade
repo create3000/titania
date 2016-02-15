@@ -637,6 +637,7 @@
                                   <object class="GtkBox" id="DiffuseColorBox">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="hexpand">True</property>
                                     <property name="spacing">8</property>
                                     <property name="homogeneous">True</property>
                                     <child>

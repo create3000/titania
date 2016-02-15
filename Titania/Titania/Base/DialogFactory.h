@@ -58,27 +58,28 @@
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
-#include "../Editors/NodeEditor/NodeEditor.h"
 #include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/BackgroundEditor/BackgroundEditor.h"
+#include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
+#include "../Editors/ColorEditor/ColorEditor.h"
+#include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
+#include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/LightEditor/LightEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
+#include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
+#include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
+#include "../Editors/NodeEditor/NodeEditor.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
+#include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
-#include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
-#include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../Editors/ViewpointEditor/ViewpointEditor.h"
-#include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
-#include "../Editors/ColorEditor/ColorEditor.h"
 #include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
-#include "../Editors/LayerEditor/LayerEditor.h"
-#include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
+#include "../Editors/ViewpointEditor/ViewpointEditor.h"
 
 #include "../Widgets/BindableNodeList/BackgroundList.h"
 #include "../Widgets/BindableNodeList/FogList.h"
@@ -88,9 +89,9 @@
 #include "../Widgets/LibraryView/LibraryView.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 
+#include "../Widgets/AnimationEditor/AnimationEditor.h"
 #include "../Widgets/Console/Console.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
-#include "../Widgets/AnimationEditor/AnimationEditor.h"
 
 namespace titania {
 namespace puck {
@@ -122,6 +123,7 @@ public:
 		         std::make_pair ("LayerEditor",              constructDialog <LayerEditor>),
 		         std::make_pair ("BindableNodeEditor",       constructDialog <BindableNodeEditor>),
 		         std::make_pair ("BackgroundEditor",         constructDialog <BackgroundEditor>),
+		         std::make_pair ("FogEditor",                constructDialog <FogEditor>),
 		         std::make_pair ("NavigationInfoEditor",     constructDialog <NavigationInfoEditor>),
 		         std::make_pair ("ViewpointEditor",          constructDialog <ViewpointEditor>),
 		         std::make_pair ("LightEditor",              constructDialog <LightEditor>),
