@@ -83,6 +83,8 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                                     "bboxCenter"),
 	                      boundedObject ()
 {
+	addChildren (boundedObject);
+
 	setup ();
 }
 

@@ -266,7 +266,16 @@ Surface::dispose ()
 {
 	draw_connection .disconnect ();
 
-	context .reset ();
+	notify_callbacks ();
+
+	// Don't use widget unparent!
+	const auto container = get_parent ();
+
+	if (container)
+		container -> remove (*this);
+	//
+
+	context        .reset ();
 	sharingContext .reset ();
 }
 

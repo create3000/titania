@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for GeometryEditor.
+ */
 class X3DGeometryEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DGeometryEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -148,6 +155,8 @@ public:
 	getLassoMenuItem () const
 	{ return *m_LassoMenuItem; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_map () = 0;
@@ -192,11 +201,15 @@ public:
 	void
 	on_lasso_activated () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DGeometryEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -206,25 +219,28 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Window*                  m_Window;
-	Gtk::Revealer*                m_Widget;
-	Gtk::Box*                     m_GeometryEditorBox;
-	Gtk::ToggleButton*            m_EditToggleButton;
-	Gtk::ToggleButton*            m_PaintSelectionToggleButton;
-	Gtk::Image*                   m_PaintSelectionImage;
-	Gtk::Button*                  m_SplitPointButton;
-	Gtk::Button*                  m_MergePointsButton;
-	Gtk::ToggleButton*            m_NormalEnabledToggleButton;
-	Gtk::Button*                  m_HammerButton;
-	Gtk::Menu*                    m_SelectionTypeMenu;
-	Gtk::ImageMenuItem*           m_BrushMenuItem;
-	Gtk::ImageMenuItem*           m_RectangleMenuItem;
-	Gtk::ImageMenuItem*           m_LassoMenuItem;
+	///  @name Members
+
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window*                m_Window;
+	Gtk::Revealer*              m_Widget;
+	Gtk::Box*                   m_GeometryEditorBox;
+	Gtk::ToggleButton*          m_EditToggleButton;
+	Gtk::ToggleButton*          m_PaintSelectionToggleButton;
+	Gtk::Image*                 m_PaintSelectionImage;
+	Gtk::Button*                m_SplitPointButton;
+	Gtk::Button*                m_MergePointsButton;
+	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
+	Gtk::Button*                m_HammerButton;
+	Gtk::Menu*                  m_SelectionTypeMenu;
+	Gtk::ImageMenuItem*         m_BrushMenuItem;
+	Gtk::ImageMenuItem*         m_RectangleMenuItem;
+	Gtk::ImageMenuItem*         m_LassoMenuItem;
 
 };
 

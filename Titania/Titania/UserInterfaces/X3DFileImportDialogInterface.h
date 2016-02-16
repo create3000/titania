@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for FileImportDialog.
+ */
 class X3DFileImportDialogInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFileImportDialogInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -144,11 +151,17 @@ public:
 	getImportProtosButton () const
 	{ return *m_ImportProtosButton; }
 
+	///  @name Signal handlers
+
+	///  @name Destruction
+
 	virtual
 	~X3DFileImportDialogInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -158,11 +171,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;

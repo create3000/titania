@@ -657,7 +657,7 @@ throw (Error <DISPOSED>)
 void
 X3DBrowser::dispose ()
 {
-	__LOG__ << this << std::endl;
+	__LOG__ << this << " : " << getWorldURL () << std::endl;
 
 	future .reset ();
 

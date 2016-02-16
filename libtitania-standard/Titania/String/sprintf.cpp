@@ -56,14 +56,16 @@ namespace titania {
 namespace basic {
 
 std::string
-sprintf (const std::string & fmt, ...)
+sprintf (const std::string & format, ...)
 {
-	char*   ret = nullptr;
-	va_list ap;
+	char* ret = nullptr;
 
-	va_start (ap, fmt);
-	const int n = vasprintf (&ret, fmt .c_str (), ap);
-	va_end (ap);
+	va_list arglist;
+	va_start (arglist, format);
+
+	const int n = vasprintf (&ret, format .c_str (), arglist);
+
+	va_end (arglist);
 
 	std::string str (ret, n);
 	free (ret);
@@ -72,14 +74,16 @@ sprintf (const std::string & fmt, ...)
 }
 
 std::string
-sprintf (const char* const fmt, ...)
+sprintf (const char* const format, ...)
 {
-	char*   ret = nullptr;
-	va_list ap;
+	char* ret = nullptr;
 
-	va_start (ap, fmt);
-	const int n = vasprintf (&ret, fmt, ap);
-	va_end (ap);
+	va_list arglist;
+	va_start (arglist, format);
+
+	const int n = vasprintf (&ret, format, arglist);
+
+	va_end (arglist);
 
 	std::string str (ret, n);
 	free (ret);

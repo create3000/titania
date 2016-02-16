@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for SoundEditor.
+ */
 class X3DSoundEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DSoundEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -164,6 +171,10 @@ public:
 	getIndexButton () const
 	{ return *m_IndexButton; }
 
+	Gtk::Notebook &
+	getSoundNotebook () const
+	{ return *m_SoundNotebook; }
+
 	Gtk::Expander &
 	getSoundExpander () const
 	{ return *m_SoundExpander; }
@@ -244,6 +255,16 @@ public:
 	getSoundMaxFrontSpinButton () const
 	{ return *m_SoundMaxFrontSpinButton; }
 
+	Gtk::Expander &
+	getSoundSourceExpander () const
+	{ return *m_SoundSourceExpander; }
+
+	Gtk::Grid &
+	getSoundSourceBox () const
+	{ return *m_SoundSourceBox; }
+
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_new_sound_clicked () = 0;
@@ -256,11 +277,15 @@ public:
 	void
 	on_index_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DSoundEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -270,11 +295,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionZAdjustment;
@@ -293,6 +321,7 @@ private:
 	Gtk::Button*                   m_NewSoundButton;
 	Gtk::Button*                   m_RemoveSoundButton;
 	Gtk::Button*                   m_IndexButton;
+	Gtk::Notebook*                 m_SoundNotebook;
 	Gtk::Expander*                 m_SoundExpander;
 	Gtk::Grid*                     m_SoundBox;
 	Gtk::CheckButton*              m_SoundSpatializeCheckButton;
@@ -313,6 +342,8 @@ private:
 	Gtk::SpinButton*               m_SoundMinFrontSpinButton;
 	Gtk::SpinButton*               m_SoundMaxBackSpinButton;
 	Gtk::SpinButton*               m_SoundMaxFrontSpinButton;
+	Gtk::Expander*                 m_SoundSourceExpander;
+	Gtk::Grid*                     m_SoundSourceBox;
 
 };
 

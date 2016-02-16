@@ -68,6 +68,7 @@ namespace puck {
 const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
 
 X3DBaseInterface::X3DBaseInterface () :
+	     sigc::trackable (),
 	X3D::X3DParentObject (nullptr),
 	       browserWindow (nullptr)
 {
@@ -218,6 +219,14 @@ void
 X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
 {
 	setBrowser (value);
+}
+
+void
+X3DBaseInterface::dispose ()
+{
+	notify_callbacks ();
+
+	X3D::X3DParentObject::dispose ();
 }
 
 X3DBaseInterface::~X3DBaseInterface ()

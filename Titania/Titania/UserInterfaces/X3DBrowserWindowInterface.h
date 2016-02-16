@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for BrowserWindow.
+ */
 class X3DBrowserWindowInterface :
 	public X3DUserInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DBrowserWindowInterface () :
 		X3DUserInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -1448,6 +1455,8 @@ public:
 	getMessageDialog () const
 	{ return *m_MessageDialog; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_angle_layout_tool_toggled () = 0;
@@ -2020,11 +2029,15 @@ public:
 	void
 	on_look_at_toggled () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DBrowserWindowInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -2034,11 +2047,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                      filename;
 	Glib::RefPtr <Gtk::Builder>      m_builder;
-	std::deque <sigc::connection>    m_connections;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;

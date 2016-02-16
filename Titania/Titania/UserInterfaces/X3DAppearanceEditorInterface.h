@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for AppearanceEditor.
+ */
 class X3DAppearanceEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DAppearanceEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -432,6 +439,8 @@ public:
 	getPaletteNextButton () const
 	{ return *m_PaletteNextButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_copy () = 0;
@@ -496,11 +505,15 @@ public:
 	void
 	on_palette_next_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DAppearanceEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -510,11 +523,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackAmbientIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BackDiffuseColorAdjustment;

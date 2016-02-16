@@ -189,8 +189,8 @@ X3DUserInterface::on_map ()
 	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DEditorInterface::set_selection);
 
 	restoreInterface ();
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 	configure ();
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

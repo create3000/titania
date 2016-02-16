@@ -75,7 +75,8 @@ X3DLayoutEditor::X3DLayoutEditor () :
 	                         scaleModeX (this, getLayoutScaleModeXComboBoxText (), "scaleMode", 0, "NONE"),
 	                         scaleModeY (this, getLayoutScaleModeYComboBoxText (), "scaleMode", 1, "NONE")
 {
-	addChildren (layoutBuffer);
+	addChildren (nodes, layoutBuffer);
+
 	layoutBuffer .addInterest (this, &X3DLayoutEditor::set_node);
 
 	offsetX .setIndex (0);

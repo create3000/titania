@@ -81,8 +81,6 @@ GridTool::realize ()
 	const auto & browser = isEnabled () ? getCurrentBrowser () : getMasterBrowser ();
 
 	tool = browser -> getExecutionContext () -> createNode <X3D::GridTool> ();
-
-	tool -> getExecutionContext () -> realize ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &

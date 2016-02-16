@@ -107,7 +107,7 @@ private:
 	std::unique_ptr <NormalTool>       axisOfRotationTool;
 
 	X3D::X3DPtr <X3D::Billboard> billboard;
-	X3D::UndoStepPtr                  undoStep;
+	X3D::UndoStepPtr             undoStep;
 	bool                         changing;
 
 };

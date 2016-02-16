@@ -1055,8 +1055,18 @@ X3DBrowserWidget::statistics ()
 	return false;
 }
 
+void
+X3DBrowserWidget::dispose ()
+{
+	history    .reset ();
+	recentView .reset ();
+
+	X3DBrowserWindowInterface::dispose ();
+}
+
 X3DBrowserWidget::~X3DBrowserWidget ()
-{ }
+{
+}
 
 } // puck
 } // titania

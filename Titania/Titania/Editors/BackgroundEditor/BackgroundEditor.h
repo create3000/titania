@@ -51,13 +51,12 @@
 #ifndef __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
 #define __TITANIA_EDITORS_BACKGROUND_EDITOR_BACKGROUND_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DBackgroundEditorInterface.h"
 #include "X3DBackgroundEditor.h"
 
+#include "../../ComposedWidgets.h"
 #include "../../ComposedWidgets/MFColorButton.h"
 #include "../../ComposedWidgets/BackgroundTool.h"
-
 #include "../../Widgets/BindableNodeList/BackgroundList.h"
 
 #include <Titania/X3D/Components/Texturing/X3DTextureNode.h>
@@ -66,6 +65,7 @@ namespace titania {
 namespace puck {
 
 class TexturePreview;
+class BackgroundTool;
 
 class BackgroundEditor :
 	virtual public X3DBackgroundEditorInterface,
@@ -98,7 +98,7 @@ private:
 	void
 	set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> &);
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	set_texture (const std::shared_ptr <TexturePreview> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);

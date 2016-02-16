@@ -74,7 +74,7 @@ X3DSidebarInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DSidebarInterface::on_switch_page)));
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DSidebarInterface::on_switch_page));
 
 	// Call construct handler of base class.
 	construct ();
@@ -82,9 +82,6 @@ X3DSidebarInterface::create (const std::string & filename)
 
 X3DSidebarInterface::~X3DSidebarInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

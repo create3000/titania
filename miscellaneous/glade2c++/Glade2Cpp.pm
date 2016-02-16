@@ -284,18 +284,19 @@ sub cpp_signals
 	
 	$attributes {name} =~ s/-/_/sgo;
 	
-	my $signal = "m_" . $self -> {id} . " -> signal_$attributes{name} ()";
-
+	my $signal  = "m_" . $self -> {id} . " -> signal_$attributes{name} ()";
 	my $after   = exists $attributes {after} && $attributes {after} eq "yes" ? ", false" : "";
 	my $swapped = exists $attributes {swapped} && $attributes {swapped} eq "yes";
 
 	if ($swapped)
 	{
-		say $file "m_connections .emplace_back ($signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after));";
+		say $file "$signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after);";
+		#say $file "m_connections .emplace_back ($signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after));";
 	}
 	else
 	{
-		say $file "m_connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after));";
+		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after);";
+		#say $file "m_connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after));";
 	}
 }
 
@@ -385,6 +386,10 @@ sub generate
 	say OUT "";
 
 	# Class
+	say OUT "/**";
+	say OUT " *  Gtk Interface for $name.";
+	say OUT "*/";
+
 	say OUT "class $self->{class_name}";
 	say OUT ": public $base_class_name" if $base_class_name;
 	say OUT "{";
@@ -393,6 +398,9 @@ sub generate
 	say OUT "public:";
 
 	# Empty constructor
+	say OUT "///  \@name Construction";
+	say OUT "";
+
 	if ($self->{empty_constructor})
 	{
 		say OUT "  $self->{class_name} () :";
@@ -418,6 +426,10 @@ sub generate
 	say OUT "  { create (filename); }";
 	say OUT "";
 
+	# Member access
+	say OUT "///  \@name Member access";
+	say OUT "";
+
 	# Builder
 	say OUT "  const Glib::RefPtr <Gtk::Builder> & getBuilder () const";
 	say OUT "  { return m_builder; }";
@@ -431,7 +443,7 @@ sub generate
 	#say OUT "  { getBuilder () -> add_from_file (filename, names); }";
 	#say OUT "";
 
-	# getWidget
+	# createWidget
 	say OUT "  template <class Type>";
 	say OUT "  Type* createWidget (const std::string & name) const";
 	say OUT "  {";
@@ -451,15 +463,21 @@ sub generate
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_widget_getters (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 
+	say OUT "///  \@name Signal handlers";
+	say OUT "";
+
 	# Virtual signal handlers
 	say OUT "";
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_signal_handler (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 	
-	# Dispose
+	say OUT "///  \@name Destruction";
+	say OUT "";
+
+	# dispose
 	#say OUT "  virtual";
 	#say OUT "  void";
-	#say OUT "  dispose ();";
+	#$base_class_name ? say OUT "  dispose () override;" : say OUT "  dispose ();";
 
 	# Destructor
 	say OUT "  virtual";
@@ -472,6 +490,9 @@ sub generate
 
 	# Private section
 	say OUT "private:";
+	say OUT "";
+
+	say OUT "///  \@name Construction";
 	say OUT "";
 
 	# Call construct
@@ -487,12 +508,18 @@ sub generate
 	say OUT "  create (const std::string &);";
 	say OUT "";
 
+	say OUT "///  \@name Static members";
+	say OUT "";
+
 	say OUT "  static const std::string m_widgetName;";
+	say OUT "";
+
+	say OUT "///  \@name Members";
 	say OUT "";
 
 	say OUT "  std::string filename;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
-	say OUT "  std::deque <sigc::connection> m_connections;";
+	#say OUT "  std::deque <sigc::connection> m_connections;";
 
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_objects (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
@@ -586,12 +613,20 @@ sub generate
 		$parser = new XML::Parser (Handlers => {Start => sub { $self -> cpp_signal_handler (@_) }});
 		$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
 	}
-	
+
+	# dispose
+	#say OUT "void";
+	#say OUT "$self->{class_name}\::dispose ()";
+	#say OUT "{";
+	#say OUT "for (auto & connection : m_connections)";
+	#say OUT "   connection .disconnect ();";
+	#say OUT "";
+	#say OUT "${base_class_name}::dispose ();" if $base_class_name;
+	#say OUT "}";
+
 	# Destructor
 	say OUT "$self->{class_name}\::~$self->{class_name} ()";
 	say OUT "{";
-	say OUT "for (auto & connection : m_connections)";
-	say OUT "   connection .disconnect ();";
 	say OUT "delete $_;" foreach keys %{$self -> {windows}};
 	say OUT "}";
 

@@ -185,6 +185,10 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DBaseInterface ();
 
 

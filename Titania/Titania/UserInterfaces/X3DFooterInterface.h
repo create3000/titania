@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for Footer.
+ */
 class X3DFooterInterface :
 	public X3DUserInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFooterInterface () :
 		X3DUserInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -120,15 +127,21 @@ public:
 	getAnimationEditorBox () const
 	{ return *m_AnimationEditorBox; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
+
+	///  @name Destruction
 
 	virtual
 	~X3DFooterInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -138,18 +151,21 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Window*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Label*                   m_Label;
-	Gtk::Notebook*                m_Notebook;
-	Gtk::Box*                     m_ConsoleBox;
-	Gtk::Box*                     m_ScriptEditorBox;
-	Gtk::Box*                     m_AnimationEditorBox;
+	///  @name Members
+
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Label*                 m_Label;
+	Gtk::Notebook*              m_Notebook;
+	Gtk::Box*                   m_ConsoleBox;
+	Gtk::Box*                   m_ScriptEditorBox;
+	Gtk::Box*                   m_AnimationEditorBox;
 
 };
 

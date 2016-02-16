@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for BackgroundEditor.
+ */
 class X3DBackgroundEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DBackgroundEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -552,6 +559,8 @@ public:
 	getBottomURLReloadButton () const
 	{ return *m_BottomURLReloadButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_new_background_activated () = 0;
@@ -564,11 +573,15 @@ public:
 	void
 	on_remove_background_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DBackgroundEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -578,11 +591,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::Adjustment>         m_GroundAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_GroundColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_SkyAngleAdjustment;

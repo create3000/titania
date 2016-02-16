@@ -98,7 +98,7 @@ protected:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 	
 	virtual
 	void

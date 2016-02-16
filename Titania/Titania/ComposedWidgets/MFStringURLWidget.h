@@ -75,6 +75,9 @@ public:
 	                   const Glib::RefPtr <Gtk::TreeViewColumn> &,
 	                   const std::string &);
 
+	virtual
+	~MFStringURLWidget ();
+
 
 private:
 

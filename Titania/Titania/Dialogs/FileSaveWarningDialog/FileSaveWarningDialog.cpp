@@ -72,7 +72,7 @@ FileSaveWarningDialog::run ()
 
 	getMessage () .set_text (basic::sprintf (_ ("Do you want to save changes to document »%s« before closing?"),
 	                                         worlURL .empty ()
-	                                         ? _ ("no title")
+	                                         ? _ ("no title") .c_str ()
 	                                         : worlURL .basename () .c_str ()));
 
 	const auto responseId = getWindow () .run ();

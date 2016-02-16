@@ -82,8 +82,6 @@ AngleTool::realize ()
 	const auto & browser = isEnabled () ? getCurrentBrowser () : getMasterBrowser ();
 
 	tool = browser -> getExecutionContext () -> createNode <X3D::AngleTool> ();
-
-	tool -> getExecutionContext () -> realize ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &
@@ -221,7 +219,6 @@ AngleTool::set_dimension ()
 
 	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
 }
-
 
 AngleTool::~AngleTool ()
 {

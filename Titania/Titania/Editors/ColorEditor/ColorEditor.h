@@ -220,7 +220,7 @@ private:
 	void
 	connectColor ();
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	set_viewer ();

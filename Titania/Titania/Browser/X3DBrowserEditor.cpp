@@ -1055,8 +1055,20 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 }
 
+void
+X3DBrowserEditor::dispose ()
+{
+	selection     .reset ();
+	undoMatrices  .clear ();
+	nudgeUndoStep .reset ();
+
+	X3DBrowserWidget::dispose ();
+}
+
 X3DBrowserEditor::~X3DBrowserEditor ()
-{ }
+{
+__LOG__ << std::endl;
+}
 
 } // puck
 } // titania

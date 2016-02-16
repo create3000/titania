@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for FileSaveDialog.
+ */
 class X3DFileSaveDialogInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFileSaveDialogInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -160,11 +167,17 @@ public:
 	getMessageDialog () const
 	{ return *m_MessageDialog; }
 
+	///  @name Signal handlers
+
+	///  @name Destruction
+
 	virtual
 	~X3DFileSaveDialogInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -174,11 +187,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;

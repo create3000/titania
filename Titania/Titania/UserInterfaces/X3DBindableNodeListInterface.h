@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for BindableNodeList.
+ */
 class X3DBindableNodeListInterface :
 	public X3DUserInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DBindableNodeListInterface () :
 		X3DUserInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -152,6 +159,8 @@ public:
 	getTreeView () const
 	{ return *m_TreeView; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_map () = 0;
@@ -168,11 +177,15 @@ public:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DBindableNodeListInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -182,11 +195,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_TypeNameColumn;
 	Glib::RefPtr <Gtk::CellRendererText>   m_TypeNameCellRenderer;

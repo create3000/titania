@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for OutlineEditor.
+ */
 class X3DOutlineEditorInterface :
 	public X3DUserInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DOutlineEditorInterface () :
 		X3DUserInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -316,6 +323,8 @@ public:
 	getUseLocaleMenuItem () const
 	{ return *m_UseLocaleMenuItem; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_map () = 0;
@@ -476,11 +485,15 @@ public:
 	void
 	on_use_locale_menu_item_toggled () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DOutlineEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -490,11 +503,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                     filename;
 	Glib::RefPtr <Gtk::Builder>     m_builder;
-	std::deque <sigc::connection>   m_connections;
 	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Gtk::Menu*                      m_SceneMenu;
 	Gtk::Window*                    m_Window;

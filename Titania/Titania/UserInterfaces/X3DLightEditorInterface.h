@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for LightEditor.
+ */
 class X3DLightEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DLightEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -408,6 +415,8 @@ public:
 	getSpotLightDirectionZSpinButton () const
 	{ return *m_SpotLightDirectionZSpinButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_new_directional_light_activated () = 0;
@@ -428,11 +437,15 @@ public:
 	void
 	on_index_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DLightEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -442,11 +455,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_AmbientIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_DirectionalLightDirectionXAdjustment;

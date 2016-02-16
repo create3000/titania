@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for InlineEditor.
+ */
 class X3DInlineEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DInlineEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -212,6 +219,8 @@ public:
 	getURLReloadButton () const
 	{ return *m_URLReloadButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_new_inline_clicked () = 0;
@@ -232,11 +241,15 @@ public:
 	void
 	on_fold_back_into_scene_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DInlineEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -246,11 +259,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_BBoxCenterZAdjustment;

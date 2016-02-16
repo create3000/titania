@@ -160,12 +160,12 @@ private:
 	///  @name Members
 
 	X3D::X3DExecutionContextPtr                         executionContext;
-	IndexType                                           index;
-	bool                                                select;
-	std::set <X3D::X3DConstants::NodeType>              types;
 	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>          protoNode;
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
+	IndexType                                           index;
+	bool                                                select;
+	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;

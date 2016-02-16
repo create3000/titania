@@ -186,6 +186,10 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose () override;
+
+	virtual
 	~X3DBrowserEditor ();
 
 
@@ -242,7 +246,7 @@ protected:
 
 private:
 
-	// Event handler
+	///  @name Event handlers
 
 	void
 	set_shutdown ();

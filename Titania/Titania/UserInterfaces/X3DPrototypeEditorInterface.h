@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for PrototypeEditor.
+ */
 class X3DPrototypeEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DPrototypeEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -208,6 +215,8 @@ public:
 	getUpdateInstancesButton () const
 	{ return *m_UpdateInstancesButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_create_proto_clicked () = 0;
@@ -240,11 +249,15 @@ public:
 	void
 	on_update_instances_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DPrototypeEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -254,11 +267,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::CellRendererText>   m_URLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;

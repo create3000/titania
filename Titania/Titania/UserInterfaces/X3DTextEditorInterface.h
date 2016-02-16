@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for TextEditor.
+ */
 class X3DTextEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DTextEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -280,6 +287,8 @@ public:
 	getFamilyChooserDialog () const
 	{ return *m_FamilyChooserDialog; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_char_spacing_changed () = 0;
@@ -308,11 +317,15 @@ public:
 	void
 	on_style_toggled () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DTextEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -322,11 +335,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                          filename;
 	Glib::RefPtr <Gtk::Builder>          m_builder;
-	std::deque <sigc::connection>        m_connections;
 	Glib::RefPtr <Gtk::ListStore>        m_FontStyleFamilyListStore;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStylePointSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSizeAdjustment;

@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for TextureMappingEditor.
+ */
 class X3DTextureMappingEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DTextureMappingEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -260,6 +267,8 @@ public:
 	getApplyButton () const
 	{ return *m_ApplyButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_texture_stage_changed () = 0;
@@ -404,11 +413,15 @@ public:
 	void
 	on_apply_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DTextureMappingEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -418,11 +431,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_TextureStageAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;

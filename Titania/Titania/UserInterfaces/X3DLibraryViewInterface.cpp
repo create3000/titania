@@ -75,7 +75,7 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
-	m_connections .emplace_back (m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated)));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated));
 
 	// Call construct handler of base class.
 	construct ();
@@ -83,9 +83,6 @@ X3DLibraryViewInterface::create (const std::string & filename)
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

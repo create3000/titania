@@ -60,14 +60,16 @@ BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
                                 const std::string & colorName) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 	  X3DGradientTool (editor, name, box, positionName, colorName)
-{ }
+{
+	setup ();
+}
 
 void
 BackgroundTool::realize ()
 {
 	try
 	{
-		getTool () -> getField <X3D::SFBool>  ("enableFirst") = false;
+		getTool () -> getField <X3D::SFBool> ("enableFirst") = false;
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -136,6 +138,11 @@ BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::
 		//__LOG__ << error .what () << std::endl;
 		return std::make_pair (positionValue, colorValue);
 	}
+}
+
+BackgroundTool::~BackgroundTool ()
+{
+	dispose ();
 }
 
 } // puck

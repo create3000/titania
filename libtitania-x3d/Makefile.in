@@ -158,6 +158,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/BrowserOptions.lo \
 	Titania/X3D/Browser/BrowserProperties.lo \
 	Titania/X3D/Browser/Console.lo \
+	Titania/X3D/Browser/ContextLock.lo \
 	Titania/X3D/Browser/Core/Clipboard.lo \
 	Titania/X3D/Browser/Core/X3DCoreContext.lo \
 	Titania/X3D/Browser/Core/X3DOptionNode.lo \
@@ -916,6 +917,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/ContextLock.cpp \
 	Titania/X3D/Browser/Core/Clipboard.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \
@@ -1588,6 +1590,9 @@ Titania/X3D/Browser/BrowserProperties.lo:  \
 	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Console.lo: Titania/X3D/Browser/$(am__dirstamp) \
+	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/ContextLock.lo:  \
+	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Core/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Core
@@ -3763,6 +3768,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserProperties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Console.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/ContextLock.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Notification.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/RenderingProperties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Selection.Plo@am__quote@

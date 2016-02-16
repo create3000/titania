@@ -92,27 +92,27 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LayerSetLabel", m_LayerSetLabel);
 
 	// Connect object Gtk::MenuItem with id 'LayerMenuItem'.
-	m_connections .emplace_back (m_LayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_activated)));
-	m_connections .emplace_back (m_LayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layout_layer_activated)));
+	m_LayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_activated));
+	m_LayoutLayerMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layout_layer_activated));
 
 	// Connect object Gtk::Button with id 'NewLayerSetButton'.
-	m_connections .emplace_back (m_NewLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_set_button_clicked)));
-	m_connections .emplace_back (m_RemoveLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_remove_layer_set_clicked)));
-	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_index_clicked)));
+	m_NewLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_new_layer_set_button_clicked));
+	m_RemoveLayerSetButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_remove_layer_set_clicked));
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::TreeView with id 'LayerTreeView'.
-	m_connections .emplace_back (m_LayerTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layers_button_release_event), false));
-	m_connections .emplace_back (m_LayerTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_activated)));
+	m_LayerTreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layers_button_release_event), false);
+	m_LayerTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_activated));
 
 	// Connect object Gtk::TreeSelection with id 'LayerSelection'.
-	m_connections .emplace_back (m_LayerSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_selection_changed)));
+	m_LayerSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_layer_selection_changed));
 
 	// Connect object Gtk::Button with id 'RemoveLayerButton'.
-	m_connections .emplace_back (m_RemoveLayerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_remove_layer_button_clicked)));
-	m_connections .emplace_back (m_TopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_top_clicked)));
-	m_connections .emplace_back (m_UpButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_up_clicked)));
-	m_connections .emplace_back (m_DownButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_down_clicked)));
-	m_connections .emplace_back (m_BottomButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_bottom_clicked)));
+	m_RemoveLayerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_remove_layer_button_clicked));
+	m_TopButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_top_clicked));
+	m_UpButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_up_clicked));
+	m_DownButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_down_clicked));
+	m_BottomButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLayerEditorInterface::on_bottom_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -120,9 +120,6 @@ X3DLayerEditorInterface::create (const std::string & filename)
 
 X3DLayerEditorInterface::~X3DLayerEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

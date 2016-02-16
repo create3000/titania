@@ -72,14 +72,14 @@ X3DConsoleInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ClearButton", m_ClearButton);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map)));
-	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_unmap)));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_unmap));
 
 	// Connect object Gtk::ToggleToolButton with id 'SuspendButton'.
-	m_connections .emplace_back (m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_suspend_button_toggled)));
+	m_SuspendButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_suspend_button_toggled));
 
 	// Connect object Gtk::ToolButton with id 'ClearButton'.
-	m_connections .emplace_back (m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_clear_button_clicked)));
+	m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_clear_button_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -87,9 +87,6 @@ X3DConsoleInterface::create (const std::string & filename)
 
 X3DConsoleInterface::~X3DConsoleInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

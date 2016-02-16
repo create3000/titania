@@ -87,17 +87,21 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.glade"), gconf_dir ()),
 	     executionContext (getMasterBrowser () -> getExecutionContext ()),
-	                index (NAMED_NODES_INDEX),
-	               select (true),
-	                types (),
 	            protoNode (),
 	                nodes (),
 	                 node (),
+	                index (NAMED_NODES_INDEX),
+	               select (true),
+	                types (),
 	            nodeTypes (),
 	          hadjustment (new AdjustmentObject ()),
 	          vadjustment (new AdjustmentObject ())
 {
-	addChildren (node);
+	addChildren (executionContext,
+	             protoNode,
+	             nodes,
+	             node);
+
 	setup ();
 }
 

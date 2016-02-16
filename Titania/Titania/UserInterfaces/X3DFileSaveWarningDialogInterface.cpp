@@ -76,9 +76,6 @@ X3DFileSaveWarningDialogInterface::create (const std::string & filename)
 
 X3DFileSaveWarningDialogInterface::~X3DFileSaveWarningDialogInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

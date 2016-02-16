@@ -67,7 +67,8 @@ X3DViewportEditor::X3DViewportEditor () :
 	                      clipBoundary2 (this, getViewportClipBoundaryBottomAdjustment (), getViewportClipBoundarySpinButton2 (), "clipBoundary"),
 	                      clipBoundary3 (this, getViewportClipBoundaryTopAdjustment (),    getViewportClipBoundarySpinButton3 (), "clipBoundary")
 {
-	addChildren (viewportBuffer);
+	addChildren (nodes, viewportBuffer);
+
 	viewportBuffer .addInterest (this, &X3DViewportEditor::set_node);
 
 	getViewportClipBoundaryLeftAdjustment ()   -> set_step_increment (0.001);

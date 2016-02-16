@@ -89,7 +89,7 @@ public:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	on_max_toggled (const int);

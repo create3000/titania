@@ -85,7 +85,7 @@ public:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	on_insert_text (const Glib::ustring &, int*);

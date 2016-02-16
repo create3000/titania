@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for FogEditor.
+ */
 class X3DFogEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFogEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -164,6 +171,8 @@ public:
 	getFogTypeComboBoxText () const
 	{ return *m_FogTypeComboBoxText; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_new_fog_clicked () = 0;
@@ -172,11 +181,15 @@ public:
 	void
 	on_remove_fog_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DFogEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -186,11 +199,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
 	Glib::RefPtr <Gtk::ListStore>  m_FogTypeListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_VisibilityRangeAdjustment;

@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for FileOpenDialog.
+ */
 class X3DFileOpenDialogInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFileOpenDialogInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -132,11 +139,17 @@ public:
 	getRelativePathSwitch () const
 	{ return *m_RelativePathSwitch; }
 
+	///  @name Signal handlers
+
+	///  @name Destruction
+
 	virtual
 	~X3DFileOpenDialogInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -146,11 +159,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterFonts;

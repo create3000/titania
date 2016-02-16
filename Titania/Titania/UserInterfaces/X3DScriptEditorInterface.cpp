@@ -136,93 +136,93 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("HideGoToLineButton", m_HideGoToLineButton);
 
 	// Connect object Gtk::MenuItem with id 'NewScriptMenuItem'.
-	m_connections .emplace_back (m_NewScriptMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_script_activated)));
-	m_connections .emplace_back (m_ShaderPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_part_activated)));
-	m_connections .emplace_back (m_ShaderProgramMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_program_activated)));
+	m_NewScriptMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_script_activated));
+	m_ShaderPartMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_part_activated));
+	m_ShaderProgramMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_shader_program_activated));
 
 	// Connect object Gtk::CheckMenuItem with id 'CaseSensitiveMenuItem'.
-	m_connections .emplace_back (m_CaseSensitiveMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_case_sensitve_toggled)));
-	m_connections .emplace_back (m_AtWordBoundariesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_at_word_boundaries_toggled)));
-	m_connections .emplace_back (m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_regex_toggled)));
-	m_connections .emplace_back (m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_within_selection_toggled)));
-	m_connections .emplace_back (m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_wrap_around_toggled)));
+	m_CaseSensitiveMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_case_sensitve_toggled));
+	m_AtWordBoundariesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_at_word_boundaries_toggled));
+	m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_regex_toggled));
+	m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_within_selection_toggled));
+	m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_wrap_around_toggled));
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map)));
-	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap)));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
 
 	// Connect object Gtk::MenuToolButton with id 'NewButton'.
-	m_connections .emplace_back (m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_clicked)));
+	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_clicked));
 
 	// Connect object Gtk::ToolButton with id 'ApplyButton'.
-	m_connections .emplace_back (m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_apply_clicked)));
-	m_connections .emplace_back (m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked)));
-	m_connections .emplace_back (m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked)));
-	m_connections .emplace_back (m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_clicked)));
+	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_apply_clicked));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_undo_clicked));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_redo_clicked));
+	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_clicked));
 
 	// Connect object Gtk::Dialog with id 'PreferencesDialog'.
-	m_connections .emplace_back (m_PreferencesDialog -> signal_delete_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_delete_event)));
+	m_PreferencesDialog -> signal_delete_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_preferences_delete_event));
 
 	// Connect object Gtk::CheckButton with id 'ShowLineNumbersCheckButton'.
-	m_connections .emplace_back (m_ShowLineNumbersCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_line_numbers_toggled)));
-	m_connections .emplace_back (m_ShowRightMarginCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_right_margin_toggled)));
+	m_ShowLineNumbersCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_line_numbers_toggled));
+	m_ShowRightMarginCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_show_right_margin_toggled));
 
 	// Connect object Gtk::SpinButton with id 'RightMarginSpinButton'.
-	m_connections .emplace_back (m_RightMarginSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_right_margin_changed)));
+	m_RightMarginSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_right_margin_changed));
 
 	// Connect object Gtk::ComboBoxText with id 'WrapModeComboBoxText'.
-	m_connections .emplace_back (m_WrapModeComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_wrap_mode_changed)));
+	m_WrapModeComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_wrap_mode_changed));
 
 	// Connect object Gtk::CheckButton with id 'HighlightCurrentLineCheckButton'.
-	m_connections .emplace_back (m_HighlightCurrentLineCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_current_line_togged)));
-	m_connections .emplace_back (m_HighlightMatchingBracketsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_matching_brackets_toggled)));
+	m_HighlightCurrentLineCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_current_line_togged));
+	m_HighlightMatchingBracketsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_highlight_matching_brackets_toggled));
 
 	// Connect object Gtk::SpinButton with id 'TabWidthSpinButton'.
-	m_connections .emplace_back (m_TabWidthSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_tab_width_changed)));
+	m_TabWidthSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_tab_width_changed));
 
 	// Connect object Gtk::CheckButton with id 'InsertSpacesInsteadOfTabsCheckButton'.
-	m_connections .emplace_back (m_InsertSpacesInsteadOfTabsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_insert_spaces_instead_of_tabs_toggled)));
+	m_InsertSpacesInsteadOfTabsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_insert_spaces_instead_of_tabs_toggled));
 
 	// Connect object Gtk::TreeView with id 'ColorThemeTreeView'.
-	m_connections .emplace_back (m_ColorThemeTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_color_theme_activated)));
+	m_ColorThemeTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_color_theme_activated));
 
 	// Connect object Gtk::Button with id 'ReplaceButton'.
-	m_connections .emplace_back (m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_forward_clicked)));
-	m_connections .emplace_back (m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_all_clicked)));
+	m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_forward_clicked));
+	m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_all_clicked));
 
 	// Connect object Gtk::SearchEntry with id 'ReplaceEntry'.
-	m_connections .emplace_back (m_ReplaceEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event)));
-	m_connections .emplace_back (m_ReplaceEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event)));
-	m_connections .emplace_back (m_ReplaceEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false));
-	m_connections .emplace_back (m_ReplaceEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false));
+	m_ReplaceEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_ReplaceEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
+	m_ReplaceEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_ReplaceEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
 
 	// Connect object Gtk::Button with id 'SearchBackwardButton'.
-	m_connections .emplace_back (m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked)));
-	m_connections .emplace_back (m_SearchForwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_forward_clicked)));
-	m_connections .emplace_back (m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked)));
+	m_SearchBackwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_backward_clicked));
+	m_SearchForwardButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_forward_clicked));
+	m_HideSearchButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_connections .emplace_back (m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event)));
-	m_connections .emplace_back (m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event)));
-	m_connections .emplace_back (m_SearchEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_menu_icon_released), false));
-	m_connections .emplace_back (m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false));
-	m_connections .emplace_back (m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false));
-	m_connections .emplace_back (m_SearchEntry -> signal_size_allocate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_size_allocate)));
+	m_SearchEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_SearchEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
+	m_SearchEntry -> signal_icon_release () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_menu_icon_released), false);
+	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_SearchEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
+	m_SearchEntry -> signal_size_allocate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_size_allocate));
 
 	// Connect object Gtk::ToggleButton with id 'ToggleReplaceButton'.
-	m_connections .emplace_back (m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_toggled)));
+	m_ToggleReplaceButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_replace_toggled));
 
 	// Connect object Gtk::SearchEntry with id 'GoToLineEntry'.
-	m_connections .emplace_back (m_GoToLineEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event)));
-	m_connections .emplace_back (m_GoToLineEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event)));
-	m_connections .emplace_back (m_GoToLineEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_insert_text), false));
-	m_connections .emplace_back (m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_key_press_event), false));
-	m_connections .emplace_back (m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false));
-	m_connections .emplace_back (m_GoToLineEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false));
+	m_GoToLineEntry -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_in_event));
+	m_GoToLineEntry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_entry_focus_out_event));
+	m_GoToLineEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_insert_text), false);
+	m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_key_press_event), false);
+	m_GoToLineEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_press_event), false);
+	m_GoToLineEntry -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_key_release_event), false);
 
 	// Connect object Gtk::Button with id 'GoToLineButton'.
-	m_connections .emplace_back (m_GoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_button_clicked)));
-	m_connections .emplace_back (m_HideGoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked)));
+	m_GoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_go_to_line_button_clicked));
+	m_HideGoToLineButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_hide_search_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -230,9 +230,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 X3DScriptEditorInterface::~X3DScriptEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 	delete m_PreferencesDialog;
 }

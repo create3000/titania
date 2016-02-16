@@ -94,20 +94,20 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UpdateInstancesButton", m_UpdateInstancesButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.
-	m_connections .emplace_back (m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_proto_clicked)));
-	m_connections .emplace_back (m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_externproto_clicked)));
+	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
+	m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
 
 	// Connect object Gtk::Button with id 'CreateInstanceButton'.
-	m_connections .emplace_back (m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked)));
+	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 
 	// Connect object Gtk::Entry with id 'NameEntry'.
-	m_connections .emplace_back (m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_delete_text), false));
-	m_connections .emplace_back (m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_insert_text), false));
-	m_connections .emplace_back (m_NameEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_key_press_event), false));
+	m_NameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_delete_text), false);
+	m_NameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_insert_text), false);
+	m_NameEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_name_key_press_event), false);
 
 	// Connect object Gtk::Button with id 'RenameButton'.
-	m_connections .emplace_back (m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_rename_clicked)));
-	m_connections .emplace_back (m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_update_instances_clicked)));
+	m_RenameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_rename_clicked));
+	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -115,9 +115,6 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 
 X3DPrototypeEditorInterface::~X3DPrototypeEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

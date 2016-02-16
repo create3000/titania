@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for GeometryPropertiesEditor.
+ */
 class X3DGeometryPropertiesEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DGeometryPropertiesEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -508,6 +515,8 @@ public:
 	getEdgeColorScale () const
 	{ return *m_EdgeColorScale; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_geometry_changed () = 0;
@@ -548,11 +557,15 @@ public:
 	void
 	on_primitive_count_count_changed () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DGeometryPropertiesEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -562,11 +575,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;

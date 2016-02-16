@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for AnimationEditor.
+ */
 class X3DAnimationEditorInterface :
 	public X3DUserInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DAnimationEditorInterface () :
 		X3DUserInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DUserInterface (m_widgetName, arguments ...),
 		        filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -300,6 +307,8 @@ public:
 	getCycleIntervalLabel () const
 	{ return *m_CycleIntervalLabel; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_current_frame_changed () = 0;
@@ -452,11 +461,15 @@ public:
 	void
 	on_new_cycle_interval_changed () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DAnimationEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -466,11 +479,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
-	std::deque <sigc::connection>          m_connections;
 	Glib::RefPtr <Gtk::AccelGroup>         m_AccelGroup;
 	Glib::RefPtr <Gtk::Adjustment>         m_DurationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_FPSAdjustment;

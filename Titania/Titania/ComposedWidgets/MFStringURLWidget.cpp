@@ -70,6 +70,8 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
 {
 	treeView     .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
 	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_reload_clicked));
+
+	setup ();
 }
 
 void
@@ -170,6 +172,11 @@ MFStringURLWidget::on_reload_clicked ()
 		catch (const X3D::X3DError &)
 		{ }
 	}
+}
+
+MFStringURLWidget::~MFStringURLWidget ()
+{
+	dispose ();
 }
 
 } // puck

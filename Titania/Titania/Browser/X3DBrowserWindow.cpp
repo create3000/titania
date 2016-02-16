@@ -243,8 +243,23 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::M_PHI);
 }
 
+void
+X3DBrowserWindow::dispose ()
+{
+	geometryEditor    .reset ();
+	sidebar           .reset ();
+	footer            .reset ();
+	gridTool          .reset ();
+	angleTool         .reset ();
+	viewpointObserver .reset ();
+
+	X3DBrowserEditor::dispose ();
+}
+
 X3DBrowserWindow::~X3DBrowserWindow ()
-{ }
+{
+__LOG__ << std::endl;
+}
 
 } // puck
 } // titania

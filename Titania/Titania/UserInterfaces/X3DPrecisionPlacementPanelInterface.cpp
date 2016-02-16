@@ -258,31 +258,31 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
-	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked)));
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.
-	m_connections .emplace_back (m_TransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_uniform_scale_clicked)));
+	m_TransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_uniform_scale_clicked));
 
 	// Connect object Gtk::Button with id 'TransformMoveCenterButton'.
-	m_connections .emplace_back (m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button)));
+	m_TransformMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_transform_move_center_button));
 
 	// Connect object Gtk::ComboBoxText with id 'BillboardAxisOfRotationComboBoxText'.
-	m_connections .emplace_back (m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed)));
+	m_BillboardAxisOfRotationComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_axisOfRotation_changed));
 
 	// Connect object Gtk::Button with id 'LODMoveCenterButton'.
-	m_connections .emplace_back (m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_move_center_button_clicked)));
+	m_LODMoveCenterButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_move_center_button_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
-	m_connections .emplace_back (m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_keep_current_level_toggled)));
-	m_connections .emplace_back (m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled)));
-	m_connections .emplace_back (m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled)));
+	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_keep_current_level_toggled));
+	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
+	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
-	m_connections .emplace_back (m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked)));
-	m_connections .emplace_back (m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked)));
+	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
+	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
-	m_connections .emplace_back (m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked)));
+	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -290,9 +290,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 X3DPrecisionPlacementPanelInterface::~X3DPrecisionPlacementPanelInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_LODExtraWindow;
 	delete m_Window;
 }

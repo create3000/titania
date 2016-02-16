@@ -79,23 +79,23 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LassoMenuItem", m_LassoMenuItem);
 
 	// Connect object Gtk::Revealer with id 'Widget'.
-	m_connections .emplace_back (m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map)));
-	m_connections .emplace_back (m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap)));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap));
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
-	m_connections .emplace_back (m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled)));
-	m_connections .emplace_back (m_PaintSelectionToggleButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event)));
-	m_connections .emplace_back (m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled)));
+	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));
+	m_PaintSelectionToggleButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
+	m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 
 	// Connect object Gtk::Button with id 'SplitPointButton'.
-	m_connections .emplace_back (m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_point_clicked)));
-	m_connections .emplace_back (m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked)));
-	m_connections .emplace_back (m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked)));
+	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_point_clicked));
+	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
+	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
-	m_connections .emplace_back (m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated)));
-	m_connections .emplace_back (m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_rectangle_activated)));
-	m_connections .emplace_back (m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated)));
+	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));
+	m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_rectangle_activated));
+	m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated));
 
 	// Call construct handler of base class.
 	construct ();
@@ -103,9 +103,6 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 
 X3DGeometryEditorInterface::~X3DGeometryEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

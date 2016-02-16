@@ -169,29 +169,29 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EdgeColorScale", m_EdgeColorScale);
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
-	m_connections .emplace_back (m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed)));
+	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));
 
 	// Connect object Gtk::Button with id 'GeometryUnlinkButton'.
-	m_connections .emplace_back (m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked)));
+	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
-	m_connections .emplace_back (m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked)));
-	m_connections .emplace_back (m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked)));
+	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
+	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
-	m_connections .emplace_back (m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked)));
-	m_connections .emplace_back (m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked)));
+	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
+	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
 
 	// Connect object Gtk::EventBox with id 'PrimitiveCountEventBox'.
-	m_connections .emplace_back (m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event)));
-	m_connections .emplace_back (m_PrimitiveCountEventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event)));
+	m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
+	m_PrimitiveCountEventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
 
 	// Connect object Gtk::Box with id 'PrimitiveCountBox'.
-	m_connections .emplace_back (m_PrimitiveCountBox -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_map_primitive_count)));
-	m_connections .emplace_back (m_PrimitiveCountBox -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_unmap_primitive_count)));
+	m_PrimitiveCountBox -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_map_primitive_count));
+	m_PrimitiveCountBox -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_unmap_primitive_count));
 
 	// Connect object Gtk::ComboBoxText with id 'PrimitiveCountCountButton'.
-	m_connections .emplace_back (m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed)));
+	m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed));
 
 	// Call construct handler of base class.
 	construct ();
@@ -199,9 +199,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 X3DGeometryPropertiesEditorInterface::~X3DGeometryPropertiesEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

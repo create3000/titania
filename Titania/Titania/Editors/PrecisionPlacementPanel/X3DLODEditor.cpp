@@ -77,7 +77,7 @@ X3DLODEditor::X3DLODEditor () :
 //	                                     getLODRangeMaxSpinButton (),
 //	                                     getLODMaxCheckButton (),
 //	                                     getLODRangeBox ())),
-		  	            			 range (this, "Range", getRangeGradientBox ()),
+		  	            			   range (this, "Range", getRangeGradientBox ()),
 	                        singleRange (this, getLODRangeAdjustment (), getLODRangeSpinButton (), "range"),
 	                      level_changed (this,
 	                                     getLODLevelAdjustment (),
@@ -85,12 +85,14 @@ X3DLODEditor::X3DLODEditor () :
 	                                     "level_changed"),
 	                                lod ()
 {
-	range .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_whichChoice_changed)); 
+	addChildren (lod);	                                	                               
 }
 
 void
 X3DLODEditor::initialize ()
-{ }
+{
+	range .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_whichChoice_changed)); 
+}
 
 void
 X3DLODEditor::set_selection (const X3D::MFNode & selection)

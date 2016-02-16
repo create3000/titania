@@ -136,6 +136,7 @@ protected:
 	get_color (const X3D::MFColor & value)
 	{ return value; }
 
+
 private:
 
 	///  @name Construction
@@ -148,7 +149,7 @@ private:
 	realize ()
 	{ }
 
-	///  @name Event handler
+	///  @name Event handlers
 
 
 	void

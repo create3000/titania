@@ -94,7 +94,7 @@ protected:
 
 	X3DGridTool ();
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	virtual
 	void
@@ -165,7 +165,7 @@ private:
 	void
 	disable ();
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	connectEnabled (const X3D::SFBool &);

@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for GridEditor.
+ */
 class X3DGridEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DGridEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -584,6 +591,8 @@ public:
 	getAngleSnapDistanceSpinButton () const
 	{ return *m_AngleSnapDistanceSpinButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_grid_toggled () = 0;
@@ -632,11 +641,15 @@ public:
 	void
 	on_angle_remove_major_line_grid () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DGridEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -646,11 +659,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleDimension0Adjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleDimension1Adjustment;

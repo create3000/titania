@@ -83,9 +83,6 @@ X3DFileImportDialogInterface::create (const std::string & filename)
 
 X3DFileImportDialogInterface::~X3DFileImportDialogInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 	delete m_ImportDialog;
 }

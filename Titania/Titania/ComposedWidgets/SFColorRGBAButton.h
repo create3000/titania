@@ -87,7 +87,7 @@ public:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	on_color_changed ();

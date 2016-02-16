@@ -83,7 +83,7 @@ public:
 	std::shared_ptr <Type>
 	getPage (const std::string & name) const;
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	virtual
 	void
@@ -93,8 +93,7 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{ }
+	dispose () override;
 
 	virtual
 	~X3DNotebook ();
@@ -106,7 +105,7 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 
 private:
@@ -128,8 +127,10 @@ X3DNotebook <Interface>::X3DNotebook () :
 
 template <class Interface>
 void
-X3DNotebook <Interface>::initialize ()
+X3DNotebook <Interface>::configure ()
 {
+	Interface::configure ();
+
 	this -> getNotebook () .set_current_page (this -> getConfig () -> getInteger ("currentPage"));
 }
 
@@ -191,6 +192,14 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 	this -> getConfig () -> setItem ("currentPage", int (pageNumber));
 }
 
+template <class Interface>
+void
+X3DNotebook <Interface>::dispose ()
+{
+	pages .clear ();
+
+	Interface::dispose ();
+}
 
 template <class Interface>
 X3DNotebook <Interface>::~X3DNotebook ()

@@ -124,7 +124,7 @@ public:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	set_splashScreen ();

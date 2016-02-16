@@ -90,7 +90,7 @@ public:
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	on_toggled ();

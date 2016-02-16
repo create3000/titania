@@ -31,6 +31,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
+	Titania/X3D/Browser/ContextLock.cpp \
 	Titania/X3D/Browser/Core/Clipboard.cpp \
 	Titania/X3D/Browser/Core/X3DCoreContext.cpp \
 	Titania/X3D/Browser/Core/X3DOptionNode.cpp \

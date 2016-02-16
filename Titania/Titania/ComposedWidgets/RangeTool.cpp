@@ -62,6 +62,8 @@ RangeTool::RangeTool (X3DBaseInterface* const editor,
 	  positionFactor (1)
 {
 	addChildren (auxNode);
+
+	setup ();
 }
 
 void
@@ -141,6 +143,11 @@ RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFCol
 		//__LOG__ << error .what () << std::endl;
 		return std::make_pair (positionValue, colorValue);
 	}
+}
+
+RangeTool::~RangeTool ()
+{
+	dispose ();
 }
 
 } // puck

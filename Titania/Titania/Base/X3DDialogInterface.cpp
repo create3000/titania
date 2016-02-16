@@ -79,14 +79,6 @@ X3DDialogInterface::initialize ()
 }
 
 void
-X3DDialogInterface::store ()
-{
-	saveExpander (getWidget ());
-
-	X3DUserInterface::store ();
-}
-
-void
 X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
 {
 	for (auto & expander : getWidgets <Gtk::Expander> (widget))
@@ -174,10 +166,16 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 }
 
 void
-X3DDialogInterface::dispose ()
+X3DDialogInterface::store ()
 {
 	saveExpander (getWidget ());
 
+	X3DUserInterface::store ();
+}
+
+void
+X3DDialogInterface::dispose ()
+{
 	X3DUserInterface::dispose ();
 }
 

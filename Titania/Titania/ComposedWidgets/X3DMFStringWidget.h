@@ -121,7 +121,7 @@ protected:
 	void
 	append (const Glib::ustring &);
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	virtual
 	void
@@ -157,7 +157,7 @@ private:
 
 	};
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	on_selection_changed ();

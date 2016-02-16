@@ -60,33 +60,20 @@ class ContextLock
 {
 public:
 
-	ContextLock (const X3DBrowserContext* const browserContext) :
-		       xDisplay (glXGetCurrentDisplay ()),
-		      xDrawable (glXGetCurrentDrawable ()),
-		       xContext (glXGetCurrentContext ()),
-		        current (browserContext -> makeCurrent ()),
-		xBrowserContext (glXGetCurrentContext ())
-	{ }
+	ContextLock (const X3DBrowserContext* const browserContext);
 
-	operator bool () const
-	{ return current; }
+	operator bool () const;
 
-	~ContextLock ()
-	{
-		if (xDisplay)
-		{
-			if (xContext not_eq xBrowserContext)
-				glXMakeCurrent (xDisplay, xDrawable, xContext);
-		}
-	}
+	~ContextLock ();
+
 
 private:
 
 	Display* const    xDisplay;
 	const GLXDrawable xDrawable;
 	const GLXContext  xContext;
-	const bool        current;
-	const GLXContext  xBrowserContext;
+	const bool        lock;
+	const GLXContext  xCurrentContext;
 
 };
 

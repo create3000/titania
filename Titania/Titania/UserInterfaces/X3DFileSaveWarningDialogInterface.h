@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for FileSaveWarningDialog.
+ */
 class X3DFileSaveWarningDialogInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DFileSaveWarningDialogInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -116,11 +123,17 @@ public:
 	getTreeView () const
 	{ return *m_TreeView; }
 
+	///  @name Signal handlers
+
+	///  @name Destruction
+
 	virtual
 	~X3DFileSaveWarningDialogInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -130,11 +143,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                   filename;
 	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
 	Gtk::Dialog*                  m_Window;
 	Gtk::Box*                     m_Widget;

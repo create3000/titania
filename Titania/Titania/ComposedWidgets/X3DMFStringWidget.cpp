@@ -88,8 +88,6 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
 	treeView .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
 	treeView .set_model (listStore);
-
-	setup ();
 }
 
 void
@@ -324,8 +322,8 @@ X3DMFStringWidget::set_buffer ()
 		}
 	}
 
-	treeView     .set_sensitive (pair .second not_eq -2);
-	addButton    .set_sensitive (pair .second not_eq -2);
+	treeView  .set_sensitive (pair .second not_eq -2);
+	addButton .set_sensitive (pair .second not_eq -2);
 
 	set_string (string);
 }

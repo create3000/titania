@@ -90,7 +90,7 @@ private:
 	void
 	set_initialized ();
 
-	///  @name Event handler
+	///  @name Event handlers
 
 	void
 	set_rotation (const X3D::SFRotation &);

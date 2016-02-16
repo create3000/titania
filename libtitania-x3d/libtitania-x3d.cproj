@@ -1309,6 +1309,7 @@
     <Compile Include="Titania\X3D\Editing\Selection\FaceSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\Clipboard.cpp" />
     <Compile Include="Titania\X3D\Base\International.cpp" />
+    <Compile Include="Titania\X3D\Browser\ContextLock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

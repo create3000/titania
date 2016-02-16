@@ -180,11 +180,11 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BottomURLReloadButton", m_BottomURLReloadButton);
 
 	// Connect object Gtk::MenuItem with id 'NewBackgroundMenuItem'.
-	m_connections .emplace_back (m_NewBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_background_activated)));
-	m_connections .emplace_back (m_NewTextureBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_texture_background_activated)));
+	m_NewBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_background_activated));
+	m_NewTextureBackgroundMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_new_texture_background_activated));
 
 	// Connect object Gtk::Button with id 'RemoveBackgroundButton'.
-	m_connections .emplace_back (m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_remove_background_clicked)));
+	m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBackgroundEditorInterface::on_remove_background_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -192,9 +192,6 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 
 X3DBackgroundEditorInterface::~X3DBackgroundEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

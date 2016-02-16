@@ -418,7 +418,7 @@ ScreenText::display ()
 
 ScreenText::~ScreenText ()
 {
-	ContextLock lock (fontStyle -> getBrowser ());
+	ContextLock lock (text -> getBrowser ());
 
 	if (lock)
 	{

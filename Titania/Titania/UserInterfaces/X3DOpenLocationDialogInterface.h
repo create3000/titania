@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for OpenLocationDialog.
+ */
 class X3DOpenLocationDialogInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DOpenLocationDialogInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -108,6 +115,8 @@ public:
 	getLocationEntry () const
 	{ return *m_LocationEntry; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_location_entry_changed () = 0;
@@ -116,11 +125,15 @@ public:
 	bool
 	on_location_entry_key_press_event (GdkEventKey* event) = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DOpenLocationDialogInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -130,15 +143,18 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Image*                   m_OpenLocationImage;
-	Gtk::Dialog*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Entry*                   m_LocationEntry;
+	///  @name Members
+
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Image*                 m_OpenLocationImage;
+	Gtk::Dialog*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Entry*                 m_LocationEntry;
 
 };
 

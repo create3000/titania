@@ -279,15 +279,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 Browser::dispose ()
 {
-	notify_callbacks ();
-
-	X3DBrowser::dispose ();
 	opengl::Surface::dispose ();
 
-	const auto container = get_parent ();
-
-	if (container)
-		container -> remove (*this);
+	X3DBrowser::dispose ();
 }
 
 Browser::~Browser ()

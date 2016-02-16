@@ -47,42 +47,35 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DBindableNodeEditorInterface.h"
+
+#include "ContextLock.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-const std::string X3DBindableNodeEditorInterface::m_widgetName = "BindableNodeEditor";
+ContextLock::ContextLock (const X3DBrowserContext* const browserContext) :
+	       xDisplay (glXGetCurrentDisplay ()),
+	      xDrawable (glXGetCurrentDrawable ()),
+	       xContext (glXGetCurrentContext ()),
+	           lock (browserContext -> makeCurrent ()),
+	xCurrentContext (glXGetCurrentContext ())
+{ }
 
-void
-X3DBindableNodeEditorInterface::create (const std::string & filename)
+ContextLock::operator bool () const
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
-
-	// Get objects.
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Label", m_Label);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("BackgroundEditorBox", m_BackgroundEditorBox);
-	m_builder -> get_widget ("FogEditorBox", m_FogEditorBox);
-	m_builder -> get_widget ("NavigationInfoEditorBox", m_NavigationInfoEditorBox);
-	m_builder -> get_widget ("ViewpointEditorBox", m_ViewpointEditorBox);
-
-	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBindableNodeEditorInterface::on_switch_page));
-
-	// Call construct handler of base class.
-	construct ();
+	return lock;
 }
 
-X3DBindableNodeEditorInterface::~X3DBindableNodeEditorInterface ()
+ContextLock::~ContextLock ()
 {
-	delete m_Window;
+	if (not xDisplay)
+		return;
+
+	if (xCurrentContext == xContext)
+		return;
+
+	glXMakeCurrent (xDisplay, xDrawable, xContext);
 }
 
-} // puck
+} // X3D
 } // titania

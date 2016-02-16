@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for ColorEditor.
+ */
 class X3DColorEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DColorEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -224,6 +231,8 @@ public:
 	getApplyButton () const
 	{ return *m_ApplyButton; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_phong_activate () = 0;
@@ -304,11 +313,15 @@ public:
 	void
 	on_apply_clicked () = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DColorEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -318,11 +331,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	std::deque <sigc::connection>  m_connections;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
 	Gtk::Menu*                     m_ShadingMenu;
 	Gtk::RadioMenuItem*            m_PhongMenuItem;

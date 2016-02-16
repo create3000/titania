@@ -72,13 +72,17 @@ public:
 	                const Glib::ustring & defaultValue) :
 		 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
 		X3DMFStringWidget (editor, treeView, cellRenderer, addButton, removeButton, name, defaultValue)
-	{ }
+	{
+		setup ();
+	}
 
 	///  @name Destruction
 
 	virtual
 	~MFStringWidget ()
-	{ }
+	{
+	   dispose ();
+	}
 
 };
 

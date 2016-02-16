@@ -81,6 +81,7 @@ X3DSoundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NewSoundButton", m_NewSoundButton);
 	m_builder -> get_widget ("RemoveSoundButton", m_RemoveSoundButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
+	m_builder -> get_widget ("SoundNotebook", m_SoundNotebook);
 	m_builder -> get_widget ("SoundExpander", m_SoundExpander);
 	m_builder -> get_widget ("SoundBox", m_SoundBox);
 	m_builder -> get_widget ("SoundSpatializeCheckButton", m_SoundSpatializeCheckButton);
@@ -101,11 +102,13 @@ X3DSoundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SoundMinFrontSpinButton", m_SoundMinFrontSpinButton);
 	m_builder -> get_widget ("SoundMaxBackSpinButton", m_SoundMaxBackSpinButton);
 	m_builder -> get_widget ("SoundMaxFrontSpinButton", m_SoundMaxFrontSpinButton);
+	m_builder -> get_widget ("SoundSourceExpander", m_SoundSourceExpander);
+	m_builder -> get_widget ("SoundSourceBox", m_SoundSourceBox);
 
 	// Connect object Gtk::Button with id 'NewSoundButton'.
-	m_connections .emplace_back (m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_new_sound_clicked)));
-	m_connections .emplace_back (m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_remove_sound_clicked)));
-	m_connections .emplace_back (m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_index_clicked)));
+	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_new_sound_clicked));
+	m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_remove_sound_clicked));
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.
 	construct ();
@@ -113,9 +116,6 @@ X3DSoundEditorInterface::create (const std::string & filename)
 
 X3DSoundEditorInterface::~X3DSoundEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

@@ -112,26 +112,26 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 
 	// Connect object Gtk::Adjustment with id 'TextCharSpacingAdjustment'.
-	m_connections .emplace_back (m_TextCharSpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_char_spacing_changed)));
+	m_TextCharSpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_char_spacing_changed));
 
 	// Connect object Gtk::TextBuffer with id 'TextStringTextBuffer'.
-	m_connections .emplace_back (m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed)));
+	m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
 
 	// Connect object Gtk::CheckButton with id 'TextCheckButton'.
-	m_connections .emplace_back (m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled)));
+	m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled));
 
 	// Connect object Gtk::Button with id 'TextUnlinkButton'.
-	m_connections .emplace_back (m_TextUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_unlink_clicked)));
+	m_TextUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'FontStyleComboBoxText'.
-	m_connections .emplace_back (m_FontStyleComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed)));
+	m_FontStyleComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_changed));
 
 	// Connect object Gtk::Button with id 'FontStyleUnlinkButton'.
-	m_connections .emplace_back (m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked)));
+	m_FontStyleUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_fontStyle_unlink_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'FontStyleBoldToggleButton'.
-	m_connections .emplace_back (m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled)));
-	m_connections .emplace_back (m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled)));
+	m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
+	m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_style_toggled));
 
 	// Call construct handler of base class.
 	construct ();
@@ -139,9 +139,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 
 X3DTextEditorInterface::~X3DTextEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 	delete m_FamilyChooserDialog;
 }

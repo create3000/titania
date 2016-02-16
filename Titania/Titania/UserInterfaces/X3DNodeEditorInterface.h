@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for NodeEditor.
+ */
 class X3DNodeEditorInterface :
 	public X3DEditorInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DNodeEditorInterface () :
 		X3DEditorInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DEditorInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -152,6 +159,8 @@ public:
 	getPrecisionPlacementPanelBox () const
 	{ return *m_PrecisionPlacementPanelBox; }
 
+	///  @name Signal handlers
+
 	virtual
 	void
 	on_map_window () = 0;
@@ -160,11 +169,15 @@ public:
 	void
 	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DNodeEditorInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -174,26 +187,29 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
-	std::deque <sigc::connection> m_connections;
-	Gtk::Window*                  m_Window;
-	Gtk::Box*                     m_Widget;
-	Gtk::Label*                   m_Label;
-	Gtk::Notebook*                m_Notebook;
-	Gtk::Box*                     m_NodePropertiesEditorBox;
-	Gtk::Box*                     m_AppearanceEditorBox;
-	Gtk::Box*                     m_TextureEditorBox;
-	Gtk::Box*                     m_GeometryPropertiesEditorBox;
-	Gtk::Box*                     m_TextEditorBox;
-	Gtk::Box*                     m_LayerEditorBox;
-	Gtk::Box*                     m_BindableNodeEditorBox;
-	Gtk::Box*                     m_LightEditorBox;
-	Gtk::Box*                     m_SoundEditorBox;
-	Gtk::Box*                     m_InlineEditorBox;
-	Gtk::Box*                     m_PrecisionPlacementPanelBox;
+	///  @name Members
+
+	std::string                 filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Label*                 m_Label;
+	Gtk::Notebook*              m_Notebook;
+	Gtk::Box*                   m_NodePropertiesEditorBox;
+	Gtk::Box*                   m_AppearanceEditorBox;
+	Gtk::Box*                   m_TextureEditorBox;
+	Gtk::Box*                   m_GeometryPropertiesEditorBox;
+	Gtk::Box*                   m_TextEditorBox;
+	Gtk::Box*                   m_LayerEditorBox;
+	Gtk::Box*                   m_BindableNodeEditorBox;
+	Gtk::Box*                   m_LightEditorBox;
+	Gtk::Box*                   m_SoundEditorBox;
+	Gtk::Box*                   m_InlineEditorBox;
+	Gtk::Box*                   m_PrecisionPlacementPanelBox;
 
 };
 

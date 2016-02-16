@@ -57,10 +57,15 @@
 namespace titania {
 namespace puck {
 
+/**
+ *  Gtk Interface for NodeIndex.
+ */
 class X3DNodeIndexInterface :
 	public X3DDialogInterface
 {
 public:
+
+	///  @name Construction
 
 	X3DNodeIndexInterface () :
 		X3DDialogInterface ()
@@ -71,6 +76,8 @@ public:
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
+
+	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
@@ -140,6 +147,8 @@ public:
 	getFooterBox () const
 	{ return *m_FooterBox; }
 
+	///  @name Signal handlers
+
 	virtual
 	bool
 	on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter) = 0;
@@ -152,11 +161,15 @@ public:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
+	///  @name Destruction
+
 	virtual
 	~X3DNodeIndexInterface ();
 
 
 private:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -166,11 +179,14 @@ private:
 	void
 	create (const std::string &);
 
+	///  @name Static members
+
 	static const std::string m_widgetName;
+
+	///  @name Members
 
 	std::string                         filename;
 	Glib::RefPtr <Gtk::Builder>         m_builder;
-	std::deque <sigc::connection>       m_connections;
 	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
 	Glib::RefPtr <Gtk::TreeModelSort>   m_TreeModelSort;
 	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;

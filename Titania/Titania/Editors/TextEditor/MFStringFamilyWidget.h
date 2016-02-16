@@ -75,6 +75,9 @@ public:
 	                      const std::string &);
 
 
+	virtual
+	~MFStringFamilyWidget ();
+
 private:
 
 	///  @name Event handlers
@@ -240,6 +243,12 @@ MFStringFamilyWidget::set_buffer ()
 		fontChooserDialog -> hide ();
 
 	X3DMFStringWidget::set_buffer ();
+}
+
+inline
+MFStringFamilyWidget::~MFStringFamilyWidget ()
+{
+	dispose ();
 }
 
 } // puck

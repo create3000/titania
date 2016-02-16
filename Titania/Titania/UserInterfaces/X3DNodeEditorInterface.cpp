@@ -80,10 +80,10 @@ X3DNodeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
 
 	// Connect object Gtk::Window with id 'Window'.
-	m_connections .emplace_back (m_Window -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_map_window)));
+	m_Window -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_map_window));
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_connections .emplace_back (m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page)));
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page));
 
 	// Call construct handler of base class.
 	construct ();
@@ -91,9 +91,6 @@ X3DNodeEditorInterface::create (const std::string & filename)
 
 X3DNodeEditorInterface::~X3DNodeEditorInterface ()
 {
-	for (auto & connection : m_connections)
-		connection .disconnect ();
-
 	delete m_Window;
 }
 

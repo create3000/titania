@@ -69,6 +69,11 @@ public:
 	                const std::string &,
 	                const std::string &);
 
+	///  @name Destruction
+
+	virtual
+	~BackgroundTool ();
+
 
 private:
 

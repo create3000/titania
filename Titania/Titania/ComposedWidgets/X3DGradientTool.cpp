@@ -64,7 +64,7 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 	  X3DComposedWidget (editor),
 	whichChoice_changed (),
 	                box (box),
-	            browser (X3D::createBrowser (editor -> getMasterBrowser (), { get_ui ("Editors/GradientTool.x3dv") })),
+	            browser (X3D::createBrowser ({ get_ui ("Editors/GradientTool.x3dv") })),
 	              nodes (),
 	               name (name),
 	       positionName (positionName),
@@ -88,10 +88,6 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 	browser -> show ();
 
 	box .pack_start (*browser, true, true, 0);
-
-	// Setup
-
-	setup ();
 }
 
 void
@@ -422,7 +418,7 @@ X3DGradientTool::connectColor (const X3D::MFColor & field)
 
 X3DGradientTool::~X3DGradientTool ()
 {
-	dispose ();
+	//undoStep .reset ();
 }
 
 } // puck
