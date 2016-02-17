@@ -291,7 +291,11 @@ void
 X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 {
 	getWindow () .set_transient_for (window);
-	getWidget () .unparent ();
+
+	const auto container = getWidget () .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
 
 	box .pack_start (getWidget (), true, true);
 }
