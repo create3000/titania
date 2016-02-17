@@ -1111,9 +1111,10 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 	const auto group    = createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
+	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
 
-	expandNodes (X3D::MFNode ({ group }));
+	expandNodes ({ group });
 }
 
 // View menu
