@@ -110,14 +110,16 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 
 	// Pick.
 
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		//update (); // We cannot make an update here because of gravity.
 
 		getWorld () -> traverse (TraverseType::POINTER);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	// Picking end.
 

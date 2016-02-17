@@ -158,13 +158,15 @@ X3DTextureNode::draw (const GLenum target, const size_t components)
 void
 X3DTextureNode::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (textureId)
 			glDeleteTextures (1, &textureId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	X3DAppearanceChildNode::dispose ();
 }

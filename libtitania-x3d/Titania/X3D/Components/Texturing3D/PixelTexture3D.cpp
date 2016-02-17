@@ -291,9 +291,6 @@ throw (Error <INVALID_NODE>,
 
 	ContextLock lock (texture3DNode -> getBrowser ());
 
-	if (not lock)
-		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-
 	const auto   width      = texture3DNode -> getWidth ();
 	const auto   height     = texture3DNode -> getHeight ();
 	const auto   depth      = texture3DNode -> getDepth ();

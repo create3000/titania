@@ -91,10 +91,14 @@ X3DCoreContext::getMaxRenderBufferSize () const
 {
 	int32_t maxRenderBufferSize = 0;
 
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
+	{
+		ContextLock lock (getBrowser ());
+	
 		glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE, &maxRenderBufferSize);
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	return maxRenderBufferSize;
 }
@@ -104,10 +108,14 @@ X3DCoreContext::getMaxSamples () const
 {
 	int32_t maxSamples = 0;
 
-	ContextLock lock (getBrowser ());
+	try
+	{
+		ContextLock lock (getBrowser ());
 
-	if (lock)
 		glGetIntegerv (GL_MAX_SAMPLES, &maxSamples);
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	return maxSamples;
 }

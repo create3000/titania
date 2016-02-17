@@ -1,10 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/Sound.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/SoundEditor/SoundEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/SoundEditor/SoundEditor.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/X3DTextureNode.cpp" Line="10" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -13,6 +14,8 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/miscellaneous/glade2c++/Glade2Cpp.pm" line="608" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Browser/X3DBrowserWindow.cpp" line="135" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

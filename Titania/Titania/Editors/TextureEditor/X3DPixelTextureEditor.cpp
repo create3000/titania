@@ -56,8 +56,6 @@ ked to indicate is contains 'non-military use only' components.
 
 #include "X3DPixelTextureEditor.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
-
 namespace titania {
 namespace puck {
 

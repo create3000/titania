@@ -65,7 +65,6 @@
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
-#include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
@@ -258,7 +257,7 @@ X3DBrowserWindow::dispose ()
 
 X3DBrowserWindow::~X3DBrowserWindow ()
 {
-__LOG__ << std::endl;
+	__LOG__ << std::endl;
 }
 
 } // puck

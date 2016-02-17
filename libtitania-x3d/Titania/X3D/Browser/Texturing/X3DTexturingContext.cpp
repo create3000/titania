@@ -120,10 +120,10 @@ X3DTexturingContext::initialize ()
 size_t
 X3DTexturingContext::getAvailableTextureMemory () const
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
 		{
 			int32_t kbytes = 0;
@@ -144,6 +144,8 @@ X3DTexturingContext::getAvailableTextureMemory () const
 			return size_t (kbytes [0]) * 1024;
 		}
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	return 0;
 }

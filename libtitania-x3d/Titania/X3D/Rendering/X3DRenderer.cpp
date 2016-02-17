@@ -215,43 +215,42 @@ X3DRenderer::getDistance (const Vector3d & translation) const
 	{
 		ContextLock lock (getBrowser ());
 
-		if (lock)
-		{
-			// Determine width and height of camera
+		// Determine width and height of camera
 
-			const auto viewpoint       = getViewpoint ();
-			const auto navigationInfo  = getNavigationInfo ();
-			const auto collisionRadius = navigationInfo -> getCollisionRadius ();
-			const auto bottom          = navigationInfo -> getStepHeight () - navigationInfo -> getAvatarHeight ();
-			const auto zNear           = navigationInfo -> getNearPlane ();
-			const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+		const auto viewpoint       = getViewpoint ();
+		const auto navigationInfo  = getNavigationInfo ();
+		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
+		const auto bottom          = navigationInfo -> getStepHeight () - navigationInfo -> getAvatarHeight ();
+		const auto zNear           = navigationInfo -> getNearPlane ();
+		const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
 
-			// Reshape camera
+		// Reshape camera
 
-			const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
+		const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
 
-			// Translate camera to user position and to look in the direction of the translation.
+		// Translate camera to user position and to look in the direction of the translation.
 
-			const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
-			auto       rotation         = Rotation4d (zAxis, -translation) * localOrientation;
-		
-			// The viewer is alway a straight box depending on the upVector.
-			// rotation *= viewpoint -> straightenHorizon (rotation);
+		const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
+		auto       rotation         = Rotation4d (zAxis, -translation) * localOrientation;
+	
+		// The viewer is alway a straight box depending on the upVector.
+		// rotation *= viewpoint -> straightenHorizon (rotation);
 
-			auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
-			modelViewMatrix .translate (viewpoint -> getUserPosition ());
-			modelViewMatrix .rotate (rotation);
-			modelViewMatrix .inverse ();
+		auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
+		modelViewMatrix .translate (viewpoint -> getUserPosition ());
+		modelViewMatrix .rotate (rotation);
+		modelViewMatrix .inverse ();
 
-			modelViewMatrix .mult_right (projectionMatrix);
-		
-			glMatrixMode (GL_PROJECTION);
-			glLoadMatrixd (modelViewMatrix .data ());
-			glMatrixMode (GL_MODELVIEW);
+		modelViewMatrix .mult_right (projectionMatrix);
+	
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (modelViewMatrix .data ());
+		glMatrixMode (GL_MODELVIEW);
 
-			return getDepth ();
-		}
+		return getDepth ();
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 	catch (const std::domain_error &)
 	{ }
 

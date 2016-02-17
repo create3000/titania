@@ -161,7 +161,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	ContextLock lock (this);
 
-	if (getWorld () and lock)
+	if (getWorld ())
 	{
 		const bool backgroundHidden = getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden ();
 	
@@ -207,7 +207,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		return image;
 	}
 
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	throw Error <DISPOSED> ("Disposed.");
 }
 
 void
@@ -238,10 +238,14 @@ X3DBrowserContext::reshape ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	ContextLock lock (this);
-
-	if (lock)
+	try
+	{
+		ContextLock lock (this);
+       
 		reshaped () .processInterests ();
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 /*
@@ -262,50 +266,47 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		ContextLock lock (this);
 
-		if (lock)
-		{
-			// Prepare
+		// Prepare
 
-			getClock () -> advance ();
+		getClock () -> advance ();
 
-			prepareEvents () .processInterests ();
-			processEvents ();
+		prepareEvents () .processInterests ();
+		processEvents ();
 
-			getWorld () -> traverse (TraverseType::CAMERA);
+		getWorld () -> traverse (TraverseType::CAMERA);
 
-			if (not getActiveCollisions () .empty ())
-				getWorld () -> traverse (TraverseType::COLLISION);
+		if (not getActiveCollisions () .empty ())
+			getWorld () -> traverse (TraverseType::COLLISION);
 
-			//__LOG__ << getActiveCollisions () .size () << std::endl;
+		//__LOG__ << getActiveCollisions () .size () << std::endl;
 
-			sensors () .processInterests ();
-			processEvents ();
+		sensors () .processInterests ();
+		processEvents ();
 
-			deleteObjectsAsync ();
+		deleteObjectsAsync ();
 
-			// Debug
-			debugRouter ();
+		// Debug
+		debugRouter ();
 
-			// Display
+		// Display
 
-			renderBackground ();
+		renderBackground ();
 
-			getWorld () -> traverse (TraverseType::DISPLAY);
+		getWorld () -> traverse (TraverseType::DISPLAY);
 
-			displayed () .processInterests ();
-			swapBuffers ();
+		displayed () .processInterests ();
+		swapBuffers ();
 
-			// Finish
+		// Finish
 
-			finished () .processInterests ();
+		finished () .processInterests ();
 
-			const GLenum errorNum = glGetError ();
+		const GLenum errorNum = glGetError ();
 
-			#ifdef TITANIA_DEBUG
-			if (errorNum not_eq GL_NO_ERROR)
-				std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
-			#endif
-		}
+		#ifdef TITANIA_DEBUG
+		if (errorNum not_eq GL_NO_ERROR)
+			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
+		#endif
 	}
 	catch (const std::exception & exception)
 	{

@@ -255,9 +255,6 @@ throw (Error <INVALID_NODE>,
 
 	ContextLock lock (texture2DNode -> getBrowser ());
 
-	if (not lock)
-		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
-
 	const auto   width      = texture2DNode -> getWidth ();
 	const auto   height     = texture2DNode -> getHeight ();
 	const auto   components = texture2DNode -> getComponents ();

@@ -371,27 +371,20 @@ throw (Error <INVALID_NAME>,
 {
 	ContextLock lock (getBrowser ());
 
-	if (lock)
-	{
-		if (getProfile () or not getComponents () .empty ())
-		   setProfile (getBrowser () -> getProfile ("Full"));
+	if (getProfile () or not getComponents () .empty ())
+	   setProfile (getBrowser () -> getProfile ("Full"));
 
-		//importMetaData (executionContext); // Makes no sense.
+	//importMetaData (executionContext); // Makes no sense.
 
-		const auto scene = dynamic_cast <X3DScene*> (executionContext);
+	const auto scene = dynamic_cast <X3DScene*> (executionContext);
 
-		if (scene)
-			updateExportedNodes (scene);
+	if (scene)
+		updateExportedNodes (scene);
 
-		X3DExecutionContext::import (executionContext, field);
+	X3DExecutionContext::import (executionContext, field);
 
-		if (scene)
-			importExportedNodes (scene);
-
-		return;
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	if (scene)
+		importExportedNodes (scene);
 }
 
 void

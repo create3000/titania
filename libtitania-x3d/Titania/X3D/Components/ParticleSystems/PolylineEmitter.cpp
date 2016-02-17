@@ -244,10 +244,10 @@ PolylineEmitter::set_polyline ()
 void
 PolylineEmitter::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		// Polyline map
 
 		if (polylineMapId)
@@ -262,6 +262,8 @@ PolylineEmitter::dispose ()
 		if (lengthBufferId)
 			glDeleteBuffers (1, &lengthBufferId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	// Dispose base
 

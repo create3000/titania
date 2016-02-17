@@ -60,9 +60,8 @@ class ContextLock
 {
 public:
 
-	ContextLock (const X3DBrowserContext* const browserContext);
-
-	operator bool () const;
+	ContextLock (const X3DBrowserContext* const browserContext)
+	throw (Error <INVALID_OPERATION_TIMING>);
 
 	~ContextLock ();
 
@@ -72,8 +71,6 @@ private:
 	Display* const    xDisplay;
 	const GLXDrawable xDrawable;
 	const GLXContext  xContext;
-	const bool        lock;
-	const GLXContext  xCurrentContext;
 
 };
 

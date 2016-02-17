@@ -418,13 +418,15 @@ ScreenText::display ()
 
 ScreenText::~ScreenText ()
 {
-	ContextLock lock (text -> getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (text -> getBrowser ());
+
 		if (textureId)
 			glDeleteTextures (1, &textureId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 const ComponentType ScreenFontStyle::component      = ComponentType::LAYOUT;

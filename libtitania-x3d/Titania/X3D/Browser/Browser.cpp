@@ -171,10 +171,14 @@ Browser::on_unmap ()
 
 		getExecutionContext () -> endUpdate ();
 
-		ContextLock lock (this);
-
-		if (lock)
+		try
+		{
+			ContextLock lock (this);
+		
 			processEvents ();
+		}
+		catch (const Error <INVALID_OPERATION_TIMING> &)
+		{ }
 	}
 
 	opengl::Surface::on_unmap ();
@@ -247,18 +251,21 @@ Browser::set_viewer ()
 }
 
 void
+Browser::makeCurrent () const
+throw (Error <INVALID_OPERATION_TIMING>)
+{
+	if (opengl::Surface::makeCurrent ())
+		return;
+
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+}
+
+void
 Browser::reshape ()
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	try
-	{
-		X3DBrowser::reshape ();
-	}
-	catch (const X3D::X3DError &)
-	{
-		// Send error message, via signal?
-	}
+	X3DBrowser::reshape ();
 }
 
 void
@@ -279,9 +286,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 Browser::dispose ()
 {
-	opengl::Surface::dispose ();
-
 	X3DBrowser::dispose ();
+
+	opengl::Surface::dispose ();
 }
 
 Browser::~Browser ()

@@ -870,10 +870,10 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 void
 X3DGeometryNode::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (not attribBufferIds .empty ())
 			glDeleteBuffers (attribBufferIds .size (), attribBufferIds .data ());
 
@@ -889,6 +889,8 @@ X3DGeometryNode::dispose ()
 		if (vertexBufferId)
 			glDeleteBuffers (1, &vertexBufferId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	X3DNode::dispose ();
 }

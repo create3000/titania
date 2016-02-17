@@ -1067,7 +1067,7 @@ X3DBrowserEditor::dispose ()
 
 X3DBrowserEditor::~X3DBrowserEditor ()
 {
-__LOG__ << std::endl;
+	__LOG__ << std::endl;
 }
 
 } // puck

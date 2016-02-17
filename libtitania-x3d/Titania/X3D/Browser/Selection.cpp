@@ -111,10 +111,10 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::addChildren (const MFNode & value)
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		for (const auto & child : value)
 		{
 			if (not child)
@@ -130,15 +130,17 @@ Selection::addChildren (const MFNode & value)
 			child -> addTool ();
 		}
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 void
 Selection::removeChildren (const MFNode & value)
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		for (const auto & child : value)
 		{
 			if (child)
@@ -152,6 +154,8 @@ Selection::removeChildren (const MFNode & value)
 			}
 		}
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 void

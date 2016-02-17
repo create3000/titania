@@ -1066,6 +1066,7 @@ X3DBrowserWidget::dispose ()
 
 X3DBrowserWidget::~X3DBrowserWidget ()
 {
+	__LOG__ << std::endl;
 }
 
 } // puck

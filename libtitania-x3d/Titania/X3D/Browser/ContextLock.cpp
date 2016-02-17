@@ -53,28 +53,35 @@
 namespace titania {
 namespace X3D {
 
-ContextLock::ContextLock (const X3DBrowserContext* const browserContext) :
-	       xDisplay (glXGetCurrentDisplay ()),
-	      xDrawable (glXGetCurrentDrawable ()),
-	       xContext (glXGetCurrentContext ()),
-	           lock (browserContext -> makeCurrent ()),
-	xCurrentContext (glXGetCurrentContext ())
-{ }
-
-ContextLock::operator bool () const
+/**
+ *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
+ *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
+ *
+ *  @param  browserContext  A valid X3DBrowserContext instance.
+ */
+ContextLock::ContextLock (const X3DBrowserContext* const browserContext)
+throw (Error <INVALID_OPERATION_TIMING>) :
+	 xDisplay (glXGetCurrentDisplay ()),
+	xDrawable (glXGetCurrentDrawable ()),
+	 xContext (glXGetCurrentContext ())
 {
-	return lock;
+	// Throws an exception if it cannot make current!  The destructor is then not called.
+	browserContext -> makeCurrent ();
 }
 
 ContextLock::~ContextLock ()
 {
-	if (not xDisplay)
-		return;
+	if (xDisplay)
+		glXMakeCurrent (xDisplay, xDrawable, xContext);
 
-	if (xCurrentContext == xContext)
-		return;
+	else
+	{
+		// Or use XOpenDisplay (NULL); to get a display;
+		const auto xCurrentDisplay = glXGetCurrentDisplay ();
 
-	glXMakeCurrent (xDisplay, xDrawable, xContext);
+		if (xCurrentDisplay)
+			glXMakeCurrent (xCurrentDisplay, None, NULL);
+	}
 }
 
 } // X3D

@@ -50,8 +50,6 @@
 
 #include "X3DPixelTexture3DEditor.h"
 
-#include <Titania/X3D/Browser/ContextLock.h>
-
 namespace titania {
 namespace puck {
 

@@ -102,9 +102,9 @@ public:
 	{ opengl::Surface::renderBackground (); }
 
 	virtual
-	bool
-	makeCurrent () const final override
-	{ return opengl::Surface::makeCurrent (); }
+	void
+	makeCurrent () const
+	throw (Error <INVALID_OPERATION_TIMING>) final override;
 
 	virtual
 	void

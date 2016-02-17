@@ -144,23 +144,22 @@ X3DExecutionContext::initialize ()
 void
 X3DExecutionContext::realize ()
 {
-	ContextLock lock (getBrowser ());
-
-	getBrowser () -> prepareEvents () .removeInterest (this, &X3DExecutionContext::realize);
-
-	requestImmediateLoadOfExternProtos ();
-
-	if (lock)
+	try
 	{
+		getBrowser () -> prepareEvents () .removeInterest (this, &X3DExecutionContext::realize);
+
+		requestImmediateLoadOfExternProtos ();
+
+		ContextLock lock (getBrowser ());
+
 		while (not uninitializedNodes .empty ())
 		{
 			for (const auto & uninitializedNode : MFNode (std::move (uninitializedNodes)))
 				uninitializedNode -> setup ();
 		}
 	}
-
-	//else
-	//	throw Error <INVALID_OPERATION_TIMING> ("Couldn't realize nodes.");
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 void
@@ -1251,26 +1250,20 @@ throw (Error <INVALID_NAME>,
 {
 	ContextLock lock (getBrowser ());
 
-	if (lock)
-	{
-		updateNamedNodes (executionContext);
+	updateNamedNodes (executionContext);
 
-		importNodes (executionContext);
-		field .append (std::move (executionContext -> getRootNodes ()));
+	importNodes (executionContext);
+	field .append (std::move (executionContext -> getRootNodes ()));
 
-		importNamedNodes (executionContext);
-		importExternProtos (executionContext);
-		importProtos (executionContext);
+	importNamedNodes (executionContext);
+	importExternProtos (executionContext);
+	importProtos (executionContext);
 
-		updateImportedNodes (executionContext);
-		copyImportedNodes (executionContext);
-		importRoutes (executionContext);
+	updateImportedNodes (executionContext);
+	copyImportedNodes (executionContext);
+	importRoutes (executionContext);
 
-		realize ();
-		return;
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	realize ();
 }
 
 void

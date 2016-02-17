@@ -1619,10 +1619,10 @@ ParticleSystem::disableTexCoord () const
 void
 ParticleSystem::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		// Particle buffer
 
 		if (particleFeedbackId [0])
@@ -1683,6 +1683,8 @@ ParticleSystem::dispose ()
 		if (boundedVolumeBufferId)
 			glDeleteBuffers (1, &boundedVolumeBufferId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	// Dispose base
 

@@ -266,13 +266,15 @@ ShaderProgram::set_url ()
 void
 ShaderProgram::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (programId)
 			glDeleteProgram (programId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	X3DProgrammableShaderObject::dispose ();
 	X3DUrlObject::dispose ();

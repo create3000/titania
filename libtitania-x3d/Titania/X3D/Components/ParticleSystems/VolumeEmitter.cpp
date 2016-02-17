@@ -276,10 +276,10 @@ VolumeEmitter::dispose ()
 {
 	// Surface map
 
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (normalMapId)
 			glDeleteTextures (1, &normalMapId);
 
@@ -304,6 +304,8 @@ VolumeEmitter::dispose ()
 		if (volumeBufferId)
 			glDeleteBuffers (1, &volumeBufferId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	// Dispose base
 

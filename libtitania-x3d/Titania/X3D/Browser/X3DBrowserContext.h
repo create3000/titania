@@ -186,9 +186,10 @@ public:
 	///  @name Rendering
 
 	virtual
-	bool
+	void
 	makeCurrent () const
-	{ return true; }
+	throw (Error <INVALID_OPERATION_TIMING>)
+	{ }
 
 	virtual
 	void

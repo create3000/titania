@@ -223,13 +223,15 @@ ProgramShader::draw ()
 void
 ProgramShader::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (pipelineId)
 			glDeleteProgramPipelines (1, &pipelineId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	X3DShaderNode::dispose ();
 }

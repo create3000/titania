@@ -607,7 +607,21 @@ main (int argc, char** argv)
 	__LOG__ << std::numeric_limits <long double>::digits10 << std::endl;
 	__LOG__ << std::setprecision (2 * std::numeric_limits <long double>::digits10) << std::endl;
 	__LOG__ << d << std::endl;
-	
+
+	try
+	{
+		try
+		{
+		   throw std::domain_error ("d");
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+	catch (const std::domain_error & e)
+	{
+	   __LOG__ << e .what () << std::endl;
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;

@@ -240,10 +240,10 @@ FrameBuffer::readDepth ()
 
 FrameBuffer::~FrameBuffer ()
 {
-	ContextLock lock (browser);
-
-	if (lock)
+	try
 	{
+		ContextLock lock (browser);
+
 		if (colorBufferId)
 			glDeleteRenderbuffers (1, &colorBufferId);
 
@@ -253,6 +253,8 @@ FrameBuffer::~FrameBuffer ()
 		if (id)
 			glDeleteFramebuffers (1, &id);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 } // X3D

@@ -2886,7 +2886,11 @@ BrowserWindow::toggleActions (const Glib::RefPtr <Gtk::ToggleAction> & current,
 
 BrowserWindow::~BrowserWindow ()
 {
+	__LOG__ << std::endl;
+
 	dispose ();
+
+	__LOG__ << std::endl;
 }
 
 } // puck

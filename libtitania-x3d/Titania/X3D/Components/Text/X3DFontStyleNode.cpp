@@ -524,13 +524,15 @@ X3DTextGeometry::display ()
 
 X3DTextGeometry::~X3DTextGeometry ()
 {
-	ContextLock lock (fontStyle -> getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (fontStyle -> getBrowser ());
+
 		if (listId)
 			glDeleteLists (listId, 1);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 }
 
 X3DFontStyleNode::Fields::Fields () :

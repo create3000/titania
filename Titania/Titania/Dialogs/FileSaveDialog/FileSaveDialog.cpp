@@ -54,7 +54,6 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
-#include <Titania/X3D/Browser/ContextLock.h>
 #include <Titania/OS.h>
 
 namespace titania {

@@ -289,77 +289,72 @@ throw (Error <INVALID_SCENE>,
 {
 	ContextLock lock (this);
 
-	if (lock)
+	if (future)
 	{
-		if (future)
+		removeLoadCount (future .get ());
+		future -> stop ();
+	}
+
+	finished () .removeInterest (this, &X3DBrowser::set_scene);
+
+
+	// Process shutdown.
+
+	if (initialized ()) // Don't do this if browser is not initialized.
+	{
+		if (not inShutdown)
 		{
-			removeLoadCount (future .get ());
-			future -> stop ();
-		}
+			++ inShutdown;
 
-		finished () .removeInterest (this, &X3DBrowser::set_scene);
+			//getClock () -> advance ();
 
+			shutdown () .processInterests ();
 
-		// Process shutdown.
+			// Cancel replaceWorld if another replaceWorld was called in shutdown.
 
-		if (initialized ()) // Don't do this if browser is not initialized.
-		{
-			if (not inShutdown)
+			if (inShutdown > 1)
 			{
-				++ inShutdown;
-
-				//getClock () -> advance ();
-
-				shutdown () .processInterests ();
-
-				// Cancel replaceWorld if another replaceWorld was called in shutdown.
-
-				if (inShutdown > 1)
-				{
-					inShutdown = 0;
-					return;
-				}
-
 				inShutdown = 0;
+				return;
 			}
-			else
-				++ inShutdown;
-		}
 
-		// Process as normal.
-
-		if (not initialized () or value not_eq executionContext)
-		{
-			// Remove world.
-
-			isLive () .removeInterest (executionContext -> isLive ());
-			executionContext -> isLive () = false;
-			processEvents ();
-
-			// Replace world.
-
-			setDescription ("");
-			const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (this);
-			browserOptions -> assign (browserOptions, true);
-
-			executionContext = value ? value : X3DExecutionContextPtr (createScene ());
-
-			print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
-			isLive () .addInterest (executionContext -> isLive ());
-			executionContext -> isLive () = isLive ();
-			executionContext -> setup ();
-
-			setWorld (new World (executionContext));
-			getWorld () -> setup ();
+			inShutdown = 0;
 		}
 		else
-			executionContext = value;
+			++ inShutdown;
+	}
 
-		if (initialized ())
-			initialized () = getCurrentTime ();
+	// Process as normal.
+
+	if (not initialized () or value not_eq executionContext)
+	{
+		// Remove world.
+
+		isLive () .removeInterest (executionContext -> isLive ());
+		executionContext -> isLive () = false;
+		processEvents ();
+
+		// Replace world.
+
+		setDescription ("");
+		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (this);
+		browserOptions -> assign (browserOptions, true);
+
+		executionContext = value ? value : X3DExecutionContextPtr (createScene ());
+
+		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
+		isLive () .addInterest (executionContext -> isLive ());
+		executionContext -> isLive () = isLive ();
+		executionContext -> setup ();
+
+		setWorld (new World (executionContext));
+		getWorld () -> setup ();
 	}
 	else
-		throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+		executionContext = value;
+
+	if (initialized ())
+		initialized () = getCurrentTime ();
 }
 
 void
@@ -450,14 +445,9 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	if (lock)
-	{
-		Loader loader (this);
+	Loader loader (this);
 
-		return loader .createX3DFromString (string);
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return loader .createX3DFromString (string);
 }
 
 X3DScenePtr
@@ -469,14 +459,9 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	if (lock)
-	{
-		Loader loader (this);
+	Loader loader (this);
 
-		return loader .createX3DFromStream (istream);
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return loader .createX3DFromStream (istream);
 }
 
 X3DScenePtr
@@ -488,14 +473,9 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	if (lock)
-	{
-		Loader loader (this);
+	Loader loader (this);
 
-		return loader .createX3DFromStream (worldURL, istream);
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return loader .createX3DFromStream (worldURL, istream);
 }
 
 X3DScenePtr
@@ -506,14 +486,9 @@ throw (Error <INVALID_URL>,
 {
 	ContextLock lock (this);
 
-	if (lock)
-	{
-		Loader loader (this);
+	Loader loader (this);
 
-		return loader .createX3DFromURL (url);
-	}
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return loader .createX3DFromURL (url);
 }
 
 void

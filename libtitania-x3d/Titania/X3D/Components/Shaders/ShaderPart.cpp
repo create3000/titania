@@ -211,13 +211,15 @@ ShaderPart::set_url ()
 void
 ShaderPart::dispose ()
 {
-	ContextLock lock (getBrowser ());
-
-	if (lock)
+	try
 	{
+		ContextLock lock (getBrowser ());
+
 		if (shaderId)
 			glDeleteShader (shaderId);
 	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
 
 	X3DUrlObject::dispose ();
 	X3DNode::dispose ();
