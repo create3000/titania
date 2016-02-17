@@ -100,6 +100,9 @@ X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 
 	if (executionContext)
 		executionContext -> sceneGraph_changed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+
+	browser          = nullptr;
+	executionContext = nullptr;
 }
 
 bool
@@ -114,6 +117,7 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 {
 	on_unmap_primitive_count ();
 
+	getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
 	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
 	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::update);
 
@@ -121,23 +125,24 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 	{
 		case 0:
 		{
+			// Entire scene
 			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::update);
 			break;
 		}
 		case 1:
 		{
-			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
-
-			set_browser ();
+			// Rendered objects
 			break;
 		}
 		case 2:
 		{
+			// Selected objects
 			getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DPrimitiveCountEditor::update);
 			break;
 		}
 	}
 
+	set_browser ();
 	set_executionContext ();
 	update ();
 }
@@ -342,7 +347,8 @@ X3DPrimitiveCountEditor::set_browser ()
 
 	browser = getCurrentBrowser ();
 
-	browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	if (getPrimitiveCountCountButton () .get_active_row_number () == 1) // Rendered objects
+		browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 
 void
