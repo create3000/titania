@@ -75,6 +75,7 @@
   </object>
   <object class="GtkTextBuffer" id="SoundSourceDescriptionTextBuffer"/>
   <object class="GtkAdjustment" id="SoundSourceDurationAdjustment">
+    <property name="lower">-1</property>
     <property name="upper">1000000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -962,7 +963,7 @@
                           <object class="GtkLabel" id="label18">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Sound Source:</property>
+                            <property name="label" translatable="yes">Source:</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1746,7 +1747,7 @@
                   <object class="GtkLabel" id="label29">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Sound Source</property>
+                    <property name="label" translatable="yes">Source</property>
                   </object>
                 </child>
               </object>
@@ -1758,7 +1759,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Sound Source</property>
+                <property name="label" translatable="yes">Source</property>
               </object>
               <packing>
                 <property name="position">1</property>

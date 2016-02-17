@@ -232,6 +232,9 @@ X3DSoundSourceNodeEditor::connectSource (const X3D::SFNode & field)
 void
 X3DSoundSourceNodeEditor::set_node ()
 {
+	if (soundSourceNode)
+	   soundSourceNode -> isEvenLive (false);
+
 	undoStep           .reset ();
 	startTimeUndoStep  .reset ();
 	resumeTimeUndoStep .reset ();
@@ -256,6 +259,8 @@ X3DSoundSourceNodeEditor::set_node ()
 
 	if (not soundSourceNode)
 		soundSourceNode = audioClip;
+
+	soundSourceNode -> isEvenLive (true);
 
 	changing = true;
 

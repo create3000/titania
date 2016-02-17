@@ -1,7 +1,5 @@
 #VRML V2.0 utf8 Titania V1.2.2
 
-META "title" "MovieTexture"
-
 WorldInfo {
   metadata DEF Titania MetadataSet {
     name "Titania"
@@ -49,6 +47,15 @@ WorldInfo {
             ]
           }
         ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF _1 Sound { }
+        }
       }
     ]
   }
@@ -269,6 +276,8 @@ function set_duration (value)
 }
 	"
 }
+
+USE _1
 
 ROUTE Speed0.touchTime TO Debug.set_speed0
 ROUTE Speed1.touchTime TO Debug.set_speed1
