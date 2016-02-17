@@ -52,6 +52,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Node Properties</property>
                 <property name="stock">gtk-edit</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -77,6 +78,7 @@
                 <property name="tooltip_text" translatable="yes">Appearance Editor</property>
                 <property name="margin_top">16</property>
                 <property name="stock">Appearance</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -102,6 +104,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Texture Editor</property>
                 <property name="stock">Texture</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -127,6 +130,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Geometry Editor</property>
                 <property name="stock">Geometry</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">3</property>
@@ -152,6 +156,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Text Editor</property>
                 <property name="stock">Text</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">4</property>
@@ -179,6 +184,7 @@
                 <property name="halign">baseline</property>
                 <property name="margin_top">16</property>
                 <property name="stock">LayerSet</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">5</property>
@@ -203,6 +209,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Bindable Node Editor</property>
                 <property name="stock">Bound</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">6</property>
@@ -227,6 +234,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Light Editor</property>
                 <property name="stock">Light</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">7</property>
@@ -251,6 +259,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Light Editor</property>
                 <property name="stock">audio-volume-high</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">8</property>
@@ -275,6 +284,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Inline Editor</property>
                 <property name="stock">Inline</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">9</property>
@@ -299,6 +309,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Precision Placement Panel</property>
                 <property name="stock">Placement</property>
+                <property name="icon_size">1</property>
               </object>
               <packing>
                 <property name="position">10</property>

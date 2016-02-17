@@ -135,15 +135,6 @@ private:
 
 	///  @name Members
 
-	X3D::X3DPtrArray <X3D::Text>        texts;
-	X3D::SFTime                         fontStyleNodeBuffer;
-	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
-	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
-	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
-	X3D::UndoStepPtr                    undoStep;
-	X3D::UndoStepPtr                    styleUndoStep;
-	bool                                changing;
-
 	std::unique_ptr <MFStringFamilyWidget> family;
 	X3DFieldAdjustment <X3D::SFFloat>      size;
 	X3DFieldAdjustment <X3D::SFFloat>      pointSize;
@@ -153,6 +144,15 @@ private:
 	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
 	MFStringComboBoxText                   majorAlignment;          
 	MFStringComboBoxText                   minorAlignment;          
+
+	X3D::X3DPtrArray <X3D::Text>        texts;
+	X3D::SFTime                         fontStyleNodeBuffer;
+	X3D::X3DPtr <X3D::X3DFontStyleNode> fontStyleNode;
+	X3D::X3DPtr <X3D::FontStyle>        fontStyle;
+	X3D::X3DPtr <X3D::ScreenFontStyle>  screenFontStyle;
+	X3D::UndoStepPtr                    undoStep;
+	X3D::UndoStepPtr                    styleUndoStep;
+	bool                                changing;
 
 };
 

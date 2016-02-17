@@ -147,6 +147,58 @@ public:
 	getSoundPriorityAdjustment () const
 	{ return m_SoundPriorityAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceCycleTimeAdjustment () const
+	{ return m_SoundSourceCycleTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getSoundSourceDescriptionTextBuffer () const
+	{ return m_SoundSourceDescriptionTextBuffer; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceDurationAdjustment () const
+	{ return m_SoundSourceDurationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceElapsedTimeAdjustment () const
+	{ return m_SoundSourceElapsedTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourcePauseTimeAdjustment () const
+	{ return m_SoundSourcePauseTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourcePitchAdjustment () const
+	{ return m_SoundSourcePitchAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceResumeTimeAdjustment () const
+	{ return m_SoundSourceResumeTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceSpeedAdjustment () const
+	{ return m_SoundSourceSpeedAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceStartTimeAdjustment () const
+	{ return m_SoundSourceStartTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSoundSourceStopTimeAdjustment () const
+	{ return m_SoundSourceStopTimeAdjustment; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getSoundSourceURLCellRendererText () const
+	{ return m_SoundSourceURLCellRendererText; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getSoundSourceURLChooserColumn () const
+	{ return m_SoundSourceURLChooserColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getSoundSourceURLCellrendererPixbuf () const
+	{ return m_SoundSourceURLCellrendererPixbuf; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -259,9 +311,129 @@ public:
 	getSoundSourceExpander () const
 	{ return *m_SoundSourceExpander; }
 
+	Gtk::Box &
+	getSelectSoundSourceBox () const
+	{ return *m_SelectSoundSourceBox; }
+
+	Gtk::ComboBoxText &
+	getSoundSourceComboBoxText () const
+	{ return *m_SoundSourceComboBoxText; }
+
+	Gtk::Button &
+	getSoundSourceUnlinkButton () const
+	{ return *m_SoundSourceUnlinkButton; }
+
 	Gtk::Grid &
-	getSoundSourceBox () const
-	{ return *m_SoundSourceBox; }
+	getSoundSourceNodeBox () const
+	{ return *m_SoundSourceNodeBox; }
+
+	Gtk::CheckButton &
+	getSoundSourceEnabledCheckButton () const
+	{ return *m_SoundSourceEnabledCheckButton; }
+
+	Gtk::TextView &
+	getSoundSourceDescriptionTextView () const
+	{ return *m_SoundSourceDescriptionTextView; }
+
+	Gtk::Box &
+	getSoundSourceURLBox () const
+	{ return *m_SoundSourceURLBox; }
+
+	Gtk::TreeView &
+	getSoundSourceURLTreeView () const
+	{ return *m_SoundSourceURLTreeView; }
+
+	Gtk::Button &
+	getSoundSourceURLAddButton () const
+	{ return *m_SoundSourceURLAddButton; }
+
+	Gtk::Button &
+	getSoundSourceURLRemoveButton () const
+	{ return *m_SoundSourceURLRemoveButton; }
+
+	Gtk::Button &
+	getSoundSourceURLReloadButton () const
+	{ return *m_SoundSourceURLReloadButton; }
+
+	Gtk::SpinButton &
+	getSoundSourceSpeedSpinButton () const
+	{ return *m_SoundSourceSpeedSpinButton; }
+
+	Gtk::SpinButton &
+	getSoundSourcePitchSpinButton () const
+	{ return *m_SoundSourcePitchSpinButton; }
+
+	Gtk::CheckButton &
+	getSoundSourceLoopCheckButton () const
+	{ return *m_SoundSourceLoopCheckButton; }
+
+	Gtk::CheckButton &
+	getSoundSourceIsActiveCheckButton () const
+	{ return *m_SoundSourceIsActiveCheckButton; }
+
+	Gtk::CheckButton &
+	getSoundSourceIsPausedCheckButton () const
+	{ return *m_SoundSourceIsPausedCheckButton; }
+
+	Gtk::SpinButton &
+	getSoundSourceCycleTimeSpinButton () const
+	{ return *m_SoundSourceCycleTimeSpinButton; }
+
+	Gtk::SpinButton &
+	getSoundSourceElapsedTimeSpinButton () const
+	{ return *m_SoundSourceElapsedTimeSpinButton; }
+
+	Gtk::SpinButton &
+	getSoundSourceDurationSpinButton () const
+	{ return *m_SoundSourceDurationSpinButton; }
+
+	Gtk::Box &
+	getSoundSourceStartTimeBox () const
+	{ return *m_SoundSourceStartTimeBox; }
+
+	Gtk::SpinButton &
+	getSoundSourceStartTimeSpinButton () const
+	{ return *m_SoundSourceStartTimeSpinButton; }
+
+	Gtk::Button &
+	getSoundSourceStartTimeButton () const
+	{ return *m_SoundSourceStartTimeButton; }
+
+	Gtk::Box &
+	getSoundSourceResumeTimeBox () const
+	{ return *m_SoundSourceResumeTimeBox; }
+
+	Gtk::SpinButton &
+	getSoundSourceResumeTimeSpinButton () const
+	{ return *m_SoundSourceResumeTimeSpinButton; }
+
+	Gtk::Button &
+	getSoundSourceResumeTimeButton () const
+	{ return *m_SoundSourceResumeTimeButton; }
+
+	Gtk::Box &
+	getSoundSourcePauseTimeBox () const
+	{ return *m_SoundSourcePauseTimeBox; }
+
+	Gtk::SpinButton &
+	getSoundSourcePauseTimeSpinButton () const
+	{ return *m_SoundSourcePauseTimeSpinButton; }
+
+	Gtk::Button &
+	getSoundSourcePauseTimeButton () const
+	{ return *m_SoundSourcePauseTimeButton; }
+
+	Gtk::Box &
+	getSoundSourceStopTimeBox () const
+	{ return *m_SoundSourceStopTimeBox; }
+
+	Gtk::SpinButton &
+	getSoundSourceStopTimeSpinButton () const
+	{ return *m_SoundSourceStopTimeSpinButton; }
+
+	Gtk::Button &
+	getSoundSourceStopTimeButton () const
+	{ return *m_SoundSourceStopTimeButton; }
 
 	///  @name Signal handlers
 
@@ -276,6 +448,30 @@ public:
 	virtual
 	void
 	on_index_clicked () = 0;
+
+	virtual
+	void
+	on_sound_source_changed () = 0;
+
+	virtual
+	void
+	on_sound_source_unlink_clicked () = 0;
+
+	virtual
+	void
+	on_sound_source_start_time_clicked () = 0;
+
+	virtual
+	void
+	on_sound_source_resume_time_clicked () = 0;
+
+	virtual
+	void
+	on_sound_source_pause_time_clicked () = 0;
+
+	virtual
+	void
+	on_sound_source_stop_time_clicked () = 0;
 
 	///  @name Destruction
 
@@ -301,49 +497,92 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundDirectionZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundIntensityAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundLocationXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundLocationYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundLocationZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundMaxBackAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundMaxFrontAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundMinBackAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundMinFrontAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SoundPriorityAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_SoundActionBox;
-	Gtk::Button*                   m_NewSoundButton;
-	Gtk::Button*                   m_RemoveSoundButton;
-	Gtk::Button*                   m_IndexButton;
-	Gtk::Notebook*                 m_SoundNotebook;
-	Gtk::Expander*                 m_SoundExpander;
-	Gtk::Grid*                     m_SoundBox;
-	Gtk::CheckButton*              m_SoundSpatializeCheckButton;
-	Gtk::Box*                      m_SoundNameBox;
-	Gtk::Entry*                    m_SoundNameEntry;
-	Gtk::Button*                   m_SoundRenameButton;
-	Gtk::Box*                      m_SoundIntensityBox;
-	Gtk::Scale*                    m_SoundIntensityScale;
-	Gtk::Box*                      m_SoundLocationBox;
-	Gtk::Box*                      m_SoundNormalToolBox;
-	Gtk::Box*                      m_SoundDirectionBox;
-	Gtk::SpinButton*               m_SoundDirectionXSpinButton;
-	Gtk::SpinButton*               m_SoundDirectionYSpinButton;
-	Gtk::SpinButton*               m_SoundDirectionZSpinButton;
-	Gtk::Box*                      m_SoundPriorityBox;
-	Gtk::Scale*                    m_SoundPriorityScale;
-	Gtk::SpinButton*               m_SoundMinBackSpinButton;
-	Gtk::SpinButton*               m_SoundMinFrontSpinButton;
-	Gtk::SpinButton*               m_SoundMaxBackSpinButton;
-	Gtk::SpinButton*               m_SoundMaxFrontSpinButton;
-	Gtk::Expander*                 m_SoundSourceExpander;
-	Gtk::Grid*                     m_SoundSourceBox;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundDirectionXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundDirectionYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundDirectionZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundIntensityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundLocationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundLocationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundLocationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundMaxBackAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundMaxFrontAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundMinBackAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundMinFrontAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundPriorityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceCycleTimeAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer>         m_SoundSourceDescriptionTextBuffer;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceDurationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceElapsedTimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourcePauseTimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourcePitchAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceResumeTimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceSpeedAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceStartTimeAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>         m_SoundSourceStopTimeAdjustment;
+	Glib::RefPtr <Gtk::CellRendererText>   m_SoundSourceURLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_SoundSourceURLChooserColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_SoundSourceURLCellrendererPixbuf;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::Box*                              m_SoundActionBox;
+	Gtk::Button*                           m_NewSoundButton;
+	Gtk::Button*                           m_RemoveSoundButton;
+	Gtk::Button*                           m_IndexButton;
+	Gtk::Notebook*                         m_SoundNotebook;
+	Gtk::Expander*                         m_SoundExpander;
+	Gtk::Grid*                             m_SoundBox;
+	Gtk::CheckButton*                      m_SoundSpatializeCheckButton;
+	Gtk::Box*                              m_SoundNameBox;
+	Gtk::Entry*                            m_SoundNameEntry;
+	Gtk::Button*                           m_SoundRenameButton;
+	Gtk::Box*                              m_SoundIntensityBox;
+	Gtk::Scale*                            m_SoundIntensityScale;
+	Gtk::Box*                              m_SoundLocationBox;
+	Gtk::Box*                              m_SoundNormalToolBox;
+	Gtk::Box*                              m_SoundDirectionBox;
+	Gtk::SpinButton*                       m_SoundDirectionXSpinButton;
+	Gtk::SpinButton*                       m_SoundDirectionYSpinButton;
+	Gtk::SpinButton*                       m_SoundDirectionZSpinButton;
+	Gtk::Box*                              m_SoundPriorityBox;
+	Gtk::Scale*                            m_SoundPriorityScale;
+	Gtk::SpinButton*                       m_SoundMinBackSpinButton;
+	Gtk::SpinButton*                       m_SoundMinFrontSpinButton;
+	Gtk::SpinButton*                       m_SoundMaxBackSpinButton;
+	Gtk::SpinButton*                       m_SoundMaxFrontSpinButton;
+	Gtk::Expander*                         m_SoundSourceExpander;
+	Gtk::Box*                              m_SelectSoundSourceBox;
+	Gtk::ComboBoxText*                     m_SoundSourceComboBoxText;
+	Gtk::Button*                           m_SoundSourceUnlinkButton;
+	Gtk::Grid*                             m_SoundSourceNodeBox;
+	Gtk::CheckButton*                      m_SoundSourceEnabledCheckButton;
+	Gtk::TextView*                         m_SoundSourceDescriptionTextView;
+	Gtk::Box*                              m_SoundSourceURLBox;
+	Gtk::TreeView*                         m_SoundSourceURLTreeView;
+	Gtk::Button*                           m_SoundSourceURLAddButton;
+	Gtk::Button*                           m_SoundSourceURLRemoveButton;
+	Gtk::Button*                           m_SoundSourceURLReloadButton;
+	Gtk::SpinButton*                       m_SoundSourceSpeedSpinButton;
+	Gtk::SpinButton*                       m_SoundSourcePitchSpinButton;
+	Gtk::CheckButton*                      m_SoundSourceLoopCheckButton;
+	Gtk::CheckButton*                      m_SoundSourceIsActiveCheckButton;
+	Gtk::CheckButton*                      m_SoundSourceIsPausedCheckButton;
+	Gtk::SpinButton*                       m_SoundSourceCycleTimeSpinButton;
+	Gtk::SpinButton*                       m_SoundSourceElapsedTimeSpinButton;
+	Gtk::SpinButton*                       m_SoundSourceDurationSpinButton;
+	Gtk::Box*                              m_SoundSourceStartTimeBox;
+	Gtk::SpinButton*                       m_SoundSourceStartTimeSpinButton;
+	Gtk::Button*                           m_SoundSourceStartTimeButton;
+	Gtk::Box*                              m_SoundSourceResumeTimeBox;
+	Gtk::SpinButton*                       m_SoundSourceResumeTimeSpinButton;
+	Gtk::Button*                           m_SoundSourceResumeTimeButton;
+	Gtk::Box*                              m_SoundSourcePauseTimeBox;
+	Gtk::SpinButton*                       m_SoundSourcePauseTimeSpinButton;
+	Gtk::Button*                           m_SoundSourcePauseTimeButton;
+	Gtk::Box*                              m_SoundSourceStopTimeBox;
+	Gtk::SpinButton*                       m_SoundSourceStopTimeSpinButton;
+	Gtk::Button*                           m_SoundSourceStopTimeButton;
 
 };
 

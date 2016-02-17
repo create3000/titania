@@ -48,82 +48,117 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_SOUND_EDITOR_SOUND_EDITOR_H__
-#define __TITANIA_EDITORS_SOUND_EDITOR_SOUND_EDITOR_H__
+#ifndef __TITANIA_EDITORS_SOUND_EDITOR_X3DSOUND_SOURCE_NODE_EDITOR_H__
+#define __TITANIA_EDITORS_SOUND_EDITOR_X3DSOUND_SOURCE_NODE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DSoundEditorInterface.h"
-#include "X3DSoundSourceNodeEditor.h"
 
 #include "../../ComposedWidgets.h"
+
+#include <Titania/X3D/Components/Sound/Sound.h>
+#include <Titania/X3D/Components/Sound/AudioClip.h>
+#include <Titania/X3D/Components/Texturing/MovieTexture.h>
 
 namespace titania {
 namespace puck {
 
-class NormalTool;
+class MFStringURLWidget;
 
-class SoundEditor :
-	virtual public X3DSoundEditorInterface,
-	public X3DSoundSourceNodeEditor
+class X3DSoundSourceNodeEditor :
+	virtual public X3DSoundEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	SoundEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~SoundEditor ();
+	~X3DSoundSourceNodeEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DSoundSourceNodeEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode &) override;
 
 
 private:
 
-	///  @name Construction
+	///  @name sound source
 
 	virtual
 	void
-	configure () final override;
+	on_sound_source_unlink_clicked () final override;
 
 	virtual
 	void
-	initialize () final override;
+	on_sound_source_changed () final override;
+
+	void
+	set_source ();
+
+	void
+	connectSource (const X3D::SFNode &);
+
+	void
+	set_node ();
+
+	void
+	set_widgets ();
 
 	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
-
-	///  @name Event handlers
+	on_sound_source_start_time_clicked () final override;
 
 	virtual
 	void
-	on_new_sound_clicked () final override;
+	on_sound_source_resume_time_clicked () final override;
 
 	virtual
 	void
-	on_remove_sound_clicked () final override;
+	on_sound_source_pause_time_clicked () final override;
 
 	virtual
 	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	store () final override;
+	on_sound_source_stop_time_clicked () final override;
 
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment <X3D::SFFloat>  intensity;
-	X3DFieldToggleButton <X3D::SFBool> spatialize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> location;
-	X3DFieldAdjustment3 <X3D::SFVec3f> direction;
-	std::unique_ptr <NormalTool>       directionTool;	
-	X3DFieldAdjustment <X3D::SFFloat>  minBack;
-	X3DFieldAdjustment <X3D::SFFloat>  minFront;
-	X3DFieldAdjustment <X3D::SFFloat>  maxBack;
-	X3DFieldAdjustment <X3D::SFFloat>  maxFront;
-	X3DFieldAdjustment <X3D::SFFloat>  priority;
+	X3DFieldToggleButton <X3D::SFBool>  enabled;
+	SFStringTextView                    description;
+	std::unique_ptr <MFStringURLWidget> url;
+	X3DFieldAdjustment <X3D::SFFloat>   speed;
+	X3DFieldAdjustment <X3D::SFFloat>   pitch;
+	X3DFieldToggleButton <X3D::SFBool>  loop;
+	X3DFieldAdjustment <X3D::SFTime>    startTime;
+	X3DFieldAdjustment <X3D::SFTime>    resumeTime;
+	X3DFieldAdjustment <X3D::SFTime>    pauseTime;
+	X3DFieldAdjustment <X3D::SFTime>    stopTime;
+	X3DFieldToggleButton <X3D::SFBool>  isPaused;
+	X3DFieldToggleButton <X3D::SFBool>  isActive;
+	X3DFieldAdjustment <X3D::SFTime>    cycleTime;
+	X3DFieldAdjustment <X3D::SFTime>    elapsedTime;
+	X3DFieldAdjustment <X3D::SFTime>    duration_changed;
+
+	X3D::X3DPtrArray <X3D::Sound>         sounds;
+	X3D::SFTime                           soundSourceNodeBuffer;
+	X3D::X3DPtr <X3D::X3DSoundSourceNode> soundSourceNode;
+	X3D::X3DPtr <X3D::AudioClip>          audioClip;
+	X3D::X3DPtr <X3D::MovieTexture>       movieTexture;
+	X3D::UndoStepPtr                      undoStep;
+	X3D::UndoStepPtr                      startTimeUndoStep;
+	X3D::UndoStepPtr                      resumeTimeUndoStep;
+	X3D::UndoStepPtr                      pauseTimeUndoStep;
+	X3D::UndoStepPtr                      stopTimeUndoStep;
+	bool                                  changing;
 
 };
 

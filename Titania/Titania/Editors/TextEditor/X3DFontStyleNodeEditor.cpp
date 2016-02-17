@@ -58,14 +58,6 @@ namespace puck {
 
 X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	X3DTextEditorInterface (),
-	                 texts (),
-	   fontStyleNodeBuffer (),
-	         fontStyleNode (),
-	             fontStyle (),
-	       screenFontStyle (),
-	              undoStep (),
-	         styleUndoStep (),
-	              changing (false),
 	                family (new MFStringFamilyWidget (this,
 	                        getFontStyleFamilyTreeView (),
 	                        getFontStyleFamilyCellrendererText (),
@@ -87,7 +79,15 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	           leftToRight (this, getFontStyleLeftToRightCheckButton (), "leftToRight"),
 	           topToBottom (this, getFontStyleTopToBottomCheckButton (), "topToBottom"),
 	        majorAlignment (this, getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
-	        minorAlignment (this, getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST")
+	        minorAlignment (this, getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST"),
+	                 texts (),
+	   fontStyleNodeBuffer (),
+	         fontStyleNode (),
+	             fontStyle (),
+	       screenFontStyle (),
+	              undoStep (),
+	         styleUndoStep (),
+	              changing (false)
 {
 	addChildren (texts, fontStyleNodeBuffer, fontStyleNode, fontStyle, screenFontStyle);
 

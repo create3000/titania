@@ -61,18 +61,31 @@ X3DSoundEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_SoundDirectionXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionXAdjustment"));
-	m_SoundDirectionYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionYAdjustment"));
-	m_SoundDirectionZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionZAdjustment"));
-	m_SoundIntensityAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundIntensityAdjustment"));
-	m_SoundLocationXAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationXAdjustment"));
-	m_SoundLocationYAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationYAdjustment"));
-	m_SoundLocationZAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationZAdjustment"));
-	m_SoundMaxBackAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMaxBackAdjustment"));
-	m_SoundMaxFrontAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMaxFrontAdjustment"));
-	m_SoundMinBackAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMinBackAdjustment"));
-	m_SoundMinFrontAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMinFrontAdjustment"));
-	m_SoundPriorityAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundPriorityAdjustment"));
+	m_SoundDirectionXAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionXAdjustment"));
+	m_SoundDirectionYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionYAdjustment"));
+	m_SoundDirectionZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundDirectionZAdjustment"));
+	m_SoundIntensityAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundIntensityAdjustment"));
+	m_SoundLocationXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationXAdjustment"));
+	m_SoundLocationYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationYAdjustment"));
+	m_SoundLocationZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundLocationZAdjustment"));
+	m_SoundMaxBackAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMaxBackAdjustment"));
+	m_SoundMaxFrontAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMaxFrontAdjustment"));
+	m_SoundMinBackAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMinBackAdjustment"));
+	m_SoundMinFrontAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundMinFrontAdjustment"));
+	m_SoundPriorityAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundPriorityAdjustment"));
+	m_SoundSourceCycleTimeAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceCycleTimeAdjustment"));
+	m_SoundSourceDescriptionTextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("SoundSourceDescriptionTextBuffer"));
+	m_SoundSourceDurationAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceDurationAdjustment"));
+	m_SoundSourceElapsedTimeAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceElapsedTimeAdjustment"));
+	m_SoundSourcePauseTimeAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourcePauseTimeAdjustment"));
+	m_SoundSourcePitchAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourcePitchAdjustment"));
+	m_SoundSourceResumeTimeAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceResumeTimeAdjustment"));
+	m_SoundSourceSpeedAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceSpeedAdjustment"));
+	m_SoundSourceStartTimeAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceStartTimeAdjustment"));
+	m_SoundSourceStopTimeAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SoundSourceStopTimeAdjustment"));
+	m_SoundSourceURLCellRendererText   = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("SoundSourceURLCellRendererText"));
+	m_SoundSourceURLChooserColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("SoundSourceURLChooserColumn"));
+	m_SoundSourceURLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("SoundSourceURLCellrendererPixbuf"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -103,12 +116,52 @@ X3DSoundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SoundMaxBackSpinButton", m_SoundMaxBackSpinButton);
 	m_builder -> get_widget ("SoundMaxFrontSpinButton", m_SoundMaxFrontSpinButton);
 	m_builder -> get_widget ("SoundSourceExpander", m_SoundSourceExpander);
-	m_builder -> get_widget ("SoundSourceBox", m_SoundSourceBox);
+	m_builder -> get_widget ("SelectSoundSourceBox", m_SelectSoundSourceBox);
+	m_builder -> get_widget ("SoundSourceComboBoxText", m_SoundSourceComboBoxText);
+	m_builder -> get_widget ("SoundSourceUnlinkButton", m_SoundSourceUnlinkButton);
+	m_builder -> get_widget ("SoundSourceNodeBox", m_SoundSourceNodeBox);
+	m_builder -> get_widget ("SoundSourceEnabledCheckButton", m_SoundSourceEnabledCheckButton);
+	m_builder -> get_widget ("SoundSourceDescriptionTextView", m_SoundSourceDescriptionTextView);
+	m_builder -> get_widget ("SoundSourceURLBox", m_SoundSourceURLBox);
+	m_builder -> get_widget ("SoundSourceURLTreeView", m_SoundSourceURLTreeView);
+	m_builder -> get_widget ("SoundSourceURLAddButton", m_SoundSourceURLAddButton);
+	m_builder -> get_widget ("SoundSourceURLRemoveButton", m_SoundSourceURLRemoveButton);
+	m_builder -> get_widget ("SoundSourceURLReloadButton", m_SoundSourceURLReloadButton);
+	m_builder -> get_widget ("SoundSourceSpeedSpinButton", m_SoundSourceSpeedSpinButton);
+	m_builder -> get_widget ("SoundSourcePitchSpinButton", m_SoundSourcePitchSpinButton);
+	m_builder -> get_widget ("SoundSourceLoopCheckButton", m_SoundSourceLoopCheckButton);
+	m_builder -> get_widget ("SoundSourceIsActiveCheckButton", m_SoundSourceIsActiveCheckButton);
+	m_builder -> get_widget ("SoundSourceIsPausedCheckButton", m_SoundSourceIsPausedCheckButton);
+	m_builder -> get_widget ("SoundSourceCycleTimeSpinButton", m_SoundSourceCycleTimeSpinButton);
+	m_builder -> get_widget ("SoundSourceElapsedTimeSpinButton", m_SoundSourceElapsedTimeSpinButton);
+	m_builder -> get_widget ("SoundSourceDurationSpinButton", m_SoundSourceDurationSpinButton);
+	m_builder -> get_widget ("SoundSourceStartTimeBox", m_SoundSourceStartTimeBox);
+	m_builder -> get_widget ("SoundSourceStartTimeSpinButton", m_SoundSourceStartTimeSpinButton);
+	m_builder -> get_widget ("SoundSourceStartTimeButton", m_SoundSourceStartTimeButton);
+	m_builder -> get_widget ("SoundSourceResumeTimeBox", m_SoundSourceResumeTimeBox);
+	m_builder -> get_widget ("SoundSourceResumeTimeSpinButton", m_SoundSourceResumeTimeSpinButton);
+	m_builder -> get_widget ("SoundSourceResumeTimeButton", m_SoundSourceResumeTimeButton);
+	m_builder -> get_widget ("SoundSourcePauseTimeBox", m_SoundSourcePauseTimeBox);
+	m_builder -> get_widget ("SoundSourcePauseTimeSpinButton", m_SoundSourcePauseTimeSpinButton);
+	m_builder -> get_widget ("SoundSourcePauseTimeButton", m_SoundSourcePauseTimeButton);
+	m_builder -> get_widget ("SoundSourceStopTimeBox", m_SoundSourceStopTimeBox);
+	m_builder -> get_widget ("SoundSourceStopTimeSpinButton", m_SoundSourceStopTimeSpinButton);
+	m_builder -> get_widget ("SoundSourceStopTimeButton", m_SoundSourceStopTimeButton);
 
 	// Connect object Gtk::Button with id 'NewSoundButton'.
 	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_new_sound_clicked));
 	m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_remove_sound_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_index_clicked));
+
+	// Connect object Gtk::ComboBoxText with id 'SoundSourceComboBoxText'.
+	m_SoundSourceComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_changed));
+
+	// Connect object Gtk::Button with id 'SoundSourceUnlinkButton'.
+	m_SoundSourceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_unlink_clicked));
+	m_SoundSourceStartTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_start_time_clicked));
+	m_SoundSourceResumeTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_resume_time_clicked));
+	m_SoundSourcePauseTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_pause_time_clicked));
+	m_SoundSourceStopTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_stop_time_clicked));
 
 	// Call construct handler of base class.
 	construct ();

@@ -658,7 +658,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	if (undoGroup .empty ())
 	{
-		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field »%s«"), field .getName () .c_str ()));
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Field %s »%s«"), node -> getTypeName () .c_str (), field .getName () .c_str ()));
 	}
 	else
 	{

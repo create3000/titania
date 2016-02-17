@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="gtk-media-resume" filename="icons/Resume.svg"/>
       <source stock-id="audio-volume-high" filename="icons/Faenza/16/audio-volume-high.png"/>
       <source stock-id="audio-volume-medium" filename="icons/Faenza/16/audio-volume-medium.png"/>
       <source stock-id="audio-volume-low" filename="icons/Faenza/16/audio-volume-low.png"/>
@@ -41,6 +42,7 @@
       <source stock-id="gtk-goto-bottom" filename="icons/Faenza/16/gtk-goto-bottom.png"/>
       <source stock-id="Titania" filename="icons/Titania.svg"/>
       <source stock-id="SnapCenter" filename="icons/SnapCenter.svg"/>
+      <source stock-id="gtk-media-stop" filename="icons/Faenza/16/gtk-media-stop.png"/>
       <source stock-id="gtk-media-play" filename="icons/Faenza/16/gtk-media-play-ltr.png"/>
       <source stock-id="gtk-apply" filename="icons/Faenza/16/gtk-apply.png"/>
       <source stock-id="gtk-redo" filename="icons/Faenza/16/gtk-redo-ltr.png"/>

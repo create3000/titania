@@ -627,6 +627,27 @@
     <None Include="Tests\CubeMapTexturing\ImageCubeMapTexture.x3dv" />
     <None Include="Tests\CubeMapTexturing\images\skybox_texture.jpg" />
     <None Include="Tests\CubeMapTexturing\images\skybox_texture.xcf" />
+    <None Include="Examples\Arcadia\stage\Thumbs.db" />
+    <None Include="Examples\Arcadia\stage\alert.wav" />
+    <None Include="Examples\Arcadia\stage\bonus.wav" />
+    <None Include="Examples\Arcadia\stage\index.html" />
+    <None Include="Examples\Arcadia\stage\index.wrl" />
+    <None Include="Examples\Arcadia\stage\index.x3d" />
+    <None Include="Examples\Arcadia\stage\key-a.png" />
+    <None Include="Examples\Arcadia\stage\key-d.png" />
+    <None Include="Examples\Arcadia\stage\key-i.png" />
+    <None Include="Examples\Arcadia\stage\key.wav" />
+    <None Include="Examples\Arcadia\stage\keybox.png" />
+    <None Include="Examples\Arcadia\stage\keyfb.png" />
+    <None Include="Examples\Arcadia\stage\mount.wrl" />
+    <None Include="Examples\Arcadia\stage\mount.x3d" />
+    <None Include="Examples\Arcadia\stage\saule.wrl" />
+    <None Include="Examples\Arcadia\stage\saule.x3d" />
+    <None Include="Examples\Arcadia\stage\sky.png" />
+    <None Include="Examples\Arcadia\stage\stone.png" />
+    <None Include="Examples\Arcadia\stage\t2.png" />
+    <None Include="Examples\Arcadia\stage\temple.wrl" />
+    <None Include="Examples\Arcadia\stage\temple.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -676,6 +697,7 @@
     <Folder Include="Tests\Layering\home1\" />
     <Folder Include="Tests\Scripting\pb\" />
     <Folder Include="Tests\PROTO\solaris\" />
+    <Folder Include="Examples\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

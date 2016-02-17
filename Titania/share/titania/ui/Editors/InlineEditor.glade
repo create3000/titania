@@ -489,6 +489,7 @@
                           <object class="GtkButton" id="URLReloadButton">
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Reload Inline</property>
                             <child>
                               <object class="GtkImage" id="image11">
                                 <property name="visible">True</property>
@@ -497,9 +498,6 @@
                                 <property name="icon_size">1</property>
                               </object>
                             </child>
-                            <style>
-                              <class name="Reload Inline"/>
-                            </style>
                           </object>
                           <packing>
                             <property name="expand">True</property>

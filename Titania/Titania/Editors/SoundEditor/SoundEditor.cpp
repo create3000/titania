@@ -62,36 +62,46 @@ namespace puck {
 
 SoundEditor::SoundEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DSoundEditorInterface (get_ui ("Editors/SoundEditor.glade"), gconf_dir ()),
-	               nodeName (this, getSoundNameEntry (), getSoundRenameButton ()),
-	              intensity (this, getSoundIntensityAdjustment (), getSoundIntensityBox (), "intensity"),
-	             spatialize (this, getSoundSpatializeCheckButton (),  "spatialize"),
-	               location (this,
-	                         getSoundLocationXAdjustment (),
-	                         getSoundLocationYAdjustment (),
-	                         getSoundLocationZAdjustment (),
-	                         getSoundLocationBox (),
-	                         "location"),
-	              direction (this,
-	                         getSoundDirectionXAdjustment (),
-	                         getSoundDirectionYAdjustment (),
-	                         getSoundDirectionZAdjustment (),
-	                         getSoundDirectionBox (),
-	                         "direction"),
-	          directionTool (new NormalTool (this, getSoundNormalToolBox (), "direction")),
-	                minBack (this, getSoundMinBackAdjustment (),  getSoundMinBackSpinButton (),  "minBack"),
-	               minFront (this, getSoundMinFrontAdjustment (), getSoundMinFrontSpinButton (), "minFront"),
-	                maxBack (this, getSoundMaxBackAdjustment (),  getSoundMaxBackSpinButton (),  "maxBack"),
-	               maxFront (this, getSoundMaxFrontAdjustment (), getSoundMaxFrontSpinButton (), "maxFront"),
-	               priority (this, getSoundPriorityAdjustment (), getSoundPriorityBox (),        "priority")
+	 X3DSoundEditorInterface (get_ui ("Editors/SoundEditor.glade"), gconf_dir ()),
+	X3DSoundSourceNodeEditor (),
+	                nodeName (this, getSoundNameEntry (), getSoundRenameButton ()),
+	               intensity (this, getSoundIntensityAdjustment (), getSoundIntensityBox (), "intensity"),
+	              spatialize (this, getSoundSpatializeCheckButton (),  "spatialize"),
+	                location (this,
+	                          getSoundLocationXAdjustment (),
+	                          getSoundLocationYAdjustment (),
+	                          getSoundLocationZAdjustment (),
+	                          getSoundLocationBox (),
+	                          "location"),
+	               direction (this,
+	                          getSoundDirectionXAdjustment (),
+	                          getSoundDirectionYAdjustment (),
+	                          getSoundDirectionZAdjustment (),
+	                          getSoundDirectionBox (),
+	                          "direction"),
+	           directionTool (new NormalTool (this, getSoundNormalToolBox (), "direction")),
+	                 minBack (this, getSoundMinBackAdjustment (),  getSoundMinBackSpinButton (),  "minBack"),
+	                minFront (this, getSoundMinFrontAdjustment (), getSoundMinFrontSpinButton (), "minFront"),
+	                 maxBack (this, getSoundMaxBackAdjustment (),  getSoundMaxBackSpinButton (),  "maxBack"),
+	                maxFront (this, getSoundMaxFrontAdjustment (), getSoundMaxFrontSpinButton (), "maxFront"),
+	                priority (this, getSoundPriorityAdjustment (), getSoundPriorityBox (),        "priority")
 {
 	setup ();
+}
+
+void
+SoundEditor::configure ()
+{
+	X3DSoundEditorInterface::configure ();
+
+	getSoundNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
 SoundEditor::initialize ()
 {
 	X3DSoundEditorInterface::initialize ();
+	X3DSoundSourceNodeEditor::initialize ();
 
 	direction .setNormalize (true);
 }
@@ -100,6 +110,7 @@ void
 SoundEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DSoundEditorInterface::set_selection (selection);
+	X3DSoundSourceNodeEditor::set_selection (selection);
 
 	const X3D::X3DPtr <X3D::Sound> soundNode (selection .empty () ? nullptr : selection .back ());
 	const auto nodes = soundNode ? X3D::MFNode ({ soundNode }) : X3D::MFNode ();
@@ -143,6 +154,14 @@ SoundEditor::on_index_clicked ()
 {
 	const auto nodeIndex = std::dynamic_pointer_cast <NodeIndex> (getBrowserWindow () -> addDialog ("NodeIndex"));
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Sound });
+}
+
+void
+SoundEditor::store ()
+{
+	getConfig () -> setItem ("currentPage", getSoundNotebook () .get_current_page ());
+
+	X3DSoundEditorInterface::store ();
 }
 
 SoundEditor::~SoundEditor ()

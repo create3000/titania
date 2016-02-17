@@ -201,6 +201,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT) \
 	Titania/Editors/SoundEditor/SoundEditor.$(OBJEXT) \
+	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextEditor/TextEditor.$(OBJEXT) \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextureEditor/TextureEditor.$(OBJEXT) \
@@ -647,6 +648,7 @@ titania_SOURCES = \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/SoundEditor/SoundEditor.cpp \
+	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
 	Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp \
 	Titania/Editors/TextureEditor/TextureEditor.cpp \
@@ -1325,6 +1327,9 @@ Titania/Editors/SoundEditor/$(DEPDIR)/$(am__dirstamp):
 Titania/Editors/SoundEditor/SoundEditor.$(OBJEXT):  \
 	Titania/Editors/SoundEditor/$(am__dirstamp) \
 	Titania/Editors/SoundEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.$(OBJEXT):  \
+	Titania/Editors/SoundEditor/$(am__dirstamp) \
+	Titania/Editors/SoundEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/TextEditor/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/TextEditor
 	@: > Titania/Editors/TextEditor/$(am__dirstamp)
@@ -1872,6 +1877,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/SoundEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/X3DSoundSourceNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/TextEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/X3DFontStyleNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextureEditor/$(DEPDIR)/TextureEditor.Po@am__quote@
