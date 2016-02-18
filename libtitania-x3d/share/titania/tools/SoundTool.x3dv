@@ -1,0 +1,180 @@
+#X3D V3.3 utf8 Titania V1.2.2
+
+META "comment" "World of Titania"
+META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
+META "modified" "Thu, 18 Feb 2016 10:58:26 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -3.27805042198747,
+              6.96792135688014,
+              -6.37984785085888
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.700440696082242,
+              0.595447564548831,
+              0.393478117745689,
+              2.78773296049462
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF Box Transform {
+            children Shape {
+              appearance Appearance { }
+              geometry IndexedFaceSet {
+                colorPerVertex FALSE
+                colorIndex [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+                texCoordIndex [
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1
+                ]
+                coordIndex [
+                  0,
+                  1,
+                  2,
+                  3,
+                  -1,
+                  5,
+                  4,
+                  7,
+                  6,
+                  -1,
+                  3,
+                  2,
+                  6,
+                  7,
+                  -1,
+                  4,
+                  5,
+                  1,
+                  0,
+                  -1,
+                  4,
+                  0,
+                  3,
+                  7,
+                  -1,
+                  1,
+                  5,
+                  6,
+                  2,
+                  -1
+                ]
+                color Color {
+                  color [
+                    1 0 0,
+                    1 0.870309 0,
+                    0.245947 1 0,
+                    0 1 0.805168,
+                    0 0.188359 1,
+                    0.843149 0 1
+                  ]
+                }
+                texCoord TextureCoordinate {
+                  point [
+                    0 0,
+                    1 0,
+                    1 1,
+                    0 1
+                  ]
+                }
+                coord Coordinate {
+                  point [
+                    -1 -1 1,
+                    1 -1 1,
+                    1 1 1,
+                    -1 1 1,
+                    -1 -1 -1,
+                    1 -1 -1,
+                    1 1 -1,
+                    -1 1 -1
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+USE Box

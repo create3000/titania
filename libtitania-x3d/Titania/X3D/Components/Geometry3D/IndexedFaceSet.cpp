@@ -601,56 +601,92 @@ throw (Error <NOT_SUPPORTED>,
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
 	geometry -> metadata ()       = metadata ();
-	geometry -> colorIndex ()     = colorIndex ();
 	geometry -> colorPerVertex () = colorPerVertex ();
 	geometry -> attrib ()         = attrib ();
 	geometry -> fogCoord ()       = fogCoord ();
 	geometry -> color ()          = color ();
 	geometry -> coord ()          = coord ();
 
-	if (not colorIndex () .empty ())
-	{
-		MFInt32 lineColorIndex = geometry -> colorIndex ();
-		int32_t firstIndex     = colorIndex () [0];
-	
-		for (const auto index : colorIndex ())
-		{
-			if (index == -1)
-			{
-				lineColorIndex .emplace_back (firstIndex);
-				firstIndex = -1;
-			}
-			else if (firstIndex == -1)
-				firstIndex = index;
-	
-			lineColorIndex .emplace_back (index);
-		}
-
-		geometry -> colorIndex () = lineColorIndex;
-	}
-
 	if (not coordIndex () .empty ())
 	{
-		MFInt32 lineCoordIndex = geometry -> coordIndex ();
-		int32_t firstIndex     = coordIndex () [0];
+	   // The coord index must end with -1!
 
-		for (const auto index : coordIndex ())
+		std::set <std::pair <int32_t, int32_t>> lineIndex;
+
+		auto &  lineColorIndex = geometry -> colorIndex ();
+		auto &  lineCoordIndex = geometry -> coordIndex ();
+		bool    line           = false;
+		int32_t last           = -1;
+		size_t  first          = 0;
+		size_t  face           = 0;
+	   
+		for (size_t i = 1, size = coordIndex () .size (); i < size; ++ i)
 		{
+		   const auto p        = i - 1;
+			const auto previous = coordIndex () [p];
+			auto       index    = coordIndex () [i];
+			auto       c        = i;
+
 			if (index == -1)
 			{
-				lineCoordIndex .emplace_back (firstIndex);
-				firstIndex = -1;
+				index = coordIndex () [first];
+				c     = first;
 			}
-			else if (firstIndex == -1)
-				firstIndex = index;
-	
-			lineCoordIndex .emplace_back (index);
-		}
 
-		geometry -> coordIndex () = lineCoordIndex;
+			bool exists = false;
+
+			exists |= not lineIndex .emplace (std::make_pair (previous, index)) .second;
+			exists |= not lineIndex .emplace (std::make_pair (index, previous)) .second;
+
+			if ((previous == -1 || exists) and line)
+			{
+				if (not colorIndex () .empty ())
+				{
+					if (colorPerVertex ())
+						lineColorIndex .emplace_back (-1);
+					else
+						lineColorIndex .emplace_back (getColorIndex (face));
+				}
+
+				lineCoordIndex .emplace_back (-1);
+
+				line = false;
+			}
+
+			if (previous == -1)
+			{
+				first = i;
+				face += 1;
+				continue;
+			}
+
+			if (exists)
+				continue;
+
+			if (last not_eq previous)
+			{
+				if (not colorIndex () .empty ())
+				{
+					if (colorPerVertex ())
+						lineColorIndex .emplace_back (getColorIndex (p, true));
+				}
+
+				lineCoordIndex .emplace_back (previous);
+			}
+
+			if (not colorIndex () .empty ())
+			{
+				if (colorPerVertex ())
+					lineColorIndex .emplace_back (getColorIndex (c, true));
+			}
+
+			lineCoordIndex .emplace_back (index);
+
+			last = index;
+			line = true;
+		}
 	}
 
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

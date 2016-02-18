@@ -780,6 +780,7 @@
     <None Include="Titania\X3D\Editing\Selection\FaceSelection.h" />
     <None Include="Titania\X3D\Editing\Selection\X3DFaceSelection.h" />
     <None Include="Titania\X3D\Browser\Core\Clipboard.h" />
+    <None Include="share\titania\tools\SoundTool.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
