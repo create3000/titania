@@ -63,7 +63,7 @@ namespace puck {
 
 BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
 	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade"), gconf_dir ()),
+	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade")),
 	X3DNotebook <X3DBindableNodeEditorInterface> ()
 {
 	setup ();

@@ -60,7 +60,7 @@ namespace puck {
 
 BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade"), gconf_dir ()),
+	X3DBackgroundEditorInterface (get_ui ("Editors/BackgroundEditor.glade")),
 	         X3DBackgroundEditor (),
 	              backgroundList (new BackgroundList (browserWindow)),
 	                    nodeName (this, getNameEntry (), getRenameButton ()),

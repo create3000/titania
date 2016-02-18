@@ -62,7 +62,7 @@ namespace puck {
 
 SoundEditor::SoundEditor (X3DBrowserWindow* const browserWindow) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	 X3DSoundEditorInterface (get_ui ("Editors/SoundEditor.glade"), gconf_dir ()),
+	 X3DSoundEditorInterface (get_ui ("Editors/SoundEditor.glade")),
 	X3DSoundSourceNodeEditor (),
 	                nodeName (this, getSoundNameEntry (), getSoundRenameButton ()),
 	               intensity (this, getSoundIntensityAdjustment (), getSoundIntensityBox (), "intensity"),

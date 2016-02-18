@@ -70,7 +70,7 @@ namespace puck {
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	  X3DScriptEditorInterface (get_ui ("ScriptEditor.glade"), gconf_dir ()),
+	  X3DScriptEditorInterface (get_ui ("ScriptEditor.glade")),
 	           X3DScriptEditor (),
 	       X3DShaderPartEditor (),
 	     X3DScriptEditorSearch (),

@@ -63,7 +63,7 @@ namespace puck {
 
 Footer::Footer (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DFooterInterface (get_ui ("Footer.glade"), gconf_dir ()),
+	              X3DFooterInterface (get_ui ("Footer.glade")),
 	X3DNotebook <X3DFooterInterface> ()
 {
 	setup ();

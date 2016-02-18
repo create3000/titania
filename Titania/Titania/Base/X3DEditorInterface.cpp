@@ -59,11 +59,11 @@ namespace puck {
 ///  @name Construction
 
 X3DEditorInterface::X3DEditorInterface () :
-	X3DEditorInterface ("", "")
+	X3DEditorInterface ("")
 { }
 
-X3DEditorInterface::X3DEditorInterface (const std::string & widgetName, const std::string & configKey) :
-	X3DDialogInterface (widgetName, configKey),
+X3DEditorInterface::X3DEditorInterface (const std::string & widgetName) :
+	X3DDialogInterface (widgetName),
 	   X3DEditorObject ()
 {
 }

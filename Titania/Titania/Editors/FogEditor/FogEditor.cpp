@@ -61,7 +61,7 @@ namespace puck {
 
 FogEditor::FogEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFogEditorInterface (get_ui ("Editors/FogEditor.glade"), gconf_dir ()),
+	X3DFogEditorInterface (get_ui ("Editors/FogEditor.glade")),
 	              fogList (new FogList (browserWindow)),
 	             nodeName (this, getNameEntry (), getRenameButton ()),
 	                color (this, getColorButton (), getColorAdjustment (), getColorBox (), "color"),

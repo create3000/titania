@@ -71,7 +71,7 @@ namespace puck {
 
 NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
 	                    X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade"), gconf_dir ()),
+	              X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade")),
 	X3DNotebook <X3DNodeEditorInterface> ()
 {
 	setup ();

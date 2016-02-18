@@ -57,12 +57,6 @@ namespace titania {
 namespace puck {
 
 std::string
-gconf_dir ();
-
-std::string
-gconf_dir (const std::string &);
-
-std::string
 config_dir ();
 
 std::string

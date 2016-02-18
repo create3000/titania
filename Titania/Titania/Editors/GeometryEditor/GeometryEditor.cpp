@@ -65,7 +65,7 @@ namespace puck {
 
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade"), gconf_dir ()),
+	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade")),
 	             normalEnabled (this, getNormalEnabledToggleButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),

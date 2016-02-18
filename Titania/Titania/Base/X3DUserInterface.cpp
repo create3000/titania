@@ -90,14 +90,14 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface () :
-	X3DUserInterface ("", "")
+	X3DUserInterface ("")
 {
 	assert (false);
 }
 
-X3DUserInterface::X3DUserInterface (const std::string & widgetName, const std::string & configKey) :
+X3DUserInterface::X3DUserInterface (const std::string & widgetName) :
 	      X3DBaseInterface (),
-	                 gconf (new Configuration (configKey, widgetName)),
+	                config (new Configuration (widgetName)),
 	constructed_connection (),
 	         userInterface (),
 	               dialogs (new DialogIndex ())
@@ -124,7 +124,7 @@ X3DUserInterface::setName (const std::string & value)
 {
 	X3DBaseInterface::setName (value);
 
-	gconf .reset (new Configuration (gconf -> getPath (), value));
+	config .reset (new Configuration (value));
 	configure ();
 }
 

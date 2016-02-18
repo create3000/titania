@@ -56,8 +56,8 @@
 namespace titania {
 namespace puck {
 
-X3DDialogInterface::X3DDialogInterface (const std::string & widgetName, const std::string & configKey) :
-	X3DUserInterface (widgetName, configKey)
+X3DDialogInterface::X3DDialogInterface (const std::string & widgetName) :
+	X3DUserInterface (widgetName)
 { }
 
 void

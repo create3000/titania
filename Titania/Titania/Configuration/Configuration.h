@@ -51,8 +51,6 @@
 #ifndef __TITANIA_CONFIGURATION_CONFIGURATION_H__
 #define __TITANIA_CONFIGURATION_CONFIGURATION_H__
 
-#include <Titania/LOG.h>
-#include <gconfmm.h>
 #include <glibmm/keyfile.h>
 #include <sstream>
 #include <string>
@@ -66,13 +64,9 @@ public:
 
 	typedef std::vector <Configuration> Array;
 
-	Configuration (const std::string &, const std::string & = "");
+	Configuration (const std::string & = "");
 
 	/// @name Key lockup
-
-	const std::string &
-	getPath () const
-	{ return path; }
 
 	bool
 	hasItem (const std::string &) const;
@@ -123,23 +117,10 @@ private:
 
 	// Glib::KeyFile
 
-	bool
-	hasKey (const std::string &) const;
-
 	std::string   directory;
 	std::string   filename;
 	Glib::KeyFile keyfile;
 	std::string   group;
-
-	// Gnome::Conf::Client
-
-	std::string
-	getKey (const std::string &) const;
-
-	Glib::RefPtr <Gnome::Conf::Client> client;
-	std::string                        path;
-	std::string                        name;
-	std::string                        key;
 
 };
 

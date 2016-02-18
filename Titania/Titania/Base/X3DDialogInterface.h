@@ -81,7 +81,7 @@ protected:
 	X3DDialogInterface ()
 	{ }
 
-	X3DDialogInterface (const std::string &, const std::string &);
+	X3DDialogInterface (const std::string &);
 
 	virtual
 	void

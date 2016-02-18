@@ -83,7 +83,7 @@ public:
 
 	const std::shared_ptr <Configuration> &
 	getConfig () const
-	{ return gconf; }
+	{ return config; }
 
 	///  @name Destruction
 
@@ -111,7 +111,7 @@ private:
 
 	///  @name Members
 
-	const std::shared_ptr <Configuration> gconf;
+	const std::shared_ptr <Configuration> config;
 
 };
 

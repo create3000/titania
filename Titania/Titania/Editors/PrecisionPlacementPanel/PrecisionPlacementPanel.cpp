@@ -59,7 +59,7 @@ namespace puck {
 
 PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow) :
 	                   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.glade"), gconf_dir ()),
+	X3DPrecisionPlacementPanelInterface (get_ui ("Editors/PrecisionPlacementPanel.glade")),
 	                 X3DTransformEditor (),
 	                    X3DSwitchEditor (),
 	                 X3DBillboardEditor (),

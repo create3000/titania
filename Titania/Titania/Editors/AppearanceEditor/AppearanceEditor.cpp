@@ -61,7 +61,7 @@ namespace puck {
 
 AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.glade"), gconf_dir ()),
+	X3DAppearanceEditorInterface (get_ui ("Editors/AppearanceEditor.glade")),
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor (),

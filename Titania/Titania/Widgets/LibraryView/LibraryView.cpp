@@ -72,7 +72,7 @@ static constexpr int COBWEB  = 3;
 
 LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DLibraryViewInterface (get_ui ("LibraryView.glade"), gconf_dir ()),
+	X3DLibraryViewInterface (get_ui ("LibraryView.glade")),
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())
 {

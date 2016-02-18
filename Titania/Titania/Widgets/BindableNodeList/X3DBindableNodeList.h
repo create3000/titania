@@ -79,6 +79,11 @@ public:
 
 	///  @name Member acccess
 
+	virtual
+	const std::string &
+	getWidgetName () const final override
+	{ return name; }
+
 	void
 	isEditor (const bool);
 
@@ -206,7 +211,7 @@ const int32_t X3DBindableNodeList <Type>::Weight::BOLD = 700;
 template <class Type>
 X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DBindableNodeListInterface (get_ui ("BindableNodeList.glade"), gconf_dir ()),
+	X3DBindableNodeListInterface (get_ui ("BindableNodeList.glade")),
 	                     browser (getCurrentBrowser ()),
 	                 activeLayer (),
 	                       nodes (),
@@ -215,6 +220,8 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	                 hadjustment (new AdjustmentObject ()),
 	                 vadjustment (new AdjustmentObject ())
 {
+	setName (name);
+
 	addChildren (browser, activeLayer, selection);
 
 	setup ();

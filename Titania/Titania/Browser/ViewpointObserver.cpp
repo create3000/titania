@@ -83,7 +83,6 @@ ViewpointObserver::setBrowser (const X3D::BrowserPtr & current, const X3D::Brows
 	value -> getViewer ()               .addInterest (this, &ViewpointObserver::set_viewer);
 
 	set_viewer (value -> getViewer ());
-	set_offsets ();
 }
 
 void
@@ -102,6 +101,8 @@ ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 		viewerNode -> isActive ()   .addInterest (this, &ViewpointObserver::set_viewer_active);
 		viewerNode -> scrollTime () .addInterest (this, &ViewpointObserver::set_viewer_scrollTime);
 	}
+
+	set_offsets ();
 }
 
 void

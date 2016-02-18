@@ -60,7 +60,7 @@ namespace puck {
 
 OpenLocationDialog::OpenLocationDialog (X3DBrowserWindow* const browserWindow) :
 	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DOpenLocationDialogInterface (get_ui ("Dialogs/OpenLocationDialog.glade"), gconf_dir ())
+	X3DOpenLocationDialogInterface (get_ui ("Dialogs/OpenLocationDialog.glade"))
 {
 	const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 

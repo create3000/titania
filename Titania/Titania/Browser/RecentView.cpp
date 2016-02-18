@@ -74,7 +74,7 @@ static const std::string PREVIEW_TYPE    = "JPG";
 
 RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	           gconf (new Configuration (gconf_dir (), "RecentView"))
+	          config (new Configuration ("RecentView"))
 {
 	// Don't use browserWindow here.
 	setup ();

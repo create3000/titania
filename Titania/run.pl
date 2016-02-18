@@ -17,9 +17,6 @@ if (($min > 16 and $min < 20) or 0)
 {
 	unless (-e "$HOME/.config/Titania.O")
 	{
-		say `gconftool-2 --dump /apps/titania > $HOME/.gconf-titania-backup.xml`;
-		system "gconftool-2", "--recursive-unset", "/apps/titania";
-
 		system "mv", "$HOME/.config/Titania", "$HOME/.config/Titania.O";
 	}
 }
@@ -36,9 +33,6 @@ system "./titania", @ARGV;
 
 if (-d "$HOME/.config/Titania.O")
 {
-	system "gconftool-2", "--recursive-unset", "/apps/titania";
-	system "gconftool-2", "--load", "$HOME/.gconf-titania-backup.xml";
-
 	system "rm", "-r", "$HOME/.config/Titania";
 	system "mv", "$HOME/.config/Titania.O", "$HOME/.config/Titania";
 }

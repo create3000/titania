@@ -55,20 +55,7 @@
 namespace titania {
 namespace puck {
 
-static const std::string TITANIA_GCONF_DIR = "/apps/titania";
 static const std::string TITANIA_DATA_DIR  = "titania/";
-
-std::string
-gconf_dir ()
-{
-	return TITANIA_GCONF_DIR;
-}
-
-std::string
-gconf_dir (const std::string & key)
-{
-	return gconf_dir () + "/" + key;
-}
 
 std::string
 config_dir ()

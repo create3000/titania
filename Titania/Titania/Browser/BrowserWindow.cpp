@@ -95,7 +95,7 @@ const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
 
 BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBaseInterface (this, browser),
-	X3DBrowserWindowInterface (get_ui ("BrowserWindow.glade"), gconf_dir ()),
+	X3DBrowserWindowInterface (get_ui ("BrowserWindow.glade")),
 	         X3DBrowserWindow (browser),
 	      X3DObjectOperations (),
 	              cssProvider (Gtk::CssProvider::create ()),

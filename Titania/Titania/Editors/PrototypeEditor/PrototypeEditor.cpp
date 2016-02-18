@@ -64,7 +64,7 @@ namespace puck {
 
 PrototypeEditor::PrototypeEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DPrototypeEditorInterface (get_ui ("Editors/PrototypeEditor.glade"), gconf_dir ()),
+	X3DPrototypeEditorInterface (get_ui ("Editors/PrototypeEditor.glade")),
 	       nodePropertiesEditor (new NodePropertiesEditor (browserWindow)),
 	                        url (new MFStringURLWidget (this,
 	                             getURLTreeView (),

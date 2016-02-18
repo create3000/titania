@@ -13,7 +13,6 @@
     </Compiler>
     <Packages>
       <Packages>
-        <Package file="/usr/lib/pkgconfig/gconfmm-2.6.pc" name="GConfmm" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/ImageMagick++.pc" name="ImageMagick++" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/mozjs185.pc" name="SpiderMonkey 1.8.5" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gtkmm-3.0.pc" name="gtkmm" IsProject="False" />

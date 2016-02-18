@@ -132,7 +132,7 @@ protected:
 
 	X3DUserInterface ();
 
-	X3DUserInterface (const std::string &, const std::string &);
+	X3DUserInterface (const std::string &);
 
 	virtual
 	void
@@ -160,7 +160,7 @@ protected:
 
 	const std::shared_ptr <Configuration> &
 	getConfig () const
-	{ return gconf; }
+	{ return config; }
 
 	/// @name Member access
 	
@@ -247,7 +247,7 @@ private:
 
 	///  @name Members
 
-	std::shared_ptr <Configuration> gconf;
+	std::shared_ptr <Configuration> config;
 	sigc::connection                constructed_connection;
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;

@@ -85,7 +85,7 @@ static constexpr int EXPORTED_NODES = 3;
 
 NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.glade"), gconf_dir ()),
+	X3DNodeIndexInterface (get_ui ("Dialogs/NodeIndex.glade")),
 	     executionContext (getMasterBrowser () -> getExecutionContext ()),
 	            protoNode (),
 	                nodes (),

@@ -59,52 +59,20 @@
 namespace titania {
 namespace puck {
 
-static const std::string DIRECTORY = config_dir ("configuration");
-
-Configuration::Configuration (const std::string & path, const std::string & group) :
+Configuration::Configuration (const std::string & group) :
 	directory (config_dir ("configuration/")),
 	 filename (directory + group + ".ini"),
 	  keyfile (),
-	    group (group),
-	     path (path),
-	     name (group),
-	      key (path + '/' + group)
+	    group (group)
 {
 	os::system ("mkdir", "-p", directory);
 	     
 	if (os::file_exists (filename))
 		keyfile .load_from_file (filename, Glib::KEY_FILE_KEEP_COMMENTS);
-
-	Gnome::Conf::init ();
-	client = Gnome::Conf::Client::get_default_client ();
-}
-
-std::string
-Configuration::getKey (const std::string & name) const
-{
-	return key + '/' + name;
 }
 
 bool
 Configuration::hasItem (const std::string & key) const
-{
-	try
-	{
-	   if (hasKey (key))
-	      return true;
-
-		const auto item = client -> get_entry (getKey (key));
-
-		return item .get_value () .get_type () not_eq Gnome::Conf::VALUE_INVALID;
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		return false;
-	}
-}
-
-bool
-Configuration::hasKey (const std::string & key) const
 {
 	return keyfile .has_group (group) and keyfile .has_key (group, key);
 }
@@ -142,77 +110,42 @@ Configuration::setItem (const std::string & key, const std::string & value)
 bool
 Configuration::getBoolean (const std::string & key) const
 {
-	try
-	{
-		if (hasKey (key))
-			return keyfile .get_boolean (group, key);
+	if (hasItem (key))
+		return keyfile .get_boolean (group, key);
 		
-		return client -> get_bool (getKey (key));
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		return false;
-	}
+	return false;
 }
 
 int
 Configuration::getInteger (const std::string & key) const
 {
-	try
-	{
-		if (hasKey (key))
-			return keyfile .get_integer (group, key);
-		
-		return client -> get_int (getKey (key));
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		return 0;
-	}
+	if (hasItem (key))
+		return keyfile .get_integer (group, key);
+
+	return 0;
 }
 
 double
 Configuration::getDouble (const std::string & key) const
 {
-	try
-	{
-		if (hasKey (key))
-			return keyfile .get_double (group, key);
-		
-		return client -> get_float (getKey (key));
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		return 0;
-	}
+	if (hasItem (key))
+		return keyfile .get_double (group, key);
+
+	return 0;
 }
 
 Glib::ustring
 Configuration::getString (const std::string & key) const
 {
-	try
-	{
-		if (hasKey (key))
-			return keyfile .get_string (group, key);
+	if (hasItem (key))
+		return keyfile .get_string (group, key);
 		
-		return client -> get_string (getKey (key));
-	}
-	catch (const Gnome::Conf::Error & error)
-	{
-		return "";
-	}
+	return "";
 }
 
 Configuration::~Configuration ()
 {
 	keyfile .save_to_file (filename);
-
-	try
-	{
-		//client -> recursive_unset (key);
-	}
-	catch (const Gnome::Conf::Error & error)
-	{ }
 }
 
 } // puck

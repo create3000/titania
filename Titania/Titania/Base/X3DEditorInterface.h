@@ -85,7 +85,7 @@ protected:
 
 	X3DEditorInterface ();
 
-	X3DEditorInterface (const std::string &, const std::string &);
+	X3DEditorInterface (const std::string &);
 
 	virtual
 	void

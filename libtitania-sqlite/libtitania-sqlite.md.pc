@@ -2,4 +2,4 @@ Name: libtitania-sqlite
 Description: 
 Version: 0.3
 Libs: -L"/home/holger/Projekte/Titania/libtitania-sqlite/bin/Release" -ltitania-sqlite
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-sqlite" -I"/home/holger/Projekte/Titania/libtitania-sqlite/Titania/SQL"
+Cflags: -I"/home/holger/Projekte/Titania/libtitania-sqlite/Titania/SQL"

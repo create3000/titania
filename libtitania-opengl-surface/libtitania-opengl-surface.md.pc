@@ -2,4 +2,4 @@ Name: libtitania-opengl-surface
 Description: 
 Version: 0.3
 Libs: -L"/home/holger/Projekte/Titania/libtitania-opengl-surface/bin/Release" -ltitania-opengl-surface
-Cflags: -I"/home/holger/Projekte/Titania/libtitania-opengl-surface" -I"/home/holger/Projekte/Titania/libtitania-opengl-surface/Titania/OpenGL/Context" -I"/home/holger/Projekte/Titania/libtitania-opengl-surface/Titania/OpenGL"
+Cflags: -I"/home/holger/Projekte/Titania/libtitania-opengl-surface/Titania/OpenGL/Context" -I"/home/holger/Projekte/Titania/libtitania-opengl-surface/Titania/OpenGL"

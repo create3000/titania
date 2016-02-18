@@ -65,7 +65,7 @@ namespace puck {
 
 Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DSidebarInterface (get_ui ("Sidebar.glade"), gconf_dir ()),
+	              X3DSidebarInterface (get_ui ("Sidebar.glade")),
 	X3DNotebook <X3DSidebarInterface> ()
 {
 	setup ();
