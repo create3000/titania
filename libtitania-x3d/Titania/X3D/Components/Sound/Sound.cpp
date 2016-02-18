@@ -188,7 +188,7 @@ throw (std::domain_error)
 	transformationMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
 
 	transformationMatrix .translate (Vector3d (0, 0, e));
-	transformationMatrix .scale (Vector3d (1, 1, b / a));
+	transformationMatrix .scale (Vector3d (1, 1, a / b));
 
 	const Vector3d viewer = inverse (transformationMatrix) .origin ();
 
