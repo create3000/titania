@@ -781,6 +781,9 @@
     <None Include="Titania\X3D\Editing\Selection\X3DFaceSelection.h" />
     <None Include="Titania\X3D\Browser\Core\Clipboard.h" />
     <None Include="share\titania\tools\SoundTool.x3dv" />
+    <None Include="Titania\X3D\Tools\Sound\X3DSoundNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Sound\SoundTool.h" />
+    <None Include="share\titania\tools\library\QuadSphere.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1382,6 +1385,7 @@
     <Folder Include="Titania\X3D\Tools\Rendering\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\" />
     <Folder Include="Titania\X3D\Editing\Selection\" />
+    <Folder Include="Titania\X3D\Tools\Sound\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

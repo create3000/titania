@@ -77,6 +77,7 @@
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
+#include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
@@ -257,6 +258,7 @@ BrowserWindow::set_scene ()
 	getFogsAction ()              -> set_active (true);
 	getLightsAction ()            -> set_active (false);
 	getProximitySensorsAction ()  -> set_active (false);
+	getSoundsAction ()            -> set_active (false);
 	getTransformSensorsAction ()  -> set_active (false);
 	getVisibilitySensorsAction () -> set_active (false);
 	getViewpointsAction ()        -> set_active (false);
@@ -425,6 +427,15 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 		}
 		catch (const X3D::X3DError &)
 		{ }
+	}
+
+	for (const auto & node : selection)
+	{
+		if (X3D::x3d_cast <X3D::Sound*> (node))
+		{
+			getSoundsAction () -> set_active (true);
+			break;
+		}
 	}
 
 	for (const auto & node : selection)
@@ -1627,6 +1638,38 @@ BrowserWindow::on_proximity_sensors_toggled ()
 }
 
 void
+BrowserWindow::on_sounds_toggled ()
+{
+	if (changing)
+		return;
+
+	if (getSoundsAction () -> get_active ())
+	{
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
+		               {
+		                  if (dynamic_cast <X3D::Sound*> (node .getValue ()))
+									node -> addTool ();
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+	else
+	{
+		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+		               {
+		                  if (dynamic_cast <X3D::Sound*> (node .getValue ()))
+									node -> removeTool (true);
+
+		                  return true;
+							},
+		               true,
+		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	}
+}
+
+void
 BrowserWindow::on_transform_sensors_toggled ()
 {
 	if (changing)
@@ -1730,6 +1773,9 @@ BrowserWindow::on_hide_all_object_icons_activated ()
 
 	if (getProximitySensorsAction () -> get_active ())
 		getProximitySensorsAction () -> set_active (false);
+
+	if (getSoundsAction () -> get_active ())
+		getSoundsAction () -> set_active (false);
 
 	if (getTransformSensorsAction () -> get_active ())
 		getTransformSensorsAction () -> set_active (false);

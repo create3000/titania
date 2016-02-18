@@ -84,6 +84,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RubberbandAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
 	m_SelectLowestAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
 	m_SidebarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SidebarAction"));
+	m_SoundsAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SoundsAction"));
 	m_TabsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TabsAction"));
 	m_TextureQualityHighAction     = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityHighAction"));
 	m_TextureQualityLowAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityLowAction"));
@@ -196,6 +197,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserLightsMenuItem", m_BrowserLightsMenuItem);
 	m_builder -> get_widget ("BrowserProximitySensorsMenuItem", m_BrowserProximitySensorsMenuItem);
 	m_builder -> get_widget ("BrowserTransformSensorsMenuItem", m_BrowserTransformSensorsMenuItem);
+	m_builder -> get_widget ("BrowserSoundsMenuItem", m_BrowserSoundsMenuItem);
 	m_builder -> get_widget ("BrowserVisibilitySensorsMenuItem", m_BrowserVisibilitySensorsMenuItem);
 	m_builder -> get_widget ("BrowserViewpointsMenuItem", m_BrowserViewpointsMenuItem);
 	m_builder -> get_widget ("BrowserHideAllObjectIconsMenuItem", m_BrowserHideAllObjectIconsMenuItem);
@@ -311,6 +313,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ObjectIconsMenuItem", m_ObjectIconsMenuItem);
 	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
 	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
+	m_builder -> get_widget ("SoundsMenuItem", m_SoundsMenuItem);
 	m_builder -> get_widget ("TransformSensorsMenuItem", m_TransformSensorsMenuItem);
 	m_builder -> get_widget ("VisibilitySensorsMenuItem", m_VisibilitySensorsMenuItem);
 	m_builder -> get_widget ("ViewpointsMenuItem", m_ViewpointsMenuItem);
@@ -426,6 +429,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RubberbandAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 	m_SelectLowestAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
 	m_SidebarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sidebar_toggled));
+	m_SoundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sounds_toggled));
 	m_TabsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_tabs_toggled));
 	m_TextureQualityHighAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_high_toggled));
 	m_TextureQualityLowAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_low_toggled));

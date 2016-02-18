@@ -7,7 +7,7 @@ META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
-META "modified" "Thu, 18 Feb 2016 13:38:42 GMT"
+META "modified" "Thu, 18 Feb 2016 15:56:00 GMT"
 
 EXTERNPROTO QuadSphere [
   inputOutput    SFInt32 uDimension
@@ -15,12 +15,17 @@ EXTERNPROTO QuadSphere [
   inputOutput    SFFloat radius
   initializeOnly SFBool  solid
 ]
-[
-  "https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d",
-  "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d",
-  "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d",
-  "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/QuadSphere.x3d"
+"library/QuadSphere.x3dv"
+
+EXTERNPROTO ToolShader [
+  inputOutput SFFloat ambientIntensity
+  inputOutput SFColor diffuseColor
+  inputOutput SFColor specularColor
+  inputOutput SFColor emissiveColor
+  inputOutput SFFloat shininess
+  inputOutput SFFloat transparency
 ]
+"library/ToolShader.x3dv"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -44,19 +49,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              34.7043113708496,
-              -29.5903263092041,
-              3.43756914138794
+              11.5968837738037,
+              -11.4416360855103,
+              -2.84756994247437
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.667266829202032,
-              -0.24005033899074,
-              0.705075040968759,
-              2.65055697521837
+              0.746182003886681,
+              -0.242593508409435,
+              0.619968391737239,
+              2.62925181708712
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -105,27 +110,113 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF SoundScript Script {
-            inputOnly      SFVec3f    set_location
-            inputOnly      SFFloat    set_range
-            outputOnly     SFVec3f    translation_changed
-            outputOnly     SFRotation rotation_changed
-            outputOnly     SFVec3f    minTranslation_changed
-            outputOnly     SFVec3f    maxTranslation_changed
-            outputOnly     SFVec3f    minScale_changed
-            outputOnly     SFVec3f    maxScale_changed
-            inputOutput    SFNode     sound DEF _1 Sound {
-              minFront 20
-              maxFront 20
-              source DEF Sound1clip AudioClip {
-                url "file:///home/holger/Projekte/Library/Examples/Compel/snd/snddiag/forest.wav"
-                loop TRUE
-                startTime 1
+          value DEF MaxEllipsoid Transform {
+            scale 10 10 10
+            children Transform {
+              rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
+              children Shape {
+                appearance Appearance {
+                  fillProperties FillProperties {
+                    filled FALSE
+                    hatched FALSE
+                  }
+                  lineProperties LineProperties {
+                    linewidthScaleFactor 1
+                  }
+                  material Material {
+                    diffuseColor 0 0 0
+                    emissiveColor 0.1854 0.618 0.2575
+                  }
+                }
+                geometry DEF _1 QuadSphere {
+                  uDimension 11
+                  vDimension 9
+                  solid FALSE
+                }
               }
             }
-            initializeOnly SFNode     self USE SoundScript
+          }
+        }
+      }
+    ]
+  }
+}
 
-            url "ecmascript:
+DEF SoundTool TouchGroup {
+  enabled FALSE
+  children DEF Sound Transform {
+    children [
+      DEF Speaker ScreenGroup {
+        children Group {
+          children [
+            DEF Cone Transform {
+              rotation -0.999999999993254 -3.67320512848233e-06 5.34689547954277e-19 1.5707963267949
+              scaleOrientation 0.999999999997857 1.84874067061104e-06 -9.31541809008593e-07 3.92699081698934
+              children Shape {
+                appearance DEF _2 Appearance {
+                  material Material {
+                    diffuseColor 0.2 0.2 0.2
+                    specularColor 1 1 1
+                  }
+                }
+                geometry Cone {
+                  height 20
+                  bottomRadius 24
+                }
+              }
+            }
+            DEF Cylinder Transform {
+              rotation -0.999999999993254 -3.67320512848233e-06 -5.41254053295498e-19 1.5707963267949
+              children Shape {
+                appearance USE _2
+                geometry Cylinder {
+                  height 20
+                  radius 12
+                }
+              }
+            }
+          ]
+        }
+      }
+      DEF MinEllipsoid Transform {
+        children Transform {
+          rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
+          children Shape {
+            appearance Appearance {
+              fillProperties FillProperties {
+                filled FALSE
+                hatched FALSE
+              }
+              lineProperties LineProperties {
+                linewidthScaleFactor 1
+              }
+              material Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.618 0.1854 0.1854
+              }
+            }
+            geometry USE _1
+          }
+        }
+      }
+      USE MaxEllipsoid
+    ]
+  }
+}
+
+DEF SoundScript Script {
+  inputOnly      SFVec3f    set_location
+  inputOnly      SFFloat    set_range
+  outputOnly     SFVec3f    translation_changed
+  outputOnly     SFRotation rotation_changed
+  outputOnly     SFVec3f    minTranslation_changed
+  outputOnly     SFVec3f    maxTranslation_changed
+  outputOnly     SFVec3f    minScale_changed
+  outputOnly     SFVec3f    maxScale_changed
+  inputOutput    SFNode     sound DEF _3 Sound { }
+  initializeOnly SFNode     self USE SoundScript
+
+  url "ecmascript:
 
 var zAxis = new SFVec3f (0, 0, 1);
 
@@ -176,98 +267,19 @@ function maxRange ()
 	maxTranslation_changed = new SFVec3f (0, 0, e);
 	maxScale_changed       = new SFVec3f (b, b, a);
 }"
-          }
-        }
-      }
-    ]
-  }
 }
-
-DEF SoundTool TouchGroup {
-  enabled FALSE
-  children DEF Sound Transform {
-    children [
-      DEF Speaker ScreenGroup {
-        children DEF Cone Transform {
-          rotation -0.577352405667029 0.577348164214974 -0.577350237679083 2.0943951023932
-          children Shape {
-            appearance Appearance {
-              material Material { }
-            }
-            geometry Cone {
-              height 20
-              bottomRadius 10
-            }
-          }
-        }
-      }
-      DEF MinEllipsoid Transform {
-        translation 0 0 9.5
-        scale 4.47214 4.47214 10.5
-        children Transform {
-          rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
-          children Shape {
-            appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
-              lineProperties LineProperties {
-                linewidthScaleFactor 1
-              }
-              material Material {
-                diffuseColor 1 0.3 0.3
-              }
-            }
-            geometry DEF _2 QuadSphere {
-              uDimension 11
-              vDimension 9
-              solid FALSE
-            }
-          }
-        }
-      }
-      DEF MaxEllipsoid Transform {
-        translation 0 0 5
-        scale 14.1421 14.1421 15
-        children Transform {
-          rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
-          children Shape {
-            appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
-              lineProperties LineProperties {
-                linewidthScaleFactor 1
-              }
-              material Material {
-                diffuseColor 0.3 1 0.416667
-              }
-            }
-            geometry USE _2
-          }
-        }
-      }
-    ]
-  }
-}
-
-USE SoundScript
-
-USE _1
 
 ROUTE SoundScript.minScale_changed TO MinEllipsoid.set_scale
 ROUTE SoundScript.minTranslation_changed TO MinEllipsoid.set_translation
-ROUTE _1.location_changed TO SoundScript.set_location
-ROUTE _1.direction_changed TO SoundScript.set_location
-ROUTE _1.minBack_changed TO SoundScript.set_range
-ROUTE _1.minFront_changed TO SoundScript.set_range
-ROUTE _1.maxBack_changed TO SoundScript.set_range
-ROUTE _1.maxFront_changed TO SoundScript.set_range
 ROUTE SoundScript.translation_changed TO Sound.set_translation
 ROUTE SoundScript.maxTranslation_changed TO MaxEllipsoid.set_translation
 ROUTE SoundScript.maxScale_changed TO MaxEllipsoid.set_scale
 ROUTE SoundScript.rotation_changed TO Sound.set_rotation
+ROUTE _3.maxFront_changed TO SoundScript.set_range
+ROUTE _3.maxBack_changed TO SoundScript.set_range
+ROUTE _3.minFront_changed TO SoundScript.set_range
+ROUTE _3.minBack_changed TO SoundScript.set_range
+ROUTE _3.direction_changed TO SoundScript.set_location
+ROUTE _3.location_changed TO SoundScript.set_location
 
 EXPORT SoundScript AS Tool

@@ -54,6 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 
+#include "../../Tools/Sound/SoundTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -194,6 +196,12 @@ throw (std::domain_error)
 
 	radius   = b;
 	distance = abs (viewer);
+}
+
+void
+Sound::addTool ()
+{
+	X3DSoundNode::addTool (new SoundTool (this));
 }
 
 } // X3D

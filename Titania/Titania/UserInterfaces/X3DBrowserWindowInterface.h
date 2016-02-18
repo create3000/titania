@@ -192,6 +192,10 @@ public:
 	{ return m_SidebarAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getSoundsAction () const
+	{ return m_SoundsAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getTabsAction () const
 	{ return m_TabsAction; }
 
@@ -630,6 +634,10 @@ public:
 	Gtk::CheckMenuItem &
 	getBrowserTransformSensorsMenuItem () const
 	{ return *m_BrowserTransformSensorsMenuItem; }
+
+	Gtk::CheckMenuItem &
+	getBrowserSoundsMenuItem () const
+	{ return *m_BrowserSoundsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getBrowserVisibilitySensorsMenuItem () const
@@ -1092,6 +1100,10 @@ public:
 	{ return *m_ProximitySensorsMenuItem; }
 
 	Gtk::CheckMenuItem &
+	getSoundsMenuItem () const
+	{ return *m_SoundsMenuItem; }
+
+	Gtk::CheckMenuItem &
 	getTransformSensorsMenuItem () const
 	{ return *m_TransformSensorsMenuItem; }
 
@@ -1544,6 +1556,10 @@ public:
 	virtual
 	void
 	on_sidebar_toggled () = 0;
+
+	virtual
+	void
+	on_sounds_toggled () = 0;
 
 	virtual
 	void
@@ -2078,6 +2094,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SidebarAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_SoundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TabsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityHighAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityLowAction;
@@ -2188,6 +2205,7 @@ private:
 	Gtk::CheckMenuItem*              m_BrowserLightsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserProximitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserTransformSensorsMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserSoundsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserVisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserViewpointsMenuItem;
 	Gtk::MenuItem*                   m_BrowserHideAllObjectIconsMenuItem;
@@ -2303,6 +2321,7 @@ private:
 	Gtk::MenuItem*                   m_ObjectIconsMenuItem;
 	Gtk::CheckMenuItem*              m_LightsMenuItem;
 	Gtk::CheckMenuItem*              m_ProximitySensorsMenuItem;
+	Gtk::CheckMenuItem*              m_SoundsMenuItem;
 	Gtk::CheckMenuItem*              m_TransformSensorsMenuItem;
 	Gtk::CheckMenuItem*              m_VisibilitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_ViewpointsMenuItem;

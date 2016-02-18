@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,212 +48,199 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SOUND_SOUND_H__
-#define __TITANIA_X3D_COMPONENTS_SOUND_SOUND_H__
+#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_X3DENVIRONMENTAL_SENSOR_NODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_X3DENVIRONMENTAL_SENSOR_NODE_TOOL_H__
 
-#include "../Sound/X3DSoundNode.h"
-#include "../Sound/X3DSoundSourceNode.h"
+#include "../Sound/X3DSoundNodeTool.h"
+
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
+
+#include "../../Components/Sound/Sound.h"
 
 namespace titania {
 namespace X3D {
 
-class Sound :
-	public X3DSoundNode
+class SoundTool :
+	virtual public X3DSoundNodeTool <Sound>
 {
 public:
 
 	///  @name Construction
 
-	Sound (X3DExecutionContext* const);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	SoundTool (Sound* const);
 
 	///  @name Fields
 
 	virtual
 	SFFloat &
-	intensity ()
-	{ return *fields .intensity; }
+	intensity () final override
+	{ return getNode () -> intensity (); }
 
 	virtual
 	const SFFloat &
-	intensity () const
-	{ return *fields .intensity; }
+	intensity () const final override
+	{ return getNode () -> intensity (); }
 
 	virtual
 	SFBool &
-	spatialize ()
-	{ return *fields .spatialize; }
+	spatialize () final override
+	{ return getNode () -> spatialize (); }
 
 	virtual
 	const SFBool &
-	spatialize () const
-	{ return *fields .spatialize; }
+	spatialize () const final override
+	{ return getNode () -> spatialize (); }
 
 	virtual
 	SFVec3f &
-	location ()
-	{ return *fields .location; }
+	location () final override
+	{ return getNode () -> location (); }
 
 	virtual
 	const SFVec3f &
-	location () const
-	{ return *fields .location; }
+	location () const final override
+	{ return getNode () -> location (); }
 
 	virtual
 	SFVec3f &
-	direction ()
-	{ return *fields .direction; }
+	direction () final override
+	{ return getNode () -> direction (); }
 
 	virtual
 	const SFVec3f &
-	direction () const
-	{ return *fields .direction; }
+	direction () const final override
+	{ return getNode () -> direction (); }
 
 	virtual
 	SFFloat &
-	minBack ()
-	{ return *fields .minBack; }
+	minBack () final override
+	{ return getNode () -> minBack (); }
 
 	virtual
 	const SFFloat &
-	minBack () const
-	{ return *fields .minBack; }
+	minBack () const final override
+	{ return getNode () -> minBack (); }
 
 	virtual
 	SFFloat &
-	minFront ()
-	{ return *fields .minFront; }
+	minFront () final override
+	{ return getNode () -> minFront (); }
 
 	virtual
 	const SFFloat &
-	minFront () const
-	{ return *fields .minFront; }
+	minFront () const final override
+	{ return getNode () -> minFront (); }
 
 	virtual
 	SFFloat &
-	maxBack ()
-	{ return *fields .maxBack; }
+	maxBack () final override
+	{ return getNode () -> maxBack (); }
 
 	virtual
 	const SFFloat &
-	maxBack () const
-	{ return *fields .maxBack; }
+	maxBack () const final override
+	{ return getNode () -> maxBack (); }
 
 	virtual
 	SFFloat &
-	maxFront ()
-	{ return *fields .maxFront; }
+	maxFront () final override
+	{ return getNode () -> maxFront (); }
 
 	virtual
 	const SFFloat &
-	maxFront () const
-	{ return *fields .maxFront; }
+	maxFront () const final override
+	{ return getNode () -> maxFront (); }
 
 	virtual
 	SFFloat &
-	priority ()
-	{ return *fields .priority; }
+	priority () final override
+	{ return getNode () -> priority (); }
 
 	virtual
 	const SFFloat &
-	priority () const
-	{ return *fields .priority; }
+	priority () const final override
+	{ return getNode () -> priority (); }
 
 	virtual
 	SFNode &
-	source ()
-	{ return *fields .source; }
+	source () final override
+	{ return getNode () -> source (); }
 
 	virtual
 	const SFNode &
-	source () const
-	{ return *fields .source; }
+	source () const final override
+	{ return getNode () -> source (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	traverse (const TraverseType type) override;
 
 	virtual
 	void
-	addTool () override;
+	removeTool (const bool) final override;
 
 
 protected:
 
-	///  @name Construction
+	virtual
+	void
+	initialize () final override;
 
 	virtual
 	void
-	initialize () override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_source ();
-
-	///  @name Operations
-
-	void
-	getEllipsoidParameter (const float &, const float &, float &, float &)
-	throw (std::domain_error);
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFFloat* const intensity;
-		SFBool* const spatialize;
-		SFVec3f* const location;
-		SFVec3f* const direction;
-		SFFloat* const minBack;
-		SFFloat* const minFront;
-		SFFloat* const maxBack;
-		SFFloat* const maxFront;
-		SFFloat* const priority;
-		SFNode* const source;
-	};
-
-	Fields fields;
-
-	X3DPtr <X3DSoundSourceNode> sourceNode;
+	realize () final override;
 
 };
+
+inline
+SoundTool::SoundTool (Sound* const node) :
+	             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	     X3DBaseTool <Sound> (node),
+	X3DSoundNodeTool <Sound> ()
+{
+	//addType (X3DConstants::SoundTool);
+}
+
+inline
+void
+SoundTool::initialize ()
+{
+	X3DSoundNodeTool <Sound>::initialize ();
+
+	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
+}
+
+inline
+void
+SoundTool::realize ()
+{
+	try
+	{
+		getToolNode () -> setField <SFNode>  ("sound", getNode ());
+	}
+	catch (const X3DError & error)
+	{ }
+}
+
+inline
+void
+SoundTool::traverse (const TraverseType type)
+{
+	getNode () -> traverse (type);
+
+	X3DToolObject::traverse (type);
+}
+
+inline
+void
+SoundTool::removeTool (const bool really)
+{
+	if (really)
+		X3DSoundNodeTool <Sound>::removeTool ();
+}
 
 } // X3D
 } // titania

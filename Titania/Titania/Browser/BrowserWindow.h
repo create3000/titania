@@ -485,6 +485,10 @@ private:
 
 	virtual
 	void
+	on_sounds_toggled () final override;
+
+	virtual
+	void
 	on_transform_sensors_toggled () final override;
 
 	virtual
