@@ -59,59 +59,73 @@
 namespace titania {
 namespace puck {
 
-Configuration::Configuration (const std::string & group) :
-	directory (config_dir ("configuration/")),
-	 filename (directory + group + ".ini"),
-	  keyfile (),
-	    group (group)
+// KeyFile
+
+Configuration::KeyFile::KeyFile (const std::string & basename) :
+	filename (config_dir (basename)),
+	 keyfile ()
 {
-	os::system ("mkdir", "-p", directory);
-	     
+	os::system ("rm",    "-r", config_dir ("configuration/")); // XXX
+	os::system ("mkdir", "-p", config_dir ());
+
 	if (os::file_exists (filename))
 		keyfile .load_from_file (filename, Glib::KEY_FILE_KEEP_COMMENTS);
 }
 
+Configuration::KeyFile::~KeyFile ()
+{
+	keyfile .save_to_file (filename);
+}
+
+// Configuration
+
+Configuration::KeyFile Configuration::keyfile ("configuration.ini");
+
+Configuration::Configuration (const std::string & group) :
+	group (group)
+{ }
+
 bool
 Configuration::hasItem (const std::string & key) const
 {
-	return keyfile .has_group (group) and keyfile .has_key (group, key);
+	return keyfile -> has_group (group) and keyfile -> has_key (group, key);
 }
 
 void
 Configuration::setItem (const std::string & key, const bool value)
 {
-	keyfile .set_boolean (group, key, value);
+	keyfile -> set_boolean (group, key, value);
 }
 
 void
 Configuration::setItem (const std::string & key, const int value)
 {
-	keyfile .set_integer (group, key, value);
+	 keyfile -> set_integer (group, key, value);
 }
 
 void
 Configuration::setItem (const std::string & key, const double value)
 {
-	keyfile .set_double (group, key, value);
+	 keyfile -> set_double (group, key, value);
 }
 
 void
 Configuration::setItem (const std::string & key, const char* value)
 {
-	keyfile .set_string (group, key, value);
+	 keyfile -> set_string (group, key, value);
 }
 
 void
 Configuration::setItem (const std::string & key, const std::string & value)
 {
-	keyfile .set_string (group, key, value);
+	 keyfile -> set_string (group, key, value);
 }
 
 bool
 Configuration::getBoolean (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile .get_boolean (group, key);
+		return keyfile -> get_boolean (group, key);
 		
 	return false;
 }
@@ -120,7 +134,7 @@ int
 Configuration::getInteger (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile .get_integer (group, key);
+		return keyfile -> get_integer (group, key);
 
 	return 0;
 }
@@ -129,7 +143,7 @@ double
 Configuration::getDouble (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile .get_double (group, key);
+		return keyfile -> get_double (group, key);
 
 	return 0;
 }
@@ -138,15 +152,13 @@ Glib::ustring
 Configuration::getString (const std::string & key) const
 {
 	if (hasItem (key))
-		return keyfile .get_string (group, key);
+		return keyfile -> get_string (group, key);
 		
 	return "";
 }
 
 Configuration::~Configuration ()
-{
-	keyfile .save_to_file (filename);
-}
+{ }
 
 } // puck
 } // titania

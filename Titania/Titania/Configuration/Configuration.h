@@ -115,12 +115,37 @@ public:
 
 private:
 
-	// Glib::KeyFile
+	class KeyFile
+	{
+	public:
 
-	std::string   directory;
-	std::string   filename;
-	Glib::KeyFile keyfile;
-	std::string   group;
+		KeyFile (const std::string & basename);
+
+		Glib::KeyFile*
+		operator -> ()
+		{ return &keyfile; }
+
+		const Glib::KeyFile*
+		operator -> () const
+		{ return &keyfile; }
+
+		~KeyFile ();
+
+
+	private:
+
+	   const std::string filename;
+		Glib::KeyFile     keyfile;
+
+	};
+
+	///  @name Static members
+
+	static KeyFile keyfile;
+
+	///  @name Members
+
+	const std::string group;
 
 };
 

@@ -260,6 +260,7 @@
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkExpander" id="ColorsExpander">
+                    <property name="name">ColorsExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
@@ -834,7 +835,7 @@
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkExpander" id="TextureExpander">
-                    <property name="name">TextureExpander</property>
+                    <property name="name">TexturesExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
