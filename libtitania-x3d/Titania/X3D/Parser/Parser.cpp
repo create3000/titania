@@ -323,8 +323,7 @@ Parser::x3dScene ()
 
 	try
 	{
-		if (scene -> getWorldURL () .empty ())
-			scene -> setWorldURL (scene -> getMetaData ("identifier"));
+		scene -> setWorldURL (scene -> getMetaData ("identifier"));
 	}
 	catch (const X3DError &)
 	{ }

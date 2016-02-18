@@ -7,7 +7,7 @@ META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
-META "modified" "Thu, 18 Feb 2016 15:56:00 GMT"
+META "modified" "Thu, 18 Feb 2016 16:44:54 GMT"
 
 EXTERNPROTO QuadSphere [
   inputOutput    SFInt32 uDimension
@@ -142,65 +142,68 @@ WorldInfo {
   }
 }
 
-DEF SoundTool TouchGroup {
+Collision {
   enabled FALSE
-  children DEF Sound Transform {
-    children [
-      DEF Speaker ScreenGroup {
-        children Group {
-          children [
-            DEF Cone Transform {
-              rotation -0.999999999993254 -3.67320512848233e-06 5.34689547954277e-19 1.5707963267949
-              scaleOrientation 0.999999999997857 1.84874067061104e-06 -9.31541809008593e-07 3.92699081698934
-              children Shape {
-                appearance DEF _2 Appearance {
-                  material Material {
-                    diffuseColor 0.2 0.2 0.2
-                    specularColor 1 1 1
+  children DEF SoundTool TouchGroup {
+    enabled FALSE
+    children DEF Sound Transform {
+      children [
+        DEF Speaker ScreenGroup {
+          children Group {
+            children [
+              DEF Cone Transform {
+                rotation -0.999999999993254 -3.67320512848233e-06 5.34689547954277e-19 1.5707963267949
+                scaleOrientation 0.999999999997857 1.84874067061104e-06 -9.31541809008593e-07 3.92699081698934
+                children Shape {
+                  appearance DEF _2 Appearance {
+                    material Material {
+                      diffuseColor 0.2 0.2 0.2
+                      specularColor 1 1 1
+                    }
+                  }
+                  geometry Cone {
+                    height 20
+                    bottomRadius 24
                   }
                 }
-                geometry Cone {
-                  height 20
-                  bottomRadius 24
+              }
+              DEF Cylinder Transform {
+                rotation -0.999999999993254 -3.67320512848233e-06 -5.41254053295498e-19 1.5707963267949
+                children Shape {
+                  appearance USE _2
+                  geometry Cylinder {
+                    height 20
+                    radius 12
+                  }
                 }
               }
-            }
-            DEF Cylinder Transform {
-              rotation -0.999999999993254 -3.67320512848233e-06 -5.41254053295498e-19 1.5707963267949
-              children Shape {
-                appearance USE _2
-                geometry Cylinder {
-                  height 20
-                  radius 12
-                }
-              }
-            }
-          ]
-        }
-      }
-      DEF MinEllipsoid Transform {
-        children Transform {
-          rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
-          children Shape {
-            appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
-              lineProperties LineProperties {
-                linewidthScaleFactor 1
-              }
-              material Material {
-                diffuseColor 0 0 0
-                emissiveColor 0.618 0.1854 0.1854
-              }
-            }
-            geometry USE _1
+            ]
           }
         }
-      }
-      USE MaxEllipsoid
-    ]
+        DEF MinEllipsoid Transform {
+          children Transform {
+            rotation 0.577352412853496 -0.577348136988758 -0.577350257718707 2.0943951023932
+            children Shape {
+              appearance Appearance {
+                fillProperties FillProperties {
+                  filled FALSE
+                  hatched FALSE
+                }
+                lineProperties LineProperties {
+                  linewidthScaleFactor 1
+                }
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.618 0.1854 0.1854
+                }
+              }
+              geometry USE _1
+            }
+          }
+        }
+        USE MaxEllipsoid
+      ]
+    }
   }
 }
 
