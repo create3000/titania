@@ -107,14 +107,18 @@ private:
 	///  @name Operations
 
 	void
-	restoreExpander (Gtk::Widget &);
+	restoreExpanders (Gtk::Widget &);
 
 	void
-	saveExpander (Gtk::Widget &);
+	storeExpanders ();
 
 	static
 	void
 	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels);
+
+	///  @name Members
+
+	std::vector <Gtk::Expander*> expanders;
 
 };
 

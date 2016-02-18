@@ -57,7 +57,8 @@ namespace titania {
 namespace puck {
 
 X3DDialogInterface::X3DDialogInterface (const std::string & widgetName) :
-	X3DUserInterface (widgetName)
+	X3DUserInterface (widgetName),
+	       expanders ()
 { }
 
 void
@@ -74,14 +75,16 @@ X3DDialogInterface::initialize ()
 {
 	X3DUserInterface::initialize ();
 
-	restoreExpander (getWidget ());
+	restoreExpanders (getWidget ());
 	setupGridLabels (getWidget ());
 }
 
 void
-X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
+X3DDialogInterface::restoreExpanders (Gtk::Widget & widget)
 {
-	for (auto & expander : getWidgets <Gtk::Expander> (widget))
+	expanders = getWidgets <Gtk::Expander> (widget);
+
+	for (auto & expander : expanders)
 	{
 		if (not expander -> get_name () .empty ())
 		{
@@ -92,9 +95,9 @@ X3DDialogInterface::restoreExpander (Gtk::Widget & widget)
 }
 
 void
-X3DDialogInterface::saveExpander (Gtk::Widget & widget)
+X3DDialogInterface::storeExpanders ()
 {
-	for (auto & expander : getWidgets <Gtk::Expander> (widget))
+	for (auto & expander : expanders)
 	{
 		if (not expander -> get_name () .empty ())
 			getConfig () -> setItem (expander -> get_name (), expander -> get_expanded ());
@@ -168,7 +171,7 @@ X3DDialogInterface::getLabels (Gtk::Widget* const widget, std::vector <Gtk::Labe
 void
 X3DDialogInterface::store ()
 {
-	saveExpander (getWidget ());
+	storeExpanders ();
 
 	X3DUserInterface::store ();
 }

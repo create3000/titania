@@ -65,7 +65,9 @@ Configuration::KeyFile::KeyFile (const std::string & basename) :
 	filename (config_dir (basename)),
 	 keyfile ()
 {
-	os::system ("rm",    "-r", config_dir ("configuration/")); // XXX
+	if (os::file_exists (config_dir ("configuration/")))
+		os::system ("rm",    "-r", config_dir ("configuration/")); // XXX
+
 	os::system ("mkdir", "-p", config_dir ());
 
 	if (os::file_exists (filename))
