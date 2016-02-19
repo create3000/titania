@@ -317,7 +317,7 @@ IndexedLineSet::build ()
 	}
 
 	addElements (GL_LINES, getVertices () .size ());
-	setSolid (false);
+	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
 }
 

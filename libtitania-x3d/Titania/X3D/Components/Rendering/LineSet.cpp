@@ -211,7 +211,7 @@ LineSet::build ()
 			index += count;
 	}
 
-	setSolid (false);
+	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
 }
 

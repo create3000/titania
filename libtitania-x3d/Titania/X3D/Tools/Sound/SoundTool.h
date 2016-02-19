@@ -48,12 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_X3DENVIRONMENTAL_SENSOR_NODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_X3DENVIRONMENTAL_SENSOR_NODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_SOUND_SOUND_TOOL_H__
+#define __TITANIA_X3D_TOOLS_SOUND_SOUND_TOOL_H__
 
 #include "../Sound/X3DSoundNodeTool.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
 #include "../../Components/Sound/Sound.h"
@@ -180,6 +181,10 @@ public:
 
 	virtual
 	void
+	addTool () final override;
+
+	virtual
+	void
 	removeTool (const bool) final override;
 
 
@@ -236,10 +241,32 @@ SoundTool::traverse (const TraverseType type)
 
 inline
 void
+SoundTool::addTool ()
+{
+	try
+	{
+		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (this));
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+inline
+void
 SoundTool::removeTool (const bool really)
 {
 	if (really)
 		X3DSoundNodeTool <Sound>::removeTool ();
+	
+	else
+	{
+		try
+		{
+			getToolNode () -> setField <SFBool> ("selected", false);
+		}
+		catch (const X3DError &)
+		{ }
+	}
 }
 
 } // X3D
