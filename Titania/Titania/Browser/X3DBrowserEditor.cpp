@@ -230,11 +230,11 @@ X3DBrowserEditor::set_selection_active (const bool value)
 	}
 	else
 	{
-		bool changed = false;
-
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Edit Transform"));
 
 		getSelection () -> redoRestoreSelection (undoStep);
+
+		bool changed = false;
 
 		for (const auto & child : getSelection () -> getChildren ())
 		{
@@ -708,16 +708,21 @@ X3DBrowserEditor::quit ()
 
 	const auto browsers = getRecentBrowsers ();
 
-	for (const auto & browser : browsers)
+	if (not browsers .empty ())
 	{
-		if (isSaved (browser))
-			continue;
+		for (const auto & browser : browsers)
+		{
+			if (isSaved (browser))
+				continue;
 
-		for (const auto & browser : getBrowsers ())
-			getUserData (browser) -> saveConfirmed = false;
+			for (const auto & browser : getBrowsers ())
+				getUserData (browser) -> saveConfirmed = false;
 
-		// Cancel quit.
-		return true;
+			// Cancel quit.
+			return true;
+		}
+
+		open (browsers .back () -> getWorldURL ());
 	}
 
 	return X3DBrowserWidget::quit ();

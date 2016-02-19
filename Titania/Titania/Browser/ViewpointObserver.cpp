@@ -61,6 +61,7 @@ namespace puck {
 ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	       X3DEditorObject (),
+	               browser (browserWindow -> getMasterBrowser ()),
 	            viewerNode (),
 	              undoStep (),
 	        positionOffset (),
@@ -70,17 +71,21 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 {
 	addChildren (viewerNode);
 
+	getCurrentBrowser () .addInterest (this, &ViewpointObserver::set_browser);
+
 	setup ();
 }
 
 void
-ViewpointObserver::setBrowser (const X3D::BrowserPtr & current, const X3D::BrowserPtr & value)
+ViewpointObserver::set_browser (const X3D::BrowserPtr & value)
 {
-	current -> getActiveViewpointEvent () .removeInterest (this, &ViewpointObserver::set_offsets);
-	current -> getViewer ()               .removeInterest (this, &ViewpointObserver::set_viewer);
+	browser -> getActiveViewpointEvent () .removeInterest (this, &ViewpointObserver::set_offsets);
+	browser -> getViewer ()               .removeInterest (this, &ViewpointObserver::set_viewer);
 
-	value -> getActiveViewpointEvent () .addInterest (this, &ViewpointObserver::set_offsets);
-	value -> getViewer ()               .addInterest (this, &ViewpointObserver::set_viewer);
+	browser = value;
+
+	browser -> getActiveViewpointEvent () .addInterest (this, &ViewpointObserver::set_offsets);
+	browser -> getViewer ()               .addInterest (this, &ViewpointObserver::set_viewer);
 
 	set_viewer (value -> getViewer ());
 }
@@ -90,23 +95,23 @@ ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 {
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .removeInterest (this, &ViewpointObserver::set_viewer_active);
-		viewerNode -> scrollTime () .removeInterest (this, &ViewpointObserver::set_viewer_scrollTime);
+		viewerNode -> isActive ()   .removeInterest (this, &ViewpointObserver::set_active);
+		viewerNode -> scrollTime () .removeInterest (this, &ViewpointObserver::set_scrollTime);
 	}
 
 	viewerNode = value;
 
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .addInterest (this, &ViewpointObserver::set_viewer_active);
-		viewerNode -> scrollTime () .addInterest (this, &ViewpointObserver::set_viewer_scrollTime);
+		viewerNode -> isActive ()   .addInterest (this, &ViewpointObserver::set_active);
+		viewerNode -> scrollTime () .addInterest (this, &ViewpointObserver::set_scrollTime);
 	}
 
 	set_offsets ();
 }
 
 void
-ViewpointObserver::set_viewer_active (const bool value)
+ViewpointObserver::set_active (const bool value)
 {
 	try
 	{
@@ -139,7 +144,7 @@ ViewpointObserver::set_viewer_active (const bool value)
 }
 
 void
-ViewpointObserver::set_viewer_scrollTime ()
+ViewpointObserver::set_scrollTime ()
 {
 	try
 	{

@@ -59,7 +59,7 @@ namespace titania {
 namespace X3D {
 
 X3DGeometricPropertyNodeTool::Fields::Fields () :
-	load (new SFBool (true))
+	load (new SFBool (false))
 { }
 
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :

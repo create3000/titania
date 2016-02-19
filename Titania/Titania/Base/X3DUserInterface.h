@@ -112,6 +112,9 @@ public:
 	void
 	reparent (Gtk::Box &, Gtk::Window &);
 
+	void
+	reparent (Gtk::Overlay &, Gtk::Window &);
+
 	/// @name Destruction
 
 	virtual

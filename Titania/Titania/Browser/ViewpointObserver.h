@@ -77,17 +77,21 @@ private:
 	/// @name Viewpoint handling
 
 	void
+	set_browser (const X3D::BrowserPtr &);
+
+	void
 	set_viewer (const X3D::X3DPtr <X3D::X3DViewer> &);
 
 	void
-	set_viewer_active (const bool);
+	set_active (const bool);
 
 	void
-	set_viewer_scrollTime ();
+	set_scrollTime ();
 
 	void
 	set_offsets ();
 
+	X3D::BrowserPtr              browser;
 	X3D::X3DPtr <X3D::X3DViewer> viewerNode;
 	X3D::UndoStepPtr             undoStep;
 	X3D::Vector3d                positionOffset;

@@ -241,6 +241,16 @@ protected:
 	getNode () const
 	{ return node; }
 
+	template <class T>
+	T*
+	getNode ()
+	{ return dynamic_cast <T> (node); }
+
+	template <class T>
+	const T*
+	getNode () const
+	{ return dynamic_cast <T> (node); }
+
 
 private:
 

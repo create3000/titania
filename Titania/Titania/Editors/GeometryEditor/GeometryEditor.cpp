@@ -145,7 +145,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool haveSelection = inScene and selection .size ();
 		//const bool haveSelections = inScene and selection .size () > 1;
 	
-		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
+		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance, X3D::X3DConstants::IndexedFaceSet });
 
 		getHammerButton ()     .set_sensitive (haveSelection);
 		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
@@ -159,9 +159,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 
 	changing = false;
 
-	getPaintSelectionToggleButton () .set_sensitive (getEditToggleButton () .get_active ());
-	getMergePointsButton ()          .set_sensitive (getEditToggleButton () .get_active ());
-	getSplitPointButton ()           .set_sensitive (getEditToggleButton () .get_active ());
+	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
 
 	if (not getEditToggleButton () .get_active ())
 		getPaintSelectionToggleButton () .set_active (false);
@@ -176,7 +174,7 @@ GeometryEditor::connect ()
 		{
 			const auto innerNode = node -> getInnerNode ();
 
-			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
 				switch (type)
 				{
@@ -199,6 +197,7 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFBool>      ("pickable")       .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection") .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
 
+						coordTool -> setField <X3D::SFBool>      ("load",           true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",       coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection", coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);

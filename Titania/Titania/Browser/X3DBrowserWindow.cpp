@@ -95,11 +95,9 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
-	geometryEditor -> getWidget () .unparent ();
-	getBrowserOverlay () .add_overlay (geometryEditor -> getWidget ());
-
-	sidebar -> reparent (getSidebarBox (), getWindow ());
-	footer  -> reparent (getFooterBox (),  getWindow ());
+	geometryEditor -> reparent (getBrowserOverlay (), getWindow ());
+	sidebar        -> reparent (getSidebarBox (),     getWindow ());
+	footer         -> reparent (getFooterBox (),      getWindow ());
 
 	clipboard -> string_changed () .addInterest (this, &X3DBrowserWindow::set_clipboard);
 }
@@ -115,8 +113,6 @@ X3DBrowserWindow::isEditor (const bool value)
 void
 X3DBrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
-	viewpointObserver -> setBrowser (getCurrentBrowser (), value); // XXX: put in observer itself
-
 	X3DBrowserEditor::setBrowser (value);
 }
 

@@ -84,9 +84,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
+	addField (inputOutput, "set_selection",  set_selection ());
 	addField (inputOutput, "pickable",       pickable ());
 	addField (inputOutput, "paintSelection", paintSelection ());
-	addField (inputOutput, "set_selection",  set_selection ());
 	addField (inputOutput, "normalTool",     normalTool ());
 	addField (inputOutput, "coordTool",      coordTool ());
 

@@ -301,6 +301,19 @@ X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
 }
 
 void
+X3DUserInterface::reparent (Gtk::Overlay & overlay, Gtk::Window & window)
+{
+	getWindow () .set_transient_for (window);
+
+	const auto container = getWidget () .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
+
+	overlay .add_overlay (getWidget ());
+}
+
+void
 X3DUserInterface::restoreInterface ()
 {
 	// Restore window size and position

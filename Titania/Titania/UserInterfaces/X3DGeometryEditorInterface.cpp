@@ -67,12 +67,13 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
+	m_builder -> get_widget ("HammerButton", m_HammerButton);
+	m_builder -> get_widget ("GeometryToolsBox", m_GeometryToolsBox);
 	m_builder -> get_widget ("PaintSelectionToggleButton", m_PaintSelectionToggleButton);
 	m_builder -> get_widget ("PaintSelectionImage", m_PaintSelectionImage);
 	m_builder -> get_widget ("SplitPointButton", m_SplitPointButton);
 	m_builder -> get_widget ("MergePointsButton", m_MergePointsButton);
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
-	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
@@ -84,13 +85,17 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
 	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));
+
+	// Connect object Gtk::Button with id 'HammerButton'.
+	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'PaintSelectionToggleButton'.
 	m_PaintSelectionToggleButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
 	m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 
 	// Connect object Gtk::Button with id 'SplitPointButton'.
 	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_point_clicked));
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
-	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));

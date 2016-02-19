@@ -57,6 +57,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Browser/Selection.h"
+#include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
@@ -74,14 +75,6 @@ public:
 
 	///  @name Private fields
 
-	SFBool &
-	pickable ()
-	{ return *fields .pickable; }
-
-	const SFBool &
-	pickable () const
-	{ return *fields .pickable; }
-
 	MFVec3d &
 	set_selection ()
 	{ return *fields .set_selection; }
@@ -89,6 +82,14 @@ public:
 	const MFVec3d &
 	set_selection () const
 	{ return *fields .set_selection; }
+
+	SFBool &
+	pickable ()
+	{ return *fields .pickable; }
+
+	const SFBool &
+	pickable () const
+	{ return *fields .pickable; }
 
 	SFNode &
 	normalTool ()
@@ -266,8 +267,8 @@ private:
 	{
 		Fields ();
 
-		SFBool* const pickable;
 		MFVec3d* const set_selection;
+		SFBool* const pickable;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};
@@ -285,8 +286,8 @@ private:
 
 template <class Type>
 X3DGeometryNodeTool <Type>::Fields::Fields () :
-	         pickable (new SFBool (true)),
 	    set_selection (new MFVec3d ()),
+	         pickable (new SFBool (true)),
 	       normalTool (new SFNode ()),
 	        coordTool (new SFNode ())
 { }
@@ -305,8 +306,8 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	coordTool  () = coordToolNode;
 
 	#ifndef DEBUG
-	pickable ()      .isHidden (true);
 	set_selection () .isHidden (true);
+	pickable ()      .isHidden (true);
 	normalTool ()    .isHidden (true);
 	coordTool  ()    .isHidden (true);
 	#endif
@@ -340,6 +341,8 @@ X3DGeometryNodeTool <Type>::initialize ()
 	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+
+	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
@@ -414,7 +417,9 @@ X3DGeometryNodeTool <Type>::set_pickable ()
 {
 	try
 	{
-		const bool enabled = pickable () and this -> getBrowser () -> getSelection () -> isEnabled ();
+		const bool enabled = pickable () and
+		                     this -> getBrowser () -> getSelection () -> isEnabled () and
+		                     not dynamic_cast <X3DPrototypeInstance*> (this -> getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode () : nullptr, true);
 	}
@@ -428,7 +433,6 @@ template <class Type>
 void
 X3DGeometryNodeTool <Type>::eventProcessed ()
 {
-
 	const auto & normals  = this -> getNode () -> getPolygonNormals ();
 	const auto & vertices = this -> getNode () -> getPolygonVertices ();
 	const auto & elements = this -> getNode () -> getElements ();
