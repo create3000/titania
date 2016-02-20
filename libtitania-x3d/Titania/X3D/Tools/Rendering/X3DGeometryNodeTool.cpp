@@ -84,12 +84,10 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
 
-	#ifndef DEBUG
 	set_selection () .isHidden (true);
 	pickable ()      .isHidden (true);
 	normalTool ()    .isHidden (true);
 	coordTool  ()    .isHidden (true);
-	#endif
 
 	addType (X3DConstants::X3DGeometryNodeTool);
 

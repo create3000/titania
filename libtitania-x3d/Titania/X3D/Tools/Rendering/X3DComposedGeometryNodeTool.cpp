@@ -66,11 +66,9 @@ X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
 	    X3DGeometryNodeTool (),
                     fields ()
 {
-	addType (X3DConstants::X3DComposedGeometryNodeTool);
-
-	#ifndef DEBUG
 	paintSelection () .isHidden (true);
-	#endif
+
+	addType (X3DConstants::X3DComposedGeometryNodeTool);
 }
 
 void
