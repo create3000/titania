@@ -440,9 +440,9 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		// Normals
 	
-		const X3DPtr <Inline> & inlineNode        = normalToolNode -> getInlineNode ();
-		auto &                  normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
-		auto &                  normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
+		const auto & inlineNode = normalToolNode -> getInlineNode ();
+		auto &       normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
+		auto &       normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
 	
 		normalVertexCount .resize (size, SFInt32 (2));
 		normalPoint       .resize (2 * size);
@@ -462,9 +462,9 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		// Points
 
-		const X3DPtr <Inline> & inlineNode       = coordToolNode -> getInlineNode ();
-		auto &                  edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
-		auto &                  edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
+		const auto & inlineNode       = coordToolNode -> getInlineNode ();
+		auto &       edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
+		auto &       edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
 
 		size_t first = 0;
 		size_t p     = 0;

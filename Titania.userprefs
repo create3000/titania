@@ -1,25 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Sound/X3DSoundNodeTool.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geospatial/GeoLODTool.h" Line="26" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h" Line="13" Column="13" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/BillboardTool.cpp" Line="41" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h" Line="5" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Networking/AnchorTool.h" Line="9" Column="9" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Networking/InlineTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Networking/X3DUrlObjectTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/ParticleSystems/ParticleSystemTool.h" Line="20" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Picking/PickableGroupTool.cpp" Line="39" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Picking/PickableGroupTool.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.h" Line="27" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DComposedGeometryNodeTool.h" Line="19" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.h" Line="12" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Shape/ShapeTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Shape/X3DShapeNodeTool.h" Line="33" Column="33" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Sound/SoundTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Sound/X3DSoundNodeTool.h" Line="30" Column="30" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geospatial/GeoLODTool.h" Line="31" Column="31" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Lighting/X3DLightNodeTool.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/SwitchTool.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -28,6 +14,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/PeaseBlossom/Objects/pbObject.h" line="313" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Tools/ParticleSystems/ParticleSystemTool.h" line="244" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -65,8 +65,8 @@ namespace X3D {
 
 class X3DEnvironmentalSensorNodeTool :
 	virtual public X3DEnvironmentalSensorNode,
-	public X3DBoundedObject,
-	public X3DSensorNodeTool
+	public X3DSensorNodeTool,
+	public X3DBoundedObject
 {
 public:
 
@@ -144,9 +144,9 @@ public:
 	void
 	dispose () override
 	{
-		X3DSensorNodeTool::dispose ();
 		X3DBoundedObject::dispose ();
-		
+		X3DSensorNodeTool::dispose ();
+
 		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
 	}
 
@@ -157,8 +157,8 @@ protected:
 
 	X3DEnvironmentalSensorNodeTool (const Color3f & color) :
 		X3DEnvironmentalSensorNode (),
-		          X3DBoundedObject (),
 		         X3DSensorNodeTool (),
+		          X3DBoundedObject (),
 		                    color (color)
 	{
 		addType (X3DConstants::X3DEnvironmentalSensorNodeTool);
@@ -190,8 +190,8 @@ inline
 void
 X3DEnvironmentalSensorNodeTool::initialize ()
 {
-	X3DBoundedObject::initialize ();
 	X3DSensorNodeTool::initialize ();
+	X3DBoundedObject::initialize ();
 
 	requestAsyncLoad ({ get_tool ("EnvironmentalSensor.x3dv") .str () });
 }
