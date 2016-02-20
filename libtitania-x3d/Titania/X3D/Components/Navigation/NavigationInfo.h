@@ -70,7 +70,7 @@ enum class TransitionType :
 };
 
 class NavigationInfo :
-	public X3DBindableNode
+	virtual public X3DBindableNode
 {
 public:
 

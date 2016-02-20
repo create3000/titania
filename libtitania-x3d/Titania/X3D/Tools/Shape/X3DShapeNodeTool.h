@@ -53,6 +53,8 @@
 
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
+
+#include "../../Components/Shape/X3DShapeNode.h"
 #include "../../Rendering/X3DCollectableObject.h"
 
 namespace titania {
@@ -60,10 +62,10 @@ namespace X3D {
 
 class ShapeContainer;
 
-template <class Type>
 class X3DShapeNodeTool :
-	virtual public X3DChildNodeTool <Type>,
-	public X3DBoundedObjectTool <Type>
+	virtual public X3DShapeNode,
+	virtual public X3DChildNodeTool,
+	public X3DBoundedObjectTool
 {
 public:
 
@@ -72,86 +74,91 @@ public:
 	virtual
 	SFNode &
 	appearance () final override
-	{ return getNode () -> appearance (); }
+	{ return getNode <X3DShapeNode> () -> appearance (); }
 
 	virtual
 	const SFNode &
 	appearance () const final override
-	{ return getNode () -> appearance (); }
+	{ return getNode <X3DShapeNode> () -> appearance (); }
 
 	virtual
 	SFNode &
 	geometry () final override
-	{ return getNode () -> geometry (); }
+	{ return getNode <X3DShapeNode> () -> geometry (); }
 
 	virtual
 	const SFNode &
 	geometry () const final override
-	{ return getNode () -> geometry (); }
+	{ return getNode <X3DShapeNode> () -> geometry (); }
 	
 	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override
+	{ X3DChildNodeTool::setExecutionContext (executionContext); }
 	
 	virtual
 	void
 	isHidden (const bool value) final override
-	{ getNode () -> isHidden (value); }
+	{ getNode <X3DShapeNode> () -> isHidden (value); }
 
 	virtual
 	bool
 	isHidden () const final override
-	{ return getNode () -> isHidden (); }
+	{ return getNode <X3DShapeNode> () -> isHidden (); }
 
 	virtual
 	bool
-	isTransparent () const final override
-	{ return getNode () -> isTransparent (); }
-
-	virtual
-	bool
-	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) final override
-	{ return getNode () -> intersects (sphere, clipPlanes); }
+	isTransparent () const override
+	{ return getNode <X3DShapeNode> () -> isTransparent (); }
 
 	/// @name Operations
 
 	virtual
+	bool
+	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) override
+	{ return getNode <X3DShapeNode> () -> intersects (sphere, clipPlanes); }
+
+	virtual
 	void
-	traverse (const TraverseType type) final override
+	traverse (const TraverseType type) override
 	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
+		X3DChildNodeTool::traverse (type);
+		X3DBoundedObjectTool::traverse (type);
 	}
 
 	virtual
 	void
-	collision (const CollisionContainer* const context) final override
-	{ return getNode () -> collision (context); }
+	collision (const CollisionContainer* const context) override
+	{ return getNode <X3DShapeNode> () -> collision (context); }
 
 	virtual
 	void
 	display (const ShapeContainer* const context) final override
-	{ return getNode () -> display (context); }
+	{ return getNode <X3DShapeNode> () -> display (context); }
 
 	/// @name Destruction
 
 	virtual
 	void
-	dispose () final override
+	dispose () override
 	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
+		X3DBoundedObjectTool::dispose ();
+		X3DChildNodeTool::dispose ();
 	}
 
-protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-	using X3DBoundedObjectTool <Type>::setDisplayCenter;
+protected:
 
 	///  @name Construction
 
 	X3DShapeNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
+		        X3DShapeNode (),
+	       X3DChildNodeTool (),
+		X3DBoundedObjectTool (color)
 	{
 		addType (X3DConstants::X3DShapeNodeTool);
 
@@ -160,10 +167,10 @@ protected:
 
 	virtual
 	void
-	initialize () final override
+	initialize () override
 	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
+		X3DChildNodeTool::initialize ();
+		X3DBoundedObjectTool::initialize ();
 	}
 
 };

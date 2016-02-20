@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class GeoTransformTool :
-	public X3DTransformMatrix4DNodeTool <GeoTransform>,
-	public X3DGeospatialObjectTool <GeoTransform>
+	virtual public GeoTransform,
+	public X3DTransformMatrix4DNodeTool,
+	public X3DGeospatialObjectTool
 {
 public:
 
 	///  @name Construction
 
 	GeoTransformTool (GeoTransform* const node) :
-		                                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                 X3DBaseTool <GeoTransform> (node),
-		X3DTransformMatrix4DNodeTool <GeoTransform> (ToolColors::DARK_GREEN),
-		     X3DGeospatialObjectTool <GeoTransform> ()
+		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                GeoTransform (node -> getExecutionContext ()),
+		                 X3DBaseTool (node),
+		X3DTransformMatrix4DNodeTool (ToolColors::DARK_GREEN),
+		     X3DGeospatialObjectTool ()
 	{
 		addType (X3DConstants::GeoTransformTool);
 
@@ -85,52 +87,52 @@ public:
 	virtual
 	SFVec3f &
 	translation () final override
-	{ return getNode () -> translation (); }
+	{ return getNode <GeoTransform> () -> translation (); }
 
 	virtual
 	const SFVec3f &
 	translation () const final override
-	{ return getNode () -> translation (); }
+	{ return getNode <GeoTransform> () -> translation (); }
 
 	virtual
 	SFRotation &
 	rotation () final override
-	{ return getNode () -> rotation (); }
+	{ return getNode <GeoTransform> () -> rotation (); }
 
 	virtual
 	const SFRotation &
 	rotation () const final override
-	{ return getNode () -> rotation (); }
+	{ return getNode <GeoTransform> () -> rotation (); }
 
 	virtual
 	SFVec3f &
 	scale () final override
-	{ return getNode () -> scale (); }
+	{ return getNode <GeoTransform> () -> scale (); }
 
 	virtual
 	const SFVec3f &
 	scale () const final override
-	{ return getNode () -> scale (); }
+	{ return getNode <GeoTransform> () -> scale (); }
 
 	virtual
 	SFRotation &
 	scaleOrientation () final override
-	{ return getNode () -> scaleOrientation (); }
+	{ return getNode <GeoTransform> () -> scaleOrientation (); }
 
 	virtual
 	const SFRotation &
 	scaleOrientation () const final override
-	{ return getNode () -> scaleOrientation (); }
+	{ return getNode <GeoTransform> () -> scaleOrientation (); }
 
 	virtual
 	SFVec3d &
 	geoCenter () final override
-	{ return getNode () -> geoCenter (); }
+	{ return getNode <GeoTransform> () -> geoCenter (); }
 
 	virtual
 	const SFVec3d &
 	geoCenter () const final override
-	{ return getNode () -> geoCenter (); }
+	{ return getNode <GeoTransform> () -> geoCenter (); }
 
 	///  @name Operations
 
@@ -138,9 +140,14 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DTransformMatrix4DNodeTool <GeoTransform>::traverse (type);
-		X3DGeospatialObjectTool <GeoTransform>::traverse (type);
+		X3DTransformMatrix4DNodeTool::traverse (type);
+		X3DGeospatialObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DTransformMatrix4DNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -148,14 +155,11 @@ public:
 	void
 	dispose () final override
 	{
-		X3DGeospatialObjectTool <GeoTransform>::dispose ();
-		X3DTransformMatrix4DNodeTool <GeoTransform>::dispose ();
+		X3DGeospatialObjectTool::dispose ();
+		X3DTransformMatrix4DNodeTool::dispose ();
 	}
 
 private:
-
-	using X3DTransformMatrix4DNodeTool <GeoTransform>::addType;
-	using X3DTransformMatrix4DNodeTool <GeoTransform>::getNode;
 
 	///  @name Destruction
 
@@ -163,8 +167,8 @@ private:
 	void
 	initialize () final override
 	{
-		X3DTransformMatrix4DNodeTool <GeoTransform>::initialize ();
-		X3DGeospatialObjectTool <GeoTransform>::initialize ();
+		X3DTransformMatrix4DNodeTool::initialize ();
+		X3DGeospatialObjectTool::initialize ();
 	}
 
 };

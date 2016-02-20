@@ -53,40 +53,57 @@
 
 #include "../Grouping/X3DGroupingNodeTool.h"
 
+#include "../../Components/Grouping/X3DTransformMatrix4DNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DTransformMatrix4DNodeTool :
-	public X3DGroupingNodeTool <Type>
+	virtual public X3DTransformMatrix4DNode,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Member access
 
 	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
 	void
 	setMatrix (const Matrix4d & matrix) override
-	{ return getNode () -> setMatrix (matrix); }
+	{ return getNode <X3DTransformMatrix4DNode> () -> setMatrix (matrix); }
 
 	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
+	{ return getNode <X3DTransformMatrix4DNode> () -> getMatrix (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) override
+	{ X3DGroupingNodeTool::traverse (type); }
 
 
 protected:
 
-	using X3DGroupingNodeTool <Type>::addType;
-	using X3DGroupingNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DTransformMatrix4DNodeTool (const Color3f & color) :
-		X3DGroupingNodeTool <Type> (color)
+		X3DTransformMatrix4DNode (),
+		     X3DGroupingNodeTool (color)
 	{
 		addType (X3DConstants::X3DTransformMatrix4DNodeTool);
 	}
+		
+	virtual
+	void
+	initialize () override
+	{ X3DGroupingNodeTool::initialize (); }
 
 };
 

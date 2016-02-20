@@ -60,19 +60,28 @@ namespace titania {
 namespace X3D {
 
 class GroupTool :
-	public X3DGroupingNodeTool <Group>
+	virtual public Group,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 
 	GroupTool (Group* const node) :
-		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <Group> (node),
-		X3DGroupingNodeTool <Group> (ToolColors::GREEN)
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		              Group (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::GREEN)
 	{
 		addType (X3DConstants::GroupTool);
 	}
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 };
 

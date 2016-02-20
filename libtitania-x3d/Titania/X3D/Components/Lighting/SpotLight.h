@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class SpotLight :
-	public X3DLightNode
+	virtual public X3DLightNode
 {
 public:
 

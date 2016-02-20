@@ -58,14 +58,16 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
+
+#include "../../Components/Grouping/X3DTransformNode.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DTransformNodeTool :
-	public X3DTransformMatrix4DNodeTool <Type>
+	virtual public X3DTransformNode,
+	public X3DTransformMatrix4DNodeTool
 {
 public:
 
@@ -74,59 +76,54 @@ public:
 	virtual
 	const SFVec3f &
 	translation () const final override
-	{ return getNode () -> translation (); }
+	{ return getNode <X3DTransformNode> () -> translation (); }
 
 	virtual
 	SFVec3f &
 	translation () final override
-	{ return getNode () -> translation (); }
+	{ return getNode <X3DTransformNode> () -> translation (); }
 
 	virtual
 	SFRotation &
 	rotation () final override
-	{ return getNode () -> rotation (); }
+	{ return getNode <X3DTransformNode> () -> rotation (); }
 
 	virtual
 	const SFRotation &
 	rotation () const final override
-	{ return getNode () -> rotation (); }
+	{ return getNode <X3DTransformNode> () -> rotation (); }
 
 	virtual
 	SFVec3f &
 	scale () final override
-	{ return getNode () -> scale (); }
+	{ return getNode <X3DTransformNode> () -> scale (); }
 
 	virtual
 	const SFVec3f &
 	scale () const final override
-	{ return getNode () -> scale (); }
+	{ return getNode <X3DTransformNode> () -> scale (); }
 
 	virtual
 	SFRotation &
 	scaleOrientation () final override
-	{ return getNode () -> scaleOrientation (); }
+	{ return getNode <X3DTransformNode> () -> scaleOrientation (); }
 
 	virtual
 	const SFRotation &
 	scaleOrientation () const final override
-	{ return getNode () -> scaleOrientation (); }
+	{ return getNode <X3DTransformNode> () -> scaleOrientation (); }
 
 	virtual
 	SFVec3f &
 	center () final override
-	{ return getNode () -> center (); }
+	{ return getNode <X3DTransformNode> () -> center (); }
 
 	virtual
 	const SFVec3f &
 	center () const final override
-	{ return getNode () -> center (); }
+	{ return getNode <X3DTransformNode> () -> center (); }
 
 	///  @name Member access
-
-	virtual
-	const SFBool &
-	isCameraObject () const final override
-	{ return Type::isCameraObject (); }
 
 	virtual
 	bool
@@ -135,7 +132,7 @@ public:
 	virtual
 	Matrix4d
 	getCurrentMatrix () const final override
-	{ return getNode () -> getCurrentMatrix (); }
+	{ return getNode <X3DTransformNode> () -> getCurrentMatrix (); }
 
 	virtual
 	void
@@ -174,16 +171,6 @@ public:
 
 protected:
 
-	using X3DTransformMatrix4DNodeTool <Type>::addType;
-	using X3DTransformMatrix4DNodeTool <Type>::getBrowser;
-	using X3DTransformMatrix4DNodeTool <Type>::setCameraObject;
-	using X3DTransformMatrix4DNodeTool <Type>::getNode;
-	using X3DTransformMatrix4DNodeTool <Type>::getToolNode;
-	using X3DTransformMatrix4DNodeTool <Type>::getCameraSpaceMatrix;
-	using X3DTransformMatrix4DNodeTool <Type>::getModelViewMatrix;
-	using X3DTransformMatrix4DNodeTool <Type>::requestAsyncLoad;
-	using X3DTransformMatrix4DNodeTool <Type>::getMatrix;
-
 	///  @name Construction
 
 	X3DTransformNodeTool ();
@@ -217,32 +204,33 @@ private:
 
 };
 
-template <class Type>
-X3DTransformNodeTool <Type>::X3DTransformNodeTool () :
-	X3DTransformMatrix4DNodeTool <Type> (ToolColors::GREEN),
-	               transformationMatrix (),
-	                             matrix (),
-	                           changing (false)
+inline
+X3DTransformNodeTool::X3DTransformNodeTool () :
+	            X3DTransformNode (),
+	X3DTransformMatrix4DNodeTool (ToolColors::GREEN),
+	        transformationMatrix (),
+	                      matrix (),
+	                    changing (false)
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
 	setCameraObject (true);
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::initialize ()
+X3DTransformNodeTool::initialize ()
 {
-	X3DBaseTool <Type>::initialize ();
+	X3DBaseTool::initialize ();
 
 	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::realize ()
+X3DTransformNodeTool::realize ()
 {
-	getNode () -> addInterest (this, &X3DTransformNodeTool::eventsProcessed);
+	getNode <X3DTransformNode> () -> addInterest (this, &X3DTransformNodeTool::eventsProcessed);
 
 	try
 	{
@@ -256,15 +244,15 @@ X3DTransformNodeTool <Type>::realize ()
 		getToolNode () -> template setField <SFBool>   ("controlKey", getBrowser () -> hasControlKey ());
 		getToolNode () -> template setField <SFBool>   ("shiftKey",   getBrowser () -> hasShiftKey ());
 		getToolNode () -> template setField <SFBool>   ("altKey",     getBrowser () -> hasAltKey ());
-		getToolNode () -> template setField <SFNode>   ("transform",  getNode ());
+		getToolNode () -> template setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
-template <class Type>
+inline
 bool
-X3DTransformNodeTool <Type>::getKeepCenter () const
+X3DTransformNodeTool::getKeepCenter () const
 {
 	try
 	{
@@ -278,36 +266,36 @@ X3DTransformNodeTool <Type>::getKeepCenter () const
 
 // Functions for grouping X3DTransformNodeTools together
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::setMatrix (const Matrix4d & matrix)
+X3DTransformNodeTool::setMatrix (const Matrix4d & matrix)
 {
 	changing = true;
 
-	getNode () -> setMatrix (matrix);
+	getNode <X3DTransformNode> () -> setMatrix (matrix);
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
+X3DTransformNodeTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
 {
 	changing = true;
 
-	getNode () -> setMatrixWithCenter (matrix, center);
+	getNode <X3DTransformNode> () -> setMatrixWithCenter (matrix, center);
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::setMatrixKeepCenter (const Matrix4d & matrix)
+X3DTransformNodeTool::setMatrixKeepCenter (const Matrix4d & matrix)
 {
 	changing = true;
 
-	getNode () -> setMatrixKeepCenter (matrix);
+	getNode <X3DTransformNode> () -> setMatrixKeepCenter (matrix);
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
+X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
 throw (Error <NOT_SUPPORTED>)
 {
 	try
@@ -323,9 +311,9 @@ throw (Error <NOT_SUPPORTED>)
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::eventsProcessed ()
+X3DTransformNodeTool::eventsProcessed ()
 {
 	try
 	{
@@ -334,7 +322,7 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 
 		else
 		{
-			//getBrowser () -> setDescription (this -> getDescription ());
+			//getBrowser () -> setDescription (getDescription ());
 
 			const auto differenceMatrix = ~(matrix * transformationMatrix) * Matrix4d (getMatrix ()) * transformationMatrix;
 
@@ -361,15 +349,15 @@ X3DTransformNodeTool <Type>::eventsProcessed ()
 
 // Traverse
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::reshape ()
+X3DTransformNodeTool::reshape ()
 {
 	try
 	{
 		getBrowser () -> endUpdateForFrame ();
 
-		const auto bbox = getNode () -> X3DGroupingNode::getBBox ();
+		const auto bbox = getNode <X3DTransformNode> () -> X3DGroupingNode::getBBox ();
 
 		getToolNode () -> template setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
 		getToolNode () -> template setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
@@ -385,11 +373,11 @@ X3DTransformNodeTool <Type>::reshape ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DTransformNodeTool <Type>::traverse (const TraverseType type)
+X3DTransformNodeTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <X3DTransformNode> () -> traverse (type);
 
 	// Remember matrices
 

@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class Collision :
-	public X3DGroupingNode, public X3DSensorNode
+	virtual public X3DGroupingNode,
+	virtual public X3DSensorNode
 {
 public:
 

@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Shape :
-	public X3DShapeNode
+	virtual public X3DShapeNode
 {
 public:
 

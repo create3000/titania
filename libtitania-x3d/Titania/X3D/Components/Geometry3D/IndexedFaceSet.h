@@ -67,7 +67,7 @@ namespace titania {
 namespace X3D {
 
 class IndexedFaceSet :
-	public X3DComposedGeometryNode
+	virtual public X3DComposedGeometryNode
 {
 public:
 

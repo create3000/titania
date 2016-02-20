@@ -61,7 +61,9 @@ namespace titania {
 namespace X3D {
 
 class GeoLOD :
-	virtual public X3DChildNode, public X3DBoundedObject, public X3DGeospatialObject
+	virtual public X3DChildNode,
+	virtual public X3DBoundedObject,
+	virtual public X3DGeospatialObject
 {
 public:
 

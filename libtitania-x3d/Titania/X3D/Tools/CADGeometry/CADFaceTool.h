@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class CADFaceTool :
-	public X3DProductStructureChildNodeTool <CADFace>,
-	public X3DBoundedObjectTool <CADFace>
+	virtual public CADFace,
+	public X3DProductStructureChildNodeTool,
+	public X3DBoundedObjectTool
 {
 public:
 
 	///  @name Construction
 
 	CADFaceTool (CADFace* const node) :
-		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                     X3DBaseTool <CADFace> (node),
-		X3DProductStructureChildNodeTool <CADFace> (),
-		            X3DBoundedObjectTool <CADFace> (ToolColors::BROWN)
+		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                         CADFace (node -> getExecutionContext ()),
+		                     X3DBaseTool (node),
+		X3DProductStructureChildNodeTool (),
+		            X3DBoundedObjectTool (ToolColors::BROWN)
 	{
 		addType (X3DConstants::CADFaceTool);
 	}
@@ -82,12 +84,19 @@ public:
 	virtual
 	SFNode &
 	shape () final override
-	{ return getNode () -> shape (); }
+	{ return getNode <CADFace> () -> shape (); }
 
 	virtual
 	const SFNode &
 	shape () const final override
-	{ return getNode () -> shape (); }
+	{ return getNode <CADFace> () -> shape (); }
+
+	/// @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DBoundedObjectTool::getBBox (); }
 
 	/// @name Operations
 
@@ -95,9 +104,14 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DProductStructureChildNodeTool <CADFace>::traverse (type);
-		X3DBoundedObjectTool <CADFace>::traverse (type);
+		X3DProductStructureChildNodeTool::traverse (type);
+		X3DBoundedObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DProductStructureChildNodeTool::addTool (); }
 
 	/// @name Destruction
 
@@ -105,22 +119,19 @@ public:
 	void
 	dispose () final override
 	{
-		X3DBoundedObjectTool <CADFace>::dispose ();
-		X3DProductStructureChildNodeTool <CADFace>::dispose ();
+		X3DBoundedObjectTool::dispose ();
+		X3DProductStructureChildNodeTool::dispose ();
 	}
 
 
 private:
 
-	using X3DProductStructureChildNodeTool <CADFace>::addType;
-	using X3DProductStructureChildNodeTool <CADFace>::getNode;
-
 	virtual
 	void
 	initialize () final override
 	{
-		X3DProductStructureChildNodeTool <CADFace>::initialize ();
-		X3DBoundedObjectTool <CADFace>::initialize ();
+		X3DProductStructureChildNodeTool::initialize ();
+		X3DBoundedObjectTool::initialize ();
 	}
 
 };

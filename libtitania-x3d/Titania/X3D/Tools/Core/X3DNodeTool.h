@@ -52,13 +52,14 @@
 #define __TITANIA_X3D_TOOLS_CORE_X3DNODE_TOOL_H__
 
 #include "../Core/X3DBaseTool.h"
+#include "../../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DNodeTool :
-	virtual public X3DBaseTool <Type>
+	virtual public X3DNode,
+	virtual public X3DBaseTool
 {
 public:
 
@@ -67,23 +68,21 @@ public:
 	virtual
 	SFNode &
 	metadata () final override
-	{ return getNode () -> metadata (); }
+	{ return getNode <X3DNode> () -> metadata (); }
 
 	virtual
 	const SFNode &
 	metadata () const final override
-	{ return getNode () -> metadata (); }
+	{ return getNode <X3DNode> () -> metadata (); }
 
 
 protected:
 
-	using X3DBaseTool <Type>::addType;
-	using X3DBaseTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DNodeTool () :
-		X3DBaseTool <Type> ()
+	       X3DNode (),
+		X3DBaseTool ()
 	{
 		addType (X3DConstants::X3DNodeTool);
 	}

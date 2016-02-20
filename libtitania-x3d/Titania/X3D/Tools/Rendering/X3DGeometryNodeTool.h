@@ -67,9 +67,9 @@
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DGeometryNodeTool :
-	virtual public X3DNodeTool <Type>
+	virtual public X3DGeometryNode,
+	virtual public X3DNodeTool
 {
 public:
 
@@ -116,55 +116,55 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override
-	{ return getNode () -> isTransparent (); }
+	isTransparent () const override
+	{ return getNode <X3DGeometryNode> () -> isTransparent (); }
 
 	virtual
 	bool
-	isLineGeometry () const final override
-	{ return getNode () -> isLineGeometry (); }
+	isLineGeometry () const override
+	{ return getNode <X3DGeometryNode> () -> isLineGeometry (); }
 
 	///  @name Member access
 
 	virtual
 	const Box3d &
 	getBBox () const final override
-	{ return getNode () -> getBBox (); }
+	{ return getNode <X3DGeometryNode> () -> getBBox (); }
 
 	virtual
 	bool
 	getSolid () const final override
-	{ return getNode () -> getSolid (); }
+	{ return getNode <X3DGeometryNode> () -> getSolid (); }
 
 	virtual
 	bool
 	getCCW () const final override
-	{ return getNode () -> getCCW (); }
+	{ return getNode <X3DGeometryNode> () -> getCCW (); }
 
 	virtual
 	const std::vector <Color4f> &
 	getPolygonColors () const final override
-	{ return getNode () -> getPolygonColors (); }
+	{ return getNode <X3DGeometryNode> () -> getPolygonColors (); }
 
 	virtual
 	const TexCoordArray &
 	getPolygonTexCoords () const final override
-	{ return getNode () -> getPolygonTexCoords (); }
+	{ return getNode <X3DGeometryNode> () -> getPolygonTexCoords (); }
 
 	virtual
 	const std::vector <Vector3f> &
 	getPolygonNormals () const final override
-	{ return getNode () -> getPolygonNormals (); }
+	{ return getNode <X3DGeometryNode> () -> getPolygonNormals (); }
 
 	virtual
 	const std::vector <Vector3d> &
 	getPolygonVertices () const final override
-	{ return getNode () -> getPolygonVertices (); }
+	{ return getNode <X3DGeometryNode> () -> getPolygonVertices (); }
 
 	virtual
 	const std::vector <X3DGeometryNode::Element> &
 	getElements () const final override
-	{ return getNode () -> getElements (); }
+	{ return getNode <X3DGeometryNode> () -> getElements (); }
 
 	const X3DPtr <NormalTool> &
 	getNormalTool () const
@@ -188,17 +188,17 @@ public:
 	virtual
 	bool
 	intersects (CollisionSphere3d sphere, const CollectableObjectArray & collectables) const final override
-	{ return getNode () -> intersects (sphere, collectables); }
+	{ return getNode <X3DGeometryNode> () -> intersects (sphere, collectables); }
 
 	virtual
 	void
 	triangulate (std::vector <Color4f> & colors, TexCoordArray & texCoords, std::vector <Vector3f> & normals, std::vector <Vector3d> & vertices) const final override
-	{ getNode () -> triangulate (colors, texCoords, normals, vertices); }
+	{ getNode <X3DGeometryNode> () -> triangulate (colors, texCoords, normals, vertices); }
 
 	virtual
 	void
 	collision (const CollisionContainer* const container) final override
-	{ getNode () -> collision (container); }
+	{ getNode <X3DGeometryNode> () -> collision (container); }
 
 	virtual
 	void
@@ -212,9 +212,8 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
-	{ return getNode () -> toPrimitive (); }
-
+	       Error <DISPOSED>) override
+	{ return getNode <X3DGeometryNode> () -> toPrimitive (); }
 
 	///  @name Destruction
 
@@ -224,8 +223,6 @@ public:
 
 
 protected:
-
-	using X3DNodeTool <Type>::getNode;
 
 	///  @name Construction
 
@@ -284,23 +281,24 @@ private:
 
 };
 
-template <class Type>
-X3DGeometryNodeTool <Type>::Fields::Fields () :
+inline
+X3DGeometryNodeTool::Fields::Fields () :
 	    set_selection (new MFVec3d ()),
 	         pickable (new SFBool (true)),
 	       normalTool (new SFNode ()),
 	        coordTool (new SFNode ())
 { }
 
-template <class Type>
-X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
-	X3DNodeTool <Type> (),
-	            fields (),
-	    normalToolNode (new NormalTool (this -> getExecutionContext ())),
-	     coordToolNode (new CoordinateTool (this -> getExecutionContext ())),
-             viewport (),
-     projectionMatrix (),
-      modelViewMatrix ()
+inline
+X3DGeometryNodeTool::X3DGeometryNodeTool () :
+	 X3DGeometryNode (),
+	     X3DNodeTool (),
+	          fields (),
+	  normalToolNode (new NormalTool (getExecutionContext ())),
+	   coordToolNode (new CoordinateTool (getExecutionContext ())),
+	        viewport (),
+	projectionMatrix (),
+	 modelViewMatrix ()
 {
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
@@ -312,35 +310,35 @@ X3DGeometryNodeTool <Type>::X3DGeometryNodeTool () :
 	coordTool  ()    .isHidden (true);
 	#endif
 
-	this -> addType (X3DConstants::X3DGeometryNodeTool);
+	addType (X3DConstants::X3DGeometryNodeTool);
 
-	this -> addChildren (normalToolNode,
+	addChildren (normalToolNode,
                         coordToolNode);
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::setExecutionContext (X3DExecutionContext* const executionContext)
+X3DGeometryNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	normalToolNode -> setExecutionContext (executionContext);
 
-	X3DNodeTool <Type>::setExecutionContext (executionContext);
+	X3DNodeTool::setExecutionContext (executionContext);
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::initialize ()
+X3DGeometryNodeTool::initialize ()
 {
-	X3DNodeTool <Type>::initialize ();
+	X3DNodeTool::initialize ();
 
 	pickable () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
-	this -> getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
+	getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
 
 	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
-	getNode () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+	getNode <X3DGeometryNode> () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
 
 	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 
@@ -348,13 +346,13 @@ X3DGeometryNodeTool <Type>::initialize ()
 	coordToolNode  -> setup ();
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer) const
+X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer) const
 {
 	try
 	{
-		if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+		if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 			return;
 
 		std::vector <Vector3d> selection;
@@ -363,7 +361,7 @@ X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & fr
 		const auto   modelViewProjection = getModelViewMatrix () * getProjectionMatrix ();
 		const auto   invProjection       = inverse (getProjectionMatrix ());
 
-		for (const Vector3d & vertex : this -> getVertices ())
+		for (const Vector3d & vertex : getVertices ())
 		{
 			const auto screen = ViewVolume::projectPoint (vertex, modelViewProjection, getViewport ());
 			const auto world  = vertex * getModelViewMatrix ();
@@ -396,9 +394,9 @@ X3DGeometryNodeTool <Type>::intersects (const std::shared_ptr <FrameBuffer> & fr
 	}
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::set_loadState ()
+X3DGeometryNodeTool::set_loadState ()
 {
 	try
 	{
@@ -411,17 +409,17 @@ X3DGeometryNodeTool <Type>::set_loadState ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::set_pickable ()
+X3DGeometryNodeTool::set_pickable ()
 {
 	try
 	{
 		const bool enabled = pickable () and
-		                     this -> getBrowser () -> getSelection () -> isEnabled () and
-		                     not dynamic_cast <X3DPrototypeInstance*> (this -> getExecutionContext ());
+		                     getBrowser () -> getSelection () -> isEnabled () and
+		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
-		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode () : nullptr, true);
+		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);
 	}
 	catch (const X3DError & error)
 	{
@@ -429,13 +427,13 @@ X3DGeometryNodeTool <Type>::set_pickable ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::eventProcessed ()
+X3DGeometryNodeTool::eventProcessed ()
 {
-	const auto & normals  = this -> getNode () -> getPolygonNormals ();
-	const auto & vertices = this -> getNode () -> getPolygonVertices ();
-	const auto & elements = this -> getNode () -> getElements ();
+	const auto & normals  = getNode <X3DGeometryNode> () -> getPolygonNormals ();
+	const auto & vertices = getNode <X3DGeometryNode> () -> getPolygonVertices ();
+	const auto & elements = getNode <X3DGeometryNode> () -> getElements ();
 	const auto   size     = vertices .size ();
 
 	try
@@ -543,24 +541,24 @@ X3DGeometryNodeTool <Type>::eventProcessed ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::traverse (const TraverseType type)
+X3DGeometryNodeTool::traverse (const TraverseType type)
 {
-	this -> getNode () -> traverse (type);
+	getNode <X3DGeometryNode> () -> traverse (type);
 
 	normalToolNode -> traverse (type);
 	coordToolNode  -> traverse (type);
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
+X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 {
 	if (PolygonMode (GL_FILL) .front () == GL_FILL)
-		this -> getNode () -> draw (container);
+		getNode <X3DGeometryNode> () -> draw (container);
 
-	if (this -> getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+	if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 		return;
 
 	viewport         = Viewport4i ();
@@ -568,11 +566,11 @@ X3DGeometryNodeTool <Type>::draw (const ShapeContainer* const container)
 	modelViewMatrix  = container -> getModelViewMatrix ();
 }
 
-template <class Type>
+inline
 void
-X3DGeometryNodeTool <Type>::dispose ()
+X3DGeometryNodeTool::dispose ()
 {
-	X3DNodeTool <Type>::dispose ();
+	X3DNodeTool::dispose ();
 }
 
 } // X3D

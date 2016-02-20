@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 
 class X3DComposedGeometryNode :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 

@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class X3DEnvironmentalSensorNode :
-	public X3DSensorNode
+	virtual public X3DSensorNode
 {
 public:
 

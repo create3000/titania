@@ -60,19 +60,38 @@ namespace titania {
 namespace X3D {
 
 class TransformSensorTool :
-	public X3DEnvironmentalSensorNodeTool <TransformSensor>
+	virtual public TransformSensor,
+	public X3DEnvironmentalSensorNodeTool
 {
 public:
 
 	///  @name Construction
 
 	TransformSensorTool (TransformSensor* const node) :
-		                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                   X3DBaseTool <TransformSensor> (node),
-		X3DEnvironmentalSensorNodeTool <TransformSensor> (Color3f (0, 1, 0))
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		               TransformSensor (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		X3DEnvironmentalSensorNodeTool (Color3f (0, 1, 0))
 	{
 		addType (X3DConstants::TransformSensorTool);
 	}
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DEnvironmentalSensorNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DEnvironmentalSensorNodeTool::initialize (); }
 
 };
 

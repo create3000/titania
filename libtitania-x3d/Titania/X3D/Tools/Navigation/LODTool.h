@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class LODTool :
-	public X3DGroupingNodeTool <LOD>
+	virtual public LOD,
+	public X3DGroupingNodeTool
 {
 public:
 
@@ -72,54 +73,71 @@ public:
 	virtual
 	SFBool &
 	forceTransitions () final override
-	{ return getNode () -> forceTransitions (); }
+	{ return getNode <LOD> () -> forceTransitions (); }
 
 	virtual
 	const SFBool &
 	forceTransitions () const final override
-	{ return getNode () -> forceTransitions (); }
+	{ return getNode <LOD> () -> forceTransitions (); }
 
 	virtual
 	SFVec3f &
 	center () final override
-	{ return getNode () -> center (); }
+	{ return getNode <LOD> () -> center (); }
 
 	virtual
 	const SFVec3f &
 	center () const final override
-	{ return getNode () -> center (); }
+	{ return getNode <LOD> () -> center (); }
 
 	virtual
 	MFFloat &
 	range () final override
-	{ return getNode () -> range (); }
+	{ return getNode <LOD> () -> range (); }
 
 	virtual
 	const MFFloat &
 	range () const final override
-	{ return getNode () -> range (); }
+	{ return getNode <LOD> () -> range (); }
 
 	virtual
 	SFInt32 &
 	level_changed () final override
-	{ return getNode () -> level_changed (); }
+	{ return getNode <LOD> () -> level_changed (); }
 
 	virtual
 	const SFInt32 &
 	level_changed () const final override
-	{ return getNode () -> level_changed (); }
+	{ return getNode <LOD> () -> level_changed (); }
 	
 	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
 	
 	virtual
 	void
 	setKeepCurrentLevel (const bool value) final override
-	{ getNode () -> setKeepCurrentLevel (value); }
+	{ getNode <LOD> () -> setKeepCurrentLevel (value); }
 
 	virtual
 	bool
 	getKeepCurrentLevel () const final override
-	{ return getNode () -> getKeepCurrentLevel (); }
+	{ return getNode <LOD> () -> getKeepCurrentLevel (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 
 private:

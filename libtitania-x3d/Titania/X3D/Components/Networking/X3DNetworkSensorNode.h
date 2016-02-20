@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class X3DNetworkSensorNode :
-	public X3DSensorNode
+	virtual public X3DSensorNode
 {
 protected:
 

@@ -52,13 +52,14 @@
 #define __TITANIA_X3D_TOOLS_CORE_X3DBASE_TOOL_H__
 
 #include "../Core/X3DToolObject.h"
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DBaseTool :
-	public Type, public X3DToolObject
+	virtual public X3DBaseNode,
+	public X3DToolObject
 {
 public:
 
@@ -109,7 +110,7 @@ public:
 	       Error <DISPOSED>) final override
 	{
 		node -> addUserDefinedField (accessType, name, field);
-		Type::addUserDefinedField (accessType, name, field);
+		X3DBaseNode::addUserDefinedField (accessType, name, field);
 	}
 
 	///  Removes the field named @a name from the set of user defined fields of this node.
@@ -119,7 +120,7 @@ public:
 	throw (Error <DISPOSED>) final override
 	{
 		node -> removeUserDefinedField (name);
-		Type::removeUserDefinedField (name);
+		X3DBaseNode::removeUserDefinedField (name);
 	}
 
 	///  Field that processes its interests when the set of fields has changed.
@@ -191,7 +192,9 @@ protected:
 
 	///  @name Construction
 
-	X3DBaseTool (Type* const = nullptr);
+	X3DBaseTool ();
+
+	X3DBaseTool (X3DBaseNode* const);
 
 	virtual
 	void
@@ -203,7 +206,7 @@ protected:
 	void
 	addChild (X3DChildObject & child) final override
 	{
-		Type::addChild (child);
+		X3DBaseNode::addChild (child);
 
 		children .emplace (&child);
 	}
@@ -212,7 +215,7 @@ protected:
 	void
 	removeChild (X3DChildObject & child) final override
 	{
-		Type::removeChild (child);
+		X3DBaseNode::removeChild (child);
 
 		children .erase (&child);
 	}
@@ -224,7 +227,7 @@ protected:
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>) final override
 	{
-		Type::addField (accessType, name, field);
+		X3DBaseNode::addField (accessType, name, field);
 
 		children .emplace (&field);
 
@@ -233,23 +236,15 @@ protected:
 
 	///  @name Member access
 
+	template <class Type>
 	Type*
 	getNode ()
-	{ return node; }
+	{ return dynamic_cast <Type*> (node); }
 
+	template <class Type>
 	const Type*
 	getNode () const
-	{ return node; }
-
-	template <class T>
-	T*
-	getNode ()
-	{ return dynamic_cast <T> (node); }
-
-	template <class T>
-	const T*
-	getNode () const
-	{ return dynamic_cast <T> (node); }
+	{ return dynamic_cast <const Type*> (node); }
 
 
 private:
@@ -274,14 +269,22 @@ private:
 
 	///  @name Members
 
-	Type* const                node;
+	X3DBaseNode* const         node;
 	std::set <X3DChildObject*> children;
 
 };
 
-template <class Type>
-X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
-	         Type (node -> getExecutionContext ()),
+inline
+X3DBaseTool::X3DBaseTool () :
+   X3DBaseNode (),
+          node (nullptr)
+{
+   throw Error <NOT_SUPPORTED> ("X3DBaseTool::X3DBaseTool");
+}
+ 
+inline
+X3DBaseTool::X3DBaseTool (X3DBaseNode* node) :
+	  X3DBaseNode (),
 	X3DToolObject (),
 	         node (node),
 	     children ()
@@ -292,47 +295,47 @@ X3DBaseTool <Type>::X3DBaseTool (Type* const node) :
 	node -> isPrivate (true);
 
 	for (auto & field : node -> getPreDefinedFields ())
-		Type::addField (field -> getAccessType (), field -> getName (), *field);
+		X3DBaseNode::addField (field -> getAccessType (), field -> getName (), *field);
 
 	for (auto & field : node -> getUserDefinedFields ())
-		Type::addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+		X3DBaseNode::addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 }
 
-template <class Type>
+inline
 void
-X3DBaseTool <Type>::initialize ()
+X3DBaseTool::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
 }
 
-template <class Type>
+inline
 void
-X3DBaseTool <Type>::setExecutionContext (X3DExecutionContext* const value)
+X3DBaseTool::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getNode () -> setExecutionContext (value);
+	node -> setExecutionContext (value);
 
 	X3DToolObject::setExecutionContext (value);
 }
 
-template <class Type>
+inline
 void
-X3DBaseTool <Type>::removeTool (const bool)
+X3DBaseTool::removeTool (const bool)
 {
-	Type::removeTool (node);
+	X3DBaseNode::removeTool (node);
 }
 
-template <class Type>
+inline
 void
-X3DBaseTool <Type>::dispose ()
+X3DBaseTool::dispose ()
 {
 	node -> isPrivate (isPrivate ());
 	node -> removeParent (this);
 
 	X3DToolObject::dispose ();
-	Type::dispose ();
+	X3DBaseNode::dispose ();
 }
 
 } // X3D

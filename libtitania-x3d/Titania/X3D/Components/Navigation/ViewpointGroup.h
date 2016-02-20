@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class ViewpointGroup :
-	virtual public X3DChildNode, public X3DViewpointObject
+	virtual public X3DChildNode,
+	virtual public X3DViewpointObject
 {
 public:
 

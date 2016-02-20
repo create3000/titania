@@ -53,12 +53,14 @@
 
 #include "../Core/X3DChildNodeTool.h"
 
+#include "../../Components/Core/X3DBindableNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DBindableNodeTool :
-	virtual public X3DChildNodeTool <Type>
+	virtual public X3DBindableNode,
+	virtual public X3DChildNodeTool
 {
 public:
 
@@ -67,46 +69,49 @@ public:
 	virtual
 	SFBool &
 	set_bind () final override
-	{ return getNode () -> set_bind (); }
+	{ return getNode <X3DBindableNode> () -> set_bind (); }
 
 	virtual
 	const SFBool &
 	set_bind () const final override
-	{ return getNode () -> set_bind (); }
+	{ return getNode <X3DBindableNode> () -> set_bind (); }
 
 	virtual
 	SFBool &
 	isBound () final override
-	{ return getNode () -> isBound (); }
+	{ return getNode <X3DBindableNode> () -> isBound (); }
 
 	virtual
 	const SFBool &
 	isBound () const final override
-	{ return getNode () -> isBound (); }
+	{ return getNode <X3DBindableNode> () -> isBound (); }
 
 	virtual
 	SFTime &
 	bindTime () final override
-	{ return getNode () -> bindTime (); }
+	{ return getNode <X3DBindableNode> () -> bindTime (); }
 
 	virtual
 	const SFTime &
 	bindTime () const final override
-	{ return getNode () -> bindTime (); }
+	{ return getNode <X3DBindableNode> () -> bindTime (); }
 
 
 protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DBindableNodeTool () :
-		X3DChildNodeTool <Type> ()
+		 X3DBindableNode (),
+		X3DChildNodeTool ()
 	{
 		addType (X3DConstants::X3DBindableNodeTool);
 	}
+
+	virtual
+	void
+	initialize () override
+	{ X3DChildNodeTool::initialize (); }
 
 };
 

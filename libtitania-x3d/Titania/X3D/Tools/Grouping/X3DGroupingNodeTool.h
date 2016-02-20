@@ -54,13 +54,15 @@
 #include "../Core/X3DChildNodeTool.h"
 #include "../Grouping/X3DBoundedObjectTool.h"
 
+#include "../../Components/Grouping/X3DGroupingNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DGroupingNodeTool :
-	virtual public X3DChildNodeTool <Type>,
-	public X3DBoundedObjectTool <Type>
+	virtual public X3DGroupingNode,
+	virtual public X3DChildNodeTool,
+	public X3DBoundedObjectTool
 {
 public:
 
@@ -69,32 +71,39 @@ public:
 	virtual
 	MFNode &
 	addChildren () final override
-	{ return getNode () -> addChildren (); }
+	{ return getNode <X3DGroupingNode> () -> addChildren (); }
 
 	virtual
 	const MFNode &
 	addChildren () const final override
-	{ return getNode () -> addChildren (); }
+	{ return getNode <X3DGroupingNode> () -> addChildren (); }
 
 	virtual
 	MFNode &
 	removeChildren () final override
-	{ return getNode () -> removeChildren (); }
+	{ return getNode <X3DGroupingNode> () -> removeChildren (); }
 
 	virtual
 	const MFNode &
 	removeChildren () const final override
-	{ return getNode () -> removeChildren (); }
+	{ return getNode <X3DGroupingNode> () -> removeChildren (); }
 
 	virtual
 	MFNode &
 	children () final override
-	{ return getNode () -> children (); }
+	{ return getNode <X3DGroupingNode> () -> children (); }
 
 	virtual
 	const MFNode &
 	children () const final override
-	{ return getNode () -> children (); }
+	{ return getNode <X3DGroupingNode> () -> children (); }
+
+	/// @name Member access
+
+	virtual
+	Box3d
+	getBBox () const override
+	{ return X3DBoundedObjectTool::getBBox (); }
 
 	/// @name Operations
 
@@ -102,8 +111,8 @@ public:
 	void
 	traverse (const TraverseType type) override
 	{
-		X3DChildNodeTool <Type>::traverse (type);
-		X3DBoundedObjectTool <Type>::traverse (type);
+		X3DChildNodeTool::traverse (type);
+		X3DBoundedObjectTool::traverse (type);
 	}
 
 	/// @name Destruction
@@ -112,20 +121,18 @@ public:
 	void
 	dispose () override
 	{
-		X3DBoundedObjectTool <Type>::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
+		X3DBoundedObjectTool::dispose ();
+		X3DChildNodeTool::dispose ();
 	}
 
 protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DGroupingNodeTool (const Color3f & color) :
-		    X3DChildNodeTool <Type> (),
-		X3DBoundedObjectTool <Type> (color)
+		     X3DGroupingNode (),
+		    X3DChildNodeTool (),
+		X3DBoundedObjectTool (color)
 	{
 		addType (X3DConstants::X3DGroupingNodeTool);
 	}
@@ -134,8 +141,8 @@ protected:
 	void
 	initialize () override
 	{
-		X3DChildNodeTool <Type>::initialize ();
-		X3DBoundedObjectTool <Type>::initialize ();
+		X3DChildNodeTool::initialize ();
+		X3DBoundedObjectTool::initialize ();
 	}
 
 };

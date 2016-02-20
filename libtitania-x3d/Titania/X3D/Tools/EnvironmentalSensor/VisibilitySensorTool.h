@@ -60,19 +60,43 @@ namespace titania {
 namespace X3D {
 
 class VisibilitySensorTool :
-	public X3DEnvironmentalSensorNodeTool <VisibilitySensor>
+	virtual public VisibilitySensor,
+	public X3DEnvironmentalSensorNodeTool
 {
 public:
 
 	///  @name Construction
 
 	VisibilitySensorTool (VisibilitySensor* const node) :
-		                                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                   X3DBaseTool <VisibilitySensor> (node),
-		X3DEnvironmentalSensorNodeTool <VisibilitySensor> (Color3f (1, 0, 0))
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		              VisibilitySensor (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		X3DEnvironmentalSensorNodeTool (Color3f (1, 0, 0))
 	{
 		addType (X3DConstants::VisibilitySensorTool);
 	}
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ X3DEnvironmentalSensorNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DEnvironmentalSensorNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DEnvironmentalSensorNodeTool::initialize (); }
 
 };
 

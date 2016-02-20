@@ -57,26 +57,27 @@
 #include "../ToolColors.h"
 
 #include "../../Components/Networking/Inline.h"
-#include "../../Thread/SceneLoader.h"
 
 namespace titania {
 namespace X3D {
 
 class InlineTool :
-	public X3DChildNodeTool <Inline>,
-	public X3DBoundedObjectTool <Inline>,
-	public X3DUrlObjectTool <Inline>
+	virtual public Inline,
+	public X3DChildNodeTool,
+	public X3DBoundedObjectTool,
+	public X3DUrlObjectTool
 {
 public:
 
 	///  @name Construction
 
 	InlineTool (Inline* const node) :
-		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		         X3DBaseTool <Inline> (node),
-		    X3DChildNodeTool <Inline> (),
-		X3DBoundedObjectTool <Inline> (ToolColors::WHITE),
-		    X3DUrlObjectTool <Inline> ()
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		              Inline (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		    X3DChildNodeTool (),
+		X3DBoundedObjectTool (ToolColors::WHITE),
+		    X3DUrlObjectTool ()
 	{
 		addType (X3DConstants::InlineTool);
 	}
@@ -86,19 +87,38 @@ public:
 	virtual
 	SFBool &
 	load ()
-	{ return getNode () -> load (); }
+	{ return getNode <Inline> () -> load (); }
 
 	virtual
 	const SFBool &
 	load () const
-	{ return getNode () -> load (); }
+	{ return getNode <Inline> () -> load (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DChildNodeTool::setExecutionContext (executionContext); }
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DBoundedObjectTool::getBBox (); }
 
 	///  @name Operations
 
 	virtual
 	void
+	requestImmediateLoad () final override
+	{ return X3DUrlObjectTool::requestImmediateLoad (); }
+
+	virtual
+	void
 	preventNextLoad () final override
-	{ getNode () -> preventNextLoad (); }
+	{ getNode <Inline> () -> preventNextLoad (); }
 
 	///  @name Exported node handling
 
@@ -109,7 +129,7 @@ public:
 	       Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getExportedNode (exportedName); }
+	{ return getNode <Inline> () -> getExportedNode (exportedName); }
 
 	virtual
 	const ExportedNodeIndex &
@@ -117,7 +137,7 @@ public:
 	throw (Error <NODE_NOT_AVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getExportedNodes (); }
+	{ return getNode <Inline> () -> getExportedNodes (); }
 
 	///  @name Root node handling
 
@@ -126,21 +146,21 @@ public:
 	getRootNodes ()
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getRootNodes (); }
+	{ return getNode <Inline> () -> getRootNodes (); }
 
 	virtual
 	const MFNode &
 	getRootNodes () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getRootNodes (); }
+	{ return getNode <Inline> () -> getRootNodes (); }
 
 	virtual
 	const X3DScenePtr &
 	getInternalScene () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ return getNode () -> getInternalScene (); }
+	{ return getNode <Inline> () -> getInternalScene (); }
 
 	///  @name Operations
 
@@ -148,10 +168,15 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DChildNodeTool <Inline>::traverse (type);
-		X3DBoundedObjectTool <Inline>::traverse (type);
-		X3DUrlObjectTool <Inline>::traverse (type);
+		X3DChildNodeTool::traverse (type);
+		X3DBoundedObjectTool::traverse (type);
+		X3DUrlObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DChildNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -159,16 +184,13 @@ public:
 	void
 	dispose () final override
 	{
-		X3DUrlObjectTool <Inline>::dispose ();
-		X3DBoundedObjectTool <Inline>::dispose ();
-		X3DChildNodeTool <Inline>::dispose ();
+		X3DUrlObjectTool::dispose ();
+		X3DBoundedObjectTool::dispose ();
+		X3DChildNodeTool::dispose ();
 	}
 
 
 private:
-
-	using X3DChildNodeTool <Inline>::addType;
-	using X3DChildNodeTool <Inline>::getNode;
 
 	///  @name Construction
 
@@ -176,9 +198,9 @@ private:
 	void
 	initialize () final override
 	{
-		X3DChildNodeTool <Inline>::initialize ();
-		X3DBoundedObjectTool <Inline>::initialize ();
-		X3DUrlObjectTool <Inline>::initialize ();
+		X3DChildNodeTool::initialize ();
+		X3DBoundedObjectTool::initialize ();
+		X3DUrlObjectTool::initialize ();
 	}
 
 };

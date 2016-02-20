@@ -52,29 +52,67 @@
 #define __TITANIA_X3D_TOOLS_SHAPE_SHAPE_TOOL_H__
 
 #include "../Shape/X3DShapeNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Components/Shape/Appearance.h"
-#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
 class ShapeTool :
-	public X3DShapeNodeTool <Shape>
+	virtual public Shape,
+	public X3DShapeNodeTool
 {
 public:
 
 	///  @name Construction
 
 	ShapeTool (Shape* const node) :
-		             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		     X3DBaseTool <Shape> (node),
-		X3DShapeNodeTool <Shape> (ToolColors::ORANGE)
+	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	              Shape (node -> getExecutionContext ()),
+		     X3DBaseTool (node),
+		X3DShapeNodeTool (ToolColors::ORANGE)
 	{
 		addType (X3DConstants::ShapeTool);
 	}
+
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DShapeNodeTool::getBBox (); }
+
+	virtual
+	bool
+	isTransparent () const final override
+	{ return X3DShapeNodeTool::isTransparent (); }
+
+	/// @name Operations
+
+	virtual
+	bool
+	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) final override
+	{ return X3DShapeNodeTool::intersects (sphere, clipPlanes); }
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ X3DShapeNodeTool::traverse (type); }
+
+	virtual
+	void
+	collision (const CollisionContainer* const context) final override
+	{ return X3DShapeNodeTool::collision (context); }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DShapeNodeTool::addTool (); }
 
 };
 

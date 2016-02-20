@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class CADFace :
-	public X3DProductStructureChildNode, public X3DBoundedObject
+	virtual public X3DProductStructureChildNode,
+	virtual public X3DBoundedObject
 {
 public:
 

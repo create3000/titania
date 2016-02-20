@@ -63,10 +63,10 @@ class PlaneSensor;
 class TouchSensor;
 class Coordinate;
 class IndexedLineSet;
-class IndexedFaceSet;
 
 class IndexedFaceSetTool :
-	public X3DComposedGeometryNodeTool <IndexedFaceSet>
+	virtual public IndexedFaceSet,
+	public X3DComposedGeometryNodeTool
 {
 public:
 
@@ -79,69 +79,93 @@ public:
 	virtual
 	SFBool &
 	convex () final override
-	{ return getNode () -> convex (); }
+	{ return getNode <IndexedFaceSet> () -> convex (); }
 
 	virtual
 	const SFBool &
 	convex () const final override
-	{ return getNode () -> convex (); }
+	{ return getNode <IndexedFaceSet> () -> convex (); }
 
 	virtual
 	SFFloat &
 	creaseAngle () final override
-	{ return getNode () -> creaseAngle (); }
+	{ return getNode <IndexedFaceSet> () -> creaseAngle (); }
 
 	virtual
 	const SFFloat &
 	creaseAngle () const final override
-	{ return getNode () -> creaseAngle (); }
+	{ return getNode <IndexedFaceSet> () -> creaseAngle (); }
 
 	virtual
 	MFInt32 &
 	texCoordIndex () final override
-	{ return getNode () -> texCoordIndex (); }
+	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
 
 	virtual
 	const MFInt32 &
 	texCoordIndex () const final override
-	{ return getNode () -> texCoordIndex (); }
+	{ return getNode <IndexedFaceSet> () -> texCoordIndex (); }
 
 	virtual
 	MFInt32 &
 	colorIndex () final override
-	{ return getNode () -> colorIndex (); }
+	{ return getNode <IndexedFaceSet> () -> colorIndex (); }
 
 	virtual
 	const MFInt32 &
 	colorIndex () const final override
-	{ return getNode () -> colorIndex (); }
+	{ return getNode <IndexedFaceSet> () -> colorIndex (); }
 
 	virtual
 	MFInt32 &
 	normalIndex () final override
-	{ return getNode () -> normalIndex (); }
+	{ return getNode <IndexedFaceSet> () -> normalIndex (); }
 
 	virtual
 	const MFInt32 &
 	normalIndex () const final override
-	{ return getNode () -> normalIndex (); }
+	{ return getNode <IndexedFaceSet> () -> normalIndex (); }
 
 	virtual
 	MFInt32 &
 	coordIndex () final override
-	{ return getNode () -> coordIndex (); }
+	{ return getNode <IndexedFaceSet> () -> coordIndex (); }
 
 	virtual
 	const MFInt32 &
 	coordIndex () const final override
-	{ return getNode () -> coordIndex (); }
+	{ return getNode <IndexedFaceSet> () -> coordIndex (); }
+
+	///  @name Member access
+
+	virtual
+	bool
+	isLineGeometry () const final override
+	{ return X3DComposedGeometryNodeTool::isLineGeometry (); }
 
 	///  @name Operations
 
 	virtual
 	void
 	addTexCoords () final override
-	{ getNode () -> addTexCoords (); }
+	{ getNode <IndexedFaceSet> () -> addTexCoords (); }
+
+	virtual
+	void
+	addNormals () final override
+	{ getNode <IndexedFaceSet> () -> addNormals (); }
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override
+	{ return getNode <IndexedFaceSet> () -> toPrimitive (); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -242,8 +266,8 @@ private:
 	X3DPtr <IndexedFaceSet>     selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode>  coordNode;
 
-	std::map <int32_t, Vector3d>    activePoints;
-	std::vector <size_t>            activeFace;
+	std::map <int32_t, Vector3d> activePoints;
+	std::vector <size_t>         activeFace;
 
 	X3DPtr <FaceSelection>       selection;
 	std::map <int32_t, Vector3d> selectedPoints;

@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class PickableGroupTool :
-	public X3DGroupingNodeTool <PickableGroup>
+	virtual public PickableGroup,
+	public X3DGroupingNodeTool
 {
 public:
 
@@ -72,22 +73,51 @@ public:
 	virtual
 	MFString &
 	objectType () final override
-	{ return getNode () -> objectType (); }
+	{ return getNode <PickableGroup> () -> objectType (); }
 
 	virtual
 	const MFString &
 	objectType () const final override
-	{ return getNode () -> objectType (); }
+	{ return getNode <PickableGroup> () -> objectType (); }
 
 	virtual
 	SFBool &
 	pickable () final override
-	{ return getNode () -> pickable (); }
+	{ return getNode <PickableGroup> () -> pickable (); }
 
 	virtual
 	const SFBool &
 	pickable () const final override
-	{ return getNode () -> pickable (); }
+	{ return getNode <PickableGroup> () -> pickable (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DGroupingNodeTool::dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
 
 
 private:

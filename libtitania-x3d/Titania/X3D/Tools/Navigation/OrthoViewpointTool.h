@@ -59,16 +59,18 @@ namespace titania {
 namespace X3D {
 
 class OrthoViewpointTool :
-	public X3DViewpointNodeTool <OrthoViewpoint>
+	virtual public OrthoViewpoint,
+	public X3DViewpointNodeTool
 {
 public:
 
 	///  @name Construction
 
 	OrthoViewpointTool (OrthoViewpoint* const node) :
-		                          X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		         X3DBaseTool <OrthoViewpoint> (node),
-		X3DViewpointNodeTool <OrthoViewpoint> ()
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		      OrthoViewpoint (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		X3DViewpointNodeTool ()
 	{
 		addType (X3DConstants::OrthoViewpointTool);
 	}
@@ -78,32 +80,39 @@ public:
 	virtual
 	SFVec3f &
 	position () final override
-	{ return getNode () -> position (); }
+	{ return getNode <OrthoViewpoint> () -> position (); }
 
 	virtual
 	const SFVec3f &
 	position () const final override
-	{ return getNode () -> position (); }
+	{ return getNode <OrthoViewpoint> () -> position (); }
 
 	virtual
 	SFVec3f &
 	centerOfRotation () final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <OrthoViewpoint> () -> centerOfRotation (); }
 
 	virtual
 	const SFVec3f &
 	centerOfRotation () const final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <OrthoViewpoint> () -> centerOfRotation (); }
 
 	virtual
 	MFFloat &
 	fieldOfView () final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <OrthoViewpoint> () -> fieldOfView (); }
 
 	virtual
 	const MFFloat &
 	fieldOfView () const final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <OrthoViewpoint> () -> fieldOfView (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DViewpointNodeTool::addTool (); }
 
 };
 

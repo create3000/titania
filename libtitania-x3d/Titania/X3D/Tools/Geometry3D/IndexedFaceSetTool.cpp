@@ -65,26 +65,27 @@ namespace X3D {
 constexpr double SELECTION_DISTANCE = 8;
 
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
-	                                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	                X3DBaseTool <IndexedFaceSet> (node),
-	X3DComposedGeometryNodeTool <IndexedFaceSet> (),
-	                                 planeSensor (),
-	                                 touchSensor (),
-	                            activePointCoord (),
-	                               activeLineSet (),
-	                              selectionCoord (),
-	                       selectedFacesGeometry (),
-	                                   coordNode (),
-	                                activePoints (),
-	                                  activeFace (),
-	                                   selection (new FaceSelection (node -> getExecutionContext ())),
-	                              selectedPoints (),
-	                               selectedFaces (),
-	                                 translation ()
+	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	             IndexedFaceSet (node -> getExecutionContext ()),
+	                X3DBaseTool (node),
+	X3DComposedGeometryNodeTool (),
+	                planeSensor (),
+	                touchSensor (),
+	           activePointCoord (),
+	              activeLineSet (),
+	             selectionCoord (),
+	      selectedFacesGeometry (),
+	                  coordNode (),
+	               activePoints (),
+	                 activeFace (),
+	                  selection (new FaceSelection (node -> getExecutionContext ())),
+	             selectedPoints (),
+	              selectedFaces (),
+	                translation ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	addField (inputOutput, "set_selection",  set_selection ());
+	addField (inputOnly,   "set_selection",  set_selection ());
 	addField (inputOutput, "pickable",       pickable ());
 	addField (inputOutput, "paintSelection", paintSelection ());
 	addField (inputOutput, "normalTool",     normalTool ());
@@ -102,14 +103,14 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 void
 IndexedFaceSetTool::initialize ()
 {
-	X3DComposedGeometryNodeTool <IndexedFaceSet>::initialize ();
+	X3DComposedGeometryNodeTool::initialize ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 
 	getCoord ()      .addInterest (this, &IndexedFaceSetTool::set_coord);
 	set_selection () .addInterest (this, &IndexedFaceSetTool::set_selection_);
 
-	selection -> geometry () = getNode ();
+	selection -> geometry () = getNode <IndexedFaceSet> ();
 	selection -> setup ();
 
 	set_loadState ();
@@ -578,7 +579,7 @@ IndexedFaceSetTool::getDistance (const Vector3d & point1, const Vector3d & point
 void
 IndexedFaceSetTool::dispose ()
 {
-	X3DComposedGeometryNodeTool <IndexedFaceSet>::dispose ();
+	X3DComposedGeometryNodeTool::dispose ();
 }
 
 } // X3D

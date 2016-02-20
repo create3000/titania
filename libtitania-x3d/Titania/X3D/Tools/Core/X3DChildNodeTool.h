@@ -53,12 +53,14 @@
 
 #include "../Core/X3DNodeTool.h"
 
+#include "../../Components/Core/X3DChildNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DChildNodeTool :
-	virtual public X3DNodeTool <Type>
+	virtual public X3DChildNode,
+	virtual public X3DNodeTool
 {
 public:
 
@@ -67,18 +69,16 @@ public:
 	virtual
 	const SFBool &
 	isCameraObject () const override
-	{ return getNode () -> isCameraObject (); }
+	{ return getNode <X3DChildNode> () -> isCameraObject (); }
 
 
 protected:
 
-	using X3DNodeTool <Type>::addType;
-	using X3DNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DChildNodeTool () :
-		X3DNodeTool <Type> ()
+		X3DChildNode (),
+		X3DNodeTool ()
 	{
 		addType (X3DConstants::X3DChildNodeTool);
 	}

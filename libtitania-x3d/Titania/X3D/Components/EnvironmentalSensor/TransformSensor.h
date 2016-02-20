@@ -59,7 +59,7 @@ namespace X3D {
 class X3DBoundedObject;
 
 class TransformSensor :
-	public X3DEnvironmentalSensorNode
+	virtual public X3DEnvironmentalSensorNode
 {
 public:
 

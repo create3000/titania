@@ -60,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 class ScreenGroupTool :
-	public X3DGroupingNodeTool <ScreenGroup>
+	virtual public ScreenGroup,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 
 	ScreenGroupTool (ScreenGroup* const node) :
-		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <ScreenGroup> (node),
-		X3DGroupingNodeTool <ScreenGroup> (ToolColors::LIME)
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        ScreenGroup (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::LIME)
 	{
 		addType (X3DConstants::ScreenGroupTool);
 	}
@@ -77,9 +79,26 @@ public:
 	///  @name Member access
 
 	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
+	{ return getNode <ScreenGroup> () -> getMatrix (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 };
 

@@ -57,9 +57,10 @@ namespace titania {
 namespace X3D {
 
 PickableGroupTool::PickableGroupTool (PickableGroup* const node) :
-	                        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	        X3DBaseTool <PickableGroup> (node),
-	X3DGroupingNodeTool <PickableGroup> (Color3f (1, 0.7, 0.7))
+	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	      PickableGroup (node -> getExecutionContext ()),
+	        X3DBaseTool (node),
+	X3DGroupingNodeTool (Color3f (1, 0.7, 0.7))
 {
 	addType (X3DConstants::PickableGroupTool);
 }
@@ -67,11 +68,11 @@ PickableGroupTool::PickableGroupTool (PickableGroup* const node) :
 void
 PickableGroupTool::realize ()
 {
-	X3DGroupingNodeTool <PickableGroup>::realize ();
+	X3DGroupingNodeTool::realize ();
 
-	getNode () -> pickable () .addInterest (this, &PickableGroupTool::set_pickable);
+	getNode <PickableGroup> () -> pickable () .addInterest (this, &PickableGroupTool::set_pickable);
 
-	set_pickable (getNode () -> pickable ());
+	set_pickable (getNode <PickableGroup> () -> pickable ());
 }
 
 void

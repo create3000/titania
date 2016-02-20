@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class BillboardTool :
-	public X3DGroupingNodeTool <Billboard>
+	virtual public Billboard,
+	public X3DGroupingNodeTool
 {
 public:
 
@@ -72,19 +73,36 @@ public:
 	virtual
 	SFVec3f &
 	axisOfRotation () final override
-	{ return getNode () -> axisOfRotation (); }
+	{ return getNode <Billboard> () -> axisOfRotation (); }
 
 	virtual
 	const SFVec3f &
 	axisOfRotation () const final override
-	{ return getNode () -> axisOfRotation (); }
+	{ return getNode <Billboard> () -> axisOfRotation (); }
 
 	///  @name Member access
 
 	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
+	{ return getNode <Billboard> () -> getMatrix (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 
 private:

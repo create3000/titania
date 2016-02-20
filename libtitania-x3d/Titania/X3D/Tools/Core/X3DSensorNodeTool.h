@@ -52,13 +52,14 @@
 #define __TITANIA_X3D_TOOLS_CORE_X3DSENSOR_NODE_TOOL_H__
 
 #include "../Core/X3DChildNodeTool.h"
+#include "../../Components/Core/X3DSensorNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DSensorNodeTool :
-	virtual public X3DChildNodeTool <Type>
+	virtual public X3DSensorNode,
+	virtual public X3DChildNodeTool
 {
 public:
 
@@ -67,33 +68,31 @@ public:
 	virtual
 	SFBool &
 	enabled () final override
-	{ return getNode () -> enabled (); }
+	{ return getNode <X3DSensorNode> () -> enabled (); }
 
 	virtual
 	const SFBool &
 	enabled () const final override
-	{ return getNode () -> enabled (); }
+	{ return getNode <X3DSensorNode> () -> enabled (); }
 
 	virtual
 	SFBool &
 	isActive () final override
-	{ return getNode () -> isActive (); }
+	{ return getNode <X3DSensorNode> () -> isActive (); }
 
 	virtual
 	const SFBool &
 	isActive () const final override
-	{ return getNode () -> isActive (); }
+	{ return getNode <X3DSensorNode> () -> isActive (); }
 
 
 protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DSensorNodeTool () :
-		X3DChildNodeTool <Type> ()
+		   X3DSensorNode (),
+		X3DChildNodeTool ()
 	{
 		addType (X3DConstants::X3DSensorNodeTool);
 	}

@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Switch :
-	public X3DGroupingNode
+	virtual public X3DGroupingNode
 {
 public:
 

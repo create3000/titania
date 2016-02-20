@@ -53,12 +53,14 @@
 
 #include "../Core/X3DBaseTool.h"
 
+#include "../../Components/Geospatial/X3DGeospatialObject.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DGeospatialObjectTool :
-	virtual public X3DBaseTool <Type>
+	virtual public X3DGeospatialObject,
+	virtual public X3DBaseTool
 {
 public:
 
@@ -67,22 +69,22 @@ public:
 	virtual
 	MFString &
 	geoSystem ()
-	{ return getNode () -> geoSystem (); }
+	{ return getNode <X3DGeospatialObject> () -> geoSystem (); }
 
 	virtual
 	const MFString &
 	geoSystem () const
-	{ return getNode () -> geoSystem (); }
+	{ return getNode <X3DGeospatialObject> () -> geoSystem (); }
 
 	virtual
 	SFNode &
 	geoOrigin ()
-	{ return getNode () -> geoOrigin (); }
+	{ return getNode <X3DGeospatialObject> () -> geoOrigin (); }
 
 	virtual
 	const SFNode &
 	geoOrigin () const
-	{ return getNode () -> geoOrigin (); }
+	{ return getNode <X3DGeospatialObject> () -> geoOrigin (); }
 
 	///  @name Destruction
 
@@ -94,13 +96,11 @@ public:
 
 protected:
 
-	using X3DBaseTool <Type>::addType;
-	using X3DBaseTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DGeospatialObjectTool () :
-		X3DBaseTool <Type> ()
+		X3DGeospatialObject (),
+		        X3DBaseTool ()
 	{
 		addType (X3DConstants::X3DGeospatialObjectTool);
 	}

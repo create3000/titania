@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class X3DTransformMatrix4DNode :
-	public X3DGroupingNode
+	virtual public X3DGroupingNode
 {
 public:
 

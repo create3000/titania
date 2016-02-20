@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class GeoViewpoint :
-	public X3DViewpointNode, public X3DGeospatialObject
+	virtual public X3DViewpointNode,
+	virtual public X3DGeospatialObject
 {
 public:
 

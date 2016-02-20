@@ -62,19 +62,21 @@ namespace titania {
 namespace X3D {
 
 class GeoLODTool :
-	public X3DChildNodeTool <GeoLOD>,
-	public X3DBoundedObjectTool <GeoLOD>,
-	public X3DGeospatialObjectTool <GeoLOD>
+	virtual public GeoLOD,
+	public X3DChildNodeTool,
+	public X3DBoundedObjectTool,
+	public X3DGeospatialObjectTool
 {
 public:
 
 	///  @name Construction
 
 	GeoLODTool (GeoLOD* const node) :
-		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		         X3DBaseTool <GeoLOD> (node),
-		    X3DChildNodeTool <GeoLOD> (),
-		X3DBoundedObjectTool <GeoLOD> (ToolColors::DARK_CYAN),
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		              GeoLOD (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		    X3DChildNodeTool (),
+		X3DBoundedObjectTool (ToolColors::DARK_CYAN),
 		      X3DGeospatialObjectTool ()
 	{
 		addType (X3DConstants::GeoLODTool);
@@ -87,114 +89,126 @@ public:
 	virtual
 	MFString &
 	rootUrl ()
-	{ return getNode () -> rootUrl (); }
+	{ return getNode <GeoLOD> () -> rootUrl (); }
 
 	virtual
 	const MFString &
 	rootUrl () const
-	{ return getNode () -> rootUrl (); }
+	{ return getNode <GeoLOD> () -> rootUrl (); }
 
 	virtual
 	MFString &
 	child1Url ()
-	{ return getNode () -> child1Url (); }
+	{ return getNode <GeoLOD> () -> child1Url (); }
 
 	virtual
 	const MFString &
 	child1Url () const
-	{ return getNode () -> child1Url (); }
+	{ return getNode <GeoLOD> () -> child1Url (); }
 
 	virtual
 	MFString &
 	child2Url ()
-	{ return getNode () -> child2Url (); }
+	{ return getNode <GeoLOD> () -> child2Url (); }
 
 	virtual
 	const MFString &
 	child2Url () const
-	{ return getNode () -> child2Url (); }
+	{ return getNode <GeoLOD> () -> child2Url (); }
 
 	virtual
 	MFString &
 	child3Url ()
-	{ return getNode () -> child3Url (); }
+	{ return getNode <GeoLOD> () -> child3Url (); }
 
 	virtual
 	const MFString &
 	child3Url () const
-	{ return getNode () -> child3Url (); }
+	{ return getNode <GeoLOD> () -> child3Url (); }
 
 	virtual
 	MFString &
 	child4Url ()
-	{ return getNode () -> child4Url (); }
+	{ return getNode <GeoLOD> () -> child4Url (); }
 
 	virtual
 	const MFString &
 	child4Url () const
-	{ return getNode () -> child4Url (); }
+	{ return getNode <GeoLOD> () -> child4Url (); }
 
 	virtual
 	SFVec3d &
 	center ()
-	{ return getNode () -> center (); }
+	{ return getNode <GeoLOD> () -> center (); }
 
 	virtual
 	const SFVec3d &
 	center () const
-	{ return getNode () -> center (); }
+	{ return getNode <GeoLOD> () -> center (); }
 
 	virtual
 	SFFloat &
 	range ()
-	{ return getNode () -> range (); }
+	{ return getNode <GeoLOD> () -> range (); }
 
 	virtual
 	const SFFloat &
 	range () const
-	{ return getNode () -> range (); }
+	{ return getNode <GeoLOD> () -> range (); }
 
 	virtual
 	SFInt32 &
 	level_changed ()
-	{ return getNode () -> level_changed (); }
+	{ return getNode <GeoLOD> () -> level_changed (); }
 
 	virtual
 	const SFInt32 &
 	level_changed () const
-	{ return getNode () -> level_changed (); }
+	{ return getNode <GeoLOD> () -> level_changed (); }
 
 	virtual
 	MFNode &
 	rootNode ()
-	{ return getNode () -> rootNode (); }
+	{ return getNode <GeoLOD> () -> rootNode (); }
 
 	virtual
 	const MFNode &
 	rootNode () const
-	{ return getNode () -> rootNode (); }
+	{ return getNode <GeoLOD> () -> rootNode (); }
 
 	virtual
 	MFNode &
 	children ()
-	{ return getNode () -> children (); }
+	{ return getNode <GeoLOD> () -> children (); }
 
 	virtual
 	const MFNode &
 	children () const
-	{ return getNode () -> children (); }
+	{ return getNode <GeoLOD> () -> children (); }
 
 	///  @name Member access
 
 	virtual
 	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DChildNodeTool::setExecutionContext (executionContext); }
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DBoundedObjectTool::getBBox (); }
+
+	virtual
+	void
 	setKeepCurrentLevel (const bool value) final override
-	{ getNode () -> setKeepCurrentLevel (value); }
+	{ getNode <GeoLOD> () -> setKeepCurrentLevel (value); }
 
 	virtual
 	bool
 	getKeepCurrentLevel () const final override
-	{ return getNode () -> getKeepCurrentLevel (); }
+	{ return getNode <GeoLOD> () -> getKeepCurrentLevel (); }
 
 	///  @name Operations
 
@@ -202,10 +216,15 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DChildNodeTool <GeoLOD>::traverse (type);
-		X3DBoundedObjectTool <GeoLOD>::traverse (type);
-		X3DGeospatialObjectTool <GeoLOD>::traverse (type);
+		X3DChildNodeTool::traverse (type);
+		X3DBoundedObjectTool::traverse (type);
+		X3DGeospatialObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DChildNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -213,15 +232,12 @@ public:
 	void
 	dispose () final override
 	{
-		X3DGeospatialObjectTool <GeoLOD>::dispose ();
-		X3DBoundedObjectTool <GeoLOD>::dispose ();
-		X3DChildNodeTool <GeoLOD>::dispose ();
+		X3DGeospatialObjectTool::dispose ();
+		X3DBoundedObjectTool::dispose ();
+		X3DChildNodeTool::dispose ();
 	}
 
 private:
-
-	using X3DChildNodeTool <GeoLOD>::addType;
-	using X3DChildNodeTool <GeoLOD>::getNode;
 
 	///  @name Construction
 
@@ -229,9 +245,9 @@ private:
 	void
 	initialize () final override
 	{
-		X3DChildNodeTool <GeoLOD>::initialize ();
-		X3DBoundedObjectTool <GeoLOD>::initialize ();
-		X3DGeospatialObjectTool <GeoLOD>::initialize ();
+		X3DChildNodeTool::initialize ();
+		X3DBoundedObjectTool::initialize ();
+		X3DGeospatialObjectTool::initialize ();
 	}
 
 	///  @name Operations
@@ -249,7 +265,7 @@ private:
 		catch (const X3DError & error)
 		{ }
 
-		X3DBoundedObjectTool <GeoLOD>::reshape ();
+		X3DBoundedObjectTool::reshape ();
 	}
 
 };

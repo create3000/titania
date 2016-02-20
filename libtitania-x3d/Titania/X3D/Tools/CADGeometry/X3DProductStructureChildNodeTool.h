@@ -53,12 +53,14 @@
 
 #include "../Core/X3DChildNodeTool.h"
 
+#include "../../Components/CADGeometry/X3DProductStructureChildNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DProductStructureChildNodeTool :
-	virtual public X3DChildNodeTool <Type>
+	virtual public X3DProductStructureChildNode,
+	virtual public X3DChildNodeTool
 {
 public:
 
@@ -67,23 +69,21 @@ public:
 	virtual
 	SFString &
 	name () final override
-	{ return getNode () -> name (); }
+	{ return getNode <X3DProductStructureChildNode> () -> name (); }
 
 	virtual
 	const SFString &
 	name () const final override
-	{ return getNode () -> name (); }
+	{ return getNode <X3DProductStructureChildNode> () -> name (); }
 
 
 protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DProductStructureChildNodeTool () :
-		X3DChildNodeTool <Type> ()
+		X3DProductStructureChildNode (),
+		            X3DChildNodeTool ()
 	{
 		addType (X3DConstants::X3DProductStructureChildNodeTool);
 	}

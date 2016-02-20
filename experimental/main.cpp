@@ -225,365 +225,91 @@ using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 
-using var = double;
-
-enum ExpressionType
-{
-	PRIMITIVE,
-	ADDITION
-};
-
-class Expression
-{
-public:
-
-	ExpressionType type;
-};
-
-var
-getValue (Expression* expression);
-
-class Primitive :
-	public Expression
-{
-public:
-
-	const var &
-	getValue ()
-	{
-		return value;
-	}
-
-	var value;
-};
-
-class Addition :
-	public Expression
-{
-public:
-
-	var
-	getValue ()
-	{
-		return ::getValue (lhs) + ::getValue (rhs);
-	}
-
-	Expression* lhs;
-	Expression* rhs;
-};
-
-var
-getValue (Expression* expression)
-{
-	switch (expression -> type)
-	{
-		case PRIMITIVE:
-			return static_cast <Primitive*> (expression) -> getValue ();
-		case ADDITION:
-			return static_cast <Addition*> (expression) -> getValue ();
-	}
-
-	throw std::invalid_argument ("getValue");
-};
-
-std::vector <std::string> words = {
-"Lorem",
-"ipsum",
-"dolor",
-"sit",
-"amet,",
-"consectetuer",
-"adipiscing",
-"elit.",
-"Aenean",
-"commodo",
-"ligula",
-"eget",
-"dolor.",
-"Aenean",
-"massa.",
-"Cum",
-"sociis",
-"natoque",
-"penatibus",
-"et",
-"magnis",
-"dis",
-"parturient",
-"montes,",
-"nascetur",
-"ridiculus",
-"mus.",
-"Donec",
-"quam",
-"felis,",
-"ultricies",
-"nec,",
-"pellentesque",
-"eu,",
-"pretium",
-"quis,",
-"sem.",
-"Nulla",
-"consequat",
-"massa",
-"quis",
-"enim.",
-"Donec",
-"pede",
-"justo,",
-"fringilla",
-"vel,",
-"aliquet",
-"nec,",
-"vulputate",
-"eget,",
-"arcu.",
-"In",
-"enim",
-"justo,",
-"rhoncus",
-"ut,",
-"imperdiet",
-"a,",
-"venenatis",
-"vitae,",
-"justo.",
-"Nullam",
-"dictum",
-"felis",
-"eu",
-"pede",
-"mollis",
-"pretium.",
-"Integer",
-"tincidunt.",
-"Cras",
-"dapibus.",
-"Vivamus",
-"elementum",
-"semper",
-"nisi.",
-"Aenean",
-"vulputate",
-"eleifend",
-"tellus.",
-"Aenean",
-"leo",
-"ligula,",
-"porttitor",
-"eu,",
-"consequat",
-"vitae,",
-"eleifend",
-"ac,",
-"enim.",
-"Aliquam",
-"lorem",
-"ante,",
-"dapibus",
-"in,",
-"viverra",
-"quis,",
-"feugiat",
-"a,",
-"tellus.",
-"Phasellus",
-"viverra",
-"nulla",
-"ut",
-"metus",
-"varius",
-"laoreet.",
-"Quisque",
-"rutrum.",
-"Aenean",
-"imperdiet.",
-"Etiam",
-"ultricies",
-"nisi",
-"vel",
-"augue.",
-"Curabitur",
-"ullamcorper",
-"ultricies",
-"nisi.",
-"Nam",
-"eget",
-"dui.",
-"Etiam",
-"rhoncus.",
-"Maecenas",
-"tempus,",
-"tellus",
-"eget",
-"condimentum",
-"rhoncus,",
-"sem",
-"quam",
-"semper",
-"libero,",
-"sit",
-"amet",
-"adipiscing",
-"sem",
-"neque",
-"sed",
-"ipsum.",
-"Nam",
-"quam",
-"nunc,",
-"blandit",
-"vel,",
-"luctus",
-"pulvinar,",
-"hendrerit",
-"id,",
-"lorem.",
-"Maecenas",
-"nec",
-"odio",
-"et",
-"ante",
-"tincidunt",
-"tempus.",
-"Donec",
-"vitae",
-"sapien",
-"ut",
-"libero",
-"venenatis",
-"faucibus.",
-"Nullam",
-"quis",
-"ante.",
-"Etiam",
-"sit",
-"amet",
-"orci",
-"eget",
-"eros",
-"faucibus",
-"tincidunt.",
-"Duis",
-"leo.",
-"Sed",
-"fringilla",
-"mauris",
-"sit",
-"amet",
-"nibh.",
-"Donec",
-"sodales",
-"sagittis",
-"magna.",
-"Sed",
-"consequat,",
-"leo",
-"eget",
-"bibendum",
-"sodales,",
-"augue",
-"velit",
-"cursus",
-"nunc,",
-"a",
-"b",
-"c",
-"d",
-"e",
-"f",
-"g",
-"h",
-"i",
-"j",
-"k",
-"l",
-"m",
-"n",
-"o",
-"p",
-"q",
-"r",
-"s",
-"t",
-"u",
-"v",
-"w",
-"x",
-"y",
-"z",
-"",
-};
-
-
-template <class T>
 class A
 {
 public:
 
 	A ()
 	{
+		throw 1;
+	}
+
+	A (int)
+	{
 		__LOG__ << std::endl;
 	}
 
 };
 
-template <class T>
 class B :
-	public A <T>
+	virtual public A
 {
 public:
 
-	B ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	template <class ... Args>
-	void
-	f ()
+	B () :
+	   A ()
 	{
 		__LOG__ << std::endl;
 	}
 
 };
 
-template <>
-template <class ... Args>
-void
-B <int>::f ()
+class C :
+	virtual public B
 {
-	__LOG__ << std::endl;
-}
+public:
 
+	C (int i) :
+	   A (i)
+	{
+		__LOG__ << std::endl;
+	}
 
-uint32_t
-toUInt32 (const std::string & name)
+};
+
+class At :
+	virtual public A
 {
-	char*      end   = nullptr;
-	const auto value = std::strtoul (name .c_str (), &end, 10);
-	
-	if (errno == ERANGE)
-		return -1;
-	
-	if (end not_eq name .data () + name .size ())
-		return -1;
-	
-	if (value >= uint32_t (-1))
-		return -1;
-	
-	return value;
-}
+public:
 
-double
-parseFloat (const std::string & string)
+	At () :
+	   A ()
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
+class Bt :
+	virtual public B,
+	public At
 {
-	char*  end    = nullptr;
-	double number = strtod (string .c_str (), &end);
+public:
 
-	return number;
-}
+	Bt () :
+	   B (),
+	   At ()
+	{
+		__LOG__ << std::endl;
+	}
+
+};
+
+class Ct :
+	virtual public C,
+	public Bt
+{
+public:
+
+	Ct (int i) :
+	   A (i),
+	   C (i),
+	   Bt ()
+	{
+		__LOG__ << std::endl;
+	}
+
+};
 
 int
 main (int argc, char** argv)
@@ -602,396 +328,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	long double d = 0.017453292519943295769236907684886127134428718885417254560971L;
-
-	__LOG__ << std::numeric_limits <long double>::digits10 << std::endl;
-	__LOG__ << std::setprecision (2 * std::numeric_limits <long double>::digits10) << std::endl;
-	__LOG__ << d << std::endl;
-
-	try
-	{
-		try
-		{
-		   throw std::domain_error ("d");
-		}
-		catch (const std::out_of_range &)
-		{ }
-	}
-	catch (const std::domain_error & e)
-	{
-	   __LOG__ << e .what () << std::endl;
-	}
+	Ct (123);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	std::clog << "Function main done." << std::endl;
 	return 0;
 }
-
-// -2696957.34256132 - 4285448.58338639 3865396.01742163
-
-//// http://www.khronos.org/registry/cl/api/1.1/cl.hpp
-//#include "cl.hpp"
-//
-//
-//int
-//main (int argc, char** argv)
-//{
-//	std::clog << "Starting main ..." << std::endl;
-//
-//	#ifdef _GLIBCXX_PARALLEL
-//	std::clog << "in parallel mode ..." << std::endl;
-//	#endif
-//
-//	std::vector <cl::Platform> all_platforms;
-//	cl::Platform::get (&all_platforms);
-//
-//	if (not all_platforms .empty ())
-//	{
-//		std::cout << "Platforms: " << all_platforms .size () << std::endl;
-//
-//		for (const auto & platform : all_platforms)
-//			std::cout << "Platform: " << platform .getInfo <CL_PLATFORM_NAME> () << std::endl;
-//__COUT__ << std::endl;
-//
-//		cl::Platform default_platform = all_platforms [0];
-//__COUT__ << std::endl;
-//
-//		//get default device of the default platform
-//		std::vector <cl::Device> all_devices;
-//		default_platform .getDevices (CL_DEVICE_TYPE_GPU, &all_devices);
-//__COUT__ << std::endl;
-//
-//		if (all_devices .size () == 0)
-//		{
-//__COUT__ << std::endl;
-//			std::cout << " No devices found. Check OpenCL installation!\n";
-//			exit (1);
-//		}
-//__COUT__ << std::endl;
-//
-//		cl::Device default_device = all_devices [0];
-//		std::cout << "Using device: " << default_device .getInfo <CL_DEVICE_NAME> () << "\n";
-//__LOG__ << std::endl;
-//
-//		cl::Context context ({ default_device });
-//__COUT__ << std::endl;
-//
-//		// kernel calculates for each element C=A+B
-//		std::string kernel_code = " void kernel simple_add (global const int* A, global const int* B, global int* C) "
-//		                          " { "
-//		                          "    int i = get_global_id (0); "
-//		                          "    C [i] = A [i] + B [i]; "
-//		                          " } ";
-//
-//		cl::Program::Sources sources;
-//		sources .push_back ({ kernel_code .c_str (), kernel_code .size () });
-//
-//		cl::Program program (context, sources);
-//
-//		if (program .build ({ default_device }) not_eq CL_SUCCESS)
-//		{
-//			std::cout << " Error building: " << program .getBuildInfo <CL_PROGRAM_BUILD_LOG> (default_device) << "\n";
-//			exit (1);
-//		}
-//
-//		// create buffers on the device
-//		cl::Buffer buffer_A (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
-//		cl::Buffer buffer_B (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
-//		cl::Buffer buffer_C (context, CL_MEM_READ_WRITE, sizeof (int) * 10);
-//
-//		int A [ ] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//		int B [ ] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//
-//		//create queue to which we will push commands for the device.
-//		cl::CommandQueue queue (context, default_device);
-//
-//		//write arrays A and B to the device
-//		queue .enqueueWriteBuffer (buffer_A, CL_TRUE, 0, sizeof (int) * 10, A);
-//		queue .enqueueWriteBuffer (buffer_B, CL_TRUE, 0, sizeof (int) * 10, B);
-//
-//		//run the kernel
-//		cl::KernelFunctor simple_add (cl::Kernel (program, "simple_add"), queue, cl::NullRange, cl::NDRange (10), cl::NullRange);
-//		simple_add (buffer_A, buffer_B, buffer_C);
-//
-//		//alternative way to run the kernel
-//		/*cl::Kernel kernel_add=cl::Kernel(program,"simple_add");
-//		 * kernel_add.setArg(0,buffer_A);
-//		 * kernel_add.setArg(1,buffer_B);
-//		 * kernel_add.setArg(2,buffer_C);
-//		 * queue.enqueueNDRangeKernel(kernel_add,cl::NullRange,cl::NDRange(10),cl::NullRange);
-//		 * queue.finish();*/
-//
-//		int C [10];
-//		//read result C from the device to array C
-//		queue .enqueueReadBuffer (buffer_C, CL_TRUE, 0, sizeof (int) * 10, C);
-//
-//		std::cout << " result: \n";
-//
-//		for (int i = 0; i < 10; i ++)
-//		{
-//			std::cout << C [i] << " ";
-//		}
-//	}
-//
-//	std::clog << "Function main done." << std::endl;
-//	exit (0);
-//	return 0;
-//}
-
-//	test_path (basic::path ("/"));
-//	test_path (basic::path ("/", "/"));
-//	test_path (basic::path ("home", "/"));
-//	test_path (basic::path ("/home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-//	test_path (basic::path ("home/holger/Projekte/Titania/Titania/share/titania/puck///pages/about/home.wrl/", "/"));
-//	test_path (basic::path ("/home/holger/Projekte/../../../.././${Version}/pages/about/home.wrl/..", "/"));
-
-//	basic::ifilestream stream = get_stream ();
-//
-//	if (stream)
-//	{
-//		// Response
-//
-//		std::clog
-//			<< "Response" << std::endl
-//			<< "Http-Version: " << stream .http_version () << std::endl
-//			<< "Status: "       << stream .status ()       << std::endl
-//			<< "Reason: "       << stream .reason ()       << std::endl
-//			<<  std::endl;
-//
-//		// Response Headers
-//
-//		std::clog << "Response Headers" << std::endl;
-//		for (const auto & response_header : stream .response_headers ())
-//			std::clog << response_header .first << ": " << response_header .second << std::endl;
-//		std::clog <<  std::endl;
-//
-//
-//		std::ostringstream osstream;
-//		osstream << stream .rdbuf ();
-//
-//		std::clog << "'" << osstream .str () << "'" << std::endl;
-//	}
-
-//	sql::sqlite3 db (os::home () + "/test.db");
-//
-//	db .query ("DROP TABLE IF EXISTS test");
-//	db .query ("CREATE TABLE IF NOT EXISTS test (title TEXT, location TEXT)");
-//
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit1', 'loc1')");
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit2', 'loc2')");
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit3', 'loc3')");
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit4', 'loc4')");
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit5', 'loc5')");
-//
-//
-//	for (const auto & item : db .query_assoc ("SELECT * FROM test"))
-//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
-//	std::clog << std::endl;
-//
-//
-//	db .query ("INSERT INTO test (title, location) VALUES ('tit6', 'loc6')");
-//
-//	db .query_array ("UPDATE test SET title = 'tit10', location = 'loc10' WHERE title = 'tit6'");
-//
-//
-//	for (const auto & item : db .query_assoc ("SELECT * FROM test WHERE title = 'tit10'"))
-//		std::clog << item .at ("title") << ", " << item .at ("location") << std::endl;
-//	std::clog << std::endl;
-//
-
-//	gegl_init (&argc, &argv);
-//
-//
-//	const char* path = "/home/holger/Projekte/Titania/Library/Tests/Texturing/images/colors/bw.png";
-//	std::ifstream      stream (path);
-//	std::ostringstream sstream;
-//	sstream << stream .rdbuf ();
-//
-//	auto image = sstream .str ();
-//
-//	std::clog << "############" << image .size () << std::endl;
-//
-//	GeglNode* gegl = gegl_node_new ();
-//
-//
-//	GeglNode* load = gegl_node_new_child (gegl,
-//                            "operation", "gegl:load",
-//                            "path",      path,
-//                            NULL);
-//
-//	//	GeglNode* scale  = gegl_node_new_child (gegl,
-//	//                                    "operation", "gegl:scale",
-//	//                                    "width", 200,
-//	//                                    "height", 50,
-//	//                                    NULL);
-//
-//	GeglBuffer* outputBuffer;
-//	GeglNode*   output = gegl_node_new_child (gegl,
-//	                                          "operation", "gegl:buffer-sink",
-//	                                          "buffer", &outputBuffer,
-//	                                          NULL);
-//
-//	gegl_node_link_many (load, output, NULL);
-//	gegl_node_process (output);
-//
-//	auto babl = gegl_buffer_get_format (outputBuffer);
-//
-//	std::clog << babl -> format .components << std::endl;
-//	std::clog << gegl_buffer_get_width (outputBuffer) << " " << gegl_buffer_get_height (outputBuffer) << std::endl;
-//
-//	std::vector <uint16_t> array (gegl_buffer_get_width (outputBuffer) * gegl_buffer_get_height (outputBuffer) * 2);
-//
-//	gegl_node_blit (load, 1, NULL
-//	                 babl_format ("Y u8"),
-//	                 array .data (),
-//	                 GEGL_AUTO_ROWSTRIDE,
-//	                 GEGL_BLIT_DEFAULT);
-//
-//	g_object_unref (outputBuffer);
-//	g_object_unref (gegl);
-//	gegl_exit ();
-
-///* This is a very simple example using the multi interface. */
-//
-//#include <stdio.h>
-//#include <string.h>
-//
-///* somewhat unix-specific */
-//#include <sys/time.h>
-//#include <unistd.h>
-//
-///* curl stuff */
-//#include <curl/curl.h>
-//
-//int
-//write_data (char* data, size_t size, size_t nmemb, void* self)
-//{
-//	// What we will return
-//	size_t bytes = size * nmemb;
-//
-//	// Append the data to the buffer
-//	__LOG__ << bytes << std::endl;
-//	__LOG__ << std::string (data, bytes) << std::endl;
-//
-//	// How much did we write?
-//	return bytes;
-//}
-//
-///*
-// * Simply download a HTTP file.
-// */
-//int
-//main (void)
-//{
-//	CURL*  easy_handle;
-//	CURLM* multi_handle;
-//
-//	int still_running; /* keep number of running handles */
-//
-//	//curl_global_init (CURL_GLOBAL_DEFAULT);
-//
-//	easy_handle = curl_easy_init ();
-//
-//	/* set the options (I left out a few, you'll get the point anyway) */
-//	curl_easy_setopt (easy_handle, CURLOPT_URL,               "http://vr.create3000.tv/");
-//	curl_easy_setopt (easy_handle, CURLOPT_BUFFERSIZE,        1024);
-//	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,           CURLUSESSL_TRY);
-//	curl_easy_setopt (easy_handle, CURLOPT_HEADER,            false);
-//	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,    true);
-//	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS, 15000);
-//	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,        15000);
-//	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,  15000);
-//	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,   "");
-//	curl_easy_setopt (easy_handle, CURLOPT_FAILONERROR,       true);
-//	curl_easy_setopt (easy_handle, CURLOPT_NOSIGNAL,          true);
-//	curl_easy_setopt (easy_handle, CURLOPT_WRITEFUNCTION,     write_data);
-//	curl_easy_setopt (easy_handle, CURLOPT_VERBOSE,           true);
-//
-//	/* init a multi stack */
-//	multi_handle = curl_multi_init ();
-//
-//	/* add the individual transfers */
-//	curl_multi_add_handle (multi_handle, easy_handle);
-//
-//	__LOG__ << std::endl;
-//	/* we start some action by calling perform right away */
-//	curl_multi_perform (multi_handle, &still_running);
-//
-//	do
-//	{
-//		__LOG__ << std::endl;
-//
-//		struct timeval timeout;
-//		int            rc; /* select() return code */
-//
-//		fd_set fdread;
-//		fd_set fdwrite;
-//		fd_set fdexcep;
-//		int    maxfd = -1;
-//
-//		long curl_timeout = -1;
-//
-//		FD_ZERO (&fdread);
-//		FD_ZERO (&fdwrite);
-//		FD_ZERO (&fdexcep);
-//
-//		/* set a suitable timeout to play around with */
-//		timeout .tv_sec  = 1;
-//		timeout .tv_usec = 0;
-//
-//		curl_multi_timeout (multi_handle, &curl_timeout);
-//
-//		if (curl_timeout >= 0)
-//		{
-//			timeout .tv_sec = curl_timeout / 1000;
-//
-//			if (timeout.tv_sec > 1)
-//				timeout .tv_sec = 1;
-//			else
-//				timeout .tv_usec = (curl_timeout % 1000) * 1000;
-//		}
-//
-//		__LOG__ <<  timeout.tv_sec << std::endl;
-//		__LOG__ <<  timeout.tv_usec << std::endl;
-//
-//		/* get file descriptors from the transfers */
-//		curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
-//
-//		/* In a real-world program you OF COURSE check the return code of the
-//		 * function calls.  On success, the value of maxfd is guaranteed to be
-//		 * greater or equal than -1.  We call select(maxfd + 1, ...), specially in
-//		 * case of (maxfd == -1), we call select(0, ...), which is basically equal
-//		 * to sleep. */
-//
-//		rc = select (maxfd + 1, &fdread, &fdwrite, &fdexcep, &timeout);
-//
-//		switch (rc)
-//		{
-//			case -1:
-//
-//				/* select error */
-//				still_running = 0;
-//				printf ("select() returns error, this is badness\n");
-//				break;
-//			case 0:
-//			default:
-//
-//				__LOG__ << std::endl;
-//				/* timeout or readable/writable sockets */
-//				curl_multi_perform (multi_handle, &still_running);
-//				break;
-//		}
-//	}
-//	while (still_running);
-//
-//	curl_multi_remove_handle (multi_handle, easy_handle);
-//
-//	curl_easy_cleanup (easy_handle);
-//
-//	curl_multi_cleanup (multi_handle);
-//
-//	curl_global_cleanup ();
-//
-//	return 0;
-//}

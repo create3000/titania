@@ -56,63 +56,70 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+
+#include "../../Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DEnvironmentalSensorNodeTool :
-	virtual public X3DSensorNodeTool <Type>,
-	public X3DBoundedObject
+	virtual public X3DEnvironmentalSensorNode,
+	public X3DBoundedObject,
+	public X3DSensorNodeTool
 {
 public:
-
-	using X3DSensorNodeTool <Type>::getBrowser;
 
 	///  @name Fields
 
 	virtual
 	SFVec3f &
 	center () final override
-	{ return getNode () -> center (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> center (); }
 
 	virtual
 	const SFVec3f &
 	center () const final override
-	{ return getNode () -> center (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> center (); }
 
 	virtual
 	SFVec3f &
 	size () final override
-	{ return getNode () -> size (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> size (); }
 
 	virtual
 	const SFVec3f &
 	size () const final override
-	{ return getNode () -> size (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> size (); }
 
 	virtual
 	SFTime &
 	enterTime () final override
-	{ return getNode () -> enterTime (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> enterTime (); }
 
 	virtual
 	const SFTime &
 	enterTime () const final override
-	{ return getNode () -> enterTime (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> enterTime (); }
 
 	virtual
 	SFTime &
 	exitTime () final override
-	{ return getNode () -> exitTime (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> exitTime (); }
 
 	virtual
 	const SFTime &
 	exitTime () const final override
-	{ return getNode () -> exitTime (); }
+	{ return getNode <X3DEnvironmentalSensorNode> () -> exitTime (); }
 
 	///  @name Operations
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DSensorNodeTool::setExecutionContext (executionContext); }
 	
 	virtual
 	Box3d
@@ -125,7 +132,7 @@ public:
 
 	virtual
 	void
-	addTool () final override;
+	addTool () override;
 
 	virtual
 	void
@@ -137,8 +144,8 @@ public:
 	void
 	dispose () override
 	{
+		X3DSensorNodeTool::dispose ();
 		X3DBoundedObject::dispose ();
-		X3DSensorNodeTool <Type>::dispose ();
 		
 		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
 	}
@@ -146,19 +153,13 @@ public:
 
 protected:
 
-	using X3DSensorNodeTool <Type>::addType;
-	using X3DSensorNodeTool <Type>::getCameraSpaceMatrix;
-	using X3DSensorNodeTool <Type>::getModelViewMatrix;
-	using X3DSensorNodeTool <Type>::getNode;
-	using X3DToolObject::getToolNode;
-	using X3DToolObject::requestAsyncLoad;
-
 	///  @name Construction
 
 	X3DEnvironmentalSensorNodeTool (const Color3f & color) :
-		X3DSensorNodeTool <Type> (),
-		        X3DBoundedObject (),
-		                   color (color)
+		X3DEnvironmentalSensorNode (),
+		          X3DBoundedObject (),
+		         X3DSensorNodeTool (),
+		                    color (color)
 	{
 		addType (X3DConstants::X3DEnvironmentalSensorNodeTool);
 
@@ -185,42 +186,42 @@ private:
 
 };
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::initialize ()
+X3DEnvironmentalSensorNodeTool::initialize ()
 {
-	X3DSensorNodeTool <Type>::initialize ();
 	X3DBoundedObject::initialize ();
-	
+	X3DSensorNodeTool::initialize ();
+
 	requestAsyncLoad ({ get_tool ("EnvironmentalSensor.x3dv") .str () });
 }
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::realize ()
+X3DEnvironmentalSensorNodeTool::realize ()
 {
 	try
 	{
 		addTool ();
 
 		getToolNode () -> setField <SFColor> ("color", color);
-		getToolNode () -> setField <SFNode>  ("node",  getNode ());
+		getToolNode () -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
 
 		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
 		size () .addInterest (set_size);
-		set_size = getNode () -> size ();
+		set_size = getNode <X3DEnvironmentalSensorNode> () -> size ();
 
 		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
 		center () .addInterest (set_center);
-		set_center = getNode () -> center ();
+		set_center = getNode <X3DEnvironmentalSensorNode> () -> center ();
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::addTool ()
+X3DEnvironmentalSensorNodeTool::addTool ()
 {
 	try
 	{
@@ -230,12 +231,12 @@ X3DEnvironmentalSensorNodeTool <Type>::addTool ()
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::removeTool (const bool really)
+X3DEnvironmentalSensorNodeTool::removeTool (const bool really)
 {
 	if (really)
-		X3DSensorNodeTool <Type>::removeTool ();
+		X3DSensorNodeTool::removeTool ();
 	
 	else
 	{
@@ -248,9 +249,9 @@ X3DEnvironmentalSensorNodeTool <Type>::removeTool (const bool really)
 	}
 }
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::reshape ()
+X3DEnvironmentalSensorNodeTool::reshape ()
 {
 	try
 	{
@@ -268,11 +269,11 @@ X3DEnvironmentalSensorNodeTool <Type>::reshape ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DEnvironmentalSensorNodeTool <Type>::traverse (const TraverseType type)
+X3DEnvironmentalSensorNodeTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <X3DEnvironmentalSensorNode> () -> traverse (type);
 
 	// Tool
 

@@ -59,16 +59,18 @@ namespace titania {
 namespace X3D {
 
 class PointLightTool :
-	public X3DLightNodeTool <PointLight>
+	virtual public PointLight,
+	public X3DLightNodeTool
 {
 public:
 
 	///  @name Construction
 
 	PointLightTool (PointLight* const node) :
-		                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		     X3DBaseTool <PointLight> (node),
-		X3DLightNodeTool <PointLight> ()
+		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		      PointLight (node -> getExecutionContext ()),
+		     X3DBaseTool (node),
+		X3DLightNodeTool ()
 	{
 		addType (X3DConstants::PointLightTool);
 	}
@@ -78,32 +80,54 @@ public:
 	virtual
 	SFVec3f &
 	attenuation () final override
-	{ return getNode () -> attenuation (); }
+	{ return getNode <PointLight> () -> attenuation (); }
 
 	virtual
 	const SFVec3f &
 	attenuation () const final override
-	{ return getNode () -> attenuation (); }
+	{ return getNode <PointLight> () -> attenuation (); }
 
 	virtual
 	SFVec3f &
 	location () final override
-	{ return getNode () -> location (); }
+	{ return getNode  <PointLight>() -> location (); }
 
 	virtual
 	const SFVec3f &
 	location () const final override
-	{ return getNode () -> location (); }
+	{ return getNode <PointLight> () -> location (); }
 
 	virtual
 	SFFloat &
 	radius () final override
-	{ return getNode () -> radius (); }
+	{ return getNode <PointLight> () -> radius (); }
 
 	virtual
 	const SFFloat &
 	radius () const final override
-	{ return getNode () -> radius (); }
+	{ return getNode <PointLight> () -> radius (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	draw (const GLenum lightId) final override
+	{ return X3DLightNodeTool::draw (lightId); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DLightNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DLightNodeTool::initialize (); }
 
 };
 

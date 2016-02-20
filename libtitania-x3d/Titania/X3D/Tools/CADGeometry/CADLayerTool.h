@@ -60,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 class CADLayerTool :
-	public X3DGroupingNodeTool <CADLayer>
+	virtual public CADLayer,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 
 	CADLayerTool (CADLayer* const node) :
-		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <CADLayer> (node),
-		X3DGroupingNodeTool <CADLayer> (ToolColors::DARK_YELLOW)
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           CADLayer (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::DARK_YELLOW)
 	{
 		addType (X3DConstants::CADLayerTool);
 	}
@@ -79,22 +81,40 @@ public:
 	virtual
 	SFString &
 	name () final override
-	{ return getNode () -> name (); }
+	{ return getNode <CADLayer> () -> name (); }
 
 	virtual
 	const SFString &
 	name () const final override
-	{ return getNode () -> name (); }
+	{ return getNode <CADLayer> () -> name (); }
 
 	virtual
 	MFBool &
 	visible () final override
-	{ return getNode () -> visible (); }
+	{ return getNode <CADLayer> () -> visible (); }
 
 	virtual
 	const MFBool &
 	visible () const final override
-	{ return getNode () -> visible (); }
+	{ return getNode <CADLayer> () -> visible (); }
+
+	/// @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+
+protected:
+
+	/// @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DGroupingNodeTool::initialize (); }
+
 
 };
 

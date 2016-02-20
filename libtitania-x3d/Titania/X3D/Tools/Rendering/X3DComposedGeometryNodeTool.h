@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DComposedGeometryNodeTool :
-	virtual public X3DGeometryNodeTool <Type>
+	virtual public X3DComposedGeometryNode,
+	virtual public X3DGeometryNodeTool
 {
 public:
 
@@ -70,102 +70,102 @@ public:
 	virtual
 	SFBool &
 	colorPerVertex () final override
-	{ return getNode () -> colorPerVertex (); }
+	{ return getNode <X3DComposedGeometryNode> () -> colorPerVertex (); }
 
 	virtual
 	const SFBool &
 	colorPerVertex () const final override
-	{ return getNode () -> colorPerVertex (); }
+	{ return getNode <X3DComposedGeometryNode> () -> colorPerVertex (); }
 
 	virtual
 	SFBool &
 	normalPerVertex () final override
-	{ return getNode () -> normalPerVertex (); }
+	{ return getNode <X3DComposedGeometryNode> () -> normalPerVertex (); }
 
 	virtual
 	const SFBool &
 	normalPerVertex () const final override
-	{ return getNode () -> normalPerVertex (); }
+	{ return getNode <X3DComposedGeometryNode> () -> normalPerVertex (); }
 
 	virtual
 	SFBool &
 	solid () final override
-	{ return getNode () -> solid (); }
+	{ return getNode <X3DComposedGeometryNode> () -> solid (); }
 
 	virtual
 	const SFBool &
 	solid () const final override
-	{ return getNode () -> solid (); }
+	{ return getNode <X3DComposedGeometryNode> () -> solid (); }
 
 	virtual
 	SFBool &
 	ccw () final override
-	{ return getNode () -> ccw (); }
+	{ return getNode <X3DComposedGeometryNode> () -> ccw (); }
 
 	virtual
 	const SFBool &
 	ccw () const final override
-	{ return getNode () -> ccw (); }
+	{ return getNode <X3DComposedGeometryNode> () -> ccw (); }
 
 	virtual
 	MFNode &
 	attrib () final override
-	{ return getNode () -> attrib (); }
+	{ return getNode <X3DComposedGeometryNode> () -> attrib (); }
 
 	virtual
 	const MFNode &
 	attrib () const final override
-	{ return getNode () -> attrib (); }
+	{ return getNode <X3DComposedGeometryNode> () -> attrib (); }
 
 	virtual
 	SFNode &
 	fogCoord () final override
-	{ return getNode () -> fogCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> fogCoord (); }
 
 	virtual
 	const SFNode &
 	fogCoord () const final override
-	{ return getNode () -> fogCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> fogCoord (); }
 
 	virtual
 	SFNode &
 	color () final override
-	{ return getNode () -> color (); }
+	{ return getNode <X3DComposedGeometryNode> () -> color (); }
 
 	virtual
 	const SFNode &
 	color () const final override
-	{ return getNode () -> color (); }
+	{ return getNode <X3DComposedGeometryNode> () -> color (); }
 
 	virtual
 	SFNode &
 	texCoord () final override
-	{ return getNode () -> texCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> texCoord (); }
 
 	virtual
 	const SFNode &
 	texCoord () const final override
-	{ return getNode () -> texCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> texCoord (); }
 
 	virtual
 	SFNode &
 	normal () final override
-	{ return getNode () -> normal (); }
+	{ return getNode <X3DComposedGeometryNode> () -> normal (); }
 
 	virtual
 	const SFNode &
 	normal () const final override
-	{ return getNode () -> normal (); }
+	{ return getNode <X3DComposedGeometryNode> () -> normal (); }
 
 	virtual
 	SFNode &
 	coord () final override
-	{ return getNode () -> coord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> coord (); }
 
 	virtual
 	const SFNode &
 	coord () const final override
-	{ return getNode () -> coord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> coord (); }
 
 	SFBool &
 	paintSelection ()
@@ -178,42 +178,44 @@ public:
 	///  @name Member access
 
 	virtual
+	bool
+	isTransparent () const final override
+	{ return X3DGeometryNodeTool::isTransparent (); }
+
+	virtual
 	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttrib () const final override
-	{ return getNode () -> getAttrib (); }
+	{ return getNode <X3DComposedGeometryNode> () -> getAttrib (); }
 
 	virtual
 	const X3DPtr <X3DColorNode> &
 	getColor () const final override
-	{ return getNode () -> getColor (); }
+	{ return getNode <X3DComposedGeometryNode> () -> getColor (); }
 
 	virtual
 	const X3DPtr <X3DTextureCoordinateNode> &
 	getTexCoord () const final override
-	{ return getNode () -> getTexCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> getTexCoord (); }
 
 	virtual
 	const X3DPtr <X3DNormalNode> &
 	getNormal () const final override
-	{ return getNode () -> getNormal (); }
+	{ return getNode <X3DComposedGeometryNode> () -> getNormal (); }
 
 	virtual
 	const X3DPtr <X3DCoordinateNode> &
 	getCoord () const final override
-	{ return getNode () -> getCoord (); }
+	{ return getNode <X3DComposedGeometryNode> () -> getCoord (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	addNormals () final override
-	{ getNode () -> addNormals (); }
+	addNormals () override
+	{ getNode <X3DComposedGeometryNode> () -> addNormals (); }
 
 
 protected:
-
-	using X3DNodeTool <Type>::addType;
-	using X3DNodeTool <Type>::getNode;
 
 	///  @name Construction
 
@@ -245,45 +247,45 @@ private:
 };
 ;
 
-template <class Type>
-X3DComposedGeometryNodeTool <Type>::Fields::Fields () :
+inline
+X3DComposedGeometryNodeTool::Fields::Fields () :
 	 paintSelection (new SFBool ())
 { }
 
-template <class Type>
-X3DComposedGeometryNodeTool <Type>::X3DComposedGeometryNodeTool () :
-	X3DGeometryNodeTool <Type> (),
-                       fields ()
+inline
+X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
+	X3DComposedGeometryNode (),
+	    X3DGeometryNodeTool (),
+                    fields ()
 {
 	addType (X3DConstants::X3DComposedGeometryNodeTool);
 
 	paintSelection () .isHidden (true);
 }
 
-template <class Type>
+inline
 void
-X3DComposedGeometryNodeTool <Type>::initialize ()
+X3DComposedGeometryNodeTool::initialize ()
 {
-	X3DGeometryNodeTool <Type>::initialize ();
+	X3DGeometryNodeTool::initialize ();
 
-	this -> getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DComposedGeometryNodeTool::set_loadState);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DComposedGeometryNodeTool::set_loadState);
 
 	set_loadState ();
 }
 
-template <class Type>
+inline
 void
-X3DComposedGeometryNodeTool <Type>::set_loadState ()
+X3DComposedGeometryNodeTool::set_loadState ()
 {
 	try
 	{
-		const X3DPtr <Inline> & inlineNode = this -> getCoordinateTool () -> getInlineNode ();
+		const auto & inlineNode    = getCoordinateTool () -> getInlineNode ();
+		const auto   activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
 
-		const auto activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
+		coord () .addInterest (activeLineSet -> coord ());
 
-		this -> coord () .addInterest (activeLineSet -> coord ());
-
-		activeLineSet -> coord () = this -> coord ();
+		activeLineSet -> coord () = coord ();
 	}
 	catch (const X3DError & error)
 	{

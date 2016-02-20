@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Billboard :
-	public X3DGroupingNode
+	virtual public X3DGroupingNode
 {
 public:
 

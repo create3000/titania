@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class LoadSensor :
-	public X3DNetworkSensorNode
+	virtual public X3DNetworkSensorNode
 {
 public:
 

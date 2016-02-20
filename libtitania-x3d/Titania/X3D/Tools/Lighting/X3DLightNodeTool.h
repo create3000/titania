@@ -58,12 +58,14 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 
+#include "../../Components/Lighting/X3DLightNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DLightNodeTool :
-	virtual public X3DChildNodeTool <Type>,
+	virtual public X3DLightNode,
+	virtual public X3DChildNodeTool,
 	public X3DBoundedObject
 {
 public:
@@ -73,52 +75,52 @@ public:
 	virtual
 	SFBool &
 	global () final override
-	{ return getNode () -> global (); }
+	{ return getNode <X3DLightNode> () -> global (); }
 
 	virtual
 	const SFBool &
 	global () const final override
-	{ return getNode () -> global (); }
+	{ return getNode <X3DLightNode> () -> global (); }
 
 	virtual
 	SFBool &
 	on () final override
-	{ return getNode () -> on (); }
+	{ return getNode  <X3DLightNode>() -> on (); }
 
 	virtual
 	const SFBool &
 	on () const final override
-	{ return getNode () -> on (); }
+	{ return getNode <X3DLightNode> () -> on (); }
 
 	virtual
 	SFColor &
 	color () final override
-	{ return getNode () -> color (); }
+	{ return getNode <X3DLightNode> () -> color (); }
 
 	virtual
 	const SFColor &
 	color () const final override
-	{ return getNode () -> color (); }
+	{ return getNode <X3DLightNode> () -> color (); }
 
 	virtual
 	SFFloat &
 	intensity () final override
-	{ return getNode () -> intensity (); }
+	{ return getNode <X3DLightNode> () -> intensity (); }
 
 	virtual
 	const SFFloat &
 	intensity () const final override
-	{ return getNode () -> intensity (); }
+	{ return getNode <X3DLightNode> () -> intensity (); }
 
 	virtual
 	SFFloat &
 	ambientIntensity () final override
-	{ return getNode () -> ambientIntensity (); }
+	{ return getNode <X3DLightNode> () -> ambientIntensity (); }
 
 	virtual
 	const SFFloat &
 	ambientIntensity () const final override
-	{ return getNode () -> ambientIntensity (); }
+	{ return getNode <X3DLightNode> () -> ambientIntensity (); }
 
 	///  @name Operations
 	
@@ -130,17 +132,17 @@ public:
 	virtual
 	void
 	push () final override
-	{ return getNode () -> push (); }
+	{ return getNode <X3DLightNode> () -> push (); }
 
 	virtual
 	void
 	pop () final override
-	{ return getNode () -> pop (); }
+	{ return getNode  <X3DLightNode>() -> pop (); }
 
 	virtual
 	void
-	draw (const GLenum lightId) final override
-	{ return getNode () -> draw (lightId); }
+	draw (const GLenum lightId) override
+	{ return getNode <X3DLightNode> () -> draw (lightId); }
 
 	virtual
 	void
@@ -148,7 +150,7 @@ public:
 
 	virtual
 	void
-	addTool () final override;
+	addTool () override;
 
 	virtual
 	void
@@ -161,7 +163,7 @@ public:
 	dispose () override
 	{
 		X3DBoundedObject::dispose ();
-		X3DChildNodeTool <Type>::dispose ();
+		X3DChildNodeTool::dispose ();
 		
 		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
 	}
@@ -169,17 +171,12 @@ public:
 
 protected:
 
-	using X3DChildNodeTool <Type>::addType;
-	using X3DChildNodeTool <Type>::getNode;
-	using X3DChildNodeTool <Type>::getInlineNode;
-	using X3DChildNodeTool <Type>::getToolNode;
-	using X3DChildNodeTool <Type>::requestAsyncLoad;
-
 	///  @name Construction
 
 	X3DLightNodeTool () :
-		X3DChildNodeTool <Type> (),
-		       X3DBoundedObject ()
+		    X3DLightNode (),
+		X3DChildNodeTool (),
+		X3DBoundedObject ()
 	{
 		addType (X3DConstants::X3DLightNodeTool);
 	
@@ -188,7 +185,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 	virtual
 	void
@@ -196,31 +193,31 @@ protected:
 
 };
 
-template <class Type>
+inline
 void
-X3DLightNodeTool <Type>::initialize ()
+X3DLightNodeTool::initialize ()
 {
-	X3DChildNodeTool <Type>::initialize ();
+	X3DChildNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
 	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
 }
 
-template <class Type>
+inline
 void
-X3DLightNodeTool <Type>::realize ()
+X3DLightNodeTool::realize ()
 {
 	try
 	{
-		getToolNode () -> setField <SFNode> ("light", getNode ());
+		getToolNode () -> setField <SFNode> ("light", getNode <X3DLightNode> ());
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DLightNodeTool <Type>::addTool ()
+X3DLightNodeTool::addTool ()
 {
 	try
 	{
@@ -230,12 +227,12 @@ X3DLightNodeTool <Type>::addTool ()
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DLightNodeTool <Type>::removeTool (const bool really)
+X3DLightNodeTool::removeTool (const bool really)
 {
 	if (really)
-		X3DChildNodeTool <Type>::removeTool ();
+		X3DChildNodeTool::removeTool ();
 
 	else
 	{
@@ -248,11 +245,11 @@ X3DLightNodeTool <Type>::removeTool (const bool really)
 	}
 }
 
-template <class Type>
+inline
 void
-X3DLightNodeTool <Type>::traverse (const TraverseType type)
+X3DLightNodeTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <X3DLightNode> () -> traverse (type);
 
 	// Tool
 

@@ -56,45 +56,45 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 
+#include "../../Components/Grouping/X3DBoundedObject.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DBoundedObjectTool :
-	virtual public X3DBaseTool <Type>
+	virtual public X3DBoundedObject,
+	virtual public X3DBaseTool
 {
 public:
-
-	using X3DBaseTool <Type>::getBrowser;
 
 	///  @name Fields
 
 	virtual
 	SFVec3f &
 	bboxCenter () final override
-	{ return getNode () -> bboxCenter (); }
+	{ return getNode <X3DBoundedObject> () -> bboxCenter (); }
 
 	virtual
 	const SFVec3f &
 	bboxCenter () const final override
-	{ return getNode () -> bboxCenter (); }
+	{ return getNode <X3DBoundedObject> () -> bboxCenter (); }
 
 	virtual
 	SFVec3f &
 	bboxSize () final override
-	{ return getNode () -> bboxSize (); }
+	{ return getNode <X3DBoundedObject> () -> bboxSize (); }
 
 	virtual
 	const SFVec3f &
 	bboxSize () const final override
-	{ return getNode () -> bboxSize (); }
+	{ return getNode <X3DBoundedObject> () -> bboxSize (); }
 
 	///  @name Operatations
 
 	virtual
 	Box3d
-	getBBox () const final override
-	{ return getNode () -> getBBox (); }
+	getBBox () const override
+	{ return getNode <X3DBoundedObject> () -> getBBox (); }
 
 	virtual
 	void
@@ -109,12 +109,6 @@ public:
 
 
 protected:
-
-	using X3DBaseTool <Type>::addType;
-	using X3DBaseTool <Type>::getModelViewMatrix;
-	using X3DBaseTool <Type>::getNode;
-	using X3DToolObject::getToolNode;
-	using X3DToolObject::requestAsyncLoad;
 
 	///  @name Construction
 
@@ -164,26 +158,27 @@ private:
 
 };
 
-template <class Type>
-X3DBoundedObjectTool <Type>::X3DBoundedObjectTool (const Color3f & color) :
-	X3DBaseTool <Type> (),
-	          linetype (3),
-	     displayCenter (false),
-	             color (color)
+inline
+X3DBoundedObjectTool::X3DBoundedObjectTool (const Color3f & color) :
+	X3DBoundedObject (),
+	     X3DBaseTool (),
+	        linetype (3),
+	   displayCenter (false),
+	           color (color)
 {
 	addType (X3DConstants::X3DBoundedObjectTool);
 }
 
-template <class Type>
+inline
 void
-X3DBoundedObjectTool <Type>::initialize ()
+X3DBoundedObjectTool::initialize ()
 {
 	requestAsyncLoad ({ get_tool ("BoundingBox.x3dv") .str () });
 }
 
-template <class Type>
+inline
 void
-X3DBoundedObjectTool <Type>::realize ()
+X3DBoundedObjectTool::realize ()
 {
 	try
 	{
@@ -197,11 +192,11 @@ X3DBoundedObjectTool <Type>::realize ()
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DBoundedObjectTool <Type>::reshape ()
+X3DBoundedObjectTool::reshape ()
 {
-	Box3d bbox = getNode () -> getBBox ();
+	Box3d bbox = getNode <X3DBoundedObject> () -> getBBox ();
 	
 	try
 	{
@@ -230,11 +225,11 @@ X3DBoundedObjectTool <Type>::reshape ()
 	}
 }
 
-template <class Type>
+inline
 void
-X3DBoundedObjectTool <Type>::traverse (const TraverseType type)
+X3DBoundedObjectTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <X3DBoundedObject> () -> traverse (type);
 
 	// Tool
 

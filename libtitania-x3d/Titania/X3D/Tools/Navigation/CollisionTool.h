@@ -60,8 +60,9 @@ namespace titania {
 namespace X3D {
 
 class CollisionTool :
-	public X3DGroupingNodeTool <Collision>,
-	public X3DSensorNodeTool <Collision>
+	virtual public Collision,
+	public X3DGroupingNodeTool,
+	public X3DSensorNodeTool
 {
 public:
 
@@ -74,28 +75,54 @@ public:
 	virtual
 	SFTime &
 	collideTime () final override
-	{ return getNode () -> collideTime (); }
+	{ return getNode <Collision> () -> collideTime (); }
 
 	virtual
 	const SFTime &
 	collideTime () const final override
-	{ return getNode () -> collideTime (); }
+	{ return getNode <Collision> () -> collideTime (); }
 
 	virtual
 	SFNode &
 	proxy () final override
-	{ return getNode () -> proxy (); }
+	{ return getNode <Collision> () -> proxy (); }
 
 	virtual
 	const SFNode &
 	proxy () const final override
-	{ return getNode () -> proxy (); }
+	{ return getNode <Collision> () -> proxy (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DGroupingNodeTool::dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
+
 
 private:
-
-	using X3DGroupingNodeTool <Collision>::addType;
-	using X3DGroupingNodeTool <Collision>::getNode;
-	using X3DGroupingNodeTool <Collision>::getToolNode;
 
 	///  @name Construction
 

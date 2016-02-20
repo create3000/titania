@@ -60,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 class SwitchTool :
-	public X3DGroupingNodeTool <Switch>
+	virtual public Switch,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 	
 	SwitchTool (Switch* const node) :
-		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <Switch> (node),
-		X3DGroupingNodeTool <Switch> (ToolColors::YELLOW)
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		             Switch (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::YELLOW)
 	{
 		addType (X3DConstants::SwitchTool);
 	}
@@ -79,22 +81,50 @@ public:
 	virtual
 	SFInt32 &
 	whichChoice () final override
-	{ return getNode () -> whichChoice (); }
+	{ return getNode <Switch> () -> whichChoice (); }
 
 	virtual
 	const SFInt32 &
 	whichChoice () const final override
-	{ return getNode () -> whichChoice (); }
+	{ return getNode <Switch> () -> whichChoice (); }
 
 	virtual
 	void
 	setWhichChoice (const int32_t value) final override
-	{ getNode () -> setWhichChoice (value); }
+	{ getNode <Switch> () -> setWhichChoice (value); }
 
 	virtual
 	int32_t
 	getWhichChoice () const final override
-	{ return getNode () -> getWhichChoice (); }
+	{ return getNode <Switch> () -> getWhichChoice (); }
+
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+
+protected:
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
+
 
 };
 

@@ -59,16 +59,18 @@ namespace titania {
 namespace X3D {
 
 class ViewpointTool :
-	public X3DViewpointNodeTool <Viewpoint>
+	virtual public Viewpoint,
+	public X3DViewpointNodeTool
 {
 public:
 
 	///  @name Construction
 
 	ViewpointTool (Viewpoint* const node) :
-		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		         X3DBaseTool <Viewpoint> (node),
-		X3DViewpointNodeTool <Viewpoint> ()
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           Viewpoint (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		X3DViewpointNodeTool ()
 	{
 		addType (X3DConstants::ViewpointTool);
 	}
@@ -78,32 +80,39 @@ public:
 	virtual
 	SFVec3f &
 	position () final override
-	{ return getNode () -> position (); }
+	{ return getNode <Viewpoint> () -> position (); }
 
 	virtual
 	const SFVec3f &
 	position () const final override
-	{ return getNode () -> position (); }
+	{ return getNode <Viewpoint> () -> position (); }
 
 	virtual
 	SFVec3f &
 	centerOfRotation () final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <Viewpoint> () -> centerOfRotation (); }
 
 	virtual
 	const SFVec3f &
 	centerOfRotation () const final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <Viewpoint> () -> centerOfRotation (); }
 
 	virtual
 	SFFloat &
 	fieldOfView () final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <Viewpoint> () -> fieldOfView (); }
 
 	virtual
 	const SFFloat &
 	fieldOfView () const final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <Viewpoint> () -> fieldOfView (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DViewpointNodeTool::addTool (); }
 
 };
 

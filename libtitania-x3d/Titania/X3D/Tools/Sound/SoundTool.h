@@ -63,7 +63,8 @@ namespace titania {
 namespace X3D {
 
 class SoundTool :
-	virtual public X3DSoundNodeTool <Sound>
+	virtual public Sound,
+	public X3DSoundNodeTool
 {
 public:
 
@@ -76,108 +77,108 @@ public:
 	virtual
 	SFFloat &
 	intensity () final override
-	{ return getNode () -> intensity (); }
+	{ return getNode <Sound> () -> intensity (); }
 
 	virtual
 	const SFFloat &
 	intensity () const final override
-	{ return getNode () -> intensity (); }
+	{ return getNode <Sound> () -> intensity (); }
 
 	virtual
 	SFBool &
 	spatialize () final override
-	{ return getNode () -> spatialize (); }
+	{ return getNode <Sound> () -> spatialize (); }
 
 	virtual
 	const SFBool &
 	spatialize () const final override
-	{ return getNode () -> spatialize (); }
+	{ return getNode <Sound> () -> spatialize (); }
 
 	virtual
 	SFVec3f &
 	location () final override
-	{ return getNode () -> location (); }
+	{ return getNode <Sound> () -> location (); }
 
 	virtual
 	const SFVec3f &
 	location () const final override
-	{ return getNode () -> location (); }
+	{ return getNode <Sound> () -> location (); }
 
 	virtual
 	SFVec3f &
 	direction () final override
-	{ return getNode () -> direction (); }
+	{ return getNode <Sound> () -> direction (); }
 
 	virtual
 	const SFVec3f &
 	direction () const final override
-	{ return getNode () -> direction (); }
+	{ return getNode <Sound> () -> direction (); }
 
 	virtual
 	SFFloat &
 	minBack () final override
-	{ return getNode () -> minBack (); }
+	{ return getNode <Sound> () -> minBack (); }
 
 	virtual
 	const SFFloat &
 	minBack () const final override
-	{ return getNode () -> minBack (); }
+	{ return getNode <Sound> () -> minBack (); }
 
 	virtual
 	SFFloat &
 	minFront () final override
-	{ return getNode () -> minFront (); }
+	{ return getNode <Sound> () -> minFront (); }
 
 	virtual
 	const SFFloat &
 	minFront () const final override
-	{ return getNode () -> minFront (); }
+	{ return getNode <Sound> () -> minFront (); }
 
 	virtual
 	SFFloat &
 	maxBack () final override
-	{ return getNode () -> maxBack (); }
+	{ return getNode <Sound> () -> maxBack (); }
 
 	virtual
 	const SFFloat &
 	maxBack () const final override
-	{ return getNode () -> maxBack (); }
+	{ return getNode <Sound> () -> maxBack (); }
 
 	virtual
 	SFFloat &
 	maxFront () final override
-	{ return getNode () -> maxFront (); }
+	{ return getNode <Sound> () -> maxFront (); }
 
 	virtual
 	const SFFloat &
 	maxFront () const final override
-	{ return getNode () -> maxFront (); }
+	{ return getNode <Sound> () -> maxFront (); }
 
 	virtual
 	SFFloat &
 	priority () final override
-	{ return getNode () -> priority (); }
+	{ return getNode <Sound> () -> priority (); }
 
 	virtual
 	const SFFloat &
 	priority () const final override
-	{ return getNode () -> priority (); }
+	{ return getNode <Sound> () -> priority (); }
 
 	virtual
 	SFNode &
 	source () final override
-	{ return getNode () -> source (); }
+	{ return getNode <Sound> () -> source (); }
 
 	virtual
 	const SFNode &
 	source () const final override
-	{ return getNode () -> source (); }
+	{ return getNode <Sound> () -> source (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	traverse (const TraverseType type) override;
+	traverse (const TraverseType type) final override;
 
 	virtual
 	void
@@ -202,9 +203,10 @@ protected:
 
 inline
 SoundTool::SoundTool (Sound* const node) :
-	             X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	     X3DBaseTool <Sound> (node),
-	X3DSoundNodeTool <Sound> ()
+	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	           Sound (node -> getExecutionContext ()),
+	     X3DBaseTool (node),
+	X3DSoundNodeTool ()
 {
 	//addType (X3DConstants::SoundTool);
 }
@@ -213,7 +215,7 @@ inline
 void
 SoundTool::initialize ()
 {
-	X3DSoundNodeTool <Sound>::initialize ();
+	X3DSoundNodeTool::initialize ();
 
 	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
 }
@@ -224,7 +226,7 @@ SoundTool::realize ()
 {
 	try
 	{
-		getToolNode () -> setField <SFNode>  ("sound", getNode ());
+		getToolNode () -> setField <SFNode>  ("sound", getNode <Sound> ());
 	}
 	catch (const X3DError & error)
 	{ }
@@ -234,7 +236,7 @@ inline
 void
 SoundTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <Sound> () -> traverse (type);
 
 	X3DToolObject::traverse (type);
 }
@@ -256,7 +258,7 @@ void
 SoundTool::removeTool (const bool really)
 {
 	if (really)
-		X3DSoundNodeTool <Sound>::removeTool ();
+		X3DSoundNodeTool::removeTool ();
 	
 	else
 	{

@@ -64,7 +64,8 @@ class ShapeContainer;
 class CollisionContainer;
 
 class X3DShapeNode :
-	virtual public X3DChildNode, public X3DBoundedObject
+	virtual public X3DChildNode,
+	virtual public X3DBoundedObject
 {
 public:
 

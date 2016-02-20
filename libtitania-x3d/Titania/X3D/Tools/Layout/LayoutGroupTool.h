@@ -60,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 class LayoutGroupTool :
-	public X3DGroupingNodeTool <LayoutGroup>
+	virtual public LayoutGroup,
+	public X3DGroupingNodeTool
 {
 public:
 
 	///  @name Construction
 
 	LayoutGroupTool (LayoutGroup* const node) :
-		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <LayoutGroup> (node),
-		X3DGroupingNodeTool <LayoutGroup> (ToolColors::DARK_GREEN)
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		        LayoutGroup (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::DARK_GREEN)
 	{
 		addType (X3DConstants::LayoutGroupTool);
 	}
@@ -79,43 +81,72 @@ public:
 	virtual
 	SFNode &
 	viewport () final override
-	{ return getNode () -> viewport (); }
+	{ return getNode <LayoutGroup> () -> viewport (); }
 
 	virtual
 	const SFNode &
 	viewport () const final override
-	{ return getNode () -> viewport (); }
+	{ return getNode <LayoutGroup> () -> viewport (); }
 
 	virtual
 	SFNode &
 	layout () final override
-	{ return getNode () -> layout (); }
+	{ return getNode <LayoutGroup> () -> layout (); }
 
 	virtual
 	const SFNode &
 	layout () const final override
-	{ return getNode () -> layout (); }
+	{ return getNode <LayoutGroup> () -> layout (); }
 	
 	///  @name Member access
 
 	virtual
 	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	virtual
+	Box3d
 	getRectangleBBox () const final override
-	{ return getNode () -> getRectangleBBox (); }
+	{ return getNode <LayoutGroup> () -> getRectangleBBox (); }
 
 	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode () -> getMatrix (); }
-
-
-private:
+	{ return getNode <LayoutGroup> () -> getMatrix (); }
 
 	///  @name Operations
 
 	virtual
 	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
 	realize () final override;
+
+	///  @name Operations
 
 	virtual
 	void
@@ -136,14 +167,14 @@ LayoutGroupTool::realize ()
 	catch (const X3DError & error)
 	{ }
 
-	X3DGroupingNodeTool <LayoutGroup>::realize ();
+	X3DGroupingNodeTool::realize ();
 }
 
 inline
 void
 LayoutGroupTool::reshape ()
 {
-	Box3d bbox = getNode () -> getRectangleBBox ();
+	Box3d bbox = getNode <LayoutGroup> () -> getRectangleBBox ();
 	
 	try
 	{
@@ -165,7 +196,7 @@ LayoutGroupTool::reshape ()
 	catch (const X3DError &)
 	{ }
 
-	X3DGroupingNodeTool <LayoutGroup>::reshape ();
+	X3DGroupingNodeTool::reshape ();
 }
 
 } // X3D

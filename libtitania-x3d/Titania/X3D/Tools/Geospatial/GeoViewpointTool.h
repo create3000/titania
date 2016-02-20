@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class GeoViewpointTool :
-	public X3DViewpointNodeTool <GeoViewpoint>,
-	public X3DGeospatialObjectTool <GeoViewpoint>
+	virtual public GeoViewpoint,
+	public X3DViewpointNodeTool,
+	public X3DGeospatialObjectTool
 {
 public:
 
 	///  @name Construction
 
 	GeoViewpointTool (GeoViewpoint* const node) :
-		                           X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		            X3DBaseTool <GeoViewpoint> (node),
-		   X3DViewpointNodeTool <GeoViewpoint> (),
-		X3DGeospatialObjectTool <GeoViewpoint> ()
+		            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           GeoViewpoint (node -> getExecutionContext ()),
+		            X3DBaseTool (node),
+		   X3DViewpointNodeTool (),
+		X3DGeospatialObjectTool ()
 	{
 		addType (X3DConstants::GeoViewpointTool);
 	}
@@ -82,42 +84,51 @@ public:
 	virtual
 	SFVec3d &
 	position () final override
-	{ return getNode () -> position (); }
+	{ return getNode <GeoViewpoint> () -> position (); }
 
 	virtual
 	const SFVec3d &
 	position () const final override
-	{ return getNode () -> position (); }
+	{ return getNode <GeoViewpoint> () -> position (); }
 
 	virtual
 	SFVec3d &
 	centerOfRotation () final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <GeoViewpoint> () -> centerOfRotation (); }
 
 	virtual
 	const SFVec3d &
 	centerOfRotation () const final override
-	{ return getNode () -> centerOfRotation (); }
+	{ return getNode <GeoViewpoint> () -> centerOfRotation (); }
 
 	virtual
 	SFFloat &
 	fieldOfView () final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <GeoViewpoint> () -> fieldOfView (); }
 
 	virtual
 	const SFFloat &
 	fieldOfView () const final override
-	{ return getNode () -> fieldOfView (); }
+	{ return getNode <GeoViewpoint> () -> fieldOfView (); }
 
 	virtual
 	SFFloat &
 	speedFactor () final override
-	{ return getNode () -> speedFactor (); }
+	{ return getNode <GeoViewpoint> () -> speedFactor (); }
 
 	virtual
 	const SFFloat &
 	speedFactor () const final override
-	{ return getNode () -> speedFactor (); }
+	{ return getNode <GeoViewpoint> () -> speedFactor (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DViewpointNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Operations
 
@@ -125,9 +136,14 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DViewpointNodeTool <GeoViewpoint>::traverse (type);
-		X3DGeospatialObjectTool <GeoViewpoint>::traverse (type);
+		X3DViewpointNodeTool::traverse (type);
+		X3DGeospatialObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DViewpointNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -135,14 +151,11 @@ public:
 	void
 	dispose () final override
 	{
-		X3DGeospatialObjectTool <GeoViewpoint>::dispose ();
-		X3DViewpointNodeTool <GeoViewpoint>::dispose ();
+		X3DGeospatialObjectTool::dispose ();
+		X3DViewpointNodeTool::dispose ();
 	}
 
 private:
-
-	using X3DViewpointNodeTool <GeoViewpoint>::addType;
-	using X3DViewpointNodeTool <GeoViewpoint>::getNode;
 
 	///  @name Destruction
 
@@ -150,8 +163,8 @@ private:
 	void
 	initialize () final override
 	{
-		X3DViewpointNodeTool <GeoViewpoint>::initialize ();
-		X3DGeospatialObjectTool <GeoViewpoint>::initialize ();
+		X3DViewpointNodeTool::initialize ();
+		X3DGeospatialObjectTool::initialize ();
 	}
 
 	virtual
@@ -164,8 +177,8 @@ private:
 			
 			const SFNode & tool = getToolNode ();
 
-			tool -> setField <SFVec3f>    ("translation", getNode () -> getPosition (),    true);
-			tool -> setField <SFRotation> ("rotation",    getNode () -> getOrientation (), true);
+			tool -> setField <SFVec3f>    ("translation", getNode <GeoViewpoint> () -> getPosition (),    true);
+			tool -> setField <SFRotation> ("rotation",    getNode <GeoViewpoint> () -> getOrientation (), true);
 
 			getBrowser () -> processEvents ();
 	      getBrowser () -> beginUpdateForFrame ();

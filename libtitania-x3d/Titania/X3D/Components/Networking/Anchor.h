@@ -60,7 +60,8 @@ namespace X3D {
 class TouchSensor;
 
 class Anchor :
-	public X3DGroupingNode, public X3DUrlObject
+	virtual public X3DGroupingNode,
+	virtual public X3DUrlObject
 {
 public:
 

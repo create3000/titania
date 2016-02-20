@@ -64,7 +64,7 @@ namespace X3D {
 
 class X3DGroupingNode :
 	virtual public X3DChildNode,
-	public X3DBoundedObject
+	virtual public X3DBoundedObject
 {
 public:
 

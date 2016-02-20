@@ -65,7 +65,8 @@ class OrientationInterpolator;
 class TimeSensor;
 
 class X3DViewpointNode :
-	public X3DBindableNode, public X3DViewpointObject
+	virtual public X3DBindableNode,
+	virtual public X3DViewpointObject
 {
 public:
 

@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class Sound :
-	public X3DSoundNode
+	virtual public X3DSoundNode
 {
 public:
 

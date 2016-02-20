@@ -52,26 +52,28 @@
 #define __TITANIA_X3D_TOOLS_PARTICLE_SYSTEMS_PARTICLE_SYSTEM_TOOL_H__
 
 #include "../Shape/X3DShapeNodeTool.h"
+#include "../ToolColors.h"
 
 #include "../../Components/ParticleSystems/ParticleSystem.h"
 #include "../../Components/Rendering/X3DGeometryNode.h"
 #include "../../Components/Shape/Appearance.h"
-#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
 
 class ParticleSystemTool :
-	public X3DShapeNodeTool <ParticleSystem>
+	virtual public ParticleSystem,
+	public X3DShapeNodeTool
 {
 public:
 
 	///  @name Construction
 
 	ParticleSystemTool (ParticleSystem* const node) :
-		                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		     X3DBaseTool <ParticleSystem> (node),
-		X3DShapeNodeTool <ParticleSystem> (ToolColors::ORANGE)
+		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		  ParticleSystem (node -> getExecutionContext ()),
+		     X3DBaseTool (node),
+		X3DShapeNodeTool (ToolColors::ORANGE)
 	{
 		addType (X3DConstants::ParticleSystemTool);
 	}
@@ -80,143 +82,201 @@ public:
 
 	virtual
 	SFBool &
-	enabled ()
-	{ return getNode () -> enabled (); }
+	enabled () final override
+	{ return getNode <ParticleSystem> () -> enabled (); }
 
 	virtual
 	const SFBool &
-	enabled () const
-	{ return getNode () -> enabled (); }
+	enabled () const final override
+	{ return getNode <ParticleSystem> () -> enabled (); }
 
 	virtual
 	SFString &
-	geometryType ()
-	{ return getNode () -> geometryType (); }
+	geometryType () final override
+	{ return getNode <ParticleSystem> () -> geometryType (); }
 
 	virtual
 	const SFString &
-	geometryType () const
-	{ return getNode () -> geometryType (); }
+	geometryType () const final override
+	{ return getNode <ParticleSystem> () -> geometryType (); }
 
 	virtual
 	SFBool &
-	createParticles ()
-	{ return getNode () -> createParticles (); }
+	createParticles () final override
+	{ return getNode <ParticleSystem> () -> createParticles (); }
 
 	virtual
 	const SFBool &
-	createParticles () const
-	{ return getNode () -> createParticles (); }
+	createParticles () const final override
+	{ return getNode <ParticleSystem> () -> createParticles (); }
 
 	virtual
 	SFInt32 &
-	maxParticles ()
-	{ return getNode () -> maxParticles (); }
+	maxParticles () final override
+	{ return getNode <ParticleSystem> () -> maxParticles (); }
 
 	virtual
 	const SFInt32 &
-	maxParticles () const
-	{ return getNode () -> maxParticles (); }
+	maxParticles () const final override
+	{ return getNode <ParticleSystem> () -> maxParticles (); }
 
 	virtual
 	SFFloat &
-	particleLifetime ()
-	{ return getNode () -> particleLifetime (); }
+	particleLifetime () final override
+	{ return getNode <ParticleSystem> () -> particleLifetime (); }
 
 	virtual
 	const SFFloat &
-	particleLifetime () const
-	{ return getNode () -> particleLifetime (); }
+	particleLifetime () const final override
+	{ return getNode <ParticleSystem> () -> particleLifetime (); }
 
 	virtual
 	SFFloat &
 	lifetimeVariation ()
-	{ return getNode () -> lifetimeVariation (); }
+	{ return getNode <ParticleSystem> () -> lifetimeVariation (); }
 
 	virtual
 	const SFFloat &
-	lifetimeVariation () const
-	{ return getNode () -> lifetimeVariation (); }
+	lifetimeVariation () const final override
+	{ return getNode <ParticleSystem> () -> lifetimeVariation (); }
 
 	virtual
 	SFVec2f &
-	particleSize ()
-	{ return getNode () -> particleSize (); }
+	particleSize () final override
+	{ return getNode <ParticleSystem> () -> particleSize (); }
 
 	virtual
 	const SFVec2f &
-	particleSize () const
-	{ return getNode () -> particleSize (); }
+	particleSize () const final override
+	{ return getNode <ParticleSystem> () -> particleSize (); }
 
 	virtual
 	MFFloat &
-	colorKey ()
-	{ return getNode () -> colorKey (); }
+	colorKey () final override
+	{ return getNode <ParticleSystem> () -> colorKey (); }
 
 	virtual
 	const MFFloat &
-	colorKey () const
-	{ return getNode () -> colorKey (); }
+	colorKey () const final override
+	{ return getNode <ParticleSystem> () -> colorKey (); }
 
 	virtual
 	MFFloat &
-	texCoordKey ()
-	{ return getNode () -> texCoordKey (); }
+	texCoordKey () final override
+	{ return getNode <ParticleSystem> () -> texCoordKey (); }
 
 	virtual
 	const MFFloat &
-	texCoordKey () const
-	{ return getNode () -> texCoordKey (); }
+	texCoordKey () const final override
+	{ return getNode <ParticleSystem> () -> texCoordKey (); }
 
 	virtual
 	SFBool &
-	isActive ()
-	{ return getNode () -> isActive (); }
+	isActive () final override
+	{ return getNode <ParticleSystem> () -> isActive (); }
 
 	virtual
 	const SFBool &
-	isActive () const
-	{ return getNode () -> isActive (); }
+	isActive () const final override
+	{ return getNode <ParticleSystem> () -> isActive (); }
 
 	virtual
 	SFNode &
-	emitter ()
-	{ return getNode () -> emitter (); }
+	emitter () final override
+	{ return getNode <ParticleSystem> () -> emitter (); }
 
 	virtual
 	const SFNode &
-	emitter () const
-	{ return getNode () -> emitter (); }
+	emitter () const final override
+	{ return getNode <ParticleSystem> () -> emitter (); }
 
 	virtual
 	SFNode &
-	colorRamp ()
-	{ return getNode () -> colorRamp (); }
+	colorRamp () final override
+	{ return getNode <ParticleSystem> () -> colorRamp (); }
 
 	virtual
 	const SFNode &
-	colorRamp () const
-	{ return getNode () -> colorRamp (); }
+	colorRamp () const final override
+	{ return getNode <ParticleSystem> () -> colorRamp (); }
 
 	virtual
 	SFNode &
-	texCoordRamp ()
-	{ return getNode () -> texCoordRamp (); }
+	texCoordRamp () final override
+	{ return getNode <ParticleSystem> () -> texCoordRamp (); }
 
 	virtual
 	const SFNode &
-	texCoordRamp () const
-	{ return getNode () -> texCoordRamp (); }
+	texCoordRamp () const final override
+	{ return getNode <ParticleSystem> () -> texCoordRamp (); }
 
 	virtual
 	MFNode &
-	physics ()
-	{ return getNode () -> physics (); }
+	physics () final override
+	{ return getNode <ParticleSystem> () -> physics (); }
 
 	virtual
 	const MFNode &
-	physics () const
-	{ return getNode () -> physics (); }
+	physics () const final override
+	{ return getNode <ParticleSystem> () -> physics (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DShapeNodeTool::setExecutionContext (executionContext); }
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DShapeNodeTool::getBBox (); }
+
+	virtual
+	bool
+	isTransparent () const final override
+	{ return X3DShapeNodeTool::isTransparent (); }
+
+	///  @name Operations
+
+	virtual
+	bool
+	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) final override
+	{ return X3DShapeNodeTool::intersects (sphere, clipPlanes); }
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ X3DShapeNodeTool::traverse (type); }
+
+	virtual
+	void
+	collision (const CollisionContainer* const context) final override
+	{ return X3DShapeNodeTool::collision (context); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DShapeNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DShapeNodeTool::dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DShapeNodeTool::initialize (); }
 
 };
 

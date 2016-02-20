@@ -60,8 +60,9 @@ namespace titania {
 namespace X3D {
 
 class TouchGroupTool :
-	public X3DGroupingNodeTool <TouchGroup>,
-	public X3DSensorNodeTool <TouchGroup>
+	virtual public TouchGroup,
+	public X3DGroupingNodeTool,
+	public X3DSensorNodeTool
 {
 public:
 
@@ -69,12 +70,44 @@ public:
 
 	TouchGroupTool (TouchGroup* const);
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override
+	{ return X3DGroupingNodeTool::getBBox (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ return X3DGroupingNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override
+	{ X3DGroupingNodeTool::dispose (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ return X3DGroupingNodeTool::initialize (); }
+
 
 private:
-
-	using X3DGroupingNodeTool <TouchGroup>::addType;
-	using X3DGroupingNodeTool <TouchGroup>::getNode;
-	using X3DGroupingNodeTool <TouchGroup>::getToolNode;
 
 	///  @name Construction
 

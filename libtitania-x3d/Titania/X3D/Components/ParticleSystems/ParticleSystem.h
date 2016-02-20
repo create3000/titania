@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 
 class ParticleSystem :
-	public X3DShapeNode
+	virtual public X3DShapeNode
 {
 public:
 

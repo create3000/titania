@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class ProximitySensor :
-	public X3DEnvironmentalSensorNode
+	virtual public X3DEnvironmentalSensorNode
 {
 public:
 

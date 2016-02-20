@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class GeoLocation :
-	public X3DTransformMatrix4DNode, public X3DGeospatialObject
+	virtual public X3DTransformMatrix4DNode,
+	virtual public X3DGeospatialObject
 {
 public:
 

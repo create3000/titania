@@ -53,12 +53,14 @@
 
 #include "../Core/X3DBaseTool.h"
 
+#include "../../Components/Networking/X3DUrlObject.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DUrlObjectTool :
-	virtual public X3DBaseTool <Type>
+	virtual public X3DUrlObject,
+	virtual public X3DBaseTool
 {
 public:
 
@@ -67,26 +69,35 @@ public:
 	virtual
 	MFString &
 	url () final override
-	{ return getNode () -> url (); }
+	{ return getNode <X3DUrlObject> () -> url (); }
 
 	virtual
 	const MFString &
 	url () const final override
-	{ return getNode () -> url (); }
+	{ return getNode <X3DUrlObject> () -> url (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override
+	{ X3DBaseTool::setExecutionContext (executionContext); }
 
 	///  @name Operations
 
 	virtual
 	void
-	requestImmediateLoad () final override
-	{ return getNode () -> requestImmediateLoad (); }
+	requestImmediateLoad () override
+	{ return getNode <X3DUrlObject> () -> requestImmediateLoad (); }
 
 	///  @name Member access
 
 	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const final override
-	{ return getNode () -> checkLoadState (); }
+	{ return getNode <X3DUrlObject> () -> checkLoadState (); }
 
 	///  @name Destruction
 
@@ -98,13 +109,11 @@ public:
 
 protected:
 
-	using X3DBaseTool <Type>::addType;
-	using X3DBaseTool <Type>::getNode;
-
 	///  @name Construction
 
 	X3DUrlObjectTool () :
-		X3DBaseTool <Type> ()
+		X3DUrlObject (),
+		 X3DBaseTool ()
 	{
 		addType (X3DConstants::X3DUrlObjectTool);
 	}

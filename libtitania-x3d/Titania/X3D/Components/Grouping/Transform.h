@@ -59,7 +59,7 @@ namespace X3D {
 class TransformTool;
 
 class Transform :
-	public X3DTransformNode
+	virtual public X3DTransformNode
 {
 public:
 

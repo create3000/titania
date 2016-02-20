@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class TouchSensor :
-	public X3DTouchSensorNode
+	virtual public X3DTouchSensorNode
 {
 public:
 

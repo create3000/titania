@@ -60,16 +60,18 @@ namespace titania {
 namespace X3D {
 
 class ProximitySensorTool :
-	public X3DEnvironmentalSensorNodeTool <ProximitySensor>
+	virtual public ProximitySensor,
+	public X3DEnvironmentalSensorNodeTool
 {
 public:
 
 	///  @name Construction
 
 	ProximitySensorTool (ProximitySensor* const node) :
-		                                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                   X3DBaseTool <ProximitySensor> (node),
-		X3DEnvironmentalSensorNodeTool <ProximitySensor> (Color3f (0.5, 0, 1))
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		               ProximitySensor (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		X3DEnvironmentalSensorNodeTool (Color3f (0.5, 0, 1))
 	{
 		addType (X3DConstants::ProximitySensorTool);
 	}
@@ -79,32 +81,54 @@ public:
 	virtual
 	SFVec3f &
 	centerOfRotation_changed () final override
-	{ return getNode () -> centerOfRotation_changed (); }
+	{ return getNode <ProximitySensor> () -> centerOfRotation_changed (); }
 
 	virtual
 	const SFVec3f &
 	centerOfRotation_changed () const final override
-	{ return getNode () -> centerOfRotation_changed (); }
+	{ return getNode <ProximitySensor> () -> centerOfRotation_changed (); }
 
 	virtual
 	SFRotation &
 	orientation_changed () final override
-	{ return getNode () -> orientation_changed (); }
+	{ return getNode <ProximitySensor> () -> orientation_changed (); }
 
 	virtual
 	const SFRotation &
 	orientation_changed () const final override
-	{ return getNode () -> orientation_changed (); }
+	{ return getNode <ProximitySensor> () -> orientation_changed (); }
 
 	virtual
 	SFVec3f &
 	position_changed () final override
-	{ return getNode () -> position_changed (); }
+	{ return getNode <ProximitySensor> () -> position_changed (); }
 
 	virtual
 	const SFVec3f &
 	position_changed () const final override
-	{ return getNode () -> position_changed (); }
+	{ return getNode <ProximitySensor> () -> position_changed (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type) final override
+	{ X3DEnvironmentalSensorNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DEnvironmentalSensorNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DEnvironmentalSensorNodeTool::initialize (); }
 
 };
 

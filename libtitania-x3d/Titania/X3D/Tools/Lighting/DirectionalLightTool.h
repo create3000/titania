@@ -59,16 +59,18 @@ namespace titania {
 namespace X3D {
 
 class DirectionalLightTool :
-	public X3DLightNodeTool <DirectionalLight>
+	virtual public DirectionalLight,
+	public X3DLightNodeTool
 {
 public:
 
 	///  @name Construction
 
 	DirectionalLightTool (DirectionalLight* const node) :
-		                        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		     X3DBaseTool <DirectionalLight> (node),
-		X3DLightNodeTool <DirectionalLight> ()
+		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		DirectionalLight (node -> getExecutionContext ()),
+		     X3DBaseTool (node),
+		X3DLightNodeTool ()
 	{
 		addType (X3DConstants::DirectionalLightTool);
 	}
@@ -78,12 +80,34 @@ public:
 	virtual
 	SFVec3f &
 	direction () final override
-	{ return getNode () -> direction (); }
+	{ return getNode <DirectionalLight> () -> direction (); }
 
 	virtual
 	const SFVec3f &
 	direction () const final override
-	{ return getNode () -> direction (); }
+	{ return getNode <DirectionalLight> () -> direction (); }
+
+	///  @name Operations
+
+	virtual
+	void
+	draw (const GLenum lightId) final override
+	{ return X3DLightNodeTool::draw (lightId); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DLightNodeTool::addTool (); }
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DLightNodeTool::initialize (); }
 
 };
 

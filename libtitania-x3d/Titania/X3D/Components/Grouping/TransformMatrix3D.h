@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class TransformMatrix3D :
-	public X3DTransformMatrix4DNode
+	virtual public X3DTransformMatrix4DNode
 {
 public:
 

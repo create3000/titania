@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class AnchorTool :
-	public X3DGroupingNodeTool <Anchor>,
-	public X3DUrlObjectTool <Anchor>
+	virtual public Anchor,
+	public X3DGroupingNodeTool,
+	public X3DUrlObjectTool
 {
 public:
 
 	///  @name Construction
 
 	AnchorTool (Anchor* const node) :
-		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        X3DBaseTool <Anchor> (node),
-		X3DGroupingNodeTool <Anchor> (ToolColors::LILA),
-		   X3DUrlObjectTool <Anchor> ()
+		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		             Anchor (node -> getExecutionContext ()),
+		        X3DBaseTool (node),
+		X3DGroupingNodeTool (ToolColors::LILA),
+		   X3DUrlObjectTool ()
 	{
 		addType (X3DConstants::AnchorTool);
 	}
@@ -82,32 +84,51 @@ public:
 	virtual
 	SFString &
 	description () final override
-	{ return getNode () -> description (); }
+	{ return getNode <Anchor> () -> description (); }
 
 	virtual
 	const SFString &
 	description () const final override
-	{ return getNode () -> description (); }
+	{ return getNode <Anchor> () -> description (); }
 
 	virtual
 	MFString &
 	parameter () final override
-	{ return getNode () -> parameter (); }
+	{ return getNode <Anchor> () -> parameter (); }
 
 	virtual
 	const MFString &
 	parameter () const final override
-	{ return getNode () -> parameter (); }
+	{ return getNode <Anchor> () -> parameter (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DGroupingNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Operations
 
 	virtual
 	void
+	requestImmediateLoad () final override
+	{ return X3DUrlObjectTool::requestImmediateLoad (); }
+
+	virtual
+	void
 	traverse (const TraverseType type) final override
 	{
-		X3DGroupingNodeTool <Anchor>::traverse (type);
-		X3DUrlObjectTool <Anchor>::traverse (type);
+		X3DGroupingNodeTool::traverse (type);
+		X3DUrlObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -115,15 +136,12 @@ public:
 	void
 	dispose () final override
 	{
-		X3DUrlObjectTool <Anchor>::dispose ();
-		X3DGroupingNodeTool <Anchor>::dispose ();
+		X3DUrlObjectTool::dispose ();
+		X3DGroupingNodeTool::dispose ();
 	}
 
 
 private:
-
-	using X3DGroupingNodeTool <Anchor>::addType;
-	using X3DGroupingNodeTool <Anchor>::getNode;
 
 	///  @name Destruction
 
@@ -131,8 +149,8 @@ private:
 	void
 	initialize () final override
 	{
-		X3DGroupingNodeTool <Anchor>::initialize ();
-		X3DUrlObjectTool <Anchor>::initialize ();
+		X3DGroupingNodeTool::initialize ();
+		X3DUrlObjectTool::initialize ();
 	}
 
 };

@@ -53,21 +53,22 @@
 
 #include "../Core/X3DChildNodeTool.h"
 
+#include "../../Components/Sound/X3DSoundNode.h"
+
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DSoundNodeTool :
-	public X3DChildNodeTool <Type>
+	virtual public X3DSoundNode,
+	public X3DChildNodeTool
 {
 protected:
-
-	using X3DChildNodeTool <Type>::addType;
 
 	///  @name Construction
 
 	X3DSoundNodeTool () :
-		X3DChildNodeTool <Type> ()
+		    X3DSoundNode (),
+		X3DChildNodeTool ()
 	{
 		//addType (X3DConstants::X3DSoundNodeTool);
 	}

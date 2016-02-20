@@ -56,14 +56,16 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+
 #include "../../Components/Grouping/X3DBoundedObject.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
 
 namespace titania {
 namespace X3D {
 
-template <class Type>
 class X3DViewpointNodeTool :
-	public X3DBindableNodeTool <Type>,
+	virtual public X3DViewpointNode,
+	public X3DBindableNodeTool,
 	public X3DBoundedObject
 {
 public:
@@ -73,69 +75,78 @@ public:
 	virtual
 	SFRotation &
 	orientation () final override
-	{ return getNode () -> orientation (); }
+	{ return getNode <X3DViewpointNode> () -> orientation (); }
 
 	virtual
 	const SFRotation &
 	orientation () const final override
-	{ return getNode () -> orientation (); }
+	{ return getNode <X3DViewpointNode> () -> orientation (); }
 
 	virtual
 	SFBool &
 	jump () final override
-	{ return getNode () -> jump (); }
+	{ return getNode <X3DViewpointNode> () -> jump (); }
 
 	virtual
 	const SFBool &
 	jump () const final override
-	{ return getNode () -> jump (); }
+	{ return getNode <X3DViewpointNode> () -> jump (); }
 
 	virtual
 	SFVec3d &
 	positionOffset () final override
-	{ return getNode () -> positionOffset (); }
+	{ return getNode <X3DViewpointNode> () -> positionOffset (); }
 
 	virtual
 	const SFVec3d &
 	positionOffset () const final override
-	{ return getNode () -> positionOffset (); }
+	{ return getNode <X3DViewpointNode> () -> positionOffset (); }
 
 	virtual
 	SFRotation4d &
 	orientationOffset () final override
-	{ return getNode () -> orientationOffset (); }
+	{ return getNode <X3DViewpointNode> () -> orientationOffset (); }
 
 	virtual
 	const SFRotation4d &
 	orientationOffset () const final override
-	{ return getNode () -> orientationOffset (); }
+	{ return getNode <X3DViewpointNode> () -> orientationOffset (); }
 
 	virtual
 	SFVec3d &
 	centerOfRotationOffset () final override
-	{ return getNode () -> centerOfRotationOffset (); }
+	{ return getNode <X3DViewpointNode> () -> centerOfRotationOffset (); }
 
 	virtual
 	const SFVec3d &
 	centerOfRotationOffset () const final override
-	{ return getNode () -> centerOfRotationOffset (); }
+	{ return getNode <X3DViewpointNode> () -> centerOfRotationOffset (); }
 
 	virtual
 	SFDouble &
 	fieldOfViewScale () final override
-	{ return getNode () -> fieldOfViewScale (); }
+	{ return getNode <X3DViewpointNode> () -> fieldOfViewScale (); }
 
 	virtual
 	const SFDouble &
 	fieldOfViewScale () const final override
-	{ return getNode () -> fieldOfViewScale (); }
+	{ return getNode <X3DViewpointNode> () -> fieldOfViewScale (); }
 
-	///  @name Operations
+	///  @name Member access
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override
+	{ X3DBindableNodeTool::setExecutionContext (executionContext); }
 
 	virtual
 	Box3d
 	getBBox () const final override
 	{ return getInlineNode () -> getBBox (); }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -143,7 +154,7 @@ public:
 
 	virtual
 	void
-	addTool () final override;
+	addTool () override;
 
 	virtual
 	void
@@ -156,24 +167,19 @@ public:
 	dispose () override
 	{
 		X3DBoundedObject::dispose ();
-		X3DBindableNodeTool <Type>::dispose ();
+		X3DBindableNodeTool::dispose ();
 
 		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
 	}
 
 protected:
 
-	using X3DBindableNodeTool <Type>::addType;
-	using X3DBindableNodeTool <Type>::getNode;
-	using X3DBindableNodeTool <Type>::getInlineNode;
-	using X3DBindableNodeTool <Type>::getToolNode;
-	using X3DBindableNodeTool <Type>::requestAsyncLoad;
-
 	///  @name Construction
 
 	X3DViewpointNodeTool () :
-		X3DBindableNodeTool <Type> (),
-		          X3DBoundedObject ()
+		   X3DViewpointNode (),
+		X3DBindableNodeTool (),
+		   X3DBoundedObject ()
 	{
 		addType (X3DConstants::X3DViewpointNodeTool);
 
@@ -195,31 +201,31 @@ protected:
 
 };
 
-template <class Type>
+inline
 void
-X3DViewpointNodeTool <Type>::initialize ()
+X3DViewpointNodeTool::initialize ()
 {
-	X3DBindableNodeTool <Type>::initialize ();
+	X3DBindableNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
 	requestAsyncLoad ({ get_tool ("ViewpointTool.x3dv") .str () });
 }
 
-template <class Type>
+inline
 void
-X3DViewpointNodeTool <Type>::realize ()
+X3DViewpointNodeTool::realize ()
 {
 	try
 	{
-		getToolNode () -> setField <SFNode> ("viewpointNode", getNode ());
+		getToolNode () -> setField <SFNode> ("viewpointNode", getNode <X3DViewpointNode> ());
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DViewpointNodeTool <Type>::addTool ()
+X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
@@ -229,12 +235,12 @@ X3DViewpointNodeTool <Type>::addTool ()
 	{ }
 }
 
-template <class Type>
+inline
 void
-X3DViewpointNodeTool <Type>::removeTool (const bool really)
+X3DViewpointNodeTool::removeTool (const bool really)
 {
 	if (really)
-		X3DBindableNodeTool <Type>::removeTool ();
+		X3DBindableNodeTool::removeTool ();
 
 	else
 	{
@@ -247,11 +253,11 @@ X3DViewpointNodeTool <Type>::removeTool (const bool really)
 	}
 }
 
-template <class Type>
+inline
 void
-X3DViewpointNodeTool <Type>::traverse (const TraverseType type)
+X3DViewpointNodeTool::traverse (const TraverseType type)
 {
-	getNode () -> traverse (type);
+	getNode <X3DViewpointNode> () -> traverse (type);
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();

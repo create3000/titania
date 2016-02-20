@@ -57,10 +57,11 @@ namespace titania {
 namespace X3D {
 
 TouchGroupTool::TouchGroupTool (TouchGroup* const node) :
-	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	        X3DBaseTool <TouchGroup> (node),
-	X3DGroupingNodeTool <TouchGroup> (ToolColors::RED),
-	  X3DSensorNodeTool <TouchGroup> ()
+	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	         TouchGroup (node -> getExecutionContext ()),
+	        X3DBaseTool (node),
+	X3DGroupingNodeTool (ToolColors::RED),
+	  X3DSensorNodeTool ()
 {
 	addType (X3DConstants::TouchGroupTool);
 }
@@ -68,11 +69,11 @@ TouchGroupTool::TouchGroupTool (TouchGroup* const node) :
 void
 TouchGroupTool::realize ()
 {
-	X3DGroupingNodeTool <TouchGroup>::realize ();
+	X3DGroupingNodeTool::realize ();
 	
-	getNode () -> enabled () .addInterest (this, &TouchGroupTool::set_enabled);
+	getNode <TouchGroup> () -> enabled () .addInterest (this, &TouchGroupTool::set_enabled);
 
-	set_enabled (getNode () -> enabled ());
+	set_enabled (getNode <TouchGroup> () -> enabled ());
 }
 
 void

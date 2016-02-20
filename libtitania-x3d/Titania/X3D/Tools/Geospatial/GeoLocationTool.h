@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class GeoLocationTool :
-	public X3DTransformMatrix4DNodeTool <GeoLocation>,
-	public X3DGeospatialObjectTool <GeoLocation>
+	virtual public GeoLocation,
+	public X3DTransformMatrix4DNodeTool,
+	public X3DGeospatialObjectTool
 {
 public:
 
 	///  @name Construction
 
 	GeoLocationTool (GeoLocation* const node) :
-		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                 X3DBaseTool <GeoLocation> (node),
-		X3DTransformMatrix4DNodeTool <GeoLocation> (ToolColors::DARK_GREEN),
-		     X3DGeospatialObjectTool <GeoLocation> ()
+		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                 GeoLocation (node -> getExecutionContext ()),
+		                 X3DBaseTool (node),
+		X3DTransformMatrix4DNodeTool (ToolColors::DARK_GREEN),
+		     X3DGeospatialObjectTool ()
 	{
 		addType (X3DConstants::GeoLocationTool);
 	}
@@ -82,12 +84,12 @@ public:
 	virtual
 	SFVec3d &
 	geoCoords () final override
-	{ return getNode () -> geoCoords (); }
+	{ return getNode <GeoLocation> () -> geoCoords (); }
 
 	virtual
 	const SFVec3d &
 	geoCoords () const final override
-	{ return getNode () -> geoCoords (); }
+	{ return getNode <GeoLocation> () -> geoCoords (); }
 
 	///  @name Operations
 
@@ -95,9 +97,14 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DTransformMatrix4DNodeTool <GeoLocation>::traverse (type);
-		X3DGeospatialObjectTool <GeoLocation>::traverse (type);
+		X3DTransformMatrix4DNodeTool::traverse (type);
+		X3DGeospatialObjectTool::traverse (type);
 	}
+
+	virtual
+	void
+	addTool () final override
+	{ X3DTransformMatrix4DNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -105,14 +112,11 @@ public:
 	void
 	dispose () final override
 	{
-		X3DGeospatialObjectTool <GeoLocation>::dispose ();
-		X3DTransformMatrix4DNodeTool <GeoLocation>::dispose ();
+		X3DGeospatialObjectTool::dispose ();
+		X3DTransformMatrix4DNodeTool::dispose ();
 	}
 
 private:
-
-	using X3DTransformMatrix4DNodeTool <GeoLocation>::addType;
-	using X3DTransformMatrix4DNodeTool <GeoLocation>::getNode;
 
 	///  @name Destruction
 
@@ -120,8 +124,8 @@ private:
 	void
 	initialize () final override
 	{
-		X3DTransformMatrix4DNodeTool <GeoLocation>::initialize ();
-		X3DGeospatialObjectTool <GeoLocation>::initialize ();
+		X3DTransformMatrix4DNodeTool::initialize ();
+		X3DGeospatialObjectTool::initialize ();
 	}
 
 };

@@ -61,18 +61,20 @@ namespace titania {
 namespace X3D {
 
 class CADPartTool :
-	public X3DTransformNodeTool <CADPart>,
-	public X3DProductStructureChildNodeTool <CADPart>
+	virtual public CADPart,
+	public X3DTransformNodeTool,
+	public X3DProductStructureChildNodeTool
 {
 public:
 
 	///  @name Construction
 
 	CADPartTool (CADPart* const node) :
-		                               X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                     X3DBaseTool <CADPart> (node),
-		            X3DTransformNodeTool <CADPart> (),
-		X3DProductStructureChildNodeTool <CADPart> ()
+		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                         CADPart (node -> getExecutionContext ()),
+		                     X3DBaseTool (node),
+		            X3DTransformNodeTool (),
+		X3DProductStructureChildNodeTool ()
 	{
 		addType (X3DConstants::CADPartTool);
 	}
@@ -82,25 +84,27 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type) final override
-	{ X3DTransformNodeTool <CADPart>::traverse (type); }
+	{ X3DTransformNodeTool::traverse (type); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DTransformNodeTool::addTool (); }
 
 	/// @name Destruction
 
 	virtual
 	void
 	dispose () final override
-	{ X3DTransformNodeTool <CADPart>::dispose (); }
+	{ X3DTransformNodeTool::dispose (); }
 
 
 private:
 
-	using X3DProductStructureChildNodeTool <CADPart>::addType;
-	using X3DProductStructureChildNodeTool <CADPart>::getNode;
-
 	virtual
 	void
 	initialize () final override
-	{ X3DTransformNodeTool <CADPart>::initialize (); }
+	{ X3DTransformNodeTool::initialize (); }
 
 };
 

@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class LayoutGroup :
-	public X3DGroupingNode
+	virtual public X3DGroupingNode
 {
 public:
 

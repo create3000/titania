@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class CADAssembly :
-	public X3DGroupingNode, public X3DProductStructureChildNode
+	virtual public X3DGroupingNode,
+	virtual public X3DProductStructureChildNode
 {
 public:
 

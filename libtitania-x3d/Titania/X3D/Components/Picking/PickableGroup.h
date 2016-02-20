@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class PickableGroup :
-	public X3DGroupingNode, public X3DPickableObject
+	virtual public X3DGroupingNode,
+	virtual public X3DPickableObject
 {
 public:
 

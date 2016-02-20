@@ -61,25 +61,38 @@ namespace titania {
 namespace X3D {
 
 class CADAssemblyTool :
-	public X3DGroupingNodeTool <CADAssembly>,
-	public X3DProductStructureChildNodeTool <CADAssembly>
+	virtual public CADAssembly,
+	public X3DGroupingNodeTool,
+	public X3DProductStructureChildNodeTool
 {
 public:
 
 	///  @name Construction
 
 	CADAssemblyTool (CADAssembly* const node) :
-		                                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		                     X3DBaseTool <CADAssembly> (node),
-		             X3DGroupingNodeTool <CADAssembly> (ToolColors::DARK_GREEN),
-		X3DProductStructureChildNodeTool <CADAssembly> ()
+		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                     CADAssembly (node -> getExecutionContext ()),
+		                     X3DBaseTool (node),
+		             X3DGroupingNodeTool (ToolColors::DARK_GREEN),
+		X3DProductStructureChildNodeTool ()
 	{
 		addType (X3DConstants::CADAssemblyTool);
 	}
 
-private:
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
-	using X3DGroupingNodeTool::addType;
+
+protected:
+
+	/// @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{ X3DGroupingNodeTool::initialize (); }
 
 };
 

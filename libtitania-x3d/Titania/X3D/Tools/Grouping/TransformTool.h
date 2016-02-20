@@ -59,19 +59,28 @@ namespace titania {
 namespace X3D {
 
 class TransformTool :
-	public X3DTransformNodeTool <Transform>
+	virtual public Transform,
+	public X3DTransformNodeTool
 {
 public:
 
 	///  @name Construction
 
 	TransformTool (Transform* const node) :
-		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		         X3DBaseTool <Transform> (node),
-		X3DTransformNodeTool <Transform> ()
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           Transform (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		X3DTransformNodeTool ()
 	{
 		addType (X3DConstants::TransformTool);
 	}
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGroupingNodeTool::addTool (); }
 
 };
 

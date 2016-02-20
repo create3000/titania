@@ -63,7 +63,9 @@ namespace X3D {
 class SceneLoader;
 
 class Inline :
-	public X3DChildNode, public X3DBoundedObject, public X3DUrlObject
+	virtual public X3DChildNode,
+	virtual public X3DBoundedObject,
+	virtual public X3DUrlObject
 {
 public:
 
