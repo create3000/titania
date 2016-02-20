@@ -52,21 +52,17 @@
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
 
 #include "../Rendering/X3DComposedGeometryNodeTool.h"
+#include "../Geometry3D/X3DIndexedFaceSetSelectionObject.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 
 namespace titania {
 namespace X3D {
 
-class FaceSelection;
-class PlaneSensor;
-class TouchSensor;
-class CoordinateDouble;
-class IndexedLineSet;
-
 class IndexedFaceSetTool :
 	virtual public IndexedFaceSet,
-	public X3DComposedGeometryNodeTool
+	virtual public X3DComposedGeometryNodeTool,
+	public X3DIndexedFaceSetSelectionObject
 {
 public:
 
@@ -184,96 +180,6 @@ protected:
 
 
 private:
-
-	///  @name Event handler
-
-	void
-	set_loadState ();
-	
-	void
-	set_coord ();
-
-	void
-	set_coord_point ();
-
-	void
-	set_touch_sensor_over (const bool);
-
-	void
-	set_touch_sensor_active (const bool);
-
-	void
-	set_touch_sensor_hitPoint (const Vector3f &);
-
-	void
-	set_selection_ (const MFVec3d &);
-
-	void
-	set_touch_sensor_touchTime ();
-
-	void
-	set_point (const Vector3d &, const bool, const bool, const bool);
-
-	void
-	set_plane_sensor_active (const bool);
-
-	void
-	set_plane_sensor_translation (const Vector3f &);
-
-	void
-	setActiveSelection (const Vector3f &);
-
-	void
-	setActivePoints ();
-
-	void
-	selectPoints (const Vector3d &, const bool, const bool);
-
-	void
-	selectFaces (const Vector3d &, const bool, const bool, const bool);
-
-	void
-	addSelectedPoint (const int32_t);
-	
-	void
-	removeSelectedPoint (const int32_t);
-	
-	void
-	updateSelectedPoints ();
-
-	void
-	addSelectedFace (const size_t);
-
-	void
-	removeSelectedFace (const size_t);
-
-	void
-	updateSelectedFaces ();
-
-	bool
-	isInSelection (const std::vector <size_t> &) const;
-
-	double
-	getDistance (const Vector3d &, const Vector3d &);
-
-	///  @name Members
-
-	X3DPtr <PlaneSensor>        planeSensor;
-	X3DPtr <TouchSensor>        touchSensor;
-	X3DPtr <CoordinateDouble>   activePointCoord;
-	X3DPtr <IndexedLineSet>     activeLineSet;
-	X3DPtr <CoordinateDouble>   selectionCoord;
-	X3DPtr <IndexedFaceSet>     selectedFacesGeometry;
-	X3DPtr <X3DCoordinateNode>  coordNode;
-
-	std::map <int32_t, Vector3d> activePoints;
-	std::vector <size_t>         activeFace;
-
-	X3DPtr <FaceSelection>       selection;
-	std::map <int32_t, Vector3d> selectedPoints;
-	std::set <size_t>            selectedFaces;
-
-	Vector3f translation;
 
 
 };
