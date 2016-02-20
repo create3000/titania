@@ -86,6 +86,15 @@ Tool::initialize ()
 }
 
 void
+Tool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DChildNode::setExecutionContext (executionContext);
+	X3DToolObject::setExecutionContext (executionContext);
+}
+
+void
 Tool::traverse (const TraverseType type)
 {
 	getModelViewMatrix () .push ();

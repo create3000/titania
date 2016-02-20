@@ -61,7 +61,7 @@ namespace X3D {
 class FaceSelection;
 class PlaneSensor;
 class TouchSensor;
-class Coordinate;
+class CoordinateDouble;
 class IndexedLineSet;
 
 class IndexedFaceSetTool :

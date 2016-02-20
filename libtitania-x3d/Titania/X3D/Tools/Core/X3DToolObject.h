@@ -51,15 +51,11 @@
 #ifndef __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_CORE_X3DTOOL_OBJECT_H__
 
-#include "../../Basic/X3DBaseNode.h"
+#include "../../Components/Core/X3DNode.h"
 #include "../../Components/Networking/Inline.h"
-#include "../../Execution/X3DScene.h"
-#include "../../Fields.h"
 
 namespace titania {
 namespace X3D {
-
-class SceneLoader;
 
 class X3DToolObject :
 	virtual public X3DNode

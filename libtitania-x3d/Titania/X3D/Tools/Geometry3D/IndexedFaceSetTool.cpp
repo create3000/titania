@@ -50,8 +50,11 @@
 
 #include "IndexedFaceSetTool.h"
 
+#include "../Rendering/CoordinateTool.h"
+
 #include "../../Browser/Networking/config.h"
 #include "../../Editing/Selection/FaceSelection.h"
+#include "../../Rendering/FrameBuffer.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/NURBS/CoordinateDouble.h"

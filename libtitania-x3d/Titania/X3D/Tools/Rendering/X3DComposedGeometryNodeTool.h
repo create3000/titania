@@ -53,7 +53,6 @@
 
 #include "../Rendering/X3DGeometryNodeTool.h"
 
-#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Rendering/X3DComposedGeometryNode.h"
 
 namespace titania {
@@ -245,53 +244,6 @@ private:
 	Fields fields;
 
 };
-;
-
-inline
-X3DComposedGeometryNodeTool::Fields::Fields () :
-	 paintSelection (new SFBool ())
-{ }
-
-inline
-X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
-	X3DComposedGeometryNode (),
-	    X3DGeometryNodeTool (),
-                    fields ()
-{
-	addType (X3DConstants::X3DComposedGeometryNodeTool);
-
-	paintSelection () .isHidden (true);
-}
-
-inline
-void
-X3DComposedGeometryNodeTool::initialize ()
-{
-	X3DGeometryNodeTool::initialize ();
-
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DComposedGeometryNodeTool::set_loadState);
-
-	set_loadState ();
-}
-
-inline
-void
-X3DComposedGeometryNodeTool::set_loadState ()
-{
-	try
-	{
-		const auto & inlineNode    = getCoordinateTool () -> getInlineNode ();
-		const auto   activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
-
-		coord () .addInterest (activeLineSet -> coord ());
-
-		activeLineSet -> coord () = coord ();
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
 
 } // X3D
 } // titania

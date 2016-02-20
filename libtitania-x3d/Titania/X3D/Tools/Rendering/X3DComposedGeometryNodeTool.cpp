@@ -48,107 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_CORE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_CORE_TOOL_H__
+#include "X3DComposedGeometryNodeTool.h"
 
-#include "../../Components/Core/X3DChildNode.h"
-#include "../Core/X3DToolObject.h"
+#include "../Rendering/CoordinateTool.h"
+
+#include "../../Components/Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
 
-class Tool :
-	public X3DChildNode,
-	public X3DToolObject
+X3DComposedGeometryNodeTool::Fields::Fields () :
+	 paintSelection (new SFBool ())
+{ }
+
+X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
+	X3DComposedGeometryNode (),
+	    X3DGeometryNodeTool (),
+                    fields ()
 {
-public:
+	addType (X3DConstants::X3DComposedGeometryNodeTool);
 
-	///  @name Construction
+	#ifndef DEBUG
+	paintSelection () .isHidden (true);
+	#endif
+}
 
-	Tool (X3DExecutionContext* const);
+void
+X3DComposedGeometryNodeTool::initialize ()
+{
+	X3DGeometryNodeTool::initialize ();
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DComposedGeometryNodeTool::set_loadState);
 
-	///  @name Common members
+	set_loadState ();
+}
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+void
+X3DComposedGeometryNodeTool::set_loadState ()
+{
+	try
+	{
+		const auto & inlineNode    = getCoordinateTool () -> getInlineNode ();
+		const auto   activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+		coord () .addInterest (activeLineSet -> coord ());
 
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
-	///  @name Operations
-
-	void
-	setWithCameraSpaceMatrix (const bool value)
-	{ withCameraSpaceMatrix = value; }
-
-	bool
-	getWithCameraSpaceMatrix () const
-	{ return withCameraSpaceMatrix; }
-
-	const Matrix4d &
-	getTransformationMatrix () const
-	{ return transformationMatrix; }
-
-	virtual
-	void
-	requestAsyncLoad (const MFString & url) final override
-	{ X3DToolObject::requestAsyncLoad (url); }
-
-	virtual
-	void
-	traverse (const TraverseType) final override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	bool     withCameraSpaceMatrix;
-	Matrix4d transformationMatrix;
-
-};
+		activeLineSet -> coord () = coord ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
 } // X3D
 } // titania
-
-#endif
