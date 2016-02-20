@@ -7,7 +7,7 @@ META "created" "Thu, 18 Feb 2016 08:47:54 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SoundTool.x3dv"
-META "modified" "Fri, 19 Feb 2016 03:02:57 GMT"
+META "modified" "Sat, 20 Feb 2016 17:26:00 GMT"
 
 EXTERNPROTO QuadSphere [
   inputOutput    SFInt32 uDimension
@@ -49,9 +49,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -36.1850221308909,
-              34.1948533203579,
-              11.005756941875
+              -36.1850204467773,
+              34.1948547363281,
+              11.0057573318481
             ]
           }
           DEF orientation MetadataDouble {

@@ -53,18 +53,16 @@
 
 #include "../Sound/X3DSoundNodeTool.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
-
 #include "../../Components/Sound/Sound.h"
+#include "../../Components/Grouping/X3DBoundedObject.h"
 
 namespace titania {
 namespace X3D {
 
 class SoundTool :
 	virtual public Sound,
-	public X3DSoundNodeTool
+	public X3DSoundNodeTool,
+	public X3DBoundedObject
 {
 public:
 
@@ -174,6 +172,12 @@ public:
 	source () const final override
 	{ return getNode <Sound> () -> source (); }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override;
+
 	///  @name Operations
 
 	virtual
@@ -188,8 +192,16 @@ public:
 	void
 	removeTool (const bool) final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 protected:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -200,76 +212,6 @@ protected:
 	realize () final override;
 
 };
-
-inline
-SoundTool::SoundTool (Sound* const node) :
-	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	           Sound (node -> getExecutionContext ()),
-	     X3DBaseTool (node),
-	X3DSoundNodeTool ()
-{
-	//addType (X3DConstants::SoundTool);
-}
-
-inline
-void
-SoundTool::initialize ()
-{
-	X3DSoundNodeTool::initialize ();
-
-	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
-}
-
-inline
-void
-SoundTool::realize ()
-{
-	try
-	{
-		getToolNode () -> setField <SFNode>  ("sound", getNode <Sound> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-inline
-void
-SoundTool::traverse (const TraverseType type)
-{
-	getNode <Sound> () -> traverse (type);
-
-	X3DToolObject::traverse (type);
-}
-
-inline
-void
-SoundTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (this));
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-inline
-void
-SoundTool::removeTool (const bool really)
-{
-	if (really)
-		X3DSoundNodeTool::removeTool ();
-	
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
 
 } // X3D
 } // titania

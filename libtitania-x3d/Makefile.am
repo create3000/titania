@@ -534,6 +534,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DGeometricPropertyNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
+	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \

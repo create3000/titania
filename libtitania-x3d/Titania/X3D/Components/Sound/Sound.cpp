@@ -156,8 +156,8 @@ Sound::traverse (const TraverseType type)
 
 			else
 			{
-				const float d1 = maxRadius - maxDistance;
-				const float d2 = maxRadius - minRadius;
+				const auto d1 = maxRadius - maxDistance;
+				const auto d2 = maxRadius - minRadius;
 
 				sourceNode -> setVolume (intensity () * (d1 / d2));
 			}
@@ -166,7 +166,9 @@ Sound::traverse (const TraverseType type)
 			sourceNode -> setVolume (0);
 	}
 	catch (const std::domain_error &)
-	{ }
+	{
+		sourceNode -> setVolume (0);
+	}
 }
 
 /*
@@ -180,19 +182,19 @@ void
 Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
 throw (std::domain_error)
 {
-	const float a = (back + front) / 2;
-	const float e = a - back;
-	const float b = std::sqrt (a * a - e * e);
+	const auto a = (back + front) / 2;
+	const auto e = a - back;
+	const auto b = std::sqrt (a * a - e * e);
 
-	Matrix4d transformationMatrix = getModelViewMatrix () .get ();
+	auto modelViewMatrix  = getModelViewMatrix () .get ();
 
-	transformationMatrix .translate (location () .getValue ());
-	transformationMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
+	modelViewMatrix .translate (location () .getValue ());
+	modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));
 
-	transformationMatrix .translate (Vector3d (0, 0, e));
-	transformationMatrix .scale (Vector3d (1, 1, a / b));
+	modelViewMatrix .translate (Vector3d (0, 0, e));
+	modelViewMatrix .scale (Vector3d (1, 1, a / b));
 
-	const Vector3d viewer = inverse (transformationMatrix) .origin ();
+	const auto viewer = inverse (modelViewMatrix) .origin ();
 
 	radius   = b;
 	distance = abs (viewer);

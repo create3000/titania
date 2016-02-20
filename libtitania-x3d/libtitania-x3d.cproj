@@ -1316,6 +1316,7 @@
     <Compile Include="Titania\X3D\Browser\ContextLock.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Sound\SoundTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
