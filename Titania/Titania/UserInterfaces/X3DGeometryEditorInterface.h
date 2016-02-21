@@ -187,7 +187,7 @@ public:
 
 	virtual
 	void
-	on_split_point_clicked () = 0;
+	on_split_points_clicked () = 0;
 
 	virtual
 	void

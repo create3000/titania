@@ -245,9 +245,21 @@ FaceSelection::findCoincidentPoints (const Vector3d & hitPoint)
 		coincidentPoints .emplace_back (index .second);
 }
 
+///  Return the indices to the coordIndex to a given point index.
+std::vector <size_t>
+FaceSelection::getPointIndices (const int32_t coordIndex) const
+{
+	std::vector <size_t> indices;
+
+	for (const auto & face : faceIndex .equal_range (coordIndex))
+		indices .emplace_back (face .second .first + face .second .second);
+	
+	return indices;
+}
+
 ///  Finds the nearest face for hitPoint and all adjacent faces.
 void
-FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
+FaceSelection::setAdjacentFaces (const Vector3d & hitPoint /*, const std::vector <size_t> & coincidentPoints */)
 {
 	faces .clear ();
 
@@ -282,19 +294,22 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 		{
 			for (size_t v = 0, size = vertices .size (); v < size; ++ v)
 			{
-				const auto i1       = geometryNode -> coordIndex () [vertices [v == 0 ? vertices .size () - 1 : v - 1]];
-				const auto i2       = geometryNode -> coordIndex () [vertices [v]];
-				const auto i3       = geometryNode -> coordIndex () [vertices [(v + 1) % vertices .size ()]];
-				const auto p1       = coordNode -> get1Point (i1);
-				const auto p2       = coordNode -> get1Point (i2);
-				const auto p3       = coordNode -> get1Point (i3);
-				const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
+			   const auto i0       = vertices [v == 0 ? vertices .size () - 1 : v - 1];
+			   const auto i1       = vertices [v];
+			   const auto i2       = vertices [(v + 1) % vertices .size ()];
+				const auto index0   = geometryNode -> coordIndex () [i0];
+				const auto index1   = geometryNode -> coordIndex () [i1];
+				const auto index2   = geometryNode -> coordIndex () [i2];
+				const auto point0   = coordNode -> get1Point (index0);
+				const auto point1   = coordNode -> get1Point (index1);
+				const auto point2   = coordNode -> get1Point (index2);
+				const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
 	
 				if (distance < minDistance)
 				{
 					minDistance = distance;
 					minIndex    = i;
-					triangle    = { i1, i2, i3 };
+					triangle    = { i0, i1, i2 };
 				}
 			}
 		}
@@ -306,7 +321,7 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint)
 			tessellator .begin_contour ();
 		
 			for (const auto & vertex : vertices)
-				tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), geometryNode -> coordIndex () [vertex]);
+				tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
 		
 			tessellator .end_contour ();
 			tessellator .end_polygon ();
@@ -363,9 +378,9 @@ FaceSelection::Edge
 FaceSelection::getEdge (const std::vector <size_t> & vertices,
                         const Vector3d & hitPoint) const
 {
-	const auto point0 = coordNode -> get1Point (triangle [0]);
-	const auto point1 = coordNode -> get1Point (triangle [1]);
-	const auto point2 = coordNode -> get1Point (triangle [2]);
+	const auto point0 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [0]]);
+	const auto point1 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [1]]);
+	const auto point2 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [2]]);
 
 	const auto line0 = Line3d (point0, point1, math::point_type ());
 	const auto line1 = Line3d (point1, point2, math::point_type ());
@@ -391,13 +406,13 @@ FaceSelection::getEdge (const std::vector <size_t> & vertices,
 
 ///  Returns true if index1 and index2 form a edge in vertices, where the vertices form a face.
 bool
-FaceSelection::isEdge (const std::vector <size_t> & vertices, const int32_t index1, const int32_t index2) const
+FaceSelection::isEdge (const std::vector <size_t> & vertices, const size_t index0, const size_t index1) const
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		if (geometryNode -> coordIndex () [vertices [i]] == index1)
+		if (vertices [i] == index0)
 		{
-			if (geometryNode -> coordIndex () [vertices [(i + 1) % size]] == index2)
+			if (vertices [(i + 1) % size] == index1)
 				return true;
 		}
 	}

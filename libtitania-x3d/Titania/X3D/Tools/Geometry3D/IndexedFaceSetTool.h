@@ -132,6 +132,24 @@ public:
 	coordIndex () const final override
 	{ return getNode <IndexedFaceSet> () -> coordIndex (); }
 
+	///  @name Hidden fields
+
+	SFTime &
+	mergePoints ()
+	{ return *fields .mergePoints; }
+
+	const SFTime &
+	mergePoints () const
+	{ return *fields .mergePoints; }
+
+	SFTime &
+	splitPoints ()
+	{ return *fields .splitPoints; }
+
+	const SFTime &
+	splitPoints () const
+	{ return *fields .splitPoints; }
+
 	///  @name Member access
 
 	virtual
@@ -181,6 +199,25 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_mergePoints ();
+
+	void
+	set_splitPoints ();
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFTime* const mergePoints;
+		SFTime* const splitPoints;
+	};
+
+	Fields fields;
 
 };
 

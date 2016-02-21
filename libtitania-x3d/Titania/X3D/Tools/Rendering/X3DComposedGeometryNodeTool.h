@@ -166,6 +166,8 @@ public:
 	coord () const final override
 	{ return getNode <X3DComposedGeometryNode> () -> coord (); }
 
+	///  @name Hidden fields
+
 	SFBool &
 	paintSelection ()
 	{ return *fields .paintSelection; }

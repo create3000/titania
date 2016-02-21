@@ -89,6 +89,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",       new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection", new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",    new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",    new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",          new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	setup ();
@@ -196,6 +198,8 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")          .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 						coordEditor -> getField <X3D::SFBool>      ("pickable")       .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection") .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
+						coordEditor -> getField <X3D::SFTime>      ("mergePoints")    .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
+						coordEditor -> getField <X3D::SFTime>      ("splitPoints")    .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
 
 						coordTool -> setField <X3D::SFBool>      ("load",           true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",          coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
@@ -477,13 +481,13 @@ GeometryEditor::set_selection_lasso ()
 void
 GeometryEditor::on_merge_points_clicked ()
 {
-	__LOG__ << std::endl;
+	coordEditor -> setField <X3D::SFTime> ("mergePoints", chrono::now ());
 }
 
 void
-GeometryEditor::on_split_point_clicked ()
+GeometryEditor::on_split_points_clicked ()
 {
-	__LOG__ << std::endl;
+	coordEditor -> setField <X3D::SFTime> ("splitPoints", chrono::now ());
 }
 
 void

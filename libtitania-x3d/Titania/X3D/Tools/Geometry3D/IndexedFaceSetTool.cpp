@@ -50,21 +50,34 @@
 
 #include "IndexedFaceSetTool.h"
 
+#include "../../Editing/Selection/FaceSelection.h"
+
 namespace titania {
 namespace X3D {
+
+IndexedFaceSetTool::Fields::Fields () :
+	 mergePoints (new SFTime ()),
+	 splitPoints (new SFTime ())
+{ }
 
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                  IndexedFaceSet (node -> getExecutionContext ()),
 	                     X3DBaseTool (node),
 	     X3DComposedGeometryNodeTool (),
-	X3DIndexedFaceSetSelectionObject ()
+	X3DIndexedFaceSetSelectionObject (),
+	                          fields ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
+
+	mergePoints () .isHidden (true);
+	splitPoints () .isHidden (true);
 
 	addField (inputOnly,   "set_selection",  set_selection ());
 	addField (inputOutput, "pickable",       pickable ());
 	addField (inputOutput, "paintSelection", paintSelection ());
+	addField (inputOutput, "mergePoints",    mergePoints ());
+	addField (inputOutput, "splitPoints",    splitPoints ());
 	addField (inputOutput, "normalTool",     normalTool ());
 	addField (inputOutput, "coordTool",      coordTool ());
 }
@@ -74,6 +87,40 @@ IndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool::initialize ();
 	X3DIndexedFaceSetSelectionObject::initialize ();
+
+	mergePoints () .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
+	splitPoints () .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
+}
+
+void
+IndexedFaceSetTool::set_mergePoints ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+IndexedFaceSetTool::set_splitPoints ()
+{
+	__LOG__ << std::endl;
+
+	for (const auto selectedPoint : getSelectedPoints ())
+	{
+	   const auto & index   = selectedPoint .first;
+	   const auto & point   = selectedPoint .second;
+	   const auto   indices = getFaceSelection () -> getPointIndices (index);
+
+	   if (indices .empty ())
+	      continue;
+
+	   for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+	   {
+	      __LOG__ << index << std::endl;
+
+	      coordIndex () [index] = getCoord () -> getSize ();
+
+	      getCoord () -> set1Point (getCoord () -> getSize (), point);
+	   }
+	}
 }
 
 void

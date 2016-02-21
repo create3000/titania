@@ -81,18 +81,18 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	projectionMatrix (),
 	 modelViewMatrix ()
 {
-	normalTool () = normalToolNode;
-	coordTool  () = coordToolNode;
+	addType (X3DConstants::X3DGeometryNodeTool);
 
 	set_selection () .isHidden (true);
 	pickable ()      .isHidden (true);
 	normalTool ()    .isHidden (true);
 	coordTool  ()    .isHidden (true);
 
-	addType (X3DConstants::X3DGeometryNodeTool);
+	normalTool () = normalToolNode;
+	coordTool  () = coordToolNode;
 
 	addChildren (normalToolNode,
-                        coordToolNode);
+                coordToolNode);
 }
 
 void

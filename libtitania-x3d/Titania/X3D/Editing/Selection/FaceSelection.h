@@ -70,7 +70,7 @@ public:
 	using Face       = std::pair <size_t, size_t>;
 	using FaceIndex  = std::multimap <int32_t, Face>;
 	using Faces      = std::vector <Face>;
-	using Triangle   = std::vector <int32_t>;
+	using Triangle   = std::vector <size_t>;
 
 	struct Edge
 	{
@@ -127,6 +127,9 @@ public:
 	void
 	findCoincidentPoints (const Vector3d &);
 
+	std::vector <size_t>
+	getPointIndices (const int32_t) const;
+
 	void
 	setAdjacentFaces (const Vector3d &);
 
@@ -152,7 +155,7 @@ public:
 	getEdge (const std::vector <size_t> &, const Vector3d &) const;
 
 	bool
-	isEdge (const std::vector <size_t> &, const int32_t, const int32_t) const;
+	isEdge (const std::vector <size_t> &, const size_t, const size_t) const;
 
 	///  @name Destruction
 

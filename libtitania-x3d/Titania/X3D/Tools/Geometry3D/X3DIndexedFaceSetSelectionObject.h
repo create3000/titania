@@ -68,6 +68,16 @@ class X3DIndexedFaceSetSelectionObject :
 {
 public:
 
+	///  @name Fields
+
+	virtual
+	SFBool &
+	convex () = 0;
+
+	virtual
+	const SFBool &
+	convex () const = 0;
+
 	virtual
 	MFInt32 &
 	coordIndex () = 0;
@@ -95,6 +105,20 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Member access
+
+	const X3DPtr <FaceSelection> &
+	getFaceSelection () const
+	{ return selection; }
+
+	int32_t
+	getMasterPoint () const
+	{ return masterPoint; }
+
+	const std::map <int32_t, Vector3d> &
+	getSelectedPoints () const
+	{ return selectedPoints; }
 
 
 private:
@@ -156,6 +180,15 @@ private:
 	updateSelectedPoints ();
 
 	void
+	addSelectedEdges (const std::vector <size_t> &);
+
+	void
+	removeSelectedEdges (const std::vector <size_t> &);
+
+	void
+	updateSelectedEdges ();
+
+	void
 	addSelectedFace (const size_t);
 
 	void
@@ -172,22 +205,29 @@ private:
 
 	///  @name Members
 
+	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+
+	///  @name Members
+
 	X3DPtr <PlaneSensor>       planeSensor;
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <CoordinateDouble>  activePointCoord;
-	X3DPtr <IndexedLineSet>    activeLineSet;
+	X3DPtr <IndexedLineSet>    activeEdgesGeometry;
 	X3DPtr <CoordinateDouble>  selectionCoord;
+	X3DPtr <IndexedLineSet>    selectedEdgesGeometry;
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
 
-	std::map <int32_t, Vector3d> activePoints;
-	std::vector <size_t>         activeFace;
+	std::map <int32_t, Vector3d> activePoints;   // coord index, point
+	std::vector <size_t>         activeFace;     // indices of vertices to coordIndex array
 
 	X3DPtr <FaceSelection>       selection;
-	std::map <int32_t, Vector3d> selectedPoints;
-	std::set <size_t>            selectedFaces;
+	int32_t                      masterPoint;    // coord index,
+	std::map <int32_t, Vector3d> selectedPoints; // coord index, point
+	SelectedEdges                selectedEdges;  // index to vertex of face to coordIndex array
+	std::set <size_t>            selectedFaces;  // index to first vertex of face to coordIndex array
 
-	Vector3f translation;
+	Vector3d translation;
 
 };
 

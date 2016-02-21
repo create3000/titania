@@ -94,7 +94,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 
 	// Connect object Gtk::Button with id 'SplitPointButton'.
-	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_point_clicked));
+	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_points_clicked));
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.

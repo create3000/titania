@@ -136,7 +136,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Split selected points.</property>
-                    <signal name="clicked" handler="on_split_point_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_split_points_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image8">
                         <property name="visible">True</property>

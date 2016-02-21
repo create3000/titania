@@ -4,7 +4,8 @@ META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sat, 13 Feb 2016 06:43:47 GMT"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
+META "modified" "Sun, 21 Feb 2016 09:25:56 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -37,9 +38,9 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.526414513587952,
-              0.810502231121063,
-              0.2568539083004,
+              -0.526414503855219,
+              0.81050221613591,
+              0.256853903551499,
               1.15459656715393
             ]
           }
@@ -53,17 +54,6 @@ WorldInfo {
             ]
           }
         ]
-      }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF SelectedFacesGeometry IndexedFaceSet {
-            solid FALSE
-          }
-        }
       }
     ]
   }
@@ -96,11 +86,14 @@ Collision {
           DEF SelectedFaces Shape {
             appearance Appearance {
               material Material {
-                diffuseColor 0.792 0.792 0.792
-                transparency 0.5
+                diffuseColor 0 0 0
+                emissiveColor 0.8 0.8 0.8
+                transparency 0.6
               }
             }
-            geometry USE SelectedFacesGeometry
+            geometry DEF SelectedFacesGeometry IndexedFaceSet {
+              solid FALSE
+            }
           }
           DEF ActiveFace Shape {
             appearance Appearance {
@@ -122,52 +115,46 @@ Collision {
               }
             }
             geometry DEF EdgesLineSet LineSet {
-              vertexCount [
-                2,
-                2,
-                2
-              ]
-              coord DEF EdgesCoord CoordinateDouble {
-                point [
-                  -2 0 0,
-                  2 0 0,
-                  0 -2 0,
-                  0 2 0,
-                  0 0 -2,
-                  0 0 2
-                ]
+              coord DEF EdgesCoord CoordinateDouble { }
+            }
+          }
+          DEF SelectedEdges Shape {
+            appearance Appearance {
+              lineProperties DEF _3 LineProperties {
+                linewidthScaleFactor 2
+              }
+              material DEF Material_2 Material {
+                diffuseColor 0 0 0
+                emissiveColor 1 0.75154 0
               }
             }
+            geometry DEF SelectedEdgesGeometry IndexedLineSet { }
           }
           DEF SelectedPoints Shape {
             appearance Appearance {
-              lineProperties DEF _3 LineProperties {
+              lineProperties DEF _4 LineProperties {
                 linewidthScaleFactor 8
               }
-              material USE Material_1
+              material USE Material_2
             }
             geometry PointSet {
               coord DEF SelectionCoord CoordinateDouble { }
             }
           }
-          DEF ActiveLines Shape {
+          DEF ActiveEdges Shape {
             appearance Appearance {
-              lineProperties LineProperties {
-                linewidthScaleFactor 2
-              }
+              lineProperties USE _3
               material USE Material
             }
-            geometry DEF ActiveLineSet IndexedLineSet { }
+            geometry DEF ActiveEdgesGeometry IndexedLineSet { }
           }
-          DEF ActivePoint Transform {
-            children Shape {
-              appearance Appearance {
-                lineProperties USE _3
-                material USE Material
-              }
-              geometry PointSet {
-                coord DEF ActivePointCoord CoordinateDouble { }
-              }
+          DEF ActivePoint Shape {
+            appearance Appearance {
+              lineProperties USE _4
+              material USE Material
+            }
+            geometry PointSet {
+              coord DEF ActivePointCoord CoordinateDouble { }
             }
           }
         ]
@@ -176,17 +163,19 @@ Collision {
   }
 }
 
-ROUTE ActiveLineSet.coord_changed TO SelectedFacesGeometry.set_coord
-ROUTE ActiveLineSet.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
-ROUTE ActiveLineSet.coord_changed TO ActiveFaceGeometry.set_coord
+ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
+ROUTE ActiveEdgesGeometry.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
+ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
+ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
 
+EXPORT ActiveEdgesGeometry
 EXPORT ActiveFaceGeometry
-EXPORT ActiveLineSet
 EXPORT ActivePointCoord
 EXPORT EdgesCoord
 EXPORT EdgesLineSet
 EXPORT Material_1 AS Material
 EXPORT PlaneSensor
+EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord
 EXPORT SelectionShape

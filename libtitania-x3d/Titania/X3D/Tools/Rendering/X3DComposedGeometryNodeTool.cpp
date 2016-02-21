@@ -66,9 +66,9 @@ X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
 	    X3DGeometryNodeTool (),
                     fields ()
 {
-	paintSelection () .isHidden (true);
-
 	addType (X3DConstants::X3DComposedGeometryNodeTool);
+
+	paintSelection () .isHidden (true);
 }
 
 void
@@ -86,12 +86,12 @@ X3DComposedGeometryNodeTool::set_loadState ()
 {
 	try
 	{
-		const auto & inlineNode    = getCoordinateTool () -> getInlineNode ();
-		const auto   activeLineSet = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveLineSet");
+		const auto & inlineNode          = getCoordinateTool () -> getInlineNode ();
+		const auto   activeEdgesGeometry = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveEdgesGeometry");
 
-		coord () .addInterest (activeLineSet -> coord ());
+		coord () .addInterest (activeEdgesGeometry -> coord ());
 
-		activeLineSet -> coord () = coord ();
+		activeEdgesGeometry -> coord () = coord ();
 	}
 	catch (const X3DError & error)
 	{
