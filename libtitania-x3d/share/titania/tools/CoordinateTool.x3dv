@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 21 Feb 2016 09:25:56 GMT"
+META "modified" "Sun, 21 Feb 2016 11:26:02 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -55,6 +55,18 @@ WorldInfo {
           }
         ]
       }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF children MetadataSet {
+          name "children"
+          reference "http://titania.create3000.de"
+          value DEF Material Material {
+            diffuseColor 0 0 0
+            emissiveColor 0.5 0.0792565 0
+          }
+        }
+      }
     ]
   }
 }
@@ -97,7 +109,7 @@ Collision {
           }
           DEF ActiveFace Shape {
             appearance Appearance {
-              material DEF Material Material {
+              material DEF Material_1 Material {
                 diffuseColor 0 0 0
                 emissiveColor 0.5 0.0792565 0
                 transparency 0.635417
@@ -109,7 +121,7 @@ Collision {
           }
           DEF Edges Shape {
             appearance Appearance {
-              material DEF Material_1 Material {
+              material DEF Material_2 Material {
                 diffuseColor 0 0 0
                 emissiveColor 0.702794 0.852152 1
               }
@@ -123,7 +135,7 @@ Collision {
               lineProperties DEF _3 LineProperties {
                 linewidthScaleFactor 2
               }
-              material DEF Material_2 Material {
+              material DEF Material_3 Material {
                 diffuseColor 0 0 0
                 emissiveColor 1 0.75154 0
               }
@@ -135,7 +147,7 @@ Collision {
               lineProperties DEF _4 LineProperties {
                 linewidthScaleFactor 8
               }
-              material USE Material_2
+              material USE Material_3
             }
             geometry PointSet {
               coord DEF SelectionCoord CoordinateDouble { }
@@ -173,7 +185,7 @@ EXPORT ActiveFaceGeometry
 EXPORT ActivePointCoord
 EXPORT EdgesCoord
 EXPORT EdgesLineSet
-EXPORT Material_1 AS Material
+EXPORT Material_2 AS Material
 EXPORT PlaneSensor
 EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry

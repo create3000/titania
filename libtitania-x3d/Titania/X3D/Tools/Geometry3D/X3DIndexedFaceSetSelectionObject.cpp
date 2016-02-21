@@ -302,7 +302,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 		// In this order.
 		selection -> setCoincidentPoints (activePoint .second);
 		selectPoints (activePoint .second, not first or paintSelection (), false);
-		selectFaces  (activePoint .second, not first or paintSelection (), false, false);
+		selectFaces  (activePoint .second, not first or paintSelection (), false, activePoints .size () < 3 and not paintSelection ());
 		first = false;
 	}
 
