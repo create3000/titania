@@ -147,6 +147,7 @@
     <None Include="Makefile.in" />
     <None Include="libtitania-standard.cproj" />
     <None Include="Titania\Math\Geometry\CollisionSphere3.h" />
+    <None Include="Titania\Math\Geometry\LineSegment3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -209,6 +210,7 @@
     <Compile Include="Titania\InputOutput\InverseSequence.cpp" />
     <Compile Include="Titania\String\dtoa.cpp" />
     <Compile Include="Titania\Math\Geometry\CollisionSphere3.cpp" />
+    <Compile Include="Titania\Math\Geometry\LineSegment3.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

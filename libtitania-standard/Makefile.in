@@ -150,7 +150,9 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Geometry/Box2.lo Titania/Math/Geometry/Box3.lo \
 	Titania/Math/Geometry/CollisionSphere3.lo \
 	Titania/Math/Geometry/Cylinder3.lo \
-	Titania/Math/Geometry/Line3.lo Titania/Math/Geometry/Plane3.lo \
+	Titania/Math/Geometry/Line3.lo \
+	Titania/Math/Geometry/LineSegment3.lo \
+	Titania/Math/Geometry/Plane3.lo \
 	Titania/Math/Geometry/Sphere3.lo \
 	Titania/Math/Geometry/Spheroid3.lo Titania/Math/Image.lo \
 	Titania/Math/Numbers/Color3.lo Titania/Math/Numbers/Color4.lo \
@@ -439,6 +441,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/CollisionSphere3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \
 	Titania/Math/Geometry/Line3.cpp \
+	Titania/Math/Geometry/LineSegment3.cpp \
 	Titania/Math/Geometry/Plane3.cpp \
 	Titania/Math/Geometry/Sphere3.cpp \
 	Titania/Math/Geometry/Spheroid3.cpp \
@@ -647,6 +650,9 @@ Titania/Math/Geometry/Cylinder3.lo:  \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/Line3.lo: Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Geometry/LineSegment3.lo:  \
+	Titania/Math/Geometry/$(am__dirstamp) \
+	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/Plane3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
@@ -813,6 +819,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/CollisionSphere3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Sphere3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Spheroid3.Plo@am__quote@

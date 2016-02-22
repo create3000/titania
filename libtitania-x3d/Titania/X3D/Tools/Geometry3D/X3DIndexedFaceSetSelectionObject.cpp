@@ -333,7 +333,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint,
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 		{
 			const auto edge     = selection -> getEdge (hitPoint, vertices);
-			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
+			const auto distance = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
 
 			if (distance > SELECTION_DISTANCE)
 			{
@@ -348,8 +348,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint,
 			{
 				// Edge
 
-				activePoints .emplace (coordIndex () [edge .index0], edge .point0);
-				activePoints .emplace (coordIndex () [edge .index1], edge .point1);
+				activePoints .emplace (coordIndex () [edge .index0], edge .segment .point0 ());
+				activePoints .emplace (coordIndex () [edge .index1], edge .segment .point1 ());
 			}
 		}
 		else

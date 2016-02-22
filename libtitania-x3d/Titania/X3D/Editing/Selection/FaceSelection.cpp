@@ -293,12 +293,12 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 		
 			const auto triangles = tessellator .triangles ();
 	
-			for (size_t v = 0, size = triangles .size (); v < size; v += 3)
+			for (size_t v = 0, size = triangles .size (); v < size; )
 			{
-				const auto p1       = triangles [v + 0] .point ();
-				const auto p2       = triangles [v + 1] .point ();
-				const auto p3       = triangles [v + 2] .point ();
-				const auto distance = triangle_distance_to_point (p1, p2, p3, hitPoint);
+				const auto point0   = triangles [v ++] .point ();
+				const auto point1   = triangles [v ++] .point ();
+				const auto point2   = triangles [v ++] .point ();
+				const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
 
 				if (distance < minDistance)
 				{
@@ -337,29 +337,64 @@ FaceSelection::getVertices (const size_t face) const
 FaceSelection::Edge
 FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
 {
-	std::vector <Vector3d> points;
-	std::vector <Line3d>   lines;
-	std::vector <double>   distances;
+	std::vector <std::vector <size_t>> polygon;
 
-	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
-	   points .emplace_back (coordNode -> get1Point (geometryNode -> coordIndex () [vertices [i]]));
-
-	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	if (geometryNode -> convex ())
+		polygon .emplace_back (vertices);
+	
+	else
 	{
-		const auto & point0   = points [i];
-		const auto & point1   = points [(i + 1) % size];
-		const auto   line     = Line3d (point0, point1, math::point_type ());
-		const auto   distance = abs (hitPoint - line .closest_point (hitPoint));
+		opengl::tessellator <size_t> tessellator;
+	
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+	
+		for (const auto & vertex : vertices)
+			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
+	
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+	
+		const auto triangles = tessellator .triangles ();
 
-		lines     .emplace_back (line);
-		distances .emplace_back (distance);
+		for (size_t v = 0, size = triangles .size (); v < size; )
+		{
+		   polygon .emplace_back ();
+			polygon .back () .emplace_back (std::get <0> (triangles [v ++] .data ()));
+			polygon .back () .emplace_back (std::get <0> (triangles [v ++] .data ()));
+			polygon .back () .emplace_back (std::get <0> (triangles [v ++] .data ()));
+		}
+	}
+
+	std::vector <std::pair <size_t, size_t>> indices;
+	std::vector <LineSegment3d>              segments;
+	std::vector <double>                     distances;
+
+	for (const auto & element : polygon)
+	{
+		for (size_t i = 0, size = element .size (); i < size; ++ i)
+		{
+		   const auto i0       = element [i];
+		   const auto i1       = element [(i + 1) % size];
+			const auto point0   = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
+			const auto point1   = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto segment  = LineSegment3d (point0, point1);
+			const auto distance = segment .distance (hitPoint);
+
+			indices   .emplace_back (std::make_pair (i0, i1));
+			segments  .emplace_back (segment);
+			distances .emplace_back (distance);
+		}
 	}
 
 	const auto iter = std::min_element (distances .begin (), distances .end ());
-	const auto i0   = iter - distances .begin ();
-	const auto i1   = (i0 + 1) % vertices .size ();
+	const auto i    = iter - distances .begin ();
 
-	return Edge { vertices [i0], vertices [i1], points [i0], points [i1], lines [i0] };
+	return Edge {
+		indices [i] .first,
+		indices [i] .second,
+		segments [i]
+	};
 }
 
 ///  Finds the all points that are equal to point, the result is an array of point indices.

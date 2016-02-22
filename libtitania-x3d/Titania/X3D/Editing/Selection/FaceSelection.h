@@ -53,8 +53,13 @@
 
 #include "../../Editing/Selection/X3DFaceSelection.h"
 
+#include <Titania/Math/Geometry/LineSegment3.h>
+
 namespace titania {
 namespace X3D {
+
+using LineSegment3d = math::line_segment3 <double>;
+using LineSegment3f = math::line_segment3 <float>;
 
 class IndexedFaceSet;
 class X3DCoordinateNode;
@@ -76,9 +81,7 @@ public:
 	{
 		int32_t index0;
 		int32_t index1;
-		Vector3d point0;
-		Vector3d point1;
-		Line3d line;
+		LineSegment3d segment;
 	};
 
 	///  @name Construction
