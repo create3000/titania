@@ -66,11 +66,11 @@ public:
 
 	///  @name Member types
 
-	using PointIndex = std::multimap <Vector3d, size_t>;
+	using PointIndex = std::multimap <Vector3d, int32_t>;
+	using Points     = std::vector <int32_t>;
 	using Face       = std::pair <size_t, size_t>;
 	using FaceIndex  = std::multimap <int32_t, Face>;
 	using Faces      = std::vector <Face>;
-	using Triangle   = std::vector <size_t>;
 
 	struct Edge
 	{
@@ -119,43 +119,34 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
-	///  @name Member access
-
-	void
-	setCoincidentPoints (const Vector3d &);
-
-	void
-	findCoincidentPoints (const Vector3d &);
-
-	std::vector <size_t>
-	getPointIndices (const int32_t) const;
-
-	void
-	setAdjacentFaces (const Vector3d &);
-
-	const std::vector <size_t> &
-	getCoincidentPoints () const
-	{ return coincidentPoints; }
-
-	std::vector <size_t>
-	getVertices (const size_t) const;
-
-	const Face &
-	getFace () const
-	{ return face; }
-
-	const Faces &
-	getAdjacentFaces () const
-	{ return faces; }
+	///  @name Operations
 
 	std::set <size_t>
 	getFaces () const;
 
-	Edge
-	getEdge (const std::vector <size_t> &, const Vector3d &) const;
+	Faces
+	getAdjacentFaces (const int32_t) const;
 
-	bool
-	isEdge (const std::vector <size_t> &, const size_t, const size_t) const;
+	Faces
+	getAdjacentFaces (const Points &) const;
+
+	Face
+	getNearestFace (const Vector3d & , const Faces &);
+
+	std::vector <size_t>
+	getVertices (const size_t) const;
+
+	Edge
+	getEdge (const Vector3d &, const std::vector <size_t> &) const;
+
+	Points
+	getCoincidentPoints (const Vector3d &) const;
+
+	Points
+	findCoincidentPoints (const Vector3d &) const;
+
+	std::vector <size_t>
+	getPointIndices (const int32_t) const;
 
 	///  @name Destruction
 
@@ -204,12 +195,8 @@ private:
 
 	X3DPtr <IndexedFaceSet>    geometryNode;
 	X3DPtr <X3DCoordinateNode> coordNode;
-	std::vector <size_t>       coincidentPoints;
-	PointIndex                 pointIndex;
 	FaceIndex                  faceIndex;
-	Face                       face;
-	Faces                      faces;
-	Triangle                   triangle;
+	PointIndex                 pointIndex;
 
 };
 

@@ -265,7 +265,7 @@ private:
 	set_touchTime ();
 
 	void
-	set_triangle (const X3D::Vector3f &);
+	set_triangle (const std::pair <size_t, size_t> &);
 
 	///  @name Operations
 

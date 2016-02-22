@@ -77,7 +77,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	      selectedFacesGeometry (),
 	                  coordNode (),
 	               activePoints (),
-	                 activeFace (),
+	             activeVertices (),
+	                 activeFace (0),
 	                  selection (new FaceSelection (getExecutionContext ())),
 	                masterPoint (-1),
 	             selectedPoints (),
@@ -212,18 +213,16 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint (const X3D::Vector3f
 	if (planeSensor -> isActive ())
 		return;
 
-	// Determine face and faces
+	// Find nearest points.
 
-	selection -> findCoincidentPoints (hitPoint);
+	const auto coincidentPoints = selection -> findCoincidentPoints (hitPoint);
 
-	if (selection -> getCoincidentPoints () .empty ())
+	if (coincidentPoints .empty ())
 		return;
 
-	// Set selected point
+	// Set active points.
 
-	selection -> setAdjacentFaces (hitPoint);
-
-	setActiveSelection (hitPoint);
+	setActiveSelection (hitPoint, coincidentPoints);
 
 	if (touchSensor -> isActive () and paintSelection ())
 		set_touch_sensor_touchTime ();
@@ -277,10 +276,9 @@ X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & vertices)
 	for (const Vector3d & vertex : vertices)
 	{
 		// In this order.
-		selection -> setCoincidentPoints (vertex);
-		selection -> setAdjacentFaces (vertex);
-		selectPoints (vertex, paintSelection (), true);
-		selectFaces (vertex, paintSelection (), true, true);
+		const auto coincidentPoints = selection -> getCoincidentPoints (vertex);
+		selectPoints (vertex, coincidentPoints, paintSelection (), true);
+		selectFaces  (vertex, coincidentPoints, paintSelection (), true, true);
 	}
 
 	// In this order.
@@ -300,9 +298,9 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	for (const auto & activePoint : activePoints)
 	{
 		// In this order.
-		selection -> setCoincidentPoints (activePoint .second);
-		selectPoints (activePoint .second, not first or paintSelection (), false);
-		selectFaces  (activePoint .second, not first or paintSelection (), false, activePoints .size () < 3 and not paintSelection ());
+		const auto coincidentPoints = selection -> getCoincidentPoints (activePoint .second);
+		selectPoints (activePoint .second, coincidentPoints, not first or paintSelection (), false);
+		selectFaces  (activePoint .second, coincidentPoints, not first or paintSelection (), false, activePoints .size () < 3 and not paintSelection ());
 		first = false;
 	}
 
@@ -313,16 +311,20 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint)
+X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
-	const auto vertices = selection -> getVertices (selection -> getFace () .first);
-	const auto index    = selection -> getCoincidentPoints () [0];
+	const auto index    = coincidentPoints [0];
 	const auto point    = getCoord () -> get1Point (index);
+	const auto faces    = selection -> getAdjacentFaces (index);
+	const auto face     = selection -> getNearestFace (hitPoint, faces) .first;
+	const auto vertices = selection -> getVertices (face);
+
+	activeFace = face;
 
 	// Active line
 
-	activeFace   .clear ();
-	activePoints .clear ();
+	activeVertices .clear ();
+	activePoints   .clear ();
 
 	if (vertices .size () >= 3)
 	{
@@ -330,14 +332,14 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint)
 	
 		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
 		{
-			const auto edge     = selection -> getEdge (vertices, hitPoint);
+			const auto edge     = selection -> getEdge (hitPoint, vertices);
 			const auto distance = getDistance (hitPoint, edge .line .closest_point (hitPoint));
 
 			if (distance > SELECTION_DISTANCE)
 			{
 				// Face
 
-				activeFace  = vertices;
+				activeVertices = vertices;
 
 				for (const auto & i : vertices)
 					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
@@ -369,25 +371,29 @@ X3DIndexedFaceSetSelectionObject::setActivePoints ()
 	{
 		for (const auto activePoint : activePoints)
 			activeEdgesGeometry -> coordIndex () .emplace_back (activePoint .first);
+
+		activeEdgesGeometry -> coordIndex () .emplace_back (-1);
 	}
 	else if (activePoints .size () > 2)
 	{
-		const auto vertices = selection -> getVertices (selection -> getFace () .first);
-
-		for (const auto vertex : vertices)
+		for (const auto vertex : activeVertices)
 			activeEdgesGeometry -> coordIndex () .emplace_back (coordIndex () [vertex]);
 
-		activeEdgesGeometry -> coordIndex () .emplace_back (coordIndex () [vertices [0]]);
+		activeEdgesGeometry -> coordIndex () .emplace_back (coordIndex () [activeVertices [0]]);
+		activeEdgesGeometry -> coordIndex () .emplace_back (-1);
 	}
 
 	activePointCoord -> point () .clear ();
 
 	for (const auto activePoint : activePoints)
-		activePointCoord -> point () .emplace_back (getCoord () -> get1Point (activePoint .first));
+		activePointCoord -> point () .emplace_back (activePoint .second);
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectPoints (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints)
+X3DIndexedFaceSetSelectionObject::selectPoints (const Vector3d & hitPoint,
+                                                const std::vector <int32_t> & points,
+                                                const bool paint,
+                                                const bool coincidentPoints)
 {
 	struct PointComp
 	{
@@ -397,7 +403,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const Vector3d & hitPoint, const
 
 	};
 
-	for (const auto & index : selection -> getCoincidentPoints ())
+	for (const auto & index : points)
 	{
 		const auto point = getCoord () -> get1Point (index);
 
@@ -422,7 +428,11 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const Vector3d & hitPoint, const
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectFaces (const Vector3d & hitPoint, const bool paint, const bool coincidentPoints, const bool adjacentFaces)
+X3DIndexedFaceSetSelectionObject::selectFaces (const Vector3d & hitPoint,
+                                               const std::vector <int32_t> & points,
+                                               const bool paint,
+                                               const bool coincidentPoints,
+                                               const bool adjacentFaces)
 {
 	struct PointComp
 	{
@@ -432,7 +442,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const Vector3d & hitPoint, const 
 
 	};
 
-	for (const auto & index : selection -> getCoincidentPoints ())
+	for (const auto & index : points)
 	{
 		const auto point = getCoord () -> get1Point (index);
 	
@@ -448,23 +458,23 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const Vector3d & hitPoint, const 
 	
 		if (getBrowser () -> hasControlKey ())
 		{
-			removeSelectedFace (selection -> getFace () .first);
-
 			if (adjacentFaces)
 			{
-				for (const auto & face : selection -> getAdjacentFaces ())
+				for (const auto & face : selection -> getAdjacentFaces (index))
 					removeSelectedFace (face .first);
 			}
+			else
+				removeSelectedFace (activeFace);
 		}
 		else
 		{
-			addSelectedFace (selection -> getFace () .first);
-
 			if (adjacentFaces)
 			{
-				for (const auto & face : selection -> getAdjacentFaces ())
+				for (const auto & face : selection -> getAdjacentFaces (index))
 					addSelectedFace (face .first);
 			}
+			else
+				addSelectedFace (activeFace);
 		}
 
 		if (not coincidentPoints)

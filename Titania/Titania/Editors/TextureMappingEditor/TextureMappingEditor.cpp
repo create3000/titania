@@ -2158,12 +2158,14 @@ TextureMappingEditor::set_left_center (const X3D::Vector3f & value)
 }
 
 void
-TextureMappingEditor::set_right_selection (const X3D::Vector3f & point)
+TextureMappingEditor::set_right_selection (const X3D::Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
 	try
 	{
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
-		const auto vertices          = rightSelection -> getVertices (rightSelection -> getFace () .first);
+		const auto adjacentFaces     = rightSelection -> getAdjacentFaces (coincidentPoints);
+		const auto nearestFace       = rightSelection -> getNearestFace (hitPoint, adjacentFaces);
+		const auto vertices          = rightSelection -> getVertices (nearestFace .first);
 
 		if (vertices .size () < 3)
 			return;
@@ -2190,16 +2192,21 @@ TextureMappingEditor::set_right_active (const bool value)
 void
 TextureMappingEditor::set_right_touchTime ()
 {
-	if (rightSelection -> getCoincidentPoints () .empty ())
+	const auto touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+	const auto coincidentPoints = rightSelection -> findCoincidentPoints (touchSensor -> hitPoint_changed () .getValue ());
+	const auto adjacentFaces    = rightSelection -> getAdjacentFaces (coincidentPoints);
+	const auto nearestFace      = rightSelection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
+
+	if (coincidentPoints .empty ())
 		return;
 
 	if (not keys .shift () and not keys .control () and not rightPaintSelecion)
 		selectedFaces .clear ();
 
 	if (keys .control ())
-		selectedFaces .erase (rightSelection -> getFace () .first);
+		selectedFaces .erase (nearestFace .first);
 
-	else if (not selectedFaces .emplace (rightSelection -> getFace () .first) .second)
+	else if (not selectedFaces .emplace (nearestFace .first) .second)
 		return;
 
 	set_selected_faces ();
@@ -2239,19 +2246,17 @@ TextureMappingEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		const auto touchSensor = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-
 		// Determine face and faces
 
-		rightSelection -> findCoincidentPoints (hitPoint);
-		rightSelection -> setAdjacentFaces (hitPoint);
+		const auto touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+		const auto coincidentPoints = rightSelection -> findCoincidentPoints (hitPoint);
 
-		if (rightSelection -> getCoincidentPoints () .empty ())
+		if (coincidentPoints .empty ())
 			return;
 
 		// Setup cross hair
 
-		set_right_selection (coord -> get1Point (rightSelection -> getCoincidentPoints () [0]));
+		set_right_selection (hitPoint, coincidentPoints);
 
 		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
 		{

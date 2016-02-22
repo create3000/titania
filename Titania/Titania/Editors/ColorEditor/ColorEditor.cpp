@@ -857,19 +857,20 @@ ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 {
 	try
 	{
-		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-
 		// Determine face and faces
 
-		selection -> findCoincidentPoints (hitPoint);
-		selection -> setAdjacentFaces (hitPoint);
+		const auto touchSensor      = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+		const auto coincidentPoints = selection -> findCoincidentPoints (hitPoint);
 
-		if (selection -> getCoincidentPoints () .empty ())
+		if (coincidentPoints .empty ())
 			return;
+
+		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
+		const auto nearestFace   = selection -> getNearestFace (hitPoint, adjacentFaces);
 
 		// Setup cross hair
 
-		set_triangle (coord -> get1Point (selection -> getCoincidentPoints () [0]));
+		set_triangle (nearestFace);
 
 		// Colorize vertices
 
@@ -884,30 +885,30 @@ ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 		switch (mode)
 		{
 			case SINGLE_VERTEX :
+			{
+				const auto index = nearestFace .first + nearestFace .second;
+
+				if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 				{
-					const auto index = selection -> getFace () .first + selection -> getFace () .second;
+					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Singe Vertex"));
 
-					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
-					{
-						const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Singe Vertex"));
+					undoStep -> addObjects (previewGeometry);
+					undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
+					undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
+					previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
 
-						undoStep -> addObjects (previewGeometry);
-						undoStep -> addUndoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, previewGeometry -> colorIndex () .get1Value (index));
-						undoStep -> addRedoFunction ((set1Value) & X3D::MFInt32::set1Value, std::ref (previewGeometry -> colorIndex ()), index, colorButton .getIndex ());
-						previewGeometry -> colorIndex () .set1Value (index, colorButton .getIndex ());
-
-						addUndoStep (undoStep);
-					}
-
-					break;
+					addUndoStep (undoStep);
 				}
+
+				break;
+			}
 			case ADJACENT_VERTICES:
 			{
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Colorize Adjacent Vertices"));
 
 				undoStep -> addObjects (previewGeometry);
 
-				for (const auto & face : selection -> getAdjacentFaces ())
+				for (const auto & face : adjacentFaces)
 				{
 					const auto index = face .first + face .second;
 
@@ -928,7 +929,7 @@ ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
 
 				undoStep -> addObjects (previewGeometry);
 
-				for (const auto & index : selection -> getVertices (selection -> getFace () .first))
+				for (const auto & index : selection -> getVertices (nearestFace .first))
 				{
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -976,27 +977,34 @@ ColorEditor::set_touchTime ()
 	{
 		getSelectColorButton () .set_active (false);
 
-		const auto index = previewGeometry -> colorIndex () .get1Value (selection -> getFace () .first + selection -> getFace () .second);
+		const auto touchSensor      = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+		const auto coincidentPoints = selection -> findCoincidentPoints (touchSensor -> hitPoint_changed () .getValue ());
+
+		if (coincidentPoints .empty ())
+			return;
+
+		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
+		const auto nearestFace   = selection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
+		const auto index         = previewGeometry -> colorIndex () .get1Value (nearestFace .first + nearestFace .second);
 
 		colorButton .setIndex (index);
-		return;
 	}
 }
 
 void
-ColorEditor::set_triangle (const X3D::Vector3f & point)
+ColorEditor::set_triangle (const std::pair <size_t, size_t> & nearestFace)
 {
 	try
 	{
 		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
 		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
 		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto vertices             = selection -> getVertices (selection -> getFace () .first);
+		const auto vertices             = selection -> getVertices (nearestFace .first);
 
 		if (vertices .size () < 3)
 			return;
 
-		const auto vertex = selection -> getFace () .second;
+		const auto vertex = nearestFace .second;
 		const auto i1     = vertex == 0 ? vertices .size () - 1 : vertex - 1;
 		const auto i2     = vertex;
 		const auto i3     = (vertex + 1) % vertices .size ();

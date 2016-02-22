@@ -405,7 +405,7 @@ private:
 	set_left_center (const X3D::Vector3f &);
 
 	void
-	set_right_selection (const X3D::Vector3f &);
+	set_right_selection (const X3D::Vector3d &, const std::vector <int32_t> &);
 
 	void
 	set_right_active (const bool);

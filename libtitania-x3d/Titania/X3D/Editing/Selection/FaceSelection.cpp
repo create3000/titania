@@ -72,12 +72,8 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	          fields (),
 	    geometryNode (),
 	       coordNode (),
-	coincidentPoints (),
-	      pointIndex (),
 	       faceIndex (),
-	            face (),
-	           faces (),
-	        triangle ()
+	      pointIndex ()
 {
 	addType (X3DConstants::FaceSelection);
 
@@ -215,65 +211,35 @@ FaceSelection::getFaces () const
 	return faces;
 }
 
-///  Finds the all points that are equal to point, the result is an array of point indices.
-void
-FaceSelection::setCoincidentPoints (const Vector3d & point)
+FaceSelection::Faces
+FaceSelection::getAdjacentFaces (const int32_t index) const
 {
-	coincidentPoints .clear ();
+	Faces faces;
 
-	for (const auto & index : pointIndex .equal_range (point))
-		coincidentPoints .emplace_back (index .second);
+	for (const auto & face : faceIndex .equal_range (index))
+		faces .emplace_back (face .second);
+
+	return faces;
 }
 
-///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
-void
-FaceSelection::findCoincidentPoints (const Vector3d & hitPoint)
+FaceSelection::Faces
+FaceSelection::getAdjacentFaces (const Points & points) const
 {
-	coincidentPoints .clear ();
+	Faces faces;
 
-	if (pointIndex .empty ())
-		return;
-
-	auto iter = std::min_element (pointIndex .begin (),
-                                 pointIndex .end (),
-                                 [&hitPoint] (const PointIndex::value_type & lhs, const PointIndex::value_type & rhs)
-                                 {
-                                   return math::abs (hitPoint - lhs .first) < math::abs (hitPoint - rhs .first);
-                                 });
-
-	for (const auto & index : pointIndex .equal_range (iter -> first))
-		coincidentPoints .emplace_back (index .second);
-}
-
-///  Return the indices to the coordIndex to a given point index.
-std::vector <size_t>
-FaceSelection::getPointIndices (const int32_t coordIndex) const
-{
-	std::vector <size_t> indices;
-
-	for (const auto & face : faceIndex .equal_range (coordIndex))
-		indices .emplace_back (face .second .first + face .second .second);
-	
-	return indices;
-}
-
-///  Finds the nearest face for hitPoint and all adjacent faces.
-void
-FaceSelection::setAdjacentFaces (const Vector3d & hitPoint /*, const std::vector <size_t> & coincidentPoints */)
-{
-	faces .clear ();
-
-	for (const auto & index : coincidentPoints)
+	for (const auto & index : points)
 	{
-		const auto range = faceIndex .equal_range (index);
-
-		for (const auto & face : range)
+		for (const auto & face : faceIndex .equal_range (index))
 			faces .emplace_back (face .second);
 	}
 
-	if (faces .empty ())
-		return;
+	return faces;
+}
 
+///  Finds the nearest face for hitPoint in faces.
+FaceSelection::Face
+FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
+{
 	// Get distances of faces to hitPoint.
 	
 	double minDistance = std::numeric_limits <double>::infinity ();
@@ -309,7 +275,6 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint /*, const std::vector
 				{
 					minDistance = distance;
 					minIndex    = i;
-					triangle    = { i0, i1, i2 };
 				}
 			}
 		}
@@ -339,11 +304,6 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint /*, const std::vector
 				{
 					minDistance = distance;
 					minIndex    = i;
-					triangle    = {
-						std::get <0> (triangles [v + 0] .data ()),
-						std::get <0> (triangles [v + 1] .data ()),
-						std::get <0> (triangles [v + 2] .data ())
-					};
 				}
 			}
 		}
@@ -351,7 +311,7 @@ FaceSelection::setAdjacentFaces (const Vector3d & hitPoint /*, const std::vector
 		++ i;
 	}
 
-	face = faces [minIndex];
+	return faces [minIndex];
 }
 
 ///  Returns all indices to the coordIndex for this face.
@@ -375,49 +335,77 @@ FaceSelection::getVertices (const size_t face) const
 
 ///  Return the nearest edge for hitPoint.
 FaceSelection::Edge
-FaceSelection::getEdge (const std::vector <size_t> & vertices,
-                        const Vector3d & hitPoint) const
+FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
 {
-	const auto point0 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [0]]);
-	const auto point1 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [1]]);
-	const auto point2 = coordNode -> get1Point (geometryNode -> coordIndex () [triangle [2]]);
+	std::vector <Vector3d> points;
+	std::vector <Line3d>   lines;
+	std::vector <double>   distances;
 
-	const auto line0 = Line3d (point0, point1, math::point_type ());
-	const auto line1 = Line3d (point1, point2, math::point_type ());
-	const auto line2 = Line3d (point2, point0, math::point_type ());
+	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	   points .emplace_back (coordNode -> get1Point (geometryNode -> coordIndex () [vertices [i]]));
 
-	const std::vector <double> distances = {
-		not geometryNode -> convex () or isEdge (vertices, triangle [0], triangle [1]) ? abs (hitPoint - line0 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
-		not geometryNode -> convex () or isEdge (vertices, triangle [1], triangle [2]) ? abs (hitPoint - line1 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity (),
-		not geometryNode -> convex () or isEdge (vertices, triangle [2], triangle [0]) ? abs (hitPoint - line2 .closest_point (hitPoint)) : std::numeric_limits <double>::infinity ()
-	};
-
-	const auto iter = std::min_element (distances .begin (), distances .end ());
-	const auto min  = iter - distances .begin ();
-
-	if (min == 0)
-		return Edge { triangle [0], triangle [1], point0, point1, line0 };
-
-	if (min == 1)
-		return Edge { triangle [1], triangle [2], point1, point2, line1 };
-
-	return Edge { triangle [2], triangle [0], point2, point0, line2 };
-}
-
-///  Returns true if index1 and index2 form a edge in vertices, where the vertices form a face.
-bool
-FaceSelection::isEdge (const std::vector <size_t> & vertices, const size_t index0, const size_t index1) const
-{
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		if (vertices [i] == index0)
-		{
-			if (vertices [(i + 1) % size] == index1)
-				return true;
-		}
+		const auto & point0   = points [i];
+		const auto & point1   = points [(i + 1) % size];
+		const auto   line     = Line3d (point0, point1, math::point_type ());
+		const auto   distance = abs (hitPoint - line .closest_point (hitPoint));
+
+		lines     .emplace_back (line);
+		distances .emplace_back (distance);
 	}
 
-	return false;
+	const auto iter = std::min_element (distances .begin (), distances .end ());
+	const auto i0   = iter - distances .begin ();
+	const auto i1   = (i0 + 1) % vertices .size ();
+
+	return Edge { vertices [i0], vertices [i1], points [i0], points [i1], lines [i0] };
+}
+
+///  Finds the all points that are equal to point, the result is an array of point indices.
+FaceSelection::Points
+FaceSelection::getCoincidentPoints (const Vector3d & point) const
+{
+	Points coincidentPoints;
+
+	for (const auto & index : pointIndex .equal_range (point))
+		coincidentPoints .emplace_back (index .second);
+
+	return coincidentPoints;
+}
+
+///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
+FaceSelection::Points
+FaceSelection::findCoincidentPoints (const Vector3d & hitPoint) const
+{
+	Points coincidentPoints;
+
+	if (pointIndex .empty ())
+		return coincidentPoints;
+
+	auto iter = std::min_element (pointIndex .begin (),
+                                 pointIndex .end (),
+                                 [&hitPoint] (const PointIndex::value_type & lhs, const PointIndex::value_type & rhs)
+                                 {
+                                   return math::abs (hitPoint - lhs .first) < math::abs (hitPoint - rhs .first);
+                                 });
+
+	for (const auto & index : pointIndex .equal_range (iter -> first))
+		coincidentPoints .emplace_back (index .second);
+
+	return coincidentPoints;
+}
+
+///  Return the indices to the coordIndex to a given point index.
+std::vector <size_t>
+FaceSelection::getPointIndices (const int32_t coordIndex) const
+{
+	std::vector <size_t> indices;
+
+	for (const auto & face : faceIndex .equal_range (coordIndex))
+		indices .emplace_back (face .second .first + face .second .second);
+	
+	return indices;
 }
 
 FaceSelection::~FaceSelection ()

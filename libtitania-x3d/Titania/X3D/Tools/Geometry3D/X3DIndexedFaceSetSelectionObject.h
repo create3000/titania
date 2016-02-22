@@ -159,16 +159,16 @@ private:
 	set_plane_sensor_translation (const Vector3f &);
 
 	void
-	setActiveSelection (const Vector3f &);
+	setActiveSelection (const Vector3f &, const std::vector <int32_t> &);
 
 	void
 	setActivePoints ();
 
 	void
-	selectPoints (const Vector3d &, const bool, const bool);
+	selectPoints (const Vector3d &, const std::vector <int32_t> &, const bool, const bool);
 
 	void
-	selectFaces (const Vector3d &, const bool, const bool, const bool);
+	selectFaces (const Vector3d &, const std::vector <int32_t> &, const bool, const bool, const bool);
 
 	void
 	addSelectedPoint (const int32_t);
@@ -219,7 +219,8 @@ private:
 	X3DPtr <X3DCoordinateNode> coordNode;
 
 	std::map <int32_t, Vector3d> activePoints;   // coord index, point
-	std::vector <size_t>         activeFace;     // indices of vertices to coordIndex array
+	std::vector <size_t>         activeVertices; // indices of vertices to coordIndex array
+	size_t                       activeFace;
 
 	X3DPtr <FaceSelection>       selection;
 	int32_t                      masterPoint;    // coord index,
