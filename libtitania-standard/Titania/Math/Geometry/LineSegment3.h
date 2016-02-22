@@ -130,7 +130,7 @@ Type
 line_segment3 <Type>::distance (const vector3 <Type> & point) const
 {
 	const auto closest = line () .closest_point (point);
-	const auto between = abs ((closest - point0 ()) + (closest - point1 ())) < abs (point0 () - point1 ());
+	const auto between = abs ((closest - point0 ()) + (closest - point1 ())) <= abs (point0 () - point1 ());
 
 	// Closest point lies between point0 and point1.
 	if (between)

@@ -243,7 +243,7 @@ X3DGeometryNode::intersects (const Line3d & line,
 	if (isClipped (point, modelViewMatrix))
 		return false;
 
-	intersections .emplace_back (new Intersection { texCoord, normal, point });
+	intersections .emplace_back (new Intersection { texCoord, normal, point, std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
 	return true;
 }
 

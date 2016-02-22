@@ -58,9 +58,6 @@
 namespace titania {
 namespace X3D {
 
-using LineSegment3d = math::line_segment3 <double>;
-using LineSegment3f = math::line_segment3 <float>;
-
 class IndexedFaceSet;
 class X3DCoordinateNode;
 
@@ -144,9 +141,6 @@ public:
 
 	Points
 	getCoincidentPoints (const Vector3d &) const;
-
-	Points
-	findCoincidentPoints (const Vector3d &) const;
 
 	std::vector <size_t>
 	getPointIndices (const int32_t) const;

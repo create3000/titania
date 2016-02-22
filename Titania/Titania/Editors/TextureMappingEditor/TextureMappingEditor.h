@@ -417,7 +417,7 @@ private:
 	set_right_selected_faces ();
 
 	void
-	set_right_hitPoint (const X3D::Vector3f &);
+	set_right_hitPoint ();
 
 	X3D::Vector2d
 	projectPoint (const X3D::Vector3d &, const X3D::BrowserPtr &) const

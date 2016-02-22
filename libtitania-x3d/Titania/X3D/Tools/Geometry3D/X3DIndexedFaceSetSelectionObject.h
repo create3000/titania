@@ -141,7 +141,7 @@ private:
 	set_touch_sensor_active (const bool);
 
 	void
-	set_touch_sensor_hitPoint (const Vector3f &);
+	set_touch_sensor_hitPoint ();
 
 	void
 	set_selection_ (const MFVec3d &);
@@ -159,7 +159,7 @@ private:
 	set_plane_sensor_translation (const Vector3f &);
 
 	void
-	setActiveSelection (const Vector3f &, const std::vector <int32_t> &);
+	setActiveSelection (const Vector3d &, const std::vector <int32_t> &);
 
 	void
 	setActivePoints ();

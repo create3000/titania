@@ -104,18 +104,39 @@ normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Typ
 	return normalize (cross (v3 - v1, v4 - v2));
 }
 
-///  Returns the squared distance from the triangle defined by @a p1, @a p2, @a p3 to @a point.
+///  Returns the index of one of the three points given defined by @a p0, @a p1, @a p2 to @a point.
+template <class Type>
+size_t
+triangle_closest_point (const vector3 <Type> & p0, const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & point)
+{
+	const auto distance0 = abs (p0 - point);
+	const auto distance1 = abs (p1 - point);
+	const auto distance2 = abs (p2 - point);
+
+	if (distance0 < distance1)
+	{
+		if (distance0 < distance2)
+			return 0;
+	}
+   
+	if (distance1 < distance2)
+		return 1;
+
+	return 2;
+}
+
+///  Returns the squared distance from the triangle defined by @a p0, @a p1, @a p2 to @a point.
 template <class Type>
 Type
-triangle_distance_to_point (const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & p3, const vector3 <Type> & point)
+triangle_distance_to_point (const vector3 <Type> & p0, const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & point)
 {
 	// http://www.geometrictools.com/GTEngine/Include/GteDistPoint3Triangle3.inl
 
 	Type sqrDistance;
 
-	vector3 <Type> diff  = p1 - point;
-	vector3 <Type> edge0 = p2 - p1;
-	vector3 <Type> edge1 = p3 - p1;
+	vector3 <Type> diff  = p0 - point;
+	vector3 <Type> edge0 = p1 - p0;
+	vector3 <Type> edge1 = p2 - p0;
 	Type           a00   = dot (edge0, edge0);
 	Type           a01   = dot (edge0, edge1);
 	Type           a11   = dot (edge1, edge1);

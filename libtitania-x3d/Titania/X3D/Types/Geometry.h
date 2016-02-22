@@ -56,6 +56,7 @@
 #include <Titania/Math/Geometry/CollisionSphere3.h>
 #include <Titania/Math/Geometry/Cylinder3.h>
 #include <Titania/Math/Geometry/Line3.h>
+#include <Titania/Math/Geometry/LineSegment3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Sphere3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
@@ -76,6 +77,8 @@ using Cylinder3d        = cylinder3 <double>;
 using Cylinder3f        = cylinder3 <float>;
 using Line3d            = line3 <double>;
 using Line3f            = line3 <float>;
+using LineSegment3d     = line_segment3 <double>;
+using LineSegment3f     = line_segment3 <float>;
 using Plane3d           = plane3 <double>;
 using Plane3f           = plane3 <float>;
 using Sphere3d          = sphere3 <double>;

@@ -83,7 +83,7 @@ public:
 	const Matrix4d                modelViewMatrix;
 	const Line3d                  hitRay;
 	const IntersectionPtr         intersection;                
-	const float                   distance;
+	const double                  distance;
 	const PointingDeviceSensorSet sensors;
 	const X3DShapeNodePtr         shape;
 	const X3DLayerNodePtr         layer;

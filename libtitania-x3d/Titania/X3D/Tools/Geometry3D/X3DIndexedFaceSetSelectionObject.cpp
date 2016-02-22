@@ -208,21 +208,21 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint (const X3D::Vector3f & hitPoint)
+X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
 	if (planeSensor -> isActive ())
 		return;
 
-	// Find nearest points.
+	// Find closest points.
 
-	const auto coincidentPoints = selection -> findCoincidentPoints (hitPoint);
+	const auto coincidentPoints = selection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 
 	if (coincidentPoints .empty ())
 		return;
 
 	// Set active points.
 
-	setActiveSelection (hitPoint, coincidentPoints);
+	setActiveSelection (touchSensor -> getHitPoint (), coincidentPoints);
 
 	if (touchSensor -> isActive () and paintSelection ())
 		set_touch_sensor_touchTime ();
@@ -311,7 +311,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3f & hitPoint, const std::vector <int32_t> & coincidentPoints)
+X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
 	const auto index    = coincidentPoints [0];
 	const auto point    = getCoord () -> get1Point (index);

@@ -115,6 +115,19 @@ public:
 	hitPoint_changed () const
 	{ return *fields .hitPoint_changed; }
 
+	///  @name Member access
+
+	const IntersectionPtr &
+	getIntersection () const
+	{ return intersection; }
+
+	const Vector3d &
+	getHitPoint () const
+	{ return hitPoint; }
+
+	const Vector3d &
+	getClosestPoint () const;
+
 	///  @name Event handlers
 
 	virtual
@@ -142,6 +155,9 @@ private:
 	};
 
 	Fields fields;
+
+	IntersectionPtr intersection;
+	Vector3d        hitPoint;
 
 };
 

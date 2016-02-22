@@ -259,7 +259,7 @@ private:
 	set_coord (const X3D::SFNode &);
 
 	void
-	set_hitPoint (const X3D::Vector3f &);
+	set_hitPoint ();
 
 	void
 	set_touchTime ();

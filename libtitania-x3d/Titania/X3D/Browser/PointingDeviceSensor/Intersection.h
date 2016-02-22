@@ -53,6 +53,9 @@
 
 #include "../../Types/Numbers.h"
 
+#include <Titania/Math/Geometry/Triangle3.h>
+
+#include <array>
 #include <memory>
 
 namespace titania {
@@ -65,6 +68,8 @@ public:
 	Vector4f texCoord;
 	Vector3f normal;
 	Vector3d point;
+
+	std::array <Vector3d, 3> triangle;
 
 };
 

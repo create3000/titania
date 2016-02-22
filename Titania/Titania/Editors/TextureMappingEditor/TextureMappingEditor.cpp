@@ -2192,10 +2192,13 @@ TextureMappingEditor::set_right_active (const bool value)
 void
 TextureMappingEditor::set_right_touchTime ()
 {
-	const auto touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-	const auto coincidentPoints = rightSelection -> findCoincidentPoints (touchSensor -> hitPoint_changed () .getValue ());
-	const auto adjacentFaces    = rightSelection -> getAdjacentFaces (coincidentPoints);
-	const auto nearestFace      = rightSelection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
+	const auto   touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
+	const auto & intersection     = touchSensor -> getIntersection ();
+	const auto & triangle         = intersection -> triangle;
+	const auto   closestPoint     = triangle_closest_point (triangle [0], triangle [1], triangle [2], intersection -> point);
+	const auto   coincidentPoints = rightSelection -> getCoincidentPoints (triangle [closestPoint]);
+	const auto   adjacentFaces    = rightSelection -> getAdjacentFaces (coincidentPoints);
+	const auto   nearestFace      = rightSelection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
 
 	if (coincidentPoints .empty ())
 		return;
@@ -2242,21 +2245,21 @@ TextureMappingEditor::set_right_selected_faces ()
 }
 
 void
-TextureMappingEditor::set_right_hitPoint (const X3D::Vector3f & hitPoint)
+TextureMappingEditor::set_right_hitPoint ()
 {
 	try
 	{
 		// Determine face and faces
 
 		const auto touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto coincidentPoints = rightSelection -> findCoincidentPoints (hitPoint);
+		const auto coincidentPoints = rightSelection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 
 		if (coincidentPoints .empty ())
 			return;
 
 		// Setup cross hair
 
-		set_right_selection (hitPoint, coincidentPoints);
+		set_right_selection (touchSensor -> getHitPoint (), coincidentPoints);
 
 		if (touchSensor -> isActive () and (keys .shift () or keys .control ()))
 		{

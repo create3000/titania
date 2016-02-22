@@ -70,7 +70,9 @@ TouchSensor::Fields::Fields () :
 TouchSensor::TouchSensor (X3DExecutionContext* const executionContext) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DTouchSensorNode (),
-	            fields ()
+	            fields (),
+	      intersection (new Intersection ()),
+	          hitPoint ()
 {
 	addType (X3DConstants::TouchSensor);
 
@@ -93,6 +95,15 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 	return new TouchSensor (executionContext);
 }
 
+const Vector3d &
+TouchSensor::getClosestPoint () const
+{
+	return intersection -> triangle [triangle_closest_point (intersection -> triangle [0],
+	                                                         intersection -> triangle [1],
+	                                                         intersection -> triangle [2],
+	                                                         hitPoint)];
+}
+
 void
 TouchSensor::set_over (const HitPtr & hit, const bool over)
 {
@@ -102,9 +113,12 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 
 		if (isOver ())
 		{
-			const auto &     intersection       = hit -> intersection;
+			intersection .reset (new Intersection (*hit -> intersection));
+
 			const Matrix4d & modelViewMatrix    = getMatrices () .at (hit -> layer) .modelViewMatrix;
 			const Matrix4d   invModelViewMatrix = ~modelViewMatrix;
+
+			hitPoint = intersection -> point * ~hit -> modelViewMatrix;
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));

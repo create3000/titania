@@ -853,20 +853,20 @@ ColorEditor::set_coord (const X3D::SFNode & value)
 }
 
 void
-ColorEditor::set_hitPoint (const X3D::Vector3f & hitPoint)
+ColorEditor::set_hitPoint ()
 {
 	try
 	{
 		// Determine face and faces
 
 		const auto touchSensor      = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto coincidentPoints = selection -> findCoincidentPoints (hitPoint);
+		const auto coincidentPoints = selection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 
 		if (coincidentPoints .empty ())
 			return;
 
 		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
-		const auto nearestFace   = selection -> getNearestFace (hitPoint, adjacentFaces);
+		const auto nearestFace   = selection -> getNearestFace (touchSensor -> getHitPoint (), adjacentFaces);
 
 		// Setup cross hair
 
@@ -978,13 +978,13 @@ ColorEditor::set_touchTime ()
 		getSelectColorButton () .set_active (false);
 
 		const auto touchSensor      = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-		const auto coincidentPoints = selection -> findCoincidentPoints (touchSensor -> hitPoint_changed () .getValue ());
+		const auto coincidentPoints = selection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 
 		if (coincidentPoints .empty ())
 			return;
 
 		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
-		const auto nearestFace   = selection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
+		const auto nearestFace   = selection -> getNearestFace (touchSensor -> getHitPoint (), adjacentFaces);
 		const auto index         = previewGeometry -> colorIndex () .get1Value (nearestFace .first + nearestFace .second);
 
 		colorButton .setIndex (index);

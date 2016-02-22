@@ -409,28 +409,6 @@ FaceSelection::getCoincidentPoints (const Vector3d & point) const
 	return coincidentPoints;
 }
 
-///  Finds the all points that are equal to the nearest point to hitPoint in triangle.
-FaceSelection::Points
-FaceSelection::findCoincidentPoints (const Vector3d & hitPoint) const
-{
-	Points coincidentPoints;
-
-	if (pointIndex .empty ())
-		return coincidentPoints;
-
-	auto iter = std::min_element (pointIndex .begin (),
-                                 pointIndex .end (),
-                                 [&hitPoint] (const PointIndex::value_type & lhs, const PointIndex::value_type & rhs)
-                                 {
-                                   return math::abs (hitPoint - lhs .first) < math::abs (hitPoint - rhs .first);
-                                 });
-
-	for (const auto & index : pointIndex .equal_range (iter -> first))
-		coincidentPoints .emplace_back (index .second);
-
-	return coincidentPoints;
-}
-
 ///  Return the indices to the coordIndex to a given point index.
 std::vector <size_t>
 FaceSelection::getPointIndices (const int32_t coordIndex) const
