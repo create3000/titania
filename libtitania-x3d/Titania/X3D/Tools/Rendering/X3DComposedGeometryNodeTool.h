@@ -166,16 +166,6 @@ public:
 	coord () const final override
 	{ return getNode <X3DComposedGeometryNode> () -> coord (); }
 
-	///  @name Hidden fields
-
-	SFBool &
-	paintSelection ()
-	{ return *fields .paintSelection; }
-
-	const SFBool &
-	paintSelection () const
-	{ return *fields .paintSelection; }
-
 	///  @name Member access
 
 	virtual
@@ -233,17 +223,6 @@ private:
 
 	void
 	set_loadState ();
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const paintSelection;
-	};
-
-	Fields fields;
 
 };
 

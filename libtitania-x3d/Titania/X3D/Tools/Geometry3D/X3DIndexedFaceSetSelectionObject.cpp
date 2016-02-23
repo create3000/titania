@@ -67,7 +67,8 @@ namespace X3D {
 constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	 selectable (new SFBool ())
+	       selectable (new SFBool (true)),
+	 replaceSelection (new SFBool ())
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
@@ -91,7 +92,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	selectable () .isHidden (true);
+	selectable ()       .isHidden (true);
+	replaceSelection () .isHidden (true);
 
 	addChildren (touchSensor,
 	             planeSensor,
@@ -213,7 +215,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 
 	setActiveSelection (touchSensor -> getHitPoint (), coincidentPoints);
 
-	if (touchSensor -> isActive () and paintSelection ())
+	if (touchSensor -> isActive () and not replaceSelection ())
 		set_touch_sensor_touchTime ();
 }
 
@@ -345,7 +347,7 @@ X3DIndexedFaceSetSelectionObject::updateActiveFace ()
 void
 X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points)
 {
-	if (not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
 	{
 		selectionCoord -> point () .clear ();
 		selectedPoints .clear ();
@@ -361,7 +363,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 void
 X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points)
 {
-	if (not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
 	{
 		selectedFacesGeometry -> coordIndex () .clear ();
 		selectedFaces .clear ();
@@ -397,7 +399,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 void
 X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
 {
-	if (not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
 	{
 		selectedFacesGeometry -> coordIndex () .clear ();
 		selectedFaces .clear ();

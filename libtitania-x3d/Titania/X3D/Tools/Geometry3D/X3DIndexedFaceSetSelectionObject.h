@@ -86,6 +86,16 @@ public:
 	const MFInt32 &
 	coordIndex () const = 0;
 
+	///  @name Hidden fields
+
+	SFBool &
+	replaceSelection ()
+	{ return *fields .replaceSelection; }
+
+	const SFBool &
+	replaceSelection () const
+	{ return *fields .replaceSelection; }
+
 	///  @name Destruction
 
 	virtual
@@ -229,6 +239,7 @@ private:
 		Fields ();
 
 		SFBool* const selectable;
+		SFBool* const replaceSelection;
 	};
 
 	Fields fields;

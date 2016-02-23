@@ -57,18 +57,11 @@
 namespace titania {
 namespace X3D {
 
-X3DComposedGeometryNodeTool::Fields::Fields () :
-	 paintSelection (new SFBool ())
-{ }
-
 X3DComposedGeometryNodeTool::X3DComposedGeometryNodeTool () :
 	X3DComposedGeometryNode (),
-	    X3DGeometryNodeTool (),
-                    fields ()
+	    X3DGeometryNodeTool ()
 {
 	addType (X3DConstants::X3DComposedGeometryNodeTool);
-
-	paintSelection () .isHidden (true);
 }
 
 void

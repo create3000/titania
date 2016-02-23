@@ -143,9 +143,11 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 			const auto world  = vertex * getModelViewMatrix ();
 			const auto x      = std::floor (screen .x ());
 			const auto y      = std::floor (screen .y ());
-			const auto index  = x * 4 + y * frameBuffer -> getWidth () * 4;
 
-			if (index < 0 or index >= frameBuffer -> getPixels () .size ())
+			if (x < 0 or x >= frameBuffer -> getWidth ())
+				continue;
+
+			if (y < 0 or y >= frameBuffer -> getHeight ())
 				continue;
 
 			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
@@ -154,6 +156,8 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 			if (world .z () - zWorld .z () < -0.05)
 				continue;
 	
+			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
+
 			if (frameBuffer -> getPixels () [index])
 				selection .emplace_back (vertex);
 		}

@@ -80,14 +80,14 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	mergePoints () .isHidden (true);
 	splitPoints () .isHidden (true);
 
-	addField (inputOutput, "pickable",       pickable ());
-	addField (inputOutput, "selectable",     selectable ());
-	addField (inputOnly,   "set_selection",  set_selection ());
-	addField (inputOutput, "paintSelection", paintSelection ());
-	addField (inputOutput, "mergePoints",    mergePoints ());
-	addField (inputOutput, "splitPoints",    splitPoints ());
-	addField (inputOutput, "normalTool",     normalTool ());
-	addField (inputOutput, "coordTool",      coordTool ());
+	addField (inputOutput, "pickable",         pickable ());
+	addField (inputOutput, "selectable",       selectable ());
+	addField (inputOnly,   "set_selection",    set_selection ());
+	addField (inputOutput, "replaceSelection", replaceSelection ());
+	addField (inputOutput, "mergePoints",      mergePoints ());
+	addField (inputOutput, "splitPoints",      splitPoints ());
+	addField (inputOutput, "normalTool",       normalTool ());
+	addField (inputOutput, "coordTool",        coordTool ());
 
 	addChildren (touchSensor,
 	             planeSensor);
@@ -156,7 +156,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
 			const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-			planeSensor -> enabled ()      = not paintSelection ();
+			planeSensor -> enabled ()      = replaceSelection ();
 			planeSensor -> axisRotation () = axisRotation;
 			planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 			break;
@@ -168,7 +168,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			const auto vector       = getCoord () -> get1Point (getActivePoints () [0]) - getCoord () -> get1Point (getActivePoints () [1]);
 			const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-			planeSensor -> enabled ()      = not paintSelection ();
+			planeSensor -> enabled ()      = replaceSelection ();
 			planeSensor -> axisRotation () = axisRotation;
 			planeSensor -> maxPosition ()  = Vector2f (-1, 0);
 			break;
@@ -179,7 +179,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getActiveFace ()));
 			const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 
-			planeSensor -> enabled ()      = not paintSelection ();
+			planeSensor -> enabled ()      = replaceSelection ();
 			planeSensor -> axisRotation () = axisRotation;
 			planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 			break;
