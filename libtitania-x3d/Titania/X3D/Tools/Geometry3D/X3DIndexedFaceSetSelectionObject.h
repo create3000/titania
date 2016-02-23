@@ -86,16 +86,6 @@ public:
 	const MFInt32 &
 	coordIndex () const = 0;
 
-	///  @name Private fields
-
-	SFBool &
-	selectable ()
-	{ return *fields .selectable; }
-
-	const SFBool &
-	selectable () const
-	{ return *fields .selectable; }
-
 	///  @name Destruction
 
 	virtual
@@ -115,6 +105,16 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Private fields
+
+	SFBool &
+	selectable ()
+	{ return *fields .selectable; }
+
+	const SFBool &
+	selectable () const
+	{ return *fields .selectable; }
 
 	///  @name Member access
 
@@ -154,9 +154,6 @@ private:
 
 	void
 	set_touch_sensor_over (const bool);
-
-	void
-	set_touch_sensor_active (const bool);
 
 	void
 	set_touch_sensor_hitPoint ();

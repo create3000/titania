@@ -135,7 +135,6 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("SelectedFacesGeometry");
 
 		touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_over);
-		touchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_active);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint);
 		touchSensor -> touchTime ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime);
 
@@ -195,11 +194,6 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
 		activeEdgesGeometry -> coordIndex () .clear ();
 		activePointCoord -> point () .clear ();
 	}
-}
-
-void
-X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
-{
 }
 
 void
