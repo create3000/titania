@@ -116,22 +116,15 @@ IndexedFaceSetTool::set_loadState ()
 		planeSensor = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
 		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
 
-		touchSensor -> isActive ()         .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_active);
 		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 
+		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
 	}
 	catch (const X3DError & error)
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-IndexedFaceSetTool::set_touch_sensor_active (const bool active)
-{
-	if (active)
-		selectable () = true;
 }
 
 void
@@ -185,6 +178,13 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			break;
 		}
 	}
+}
+
+void
+IndexedFaceSetTool::set_plane_sensor_active (const bool active)
+{
+	if (not active)
+		selectable () = true;
 }
 
 void

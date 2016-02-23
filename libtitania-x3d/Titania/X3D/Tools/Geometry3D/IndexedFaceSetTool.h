@@ -208,10 +208,10 @@ private:
 	set_loadState ();
 
 	void
-	set_touch_sensor_active (const bool);
+	set_touch_sensor_hitPoint ();
 
 	void
-	set_touch_sensor_hitPoint ();
+	set_plane_sensor_active (const bool);
 
 	void
 	set_plane_sensor_translation (const Vector3f &);

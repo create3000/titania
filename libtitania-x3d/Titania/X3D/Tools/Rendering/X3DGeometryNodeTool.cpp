@@ -157,7 +157,7 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 				continue;
 	
 			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
-
+	
 			if (frameBuffer -> getPixels () [index])
 				selection .emplace_back (vertex);
 		}
