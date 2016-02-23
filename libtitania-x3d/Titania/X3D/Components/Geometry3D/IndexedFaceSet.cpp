@@ -561,22 +561,8 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 			}
 			default:
 			{
-				// Determine polygon normal.
-				// Or use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal
-
-				normal = Vector3f ();
-
-				for (const auto & element : polygon .elements)
-				{
-					for (size_t i = 0, size = element .size (); i < size; ++ i)
-					{
-						normal += getCoord () -> getNormal (coordIndex () [vertices [element [i]]],
-						                                    coordIndex () [vertices [element [(i + 1) % size]]],
-						                                    coordIndex () [vertices [element [(i + 2) % size]]]);
-					}
-				}
-
-				normal .normalize ();
+				normal = getPolygonNormal (vertices);
+				break;
 			}
 		}
 
@@ -591,6 +577,30 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 	refineNormals (normalIndex, normals, creaseAngle (), ccw ());
 
 	return normals;
+}
+
+Vector3f
+IndexedFaceSet::getPolygonNormal (const Vertices & vertices) const
+{
+	// Determine polygon normal.
+	// We use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal here:
+
+	float x = 0, y = 0, z = 0;
+
+	auto next = getCoord () -> get1Point (coordIndex () [vertices [0]]);
+
+	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	{
+		auto current = next;
+
+		next = getCoord () -> get1Point (coordIndex () [vertices [(i + 1) % size]]);
+
+		x += (current .y () - next .y ()) * (current .z () + next .z ());
+		y += (current .z () - next .z ()) * (current .x () + next .x ());
+		z += (current .x () - next .x ()) * (current .y () + next .y ());
+	}
+
+	return normalize (Vector3f (x, y, z));
 }
 
 SFNode

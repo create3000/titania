@@ -189,12 +189,21 @@ public:
 	addTool () override;
 
 
+protected:
+
+	///  @name Member types
+
+	using Vertices = std::vector <size_t>;
+
+	Vector3f
+	getPolygonNormal (const Vertices &) const;
+
+
 private:
 
 	///  @name Member types
 
-	typedef std::vector <size_t>   Vertices;
-	typedef std::vector <Vertices> ElementArray;
+	using ElementArray = std::vector <Vertices>;
 
 	struct Polygon
 	{
@@ -203,8 +212,8 @@ private:
 
 	};
 
-	typedef std::vector <Polygon>        PolygonArray;
-	typedef opengl::tessellator <size_t> Tessellator;
+	using PolygonArray = std::vector <Polygon>;
+	using Tessellator  = opengl::tessellator <size_t>;
 
 	///  @name Operations
 

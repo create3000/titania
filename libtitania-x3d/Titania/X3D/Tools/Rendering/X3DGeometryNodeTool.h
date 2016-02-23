@@ -69,14 +69,6 @@ public:
 
 	///  @name Private fields
 
-	MFVec3d &
-	set_selection ()
-	{ return *fields .set_selection; }
-
-	const MFVec3d &
-	set_selection () const
-	{ return *fields .set_selection; }
-
 	SFBool &
 	pickable ()
 	{ return *fields .pickable; }
@@ -84,6 +76,14 @@ public:
 	const SFBool &
 	pickable () const
 	{ return *fields .pickable; }
+
+	MFVec3d &
+	set_selection ()
+	{ return *fields .set_selection; }
+
+	const MFVec3d &
+	set_selection () const
+	{ return *fields .set_selection; }
 
 	SFNode &
 	normalTool ()

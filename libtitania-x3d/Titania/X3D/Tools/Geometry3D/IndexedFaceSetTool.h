@@ -155,7 +155,7 @@ public:
 	virtual
 	bool
 	isLineGeometry () const final override
-	{ return X3DComposedGeometryNodeTool::isLineGeometry (); }
+	{ return getNode <IndexedFaceSet> () -> isLineGeometry (); }
 
 	///  @name Operations
 
@@ -187,6 +187,9 @@ public:
 	void
 	dispose () final override;
 
+	virtual
+	~IndexedFaceSetTool ();
+
 
 protected:
 
@@ -200,6 +203,18 @@ protected:
 private:
 
 	///  @name Event handlers
+
+	void
+	set_loadState ();
+
+	void
+	set_touch_sensor_active (const bool);
+
+	void
+	set_touch_sensor_hitPoint ();
+
+	void
+	set_plane_sensor_translation (const Vector3f &);
 
 	void
 	set_mergePoints ();
@@ -218,6 +233,11 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <TouchSensor> touchSensor;
+	X3DPtr <PlaneSensor> planeSensor;
+
+	Vector3d translation;
 
 };
 

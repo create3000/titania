@@ -929,7 +929,7 @@ ColorEditor::set_hitPoint ()
 
 				undoStep -> addObjects (previewGeometry);
 
-				for (const auto & index : selection -> getVertices (nearestFace .first))
+				for (const auto & index : selection -> getFaceVertices (nearestFace .first))
 				{
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -999,7 +999,7 @@ ColorEditor::set_triangle (const std::pair <size_t, size_t> & nearestFace)
 		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
 		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
 		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto vertices             = selection -> getVertices (nearestFace .first);
+		const auto vertices             = selection -> getFaceVertices (nearestFace .first);
 
 		if (vertices .size () < 3)
 			return;

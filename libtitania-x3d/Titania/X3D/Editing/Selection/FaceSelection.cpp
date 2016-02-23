@@ -248,7 +248,7 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 
 	for (const auto & face : faces)
 	{
-		const auto vertices = getVertices (face .first);
+		const auto vertices = getFaceVertices (face .first);
 
 		if (vertices .size () < 3)
 		{
@@ -263,9 +263,9 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 			   const auto i0       = vertices [v == 0 ? vertices .size () - 1 : v - 1];
 			   const auto i1       = vertices [v];
 			   const auto i2       = vertices [(v + 1) % vertices .size ()];
-				const auto index0   = geometryNode -> coordIndex () [i0];
-				const auto index1   = geometryNode -> coordIndex () [i1];
-				const auto index2   = geometryNode -> coordIndex () [i2];
+				const auto index0   = geometryNode -> coordIndex () [i0] .getValue ();
+				const auto index1   = geometryNode -> coordIndex () [i1] .getValue ();
+				const auto index2   = geometryNode -> coordIndex () [i2] .getValue ();
 				const auto point0   = coordNode -> get1Point (index0);
 				const auto point1   = coordNode -> get1Point (index1);
 				const auto point2   = coordNode -> get1Point (index2);
@@ -316,13 +316,13 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 
 ///  Returns all indices to the coordIndex for this face.
 std::vector <size_t>
-FaceSelection::getVertices (const size_t face) const
+FaceSelection::getFaceVertices (const size_t face) const
 {
 	std::vector <size_t> vertices;
 
 	for (size_t i = face, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 	{
-		const auto index = geometryNode -> coordIndex () [i];
+		const auto index = geometryNode -> coordIndex () [i] .getValue ();
 
 		if (index < 0)
 			break;

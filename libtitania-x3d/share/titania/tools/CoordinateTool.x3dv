@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 21 Feb 2016 11:26:02 GMT"
+META "modified" "Tue, 23 Feb 2016 17:49:11 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -90,6 +90,7 @@ Collision {
               }
               DEF TouchSensor TouchSensor { }
               DEF PlaneSensor PlaneSensor {
+                enabled FALSE
                 autoOffset FALSE
                 maxPosition -1 0
               }

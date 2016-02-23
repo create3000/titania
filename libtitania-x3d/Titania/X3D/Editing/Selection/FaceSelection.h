@@ -134,7 +134,7 @@ public:
 	getNearestFace (const Vector3d & , const Faces &);
 
 	std::vector <size_t>
-	getVertices (const size_t) const;
+	getFaceVertices (const size_t) const;
 
 	Edge
 	getEdge (const Vector3d &, const std::vector <size_t> &) const;

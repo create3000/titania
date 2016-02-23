@@ -410,7 +410,7 @@ TextureMappingEditor::on_plane_activate (const size_t x, const size_t y, const b
 	
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
@@ -465,7 +465,7 @@ TextureMappingEditor::on_camera_activate ()
 		
 		for (const auto & face : selectedFaces)
 		{
-			for (const auto & vertex : rightSelection -> getVertices (face))
+			for (const auto & vertex : rightSelection -> getFaceVertices (face))
 				indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 		}
 
@@ -543,7 +543,7 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 	
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
@@ -613,7 +613,7 @@ TextureMappingEditor::on_sphere_activate (const size_t x, const size_t y, const 
 	
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
@@ -635,7 +635,7 @@ TextureMappingEditor::on_sphere_activate (const size_t x, const size_t y, const 
 
 	for (const auto & face : selectedFaces)
 	{
-		const auto vertices = rightSelection -> getVertices (face);
+		const auto vertices = rightSelection -> getFaceVertices (face);
 
 		float min = 1;
 		float max = 0;
@@ -692,7 +692,7 @@ TextureMappingEditor::resolveOverlaps ()
 
 	for (const auto & face : selectedFaces)
 	{
-		const auto vertices = rightSelection -> getVertices (face);
+		const auto vertices = rightSelection -> getFaceVertices (face);
 		
 		if (vertices .empty ())
 			continue;
@@ -763,7 +763,7 @@ TextureMappingEditor::getTexBBox () const
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			points .emplace_back (texCoord -> point () .get1Value (previewGeometry -> texCoordIndex () [vertex]));
 	}
 
@@ -779,7 +779,7 @@ TextureMappingEditor::getBBox (const size_t i1, const size_t i2) const
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 		{
 			const auto point = coord -> get1Point (previewGeometry -> coordIndex () [vertex]);
 			points .emplace_back (point [i1], point [i2]);
@@ -872,7 +872,7 @@ TextureMappingEditor::on_rotate (const std::string & description, const double a
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			vertices .emplace (previewGeometry -> texCoordIndex () .get1Value (vertex));
 	}
 
@@ -908,7 +908,7 @@ TextureMappingEditor::on_flip ()
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			vertices .emplace (previewGeometry -> texCoordIndex () [vertex]);
 	}
 
@@ -943,7 +943,7 @@ TextureMappingEditor::on_flop ()
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 			vertices .emplace (previewGeometry -> texCoordIndex () [vertex]);
 	}
 
@@ -972,7 +972,7 @@ TextureMappingEditor::on_merge_points ()
 	
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 		{
 			const auto index = previewGeometry -> texCoordIndex () [vertex];
 
@@ -1015,7 +1015,7 @@ TextureMappingEditor::on_split_point ()
 
 	for (const auto & face : selectedFaces)
 	{
-		for (const auto & vertex : rightSelection -> getVertices (face))
+		for (const auto & vertex : rightSelection -> getFaceVertices (face))
 		{
 			const auto index = previewGeometry -> texCoordIndex () [vertex];
 		
@@ -1740,7 +1740,7 @@ TextureMappingEditor::set_left_selected_faces ()
 
 		for (const auto & face : selectedFaces)
 		{
-			const auto vertices = rightSelection -> getVertices (face);
+			const auto vertices = rightSelection -> getFaceVertices (face);
 
 			if (vertices .size () < 3)
 				continue;
@@ -2165,7 +2165,7 @@ TextureMappingEditor::set_right_selection (const X3D::Vector3d & hitPoint, const
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 		const auto adjacentFaces     = rightSelection -> getAdjacentFaces (coincidentPoints);
 		const auto nearestFace       = rightSelection -> getNearestFace (hitPoint, adjacentFaces);
-		const auto vertices          = rightSelection -> getVertices (nearestFace .first);
+		const auto vertices          = rightSelection -> getFaceVertices (nearestFace .first);
 
 		if (vertices .size () < 3)
 			return;
@@ -2226,7 +2226,7 @@ TextureMappingEditor::set_right_selected_faces ()
 
 		for (const auto & face : selectedFaces)
 		{
-			const auto vertices = rightSelection -> getVertices (face);
+			const auto vertices = rightSelection -> getFaceVertices (face);
 
 			if (vertices .size () < 3)
 				continue;

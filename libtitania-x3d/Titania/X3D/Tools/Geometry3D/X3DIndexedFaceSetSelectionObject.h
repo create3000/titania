@@ -86,6 +86,16 @@ public:
 	const MFInt32 &
 	coordIndex () const = 0;
 
+	///  @name Private fields
+
+	SFBool &
+	selectable ()
+	{ return *fields .selectable; }
+
+	const SFBool &
+	selectable () const
+	{ return *fields .selectable; }
+
 	///  @name Destruction
 
 	virtual
@@ -115,6 +125,14 @@ protected:
 	int32_t
 	getMasterPoint () const
 	{ return masterPoint; }
+
+	const std::vector <int32_t> &
+	getActivePoints () const
+	{ return activePoints; }
+
+	size_t
+	getActiveFace () const
+	{ return activeFace; }
 
 	const std::map <int32_t, Vector3d> &
 	getSelectedPoints () const
@@ -150,13 +168,7 @@ private:
 	set_touch_sensor_touchTime ();
 
 	void
-	set_point (const Vector3d &, const bool, const bool, const bool);
-
-	void
 	set_plane_sensor_active (const bool);
-
-	void
-	set_plane_sensor_translation (const Vector3f &);
 
 	void
 	setActiveSelection (const Vector3d &, const std::vector <int32_t> &);
@@ -215,8 +227,17 @@ private:
 
 	///  @name Members
 
-	X3DPtr <PlaneSensor>       planeSensor;
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const selectable;
+	};
+
+	Fields fields;
+
 	X3DPtr <TouchSensor>       touchSensor;
+	X3DPtr <PlaneSensor>       planeSensor;
 	X3DPtr <CoordinateDouble>  activePointCoord;
 	X3DPtr <IndexedLineSet>    activeEdgesGeometry;
 	X3DPtr <CoordinateDouble>  selectionCoord;
@@ -232,8 +253,6 @@ private:
 	std::map <int32_t, Vector3d> selectedPoints; // coord index, point
 	SelectedEdges                selectedEdges;  // index to vertex of face to coordIndex array
 	std::set <size_t>            selectedFaces;  // index to first vertex of face to coordIndex array
-
-	Vector3d translation;
 
 };
 

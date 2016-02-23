@@ -83,8 +83,8 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 {
 	addType (X3DConstants::X3DGeometryNodeTool);
 
-	set_selection () .isHidden (true);
 	pickable ()      .isHidden (true);
+	set_selection () .isHidden (true);
 	normalTool ()    .isHidden (true);
 	coordTool  ()    .isHidden (true);
 
@@ -213,7 +213,7 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		// Normals
 	
-		const auto & inlineNode = normalToolNode -> getInlineNode ();
+		const auto & inlineNode        = normalToolNode -> getInlineNode ();
 		auto &       normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
 		auto &       normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
 	
