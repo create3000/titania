@@ -107,7 +107,7 @@ IndexedFaceSetTool::set_splitPoints ()
 	{
 	   const auto & index   = selectedPoint .first;
 	   const auto & point   = selectedPoint .second;
-	   const auto   indices = getFaceSelection () -> getPointIndices (index);
+	   const auto   indices = getFaceSelection () -> getSharedVertices (index);
 
 	   if (indices .empty ())
 	      continue;

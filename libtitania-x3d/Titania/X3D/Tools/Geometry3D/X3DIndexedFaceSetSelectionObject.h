@@ -162,19 +162,22 @@ private:
 	setActiveSelection (const Vector3d &, const std::vector <int32_t> &);
 
 	void
-	setActivePoints ();
+	updateActivePoints ();
 
 	void
-	selectPoints (const Vector3d &, const std::vector <int32_t> &, const bool, const bool);
+	updateActiveFace ();
 
 	void
-	selectFaces (const Vector3d &, const std::vector <int32_t> &, const bool, const bool, const bool);
+	selectPoints (const std::vector <size_t> &);
 
 	void
-	addSelectedPoint (const int32_t);
+	selectFaces (const std::vector <size_t> &, const bool);
 
 	void
-	removeSelectedPoint (const int32_t);
+	addSelectedPoints (const std::vector <size_t> &);
+
+	void
+	removeSelectedPoints (const std::vector <size_t> &);
 
 	void
 	updateSelectedPoints ();
@@ -189,10 +192,10 @@ private:
 	updateSelectedEdges ();
 
 	void
-	addSelectedFace (const size_t);
+	addSelectedFaces (const std::set <size_t> &);
 
 	void
-	removeSelectedFace (const size_t);
+	removeSelectedFaces (const std::set <size_t> &);
 
 	void
 	updateSelectedFaces ();
@@ -218,9 +221,8 @@ private:
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
 
-	std::map <int32_t, Vector3d> activePoints;   // coord index, point
-	std::vector <size_t>         activeVertices; // indices of vertices to coordIndex array
-	size_t                       activeFace;
+	std::vector <size_t> activeVertices; // indices of vertices to coordIndex array
+	size_t               activeFace;
 
 	X3DPtr <FaceSelection>       selection;
 	int32_t                      masterPoint;    // coord index,

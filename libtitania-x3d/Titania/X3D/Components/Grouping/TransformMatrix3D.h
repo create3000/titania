@@ -93,12 +93,12 @@ public:
 	///  @name Fields
 
 	virtual
-	SFMatrix4f &
+	SFMatrix4d &
 	matrix ()
 	{ return *fields .matrix; }
 
 	virtual
-	const SFMatrix4f &
+	const SFMatrix4d &
 	matrix () const
 	{ return *fields .matrix; }
 
@@ -141,7 +141,7 @@ private:
 	{
 		Fields ();
 
-		SFMatrix4f* const matrix;
+		SFMatrix4d* const matrix;
 	};
 
 	Fields fields;

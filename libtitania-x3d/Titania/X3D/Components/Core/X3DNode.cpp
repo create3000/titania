@@ -325,7 +325,7 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	float x, y, z, angle;
+	Rotation4d::value_type x, y, z, angle;
 	
 	value .get (x, y, z, angle);
 

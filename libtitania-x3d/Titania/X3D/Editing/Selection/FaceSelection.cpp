@@ -411,7 +411,7 @@ FaceSelection::getCoincidentPoints (const Vector3d & point) const
 
 ///  Return the indices to the coordIndex to a given point index.
 std::vector <size_t>
-FaceSelection::getPointIndices (const int32_t coordIndex) const
+FaceSelection::getSharedVertices (const int32_t coordIndex) const
 {
 	std::vector <size_t> indices;
 

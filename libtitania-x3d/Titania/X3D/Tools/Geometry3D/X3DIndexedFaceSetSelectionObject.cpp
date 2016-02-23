@@ -52,14 +52,14 @@
 
 #include "../Rendering/CoordinateTool.h"
 
-#include "../../Editing/Selection/FaceSelection.h"
-#include "../../Rendering/FrameBuffer.h"
-
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Editing/Selection/FaceSelection.h"
+
 
 namespace titania {
 namespace X3D {
@@ -76,7 +76,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	      selectedEdgesGeometry (),
 	      selectedFacesGeometry (),
 	                  coordNode (),
-	               activePoints (),
 	             activeVertices (),
 	                 activeFace (0),
 	                  selection (new FaceSelection (getExecutionContext ())),
@@ -169,15 +168,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 {
 	try
 	{
-		// Update active point
-
-		for (auto & activePoint : activePoints)
-			activePoint .second = getCoord () -> get1Point (activePoint .first);
-
-		setActivePoints ();
-	
-		// Update selected points
-	
+		updateActivePoints ();
 		updateSelectedPoints ();
 
 		if (planeSensor -> isActive ())
@@ -229,57 +220,66 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 
 	// Setup PlaneSensor
 
-	if (activePoints .size () == 0)
+	switch (activeVertices .size ())
 	{
-		planeSensor -> enabled () = false;
-	}
-	else if (activePoints .size () == 1)
-	{
-		// Translate over screen plane
+		case 0:
+		{
+			planeSensor -> enabled () = false;
+			break;
+		}
+		case 1:
+		{
+			// Translate over screen plane
 
-		const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
+			const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+			const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-		planeSensor -> enabled ()      = not paintSelection ();
-		planeSensor -> axisRotation () = axisRotation;
-		planeSensor -> maxPosition ()  = Vector2f (-1, -1);
-	}
-	else if (activePoints .size () == 2)
-	{
-		// Translate along edge
+			planeSensor -> enabled ()      = not paintSelection ();
+			planeSensor -> axisRotation () = axisRotation;
+			planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+			break;
+		}
+		case 2:
+		{
+			// Translate along edge
 
-		const auto vector       = getCoord () -> get1Point (activeEdgesGeometry -> coordIndex () [0]) - getCoord () -> get1Point (activeEdgesGeometry -> coordIndex () [1]);
-		const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
+			const auto vector       = getCoord () -> get1Point (activeEdgesGeometry -> coordIndex () [0]) - getCoord () -> get1Point (activeEdgesGeometry -> coordIndex () [1]);
+			const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-		planeSensor -> enabled ()      = not paintSelection ();
-		planeSensor -> axisRotation () = axisRotation;
-		planeSensor -> maxPosition ()  = Vector2f (-1, 0);
-	}
-	else
-	{
-		// Translate along face normal
-		planeSensor -> enabled () = false;
+			planeSensor -> enabled ()      = not paintSelection ();
+			planeSensor -> axisRotation () = axisRotation;
+			planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+			break;
+		}
+		default:
+		{
+			// Translate along face normal
+			planeSensor -> enabled () = false;
+			// ...
+			break;
+		}
 	}
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & vertices)
+X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & points)
 {
-	FrameBuffer depthBuffer (getBrowser (), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3], 0, false);
+	std::vector <size_t> vertices;
 
-	depthBuffer .setup ();
-	depthBuffer .bind ();
-	getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH);
-	depthBuffer .readDepth ();
-	depthBuffer .unbind ();
-
-	for (const Vector3d & vertex : vertices)
+	for (const auto & point : points)
 	{
-		// In this order.
-		const auto coincidentPoints = selection -> getCoincidentPoints (vertex);
-		selectPoints (vertex, coincidentPoints, paintSelection (), true);
-		selectFaces  (vertex, coincidentPoints, paintSelection (), true, true);
+		const auto coincidentPoints = selection -> getCoincidentPoints (point);
+
+		for (const auto & index : coincidentPoints)
+		{
+		   const auto pointIndices = selection -> getSharedVertices (index);
+			vertices .insert (vertices .end (), pointIndices .begin (), pointIndices .end ());
+		}
 	}
+
+	// In this order.
+	selectPoints (vertices);
+	selectFaces  (vertices, true);
 
 	// In this order.
 	updateSelectedFaces ();
@@ -293,16 +293,9 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	if (translation not_eq Vector3d ())
 		return;
 
-	bool first = true;
-
-	for (const auto & activePoint : activePoints)
-	{
-		// In this order.
-		const auto coincidentPoints = selection -> getCoincidentPoints (activePoint .second);
-		selectPoints (activePoint .second, coincidentPoints, not first or paintSelection (), false);
-		selectFaces  (activePoint .second, coincidentPoints, not first or paintSelection (), false, activePoints .size () < 3 and not paintSelection ());
-		first = false;
-	}
+	// In this order.
+	selectPoints (activeVertices);
+	selectFaces  (activeVertices, activeVertices .size () < 3);
 
 	// In this order.
 	updateSelectedFaces ();
@@ -315,16 +308,12 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 {
 	const auto index    = coincidentPoints [0];
 	const auto point    = getCoord () -> get1Point (index);
-	const auto faces    = selection -> getAdjacentFaces (index);
+	const auto faces    = selection -> getAdjacentFaces (coincidentPoints);
 	const auto face     = selection -> getNearestFace (hitPoint, faces) .first;
 	const auto vertices = selection -> getVertices (face);
 
 	activeFace = face;
-
-	// Active line
-
 	activeVertices .clear ();
-	activePoints   .clear ();
 
 	if (vertices .size () >= 3)
 	{
@@ -338,164 +327,132 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 			if (distance > SELECTION_DISTANCE)
 			{
 				// Face
-
 				activeVertices = vertices;
-
-				for (const auto & i : vertices)
-					activePoints .emplace (coordIndex () [i], getCoord () -> get1Point (coordIndex () [i]));
 			}
 			else
 			{
 				// Edge
-
-				activePoints .emplace (coordIndex () [edge .index0], edge .segment .point0 ());
-				activePoints .emplace (coordIndex () [edge .index1], edge .segment .point1 ());
+				activeVertices = { edge .index0, edge .index1 };
 			}
 		}
 		else
 		{
 			// Point
-			activePoints = { std::make_pair (index, point) };
+			activeVertices = { selection -> getSharedVertices (index) [0] };
 		}
 	}
 
-	setActivePoints ();
+	updateActiveFace ();
+	updateActivePoints ();
 }
 
 void
-X3DIndexedFaceSetSelectionObject::setActivePoints ()
+X3DIndexedFaceSetSelectionObject::updateActivePoints ()
 {
-	activeEdgesGeometry -> coordIndex () .clear ();
+	size_t i = 0;
 
-	if (activePoints .size () == 2)
-	{
-		for (const auto activePoint : activePoints)
-			activeEdgesGeometry -> coordIndex () .emplace_back (activePoint .first);
-
-		activeEdgesGeometry -> coordIndex () .emplace_back (-1);
-	}
-	else if (activePoints .size () > 2)
-	{
-		for (const auto vertex : activeVertices)
-			activeEdgesGeometry -> coordIndex () .emplace_back (coordIndex () [vertex]);
-
-		activeEdgesGeometry -> coordIndex () .emplace_back (coordIndex () [activeVertices [0]]);
-		activeEdgesGeometry -> coordIndex () .emplace_back (-1);
-	}
-
-	activePointCoord -> point () .clear ();
-
-	for (const auto activePoint : activePoints)
-		activePointCoord -> point () .emplace_back (activePoint .second);
+	for (const auto activeVertex : activeVertices)
+		activePointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (coordIndex () [activeVertex]));
+	
+	activePointCoord -> point () .resize (i);
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectPoints (const Vector3d & hitPoint,
-                                                const std::vector <int32_t> & points,
-                                                const bool paint,
-                                                const bool coincidentPoints)
+X3DIndexedFaceSetSelectionObject::updateActiveFace ()
 {
-	struct PointComp
+	size_t i = 0;
+
+	if (not activeVertices .empty ())
 	{
-		bool
-		operator () (const SFVec3f & value, const Vector3f & point)
-		{ return value .getValue () < point; }
+		for (const auto activeVertex : activeVertices)
+			activeEdgesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [activeVertex]);
 
-	};
-
-	for (const auto & index : points)
-	{
-		const auto point = getCoord () -> get1Point (index);
-
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-			return;
-	
-		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
-		{
-			selectionCoord -> point () .clear ();
-			selectedPoints .clear ();
-		}
-	
-		if (getBrowser () -> hasControlKey ())
-			removeSelectedPoint (index);
-
-		else
-			addSelectedPoint (index);
-
-		if (not coincidentPoints)
-			break;
+		activeEdgesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [activeVertices [0]]);
+		activeEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
 	}
+
+	activeEdgesGeometry -> coordIndex () .resize (i);
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectFaces (const Vector3d & hitPoint,
-                                               const std::vector <int32_t> & points,
-                                               const bool paint,
-                                               const bool coincidentPoints,
-                                               const bool adjacentFaces)
+X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <size_t> & vertices)
 {
-	struct PointComp
+	if (not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
 	{
-		bool
-		operator () (const SFVec3f & value, const Vector3f & point)
-		{ return value .getValue () < point; }
+		selectionCoord -> point () .clear ();
+		selectedPoints .clear ();
+	}
 
-	};
+	if (getBrowser () -> hasControlKey ())
+		removeSelectedPoints (vertices);
 
-	for (const auto & index : points)
+	else
+		addSelectedPoints (vertices);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <size_t> & vertices, const bool adjacentFaces)
+{
+	if (not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
 	{
-		const auto point = getCoord () -> get1Point (index);
-	
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
-			return;
-	
-		if (not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey () and not paint)
+		selectedFacesGeometry -> coordIndex () .clear ();
+		selectedFaces .clear ();
+		selectedEdges .clear ();
+	}
+
+	if (getBrowser () -> hasControlKey ())
+	{
+		if (adjacentFaces)
 		{
-			selectedFacesGeometry -> coordIndex () .clear ();
-			selectedFaces .clear ();
-			selectedEdges .clear ();
-		}
-	
-		if (getBrowser () -> hasControlKey ())
-		{
-			if (adjacentFaces)
+			for (const auto & vertex : vertices)
 			{
-				for (const auto & face : selection -> getAdjacentFaces (index))
-					removeSelectedFace (face .first);
+				std::set <size_t> faces;
+
+				for (const auto & face : selection -> getAdjacentFaces (coordIndex () [vertex]))
+					faces .emplace (face .first);
+
+				removeSelectedFaces (faces);
 			}
-			else
-				removeSelectedFace (activeFace);
 		}
 		else
+			removeSelectedFaces ({ vertices [0] });
+	}
+	else
+	{
+		if (adjacentFaces)
 		{
-			if (adjacentFaces)
+			for (const auto & vertex : vertices)
 			{
-				for (const auto & face : selection -> getAdjacentFaces (index))
-					addSelectedFace (face .first);
-			}
-			else
-				addSelectedFace (activeFace);
-		}
+				std::set <size_t> faces;
 
-		if (not coincidentPoints)
-			break;
+				for (const auto & face : selection -> getAdjacentFaces (coordIndex () [vertex]))
+					faces .emplace (face .first);
+
+				addSelectedFaces (faces);
+			}
+		}
+		else
+			addSelectedFaces ({ vertices [0] });
 	}
 }
 
 void
-X3DIndexedFaceSetSelectionObject::addSelectedPoint (const int32_t index)
+X3DIndexedFaceSetSelectionObject::addSelectedPoints (const std::vector <size_t> & vertices)
 {
-	const auto point = getCoord () -> get1Point (index);
+	for (const auto & vertex : vertices)
+	{
+	   const auto index = coordIndex () [vertex] .getValue ();
+		selectedPoints .emplace (index, getCoord () -> get1Point (index));
+	}
 
-	selectedPoints .emplace (index, point);
-
-	masterPoint = index;
+	masterPoint = vertices .back ();
 }
 
 void
-X3DIndexedFaceSetSelectionObject::removeSelectedPoint (const int32_t index)
+X3DIndexedFaceSetSelectionObject::removeSelectedPoints (const std::vector <size_t> & vertices)
 {
-	selectedPoints .erase (index);
+	for (const auto & vertex : vertices)
+		selectedPoints .erase (coordIndex () [vertex]);
 }
 
 void
@@ -517,8 +474,8 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdges (const std::vector <size_t> &
 		auto i0 = i;
 		auto i1 = (i0 + 1) % size;
 
-		auto index0 = coordIndex () [vertices [i0]];
-		auto index1 = coordIndex () [vertices [i1]];
+		auto index0 = coordIndex () [vertices [i0]] .getValue ();
+		auto index1 = coordIndex () [vertices [i1]] .getValue ();
 
 		if (index0 > index1)
 		{
@@ -538,8 +495,8 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdges (const std::vector <size_t
 		auto i0 = i;
 		auto i1 = (i0 + 1) % size;
 
-		auto index0 = coordIndex () [vertices [i0]];
-		auto index1 = coordIndex () [vertices [i1]];
+		auto index0 = coordIndex () [vertices [i0]] .getValue ();
+		auto index1 = coordIndex () [vertices [i1]] .getValue ();
 
 		if (index0 > index1)
 		{
@@ -570,46 +527,44 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::addSelectedFace (const size_t index)
+X3DIndexedFaceSetSelectionObject::addSelectedFaces (const std::set <size_t> & faces)
 {
-	const auto vertices = selection -> getVertices (index);
-
-	if (isInSelection (vertices))
+	for (const auto & face : faces)
 	{
-		addSelectedEdges (vertices);
-		selectedFaces .emplace (index);
+		const auto vertices = selection -> getVertices (face);
+
+		if (isInSelection (vertices))
+		{
+			addSelectedEdges (vertices);
+			selectedFaces .emplace (face);
+		}
 	}
 }
 
 void
-X3DIndexedFaceSetSelectionObject::removeSelectedFace (const size_t index)
+X3DIndexedFaceSetSelectionObject::removeSelectedFaces (const std::set <size_t> & faces)
 {
-	const auto vertices = selection -> getVertices (index);
-
-	if (not isInSelection (vertices))
+	for (const auto & face : faces)
 	{
+		const auto vertices = selection -> getVertices (face);
+
+		if (isInSelection (vertices))
+		   continue;
+
 		removeSelectedEdges (vertices);
-		selectedFaces .erase (index);
+		selectedFaces .erase (face);
 	}
 }
 
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 {
-	for (const auto index : selectedFaces)
-	{
-		for (const auto v : selection -> getVertices (index))
-			addSelectedPoint (coordIndex () [v]);
-	}
-
 	size_t i = 0;
 
 	for (const auto index : selectedFaces)
 	{
-		const auto vertices = selection -> getVertices (index);
-	
-		for (const auto v : vertices)
-			selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [v]);
+		for (const auto vertex : selection -> getVertices (index))
+			selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [vertex]);
 	
 		selectedFacesGeometry -> coordIndex () .set1Value (i ++, -1);
 	}
@@ -620,10 +575,12 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 bool
 X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & vertices) const
 {
-	for (const auto & v : vertices)
+	for (const auto & vertex : vertices)
 	{
-		if (not selectedPoints .count (coordIndex () [v]))
-			return false;
+		if (selectedPoints .count (coordIndex () [vertex]))
+			continue;
+
+		return false;
 	}
 
 	return true;

@@ -143,7 +143,7 @@ public:
 	getCoincidentPoints (const Vector3d &) const;
 
 	std::vector <size_t>
-	getPointIndices (const int32_t) const;
+	getSharedVertices (const int32_t) const;
 
 	///  @name Destruction
 

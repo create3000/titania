@@ -63,7 +63,7 @@ const std::string   TransformMatrix3D::typeName       = "TransformMatrix3D";
 const std::string   TransformMatrix3D::containerField = "children";
 
 TransformMatrix3D::Fields::Fields () :
-	     matrix (new SFMatrix4f ())
+	     matrix (new SFMatrix4d ())
 { }
 
 TransformMatrix3D::TransformMatrix3D (X3DExecutionContext* const executionContext) :
@@ -109,13 +109,13 @@ TransformMatrix3D::setMatrix (const Matrix4d & value)
 void
 TransformMatrix3D::eventsProcessed ()
 {
-	X3DTransformMatrix4DNode::setMatrix (matrix () .getValue ());
+	X3DTransformMatrix4DNode::setMatrix (matrix ());
 }
 
 Matrix4d
 TransformMatrix3D::getCurrentMatrix () const
 {
-	return matrix () .getValue ();
+	return matrix ();
 }
 
 } // X3D
