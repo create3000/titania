@@ -238,6 +238,7 @@ private:
 	X3DPtr <PlaneSensor> planeSensor;
 
 	Vector3d translation;
+	size_t   translations;
 
 };
 

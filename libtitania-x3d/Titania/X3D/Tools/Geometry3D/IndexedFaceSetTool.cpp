@@ -59,6 +59,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr size_t TRANSLATIONS_EVENTS = 4;
+
 IndexedFaceSetTool::Fields::Fields () :
 	 mergePoints (new SFTime ()),
 	 splitPoints (new SFTime ())
@@ -73,7 +75,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                          fields (),
 	                     touchSensor (),
 	                     planeSensor (),
-	                     translation ()
+	                     translation (),
+	                    translations (0)
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
@@ -183,13 +186,20 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 void
 IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 {
-	if (not active)
-		selectable () = true;
+	if (active)
+	   return;
+
+	selectable () = true;
+	translations  = 0;
 }
 
 void
 IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & translation)
 {
+	// Prevent accidentially move.
+	if (translations ++ < TRANSLATIONS_EVENTS)
+	   return;
+
 	if (abs (translation) and selectable ())
 		selectable () = false;
 

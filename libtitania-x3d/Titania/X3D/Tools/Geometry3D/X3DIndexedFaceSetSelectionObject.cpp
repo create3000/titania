@@ -64,7 +64,7 @@
 namespace titania {
 namespace X3D {
 
-constexpr double SELECTION_DISTANCE = 8;
+static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	       selectable (new SFBool (true)),
