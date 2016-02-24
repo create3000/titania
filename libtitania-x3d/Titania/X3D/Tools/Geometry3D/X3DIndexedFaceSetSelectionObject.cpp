@@ -90,7 +90,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	              selectedEdges (),
 	              selectedFaces ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
+	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
 	selectable ()       .isHidden (true);
 	replaceSelection () .isHidden (true);

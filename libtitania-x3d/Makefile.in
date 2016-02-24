@@ -531,6 +531,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Editing/Undo/UndoGroup.lo \
 	Titania/X3D/Editing/Undo/UndoHistory.lo \
 	Titania/X3D/Editing/Undo/UndoStep.lo \
+	Titania/X3D/Editing/Undo/UndoStepContainer.lo \
 	Titania/X3D/Editing/X3DEditor.lo \
 	Titania/X3D/Execution/BindableNodeList.lo \
 	Titania/X3D/Execution/ExportedNode.lo \
@@ -1294,6 +1295,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Editing/Undo/UndoGroup.cpp \
 	Titania/X3D/Editing/Undo/UndoHistory.cpp \
 	Titania/X3D/Editing/Undo/UndoStep.cpp \
+	Titania/X3D/Editing/Undo/UndoStepContainer.cpp \
 	Titania/X3D/Editing/X3DEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \
@@ -3065,6 +3067,9 @@ Titania/X3D/Editing/Undo/UndoHistory.lo:  \
 Titania/X3D/Editing/Undo/UndoStep.lo:  \
 	Titania/X3D/Editing/Undo/$(am__dirstamp) \
 	Titania/X3D/Editing/Undo/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Editing/Undo/UndoStepContainer.lo:  \
+	Titania/X3D/Editing/Undo/$(am__dirstamp) \
+	Titania/X3D/Editing/Undo/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Editing/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Editing
 	@: > Titania/X3D/Editing/$(am__dirstamp)
@@ -4170,6 +4175,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Undo/$(DEPDIR)/UndoGroup.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Undo/$(DEPDIR)/UndoHistory.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Undo/$(DEPDIR)/UndoStep.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Undo/$(DEPDIR)/UndoStepContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/BindableNodeList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/ExportedNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Execution/$(DEPDIR)/ExportedNodeIndex.Plo@am__quote@

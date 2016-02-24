@@ -55,6 +55,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../Components/Geospatial/GeoCoordinate.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
+#include "../../Components/Rendering/Coordinate.h"
 #include "../../Editing/Selection/FaceSelection.h"
 
 namespace titania {
@@ -64,7 +67,8 @@ static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 IndexedFaceSetTool::Fields::Fields () :
 	 mergePoints (new SFTime ()),
-	 splitPoints (new SFTime ())
+	 splitPoints (new SFTime ()),
+	undo_changed (new UndoStepContainerPtr ())
 { }
 
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
@@ -77,7 +81,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                     touchSensor (),
 	                     planeSensor (),
 	                     translation (),
-	                    translations (0)
+	                    translations (0),
+	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
@@ -90,6 +95,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "replaceSelection", replaceSelection ());
 	addField (inputOutput, "mergePoints",      mergePoints ());
 	addField (inputOutput, "splitPoints",      splitPoints ());
+	addField (inputOutput, "undo_changed",     undo_changed ());
 	addField (inputOutput, "normalTool",       normalTool ());
 	addField (inputOutput, "coordTool",        coordTool ());
 
@@ -135,80 +141,143 @@ IndexedFaceSetTool::set_loadState ()
 void
 IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 {
-	if (planeSensor -> isActive ())
-		return;
-
-	// Setup PlaneSensor
-
-	switch (getActivePoints () .size ())
+	try
 	{
-		case 0:
-		{
-			planeSensor -> enabled () = false;
-			break;
-		}
-		case 1:
-		{
-			// Translate over screen plane
+		if (planeSensor -> isActive ())
+			return;
 
-			const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-			const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
+		// Setup PlaneSensor
 
-			planeSensor -> enabled ()      = replaceSelection (); // XXX
-			planeSensor -> axisRotation () = axisRotation;
-			planeSensor -> maxPosition ()  = Vector2f (-1, -1);
-			break;
-		}
-		case 2:
+		switch (getActivePoints () .size ())
 		{
-			// Translate along edge
-
-			const auto vector       = getCoord () -> get1Point (getActivePoints () [0]) - getCoord () -> get1Point (getActivePoints () [1]);
-			const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-			planeSensor -> enabled ()      = replaceSelection (); // XXX
-			planeSensor -> axisRotation () = axisRotation;
-			planeSensor -> maxPosition ()  = Vector2f (-1, 0);
-			break;
-		}
-		default:
-		{
-			const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getActiveFace ()));
-				
-			if (getBrowser () -> hasShiftKey ())
+			case 0:
 			{
-				// Translate along face normal
-
-				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
-
-				planeSensor -> enabled ()      = replaceSelection (); // XXX
-				planeSensor -> axisRotation () = axisRotation;
-				planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+				planeSensor -> enabled () = false;
+				break;
 			}
-			else
+			case 1:
 			{
-				// Translate along plane
+				// Translate over screen plane
 
-				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-				planeSensor -> enabled ()      = replaceSelection (); // XXX
+				planeSensor -> enabled ()      = replaceSelection ();
 				planeSensor -> axisRotation () = axisRotation;
 				planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+				break;
 			}
-	
-			break;
+			case 2:
+			{
+				// Translate along edge
+
+				const auto vector       = getCoord () -> get1Point (getActivePoints () [0]) - getCoord () -> get1Point (getActivePoints () [1]);
+				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
+
+				planeSensor -> enabled ()      = replaceSelection ();
+				planeSensor -> axisRotation () = axisRotation;
+				planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+				break;
+			}
+			default:
+			{
+				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getActiveFace ()));
+					
+				if (getBrowser () -> hasShiftKey ())
+				{
+					// Translate along face normal
+
+					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+
+					planeSensor -> enabled ()      = replaceSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+				}
+				else
+				{
+					// Translate along plane
+
+					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+					planeSensor -> enabled ()      = replaceSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+				}
+		
+				break;
+			}
 		}
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 void
 IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 {
-	if (active)
-	   return;
+	// Create undo step for translation.
 
-	selectable () = true;
-	translations  = 0;
+	switch (getCoord () -> getType () .back ())
+	{
+		case X3DConstants::Coordinate:
+		{
+			X3DPtr <Coordinate> coordinate (getCoord ());
+
+			if (active)
+			{
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate Coordinate »point«"));
+				undoStep -> addObjects (coordinate);
+				undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			}
+			else
+				undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			
+			break;
+		}
+		case X3DConstants::CoordinateDouble:
+		{
+			X3DPtr <CoordinateDouble> coordinate (getCoord ());
+
+			if (active)
+			{
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate CoordinateDouble »point«"));
+				undoStep -> addObjects (coordinate);
+				undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			}
+			else
+				undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			
+			break;
+		}
+		case X3DConstants::GeoCoordinate:
+		{
+			X3DPtr <GeoCoordinate> coordinate (getCoord ());
+
+			if (active)
+			{
+				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate GeoCoordinate »point«"));
+				undoStep -> addObjects (coordinate);
+				undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			}
+			else
+				undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+
+			break;
+		}
+		default:
+			break;
+	}
+
+	// Reset fields and send undo step.
+
+	if (not active)
+	{
+		if (selectable () == false)
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+
+		selectable () = true;
+		translations  = 0;
+	}
 }
 
 void

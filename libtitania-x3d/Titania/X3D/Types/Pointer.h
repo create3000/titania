@@ -183,6 +183,10 @@ using MaterialPtr         = X3DPtr <Material>;
 using TwoSidedMaterialPtr = X3DPtr <TwoSidedMaterial>;
 using X3DShapeNodePtr     = X3DPtr <X3DShapeNode>;
 
+class UndoStepContainer;
+
+using UndoStepContainerPtr = X3DPtr <UndoStepContainer>;
+
 } // X3D
 } // titania
 

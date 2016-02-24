@@ -785,6 +785,7 @@
     <None Include="Titania\X3D\Tools\Sound\SoundTool.h" />
     <None Include="share\titania\tools\library\QuadSphere.x3dv" />
     <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetSelectionObject.h" />
+    <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1319,6 +1320,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Sound\SoundTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetSelectionObject.cpp" />
+    <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

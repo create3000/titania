@@ -404,6 +404,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Editing/Undo/UndoGroup.cpp \
 	Titania/X3D/Editing/Undo/UndoHistory.cpp \
 	Titania/X3D/Editing/Undo/UndoStep.cpp \
+	Titania/X3D/Editing/Undo/UndoStepContainer.cpp \
 	Titania/X3D/Editing/X3DEditor.cpp \
 	Titania/X3D/Execution/BindableNodeList.cpp \
 	Titania/X3D/Execution/ExportedNode.cpp \

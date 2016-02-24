@@ -70,7 +70,7 @@ protected:
 		    X3DSoundNode (),
 		X3DChildNodeTool ()
 	{
-		//addType (X3DConstants::X3DSoundNodeTool);
+		addType (X3DConstants::X3DSoundNodeTool);
 	}
 
 };

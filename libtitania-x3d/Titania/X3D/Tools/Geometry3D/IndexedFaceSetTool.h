@@ -55,6 +55,7 @@
 #include "../Geometry3D/X3DIndexedFaceSetSelectionObject.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Editing/Undo/UndoStepContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -150,6 +151,14 @@ public:
 	splitPoints () const
 	{ return *fields .splitPoints; }
 
+	UndoStepContainerPtr &
+	undo_changed ()
+	{ return *fields .undo_changed; }
+
+	const UndoStepContainerPtr &
+	undo_changed () const
+	{ return *fields .undo_changed; }
+
 	///  @name Member access
 
 	virtual
@@ -230,6 +239,7 @@ private:
 
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
+		UndoStepContainerPtr* const undo_changed;
 	};
 
 	Fields fields;
@@ -239,6 +249,8 @@ private:
 
 	Vector3d translation;
 	size_t   translations;
+
+	UndoStepPtr undoStep;
 
 };
 

@@ -48,106 +48,71 @@
  *
  ******************************************************************************/
 
-#include "SoundTool.h"
+#ifndef __TITANIA_X3D_EDITING_UNDO_UNDO_STEP_CONTAINER_H__
+#define __TITANIA_X3D_EDITING_UNDO_UNDO_STEP_CONTAINER_H__
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Fields/X3DPtr.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Editing/Undo/UndoStep.h"
 
 namespace titania {
 namespace X3D {
 
-SoundTool::SoundTool (Sound* const node) :
-	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	           Sound (node -> getExecutionContext ()),
-	     X3DBaseTool (node),
-	X3DSoundNodeTool (),
-	X3DBoundedObject ()
+class UndoStepContainer :
+	public X3DBaseNode
 {
-	addType (X3DConstants::SoundTool);
-}
+public:
 
-void
-SoundTool::initialize ()
-{
-	X3DSoundNodeTool::initialize ();
-	X3DBoundedObject::initialize ();
+	///  @name Construction
 
-	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
-}
+	UndoStepContainer (X3DExecutionContext* const, const UndoStepPtr &);
 
-void
-SoundTool::realize ()
-{
-	try
-	{
-		getToolNode () -> setField <SFNode>  ("sound", getNode <Sound> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
+	virtual
+	UndoStepContainer*
+	create (X3DExecutionContext* const) const final override;
 
-Box3d
-SoundTool::getBBox () const
-{
-	const auto a = (maxBack () + maxFront ()) / 2;
-	const auto e = a - maxBack ();
-	const auto b = std::sqrt (a * a - e * e);
+	///  @name Common members
 
-	const auto center   = Vector3d (0, 0, e);
-	const auto size     = Vector3d (b, b, a) * 2.0;
-	const auto rotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ()));
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
-	auto bbox = Box3d (size, center);
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
 
-	bbox .rotate (rotation);
-	bbox .translate (Vector3d (location () .getValue ()));
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
-	return bbox;
-}
+	/// @name Member access
 
-void
-SoundTool::traverse (const TraverseType type)
-{
-	getNode <Sound> () -> traverse (type);
+	const UndoStepPtr &
+	getUndoStep () const
+	{ return undoStep; }
 
-	X3DToolObject::traverse (type);
-}
 
-void
-SoundTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (this));
-	}
-	catch (const X3DError &)
-	{ }
-}
+private:
 
-void
-SoundTool::removeTool (const bool really)
-{
-	if (really)
-		X3DSoundNodeTool::removeTool ();
+	///  @name Static members
 
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
-void
-SoundTool::dispose ()
-{
-	X3DBoundedObject::dispose ();
-	X3DSoundNodeTool::dispose ();
-}
+	///  @name Members
+
+	const UndoStepPtr undoStep;
+
+};
 
 } // X3D
 } // titania
+
+#endif

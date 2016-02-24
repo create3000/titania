@@ -58,6 +58,7 @@
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
 #include <Titania/X3D/Tools/ToolColors.h>
 
 namespace titania {
@@ -201,6 +202,8 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")      .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")      .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
 
+						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed") .addInterest (this, &GeometryEditor::set_undo);
+
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                            true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),            true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),         true);
@@ -219,6 +222,14 @@ GeometryEditor::connect ()
 			__LOG__ << error .what () << std::endl;
 		}
 	}
+}
+
+void
+GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
+{
+	__LOG__ << std::endl;
+
+	getBrowserWindow () -> addUndoStep (container -> getUndoStep ());
 }
 
 void
@@ -302,27 +313,27 @@ GeometryEditor::on_hammer_clicked ()
 			switch (type)
 			{
 				case X3D::X3DConstants::X3DPrototypeInstance :
+				{
+					try
 					{
-						try
+						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry () -> getInnerNode ());
+
+						if (geometry)
 						{
-							const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry () -> getInnerNode ());
+							X3D::MFNode        exports ({ geometry });
+							basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports));
 
-							if (geometry)
-							{
-								X3D::MFNode        exports ({ geometry });
-								basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports));
+							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
+							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
-								const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
-								const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
-
-								getBrowserWindow () -> addToGroup (getCurrentContext (), X3D::SFNode (shape), nodes, undoStep);
-							}
+							getBrowserWindow () -> addToGroup (getCurrentContext (), X3D::SFNode (shape), nodes, undoStep);
 						}
-						catch (const X3D::X3DError &)
-						{ }
-
-						break;
 					}
+					catch (const X3D::X3DError &)
+					{ }
+
+					break;
+				}
 				case X3D::X3DConstants::X3DGeometryNode:
 				{
 					try

@@ -172,11 +172,11 @@ public:
 
 	///  @name Node handling
 
-	template <class Type>
+	template <class Type, class ... Args>
 	X3DPtr <Type>
-	createNode ()
+	createNode (Args && ... args)
 	{
-		const X3DPtr <Type> node = new Type (this);
+		const X3DPtr <Type> node = new Type (this, std::forward <Args> (args) ...);
 
 		addUninitializedNode (node);
 

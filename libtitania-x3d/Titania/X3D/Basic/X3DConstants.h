@@ -517,6 +517,8 @@ enum NodeType : uint16_t
 
 	// Tool nodes
 
+	UndoStepContainer,
+
 	AnchorTool,
 	AngleTool,
 	BillboardTool,
@@ -545,6 +547,7 @@ enum NodeType : uint16_t
 	ProximitySensorTool,
 	ScreenGroupTool,
 	ShapeTool,
+	SoundTool,
 	SpotLightTool,
 	SwitchTool,
 	Tool,
@@ -565,12 +568,14 @@ enum NodeType : uint16_t
 	X3DGeospatialObjectTool,
 	X3DGridTool,
 	X3DGroupingNodeTool,
+	X3DIndexedFaceSetSelectionObject,
 	X3DLightNodeTool,
 	X3DNodeTool,
 	X3DNormalNodeTool,
 	X3DProductStructureChildNodeTool,
 	X3DSensorNodeTool,
 	X3DShapeNodeTool,
+	X3DSoundNodeTool,
 	X3DToolObject,
 	X3DTransformMatrix4DNodeTool,
 	X3DTransformNodeTool,

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,105 +48,28 @@
  *
  ******************************************************************************/
 
-#include "SoundTool.h"
+#include "UndoStepContainer.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-SoundTool::SoundTool (Sound* const node) :
-	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	           Sound (node -> getExecutionContext ()),
-	     X3DBaseTool (node),
-	X3DSoundNodeTool (),
-	X3DBoundedObject ()
+const ComponentType UndoStepContainer::component      = ComponentType::TITANIA;
+const std::string   UndoStepContainer::typeName       = "UndoStepContainer";
+const std::string   UndoStepContainer::containerField = "undoStep";
+
+UndoStepContainer::UndoStepContainer (X3DExecutionContext* const executionContext, const UndoStepPtr & undoStep) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   undoStep (undoStep)
 {
-	addType (X3DConstants::SoundTool);
+	addType (X3DConstants::UndoStepContainer);
 }
 
-void
-SoundTool::initialize ()
+UndoStepContainer*
+UndoStepContainer::create (X3DExecutionContext* const executionContext) const
 {
-	X3DSoundNodeTool::initialize ();
-	X3DBoundedObject::initialize ();
-
-	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
-}
-
-void
-SoundTool::realize ()
-{
-	try
-	{
-		getToolNode () -> setField <SFNode>  ("sound", getNode <Sound> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-Box3d
-SoundTool::getBBox () const
-{
-	const auto a = (maxBack () + maxFront ()) / 2;
-	const auto e = a - maxBack ();
-	const auto b = std::sqrt (a * a - e * e);
-
-	const auto center   = Vector3d (0, 0, e);
-	const auto size     = Vector3d (b, b, a) * 2.0;
-	const auto rotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ()));
-
-	auto bbox = Box3d (size, center);
-
-	bbox .rotate (rotation);
-	bbox .translate (Vector3d (location () .getValue ()));
-
-	return bbox;
-}
-
-void
-SoundTool::traverse (const TraverseType type)
-{
-	getNode <Sound> () -> traverse (type);
-
-	X3DToolObject::traverse (type);
-}
-
-void
-SoundTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (this));
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-void
-SoundTool::removeTool (const bool really)
-{
-	if (really)
-		X3DSoundNodeTool::removeTool ();
-
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
-
-void
-SoundTool::dispose ()
-{
-	X3DBoundedObject::dispose ();
-	X3DSoundNodeTool::dispose ();
+	return new UndoStepContainer (executionContext, undoStep);
 }
 
 } // X3D
