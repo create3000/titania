@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,29 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_H__
+#include "PolygonOffsetContainer.h"
 
-#include "Rendering/ClipPlane.h"
-#include "Rendering/Color.h"
-#include "Rendering/ColorRGBA.h"
-#include "Rendering/Coordinate.h"
-#include "Rendering/IndexedLineSet.h"
-#include "Rendering/IndexedTriangleFanSet.h"
-#include "Rendering/IndexedTriangleSet.h"
-#include "Rendering/IndexedTriangleStripSet.h"
-#include "Rendering/LineSet.h"
-#include "Rendering/Normal.h"
-#include "Rendering/PointSet.h"
-#include "Rendering/PolygonOffset.h"
-#include "Rendering/TriangleFanSet.h"
-#include "Rendering/TriangleSet.h"
-#include "Rendering/TriangleStripSet.h"
-#include "Rendering/X3DColorNode.h"
-#include "Rendering/X3DComposedGeometryNode.h"
-#include "Rendering/X3DCoordinateNode.h"
-#include "Rendering/X3DGeometricPropertyNode.h"
-#include "Rendering/X3DGeometryNode.h"
-#include "Rendering/X3DNormalNode.h"
+#include "../Components/Rendering/PolygonOffset.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffset* const polygonOffset) :
+	X3DCollectableObject (),
+	       polygonOffset (polygonOffset),
+	             enabled (false),
+	              factor (0),
+	               units (0)
+{ }
+        
+void
+PolygonOffsetContainer::enable ()
+{
+	enabled = glIsEnabled (polygonOffset -> getType ());
+
+	glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
+	glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+
+	glEnable (polygonOffset -> getType ());
+	glPolygonOffset (polygonOffset -> factor (), polygonOffset -> units ());
+}
+
+void
+PolygonOffsetContainer::disable ()
+{
+	if (not enabled)
+		glDisable (polygonOffset -> getType ());
+
+	glPolygonOffset (factor, units);
+}
+
+} // X3D
+} // titania

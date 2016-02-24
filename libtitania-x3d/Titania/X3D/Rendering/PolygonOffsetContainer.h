@@ -48,29 +48,42 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_H__
+#ifndef __TITANIA_X3D_RENDERING_POLYGON_OFFSET_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_POLYGON_OFFSET_CONTAINER_H__
 
-#include "Rendering/ClipPlane.h"
-#include "Rendering/Color.h"
-#include "Rendering/ColorRGBA.h"
-#include "Rendering/Coordinate.h"
-#include "Rendering/IndexedLineSet.h"
-#include "Rendering/IndexedTriangleFanSet.h"
-#include "Rendering/IndexedTriangleSet.h"
-#include "Rendering/IndexedTriangleStripSet.h"
-#include "Rendering/LineSet.h"
-#include "Rendering/Normal.h"
-#include "Rendering/PointSet.h"
-#include "Rendering/PolygonOffset.h"
-#include "Rendering/TriangleFanSet.h"
-#include "Rendering/TriangleSet.h"
-#include "Rendering/TriangleStripSet.h"
-#include "Rendering/X3DColorNode.h"
-#include "Rendering/X3DComposedGeometryNode.h"
-#include "Rendering/X3DCoordinateNode.h"
-#include "Rendering/X3DGeometricPropertyNode.h"
-#include "Rendering/X3DGeometryNode.h"
-#include "Rendering/X3DNormalNode.h"
+#include "../Rendering/X3DCollectableObject.h"
+
+namespace titania {
+namespace X3D {
+
+class PolygonOffset;
+
+class PolygonOffsetContainer :
+	public X3DCollectableObject
+{
+public:
+
+	PolygonOffsetContainer (PolygonOffset* const);
+
+	virtual
+	void
+	enable () final override;
+
+	virtual
+	void
+	disable () final override;
+
+
+private:
+
+	PolygonOffset* const polygonOffset;
+	bool                 enabled;
+	float                factor;
+	float                units;
+
+};
+
+} // X3D
+} // titania
 
 #endif

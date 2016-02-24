@@ -60,6 +60,39 @@
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
+	              
+class PolygonOffsetLock
+{
+public:
+
+	PolygonOffsetLock (GLenum type, float factor_, float units_) :
+		   type (type),
+		enabled (glIsEnabled (type)),
+		 factor (0),
+		  units (0)
+	{
+		glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
+		glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+
+		glEnable (type);
+		glPolygonOffset (factor_, units_);
+	}
+
+	~PolygonOffsetLock ()
+	{
+		if (not enabled)
+			glDisable (type);
+
+		glPolygonOffset (factor, units);
+	}
+
+private:
+
+	GLenum type;
+	bool   enabled;
+	float  factor;
+	float  units;
+};
 
 namespace titania {
 namespace X3D {
@@ -140,7 +173,6 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 		for (const Vector3d & vertex : getVertices ())
 		{
 			const auto screen = ViewVolume::projectPoint (vertex, modelViewProjection, getViewport ());
-			const auto world  = vertex * getModelViewMatrix ();
 			const auto x      = std::floor (screen .x ());
 			const auto y      = std::floor (screen .y ());
 
@@ -152,6 +184,10 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 
 			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
 			const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, getViewport ());
+			const auto world  = vertex * getModelViewMatrix ();
+
+			if (world .z () > 0)
+			   continue;
 	
 			if (world .z () - zWorld .z () < -0.05)
 				continue;
@@ -331,7 +367,11 @@ void
 X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 {
 	if (PolygonMode (GL_FILL) .front () == GL_FILL)
+	{
+	   PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
+
 		getNode <X3DGeometryNode> () -> draw (container);
+	}
 
 	if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
 		return;

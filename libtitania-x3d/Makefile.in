@@ -435,6 +435,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Rendering/LineSet.lo \
 	Titania/X3D/Components/Rendering/Normal.lo \
 	Titania/X3D/Components/Rendering/PointSet.lo \
+	Titania/X3D/Components/Rendering/PolygonOffset.lo \
 	Titania/X3D/Components/Rendering/TriangleFanSet.lo \
 	Titania/X3D/Components/Rendering/TriangleSet.lo \
 	Titania/X3D/Components/Rendering/TriangleStripSet.lo \
@@ -624,6 +625,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Rendering/FrameBuffer.lo \
 	Titania/X3D/Rendering/LightContainer.lo \
 	Titania/X3D/Rendering/PolygonModeContainer.lo \
+	Titania/X3D/Rendering/PolygonOffsetContainer.lo \
 	Titania/X3D/Rendering/ShapeContainer.lo \
 	Titania/X3D/Rendering/ViewVolume.lo \
 	Titania/X3D/Rendering/X3DRenderer.lo \
@@ -1199,6 +1201,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Rendering/LineSet.cpp \
 	Titania/X3D/Components/Rendering/Normal.cpp \
 	Titania/X3D/Components/Rendering/PointSet.cpp \
+	Titania/X3D/Components/Rendering/PolygonOffset.cpp \
 	Titania/X3D/Components/Rendering/TriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleStripSet.cpp \
@@ -1397,6 +1400,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
+	Titania/X3D/Rendering/PolygonOffsetContainer.cpp \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderer.cpp \
@@ -2707,6 +2711,9 @@ Titania/X3D/Components/Rendering/Normal.lo:  \
 Titania/X3D/Components/Rendering/PointSet.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Components/Rendering/PolygonOffset.lo:  \
+	Titania/X3D/Components/Rendering/$(am__dirstamp) \
+	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Rendering/TriangleFanSet.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -3427,6 +3434,9 @@ Titania/X3D/Rendering/LightContainer.lo:  \
 Titania/X3D/Rendering/PolygonModeContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Rendering/PolygonOffsetContainer.lo:  \
+	Titania/X3D/Rendering/$(am__dirstamp) \
+	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Rendering/ShapeContainer.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -4078,6 +4088,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/LineSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Normal.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/PointSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/PolygonOffset.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleFanSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/TriangleStripSet.Plo@am__quote@
@@ -4276,6 +4287,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/FrameBuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/LightContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/PolygonModeContainer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/PolygonOffsetContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/X3DRenderer.Plo@am__quote@

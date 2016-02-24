@@ -308,6 +308,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/LineSet.cpp \
 	Titania/X3D/Components/Rendering/Normal.cpp \
 	Titania/X3D/Components/Rendering/PointSet.cpp \
+	Titania/X3D/Components/Rendering/PolygonOffset.cpp \
 	Titania/X3D/Components/Rendering/TriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleStripSet.cpp \
@@ -506,6 +507,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \
+	Titania/X3D/Rendering/PolygonOffsetContainer.cpp \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
 	Titania/X3D/Rendering/X3DRenderer.cpp \
