@@ -163,16 +163,19 @@ private:
 	set_coord_point ();
 
 	void
-	set_touch_sensor_over (const bool);
-
-	void
 	set_touch_sensor_hitPoint ();
 
 	void
-	set_selection_ (const MFVec3d &);
+	set_touch_sensor_over (const bool);
+
+	void
+	set_touch_sensor_active (const bool);
 
 	void
 	set_touch_sensor_touchTime ();
+
+	void
+	set_selection_ (const MFVec3d &);
 
 	void
 	set_plane_sensor_active (const bool);

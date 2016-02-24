@@ -52,6 +52,9 @@
 
 #include "../Rendering/CoordinateTool.h"
 
+#include "../../Components/Geospatial/GeoCoordinate.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
+#include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 
 namespace titania {
@@ -89,6 +92,71 @@ X3DComposedGeometryNodeTool::set_loadState ()
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DComposedGeometryNodeTool::addCoordUndoFunction (const UndoStepPtr & undoStep) const
+{
+	switch (getCoord () -> getType () .back ())
+	{
+		case X3DConstants::Coordinate:
+		{
+			X3DPtr <Coordinate> coordinate (getCoord ());
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		case X3DConstants::CoordinateDouble:
+		{
+			X3DPtr <CoordinateDouble> coordinate (getCoord ());
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		case X3DConstants::GeoCoordinate:
+		{
+			X3DPtr <GeoCoordinate> coordinate (getCoord ());
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+X3DComposedGeometryNodeTool::addCoordRedoFunction (const UndoStepPtr & undoStep) const
+{
+	switch (getCoord () -> getType () .back ())
+	{
+		case X3DConstants::Coordinate:
+		{
+			X3DPtr <Coordinate> coordinate (getCoord ());
+
+			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		case X3DConstants::CoordinateDouble:
+		{
+			X3DPtr <CoordinateDouble> coordinate (getCoord ());
+
+			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		case X3DConstants::GeoCoordinate:
+		{
+			X3DPtr <GeoCoordinate> coordinate (getCoord ());
+
+			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			break;
+		}
+		default:
+			break;
 	}
 }
 

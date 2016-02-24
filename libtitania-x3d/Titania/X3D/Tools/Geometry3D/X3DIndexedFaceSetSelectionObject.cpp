@@ -136,8 +136,9 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		selectedEdgesGeometry = inlineNode -> getExportedNode <IndexedLineSet> ("SelectedEdgesGeometry");
 		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("SelectedFacesGeometry");
 
-		touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_over);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint);
+		touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_over);
+		touchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_active);
 		touchSensor -> touchTime ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime);
 
 		planeSensor -> isActive () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_plane_sensor_active);
@@ -189,16 +190,6 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
-{
-	if (not over)
-	{
-		activeEdgesGeometry -> coordIndex () .clear ();
-		activePointCoord -> point () .clear ();
-	}
-}
-
-void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
 	if (planeSensor -> isActive ())
@@ -220,6 +211,41 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 }
 
 void
+X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
+{
+	if (not over)
+	{
+		activeEdgesGeometry -> coordIndex () .clear ();
+		activePointCoord -> point () .clear ();
+	}
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
+{
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
+{
+	if (not selectable ())
+		return;
+
+	// In this order.
+	selectPoints (activePoints);
+
+	if (activePoints .size () < 3)
+		selectFaces (activePoints);
+	else
+		selectFace (activeFace);
+
+	// In this order.
+	updateSelectedFaces ();
+	updateSelectedEdges ();
+	updateSelectedPoints ();
+}
+
+void
 X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & hitPoints)
 {
 	if (not selectable ())
@@ -236,26 +262,6 @@ X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & hitPoints)
 	// In this order.
 	selectPoints (points);
 	selectFaces  (points);
-
-	// In this order.
-	updateSelectedFaces ();
-	updateSelectedEdges ();
-	updateSelectedPoints ();
-}
-
-void
-X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
-{
-	if (not selectable ())
-		return;
-
-	// In this order.
-	selectPoints (activePoints);
-
-	if (activePoints .size () < 3)
-		selectFaces  (activePoints);
-	else
-		selectFace (activeFace);
 
 	// In this order.
 	updateSelectedFaces ();

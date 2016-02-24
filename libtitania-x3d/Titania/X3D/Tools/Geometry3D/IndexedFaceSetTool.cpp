@@ -55,10 +55,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Components/Geospatial/GeoCoordinate.h"
-#include "../../Components/NURBS/CoordinateDouble.h"
-#include "../../Components/Rendering/Coordinate.h"
 #include "../../Editing/Selection/FaceSelection.h"
+
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -126,7 +125,7 @@ IndexedFaceSetTool::set_loadState ()
 		planeSensor = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
 		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
 
-		getBrowser () -> hasShiftKey ()    .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		getBrowser () -> hasControlKey ()    .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
@@ -183,7 +182,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			{
 				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getActiveFace ()));
 					
-				if (getBrowser () -> hasShiftKey ())
+				if (getBrowser () -> hasControlKey ())
 				{
 					// Translate along face normal
 
@@ -217,61 +216,18 @@ IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 {
 	// Create undo step for translation.
 
-	switch (getCoord () -> getType () .back ())
+	if (active)
 	{
-		case X3DConstants::Coordinate:
-		{
-			X3DPtr <Coordinate> coordinate (getCoord ());
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
-			if (active)
-			{
-				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate Coordinate »point«"));
-				undoStep -> addObjects (coordinate);
-				undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			}
-			else
-				undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			
-			break;
-		}
-		case X3DConstants::CoordinateDouble:
-		{
-			X3DPtr <CoordinateDouble> coordinate (getCoord ());
-
-			if (active)
-			{
-				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate CoordinateDouble »point«"));
-				undoStep -> addObjects (coordinate);
-				undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			}
-			else
-				undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			
-			break;
-		}
-		case X3DConstants::GeoCoordinate:
-		{
-			X3DPtr <GeoCoordinate> coordinate (getCoord ());
-
-			if (active)
-			{
-				undoStep = std::make_shared <X3D::UndoStep> (_ ("Translate GeoCoordinate »point«"));
-				undoStep -> addObjects (coordinate);
-				undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			}
-			else
-				undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-
-			break;
-		}
-		default:
-			break;
+	   addCoordUndoFunction (undoStep);
 	}
-
-	// Reset fields and send undo step.
-
-	if (not active)
+	else
 	{
+		addCoordRedoFunction (undoStep);
+
+		// Reset fields and send undo step.
+
 		if (abs (translation))
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
@@ -311,6 +267,12 @@ IndexedFaceSetTool::set_splitPoints ()
 {
 	__LOG__ << std::endl;
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Points"));
+
+	undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
+	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
+	addCoordUndoFunction (undoStep);
+
 	for (const auto selectedPoint : getSelectedPoints ())
 	{
 	   const auto & index   = selectedPoint .first;
@@ -329,6 +291,11 @@ IndexedFaceSetTool::set_splitPoints ()
 	      getCoord () -> set1Point (getCoord () -> getSize (), point);
 	   }
 	}
+
+	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
+	addCoordRedoFunction (undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 void

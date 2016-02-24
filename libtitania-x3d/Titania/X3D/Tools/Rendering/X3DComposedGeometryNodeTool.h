@@ -54,6 +54,7 @@
 #include "../Rendering/X3DGeometryNodeTool.h"
 
 #include "../../Components/Rendering/X3DComposedGeometryNode.h"
+#include "../../Editing/Undo/UndoStep.h"
 
 namespace titania {
 namespace X3D {
@@ -215,6 +216,14 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	///  @name Undo/Redo handling
+
+	void
+	addCoordUndoFunction (const UndoStepPtr &) const;
+
+	void
+	addCoordRedoFunction (const UndoStepPtr &) const;
 
 
 private:

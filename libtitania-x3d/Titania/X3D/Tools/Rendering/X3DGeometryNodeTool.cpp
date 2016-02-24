@@ -60,39 +60,6 @@
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
-	              
-class PolygonOffsetLock
-{
-public:
-
-	PolygonOffsetLock (GLenum type, float factor_, float units_) :
-		   type (type),
-		enabled (glIsEnabled (type)),
-		 factor (0),
-		  units (0)
-	{
-		glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-		glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
-
-		glEnable (type);
-		glPolygonOffset (factor_, units_);
-	}
-
-	~PolygonOffsetLock ()
-	{
-		if (not enabled)
-			glDisable (type);
-
-		glPolygonOffset (factor, units);
-	}
-
-private:
-
-	GLenum type;
-	bool   enabled;
-	float  factor;
-	float  units;
-};
 
 namespace titania {
 namespace X3D {

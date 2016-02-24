@@ -71,7 +71,7 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 {
 	addChildren (viewerNode);
 
-	getCurrentBrowser () .addInterest (this, &ViewpointObserver::set_browser);
+//	getCurrentBrowser () .addInterest (this, &ViewpointObserver::set_browser);
 
 	setup ();
 }
