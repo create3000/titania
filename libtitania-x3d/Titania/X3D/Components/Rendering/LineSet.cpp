@@ -184,17 +184,20 @@ LineSet::build ()
 
 	std::vector <std::vector <float>> attribArrays (attribNodes .size ());
 
-	size_t       index = 0;
-	const size_t size  = coordNode -> getSize ();
+	const size_t size        = coordNode -> getSize ();
+	size_t       index       = 0;
+	size_t       numElements = 0;
 
-	for (const auto count : vertexCount ())
+	for (int32_t count : vertexCount ())
 	{
 		if (index + count > size)
 			break;
 
 		if (count > 1)
 		{
-			for (size_t i = 0; i < (size_t) count; ++ i, ++ index)
+			const size_t numVertices = 2 * count - 2;
+
+			for (size_t i = 0; i < numVertices; ++ i, index += i & 1)
 			{
 				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
 					attribNodes [a] -> addValue (attribArrays [a], index);
@@ -205,11 +208,14 @@ LineSet::build ()
 				coordNode -> addVertex (getVertices (), index);
 			}
 
-			addElements (GL_LINE_STRIP, count);
+			index       += 1;
+			numElements += numVertices;
 		}
 		else
 			index += count;
 	}
+
+	addElements (GL_LINES, numElements);
 
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);

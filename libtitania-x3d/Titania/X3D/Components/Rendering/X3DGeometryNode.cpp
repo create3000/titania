@@ -836,6 +836,8 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 		}
 	}
 
+	__LOG__ << getTypeName () << " : " << getName () << " : " << elements .size () << std::endl;
+
 	// VertexAttribs
 
 	if (not attribNodes .empty ())
