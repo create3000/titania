@@ -272,26 +272,32 @@ IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 
 	if (not active)
 	{
-		if (selectable () == false)
+		if (abs (translation))
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
 		selectable () = true;
+		translation   = Vector3d ();
 		translations  = 0;
 	}
 }
 
 void
-IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & translation)
+IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
 {
 	// Prevent accidentially move.
 	if (translations ++ < TRANSLATIONS_EVENTS)
 	   return;
 
-	if (abs (translation) and selectable ())
-		selectable () = false;
+	translation = value;
 
-	for (const auto & pair : getSelectedPoints ())
-		getCoord () -> set1Point (pair .first, pair .second + Vector3d (translation));
+	if (abs (translation))
+	{
+		if (selectable ())
+			selectable () = false;
+
+		for (const auto & pair : getSelectedPoints ())
+			getCoord () -> set1Point (pair .first, pair .second + translation);
+	}
 }
 
 void

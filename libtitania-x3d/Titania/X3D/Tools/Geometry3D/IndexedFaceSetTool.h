@@ -246,11 +246,9 @@ private:
 
 	X3DPtr <TouchSensor> touchSensor;
 	X3DPtr <PlaneSensor> planeSensor;
-
-	Vector3d translation;
-	size_t   translations;
-
-	UndoStepPtr undoStep;
+	Vector3d             translation;
+	size_t               translations;
+	UndoStepPtr          undoStep;
 
 };
 
