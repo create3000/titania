@@ -499,7 +499,7 @@ AnimationEditor::set_interpolators ()
 
 	std::map <size_t, X3D::SFNode> foundNodes;
 
-	for (const auto node : animation -> children ())
+	for (const auto & node : animation -> children ())
 	{
 		try
 		{	
@@ -1374,7 +1374,7 @@ AnimationEditor::set_key_type ()
 	bool inconsistent = false;
 	auto currentType  = activeType;
 
-	for (const auto frame : selectedFrames)
+	for (const auto & frame : selectedFrames)
 	{
 		try
 		{

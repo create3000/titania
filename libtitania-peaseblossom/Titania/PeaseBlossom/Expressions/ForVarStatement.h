@@ -107,7 +107,7 @@ public:
 	{
 		CompletionType result;
 
-		for (const auto variableDeclaration : variableDeclarations)
+		for (const auto & variableDeclaration : variableDeclarations)
 			variableDeclaration -> getValue ();
 
 		for (; booleanExpression -> getValue () .toBoolean (); iterationExpression -> getValue ())
@@ -151,7 +151,7 @@ public:
 				<< "var"
 				<< Generator::Space;
 
-			for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+			for (const auto & variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
 			{
 				ostream
 					<< variableDeclaration

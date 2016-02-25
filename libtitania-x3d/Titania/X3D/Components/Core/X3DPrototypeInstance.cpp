@@ -145,7 +145,7 @@ X3DPrototypeInstance::construct ()
 
 		const auto & fieldDefinitions = proto -> getFieldDefinitions ();
 
-		for (const auto fieldDefinition : fieldDefinitions)
+		for (const auto & fieldDefinition : fieldDefinitions)
 		{
 			try
 			{

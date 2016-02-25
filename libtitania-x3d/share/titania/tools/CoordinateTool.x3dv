@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Tue, 23 Feb 2016 17:49:11 GMT"
+META "modified" "Thu, 25 Feb 2016 20:45:29 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -61,9 +61,18 @@ WorldInfo {
         value DEF children MetadataSet {
           name "children"
           reference "http://titania.create3000.de"
-          value DEF Material Material {
-            diffuseColor 0 0 0
-            emissiveColor 0.5 0.0792565 0
+          value DEF ActiveEdges Shape {
+            appearance Appearance {
+              lineProperties DEF _1 LineProperties {
+                linewidthScaleFactor 2
+              }
+              material DEF Material Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.5 0.0792565 0
+                transparency 0.381
+              }
+            }
+            geometry DEF ActiveEdgesGeometry IndexedLineSet { }
           }
         }
       }
@@ -73,10 +82,10 @@ WorldInfo {
 
 Collision {
   enabled FALSE
-  children DEF _1 Switch {
+  children DEF _2 Switch {
     children [
       Group { }
-      DEF _2 TransformMatrix3D {
+      DEF _3 TransformMatrix3D {
         children [
           DEF SelectionGeometry Group {
             children [
@@ -122,7 +131,7 @@ Collision {
           }
           DEF Edges Shape {
             appearance Appearance {
-              material DEF Material_2 Material {
+              material DEF EdgesMaterial Material {
                 diffuseColor 0 0 0
                 emissiveColor 0.702794 0.852152 1
               }
@@ -133,10 +142,8 @@ Collision {
           }
           DEF SelectedEdges Shape {
             appearance Appearance {
-              lineProperties DEF _3 LineProperties {
-                linewidthScaleFactor 2
-              }
-              material DEF Material_3 Material {
+              lineProperties USE _1
+              material DEF Material_2 Material {
                 diffuseColor 0 0 0
                 emissiveColor 1 0.75154 0
               }
@@ -148,19 +155,13 @@ Collision {
               lineProperties DEF _4 LineProperties {
                 linewidthScaleFactor 8
               }
-              material USE Material_3
+              material USE Material_2
             }
             geometry PointSet {
               coord DEF SelectionCoord CoordinateDouble { }
             }
           }
-          DEF ActiveEdges Shape {
-            appearance Appearance {
-              lineProperties USE _3
-              material USE Material
-            }
-            geometry DEF ActiveEdgesGeometry IndexedLineSet { }
-          }
+          USE ActiveEdges
           DEF ActivePoint Shape {
             appearance Appearance {
               lineProperties USE _4
@@ -186,12 +187,12 @@ EXPORT ActiveFaceGeometry
 EXPORT ActivePointCoord
 EXPORT EdgesCoord
 EXPORT EdgesLineSet
-EXPORT Material_2 AS Material
+EXPORT EdgesMaterial
 EXPORT PlaneSensor
 EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord
 EXPORT SelectionShape
-EXPORT _1 AS Switch
+EXPORT _2 AS Switch
 EXPORT TouchSensor
-EXPORT _2 AS TransformMatrix3D
+EXPORT _3 AS TransformMatrix3D

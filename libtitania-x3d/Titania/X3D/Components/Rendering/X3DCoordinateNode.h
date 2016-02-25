@@ -106,16 +106,20 @@ public:
 	getControlPoints (const MFDouble & weight) const = 0;
 
 	virtual
+	void
+	erasePoint (const size_t) = 0;
+
+	virtual
+	void
+	resize (const size_t) = 0;
+
+	virtual
 	bool
 	isEmpty () const = 0;
 
 	virtual
 	size_t
 	getSize () const = 0;
-
-	virtual
-	void
-	resize (const size_t) = 0;
 
 
 protected:

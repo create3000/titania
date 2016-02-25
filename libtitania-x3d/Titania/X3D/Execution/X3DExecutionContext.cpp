@@ -917,7 +917,7 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 	// Parallel load all extern protos, then sync.
 	requestAsyncLoadOfExternProtos ();
 
-	for (const auto externProto : getExternProtoDeclarations ())
+	for (const auto&  externProto : getExternProtoDeclarations ())
 	{
 		if (externProto -> getInstances () .empty ())
 		   continue;
@@ -925,7 +925,7 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 		externProto -> requestImmediateLoad ();
 	}
 
-	for (const auto proto : getProtoDeclarations ())
+	for (const auto & proto : getProtoDeclarations ())
 		proto -> requestImmediateLoadOfExternProtos ();
 }
 
@@ -935,7 +935,7 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 	externProtosLoadCount .isTainted (false);
 	externProtosLoadCount .addEvent ();
 
-	for (const auto externProto : getExternProtoDeclarations ())
+	for (const auto & externProto : getExternProtoDeclarations ())
 	{
 		if (externProto -> getInstances () .empty ())
 		   continue;
@@ -943,7 +943,7 @@ X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 		externProto -> requestAsyncLoad ();
 	}
 
-	for (const auto proto : getProtoDeclarations ())
+	for (const auto & proto : getProtoDeclarations ())
 	{
 	   proto -> requestAsyncLoadOfExternProtos ();
 	}

@@ -208,7 +208,7 @@ IndexedLineSet::getPolylines () const
 
 	const auto polylineIndices = getPolylineIndices ();
 
-	for (const auto polyline : polylineIndices)
+	for (const auto & polyline : polylineIndices)
 	{
 		// Create two vertices for each line.
 
@@ -287,7 +287,7 @@ IndexedLineSet::build ()
 
 	int face = 0;
 
-	for (const auto polyline : polylines)
+	for (const auto & polyline : polylines)
 	{
 		// Create two vertices for each line.
 

@@ -382,7 +382,7 @@ throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
-	for (const auto value : parameter)
+	for (const auto & value : parameter)
 	{
 		const auto pair = basic::split (value .str (), "=");
 

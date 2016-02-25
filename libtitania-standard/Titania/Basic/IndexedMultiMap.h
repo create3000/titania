@@ -259,7 +259,7 @@ indexed_multimap <Key, ValueType>::operator = (const indexed_multimap & value)
 	typename array_type::size_type index = 0;
 	std::map <pointer_type, typename array_type::size_type> indices;
 
-	for (const auto e : value .array)
+	for (const auto & e : value .array)
 	{
 		indices .emplace (e, index ++);
 

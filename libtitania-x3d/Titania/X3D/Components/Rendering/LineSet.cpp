@@ -244,7 +244,7 @@ throw (Error <NOT_SUPPORTED>,
 	size_t       index = 0;
 	const size_t size  = coordNode -> getSize ();
 
-	for (const auto count : vertexCount ())
+	for (const auto & count : vertexCount ())
 	{
 		if (index + count > size)
 			break;

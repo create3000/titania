@@ -79,7 +79,7 @@ X3DComposedTexture3DEditor::getComposedTexture3D (const X3D::X3DPtr <X3D::X3DTex
 
 	if (value)
 	{
-		for (const auto type : basic::make_reverse_range (value -> getType ()))
+		for (const auto & type : basic::make_reverse_range (value -> getType ()))
 		{
 			switch (type)
 			{

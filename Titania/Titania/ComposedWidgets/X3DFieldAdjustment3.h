@@ -431,7 +431,7 @@ X3DFieldAdjustment3 <Type>::set_bounds ()
 {
 	if (lower .empty ())
 	{
-		for (const auto adjustment : adjustments)
+		for (const auto & adjustment : adjustments)
 		{
 			lower .emplace_back (adjustment -> get_lower ());
 			upper .emplace_back (adjustment -> get_upper ());

@@ -350,7 +350,7 @@ X3DScriptEditorSearch::on_build_search_menu ()
 
 	// Add menu items
 
-	for (const auto search : recentSearches)
+	for (const auto & search : recentSearches)
 	{
 		const auto menuItem = Gtk::manage (new Gtk::MenuItem (search));
 		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_activate), search));

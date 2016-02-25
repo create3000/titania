@@ -96,7 +96,7 @@ public:
 	getValue () const
 	throw (pbError) final override
 	{
-		for (const auto variableDeclaration : variableDeclarations)
+		for (const auto & variableDeclaration : variableDeclarations)
 			variableDeclaration -> getValue ();
 
 		return CompletionType (this, undefined);
@@ -130,7 +130,7 @@ public:
 					<< Generator::Break
 					<< Generator::IncIndent;
 
-				for (const auto variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
+				for (const auto & variableDeclaration : std::make_pair (variableDeclarations .begin (), variableDeclarations .end () - 1))
 				{
 					ostream
 						<< Generator::Indent

@@ -211,6 +211,12 @@ GeoCoordinate::getControlPoints (const MFDouble & weight) const
 }
 
 void
+GeoCoordinate::erasePoint (const size_t index)
+{
+	point () .erase (point () .begin () + index);
+}
+
+void
 GeoCoordinate::resize (const size_t size)
 {
 	point () .resize (size);

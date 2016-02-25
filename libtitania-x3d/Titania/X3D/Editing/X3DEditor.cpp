@@ -1460,7 +1460,7 @@ X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray
 
 	std::set_difference (lhs .begin (), lhs .end (), rhs .begin (), rhs .end (), std::back_inserter (difference));
 
-	for (const auto field : difference)
+	for (const auto & field : difference)
 	{
 		undoStep -> addUndoFunction (&X3DFieldDefinition::setUserData, field, nullptr);
 		removeRoutes (field, undoStep);

@@ -119,7 +119,7 @@ X3DMultiTextureEditor::getMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 
 	if (value)
 	{
-		for (const auto type : basic::make_reverse_range (value -> getType ()))
+		for (const auto & type : basic::make_reverse_range (value -> getType ()))
 		{
 			switch (type)
 			{

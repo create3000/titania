@@ -206,11 +206,11 @@ IndexedFaceSet::build ()
 	GLenum currentVertexMode = 0;
 	size_t numVertices       = 0;
 
-	for (const auto polygon : polygons)
+	for (const auto & polygon : polygons)
 	{
 		const auto & vertices = polygon .vertices;
 
-		for (const auto element : polygon .elements)
+		for (const auto & element : polygon .elements)
 		{
 			currentVertexMode = getVertexMode (element .size ());
 
@@ -365,8 +365,8 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 void
 IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons)
 {
-	Vertices &     vertices = polygons .back () .vertices;
-	ElementArray & elements = polygons .back () .elements;
+	Vertices &     vertices = polygons .back () .vertices; // Index to coord index
+	ElementArray & elements = polygons .back () .elements; // Index to vertices
 
 	if (not tessellator)
 	{

@@ -414,7 +414,7 @@ TextureMappingEditor::on_plane_activate (const size_t x, const size_t y, const b
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
-	for (const auto pair : indices)
+	for (const auto & pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
 		auto       texPoint = (X3D::Vector2f (point [x], point [y]) - min) / size [m];
@@ -469,7 +469,7 @@ TextureMappingEditor::on_camera_activate ()
 				indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 		}
 
-		for (const auto pair : indices)
+		for (const auto & pair : indices)
 		{
 			const auto point    = coord -> get1Point (pair .first);
 			const auto texPoint = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);
@@ -547,7 +547,7 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
-	for (const auto pair : indices)
+	for (const auto & pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
 		const auto complex  = std::complex <float> (point [z] - center [z], point [x] - center [x]);
@@ -617,7 +617,7 @@ TextureMappingEditor::on_sphere_activate (const size_t x, const size_t y, const 
 			indices [previewGeometry -> coordIndex () [vertex]] .emplace_back (vertex);
 	}
 
-	for (const auto pair : indices)
+	for (const auto & pair : indices)
 	{
 		const auto point    = math::normalize (coord -> get1Point (pair .first) - center);
 		auto       texPoint = X3D::Vector2f (std::atan2 (point [x], point [z]) / M_PI2 + 0.5, std::asin (point [y]) / M_PI + 0.5);

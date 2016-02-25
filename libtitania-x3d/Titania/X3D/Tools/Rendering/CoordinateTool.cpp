@@ -100,10 +100,12 @@ CoordinateTool::realize ()
 	{
 		const auto activeEdgesGeometry   = getInlineNode () -> getExportedNode ("ActiveEdgesGeometry");
 		const auto activeFaceGeometry    = getInlineNode () -> getExportedNode ("ActiveFaceGeometry");
+		const auto selectedEdgesGeometry = getInlineNode () -> getExportedNode ("SelectedEdgesGeometry");
 		const auto selectedFacesGeometry = getInlineNode () -> getExportedNode ("SelectedFacesGeometry");
 
 		activeEdgesGeometry   -> isPrivate (true);
 		activeFaceGeometry    -> isPrivate (true);
+		selectedEdgesGeometry -> isPrivate (true);
 		selectedFacesGeometry -> isPrivate (true);
 
 		color () .addInterest (this, &CoordinateTool::set_color);
@@ -121,7 +123,7 @@ CoordinateTool::set_color ()
 {
 	try
 	{
-		const auto material = getInlineNode () -> getExportedNode ("Material");
+		const auto material = getInlineNode () -> getExportedNode ("EdgesMaterial");
 
 		material -> setField <SFColor> ("emissiveColor", Color3f (color () .getRed (), color () .getGreen (), color () .getBlue ()));
 		material -> setField <SFFloat> ("transparency", 1 - color () .getAlpha ());

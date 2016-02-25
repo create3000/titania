@@ -179,7 +179,7 @@ X3DObjectOperations::removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> & 
 
 	X3D::MFNode nodes;
 
-	for (const auto node : selection)
+	for (const auto & node : selection)
 	{
 		X3D::X3DPtr <X3D::X3DShapeNode> shape (node);
 

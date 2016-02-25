@@ -261,13 +261,73 @@ void
 IndexedFaceSetTool::set_mergePoints ()
 {
 	__LOG__ << std::endl;
+
+	if (getMasterPoint () < 0)
+	   return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Merge Points"));
+
+	undoRestoreSelection (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	std::map <int32_t, size_t> removedPoints;
+
+	for (const auto & selectedPoint : getSelectedPoints ())
+	{
+		const auto & index   = selectedPoint .first;
+		const auto   indices = getFaceSelection () -> getSharedVertices (index);
+		
+		if (indices .empty ())
+			continue;
+		
+		for (const auto & index : indices)
+		{
+			removedPoints .emplace (coordIndex () [index], 0);
+
+			coordIndex () [index] = getMasterPoint ();
+		}
+	}
+
+	if (getCoord () -> getCloneCount () == 1)
+	{
+		removedPoints .erase (getMasterPoint ());
+
+		// Remove unused points
+
+		for (auto & removedPoint : basic::make_reverse_range (removedPoints))
+		   getCoord () -> erasePoint (removedPoint .first);
+
+		// Update coordIndex
+
+		size_t count = 0;
+
+		for (auto & removedPoint : removedPoints)
+			removedPoint .second = count ++;
+
+		for (auto & index : coordIndex ())
+		{
+			const auto & iter = removedPoints .upper_bound (index);
+
+			if (iter == removedPoints .end ())
+				index -= count;
+			else
+				index -= iter -> second;
+		}
+	}
+
+	select ({ getMasterPoint () }, true);
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoRestoreSelection (undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 void
 IndexedFaceSetTool::set_splitPoints ()
 {
-	__LOG__ << std::endl;
-
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Points"));
 
 	undoRestoreSelection (undoStep);
@@ -276,7 +336,7 @@ IndexedFaceSetTool::set_splitPoints ()
 
 	std::vector <int32_t> points;
 
-	for (const auto selectedPoint : getSelectedPoints ())
+	for (const auto & selectedPoint : getSelectedPoints ())
 	{
 		const auto & index   = selectedPoint .first;
 		const auto & point   = selectedPoint .second;

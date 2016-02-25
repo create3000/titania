@@ -308,7 +308,7 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
-	for (const auto point : texCoords)
+	for (const auto & point : texCoords)
 		texCoord -> point () .emplace_back (point .x (), point .y ());
 
 	coord -> point () .assign (points .begin (), points .end ());

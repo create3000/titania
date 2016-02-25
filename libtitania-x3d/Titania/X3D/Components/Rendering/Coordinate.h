@@ -132,6 +132,14 @@ public:
 	getControlPoints (const MFDouble & weight) const final override;
 
 	virtual
+	void
+	erasePoint (const size_t) final override;
+
+	virtual
+	void
+	resize (const size_t) final override;
+
+	virtual
 	bool
 	isEmpty () const final override
 	{ return point () .empty (); }
@@ -140,10 +148,6 @@ public:
 	size_t
 	getSize () const final override
 	{ return point () .size (); }
-
-	virtual
-	void
-	resize (const size_t) final override;
 
 
 private:

@@ -250,6 +250,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	updateSelectedFaces ();
 	updateSelectedEdges ();
 	updateSelectedPoints ();
+	updateActivePoints ();
 }
 
 void
@@ -341,7 +342,7 @@ X3DIndexedFaceSetSelectionObject::updateActivePoints ()
 {
 	size_t i = 0;
 
-	for (const auto activePoint : activePoints)
+	for (const auto & activePoint : activePoints)
 		activePointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (activePoint));
 	
 	activePointCoord -> point () .resize (i);
@@ -354,7 +355,7 @@ X3DIndexedFaceSetSelectionObject::updateActiveFace ()
 
 	if (not activePoints .empty ())
 	{
-		for (const auto activePoint : activePoints)
+		for (const auto & activePoint : activePoints)
 			activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoint);
 
 		activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoints [0]);
@@ -375,6 +376,7 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 	updateSelectedFaces ();
 	updateSelectedEdges ();
 	updateSelectedPoints ();
+	updateActivePoints ();
 }
 
 void
@@ -525,7 +527,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 {
 	size_t i = 0;
 
-	for (const auto edge : selectedEdges)
+	for (const auto & edge : selectedEdges)
 	{
 	   if (edge .second .size () not_eq 1)
 	      continue;
@@ -573,9 +575,9 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 {
 	size_t i = 0;
 
-	for (const auto index : selectedFaces)
+	for (const auto & index : selectedFaces)
 	{
-		for (const auto vertex : selection -> getFaceVertices (index))
+		for (const auto & vertex : selection -> getFaceVertices (index))
 			selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [vertex]);
 	
 		selectedFacesGeometry -> coordIndex () .set1Value (i ++, -1);
@@ -612,7 +614,7 @@ X3DIndexedFaceSetSelectionObject::undoRestoreSelection (const UndoStepPtr & undo
 {
 	std::vector <int32_t> points;
 
-	for (const auto selectedPoint : getSelectedPoints ())
+	for (const auto & selectedPoint : getSelectedPoints ())
 		points .emplace_back (selectedPoint .first);
 
 	undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points, true);
@@ -623,7 +625,7 @@ X3DIndexedFaceSetSelectionObject::redoRestoreSelection (const UndoStepPtr & undo
 {
 	std::vector <int32_t> points;
 
-	for (const auto selectedPoint : getSelectedPoints ())
+	for (const auto & selectedPoint : getSelectedPoints ())
 		points .emplace_back (selectedPoint .first);
 
 	undoStep -> addRedoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points, true);

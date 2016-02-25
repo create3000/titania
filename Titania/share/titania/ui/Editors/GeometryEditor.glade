@@ -133,7 +133,7 @@
                 <child>
                   <object class="GtkButton" id="SplitPointButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Split selected points.</property>
                     <signal name="clicked" handler="on_split_points_clicked" swapped="no"/>
@@ -154,7 +154,7 @@
                 <child>
                   <object class="GtkButton" id="MergePointsButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Merge selected points.</property>
                     <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>

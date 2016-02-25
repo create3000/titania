@@ -70,25 +70,25 @@ X3DUnitEditor::initialize ()
 
 	if (keyfile .has_group ("angle"))
 	{
-		for (const auto key : keyfile .get_keys ("angle"))
+		for (const auto & key : keyfile .get_keys ("angle"))
 			getUnitAngleCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("force"))
 	{
-		for (const auto key : keyfile .get_keys ("force"))
+		for (const auto & key : keyfile .get_keys ("force"))
 			getUnitForceCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("length"))
 	{
-		for (const auto key : keyfile .get_keys ("length"))
+		for (const auto & key : keyfile .get_keys ("length"))
 			getUnitLengthCombo () .append (key, _ (key .c_str ()));
 	}
 
 	if (keyfile .has_group ("mass"))
 	{
-		for (const auto key : keyfile .get_keys ("mass"))
+		for (const auto & key : keyfile .get_keys ("mass"))
 			getUnitMassCombo () .append (key, _ (key .c_str ()));
 	}
 

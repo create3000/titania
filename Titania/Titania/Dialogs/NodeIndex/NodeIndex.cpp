@@ -318,7 +318,7 @@ NodeIndex::getNodes ()
 	if (inPrototypeInstance ())
 		return nodes;
 
-	for (const auto pair : getCurrentContext () -> getNamedNodes ())
+	for (const auto & pair : getCurrentContext () -> getNamedNodes ())
 	{
 		try
 		{

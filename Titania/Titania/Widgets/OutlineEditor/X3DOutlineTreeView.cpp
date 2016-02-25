@@ -217,7 +217,7 @@ X3DOutlineTreeView::expand_to (const Gtk::TreeModel::Children & children, std::v
 {
 	path .push_back (0);
 
-	for (const auto child : children)
+	for (const auto & child : children)
 	{
 		const auto data   = get_model () -> get_data (child);
 		auto       object = data -> get_object ();
