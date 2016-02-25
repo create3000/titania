@@ -89,7 +89,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",         new X3D::SFBool (true));
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "replaceSelection", new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",   new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",      new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",      new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",            new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
@@ -113,7 +113,7 @@ GeometryEditor::configure ()
 	if (getConfig () -> hasItem ("edgeColor"))
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 
-	coordEditor -> setField <X3D::SFBool> ("replaceSelection", not getConfig () -> get <X3D::SFBool> ("paintSelection"));
+	coordEditor -> setField <X3D::SFBool> ("paintSelection", getConfig () -> get <X3D::SFBool> ("paintSelection"));
 
 	set_selection_type (SelectionType (getConfig () -> get <size_t> ("selectionType")));
 }
@@ -198,7 +198,7 @@ GeometryEditor::connect ()
 
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")            .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 						coordEditor -> getField <X3D::SFBool>      ("pickable")         .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
-						coordEditor -> getField <X3D::SFBool>      ("replaceSelection") .addInterest (innerNode -> getField <X3D::SFBool>      ("replaceSelection"));
+						coordEditor -> getField <X3D::SFBool>      ("paintSelection")   .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")      .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")      .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
 
@@ -207,7 +207,7 @@ GeometryEditor::connect ()
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                            true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),            true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),         true);
-						innerNode -> setField <X3D::SFBool>      ("replaceSelection", coordEditor -> getField <X3D::SFBool>      ("replaceSelection"), true);
+						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
 						break;
 					}
 					default:
@@ -373,7 +373,7 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
-	coordEditor -> setField <X3D::SFBool> ("replaceSelection", not getPaintSelectionToggleButton () .get_active (), true);
+	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active (), true);
 
 	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
 		return;

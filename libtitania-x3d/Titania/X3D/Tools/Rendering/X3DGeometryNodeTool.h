@@ -77,14 +77,6 @@ public:
 	pickable () const
 	{ return *fields .pickable; }
 
-	MFVec3d &
-	set_selection ()
-	{ return *fields .set_selection; }
-
-	const MFVec3d &
-	set_selection () const
-	{ return *fields .set_selection; }
-
 	SFNode &
 	normalTool ()
 	{ return *fields .normalTool; }
@@ -177,7 +169,7 @@ public:
 
 	virtual
 	void
-	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &) const final override;
+	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &) final override;
 
 	virtual
 	bool
@@ -241,6 +233,11 @@ protected:
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
+	virtual
+	void
+	set_selection (const std::vector <Vector3d> &)
+	{ }
+
 
 private:
 
@@ -261,7 +258,6 @@ private:
 	{
 		Fields ();
 
-		MFVec3d* const set_selection;
 		SFBool* const pickable;
 		SFNode* const normalTool;
 		SFNode* const coordTool;

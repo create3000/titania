@@ -231,6 +231,12 @@ private:
 	void
 	set_splitPoints ();
 
+	void
+	undoSetCoordIndex (const UndoStepPtr &);
+
+	void
+	redoSetCoordIndex (const UndoStepPtr &);
+
 	///  @name Members
 
 	struct Fields

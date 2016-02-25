@@ -154,7 +154,7 @@ public:
 
 	virtual
 	void
-	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &) const;
+	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &);
 
 	virtual
 	bool

@@ -90,7 +90,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 
 	addField (inputOutput, "pickable",         pickable ());
 	addField (inputOutput, "selectable",       selectable ());
-	addField (inputOnly,   "set_selection",    set_selection ());
+	addField (inputOutput, "paintSelection",   paintSelection ());
+	addField (inputOutput, "addSelection",     addSelection ());
 	addField (inputOutput, "replaceSelection", replaceSelection ());
 	addField (inputOutput, "mergePoints",      mergePoints ());
 	addField (inputOutput, "splitPoints",      splitPoints ());
@@ -161,7 +162,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
 				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-				planeSensor -> enabled ()      = replaceSelection ();
+				planeSensor -> enabled ()      = not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
 				planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 				break;
@@ -173,7 +174,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 				const auto vector       = getCoord () -> get1Point (getActivePoints () [0]) - getCoord () -> get1Point (getActivePoints () [1]);
 				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-				planeSensor -> enabled ()      = replaceSelection ();
+				planeSensor -> enabled ()      = not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
 				planeSensor -> maxPosition ()  = Vector2f (-1, 0);
 				break;
@@ -188,7 +189,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
 
-					planeSensor -> enabled ()      = replaceSelection ();
+					planeSensor -> enabled ()      = not paintSelection ();
 					planeSensor -> axisRotation () = axisRotation;
 					planeSensor -> maxPosition ()  = Vector2f (-1, 0);
 				}
@@ -198,7 +199,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 
-					planeSensor -> enabled ()      = replaceSelection ();
+					planeSensor -> enabled ()      = not paintSelection ();
 					planeSensor -> axisRotation () = axisRotation;
 					planeSensor -> maxPosition ()  = Vector2f (-1, -1);
 				}
@@ -207,7 +208,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			}
 		}
 	}
-	catch (const X3DError &)
+	catch (const std::exception & error)
 	{ }
 }
 
@@ -220,11 +221,11 @@ IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 	{
 		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
-	   addCoordUndoFunction (undoStep);
+	   undoSetCoordPoint (undoStep);
 	}
 	else
 	{
-		addCoordRedoFunction (undoStep);
+		redoSetCoordPoint (undoStep);
 
 		// Reset fields and send undo step.
 
@@ -269,33 +270,52 @@ IndexedFaceSetTool::set_splitPoints ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Points"));
 
-	undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
-	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
-	addCoordUndoFunction (undoStep);
+	undoRestoreSelection (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	std::vector <int32_t> points;
 
 	for (const auto selectedPoint : getSelectedPoints ())
 	{
-	   const auto & index   = selectedPoint .first;
-	   const auto & point   = selectedPoint .second;
-	   const auto   indices = getFaceSelection () -> getSharedVertices (index);
+		const auto & index   = selectedPoint .first;
+		const auto & point   = selectedPoint .second;
+		const auto   indices = getFaceSelection () -> getSharedVertices (index);
+		
+		if (indices .empty ())
+			continue;
+		
+		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+		{
+			coordIndex () [index] = getCoord () -> getSize ();
+		
+			getCoord () -> set1Point (getCoord () -> getSize (), point);
+		}
 
-	   if (indices .empty ())
-	      continue;
-
-	   for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
-	   {
-	      __LOG__ << index << std::endl;
-
-	      coordIndex () [index] = getCoord () -> getSize ();
-
-	      getCoord () -> set1Point (getCoord () -> getSize (), point);
-	   }
+		for (const auto & index : indices)
+		   points .emplace_back (coordIndex () [index]);
 	}
 
-	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
-	addCoordRedoFunction (undoStep);
+	select (points, true);
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::undoSetCoordIndex (const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
+	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
+}
+
+void
+IndexedFaceSetTool::redoSetCoordIndex (const UndoStepPtr & undoStep)
+{
+	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
 }
 
 void

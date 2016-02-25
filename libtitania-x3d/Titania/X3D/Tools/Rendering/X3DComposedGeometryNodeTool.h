@@ -220,10 +220,10 @@ protected:
 	///  @name Undo/Redo handling
 
 	void
-	addCoordUndoFunction (const UndoStepPtr &) const;
+	undoSetCoordPoint (const UndoStepPtr &) const;
 
 	void
-	addCoordRedoFunction (const UndoStepPtr &) const;
+	redoSetCoordPoint (const UndoStepPtr &) const;
 
 
 private:

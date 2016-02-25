@@ -129,10 +129,10 @@ public:
 	clear (const X3D::UndoStepPtr &) const;
 
 	void
-	redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
+	undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
 
 	void
-	undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
+	redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
 
 	///  @name Destruction
 

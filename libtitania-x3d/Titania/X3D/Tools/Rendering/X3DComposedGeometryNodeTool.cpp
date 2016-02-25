@@ -96,7 +96,7 @@ X3DComposedGeometryNodeTool::set_loadState ()
 }
 
 void
-X3DComposedGeometryNodeTool::addCoordUndoFunction (const UndoStepPtr & undoStep) const
+X3DComposedGeometryNodeTool::undoSetCoordPoint (const UndoStepPtr & undoStep) const
 {
 	switch (getCoord () -> getType () .back ())
 	{
@@ -130,7 +130,7 @@ X3DComposedGeometryNodeTool::addCoordUndoFunction (const UndoStepPtr & undoStep)
 }
 
 void
-X3DComposedGeometryNodeTool::addCoordRedoFunction (const UndoStepPtr & undoStep) const
+X3DComposedGeometryNodeTool::redoSetCoordPoint (const UndoStepPtr & undoStep) const
 {
 	switch (getCoord () -> getType () .back ())
 	{

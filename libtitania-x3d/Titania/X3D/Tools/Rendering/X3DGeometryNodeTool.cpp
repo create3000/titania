@@ -65,7 +65,6 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNodeTool::Fields::Fields () :
-	    set_selection (new MFVec3d ()),
 	         pickable (new SFBool (true)),
 	       normalTool (new SFNode ()),
 	        coordTool (new SFNode ())
@@ -83,10 +82,9 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 {
 	addType (X3DConstants::X3DGeometryNodeTool);
 
-	pickable ()      .isHidden (true);
-	set_selection () .isHidden (true);
-	normalTool ()    .isHidden (true);
-	coordTool  ()    .isHidden (true);
+	pickable ()   .isHidden (true);
+	normalTool () .isHidden (true);
+	coordTool  () .isHidden (true);
 
 	normalTool () = normalToolNode;
 	coordTool  () = coordToolNode;
@@ -124,7 +122,7 @@ X3DGeometryNodeTool::initialize ()
 }
 
 void
-X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer) const
+X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer)
 {
 	try
 	{
@@ -168,8 +166,10 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 		std::sort (selection .begin (), selection .end ());
 	
 		const auto last = std::unique (selection .begin (), selection .end ());
+
+		selection .erase (last, selection .end ());
 	
-		const_cast <X3DGeometryNodeTool*> (this) -> set_selection () .assign (selection .begin (), last);
+		set_selection (selection);
 	}
 	catch (const std::exception & error)
 	{

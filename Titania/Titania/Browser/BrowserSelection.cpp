@@ -158,17 +158,17 @@ BrowserSelection::setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr
 }
 
 void
-BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 {
-	undoStep -> addRedoFunction (&X3D::Selection::setChildren,
+	undoStep -> addUndoFunction (&X3D::Selection::setChildren,
 	                             getCurrentBrowser () -> getSelection (),
 	                             getCurrentBrowser () -> getSelection () -> getChildren ());
 }
 
 void
-BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 {
-	undoStep -> addUndoFunction (&X3D::Selection::setChildren,
+	undoStep -> addRedoFunction (&X3D::Selection::setChildren,
 	                             getCurrentBrowser () -> getSelection (),
 	                             getCurrentBrowser () -> getSelection () -> getChildren ());
 }

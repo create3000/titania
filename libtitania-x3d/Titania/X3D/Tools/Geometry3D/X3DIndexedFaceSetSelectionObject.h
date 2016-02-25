@@ -89,10 +89,26 @@ public:
 	///  @name Hidden fields
 
 	SFBool &
+	paintSelection ()
+	{ return *fields .paintSelection; }
+
+	const SFBool &
+	paintSelection () const
+	{ return *fields .paintSelection; }
+
+	MFInt32 &
+	addSelection ()
+	{ return *fields .addSelection; }
+
+	const MFInt32 &
+	addSelection () const
+	{ return *fields .addSelection; }
+
+	MFInt32 &
 	replaceSelection ()
 	{ return *fields .replaceSelection; }
 
-	const SFBool &
+	const MFInt32 &
 	replaceSelection () const
 	{ return *fields .replaceSelection; }
 
@@ -148,6 +164,17 @@ protected:
 	getSelectedPoints () const
 	{ return selectedPoints; }
 
+	///  @name Operations
+
+	void
+	select (const std::vector <int32_t> &, const bool);
+
+	void
+	undoRestoreSelection (const UndoStepPtr &);
+
+	void
+	redoRestoreSelection (const UndoStepPtr &);
+
 
 private:
 
@@ -175,7 +202,13 @@ private:
 	set_touch_sensor_touchTime ();
 
 	void
-	set_selection_ (const MFVec3d &);
+	set_selection (const std::vector <Vector3d> &) final override;
+
+	void
+	set_addSelection_ ();
+
+	void
+	set_replaceSelection_ ();
 
 	void
 	set_plane_sensor_active (const bool);
@@ -190,13 +223,13 @@ private:
 	updateActiveFace ();
 
 	void
-	selectPoints (const std::vector <int32_t> &);
+	selectPoints (const std::vector <int32_t> &, const bool);
 
 	void
-	selectFaces (const std::vector <int32_t> &);
+	selectFaces (const std::vector <int32_t> &, const bool);
 
 	void
-	selectFace (const size_t);
+	selectFace (const size_t, const bool);
 
 	void
 	addSelectedPoints (const std::vector <int32_t> &);
@@ -231,6 +264,10 @@ private:
 	double
 	getDistance (const Vector3d &, const Vector3d &);
 
+	static
+	void
+	restoreSelection (const SFNode &, const std::vector <int32_t> &, const bool);
+
 	///  @name Members
 
 	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
@@ -242,7 +279,9 @@ private:
 		Fields ();
 
 		SFBool* const selectable;
-		SFBool* const replaceSelection;
+		SFBool* const paintSelection;
+		MFInt32* const addSelection;
+		MFInt32* const replaceSelection;
 	};
 
 	Fields fields;

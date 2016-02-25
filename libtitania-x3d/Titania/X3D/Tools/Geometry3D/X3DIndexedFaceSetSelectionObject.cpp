@@ -68,7 +68,9 @@ static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	       selectable (new SFBool (true)),
-	 replaceSelection (new SFBool ())
+	   paintSelection (new SFBool ()),
+	     addSelection (new MFInt32 ()),
+	 replaceSelection (new MFInt32 ())
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
@@ -93,6 +95,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
 	selectable ()       .isHidden (true);
+	paintSelection ()   .isHidden (true);
+	addSelection ()     .isHidden (true);
 	replaceSelection () .isHidden (true);
 
 	addChildren (touchSensor,
@@ -110,8 +114,9 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_loadState);
 
-	getCoord ()      .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord);
-	set_selection () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selection_);
+	getCoord ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord);
+	addSelection ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelection_);
+	replaceSelection () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelection_);
 
 	selection -> geometry () = getNode <IndexedFaceSet> ();
 	selection -> setup ();
@@ -206,7 +211,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 
 	setActiveSelection (touchSensor -> getHitPoint (), coincidentPoints);
 
-	if (touchSensor -> isActive () and not replaceSelection ())
+	if (touchSensor -> isActive () and paintSelection ())
 		set_touch_sensor_touchTime ();
 }
 
@@ -231,13 +236,15 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	if (not selectable ())
 		return;
 
+	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
+
 	// In this order.
-	selectPoints (activePoints);
+	selectPoints (activePoints, replace);
 
 	if (activePoints .size () < 3)
-		selectFaces (activePoints);
+		selectFaces (activePoints, replace);
 	else
-		selectFace (activeFace);
+		selectFace (activeFace, replace);
 
 	// In this order.
 	updateSelectedFaces ();
@@ -246,7 +253,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & hitPoints)
+X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints)
 {
 	if (not selectable ())
 		return;
@@ -259,14 +266,21 @@ X3DIndexedFaceSetSelectionObject::set_selection_ (const MFVec3d & hitPoints)
 		points .insert (points .end (), coincidentPoints .begin (), coincidentPoints .end ());
 	}
 
-	// In this order.
-	selectPoints (points);
-	selectFaces  (points);
+	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
 
-	// In this order.
-	updateSelectedFaces ();
-	updateSelectedEdges ();
-	updateSelectedPoints ();
+	select (points, replace);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
+{
+	select (std::vector <int32_t> (addSelection () .begin (), addSelection () .end ()), false);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
+{
+	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), true);
 }
 
 void
@@ -351,9 +365,22 @@ X3DIndexedFaceSetSelectionObject::updateActiveFace ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const bool replace)
 {
-	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	// In this order.
+	selectPoints (points, replace);
+	selectFaces  (points, replace);
+
+	// In this order.
+	updateSelectedFaces ();
+	updateSelectedEdges ();
+	updateSelectedPoints ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points, const bool replace)
+{
+	if (replace)
 	{
 		selectionCoord -> point () .clear ();
 		selectedPoints .clear ();
@@ -367,9 +394,9 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points, const bool replace)
 {
-	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	if (replace)
 	{
 		selectedFacesGeometry -> coordIndex () .clear ();
 		selectedFaces .clear ();
@@ -403,9 +430,9 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
+X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const bool replace)
 {
-	if (replaceSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ())
+	if (replace)
 	{
 		selectedFacesGeometry -> coordIndex () .clear ();
 		selectedFaces .clear ();
@@ -578,6 +605,42 @@ X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Ve
 	const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 	return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
+}
+
+void
+X3DIndexedFaceSetSelectionObject::undoRestoreSelection (const UndoStepPtr & undoStep)
+{
+	std::vector <int32_t> points;
+
+	for (const auto selectedPoint : getSelectedPoints ())
+		points .emplace_back (selectedPoint .first);
+
+	undoStep -> addUndoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points, true);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::redoRestoreSelection (const UndoStepPtr & undoStep)
+{
+	std::vector <int32_t> points;
+
+	for (const auto selectedPoint : getSelectedPoints ())
+		points .emplace_back (selectedPoint .first);
+
+	undoStep -> addRedoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelection, SFNode (this), points, true);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::restoreSelection (const SFNode & node, const std::vector <int32_t> & points, const bool replace)
+{
+	X3DPtr <X3DIndexedFaceSetSelectionObject> tool (node);
+
+	if (tool)
+	{
+		if (replace)
+			tool -> replaceSelection () .assign (points .begin (), points .end ());
+		else
+			tool -> addSelection () .assign (points .begin (), points .end ());		
+	}
 }
 
 X3DIndexedFaceSetSelectionObject::~X3DIndexedFaceSetSelectionObject ()
