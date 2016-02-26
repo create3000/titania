@@ -218,11 +218,13 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
 {
-	if (not over)
-	{
-		activeEdgesGeometry -> coordIndex () .clear ();
-		activePointCoord -> point () .clear ();
-	}
+	if (over)
+		return;
+
+	activePoints .clear ();
+	activeFace = -1;
+
+	updateActiveSelection ();
 }
 
 void
@@ -333,6 +335,12 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 		}
 	}
 
+	updateActiveSelection ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::updateActiveSelection ()
+{
 	updateActiveFace ();
 	updateActivePoints ();
 }

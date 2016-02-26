@@ -217,6 +217,9 @@ private:
 	setActiveSelection (const Vector3d &, const std::vector <int32_t> &);
 
 	void
+	updateActiveSelection ();
+
+	void
 	updateActivePoints ();
 
 	void
