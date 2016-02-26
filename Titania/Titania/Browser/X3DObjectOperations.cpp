@@ -54,6 +54,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 
 #include <Titania/X3D/Components/Grouping/X3DGroupingNode.h>
+#include <Titania/X3D/Components/Texturing/TextureCoordinate.h>
 #include <Titania/X3D/Components/Rendering/Coordinate.h>
 #include <Titania/Utility/Map.h>
 
@@ -84,24 +85,9 @@ X3DObjectOperations::on_combine_activated ()
 		const auto masterShape = shapes .back ();
 	
 		X3D::X3DPtr <X3D::IndexedFaceSet>    masterGeometry (masterShape -> geometry ());
-		X3D::X3DPtr <X3D::X3DCoordinateNode> masterCoord (masterGeometry ? masterGeometry -> coord () : nullptr);
-
 		X3D::X3DPtr <X3D::IndexedFaceSet>    targetGeometry (getCurrentContext () -> createNode <X3D::IndexedFaceSet> ());
-		X3D::X3DPtr <X3D::X3DCoordinateNode> targetCoord;
+		X3D::X3DPtr <X3D::X3DCoordinateNode> targetCoord (getCurrentContext () -> createNode <X3D::Coordinate> ());
 
-		if (masterCoord)
-		{
-			targetCoord = masterCoord -> create (getCurrentContext ());
-			getCurrentContext () -> addUninitializedNode (targetCoord);
-		}
-		else
-		{
-			if (not getCurrentContext () -> hasComponent (X3D::ComponentType::RENDERING))
-				getCurrentContext () -> updateComponent (getCurrentBrowser () -> getComponent ("Rendering", 1));
-
-			targetCoord = getCurrentContext () -> createNode <X3D::Coordinate> ();
-		}
-		
 		targetGeometry -> coord () = targetCoord;
 
 		// Combine Coordinates
@@ -143,15 +129,41 @@ X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNo
 
 		if (not geometry)
 			continue;
-
+		
 		const X3D::X3DPtr <X3D::X3DCoordinateNode> coord (geometry -> coord ());
 
 		if (not coord)
 			continue;
+	
+		X3D::X3DPtr <X3D::TextureCoordinate> targetTexCoord (targetGeometry -> texCoord ());
+		X3D::X3DPtr <X3D::TextureCoordinate> texCoord (geometry -> texCoord ());
 
-		const auto matrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), X3D::SFNode (shape)) * targetMatrix;
+		//if (geometry -> getColor () and not targetGeometry -> getColor ())
+		//	targetGeometry -> addColors ();
+
+		if (texCoord and not targetTexCoord)
+		{
+			targetGeometry -> addTexCoords ();
+			targetTexCoord = targetGeometry -> texCoord ();
+		}
+
+		//if (geometry -> getNormal () and not targetGeometry -> getNormal ())
+		//	targetGeometry -> addNormals ();
+
+		//if (not geometry -> getColor () and targetGeometry -> getColor ())
+		//	geometry -> addColors ();
+
+		if (not texCoord and targetTexCoord)
+		{
+			geometry -> addTexCoords ();
+			texCoord = geometry -> texCoord ();
+		}
+
+		//if (not geometry -> getNormal () and targetGeometry -> getNormal ())
+		//	geometry -> addNormals ();
 
 		std::map <int32_t, int32_t> coordIndex;
+		std::map <int32_t, int32_t> texCoordIndex;
 
 		for (const auto & index : geometry -> coordIndex ())
 		{
@@ -159,12 +171,42 @@ X3DObjectOperations::combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNo
 				coordIndex .emplace (index, coordIndex .size ());
 		}
 
-		for (const auto & index : geometry -> coordIndex ())
+		for (const auto & index : geometry -> texCoordIndex ())
 		{
+			if (index >= 0)
+				texCoordIndex .emplace (index, texCoordIndex .size ());
+		}
+
+
+		const auto matrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), X3D::SFNode (geometry)) * targetMatrix;
+
+		size_t face = 0;
+
+		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
+		{
+			const int32_t index = geometry -> coordIndex () [i];
+
 			if (index < 0)
+			{
+				++ face;
+
+				if (targetTexCoord)
+					targetGeometry -> texCoordIndex () .emplace_back (-1);
+
 				targetGeometry -> coordIndex () .emplace_back (-1);
-			else
-				targetGeometry -> coordIndex () .emplace_back (coordIndex [index] + targetCoord -> getSize ());
+				continue;
+			}
+
+			if (targetTexCoord)
+				targetGeometry -> texCoordIndex () .emplace_back (texCoordIndex [geometry -> texCoordIndex () [i]] + targetTexCoord -> getSize ());
+
+			targetGeometry -> coordIndex () .emplace_back (coordIndex [index] + targetCoord -> getSize ());
+		}
+
+		if (targetTexCoord)
+		{
+			for (const auto & index : basic::reverse (texCoordIndex))
+				targetTexCoord -> point () .set1Value (targetTexCoord -> getSize (), texCoord -> point () .get1Value (index .second));
 		}
 
 		for (const auto & index : basic::reverse (coordIndex))

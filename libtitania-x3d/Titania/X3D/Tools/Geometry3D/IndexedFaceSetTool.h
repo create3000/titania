@@ -170,6 +170,11 @@ public:
 
 	virtual
 	void
+	addColors () final override
+	{ getNode <IndexedFaceSet> () -> addColors (); }
+
+	virtual
+	void
 	addTexCoords () final override
 	{ getNode <IndexedFaceSet> () -> addTexCoords (); }
 

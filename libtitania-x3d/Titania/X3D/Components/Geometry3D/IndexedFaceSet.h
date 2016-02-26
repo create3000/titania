@@ -172,6 +172,10 @@ public:
 
 	virtual
 	void
+	addColors ();
+
+	virtual
+	void
 	addTexCoords ();
 
 	virtual

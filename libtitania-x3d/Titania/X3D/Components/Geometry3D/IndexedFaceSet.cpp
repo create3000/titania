@@ -56,6 +56,7 @@
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/ColorRGBA.h"
 #include "../Rendering/Normal.h"
 #include "../Texturing/TextureCoordinate.h"
 
@@ -457,6 +458,19 @@ IndexedFaceSet::buildNormals (const PolygonArray & polygons)
 }
 
 void
+IndexedFaceSet::addColors ()
+{
+	const auto colorNode = getExecutionContext () -> createNode <ColorRGBA> ();
+
+	colorNode -> color () .emplace_back (Color4f (1, 1, 1, 1));
+
+	colorIndex () .clear ();
+
+	for (const auto & index : coordIndex ())
+	   colorIndex () .emplace_back (index < 0 ? -1 : 0);
+}
+
+void
 IndexedFaceSet::addTexCoords ()
 {
 	const auto texCoordNode = getExecutionContext () -> createNode <TextureCoordinate> ();
@@ -494,8 +508,6 @@ IndexedFaceSet::addTexCoords ()
 		else
 			texCoordIndex () .emplace_back (indices [index]);
 	}
-
-	getExecutionContext () -> realize ();
 }
 
 void
@@ -526,8 +538,6 @@ IndexedFaceSet::addNormals ()
 			normalNode -> vector () .emplace_back (*normal++);
 		}
 	}
-
-	getExecutionContext () -> realize ();
 }
 
 std::vector <Vector3f>
