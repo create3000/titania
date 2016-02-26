@@ -353,6 +353,9 @@ GeometryEditor::on_hammer_clicked ()
 		}
 	}
 
+	getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode (), undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren (selection,      undoStep);
+
 	addUndoStep (undoStep);
 }
 

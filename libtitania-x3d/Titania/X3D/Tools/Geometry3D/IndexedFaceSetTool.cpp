@@ -262,7 +262,9 @@ IndexedFaceSetTool::set_mergePoints ()
 {
 	__LOG__ << std::endl;
 
-	if (getMasterPoint () < 0)
+	int32_t masterPoint = getMasterPoint ();
+
+	if (masterPoint < 0)
 	   return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Merge Points"));
@@ -288,7 +290,7 @@ IndexedFaceSetTool::set_mergePoints ()
 		{
 			pointsToRemove .emplace_back (coordIndex () [index]);
 
-			coordIndex () [index] = getMasterPoint ();
+			coordIndex () [index] = masterPoint;
 		}
 	}
 
@@ -297,19 +299,24 @@ IndexedFaceSetTool::set_mergePoints ()
 		// Erase points.
 
 		const auto unique  = std::unique (pointsToRemove .begin (), pointsToRemove .end ());
-		const auto removed = std::remove (pointsToRemove .begin (), unique, getMasterPoint ());
+		const auto removed = std::remove (pointsToRemove .begin (), unique, masterPoint);
 	 
 		pointsToRemove .erase (removed, pointsToRemove .end ());
 
 		std::sort (pointsToRemove .begin (), pointsToRemove .end ());
+
+		masterPoint -= std::lower_bound (pointsToRemove .begin (), pointsToRemove .end (), masterPoint) - pointsToRemove .begin ();
 
 		erasePoints (pointsToRemove);
 	}
 
 	// Remove degenerated edges and faces.
 	rebuildIndices ();
+	//rebuildColor ();
+	//rebuildTexCoord ();
+	//rebuildNormal ();
 
-	select ({ getMasterPoint () }, true);
+	select ({ masterPoint }, true);
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);

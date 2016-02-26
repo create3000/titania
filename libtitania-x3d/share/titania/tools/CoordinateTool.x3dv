@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Thu, 25 Feb 2016 20:45:29 GMT"
+META "modified" "Fri, 26 Feb 2016 07:29:01 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -69,7 +69,7 @@ WorldInfo {
               material DEF Material Material {
                 diffuseColor 0 0 0
                 emissiveColor 0.5 0.0792565 0
-                transparency 0.381
+                transparency 0.207602
               }
             }
             geometry DEF ActiveEdgesGeometry IndexedLineSet { }
