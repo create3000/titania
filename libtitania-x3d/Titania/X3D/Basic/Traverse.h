@@ -133,26 +133,28 @@ findParents (X3DChildObject* const object, std::vector <Type*> & parents, const 
 		{
 			switch (type)
 			{
+				case X3DConstants::X3DMetadataObject:
+				case X3DConstants::X3DProgrammableShaderObject:
 				case X3DConstants::X3DProtoDeclarationNode:
 				case X3DConstants::X3DScriptNode:
-				case X3DConstants::X3DProgrammableShaderObject:
 				{
 					if (flags & TRAVERSE_VISIBLE_NODES)
 						return;
 
-					goto NEXT;
+					break;
 				}
 				case X3DConstants::X3DNode:
-					goto NEXT;
+					break;
+				case X3DConstants::LayerSet:
 				case X3DConstants::X3DBaseNode:
 					return;
 				default:
-					break;
+					continue;
 			}
+
+			break;
 		}
 	}
-
-NEXT:
 
 	const auto parent = dynamic_cast <Type*> (object);
 

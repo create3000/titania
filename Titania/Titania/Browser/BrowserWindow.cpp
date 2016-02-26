@@ -926,8 +926,6 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
 	const auto group    = groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
-	pushBackIntoArray (X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), group, undoStep);
-
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
 
@@ -945,7 +943,10 @@ BrowserWindow::on_ungroup_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
 
 	getSelection () -> clear (undoStep);
-	getSelection () -> setChildren (ungroupNodes (getCurrentContext (), selection, undoStep), undoStep);
+
+	const auto nodes = ungroupNodes (getCurrentContext (), selection, undoStep);
+
+	getSelection () -> setChildren (nodes, undoStep);
 
 	addUndoStep (undoStep);
 }

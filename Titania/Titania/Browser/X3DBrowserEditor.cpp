@@ -808,31 +808,6 @@ X3DBrowserEditor::set_undoHistory ()
 	setTitle ();
 }
 
-// Edit operations
-
-/***
- *  Add node to current layer root nodes.
- */
-void
-X3DBrowserEditor::addNode (const X3D::SFNode & node, const X3D::UndoStepPtr & undoStep)
-{
-	const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
-	auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
-	                           ? activeLayer -> children ()
-										: getCurrentContext () -> getRootNodes ();
-
-	undoStep -> addObjects (getCurrentContext (), activeLayer);
-	children .emplace_back (node);
-	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
-
-	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
-
-	removeNodesFromScene (getCurrentContext (), { node }, true, removeUndoStep);
-	undoStep -> addUndoFunction (&X3D::UndoStep::redo, removeUndoStep);
-	removeUndoStep -> undo ();
-	undoStep -> addRedoFunction (&X3D::UndoStep::undo, removeUndoStep);
-}
-
 /***
  *  Create node and add node to current layer root nodes.
  */
@@ -844,7 +819,8 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 	getCurrentContext () -> addUninitializedNode (node);
 	getCurrentContext () -> realize ();
 
-	addNode (node, undoStep);
+	addNodesToActiveLayer (getCurrentWorld (), { node }, undoStep);
+	getSelection () -> setChildren ({ node });
 
 	return node;
 }

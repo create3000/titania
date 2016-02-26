@@ -66,6 +66,7 @@
 #include "../Execution/ExportedNode.h"
 #include "../Execution/ImportedNode.h"
 #include "../Execution/X3DExecutionContext.h"
+#include "../Execution/World.h"
 #include "../Prototype/ExternProtoDeclaration.h"
 #include "../Prototype/ProtoDeclaration.h"
 
@@ -1741,6 +1742,8 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
                        const MFNode & nodes,
                        const UndoStepPtr & undoStep) const
 {
+	const auto layers = findParents <X3DLayerNode> (nodes .back ());
+
 	const X3DPtr <X3DGroupingNode> group (executionContext -> createNode (typeName));
 	const SFNode                   groupNode (group);
 
@@ -1773,7 +1776,13 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 	group -> setup ();
 
-	return SFNode (group);
+	// Add to layer
+
+	SFNode node (group);
+
+	addToLayers (executionContext, layers, node, undoStep);
+
+	return node;
 }
 
 MFNode
@@ -1819,18 +1828,7 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 
 				// Add to layer
 
-				for (const auto & layer : layers)
-				{
-					if (layer -> isLayer0 ())
-						pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
-
-					else
-					{
-						undoStep -> addObjects (SFNode (layer));
-
-						pushBackIntoArray (SFNode (layer), layer -> children (), child, undoStep);
-					}
-				}
+				addToLayers (executionContext, layers, child, undoStep);
 
 				undoStep -> addUndoFunction (&MFNode::push_front, groupingField, child);
 
@@ -1981,16 +1979,7 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 			pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
 
 		else
-		{
-			for (const auto & layer : layers)
-			{
-				if (layer -> isLayer0 ())
-					pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
-
-				else
-					pushBackIntoArray (SFNode (layer), layer -> children (), child, undoStep);
-			}
-		}
+		   addToLayers (executionContext, layers, child, undoStep);
 	}
 }
 
@@ -2090,6 +2079,48 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 
 		children [index] = group;
 	}
+}
+
+///  Add node to active layer root nodes or layer 0.
+void
+X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep) const
+{
+	const auto & activeLayer = world -> getActiveLayer ();
+	auto &       children    = activeLayer and activeLayer not_eq world -> getLayer0 ()
+	                           ? activeLayer -> children ()
+										: world -> getExecutionContext () -> getRootNodes ();
+
+	undoStep -> addObjects (world -> getExecutionContext (), activeLayer);
+	children .append (nodes);
+
+	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
+
+	removeNodesFromScene (world -> getExecutionContext (), nodes, true, removeUndoStep);
+	undoStep -> addUndoFunction (&UndoStep::redo, removeUndoStep);
+	removeUndoStep -> undo ();
+	undoStep -> addRedoFunction (&UndoStep::undo, removeUndoStep);
+}
+
+/// Add node to layers.
+void
+X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> & layers, const SFNode & node, const UndoStepPtr & undoStep) const
+{
+	bool added = false;
+
+	for (const auto & layer : layers)
+	{
+		if (layer -> isLayer0 ())
+		   continue;
+
+		added = true;
+
+		undoStep -> addObjects (SFNode (layer));
+
+		pushBackIntoArray (SFNode (layer), layer -> children (), node, undoStep);
+	}
+
+	if (not added)
+		pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), node, undoStep);
 }
 
 /***

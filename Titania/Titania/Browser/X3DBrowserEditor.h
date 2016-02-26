@@ -162,9 +162,6 @@ public:
 
 	/// @name Edit operations
 
-	void
-	addNode (const X3D::SFNode &, const X3D::UndoStepPtr &);
-
 	X3D::SFNode
 	createNode (const std::string & typeName, const X3D::UndoStepPtr &);
 
