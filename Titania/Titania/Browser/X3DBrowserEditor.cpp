@@ -657,9 +657,11 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	{
 		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("children");
+		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
 
 		children -> isPrivate (false);
+		previous -> isPrivate (false);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -671,9 +673,11 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	{
 		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("children");
+		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
 
 		children -> isPrivate (true);
+		previous -> isPrivate (false);
 	}
 	catch (const X3D::X3DError &)
 	{ }

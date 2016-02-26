@@ -55,6 +55,8 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Browser/Core/Cast.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
@@ -71,6 +73,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
+	         previousSelection (),
 	             selectionType (SelectionType::BRUSH),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                   browser (getCurrentBrowser ()),
@@ -125,10 +128,30 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
+	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
+
 	normalEditor -> setup ();
 	coordEditor  -> setup ();
 
 	normalEnabled  .setNodes ({ normalEditor });
+}
+
+void
+GeometryEditor::set_executionContext ()
+{
+	try
+	{
+		const auto worldInfo   = getWorldInfo ();
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
+
+		children -> isPrivate (true);
+		previousSelection = children -> value ();
+	}
+	catch (const std::exception & error)
+	{
+		previousSelection .clear ();
+	}
 }
 
 void
@@ -144,23 +167,24 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	}
 	else
 	{
-		previousSelection = selection;
-
 		const bool inScene       = not inPrototypeInstance ();
 		const bool haveSelection = inScene and selection .size ();
 		//const bool haveSelections = inScene and selection .size () > 1;
-	
+
 		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance, X3D::X3DConstants::IndexedFaceSet });
+
+		if (selection not_eq geometryNodes)
+		   previousSelection = selection;
+
+		if (previousSelection == geometryNodes)
+			previousSelection .clear ();
 
 		getHammerButton ()     .set_sensitive (haveSelection);
 		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
 		getEditToggleButton () .set_active (selection == geometryNodes and not geometryNodes .empty  ());
 
-		if (previousSelection == geometryNodes)
-			previousSelection .clear ();
-
 		connect ();
-	}	
+	}
 
 	changing = false;
 
@@ -368,6 +392,22 @@ GeometryEditor::on_edit_toggled ()
 {
 	if (changing)
 		return;
+
+	if (true)
+	{
+		const auto worldInfo = createWorldInfo ();
+
+		if (getEditToggleButton () .get_active ())
+		{
+			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
+
+			children -> isPrivate (true);
+			children -> value () = previousSelection;
+		}
+		else
+			worldInfo -> removeMetaData ("/Titania/Selection/previous");
+	}
 
 	if (getEditToggleButton () .get_active ())
 		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
