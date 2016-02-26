@@ -232,6 +232,12 @@ private:
 	set_splitPoints ();
 
 	void
+	erasePoints (const std::vector <int32_t> &);
+
+	void
+	rewriteCoordIndex ();
+
+	void
 	undoSetCoordIndex (const UndoStepPtr &);
 
 	void

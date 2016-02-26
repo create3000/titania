@@ -271,7 +271,7 @@ IndexedFaceSetTool::set_mergePoints ()
 	undoSetCoordIndex (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	std::map <int32_t, size_t> removedPoints;
+	std::vector <int32_t> pointsToRemove;
 
 	for (const auto & selectedPoint : getSelectedPoints ())
 	{
@@ -283,7 +283,7 @@ IndexedFaceSetTool::set_mergePoints ()
 		
 		for (const auto & index : indices)
 		{
-			removedPoints .emplace (coordIndex () [index], 0);
+			pointsToRemove .emplace_back (coordIndex () [index]);
 
 			coordIndex () [index] = getMasterPoint ();
 		}
@@ -291,29 +291,15 @@ IndexedFaceSetTool::set_mergePoints ()
 
 	if (getCoord () -> getCloneCount () == 1)
 	{
-		removedPoints .erase (getMasterPoint ());
+		const auto unique  = std::unique (pointsToRemove .begin (), pointsToRemove .end ());
+		const auto removed = std::remove (pointsToRemove .begin (), unique, getMasterPoint ());
+	 
+		pointsToRemove .erase (removed, pointsToRemove .end ());
 
-		// Remove unused points
+		std::sort (pointsToRemove .begin (), pointsToRemove .end ());
 
-		for (auto & removedPoint : basic::make_reverse_range (removedPoints))
-		   getCoord () -> erasePoint (removedPoint .first);
-
-		// Update coordIndex
-
-		size_t count = 0;
-
-		for (auto & removedPoint : removedPoints)
-			removedPoint .second = count ++;
-
-		for (auto & index : coordIndex ())
-		{
-			const auto & iter = removedPoints .upper_bound (index);
-
-			if (iter == removedPoints .end ())
-				index -= count;
-			else
-				index -= iter -> second;
-		}
+		erasePoints (pointsToRemove);
+		rewriteCoordIndex ();
 	}
 
 	select ({ getMasterPoint () }, true);
@@ -363,6 +349,46 @@ IndexedFaceSetTool::set_splitPoints ()
 	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+///  A unique and sorted list of points given, the point will be removed from coords and the coord index will be updated.
+void
+IndexedFaceSetTool::erasePoints (const std::vector <int32_t> & points)
+{
+	for (auto & point : basic::make_reverse_range (points))
+	   getCoord () -> erasePoint (point);
+
+	// Update coordIndex
+
+	std::vector <size_t> counts;
+	size_t               count = 0;
+
+	for (size_t i = 0, size = points .size (); i < size; ++ i)
+		counts .emplace_back (count ++);
+
+	for (auto & index : coordIndex ())
+	{
+		const auto iter = std::upper_bound (points .begin (), points .end (), index);
+
+		if (iter == points .end ())
+			index -= count;
+		else
+			index -= counts [iter - points .begin ()];
+	}
+}
+
+///  Removes degenerated edges and faces from coordIndex and rewites color, texCoord, normal index.
+void
+IndexedFaceSetTool::rewriteCoordIndex ()
+{
+	size_t faceIndex = 0;
+
+	for (const auto & face : getFaceSelection () -> getFaces ())
+	{
+		//const auto faceBounds = getFaceSelection () -> getFaceBounds (face);
+
+
+	}
 }
 
 void

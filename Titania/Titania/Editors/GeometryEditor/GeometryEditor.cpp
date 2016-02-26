@@ -227,8 +227,6 @@ GeometryEditor::connect ()
 void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
-	__LOG__ << std::endl;
-
 	getBrowserWindow () -> addUndoStep (container -> getUndoStep ());
 }
 

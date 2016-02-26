@@ -814,7 +814,9 @@ TextureMappingEditor::on_select_all_activate ()
 
 	else if (right -> has_focus ())
 	{
-		selectedFaces = rightSelection -> getFaces ();
+		const auto faces = rightSelection -> getFaces ();
+
+		selectedFaces .insert (faces .begin (), faces .end ());
 
 		set_selected_faces ();
 	}

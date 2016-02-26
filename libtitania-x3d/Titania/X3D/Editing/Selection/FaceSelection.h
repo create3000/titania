@@ -66,14 +66,6 @@ class FaceSelection :
 {
 public:
 
-	///  @name Member types
-
-	using PointIndex = std::multimap <Vector3d, int32_t>;
-	using Points     = std::vector <int32_t>;
-	using Face       = std::pair <size_t, size_t>;
-	using FaceIndex  = std::multimap <int32_t, Face>;
-	using Faces      = std::vector <Face>;
-
 	struct Edge
 	{
 		int32_t index0;
@@ -121,7 +113,7 @@ public:
 
 	///  @name Operations
 
-	std::set <size_t>
+	std::vector <size_t>
 	getFaces () const;
 
 	Faces

@@ -178,11 +178,11 @@ FaceSelection::set_point ()
 	}
 }
 
-///  Returns a set of all faces in geometry.
-std::set <size_t>
+///  Returns a array of all faces in geometry.
+std::vector <size_t>
 FaceSelection::getFaces () const
 {
-	std::set <size_t> faces;
+	std::vector <size_t> faces;
 
 	if (not geometryNode)
 		return faces;
@@ -194,16 +194,13 @@ FaceSelection::getFaces () const
 	{
 		if (index < 0)
 		{
-			if (vertex < 3)
-				faces .erase (face);
-
 			face  += vertex + 1;
 			vertex = 0;
 			continue;
 		}
 
 		if (vertex == 0)
-			faces .emplace (face);
+			faces .emplace_back (face);
 
 		++ vertex;
 	}
