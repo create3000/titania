@@ -115,6 +115,8 @@ GeometryEditor::configure ()
 
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", getConfig () -> get <X3D::SFBool> ("paintSelection"));
 
+	getPaintSelectionToggleButton () .set_active (getConfig () -> get <X3D::SFBool> ("paintSelection"));
+
 	set_selection_type (SelectionType (getConfig () -> get <size_t> ("selectionType")));
 }
 
@@ -204,9 +206,9 @@ GeometryEditor::connect ()
 
 						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed") .addInterest (this, &GeometryEditor::set_undo);
 
-						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                            true);
-						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),            true);
-						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),         true);
+						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
+						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
+						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
 						break;
 					}
@@ -284,6 +286,8 @@ GeometryEditor::set_viewer ()
 			break;
 		}
 	}
+
+	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
 
 	changing = false;
 }
@@ -374,8 +378,6 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
-	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active (), true);
-
 	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
 		return;
 
@@ -386,6 +388,8 @@ GeometryEditor::on_paint_selection_toggled ()
 	{
 		case SelectionType::BRUSH:
 		{
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active ());
+
 			getCurrentBrowser () -> setPrivateViewer (privateViewer);
 			coordEditor -> setField <X3D::SFBool> ("pickable", true);
 
@@ -395,6 +399,8 @@ GeometryEditor::on_paint_selection_toggled ()
 		}
 		case SelectionType::RECTANGLE:
 		{
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
+
 			if (getPaintSelectionToggleButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
 			else
@@ -405,6 +411,8 @@ GeometryEditor::on_paint_selection_toggled ()
 		}
 		case SelectionType::LASSO:
 		{
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
+
 			if (getPaintSelectionToggleButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
 			else
