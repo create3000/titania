@@ -217,6 +217,9 @@ protected:
 	Vector3f
 	getPolygonNormal (const Vertices &) const;
 
+	void
+	rebuildIndices ();
+
 
 private:
 
@@ -251,6 +254,9 @@ private:
 
 	void
 	tessellate (const std::unique_ptr <Tessellator> &, PolygonArray &);
+
+	void
+	rebuildIndices (const size_t, const size_t, const size_t, std::vector <size_t> &, std::vector <size_t> &);
 
 	///  @name Static members
 

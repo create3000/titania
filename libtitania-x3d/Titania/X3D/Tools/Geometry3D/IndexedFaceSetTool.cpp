@@ -304,11 +304,10 @@ IndexedFaceSetTool::set_mergePoints ()
 		std::sort (pointsToRemove .begin (), pointsToRemove .end ());
 
 		erasePoints (pointsToRemove);
-
-		// Remove degenerated edges and faces.
-
-		rewriteIndices ();
 	}
+
+	// Remove degenerated edges and faces.
+	rebuildIndices ();
 
 	select ({ getMasterPoint () }, true);
 
@@ -385,107 +384,6 @@ IndexedFaceSetTool::erasePoints (const std::vector <int32_t> & points)
 			index -= count;
 		else
 			index -= counts [iter - points .begin ()];
-	}
-}
-
-///  Removes degenerated edges and faces from coordIndex and rewites color, texCoord, normal index.
-void
-IndexedFaceSetTool::rewriteIndices ()
-{
-	std::vector <size_t> indices;
-	std::vector <size_t> faceNumbers;
-
-	size_t faceIndex  = 0;
-	size_t faceNumber = 0;
-	size_t count      = 0;
-
-	for (const int32_t index : coordIndex ())
-	{
-		if (index < 0)
-		{
-			rewriteIndices (faceIndex, faceNumber, count, indices, faceNumbers);
-
-			faceIndex  += count + 1;
-			faceNumber += 1;
-			count       = 0;
-			continue;
-		}
-
-		++ count;
-	}
-
-	MFInt32 color;
-	MFInt32 texCoord;
-	MFInt32 normal;
-	MFInt32 coord;
-
-	size_t face = 0;
-
-	for (size_t i = 0, size = indices .size (); i < size; ++ i)
-	{
-		const size_t  vertex     = indices [i];
-		const int32_t index      = coordIndex () [vertex];
-		const size_t  faceNumber = faceNumbers [face];
-
-		if (index < 0)
-		{
-		   ++ face;
-
-			if (not colorIndex () .empty () and colorPerVertex ())
-				color .emplace_back (-1);
-
-			if (not texCoordIndex () .empty ())
-				texCoord .emplace_back (-1);
-
-			if (not normalIndex () .empty ())
-				normal .emplace_back (-1);
-
-			coord .emplace_back (-1);
-			continue;
-		}
-
-		if (not colorIndex () .empty ())
-			color .emplace_back (colorPerVertex () ? getVertexColorIndex (vertex) : getFaceColorIndex (faceNumber));
-
-		if (not texCoordIndex () .empty ())
-			texCoord .emplace_back (getVertexTexCoordIndex (vertex));
-
-		if (not normalIndex () .empty ())
-			normal .emplace_back (normalPerVertex () ? getVertexNormalIndex (vertex) : getFaceNormalIndex (faceNumber));
-
-		coord .emplace_back (index);
-	}
-
-	colorIndex ()    = color;
-	texCoordIndex () = texCoord;
-	normalIndex ()   = normal;
-	coordIndex ()    = coord;
-}
-
-void
-IndexedFaceSetTool::rewriteIndices (const size_t faceIndex,
-                                    const size_t faceNumber,
-                                    const size_t count,
-                                    std::vector <size_t> & indices,
-                                    std::vector <size_t> & faceNumbers)
-{
-	const auto size = indices .size ();
-
-	for (size_t i = faceIndex, size = faceIndex + count; i < size; ++ i)
-	{
-		const auto i0 = i;
-		const auto i1 = i + 1 == size ? faceIndex : i + 1;
-
-	   if (coordIndex () [i0] not_eq coordIndex () [i1])
-	      indices .emplace_back (i0);
-	}
-
-	if (indices .size () - size < 3)
-	   indices .resize (size);
-	else
-	{
-	   indices .emplace_back (faceIndex + count);
-	   faceNumbers .emplace_back (faceNumber);
 	}
 }
 

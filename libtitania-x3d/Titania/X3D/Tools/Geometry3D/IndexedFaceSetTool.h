@@ -235,12 +235,6 @@ private:
 	erasePoints (const std::vector <int32_t> &);
 
 	void
-	rewriteIndices ();
-
-	void
-	rewriteIndices (const size_t, const size_t, const size_t, std::vector <size_t> &, std::vector <size_t> &);
-
-	void
 	undoSetColorIndex (const UndoStepPtr &);
 
 	void
