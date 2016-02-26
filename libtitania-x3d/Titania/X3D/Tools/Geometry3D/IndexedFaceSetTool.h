@@ -235,7 +235,28 @@ private:
 	erasePoints (const std::vector <int32_t> &);
 
 	void
-	rewriteCoordIndex ();
+	rewriteIndices ();
+
+	void
+	rewriteIndices (const size_t, const size_t, const size_t, std::vector <size_t> &, std::vector <size_t> &);
+
+	void
+	undoSetColorIndex (const UndoStepPtr &);
+
+	void
+	redoSetColorIndex (const UndoStepPtr &);
+
+	void
+	undoSetTexCoordIndex (const UndoStepPtr &);
+
+	void
+	redoSetTexCoordIndex (const UndoStepPtr &);
+
+	void
+	undoSetNormalIndex (const UndoStepPtr &);
+
+	void
+	redoSetNormalIndex (const UndoStepPtr &);
 
 	void
 	undoSetCoordIndex (const UndoStepPtr &);

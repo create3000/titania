@@ -195,6 +195,25 @@ protected:
 
 	using Vertices = std::vector <size_t>;
 
+	///  @name Member access
+
+	size_t
+	getVertexTexCoordIndex (const size_t) const;
+
+	size_t
+	getVertexColorIndex (const size_t) const;
+
+	size_t
+	getFaceColorIndex (const size_t) const;
+
+	size_t
+	getVertexNormalIndex (const size_t) const;
+
+	size_t
+	getFaceNormalIndex (const size_t) const;
+
+	///  @name Operations
+
 	Vector3f
 	getPolygonNormal (const Vertices &) const;
 
@@ -216,21 +235,6 @@ private:
 	using Tessellator  = opengl::tessellator <size_t>;
 
 	///  @name Operations
-
-	size_t
-	getTexCoordIndex (const size_t) const;
-
-	size_t
-	getColorIndex (const size_t, const bool) const;
-
-	size_t
-	getColorIndex (const size_t) const;
-
-	size_t
-	getNormalIndex (const size_t, const bool) const;
-
-	size_t
-	getNormalIndex (const size_t) const;
 
 	virtual
 	void

@@ -187,22 +187,25 @@ FaceSelection::getFaces () const
 	if (not geometryNode)
 		return faces;
 
-	size_t face   = 0;
-	size_t vertex = 0;
+	size_t face  = 0;
+	size_t count = 0;
 
 	for (const int32_t index : geometryNode -> coordIndex ())
 	{
 		if (index < 0)
 		{
-			face  += vertex + 1;
-			vertex = 0;
+			if (count < 3 and count > 0)
+				faces .pop_back ();
+
+			face  += count + 1;
+			count  = 0;
 			continue;
 		}
 
-		if (vertex == 0)
+		if (count == 0)
 			faces .emplace_back (face);
 
-		++ vertex;
+		++ count;
 	}
 
 	return faces;

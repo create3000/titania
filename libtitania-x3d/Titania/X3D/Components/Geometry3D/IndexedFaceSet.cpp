@@ -115,7 +115,7 @@ IndexedFaceSet::create (X3DExecutionContext* const executionContext) const
 }
 
 size_t
-IndexedFaceSet::getTexCoordIndex (const size_t index) const
+IndexedFaceSet::getVertexTexCoordIndex (const size_t index) const
 {
 	if (index < texCoordIndex () .size ())
 		return texCoordIndex () [index];
@@ -124,7 +124,7 @@ IndexedFaceSet::getTexCoordIndex (const size_t index) const
 }
 
 size_t
-IndexedFaceSet::getColorIndex (const size_t index, const bool) const
+IndexedFaceSet::getVertexColorIndex (const size_t index) const
 {
 	if (index < colorIndex () .size ())
 		return colorIndex () [index];
@@ -133,7 +133,7 @@ IndexedFaceSet::getColorIndex (const size_t index, const bool) const
 }
 
 size_t
-IndexedFaceSet::getColorIndex (const size_t index) const
+IndexedFaceSet::getFaceColorIndex (const size_t index) const
 {
 	if (index < colorIndex () .size ())
 		return colorIndex () [index];
@@ -142,7 +142,7 @@ IndexedFaceSet::getColorIndex (const size_t index) const
 }
 
 size_t
-IndexedFaceSet::getNormalIndex (const size_t index, const bool) const
+IndexedFaceSet::getVertexNormalIndex (const size_t index) const
 {
 	if (index < normalIndex () .size ())
 		return normalIndex () [index];
@@ -151,7 +151,7 @@ IndexedFaceSet::getNormalIndex (const size_t index, const bool) const
 }
 
 size_t
-IndexedFaceSet::getNormalIndex (const size_t index) const
+IndexedFaceSet::getFaceNormalIndex (const size_t index) const
 {
 	if (index < normalIndex () .size ())
 		return normalIndex () [index];
@@ -236,22 +236,22 @@ IndexedFaceSet::build ()
 				if (getColor ())
 				{
 					if (colorPerVertex ())
-						getColor () -> addColor (getColors (), getColorIndex (i, true));
+						getColor () -> addColor (getColors (), getVertexColorIndex (i));
 
 					else
-						getColor () -> addColor (getColors (), getColorIndex (face));
+						getColor () -> addColor (getColors (), getFaceColorIndex (face));
 				}
 
 				if (getTexCoord ())
-					getTexCoord () -> addTexCoord (getTexCoords (), getTexCoordIndex (i));
+					getTexCoord () -> addTexCoord (getTexCoords (), getVertexTexCoordIndex (i));
 
 				if (getNormal ())
 				{
 					if (normalPerVertex ())
-						getNormal () -> addVector (getNormals (), getNormalIndex (i, true));
+						getNormal () -> addVector (getNormals (), getVertexNormalIndex (i));
 
 					else
-						getNormal () -> addVector (getNormals (), getNormalIndex (face));
+						getNormal () -> addVector (getNormals (), getFaceNormalIndex (face));
 				}
 
 				getCoord () -> addVertex (getVertices (), index);
@@ -632,10 +632,10 @@ throw (Error <NOT_SUPPORTED>,
 	   
 		for (size_t i = 1, size = coordIndex () .size (); i < size; ++ i)
 		{
-		   const auto p        = i - 1;
-			const auto previous = coordIndex () [p];
-			auto       index    = coordIndex () [i];
-			auto       c        = i;
+		   const auto    p        = i - 1;
+			const int32_t previous = coordIndex () [p];
+			int32_t       index    = coordIndex () [i];
+			auto          c        = i;
 
 			if (index == -1)
 			{
@@ -655,7 +655,7 @@ throw (Error <NOT_SUPPORTED>,
 					if (colorPerVertex ())
 						lineColorIndex .emplace_back (-1);
 					else
-						lineColorIndex .emplace_back (getColorIndex (face));
+						lineColorIndex .emplace_back (getFaceColorIndex (face));
 				}
 
 				lineCoordIndex .emplace_back (-1);
@@ -678,7 +678,7 @@ throw (Error <NOT_SUPPORTED>,
 				if (not colorIndex () .empty ())
 				{
 					if (colorPerVertex ())
-						lineColorIndex .emplace_back (getColorIndex (p, true));
+						lineColorIndex .emplace_back (getVertexColorIndex (p));
 				}
 
 				lineCoordIndex .emplace_back (previous);
@@ -687,7 +687,7 @@ throw (Error <NOT_SUPPORTED>,
 			if (not colorIndex () .empty ())
 			{
 				if (colorPerVertex ())
-					lineColorIndex .emplace_back (getColorIndex (c, true));
+					lineColorIndex .emplace_back (getVertexColorIndex (c));
 			}
 
 			lineCoordIndex .emplace_back (index);

@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="41" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.h" Line="37" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp" Line="51" Column="51" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="66" Column="66" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="5" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.h" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" Line="16" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
