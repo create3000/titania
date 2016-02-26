@@ -192,6 +192,30 @@
                     <property name="top_attach">0</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkButton" id="RemoveFacesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected faces.</property>
+                    <signal name="clicked" handler="on_remove_selected_faces_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image9">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">RemoveFace</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>

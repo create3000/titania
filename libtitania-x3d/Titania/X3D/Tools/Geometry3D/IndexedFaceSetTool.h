@@ -151,6 +151,14 @@ public:
 	splitPoints () const
 	{ return *fields .splitPoints; }
 
+	SFTime &
+	removeSelectedFaces ()
+	{ return *fields .removeSelectedFaces; }
+
+	const SFTime &
+	removeSelectedFaces () const
+	{ return *fields .removeSelectedFaces; }
+
 	UndoStepContainerPtr &
 	undo_changed ()
 	{ return *fields .undo_changed; }
@@ -237,6 +245,9 @@ private:
 	set_splitPoints ();
 
 	void
+	set_removeSelectedFaces ();
+
+	void
 	erasePoints (const std::vector <int32_t> &);
 
 	void
@@ -271,6 +282,7 @@ private:
 
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
+		SFTime* const removeSelectedFaces;
 		UndoStepContainerPtr* const undo_changed;
 	};
 

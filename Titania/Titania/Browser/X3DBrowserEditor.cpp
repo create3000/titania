@@ -677,7 +677,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
 
 		children -> isPrivate (true);
-		previous -> isPrivate (false);
+		previous -> isPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }

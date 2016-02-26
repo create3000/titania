@@ -2497,6 +2497,7 @@
     <None Include="Titania\Editors\SoundEditor\X3DSoundSourceNodeEditor.h" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-media-stop.png" />
     <None Include="share\titania\ui\icons\Resume.svg" />
+    <None Include="share\titania\ui\icons\RemoveFace.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

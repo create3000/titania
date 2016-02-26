@@ -150,7 +150,7 @@ X3DGridTool::realize ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

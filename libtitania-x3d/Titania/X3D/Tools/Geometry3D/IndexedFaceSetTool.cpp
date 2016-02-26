@@ -65,9 +65,10 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 IndexedFaceSetTool::Fields::Fields () :
-	 mergePoints (new SFTime ()),
-	 splitPoints (new SFTime ()),
-	undo_changed (new UndoStepContainerPtr ())
+	         mergePoints (new SFTime ()),
+	         splitPoints (new SFTime ()),
+	 removeSelectedFaces (new SFTime ()),
+	        undo_changed (new UndoStepContainerPtr ())
 { }
 
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
@@ -88,16 +89,17 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	mergePoints () .isHidden (true);
 	splitPoints () .isHidden (true);
 
-	addField (inputOutput, "pickable",         pickable ());
-	addField (inputOutput, "selectable",       selectable ());
-	addField (inputOutput, "paintSelection",   paintSelection ());
-	addField (inputOutput, "addSelection",     addSelection ());
-	addField (inputOutput, "replaceSelection", replaceSelection ());
-	addField (inputOutput, "mergePoints",      mergePoints ());
-	addField (inputOutput, "splitPoints",      splitPoints ());
-	addField (inputOutput, "undo_changed",     undo_changed ());
-	addField (inputOutput, "normalTool",       normalTool ());
-	addField (inputOutput, "coordTool",        coordTool ());
+	addField (inputOutput, "pickable",            pickable ());
+	addField (inputOutput, "selectable",          selectable ());
+	addField (inputOutput, "paintSelection",      paintSelection ());
+	addField (inputOutput, "addSelection",        addSelection ());
+	addField (inputOutput, "replaceSelection",    replaceSelection ());
+	addField (inputOutput, "mergePoints",         mergePoints ());
+	addField (inputOutput, "splitPoints",         splitPoints ());
+	addField (inputOutput, "removeSelectedFaces", removeSelectedFaces ());
+	addField (inputOutput, "undo_changed",        undo_changed ());
+	addField (inputOutput, "normalTool",          normalTool ());
+	addField (inputOutput, "coordTool",           coordTool ());
 
 	addChildren (touchSensor,
 	             planeSensor);
@@ -111,8 +113,9 @@ IndexedFaceSetTool::initialize ()
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 
-	mergePoints () .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
-	splitPoints () .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
+	mergePoints ()         .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
+	splitPoints ()         .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
+	removeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 }
 
 void
@@ -260,8 +263,6 @@ IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
 void
 IndexedFaceSetTool::set_mergePoints ()
 {
-	__LOG__ << std::endl;
-
 	int32_t masterPoint = getMasterPoint ();
 
 	if (masterPoint < 0)
@@ -363,6 +364,78 @@ IndexedFaceSetTool::set_splitPoints ()
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
+	redoRestoreSelection (undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_removeSelectedFaces ()
+{
+	__LOG__ << std::endl;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Selected Faces"));
+
+	undoRestoreSelection (undoStep);
+	undoSetColorIndex (undoStep);
+	undoSetTexCoordIndex (undoStep);
+	undoSetNormalIndex (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	const auto faceNumbers = getFaceSelection () -> getFaceNumbers (getSelectedFaces ());
+	size_t     i           = 0;
+
+	for (const auto & faceIndex : basic::make_reverse_range (getSelectedFaces ()))
+	{
+		const auto vertices   = getFaceSelection () -> getFaceVertices (faceIndex);
+		const auto first      = faceIndex;
+		const auto last       = faceIndex + vertices .size ();
+		const auto faceNumber = faceNumbers [i];
+
+		if (colorPerVertex ())
+		{
+			if (last < colorIndex () .size ())
+				colorIndex () .erase (colorIndex () .begin () + first, colorIndex () .begin () + last);
+		}
+		else
+		{
+			if (faceNumber < colorIndex () .size ())
+				colorIndex () .erase (colorIndex () .begin () + faceNumber, colorIndex () .begin () + faceNumber + 1);
+		}
+
+		if (last < texCoordIndex () .size ())
+			texCoordIndex () .erase (texCoordIndex () .begin () + first, texCoordIndex () .begin () + last);
+
+		if (normalPerVertex ())
+		{
+			if (last < normalIndex () .size ())
+				normalIndex () .erase (normalIndex () .begin () + first, normalIndex () .begin () + last);
+		}
+		else
+		{
+			if (faceNumber < normalIndex () .size ())
+				normalIndex () .erase (normalIndex () .begin () + faceNumber, normalIndex () .begin () + faceNumber + 1);
+		}
+
+		coordIndex () .erase (coordIndex () .begin () + first, coordIndex () .begin () + last);
+
+		++ i;
+	}
+
+	rebuildIndices ();
+	//rebuildCoord ();
+	//rebuildColor ();
+	//rebuildTexCoord ();
+	//rebuildNormal ();
+
+	select ({ }, true);
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoSetNormalIndex (undoStep);
+	redoSetTexCoordIndex (undoStep);
+	redoSetColorIndex (undoStep);
 	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

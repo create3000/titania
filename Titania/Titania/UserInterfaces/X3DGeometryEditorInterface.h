@@ -143,6 +143,10 @@ public:
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
 
+	Gtk::Button &
+	getRemoveFacesButton () const
+	{ return *m_RemoveFacesButton; }
+
 	Gtk::Menu &
 	getSelectionTypeMenu () const
 	{ return *m_SelectionTypeMenu; }
@@ -195,6 +199,10 @@ public:
 
 	virtual
 	void
+	on_remove_selected_faces_clicked () = 0;
+
+	virtual
+	void
 	on_brush_activated () = 0;
 
 	virtual
@@ -242,6 +250,7 @@ private:
 	Gtk::Button*                m_SplitPointButton;
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
+	Gtk::Button*                m_RemoveFacesButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

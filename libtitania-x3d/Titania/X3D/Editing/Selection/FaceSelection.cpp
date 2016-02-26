@@ -333,6 +333,37 @@ FaceSelection::getFaceVertices (const size_t face) const
 	return vertices;
 }
 
+std::vector <size_t>
+FaceSelection::getFaceNumbers (const std::set <size_t> & faces) const
+{
+	std::vector <size_t> faceNumbers (faces .size ());
+
+	size_t faceNumber = 0;
+	size_t faceIndex = 0;
+	size_t count     = 0;
+
+	for (const int32_t index : geometryNode -> coordIndex ())
+	{
+		if (index < 0)
+		{
+			faceNumber += 1;
+			faceIndex  += count + 1;
+			count       = 0;
+			continue;
+		}
+
+		if (count == 0)
+		{
+		   if (faces .count (faceIndex))
+				faceNumbers .emplace_back (faceNumber);
+		}
+
+		++ count;
+	}
+
+	return faceNumbers;
+}
+
 ///  Return the nearest edge for hitPoint.
 FaceSelection::Edge
 FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const

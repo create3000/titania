@@ -164,6 +164,10 @@ protected:
 	getSelectedPoints () const
 	{ return selectedPoints; }
 
+	const std::set <size_t> &
+	getSelectedFaces () const
+	{ return selectedFaces; }
+
 	///  @name Operations
 
 	void

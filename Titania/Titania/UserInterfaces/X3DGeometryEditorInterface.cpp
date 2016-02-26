@@ -74,6 +74,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SplitPointButton", m_SplitPointButton);
 	m_builder -> get_widget ("MergePointsButton", m_MergePointsButton);
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
+	m_builder -> get_widget ("RemoveFacesButton", m_RemoveFacesButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
@@ -96,6 +97,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'SplitPointButton'.
 	m_SplitPointButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_points_clicked));
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
+	m_RemoveFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_remove_selected_faces_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));

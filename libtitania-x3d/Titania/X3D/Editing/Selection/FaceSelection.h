@@ -128,6 +128,9 @@ public:
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;
 
+	std::vector <size_t>
+	getFaceNumbers (const std::set <size_t> &) const;
+
 	Edge
 	getEdge (const Vector3d &, const std::vector <size_t> &) const;
 
