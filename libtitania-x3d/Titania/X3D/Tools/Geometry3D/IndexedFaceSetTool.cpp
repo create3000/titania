@@ -316,6 +316,7 @@ IndexedFaceSetTool::set_mergePoints ()
 	rebuildColor ();
 	rebuildTexCoord ();
 	rebuildNormal ();
+	rebuildCoord ();
 
 	select ({ masterPoint }, true);
 
