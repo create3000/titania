@@ -90,6 +90,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	      selectedEdgesGeometry (),
 	      selectedFacesGeometry (),
 	                  coordNode (),
+	                  selection (new FaceSelection (getExecutionContext ())),
 	                  hotPoints (),
 	                    hotEdge (),
 	                    hotFace (0),
@@ -97,7 +98,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                 activeEdge (),
 	                 activeFace (0),
 	                       type (SelectionType::POINTS),
-	                  selection (new FaceSelection (getExecutionContext ())),
 	                masterPoint (-1),
 	             selectedPoints (),
 	              selectedEdges (),
@@ -121,7 +121,9 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	             activePointCoord,
 	             activeEdgesGeometry,
 	             selectionCoord,
+	             selectedEdgesGeometry,
 	             selectedFacesGeometry,
+	             coordNode,
 	             selection);
 	            
 }

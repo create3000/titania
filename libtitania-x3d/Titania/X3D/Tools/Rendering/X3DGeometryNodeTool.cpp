@@ -86,8 +86,8 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	normalTool () .isHidden (true);
 	coordTool  () .isHidden (true);
 
-	normalTool () = normalToolNode;
-	coordTool  () = coordToolNode;
+	normalTool () .set (normalToolNode);
+	coordTool  () .set (coordToolNode);
 
 	addChildren (normalToolNode,
                 coordToolNode);

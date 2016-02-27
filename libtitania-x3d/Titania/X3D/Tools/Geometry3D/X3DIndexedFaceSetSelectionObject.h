@@ -387,6 +387,7 @@ private:
 	X3DPtr <IndexedLineSet>    selectedEdgesGeometry;
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
+	X3DPtr <FaceSelection>     selection;
 
 	std::vector <int32_t> hotPoints;    // coord indices
 	std::vector <size_t>  hotEdge;      // index of coord indices
@@ -397,7 +398,6 @@ private:
 	size_t                activeFace;   // index of first coord index of face
 
 	SelectionType                type;
-	X3DPtr <FaceSelection>       selection;
 	int32_t                      masterPoint;    // coord index,
 	std::map <int32_t, Vector3d> selectedPoints; // coord index, point
 	SelectedEdges                selectedEdges;  // index to vertex of face to coordIndex array

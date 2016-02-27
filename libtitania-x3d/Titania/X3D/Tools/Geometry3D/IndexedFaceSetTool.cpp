@@ -567,6 +567,8 @@ IndexedFaceSetTool::redoSetCoordIndex (const UndoStepPtr & undoStep)
 void
 IndexedFaceSetTool::dispose ()
 {
+	__LOG__ << std::endl;
+
 	X3DIndexedFaceSetSelectionObject::dispose ();
 	X3DComposedGeometryNodeTool::dispose ();
 }
