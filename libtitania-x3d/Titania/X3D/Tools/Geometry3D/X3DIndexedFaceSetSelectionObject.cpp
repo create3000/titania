@@ -199,10 +199,6 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		convex () .addInterest (activeFaceGeometry    -> convex ());
 		convex () .addInterest (selectedFacesGeometry -> convex ());
 
-		hotFaceGeometry       -> ccw () = ccw ();
-		activeFaceGeometry    -> ccw () = ccw ();
-		selectedFacesGeometry -> ccw () = ccw ();
-
 		hotFaceGeometry       -> convex () = convex ();
 		activeFaceGeometry    -> convex () = convex ();
 		selectedFacesGeometry -> convex () = convex ();
@@ -327,6 +323,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	updateSelectedEdges ();
 	updateSelectedPoints ();
 	updateActivePoints ();
+	updateHotPoints ();
 }
 
 void
@@ -549,6 +546,7 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 	updateSelectedEdges ();
 	updateSelectedPoints ();
 	updateActivePoints ();
+	updateHotPoints ();
 }
 
 void

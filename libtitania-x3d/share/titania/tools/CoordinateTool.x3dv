@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sat, 27 Feb 2016 16:20:25 GMT"
+META "modified" "Sat, 27 Feb 2016 18:37:47 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -58,10 +58,28 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF HotFace Shape {
+              appearance Appearance {
+                material DEF HotMaterial Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0 0.726352 0.121059
+                  transparency 0.635417
+                }
+              }
+              geometry DEF HotFaceGeometry IndexedFaceSet {
+                solid FALSE
+              }
+            }
+          }
+        ]
       }
     ]
   }
@@ -74,23 +92,13 @@ Collision {
       Group { }
       DEF _1 TransformMatrix3D {
         children [
-          DEF SelectionGeometry Group {
-            children [
-              DEF SelectionShape Shape {
-                appearance Appearance {
-                  texture PixelTexture {
-                    image 1 1 2
-                      0
-                  }
-                }
+          DEF SelectionShape Shape {
+            appearance Appearance {
+              texture PixelTexture {
+                image 1 1 2
+                  0
               }
-              DEF TouchSensor TouchSensor { }
-              DEF PlaneSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-                maxPosition -1 0
-              }
-            ]
+            }
           }
           DEF SelectedFaces Shape {
             appearance Appearance {
@@ -109,7 +117,7 @@ Collision {
             children [
               DEF ActiveFace Shape {
                 appearance Appearance {
-                  material DEF Material Material {
+                  material DEF ActvieFaceMaterial Material {
                     diffuseColor 0 0 0
                     emissiveColor 0.5 0.0792565 0
                     transparency 0.635417
@@ -119,18 +127,7 @@ Collision {
                   solid FALSE
                 }
               }
-              DEF HotFace Shape {
-                appearance Appearance {
-                  material DEF Material_1 Material {
-                    diffuseColor 0 0 0
-                    emissiveColor 0.5 0.0792565 0
-                    transparency 0.635417
-                  }
-                }
-                geometry DEF HotFaceGeometry IndexedFaceSet {
-                  solid FALSE
-                }
-              }
+              USE HotFace
             ]
           }
           DEF Edges Shape {
@@ -149,7 +146,7 @@ Collision {
               lineProperties DEF _2 LineProperties {
                 linewidthScaleFactor 2
               }
-              material DEF Material_2 Material {
+              material DEF Material Material {
                 diffuseColor 0 0 0
                 emissiveColor 1 0.75154 0
               }
@@ -161,7 +158,7 @@ Collision {
               lineProperties DEF _3 LineProperties {
                 linewidthScaleFactor 8
               }
-              material USE Material_2
+              material USE Material
             }
             geometry PointSet {
               coord DEF SelectionCoord CoordinateDouble { }
@@ -173,7 +170,7 @@ Collision {
               DEF ActiveEdges Shape {
                 appearance Appearance {
                   lineProperties USE _2
-                  material DEF Material_3 Material {
+                  material DEF ActiveMaterial Material {
                     diffuseColor 0 0 0
                     emissiveColor 0.5 0.0792565 0
                     transparency 0.207602
@@ -183,12 +180,12 @@ Collision {
               }
               DEF HotEdges Shape {
                 appearance Appearance {
-                  lineProperties LineProperties {
+                  lineProperties DEF _4 LineProperties {
                     linewidthScaleFactor 2
                   }
-                  material DEF Material_4 Material {
+                  material DEF HotMaterial_1 Material {
                     diffuseColor 0 0 0
-                    emissiveColor 0.5 0.0792565 0
+                    emissiveColor 0 0.726352 0.121059
                     transparency 0.207602
                   }
                 }
@@ -202,7 +199,7 @@ Collision {
               DEF ActivePoint Shape {
                 appearance Appearance {
                   lineProperties USE _3
-                  material USE Material_3
+                  material USE ActiveMaterial
                 }
                 geometry PointSet {
                   coord DEF ActivePointCoord CoordinateDouble { }
@@ -210,14 +207,8 @@ Collision {
               }
               DEF HotPoint Shape {
                 appearance Appearance {
-                  lineProperties LineProperties {
-                    linewidthScaleFactor 8
-                  }
-                  material DEF Material_5 Material {
-                    diffuseColor 0 0 0
-                    emissiveColor 0.5 0.0792565 0
-                    transparency 0.207602
-                  }
+                  lineProperties USE _4
+                  material USE HotMaterial_1
                 }
                 geometry PointSet {
                   coord DEF HotPointCoord CoordinateDouble { }
@@ -225,14 +216,20 @@ Collision {
               }
               Group {
                 children [
-                  DEF _4 BooleanFilter { }
-                  DEF _5 IntegerTrigger {
+                  DEF _5 BooleanFilter { }
+                  DEF _6 IntegerTrigger {
                     integerKey 1
                   }
-                  DEF _6 IntegerTrigger { }
+                  DEF _7 IntegerTrigger { }
                 ]
               }
             ]
+          }
+          DEF TouchSensor TouchSensor { }
+          DEF PlaneSensor PlaneSensor {
+            enabled FALSE
+            autoOffset FALSE
+            maxPosition -1 0
           }
         ]
       }
@@ -241,18 +238,22 @@ Collision {
 }
 
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
-ROUTE ActiveEdgesGeometry.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
 ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
-ROUTE HotEdgesGeometry.coordIndex_changed TO HotFaceGeometry.set_colorIndex
 ROUTE HotPointSwitch.whichChoice_changed TO HotEdgeSwitch.set_whichChoice
 ROUTE ActiveEdgesGeometry.coord_changed TO HotEdgesGeometry.set_coord
-ROUTE ActiveEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
-ROUTE _4.inputTrue TO _5.set_boolean
-ROUTE _4.inputFalse TO _6.set_boolean
+ROUTE _5.inputTrue TO _6.set_boolean
+ROUTE _5.inputFalse TO _7.set_boolean
+ROUTE _7.triggerValue TO HotPointSwitch.set_whichChoice
+ROUTE PlaneSensor.isActive TO _5.set_boolean
 ROUTE _6.triggerValue TO HotPointSwitch.set_whichChoice
-ROUTE PlaneSensor.isActive TO _4.set_boolean
-ROUTE _5.triggerValue TO HotPointSwitch.set_whichChoice
 ROUTE HotPointSwitch.whichChoice_changed TO HotFaceSwitch.set_whichChoice
+ROUTE ActiveEdgesGeometry.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
+ROUTE HotEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
+ROUTE HotEdgesGeometry.coordIndex_changed TO HotFaceGeometry.set_coordIndex
+ROUTE ActiveMaterial.emissiveColor_changed TO ActvieFaceMaterial.set_emissiveColor
+ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveColor
+ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
+ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 
 EXPORT ActiveEdgesGeometry
 EXPORT ActiveFaceGeometry
