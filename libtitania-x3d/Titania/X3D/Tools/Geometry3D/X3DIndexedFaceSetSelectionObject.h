@@ -112,11 +112,27 @@ public:
 	replaceSelection () const
 	{ return *fields .replaceSelection; }
 
-	MFInt32 &
+	SFInt32 &
+	selectedPoints_changed ()
+	{ return *fields .selectedPoints_changed; }
+
+	const SFInt32 &
+	selectedPoints_changed () const
+	{ return *fields .selectedPoints_changed; }
+
+	SFInt32 &
+	selectedEdges_changed ()
+	{ return *fields .selectedEdges_changed; }
+
+	const SFInt32 &
+	selectedEdges_changed () const
+	{ return *fields .selectedEdges_changed; }
+
+	SFInt32 &
 	selectedFaces_changed ()
 	{ return *fields .selectedFaces_changed; }
 
-	const MFInt32 &
+	const SFInt32 &
 	selectedFaces_changed () const
 	{ return *fields .selectedFaces_changed; }
 
@@ -297,7 +313,9 @@ private:
 		SFBool* const paintSelection;
 		MFInt32* const addSelection;
 		MFInt32* const replaceSelection;
-		MFInt32* const selectedFaces_changed;
+		SFInt32* const selectedPoints_changed;
+		SFInt32* const selectedEdges_changed;
+		SFInt32* const selectedFaces_changed;
 	};
 
 	Fields fields;

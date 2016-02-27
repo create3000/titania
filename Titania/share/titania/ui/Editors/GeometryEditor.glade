@@ -131,7 +131,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="SplitPointButton">
+                  <object class="GtkButton" id="SplitPointsButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>

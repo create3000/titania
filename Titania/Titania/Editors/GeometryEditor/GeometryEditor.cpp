@@ -77,6 +77,9 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	             selectionType (SelectionType::BRUSH),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                   browser (getCurrentBrowser ()),
+	         numSelectedPoints (0),
+	          numSelectedEdges (0),
+	          numSelectedFaces (0),
 	                  changing (false)
 {
 	addChildren (normalEditor,
@@ -232,8 +235,10 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("chipSelectedOfFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("chipSelectedOfFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("removeSelectedFaces"));
 
-						innerNode -> getField <X3D::MFInt32>              ("selectedFaces_changed") .addInterest (this, &GeometryEditor::set_selectedFaces);
-						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")          .addInterest (this, &GeometryEditor::set_undo);
+						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
+						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
+						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
+						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
 
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
@@ -265,9 +270,9 @@ GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 }
 
 void
-GeometryEditor::set_selectedFaces ()
+GeometryEditor::set_selectedPoints ()
 {
-	size_t numSelectedFaces = 0;
+	numSelectedPoints = 0;
 
 	for (const auto & node : geometryNodes)
 	{
@@ -281,7 +286,83 @@ GeometryEditor::set_selectedFaces ()
 				{
 					case X3D::X3DConstants::X3DGeometryNodeTool:
 					{
-						numSelectedFaces += innerNode -> getField <X3D::MFInt32> ("selectedFaces_changed") .size ();
+						numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
+					   break;
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	getMergePointsButton () .set_sensitive (numSelectedPoints);
+	getSplitPointsButton () .set_sensitive (numSelectedPoints);
+
+	set_face_selection ();
+}
+
+
+void
+GeometryEditor::set_selectedEdges ()
+{
+	numSelectedEdges = 0;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGeometryNodeTool:
+					{
+						numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
+					   break;
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	set_face_selection ();
+}
+
+void
+GeometryEditor::set_selectedFaces ()
+{
+	numSelectedFaces = 0;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGeometryNodeTool:
+					{
+						numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
 					   break;
 					}
 					default:
@@ -299,14 +380,25 @@ GeometryEditor::set_selectedFaces ()
 
 	getChipOfFacesButton () .set_sensitive (numSelectedFaces);
 	getRemoveFacesButton () .set_sensitive (numSelectedFaces);
-		
+
+	set_face_selection ();
+}
+
+void
+GeometryEditor::set_face_selection ()
+{
+	#ifdef DEBUG
 	// Set description.
 
 	std::ostringstream ostream;
 
-	ostream << "Selected faces: " << numSelectedFaces;
+	ostream
+		<< "Selected points: " << numSelectedPoints << std::endl
+		<< "Selected edges: " << numSelectedEdges << std::endl
+		<< "Selected faces: " << numSelectedFaces;
 
 	getCurrentBrowser () -> setDescription (ostream .str ());
+	#endif
 }
 
 void

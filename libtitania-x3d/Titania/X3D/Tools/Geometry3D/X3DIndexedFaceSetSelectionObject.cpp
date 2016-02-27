@@ -67,11 +67,13 @@ namespace X3D {
 static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	               selectable (new SFBool (true)),
-	           paintSelection (new SFBool ()),
-	             addSelection (new MFInt32 ()),
-	         replaceSelection (new MFInt32 ()),
-	    selectedFaces_changed (new MFInt32 ())
+	                selectable (new SFBool (true)),
+	            paintSelection (new SFBool ()),
+	              addSelection (new MFInt32 ()),
+	          replaceSelection (new MFInt32 ()),
+	    selectedPoints_changed (new SFInt32 ()),
+	     selectedEdges_changed (new SFInt32 ()),
+	     selectedFaces_changed (new SFInt32 ())
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
@@ -95,11 +97,13 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	selectable ()            .isHidden (true);
-	paintSelection ()        .isHidden (true);
-	addSelection ()          .isHidden (true);
-	replaceSelection ()      .isHidden (true);
-	selectedFaces_changed () .isHidden (true);
+	selectable ()             .isHidden (true);
+	paintSelection ()         .isHidden (true);
+	addSelection ()           .isHidden (true);
+	replaceSelection ()       .isHidden (true);
+	selectedPoints_changed () .isHidden (true);
+	selectedEdges_changed ()  .isHidden (true);
+	selectedFaces_changed ()  .isHidden (true);
 
 	addChildren (touchSensor,
 	             planeSensor,
@@ -488,6 +492,8 @@ X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 		selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
 
 	selectionCoord -> point () .resize (i);
+
+	selectedPoints_changed () = i;
 }
 
 void
@@ -548,6 +554,8 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 	}
 
 	selectedEdgesGeometry -> coordIndex () .resize (i);
+
+	selectedEdges_changed () = i / 3;
 }
 
 void
@@ -594,7 +602,8 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 	}
 
 	selectedFacesGeometry -> coordIndex () .resize (i);
-	selectedFaces_changed () .assign (selectedFaces .begin (), selectedFaces .end ());
+
+	selectedFaces_changed () = selectedFaces .size ();
 }
 
 bool

@@ -132,8 +132,8 @@ public:
 	{ return *m_PaintSelectionImage; }
 
 	Gtk::Button &
-	getSplitPointButton () const
-	{ return *m_SplitPointButton; }
+	getSplitPointsButton () const
+	{ return *m_SplitPointsButton; }
 
 	Gtk::Button &
 	getMergePointsButton () const
@@ -255,7 +255,7 @@ private:
 	Gtk::Grid*                  m_GeometryToolsBox;
 	Gtk::ToggleButton*          m_PaintSelectionToggleButton;
 	Gtk::Image*                 m_PaintSelectionImage;
-	Gtk::Button*                m_SplitPointButton;
+	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
 	Gtk::Button*                m_RemoveFacesButton;

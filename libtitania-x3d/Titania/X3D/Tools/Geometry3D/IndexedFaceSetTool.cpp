@@ -92,19 +92,21 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	chipSelectedOfFaces () .isHidden (true);
 	removeSelectedFaces () .isHidden (true);
 
-	addField (inputOutput, "pickable",              pickable ());
-	addField (inputOutput, "selectable",            selectable ());
-	addField (inputOutput, "paintSelection",        paintSelection ());
-	addField (inputOutput, "addSelection",          addSelection ());
-	addField (inputOutput, "replaceSelection",      replaceSelection ());
-	addField (inputOutput, "mergePoints",           mergePoints ());
-	addField (inputOutput, "splitPoints",           splitPoints ());
-	addField (inputOutput, "chipSelectedOfFaces",   chipSelectedOfFaces ());
-	addField (inputOutput, "removeSelectedFaces",   removeSelectedFaces ());
-	addField (outputOnly,  "selectedFaces_changed", selectedFaces_changed ());
-	addField (outputOnly , "undo_changed",          undo_changed ());
-	addField (inputOutput, "normalTool",            normalTool ());
-	addField (inputOutput, "coordTool",             coordTool ());
+	addField (inputOutput, "pickable",               pickable ());
+	addField (inputOutput, "selectable",             selectable ());
+	addField (inputOutput, "paintSelection",         paintSelection ());
+	addField (inputOutput, "addSelection",           addSelection ());
+	addField (inputOutput, "replaceSelection",       replaceSelection ());
+	addField (inputOutput, "mergePoints",            mergePoints ());
+	addField (inputOutput, "splitPoints",            splitPoints ());
+	addField (inputOutput, "chipSelectedOfFaces",    chipSelectedOfFaces ());
+	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
+	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
+	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
+	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
+	addField (outputOnly , "undo_changed",           undo_changed ());
+	addField (inputOutput, "normalTool",             normalTool ());
+	addField (inputOutput, "coordTool",              coordTool ());
 
 	addChildren (touchSensor,
 	             planeSensor);
