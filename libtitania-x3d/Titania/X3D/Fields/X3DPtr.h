@@ -53,6 +53,8 @@
 
 #include "../Basic/X3DField.h"
 
+//#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -315,6 +317,8 @@ public:
 
 	   if (value)
 			return value;
+
+		//backtrace_fn ();
 
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()");
 	}

@@ -298,7 +298,12 @@ void
 X3DGroupingNode::clear ()
 {
 	for (const auto & childNode : childNodes)
+	{
+	   if (not childNode)
+	      __LOG__ << getTypeName () << " : " << getName () << std::endl;
+
 		childNode -> isCameraObject () .removeInterest (this, &X3DGroupingNode::set_cameraObjects);
+	}
 	
 	pointingDeviceSensors .clear ();
 	cameraObjects .clear ();

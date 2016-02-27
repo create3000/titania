@@ -27,6 +27,11 @@
 	font-weight: bold;
 }
 
+.titania-small-menu {
+	font-size: 90%;
+	font-weight: bold;
+}
+
 .titania-tab-close {
 	margin: 0px;
 	border: 0px;

@@ -65,11 +65,12 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 IndexedFaceSetTool::Fields::Fields () :
-	         mergePoints (new SFTime ()),
-	         splitPoints (new SFTime ()),
-	 removeSelectedFaces (new SFTime ()),
-	 chipSelectedOfFaces (new SFTime ()),
-	        undo_changed (new UndoStepContainerPtr ())
+	          mergePoints (new SFTime ()),
+	          splitPoints (new SFTime ()),
+	 extrudeSelectedEdges (new SFTime ()),
+	  removeSelectedFaces (new SFTime ()),
+	  chipOfSelectedFaces (new SFTime ()),
+	         undo_changed (new UndoStepContainerPtr ())
 { }
 
 IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
@@ -87,10 +88,11 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	mergePoints ()         .isHidden (true);
-	splitPoints ()         .isHidden (true);
-	chipSelectedOfFaces () .isHidden (true);
-	removeSelectedFaces () .isHidden (true);
+	mergePoints ()          .isHidden (true);
+	splitPoints ()          .isHidden (true);
+	extrudeSelectedEdges () .isHidden (true);
+	chipOfSelectedFaces ()  .isHidden (true);
+	removeSelectedFaces ()  .isHidden (true);
 
 	addField (inputOutput, "pickable",               pickable ());
 	addField (inputOutput, "selectable",             selectable ());
@@ -100,7 +102,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "replaceSelection",       replaceSelection ());
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
-	addField (inputOutput, "chipSelectedOfFaces",    chipSelectedOfFaces ());
+	addField (inputOutput, "extrudeSelectedEdges",   extrudeSelectedEdges ());
+	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
 	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
 	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
@@ -119,12 +122,14 @@ IndexedFaceSetTool::initialize ()
 	X3DComposedGeometryNodeTool::initialize ();
 	X3DIndexedFaceSetSelectionObject::initialize ();
 
+	removeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 
-	mergePoints ()         .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
-	splitPoints ()         .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
-	removeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
-	chipSelectedOfFaces () .addInterest (this, &IndexedFaceSetTool::set_chipSelectedOfFaces);
+	mergePoints ()          .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
+	splitPoints ()          .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
+	extrudeSelectedEdges () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedEdges);
+	chipOfSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_chipOfSelectedFaces);
+	removeSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 }
 
 void
@@ -160,7 +165,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 		// Setup PlaneSensor
 
-		switch (getActivePoints () .size ())
+		switch (getHotPoints () .size ())
 		{
 			case 0:
 			{
@@ -183,7 +188,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			{
 				// Translate along edge
 
-				const auto vector       = getCoord () -> get1Point (getActivePoints () [0]) - getCoord () -> get1Point (getActivePoints () [1]);
+				const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
 				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
 				planeSensor -> enabled ()      = not paintSelection ();
@@ -193,7 +198,7 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 			}
 			default:
 			{
-				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getActiveFace ()));
+				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
 					
 				if (getBrowser () -> hasControlKey ())
 				{
@@ -380,7 +385,18 @@ IndexedFaceSetTool::set_splitPoints ()
 }
 
 void
-IndexedFaceSetTool::set_chipSelectedOfFaces ()
+IndexedFaceSetTool::set_extrudeSelectedEdges ()
+{
+	__LOG__ << std::endl;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Edges"));
+
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_chipOfSelectedFaces ()
 {
 	__LOG__ << std::endl;
 

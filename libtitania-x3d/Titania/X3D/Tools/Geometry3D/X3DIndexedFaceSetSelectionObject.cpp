@@ -82,12 +82,17 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                     fields (),
 	                touchSensor (),
 	                planeSensor (),
+	              hotPointCoord (),
+	           hotEdgesGeometry (),
 	           activePointCoord (),
 	        activeEdgesGeometry (),
 	             selectionCoord (),
 	      selectedEdgesGeometry (),
 	      selectedFacesGeometry (),
 	                  coordNode (),
+	                  hotPoints (),
+	                    hotEdge (),
+	                    hotFace (0),
 	               activePoints (),
 	                 activeEdge (),
 	                 activeFace (0),
@@ -111,6 +116,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 
 	addChildren (touchSensor,
 	             planeSensor,
+	             hotPointCoord,
+	             hotEdgesGeometry,
 	             activePointCoord,
 	             activeEdgesGeometry,
 	             selectionCoord,
@@ -167,10 +174,13 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 	try
 	{
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
+		const auto   hotFaceGeometry    = inlineNode -> getExportedNode <IndexedFaceSet> ("HotFaceGeometry");
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
 		touchSensor           = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
 		planeSensor           = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
+		hotPointCoord         = inlineNode -> getExportedNode <CoordinateDouble> ("HotPointCoord");
+		hotEdgesGeometry      = inlineNode -> getExportedNode <IndexedLineSet> ("HotEdgesGeometry");
 		activePointCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("ActivePointCoord");
 		activeEdgesGeometry   = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveEdgesGeometry");
 		selectionCoord        = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
@@ -187,6 +197,11 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		convex () .addInterest (activeFaceGeometry    -> convex ());
 		convex () .addInterest (selectedFacesGeometry -> convex ());
 
+		hotFaceGeometry       -> ccw () = ccw ();
+		activeFaceGeometry    -> ccw () = ccw ();
+		selectedFacesGeometry -> ccw () = ccw ();
+
+		hotFaceGeometry       -> convex () = convex ();
 		activeFaceGeometry    -> convex () = convex ();
 		selectedFacesGeometry -> convex () = convex ();
 
@@ -194,7 +209,7 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 	}
 	catch (const X3DError & error)
 	{
-		//__LOG__ << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -217,6 +232,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 {
 	try
 	{
+		updateHotPoints ();
 		updateActivePoints ();
 		updateSelectedPoints ();
 
@@ -295,8 +311,6 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 
 		case SelectionType::FACES:
 		{
-			selectPoints (activePoints);
-
 			if (activePoints .size () < 3)
 				selectFaces (activePoints);
 			else
@@ -362,12 +376,42 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 	const auto face     = selection -> getNearestFace (hitPoint, faces) .first;
 	const auto vertices = selection -> getFaceVertices (face);
 
+	hotFace = face;
+	hotEdge   .clear ();
+	hotPoints .clear ();
+
 	activeFace = face;
 	activeEdge   .clear ();
 	activePoints .clear ();
 
 	if (vertices .size () >= 3)
 	{
+		const auto edge     = selection -> getEdge (hitPoint, vertices);
+		const auto distance = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+
+		// Hot points for near point or face
+	
+		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+		{
+			if (distance > SELECTION_DISTANCE)
+			{
+				// Face
+				for (const auto & vertex : vertices)
+					hotPoints .emplace_back (coordIndex () [vertex]);
+			}
+			else
+			{
+				// Edge
+				hotEdge   = { edge .index0, edge .index1 };
+				hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+			}
+		}
+		else
+		{
+			// Point
+			hotPoints = { index };
+		}
+
 		// Active points for near point or face
 	
 		switch (type)
@@ -381,9 +425,6 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 			}
 			case SelectionType::EDGES:
 			{
-				const auto edge     = selection -> getEdge (hitPoint, vertices);
-				const auto distance = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
-
 				if (edge .isEdge and distance <= SELECTION_DISTANCE)
 				{
 					activeEdge   = { edge .index0, edge .index1 };
@@ -402,7 +443,43 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 		}
 	}
 
+	updateHotSelection ();
 	updateActiveSelection ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::updateHotSelection ()
+{
+	updateHotFace ();
+	updateHotPoints ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::updateHotPoints ()
+{
+	size_t i = 0;
+
+	for (const auto & hotPoint : hotPoints)
+		hotPointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (hotPoint));
+	
+	hotPointCoord -> point () .resize (i);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::updateHotFace ()
+{
+	size_t i = 0;
+
+	if (not hotPoints .empty ())
+	{
+		for (const auto & hotPoint : hotPoints)
+			hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoint);
+
+		hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoints [0]);
+		hotEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+	}
+
+	hotEdgesGeometry -> coordIndex () .resize (i);
 }
 
 void
@@ -461,7 +538,6 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 			break;
 
 		case SelectionType::FACES:
-			selectPoints (points);
 			selectFaces  (points);
 			break;
 	}
@@ -526,6 +602,17 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 			}
 		}
 	}
+	
+	selectedPoints .clear ();
+
+	for (const auto & edge : selectedEdges)
+	{
+		if (edge .second .empty ())
+			continue;
+
+		selectedPoints .emplace (edge .first .first,  getCoord () -> get1Point (edge .first .first));
+		selectedPoints .emplace (edge .first .second, getCoord () -> get1Point (edge .first .second));
+	}
 }
 
 void
@@ -536,11 +623,24 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge)
 
 	else
 		addSelectedEdges (edge);
+	
+	selectedPoints .clear ();
+
+	for (const auto & edge : selectedEdges)
+	{
+		if (edge .second .empty ())
+			continue;
+
+		selectedPoints .emplace (edge .first .first,  getCoord () -> get1Point (edge .first .first));
+		selectedPoints .emplace (edge .first .second, getCoord () -> get1Point (edge .first .second));
+	}
 }
 
 void
 X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points)
 {
+	selectPoints (points);
+
 	if (getBrowser () -> hasControlKey ())
 	{
 		for (const auto & point : points)
@@ -565,11 +665,20 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 			addSelectedFaces (faces);
 		}
 	}
+
+	selectedPoints .clear ();
+
+	for (const auto & face : selectedFaces)
+		for (const auto & vertex : selection -> getFaceVertices (face))
+		   selectedPoints .emplace (coordIndex () [vertex], getCoord () -> get1Point (coordIndex () [vertex]));
 }
 
 void
 X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
 {
+	for (const auto & vertex : selection -> getFaceVertices (face))
+		selectPoints ({ coordIndex () [vertex] });
+
 	if (getBrowser () -> hasControlKey ())
 		removeSelectedFaces ({ face });
 
@@ -601,22 +710,14 @@ X3DIndexedFaceSetSelectionObject::removeSelectedPoints (const std::vector <int32
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 {
-	if (type not_eq SelectionType::POINTS)
-	{
-		selectionCoord -> point () .clear ();
-	   selectedPoints_changed () = 0;
-	}
-	else
-	{
-		size_t i = 0;
+	size_t i = 0;
 
-		for (auto & selectedPoint : selectedPoints)
-			selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
+	for (auto & selectedPoint : selectedPoints)
+		selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
 
-		selectionCoord -> point () .resize (i);
+	selectionCoord -> point () .resize (i);
 
-		selectedPoints_changed () = i;
-	}
+	selectedPoints_changed () = type == SelectionType::POINTS ? i : 0;
 }
 
 void
@@ -679,7 +780,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 
 	selectedEdgesGeometry -> coordIndex () .resize (i);
 
-	selectedEdges_changed () = i / 3;
+	selectedEdges_changed () = type == SelectionType::EDGES ? i / 3 : 0;
 }
 
 void
@@ -727,7 +828,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 
 	selectedFacesGeometry -> coordIndex () .resize (i);
 
-	selectedFaces_changed () = selectedFaces .size ();
+	selectedFaces_changed () = type == SelectionType::FACES ? selectedFaces .size () : 0;
 }
 
 bool

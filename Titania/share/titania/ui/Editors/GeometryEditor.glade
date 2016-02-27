@@ -10,6 +10,7 @@
         <property name="can_focus">False</property>
         <property name="halign">start</property>
         <property name="valign">start</property>
+        <property name="margin_left">1</property>
         <property name="margin_top">3</property>
         <property name="transition_type">slide-right</property>
         <property name="transition_duration">300</property>
@@ -210,7 +211,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -231,8 +232,32 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected edges.</property>
+                    <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">ExtrudeSelectedEdges</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -274,6 +299,18 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
+      <object class="GtkMenuItem" id="menuitem3">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Selector</property>
+        <property name="use_underline">True</property>
+        <style>
+          <class name="titania-small-menu"/>
+        </style>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="BrushMenuItem">
         <property name="label" translatable="yes">Brush</property>
         <property name="visible">True</property>
@@ -310,6 +347,18 @@
       <object class="GtkSeparatorMenuItem" id="menuitem1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menuitem2">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Selection Type</property>
+        <property name="use_underline">True</property>
+        <style>
+          <class name="titania-small-menu"/>
+        </style>
       </object>
     </child>
     <child>

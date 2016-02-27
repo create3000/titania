@@ -151,6 +151,10 @@ public:
 	getChipOfFacesButton () const
 	{ return *m_ChipOfFacesButton; }
 
+	Gtk::Button &
+	getExtrudeSelectedEdgesButton () const
+	{ return *m_ExtrudeSelectedEdgesButton; }
+
 	Gtk::Menu &
 	getSelectionTypeMenu () const
 	{ return *m_SelectionTypeMenu; }
@@ -223,6 +227,10 @@ public:
 
 	virtual
 	void
+	on_extrude_selected_edges_clicked () = 0;
+
+	virtual
+	void
 	on_brush_activated () = 0;
 
 	virtual
@@ -284,6 +292,7 @@ private:
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
 	Gtk::Button*                m_RemoveFacesButton;
 	Gtk::Button*                m_ChipOfFacesButton;
+	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

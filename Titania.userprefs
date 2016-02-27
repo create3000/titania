@@ -1,18 +1,45 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="55" Column="55" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="39" Column="39" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DComposedGeometryNodeTool.h" Line="2" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DComposedGeometryNodeTool.cpp" Line="2" Column="2" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="51" Column="51" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp" Line="82" Column="82" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.h" Line="23" Column="23" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="libtitania-x3d" expanded="True">
+            <Node name="Titania" expanded="True">
+              <Node name="X3D" expanded="True">
+                <Node name="Basic" expanded="True" />
+                <Node name="Components" expanded="True">
+                  <Node name="Geometry3D" expanded="True" />
+                </Node>
+                <Node name="Editing" expanded="True">
+                  <Node name="Selection" expanded="True" />
+                </Node>
+                <Node name="Tools" expanded="True">
+                  <Node name="Geometry3D" expanded="True">
+                    <Node name="IndexedFaceSetTool.cpp" selected="True" />
+                  </Node>
+                  <Node name="Rendering" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Titania" expanded="True">
+            <Node name="share" expanded="True">
+              <Node name="titania" expanded="True" />
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="Editors" expanded="True">
+                <Node name="GeometryEditor" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

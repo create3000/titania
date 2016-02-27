@@ -76,6 +76,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
 	m_builder -> get_widget ("RemoveFacesButton", m_RemoveFacesButton);
 	m_builder -> get_widget ("ChipOfFacesButton", m_ChipOfFacesButton);
+	m_builder -> get_widget ("ExtrudeSelectedEdgesButton", m_ExtrudeSelectedEdgesButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
@@ -103,6 +104,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
 	m_RemoveFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_remove_selected_faces_clicked));
 	m_ChipOfFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_chip_of_face_clicked));
+	m_ExtrudeSelectedEdgesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_extrude_selected_edges_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));

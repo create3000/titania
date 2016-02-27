@@ -156,6 +156,16 @@ public:
 
 protected:
 
+	///  @name Member types
+
+	enum class SelectionType :
+	   uint8_t
+	{
+	   POINTS,
+	   EDGES,
+	   FACES
+	};
+
 	///  @name Construction
 
 	X3DIndexedFaceSetSelectionObject ();
@@ -185,12 +195,32 @@ protected:
 	{ return masterPoint; }
 
 	const std::vector <int32_t> &
+	getHotPoints () const
+	{ return hotPoints; }
+
+	const std::vector <size_t> &
+	getHotEdge () const
+	{ return hotEdge; }
+
+	size_t
+	getHotFace () const
+	{ return hotFace; }
+
+	const std::vector <int32_t> &
 	getActivePoints () const
 	{ return activePoints; }
+
+	const std::vector <size_t> &
+	getActiveEdge () const
+	{ return activeEdge; }
 
 	size_t
 	getActiveFace () const
 	{ return activeFace; }
+
+	SelectionType
+	getSelectionType () const
+	{ return type; }
 
 	const std::map <int32_t, Vector3d> &
 	getSelectedPoints () const
@@ -213,16 +243,6 @@ protected:
 
 
 private:
-
-	///  @name Member types
-
-	enum class SelectionType :
-	   uint8_t
-	{
-	   POINTS,
-	   EDGES,
-	   FACES
-	};
 
 	///  @name Event handler
 
@@ -273,6 +293,15 @@ private:
 
 	void
 	updateActiveFace ();
+
+	void
+	updateHotSelection ();
+
+	void
+	updateHotPoints ();
+
+	void
+	updateHotFace ();
 
 	void
 	selectPoints (const std::vector <int32_t> &);
@@ -350,12 +379,18 @@ private:
 
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <PlaneSensor>       planeSensor;
+	X3DPtr <CoordinateDouble>  hotPointCoord;
+	X3DPtr <IndexedLineSet>    hotEdgesGeometry;
 	X3DPtr <CoordinateDouble>  activePointCoord;
 	X3DPtr <IndexedLineSet>    activeEdgesGeometry;
 	X3DPtr <CoordinateDouble>  selectionCoord;
 	X3DPtr <IndexedLineSet>    selectedEdgesGeometry;
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
+
+	std::vector <int32_t> hotPoints;    // coord indices
+	std::vector <size_t>  hotEdge;      // index of coord indices
+	size_t                hotFace;      // index of first coord index of face
 
 	std::vector <int32_t> activePoints; // coord indices
 	std::vector <size_t>  activeEdge;   // index of coord indices

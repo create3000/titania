@@ -152,12 +152,20 @@ public:
 	{ return *fields .splitPoints; }
 
 	SFTime &
-	chipSelectedOfFaces ()
-	{ return *fields .chipSelectedOfFaces; }
+	extrudeSelectedEdges ()
+	{ return *fields .extrudeSelectedEdges; }
 
 	const SFTime &
-	chipSelectedOfFaces () const
-	{ return *fields .chipSelectedOfFaces; }
+	extrudeSelectedEdges () const
+	{ return *fields .extrudeSelectedEdges; }
+
+	SFTime &
+	chipOfSelectedFaces ()
+	{ return *fields .chipOfSelectedFaces; }
+
+	const SFTime &
+	chipOfSelectedFaces () const
+	{ return *fields .chipOfSelectedFaces; }
 
 	SFTime &
 	removeSelectedFaces ()
@@ -253,7 +261,10 @@ private:
 	set_splitPoints ();
 
 	void
-	set_chipSelectedOfFaces ();
+	set_extrudeSelectedEdges ();
+
+	void
+	set_chipOfSelectedFaces ();
 
 	void
 	set_removeSelectedFaces ();
@@ -293,18 +304,19 @@ private:
 
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
+		SFTime* const extrudeSelectedEdges;
 		SFTime* const removeSelectedFaces;
-		SFTime* const chipSelectedOfFaces;
+		SFTime* const chipOfSelectedFaces;
 		UndoStepContainerPtr* const undo_changed;
 	};
 
 	Fields fields;
 
-	X3DPtr <TouchSensor> touchSensor;
-	X3DPtr <PlaneSensor> planeSensor;
-	Vector3d             translation;
-	size_t               translations;
-	UndoStepPtr          undoStep;
+	X3DPtr <TouchSensor>  touchSensor;
+	X3DPtr <PlaneSensor>  planeSensor;
+	Vector3d              translation;
+	size_t                translations;
+	UndoStepPtr           undoStep;
 
 };
 

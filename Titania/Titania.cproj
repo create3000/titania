@@ -2499,6 +2499,7 @@
     <None Include="share\titania\ui\icons\Resume.svg" />
     <None Include="share\titania\ui\icons\RemoveFace.svg" />
     <None Include="share\titania\ui\icons\ChipOfFace.svg" />
+    <None Include="share\titania\ui\icons\ExtrudeSelectedEdges.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

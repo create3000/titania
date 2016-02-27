@@ -98,11 +98,15 @@ CoordinateTool::realize ()
 
 	try
 	{
+		const auto hotEdgesGeometry      = getInlineNode () -> getExportedNode ("HotEdgesGeometry");
+		const auto hotFaceGeometry       = getInlineNode () -> getExportedNode ("HotFaceGeometry");
 		const auto activeEdgesGeometry   = getInlineNode () -> getExportedNode ("ActiveEdgesGeometry");
 		const auto activeFaceGeometry    = getInlineNode () -> getExportedNode ("ActiveFaceGeometry");
 		const auto selectedEdgesGeometry = getInlineNode () -> getExportedNode ("SelectedEdgesGeometry");
 		const auto selectedFacesGeometry = getInlineNode () -> getExportedNode ("SelectedFacesGeometry");
 
+		hotEdgesGeometry      -> isPrivate (true);
+		hotFaceGeometry       -> isPrivate (true);
 		activeEdgesGeometry   -> isPrivate (true);
 		activeFaceGeometry    -> isPrivate (true);
 		selectedEdgesGeometry -> isPrivate (true);
