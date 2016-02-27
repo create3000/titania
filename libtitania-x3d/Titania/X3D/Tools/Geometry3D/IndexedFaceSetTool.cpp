@@ -68,6 +68,7 @@ IndexedFaceSetTool::Fields::Fields () :
 	         mergePoints (new SFTime ()),
 	         splitPoints (new SFTime ()),
 	 removeSelectedFaces (new SFTime ()),
+	 chipSelectedOfFaces (new SFTime ()),
 	        undo_changed (new UndoStepContainerPtr ())
 { }
 
@@ -86,20 +87,24 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
-	mergePoints () .isHidden (true);
-	splitPoints () .isHidden (true);
+	mergePoints ()         .isHidden (true);
+	splitPoints ()         .isHidden (true);
+	chipSelectedOfFaces () .isHidden (true);
+	removeSelectedFaces () .isHidden (true);
 
-	addField (inputOutput, "pickable",            pickable ());
-	addField (inputOutput, "selectable",          selectable ());
-	addField (inputOutput, "paintSelection",      paintSelection ());
-	addField (inputOutput, "addSelection",        addSelection ());
-	addField (inputOutput, "replaceSelection",    replaceSelection ());
-	addField (inputOutput, "mergePoints",         mergePoints ());
-	addField (inputOutput, "splitPoints",         splitPoints ());
-	addField (inputOutput, "removeSelectedFaces", removeSelectedFaces ());
-	addField (inputOutput, "undo_changed",        undo_changed ());
-	addField (inputOutput, "normalTool",          normalTool ());
-	addField (inputOutput, "coordTool",           coordTool ());
+	addField (inputOutput, "pickable",              pickable ());
+	addField (inputOutput, "selectable",            selectable ());
+	addField (inputOutput, "paintSelection",        paintSelection ());
+	addField (inputOutput, "addSelection",          addSelection ());
+	addField (inputOutput, "replaceSelection",      replaceSelection ());
+	addField (inputOutput, "mergePoints",           mergePoints ());
+	addField (inputOutput, "splitPoints",           splitPoints ());
+	addField (inputOutput, "chipSelectedOfFaces",   chipSelectedOfFaces ());
+	addField (inputOutput, "removeSelectedFaces",   removeSelectedFaces ());
+	addField (outputOnly,  "selectedFaces_changed", selectedFaces_changed ());
+	addField (outputOnly , "undo_changed",          undo_changed ());
+	addField (inputOutput, "normalTool",            normalTool ());
+	addField (inputOutput, "coordTool",             coordTool ());
 
 	addChildren (touchSensor,
 	             planeSensor);
@@ -116,6 +121,7 @@ IndexedFaceSetTool::initialize ()
 	mergePoints ()         .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
 	splitPoints ()         .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
 	removeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
+	chipSelectedOfFaces () .addInterest (this, &IndexedFaceSetTool::set_chipSelectedOfFaces);
 }
 
 void
@@ -371,10 +377,19 @@ IndexedFaceSetTool::set_splitPoints ()
 }
 
 void
-IndexedFaceSetTool::set_removeSelectedFaces ()
+IndexedFaceSetTool::set_chipSelectedOfFaces ()
 {
 	__LOG__ << std::endl;
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Chip Of Selected Faces"));
+
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_removeSelectedFaces ()
+{
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Selected Faces"));
 
 	undoRestoreSelection (undoStep);

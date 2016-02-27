@@ -95,6 +95,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",      new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",         new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",         new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "chipSelectedOfFaces", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "removeSelectedFaces", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",               new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
@@ -228,14 +229,17 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")      .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")         .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")         .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
+						coordEditor -> getField <X3D::SFTime>      ("chipSelectedOfFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("chipSelectedOfFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("removeSelectedFaces"));
 
-						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed") .addInterest (this, &GeometryEditor::set_undo);
+						innerNode -> getField <X3D::MFInt32>              ("selectedFaces_changed") .addInterest (this, &GeometryEditor::set_selectedFaces);
+						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")          .addInterest (this, &GeometryEditor::set_undo);
 
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
+
 						break;
 					}
 					default:
@@ -250,12 +254,59 @@ GeometryEditor::connect ()
 			__LOG__ << error .what () << std::endl;
 		}
 	}
+
+	set_selectedFaces ();
 }
 
 void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
 	getBrowserWindow () -> addUndoStep (container -> getUndoStep ());
+}
+
+void
+GeometryEditor::set_selectedFaces ()
+{
+	size_t numSelectedFaces = 0;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGeometryNodeTool:
+					{
+						numSelectedFaces += innerNode -> getField <X3D::MFInt32> ("selectedFaces_changed") .size ();
+					   break;
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	getChipOfFacesButton () .set_sensitive (numSelectedFaces);
+	getRemoveFacesButton () .set_sensitive (numSelectedFaces);
+		
+	// Set description.
+
+	std::ostringstream ostream;
+
+	ostream << "Selected faces: " << numSelectedFaces;
+
+	getCurrentBrowser () -> setDescription (ostream .str ());
 }
 
 void
@@ -550,6 +601,14 @@ void
 GeometryEditor::on_split_points_clicked ()
 {
 	coordEditor -> setField <X3D::SFTime> ("splitPoints", chrono::now ());
+}
+
+void
+GeometryEditor::on_chip_of_face_clicked ()
+{
+	__LOG__ << std::endl;
+
+	coordEditor -> setField <X3D::SFTime> ("chipSelectedOfFaces", chrono::now ());
 }
 
 void

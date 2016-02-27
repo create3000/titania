@@ -112,6 +112,14 @@ public:
 	replaceSelection () const
 	{ return *fields .replaceSelection; }
 
+	MFInt32 &
+	selectedFaces_changed ()
+	{ return *fields .selectedFaces_changed; }
+
+	const MFInt32 &
+	selectedFaces_changed () const
+	{ return *fields .selectedFaces_changed; }
+
 	///  @name Destruction
 
 	virtual
@@ -289,6 +297,7 @@ private:
 		SFBool* const paintSelection;
 		MFInt32* const addSelection;
 		MFInt32* const replaceSelection;
+		MFInt32* const selectedFaces_changed;
 	};
 
 	Fields fields;

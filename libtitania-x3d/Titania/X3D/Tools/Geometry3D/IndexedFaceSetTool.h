@@ -152,6 +152,14 @@ public:
 	{ return *fields .splitPoints; }
 
 	SFTime &
+	chipSelectedOfFaces ()
+	{ return *fields .chipSelectedOfFaces; }
+
+	const SFTime &
+	chipSelectedOfFaces () const
+	{ return *fields .chipSelectedOfFaces; }
+
+	SFTime &
 	removeSelectedFaces ()
 	{ return *fields .removeSelectedFaces; }
 
@@ -245,6 +253,9 @@ private:
 	set_splitPoints ();
 
 	void
+	set_chipSelectedOfFaces ();
+
+	void
 	set_removeSelectedFaces ();
 
 	void
@@ -283,6 +294,7 @@ private:
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
 		SFTime* const removeSelectedFaces;
+		SFTime* const chipSelectedOfFaces;
 		UndoStepContainerPtr* const undo_changed;
 	};
 

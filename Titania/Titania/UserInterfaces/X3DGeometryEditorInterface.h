@@ -147,6 +147,10 @@ public:
 	getRemoveFacesButton () const
 	{ return *m_RemoveFacesButton; }
 
+	Gtk::Button &
+	getChipOfFacesButton () const
+	{ return *m_ChipOfFacesButton; }
+
 	Gtk::Menu &
 	getSelectionTypeMenu () const
 	{ return *m_SelectionTypeMenu; }
@@ -203,6 +207,10 @@ public:
 
 	virtual
 	void
+	on_chip_of_face_clicked () = 0;
+
+	virtual
+	void
 	on_brush_activated () = 0;
 
 	virtual
@@ -251,6 +259,7 @@ private:
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
 	Gtk::Button*                m_RemoveFacesButton;
+	Gtk::Button*                m_ChipOfFacesButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

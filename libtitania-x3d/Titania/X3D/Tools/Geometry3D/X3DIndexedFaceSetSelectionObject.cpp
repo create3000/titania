@@ -67,10 +67,11 @@ namespace X3D {
 static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	       selectable (new SFBool (true)),
-	   paintSelection (new SFBool ()),
-	     addSelection (new MFInt32 ()),
-	 replaceSelection (new MFInt32 ())
+	               selectable (new SFBool (true)),
+	           paintSelection (new SFBool ()),
+	             addSelection (new MFInt32 ()),
+	         replaceSelection (new MFInt32 ()),
+	    selectedFaces_changed (new MFInt32 ())
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
@@ -94,10 +95,11 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	selectable ()       .isHidden (true);
-	paintSelection ()   .isHidden (true);
-	addSelection ()     .isHidden (true);
-	replaceSelection () .isHidden (true);
+	selectable ()            .isHidden (true);
+	paintSelection ()        .isHidden (true);
+	addSelection ()          .isHidden (true);
+	replaceSelection ()      .isHidden (true);
+	selectedFaces_changed () .isHidden (true);
 
 	addChildren (touchSensor,
 	             planeSensor,
@@ -592,6 +594,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 	}
 
 	selectedFacesGeometry -> coordIndex () .resize (i);
+	selectedFaces_changed () .assign (selectedFaces .begin (), selectedFaces .end ());
 }
 
 bool
