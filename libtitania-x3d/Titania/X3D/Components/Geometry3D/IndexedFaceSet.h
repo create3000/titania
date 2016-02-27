@@ -224,6 +224,18 @@ protected:
 	void
 	rebuildIndices ();
 
+	void
+	rebuildColor ();
+
+	void
+	rebuildTexCoord ();
+
+	void
+	rebuildNormal ();
+
+	void
+	rebuildCoord ();
+
 
 private:
 
@@ -261,6 +273,9 @@ private:
 
 	void
 	rebuildIndices (const size_t, const size_t, const size_t, std::vector <size_t> &, std::vector <size_t> &);
+
+	void
+	rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const std::map <int32_t, int32_t> &);
 
 	///  @name Static members
 

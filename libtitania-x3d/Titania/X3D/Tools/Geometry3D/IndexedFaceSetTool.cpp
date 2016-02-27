@@ -313,9 +313,9 @@ IndexedFaceSetTool::set_mergePoints ()
 
 	// Remove degenerated edges and faces.
 	rebuildIndices ();
-	//rebuildColor ();
-	//rebuildTexCoord ();
-	//rebuildNormal ();
+	rebuildColor ();
+	rebuildTexCoord ();
+	rebuildNormal ();
 
 	select ({ masterPoint }, true);
 
@@ -381,6 +381,9 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex (undoStep);
 	undoSetCoordIndex (undoStep);
+	undoSetColorColor (undoStep);
+	undoSetTexCoordPoint (undoStep);
+	undoSetNormalVector (undoStep);
 	undoSetCoordPoint (undoStep);
 
 	const auto faceNumbers = getFaceSelection () -> getFaceNumbers (getSelectedFaces ());
@@ -423,15 +426,19 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 		++ i;
 	}
 
+	// Remove degenerated edges and faces.
 	rebuildIndices ();
-	//rebuildCoord ();
-	//rebuildColor ();
-	//rebuildTexCoord ();
-	//rebuildNormal ();
+	rebuildColor ();
+	rebuildTexCoord ();
+	rebuildNormal ();
+	rebuildCoord ();
 
 	select ({ }, true);
 
 	redoSetCoordPoint (undoStep);
+	redoSetNormalVector (undoStep);
+	redoSetTexCoordPoint (undoStep);
+	redoSetColorColor (undoStep);
 	redoSetCoordIndex (undoStep);
 	redoSetNormalIndex (undoStep);
 	redoSetTexCoordIndex (undoStep);

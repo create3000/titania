@@ -136,6 +136,12 @@ array_to_string (const X3D::X3DScene* const scene,
 			<< X3D::Generator::ForceBreak
 			<< '[' << array .size () << "]  …­";
 	}
+	else
+	{
+		ostream
+			<< X3D::Generator::ForceBreak
+			<< '[' << array .size () << "]";
+	}
 
 	return ostream .str ();
 }

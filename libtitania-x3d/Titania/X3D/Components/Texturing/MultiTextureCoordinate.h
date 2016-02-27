@@ -98,16 +98,14 @@ public:
 	{ return *fields .texCoord; }
 
 	///  @name Operations
-	
-	const X3DPtrArray <X3DTextureCoordinateNode> &
-	getTexCoord () const
-	{ return texCoords; }
-
-	///  @name Operations
 
 	virtual
 	void
 	init (TexCoordArray &, const size_t) const final override;
+
+	const X3DPtrArray <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoords; }
 
 	virtual
 	void

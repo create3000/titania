@@ -53,12 +53,18 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/Tessellator.h"
+#include "../Geospatial/GeoCoordinate.h"
+#include "../NURBS/CoordinateDouble.h"
 #include "../Rendering/IndexedLineSet.h"
 #include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
 #include "../Rendering/Normal.h"
 #include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/MultiTextureCoordinate.h"
+#include "../Texturing3D/TextureCoordinate3D.h"
+#include "../Texturing3D/TextureCoordinate4D.h"
 
 #include "../../Tools/Geometry3D/IndexedFaceSetTool.h"
 
@@ -711,6 +717,330 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	{
 	   indices .emplace_back (faceIndex + count);
 	   faceNumbers .emplace_back (faceNumber);
+	}
+}
+
+void
+IndexedFaceSet::rebuildColor ()
+{
+	if (not getColor ())
+	   return;
+
+	// Build indices map
+
+	std::map <int32_t, int32_t> map;
+
+	for (const auto & index : colorIndex ())
+	{
+		if (index < 0)
+			continue;
+
+		map .emplace (index, 0);
+	}
+
+	size_t i = 0;
+
+	for (auto & pair : map)
+	   pair .second = i ++;
+
+	// Rebuild index
+	   
+	std::vector <int32_t> indices;
+
+	for (const auto & index : colorIndex ())
+	{
+		if (index < 0)
+		{
+		   indices .emplace_back (-1);
+			continue;
+		}
+
+		indices .emplace_back (map [index]);
+	}
+
+	colorIndex () .assign (indices .begin (), indices .end ());
+
+	// Rebuild node
+	   
+	switch (getColor () -> getType () .back ())
+	{
+		case X3DConstants::Color:
+		{
+			const X3DPtr <Color> node (getColor ());
+
+			std::vector <Color3f> colors;
+
+			for (const auto & pair : map)
+			   colors .emplace_back (node -> color () [pair .first]);
+
+			node -> color () .assign (colors .begin (), colors .end ());
+			break;
+		}
+		case X3DConstants::ColorRGBA:
+		{
+			const X3DPtr <ColorRGBA> node (getColor ());
+
+			std::vector <Color4f> colors;
+
+			for (const auto & pair : map)
+			   colors .emplace_back (node -> color () [pair .first]);
+
+			node -> color () .assign (colors .begin (), colors .end ());
+			break;
+		}
+		default:
+		   break;
+	}
+}
+
+void
+IndexedFaceSet::rebuildTexCoord ()
+{
+	if (not getTexCoord ())
+	   return;
+
+	// Build indices map
+
+	std::map <int32_t, int32_t> map;
+
+	for (const auto & index : texCoordIndex ())
+	{
+		if (index < 0)
+			continue;
+
+		map .emplace (index, 0);
+	}
+
+	size_t i = 0;
+
+	for (auto & pair : map)
+	   pair .second = i ++;
+
+	// Rebuild index
+	   
+	std::vector <int32_t> indices;
+
+	for (const auto & index : texCoordIndex ())
+	{
+		if (index < 0)
+		{
+		   indices .emplace_back (-1);
+			continue;
+		}
+
+		indices .emplace_back (map [index]);
+	}
+
+	texCoordIndex () .assign (indices .begin (), indices .end ());
+
+	// Rebuild node
+	   
+	switch (getTexCoord () -> getType () .back ())
+	{
+	   case X3DConstants::MultiTextureCoordinate:
+		{
+			const X3DPtr <MultiTextureCoordinate> texCoordNode (getTexCoord ());
+
+			for (const auto & node : texCoordNode -> getTexCoord ())
+			   rebuildTexCoord (node, map);
+
+			break;
+		}
+	   default:
+	      rebuildTexCoord (getTexCoord (), map);
+	      break;
+	}
+}
+
+void
+IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoord, const std::map <int32_t, int32_t> & map)
+{
+	switch (texCoord -> getType () .back ())
+	{
+		case X3DConstants::TextureCoordinate:
+		{
+			const X3DPtr <TextureCoordinate> node (texCoord);
+
+			std::vector <Vector2f> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (node -> point () [pair .first]);
+
+			node -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		case X3DConstants::TextureCoordinate3D:
+		{
+			const X3DPtr <TextureCoordinate3D> node (texCoord);
+
+			std::vector <Vector3f> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (node -> point () [pair .first]);
+
+			node -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		case X3DConstants::TextureCoordinate4D:
+		{
+			const X3DPtr <TextureCoordinate4D> node (texCoord);
+
+			std::vector <Vector4f> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (node -> point () [pair .first]);
+
+			node -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		default:
+		   break;
+	}
+}
+
+void
+IndexedFaceSet::rebuildNormal ()
+{
+	if (not getNormal ())
+	   return;
+
+	// Build indices map
+
+	std::map <int32_t, int32_t> map;
+
+	for (const auto & index : normalIndex ())
+	{
+		if (index < 0)
+			continue;
+
+		map .emplace (index, 0);
+	}
+
+	size_t i = 0;
+
+	for (auto & pair : map)
+	   pair .second = i ++;
+
+	// Rebuild index
+	   
+	std::vector <int32_t> indices;
+
+	for (const auto & index : normalIndex ())
+	{
+		if (index < 0)
+		{
+		   indices .emplace_back (-1);
+			continue;
+		}
+
+		indices .emplace_back (map [index]);
+	}
+
+	normalIndex () .assign (indices .begin (), indices .end ());
+
+	// Rebuild node
+	   
+	switch (getNormal () -> getType () .back ())
+	{
+		case X3DConstants::Normal:
+		{
+			const X3DPtr <Normal> node (getNormal ());
+
+			std::vector <Vector3f> normals;
+
+			for (const auto & pair : map)
+			   normals .emplace_back (node -> vector () [pair .first]);
+
+			node -> vector () .assign (normals .begin (), normals .end ());
+			break;
+		}
+		default:
+		   break;
+	}
+}
+
+void
+IndexedFaceSet::rebuildCoord ()
+{
+	if (not getCoord ())
+		return;
+
+	// Build indices map
+
+	std::map <int32_t, int32_t> map;
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+			continue;
+
+		map .emplace (index, 0);
+	}
+
+	size_t i = 0;
+
+	for (auto & pair : map)
+	   pair .second = i ++;
+
+	// Rebuild index
+	   
+	std::vector <int32_t> indices;
+
+	for (const auto & index : coordIndex ())
+	{
+		if (index < 0)
+		{
+		   indices .emplace_back (-1);
+			continue;
+		}
+
+		indices .emplace_back (map [index]);
+	}
+
+	coordIndex () .assign (indices .begin (), indices .end ());
+
+	// Rebuild node
+	   
+	switch (getCoord () -> getType () .back ())
+	{
+		case X3DConstants::Coordinate:
+		{
+			const X3DPtr <Coordinate> coordinate (getCoord ());
+
+			std::vector <Vector3f> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (coordinate -> point () [pair .first]);
+
+			coordinate -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		case X3DConstants::CoordinateDouble:
+		{
+			const X3DPtr <CoordinateDouble> coordinate (getCoord ());
+
+			std::vector <Vector3d> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (coordinate -> point () [pair .first]);
+
+			coordinate -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		case X3DConstants::GeoCoordinate:
+		{
+			const X3DPtr <GeoCoordinate> coordinate (getCoord ());
+
+			std::vector <Vector3d> points;
+
+			for (const auto & pair : map)
+			   points .emplace_back (coordinate -> point () [pair .first]);
+
+			coordinate -> point () .assign (points .begin (), points .end ());
+			break;
+		}
+		default:
+		   break;
 	}
 }
 
