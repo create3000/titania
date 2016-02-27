@@ -74,7 +74,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
 	         previousSelection (),
-	             selectionType (SelectionType::BRUSH),
+	                  selector (SelectionType::BRUSH),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                   browser (getCurrentBrowser ()),
 	         numSelectedPoints (0),
@@ -94,6 +94,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "selectionType",       new X3D::SFString ("POINTS"));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",            new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",      new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",         new X3D::SFTime ());
@@ -121,11 +122,19 @@ GeometryEditor::configure ()
 	if (getConfig () -> hasItem ("edgeColor"))
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 
-	coordEditor -> setField <X3D::SFBool> ("paintSelection", getConfig () -> get <X3D::SFBool> ("paintSelection"));
+	coordEditor -> setField <X3D::SFString> ("selectionType", getConfig () -> get <X3D::SFString> ("selectionType"));
+	coordEditor -> setField <X3D::SFBool> ("paintSelection",  getConfig () -> get <X3D::SFBool> ("paintSelection"));
+
+	if (getConfig () -> get <X3D::SFString> ("selectionType") == "FACES")
+		getFacesMenuItem () .set_active (true);
+	else if (getConfig () -> get <X3D::SFString> ("selectionType") == "EDGES")
+		getEdgesMenuItem () .set_active (true);
+	else
+		getPointsMenuItem () .set_active (true);
 
 	getPaintSelectionToggleButton () .set_active (getConfig () -> get <X3D::SFBool> ("paintSelection"));
 
-	set_selection_type (SelectionType (getConfig () -> get <size_t> ("selectionType")));
+	set_selector (SelectionType (getConfig () -> get <size_t> ("selector")));
 }
 
 void
@@ -139,6 +148,37 @@ GeometryEditor::initialize ()
 	coordEditor  -> setup ();
 
 	normalEnabled  .setNodes ({ normalEditor });
+}
+
+void
+GeometryEditor::on_map ()
+{
+	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
+
+	set_browser (getCurrentBrowser ());
+}
+
+void
+GeometryEditor::on_unmap ()
+{
+	getCurrentBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
+	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
+}
+
+void
+GeometryEditor::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
+	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+
+	browser = value;
+
+	browser -> getSelection () -> isEnabled () .addInterest (this, &GeometryEditor::on_paint_selection_toggled);
+	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
+
+	set_viewer ();
 }
 
 void
@@ -157,6 +197,42 @@ GeometryEditor::set_executionContext ()
 	{
 		previousSelection .clear ();
 	}
+}
+
+void
+GeometryEditor::set_viewer ()
+{
+	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
+		return;
+
+	changing = true;
+
+	switch (getCurrentBrowser () -> getCurrentViewer ())
+	{
+		case X3D::X3DConstants::RectangleSelection:
+		case X3D::X3DConstants::LassoSelection:
+		{
+			getPaintSelectionToggleButton () .set_active (true);
+			break;
+		}
+		default:
+		{
+			privateViewer = browser-> getPrivateViewer ();
+			getPaintSelectionToggleButton () .set_active (false);
+			break;
+		}
+	}
+
+	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+
+	changing = false;
+}
+
+void
+GeometryEditor::connectViewer ()
+{
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 }
 
 void
@@ -227,13 +303,14 @@ GeometryEditor::connect ()
 
 						// Coord
 
-						coordEditor -> getField <X3D::SFColorRGBA> ("color")               .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordEditor -> getField <X3D::SFString>    ("selectionType")       .addInterest (innerNode -> getField <X3D::SFString>    ("selectionType"));
 						coordEditor -> getField <X3D::SFBool>      ("pickable")            .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")      .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")         .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")         .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
 						coordEditor -> getField <X3D::SFTime>      ("chipSelectedOfFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("chipSelectedOfFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("removeSelectedFaces"));
+						coordEditor -> getField <X3D::SFColorRGBA> ("color")               .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
 						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
 						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
@@ -242,6 +319,7 @@ GeometryEditor::connect ()
 
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
+						innerNode -> setField <X3D::SFString>    ("selectionType",    coordEditor -> getField <X3D::SFString>    ("selectionType"),  true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
 
@@ -402,73 +480,6 @@ GeometryEditor::set_face_selection ()
 }
 
 void
-GeometryEditor::on_map ()
-{
-	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
-
-	set_browser (getCurrentBrowser ());
-}
-
-void
-GeometryEditor::on_unmap ()
-{
-	getCurrentBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
-	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
-}
-
-void
-GeometryEditor::set_browser (const X3D::BrowserPtr & value)
-{
-	browser -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
-	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-
-	browser = value;
-
-	browser -> getSelection () -> isEnabled () .addInterest (this, &GeometryEditor::on_paint_selection_toggled);
-	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
-
-	set_viewer ();
-}
-
-void
-GeometryEditor::set_viewer ()
-{
-	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
-		return;
-
-	changing = true;
-
-	switch (getCurrentBrowser () -> getCurrentViewer ())
-	{
-		case X3D::X3DConstants::RectangleSelection:
-		case X3D::X3DConstants::LassoSelection:
-		{
-			getPaintSelectionToggleButton () .set_active (true);
-			break;
-		}
-		default:
-		{
-			privateViewer = browser-> getPrivateViewer ();
-			getPaintSelectionToggleButton () .set_active (false);
-			break;
-		}
-	}
-
-	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
-
-	changing = false;
-}
-
-void
-GeometryEditor::connectViewer ()
-{
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
-}
-
-void
 GeometryEditor::on_hammer_clicked ()
 {
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
@@ -569,7 +580,7 @@ GeometryEditor::on_paint_selection_toggled ()
 	if (changing)
 		return;
 
-	switch (selectionType)
+	switch (selector)
 	{
 		case SelectionType::BRUSH:
 		{
@@ -622,27 +633,27 @@ GeometryEditor::on_selection_type_button_press_event (GdkEventButton* event)
 void
 GeometryEditor::on_brush_activated ()
 {
-	set_selection_type (SelectionType::BRUSH);
+	set_selector (SelectionType::BRUSH);
 }
 
 void
 GeometryEditor::on_rectangle_activated ()
 {
-	set_selection_type (SelectionType::RECTANGLE);
+	set_selector (SelectionType::RECTANGLE);
 }
 
 void
 GeometryEditor::on_lasso_activated ()
 {
-	set_selection_type (SelectionType::LASSO);
+	set_selector (SelectionType::LASSO);
 }
 
 void
-GeometryEditor::set_selection_type (const SelectionType & type)
+GeometryEditor::set_selector (const SelectionType & type)
 {
-	selectionType = type;
+	selector = type;
 
-	switch (type)
+	switch (selector)
 	{
 		case SelectionType::BRUSH:
 			set_selection_brush ();
@@ -684,6 +695,26 @@ GeometryEditor::set_selection_lasso ()
 }
 
 void
+GeometryEditor::on_points_toggled ()
+{
+	if (getPointsMenuItem () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("selectionType", "POINTS");
+}
+
+void
+GeometryEditor::on_edges_toggled ()
+{
+	if (getEdgesMenuItem () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("selectionType", "EDGES");
+}
+void
+GeometryEditor::on_faces_toggled ()
+{
+	if (getFacesMenuItem () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("selectionType", "FACES");
+}
+
+void
 GeometryEditor::on_merge_points_clicked ()
 {
 	coordEditor -> setField <X3D::SFTime> ("mergePoints", chrono::now ());
@@ -698,8 +729,6 @@ GeometryEditor::on_split_points_clicked ()
 void
 GeometryEditor::on_chip_of_face_clicked ()
 {
-	__LOG__ << std::endl;
-
 	coordEditor -> setField <X3D::SFTime> ("chipSelectedOfFaces", chrono::now ());
 }
 
@@ -715,8 +744,9 @@ GeometryEditor::store ()
 	getConfig () -> set ("normalEnabled",   normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",    normalEditor -> getField <X3D::SFFloat>     ("length"));
 	getConfig () -> set ("normalColor",     normalEditor -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("selectionType",   coordEditor  -> getField <X3D::SFString>    ("selectionType"));
 	getConfig () -> set ("edgeColor",       coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("selectionType",   size_t (selectionType));
+	getConfig () -> set ("selector",        size_t (selector));
 
 	X3DGeometryEditorInterface::store ();
 }

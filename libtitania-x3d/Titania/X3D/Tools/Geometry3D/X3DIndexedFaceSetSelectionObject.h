@@ -88,6 +88,14 @@ public:
 
 	///  @name Hidden fields
 
+	SFString &
+	selectionType ()
+	{ return *fields .selectionType; }
+
+	const SFString &
+	selectionType () const
+	{ return *fields .selectionType; }
+
 	SFBool &
 	paintSelection ()
 	{ return *fields .paintSelection; }
@@ -206,7 +214,20 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class SelectionType :
+	   uint8_t
+	{
+	   POINTS,
+	   EDGES,
+	   FACES
+	};
+
 	///  @name Event handler
+
+	void
+	set_selectionType ();
 
 	void
 	set_loadState ();
@@ -254,13 +275,19 @@ private:
 	updateActiveFace ();
 
 	void
-	selectPoints (const std::vector <int32_t> &, const bool);
+	selectPoints (const std::vector <int32_t> &);
 
 	void
-	selectFaces (const std::vector <int32_t> &, const bool);
+	selectEdges (const std::vector <int32_t> &);
 
 	void
-	selectFace (const size_t, const bool);
+	selectEdge (const std::vector <size_t> &);
+
+	void
+	selectFaces (const std::vector <int32_t> &);
+
+	void
+	selectFace (const size_t);
 
 	void
 	addSelectedPoints (const std::vector <int32_t> &);
@@ -310,6 +337,7 @@ private:
 		Fields ();
 
 		SFBool* const selectable;
+		SFString* const selectionType;
 		SFBool* const paintSelection;
 		MFInt32* const addSelection;
 		MFInt32* const replaceSelection;
@@ -330,8 +358,10 @@ private:
 	X3DPtr <X3DCoordinateNode> coordNode;
 
 	std::vector <int32_t> activePoints; // coord indices
-	size_t                activeFace;
+	std::vector <size_t>  activeEdge;   // index of coord indices
+	size_t                activeFace;   // index of first coord index of face
 
+	SelectionType                type;
 	X3DPtr <FaceSelection>       selection;
 	int32_t                      masterPoint;    // coord index,
 	std::map <int32_t, Vector3d> selectedPoints; // coord index, point

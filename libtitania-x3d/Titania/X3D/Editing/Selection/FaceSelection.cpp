@@ -424,8 +424,21 @@ FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & 
 	return Edge {
 		indices [i] .first,
 		indices [i] .second,
-		segments [i]
+		segments [i],
+		isEdge (vertices, indices [i] .first, indices [i] .second)
 	};
+}
+
+bool
+FaceSelection::isEdge (const std::vector <size_t> & vertices, const size_t index0, const size_t index1) const
+{
+	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	{
+		if (index0 == vertices [i] and index1 ==vertices [(i + 1) % size])
+		   return true;
+	}
+
+	return false;
 }
 
 ///  Finds the all points that are equal to point, the result is an array of point indices.

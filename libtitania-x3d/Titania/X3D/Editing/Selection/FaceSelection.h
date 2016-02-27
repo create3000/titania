@@ -71,6 +71,7 @@ public:
 		int32_t index0;
 		int32_t index1;
 		LineSegment3d segment;
+		bool isEdge;
 	};
 
 	///  @name Construction
@@ -133,6 +134,9 @@ public:
 
 	Edge
 	getEdge (const Vector3d &, const std::vector <size_t> &) const;
+
+	bool
+	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;
 
 	Points
 	getCoincidentPoints (const Vector3d &) const;
