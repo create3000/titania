@@ -841,3 +841,5 @@ Box::event
   virtual bool on_event(GdkEvent* event);
 Window::map
   virtual void on_map();
+RadioMenuItem::group_changed
+  virtual void on_group_changed();

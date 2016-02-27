@@ -74,7 +74,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
 	         previousSelection (),
-	                  selector (SelectionType::BRUSH),
+	                  selector (SelectorType::BRUSH),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                   browser (getCurrentBrowser ()),
 	         numSelectedPoints (0),
@@ -123,7 +123,6 @@ GeometryEditor::configure ()
 		coordEditor -> setField <X3D::SFColorRGBA> ("color", getConfig () -> get <X3D::SFColorRGBA> ("edgeColor"));
 
 	coordEditor -> setField <X3D::SFString> ("selectionType", getConfig () -> get <X3D::SFString> ("selectionType"));
-	coordEditor -> setField <X3D::SFBool> ("paintSelection",  getConfig () -> get <X3D::SFBool> ("paintSelection"));
 
 	if (getConfig () -> get <X3D::SFString> ("selectionType") == "FACES")
 		getFacesMenuItem () .set_active (true);
@@ -132,9 +131,9 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getPaintSelectionToggleButton () .set_active (getConfig () -> get <X3D::SFBool> ("paintSelection"));
+	getPaintSelectionToggleButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
 
-	set_selector (SelectionType (getConfig () -> get <size_t> ("selector")));
+	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
 
 void
@@ -192,6 +191,8 @@ GeometryEditor::set_executionContext ()
 
 		children -> isPrivate (true);
 		previousSelection = children -> value ();
+
+		set_viewer ();
 	}
 	catch (const std::exception & error)
 	{
@@ -210,15 +211,31 @@ GeometryEditor::set_viewer ()
 	switch (getCurrentBrowser () -> getCurrentViewer ())
 	{
 		case X3D::X3DConstants::RectangleSelection:
+		{
+			if (selector not_eq SelectorType::RECTANGLE)
+				set_selector (selector);
+
+			else
+				getPaintSelectionToggleButton () .set_active (true);
+
+			break;
+		}
 		case X3D::X3DConstants::LassoSelection:
 		{
-			getPaintSelectionToggleButton () .set_active (true);
+			if (selector not_eq SelectorType::LASSO)
+				set_selector (selector);
+
+			else
+				getPaintSelectionToggleButton () .set_active (true);
+
 			break;
 		}
 		default:
 		{
+			if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
+				getPaintSelectionToggleButton () .set_active (false);
+
 			privateViewer = browser-> getPrivateViewer ();
-			getPaintSelectionToggleButton () .set_active (false);
 			break;
 		}
 	}
@@ -267,11 +284,13 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		connect ();
 	}
 
-	changing = false;
-
 	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
 
-	if (not getEditToggleButton () .get_active ())
+	changing = false;
+
+	if (getEditToggleButton () .get_active ())
+	   getPaintSelectionToggleButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
+	else
 		getPaintSelectionToggleButton () .set_active (false);
 }
 
@@ -574,6 +593,9 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
+	if (getEditToggleButton () .get_active ())
+		getConfig () -> set ("paintSelection", getPaintSelectionToggleButton () .get_active ());
+
 	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
 		return;
 
@@ -582,7 +604,7 @@ GeometryEditor::on_paint_selection_toggled ()
 
 	switch (selector)
 	{
-		case SelectionType::BRUSH:
+		case SelectorType::BRUSH:
 		{
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active ());
 
@@ -593,7 +615,7 @@ GeometryEditor::on_paint_selection_toggled ()
 			getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 			break;
 		}
-		case SelectionType::RECTANGLE:
+		case SelectorType::RECTANGLE:
 		{
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 
@@ -605,7 +627,7 @@ GeometryEditor::on_paint_selection_toggled ()
 			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
 			break;
 		}
-		case SelectionType::LASSO:
+		case SelectorType::LASSO:
 		{
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 
@@ -633,35 +655,35 @@ GeometryEditor::on_selection_type_button_press_event (GdkEventButton* event)
 void
 GeometryEditor::on_brush_activated ()
 {
-	set_selector (SelectionType::BRUSH);
+	set_selector (SelectorType::BRUSH);
 }
 
 void
 GeometryEditor::on_rectangle_activated ()
 {
-	set_selector (SelectionType::RECTANGLE);
+	set_selector (SelectorType::RECTANGLE);
 }
 
 void
 GeometryEditor::on_lasso_activated ()
 {
-	set_selector (SelectionType::LASSO);
+	set_selector (SelectorType::LASSO);
 }
 
 void
-GeometryEditor::set_selector (const SelectionType & type)
+GeometryEditor::set_selector (const SelectorType & type)
 {
 	selector = type;
 
 	switch (selector)
 	{
-		case SelectionType::BRUSH:
+		case SelectorType::BRUSH:
 			set_selection_brush ();
 			break;
-		case SelectionType::RECTANGLE:
+		case SelectorType::RECTANGLE:
 			set_selection_rectangle ();
 			break;
-		case SelectionType::LASSO:
+		case SelectorType::LASSO:
 			set_selection_lasso ();
 			break;
 	}

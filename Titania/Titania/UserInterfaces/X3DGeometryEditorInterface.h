@@ -167,6 +167,18 @@ public:
 	getLassoMenuItem () const
 	{ return *m_LassoMenuItem; }
 
+	Gtk::RadioMenuItem &
+	getPointsMenuItem () const
+	{ return *m_PointsMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getEdgesMenuItem () const
+	{ return *m_EdgesMenuItem; }
+
+	Gtk::RadioMenuItem &
+	getFacesMenuItem () const
+	{ return *m_FacesMenuItem; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -221,6 +233,18 @@ public:
 	void
 	on_lasso_activated () = 0;
 
+	virtual
+	void
+	on_points_toggled () = 0;
+
+	virtual
+	void
+	on_edges_toggled () = 0;
+
+	virtual
+	void
+	on_faces_toggled () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -264,6 +288,9 @@ private:
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;
 	Gtk::ImageMenuItem*         m_LassoMenuItem;
+	Gtk::RadioMenuItem*         m_PointsMenuItem;
+	Gtk::RadioMenuItem*         m_EdgesMenuItem;
+	Gtk::RadioMenuItem*         m_FacesMenuItem;
 
 };
 

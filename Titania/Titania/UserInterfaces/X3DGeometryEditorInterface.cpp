@@ -80,6 +80,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
 	m_builder -> get_widget ("LassoMenuItem", m_LassoMenuItem);
+	m_builder -> get_widget ("PointsMenuItem", m_PointsMenuItem);
+	m_builder -> get_widget ("EdgesMenuItem", m_EdgesMenuItem);
+	m_builder -> get_widget ("FacesMenuItem", m_FacesMenuItem);
 
 	// Connect object Gtk::Revealer with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
@@ -105,6 +108,11 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));
 	m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_rectangle_activated));
 	m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated));
+
+	// Connect object Gtk::RadioMenuItem with id 'PointsMenuItem'.
+	m_PointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_points_toggled));
+	m_EdgesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edges_toggled));
+	m_FacesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_faces_toggled));
 
 	// Call construct handler of base class.
 	construct ();
