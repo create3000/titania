@@ -102,13 +102,14 @@ public:
 	{ opengl::Surface::renderBackground (); }
 
 	virtual
-	void
-	makeCurrent () const
-	throw (Error <INVALID_OPERATION_TIMING>) final override;
+	bool
+	makeCurrent ()
+	noexcept (true) final override;
 
 	virtual
 	void
-	swapBuffers () final override
+	swapBuffers ()
+	noexcept (true) final override
 	{ opengl::Surface::swapBuffers (); }
 
 	///  @name Destruction
@@ -160,14 +161,12 @@ private:
 	virtual
 	void
 	reshape ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	noexcept (true) final override;
 	
 	virtual
 	void
 	update ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	noexcept (true) final override;
 
 	///  @name Members
 

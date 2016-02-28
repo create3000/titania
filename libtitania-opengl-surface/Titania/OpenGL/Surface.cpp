@@ -170,7 +170,7 @@ Surface::setSwapInterval (const size_t interval)
 }
 
 void
-Surface::swapBuffers ()
+Surface::swapBuffers () const
 {
 	context -> swapBuffers ();
 }

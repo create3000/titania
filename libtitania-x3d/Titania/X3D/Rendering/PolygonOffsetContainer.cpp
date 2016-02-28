@@ -50,12 +50,12 @@
 
 #include "PolygonOffsetContainer.h"
 
-#include "../Components/Rendering/PolygonOffset.h"
+#include "../Components/Rendering/PolygonOffsetGroup.h"
 
 namespace titania {
 namespace X3D {
 
-PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffset* const polygonOffset) :
+PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffsetGroup* const polygonOffset) :
 	X3DCollectableObject (),
 	       polygonOffset (polygonOffset),
 	             enabled (false),

@@ -335,7 +335,7 @@ X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 {
 	if (PolygonMode (GL_FILL) .front () == GL_FILL)
 	{
-	   PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
+	   PolygonOffset polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 
 		getNode <X3DGeometryNode> () -> draw (container);
 	}

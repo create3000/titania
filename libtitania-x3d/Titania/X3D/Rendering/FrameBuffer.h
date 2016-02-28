@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	FrameBuffer (const X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
+	FrameBuffer (X3DBrowserContext* const, const size_t, const size_t, const size_t, const bool = true);
 
 	void
 	setup ();
@@ -73,7 +73,7 @@ public:
 	///  @name Member access
 
 	void
-	setBrowser (const X3DBrowserContext* const value)
+	setBrowser (X3DBrowserContext* const value)
 	{ browser = value; }
 
 	size_t
@@ -118,17 +118,17 @@ private:
 
 	///  @name Members
 
-	const X3DBrowserContext* browser;
-	size_t                   width;
-	size_t                   height;
-	size_t                   samples;
-	bool                     withColorBuffer;
-	GLuint                   id;
-	GLuint                   colorBufferId;
-	GLuint                   depthBufferId;
-	std::vector <float>      depth;
-	GLint                    viewport [4];
-	std::vector <uint8_t>    pixels;
+	X3DBrowserContext*    browser;
+	size_t                width;
+	size_t                height;
+	size_t                samples;
+	bool                  withColorBuffer;
+	GLuint                id;
+	GLuint                colorBufferId;
+	GLuint                depthBufferId;
+	std::vector <float>   depth;
+	GLint                 viewport [4];
+	std::vector <uint8_t> pixels;
 
 };
 

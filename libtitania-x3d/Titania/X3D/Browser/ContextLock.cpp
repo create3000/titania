@@ -59,14 +59,17 @@ namespace X3D {
  *
  *  @param  browserContext  A valid X3DBrowserContext instance.
  */
-ContextLock::ContextLock (const X3DBrowserContext* const browserContext)
+ContextLock::ContextLock (X3DBrowserContext* const browserContext)
 throw (Error <INVALID_OPERATION_TIMING>) :
 	 xDisplay (glXGetCurrentDisplay ()),
 	xDrawable (glXGetCurrentDrawable ()),
 	 xContext (glXGetCurrentContext ())
 {
-	// Throws an exception if it cannot make current!  The destructor is then not called.
-	browserContext -> makeCurrent ();
+	if (browserContext -> makeCurrent ())
+	   return;
+
+	// Throw an exception if it cannot make current!  The destructor is then not called.
+	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
 ContextLock::~ContextLock ()

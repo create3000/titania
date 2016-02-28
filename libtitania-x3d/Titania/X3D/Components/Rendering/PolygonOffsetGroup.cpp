@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "PolygonOffset.h"
+#include "PolygonOffsetGroup.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -58,22 +58,22 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType PolygonOffset::component      = ComponentType::TITANIA;
-const std::string   PolygonOffset::typeName       = "PolygonOffset";
-const std::string   PolygonOffset::containerField = "children";
+const ComponentType PolygonOffsetGroup::component      = ComponentType::TITANIA;
+const std::string   PolygonOffsetGroup::typeName       = "PolygonOffsetGroup";
+const std::string   PolygonOffsetGroup::containerField = "children";
 
-PolygonOffset::Fields::Fields () :
+PolygonOffsetGroup::Fields::Fields () :
 	  type (new SFString ("POLYGON_OFFSET_FILL")),
 	factor (new SFFloat (0)),
 	 units (new SFFloat (0))
 { }
 
-PolygonOffset::PolygonOffset (X3DExecutionContext* const executionContext) :
+PolygonOffsetGroup::PolygonOffsetGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
 	     offsetType (GL_POLYGON_OFFSET_FILL)
 {
-	//addType (X3DConstants::PolygonOffset);
+	//addType (X3DConstants::PolygonOffsetGroup);
 
 	addField (inputOutput,    "metadata",       metadata ());
 
@@ -89,23 +89,23 @@ PolygonOffset::PolygonOffset (X3DExecutionContext* const executionContext) :
 }
 
 X3DBaseNode*
-PolygonOffset::create (X3DExecutionContext* const executionContext) const
+PolygonOffsetGroup::create (X3DExecutionContext* const executionContext) const
 {
-	return new PolygonOffset (executionContext);
+	return new PolygonOffsetGroup (executionContext);
 }
 
 void
-PolygonOffset::initialize ()
+PolygonOffsetGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	type () .addInterest (this, &PolygonOffset::set_type);
+	type () .addInterest (this, &PolygonOffsetGroup::set_type);
 
 	set_type ();
 }
 
 void
-PolygonOffset::set_type ()
+PolygonOffsetGroup::set_type ()
 {
 	if (type () == "POLYGON_OFFSET_POINT")
 		offsetType = GL_POLYGON_OFFSET_POINT;
@@ -118,7 +118,7 @@ PolygonOffset::set_type ()
 }
 
 void
-PolygonOffset::traverse (const TraverseType type)
+PolygonOffsetGroup::traverse (const TraverseType type)
 {
 	if (type == TraverseType::DISPLAY)
 		getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
@@ -127,9 +127,9 @@ PolygonOffset::traverse (const TraverseType type)
 }
 
 void
-PolygonOffset::addTool ()
+PolygonOffsetGroup::addTool ()
 {
-	//X3DGroupingNode::addTool (new PolygonOffsetTool (this));
+	//X3DGroupingNode::addTool (new PolygonOffsetGroupTool (this));
 }
 
 } // X3D

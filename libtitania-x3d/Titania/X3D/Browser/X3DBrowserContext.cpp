@@ -159,7 +159,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>,
        std::runtime_error)
 {
-	ContextLock lock (this);
+	ContextLock lock (const_cast <X3DBrowserContext*> (this));
 
 	if (getWorld ())
 	{
@@ -169,7 +169,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		// Render to frame buffer.
 
-		FrameBuffer frameBuffer (this, width, height, antialiasing);
+		FrameBuffer frameBuffer (const_cast <X3DBrowserContext*> (this), width, height, antialiasing);
 
 		frameBuffer .setup ();
 		frameBuffer .bind ();
@@ -235,8 +235,7 @@ X3DBrowserContext::endUpdateForFrame ()
 
 void
 X3DBrowserContext::reshape ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+noexcept (true)
 {
 	try
 	{
@@ -259,8 +258,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 void
 X3DBrowserContext::update ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+noexcept (true)
 {
 	try
 	{
@@ -308,7 +306,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 		#endif
 	}
-	catch (const std::exception & exception)
+	catch (const Error <INVALID_OPERATION_TIMING> & exception)
 	{
 		std::clog
 		   << getName () << " "

@@ -364,7 +364,7 @@ X3DIndexedFaceSetSelectionObject::set_plane_sensor_active (const bool active)
 	set_coord_point ();
 }
 
-///  Generate and update hot and active points, edges and face
+///  Determine and update hot and active points, edges and face
 void
 X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
@@ -451,6 +451,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 	updateMagicPoints ();
 }
 
+///  Update hot and active points and edges geometries.
 void
 X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 {
@@ -473,6 +474,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 	}
 }
 
+///  Update hot and active face geometry.
 void
 X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 {
@@ -507,6 +509,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 	}
 }
 
+///  Select points, edges or faces depending on selection type.
 void
 X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const bool replace)
 {
@@ -539,6 +542,7 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 	updateMagicPoints ();
 }
 
+///  Select points.
 void
 X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points)
 {
@@ -549,6 +553,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 		addSelectedPoints (points);
 }
 
+///  Select edges.
 void
 X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points)
 {
@@ -605,6 +610,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 	}
 }
 
+///  Select one edge.
 void
 X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge)
 {
@@ -626,6 +632,7 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge)
 	}
 }
 
+///  Select faces.
 void
 X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points)
 {
@@ -663,6 +670,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		   selectedPoints .emplace (coordIndex () [vertex], getCoord () -> get1Point (coordIndex () [vertex]));
 }
 
+///  Select one face.
 void
 X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
 {
@@ -676,6 +684,7 @@ X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
 		addSelectedFaces ({ face });
 }
 
+///  Add @a points to selection of points.
 void
 X3DIndexedFaceSetSelectionObject::addSelectedPoints (const std::vector <int32_t> & points)
 {
@@ -688,6 +697,7 @@ X3DIndexedFaceSetSelectionObject::addSelectedPoints (const std::vector <int32_t>
 		selectedPoints .emplace (point, getCoord () -> get1Point (point));
 }
 
+///  Remove @a points to selection of points.
 void
 X3DIndexedFaceSetSelectionObject::removeSelectedPoints (const std::vector <int32_t> & points)
 {
@@ -697,6 +707,7 @@ X3DIndexedFaceSetSelectionObject::removeSelectedPoints (const std::vector <int32
 		selectedPoints .erase (point);
 }
 
+///  Update selected points geometry.
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 {
@@ -710,6 +721,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 	selectedPoints_changed () = type == SelectionType::POINTS ? i : 0;
 }
 
+///  Determine edges from @a vertices and add them to selected edges.
 void
 X3DIndexedFaceSetSelectionObject::addSelectedEdges (const std::vector <size_t> & vertices)
 {
@@ -731,6 +743,7 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdges (const std::vector <size_t> &
 	}
 }
 
+///  Determine edges from @a vertices and remove them from selected edges.
 void
 X3DIndexedFaceSetSelectionObject::removeSelectedEdges (const std::vector <size_t> & vertices)
 {
@@ -752,6 +765,7 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdges (const std::vector <size_t
 	}
 }
 
+///  Update selected edges geometry.
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 {
@@ -773,6 +787,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 	selectedEdges_changed () = type == SelectionType::EDGES ? i / 3 : 0;
 }
 
+///  Add @a faces to selection of faces.
 void
 X3DIndexedFaceSetSelectionObject::addSelectedFaces (const std::set <size_t> & faces)
 {
@@ -788,6 +803,7 @@ X3DIndexedFaceSetSelectionObject::addSelectedFaces (const std::set <size_t> & fa
 	}
 }
 
+///  Remove @a faces from selection of faces.
 void
 X3DIndexedFaceSetSelectionObject::removeSelectedFaces (const std::set <size_t> & faces)
 {
@@ -803,6 +819,7 @@ X3DIndexedFaceSetSelectionObject::removeSelectedFaces (const std::set <size_t> &
 	}
 }
 
+///  Update selected faces geometry.
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 {
@@ -821,6 +838,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 	selectedFaces_changed () = type == SelectionType::FACES ? selectedFaces .size () : 0;
 }
 
+///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 
 bool
 X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & vertices) const
 {
@@ -835,6 +853,7 @@ X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & ve
 	return true;
 }
 
+///  Returns the sceen distance in pixels between @a point1 and @a point2.
 double
 X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Vector3d & point2)
 {

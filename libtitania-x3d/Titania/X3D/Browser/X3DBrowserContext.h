@@ -186,15 +186,14 @@ public:
 	///  @name Rendering
 
 	virtual
-	void
-	makeCurrent () const
-	throw (Error <INVALID_OPERATION_TIMING>)
-	{ }
+	bool
+	makeCurrent ()
+	noexcept (true) = 0;
 
 	virtual
 	void
 	swapBuffers ()
-	{ }
+	noexcept (true) = 0;
 
 	///  @name Destruction
 
@@ -223,13 +222,11 @@ protected:
 	virtual
 	void
 	reshape ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	noexcept (true);
 
 	void
 	update ()
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	noexcept (true);
 
 	virtual
 	void

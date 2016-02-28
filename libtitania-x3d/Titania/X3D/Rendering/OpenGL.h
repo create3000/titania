@@ -132,63 +132,91 @@ class PolygonMode
 public:
 
 	PolygonMode (GLenum type) :
-		polygonMode ()
+		m_polygonMode ()
 	{
-		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
+		glGetIntegerv (GL_POLYGON_MODE, m_polygonMode);
 
 		glPolygonMode (GL_FRONT_AND_BACK, type);
 	}
 	
 	GLenum
 	front () const
-	{ return polygonMode [0]; }
+	{ return m_polygonMode [0]; }
 	
 	GLenum
 	back () const
-	{ return polygonMode [1]; }
+	{ return m_polygonMode [1]; }
 	
 	~PolygonMode ()
 	{
-		glPolygonMode (GL_FRONT, polygonMode [0]);
-		glPolygonMode (GL_BACK,  polygonMode [1]);
+		glPolygonMode (GL_FRONT, m_polygonMode [0]);
+		glPolygonMode (GL_BACK,  m_polygonMode [1]);
 	}
 
 private:
 
-	GLint polygonMode [2];
+	GLint m_polygonMode [2];
 };
 	              
-class PolygonOffsetLock
+class PolygonOffset
 {
 public:
 
-	PolygonOffsetLock (GLenum type, float factor_, float units_) :
-		   type (type),
-		enabled (glIsEnabled (type)),
-		 factor (0),
-		  units (0)
+	PolygonOffset (GLenum type, float factor, float units) :
+		   m_type (type),
+		m_enabled (glIsEnabled (type)),
+		 m_factor (0),
+		  m_units (0)
 	{
-		glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-		glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+		glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &m_factor);
+		glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &m_units);
 
-		glEnable (type);
-		glPolygonOffset (factor_, units_);
+		glEnable (m_type);
+		glPolygonOffset (factor, units);
 	}
 
-	~PolygonOffsetLock ()
+	~PolygonOffset ()
 	{
-		if (not enabled)
-			glDisable (type);
+		if (not m_enabled)
+			glDisable (m_type);
 
-		glPolygonOffset (factor, units);
+		glPolygonOffset (m_factor, m_units);
 	}
 
 private:
 
-	GLenum type;
-	bool   enabled;
-	float  factor;
-	float  units;
+	GLenum m_type;
+	bool   m_enabled;
+	float  m_factor;
+	float  m_units;
+};
+	              
+class DepthTest
+{
+public:
+
+	 DepthTest (GLenum function) :
+		 m_enabled (glIsEnabled (GL_DEPTH_TEST)),
+		m_function ()
+	{
+		glGetIntegerv (GL_DEPTH_FUNC, &m_function);
+
+		glEnable (GL_DEPTH_TEST);
+		glDepthFunc (function);
+	}
+
+	~DepthTest ()
+	{
+		if (not m_enabled)
+			glDisable (GL_DEPTH_FUNC);
+
+		glDepthFunc (m_function);
+	}
+
+private:
+
+	bool  m_enabled;
+	GLint m_function;
 };
 
 } // X3D

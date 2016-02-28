@@ -79,6 +79,18 @@ public:
 	getViewerType () const final override
 	{ return viewer; }
 
+	virtual
+	bool
+	makeCurrent ()
+	noexcept (true) final override
+	{ return true; }
+
+	virtual
+	void
+	swapBuffers ()
+	noexcept (true) final override
+	{ }
+
 
 private:
 

@@ -60,7 +60,7 @@ class ContextLock
 {
 public:
 
-	ContextLock (const X3DBrowserContext* const browserContext)
+	ContextLock (X3DBrowserContext* const browserContext)
 	throw (Error <INVALID_OPERATION_TIMING>);
 
 	~ContextLock ();

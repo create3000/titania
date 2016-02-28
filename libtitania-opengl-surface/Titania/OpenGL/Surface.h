@@ -84,7 +84,7 @@ public:
 	setSwapInterval (const size_t);
 
 	void
-	swapBuffers ();
+	swapBuffers () const;
 
 	void
 	dispose ();

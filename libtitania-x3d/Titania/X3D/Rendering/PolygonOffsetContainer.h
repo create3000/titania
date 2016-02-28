@@ -56,14 +56,14 @@
 namespace titania {
 namespace X3D {
 
-class PolygonOffset;
+class PolygonOffsetGroup;
 
 class PolygonOffsetContainer :
 	public X3DCollectableObject
 {
 public:
 
-	PolygonOffsetContainer (PolygonOffset* const);
+	PolygonOffsetContainer (PolygonOffsetGroup* const);
 
 	virtual
 	void
@@ -76,10 +76,10 @@ public:
 
 private:
 
-	PolygonOffset* const polygonOffset;
-	bool                 enabled;
-	float                factor;
-	float                units;
+	PolygonOffsetGroup* const polygonOffset;
+	bool                      enabled;
+	float                     factor;
+	float                     units;
 
 };
 

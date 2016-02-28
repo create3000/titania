@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-FrameBuffer::FrameBuffer (const X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
+FrameBuffer::FrameBuffer (X3DBrowserContext* const browser, const size_t width, const size_t height, const size_t samples_, const bool withColorBuffer) :
 	        browser (browser),
 	          width (width),
 	         height (height),

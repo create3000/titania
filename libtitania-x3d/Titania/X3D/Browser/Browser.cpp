@@ -250,37 +250,25 @@ Browser::set_viewer ()
 	}
 }
 
-void
-Browser::makeCurrent () const
-throw (Error <INVALID_OPERATION_TIMING>)
+bool
+Browser::makeCurrent ()
+noexcept (true)
 {
-	if (opengl::Surface::makeCurrent ())
-		return;
-
-	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
+	return opengl::Surface::makeCurrent ();
 }
 
 void
 Browser::reshape ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+noexcept (true)
 {
 	X3DBrowser::reshape ();
 }
 
 void
 Browser::update ()
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+noexcept (true)
 {
-	try
-	{
-		X3DBrowser::update ();
-	}
-	catch (const X3D::X3DError &)
-	{
-		// Send error message, via signal?
-	}
+	X3DBrowser::update ();
 }
 
 void
