@@ -600,7 +600,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		{
 			const std::set <int32_t> pointIndex (points .begin (), points .end ());
 
-			for (const auto & point : points)
+			for (const auto & point : pointIndex)
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
@@ -648,11 +648,6 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 
 	for (const auto & edge : selectedEdges)
 	{
-	   __LOG__ << edge .second .size () << std::endl;
-
-	   for (const auto & pair : edge .second)
-	       __LOG__ << edge .first .first << " " << edge .first .second << " : " << pair .first << " " << pair .second << std::endl;
-
 		if (edge .second .empty ())
 			continue;
 
@@ -829,14 +824,17 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdgesFunction (const std::vector <s
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		const auto i0 = vertices [i];
-		const auto i1 = vertices [(i + 1) % size];
+		auto i0 = vertices [i];
+		auto i1 = vertices [(i + 1) % size];
 
 		auto index0 = coordIndex () [i0] .getValue ();
 		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
+		{
 			std::swap (index0, index1);
+			std::swap (i0, i1);
+		}
 
 		selectedEdges [std::make_pair (index0, index1)] .emplace (std::make_pair (i0, i1)); 
 	}
@@ -848,14 +846,17 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdgesFunction (const std::vector
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		const auto i0 = vertices [i];
-		const auto i1 = vertices [(i + 1) % size];
+		auto i0 = vertices [i];
+		auto i1 = vertices [(i + 1) % size];
 
 		auto index0 = coordIndex () [i0] .getValue ();
 		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
+		{
 			std::swap (index0, index1);
+			std::swap (i0, i1);
+		}
 
 		selectedEdges [std::make_pair (index0, index1)] .erase (std::make_pair (i0, i1)); 
 	}
