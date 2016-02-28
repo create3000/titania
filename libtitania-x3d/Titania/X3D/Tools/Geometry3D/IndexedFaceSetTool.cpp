@@ -68,6 +68,7 @@ IndexedFaceSetTool::Fields::Fields () :
 	          mergePoints (new SFTime ()),
 	          splitPoints (new SFTime ()),
 	 extrudeSelectedEdges (new SFTime ()),
+	 extrudeSelectedFaces (new SFTime ()),
 	  removeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
 	         undo_changed (new UndoStepContainerPtr ())
@@ -91,6 +92,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	mergePoints ()          .isHidden (true);
 	splitPoints ()          .isHidden (true);
 	extrudeSelectedEdges () .isHidden (true);
+	extrudeSelectedFaces () .isHidden (true);
 	chipOfSelectedFaces ()  .isHidden (true);
 	removeSelectedFaces ()  .isHidden (true);
 
@@ -103,6 +105,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
 	addField (inputOutput, "extrudeSelectedEdges",   extrudeSelectedEdges ());
+	addField (inputOutput, "extrudeSelectedFaces",   extrudeSelectedFaces ());
 	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
 	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
 	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
@@ -128,6 +131,7 @@ IndexedFaceSetTool::initialize ()
 	mergePoints ()          .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
 	splitPoints ()          .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
 	extrudeSelectedEdges () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedEdges);
+	extrudeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedFaces);
 	chipOfSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_chipOfSelectedFaces);
 	removeSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 }
@@ -375,6 +379,17 @@ IndexedFaceSetTool::set_extrudeSelectedEdges ()
 	__LOG__ << std::endl;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Edges"));
+
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_extrudeSelectedFaces ()
+{
+	__LOG__ << std::endl;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Faces"));
 
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

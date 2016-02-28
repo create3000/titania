@@ -194,6 +194,27 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected edges.</property>
+                    <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">ExtrudeSelectedEdges</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkButton" id="RemoveFacesButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -211,7 +232,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
                 <child>
@@ -232,29 +253,32 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
+                  <object class="GtkButton" id="ExtrudeSelectedFacesButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Extrude selected edges.</property>
-                    <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
+                    <property name="tooltip_text" translatable="yes">Extrude selected faces.</property>
+                    <signal name="clicked" handler="on_extrude_selected_faces_clicked" swapped="no"/>
                     <child>
-                      <object class="GtkImage" id="image11">
+                      <object class="GtkImage" id="image12">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stock">ExtrudeSelectedEdges</property>
+                        <property name="stock">ExtrudeSelectedFaces</property>
                         <property name="icon_size">1</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">3</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>

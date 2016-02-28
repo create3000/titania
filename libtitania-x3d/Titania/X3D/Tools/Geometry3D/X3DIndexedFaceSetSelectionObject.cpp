@@ -709,7 +709,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 
 	selectionCoord -> point () .resize (i);
 
-	selectedPoints_changed () = type == SelectionType::POINTS ? i : 0;
+	selectedPoints_changed () = i;
 }
 
 ///  Determine edges from @a vertices and add them to selected edges.
@@ -774,7 +774,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 
 	selectedEdgesGeometry -> coordIndex () .resize (i);
 
-	selectedEdges_changed () = type == SelectionType::EDGES ? i / 3 : 0;
+	selectedEdges_changed () = i / 3;
 }
 
 ///  Add @a faces to selection of faces.
@@ -825,7 +825,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 
 	selectedFacesGeometry -> coordIndex () .resize (i);
 
-	selectedFaces_changed () = type == SelectionType::FACES ? selectedFaces .size () : 0;
+	selectedFaces_changed () = selectedFaces .size ();
 }
 
 ///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 

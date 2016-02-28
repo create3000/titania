@@ -160,6 +160,14 @@ public:
 	{ return *fields .extrudeSelectedEdges; }
 
 	SFTime &
+	extrudeSelectedFaces ()
+	{ return *fields .extrudeSelectedFaces; }
+
+	const SFTime &
+	extrudeSelectedFaces () const
+	{ return *fields .extrudeSelectedFaces; }
+
+	SFTime &
 	chipOfSelectedFaces ()
 	{ return *fields .chipOfSelectedFaces; }
 
@@ -264,6 +272,9 @@ private:
 	set_extrudeSelectedEdges ();
 
 	void
+	set_extrudeSelectedFaces ();
+
+	void
 	set_chipOfSelectedFaces ();
 
 	void
@@ -311,6 +322,7 @@ private:
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
 		SFTime* const extrudeSelectedEdges;
+		SFTime* const extrudeSelectedFaces;
 		SFTime* const removeSelectedFaces;
 		SFTime* const chipOfSelectedFaces;
 		UndoStepContainerPtr* const undo_changed;

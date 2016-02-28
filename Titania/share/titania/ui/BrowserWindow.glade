@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="ExtrudeSelectedFaces" filename="icons/ExtrudeSelectedFaces.svg"/>
       <source stock-id="ExtrudeSelectedEdges" filename="icons/ExtrudeSelectedEdges.svg"/>
       <source stock-id="ChipOfFace" filename="icons/ChipOfFace.svg"/>
       <source stock-id="RemoveFace" filename="icons/RemoveFace.svg"/>

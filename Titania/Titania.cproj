@@ -2500,6 +2500,7 @@
     <None Include="share\titania\ui\icons\RemoveFace.svg" />
     <None Include="share\titania\ui\icons\ChipOfFace.svg" />
     <None Include="share\titania\ui\icons\ExtrudeSelectedEdges.svg" />
+    <None Include="share\titania\ui\icons\ExtrudeSelectedFaces.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

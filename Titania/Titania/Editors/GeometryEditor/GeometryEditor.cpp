@@ -100,6 +100,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedEdges", new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedFaces", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "chipOfSelectedFaces",  new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "removeSelectedFaces",  new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
@@ -329,6 +330,7 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("splitPoints"));
 						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges") .addInterest (innerNode -> getField <X3D::SFTime>      ("extrudeSelectedEdges"));
+						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("extrudeSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("chipOfSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("removeSelectedFaces"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA>  ("color"));
@@ -359,7 +361,9 @@ GeometryEditor::connect ()
 		}
 	}
 
-	set_selectedFaces ();
+	set_selectedPoints ();
+	set_selectedEdges  ();
+	set_selectedFaces  ();
 }
 
 void
@@ -771,6 +775,12 @@ void
 GeometryEditor::on_extrude_selected_edges_clicked ()
 {
 	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedEdges", chrono::now ());
+}
+
+void
+GeometryEditor::on_extrude_selected_faces_clicked ()
+{
+	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedFaces", chrono::now ());
 }
 
 void

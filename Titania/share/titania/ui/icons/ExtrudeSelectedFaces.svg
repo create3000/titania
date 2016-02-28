@@ -14,7 +14,7 @@
    height="96"
    id="svg2408"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="ExtrudeSelectedEdges.svg"
+   sodipodi:docname="ExtrudeSelectedFaces.svg"
    inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/icon14x14.png"
    inkscape:export-xdpi="13.125"
    inkscape:export-ydpi="13.125">
@@ -32,7 +32,7 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="7.2407734"
-     inkscape:cx="25.242984"
+     inkscape:cx="49.204513"
      inkscape:cy="45.725554"
      inkscape:window-x="65"
      inkscape:window-y="24"
@@ -55,7 +55,7 @@
        id="guide4411" />
     <sodipodi:guide
        orientation="1,0"
-       position="48,54"
+       position="48,42"
        id="guide4413" />
     <inkscape:grid
        type="xygrid"
@@ -143,7 +143,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -231,49 +231,43 @@
     <g
        id="g6959">
       <path
-         style="fill:#d9d9d9;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="M 66,30 69,87 36,60 Z"
-         id="path7693"
-         inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccc" />
-      <path
          sodipodi:nodetypes="ccccc"
-         style="display:inline;fill:#b7b7b7;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         style="display:inline;fill:#757575;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="M 72,93 55.519175,69 9,51 24,72 Z"
          id="path4195-1"
          inkscape:connector-curvature="0" />
       <g
          id="g4197">
         <path
-           style="fill:#5f5f5f;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="M 48,6 6,48 36,58.603641 64.480825,30 Z"
+           sodipodi:nodetypes="ccccc"
+           style="fill:#525252;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="M 48,6 54,69 72,91.549757 66,30 Z"
+           id="path4195"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#cecece;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="M 45,9 6,48 55.442476,66 Z"
            id="path4191"
            inkscape:connector-curvature="0"
-           sodipodi:nodetypes="ccccc" />
-        <path
-           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="M 34.381068,60 64.480825,30"
-           id="path7691"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc" />
+           sodipodi:nodetypes="cccc" />
       </g>
       <path
-         sodipodi:nodetypes="ccc"
+         sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
          id="path5592"
-         d="M 48,6 6,48 55.519175,69"
+         d="M 6,48 55.519175,69 48,6 Z"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="ccc"
          inkscape:connector-curvature="0"
          id="path5592-9"
-         d="M 24,72 72,93 66,30"
+         d="M 24,72 72,93 64.480825,30"
          style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path5633"
-         d="M 48,6 66,30"
+         d="M 48,6 64.480825,30"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="cc"
