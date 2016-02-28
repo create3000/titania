@@ -159,6 +159,10 @@ public:
 	getExtrudeSelectedFacesButton () const
 	{ return *m_ExtrudeSelectedFacesButton; }
 
+	Gtk::Button &
+	getFlipVertexOrderingButton () const
+	{ return *m_FlipVertexOrderingButton; }
+
 	Gtk::Menu &
 	getSelectionTypeMenu () const
 	{ return *m_SelectionTypeMenu; }
@@ -239,6 +243,10 @@ public:
 
 	virtual
 	void
+	on_flip_vertex_ordering_clicked () = 0;
+
+	virtual
+	void
 	on_brush_activated () = 0;
 
 	virtual
@@ -302,6 +310,7 @@ private:
 	Gtk::Button*                m_RemoveFacesButton;
 	Gtk::Button*                m_ChipOfFacesButton;
 	Gtk::Button*                m_ExtrudeSelectedFacesButton;
+	Gtk::Button*                m_FlipVertexOrderingButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

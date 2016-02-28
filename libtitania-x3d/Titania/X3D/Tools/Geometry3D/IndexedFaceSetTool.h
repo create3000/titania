@@ -176,6 +176,14 @@ public:
 	{ return *fields .chipOfSelectedFaces; }
 
 	SFTime &
+	flipVertexOrdering ()
+	{ return *fields .flipVertexOrdering; }
+
+	const SFTime &
+	flipVertexOrdering () const
+	{ return *fields .flipVertexOrdering; }
+
+	SFTime &
 	removeSelectedFaces ()
 	{ return *fields .removeSelectedFaces; }
 
@@ -278,6 +286,9 @@ private:
 	set_chipOfSelectedFaces ();
 
 	void
+	set_flipVertexOrdering ();
+
+	void
 	set_removeSelectedFaces ();
 
 	std::vector <int32_t>
@@ -288,6 +299,9 @@ private:
 
 	std::vector <int32_t>
 	chipOf (const std::set <size_t> &);
+
+	void
+	flipVertexOrdering (const std::set <size_t> &);
 
 	void
 	erasePoints (const std::vector <int32_t> &);
@@ -326,8 +340,9 @@ private:
 		SFTime* const splitPoints;
 		SFTime* const extrudeSelectedEdges;
 		SFTime* const extrudeSelectedFaces;
-		SFTime* const removeSelectedFaces;
 		SFTime* const chipOfSelectedFaces;
+		SFTime* const flipVertexOrdering;
+		SFTime* const removeSelectedFaces;
 		UndoStepContainerPtr* const undo_changed;
 	};
 

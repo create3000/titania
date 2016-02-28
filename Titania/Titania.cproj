@@ -2501,6 +2501,7 @@
     <None Include="share\titania\ui\icons\ChipOfFace.svg" />
     <None Include="share\titania\ui\icons\ExtrudeSelectedEdges.svg" />
     <None Include="share\titania\ui\icons\ExtrudeSelectedFaces.svg" />
+    <None Include="share\titania\ui\icons\FlipVertexOrdering.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

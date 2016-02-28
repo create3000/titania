@@ -69,8 +69,9 @@ IndexedFaceSetTool::Fields::Fields () :
 	          splitPoints (new SFTime ()),
 	 extrudeSelectedEdges (new SFTime ()),
 	 extrudeSelectedFaces (new SFTime ()),
-	  removeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
+	   flipVertexOrdering (new SFTime ()),
+	  removeSelectedFaces (new SFTime ()),
 	         undo_changed (new UndoStepContainerPtr ())
 { }
 
@@ -94,6 +95,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	extrudeSelectedEdges () .isHidden (true);
 	extrudeSelectedFaces () .isHidden (true);
 	chipOfSelectedFaces ()  .isHidden (true);
+	flipVertexOrdering ()   .isHidden (true);
 	removeSelectedFaces ()  .isHidden (true);
 
 	addField (inputOutput, "pickable",               pickable ());
@@ -111,6 +113,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "extrudeSelectedEdges",   extrudeSelectedEdges ());
 	addField (inputOutput, "extrudeSelectedFaces",   extrudeSelectedFaces ());
 	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
+	addField (inputOutput, "flipVertexOrdering",     flipVertexOrdering ());
 	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
 	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
@@ -137,6 +140,7 @@ IndexedFaceSetTool::initialize ()
 	extrudeSelectedEdges () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedEdges);
 	extrudeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedFaces);
 	chipOfSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_chipOfSelectedFaces);
+	flipVertexOrdering ()   .addInterest (this, &IndexedFaceSetTool::set_flipVertexOrdering);
 	removeSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 }
 
@@ -505,12 +509,43 @@ IndexedFaceSetTool::set_chipOfSelectedFaces ()
 	std::vector <int32_t> selection;
 
 	for (const auto & face : getSelectedFaces ())
-	   for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
-	      selection .emplace_back (coordIndex () [vertex]);
+	{
+		for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+			selection .emplace_back (coordIndex () [vertex]);
+	}
 
 	replaceSelection () .assign (selection .begin (), selection .end ());
 
 	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoRestoreSelection (selection, undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_flipVertexOrdering ()
+{
+	__LOG__ << std::endl;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Flip Vertex Ordering"));
+
+	undoRestoreSelection (undoStep);
+	undoSetCoordIndex (undoStep);
+
+	flipVertexOrdering (getSelectedFaces ());
+
+	// Set selection
+
+	std::vector <int32_t> selection;
+
+	for (const auto & point : getSelectedPoints ())
+	   selection .emplace_back (point .first);
+
+	replaceSelection () .assign (selection .begin (), selection .end ());
+
+	// Redo
+
 	redoSetCoordIndex (undoStep);
 	redoRestoreSelection (selection, undoStep);
 
@@ -746,6 +781,28 @@ IndexedFaceSetTool::chipOf (const std::set <size_t> & selectedVertices)
 	rebuildCoord ();
 
 	return points;
+}
+
+void
+IndexedFaceSetTool::flipVertexOrdering (const std::set <size_t> & faces)
+{
+	__LOG__ << faces .size () << std::endl;
+
+	for (const auto & face : faces)
+	{
+		const auto vertices = getFaceSelection () -> getFaceVertices (face);
+		const auto size     = vertices .size ();
+		
+		for (size_t i = 0, size1_2 = size / 2; i < size1_2; ++ i)
+		{
+			const auto i0 = vertices [i];
+			const auto i1 = vertices [size - i - 1];
+			
+			std::swap (coordIndex () [i0], coordIndex () [i1]);
+			
+			__LOG__ << i0 << " : " << i1 << std::endl;
+		}
+	}
 }
 
 ///  A unique and sorted list of points given, the point will be removed from coords and the coord index will be updated.
