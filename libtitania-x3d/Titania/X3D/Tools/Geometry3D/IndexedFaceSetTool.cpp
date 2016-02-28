@@ -67,6 +67,7 @@ static constexpr size_t TRANSLATIONS_EVENTS = 4;
 IndexedFaceSetTool::Fields::Fields () :
 	          mergePoints (new SFTime ()),
 	          splitPoints (new SFTime ()),
+	          formNewFace (new SFTime ()),
 	 extrudeSelectedEdges (new SFTime ()),
 	 extrudeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
@@ -92,35 +93,38 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 
 	mergePoints ()          .isHidden (true);
 	splitPoints ()          .isHidden (true);
+	formNewFace ()          .isHidden (true);
 	extrudeSelectedEdges () .isHidden (true);
 	extrudeSelectedFaces () .isHidden (true);
 	chipOfSelectedFaces ()  .isHidden (true);
 	flipVertexOrdering ()   .isHidden (true);
 	removeSelectedFaces ()  .isHidden (true);
 
-	addField (inputOutput, "pickable",               pickable ());
-	addField (inputOutput, "selectable",             selectable ());
-	addField (inputOutput, "selectionType",          selectionType ());
-	addField (inputOutput, "paintSelection",         paintSelection ());
-	addField (inputOutput, "replaceSelection",       replaceSelection ());
-	addField (inputOutput, "addSelection",           addSelection ());
-	addField (inputOutput, "removeSelection",        removeSelection ());
-	addField (inputOutput, "replaceSelectedEdges",   replaceSelectedEdges ());
-	addField (inputOutput, "addSelectedEdges",       addSelectedEdges ());
-	addField (inputOutput, "removeSelectedEdges",    removeSelectedEdges ());
-	addField (inputOutput, "mergePoints",            mergePoints ());
-	addField (inputOutput, "splitPoints",            splitPoints ());
-	addField (inputOutput, "extrudeSelectedEdges",   extrudeSelectedEdges ());
-	addField (inputOutput, "extrudeSelectedFaces",   extrudeSelectedFaces ());
-	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
-	addField (inputOutput, "flipVertexOrdering",     flipVertexOrdering ());
-	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
-	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
-	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
-	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
-	addField (outputOnly , "undo_changed",           undo_changed ());
-	addField (inputOutput, "normalTool",             normalTool ());
-	addField (inputOutput, "coordTool",              coordTool ());
+	addField (inputOutput, "pickable",                  pickable ());
+	addField (inputOutput, "selectable",                selectable ());
+	addField (inputOutput, "selectionType",             selectionType ());
+	addField (inputOutput, "paintSelection",            paintSelection ());
+	addField (inputOutput, "replaceSelection",          replaceSelection ());
+	addField (inputOutput, "addSelection",              addSelection ());
+	addField (inputOutput, "removeSelection",           removeSelection ());
+	addField (inputOutput, "replaceSelectedEdges",      replaceSelectedEdges ());
+	addField (inputOutput, "addSelectedEdges",          addSelectedEdges ());
+	addField (inputOutput, "removeSelectedEdges",       removeSelectedEdges ());
+	addField (inputOutput, "mergePoints",               mergePoints ());
+	addField (inputOutput, "splitPoints",               splitPoints ());
+	addField (inputOutput, "formNewFace",               formNewFace ());
+	addField (inputOutput, "extrudeSelectedEdges",      extrudeSelectedEdges ());
+	addField (inputOutput, "extrudeSelectedFaces",      extrudeSelectedFaces ());
+	addField (inputOutput, "chipOfSelectedFaces",       chipOfSelectedFaces ());
+	addField (inputOutput, "flipVertexOrdering",        flipVertexOrdering ());
+	addField (inputOutput, "removeSelectedFaces",       removeSelectedFaces ());
+	addField (outputOnly,  "selectedPoints_changed",    selectedPoints_changed ());
+	addField (outputOnly,  "selectedEdges_changed",     selectedEdges_changed ());
+	addField (outputOnly,  "selectedLineLoops_changed", selectedLineLoops_changed ());
+	addField (outputOnly,  "selectedFaces_changed",     selectedFaces_changed ());
+	addField (outputOnly , "undo_changed",              undo_changed ());
+	addField (inputOutput, "normalTool",                normalTool ());
+	addField (inputOutput, "coordTool",                 coordTool ());
 
 	addChildren (touchSensor,
 	             planeSensor);
@@ -137,6 +141,7 @@ IndexedFaceSetTool::initialize ()
 
 	mergePoints ()          .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
 	splitPoints ()          .addInterest (this, &IndexedFaceSetTool::set_splitPoints);
+	formNewFace ()          .addInterest (this, &IndexedFaceSetTool::set_formNewFace);
 	extrudeSelectedEdges () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedEdges);
 	extrudeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedFaces);
 	chipOfSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_chipOfSelectedFaces);
@@ -301,6 +306,9 @@ IndexedFaceSetTool::set_mergePoints ()
 	undoSetTexCoordIndex (undoStep);
 	undoSetNormalIndex (undoStep);
 	undoSetCoordIndex (undoStep);
+	undoSetColorColor (undoStep);
+	undoSetTexCoordPoint (undoStep);
+	undoSetNormalVector (undoStep);
 	undoSetCoordPoint (undoStep);
 
 	std::vector <int32_t> pointsToRemove;
@@ -347,6 +355,9 @@ IndexedFaceSetTool::set_mergePoints ()
 	replaceSelection () = { masterPoint };
 
 	redoSetCoordPoint (undoStep);
+	redoSetNormalVector (undoStep);
+	redoSetTexCoordPoint (undoStep);
+	redoSetColorColor (undoStep);
 	redoSetCoordIndex (undoStep);
 	redoSetNormalIndex (undoStep);
 	redoSetTexCoordIndex (undoStep);
@@ -382,12 +393,21 @@ IndexedFaceSetTool::set_splitPoints ()
 }
 
 void
+IndexedFaceSetTool::set_formNewFace ()
+{
+	__LOG__ << std::endl;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Form New Face From Selected Edges"));
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
 IndexedFaceSetTool::set_extrudeSelectedEdges ()
 {
 	__LOG__ << std::endl;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Edges"));
-
 	undoRestoreSelection (undoStep);
 	if (colorIndex ()    .size ()) undoSetColorIndex    (undoStep);
 	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);

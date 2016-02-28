@@ -67,18 +67,19 @@ namespace X3D {
 static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	                selectable (new SFBool (true)),
-	             selectionType (new SFString ("POINTS")),
-	            paintSelection (new SFBool ()),
-	          replaceSelection (new MFInt32 ()),
-	              addSelection (new MFInt32 ()),
-	           removeSelection (new MFInt32 ()),
-	      replaceSelectedEdges (new MFInt32 ()),
-	          addSelectedEdges (new MFInt32 ()),
-	       removeSelectedEdges (new MFInt32 ()),
-	    selectedPoints_changed (new SFInt32 ()),
-	     selectedEdges_changed (new SFInt32 ()),
-	     selectedFaces_changed (new SFInt32 ())
+	                 selectable (new SFBool (true)),
+	              selectionType (new SFString ("POINTS")),
+	             paintSelection (new SFBool ()),
+	           replaceSelection (new MFInt32 ()),
+	               addSelection (new MFInt32 ()),
+	            removeSelection (new MFInt32 ()),
+	       replaceSelectedEdges (new MFInt32 ()),
+	           addSelectedEdges (new MFInt32 ()),
+	        removeSelectedEdges (new MFInt32 ()),
+	     selectedPoints_changed (new SFInt32 ()),
+	      selectedEdges_changed (new SFInt32 ()),
+	  selectedLineLoops_changed (new SFInt32 ()),
+	      selectedFaces_changed (new SFInt32 ())
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
@@ -109,18 +110,19 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	selectable ()             .isHidden (true);
-	selectionType ()          .isHidden (true);
-	paintSelection ()         .isHidden (true);
-	replaceSelection ()       .isHidden (true);
-	addSelection ()           .isHidden (true);
-	removeSelection ()        .isHidden (true);
-	replaceSelectedEdges ()   .isHidden (true);
-	addSelectedEdges ()       .isHidden (true);
-	removeSelectedEdges ()    .isHidden (true);
-	selectedPoints_changed () .isHidden (true);
-	selectedEdges_changed ()  .isHidden (true);
-	selectedFaces_changed ()  .isHidden (true);
+	selectable ()                .isHidden (true);
+	selectionType ()             .isHidden (true);
+	paintSelection ()            .isHidden (true);
+	replaceSelection ()          .isHidden (true);
+	addSelection ()              .isHidden (true);
+	removeSelection ()           .isHidden (true);
+	replaceSelectedEdges ()      .isHidden (true);
+	addSelectedEdges ()          .isHidden (true);
+	removeSelectedEdges ()       .isHidden (true);
+	selectedPoints_changed ()    .isHidden (true);
+	selectedEdges_changed ()     .isHidden (true);
+	selectedLineLoops_changed () .isHidden (true);
+	selectedFaces_changed ()     .isHidden (true);
 
 	addChildren (touchSensor,
 	             planeSensor,

@@ -169,6 +169,14 @@ public:
 	{ return *fields .selectedEdges_changed; }
 
 	SFInt32 &
+	selectedLineLoops_changed ()
+	{ return *fields .selectedLineLoops_changed; }
+
+	const SFInt32 &
+	selectedLineLoops_changed () const
+	{ return *fields .selectedLineLoops_changed; }
+
+	SFInt32 &
 	selectedFaces_changed ()
 	{ return *fields .selectedFaces_changed; }
 
@@ -437,6 +445,7 @@ private:
 		MFInt32* const removeSelectedEdges;
 		SFInt32* const selectedPoints_changed;
 		SFInt32* const selectedEdges_changed;
+		SFInt32* const selectedLineLoops_changed;
 		SFInt32* const selectedFaces_changed;
 	};
 

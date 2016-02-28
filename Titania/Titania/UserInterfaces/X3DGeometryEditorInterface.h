@@ -131,14 +131,6 @@ public:
 	getPaintSelectionImage () const
 	{ return *m_PaintSelectionImage; }
 
-	Gtk::Button &
-	getSplitPointsButton () const
-	{ return *m_SplitPointsButton; }
-
-	Gtk::Button &
-	getMergePointsButton () const
-	{ return *m_MergePointsButton; }
-
 	Gtk::ToggleButton &
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
@@ -162,6 +154,18 @@ public:
 	Gtk::Button &
 	getFlipVertexOrderingButton () const
 	{ return *m_FlipVertexOrderingButton; }
+
+	Gtk::Button &
+	getSplitPointsButton () const
+	{ return *m_SplitPointsButton; }
+
+	Gtk::Button &
+	getMergePointsButton () const
+	{ return *m_MergePointsButton; }
+
+	Gtk::Button &
+	getFormNewFaceButton () const
+	{ return *m_FormNewFaceButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -219,14 +223,6 @@ public:
 
 	virtual
 	void
-	on_split_points_clicked () = 0;
-
-	virtual
-	void
-	on_merge_points_clicked () = 0;
-
-	virtual
-	void
 	on_extrude_selected_edges_clicked () = 0;
 
 	virtual
@@ -244,6 +240,18 @@ public:
 	virtual
 	void
 	on_flip_vertex_ordering_clicked () = 0;
+
+	virtual
+	void
+	on_split_points_clicked () = 0;
+
+	virtual
+	void
+	on_merge_points_clicked () = 0;
+
+	virtual
+	void
+	on_form_new_face_clicked () = 0;
 
 	virtual
 	void
@@ -303,14 +311,15 @@ private:
 	Gtk::Grid*                  m_GeometryToolsBox;
 	Gtk::ToggleButton*          m_PaintSelectionToggleButton;
 	Gtk::Image*                 m_PaintSelectionImage;
-	Gtk::Button*                m_SplitPointsButton;
-	Gtk::Button*                m_MergePointsButton;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
 	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
 	Gtk::Button*                m_RemoveFacesButton;
 	Gtk::Button*                m_ChipOfFacesButton;
 	Gtk::Button*                m_ExtrudeSelectedFacesButton;
 	Gtk::Button*                m_FlipVertexOrderingButton;
+	Gtk::Button*                m_SplitPointsButton;
+	Gtk::Button*                m_MergePointsButton;
+	Gtk::Button*                m_FormNewFaceButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

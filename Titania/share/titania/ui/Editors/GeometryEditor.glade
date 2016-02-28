@@ -132,48 +132,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="SplitPointsButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Split selected points.</property>
-                    <signal name="clicked" handler="on_split_points_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image8">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">SplitPoint</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="MergePointsButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Merge selected points.</property>
-                    <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">MergePoints</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -198,7 +156,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Extrude selected edges.</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected edges, then drag move to extrude.</property>
                     <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image11">
@@ -261,7 +219,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Extrude selected faces.</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected faces, then drag move to extrude.</property>
                     <signal name="clicked" handler="on_extrude_selected_faces_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image12">
@@ -299,7 +257,67 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkButton" id="SplitPointsButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Split selected points.</property>
+                    <signal name="clicked" handler="on_split_points_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">SplitPoint</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="MergePointsButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Merge selected points.</property>
+                    <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image7">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">MergePoints</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="FormNewFaceButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Form new face from selected edges.</property>
+                    <signal name="clicked" handler="on_form_new_face_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image14">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">FormNewFace</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>

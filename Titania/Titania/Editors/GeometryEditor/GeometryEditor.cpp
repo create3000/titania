@@ -79,6 +79,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	                  selector (SelectorType::BRUSH),
 	         numSelectedPoints (0),
 	          numSelectedEdges (0),
+	      numSelectedLineLoops (0),
 	          numSelectedFaces (0),
 	                  changing (false)
 {
@@ -99,6 +100,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",       new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",          new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "formNewFace",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedEdges", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedFaces", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "chipOfSelectedFaces",  new X3D::SFTime ());
@@ -330,6 +332,7 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")       .addInterest (innerNode -> getField <X3D::SFBool>       ("paintSelection"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("splitPoints"));
+						coordEditor -> getField <X3D::SFTime>      ("formNewFace")          .addInterest (innerNode -> getField <X3D::SFTime>       ("formNewFace"));
 						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges") .addInterest (innerNode -> getField <X3D::SFTime>       ("extrudeSelectedEdges"));
 						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>       ("extrudeSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("chipOfSelectedFaces"));
@@ -337,10 +340,11 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("removeSelectedFaces"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA>  ("color"));
 
-						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
-						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
-						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
-						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
+						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed")    .addInterest (this, &GeometryEditor::set_selectedPoints);
+						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")     .addInterest (this, &GeometryEditor::set_selectedEdges);
+						innerNode -> getField <X3D::SFInt32>              ("selectedLineLoops_changed") .addInterest (this, &GeometryEditor::set_selectedLineLoops);
+						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")     .addInterest (this, &GeometryEditor::set_selectedFaces);
+						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")              .addInterest (this, &GeometryEditor::set_undo);
 
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
@@ -363,9 +367,10 @@ GeometryEditor::connect ()
 		}
 	}
 
-	set_selectedPoints ();
-	set_selectedEdges  ();
-	set_selectedFaces  ();
+	set_selectedPoints    ();
+	set_selectedEdges     ();
+	set_selectedLineLoops ();
+	set_selectedFaces     ();
 }
 
 void
@@ -453,6 +458,44 @@ GeometryEditor::set_selectedEdges ()
 }
 
 void
+GeometryEditor::set_selectedLineLoops ()
+{
+	numSelectedLineLoops = 0;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+			{
+				switch (type)
+				{
+					case X3D::X3DConstants::X3DGeometryNodeTool:
+					{
+						numSelectedLineLoops += innerNode -> getField <X3D::SFInt32> ("selectedLineLoops_changed") .getValue ();
+					   break;
+					}
+					default:
+						continue;
+				}
+
+				break;
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+
+	getFormNewFaceButton () .set_sensitive (numSelectedLineLoops);
+
+	set_face_selection ();
+}
+
+void
 GeometryEditor::set_selectedFaces ()
 {
 	numSelectedFaces = 0;
@@ -496,15 +539,14 @@ GeometryEditor::set_selectedFaces ()
 void
 GeometryEditor::set_face_selection ()
 {
-	#ifdef DEBUG
-	// Set description.
-
+	#ifdef TITANIA_DEBUG
 	std::ostringstream ostream;
 
 	ostream
-		<< "Selected points: " << numSelectedPoints << std::endl
-		<< "Selected edges: " << numSelectedEdges << std::endl
-		<< "Selected faces: " << numSelectedFaces;
+		<< "Selected points: "     << numSelectedPoints << std::endl
+		<< "Selected edges: "      << numSelectedEdges << std::endl
+		<< "Selected line loops: " << numSelectedLineLoops << std::endl
+		<< "Selected faces: "      << numSelectedFaces;
 
 	getCurrentBrowser () -> setDescription (ostream .str ());
 	#endif
@@ -770,9 +812,9 @@ GeometryEditor::on_split_points_clicked ()
 }
 
 void
-GeometryEditor::on_chip_of_face_clicked ()
+GeometryEditor::on_form_new_face_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("chipOfSelectedFaces", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("formNewFace", chrono::now ());
 }
 
 void
@@ -785,6 +827,12 @@ void
 GeometryEditor::on_extrude_selected_faces_clicked ()
 {
 	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedFaces", chrono::now ());
+}
+
+void
+GeometryEditor::on_chip_of_face_clicked ()
+{
+	coordEditor -> setField <X3D::SFTime> ("chipOfSelectedFaces", chrono::now ());
 }
 
 void

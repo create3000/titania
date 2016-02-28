@@ -152,6 +152,14 @@ public:
 	{ return *fields .splitPoints; }
 
 	SFTime &
+	formNewFace ()
+	{ return *fields .formNewFace; }
+
+	const SFTime &
+	formNewFace () const
+	{ return *fields .formNewFace; }
+
+	SFTime &
 	extrudeSelectedEdges ()
 	{ return *fields .extrudeSelectedEdges; }
 
@@ -277,6 +285,9 @@ private:
 	set_splitPoints ();
 
 	void
+	set_formNewFace ();
+
+	void
 	set_extrudeSelectedEdges ();
 
 	void
@@ -338,6 +349,7 @@ private:
 
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
+		SFTime* const formNewFace;
 		SFTime* const extrudeSelectedEdges;
 		SFTime* const extrudeSelectedFaces;
 		SFTime* const chipOfSelectedFaces;
