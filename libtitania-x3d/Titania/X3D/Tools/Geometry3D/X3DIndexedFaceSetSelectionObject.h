@@ -166,6 +166,8 @@ protected:
 	   FACES
 	};
 
+	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+
 	///  @name Construction
 
 	X3DIndexedFaceSetSelectionObject ();
@@ -226,14 +228,15 @@ protected:
 	getSelectedPoints () const
 	{ return selectedPoints; }
 
+	const SelectedEdges &
+	getSelectedEdges () const
+	{ return selectedEdges; }
+
 	const std::set <size_t> &
 	getSelectedFaces () const
 	{ return selectedFaces; }
 
 	///  @name Operations
-
-	void
-	select (const std::vector <int32_t> &, const bool);
 
 	void
 	undoRestoreSelection (const UndoStepPtr &);
@@ -295,6 +298,9 @@ private:
 	updateMagicFace ();
 
 	void
+	select (const std::vector <int32_t> &, const bool);
+
+	void
 	selectPoints (const std::vector <int32_t> &);
 
 	void
@@ -342,13 +348,12 @@ private:
 	double
 	getDistance (const Vector3d &, const Vector3d &);
 
+	double
+	getArea (const std::vector <size_t> &);
+
 	static
 	void
 	restoreSelection (const SFNode &, const std::vector <int32_t> &, const bool);
-
-	///  @name Members
-
-	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
 
 	///  @name Members
 

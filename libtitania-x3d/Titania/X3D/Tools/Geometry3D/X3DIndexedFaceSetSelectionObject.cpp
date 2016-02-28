@@ -59,7 +59,7 @@
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Editing/Selection/FaceSelection.h"
-
+#include "../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {
@@ -384,14 +384,15 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 
 	if (vertices .size () >= 3)
 	{
-		const auto edge     = selection -> getEdge (hitPoint, vertices);
-		const auto distance = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+		const auto edge          = selection -> getEdge (hitPoint, vertices);
+		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+		const auto pointDistance = getDistance (hitPoint, point);
 
 		// Hot points for near point or face
 	
-		if (getDistance (hitPoint, point) > SELECTION_DISTANCE)
+		if (pointDistance > SELECTION_DISTANCE)
 		{
-			if (distance > SELECTION_DISTANCE)
+			if (edgeDistance > SELECTION_DISTANCE)
 			{
 				// Face
 				for (const auto & vertex : vertices)
@@ -416,14 +417,14 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 		{
 			case SelectionType::POINTS:
 			{
-				if (getDistance (hitPoint, point) <= SELECTION_DISTANCE)
+				if (pointDistance <= SELECTION_DISTANCE)
 					activePoints = { index };
 
 				break;
 			}
 			case SelectionType::EDGES:
 			{
-				if (edge .isEdge and distance <= SELECTION_DISTANCE)
+				if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
 				{
 					activeEdge   = { edge .index0, edge .index1 };
 					activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
@@ -727,11 +728,11 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdges (const std::vector <size_t> &
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		auto i0 = i;
-		auto i1 = (i0 + 1) % size;
+		auto i0 = vertices [i];
+		auto i1 = vertices [(i + 1) % size];
 
-		auto index0 = coordIndex () [vertices [i0]] .getValue ();
-		auto index1 = coordIndex () [vertices [i1]] .getValue ();
+		auto index0 = coordIndex () [i0] .getValue ();
+		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
 		{
@@ -749,11 +750,11 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdges (const std::vector <size_t
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		auto i0 = i;
-		auto i1 = (i0 + 1) % size;
+		auto i0 = vertices [i];
+		auto i1 = vertices [(i + 1) % size];
 
-		auto index0 = coordIndex () [vertices [i0]] .getValue ();
-		auto index1 = coordIndex () [vertices [i1]] .getValue ();
+		auto index0 = coordIndex () [i0] .getValue ();
+		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
 		{
@@ -779,7 +780,6 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .first);
 		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .second);
 		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
-
 	}
 
 	selectedEdgesGeometry -> coordIndex () .resize (i);
@@ -861,6 +861,55 @@ X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Ve
 	const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 	return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
+}
+
+///  Returns the sceen area in pixels of @a polygon.
+double
+X3DIndexedFaceSetSelectionObject::getArea (const std::vector <size_t> & vertices)
+{
+	double area = 0;
+
+	if (convex ())
+	{
+		for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
+		{
+			auto p0 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [0]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			auto p1 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			auto p2 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i + 1]]), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+			p0 .z (0);
+			p1 .z (0);
+			p2 .z (0);
+
+			area += math::area (p0, p1, p2);
+		}
+	}
+	else
+	{
+		opengl::tessellator <size_t> tessellator;
+
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+
+		for (const auto vertex : vertices)
+		{
+			const auto point = getCoord () -> get1Point (coordIndex () [vertex]);
+			auto       p     = ViewVolume::projectPoint (point, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			p .z (0);
+
+			tessellator .add_vertex (p);
+		}
+
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+
+		const auto triangles = tessellator .triangles ();
+
+		for (size_t v = 0, size = triangles .size (); v < size; v += 3)
+			area += math::area (triangles [v] .point (), triangles [v + 1] .point (), triangles [v + 2] .point ());
+	}
+
+	return area;
 }
 
 void

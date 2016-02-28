@@ -269,6 +269,12 @@ private:
 	void
 	set_removeSelectedFaces ();
 
+	std::vector <int32_t>
+	splitPoints (const std::set <int32_t> &);
+
+	std::vector <int32_t>
+	chipOf (const std::set <size_t> &);
+
 	void
 	erasePoints (const std::vector <int32_t> &);
 

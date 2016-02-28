@@ -332,7 +332,7 @@ IndexedFaceSetTool::set_mergePoints ()
 	rebuildNormal ();
 	rebuildCoord ();
 
-	select ({ masterPoint }, true);
+	replaceSelection () = { masterPoint };
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
@@ -353,29 +353,14 @@ IndexedFaceSetTool::set_splitPoints ()
 	undoSetCoordIndex (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	std::vector <int32_t> points;
+	std::set <int32_t> points;
 
 	for (const auto & selectedPoint : getSelectedPoints ())
-	{
-		const auto & index   = selectedPoint .first;
-		const auto & point   = selectedPoint .second;
-		const auto   indices = getFaceSelection () -> getSharedVertices (index);
-		
-		if (indices .empty ())
-			continue;
-		
-		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
-		{
-			coordIndex () [index] = getCoord () -> getSize ();
-		
-			getCoord () -> set1Point (getCoord () -> getSize (), point);
-		}
+		points .emplace (selectedPoint .first);
 
-		for (const auto & index : indices)
-		   points .emplace_back (coordIndex () [index]);
-	}
+	const auto selection = splitPoints (points);
 
-	select (points, true);
+	replaceSelection () .assign (selection .begin (), selection .end ());
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
@@ -402,6 +387,28 @@ IndexedFaceSetTool::set_chipOfSelectedFaces ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Chip Of Selected Faces"));
 
+	undoRestoreSelection (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	std::set <size_t> vertices;
+
+	for (const auto & edge : getSelectedEdges ())
+	{
+	   for (const auto & pair : edge .second)
+		{
+			vertices .emplace (pair .first);
+			vertices .emplace (pair .second);
+		}
+	}
+
+	const auto selection = chipOf (vertices);
+
+	replaceSelection () .assign (selection .begin (), selection .end ());
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -468,7 +475,7 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	rebuildNormal ();
 	rebuildCoord ();
 
-	select ({ }, true);
+	replaceSelection () = MFInt32 ();
 
 	redoSetCoordPoint (undoStep);
 	redoSetNormalVector (undoStep);
@@ -481,6 +488,64 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+std::vector <int32_t>
+IndexedFaceSetTool::splitPoints (const std::set <int32_t> & selectedPoints)
+{
+	std::vector <int32_t> points;
+
+	for (const auto & index : selectedPoints)
+	{
+		const auto point   = getCoord () -> get1Point (index);
+		const auto indices = getFaceSelection () -> getSharedVertices (index);
+		
+		if (indices .empty ())
+			continue;
+		
+		points .emplace_back (indices [0]);
+
+		for (const auto & index : std::make_pair (indices .begin () + 1, indices .end ()))
+		{
+			const auto size = getCoord () -> getSize ();
+			
+			points .emplace_back (size);
+			
+			coordIndex () [index] = size;
+
+			getCoord () -> set1Point (size, point);
+		}
+	}
+
+	return points;
+}
+
+std::vector <int32_t>
+IndexedFaceSetTool::chipOf (const std::set <size_t> & selectedVertices)
+{
+	std::map <int32_t, std::vector <size_t>> pointIndex;
+
+	for (const auto vertex : selectedVertices)
+	   pointIndex [coordIndex () [vertex]] .emplace_back (vertex);
+
+	std::vector <int32_t> points;
+
+	for (const auto & pair : pointIndex)
+	{
+		const auto point = getCoord () -> get1Point (pair .first);
+		const auto size  = getCoord () -> getSize ();
+	
+		points .emplace_back (size);
+	
+		for (const auto & vertex : pair .second)
+			coordIndex () [vertex] = size;
+
+		getCoord () -> set1Point (size, point);
+	}
+
+	rebuildCoord ();
+
+	return points;
 }
 
 ///  A unique and sorted list of points given, the point will be removed from coords and the coord index will be updated.
