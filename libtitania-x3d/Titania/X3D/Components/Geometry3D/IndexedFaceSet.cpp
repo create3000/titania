@@ -597,19 +597,20 @@ IndexedFaceSet::createNormals (const PolygonArray & polygons) const
 
 Vector3f
 IndexedFaceSet::getPolygonNormal (const Vertices & vertices) const
+throw (std::out_of_range)
 {
 	// Determine polygon normal.
 	// We use Newell's method https://www.opengl.org/wiki/Calculating_a_Surface_Normal here:
 
 	float x = 0, y = 0, z = 0;
 
-	auto next = getCoord () -> get1Point (coordIndex () [vertices [0]]);
+	auto next = getCoord () -> get1Point (coordIndex () .at (vertices [0]));
 
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
 		auto current = next;
 
-		next = getCoord () -> get1Point (coordIndex () [vertices [(i + 1) % size]]);
+		next = getCoord () -> get1Point (coordIndex () .at (vertices [(i + 1) % size]));
 
 		x += (current .y () - next .y ()) * (current .z () + next .z ());
 		y += (current .z () - next .z ()) * (current .x () + next .x ());

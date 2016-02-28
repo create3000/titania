@@ -100,8 +100,12 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "selectable",             selectable ());
 	addField (inputOutput, "selectionType",          selectionType ());
 	addField (inputOutput, "paintSelection",         paintSelection ());
-	addField (inputOutput, "addSelection",           addSelection ());
 	addField (inputOutput, "replaceSelection",       replaceSelection ());
+	addField (inputOutput, "addSelection",           addSelection ());
+	addField (inputOutput, "removeSelection",        removeSelection ());
+	addField (inputOutput, "replaceSelectedEdges",   replaceSelectedEdges ());
+	addField (inputOutput, "addSelectedEdges",       addSelectedEdges ());
+	addField (inputOutput, "removeSelectedEdges",    removeSelectedEdges ());
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
 	addField (inputOutput, "extrudeSelectedEdges",   extrudeSelectedEdges ());
@@ -343,7 +347,7 @@ IndexedFaceSetTool::set_mergePoints ()
 	redoSetNormalIndex (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex (undoStep);
-	redoRestoreSelection (undoStep);
+	redoRestoreSelection ({ masterPoint }, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -368,7 +372,7 @@ IndexedFaceSetTool::set_splitPoints ()
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
-	redoRestoreSelection (undoStep);
+	redoRestoreSelection (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -391,20 +395,23 @@ IndexedFaceSetTool::set_extrudeSelectedEdges ()
 
 	for (const auto & edge : getSelectedEdges ())
 	{
+		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+			continue;
+
 	   for (const auto & pair : edge .second)
 			edges .emplace (pair);
 	}
 
 	const auto selection = extrudeSelectedEdges (edges);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
 	if (normalIndex ()   .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex ()    .size ()) redoSetColorIndex    (undoStep);
-	redoRestoreSelection (undoStep);
+	redoRestoreSelectedEdges (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -444,17 +451,17 @@ IndexedFaceSetTool::set_chipOfSelectedFaces ()
 
 	chipOf (vertices);
 
-	size_t i = 0;
+	std::vector <int32_t> selection;
 
 	for (const auto & face : getSelectedFaces ())
 	   for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
-	      replaceSelection () .set1Value (i ++, coordIndex () [vertex]);
+	      selection .emplace_back (coordIndex () [vertex]);
 
-	replaceSelection () .resize (i);
+	replaceSelection () .assign (selection .begin (), selection .end ());
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);
-	redoRestoreSelection (undoStep);
+	redoRestoreSelection (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -531,7 +538,7 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	redoSetNormalIndex (undoStep);
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex (undoStep);
-	redoRestoreSelection (undoStep);
+	redoRestoreSelection ({ }, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }

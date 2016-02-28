@@ -219,7 +219,8 @@ protected:
 	///  @name Operations
 
 	Vector3f
-	getPolygonNormal (const Vertices &) const;
+	getPolygonNormal (const Vertices &) const
+	throw (std::out_of_range);
 
 	void
 	rebuildIndices ();

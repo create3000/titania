@@ -120,6 +120,38 @@ public:
 	addSelection () const
 	{ return *fields .addSelection; }
 
+	MFInt32 &
+	removeSelection ()
+	{ return *fields .removeSelection; }
+
+	const MFInt32 &
+	removeSelection () const
+	{ return *fields .removeSelection; }
+
+	MFInt32 &
+	replaceSelectedEdges ()
+	{ return *fields .replaceSelectedEdges; }
+
+	const MFInt32 &
+	replaceSelectedEdges () const
+	{ return *fields .replaceSelectedEdges; }
+
+	MFInt32 &
+	addSelectedEdges ()
+	{ return *fields .addSelectedEdges; }
+
+	const MFInt32 &
+	addSelectedEdges () const
+	{ return *fields .addSelectedEdges; }
+
+	MFInt32 &
+	removeSelectedEdges ()
+	{ return *fields .removeSelectedEdges; }
+
+	const MFInt32 &
+	removeSelectedEdges () const
+	{ return *fields .removeSelectedEdges; }
+
 	SFInt32 &
 	selectedPoints_changed ()
 	{ return *fields .selectedPoints_changed; }
@@ -250,7 +282,10 @@ protected:
 	undoRestoreSelection (const UndoStepPtr &);
 
 	void
-	redoRestoreSelection (const UndoStepPtr &);
+	redoRestoreSelection (const std::vector <int32_t> &, const UndoStepPtr &);
+
+	void
+	redoRestoreSelectedEdges (const std::vector <int32_t> &, const UndoStepPtr &);
 
 
 private:
@@ -265,6 +300,18 @@ private:
 
 	void
 	set_addSelection_ ();
+
+	void
+	set_removeSelection_ ();
+
+	void
+	set_replaceSelectedEdges_ ();
+
+	void
+	set_addSelectedEdges_ ();
+
+	void
+	set_removeSelectedEdges_ ();
 
 	void
 	set_loadState ();
@@ -324,28 +371,28 @@ private:
 	selectFace (const size_t, const SelectType);
 
 	void
-	addSelectedPoints (const std::vector <int32_t> &);
+	addSelectedPointsFunction (const std::vector <int32_t> &);
 
 	void
-	removeSelectedPoints (const std::vector <int32_t> &);
+	removeSelectedPointsFunction (const std::vector <int32_t> &);
 
 	void
 	updateSelectedPoints ();
 
 	void
-	addSelectedEdges (const std::vector <size_t> &);
+	addSelectedEdgesFunction (const std::vector <size_t> &);
 
 	void
-	removeSelectedEdges (const std::vector <size_t> &);
+	removeSelectedEdgesFunction (const std::vector <size_t> &);
 
 	void
 	updateSelectedEdges ();
 
 	void
-	addSelectedFaces (const std::set <size_t> &);
+	addSelectedFacesFunction (const std::set <size_t> &);
 
 	void
-	removeSelectedFaces (const std::set <size_t> &);
+	removeSelectedFacesFunction (const std::set <size_t> &);
 
 	void
 	updateSelectedFaces ();
@@ -367,7 +414,11 @@ private:
 
 	static
 	void
-	restoreSelection (const SFNode &, const std::vector <int32_t> &, const bool);
+	restoreSelection (const SFNode &, const std::vector <int32_t> &);
+
+	static
+	void
+	restoreSelectedEdges (const SFNode &, const std::vector <int32_t> &);
 
 	///  @name Members
 
@@ -380,6 +431,10 @@ private:
 		SFBool* const paintSelection;
 		MFInt32* const replaceSelection;
 		MFInt32* const addSelection;
+		MFInt32* const removeSelection;
+		MFInt32* const replaceSelectedEdges;
+		MFInt32* const addSelectedEdges;
+		MFInt32* const removeSelectedEdges;
 		SFInt32* const selectedPoints_changed;
 		SFInt32* const selectedEdges_changed;
 		SFInt32* const selectedFaces_changed;
@@ -403,9 +458,9 @@ private:
 	std::vector <size_t>  hotEdge;      // index of coord indices
 	size_t                hotFace;      // index of first coord index of face
 
-	std::vector <int32_t> activePoints; // coord indices
-	std::vector <size_t>  activeEdge;   // index of coord indices
-	size_t                activeFace;   // index of first coord index of face
+	std::vector <int32_t> activePoints;   // coord indices
+	std::vector <size_t>  activeEdge;     // index of coord indices
+	size_t                activeFace;     // index of first coord index of face
 
 	SelectionType                type;
 	int32_t                      masterPoint;    // coord index,

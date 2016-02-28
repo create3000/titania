@@ -196,7 +196,7 @@
                 <child>
                   <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Extrude selected edges.</property>
                     <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
@@ -259,7 +259,7 @@
                 <child>
                   <object class="GtkButton" id="ExtrudeSelectedFacesButton">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Extrude selected faces.</property>
                     <signal name="clicked" handler="on_extrude_selected_faces_clicked" swapped="no"/>
