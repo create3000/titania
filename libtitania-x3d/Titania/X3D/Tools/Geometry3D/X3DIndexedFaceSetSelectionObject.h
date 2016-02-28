@@ -190,10 +190,6 @@ protected:
 	getFaceSelection () const
 	{ return selection; }
 
-	int32_t
-	getMasterPoint () const
-	{ return masterPoint; }
-
 	const std::vector <int32_t> &
 	getHotPoints () const
 	{ return hotPoints; }
@@ -221,6 +217,10 @@ protected:
 	SelectionType
 	getSelectionType () const
 	{ return type; }
+
+	int32_t
+	getMasterPoint () const
+	{ return masterPoint; }
 
 	const std::map <int32_t, Vector3d> &
 	getSelectedPoints () const
@@ -283,25 +283,16 @@ private:
 	set_plane_sensor_active (const bool);
 
 	void
-	setActiveSelection (const Vector3d &, const std::vector <int32_t> &);
+	setMagicSelection (const Vector3d &, const std::vector <int32_t> &);
 
 	void
-	updateActiveSelection ();
+	updateMagicSelection ();
 
 	void
-	updateActivePoints ();
+	updateMagicPoints ();
 
 	void
-	updateActiveFace ();
-
-	void
-	updateHotSelection ();
-
-	void
-	updateHotPoints ();
-
-	void
-	updateHotFace ();
+	updateMagicFace ();
 
 	void
 	selectPoints (const std::vector <int32_t> &);

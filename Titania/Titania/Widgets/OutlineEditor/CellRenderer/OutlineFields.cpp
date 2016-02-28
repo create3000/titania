@@ -138,9 +138,12 @@ array_to_string (const X3D::X3DScene* const scene,
 	}
 	else
 	{
-		ostream
-			<< X3D::Generator::ForceBreak
-			<< '[' << array .size () << "]";
+		if (ellipsize)
+		{
+			ostream
+				<< X3D::Generator::ForceBreak
+				<< '[' << array .size () << "]";
+		}
 	}
 
 	return ostream .str ();

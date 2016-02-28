@@ -230,8 +230,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 {
 	try
 	{
-		updateHotPoints ();
-		updateActivePoints ();
+		updateMagicPoints ();
 		updateSelectedPoints ();
 
 		if (planeSensor -> isActive ())
@@ -259,7 +258,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 
 	// Set active points.
 
-	setActiveSelection (touchSensor -> getHitPoint (), coincidentPoints);
+	setMagicSelection (touchSensor -> getHitPoint (), coincidentPoints);
 
 	if (touchSensor -> isActive () and paintSelection ())
 		set_touch_sensor_touchTime ();
@@ -274,7 +273,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
 	activePoints .clear ();
 	activeFace = -1;
 
-	updateActiveSelection ();
+	updateMagicSelection ();
 }
 
 void
@@ -322,8 +321,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	updateSelectedFaces ();
 	updateSelectedEdges ();
 	updateSelectedPoints ();
-	updateActivePoints ();
-	updateHotPoints ();
+	updateMagicPoints ();
 }
 
 void
@@ -366,8 +364,9 @@ X3DIndexedFaceSetSelectionObject::set_plane_sensor_active (const bool active)
 	set_coord_point ();
 }
 
+///  Generate and update hot and active points, edges and face
 void
-X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
+X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
 	const auto index    = coincidentPoints [0];
 	const auto point    = getCoord () -> get1Point (index);
@@ -442,78 +441,70 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const Vector3d & hitPoint,
 		}
 	}
 
-	updateHotSelection ();
-	updateActiveSelection ();
+	updateMagicSelection ();
 }
 
 void
-X3DIndexedFaceSetSelectionObject::updateHotSelection ()
+X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 {
-	updateHotFace ();
-	updateHotPoints ();
+	updateMagicFace ();
+	updateMagicPoints ();
 }
 
 void
-X3DIndexedFaceSetSelectionObject::updateHotPoints ()
+X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 {
-	size_t i = 0;
-
-	for (const auto & hotPoint : hotPoints)
-		hotPointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (hotPoint));
-	
-	hotPointCoord -> point () .resize (i);
-}
-
-void
-X3DIndexedFaceSetSelectionObject::updateHotFace ()
-{
-	size_t i = 0;
-
-	if (not hotPoints .empty ())
 	{
+		size_t i = 0;
+
 		for (const auto & hotPoint : hotPoints)
-			hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoint);
-
-		hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoints [0]);
-		hotEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+			hotPointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (hotPoint));
+		
+		hotPointCoord -> point () .resize (i);
 	}
 
-	hotEdgesGeometry -> coordIndex () .resize (i);
-}
-
-void
-X3DIndexedFaceSetSelectionObject::updateActiveSelection ()
-{
-	updateActiveFace ();
-	updateActivePoints ();
-}
-
-void
-X3DIndexedFaceSetSelectionObject::updateActivePoints ()
-{
-	size_t i = 0;
-
-	for (const auto & activePoint : activePoints)
-		activePointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (activePoint));
-	
-	activePointCoord -> point () .resize (i);
-}
-
-void
-X3DIndexedFaceSetSelectionObject::updateActiveFace ()
-{
-	size_t i = 0;
-
-	if (not activePoints .empty ())
 	{
-		for (const auto & activePoint : activePoints)
-			activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoint);
+		size_t i = 0;
 
-		activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoints [0]);
-		activeEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+		for (const auto & activePoint : activePoints)
+			activePointCoord -> point () .set1Value (i ++, getCoord () -> get1Point (activePoint));
+		
+		activePointCoord -> point () .resize (i);
+	}
+}
+
+void
+X3DIndexedFaceSetSelectionObject::updateMagicFace ()
+{
+	{
+		size_t i = 0;
+
+		if (not hotPoints .empty ())
+		{
+			for (const auto & hotPoint : hotPoints)
+				hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoint);
+
+			hotEdgesGeometry -> coordIndex () .set1Value (i ++, hotPoints [0]);
+			hotEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+		}
+
+		hotEdgesGeometry -> coordIndex () .resize (i);
 	}
 
-	activeEdgesGeometry -> coordIndex () .resize (i);
+	{
+		size_t i = 0;
+
+		if (not activePoints .empty ())
+		{
+			for (const auto & activePoint : activePoints)
+				activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoint);
+
+			activeEdgesGeometry -> coordIndex () .set1Value (i ++, activePoints [0]);
+			activeEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+		}
+
+		activeEdgesGeometry -> coordIndex () .resize (i);
+	}
 }
 
 void
@@ -545,8 +536,7 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 	updateSelectedFaces ();
 	updateSelectedEdges ();
 	updateSelectedPoints ();
-	updateActivePoints ();
-	updateHotPoints ();
+	updateMagicPoints ();
 }
 
 void
