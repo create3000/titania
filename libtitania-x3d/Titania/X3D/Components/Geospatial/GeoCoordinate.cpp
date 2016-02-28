@@ -95,8 +95,10 @@ GeoCoordinate::initialize ()
 	X3DCoordinateNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	addInterest (this, &GeoCoordinate::eventsProcessed);
-	
+	geoSystem () .addInterest (this, &GeoCoordinate::eventsProcessed);
+	point ()     .addInterest (this, &GeoCoordinate::eventsProcessed);
+	geoOrigin () .addInterest (this, &GeoCoordinate::eventsProcessed);
+
 	eventsProcessed ();
 }
 

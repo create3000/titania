@@ -699,7 +699,10 @@ GeometryEditor::set_selection_brush ()
 	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Paint current selection."));
 	getPaintSelectionImage () .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	on_paint_selection_toggled ();
+	if (not getPaintSelectionToggleButton () .get_active ())
+		getPaintSelectionToggleButton () .set_active (true);
+	else
+		on_paint_selection_toggled ();
 }
 
 void
@@ -708,7 +711,10 @@ GeometryEditor::set_selection_rectangle ()
 	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use rectangle selection."));
 	getPaintSelectionImage () .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	on_paint_selection_toggled ();
+	if (not getPaintSelectionToggleButton () .get_active ())
+		getPaintSelectionToggleButton () .set_active (true);
+	else
+		on_paint_selection_toggled ();
 }
 
 void
@@ -717,7 +723,10 @@ GeometryEditor::set_selection_lasso ()
 	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use lasso selection."));
 	getPaintSelectionImage () .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	on_paint_selection_toggled ();
+	if (not getPaintSelectionToggleButton () .get_active ())
+		getPaintSelectionToggleButton () .set_active (true);
+	else
+		on_paint_selection_toggled ();
 }
 
 void

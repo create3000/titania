@@ -352,6 +352,8 @@ X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
 {
+	__LOG__ << replaceSelection () .size () << std::endl;
+
 	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), true);
 }
 
@@ -639,29 +641,17 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 {
 	selectPoints (points);
 
-	if (getBrowser () -> hasControlKey ())
+	for (const auto & point : points)
 	{
-		for (const auto & point : points)
-		{
-			std::set <size_t> faces;
+		std::set <size_t> faces;
 
-			for (const auto & face : selection -> getAdjacentFaces (point))
-				faces .emplace (face .first);
+		for (const auto & face : selection -> getAdjacentFaces (point))
+			faces .emplace (face .first);
 
+		if (getBrowser () -> hasControlKey ())
 			removeSelectedFaces (faces);
-		}
-	}
-	else
-	{
-		for (const auto & point : points)
-		{
-			std::set <size_t> faces;
-
-			for (const auto & face : selection -> getAdjacentFaces (point))
-				faces .emplace (face .first);
-
+		else
 			addSelectedFaces (faces);
-		}
 	}
 
 	selectedPoints .clear ();

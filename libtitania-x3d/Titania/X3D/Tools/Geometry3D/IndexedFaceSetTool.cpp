@@ -402,9 +402,15 @@ IndexedFaceSetTool::set_chipOfSelectedFaces ()
 		}
 	}
 
-	const auto selection = chipOf (vertices);
+	chipOf (vertices);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	size_t i = 0;
+
+	for (const auto & face : getSelectedFaces ())
+	   for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+	      replaceSelection () .set1Value (i ++, coordIndex () [vertex]);
+
+	replaceSelection () .resize (i);
 
 	redoSetCoordPoint (undoStep);
 	redoSetCoordIndex (undoStep);

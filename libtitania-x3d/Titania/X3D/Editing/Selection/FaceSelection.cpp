@@ -52,7 +52,9 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../Components/Geospatial/GeoCoordinate.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
+#include "../../Components/Rendering/Coordinate.h"
 #include "../../Rendering/Tessellator.h"
 
 namespace titania {
@@ -155,12 +157,42 @@ void
 FaceSelection::set_coord (const X3DPtr <X3DCoordinateNode> & value)
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &FaceSelection::set_point);
+	{
+		switch (coordNode -> getType () .back ())
+		{
+			case X3DConstants::Coordinate:
+				X3DPtr <Coordinate> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
+				break;
+			case X3DConstants::CoordinateDouble:
+				X3DPtr <CoordinateDouble> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
+				break;
+			case X3DConstants::GeoCoordinate:
+				X3DPtr <GeoCoordinate> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
+				break;
+			default:
+				break;
+		}
+	}
 
 	coordNode = value;
 	
 	if (coordNode)
-		coordNode -> addInterest (this, &FaceSelection::set_point);
+	{
+		switch (coordNode -> getType () .back ())
+		{
+			case X3DConstants::Coordinate:
+				X3DPtr <Coordinate> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
+				break;
+			case X3DConstants::CoordinateDouble:
+				X3DPtr <CoordinateDouble> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
+				break;
+			case X3DConstants::GeoCoordinate:
+				X3DPtr <GeoCoordinate> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
+				break;
+			default:
+				break;
+		}
+	}
 
 	set_point ();
 }
