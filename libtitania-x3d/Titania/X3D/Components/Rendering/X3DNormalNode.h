@@ -65,6 +65,14 @@ public:
 
 	virtual
 	void
+	set1Vector (const size_t, const Vector3f &) = 0;
+
+	virtual
+	Vector3f
+	get1Vector (const size_t) = 0;
+
+	virtual
+	void
 	addVector (std::vector <Vector3f> &, const size_t) const = 0;
 
 	virtual

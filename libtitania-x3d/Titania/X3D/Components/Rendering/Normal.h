@@ -101,6 +101,14 @@ public:
 
 	virtual
 	void
+	set1Vector (const size_t, const Vector3f &) final override;
+
+	virtual
+	Vector3f
+	get1Vector (const size_t) final override;
+
+	virtual
+	void
 	addVector (std::vector <Vector3f>&, const size_t) const final override;
 
 	virtual

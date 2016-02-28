@@ -380,6 +380,31 @@ IndexedFaceSetTool::set_extrudeSelectedEdges ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Edges"));
 
+	undoRestoreSelection (undoStep);
+	if (colorIndex ()    .size ()) undoSetColorIndex    (undoStep);
+	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) undoSetNormalIndex   (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	std::set <std::pair <size_t, size_t>> edges;
+
+	for (const auto & edge : getSelectedEdges ())
+	{
+	   for (const auto & pair : edge .second)
+			edges .emplace (pair);
+	}
+
+	const auto selection = extrudeSelectedEdges (edges);
+
+	replaceSelection () .assign (selection .begin (), selection .end ());
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) redoSetNormalIndex   (undoStep);
+	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
+	if (colorIndex ()    .size ()) redoSetColorIndex    (undoStep);
+	redoRestoreSelection (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -539,6 +564,84 @@ IndexedFaceSetTool::splitPoints (const std::set <int32_t> & selectedPoints)
 	}
 
 	return points;
+}
+
+std::vector <int32_t>
+IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> & edges)
+{
+	std::map <int32_t, size_t>  pointIndex;
+	std::map <int32_t, int32_t> points;
+
+	for (const auto & edge : edges)
+	{
+		pointIndex .emplace (coordIndex () [edge .first],  edge .first);
+		pointIndex .emplace (coordIndex () [edge .second], edge .second);
+	}
+
+
+	for (const auto & point : pointIndex)
+	{
+		const auto size = getCoord () -> getSize ();
+
+		points .emplace (point .first, size);
+
+		getCoord () -> set1Point (size, getCoord () -> get1Point (point .first));
+	}
+
+	for (const auto & edge : edges)
+	{
+		const auto size = coordIndex () .size ();
+
+		if (colorIndex () .size ())
+		{
+			if (colorPerVertex ())
+			{
+				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 4, -1);
+			}
+			else
+			{ }
+		}
+
+	   if (texCoordIndex () .size ())
+	   {
+			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 4, -1);
+		}
+
+		if (normalIndex () .size ())
+		{
+			if (normalPerVertex ())
+			{
+				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 4, -1);
+			}
+			else
+			{ }
+		}
+
+		coordIndex () .emplace_back (coordIndex () [edge .first]);
+		coordIndex () .emplace_back (coordIndex () [edge .second]);
+		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
+		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
+		coordIndex () .emplace_back (-1);
+	}
+
+	std::vector <int32_t> selection;
+
+	for (const auto & point : points)
+	   selection .emplace_back (point .second);
+
+	return selection;
 }
 
 std::vector <int32_t>

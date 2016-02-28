@@ -718,17 +718,14 @@ X3DIndexedFaceSetSelectionObject::addSelectedEdges (const std::vector <size_t> &
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		auto i0 = vertices [i];
-		auto i1 = vertices [(i + 1) % size];
+		const auto i0 = vertices [i];
+		const auto i1 = vertices [(i + 1) % size];
 
 		auto index0 = coordIndex () [i0] .getValue ();
 		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
-		{
-			std::swap (i0, i1);
 			std::swap (index0, index1);
-		}
 
 		selectedEdges [std::make_pair (index0, index1)] .emplace (std::make_pair (i0, i1)); 
 	}
@@ -740,17 +737,14 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdges (const std::vector <size_t
 {
 	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 	{
-		auto i0 = vertices [i];
-		auto i1 = vertices [(i + 1) % size];
+		const auto i0 = vertices [i];
+		const auto i1 = vertices [(i + 1) % size];
 
 		auto index0 = coordIndex () [i0] .getValue ();
 		auto index1 = coordIndex () [i1] .getValue ();
 
 		if (index0 > index1)
-		{
-			std::swap (i0, i1);
 			std::swap (index0, index1);
-		}
 
 		selectedEdges [std::make_pair (index0, index1)] .erase (std::make_pair (i0, i1)); 
 	}

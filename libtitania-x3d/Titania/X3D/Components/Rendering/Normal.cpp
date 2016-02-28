@@ -81,13 +81,28 @@ Normal::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Normal::set1Vector (const size_t index, const Vector3f & value)
+{
+	vector () .set1Value (index, value);
+}
+
+Vector3f
+Normal::get1Vector (const size_t index)
+{
+	if (index < vector () .size ())
+		return vector () [index] .getValue ();
+
+	return Vector3f (0, 0, 0);
+}
+
+void
 Normal::addVector (std::vector <Vector3f> & normals, const size_t index) const
 {
 	if (index < vector () .size ())
 		normals .emplace_back (vector () [index]);
 
 	else
-		normals .emplace_back (0, 0, 1);
+		normals .emplace_back (0, 0, 0);
 }
 
 } // X3D

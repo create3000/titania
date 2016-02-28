@@ -284,6 +284,9 @@ private:
 	splitPoints (const std::set <int32_t> &);
 
 	std::vector <int32_t>
+	extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> &);
+
+	std::vector <int32_t>
 	chipOf (const std::set <size_t> &);
 
 	void
