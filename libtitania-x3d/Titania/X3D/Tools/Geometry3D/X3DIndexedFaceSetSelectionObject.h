@@ -105,20 +105,20 @@ public:
 	{ return *fields .paintSelection; }
 
 	MFInt32 &
-	addSelection ()
-	{ return *fields .addSelection; }
-
-	const MFInt32 &
-	addSelection () const
-	{ return *fields .addSelection; }
-
-	MFInt32 &
 	replaceSelection ()
 	{ return *fields .replaceSelection; }
 
 	const MFInt32 &
 	replaceSelection () const
 	{ return *fields .replaceSelection; }
+
+	MFInt32 &
+	addSelection ()
+	{ return *fields .addSelection; }
+
+	const MFInt32 &
+	addSelection () const
+	{ return *fields .addSelection; }
 
 	SFInt32 &
 	selectedPoints_changed ()
@@ -164,6 +164,14 @@ protected:
 	   POINTS,
 	   EDGES,
 	   FACES
+	};
+
+	enum class SelectType :
+	   uint8_t
+	{
+	   REPLACE,
+	   ADD,
+	   REMOVE
 	};
 
 	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
@@ -253,6 +261,12 @@ private:
 	set_selectionType ();
 
 	void
+	set_replaceSelection_ ();
+
+	void
+	set_addSelection_ ();
+
+	void
 	set_loadState ();
 
 	void
@@ -277,12 +291,6 @@ private:
 	set_selection (const std::vector <Vector3d> &) final override;
 
 	void
-	set_addSelection_ ();
-
-	void
-	set_replaceSelection_ ();
-
-	void
 	set_plane_sensor_active (const bool);
 
 	void
@@ -298,22 +306,22 @@ private:
 	updateMagicFace ();
 
 	void
-	select (const std::vector <int32_t> &, const bool);
+	select (const std::vector <int32_t> &, const SelectType);
 
 	void
-	selectPoints (const std::vector <int32_t> &);
+	selectPoints (const std::vector <int32_t> &, const SelectType);
 
 	void
-	selectEdges (const std::vector <int32_t> &);
+	selectEdges (const std::vector <int32_t> &, const SelectType);
 
 	void
-	selectEdge (const std::vector <size_t> &);
+	selectEdge (const std::vector <size_t> &, const SelectType);
 
 	void
-	selectFaces (const std::vector <int32_t> &);
+	selectFaces (const std::vector <int32_t> &, const SelectType);
 
 	void
-	selectFace (const size_t);
+	selectFace (const size_t, const SelectType);
 
 	void
 	addSelectedPoints (const std::vector <int32_t> &);
@@ -342,6 +350,12 @@ private:
 	void
 	updateSelectedFaces ();
 
+	void
+	updateGeometries ();
+
+	SelectType
+	getSelectType () const;
+
 	bool
 	isInSelection (const std::vector <size_t> &) const;
 
@@ -364,8 +378,8 @@ private:
 		SFBool* const selectable;
 		SFString* const selectionType;
 		SFBool* const paintSelection;
-		MFInt32* const addSelection;
 		MFInt32* const replaceSelection;
+		MFInt32* const addSelection;
 		SFInt32* const selectedPoints_changed;
 		SFInt32* const selectedEdges_changed;
 		SFInt32* const selectedFaces_changed;

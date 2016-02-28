@@ -70,8 +70,8 @@ X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	                selectable (new SFBool (true)),
 	             selectionType (new SFString ("POINTS")),
 	            paintSelection (new SFBool ()),
-	              addSelection (new MFInt32 ()),
 	          replaceSelection (new MFInt32 ()),
+	              addSelection (new MFInt32 ()),
 	    selectedPoints_changed (new SFInt32 ()),
 	     selectedEdges_changed (new SFInt32 ()),
 	     selectedFaces_changed (new SFInt32 ())
@@ -108,8 +108,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	selectable ()             .isHidden (true);
 	selectionType ()          .isHidden (true);
 	paintSelection ()         .isHidden (true);
-	addSelection ()           .isHidden (true);
 	replaceSelection ()       .isHidden (true);
+	addSelection ()           .isHidden (true);
 	selectedPoints_changed () .isHidden (true);
 	selectedEdges_changed ()  .isHidden (true);
 	selectedFaces_changed ()  .isHidden (true);
@@ -168,6 +168,20 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 	}
 
 	//select ({ }, true);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
+{
+	__LOG__ << replaceSelection () .size () << std::endl;
+
+	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), SelectType::REPLACE);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
+{
+	select (std::vector <int32_t> (addSelection () .begin (), addSelection () .end ()), SelectType::ADD);
 }
 
 void
@@ -287,41 +301,26 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	if (not selectable ())
 		return;
 
-	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
-
-	if (replace)
-	{
-		selectedPoints .clear ();
-		selectedEdges  .clear ();
-		selectedFaces  .clear ();
-	}
-		
 	switch (type)
 	{
 		case SelectionType::POINTS:
-			selectPoints (activePoints);
+			selectPoints (activePoints, getSelectType ());
 			break;
 
 		case SelectionType::EDGES:
-			selectEdge (activeEdge);
+			selectEdge (activeEdge, getSelectType ());
 			break;
 
 		case SelectionType::FACES:
 		{
-			if (activePoints .size () < 3)
-				selectFaces (activePoints);
-			else
-				selectFace (activeFace);
+			if (activePoints .size () >= 3)
+				selectFace (activeFace, getSelectType ());
 
 			break;
 		}
 	}
 
-	// In this order.
-	updateSelectedFaces ();
-	updateSelectedEdges ();
-	updateSelectedPoints ();
-	updateMagicPoints ();
+	updateGeometries ();
 }
 
 void
@@ -338,23 +337,7 @@ X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & 
 		points .insert (points .end (), coincidentPoints .begin (), coincidentPoints .end ());
 	}
 
-	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
-
-	select (points, replace);
-}
-
-void
-X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
-{
-	select (std::vector <int32_t> (addSelection () .begin (), addSelection () .end ()), false);
-}
-
-void
-X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
-{
-	__LOG__ << replaceSelection () .size () << std::endl;
-
-	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), true);
+	select (points, getSelectType ());
 }
 
 void
@@ -514,93 +497,115 @@ X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 
 ///  Select points, edges or faces depending on selection type.
 void
-X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const bool replace)
+X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const SelectType selectType)
 {
-	if (replace)
-	{
-		selectedPoints .clear ();
-		selectedEdges  .clear ();
-		selectedFaces  .clear ();
-	}
-
 	switch (type)
 	{
 		case SelectionType::POINTS:
-			selectPoints (points);
+			selectPoints (points, selectType);
 			break;
 
 		case SelectionType::EDGES:
-			selectEdges (points);
+			selectEdges (points, selectType);
 			break;
 
 		case SelectionType::FACES:
-			selectFaces  (points);
+			selectFaces  (points, selectType);
 			break;
 	}
 
-	// In this order.
-	updateSelectedFaces ();
-	updateSelectedEdges ();
-	updateSelectedPoints ();
-	updateMagicPoints ();
+	updateGeometries ();
 }
 
 ///  Select points.
 void
-X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points, const SelectType selectType)
 {
-	if (getBrowser () -> hasControlKey ())
-		removeSelectedPoints (points);
+	switch (selectType)
+	{
+		case SelectType::REPLACE:
+		{
+			selectedPoints .clear ();
+			selectedEdges  .clear ();
+			selectedFaces  .clear ();
 
-	else
-		addSelectedPoints (points);
+		   // Proceed with nex step:
+		}
+		case SelectType::ADD:
+		{
+			addSelectedPoints (points);
+			break;
+		}
+		case SelectType::REMOVE:
+		{
+			removeSelectedPoints (points);
+			break;
+		}
+	}
 }
 
 ///  Select edges.
 void
-X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points, const SelectType selectType)
 {
-	const std::set <int32_t> pointIndex (points .begin (), points .end ());
-
-	if (getBrowser () -> hasControlKey ())
+	switch (selectType)
 	{
-		for (const auto & point : points)
+		case SelectType::REPLACE:
 		{
-			for (const auto & face : selection -> getAdjacentFaces (point))
+			selectedPoints .clear ();
+			selectedEdges  .clear ();
+			selectedFaces  .clear ();
+
+		   // Proceed with nex step:
+		}
+		case SelectType::ADD:
+		{
+			const std::set <int32_t> pointIndex (points .begin (), points .end ());
+
+			for (const auto & point : points)
 			{
-				const auto vertices = selection -> getFaceVertices (face .first);
-
-				for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
-					const auto i0 = vertices [i];
-					const auto i1 = vertices [(i + 1) % size];
+					const auto vertices = selection -> getFaceVertices (face .first);
 
-					if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
-						removeSelectedEdges ({ i0, i1 });
+					for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+					{
+						const auto i0 = vertices [i];
+						const auto i1 = vertices [(i + 1) % size];
+
+						if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
+							addSelectedEdges ({ i0, i1 });
+					}
 				}
 			}
+
+			break;
 		}
-	}
-	else
-	{
-		for (const auto & point : points)
+		case SelectType::REMOVE:
 		{
-			for (const auto & face : selection -> getAdjacentFaces (point))
+			const std::set <int32_t> pointIndex (points .begin (), points .end ());
+
+			for (const auto & point : points)
 			{
-				const auto vertices = selection -> getFaceVertices (face .first);
-
-				for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
-					const auto i0 = vertices [i];
-					const auto i1 = vertices [(i + 1) % size];
+					const auto vertices = selection -> getFaceVertices (face .first);
 
-					if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
-						addSelectedEdges ({ i0, i1 });
+					for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+					{
+						const auto i0 = vertices [i];
+						const auto i1 = vertices [(i + 1) % size];
+
+						if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
+							removeSelectedEdges ({ i0, i1 });
+					}
 				}
 			}
+
+			break;
 		}
 	}
-	
+
 	selectedPoints .clear ();
 
 	for (const auto & edge : selectedEdges)
@@ -615,13 +620,29 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 
 ///  Select one edge.
 void
-X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge)
+X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge, const SelectType selectType)
 {
-	if (getBrowser () -> hasControlKey ())
-		removeSelectedEdges (edge);
+	switch (selectType)
+	{
+		case SelectType::REPLACE:
+		{
+			selectedPoints .clear ();
+			selectedEdges  .clear ();
+			selectedFaces  .clear ();
 
-	else
-		addSelectedEdges (edge);
+		   // Proceed with nex step:
+		}
+		case SelectType::ADD:
+		{
+			addSelectedEdges (edge);
+			break;
+		}
+		case SelectType::REMOVE:
+		{
+			removeSelectedEdges (edge);
+			break;
+		}
+	}
 	
 	selectedPoints .clear ();
 
@@ -637,21 +658,49 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge)
 
 ///  Select faces.
 void
-X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points, const SelectType selectType)
 {
-	selectPoints (points);
-
-	for (const auto & point : points)
+	switch (selectType)
 	{
-		std::set <size_t> faces;
+		case SelectType::REPLACE:
+		{
+			selectedPoints .clear ();
+			selectedEdges  .clear ();
+			selectedFaces  .clear ();
 
-		for (const auto & face : selection -> getAdjacentFaces (point))
-			faces .emplace (face .first);
+		   // Proceed with nex step:
+		}
+		case SelectType::ADD:
+		{
+			selectPoints (points, selectType);
 
-		if (getBrowser () -> hasControlKey ())
-			removeSelectedFaces (faces);
-		else
-			addSelectedFaces (faces);
+			for (const auto & point : points)
+			{
+				std::set <size_t> faces;
+
+				for (const auto & face : selection -> getAdjacentFaces (point))
+					faces .emplace (face .first);
+
+				addSelectedFaces (faces);
+			}
+
+			break;
+		}
+		case SelectType::REMOVE:
+		{
+			selectPoints (points, selectType);
+
+			for (const auto & point : points)
+			{
+				std::set <size_t> faces;
+
+				for (const auto & face : selection -> getAdjacentFaces (point))
+					faces .emplace (face .first);
+
+				removeSelectedFaces (faces);
+			}
+			break;
+		}
 	}
 
 	selectedPoints .clear ();
@@ -663,16 +712,35 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 
 ///  Select one face.
 void
-X3DIndexedFaceSetSelectionObject::selectFace (const size_t face)
+X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectType selectType)
 {
-	for (const auto & vertex : selection -> getFaceVertices (face))
-		selectPoints ({ coordIndex () [vertex] });
+	switch (selectType)
+	{
+		case SelectType::REPLACE:
+		{
+			selectedPoints .clear ();
+			selectedEdges  .clear ();
+			selectedFaces  .clear ();
 
-	if (getBrowser () -> hasControlKey ())
-		removeSelectedFaces ({ face });
+		   // Proceed with nex step:
+		}
+		case SelectType::ADD:
+		{
+			for (const auto & vertex : selection -> getFaceVertices (face))
+				selectPoints ({ coordIndex () [vertex] }, selectType);
 
-	else
-		addSelectedFaces ({ face });
+			addSelectedFaces ({ face });
+			break;
+		}
+		case SelectType::REMOVE:
+		{
+			for (const auto & vertex : selection -> getFaceVertices (face))
+				selectPoints ({ coordIndex () [vertex] }, selectType);
+
+			removeSelectedFaces ({ face });
+			break;
+		}
+	}
 }
 
 ///  Add @a points to selection of points.
@@ -822,6 +890,17 @@ X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 	selectedFaces_changed () = selectedFaces .size ();
 }
 
+///  Update selection geometries.
+void
+X3DIndexedFaceSetSelectionObject::updateGeometries ()
+{
+	// In this order.
+	updateSelectedFaces ();
+	updateSelectedEdges ();
+	updateSelectedPoints ();
+	updateMagicPoints ();
+}
+
 ///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 
 bool
 X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & vertices) const
@@ -835,6 +914,20 @@ X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & ve
 	}
 
 	return true;
+}
+
+X3DIndexedFaceSetSelectionObject::SelectType
+X3DIndexedFaceSetSelectionObject::getSelectType () const
+{
+	if (getBrowser () -> hasControlKey ())
+		return SelectType::REMOVE;
+
+	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
+
+	if (replace)
+		return SelectType::REPLACE;
+	
+	return SelectType::ADD;
 }
 
 ///  Returns the sceen distance in pixels between @a point1 and @a point2.
