@@ -483,8 +483,9 @@ GeometryEditor::set_selectedFaces ()
 		}
 	}
 
-	getChipOfFacesButton () .set_sensitive (numSelectedFaces);
-	getRemoveFacesButton () .set_sensitive (numSelectedFaces);
+	getExtrudeSelectedFacesButton () .set_sensitive (numSelectedFaces);
+	getChipOfFacesButton          () .set_sensitive (numSelectedFaces);
+	getRemoveFacesButton          () .set_sensitive (numSelectedFaces);
 
 	set_face_selection ();
 }

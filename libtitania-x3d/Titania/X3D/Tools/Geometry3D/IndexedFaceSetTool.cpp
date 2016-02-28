@@ -402,7 +402,7 @@ IndexedFaceSetTool::set_extrudeSelectedEdges ()
 			edges .emplace (pair);
 	}
 
-	const auto selection = extrudeSelectedEdges (edges);
+	const auto selection = extrudeSelectedEdges (edges, false);
 
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
@@ -423,6 +423,57 @@ IndexedFaceSetTool::set_extrudeSelectedFaces ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Faces"));
 
+	undoRestoreSelection (undoStep);
+	if (colorIndex ()    .size ()) undoSetColorIndex    (undoStep);
+	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) undoSetNormalIndex   (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetCoordPoint (undoStep);
+
+	std::set <std::pair <size_t, size_t>> edges;
+	std::set <int32_t>                    points;
+
+	for (const auto & edge : getSelectedEdges ())
+	{
+		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+			continue;
+
+		points .emplace (edge .first .first);
+		points .emplace (edge .first .second);
+
+	   for (const auto & pair : edge .second)
+			edges .emplace (pair);
+	}
+
+	//
+
+	std::set <int32_t> facesPoints;
+	std::set <int32_t> selection;
+
+	const auto extrudesPoints = extrudeSelectedEdges (edges, true);
+
+	for (const auto & face : getSelectedFaces ())
+	{
+		for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+		   facesPoints .emplace (coordIndex () [vertex]);
+	}
+
+	std::set_difference (facesPoints .begin (), facesPoints .end (), points .begin (), points .end (), std::inserter (selection, selection .begin ()));
+
+	selection .insert (extrudesPoints .begin (), extrudesPoints .end ());
+
+	replaceSelection () .assign (selection .begin (), selection .end ());
+
+	//
+
+	rebuildCoord ();
+
+	redoSetCoordPoint (undoStep);
+	redoSetCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) redoSetNormalIndex   (undoStep);
+	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
+	if (colorIndex ()    .size ()) redoSetColorIndex    (undoStep);
+	redoRestoreSelectedEdges (std::vector <int32_t> (selection .begin (), selection .end ()), undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -574,7 +625,7 @@ IndexedFaceSetTool::splitPoints (const std::set <int32_t> & selectedPoints)
 }
 
 std::vector <int32_t>
-IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> & edges)
+IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> & edges, const bool extrudeFaces)
 {
 	std::map <int32_t, size_t>  pointIndex;
 	std::map <int32_t, int32_t> points;
@@ -584,8 +635,7 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 		pointIndex .emplace (coordIndex () [edge .first],  edge .first);
 		pointIndex .emplace (coordIndex () [edge .second], edge .second);
 	}
-
-
+		
 	for (const auto & point : pointIndex)
 	{
 		const auto size = getCoord () -> getSize ();
@@ -641,6 +691,20 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
 		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
 		coordIndex () .emplace_back (-1);
+	}
+
+	 if (extrudeFaces)
+	 {
+	   std::set <size_t> vertices;
+
+		for (const auto & edge : edges)
+		{
+			vertices .emplace (edge .first);
+			vertices .emplace (edge .second);
+		}
+
+		for (const auto & vertex : vertices)
+			coordIndex () [vertex] = points [coordIndex () [vertex]];
 	}
 
 	std::vector <int32_t> selection;
