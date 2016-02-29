@@ -381,22 +381,18 @@ private:
 	selectLineLoops ();
 
 	void
-	selectLineLoops (const std::set <std::pair <size_t, size_t>> &,
-	                 const std::multimap <int32_t, std::pair <size_t, size_t>> &,
+	selectLineLoops (const std::set <std::pair <int32_t, int32_t>> &,
+	                 const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,
 		              std::vector <std::vector <int32_t>> &) const;
 
 	void
-	selectLineLoop (std::set <std::pair <size_t, size_t>> &,
-	                const std::multimap <int32_t, std::pair <size_t, size_t>> &,                                                 
-	                const size_t,
-		             const size_t,
-		             const std::pair <size_t, size_t> &,
+	selectLineLoop (std::set <int32_t> &,
+	                const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,                                                 
+	                const int32_t,
+		             const int32_t,
+		             const std::pair <int32_t, int32_t> &,
 		             std::vector <int32_t> &,
 		             std::vector <std::vector <int32_t>> &) const;
-
-	bool
-	isEdgeInLineLoops (const std::pair <size_t, size_t> & edge,
-                      const std::vector <std::vector <int32_t>> & lineLoops) const;
 
 	void
 	selectFaces (const std::vector <int32_t> &, const SelectType);
