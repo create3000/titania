@@ -152,108 +152,24 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
+                  <object class="GtkButton" id="MergePointsButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Extrude selected edges, then drag move to extrude.</property>
-                    <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
+                    <property name="tooltip_text" translatable="yes">Merge selected points.</property>
+                    <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>
                     <child>
-                      <object class="GtkImage" id="image11">
+                      <object class="GtkImage" id="image7">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stock">ExtrudeSelectedEdges</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="RemoveFacesButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Remove selected faces.</property>
-                    <signal name="clicked" handler="on_remove_selected_faces_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image9">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">RemoveFace</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="ChipOfFacesButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Chip of selected faces.</property>
-                    <signal name="clicked" handler="on_chip_of_face_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image10">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">ChipOfFace</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="ExtrudeSelectedFacesButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Extrude selected faces, then drag move to extrude.</property>
-                    <signal name="clicked" handler="on_extrude_selected_faces_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image12">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">ExtrudeSelectedFaces</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="FlipVertexOrderingButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Flip vertex ordering.</property>
-                    <signal name="clicked" handler="on_flip_vertex_ordering_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image13">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">FlipVertexOrdering</property>
+                        <property name="stock">MergePoints</property>
                         <property name="icon_size">1</property>
                       </object>
                     </child>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -278,27 +194,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MergePointsButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Merge selected points.</property>
-                    <signal name="clicked" handler="on_merge_points_clicked" swapped="no"/>
-                    <child>
-                      <object class="GtkImage" id="image7">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="stock">MergePoints</property>
-                        <property name="icon_size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkButton" id="FormNewFaceButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -317,6 +212,111 @@
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ExtrudeSelectedEdgesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected edges, then drag move to extrude.</property>
+                    <signal name="clicked" handler="on_extrude_selected_edges_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">ExtrudeSelectedEdges</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ExtrudeSelectedFacesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Extrude selected faces, then drag move to extrude.</property>
+                    <signal name="clicked" handler="on_extrude_selected_faces_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image12">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">ExtrudeSelectedFaces</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ChipOfFacesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Chip of selected faces.</property>
+                    <signal name="clicked" handler="on_chip_of_face_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image10">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">ChipOfFace</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="RemoveFacesButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Remove selected faces.</property>
+                    <signal name="clicked" handler="on_remove_selected_faces_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image9">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">RemoveFace</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="FlipVertexOrderingButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Flip vertex ordering.</property>
+                    <signal name="clicked" handler="on_flip_vertex_ordering_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image13">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">FlipVertexOrdering</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">5</property>
                   </packing>
                 </child>
                 <child>

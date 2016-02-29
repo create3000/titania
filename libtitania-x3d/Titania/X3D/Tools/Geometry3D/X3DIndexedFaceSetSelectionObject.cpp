@@ -569,6 +569,16 @@ X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 	}
 }
 
+///  Clear selection.
+void
+X3DIndexedFaceSetSelectionObject::clearSelection ()
+{
+	selectedPoints .clear ();
+	selectedEdges  .clear ();
+	selectedHoles  .clear ();
+	selectedFaces  .clear ();
+}
+
 ///  Select points, edges or faces depending on selection type.
 void
 X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const SelectType selectType)
@@ -599,9 +609,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 	{
 		case SelectType::REPLACE:
 		{
-			selectedPoints .clear ();
-			selectedEdges  .clear ();
-			selectedFaces  .clear ();
+			clearSelection ();
 
 		   // Proceed with nex step:
 		}
@@ -626,9 +634,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 	{
 		case SelectType::REPLACE:
 		{
-			selectedPoints .clear ();
-			selectedEdges  .clear ();
-			selectedFaces  .clear ();
+			clearSelection ();
 
 		   // Proceed with nex step:
 		}
@@ -691,7 +697,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		selectedPoints .emplace (edge .first .second, getCoord () -> get1Point (edge .first .second));
 	}
 
-	selectLineLoops ();
+	selectHoles ();
 }
 
 ///  Select one edge.
@@ -702,9 +708,7 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge,
 	{
 		case SelectType::REPLACE:
 		{
-			selectedPoints .clear ();
-			selectedEdges  .clear ();
-			selectedFaces  .clear ();
+			clearSelection ();
 
 		   // Proceed with nex step:
 		}
@@ -731,12 +735,12 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge,
 		selectedPoints .emplace (edge .first .second, getCoord () -> get1Point (edge .first .second));
 	}
 
-	selectLineLoops ();
+	selectHoles ();
 }
 
 ///  Select line loops from selected edges.
 void
-X3DIndexedFaceSetSelectionObject::selectLineLoops ()
+X3DIndexedFaceSetSelectionObject::selectHoles ()
 {
 	std::set <std::pair <int32_t, int32_t>>               edges;
 	std::multimap <int32_t, std::pair <int32_t, int32_t>> edgeIndex;
@@ -765,17 +769,17 @@ X3DIndexedFaceSetSelectionObject::selectLineLoops ()
 	selectedHoles .clear ();
 
 	if (not edges .empty ())
-		selectLineLoops (edges, edgeIndex, selectedHoles);
+		selectHoles (edges, edgeIndex, selectedHoles);
 
 	selectedHoles_changed () = selectedHoles .size ();
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectLineLoops (const std::set <std::pair <int32_t, int32_t>> & edges,
-                                                   const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
-	                                                std::vector <std::vector <int32_t>> & lineLoops) const
+X3DIndexedFaceSetSelectionObject::selectHoles (const std::set <std::pair <int32_t, int32_t>> & edges,
+                                               const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
+                                               std::vector <std::vector <int32_t>> & holes) const
 {
-	std::vector <int32_t> lineLoop;
+	std::vector <int32_t> hole;
 	std::set <int32_t>    currentPoints;
 
 	for (const auto & edge : edges)
@@ -787,33 +791,31 @@ X3DIndexedFaceSetSelectionObject::selectLineLoops (const std::set <std::pair <in
 
 		// Start new line loop.
 
-		lineLoop .emplace_back (edge .first);
+		hole .emplace_back (edge .first);
 
-		selectLineLoop (currentPoints,
-		                edgeIndex,		                
-		                edge .first,
-		                edge,
-		                lineLoop,
-		                lineLoops);
+		selectHole (currentPoints,
+		            edgeIndex,		 
+		            edge,
+		            hole,
+		            holes);
 
-		lineLoop .clear ();
+		hole .clear ();
 	}
 }
 
 void
-X3DIndexedFaceSetSelectionObject::selectLineLoop (std::set <int32_t> & currentPoints,
-                                                  const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,                                                 
-                                                  const int32_t first,
-	                                               const std::pair <int32_t, int32_t> & current,
-	                                               std::vector <int32_t> & lineLoop,
-	                                               std::vector <std::vector <int32_t>> & lineLoops) const
+X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints,
+                                              const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
+	                                           const std::pair <int32_t, int32_t> & current,
+	                                           std::vector <int32_t> & hole,
+	                                           std::vector <std::vector <int32_t>> & holes) const
 {
 	const auto last = current .second;
 
-  	if (last == first)
+  	if (last == hole .front ())
 	{
-		if (lineLoop .size () >= 3)
-			lineLoops .emplace_back (lineLoop);
+		if (hole .size () >= 3)
+			holes .emplace_back (hole);
 
 		return;
 	}
@@ -821,12 +823,12 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (std::set <int32_t> & currentPo
 	if (not currentPoints .emplace (last) .second)
 		return;
 
-	lineLoop .emplace_back (last);
+	hole .emplace_back (last);
 
 	for (const auto & edge : edgeIndex .equal_range (last))
-		selectLineLoop (currentPoints, edgeIndex, first, edge .second, lineLoop, lineLoops);
+		selectHole (currentPoints, edgeIndex, edge .second, hole, holes);
  
-	lineLoop .pop_back ();
+	hole .pop_back ();
 }
 
 ///  Select faces.
@@ -837,9 +839,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 	{
 		case SelectType::REPLACE:
 		{
-			selectedPoints .clear ();
-			selectedEdges  .clear ();
-			selectedFaces  .clear ();
+			clearSelection ();
 
 		   // Proceed with nex step:
 		}
@@ -881,8 +881,6 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 	for (const auto & face : selectedFaces)
 		for (const auto & vertex : selection -> getFaceVertices (face))
 		   selectedPoints .emplace (coordIndex () [vertex], getCoord () -> get1Point (coordIndex () [vertex]));
-
-	selectLineLoops ();
 }
 
 ///  Select one face.
@@ -893,9 +891,7 @@ X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectTyp
 	{
 		case SelectType::REPLACE:
 		{
-			selectedPoints .clear ();
-			selectedEdges  .clear ();
-			selectedFaces  .clear ();
+			clearSelection ();
 
 		   // Proceed with nex step:
 		}
@@ -916,8 +912,6 @@ X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectTyp
 			break;
 		}
 	}
-
-	selectLineLoops ();
 }
 
 ///  Add @a points to selection of points.
@@ -1020,6 +1014,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 	selectedEdgesGeometry -> coordIndex () .resize (i);
 
 	selectedEdges_changed () = i / 3;
+	selectedHoles_changed () = selectedHoles .size ();
 }
 
 ///  Add @a faces to selection of faces.

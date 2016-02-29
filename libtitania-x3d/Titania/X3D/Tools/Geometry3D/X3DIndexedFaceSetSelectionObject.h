@@ -410,6 +410,9 @@ private:
 	updateMagicFace ();
 
 	void
+	clearSelection ();
+
+	void
 	select (const std::vector <int32_t> &, const SelectType);
 
 	void
@@ -422,20 +425,19 @@ private:
 	selectEdge (const std::vector <size_t> &, const SelectType);
 
 	void
-	selectLineLoops ();
+	selectHoles ();
 
 	void
-	selectLineLoops (const std::set <std::pair <int32_t, int32_t>> &,
-	                 const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,
-		              std::vector <std::vector <int32_t>> &) const;
+	selectHoles (const std::set <std::pair <int32_t, int32_t>> &,
+	             const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,
+		          std::vector <std::vector <int32_t>> &) const;
 
 	void
-	selectLineLoop (std::set <int32_t> &,
-	                const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,                                                 
-	                const int32_t,
-		             const std::pair <int32_t, int32_t> &,
-		             std::vector <int32_t> &,
-		             std::vector <std::vector <int32_t>> &) const;
+	selectHole (std::set <int32_t> &,
+	            const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,
+		         const std::pair <int32_t, int32_t> &,
+		         std::vector <int32_t> &,
+		         std::vector <std::vector <int32_t>> &) const;
 
 	void
 	selectFaces (const std::vector <int32_t> &, const SelectType);

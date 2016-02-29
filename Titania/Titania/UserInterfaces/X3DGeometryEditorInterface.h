@@ -136,36 +136,36 @@ public:
 	{ return *m_NormalEnabledToggleButton; }
 
 	Gtk::Button &
-	getExtrudeSelectedEdgesButton () const
-	{ return *m_ExtrudeSelectedEdgesButton; }
-
-	Gtk::Button &
-	getRemoveFacesButton () const
-	{ return *m_RemoveFacesButton; }
-
-	Gtk::Button &
-	getChipOfFacesButton () const
-	{ return *m_ChipOfFacesButton; }
-
-	Gtk::Button &
-	getExtrudeSelectedFacesButton () const
-	{ return *m_ExtrudeSelectedFacesButton; }
-
-	Gtk::Button &
-	getFlipVertexOrderingButton () const
-	{ return *m_FlipVertexOrderingButton; }
+	getMergePointsButton () const
+	{ return *m_MergePointsButton; }
 
 	Gtk::Button &
 	getSplitPointsButton () const
 	{ return *m_SplitPointsButton; }
 
 	Gtk::Button &
-	getMergePointsButton () const
-	{ return *m_MergePointsButton; }
-
-	Gtk::Button &
 	getFormNewFaceButton () const
 	{ return *m_FormNewFaceButton; }
+
+	Gtk::Button &
+	getExtrudeSelectedEdgesButton () const
+	{ return *m_ExtrudeSelectedEdgesButton; }
+
+	Gtk::Button &
+	getExtrudeSelectedFacesButton () const
+	{ return *m_ExtrudeSelectedFacesButton; }
+
+	Gtk::Button &
+	getChipOfFacesButton () const
+	{ return *m_ChipOfFacesButton; }
+
+	Gtk::Button &
+	getRemoveFacesButton () const
+	{ return *m_RemoveFacesButton; }
+
+	Gtk::Button &
+	getFlipVertexOrderingButton () const
+	{ return *m_FlipVertexOrderingButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -223,23 +223,7 @@ public:
 
 	virtual
 	void
-	on_extrude_selected_edges_clicked () = 0;
-
-	virtual
-	void
-	on_remove_selected_faces_clicked () = 0;
-
-	virtual
-	void
-	on_chip_of_face_clicked () = 0;
-
-	virtual
-	void
-	on_extrude_selected_faces_clicked () = 0;
-
-	virtual
-	void
-	on_flip_vertex_ordering_clicked () = 0;
+	on_merge_points_clicked () = 0;
 
 	virtual
 	void
@@ -247,11 +231,27 @@ public:
 
 	virtual
 	void
-	on_merge_points_clicked () = 0;
+	on_form_new_face_clicked () = 0;
 
 	virtual
 	void
-	on_form_new_face_clicked () = 0;
+	on_extrude_selected_edges_clicked () = 0;
+
+	virtual
+	void
+	on_extrude_selected_faces_clicked () = 0;
+
+	virtual
+	void
+	on_chip_of_face_clicked () = 0;
+
+	virtual
+	void
+	on_remove_selected_faces_clicked () = 0;
+
+	virtual
+	void
+	on_flip_vertex_ordering_clicked () = 0;
 
 	virtual
 	void
@@ -312,14 +312,14 @@ private:
 	Gtk::ToggleButton*          m_PaintSelectionToggleButton;
 	Gtk::Image*                 m_PaintSelectionImage;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
-	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
-	Gtk::Button*                m_RemoveFacesButton;
-	Gtk::Button*                m_ChipOfFacesButton;
-	Gtk::Button*                m_ExtrudeSelectedFacesButton;
-	Gtk::Button*                m_FlipVertexOrderingButton;
-	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_MergePointsButton;
+	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_FormNewFaceButton;
+	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
+	Gtk::Button*                m_ExtrudeSelectedFacesButton;
+	Gtk::Button*                m_ChipOfFacesButton;
+	Gtk::Button*                m_RemoveFacesButton;
+	Gtk::Button*                m_FlipVertexOrderingButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;
