@@ -397,7 +397,23 @@ IndexedFaceSetTool::set_formNewFace ()
 {
 	__LOG__ << std::endl;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Form New Face From Selected Edges"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Form New Face From Selected Holes"));
+
+	undoRestoreSelection (undoStep);
+	if (colorIndex ()    .size ()) undoSetColorIndex    (undoStep);
+	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) undoSetNormalIndex   (undoStep);
+	undoSetCoordIndex (undoStep);
+
+	const auto selection = formNewFace (getSelectedHoles ());
+
+	replaceSelection () .assign (selection .begin (), selection .end ());
+
+	redoSetCoordIndex (undoStep);
+	if (normalIndex ()   .size ()) redoSetNormalIndex   (undoStep);
+	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
+	if (colorIndex ()    .size ()) redoSetColorIndex    (undoStep);
+	redoRestoreSelection (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -677,6 +693,78 @@ IndexedFaceSetTool::splitPoints (const std::set <int32_t> & selectedPoints)
 	}
 
 	return points;
+}
+
+std::vector <int32_t>
+IndexedFaceSetTool::formNewFace (const std::vector <std::vector <int32_t>> & holes)
+{
+	std::vector <int32_t> selection;
+	std::vector <size_t>  vertices;
+
+	for (const auto & hole : holes)
+	{
+		if (colorIndex () .size ())
+		{
+			if (not colorPerVertex () and getColor ())
+				colorIndex () .emplace_back (getColor () -> getSize ());
+		}
+
+		if (normalIndex () .size () and getNormal ())
+		{
+			if (not normalPerVertex ())
+				normalIndex () .emplace_back (getNormal () -> getSize ());
+		}
+
+	   for (const auto & point : hole)
+	   {
+			if (colorIndex () .size () and getColor ())
+			{
+				if (colorPerVertex ())
+					colorIndex () .emplace_back (getColor () -> getSize ());
+			}
+
+		   if (texCoordIndex () .size () and getTexCoord ())
+		   {
+		      const auto vertices = getFaceSelection () -> getVertices (point);
+
+				if (vertices .empty () or texCoordIndex () .size () < vertices .size ())
+					texCoordIndex () .emplace_back (0);
+				else
+					texCoordIndex () .emplace_back (texCoordIndex () [vertices [0]]);
+			}
+
+			if (normalIndex () .size () and getNormal ())
+			{
+				if (normalPerVertex ())
+					normalIndex () .emplace_back (getNormal () -> getSize ());
+			}
+
+			vertices      .emplace_back (coordIndex () .size ());
+			coordIndex () .emplace_back (point);
+			selection     .emplace_back (point);
+		}
+
+		if (colorIndex () .size () and getColor () and colorPerVertex ())
+			colorIndex () .emplace_back (-1);
+	   
+	   if (texCoordIndex () .size () and getTexCoord ())
+	      texCoordIndex () .emplace_back (-1);
+		
+		if (normalIndex () .size () and getNormal () and normalPerVertex ())
+			normalIndex () .emplace_back (-1);
+
+		coordIndex () .emplace_back (-1);
+
+		if (normalIndex () .size () and getNormal ())
+			getNormal () -> set1Vector (getNormal () -> getSize (), getPolygonNormal (vertices));
+
+		vertices .clear ();
+	}
+
+	if (colorIndex () .size () and getColor ())
+		getColor () -> set1Color (getColor () -> getSize (), Color4f (1, 1, 1, 1));
+
+	return selection;
 }
 
 std::vector <int32_t>

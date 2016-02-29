@@ -144,6 +144,9 @@ public:
 	std::vector <size_t>
 	getSharedVertices (const int32_t) const;
 
+	std::vector <size_t>
+	getVertices (const int32_t) const;
+
 	///  @name Destruction
 
 	virtual

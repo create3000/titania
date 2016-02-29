@@ -543,10 +543,10 @@ GeometryEditor::set_face_selection ()
 	std::ostringstream ostream;
 
 	ostream
-		<< "Selected points: "     << numSelectedPoints << std::endl
-		<< "Selected edges: "      << numSelectedEdges << std::endl
-		<< "Selected line loops: " << numSelectedHoles << std::endl
-		<< "Selected faces: "      << numSelectedFaces;
+		<< "Selected points: " << numSelectedPoints << std::endl
+		<< "Selected edges: "  << numSelectedEdges << std::endl
+		<< "Selected holes: "  << numSelectedHoles << std::endl
+		<< "Selected faces: "  << numSelectedFaces;
 
 	getCurrentBrowser () -> setDescription (ostream .str ());
 	#endif

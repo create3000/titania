@@ -497,6 +497,17 @@ FaceSelection::getSharedVertices (const int32_t coordIndex) const
 	return indices;
 }
 
+std::vector <size_t>
+FaceSelection::getVertices (const int32_t point) const
+{
+	std::vector <size_t> vertices;
+
+	for (const auto & vertex : faceIndex .equal_range (point))
+		vertices .emplace_back (vertex .second .first + vertex .second .second);
+
+	return vertices;
+}
+
 FaceSelection::~FaceSelection ()
 { }
 
