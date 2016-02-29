@@ -611,7 +611,7 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 		{
 			clearSelection ();
 
-		   // Proceed with nex step:
+		   // Proceed with next step:
 		}
 		case SelectType::ADD:
 		{
@@ -636,13 +636,13 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		{
 			clearSelection ();
 
-		   // Proceed with nex step:
+		   // Proceed with next step:
 		}
 		case SelectType::ADD:
 		{
 			const std::set <int32_t> pointIndex (points .begin (), points .end ());
 
-			for (const auto & point : pointIndex)
+			for (const auto & point : points)
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
@@ -710,7 +710,7 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge,
 		{
 			clearSelection ();
 
-		   // Proceed with nex step:
+		   // Proceed with next step:
 		}
 		case SelectType::ADD:
 		{
@@ -749,21 +749,15 @@ X3DIndexedFaceSetSelectionObject::selectHoles ()
 	{
 		if (edge .second .size () not_eq 1)
 			continue;
-
-		for (const auto & vertices : edge .second)
-		{
-		   const std::pair <int32_t, int32_t> points1 (coordIndex () [vertices .first],
-		                                               coordIndex () [vertices .second]);
-
-		   const std::pair <int32_t, int32_t> points2 (coordIndex () [vertices .second],
-		                                               coordIndex () [vertices .first]);
-
-			if (edges .emplace (points1) .second)
-				edgeIndex .emplace (points1 .first, points1);
-
-			if (edges .emplace (points2) .second)
-				edgeIndex .emplace (points2 .first, points2);
-		}
+		
+		const auto & points1 = edge .first;
+		const auto   points2 = std::make_pair (points1 .second, points1 .first);
+		
+		edges .emplace (points1);
+		edges .emplace (points2);
+		
+		edgeIndex .emplace (points1 .first, points1);
+		edgeIndex .emplace (points2 .first, points2);
 	}
 
 	selectedHoles .clear ();
@@ -779,8 +773,33 @@ X3DIndexedFaceSetSelectionObject::selectHoles (const std::set <std::pair <int32_
                                                const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
                                                std::vector <std::vector <int32_t>> & holes) const
 {
+__LOG__ << std::endl;
+__LOG__ << "edges * 2: " << edges .size () << std::endl;
+
+
 	std::vector <int32_t> hole;
 	std::set <int32_t>    currentPoints;
+
+	for (const auto & edge : edges)
+	{
+		const auto range = edgeIndex .equal_range (edge .first);
+
+		if (std::distance (range .first, range .second) < 4)
+		   continue;
+
+__LOG__ << "distance: " << std::distance (range .first, range .second) << std::endl;
+	
+		// Test if edge is already in line loops.
+
+		if (not currentPoints .emplace (edge .first) .second)
+			continue;
+
+		for (const auto & e : range)
+		{
+			hole = { edge .first };
+			selectHole (currentPoints, edgeIndex, e .second, hole, holes);
+		}
+	}
 
 	for (const auto & edge : edges)
 	{
@@ -789,18 +808,19 @@ X3DIndexedFaceSetSelectionObject::selectHoles (const std::set <std::pair <int32_
 		if (not currentPoints .emplace (edge .first) .second)
 			continue;
 
-		// Start new line loop.
+		hole = { edge .first };
 
-		hole .emplace_back (edge .first);
-
-		selectHole (currentPoints,
-		            edgeIndex,		 
-		            edge,
-		            hole,
-		            holes);
-
-		hole .clear ();
+		selectHole (currentPoints, edgeIndex, edge, hole, holes);
 	}
+
+std::clog << std::endl;
+for (const auto & hole : holes)
+{
+	for (const auto & h : hole)
+		std::clog << h << " ";
+	std::clog << std::endl;
+}
+
 }
 
 void
@@ -817,26 +837,27 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 		hole .emplace_back (last);
 
 		for (const auto & edge : edgeIndex .equal_range (last))
+		{
+			if (edge .second == std::make_pair (current .second, current .first))
+				continue;
+			
 			selectHole (currentPoints, edgeIndex, edge .second, hole, holes);
+		}
 
 		hole .pop_back ();
 	}
 	else
 	{
-	  	if (last == hole .front ())
-		{
-			if (hole .size () >= 3)
-				holes .emplace_back (hole);
-		}
-		else
-		{
-			const auto iter = std::find (hole .begin (), hole .end (), last);
+for (const auto & h : hole)
+	std::clog << h << " ";
+std::clog << ": " << last << std::endl;
 
-			if (iter not_eq hole .end ())
-			{
-				if (hole .end () - iter >= 3)
-					holes .emplace_back (iter, hole .end ());
-			 }
+		const auto iter = std::find (hole .begin (), hole .end (), last);
+
+		if (iter not_eq hole .end ())
+		{
+			if (hole .end () - iter >= 3)
+				holes .emplace_back (iter, hole .end ());
 		}
 	}
 }
@@ -851,7 +872,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		{
 			clearSelection ();
 
-		   // Proceed with nex step:
+		   // Proceed with next step:
 		}
 		case SelectType::ADD:
 		{
@@ -903,7 +924,7 @@ X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectTyp
 		{
 			clearSelection ();
 
-		   // Proceed with nex step:
+		   // Proceed with next step:
 		}
 		case SelectType::ADD:
 		{
