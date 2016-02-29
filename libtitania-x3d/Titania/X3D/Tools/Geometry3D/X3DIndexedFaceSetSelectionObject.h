@@ -214,7 +214,8 @@ protected:
 	   REMOVE
 	};
 
-	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+	using SelectedEdges     = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+	using SelectedLineLoops = std::vector <std::vector <int32_t>>;
 
 	///  @name Construction
 
@@ -279,6 +280,10 @@ protected:
 	const SelectedEdges &
 	getSelectedEdges () const
 	{ return selectedEdges; }
+
+	const SelectedLineLoops &
+	getSelectedLineLoops () const
+	{ return selectedLineLoops; }
 
 	const std::set <size_t> &
 	getSelectedFaces () const
@@ -371,6 +376,27 @@ private:
 
 	void
 	selectEdge (const std::vector <size_t> &, const SelectType);
+
+	void
+	selectLineLoops ();
+
+	void
+	selectLineLoops (const std::set <std::pair <size_t, size_t>> &,
+	                 const std::multimap <int32_t, std::pair <size_t, size_t>> &,
+		              std::vector <std::vector <int32_t>> &) const;
+
+	void
+	selectLineLoop (std::set <std::pair <size_t, size_t>> &,
+	                const std::multimap <int32_t, std::pair <size_t, size_t>> &,                                                 
+	                const size_t,
+		             const size_t,
+		             const std::pair <size_t, size_t> &,
+		             std::vector <int32_t> &,
+		             std::vector <std::vector <int32_t>> &) const;
+
+	bool
+	isEdgeInLineLoops (const std::pair <size_t, size_t> & edge,
+                      const std::vector <std::vector <int32_t>> & lineLoops) const;
 
 	void
 	selectFaces (const std::vector <int32_t> &, const SelectType);
@@ -472,10 +498,11 @@ private:
 	size_t                activeFace;     // index of first coord index of face
 
 	SelectionType                type;
-	int32_t                      masterPoint;    // coord index,
-	std::map <int32_t, Vector3d> selectedPoints; // coord index, point
-	SelectedEdges                selectedEdges;  // index to vertex of face to coordIndex array
-	std::set <size_t>            selectedFaces;  // index to first vertex of face to coordIndex array
+	int32_t                      masterPoint;       // coord index,
+	std::map <int32_t, Vector3d> selectedPoints;    // coord index, point
+	SelectedEdges                selectedEdges;     // index to vertex of face to coordIndex array
+	SelectedLineLoops            selectedLineLoops; // index of coord indices
+	std::set <size_t>            selectedFaces;     // index to first vertex of face to coordIndex array
 
 };
 
