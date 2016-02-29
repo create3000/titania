@@ -65,6 +65,7 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
+#include "../Editors/GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
@@ -822,6 +823,9 @@ BrowserWindow::on_redo_activated ()
 void
 BrowserWindow::on_cut_activated ()
 {
+	if (getGeometryEditor () -> on_cut ())
+	   return;
+
 	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -841,6 +845,9 @@ BrowserWindow::on_cut_activated ()
 void
 BrowserWindow::on_copy_activated ()
 {
+	if (getGeometryEditor () -> on_copy ())
+	   return;
+
 	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
@@ -852,6 +859,9 @@ BrowserWindow::on_copy_activated ()
 void
 BrowserWindow::on_paste_activated ()
 {
+	if (getGeometryEditor () -> on_paste ())
+	   return;
+
 	auto selection = getSelection () -> getChildren ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
@@ -866,6 +876,9 @@ BrowserWindow::on_paste_activated ()
 void
 BrowserWindow::on_delete_activated ()
 {
+	if (getGeometryEditor () -> on_delete ())
+	   return;
+
 	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())

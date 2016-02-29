@@ -373,6 +373,51 @@ GeometryEditor::connect ()
 	set_selectedFaces  ();
 }
 
+bool
+GeometryEditor::on_cut ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool
+GeometryEditor::on_copy ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool
+GeometryEditor::on_paste ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool
+GeometryEditor::on_delete ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		on_remove_selected_faces_clicked ();
+		return true;
+	}
+
+	return false;
+}
+
 void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
