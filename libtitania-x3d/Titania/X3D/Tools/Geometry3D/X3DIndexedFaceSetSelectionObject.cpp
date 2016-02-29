@@ -773,9 +773,8 @@ X3DIndexedFaceSetSelectionObject::selectHoles (const std::set <std::pair <int32_
                                                const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
                                                std::vector <std::vector <int32_t>> & holes) const
 {
-__LOG__ << std::endl;
-__LOG__ << "edges * 2: " << edges .size () << std::endl;
-
+	//__LOG__ << std::endl;
+	//__LOG__ << "edges * 2: " << edges .size () << std::endl;
 
 	std::vector <int32_t> hole;
 	std::set <int32_t>    currentPoints;
@@ -787,7 +786,7 @@ __LOG__ << "edges * 2: " << edges .size () << std::endl;
 		if (std::distance (range .first, range .second) < 4)
 		   continue;
 
-__LOG__ << "distance: " << std::distance (range .first, range .second) << std::endl;
+		//__LOG__ << "distance: " << std::distance (range .first, range .second) << std::endl;
 	
 		// Test if edge is already in line loops.
 
@@ -813,14 +812,13 @@ __LOG__ << "distance: " << std::distance (range .first, range .second) << std::e
 		selectHole (currentPoints, edgeIndex, edge, hole, holes);
 	}
 
-std::clog << std::endl;
-for (const auto & hole : holes)
-{
-	for (const auto & h : hole)
-		std::clog << h << " ";
-	std::clog << std::endl;
-}
-
+	//std::clog << std::endl;
+	//for (const auto & hole : holes)
+	//{
+	//	for (const auto & h : hole)
+	//		std::clog << h << " ";
+	//	std::clog << std::endl;
+	//}
 }
 
 void
@@ -848,9 +846,9 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 	}
 	else
 	{
-for (const auto & h : hole)
-	std::clog << h << " ";
-std::clog << ": " << last << std::endl;
+//for (const auto & h : hole)
+//	std::clog << h << " ";
+//std::clog << ": " << last << std::endl;
 
 		const auto iter = std::find (hole .begin (), hole .end (), last);
 
