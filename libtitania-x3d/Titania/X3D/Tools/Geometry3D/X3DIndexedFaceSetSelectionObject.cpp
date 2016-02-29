@@ -76,6 +76,9 @@ X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	  replaceSelectedEdges (new MFInt32 ()),
 	      addSelectedEdges (new MFInt32 ()),
 	   removeSelectedEdges (new MFInt32 ()),
+	  replaceSelectedFaces (new MFInt32 ()),
+	      addSelectedFaces (new MFInt32 ()),
+	   removeSelectedFaces (new MFInt32 ()),
 	selectedPoints_changed (new SFInt32 ()),
 	 selectedEdges_changed (new SFInt32 ()),
 	 selectedHoles_changed (new SFInt32 ()),
@@ -120,6 +123,9 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	replaceSelectedEdges ()   .isHidden (true);
 	addSelectedEdges ()       .isHidden (true);
 	removeSelectedEdges ()    .isHidden (true);
+	replaceSelectedFaces ()   .isHidden (true);
+	addSelectedFaces ()       .isHidden (true);
+	removeSelectedFaces ()    .isHidden (true);
 	selectedPoints_changed () .isHidden (true);
 	selectedEdges_changed ()  .isHidden (true);
 	selectedHoles_changed ()  .isHidden (true);
@@ -152,6 +158,9 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 	replaceSelectedEdges () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_);
 	addSelectedEdges ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_);
 	removeSelectedEdges ()  .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_);
+	replaceSelectedFaces () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_);
+	addSelectedFaces ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_);
+	removeSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_);
 
 	selection -> geometry () = getNode <IndexedFaceSet> ();
 	selection -> setup ();
@@ -224,6 +233,30 @@ X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_ ()
 {
 	__LOG__ << removeSelectedEdges () .size () << std::endl;
 	selectEdges (std::vector <int32_t> (removeSelectedEdges () .begin (), removeSelectedEdges () .end ()), SelectType::REMOVE);
+	updateGeometries ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_ ()
+{
+	__LOG__ << replaceSelectedFaces () .size () << std::endl;
+	selectFaces (std::vector <int32_t> (replaceSelectedFaces () .begin (), replaceSelectedFaces () .end ()), SelectType::REPLACE);
+	updateGeometries ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_ ()
+{
+	__LOG__ << addSelectedFaces () .size () << std::endl;
+	selectFaces (std::vector <int32_t> (addSelectedFaces () .begin (), addSelectedFaces () .end ()), SelectType::ADD);
+	updateGeometries ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_ ()
+{
+	__LOG__ << removeSelectedFaces () .size () << std::endl;
+	selectFaces (std::vector <int32_t> (removeSelectedFaces () .begin (), removeSelectedFaces () .end ()), SelectType::REMOVE);
 	updateGeometries ();
 }
 
@@ -1163,6 +1196,12 @@ X3DIndexedFaceSetSelectionObject::redoRestoreSelectedEdges (const std::vector <i
 }
 
 void
+X3DIndexedFaceSetSelectionObject::redoRestoreSelectedFaces (const std::vector <int32_t> & points, const UndoStepPtr & undoStep)
+{
+	undoStep -> addRedoFunction (&X3DIndexedFaceSetSelectionObject::restoreSelectedFaces, SFNode (this), points);
+}
+
+void
 X3DIndexedFaceSetSelectionObject::restoreSelection (const SFNode & node, const std::vector <int32_t> & points)
 {
 	X3DPtr <X3DIndexedFaceSetSelectionObject> tool (node);
@@ -1178,6 +1217,15 @@ X3DIndexedFaceSetSelectionObject::restoreSelectedEdges (const SFNode & node, con
 
 	if (tool)
 		tool -> replaceSelectedEdges () .assign (points .begin (), points .end ());
+}
+
+void
+X3DIndexedFaceSetSelectionObject::restoreSelectedFaces (const SFNode & node, const std::vector <int32_t> & points)
+{
+	X3DPtr <X3DIndexedFaceSetSelectionObject> tool (node);
+
+	if (tool)
+		tool -> replaceSelectedFaces () .assign (points .begin (), points .end ());
 }
 
 X3DIndexedFaceSetSelectionObject::~X3DIndexedFaceSetSelectionObject ()

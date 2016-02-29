@@ -104,6 +104,8 @@ public:
 	paintSelection () const
 	{ return *fields .paintSelection; }
 
+	// Selection
+
 	MFInt32 &
 	replaceSelection ()
 	{ return *fields .replaceSelection; }
@@ -128,6 +130,8 @@ public:
 	removeSelection () const
 	{ return *fields .removeSelection; }
 
+	// SelectedEdges
+
 	MFInt32 &
 	replaceSelectedEdges ()
 	{ return *fields .replaceSelectedEdges; }
@@ -151,6 +155,34 @@ public:
 	const MFInt32 &
 	removeSelectedEdges () const
 	{ return *fields .removeSelectedEdges; }
+
+	// SelectedFaces
+
+	MFInt32 &
+	replaceSelectedFaces ()
+	{ return *fields .replaceSelectedFaces; }
+
+	const MFInt32 &
+	replaceSelectedFaces () const
+	{ return *fields .replaceSelectedFaces; }
+
+	MFInt32 &
+	addSelectedFaces ()
+	{ return *fields .addSelectedFaces; }
+
+	const MFInt32 &
+	addSelectedFaces () const
+	{ return *fields .addSelectedFaces; }
+
+	MFInt32 &
+	removeSelectedFaces ()
+	{ return *fields .removeSelectedFaces; }
+
+	const MFInt32 &
+	removeSelectedFaces () const
+	{ return *fields .removeSelectedFaces; }
+
+	// selected pep
 
 	SFInt32 &
 	selectedPoints_changed ()
@@ -300,6 +332,9 @@ protected:
 	void
 	redoRestoreSelectedEdges (const std::vector <int32_t> &, const UndoStepPtr &);
 
+	void
+	redoRestoreSelectedFaces (const std::vector <int32_t> &, const UndoStepPtr &);
+
 
 private:
 
@@ -325,6 +360,15 @@ private:
 
 	void
 	set_removeSelectedEdges_ ();
+
+	void
+	set_replaceSelectedFaces_ ();
+
+	void
+	set_addSelectedFaces_ ();
+
+	void
+	set_removeSelectedFaces_ ();
 
 	void
 	set_loadState ();
@@ -449,6 +493,10 @@ private:
 	void
 	restoreSelectedEdges (const SFNode &, const std::vector <int32_t> &);
 
+	static
+	void
+	restoreSelectedFaces (const SFNode &, const std::vector <int32_t> &);
+
 	///  @name Members
 
 	struct Fields
@@ -464,6 +512,9 @@ private:
 		MFInt32* const replaceSelectedEdges;
 		MFInt32* const addSelectedEdges;
 		MFInt32* const removeSelectedEdges;
+		MFInt32* const replaceSelectedFaces;
+		MFInt32* const addSelectedFaces;
+		MFInt32* const removeSelectedFaces;
 		SFInt32* const selectedPoints_changed;
 		SFInt32* const selectedEdges_changed;
 		SFInt32* const selectedHoles_changed;

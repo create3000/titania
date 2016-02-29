@@ -110,6 +110,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "replaceSelectedEdges",   replaceSelectedEdges ());
 	addField (inputOutput, "addSelectedEdges",       addSelectedEdges ());
 	addField (inputOutput, "removeSelectedEdges",    removeSelectedEdges ());
+	addField (inputOutput, "replaceSelectedFaces",   replaceSelectedFaces ());
+	addField (inputOutput, "addSelectedFaces",       addSelectedFaces ());
+	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
 	addField (inputOutput, "formNewFace",            formNewFace ());
@@ -407,13 +410,13 @@ IndexedFaceSetTool::set_formNewFace ()
 
 	const auto selection = formNewFace (getSelectedHoles ());
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
 	redoSetCoordIndex (undoStep);
 	if (normalIndex ()   .size ()) redoSetNormalIndex   (undoStep);
 	if (texCoordIndex () .size ()) redoSetTexCoordIndex (undoStep);
 	if (colorIndex ()    .size ()) redoSetColorIndex    (undoStep);
-	redoRestoreSelection (selection, undoStep);
+	redoRestoreSelectedFaces (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -578,12 +581,12 @@ IndexedFaceSetTool::set_flipVertexOrdering ()
 	for (const auto & point : getSelectedPoints ())
 	   selection .emplace_back (point .first);
 
-	replaceSelection () .assign (selection .begin (), selection .end ());
+	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
 	// Redo
 
 	redoSetCoordIndex (undoStep);
-	redoRestoreSelection (selection, undoStep);
+	redoRestoreSelectedFaces (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
