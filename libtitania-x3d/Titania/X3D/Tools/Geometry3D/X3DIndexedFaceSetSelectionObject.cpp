@@ -812,23 +812,33 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 {
 	const auto last = current .second;
 
-  	if (last == hole .front ())
+	if (currentPoints .emplace (last) .second)
 	{
-		if (hole .size () >= 3)
-			holes .emplace_back (hole);
+		hole .emplace_back (last);
 
-		return;
+		for (const auto & edge : edgeIndex .equal_range (last))
+			selectHole (currentPoints, edgeIndex, edge .second, hole, holes);
+
+		hole .pop_back ();
 	}
+	else
+	{
+	  	if (last == hole .front ())
+		{
+			if (hole .size () >= 3)
+				holes .emplace_back (hole);
+		}
+		else
+		{
+			const auto iter = std::find (hole .begin (), hole .end (), last);
 
-	if (not currentPoints .emplace (last) .second)
-		return;
-
-	hole .emplace_back (last);
-
-	for (const auto & edge : edgeIndex .equal_range (last))
-		selectHole (currentPoints, edgeIndex, edge .second, hole, holes);
- 
-	hole .pop_back ();
+			if (iter not_eq hole .end ())
+			{
+				if (hole .end () - iter >= 3)
+					holes .emplace_back (iter, hole .end ());
+			 }
+		}
+	}
 }
 
 ///  Select faces.
