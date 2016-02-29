@@ -705,14 +705,12 @@ X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge,
 void
 X3DIndexedFaceSetSelectionObject::selectLineLoops ()
 {
-__LOG__ << std::endl;
-
 	std::set <std::pair <int32_t, int32_t>>               edges;
 	std::multimap <int32_t, std::pair <int32_t, int32_t>> edgeIndex;
 
 	for (const auto & edge : getSelectedEdges ())
 	{
-		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+		if (edge .second .size () not_eq 1)
 			continue;
 
 		for (const auto & vertices : edge .second)
@@ -723,10 +721,11 @@ __LOG__ << std::endl;
 		   const std::pair <int32_t, int32_t> points2 (coordIndex () [vertices .second],
 		                                               coordIndex () [vertices .first]);
 
-			edges     .emplace (points1);
-			edges     .emplace (points2);
-			edgeIndex .emplace (points1 .first, points1);
-			edgeIndex .emplace (points2 .first, points2);
+			if (edges .emplace (points1) .second)
+				edgeIndex .emplace (points1 .first, points1);
+
+			if (edges .emplace (points2) .second)
+				edgeIndex .emplace (points2 .first, points2);
 		}
 	}
 
@@ -743,8 +742,6 @@ X3DIndexedFaceSetSelectionObject::selectLineLoops (const std::set <std::pair <in
                                                    const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,
 	                                                std::vector <std::vector <int32_t>> & lineLoops) const
 {
-__LOG__ << edges .size () << std::endl;
-
 	std::vector <int32_t> lineLoop;
 	std::set <int32_t>    currentPoints;
 
@@ -757,26 +754,16 @@ __LOG__ << edges .size () << std::endl;
 
 		// Start new line loop.
 
-__LOG__ << "start: " << edge .first << std::endl;
-
 		lineLoop .emplace_back (edge .first);
 
 		selectLineLoop (currentPoints,
 		                edgeIndex,		                
 		                edge .first,
-		                edge .second,
 		                edge,
 		                lineLoop,
 		                lineLoops);
 
 		lineLoop .clear ();
-	}
-
-	for (const auto & lineLoop : lineLoops)
-	{
-		for (const auto & i : lineLoop)
-	      std::cout << i << " ";
-	   std::cout << std::endl;
 	}
 }
 
@@ -784,11 +771,12 @@ void
 X3DIndexedFaceSetSelectionObject::selectLineLoop (std::set <int32_t> & currentPoints,
                                                   const std::multimap <int32_t, std::pair <int32_t, int32_t>> & edgeIndex,                                                 
                                                   const int32_t first,
-	                                               const int32_t last,
 	                                               const std::pair <int32_t, int32_t> & current,
 	                                               std::vector <int32_t> & lineLoop,
 	                                               std::vector <std::vector <int32_t>> & lineLoops) const
 {
+	const auto last = current .second;
+
   	if (last == first)
 	{
 		if (lineLoop .size () >= 3)
@@ -803,7 +791,7 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (std::set <int32_t> & currentPo
 	lineLoop .emplace_back (last);
 
 	for (const auto & edge : edgeIndex .equal_range (last))
-		selectLineLoop (currentPoints, edgeIndex, first, edge .second .second, edge .second, lineLoop, lineLoops);
+		selectLineLoop (currentPoints, edgeIndex, first, edge .second, lineLoop, lineLoops);
  
 	lineLoop .pop_back ();
 }

@@ -389,7 +389,6 @@ private:
 	selectLineLoop (std::set <int32_t> &,
 	                const std::multimap <int32_t, std::pair <int32_t, int32_t>> &,                                                 
 	                const int32_t,
-		             const int32_t,
 		             const std::pair <int32_t, int32_t> &,
 		             std::vector <int32_t> &,
 		             std::vector <std::vector <int32_t>> &) const;
