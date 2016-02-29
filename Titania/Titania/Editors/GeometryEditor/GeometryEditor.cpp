@@ -79,7 +79,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	                  selector (SelectorType::BRUSH),
 	         numSelectedPoints (0),
 	          numSelectedEdges (0),
-	      numSelectedLineLoops (0),
+	      numSelectedHoles (0),
 	          numSelectedFaces (0),
 	                  changing (false)
 {
@@ -340,11 +340,11 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("removeSelectedFaces"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA>  ("color"));
 
-						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed")    .addInterest (this, &GeometryEditor::set_selectedPoints);
-						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")     .addInterest (this, &GeometryEditor::set_selectedEdges);
-						innerNode -> getField <X3D::SFInt32>              ("selectedLineLoops_changed") .addInterest (this, &GeometryEditor::set_selectedLineLoops);
-						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")     .addInterest (this, &GeometryEditor::set_selectedFaces);
-						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")              .addInterest (this, &GeometryEditor::set_undo);
+						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
+						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
+						innerNode -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (this, &GeometryEditor::set_selectedHoles);
+						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
+						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
 
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
@@ -367,10 +367,10 @@ GeometryEditor::connect ()
 		}
 	}
 
-	set_selectedPoints    ();
-	set_selectedEdges     ();
-	set_selectedLineLoops ();
-	set_selectedFaces     ();
+	set_selectedPoints ();
+	set_selectedEdges  ();
+	set_selectedHoles  ();
+	set_selectedFaces  ();
 }
 
 void
@@ -458,9 +458,9 @@ GeometryEditor::set_selectedEdges ()
 }
 
 void
-GeometryEditor::set_selectedLineLoops ()
+GeometryEditor::set_selectedHoles ()
 {
-	numSelectedLineLoops = 0;
+	numSelectedHoles = 0;
 
 	for (const auto & node : geometryNodes)
 	{
@@ -474,7 +474,7 @@ GeometryEditor::set_selectedLineLoops ()
 				{
 					case X3D::X3DConstants::X3DGeometryNodeTool:
 					{
-						numSelectedLineLoops += innerNode -> getField <X3D::SFInt32> ("selectedLineLoops_changed") .getValue ();
+						numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
 					   break;
 					}
 					default:
@@ -490,7 +490,7 @@ GeometryEditor::set_selectedLineLoops ()
 		}
 	}
 
-	getFormNewFaceButton () .set_sensitive (numSelectedLineLoops);
+	getFormNewFaceButton () .set_sensitive (numSelectedHoles);
 
 	set_face_selection ();
 }
@@ -545,7 +545,7 @@ GeometryEditor::set_face_selection ()
 	ostream
 		<< "Selected points: "     << numSelectedPoints << std::endl
 		<< "Selected edges: "      << numSelectedEdges << std::endl
-		<< "Selected line loops: " << numSelectedLineLoops << std::endl
+		<< "Selected line loops: " << numSelectedHoles << std::endl
 		<< "Selected faces: "      << numSelectedFaces;
 
 	getCurrentBrowser () -> setDescription (ostream .str ());

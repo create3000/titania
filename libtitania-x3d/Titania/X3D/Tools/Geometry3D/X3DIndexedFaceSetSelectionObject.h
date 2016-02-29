@@ -169,12 +169,12 @@ public:
 	{ return *fields .selectedEdges_changed; }
 
 	SFInt32 &
-	selectedLineLoops_changed ()
-	{ return *fields .selectedLineLoops_changed; }
+	selectedHoles_changed ()
+	{ return *fields .selectedHoles_changed; }
 
 	const SFInt32 &
-	selectedLineLoops_changed () const
-	{ return *fields .selectedLineLoops_changed; }
+	selectedHoles_changed () const
+	{ return *fields .selectedHoles_changed; }
 
 	SFInt32 &
 	selectedFaces_changed ()
@@ -214,8 +214,8 @@ protected:
 	   REMOVE
 	};
 
-	using SelectedEdges     = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
-	using SelectedLineLoops = std::vector <std::vector <int32_t>>;
+	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
+	using SelectedHoles = std::vector <std::vector <int32_t>>;
 
 	///  @name Construction
 
@@ -281,9 +281,9 @@ protected:
 	getSelectedEdges () const
 	{ return selectedEdges; }
 
-	const SelectedLineLoops &
-	getSelectedLineLoops () const
-	{ return selectedLineLoops; }
+	const SelectedHoles &
+	getSelectedHoles () const
+	{ return selectedHoles; }
 
 	const std::set <size_t> &
 	getSelectedFaces () const
@@ -466,7 +466,7 @@ private:
 		MFInt32* const removeSelectedEdges;
 		SFInt32* const selectedPoints_changed;
 		SFInt32* const selectedEdges_changed;
-		SFInt32* const selectedLineLoops_changed;
+		SFInt32* const selectedHoles_changed;
 		SFInt32* const selectedFaces_changed;
 	};
 
@@ -496,7 +496,7 @@ private:
 	int32_t                      masterPoint;       // coord index,
 	std::map <int32_t, Vector3d> selectedPoints;    // coord index, point
 	SelectedEdges                selectedEdges;     // index to vertex of face to coordIndex array
-	SelectedLineLoops            selectedLineLoops; // index of coord indices
+	SelectedHoles                selectedHoles;     // index of coord indices
 	std::set <size_t>            selectedFaces;     // index to first vertex of face to coordIndex array
 
 };

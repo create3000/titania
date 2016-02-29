@@ -303,7 +303,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Form new face from selected edges.</property>
+                    <property name="tooltip_text" translatable="yes">Form new face from selected wholes.</property>
                     <signal name="clicked" handler="on_form_new_face_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image14">
