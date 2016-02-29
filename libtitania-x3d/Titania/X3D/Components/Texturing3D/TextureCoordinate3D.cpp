@@ -88,6 +88,24 @@ TextureCoordinate3D::init (TexCoordArray & texCoords, const size_t reserve) cons
 }
 
 void
+TextureCoordinate3D::set1Point (const size_t index, const Vector4f & value)
+{
+	point () .set1Value (index, Vector3f (value .x (), value .y (), value .z ()));
+}
+
+Vector4f
+TextureCoordinate3D::get1Point (const size_t index)
+{
+	if (index < point () .size ())
+	{
+	   const auto & p = point () [index] .getValue ();
+		return Vector4f (p .x (), p .y (), p .z (), 1);
+	}
+
+	return Vector4f (0, 0, 0, 1);
+}
+
+void
 TextureCoordinate3D::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
 {
 	if (index < point () .size ())

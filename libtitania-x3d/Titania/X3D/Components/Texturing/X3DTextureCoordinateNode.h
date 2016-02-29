@@ -68,6 +68,14 @@ public:
 	void
 	init (TexCoordArray &, const size_t) const = 0;
 
+	virtual
+	void
+	set1Point (const size_t, const Vector4f &) = 0;
+
+	virtual
+	Vector4f
+	get1Point (const size_t) = 0;
+
 	void
 	addTexCoord (TexCoordArray & texCoord, const size_t index) const
 	{ addTexCoord (0, texCoord, index); }

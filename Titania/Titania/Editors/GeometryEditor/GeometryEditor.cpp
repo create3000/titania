@@ -412,7 +412,7 @@ GeometryEditor::set_selectedPoints ()
 		}
 	}
 
-	getMergePointsButton () .set_sensitive (numSelectedPoints);
+	getMergePointsButton () .set_sensitive (numSelectedPoints > 1);
 	getSplitPointsButton () .set_sensitive (numSelectedPoints);
 
 	set_face_selection ();

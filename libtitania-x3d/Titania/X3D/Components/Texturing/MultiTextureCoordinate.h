@@ -103,9 +103,13 @@ public:
 	void
 	init (TexCoordArray &, const size_t) const final override;
 
-	const X3DPtrArray <X3DTextureCoordinateNode> &
-	getTexCoord () const
-	{ return texCoords; }
+	virtual
+	void
+	set1Point (const size_t, const Vector4f &) final override;
+
+	virtual
+	Vector4f
+	get1Point (const size_t) final override;
 
 	virtual
 	void
@@ -115,6 +119,10 @@ public:
 	void
 	getTexCoord (std::vector <Vector4f> &) const final override
 	{ }
+
+	const X3DPtrArray <X3DTextureCoordinateNode> &
+	getTexCoord () const
+	{ return texCoords; }
 
 	virtual
 	void

@@ -113,6 +113,16 @@ public:
 
 	virtual
 	void
+	set1Point (const size_t, const Vector4f &) final override
+	{ }
+
+	virtual
+	Vector4f
+	get1Point (const size_t) final override
+	{ return Vector4f (0, 0, 0, 1); }
+
+	virtual
+	void
 	addTexCoord (const size_t, TexCoordArray &, const size_t) const final override
 	{ }
 

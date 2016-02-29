@@ -89,6 +89,14 @@ public:
 
 	///  @name Fields
 
+	virtual
+	void
+	set1Point (const size_t, const Vector4f &) final override;
+
+	virtual
+	Vector4f
+	get1Point (const size_t) final override;
+
 	MFVec2f &
 	point ()
 	{ return *fields .point; }

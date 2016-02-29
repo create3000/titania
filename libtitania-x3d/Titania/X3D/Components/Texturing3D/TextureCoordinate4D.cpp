@@ -88,6 +88,21 @@ TextureCoordinate4D::init (TexCoordArray & texCoords, const size_t reserve) cons
 }
 
 void
+TextureCoordinate4D::set1Point (const size_t index, const Vector4f & value)
+{
+	point () .set1Value (index, value);
+}
+
+Vector4f
+TextureCoordinate4D::get1Point (const size_t index)
+{
+	if (index < point () .size ())
+		return point () [index];
+
+	return Vector4f (0, 0, 0, 1);
+}
+
+void
 TextureCoordinate4D::addTexCoord (const size_t channel, TexCoordArray & texCoords, const size_t index) const
 {
 	if (index < point () .size ())

@@ -96,6 +96,22 @@ MultiTextureCoordinate::initialize ()
 }
 
 void
+MultiTextureCoordinate::set1Point (const size_t index, const Vector4f & value)
+{
+	for (const auto & texCoordNode : texCoords)
+		texCoordNode -> set1Point (index, value);
+}
+
+Vector4f
+MultiTextureCoordinate::get1Point (const size_t index)
+{
+	for (const auto & texCoordNode : texCoords)
+		return texCoordNode -> get1Point (index);
+
+	return Vector4d (0, 0, 0, 1);
+}
+
+void
 MultiTextureCoordinate::set_texCoord ()
 {
 	for (const auto & node : texCoords)
@@ -108,10 +124,10 @@ MultiTextureCoordinate::set_texCoord ()
 		if (x3d_cast <MultiTextureCoordinate*> (node))
 			continue;
 
-		const auto textureCoordinate = x3d_cast <X3DTextureCoordinateNode*> (node);
+		const auto texCoordNode = x3d_cast <X3DTextureCoordinateNode*> (node);
 		
-		if (textureCoordinate)
-			value .emplace_back (textureCoordinate);
+		if (texCoordNode)
+			value .emplace_back (texCoordNode);
 	}
 
 	texCoords .set (value .begin (), value .end ());
@@ -123,8 +139,8 @@ MultiTextureCoordinate::set_texCoord ()
 void
 MultiTextureCoordinate::init (TexCoordArray & texCoordArray, const size_t reserve) const
 {
-	for (const auto & textureCoordinate : texCoords)
-		textureCoordinate -> init (texCoordArray, reserve);
+	for (const auto & texCoordNode : texCoords)
+		texCoordNode -> init (texCoordArray, reserve);
 }
 
 void
@@ -132,9 +148,9 @@ MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoordArray
 {
 	size_t channel = 0;
 
-	for (const auto & textureCoordinate : texCoords)
+	for (const auto & texCoordNode : texCoords)
 	{
-		textureCoordinate -> addTexCoord (channel, texCoordArray, index);
+		texCoordNode -> addTexCoord (channel, texCoordArray, index);
 		++ channel;
 	}
 }
@@ -146,14 +162,14 @@ MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) 
 	size_t                    channel = 0;
 	const size_t              size    = getBrowser () -> getTextureStages () .size ();
 
-	for (const auto & textureCoordinate : texCoords)
+	for (const auto & texCoordNode : texCoords)
 	{
 		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
 
 		if (unit >= 0)
-			textureCoordinate -> enable (unit, channel, texCoordBufferIds);
+			texCoordNode -> enable (unit, channel, texCoordBufferIds);
 
-		last = textureCoordinate;
+		last = texCoordNode;
 		++ channel;
 
 		if (channel >= size)
@@ -179,14 +195,14 @@ MultiTextureCoordinate::disable () const
 	size_t                    channel = 0;
 	const  size_t             size    = getBrowser () -> getTextureStages () .size ();
 
-	for (const auto & textureCoordinate : texCoords)
+	for (const auto & texCoordNode : texCoords)
 	{
 		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
 		
 		if (unit >= 0)
-			textureCoordinate -> disable (unit);
+			texCoordNode -> disable (unit);
 
-		last = textureCoordinate;
+		last = texCoordNode;
 		++ channel;
 
 		if (channel >= size)
