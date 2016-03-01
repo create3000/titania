@@ -246,6 +246,14 @@ protected:
 	   REMOVE
 	};
 
+	enum class ActionType :
+	   uint8_t
+	{
+		SELECT,
+	   TRANSLATE,
+	   CUT
+	};
+
 	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
 	using SelectedHoles = std::vector <std::vector <int32_t>>;
 
@@ -257,17 +265,15 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Private fields
-
-	SFBool &
-	selectable ()
-	{ return *fields .selectable; }
-
-	const SFBool &
-	selectable () const
-	{ return *fields .selectable; }
-
 	///  @name Member access
+
+	void
+	setActionType (const ActionType value)
+	{ actionType = value; }
+
+	ActionType
+	getActionType () const
+	{ return actionType; }
 
 	const X3DPtr <FaceSelection> &
 	getFaceSelection () const
@@ -505,7 +511,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const selectable;
 		SFString* const selectionType;
 		SFBool* const paintSelection;
 		MFInt32* const replaceSelection;
@@ -527,6 +532,7 @@ private:
 
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <PlaneSensor>       planeSensor;
+	X3DPtr <PlaneSensor>       knifePlaneSensor;
 	X3DPtr <CoordinateDouble>  hotPointCoord;
 	X3DPtr <IndexedLineSet>    hotEdgesGeometry;
 	X3DPtr <CoordinateDouble>  activePointCoord;
@@ -536,6 +542,8 @@ private:
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
 	X3DPtr <FaceSelection>     selection;
+
+	ActionType actionType;
 
 	std::vector <int32_t> hotPoints;    // coord indices
 	std::vector <size_t>  hotEdge;      // index of coord indices

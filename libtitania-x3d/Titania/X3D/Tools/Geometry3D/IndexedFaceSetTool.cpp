@@ -53,6 +53,8 @@
 #include "../Rendering/CoordinateTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
+#include "../../Components/Grouping/Switch.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../Editing/Selection/FaceSelection.h"
@@ -72,7 +74,8 @@ IndexedFaceSetTool::Fields::Fields () :
 	 extrudeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
 	   flipVertexOrdering (new SFTime ()),
-	  removeSelectedFaces (new SFTime ()),
+	  deleteSelectedFaces (new SFTime ()),
+	          cutPolygons (new SFBool ()),
 	         undo_changed (new UndoStepContainerPtr ())
 { }
 
@@ -85,8 +88,11 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                          fields (),
 	                     touchSensor (),
 	                     planeSensor (),
+	                     knifeSwitch (),
+	                     knifeCircle (),
 	                     translation (),
 	                    translations (0),
+	                      startPoint (),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	addType (X3DConstants::IndexedFaceSetTool);
@@ -98,10 +104,10 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	extrudeSelectedFaces () .isHidden (true);
 	chipOfSelectedFaces ()  .isHidden (true);
 	flipVertexOrdering ()   .isHidden (true);
-	removeSelectedFaces ()  .isHidden (true);
+	deleteSelectedFaces ()  .isHidden (true);
+	cutPolygons ()          .isHidden (true);
 
 	addField (inputOutput, "pickable",               pickable ());
-	addField (inputOutput, "selectable",             selectable ());
 	addField (inputOutput, "selectionType",          selectionType ());
 	addField (inputOutput, "paintSelection",         paintSelection ());
 	addField (inputOutput, "replaceSelection",       replaceSelection ());
@@ -120,7 +126,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "extrudeSelectedFaces",   extrudeSelectedFaces ());
 	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
 	addField (inputOutput, "flipVertexOrdering",     flipVertexOrdering ());
-	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
+	addField (inputOutput, "deleteSelectedFaces",    deleteSelectedFaces ());
+	addField (inputOutput, "cutPolygons",            cutPolygons ());
 	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
 	addField (outputOnly,  "selectedHoles_changed",  selectedHoles_changed ());
@@ -130,7 +137,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "coordTool",              coordTool ());
 
 	addChildren (touchSensor,
-	             planeSensor);
+	             planeSensor,
+	             knifeSwitch,
+	             knifeCircle);
 }
 
 void
@@ -139,7 +148,6 @@ IndexedFaceSetTool::initialize ()
 	X3DComposedGeometryNodeTool::initialize ();
 	X3DIndexedFaceSetSelectionObject::initialize ();
 
-	removeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &IndexedFaceSetTool::set_loadState);
 
 	mergePoints ()          .addInterest (this, &IndexedFaceSetTool::set_mergePoints);
@@ -149,7 +157,8 @@ IndexedFaceSetTool::initialize ()
 	extrudeSelectedFaces () .addInterest (this, &IndexedFaceSetTool::set_extrudeSelectedFaces);
 	chipOfSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_chipOfSelectedFaces);
 	flipVertexOrdering ()   .addInterest (this, &IndexedFaceSetTool::set_flipVertexOrdering);
-	removeSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_removeSelectedFaces);
+	deleteSelectedFaces ()  .addInterest (this, &IndexedFaceSetTool::set_deleteSelectedFaces);
+	cutPolygons ()          .addInterest (this, &IndexedFaceSetTool::set_cutPolygons);
 }
 
 void
@@ -162,9 +171,11 @@ IndexedFaceSetTool::set_loadState ()
 
 		planeSensor = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
 		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
+		knifeSwitch = inlineNode -> getExportedNode <Switch> ("KnifeSwitch");
+		knifeCircle = inlineNode -> getExportedNode <Transform> ("KnifeCircle");
 
-		getBrowser () -> hasControlKey ()    .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
-		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		getBrowser () -> hasControlKey ()   .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		touchSensor -> hitPoint_changed ()  .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
@@ -180,68 +191,75 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 {
 	try
 	{
-		if (planeSensor -> isActive ())
-			return;
-
 		// Setup PlaneSensor
 
-		switch (getHotPoints () .size ())
+		if (getActionType () == ActionType::CUT)
 		{
-			case 0:
-			{
-				planeSensor -> enabled () = false;
-				break;
-			}
-			case 1:
-			{
-				// Translate over screen plane
+			set_knife ();
+		}
+		else
+		{
+			if (planeSensor -> isActive ())
+				return;
 
-				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
-
-				planeSensor -> enabled ()      = not paintSelection ();
-				planeSensor -> axisRotation () = axisRotation;
-				planeSensor -> maxPosition ()  = Vector2f (-1, -1);
-				break;
-			}
-			case 2:
+			switch (getHotPoints () .size ())
 			{
-				// Translate along edge
-
-				const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
-				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-				planeSensor -> enabled ()      = not paintSelection ();
-				planeSensor -> axisRotation () = axisRotation;
-				planeSensor -> maxPosition ()  = Vector2f (-1, 0);
-				break;
-			}
-			default:
-			{
-				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
-					
-				if (getBrowser () -> hasControlKey ())
+				case 0:
 				{
-					// Translate along face normal
-
-					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
-
-					planeSensor -> enabled ()      = not paintSelection ();
-					planeSensor -> axisRotation () = axisRotation;
-					planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+					planeSensor -> enabled () = false;
+					break;
 				}
-				else
+				case 1:
 				{
-					// Translate along plane
+					// Translate over screen plane
 
-					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+					const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
 					planeSensor -> enabled ()      = not paintSelection ();
 					planeSensor -> axisRotation () = axisRotation;
 					planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+					break;
 				}
-		
-				break;
+				case 2:
+				{
+					// Translate along edge
+
+					const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
+					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
+
+					planeSensor -> enabled ()      = not paintSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+					break;
+				}
+				default:
+				{
+					const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
+						
+					if (getBrowser () -> hasControlKey ())
+					{
+						// Translate along face normal
+
+						const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+
+						planeSensor -> enabled ()      = not paintSelection ();
+						planeSensor -> axisRotation () = axisRotation;
+						planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+					}
+					else
+					{
+						// Translate along plane
+
+						const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+						planeSensor -> enabled ()      = not paintSelection ();
+						planeSensor -> axisRotation () = axisRotation;
+						planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+					}
+			
+					break;
+				}
 			}
 		}
 	}
@@ -254,43 +272,63 @@ IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 {
 	// Create undo step for translation.
 
-	if (active)
+	if (getActionType () == ActionType::CUT)
 	{
-		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
-
-	   undoSetCoordPoint (undoStep);
+		set_knife_active ();
 	}
 	else
 	{
-		redoSetCoordPoint (undoStep);
+		if (active)
+		{
+			undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
-		// Reset fields and send undo step.
+		   undoSetCoordPoint (undoStep);
+		}
+		else
+		{
+			setActionType (ActionType::SELECT);
 
-		if (abs (translation))
-			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+			redoSetCoordPoint (undoStep);
 
-		selectable () = true;
-		translation   = Vector3d ();
-		translations  = 0;
+			// Reset fields and send undo step.
+
+			if (abs (translation))
+				undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+
+			translation   = Vector3d ();
+			translations  = 0;
+		}
 	}
 }
 
 void
 IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
 {
-	// Prevent accidentially move.
-	if (translations ++ < TRANSLATIONS_EVENTS)
-	   return;
-
-	translation = value;
-
-	if (abs (translation))
+	switch (getActionType ())
 	{
-		if (selectable ())
-			selectable () = false;
+		case ActionType::CUT:
+		{
+			set_knife_translation ();
+			break;
+		}
+		default:
+		{
+			// Prevent accidentially move.
+			if (translations ++ < TRANSLATIONS_EVENTS)
+			   return;
 
-		for (const auto & pair : getSelectedPoints ())
-			getCoord () -> set1Point (pair .first, pair .second + translation);
+			translation = value;
+
+			if (abs (translation))
+			{
+				setActionType (ActionType::TRANSLATE);
+
+				for (const auto & pair : getSelectedPoints ())
+					getCoord () -> set1Point (pair .first, pair .second + translation);
+
+				break;
+			}
+		}
 	}
 }
 
@@ -592,7 +630,7 @@ IndexedFaceSetTool::set_flipVertexOrdering ()
 }
 
 void
-IndexedFaceSetTool::set_removeSelectedFaces ()
+IndexedFaceSetTool::set_deleteSelectedFaces ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Selected Faces"));
 
@@ -665,6 +703,61 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	redoRestoreSelection ({ }, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+IndexedFaceSetTool::set_cutPolygons ()
+{
+	__LOG__ <<std::endl;
+
+	setActionType (ActionType::CUT);
+
+	knifeSwitch -> whichChoice () = cutPolygons ();
+}
+
+bool
+IndexedFaceSetTool::set_knife ()
+{
+	if (not touchSensor -> isActive ())
+	{
+	   // Set start point
+
+		if (getHotPoints () .size () == 1)
+		{
+			startPoint = getCoord () -> get1Point (getHotPoints () .front ());
+		}
+		else
+		{
+			const Line3d line (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+			                   getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+			                   math::point_type ());
+			
+			startPoint = line .closest_point (touchSensor -> getHitPoint ());	   
+		}
+
+		knifeCircle -> translation () = startPoint;
+	}
+	else
+	{
+	   
+	}
+
+	return true;
+}
+
+void
+IndexedFaceSetTool::set_knife_active ()
+{
+	if (not touchSensor -> isActive ())
+	{
+	   
+	}
+}
+
+void
+IndexedFaceSetTool::set_knife_translation ()
+{
+	__LOG__ << planeSensor -> translation_changed () << std::endl;
 }
 
 std::vector <int32_t>

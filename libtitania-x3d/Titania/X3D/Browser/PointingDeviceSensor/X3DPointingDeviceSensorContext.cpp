@@ -161,7 +161,16 @@ X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, con
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	hits .emplace_front (new Hit (pointer, transformationMatrix, hitRay, intersection, enabledSensors .back (), shape, layer, layerNumber));
+	hits .emplace_front (new Hit (pointer,
+	                              transformationMatrix,
+	                              hitRay,
+	                              intersection,
+	                              enabledSensors .back (),
+	                              shape,
+	                              layer,
+	                              layerNumber,
+	                              getBrowser () -> getDepthTest ()   .top (),
+	                              getBrowser () -> getDepthOffset () .top ()));
 }
 
 bool
@@ -182,7 +191,7 @@ X3DPointingDeviceSensorContext::motion ()
 	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
 
 	const auto nearestHit = getHits () .empty ()
-	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0)
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)
 	                        : getNearestHit ();
 
 	// Set isOver to FALSE for appropriate nodes
@@ -266,7 +275,7 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
 
 	const auto nearestHit = getHits () .empty ()
-	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0)
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)
 	                        : getNearestHit ();
 
 	selectedLayer = nullptr;

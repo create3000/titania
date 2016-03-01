@@ -291,6 +291,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
 	add ("TransformMatrix3D",            new TransformMatrix3D            (executionContext));
 	add ("TouchGroup",                   new TouchGroup                   (executionContext));
 	add ("PolygonOffsetGroup",           new PolygonOffsetGroup           (executionContext));
+	add ("DepthTestGroup",               new DepthTestGroup               (executionContext));
 
 	//std::clog << "\tDone creating node index." << std::endl;
 }

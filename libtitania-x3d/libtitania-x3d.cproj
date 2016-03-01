@@ -788,6 +788,8 @@
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.h" />
+    <None Include="Titania\X3D\Components\Rendering\DepthTestGroup.h" />
+    <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1325,6 +1327,8 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.cpp" />
+    <Compile Include="Titania\X3D\Components\Rendering\DepthTestGroup.cpp" />
+    <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

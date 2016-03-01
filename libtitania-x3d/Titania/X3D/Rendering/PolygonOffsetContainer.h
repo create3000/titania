@@ -76,7 +76,7 @@ public:
 
 private:
 
-	PolygonOffsetGroup* const polygonOffset;
+	PolygonOffsetGroup* const node;
 	bool                      enabled;
 	float                     factor;
 	float                     units;

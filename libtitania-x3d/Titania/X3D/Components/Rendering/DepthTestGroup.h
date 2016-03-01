@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,43 +48,134 @@
  *
  ******************************************************************************/
 
-#include "PolygonOffsetContainer.h"
+#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_DEPTH_TEST_GROUP_H__
+#define __TITANIA_X3D_COMPONENTS_RENDERING_DEPTH_TEST_GROUP_H__
 
-#include "../Components/Rendering/PolygonOffsetGroup.h"
+#include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffsetGroup* const node) :
-	X3DCollectableObject (),
-	                node (node),
-	             enabled (false),
-	              factor (0),
-	               units (0)
-{ }
-        
-void
-PolygonOffsetContainer::enable ()
+class DepthTestGroup :
+	virtual public X3DGroupingNode
 {
-	enabled = glIsEnabled (node -> getType ());
+public:
 
-	glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-	glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+	///  @name Construction
 
-	glEnable (node -> getType ());
-	glPolygonOffset (node -> factor (), node -> units ());
-}
+	DepthTestGroup (X3DExecutionContext* const);
 
-void
-PolygonOffsetContainer::disable ()
-{
-	if (enabled)
-		glEnable (node -> getType ());
-	else
-		glDisable (node -> getType ());
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
 
-	glPolygonOffset (factor, units);
-}
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	virtual
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	virtual
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	virtual
+	SFString &
+	function ()
+	{ return *fields .function; }
+
+	virtual
+	const SFString &
+	function () const
+	{ return *fields .function; }
+
+	virtual
+	SFDouble &
+	depthOffset ()
+	{ return *fields .depthOffset; }
+
+	virtual
+	const SFDouble &
+	depthOffset () const
+	{ return *fields .depthOffset; }
+
+	///  @name Member access
+
+	GLenum
+	getFunction () const
+	{ return functionType; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) override;
+
+	virtual
+	void
+	addTool () override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () override;
+
+
+private:
+
+	///  @name Event handler
+
+	void
+	set_function ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const enabled;
+		SFString* const function;
+		SFDouble* const depthOffset;
+	};
+
+	Fields fields;
+
+	GLenum functionType;
+
+};
 
 } // X3D
 } // titania
+
+#endif

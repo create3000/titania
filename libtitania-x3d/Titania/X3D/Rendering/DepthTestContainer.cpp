@@ -48,42 +48,44 @@
  *
  ******************************************************************************/
 
-#include "PolygonOffsetContainer.h"
+#include "DepthTestContainer.h"
 
-#include "../Components/Rendering/PolygonOffsetGroup.h"
+#include "../Components/Rendering/DepthTestGroup.h"
 
 namespace titania {
 namespace X3D {
 
-PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffsetGroup* const node) :
+DepthTestContainer::DepthTestContainer (DepthTestGroup* const node) :
 	X3DCollectableObject (),
 	                node (node),
 	             enabled (false),
-	              factor (0),
-	               units (0)
+	            function (GL_LEQUAL)
 { }
         
 void
-PolygonOffsetContainer::enable ()
+DepthTestContainer::enable ()
 {
-	enabled = glIsEnabled (node -> getType ());
+	enabled = glIsEnabled (GL_DEPTH_TEST);
+        
+	glGetIntegerv (GL_DEPTH_FUNC, &function);
 
-	glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-	glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+	if (node -> enabled ())
+		glEnable (GL_DEPTH_TEST);
+	else
+		glDisable (GL_DEPTH_TEST);
 
-	glEnable (node -> getType ());
-	glPolygonOffset (node -> factor (), node -> units ());
+	glDepthFunc (node -> getFunction ());
 }
 
 void
-PolygonOffsetContainer::disable ()
+DepthTestContainer::disable ()
 {
 	if (enabled)
-		glEnable (node -> getType ());
+		glEnable (GL_DEPTH_TEST);
 	else
-		glDisable (node -> getType ());
+		glDisable (GL_DEPTH_TEST);
 
-	glPolygonOffset (factor, units);
+	glDepthFunc (function);
 }
 
 } // X3D

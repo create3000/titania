@@ -113,7 +113,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 	const Box3d  bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
 	const double depth  = bbox .size () .z () / 2;
 	const double min    = bbox .center () .z () - depth;
-	const double center = bbox .center () .z ();
+	const double center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
 
 	if (min > 0)
 	   return;
@@ -124,7 +124,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 	{
 	   ShapeContainer* context = nullptr;
 
-		if (shape -> isTransparent ())
+		if (shape -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
 		{
 		   if (numTransparentShapes == transparentShapes .size ())
 		      transparentShapes .emplace_back (new ShapeContainer (true));

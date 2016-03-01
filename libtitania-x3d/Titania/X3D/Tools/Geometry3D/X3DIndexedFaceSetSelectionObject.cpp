@@ -67,7 +67,6 @@ namespace X3D {
 static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	            selectable (new SFBool (true)),
 	         selectionType (new SFString ("POINTS")),
 	        paintSelection (new SFBool ()),
 	      replaceSelection (new MFInt32 ()),
@@ -99,6 +98,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	      selectedFacesGeometry (),
 	                  coordNode (),
 	                  selection (new FaceSelection (getExecutionContext ())),
+	                 actionType (ActionType::SELECT),
 	                  hotPoints (),
 	                    hotEdge (),
 	                    hotFace (0),
@@ -114,7 +114,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	selectable ()             .isHidden (true);
 	selectionType ()          .isHidden (true);
 	paintSelection ()         .isHidden (true);
 	replaceSelection ()       .isHidden (true);
@@ -323,7 +322,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 		updateMagicPoints ();
 		updateSelectedPoints ();
 
-		if (planeSensor -> isActive ())
+		if (getActionType () == ActionType::TRANSLATE)
 			return;
 	
 		for (auto & selectedPoint : selectedPoints)
@@ -336,7 +335,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
-	if (planeSensor -> isActive ())
+	if (getActionType () == ActionType::TRANSLATE)
 		return;
 
 	// Find closest points.
@@ -374,7 +373,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 {
-	if (not selectable ())
+	if (getActionType () == ActionType::TRANSLATE)
 		return;
 
 	switch (getSelectionType ())
@@ -400,7 +399,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 void
 X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints)
 {
-	if (not selectable ())
+	if (getActionType () == ActionType::TRANSLATE)
 		return;
 
 	std::vector <int32_t> points;
@@ -434,7 +433,6 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 	const auto vertices = selection -> getFaceVertices (face);
 
 	hotFace = face;
-	hotEdge   .clear ();
 	hotPoints .clear ();
 
 	activeFace = face;
@@ -447,7 +445,9 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
 		const auto pointDistance = getDistance (hitPoint, point);
 
-		// Hot points for near point or face
+		// Hot edge and points for near point or face
+
+		hotEdge = { edge .index0, edge .index1 };
 	
 		if (pointDistance > SELECTION_DISTANCE)
 		{
@@ -460,7 +460,6 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 			else
 			{
 				// Edge
-				hotEdge   = { edge .index0, edge .index1 };
 				hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
 			}
 		}

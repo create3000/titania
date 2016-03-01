@@ -78,8 +78,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExtrudeSelectedEdgesButton", m_ExtrudeSelectedEdgesButton);
 	m_builder -> get_widget ("ExtrudeSelectedFacesButton", m_ExtrudeSelectedFacesButton);
 	m_builder -> get_widget ("ChipOfFacesButton", m_ChipOfFacesButton);
-	m_builder -> get_widget ("RemoveFacesButton", m_RemoveFacesButton);
+	m_builder -> get_widget ("DeleteFacesButton", m_DeleteFacesButton);
 	m_builder -> get_widget ("FlipVertexOrderingButton", m_FlipVertexOrderingButton);
+	m_builder -> get_widget ("CutPolygonsButton", m_CutPolygonsButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
@@ -109,8 +110,11 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_ExtrudeSelectedEdgesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_extrude_selected_edges_clicked));
 	m_ExtrudeSelectedFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_extrude_selected_faces_clicked));
 	m_ChipOfFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_chip_of_face_clicked));
-	m_RemoveFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_remove_selected_faces_clicked));
+	m_DeleteFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_delete_selected_faces_clicked));
 	m_FlipVertexOrderingButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_flip_vertex_ordering_clicked));
+
+	// Connect object Gtk::ToggleButton with id 'CutPolygonsButton'.
+	m_CutPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_clicked));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));

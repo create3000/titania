@@ -20,8 +20,6 @@
  *
  * NON-MILITARY USE ONLY
  *
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
-
  * All create3000 software are effectively free software with a non-military use
  * restriction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
@@ -50,38 +48,38 @@
  *
  ******************************************************************************/
 
-#include "PolygonOffsetGroup.h"
+#include "DepthTestGroup.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/PolygonOffsetContainer.h"
+#include "../../Rendering/DepthTestContainer.h"
 #include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType PolygonOffsetGroup::component      = ComponentType::TITANIA;
-const std::string   PolygonOffsetGroup::typeName       = "PolygonOffsetGroup";
-const std::string   PolygonOffsetGroup::containerField = "children";
+const ComponentType DepthTestGroup::component      = ComponentType::TITANIA;
+const std::string   DepthTestGroup::typeName       = "DepthTestGroup";
+const std::string   DepthTestGroup::containerField = "children";
 
-PolygonOffsetGroup::Fields::Fields () :
-	  type (new SFString ("POLYGON_OFFSET_FILL")),
-	factor (new SFFloat (0)),
-	 units (new SFFloat (0))
+DepthTestGroup::Fields::Fields () :
+	     enabled (new SFBool (true)),
+	    function (new SFString ("LEQUAL")),
+	 depthOffset (new SFDouble (0))
 { }
 
-PolygonOffsetGroup::PolygonOffsetGroup (X3DExecutionContext* const executionContext) :
+DepthTestGroup::DepthTestGroup (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGroupingNode (),
-	     offsetType (GL_POLYGON_OFFSET_FILL)
+	   functionType (GL_LEQUAL)
 {
-	//addType (X3DConstants::PolygonOffsetGroup);
+	//addType (X3DConstants::DepthTestGroup);
 
 	addField (inputOutput,    "metadata",       metadata ());
 
-	addField (inputOutput,    "type",           type ());
-	addField (inputOutput,    "factor",         factor ());
-	addField (inputOutput,    "units",          units ());
+	addField (inputOutput,    "enabled",        enabled ());
+	addField (inputOutput,    "function",       function ());
+	addField (inputOutput,    "depthOffset",    depthOffset ());
 
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
@@ -91,42 +89,56 @@ PolygonOffsetGroup::PolygonOffsetGroup (X3DExecutionContext* const executionCont
 }
 
 X3DBaseNode*
-PolygonOffsetGroup::create (X3DExecutionContext* const executionContext) const
+DepthTestGroup::create (X3DExecutionContext* const executionContext) const
 {
-	return new PolygonOffsetGroup (executionContext);
+	return new DepthTestGroup (executionContext);
 }
 
 void
-PolygonOffsetGroup::initialize ()
+DepthTestGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	type () .addInterest (this, &PolygonOffsetGroup::set_type);
+	function () .addInterest (this, &DepthTestGroup::set_function);
 
-	set_type ();
+	set_function ();
 }
 
 void
-PolygonOffsetGroup::set_type ()
+DepthTestGroup::set_function ()
 {
-	if (type () == "POLYGON_OFFSET_POINT")
-		offsetType = GL_POLYGON_OFFSET_POINT;
+	static const std::map <std::string, GLenum> functionTypes = {
+	   std::make_pair ("NEVER",    GL_NEVER),
+	   std::make_pair ("LESS",     GL_LESS),
+	   std::make_pair ("EQUAL",    GL_EQUAL),
+	   std::make_pair ("LEQUAL",   GL_LEQUAL),
+	   std::make_pair ("GREATER",  GL_GREATER),
+	   std::make_pair ("NOTEQUAL", GL_NOTEQUAL),
+	   std::make_pair ("GEQUAL",   GL_GEQUAL),
+	   std::make_pair ("ALWAYS",   GL_ALWAYS),
+	};
 
-	else if (type () == "POLYGON_OFFSET_LINE")
-		offsetType = GL_POLYGON_OFFSET_LINE;
-
-	else
-		offsetType = GL_POLYGON_OFFSET_FILL;
+	try
+	{
+		functionType = functionTypes .at (function ());
+	}
+	catch (const X3DError &)
+	{
+		functionType = GL_LEQUAL;
+	}
 }
 
 void
-PolygonOffsetGroup::traverse (const TraverseType type)
+DepthTestGroup::traverse (const TraverseType type)
 {
+	getBrowser () -> getDepthTest ()   .push (enabled ());
+	getBrowser () -> getDepthOffset () .push (depthOffset ());
+
 	switch (type)
 	{
 		case TraverseType::DISPLAY:
 		{
-			getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
+			getCurrentLayer () -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
 
 			X3DGroupingNode::traverse (type);
 
@@ -139,12 +151,15 @@ PolygonOffsetGroup::traverse (const TraverseType type)
 			break;
 		}
 	}
+
+	getBrowser () -> getDepthOffset () .pop ();
+	getBrowser () -> getDepthTest ()   .pop ();
 }
 
 void
-PolygonOffsetGroup::addTool ()
+DepthTestGroup::addTool ()
 {
-	//X3DGroupingNode::addTool (new PolygonOffsetGroupTool (this));
+	//X3DGroupingNode::addTool (new DepthTestGroupTool (this));
 }
 
 } // X3D

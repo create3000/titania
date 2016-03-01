@@ -104,8 +104,9 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedEdges", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "extrudeSelectedFaces", new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "chipOfSelectedFaces",  new X3D::SFTime ());
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "removeSelectedFaces",  new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "deleteSelectedFaces",  new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "flipVertexOrdering",   new X3D::SFTime ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutPolygons",          new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	setup ();
@@ -337,7 +338,8 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>       ("extrudeSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("chipOfSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")   .addInterest (innerNode -> getField <X3D::SFTime>       ("flipVertexOrdering"));
-						coordEditor -> getField <X3D::SFTime>      ("removeSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("removeSelectedFaces"));
+						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("deleteSelectedFaces"));
+						coordEditor -> getField <X3D::SFBool>      ("cutPolygons")          .addInterest (innerNode -> getField <X3D::SFBool>       ("cutPolygons"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA>  ("color"));
 
 						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
@@ -411,7 +413,7 @@ GeometryEditor::on_delete ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
-		on_remove_selected_faces_clicked ();
+		on_delete_selected_faces_clicked ();
 		return true;
 	}
 
@@ -575,7 +577,7 @@ GeometryEditor::set_selectedFaces ()
 
 	getExtrudeSelectedFacesButton () .set_sensitive (numSelectedFaces);
 	getChipOfFacesButton          () .set_sensitive (numSelectedFaces);
-	getRemoveFacesButton          () .set_sensitive (numSelectedFaces);
+	getDeleteFacesButton          () .set_sensitive (numSelectedFaces);
 	getFlipVertexOrderingButton   () .set_sensitive (numSelectedFaces);
 
 	set_face_selection ();
@@ -680,13 +682,17 @@ GeometryEditor::on_edit_toggled ()
 			children -> value () = previousSelection;
 		}
 		else
+		{
 			worldInfo -> removeMetaData ("/Titania/Selection/previous");
+			getCutPolygonsButton () .set_active (false);
+		}
 	}
 
 	if (getEditToggleButton () .get_active ())
 		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
 	else
 		getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
+	
 }
 
 void
@@ -887,9 +893,15 @@ GeometryEditor::on_flip_vertex_ordering_clicked ()
 }
 
 void
-GeometryEditor::on_remove_selected_faces_clicked ()
+GeometryEditor::on_delete_selected_faces_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("removeSelectedFaces", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("deleteSelectedFaces", chrono::now ());
+}
+
+void
+GeometryEditor::on_cut_polygons_clicked ()
+{
+	coordEditor -> setField <X3D::SFBool> ("cutPolygons", getCutPolygonsButton () .get_active ());
 }
 
 void

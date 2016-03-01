@@ -278,12 +278,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="RemoveFacesButton">
+                  <object class="GtkButton" id="DeleteFacesButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Remove selected faces.</property>
-                    <signal name="clicked" handler="on_remove_selected_faces_clicked" swapped="no"/>
+                    <signal name="clicked" handler="on_delete_selected_faces_clicked" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image9">
                         <property name="visible">True</property>
@@ -320,7 +320,25 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkToggleButton" id="CutPolygonsButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Cut polygons.</property>
+                    <signal name="toggled" handler="on_cut_polygons_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkImage" id="image15">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="stock">Knife</property>
+                        <property name="icon_size">1</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">4</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>

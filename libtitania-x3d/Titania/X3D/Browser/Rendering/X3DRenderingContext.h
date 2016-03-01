@@ -62,7 +62,9 @@ namespace X3D {
 
 class MotionBlur;
 
-using ClipPlaneStack = std::stack <GLenum>;
+using ClipPlaneStack   = std::stack <GLenum>;
+using DepthTestStack   = std::stack <bool>;
+using DepthOffsetStack = std::stack <double>;
 
 class X3DRenderingContext :
 	virtual public X3DBaseNode
@@ -78,6 +80,14 @@ public:
 	ClipPlaneStack &
 	getClipPlanes ()
 	{ return clipPlanes; }
+
+	DepthTestStack &
+	getDepthTest ()
+	{ return depthTest; }
+
+	DepthOffsetStack &
+	getDepthOffset ()
+	{ return depthOffset; }
 
 	const X3DPtr <MotionBlur> &
 	getMotionBlur () const
@@ -114,6 +124,8 @@ private:
 
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
+	DepthTestStack      depthTest;
+	DepthOffsetStack    depthOffset;
 	X3DPtr <MotionBlur> motionBlur;
 
 };

@@ -201,6 +201,7 @@ private:
 
 	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;
+	ShapeContainerArray      depthShapes;
 	CollisionContainerArray  collisionShapes;
 	std::vector <Collision*> activeCollisions;
 

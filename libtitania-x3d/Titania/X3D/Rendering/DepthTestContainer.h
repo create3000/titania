@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,43 +48,42 @@
  *
  ******************************************************************************/
 
-#include "PolygonOffsetContainer.h"
+#ifndef __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
 
-#include "../Components/Rendering/PolygonOffsetGroup.h"
+#include "../Rendering/X3DCollectableObject.h"
+#include "../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
 
-PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffsetGroup* const node) :
-	X3DCollectableObject (),
-	                node (node),
-	             enabled (false),
-	              factor (0),
-	               units (0)
-{ }
-        
-void
-PolygonOffsetContainer::enable ()
+class DepthTestGroup;
+
+class DepthTestContainer :
+	public X3DCollectableObject
 {
-	enabled = glIsEnabled (node -> getType ());
+public:
 
-	glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-	glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
+	DepthTestContainer (DepthTestGroup* const);
 
-	glEnable (node -> getType ());
-	glPolygonOffset (node -> factor (), node -> units ());
-}
+	virtual
+	void
+	enable () final override;
 
-void
-PolygonOffsetContainer::disable ()
-{
-	if (enabled)
-		glEnable (node -> getType ());
-	else
-		glDisable (node -> getType ());
+	virtual
+	void
+	disable () final override;
 
-	glPolygonOffset (factor, units);
-}
+
+private:
+
+	DepthTestGroup* const node;
+	bool                  enabled;
+	GLint                 function;
+
+};
 
 } // X3D
 } // titania
+
+#endif

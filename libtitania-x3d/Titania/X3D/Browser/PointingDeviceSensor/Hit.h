@@ -77,7 +77,9 @@ public:
 	     const PointingDeviceSensorSet &,
 	     const X3DShapeNodePtr,
 	     const X3DLayerNodePtr,
-	     const size_t);
+	     const size_t,
+	     const bool,
+	     const double);
 
 	const Vector2d                pointer;
 	const Matrix4d                modelViewMatrix;

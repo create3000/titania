@@ -160,12 +160,16 @@ public:
 	{ return *m_ChipOfFacesButton; }
 
 	Gtk::Button &
-	getRemoveFacesButton () const
-	{ return *m_RemoveFacesButton; }
+	getDeleteFacesButton () const
+	{ return *m_DeleteFacesButton; }
 
 	Gtk::Button &
 	getFlipVertexOrderingButton () const
 	{ return *m_FlipVertexOrderingButton; }
+
+	Gtk::ToggleButton &
+	getCutPolygonsButton () const
+	{ return *m_CutPolygonsButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -247,11 +251,15 @@ public:
 
 	virtual
 	void
-	on_remove_selected_faces_clicked () = 0;
+	on_delete_selected_faces_clicked () = 0;
 
 	virtual
 	void
 	on_flip_vertex_ordering_clicked () = 0;
+
+	virtual
+	void
+	on_cut_polygons_clicked () = 0;
 
 	virtual
 	void
@@ -318,8 +326,9 @@ private:
 	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
 	Gtk::Button*                m_ExtrudeSelectedFacesButton;
 	Gtk::Button*                m_ChipOfFacesButton;
-	Gtk::Button*                m_RemoveFacesButton;
+	Gtk::Button*                m_DeleteFacesButton;
 	Gtk::Button*                m_FlipVertexOrderingButton;
+	Gtk::ToggleButton*          m_CutPolygonsButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

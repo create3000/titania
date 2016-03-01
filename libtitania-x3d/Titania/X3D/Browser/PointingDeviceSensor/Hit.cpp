@@ -63,17 +63,21 @@ Hit::Hit (const Vector2d & pointer,
           const PointingDeviceSensorSet & sensors,
           const X3DShapeNodePtr shape,
           const X3DLayerNodePtr layer,
-          const size_t layerNumber) :
+          const size_t layerNumber,
+          const bool depthTest,
+          const double depthOffset) :
 	        pointer (pointer),
-	modelViewMatrix (modelViewMatrix), // Shapes model view matrix.
-	         hitRay (hitRay),                   // Hit ray in absolute space (null space).
+	modelViewMatrix (modelViewMatrix),    // Shapes model view matrix.
+	         hitRay (hitRay),             // Hit ray in absolute space (null space).
 	   intersection (intersection),       // All values are transform to absolute space (null space), except intersection -> triangle, this isn't transformed.
-	       distance (intersection -> point .z ()),
+	       distance (intersection -> point .z () + depthOffset),
 	        sensors (sensors),
 	          shape (shape),
 	          layer (layer),
 	    layerNumber (layerNumber)
-{ }
+{
+	__LOG__ << distance << std::endl;
+}
 
 Hit::~Hit ()
 { }

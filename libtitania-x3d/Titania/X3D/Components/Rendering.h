@@ -55,6 +55,7 @@
 #include "Rendering/Color.h"
 #include "Rendering/ColorRGBA.h"
 #include "Rendering/Coordinate.h"
+#include "Rendering/DepthTestGroup.h"
 #include "Rendering/IndexedLineSet.h"
 #include "Rendering/IndexedTriangleFanSet.h"
 #include "Rendering/IndexedTriangleSet.h"

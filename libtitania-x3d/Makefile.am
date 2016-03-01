@@ -301,6 +301,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/Color.cpp \
 	Titania/X3D/Components/Rendering/ColorRGBA.cpp \
 	Titania/X3D/Components/Rendering/Coordinate.cpp \
+	Titania/X3D/Components/Rendering/DepthTestGroup.cpp \
 	Titania/X3D/Components/Rendering/IndexedLineSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.cpp \
@@ -504,6 +505,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Prototype/X3DProtoDeclarationNode.cpp \
 	Titania/X3D/Rendering/ClipPlaneContainer.cpp \
 	Titania/X3D/Rendering/CollisionContainer.cpp \
+	Titania/X3D/Rendering/DepthTestContainer.cpp \
 	Titania/X3D/Rendering/FrameBuffer.cpp \
 	Titania/X3D/Rendering/LightContainer.cpp \
 	Titania/X3D/Rendering/PolygonModeContainer.cpp \

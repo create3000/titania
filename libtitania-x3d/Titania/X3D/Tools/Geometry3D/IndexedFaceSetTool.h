@@ -60,6 +60,9 @@
 namespace titania {
 namespace X3D {
 
+class Switch;
+class Transform;
+
 class IndexedFaceSetTool :
 	virtual public IndexedFaceSet,
 	virtual public X3DComposedGeometryNodeTool,
@@ -192,12 +195,20 @@ public:
 	{ return *fields .flipVertexOrdering; }
 
 	SFTime &
-	removeSelectedFaces ()
-	{ return *fields .removeSelectedFaces; }
+	deleteSelectedFaces ()
+	{ return *fields .deleteSelectedFaces; }
 
 	const SFTime &
-	removeSelectedFaces () const
-	{ return *fields .removeSelectedFaces; }
+	deleteSelectedFaces () const
+	{ return *fields .deleteSelectedFaces; }
+
+	SFBool &
+	cutPolygons ()
+	{ return *fields .cutPolygons; }
+
+	const SFBool &
+	cutPolygons () const
+	{ return *fields .cutPolygons; }
 
 	UndoStepContainerPtr &
 	undo_changed ()
@@ -300,7 +311,19 @@ private:
 	set_flipVertexOrdering ();
 
 	void
-	set_removeSelectedFaces ();
+	set_deleteSelectedFaces ();
+
+	void
+	set_cutPolygons ();
+
+	bool
+	set_knife ();
+
+	void
+	set_knife_active ();
+
+	void
+	set_knife_translation ();
 
 	std::vector <int32_t>
 	splitPoints (const std::set <int32_t> &);
@@ -357,7 +380,8 @@ private:
 		SFTime* const extrudeSelectedFaces;
 		SFTime* const chipOfSelectedFaces;
 		SFTime* const flipVertexOrdering;
-		SFTime* const removeSelectedFaces;
+		SFTime* const deleteSelectedFaces;
+		SFBool* const cutPolygons;
 		UndoStepContainerPtr* const undo_changed;
 	};
 
@@ -365,8 +389,11 @@ private:
 
 	X3DPtr <TouchSensor>  touchSensor;
 	X3DPtr <PlaneSensor>  planeSensor;
+	X3DPtr <Switch>       knifeSwitch;
+	X3DPtr <Transform>    knifeCircle;
 	Vector3d              translation;
 	size_t                translations;
+	Vector3d              startPoint;
 	UndoStepPtr           undoStep;
 
 };
