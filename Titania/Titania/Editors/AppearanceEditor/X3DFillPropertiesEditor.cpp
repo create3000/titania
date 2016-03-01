@@ -80,6 +80,8 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 void
 X3DFillPropertiesEditor::initialize ()
 {
+	getPreview () -> initialized () .addInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+
 	fillPropertiesBuffer .addInterest (this, &X3DFillPropertiesEditor::set_node);
 }
 
@@ -118,15 +120,24 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 	{
 		try
 		{
+			const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
 			auto & field = appearance -> getField <X3D::SFNode> ("fillProperties");
 
 			field .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
 			field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
 
 			if (getFillPropertiesCheckButton () .get_active ())
+			{
 				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
+				previewAppearance -> fillProperties () = fillProperties;
+			}
 			else
+			{
 				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				previewAppearance -> fillProperties () = nullptr;
+			}
+
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -146,39 +157,55 @@ X3DFillPropertiesEditor::set_fillProperties ()
 void
 X3DFillPropertiesEditor::set_node ()
 {
-	undoStep .reset ();
-
-	auto          tuple     = getSelection <X3D::FillProperties> (appearances, "fillProperties");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
-
-	fillProperties = std::move (std::get <0> (tuple));
-
-	if (not fillProperties)
+	try
 	{
-		fillProperties = new X3D::FillProperties (getCurrentContext ());
-		fillProperties -> setup ();
+		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+		if (fillProperties)
+			fillProperties -> removeInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+
+		undoStep .reset ();
+
+		auto          tuple     = getSelection <X3D::FillProperties> (appearances, "fillProperties");
+		const int32_t active    = std::get <1> (tuple);
+		const bool    hasParent = std::get <2> (tuple);
+		const bool    hasField  = (active not_eq -2);
+
+		fillProperties = std::move (std::get <0> (tuple));
+
+		previewAppearance -> fillProperties () = fillProperties;
+
+		if (fillProperties)
+			fillProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+
+		else
+		{
+			fillProperties = new X3D::FillProperties (getCurrentContext ());
+			fillProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			fillProperties -> setup ();
+		}
+
+		changing = true;
+
+		getSelectFillPropertiesBox ()   .set_sensitive (hasParent);
+		getFillPropertiesMainBox ()     .set_sensitive (hasField);
+		getFillPropertiesCheckButton () .set_active (active > 0);
+		getFillPropertiesCheckButton () .set_inconsistent (active < 0);
+
+		getFillPropertiesUnlinkButton () .set_sensitive (active > 0 and fillProperties -> getCloneCount () > 1);
+		getFillPropertiesBox ()          .set_sensitive (active > 0);
+
+		changing = false;
+
+		const X3D::MFNode nodes = { fillProperties };
+
+		filled     .setNodes (nodes);
+		hatched    .setNodes (nodes);
+		hatchStyle .setNodes (nodes);
+		hatchColor .setNodes (nodes);
 	}
-
-	changing = true;
-
-	getSelectFillPropertiesBox ()   .set_sensitive (hasParent);
-	getFillPropertiesMainBox ()     .set_sensitive (hasField);
-	getFillPropertiesCheckButton () .set_active (active > 0);
-	getFillPropertiesCheckButton () .set_inconsistent (active < 0);
-
-	getFillPropertiesUnlinkButton () .set_sensitive (active > 0 and fillProperties -> getCloneCount () > 1);
-	getFillPropertiesBox ()          .set_sensitive (active > 0);
-
-	changing = false;
-
-	const X3D::MFNode nodes = { fillProperties };
-
-	filled     .setNodes (nodes);
-	hatched    .setNodes (nodes);
-	hatchStyle .setNodes (nodes);
-	hatchColor .setNodes (nodes);
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

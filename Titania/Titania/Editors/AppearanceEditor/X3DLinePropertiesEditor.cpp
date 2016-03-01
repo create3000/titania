@@ -78,6 +78,8 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 void
 X3DLinePropertiesEditor::initialize ()
 {
+	getPreview () -> initialized () .addInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+
 	linePropertiesBuffer .addInterest (this, &X3DLinePropertiesEditor::set_node);
 }
 
@@ -116,15 +118,24 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 	{
 		try
 		{
+			const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
+
 			auto & field = appearance -> getField <X3D::SFNode> ("lineProperties");
 
 			field .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
 			field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
 
 			if (getLinePropertiesCheckButton () .get_active ())
+			{
 				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
+				previewAppearance -> lineProperties () = lineProperties;
+			}
 			else
+			{
 				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				previewAppearance -> lineProperties () = nullptr;
+			}
+
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -144,39 +155,55 @@ X3DLinePropertiesEditor::set_lineProperties ()
 void
 X3DLinePropertiesEditor::set_node ()
 {
-	undoStep .reset ();
-
-	auto          tuple     = getSelection <X3D::LineProperties> (appearances, "lineProperties");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
-
-	lineProperties = std::move (std::get <0> (tuple));
-
-	if (not lineProperties)
+	try
 	{
-		lineProperties = new X3D::LineProperties (getCurrentContext ());
-		lineProperties -> linewidthScaleFactor () = 1;
-		lineProperties -> setup ();
+		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
+
+		if (lineProperties)
+			lineProperties -> removeInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+
+		undoStep .reset ();
+
+		auto          tuple     = getSelection <X3D::LineProperties> (appearances, "lineProperties");
+		const int32_t active    = std::get <1> (tuple);
+		const bool    hasParent = std::get <2> (tuple);
+		const bool    hasField  = (active not_eq -2);
+
+		lineProperties = std::move (std::get <0> (tuple));
+
+		previewAppearance -> lineProperties () = lineProperties;
+
+		if (lineProperties)
+			lineProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+		
+		else
+		{
+			lineProperties = new X3D::LineProperties (getCurrentContext ());
+			lineProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			lineProperties -> linewidthScaleFactor () = 1;
+			lineProperties -> setup ();
+		}
+
+		changing = true;
+
+		getLinePropertiesMainBox ()     .set_sensitive (hasField);
+		getLinePropertiesCheckButton () .set_sensitive (hasParent);
+		getLinePropertiesCheckButton () .set_active (active > 0);
+		getLinePropertiesCheckButton () .set_inconsistent (active < 0);
+
+		getLinePropertiesUnlinkButton () .set_sensitive (active > 0 and lineProperties -> getCloneCount () > 1);
+		getLinePropertiesBox ()          .set_sensitive (active > 0);
+
+		changing = false;
+
+		const X3D::MFNode nodes = { lineProperties };
+
+		applied              .setNodes (nodes);
+		linetype             .setNodes (nodes);
+		linewidthScaleFactor .setNodes (nodes);
 	}
-
-	changing = true;
-
-	getLinePropertiesMainBox ()     .set_sensitive (hasField);
-	getLinePropertiesCheckButton () .set_sensitive (hasParent);
-	getLinePropertiesCheckButton () .set_active (active > 0);
-	getLinePropertiesCheckButton () .set_inconsistent (active < 0);
-
-	getLinePropertiesUnlinkButton () .set_sensitive (active > 0 and lineProperties -> getCloneCount () > 1);
-	getLinePropertiesBox ()          .set_sensitive (active > 0);
-
-	changing = false;
-
-	const X3D::MFNode nodes = { lineProperties };
-
-	applied              .setNodes (nodes);
-	linetype             .setNodes (nodes);
-	linewidthScaleFactor .setNodes (nodes);
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

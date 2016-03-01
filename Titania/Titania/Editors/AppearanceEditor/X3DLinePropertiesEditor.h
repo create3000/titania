@@ -82,6 +82,11 @@ protected:
 	initialize () override;
 
 	virtual
+	const X3D::BrowserPtr &
+	getPreview () const = 0;
+
+
+	virtual
 	void
 	set_selection (const X3D::MFNode &) override;
 

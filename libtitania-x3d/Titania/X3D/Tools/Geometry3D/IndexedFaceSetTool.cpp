@@ -57,6 +57,7 @@
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Editing/Selection/FaceSelection.h"
 
 #include <Titania/String/sprintf.h>
@@ -90,9 +91,10 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                     planeSensor (),
 	                     knifeSwitch (),
 	                     knifeCircle (),
+	                 knifeLineSwitch (),
+	             knifeLineCoordinate (),
 	                     translation (),
 	                    translations (0),
-	                      startPoint (),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	addType (X3DConstants::IndexedFaceSetTool);
@@ -139,7 +141,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addChildren (touchSensor,
 	             planeSensor,
 	             knifeSwitch,
-	             knifeCircle);
+	             knifeCircle,
+	             knifeLineSwitch,
+	             knifeLineCoordinate);
 }
 
 void
@@ -169,10 +173,12 @@ IndexedFaceSetTool::set_loadState ()
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
-		planeSensor = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
-		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
-		knifeSwitch = inlineNode -> getExportedNode <Switch> ("KnifeSwitch");
-		knifeCircle = inlineNode -> getExportedNode <Transform> ("KnifeCircle");
+		planeSensor         = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
+		touchSensor         = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
+		knifeSwitch         = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
+		knifeCircle         = inlineNode -> getExportedNode <Transform>        ("KnifeCircle");
+		knifeLineSwitch     = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
+		knifeLineCoordinate = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
 
 		getBrowser () -> hasControlKey ()   .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed ()  .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
@@ -721,28 +727,27 @@ IndexedFaceSetTool::set_cutPolygons ()
 bool
 IndexedFaceSetTool::set_knife ()
 {
+	knifeLineSwitch -> whichChoice () = touchSensor -> isActive ();	   
+	
 	if (not touchSensor -> isActive ())
 	{
 	   // Set start point
 
+		const Line3d line (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+		                   getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+		                   math::point_type ());
+		                  
 		if (getHotPoints () .size () == 1)
-		{
-			startPoint = getCoord () -> get1Point (getHotPoints () .front ());
-		}
-		else
-		{
-			const Line3d line (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-			                   getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-			                   math::point_type ());
-			
-			startPoint = line .closest_point (touchSensor -> getHitPoint ());	   
-		}
+			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
 
-		knifeCircle -> translation () = startPoint;
+		else
+			knifeLineCoordinate -> point () [0] = line .closest_point (touchSensor -> getHitPoint ());	   
+
+		knifeCircle -> translation () = knifeLineCoordinate -> point () [0] .getValue ();
 	}
 	else
 	{
-	   
+		knifeLineCoordinate -> point () [1] = touchSensor -> getHitPoint ();	   
 	}
 
 	return true;

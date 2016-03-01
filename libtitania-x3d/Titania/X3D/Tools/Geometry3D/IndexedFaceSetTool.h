@@ -62,6 +62,9 @@ namespace X3D {
 
 class Switch;
 class Transform;
+class TouchSensor;
+class PlaneSensor;
+class CoordinateDouble;
 
 class IndexedFaceSetTool :
 	virtual public IndexedFaceSet,
@@ -387,14 +390,15 @@ private:
 
 	Fields fields;
 
-	X3DPtr <TouchSensor>  touchSensor;
-	X3DPtr <PlaneSensor>  planeSensor;
-	X3DPtr <Switch>       knifeSwitch;
-	X3DPtr <Transform>    knifeCircle;
-	Vector3d              translation;
-	size_t                translations;
-	Vector3d              startPoint;
-	UndoStepPtr           undoStep;
+	X3DPtr <TouchSensor>      touchSensor;
+	X3DPtr <PlaneSensor>      planeSensor;
+	X3DPtr <Switch>           knifeSwitch;
+	X3DPtr <Transform>        knifeCircle;
+	X3DPtr <Switch>           knifeLineSwitch;
+	X3DPtr <CoordinateDouble> knifeLineCoordinate;
+	Vector3d                  translation;
+	size_t                    translations;
+	UndoStepPtr               undoStep;
 
 };
 
