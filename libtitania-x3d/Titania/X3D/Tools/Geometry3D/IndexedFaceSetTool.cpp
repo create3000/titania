@@ -710,7 +710,10 @@ IndexedFaceSetTool::set_cutPolygons ()
 {
 	__LOG__ <<std::endl;
 
-	setActionType (ActionType::CUT);
+	if (cutPolygons ())
+		setActionType (ActionType::CUT);
+	else
+		setActionType (ActionType::SELECT);
 
 	knifeSwitch -> whichChoice () = cutPolygons ();
 }

@@ -54,6 +54,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Grouping/Switch.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
@@ -89,6 +90,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                     fields (),
 	                touchSensor (),
 	                planeSensor (),
+	                  hotSwitch (),
 	              hotPointCoord (),
 	           hotEdgesGeometry (),
 	           activePointCoord (),
@@ -132,6 +134,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 
 	addChildren (touchSensor,
 	             planeSensor,
+	             hotSwitch,
 	             hotPointCoord,
 	             hotEdgesGeometry,
 	             activePointCoord,
@@ -167,6 +170,14 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 	set_selectionType ();
 	set_loadState ();
 	set_coord ();
+}
+
+void
+X3DIndexedFaceSetSelectionObject::setActionType (const ActionType value)
+{
+	actionType = value;
+
+	set_plane_sensor_active ();
 }
 
 void
@@ -268,15 +279,16 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		const auto   hotFaceGeometry    = inlineNode -> getExportedNode <IndexedFaceSet> ("HotFaceGeometry");
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
-		touchSensor           = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
-		planeSensor           = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
+		touchSensor           = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
+		planeSensor           = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
+		hotSwitch             = inlineNode -> getExportedNode <Switch>           ("HotSwitch");
 		hotPointCoord         = inlineNode -> getExportedNode <CoordinateDouble> ("HotPointCoord");
-		hotEdgesGeometry      = inlineNode -> getExportedNode <IndexedLineSet> ("HotEdgesGeometry");
+		hotEdgesGeometry      = inlineNode -> getExportedNode <IndexedLineSet>   ("HotEdgesGeometry");
 		activePointCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("ActivePointCoord");
-		activeEdgesGeometry   = inlineNode -> getExportedNode <IndexedLineSet> ("ActiveEdgesGeometry");
+		activeEdgesGeometry   = inlineNode -> getExportedNode <IndexedLineSet>   ("ActiveEdgesGeometry");
 		selectionCoord        = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
-		selectedEdgesGeometry = inlineNode -> getExportedNode <IndexedLineSet> ("SelectedEdgesGeometry");
-		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("SelectedFacesGeometry");
+		selectedEdgesGeometry = inlineNode -> getExportedNode <IndexedLineSet>   ("SelectedEdgesGeometry");
+		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet>   ("SelectedFacesGeometry");
 
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint);
 		touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_over);
@@ -373,24 +385,33 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 {
-	if (getActionType () == ActionType::TRANSLATE)
-		return;
-
-	switch (getSelectionType ())
+	switch (getActionType ())
 	{
-		case SelectionType::POINTS:
-			selectPoints (activePoints, getSelectType ());
-			break;
-
-		case SelectionType::EDGES:
-			selectEdge (activeEdge, getSelectType ());
-			break;
-
-		case SelectionType::FACES:
+		case ActionType::SELECT:
 		{
-			selectFace (activeFace, getSelectType ());
+			switch (getSelectionType ())
+			{
+				case SelectionType::POINTS:
+					selectPoints (activePoints, getSelectType ());
+					break;
+
+				case SelectionType::EDGES:
+					selectEdge (activeEdge, getSelectType ());
+					break;
+
+				case SelectionType::FACES:
+				{
+					selectFace (activeFace, getSelectType ());
+					break;
+				}
+			}
+
 			break;
 		}
+
+		case ActionType::TRANSLATE:
+		case ActionType::CUT:
+			return;
 	}
 
 	updateGeometries ();
@@ -414,12 +435,27 @@ X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & 
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_plane_sensor_active (const bool active)
+X3DIndexedFaceSetSelectionObject::set_plane_sensor_active ()
 {
-	if (active)
-		return;
+	switch (getActionType ())
+	{
+		case ActionType::SELECT:
+		case ActionType::TRANSLATE:
+		{
+			hotSwitch -> whichChoice () = planeSensor -> isActive ();
 
-	set_coord_point ();
+			if (planeSensor -> isActive ())
+				return;
+
+			set_coord_point ();
+			break;
+		}
+		case ActionType::CUT:
+		{
+			hotSwitch -> whichChoice () = true;
+			break;
+		}
+	} 
 }
 
 ///  Determine and update hot and active points, edges and face
@@ -449,24 +485,39 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 
 		hotEdge = { edge .index0, edge .index1 };
 	
-		if (pointDistance > SELECTION_DISTANCE)
+		switch (getActionType ())
 		{
-			if (edgeDistance > SELECTION_DISTANCE)
-			{
-				// Face
-				for (const auto & vertex : vertices)
-					hotPoints .emplace_back (coordIndex () [vertex]);
-			}
-			else
+			case ActionType::CUT:
 			{
 				// Edge
 				hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+				break;
 			}
-		}
-		else
-		{
-			// Point
-			hotPoints = { index };
+			case ActionType::SELECT:
+			case ActionType::TRANSLATE:
+			{
+				if (pointDistance > SELECTION_DISTANCE)
+				{
+					if (edgeDistance > SELECTION_DISTANCE)
+					{
+						// Face
+						for (const auto & vertex : vertices)
+							hotPoints .emplace_back (coordIndex () [vertex]);
+					}
+					else
+					{
+						// Edge
+						hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+					}
+				}
+				else
+				{
+					// Point
+					hotPoints = { index };
+				}
+
+				break;
+			}
 		}
 
 		// Active points for near point or face

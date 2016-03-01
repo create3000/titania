@@ -75,9 +75,7 @@ Hit::Hit (const Vector2d & pointer,
 	          shape (shape),
 	          layer (layer),
 	    layerNumber (layerNumber)
-{
-	__LOG__ << distance << std::endl;
-}
+{ }
 
 Hit::~Hit ()
 { }

@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Tue, 01 Mar 2016 06:35:30 GMT"
+META "modified" "Tue, 01 Mar 2016 09:17:31 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,111 +66,36 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF _1 DepthTestGroup {
-              enabled FALSE
+            value DEF MagicPointsSwitch Switch {
+              whichChoice 0
               children [
-                DEF MagicEdgesSwitch Switch {
-                  whichChoice 0
-                  children [
-                    DEF ActiveEdges Shape {
-                      appearance Appearance {
-                        lineProperties DEF _2 LineProperties {
-                          linewidthScaleFactor 2
-                        }
-                        material DEF ActiveMaterial Material {
-                          diffuseColor 0 0 0
-                          emissiveColor 0.5 0.0792565 0
-                          transparency 0.207602
-                        }
-                      }
-                      geometry DEF ActiveEdgesGeometry IndexedLineSet { }
+                DEF ActivePoints Shape {
+                  appearance Appearance {
+                    lineProperties DEF _1 LineProperties {
+                      linewidthScaleFactor 8
                     }
-                    DEF HotEdges Shape {
-                      appearance Appearance {
-                        lineProperties LineProperties {
-                          linewidthScaleFactor 2
-                        }
-                        material DEF HotMaterial Material {
-                          diffuseColor 0 0 0
-                          emissiveColor 0.519546 0.173182 0.865911
-                          transparency 0.207602
-                        }
-                      }
-                      geometry DEF HotEdgesGeometry IndexedLineSet { }
+                    material DEF ActiveMaterial Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.5 0.0792565 0
+                      transparency 0.207602
                     }
-                  ]
+                  }
+                  geometry PointSet {
+                    coord DEF ActivePointCoord CoordinateDouble { }
+                  }
                 }
-                DEF MagicPointsSwitch Switch {
-                  whichChoice 0
-                  children [
-                    DEF ActivePoints Shape {
-                      appearance Appearance {
-                        lineProperties DEF _3 LineProperties {
-                          linewidthScaleFactor 8
-                        }
-                        material USE ActiveMaterial
-                      }
-                      geometry PointSet {
-                        coord DEF ActivePointCoord CoordinateDouble { }
-                      }
+                DEF HotPoints Shape {
+                  appearance Appearance {
+                    lineProperties USE _1
+                    material DEF HotMaterial Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.519546 0.173182 0.865911
+                      transparency 0.207602
                     }
-                    DEF HotPoints Shape {
-                      appearance Appearance {
-                        lineProperties USE _3
-                        material USE HotMaterial
-                      }
-                      geometry PointSet {
-                        coord DEF HotPointCoord CoordinateDouble { }
-                      }
-                    }
-                    Group {
-                      children [
-                        DEF _4 BooleanFilter { }
-                        DEF _5 IntegerTrigger {
-                          integerKey 1
-                        }
-                        DEF _6 IntegerTrigger { }
-                      ]
-                    }
-                  ]
-                }
-                DEF KnifeSwitch Switch {
-                  whichChoice 0
-                  children [
-                    Group { }
-                    DEF KnifeCircle Transform {
-                      children Billboard {
-                        axisOfRotation 0 0 0
-                        children ScreenGroup {
-                          children [
-                            Shape {
-                              appearance Appearance {
-                                lineProperties LineProperties {
-                                  linetype 2
-                                  linewidthScaleFactor 1
-                                }
-                                material Material {
-                                  diffuseColor 0 0 0
-                                }
-                              }
-                              geometry DEF _7 Circle2D {
-                                radius 3
-                              }
-                            }
-                            Shape {
-                              appearance Appearance {
-                                material Material {
-                                  diffuseColor 0 0 0
-                                  emissiveColor 1 1 1
-                                }
-                              }
-                              geometry USE _7
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  ]
+                  }
+                  geometry PointSet {
+                    coord DEF HotPointCoord CoordinateDouble { }
+                  }
                 }
               ]
             }
@@ -186,7 +111,7 @@ Collision {
   children DEF Switch Switch {
     children [
       Group { }
-      DEF _8 TransformMatrix3D {
+      DEF _2 TransformMatrix3D {
         children [
           Group {
             children [
@@ -266,7 +191,9 @@ Collision {
           }
           DEF SelectedEdges Shape {
             appearance Appearance {
-              lineProperties USE _2
+              lineProperties DEF _3 LineProperties {
+                linewidthScaleFactor 2
+              }
               material DEF SelectedMaterial Material {
                 diffuseColor 0 0 0
                 emissiveColor 1 0.75154 0
@@ -276,14 +203,82 @@ Collision {
           }
           DEF SelectedPoints Shape {
             appearance Appearance {
-              lineProperties USE _3
+              lineProperties USE _1
               material USE SelectedMaterial
             }
             geometry PointSet {
               coord DEF SelectionCoord CoordinateDouble { }
             }
           }
-          USE _1
+          DepthTestGroup {
+            enabled FALSE
+            children [
+              DEF MagicEdgesSwitch Switch {
+                whichChoice 0
+                children [
+                  DEF ActiveEdges Shape {
+                    appearance Appearance {
+                      lineProperties USE _3
+                      material USE ActiveMaterial
+                    }
+                    geometry DEF ActiveEdgesGeometry IndexedLineSet { }
+                  }
+                  DEF HotEdges Shape {
+                    appearance Appearance {
+                      lineProperties LineProperties {
+                        linewidthScaleFactor 2
+                      }
+                      material USE HotMaterial
+                    }
+                    geometry DEF HotEdgesGeometry IndexedLineSet { }
+                  }
+                ]
+              }
+              USE MagicPointsSwitch
+            ]
+          }
+          DepthTestGroup {
+            enabled FALSE
+            depthOffset 1000
+            children DEF KnifeSwitch Switch {
+              whichChoice 0
+              children [
+                Group { }
+                DEF KnifeCircle Transform {
+                  children Billboard {
+                    axisOfRotation 0 0 0
+                    children ScreenGroup {
+                      children [
+                        Shape {
+                          appearance Appearance {
+                            lineProperties LineProperties {
+                              linetype 2
+                              linewidthScaleFactor 1
+                            }
+                            material Material {
+                              diffuseColor 0 0 0
+                            }
+                          }
+                          geometry DEF _4 Circle2D {
+                            radius 3
+                          }
+                        }
+                        Shape {
+                          appearance Appearance {
+                            material Material {
+                              diffuseColor 0 0 0
+                              emissiveColor 1 1 1
+                            }
+                          }
+                          geometry USE _4
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
         ]
       }
     ]
@@ -294,11 +289,6 @@ ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
 ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
 ROUTE MagicPointsSwitch.whichChoice_changed TO MagicEdgesSwitch.set_whichChoice
 ROUTE ActiveEdgesGeometry.coord_changed TO HotEdgesGeometry.set_coord
-ROUTE _4.inputTrue TO _5.set_boolean
-ROUTE _4.inputFalse TO _6.set_boolean
-ROUTE _6.triggerValue TO MagicPointsSwitch.set_whichChoice
-ROUTE PlaneSensor.isActive TO _4.set_boolean
-ROUTE _5.triggerValue TO MagicPointsSwitch.set_whichChoice
 ROUTE MagicPointsSwitch.whichChoice_changed TO MagicFaceSwitch.set_whichChoice
 ROUTE ActiveEdgesGeometry.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
 ROUTE HotEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
@@ -318,6 +308,7 @@ EXPORT EdgesMaterial
 EXPORT HotEdgesGeometry
 EXPORT HotFaceGeometry
 EXPORT HotPointCoord
+EXPORT MagicPointsSwitch AS HotSwitch
 EXPORT KnifeCircle
 EXPORT KnifeSwitch
 EXPORT PlaneSensor
@@ -327,4 +318,4 @@ EXPORT SelectionCoord
 EXPORT SelectionShape
 EXPORT Switch
 EXPORT TouchSensor
-EXPORT _8 AS TransformMatrix3D
+EXPORT _2 AS TransformMatrix3D

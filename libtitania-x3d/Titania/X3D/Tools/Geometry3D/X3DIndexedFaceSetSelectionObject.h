@@ -57,6 +57,7 @@ namespace titania {
 namespace X3D {
 
 class FaceSelection;
+class Switch;
 class PlaneSensor;
 class TouchSensor;
 class CoordinateDouble;
@@ -268,8 +269,7 @@ protected:
 	///  @name Member access
 
 	void
-	setActionType (const ActionType value)
-	{ actionType = value; }
+	setActionType (const ActionType);
 
 	ActionType
 	getActionType () const
@@ -401,7 +401,7 @@ private:
 	set_selection (const std::vector <Vector3d> &) final override;
 
 	void
-	set_plane_sensor_active (const bool);
+	set_plane_sensor_active ();
 
 	void
 	setMagicSelection (const Vector3d &, const std::vector <int32_t> &);
@@ -533,6 +533,7 @@ private:
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <PlaneSensor>       planeSensor;
 	X3DPtr <PlaneSensor>       knifePlaneSensor;
+	X3DPtr <Switch>            hotSwitch;
 	X3DPtr <CoordinateDouble>  hotPointCoord;
 	X3DPtr <IndexedLineSet>    hotEdgesGeometry;
 	X3DPtr <CoordinateDouble>  activePointCoord;
