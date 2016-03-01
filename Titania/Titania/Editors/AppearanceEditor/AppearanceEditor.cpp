@@ -155,6 +155,8 @@ AppearanceEditor::on_appearance_toggled ()
 	addRedoFunction <X3D::SFNode> (shapeNodes, "appearance", undoStep);
 
 	getAppearanceUnlinkButton () .set_sensitive (getAppearanceCheckButton () .get_active () and appearanceNode -> getCloneCount () > 1);
+
+	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
 
 void

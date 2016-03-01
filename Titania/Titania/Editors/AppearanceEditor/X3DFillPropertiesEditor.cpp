@@ -108,44 +108,48 @@ X3DFillPropertiesEditor::on_fillProperties_unlink_clicked ()
 void
 X3DFillPropertiesEditor::on_fillProperties_toggled ()
 {
-	if (changing)
-		return;
-
-	addUndoFunction <X3D::SFNode> (appearances, "fillProperties", undoStep);
-
-	getFillPropertiesCheckButton () .set_inconsistent (false);
-	getFillPropertiesBox ()         .set_sensitive (getFillPropertiesCheckButton () .get_active ());
-
-	for (const auto & appearance : appearances)
+	try
 	{
-		try
+		if (changing)
+			return;
+
+		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
+
+		addUndoFunction <X3D::SFNode> (appearances, "fillProperties", undoStep);
+
+		getFillPropertiesCheckButton () .set_inconsistent (false);
+		getFillPropertiesBox ()         .set_sensitive (getFillPropertiesCheckButton () .get_active ());
+
+		for (const auto & appearance : appearances)
 		{
-			const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
-
-			auto & field = appearance -> getField <X3D::SFNode> ("fillProperties");
-
-			field .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
-			field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
-
-			if (getFillPropertiesCheckButton () .get_active ())
+			try
 			{
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
-				previewAppearance -> fillProperties () = fillProperties;
-			}
-			else
-			{
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
-				previewAppearance -> fillProperties () = nullptr;
-			}
+				auto & field = appearance -> getField <X3D::SFNode> ("fillProperties");
 
+				field .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+				field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
+
+				if (getFillPropertiesCheckButton () .get_active ())
+				{
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (fillProperties), undoStep);
+					previewAppearance -> fillProperties () = fillProperties;
+				}
+				else
+				{
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+					previewAppearance -> fillProperties () = nullptr;
+				}
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+
+		addRedoFunction <X3D::SFNode> (appearances, "fillProperties", undoStep);
+
+		getFillPropertiesUnlinkButton () .set_sensitive (getFillPropertiesCheckButton () .get_active () and fillProperties -> getCloneCount () > 1);
 	}
-
-	addRedoFunction <X3D::SFNode> (appearances, "fillProperties", undoStep);
-
-	getFillPropertiesUnlinkButton () .set_sensitive (getFillPropertiesCheckButton () .get_active () and fillProperties -> getCloneCount () > 1);
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

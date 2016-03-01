@@ -106,44 +106,48 @@ X3DLinePropertiesEditor::on_lineProperties_unlink_clicked ()
 void
 X3DLinePropertiesEditor::on_lineProperties_toggled ()
 {
-	if (changing)
-		return;
-
-	addUndoFunction <X3D::SFNode> (appearances, "lineProperties", undoStep);
-
-	getLinePropertiesCheckButton () .set_inconsistent (false);
-	getLinePropertiesBox ()         .set_sensitive (getLinePropertiesCheckButton () .get_active ());
-
-	for (const auto & appearance : appearances)
+	try
 	{
-		try
+		if (changing)
+			return;
+
+		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
+
+		addUndoFunction <X3D::SFNode> (appearances, "lineProperties", undoStep);
+
+		getLinePropertiesCheckButton () .set_inconsistent (false);
+		getLinePropertiesBox ()         .set_sensitive (getLinePropertiesCheckButton () .get_active ());
+
+		for (const auto & appearance : appearances)
 		{
-			const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
-
-			auto & field = appearance -> getField <X3D::SFNode> ("lineProperties");
-
-			field .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
-			field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
-
-			if (getLinePropertiesCheckButton () .get_active ())
+			try
 			{
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
-				previewAppearance -> lineProperties () = lineProperties;
-			}
-			else
-			{
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
-				previewAppearance -> lineProperties () = nullptr;
-			}
+				auto & field = appearance -> getField <X3D::SFNode> ("lineProperties");
 
+				field .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+				field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
+
+				if (getLinePropertiesCheckButton () .get_active ())
+				{
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
+					previewAppearance -> lineProperties () = lineProperties;
+				}
+				else
+				{
+					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+					previewAppearance -> lineProperties () = nullptr;
+				}
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
+
+		addRedoFunction <X3D::SFNode> (appearances, "lineProperties", undoStep);
+
+		getLinePropertiesUnlinkButton () .set_sensitive (getLinePropertiesCheckButton () .get_active () and lineProperties -> getCloneCount () > 1);
 	}
-
-	addRedoFunction <X3D::SFNode> (appearances, "lineProperties", undoStep);
-
-	getLinePropertiesUnlinkButton () .set_sensitive (getLinePropertiesCheckButton () .get_active () and lineProperties -> getCloneCount () > 1);
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void

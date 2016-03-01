@@ -100,20 +100,20 @@ public:
 	{ return *fields .set_boolean; }
 
 	SFBool &
-	inputTrue ()
-	{ return *fields .inputTrue; }
-
-	const SFBool &
-	inputTrue () const
-	{ return *fields .inputTrue; }
-
-	SFBool &
 	inputFalse ()
 	{ return *fields .inputFalse; }
 
 	const SFBool &
 	inputFalse () const
 	{ return *fields .inputFalse; }
+
+	SFBool &
+	inputTrue ()
+	{ return *fields .inputTrue; }
+
+	const SFBool &
+	inputTrue () const
+	{ return *fields .inputTrue; }
 
 	SFBool &
 	inputNegate ()

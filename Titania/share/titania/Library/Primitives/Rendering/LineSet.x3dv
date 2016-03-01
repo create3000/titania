@@ -1,9 +1,9 @@
 #X3D V3.3 utf8 Titania
 
-DEF IndexedLineSet Transform {
+DEF LineSet Transform {
   children Shape {
-    geometry IndexedLineSet {
-      coordIndex [ 0, 1, -1 ]
+    geometry LineSet {
+      vertexCount 2
       coord Coordinate {
         point [ -1 0 0, 1 0 0 ]
       }

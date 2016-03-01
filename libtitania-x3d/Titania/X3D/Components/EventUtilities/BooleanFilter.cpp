@@ -61,8 +61,8 @@ const std::string   BooleanFilter::containerField = "children";
 
 BooleanFilter::Fields::Fields () :
 	set_boolean (new SFBool ()),
-	  inputTrue (new SFBool ()),
 	 inputFalse (new SFBool ()),
+	  inputTrue (new SFBool ()),
 	inputNegate (new SFBool ())
 { }
 
@@ -75,8 +75,8 @@ BooleanFilter::BooleanFilter (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",    metadata ());
 	addField (inputOnly,   "set_boolean", set_boolean ());
-	addField (outputOnly,  "inputTrue",   inputTrue ());
 	addField (outputOnly,  "inputFalse",  inputFalse ());
+	addField (outputOnly,  "inputTrue",   inputTrue ());
 	addField (outputOnly,  "inputNegate", inputNegate ());
 }
 

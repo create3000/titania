@@ -2508,6 +2508,7 @@
     <None Include="share\titania\ui\icons\Points.svg" />
     <None Include="share\titania\ui\icons\Triangulate.svg" />
     <None Include="share\titania\ui\icons\Knife.svg" />
+    <None Include="share\titania\Library\Primitives\Rendering\LineSet.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
