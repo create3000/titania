@@ -554,6 +554,9 @@ private:
 	std::vector <size_t>  activeEdge;     // index of coord indices
 	size_t                activeFace;     // index of first coord index of face
 
+	int32_t cutPoint ;   // coord indices
+	size_t  cutFace;     // index of first coord index of face
+
 	SelectionType                type;
 	int32_t                      masterPoint;       // coord index,
 	std::map <int32_t, Vector3d> selectedPoints;    // coord index, point

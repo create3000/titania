@@ -107,6 +107,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	               activePoints (),
 	                 activeEdge (),
 	                 activeFace (0),
+	                   cutPoint (-1),
+	                    cutFace (0),
 	                       type (SelectionType::POINTS),
 	                masterPoint (-1),
 	             selectedPoints (),
@@ -462,96 +464,120 @@ X3DIndexedFaceSetSelectionObject::set_plane_sensor_active ()
 void
 X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
 {
-	const auto index    = coincidentPoints [0];
-	const auto point    = getCoord () -> get1Point (index);
-	const auto faces    = selection -> getAdjacentFaces (coincidentPoints);
-	const auto face     = selection -> getNearestFace (hitPoint, faces) .index;
-	const auto vertices = selection -> getFaceVertices (face);
+	auto       index = coincidentPoints [0];
+	const auto faces = selection -> getAdjacentFaces (coincidentPoints);
+	auto       face  = selection -> getNearestFace (hitPoint, faces) .index;
 
-	hotFace = face;
-	hotPoints .clear ();
-
-	activeFace = face;
-	activeEdge   .clear ();
-	activePoints .clear ();
-
-	if (vertices .size () >= 3)
+	switch (getActionType ())
 	{
-		const auto edge          = selection -> getEdge (hitPoint, vertices);
-		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
-		const auto pointDistance = getDistance (hitPoint, point);
-
-		// Hot edge and points for near point or face
-
-		hotEdge = { edge .index0, edge .index1 };
-	
-		switch (getActionType ())
+		case ActionType::CUT:
 		{
-			case ActionType::CUT:
+			if (planeSensor -> isActive ())
 			{
-				// Edge
-				hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-				break;
+				index = cutPoint;
+				face  = cutFace;
 			}
-			case ActionType::SELECT:
-			case ActionType::TRANSLATE:
+			else
 			{
-				if (pointDistance > SELECTION_DISTANCE)
+				cutPoint = index;
+				cutFace  = face;
+			}
+
+			// Procced with next step:
+		}
+		case ActionType::SELECT:
+		case ActionType::TRANSLATE:
+		{
+			const auto point    = getCoord () -> get1Point (index);
+			const auto vertices = selection -> getFaceVertices (face);
+
+			hotFace = face;
+			hotPoints .clear ();
+
+			activeFace = face;
+			activeEdge   .clear ();
+			activePoints .clear ();
+
+			if (vertices .size () >= 3)
+			{
+				const auto edge          = selection -> getEdge (hitPoint, vertices);
+				const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+				const auto pointDistance = getDistance (hitPoint, point);
+
+				// Hot edge and points for near point or face
+
+				hotEdge = { edge .index0, edge .index1 };
+			
+				switch (getActionType ())
 				{
-					if (edgeDistance > SELECTION_DISTANCE)
-					{
-						// Face
-						for (const auto & vertex : vertices)
-							hotPoints .emplace_back (coordIndex () [vertex]);
-					}
-					else
+					case ActionType::CUT:
 					{
 						// Edge
 						hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+						break;
+					}
+					case ActionType::SELECT:
+					case ActionType::TRANSLATE:
+					{
+						if (pointDistance > SELECTION_DISTANCE)
+						{
+							if (edgeDistance > SELECTION_DISTANCE)
+							{
+								// Face
+								for (const auto & vertex : vertices)
+									hotPoints .emplace_back (coordIndex () [vertex]);
+							}
+							else
+							{
+								// Edge
+								hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+							}
+						}
+						else
+						{
+							// Point
+							hotPoints = { index };
+						}
+
+						break;
 					}
 				}
-				else
+
+				// Active points for near point or face
+			
+				switch (getSelectionType ())
 				{
-					// Point
-					hotPoints = { index };
+					case SelectionType::POINTS:
+					{
+						if (pointDistance <= SELECTION_DISTANCE)
+							activePoints = { index };
+
+						break;
+					}
+					case SelectionType::EDGES:
+					{
+						if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
+						{
+							activeEdge     = { edge .index0, edge .index1 };
+							activePoints   = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+						}
+
+						break;
+					}
+					case SelectionType::FACES:
+					{
+						for (const auto & vertex : vertices)
+							activePoints .emplace_back (coordIndex () [vertex]);
+
+						break;
+					}
 				}
-
-				break;
 			}
-		}
 
-		// Active points for near point or face
-	
-		switch (getSelectionType ())
-		{
-			case SelectionType::POINTS:
-			{
-				if (pointDistance <= SELECTION_DISTANCE)
-					activePoints = { index };
-
-				break;
-			}
-			case SelectionType::EDGES:
-			{
-				if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
-				{
-					activeEdge     = { edge .index0, edge .index1 };
-					activePoints   = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-				}
-
-				break;
-			}
-			case SelectionType::FACES:
-			{
-				for (const auto & vertex : vertices)
-					activePoints .emplace_back (coordIndex () [vertex]);
-
-				break;
-			}
+			updateMagicSelection ();
+			break;
 		}
 	}
-
-	updateMagicSelection ();
 }
 
 void
