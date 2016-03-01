@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,45 +48,68 @@
  *
  ******************************************************************************/
 
-#include "DepthTestContainer.h"
+#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_H__
+#define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_H__
 
-#include "../Components/Rendering/DepthBuffer.h"
+#include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-DepthTestContainer::DepthTestContainer (DepthBuffer* const node) :
-	X3DCollectableObject (),
-	                node (node),
-	             enabled (false),
-	            function (GL_LEQUAL)
-{ }
-        
-void
-DepthTestContainer::enable ()
+class X3DTransformMatrix3DNode :
+	virtual public X3DGroupingNode
 {
-	enabled = glIsEnabled (GL_DEPTH_TEST);
-        
-	glGetIntegerv (GL_DEPTH_FUNC, &function);
+public:
 
-	if (node -> enabled ())
-		glEnable (GL_DEPTH_TEST);
-	else
-		glDisable (GL_DEPTH_TEST);
+	///  @name Member access
 
-	glDepthFunc (node -> getDepthFunction ());
-}
+	virtual
+	Box3d
+	getBBox () const override;
 
-void
-DepthTestContainer::disable ()
-{
-	if (enabled)
-		glEnable (GL_DEPTH_TEST);
-	else
-		glDisable (GL_DEPTH_TEST);
+	virtual
+	void
+	setMatrix (const Matrix4d & value)
+	{ matrix = value; }
 
-	glDepthFunc (function);
-}
+	virtual
+	const Matrix4d &
+	getMatrix () const
+	{ return matrix; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTransformMatrix3DNode ();
+
+	///  @name Member access
+
+	void
+	setMatrix (const Vector3f & t,
+	           const Rotation4d & r,
+	           const Vector3f & s,
+	           const Rotation4d & so,
+	           const Vector3f & c)
+	{ matrix .set (t, r, s, so, c); }
+
+
+private:
+
+	///  @name Members
+
+	Matrix4d matrix;
+
+};
 
 } // X3D
 } // titania
+
+#endif

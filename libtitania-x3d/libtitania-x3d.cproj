@@ -520,7 +520,6 @@
     <None Include="Titania\X3D\Types\MatrixStack.h" />
     <None Include="Titania\X3D\Configuration\Unit.h" />
     <None Include="Titania\X3D\Configuration\UnitArray.h" />
-    <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.h" />
     <None Include="Titania\X3D\InputOutput\X3DBaseGenerator.h" />
     <None Include="Titania\X3D\Execution\NamedNodeIndex.h" />
     <None Include="Titania\X3D\Execution\NamedNode.h" />
@@ -635,7 +634,7 @@
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformNodeTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\X3DGeospatialObjectTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoViewpointTool.h" />
-    <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix4DNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DNodeTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLocationTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoTransformTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoLODTool.h" />
@@ -788,8 +787,9 @@
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.h" />
-    <None Include="Titania\X3D\Components\Rendering\DepthTestGroup.h" />
+    <None Include="Titania\X3D\Components\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
+    <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1159,7 +1159,6 @@
     <Compile Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.cpp" />
     <Compile Include="Titania\X3D\Configuration\Unit.cpp" />
     <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
-    <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix4DNode.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DBaseGenerator.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNodeIndex.cpp" />
     <Compile Include="Titania\X3D\Execution\NamedNode.cpp" />
@@ -1327,8 +1326,9 @@
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.cpp" />
-    <Compile Include="Titania\X3D\Components\Rendering\DepthTestGroup.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
+    <Compile Include="Titania\X3D\Components\Rendering\DepthBuffer.cpp" />
+    <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

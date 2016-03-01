@@ -48,33 +48,39 @@
  *
  ******************************************************************************/
 
-#include "TransformMatrix3D.h"
+#include "DepthBuffer.h"
 
-#include "../../Execution/X3DScene.h"
-
-#include <Titania/Math/Utility/almost_equal.h>
-#include <Titania/String/sprintf.h>
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/DepthTestContainer.h"
+#include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType TransformMatrix3D::component      = ComponentType::TITANIA;
-const std::string   TransformMatrix3D::typeName       = "TransformMatrix3D";
-const std::string   TransformMatrix3D::containerField = "children";
+const ComponentType DepthBuffer::component      = ComponentType::TITANIA;
+const std::string   DepthBuffer::typeName       = "DepthBuffer";
+const std::string   DepthBuffer::containerField = "children";
 
-TransformMatrix3D::Fields::Fields () :
-	     matrix (new SFMatrix4d ())
+DepthBuffer::Fields::Fields () :
+	          enabled (new SFBool (true)),
+	    depthFunction (new SFString ("LEQUAL")),
+	      depthOffset (new SFDouble (0))
 { }
 
-TransformMatrix3D::TransformMatrix3D (X3DExecutionContext* const executionContext) :
-	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix3DNode (),
-	                  fields ()
+DepthBuffer::DepthBuffer (X3DExecutionContext* const executionContext) :
+	      X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DGroupingNode (),
+	depthFunctionType (GL_LEQUAL)
 {
-	addType (X3DConstants::TransformMatrix3D);
+	//addType (X3DConstants::DepthBuffer);
 
 	addField (inputOutput,    "metadata",       metadata ());
-	addField (inputOutput,    "matrix",         matrix ());
+
+	addField (inputOutput,    "enabled",        enabled ());
+	addField (inputOutput,    "depthFunction",  depthFunction ());
+	addField (inputOutput,    "depthOffset",    depthOffset ());
+
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
@@ -82,40 +88,78 @@ TransformMatrix3D::TransformMatrix3D (X3DExecutionContext* const executionContex
 	addField (inputOutput,    "children",       children ());
 }
 
-TransformMatrix3D*
-TransformMatrix3D::create (X3DExecutionContext* const executionContext) const
+X3DBaseNode*
+DepthBuffer::create (X3DExecutionContext* const executionContext) const
 {
-	return new TransformMatrix3D (executionContext);
+	return new DepthBuffer (executionContext);
 }
 
 void
-TransformMatrix3D::initialize ()
+DepthBuffer::initialize ()
 {
-	X3DTransformMatrix3DNode::initialize ();
+	X3DGroupingNode::initialize ();
 
-	addInterest (this, &TransformMatrix3D::eventsProcessed);
+	depthFunction () .addInterest (this, &DepthBuffer::set_depthFunction);
 
-	eventsProcessed ();
+	set_depthFunction ();
 }
 
 void
-TransformMatrix3D::setMatrix (const Matrix4d & value)
+DepthBuffer::set_depthFunction ()
 {
-	matrix () .setValue (value);
+	static const std::map <std::string, GLenum> depthFunctionTypes = {
+	   std::make_pair ("NEVER",    GL_NEVER),
+	   std::make_pair ("LESS",     GL_LESS),
+	   std::make_pair ("EQUAL",    GL_EQUAL),
+	   std::make_pair ("LEQUAL",   GL_LEQUAL),
+	   std::make_pair ("GREATER",  GL_GREATER),
+	   std::make_pair ("NOTEQUAL", GL_NOTEQUAL),
+	   std::make_pair ("GEQUAL",   GL_GEQUAL),
+	   std::make_pair ("ALWAYS",   GL_ALWAYS),
+	};
 
-	X3DTransformMatrix3DNode::setMatrix (value);
+	try
+	{
+		depthFunctionType = depthFunctionTypes .at (depthFunction ());
+	}
+	catch (const X3DError &)
+	{
+		depthFunctionType = GL_LEQUAL;
+	}
 }
 
 void
-TransformMatrix3D::eventsProcessed ()
+DepthBuffer::traverse (const TraverseType type)
 {
-	X3DTransformMatrix3DNode::setMatrix (matrix ());
+	getBrowser () -> getDepthTest ()   .push (enabled ());
+	getBrowser () -> getDepthOffset () .push (depthOffset ());
+
+	switch (type)
+	{
+		case TraverseType::DISPLAY:
+		{
+			getCurrentLayer () -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
+
+			X3DGroupingNode::traverse (type);
+
+			getCurrentLayer () -> getLocalObjects () .pop_back ();
+			break;
+		}
+		default:
+		{
+			X3DGroupingNode::traverse (type);
+			break;
+		}
+	}
+
+	getBrowser () -> getDepthOffset () .pop ();
+	getBrowser () -> getDepthTest ()   .pop ();
 }
 
-Matrix4d
-TransformMatrix3D::getCurrentMatrix () const
+void
+DepthBuffer::addTool ()
 {
-	return matrix ();
+	//X3DGroupingNode::addTool (new DepthBufferTool (this));
 }
 
 } // X3D

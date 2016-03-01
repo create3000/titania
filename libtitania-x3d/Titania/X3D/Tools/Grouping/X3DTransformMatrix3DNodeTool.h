@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX3DNODE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX3DNODE_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
 
-#include "../../Components/Grouping/X3DTransformMatrix4DNode.h"
+#include "../../Components/Grouping/X3DTransformMatrix3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DTransformMatrix4DNodeTool :
-	virtual public X3DTransformMatrix4DNode,
+class X3DTransformMatrix3DNodeTool :
+	virtual public X3DTransformMatrix3DNode,
 	public X3DGroupingNodeTool
 {
 public:
@@ -74,12 +74,12 @@ public:
 	virtual
 	void
 	setMatrix (const Matrix4d & matrix) override
-	{ return getNode <X3DTransformMatrix4DNode> () -> setMatrix (matrix); }
+	{ return getNode <X3DTransformMatrix3DNode> () -> setMatrix (matrix); }
 
 	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode <X3DTransformMatrix4DNode> () -> getMatrix (); }
+	{ return getNode <X3DTransformMatrix3DNode> () -> getMatrix (); }
 
 	///  @name Operations
 
@@ -93,13 +93,13 @@ protected:
 
 	///  @name Construction
 
-	X3DTransformMatrix4DNodeTool (const Color3f & color) :
-		X3DTransformMatrix4DNode (),
+	X3DTransformMatrix3DNodeTool (const Color3f & color) :
+		X3DTransformMatrix3DNode (),
 		     X3DGroupingNodeTool (color)
 	{
-		addType (X3DConstants::X3DTransformMatrix4DNodeTool);
+		addType (X3DConstants::X3DTransformMatrix3DNodeTool);
 	}
-		
+
 	virtual
 	void
 	initialize () override

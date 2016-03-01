@@ -91,7 +91,7 @@ PROTO TransformTool [
   Collision {
     enabled FALSE
     children [
-      DepthTestGroup {
+      DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
         children Transform {
@@ -269,7 +269,7 @@ PROTO TransformTool [
           ]
         }
       }
-      DEF _1 DepthTestGroup {
+      DEF _1 DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
         children [

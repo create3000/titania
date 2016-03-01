@@ -51,14 +51,14 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
-#include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "../Grouping/X3DTransformMatrix3DNode.h"
 #include "../../Browser/Selection.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DTransformNode :
-	virtual public X3DTransformMatrix4DNode
+	virtual public X3DTransformMatrix3DNode
 {
 public:
 

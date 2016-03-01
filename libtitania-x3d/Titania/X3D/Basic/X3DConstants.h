@@ -452,7 +452,7 @@ enum NodeType : uint16_t
 	X3DTextureTransformNode,
 	X3DTimeDependentNode,
 	X3DTouchSensorNode,
-	X3DTransformMatrix4DNode,
+	X3DTransformMatrix3DNode,
 	X3DTransformNode,
 	X3DTriggerNode,
 	X3DUrlObject,
@@ -577,7 +577,7 @@ enum NodeType : uint16_t
 	X3DShapeNodeTool,
 	X3DSoundNodeTool,
 	X3DToolObject,
-	X3DTransformMatrix4DNodeTool,
+	X3DTransformMatrix3DNodeTool,
 	X3DTransformNodeTool,
 	X3DUrlObjectTool,
 	X3DViewpointNodeTool

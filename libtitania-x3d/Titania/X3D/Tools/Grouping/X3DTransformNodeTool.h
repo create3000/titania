@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 
-#include "../Grouping/X3DTransformMatrix4DNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DNodeTool.h"
 #include "../ToolColors.h"
 
 #include "../../Browser/Networking/config.h"
@@ -67,7 +67,7 @@ namespace X3D {
 
 class X3DTransformNodeTool :
 	virtual public X3DTransformNode,
-	public X3DTransformMatrix4DNodeTool
+	public X3DTransformMatrix3DNodeTool
 {
 public:
 
@@ -207,7 +207,7 @@ private:
 inline
 X3DTransformNodeTool::X3DTransformNodeTool () :
 	            X3DTransformNode (),
-	X3DTransformMatrix4DNodeTool (ToolColors::GREEN),
+	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
 	        transformationMatrix (),
 	                      matrix (),
 	                    changing (false)

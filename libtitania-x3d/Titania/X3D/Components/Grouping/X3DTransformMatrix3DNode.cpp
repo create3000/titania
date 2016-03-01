@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,44 +48,37 @@
  *
  ******************************************************************************/
 
-#include "DepthTestContainer.h"
-
-#include "../Components/Rendering/DepthBuffer.h"
+#include "X3DTransformMatrix3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-DepthTestContainer::DepthTestContainer (DepthBuffer* const node) :
-	X3DCollectableObject (),
-	                node (node),
-	             enabled (false),
-	            function (GL_LEQUAL)
-{ }
-        
-void
-DepthTestContainer::enable ()
+X3DTransformMatrix3DNode::X3DTransformMatrix3DNode () :
+	X3DGroupingNode (),
+	         matrix ()
 {
-	enabled = glIsEnabled (GL_DEPTH_TEST);
-        
-	glGetIntegerv (GL_DEPTH_FUNC, &function);
+	addType (X3DConstants::X3DTransformMatrix3DNode);
+}
 
-	if (node -> enabled ())
-		glEnable (GL_DEPTH_TEST);
-	else
-		glDisable (GL_DEPTH_TEST);
+Box3d
+X3DTransformMatrix3DNode::getBBox () const
+{
+	if (isHidden ())
+		return Box3d ();
 
-	glDepthFunc (node -> getDepthFunction ());
+	return X3DGroupingNode::getBBox () * matrix;
 }
 
 void
-DepthTestContainer::disable ()
+X3DTransformMatrix3DNode::traverse (const TraverseType type)
 {
-	if (enabled)
-		glEnable (GL_DEPTH_TEST);
-	else
-		glDisable (GL_DEPTH_TEST);
+	getModelViewMatrix () .push ();
 
-	glDepthFunc (function);
+	getModelViewMatrix () .mult_left (matrix);
+
+	X3DGroupingNode::traverse (type);
+
+	getModelViewMatrix () .pop ();
 }
 
 } // X3D

@@ -200,7 +200,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Grouping/TransformMatrix3D.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix4DNode.cpp \
+	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformNode.cpp \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \
 	Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp \
@@ -301,7 +301,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/Color.cpp \
 	Titania/X3D/Components/Rendering/ColorRGBA.cpp \
 	Titania/X3D/Components/Rendering/Coordinate.cpp \
-	Titania/X3D/Components/Rendering/DepthTestGroup.cpp \
+	Titania/X3D/Components/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Components/Rendering/IndexedLineSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.cpp \
