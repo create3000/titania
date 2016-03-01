@@ -606,15 +606,14 @@ IndexedFaceSetTool::set_removeSelectedFaces ()
 	undoSetNormalVector (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	const auto faceNumbers = getFaceSelection () -> getFaceNumbers (getSelectedFaces ());
-	size_t     i           = 0;
+	size_t i = 0;
 
 	for (const auto & faceIndex : basic::make_reverse_range (getSelectedFaces ()))
 	{
 		const auto vertices   = getFaceSelection () -> getFaceVertices (faceIndex);
 		const auto first      = faceIndex;
 		const auto last       = faceIndex + vertices .size ();
-		const auto faceNumber = faceNumbers [i];
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (faceIndex);
 
 		if (colorPerVertex ())
 		{
@@ -733,7 +732,7 @@ IndexedFaceSetTool::formNewFace (const std::vector <std::vector <int32_t>> & hol
 				if (vertices .empty () or texCoordIndex () .size () < vertices .size ())
 					texCoordIndex () .emplace_back (0);
 				else
-					texCoordIndex () .emplace_back (texCoordIndex () [vertices [0]]);
+					texCoordIndex () .emplace_back (texCoordIndex () .get1Value (vertices [0]));
 			}
 
 			if (normalIndex () .size () and getNormal ())
@@ -759,7 +758,7 @@ IndexedFaceSetTool::formNewFace (const std::vector <std::vector <int32_t>> & hol
 		coordIndex () .emplace_back (-1);
 
 		if (normalIndex () .size () and getNormal ())
-			getNormal () -> set1Vector (getNormal () -> getSize (), getPolygonNormal (vertices));
+			getNormal () -> set1Vector (getNormal () -> getSize (), getPolygonNormal (vertices)); // getPolygonNormal fails with GeoCoordinate
 
 		vertices .clear ();
 	}
@@ -791,9 +790,12 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 		getCoord () -> set1Point (size, getCoord () -> get1Point (point .first));
 	}
 
+	size_t numFaces = getFaceSelection () -> getNumFaces ();
+
 	for (const auto & edge : edges)
 	{
-		const auto size = coordIndex () .size ();
+		const auto size       = coordIndex () .size ();
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (edge .first);
 
 		if (colorIndex () .size ())
 		{
@@ -806,7 +808,9 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 				colorIndex () .set1Value (size + 4, -1);
 			}
 			else
-			{ }
+			{
+				colorIndex () .set1Value (numFaces, colorIndex () .get1Value (faceNumber));
+			}
 		}
 
 	   if (texCoordIndex () .size ())
@@ -829,7 +833,9 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 				normalIndex () .set1Value (size + 4, -1);
 			}
 			else
-			{ }
+			{
+				normalIndex () .set1Value (numFaces, normalIndex () .get1Value (faceNumber));
+			}
 		}
 
 		coordIndex () .emplace_back (coordIndex () [edge .first]);
@@ -837,6 +843,8 @@ IndexedFaceSetTool::extrudeSelectedEdges (const std::set <std::pair <size_t, siz
 		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
 		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
 		coordIndex () .emplace_back (-1);
+
+		++ numFaces;
 	}
 
 	 if (not faces .empty ())
@@ -897,8 +905,6 @@ IndexedFaceSetTool::chipOf (const std::set <size_t> & selectedVertices)
 void
 IndexedFaceSetTool::flipVertexOrdering (const std::set <size_t> & faces)
 {
-	__LOG__ << faces .size () << std::endl;
-
 	for (const auto & face : faces)
 	{
 		const auto vertices = getFaceSelection () -> getFaceVertices (face);
@@ -910,8 +916,20 @@ IndexedFaceSetTool::flipVertexOrdering (const std::set <size_t> & faces)
 			const auto i1 = vertices [size - i - 1];
 			
 			std::swap (coordIndex () [i0], coordIndex () [i1]);
-			
-			__LOG__ << i0 << " : " << i1 << std::endl;
+		}
+
+		if (not normalIndex () .empty () and getNormal ())
+		{
+		   std::set <int32_t> indices;
+
+		   if (normalPerVertex ())
+		   {
+				for (size_t i = 0; i < size; ++ i)
+					indices .emplace (normalIndex () .get1Value (vertices [i]));
+			}
+
+			for (const auto index : indices)
+				getNormal () -> set1Vector (index, negate (getNormal () -> get1Vector (index)));
 		}
 	}
 }

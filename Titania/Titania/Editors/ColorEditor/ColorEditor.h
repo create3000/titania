@@ -52,11 +52,11 @@
 #define __TITANIA_EDITORS_COLOR_PER_VERTEX_EDITOR_COLOR_PER_VERTEX_EDITOR_H__
 
 #include "../../UserInterfaces/X3DColorEditorInterface.h"
-
 #include "../../ComposedWidgets/MFColorRGBAButton.h"
 
 #include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
 #include <Titania/X3D/Components/Rendering/ColorRGBA.h>
+#include <Titania/X3D/Editing/Selection/X3DFaceSelection.h>
 #include <Titania/X3D/Editing/Undo/UndoHistory.h>
 
 namespace titania {
@@ -265,7 +265,7 @@ private:
 	set_touchTime ();
 
 	void
-	set_triangle (const std::pair <size_t, size_t> &);
+	set_triangle (const X3D::X3DFaceSelection::Face &);
 
 	///  @name Operations
 

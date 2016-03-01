@@ -67,11 +67,17 @@ public:
 
 	///  @name Member types
 
-	using PointIndex = std::multimap <Vector3d, int32_t>;
-	using Points     = std::vector <int32_t>;
-	using Face       = std::pair <size_t, size_t>;
-	using FaceIndex  = std::multimap <int32_t, Face>;
-	using Faces      = std::vector <Face>;
+	struct Face
+	{
+		size_t index;
+		size_t vertex;
+	};
+
+	using PointIndex  = std::multimap <Vector3d, int32_t>;
+	using Points      = std::vector <int32_t>;
+	using FaceIndex   = std::multimap <int32_t, Face>;
+	using FaceNumbers = std::vector <size_t>;
+	using Faces       = std::vector <Face>;
 
 	///  @name Destruction
 

@@ -75,6 +75,7 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 	    geometryNode (),
 	       coordNode (),
 	       faceIndex (),
+	     faceNumbers (),
 	      pointIndex ()
 {
 	addType (X3DConstants::FaceSelection);
@@ -132,21 +133,26 @@ FaceSelection::set_coordIndex (const MFInt32 & coordIndex)
 {
 	// Update face index
 
-	faceIndex .clear ();
+	faceIndex   .clear ();
+	faceNumbers .clear ();
 
-	size_t face   = 0;
-	size_t vertex = 0;
+	size_t face       = 0;
+	size_t vertex     = 0;
+	size_t faceNumber = 0;
 
 	for (const int32_t index : coordIndex)
 	{
+		faceNumbers .emplace_back (faceNumber);
+
 		if (index < 0)
 		{
-			face  += vertex + 1;
-			vertex = 0;
+			faceNumber += 1;
+			face       += vertex + 1;
+			vertex      = 0;
 			continue;
 		}
 
-		faceIndex .emplace (index, std::make_pair (face, vertex));
+		faceIndex .emplace (index, Face { face, vertex });
 
 		++ vertex;
 	}
@@ -280,7 +286,7 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 
 	for (const auto & face : faces)
 	{
-		const auto vertices = getFaceVertices (face .first);
+		const auto vertices = getFaceVertices (face .index);
 
 		if (vertices .size () < 3)
 		{
@@ -365,35 +371,16 @@ FaceSelection::getFaceVertices (const size_t face) const
 	return vertices;
 }
 
-std::vector <size_t>
-FaceSelection::getFaceNumbers (const std::set <size_t> & faces) const
+size_t
+FaceSelection::getFaceNumber (const size_t vertex) const
 {
-	std::vector <size_t> faceNumbers (faces .size ());
+	return faceNumbers [vertex];
+}
 
-	size_t faceNumber = 0;
-	size_t faceIndex = 0;
-	size_t count     = 0;
-
-	for (const int32_t index : geometryNode -> coordIndex ())
-	{
-		if (index < 0)
-		{
-			faceNumber += 1;
-			faceIndex  += count + 1;
-			count       = 0;
-			continue;
-		}
-
-		if (count == 0)
-		{
-		   if (faces .count (faceIndex))
-				faceNumbers .emplace_back (faceNumber);
-		}
-
-		++ count;
-	}
-
-	return faceNumbers;
+size_t
+FaceSelection::getNumFaces () const
+{
+	return faceNumbers .size ();
 }
 
 ///  Return the nearest edge for hitPoint.
@@ -492,7 +479,7 @@ FaceSelection::getSharedVertices (const int32_t coordIndex) const
 	std::vector <size_t> indices;
 
 	for (const auto & face : faceIndex .equal_range (coordIndex))
-		indices .emplace_back (face .second .first + face .second .second);
+		indices .emplace_back (face .second .index + face .second .vertex);
 	
 	return indices;
 }
@@ -503,7 +490,7 @@ FaceSelection::getVertices (const int32_t point) const
 	std::vector <size_t> vertices;
 
 	for (const auto & vertex : faceIndex .equal_range (point))
-		vertices .emplace_back (vertex .second .first + vertex .second .second);
+		vertices .emplace_back (vertex .second .index + vertex .second .vertex);
 
 	return vertices;
 }

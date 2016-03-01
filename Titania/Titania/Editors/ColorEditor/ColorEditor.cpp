@@ -886,7 +886,7 @@ ColorEditor::set_hitPoint ()
 		{
 			case SINGLE_VERTEX :
 			{
-				const auto index = nearestFace .first + nearestFace .second;
+				const auto index = nearestFace .index + nearestFace .vertex;
 
 				if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 				{
@@ -910,7 +910,7 @@ ColorEditor::set_hitPoint ()
 
 				for (const auto & face : adjacentFaces)
 				{
-					const auto index = face .first + face .second;
+					const auto index = face .index + face .vertex;
 
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -929,7 +929,7 @@ ColorEditor::set_hitPoint ()
 
 				undoStep -> addObjects (previewGeometry);
 
-				for (const auto & index : selection -> getFaceVertices (nearestFace .first))
+				for (const auto & index : selection -> getFaceVertices (nearestFace .index))
 				{
 					if (previewGeometry -> colorIndex () .get1Value (index) not_eq (int32_t) colorButton .getIndex ())
 					{
@@ -985,26 +985,26 @@ ColorEditor::set_touchTime ()
 
 		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
 		const auto nearestFace   = selection -> getNearestFace (touchSensor -> getHitPoint (), adjacentFaces);
-		const auto index         = previewGeometry -> colorIndex () .get1Value (nearestFace .first + nearestFace .second);
+		const auto index         = previewGeometry -> colorIndex () .get1Value (nearestFace .index + nearestFace .vertex);
 
 		colorButton .setIndex (index);
 	}
 }
 
 void
-ColorEditor::set_triangle (const std::pair <size_t, size_t> & nearestFace)
+ColorEditor::set_triangle (const X3D::X3DFaceSelection::Face & nearestFace)
 {
 	try
 	{
 		const auto triangleBackGeometry = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleBackGeometry");
 		const auto triangleGeometry     = preview -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("TriangleGeometry");
 		const auto triangleCoordinate   = preview -> getExecutionContext () -> getNamedNode <X3D::Coordinate> ("TriangleCoordinate");
-		const auto vertices             = selection -> getFaceVertices (nearestFace .first);
+		const auto vertices             = selection -> getFaceVertices (nearestFace .index);
 
 		if (vertices .size () < 3)
 			return;
 
-		const auto vertex = nearestFace .second;
+		const auto vertex = nearestFace .vertex;
 		const auto i1     = vertex == 0 ? vertices .size () - 1 : vertex - 1;
 		const auto i2     = vertex;
 		const auto i3     = (vertex + 1) % vertices .size ();

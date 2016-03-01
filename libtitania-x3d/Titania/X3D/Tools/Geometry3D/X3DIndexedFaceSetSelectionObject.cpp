@@ -430,7 +430,7 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 	const auto index    = coincidentPoints [0];
 	const auto point    = getCoord () -> get1Point (index);
 	const auto faces    = selection -> getAdjacentFaces (coincidentPoints);
-	const auto face     = selection -> getNearestFace (hitPoint, faces) .first;
+	const auto face     = selection -> getNearestFace (hitPoint, faces) .index;
 	const auto vertices = selection -> getFaceVertices (face);
 
 	hotFace = face;
@@ -646,7 +646,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
-					const auto vertices = selection -> getFaceVertices (face .first);
+					const auto vertices = selection -> getFaceVertices (face .index);
 
 					for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 					{
@@ -669,7 +669,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
 				{
-					const auto vertices = selection -> getFaceVertices (face .first);
+					const auto vertices = selection -> getFaceVertices (face .index);
 
 					for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 					{
@@ -881,7 +881,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 				std::set <size_t> faces;
 
 				for (const auto & face : selection -> getAdjacentFaces (point))
-					faces .emplace (face .first);
+					faces .emplace (face .index);
 
 				addSelectedFacesFunction (faces);
 			}
@@ -897,7 +897,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 				std::set <size_t> faces;
 
 				for (const auto & face : selection -> getAdjacentFaces (point))
-					faces .emplace (face .first);
+					faces .emplace (face .index);
 
 				removeSelectedFacesFunction (faces);
 			}

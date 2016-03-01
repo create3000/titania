@@ -2506,6 +2506,7 @@
     <None Include="share\titania\ui\icons\Faces.svg" />
     <None Include="share\titania\ui\icons\Lines.svg" />
     <None Include="share\titania\ui\icons\Points.svg" />
+    <None Include="share\titania\ui\icons\Triangulate.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

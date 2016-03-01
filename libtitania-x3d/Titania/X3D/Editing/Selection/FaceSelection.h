@@ -129,8 +129,11 @@ public:
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;
 
-	std::vector <size_t>
-	getFaceNumbers (const std::set <size_t> &) const;
+	size_t
+	getFaceNumber (const size_t) const;
+
+	size_t
+	getNumFaces () const;
 
 	Edge
 	getEdge (const Vector3d &, const std::vector <size_t> &) const;
@@ -195,6 +198,7 @@ private:
 	X3DPtr <IndexedFaceSet>    geometryNode;
 	X3DPtr <X3DCoordinateNode> coordNode;
 	FaceIndex                  faceIndex;
+	FaceNumbers                faceNumbers;
 	PointIndex                 pointIndex;
 
 };
