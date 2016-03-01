@@ -520,7 +520,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
@@ -586,13 +586,17 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		// Remove
 		switch (context -> get_selected_action ())
 		{
+			case Gdk::ACTION_DEFAULT:
 			case Gdk::ACTION_MOVE:
 				remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
 				break;
 			case Gdk::ACTION_COPY:
 				remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 				break;
-			default:
+			case Gdk::ACTION_LINK:
+				break;
+			case Gdk::ACTION_ASK:
+			case Gdk::ACTION_PRIVATE:
 				break;
 		}
 
@@ -607,7 +611,11 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			case Gdk::ACTION_COPY:
 				remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 				break;
-			default:
+		case Gdk::ACTION_DEFAULT:
+		case Gdk::ACTION_LINK:
+		case Gdk::ACTION_MOVE:
+		case Gdk::ACTION_ASK:
+		case Gdk::ACTION_PRIVATE:
 				break;
 		}
 
@@ -744,7 +752,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
@@ -807,13 +815,16 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	// Remove
 	switch (context -> get_selected_action ())
 	{
+		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
 			remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
 			break;
 		case Gdk::ACTION_COPY:
 			remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 			break;
-		default:
+		case Gdk::ACTION_LINK:
+		case Gdk::ACTION_ASK:
+		case Gdk::ACTION_PRIVATE:
 			break;
 	}
 
@@ -964,7 +975,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	    treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::NULL_)
 	   return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
 	// Handle X3DTransformNode nodes.
 
@@ -1055,13 +1066,16 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	switch (context -> get_selected_action ())
 	{
+		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
 			remove_source_node (sourceParent, sourceField, sourceIndex, true, undoStep);
 			break;
 		case Gdk::ACTION_COPY:
 			remove_source_node (sourceParent, sourceField, sourceIndex, false, undoStep);
 			break;
-		default:
+		case Gdk::ACTION_LINK:
+		case Gdk::ACTION_ASK:
+		case Gdk::ACTION_PRIVATE:
 			break;
 	}
 
@@ -1101,15 +1115,22 @@ OutlineDragDrop::remove_source_node (X3D::SFNode* const sourceParent, X3D::X3DFi
 }
 
 const char*
-OutlineDragDrop::get_node_action_string () const
+OutlineDragDrop::get_node_action_string (Gdk::DragAction action) const
 {
-   if (getBrowserWindow () -> getKeys () .control ())
-   {
-      if (getBrowserWindow () -> getKeys () .shift ())
+	switch (action)
+	{
+		case Gdk::ACTION_LINK:
          return "Clone Node";
-      
-		return "Copy Node";
-   }
+		case Gdk::ACTION_MOVE:
+         return "Move Node";
+		case Gdk::ACTION_COPY:
+			return "Copy Node";
+		case Gdk::ACTION_DEFAULT:
+			return "Copy Node";
+		case Gdk::ACTION_ASK:
+		case Gdk::ACTION_PRIVATE:
+		   break;
+	}
 
    return "Move Node";
 }

@@ -290,7 +290,10 @@ private:
 	set_plane_sensor_active (const bool);
 
 	void
-	set_plane_sensor_translation (const Vector3f &);
+	set_plane_sensor_translation ();
+
+	void
+	set_plane_sensor_trackPoint ();
 
 	void
 	set_mergePoints ();
@@ -320,13 +323,13 @@ private:
 	set_cutPolygons ();
 
 	bool
-	set_knife ();
+	set_knife_hitPoint  ();
 
 	void
 	set_knife_active ();
 
 	void
-	set_knife_translation ();
+	set_knife_trackPoint ();
 
 	std::vector <int32_t>
 	splitPoints (const std::set <int32_t> &);
@@ -393,7 +396,8 @@ private:
 	X3DPtr <TouchSensor>      touchSensor;
 	X3DPtr <PlaneSensor>      planeSensor;
 	X3DPtr <Switch>           knifeSwitch;
-	X3DPtr <Transform>        knifeCircle;
+	X3DPtr <Transform>        knifeStartPoint;
+	X3DPtr <Transform>        knifeEndPoint;
 	X3DPtr <Switch>           knifeLineSwitch;
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 	Vector3d                  translation;

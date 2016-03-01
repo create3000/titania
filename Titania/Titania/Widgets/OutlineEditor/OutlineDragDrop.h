@@ -107,7 +107,7 @@ private:
 	remove_source_node (X3D::SFNode* const, X3D::X3DFieldDefinition* const, size_t, const bool, const X3D::UndoStepPtr &);
 
 	const char*
-	get_node_action_string () const;
+	get_node_action_string (Gdk::DragAction) const;
 
 	///  @name Static members
 

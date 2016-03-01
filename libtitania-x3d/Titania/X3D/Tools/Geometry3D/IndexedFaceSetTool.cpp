@@ -90,7 +90,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                     touchSensor (),
 	                     planeSensor (),
 	                     knifeSwitch (),
-	                     knifeCircle (),
+	                 knifeStartPoint (),
+	                   knifeEndPoint (),
 	                 knifeLineSwitch (),
 	             knifeLineCoordinate (),
 	                     translation (),
@@ -141,7 +142,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addChildren (touchSensor,
 	             planeSensor,
 	             knifeSwitch,
-	             knifeCircle,
+	             knifeStartPoint,
+	             knifeEndPoint,
 	             knifeLineSwitch,
 	             knifeLineCoordinate);
 }
@@ -176,14 +178,16 @@ IndexedFaceSetTool::set_loadState ()
 		planeSensor         = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
 		touchSensor         = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 		knifeSwitch         = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
-		knifeCircle         = inlineNode -> getExportedNode <Transform>        ("KnifeCircle");
+		knifeStartPoint     = inlineNode -> getExportedNode <Transform>        ("KnifeStartPoint");
+		knifeEndPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
 		knifeLineSwitch     = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
 		knifeLineCoordinate = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
 
-		getBrowser () -> hasControlKey ()   .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
-		touchSensor -> hitPoint_changed ()  .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		getBrowser () -> hasControlKey ()  .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
+		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
+		planeSensor -> trackPoint_changed ()  .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_trackPoint);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
 	}
 	catch (const X3DError & error)
@@ -199,73 +203,80 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 	{
 		// Setup PlaneSensor
 
-		if (getActionType () == ActionType::CUT)
+		switch (getActionType ())
 		{
-			set_knife ();
-		}
-		else
-		{
-			if (planeSensor -> isActive ())
-				return;
-
-			switch (getHotPoints () .size ())
+			case ActionType::SELECT:
+			case ActionType::TRANSLATE:
 			{
-				case 0:
-				{
-					planeSensor -> enabled () = false;
-					break;
-				}
-				case 1:
-				{
-					// Translate over screen plane
+				if (planeSensor -> isActive ())
+					return;
 
-					const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
-
-					planeSensor -> enabled ()      = not paintSelection ();
-					planeSensor -> axisRotation () = axisRotation;
-					planeSensor -> maxPosition ()  = Vector2f (-1, -1);
-					break;
-				}
-				case 2:
+				switch (getHotPoints () .size ())
 				{
-					// Translate along edge
-
-					const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
-					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-					planeSensor -> enabled ()      = not paintSelection ();
-					planeSensor -> axisRotation () = axisRotation;
-					planeSensor -> maxPosition ()  = Vector2f (-1, 0);
-					break;
-				}
-				default:
-				{
-					const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
-						
-					if (getBrowser () -> hasControlKey ())
+					case 0:
 					{
-						// Translate along face normal
-
-						const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
-
-						planeSensor -> enabled ()      = not paintSelection ();
-						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+						planeSensor -> enabled () = false;
+						break;
 					}
-					else
+					case 1:
 					{
-						// Translate along plane
+						// Translate over screen plane
 
-						const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+						const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+						const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
 						planeSensor -> enabled ()      = not paintSelection ();
 						planeSensor -> axisRotation () = axisRotation;
 						planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+						break;
 					}
-			
-					break;
+					case 2:
+					{
+						// Translate along edge
+
+						const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
+						const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
+
+						planeSensor -> enabled ()      = not paintSelection ();
+						planeSensor -> axisRotation () = axisRotation;
+						planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+						break;
+					}
+					default:
+					{
+						const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
+							
+						if (getBrowser () -> hasControlKey ())
+						{
+							// Translate along face normal
+
+							const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+
+							planeSensor -> enabled ()      = not paintSelection ();
+							planeSensor -> axisRotation () = axisRotation;
+							planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+						}
+						else
+						{
+							// Translate along plane
+
+							const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+							planeSensor -> enabled ()      = not paintSelection ();
+							planeSensor -> axisRotation () = axisRotation;
+							planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+						}
+				
+						break;
+					}
 				}
+
+				break;
+			}
+			case ActionType::CUT:
+			{
+				set_knife_hitPoint  ();
+				break;
 			}
 		}
 	}
@@ -276,54 +287,57 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 void
 IndexedFaceSetTool::set_plane_sensor_active (const bool active)
 {
-	// Create undo step for translation.
-
-	if (getActionType () == ActionType::CUT)
+	switch (getActionType ())
 	{
-		set_knife_active ();
-	}
-	else
-	{
-		if (active)
+		case ActionType::SELECT:
+		case ActionType::TRANSLATE:
 		{
-			undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
+			if (active)
+			{
+				// Create undo step for translation.
 
-		   undoSetCoordPoint (undoStep);
+				undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
+
+			   undoSetCoordPoint (undoStep);
+			}
+			else
+			{
+				setActionType (ActionType::SELECT);
+
+				redoSetCoordPoint (undoStep);
+
+				// Reset fields and send undo step.
+
+				if (abs (translation))
+					undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+
+				translation   = Vector3d ();
+				translations  = 0;
+			}
+
+			break;
 		}
-		else
+		case ActionType::CUT:
 		{
-			setActionType (ActionType::SELECT);
-
-			redoSetCoordPoint (undoStep);
-
-			// Reset fields and send undo step.
-
-			if (abs (translation))
-				undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
-
-			translation   = Vector3d ();
-			translations  = 0;
+			set_knife_active ();
+			break;
 		}
 	}
 }
 
 void
-IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
+IndexedFaceSetTool::set_plane_sensor_translation ()
 {
 	switch (getActionType ())
 	{
-		case ActionType::CUT:
-		{
-			set_knife_translation ();
-			break;
-		}
-		default:
+		case ActionType::SELECT:
+		case ActionType::TRANSLATE:
 		{
 			// Prevent accidentially move.
 			if (translations ++ < TRANSLATIONS_EVENTS)
 			   return;
 
-			translation = value;
+			translation = planeSensor -> translation_changed () .getValue ();
 
 			if (abs (translation))
 			{
@@ -334,6 +348,26 @@ IndexedFaceSetTool::set_plane_sensor_translation (const Vector3f & value)
 
 				break;
 			}
+		}
+
+		case ActionType::CUT:
+			break;
+	}
+}
+
+void
+IndexedFaceSetTool::set_plane_sensor_trackPoint ()
+{
+	switch (getActionType ())
+	{
+		case ActionType::SELECT:
+		case ActionType::TRANSLATE:
+			break;
+
+		case ActionType::CUT:
+		{
+			set_knife_trackPoint ();
+			break;
 		}
 	}
 }
@@ -725,29 +759,34 @@ IndexedFaceSetTool::set_cutPolygons ()
 }
 
 bool
-IndexedFaceSetTool::set_knife ()
+IndexedFaceSetTool::set_knife_hitPoint  ()
 {
-	knifeLineSwitch -> whichChoice () = touchSensor -> isActive ();	   
-	
-	if (not touchSensor -> isActive ())
+	if (planeSensor -> isActive ())
+	   ;
+	else
 	{
 	   // Set start point
 
-		const Line3d line (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-		                   getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-		                   math::point_type ());
-		                  
+		const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+		                       math::point_type ());
+
+		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
+		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+		planeSensor -> enabled ()      = true;
+		planeSensor -> axisRotation () = axisRotation;
+		planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+
 		if (getHotPoints () .size () == 1)
 			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
 
 		else
-			knifeLineCoordinate -> point () [0] = line .closest_point (touchSensor -> getHitPoint ());	   
+			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());	   
 
-		knifeCircle -> translation () = knifeLineCoordinate -> point () [0] .getValue ();
-	}
-	else
-	{
-		knifeLineCoordinate -> point () [1] = touchSensor -> getHitPoint ();	   
+		knifeLineCoordinate -> point () [1] = knifeLineCoordinate -> point () [0];
+		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
+		knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
 	}
 
 	return true;
@@ -756,16 +795,55 @@ IndexedFaceSetTool::set_knife ()
 void
 IndexedFaceSetTool::set_knife_active ()
 {
-	if (not touchSensor -> isActive ())
+	knifeLineSwitch -> whichChoice () = planeSensor -> isActive ();	 
+  
+	if (touchSensor -> isActive ())
+	   ;
+	else
 	{
-	   
+
 	}
 }
 
 void
-IndexedFaceSetTool::set_knife_translation ()
+IndexedFaceSetTool::set_knife_trackPoint ()
 {
-	__LOG__ << planeSensor -> translation_changed () << std::endl;
+	__LOG__ << planeSensor -> trackPoint_changed () << std::endl;
+
+	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+	                       math::point_type ());
+	                      
+	const Line3d cutLine (knifeLineCoordinate -> point () [0],
+	                      knifeLineCoordinate -> point () [1],
+	                      math::point_type ());
+
+	const auto edgeScreenLine = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	const auto cutScreenLine  = ViewVolume::projectLine (cutLine,  getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+	Vector3d screenClosestPoint;
+	                     
+	if (edgeScreenLine .closest_point (cutScreenLine, screenClosestPoint))           
+	{
+		const auto hitRay = ViewVolume::unProjectLine (screenClosestPoint .x () ,screenClosestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());	  
+
+		Vector3d closestPoint;
+	                     
+		if (edgeLine .closest_point (hitRay, closestPoint))
+		{
+			knifeLineSwitch -> whichChoice ()   = true;	
+			knifeLineCoordinate -> point () [1] = planeSensor -> trackPoint_changed () .getValue ();	   
+			knifeEndPoint -> translation ()     = closestPoint;
+		}
+		else
+		{
+			knifeLineSwitch -> whichChoice () = false;	
+		}
+	}
+	else
+	{
+		knifeLineSwitch -> whichChoice () = false;	
+	}
 }
 
 std::vector <int32_t>
