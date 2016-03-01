@@ -117,7 +117,7 @@ class Group;
 class Transform;
 class X3DTransformNode;
 class X3DGroupingNode;
-class X3DTransformMatrix4DNode;
+class X3DTransformMatrix3DNode;
 class Inline;
 
 // Shape
@@ -174,7 +174,7 @@ using X3DNodePtr                  = X3DPtr <X3DNode>;
 using GroupPtr                    = X3DPtr <Group>;
 using TransformPtr                = X3DPtr <Transform>;
 using X3DTransformNodePtr         = X3DPtr <X3DTransformNode>;
-using X3DTransformMatrix4DNodePtr = X3DPtr <X3DTransformMatrix4DNode>;
+using X3DTransformMatrix3DNodePtr = X3DPtr <X3DTransformMatrix3DNode>;
 using X3DGroupingNodePtr          = X3DPtr <X3DGroupingNode>;
 using InlinePtr                   = X3DPtr <Inline>;
 

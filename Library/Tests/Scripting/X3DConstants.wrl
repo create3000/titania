@@ -387,7 +387,7 @@ function set_time ()
 	print ('X3DTextureTransformNode     : ', X3DConstants .X3DTextureTransformNode      == 278);
 	print ('X3DTimeDependentNode        : ', X3DConstants .X3DTimeDependentNode         == 279);
 	print ('X3DTouchSensorNode          : ', X3DConstants .X3DTouchSensorNode           == 280);
-	print ('X3DTransformMatrix4DNode    : ', X3DConstants .X3DTransformMatrix4DNode     == 281);
+	print ('X3DTransformMatrix3DNode    : ', X3DConstants .X3DTransformMatrix3DNode     == 281);
 	print ('X3DTransformNode            : ', X3DConstants .X3DTransformNode             == 282);
 	print ('X3DTriggerNode              : ', X3DConstants .X3DTriggerNode               == 283);
 	print ('X3DUrlObject                : ', X3DConstants .X3DUrlObject                 == 284);

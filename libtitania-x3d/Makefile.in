@@ -327,7 +327,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Grouping/TransformMatrix3D.lo \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.lo \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.lo \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix4DNode.lo \
+	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.lo \
 	Titania/X3D/Components/Grouping/X3DTransformNode.lo \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.lo \
 	Titania/X3D/Components/H-Anim/HAnimHumanoid.lo \
@@ -428,7 +428,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Rendering/Color.lo \
 	Titania/X3D/Components/Rendering/ColorRGBA.lo \
 	Titania/X3D/Components/Rendering/Coordinate.lo \
-	Titania/X3D/Components/Rendering/DepthTestGroup.lo \
+	Titania/X3D/Components/Rendering/DepthBuffer.lo \
 	Titania/X3D/Components/Rendering/IndexedLineSet.lo \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.lo \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.lo \
@@ -1095,7 +1095,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Grouping/TransformMatrix3D.cpp \
 	Titania/X3D/Components/Grouping/X3DBoundedObject.cpp \
 	Titania/X3D/Components/Grouping/X3DGroupingNode.cpp \
-	Titania/X3D/Components/Grouping/X3DTransformMatrix4DNode.cpp \
+	Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.cpp \
 	Titania/X3D/Components/Grouping/X3DTransformNode.cpp \
 	Titania/X3D/Components/H-Anim/HAnimDisplacer.cpp \
 	Titania/X3D/Components/H-Anim/HAnimHumanoid.cpp \
@@ -1196,7 +1196,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Rendering/Color.cpp \
 	Titania/X3D/Components/Rendering/ColorRGBA.cpp \
 	Titania/X3D/Components/Rendering/Coordinate.cpp \
-	Titania/X3D/Components/Rendering/DepthTestGroup.cpp \
+	Titania/X3D/Components/Rendering/DepthBuffer.cpp \
 	Titania/X3D/Components/Rendering/IndexedLineSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/IndexedTriangleSet.cpp \
@@ -2313,7 +2313,7 @@ Titania/X3D/Components/Grouping/X3DBoundedObject.lo:  \
 Titania/X3D/Components/Grouping/X3DGroupingNode.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Grouping/X3DTransformMatrix4DNode.lo:  \
+Titania/X3D/Components/Grouping/X3DTransformMatrix3DNode.lo:  \
 	Titania/X3D/Components/Grouping/$(am__dirstamp) \
 	Titania/X3D/Components/Grouping/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Grouping/X3DTransformNode.lo:  \
@@ -2694,7 +2694,7 @@ Titania/X3D/Components/Rendering/ColorRGBA.lo:  \
 Titania/X3D/Components/Rendering/Coordinate.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Components/Rendering/DepthTestGroup.lo:  \
+Titania/X3D/Components/Rendering/DepthBuffer.lo:  \
 	Titania/X3D/Components/Rendering/$(am__dirstamp) \
 	Titania/X3D/Components/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Components/Rendering/IndexedLineSet.lo:  \
@@ -3990,7 +3990,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/TransformMatrix3D.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DBoundedObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DGroupingNode.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix4DNode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformMatrix3DNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Grouping/$(DEPDIR)/X3DTransformNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimDisplacer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/H-Anim/$(DEPDIR)/HAnimHumanoid.Plo@am__quote@
@@ -4091,7 +4091,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Color.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/ColorRGBA.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/Coordinate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/DepthTestGroup.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/DepthBuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedLineSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedTriangleFanSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Rendering/$(DEPDIR)/IndexedTriangleSet.Plo@am__quote@

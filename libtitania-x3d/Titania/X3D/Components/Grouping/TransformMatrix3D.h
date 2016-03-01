@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_MATRIX3D_H__
 
 #include "../../Browser/Selection.h"
-#include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "../Grouping/X3DTransformMatrix3DNode.h"
 
 namespace titania {
 namespace X3D {
 
 class TransformMatrix3D :
-	virtual public X3DTransformMatrix4DNode
+	virtual public X3DTransformMatrix3DNode
 {
 public:
 

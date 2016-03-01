@@ -532,7 +532,7 @@ private:
 	static JSBool X3DTextureTransformNode      (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTimeDependentNode         (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTouchSensorNode           (JSContext *, JSObject *, jsid, jsval*);
-	static JSBool X3DTransformMatrix4DNode     (JSContext *, JSObject *, jsid, jsval*);
+	static JSBool X3DTransformMatrix3DNode     (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTransformNode             (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DTriggerNode               (JSContext *, JSObject *, jsid, jsval*);
 	static JSBool X3DUrlObject                 (JSContext *, JSObject *, jsid, jsval*);

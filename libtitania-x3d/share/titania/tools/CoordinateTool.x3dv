@@ -134,7 +134,7 @@ Collision {
               solid FALSE
             }
           }
-          DepthTestGroup {
+          DepthBuffer {
             enabled FALSE
             children DEF MagicFaceSwitch Switch {
               whichChoice 0
@@ -200,7 +200,7 @@ Collision {
               coord DEF SelectionCoord CoordinateDouble { }
             }
           }
-          DepthTestGroup {
+          DepthBuffer {
             enabled FALSE
             children [
               DEF MagicEdgesSwitch Switch {
@@ -257,7 +257,7 @@ Collision {
               }
             ]
           }
-          DepthTestGroup {
+          DepthBuffer {
             enabled FALSE
             depthOffset 1000
             children DEF KnifeSwitch Switch {

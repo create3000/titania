@@ -65,7 +65,7 @@ GeoLocation::Fields::Fields () :
 
 GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix4DNode (),
+	X3DTransformMatrix3DNode (),
 	     X3DGeospatialObject (),
 	                  fields ()
 {
@@ -94,7 +94,7 @@ GeoLocation::create (X3DExecutionContext* const executionContext) const
 void
 GeoLocation::initialize ()
 {
-	X3DTransformMatrix4DNode::initialize ();
+	X3DTransformMatrix3DNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
 	addInterest (this, &GeoLocation::eventsProcessed);
@@ -111,14 +111,14 @@ GeoLocation::eventsProcessed ()
 void
 GeoLocation::addTool ()
 {
-	X3DTransformMatrix4DNode::addTool (new GeoLocationTool (this));
+	X3DTransformMatrix3DNode::addTool (new GeoLocationTool (this));
 }
 
 void
 GeoLocation::dispose ()
 {
 	X3DGeospatialObject::dispose ();
-	X3DTransformMatrix4DNode::dispose ();
+	X3DTransformMatrix3DNode::dispose ();
 }
 
 } // X3D

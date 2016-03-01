@@ -70,7 +70,7 @@ GeoTransform::Fields::Fields () :
 
 GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	             X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DTransformMatrix4DNode (),
+	X3DTransformMatrix3DNode (),
 	     X3DGeospatialObject (),
 	                  fields ()
 {
@@ -105,7 +105,7 @@ GeoTransform::create (X3DExecutionContext* const executionContext) const
 void
 GeoTransform::initialize ()
 {
-	X3DTransformMatrix4DNode::initialize ();
+	X3DTransformMatrix3DNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
 	addInterest (this, &GeoTransform::eventsProcessed);
@@ -129,14 +129,14 @@ GeoTransform::eventsProcessed ()
 void
 GeoTransform::addTool ()
 {
-	X3DTransformMatrix4DNode::addTool (new GeoTransformTool (this));
+	X3DTransformMatrix3DNode::addTool (new GeoTransformTool (this));
 }
 
 void
 GeoTransform::dispose ()
 {
 	X3DGeospatialObject::dispose ();
-	X3DTransformMatrix4DNode::dispose ();
+	X3DTransformMatrix3DNode::dispose ();
 }
 
 } // X3D

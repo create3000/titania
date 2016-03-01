@@ -57,14 +57,14 @@
 namespace titania {
 namespace X3D {
 
-class DepthTestGroup;
+class DepthBuffer;
 
 class DepthTestContainer :
 	public X3DCollectableObject
 {
 public:
 
-	DepthTestContainer (DepthTestGroup* const);
+	DepthTestContainer (DepthBuffer* const);
 
 	virtual
 	void
@@ -77,7 +77,7 @@ public:
 
 private:
 
-	DepthTestGroup* const node;
+	DepthBuffer* const node;
 	bool                  enabled;
 	GLint                 function;
 

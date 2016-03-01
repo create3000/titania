@@ -52,13 +52,13 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_LOCATION_H__
 
 #include "../Geospatial/X3DGeospatialObject.h"
-#include "../Grouping/X3DTransformMatrix4DNode.h"
+#include "../Grouping/X3DTransformMatrix3DNode.h"
 
 namespace titania {
 namespace X3D {
 
 class GeoLocation :
-	virtual public X3DTransformMatrix4DNode,
+	virtual public X3DTransformMatrix3DNode,
 	virtual public X3DGeospatialObject
 {
 public:

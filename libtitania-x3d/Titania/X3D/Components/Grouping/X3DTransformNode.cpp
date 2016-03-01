@@ -67,7 +67,7 @@ X3DTransformNode::Fields::Fields () :
 { }
 
 X3DTransformNode::X3DTransformNode () :
-	X3DTransformMatrix4DNode (),
+	X3DTransformMatrix3DNode (),
 	                  fields ()
 {
 	addType (X3DConstants::X3DTransformNode);
@@ -79,7 +79,7 @@ X3DTransformNode::X3DTransformNode () :
 void
 X3DTransformNode::initialize ()
 {
-	X3DTransformMatrix4DNode::initialize ();
+	X3DTransformMatrix3DNode::initialize ();
 
 	addInterest (this, &X3DTransformNode::eventsProcessed);
 
@@ -93,7 +93,7 @@ X3DTransformNode::eventsProcessed ()
 	          scale () .getY () == 0 or
 	          scale () .getZ () == 0);
 
-	X3DTransformMatrix4DNode::setMatrix (translation (),
+	X3DTransformMatrix3DNode::setMatrix (translation (),
 	                                     rotation (),
 	                                     scale (),
 	                                     scaleOrientation (),
@@ -143,7 +143,7 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f &
 	if (not almost_equal (c, center () .getValue (), 17))
 		center () = c;
 
-	X3DTransformMatrix4DNode::setMatrix (matrix);
+	X3DTransformMatrix3DNode::setMatrix (matrix);
 }
 
 void

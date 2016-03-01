@@ -1889,7 +1889,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 					Matrix4d groupModelViewMatrix (getModelViewMatrix (executionContext, group));
 
-					const X3DTransformMatrix4DNodePtr groupTransform (group);
+					const X3DTransformMatrix3DNodePtr groupTransform (group);
 
 					if (groupTransform)
 						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
@@ -2444,9 +2444,9 @@ X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, 
 				case X3DConstants::X3DProgrammableShaderObject :
 				case X3DConstants::X3DBaseNode                 :
 					goto END;
-				case X3DConstants::X3DTransformMatrix4DNode:
+				case X3DConstants::X3DTransformMatrix3DNode:
 				{
-					const auto transform = dynamic_cast <X3DTransformMatrix4DNode*> (object);
+					const auto transform = dynamic_cast <X3DTransformMatrix3DNode*> (object);
 
 					modelViewMatrix .mult_right (transform -> getMatrix ());
 					break;

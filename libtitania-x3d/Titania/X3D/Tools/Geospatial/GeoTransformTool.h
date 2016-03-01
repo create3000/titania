@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_TRANSFORM_TOOL_H__
 
 #include "../Geospatial/X3DGeospatialObjectTool.h"
-#include "../Grouping/X3DTransformMatrix4DNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DNodeTool.h"
 #include "../ToolColors.h"
 
 #include "../../Components/Geospatial/GeoTransform.h"
@@ -62,7 +62,7 @@ namespace X3D {
 
 class GeoTransformTool :
 	virtual public GeoTransform,
-	public X3DTransformMatrix4DNodeTool,
+	public X3DTransformMatrix3DNodeTool,
 	public X3DGeospatialObjectTool
 {
 public:
@@ -73,7 +73,7 @@ public:
 		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                GeoTransform (node -> getExecutionContext ()),
 		                 X3DBaseTool (node),
-		X3DTransformMatrix4DNodeTool (ToolColors::DARK_GREEN),
+		X3DTransformMatrix3DNodeTool (ToolColors::DARK_GREEN),
 		     X3DGeospatialObjectTool ()
 	{
 		addType (X3DConstants::GeoTransformTool);
@@ -140,14 +140,14 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{
-		X3DTransformMatrix4DNodeTool::traverse (type);
+		X3DTransformMatrix3DNodeTool::traverse (type);
 		X3DGeospatialObjectTool::traverse (type);
 	}
 
 	virtual
 	void
 	addTool () final override
-	{ X3DTransformMatrix4DNodeTool::addTool (); }
+	{ X3DTransformMatrix3DNodeTool::addTool (); }
 
 	///  @name Destruction
 
@@ -156,7 +156,7 @@ public:
 	dispose () final override
 	{
 		X3DGeospatialObjectTool::dispose ();
-		X3DTransformMatrix4DNodeTool::dispose ();
+		X3DTransformMatrix3DNodeTool::dispose ();
 	}
 
 private:
@@ -167,7 +167,7 @@ private:
 	void
 	initialize () final override
 	{
-		X3DTransformMatrix4DNodeTool::initialize ();
+		X3DTransformMatrix3DNodeTool::initialize ();
 		X3DGeospatialObjectTool::initialize ();
 	}
 
