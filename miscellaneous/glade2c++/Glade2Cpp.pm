@@ -777,6 +777,8 @@ RadioToolButton::toggled
   virtual void on_toggled();
 ToggleButton::toggled
   virtual void on_toggled();
+RadioButton::toggled
+  virtual void on_toggled();
 EventBox::enter_notify_event
   virtual bool on_enter_notify_event(GdkEventCrossing* event);
 RadioMenuItem::activate
@@ -843,3 +845,7 @@ Window::map
   virtual void on_map();
 RadioMenuItem::group_changed
   virtual void on_group_changed();
+RadioButton::group_changed
+  virtual void on_group_changed();
+RadioButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);

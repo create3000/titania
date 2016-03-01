@@ -69,8 +69,6 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("GeometryToolsBox", m_GeometryToolsBox);
-	m_builder -> get_widget ("PaintSelectionToggleButton", m_PaintSelectionToggleButton);
-	m_builder -> get_widget ("PaintSelectionImage", m_PaintSelectionImage);
 	m_builder -> get_widget ("NormalEnabledToggleButton", m_NormalEnabledToggleButton);
 	m_builder -> get_widget ("MergePointsButton", m_MergePointsButton);
 	m_builder -> get_widget ("SplitPointsButton", m_SplitPointsButton);
@@ -81,6 +79,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("DeleteFacesButton", m_DeleteFacesButton);
 	m_builder -> get_widget ("FlipVertexOrderingButton", m_FlipVertexOrderingButton);
 	m_builder -> get_widget ("CutPolygonsButton", m_CutPolygonsButton);
+	m_builder -> get_widget ("PaintSelectionButton", m_PaintSelectionButton);
+	m_builder -> get_widget ("PaintSelectionImage", m_PaintSelectionImage);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);
@@ -98,12 +98,6 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'HammerButton'.
 	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked));
-
-	// Connect object Gtk::ToggleButton with id 'PaintSelectionToggleButton'.
-	m_PaintSelectionToggleButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
-	m_PaintSelectionToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
-
-	// Connect object Gtk::Button with id 'MergePointsButton'.
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
 	m_SplitPointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_points_clicked));
 	m_FormNewFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_form_new_face_clicked));
@@ -113,8 +107,10 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_DeleteFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_delete_selected_faces_clicked));
 	m_FlipVertexOrderingButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_flip_vertex_ordering_clicked));
 
-	// Connect object Gtk::ToggleButton with id 'CutPolygonsButton'.
-	m_CutPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_clicked));
+	// Connect object Gtk::RadioButton with id 'CutPolygonsButton'.
+	m_CutPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_toggled));
+	m_PaintSelectionButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
+	m_PaintSelectionButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
 	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));

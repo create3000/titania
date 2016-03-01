@@ -137,7 +137,7 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getPaintSelectionToggleButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
+	getPaintSelectionButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
 
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
@@ -146,6 +146,11 @@ void
 GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
+
+	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
+
+	getPaintSelectionButton () .set_group (selectionGroup);
+	getCutPolygonsButton    () .set_group (selectionGroup);
 
 	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
 
@@ -166,7 +171,6 @@ GeometryEditor::on_map ()
 void
 GeometryEditor::on_unmap ()
 {
-	getCurrentBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
 	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
@@ -175,12 +179,10 @@ GeometryEditor::on_unmap ()
 void
 GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 {
-	browser -> getSelection () -> isEnabled () .removeInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 
 	browser = value;
 
-	browser -> getSelection () -> isEnabled () .addInterest (this, &GeometryEditor::on_paint_selection_toggled);
 	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
 
 	set_viewer ();
@@ -204,6 +206,8 @@ GeometryEditor::set_executionContext ()
 	{
 		previousSelection .clear ();
 	}
+
+	getCutPolygonsButton () .set_active (false);
 }
 
 void
@@ -222,7 +226,7 @@ GeometryEditor::set_viewer ()
 				set_selector (selector);
 
 			else
-				getPaintSelectionToggleButton () .set_active (true);
+				getPaintSelectionButton () .set_active (true);
 
 			break;
 		}
@@ -232,21 +236,24 @@ GeometryEditor::set_viewer ()
 				set_selector (selector);
 
 			else
-				getPaintSelectionToggleButton () .set_active (true);
+				getPaintSelectionButton () .set_active (true);
 
 			break;
 		}
 		default:
 		{
-			if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
-				getPaintSelectionToggleButton () .set_active (false);
+		   if (getPaintSelectionButton () .get_active ())
+		   {
+				if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
+					getBrowserWindow () -> getArrowButton () .set_active (true);
+			}
 
 			privateViewer = browser-> getPrivateViewer ();
 			break;
 		}
 	}
 
-	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
 
 	changing = false;
 }
@@ -295,9 +302,9 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	changing = false;
 
 	if (getEditToggleButton () .get_active ())
-	   getPaintSelectionToggleButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
+	   getPaintSelectionButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
 	else
-		getPaintSelectionToggleButton () .set_active (false);
+		getBrowserWindow () -> getArrowButton () .set_active (true);
 }
 
 void
@@ -699,19 +706,20 @@ void
 GeometryEditor::on_paint_selection_toggled ()
 {
 	if (getEditToggleButton () .get_active ())
-		getConfig () -> set ("paintSelection", getPaintSelectionToggleButton () .get_active ());
-
-	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
-		return;
+		getConfig () -> set ("paintSelection", getPaintSelectionButton () .get_active ());
 
 	if (changing)
 		return;
+
+	if (getPaintSelectionButton () .get_active ())
+		getCurrentBrowser () -> getSelection () -> isEnabled (true);
+
 
 	switch (selector)
 	{
 		case SelectorType::BRUSH:
 		{
-			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionToggleButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionButton () .get_active ());
 
 			getCurrentBrowser () -> setPrivateViewer (privateViewer);
 			coordEditor -> setField <X3D::SFBool> ("pickable", true);
@@ -724,24 +732,24 @@ GeometryEditor::on_paint_selection_toggled ()
 		{
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 
-			if (getPaintSelectionToggleButton () .get_active ())
+			if (getPaintSelectionButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
 			else
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 
-			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
 			break;
 		}
 		case SelectorType::LASSO:
 		{
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 
-			if (getPaintSelectionToggleButton () .get_active ())
+			if (getPaintSelectionButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
 			else
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 
-			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionToggleButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
 			break;
 		}
 	}
@@ -797,11 +805,11 @@ GeometryEditor::set_selector (const SelectorType & type)
 void
 GeometryEditor::set_selection_brush ()
 {
-	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Paint current selection."));
-	getPaintSelectionImage () .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Paint current selection."));
+	getPaintSelectionImage ()  .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionToggleButton () .get_active ())
-		getPaintSelectionToggleButton () .set_active (true);
+	if (not getPaintSelectionButton () .get_active ())
+		getPaintSelectionButton () .set_active (true);
 	else
 		on_paint_selection_toggled ();
 }
@@ -809,11 +817,11 @@ GeometryEditor::set_selection_brush ()
 void
 GeometryEditor::set_selection_rectangle ()
 {
-	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use rectangle selection."));
-	getPaintSelectionImage () .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Use rectangle selection."));
+	getPaintSelectionImage ()  .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionToggleButton () .get_active ())
-		getPaintSelectionToggleButton () .set_active (true);
+	if (not getPaintSelectionButton () .get_active ())
+		getPaintSelectionButton () .set_active (true);
 	else
 		on_paint_selection_toggled ();
 }
@@ -821,11 +829,11 @@ GeometryEditor::set_selection_rectangle ()
 void
 GeometryEditor::set_selection_lasso ()
 {
-	getPaintSelectionToggleButton () .set_tooltip_text (_ ("Use lasso selection."));
-	getPaintSelectionImage () .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Use lasso selection."));
+	getPaintSelectionImage ()  .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionToggleButton () .get_active ())
-		getPaintSelectionToggleButton () .set_active (true);
+	if (not getPaintSelectionButton () .get_active ())
+		getPaintSelectionButton () .set_active (true);
 	else
 		on_paint_selection_toggled ();
 }
@@ -899,7 +907,7 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 }
 
 void
-GeometryEditor::on_cut_polygons_clicked ()
+GeometryEditor::on_cut_polygons_toggled ()
 {
 	coordEditor -> setField <X3D::SFBool> ("cutPolygons", getCutPolygonsButton () .get_active ());
 }

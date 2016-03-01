@@ -124,14 +124,6 @@ public:
 	{ return *m_GeometryToolsBox; }
 
 	Gtk::ToggleButton &
-	getPaintSelectionToggleButton () const
-	{ return *m_PaintSelectionToggleButton; }
-
-	Gtk::Image &
-	getPaintSelectionImage () const
-	{ return *m_PaintSelectionImage; }
-
-	Gtk::ToggleButton &
 	getNormalEnabledToggleButton () const
 	{ return *m_NormalEnabledToggleButton; }
 
@@ -167,9 +159,17 @@ public:
 	getFlipVertexOrderingButton () const
 	{ return *m_FlipVertexOrderingButton; }
 
-	Gtk::ToggleButton &
+	Gtk::RadioButton &
 	getCutPolygonsButton () const
 	{ return *m_CutPolygonsButton; }
+
+	Gtk::RadioButton &
+	getPaintSelectionButton () const
+	{ return *m_PaintSelectionButton; }
+
+	Gtk::Image &
+	getPaintSelectionImage () const
+	{ return *m_PaintSelectionImage; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -218,14 +218,6 @@ public:
 	on_hammer_clicked () = 0;
 
 	virtual
-	bool
-	on_selection_type_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	void
-	on_paint_selection_toggled () = 0;
-
-	virtual
 	void
 	on_merge_points_clicked () = 0;
 
@@ -259,7 +251,15 @@ public:
 
 	virtual
 	void
-	on_cut_polygons_clicked () = 0;
+	on_cut_polygons_toggled () = 0;
+
+	virtual
+	bool
+	on_selection_type_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_paint_selection_toggled () = 0;
 
 	virtual
 	void
@@ -317,8 +317,6 @@ private:
 	Gtk::ToggleButton*          m_EditToggleButton;
 	Gtk::Button*                m_HammerButton;
 	Gtk::Grid*                  m_GeometryToolsBox;
-	Gtk::ToggleButton*          m_PaintSelectionToggleButton;
-	Gtk::Image*                 m_PaintSelectionImage;
 	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::Button*                m_SplitPointsButton;
@@ -328,7 +326,9 @@ private:
 	Gtk::Button*                m_ChipOfFacesButton;
 	Gtk::Button*                m_DeleteFacesButton;
 	Gtk::Button*                m_FlipVertexOrderingButton;
-	Gtk::ToggleButton*          m_CutPolygonsButton;
+	Gtk::RadioButton*           m_CutPolygonsButton;
+	Gtk::RadioButton*           m_PaintSelectionButton;
+	Gtk::Image*                 m_PaintSelectionImage;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;
