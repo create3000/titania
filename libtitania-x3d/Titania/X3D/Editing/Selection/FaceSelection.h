@@ -123,8 +123,14 @@ public:
 	Faces
 	getAdjacentFaces (const Points &) const;
 
+	std::vector <size_t>
+	getAdjacentFaces (const Edge &) const;
+
 	Face
 	getNearestFace (const Vector3d & , const Faces &);
+
+	Face
+	getNearestFace (const Vector3d & , const std::vector <size_t> &);
 
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;

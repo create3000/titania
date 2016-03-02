@@ -274,6 +274,33 @@ FaceSelection::getAdjacentFaces (const Points & points) const
 	return faces;
 }
 
+std::vector <size_t>
+FaceSelection::getAdjacentFaces (const Edge & edge) const
+{
+	const auto faces0 = getAdjacentFaces (Points { geometryNode -> coordIndex () [edge .index0] });
+	const auto faces1 = getAdjacentFaces (Points { geometryNode -> coordIndex () [edge .index1] });
+
+	std::vector <size_t> set0;
+	std::vector <size_t> set1;
+	std::vector <size_t> intersection;
+
+	for (const auto & face : faces0)
+	   set0 .emplace_back (face .index);
+
+	for (const auto & face : faces1)
+	   set1 .emplace_back (face .index);
+
+	std::sort (set0 .begin (), set0 .end ());
+	std::sort (set1 .begin (), set1 .end ());
+
+	std::set_intersection (set0 .begin(), set0 .end(),
+	                       set1 .begin(), set1 .end (),
+	                       std::back_inserter (intersection));
+
+
+	return intersection;
+}
+
 ///  Finds the nearest face for hitPoint in faces.
 FaceSelection::Face
 FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
@@ -350,6 +377,18 @@ FaceSelection::getNearestFace (const Vector3d & hitPoint, const Faces & faces)
 	}
 
 	return faces [minIndex];
+}
+
+///  Finds the nearest face for hitPoint in faces.
+FaceSelection::Face
+FaceSelection::getNearestFace (const Vector3d & hitPoint, const std::vector <size_t> & indices)
+{
+	Faces faces;
+
+	for (const auto & faceIndex : indices)
+	   faces .emplace_back (Face { faceIndex, 0 });
+	
+	return getNearestFace (hitPoint, faces);
 }
 
 ///  Returns all indices to the coordIndex for this face.

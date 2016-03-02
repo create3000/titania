@@ -48,6 +48,61 @@ WorldInfo {
           }
         ]
       }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value DEF _1 Transform {
+              children DEF Shape Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 1 0 0
+                  }
+                }
+                geometry DEF _2 IndexedFaceSet {
+                  solid FALSE
+                  convex FALSE
+                  coordIndex [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    -1
+                  ]
+                  coord Coordinate {
+                    point [
+                      0 5 0,
+                      0 1 0,
+                      1 0 0,
+                      5 0 0,
+                      6 1 0,
+                      6 5 0,
+                      4 5 0,
+                      4 2 0,
+                      2 2 0,
+                      2 5 0
+                    ]
+                  }
+                }
+              }
+            }
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value USE _2
+          }
+        ]
+      }
     ]
   }
   title "U"
@@ -62,43 +117,4 @@ Viewpoint {
   centerOfRotation 3 2.5 0
 }
 
-Transform {
-  children DEF Shape Shape {
-    appearance Appearance {
-      material Material {
-        diffuseColor 1 0 0
-      }
-    }
-    geometry DEF _1 IndexedFaceSet {
-      solid FALSE
-      convex FALSE
-      coordIndex [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        -1
-      ]
-      coord Coordinate {
-        point [
-          0 5 0,
-          0 1 0,
-          1 0 0,
-          5 0 0,
-          6 1 0,
-          6 5 0,
-          4 5 0,
-          4 2 0,
-          2 2 0,
-          2 5 0
-        ]
-      }
-    }
-  }
-}
+USE _1

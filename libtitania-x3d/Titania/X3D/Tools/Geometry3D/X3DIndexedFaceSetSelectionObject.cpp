@@ -104,11 +104,13 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                  hotPoints (),
 	                    hotEdge (),
 	                    hotFace (0),
+	                   hotFaces (),
 	               activePoints (),
 	                 activeEdge (),
 	                 activeFace (0),
 	                   cutPoint (-1),
 	                    cutFace (0),
+	                   cutFaces (),
 	                       type (SelectionType::POINTS),
 	                masterPoint (-1),
 	             selectedPoints (),
@@ -474,21 +476,22 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 		{
 			if (planeSensor -> isActive ())
 			{
-				if (face not_eq cutFace)
+				if (cutFaces .count (face))
 				{
-					face = cutFace;
-
-					const auto vertices = selection -> getFaceVertices (face);
-					const auto cmp      = [&] (const size_t vertex) { return coordIndex () [vertex] == index; };
-
-					if (std::find_if (vertices .begin (), vertices .end (), cmp) == vertices .end ())
-						index = cutPoint;
+					cutPoint = index;
+					cutFace  = face;				   
+				}
+				else
+				{
+					face  = selection -> getNearestFace (hitPoint, std::vector <size_t> (cutFaces .begin (), cutFaces .end ())) .index;
+					index = cutPoint;
 				}
 			}
 			else
 			{
 				cutPoint = index;
 				cutFace  = face;
+				cutFaces = hotFaces;
 			}
 
 			// Procced with next step:
@@ -500,6 +503,7 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 			const auto vertices = selection -> getFaceVertices (face);
 
 			hotFace = face;
+			hotFaces  .clear ();
 			hotPoints .clear ();
 
 			activeFace = face;
@@ -524,11 +528,17 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 						{
 							// Edge
 							hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+
+							for (const auto & face : getFaceSelection () -> getAdjacentFaces (edge))
+								hotFaces .emplace (face);
 						}
 						else
 						{
 							// Point
 							hotPoints = { index };
+
+							for (const auto & face : faces)
+								hotFaces .emplace (face .index);
 						}
 
 						break;

@@ -549,13 +549,15 @@ private:
 	std::vector <int32_t> hotPoints;    // coord indices
 	std::vector <size_t>  hotEdge;      // index of coord indices
 	size_t                hotFace;      // index of first coord index of face
+	std::set <size_t>     hotFaces;     // adjacent faces of hot point, edge or the face itself 
 
 	std::vector <int32_t> activePoints;   // coord indices
 	std::vector <size_t>  activeEdge;     // index of coord indices
 	size_t                activeFace;     // index of first coord index of face
 
-	int32_t cutPoint ;   // coord indices
-	size_t  cutFace;     // index of first coord index of face
+	int32_t           cutPoint ;   // coord indices
+	size_t            cutFace;     // index of first coord index of face
+	std::set <size_t> cutFaces;    // adjacent faces of hot point, edge or the face itself 
 
 	SelectionType                type;
 	int32_t                      masterPoint;       // coord index,
