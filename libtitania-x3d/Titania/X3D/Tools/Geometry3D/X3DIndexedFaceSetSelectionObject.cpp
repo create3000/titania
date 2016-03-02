@@ -474,8 +474,16 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 		{
 			if (planeSensor -> isActive ())
 			{
-				index = cutPoint;
-				face  = cutFace;
+				if (face not_eq cutFace)
+				{
+					face = cutFace;
+
+					const auto vertices = selection -> getFaceVertices (face);
+					const auto cmp      = [&] (const size_t vertex) { return coordIndex () [vertex] == index; };
+
+					if (std::find_if (vertices .begin (), vertices .end (), cmp) == vertices .end ())
+						index = cutPoint;
+				}
 			}
 			else
 			{
@@ -512,8 +520,17 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 				{
 					case ActionType::CUT:
 					{
-						// Edge
-						hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+						if (pointDistance > SELECTION_DISTANCE)
+						{
+							// Edge
+							hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+						}
+						else
+						{
+							// Point
+							hotPoints = { index };
+						}
+
 						break;
 					}
 					case ActionType::SELECT:

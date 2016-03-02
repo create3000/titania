@@ -758,15 +758,17 @@ IndexedFaceSetTool::set_knife_hitPoint  ()
 	   if (getHotEdge () .empty ())
 	      return;
 
-		const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-		                       math::point_type ());
-
 		if (getHotPoints () .size () == 1)
 			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
 
 		else
-			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());	   
+		{
+			const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+			                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+			                       math::point_type ());
+
+			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());
+		}  
 
 		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
 		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
@@ -798,7 +800,11 @@ IndexedFaceSetTool::set_knife_active ()
 void
 IndexedFaceSetTool::set_knife_translation ()
 {
-	knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
+	if (getHotPoints () .size () == 1)
+		knifeLineCoordinate -> point () [1] = getCoord () -> get1Point (getHotPoints () .front ());
+
+	else
+		knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
 
 	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
 	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
