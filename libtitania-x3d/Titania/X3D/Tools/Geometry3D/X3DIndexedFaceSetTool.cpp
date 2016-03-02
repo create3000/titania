@@ -50,19 +50,8 @@
 
 #include "X3DIndexedFaceSetTool.h"
 
-#include "../Rendering/CoordinateTool.h"
-
-#include "../../Browser/X3DBrowser.h"
-#include "../../Components/PointingDeviceSensor/TouchSensor.h"
-#include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Editing/Selection/FaceSelection.h"
-
-#include <Titania/String/sprintf.h>
-
 namespace titania {
 namespace X3D {
-
-static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTool::Fields::Fields () :
 	undo_changed (new UndoStepContainerPtr ())
@@ -72,17 +61,9 @@ X3DIndexedFaceSetTool::X3DIndexedFaceSetTool () :
 	                  IndexedFaceSet (getExecutionContext ()),
 	     X3DComposedGeometryNodeTool (),
 	X3DIndexedFaceSetSelectionObject (),
-	                          fields (),
-	                     touchSensor (),
-	                     planeSensor (),
-	                     translation (),
-	                    translations (0),
-	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
+	                          fields ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetTool);
-
-	addChildren (touchSensor,
-	             planeSensor);
 }
 
 void
@@ -90,187 +71,6 @@ X3DIndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool::initialize ();
 	X3DIndexedFaceSetSelectionObject::initialize ();
-
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTool::set_loadState);
-}
-
-void
-X3DIndexedFaceSetTool::set_loadState ()
-{
-	try
-	{
-		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
-		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
-
-		planeSensor = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
-		touchSensor = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
-
-		getBrowser () -> hasControlKey ()  .addInterest (this, &X3DIndexedFaceSetTool::set_touch_sensor_hitPoint);
-		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTool::set_touch_sensor_hitPoint);
-
-		planeSensor -> isActive ()            .addInterest (this, &X3DIndexedFaceSetTool::set_plane_sensor_active);
-		planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetTool::set_plane_sensor_translation);
-	}
-	catch (const X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DIndexedFaceSetTool::set_touch_sensor_hitPoint ()
-{
-	try
-	{
-		// Setup PlaneSensor
-
-		switch (getActionType ())
-		{
-			case ActionType::SELECT:
-			case ActionType::TRANSLATE:
-			{
-				if (planeSensor -> isActive ())
-					return;
-
-				switch (getHotPoints () .size ())
-				{
-					case 0:
-					{
-						planeSensor -> enabled () = false;
-						break;
-					}
-					case 1:
-					{
-						// Translate over screen plane
-
-						const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-						const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
-
-						planeSensor -> enabled ()      = not paintSelection ();
-						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> offset ()       = Vector3d ();
-						planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-						break;
-					}
-					case 2:
-					{
-						// Translate along edge
-
-						const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
-						const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-						planeSensor -> enabled ()      = not paintSelection ();
-						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> offset ()       = Vector3d ();
-						planeSensor -> maxPosition ()  = Vector2d (-1, 0);
-						break;
-					}
-					default:
-					{
-						const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
-							
-						if (getBrowser () -> hasControlKey ())
-						{
-							// Translate along face normal
-
-							const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
-
-							planeSensor -> enabled ()      = not paintSelection ();
-							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> offset ()       = Vector3d ();
-							planeSensor -> maxPosition ()  = Vector2d (-1, 0);
-						}
-						else
-						{
-							// Translate along plane
-
-							const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-							planeSensor -> enabled ()      = not paintSelection ();
-							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> offset ()       = Vector3d ();
-							planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-						}
-				
-						break;
-					}
-				}
-
-				break;
-			}
-			default:
-			   break;
-		}
-	}
-	catch (const std::exception & error)
-	{ }
-}
-
-void
-X3DIndexedFaceSetTool::set_plane_sensor_active (const bool active)
-{
-	switch (getActionType ())
-	{
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
-		{
-			if (active)
-			{
-				// Create undo step for translation.
-
-				undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
-
-			   undoSetCoordPoint (undoStep);
-			}
-			else
-			{
-				setActionType (ActionType::SELECT);
-
-				redoSetCoordPoint (undoStep);
-
-				// Reset fields and send undo step.
-
-				if (abs (translation))
-					undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
-
-				translation   = Vector3d ();
-				translations  = 0;
-			}
-
-			break;
-		}
-		default:
-		   break;
-	}
-}
-
-void
-X3DIndexedFaceSetTool::set_plane_sensor_translation ()
-{
-	switch (getActionType ())
-	{
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
-		{
-			// Prevent accidentially move.
-			if (translations ++ < TRANSLATIONS_EVENTS)
-			   return;
-
-			translation = planeSensor -> translation_changed () .getValue ();
-
-			if (abs (translation))
-			{
-				setActionType (ActionType::TRANSLATE);
-
-				for (const auto & pair : getSelectedPoints ())
-					getCoord () -> set1Point (pair .first, pair .second + translation);
-
-				break;
-			}
-		}
-		default:
-		   break;
-	}
 }
 
 void

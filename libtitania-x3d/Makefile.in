@@ -644,6 +644,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.lo \
+	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTransformObject.lo \
 	Titania/X3D/Tools/Grids/AngleTool.lo \
 	Titania/X3D/Tools/Grids/GridTool.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
@@ -1425,6 +1426,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.cpp \
+	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
@@ -3525,6 +3527,9 @@ Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.lo:  \
 Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.lo:  \
 	Titania/X3D/Tools/Geometry3D/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTransformObject.lo:  \
+	Titania/X3D/Tools/Geometry3D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Grids/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Grids
 	@: > Titania/X3D/Tools/Grids/$(am__dirstamp)
@@ -4332,6 +4337,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetOperationsObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetSelectionObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetTransformObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AngleTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/GridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@

@@ -60,9 +60,6 @@
 namespace titania {
 namespace X3D {
 
-class TouchSensor;
-class PlaneSensor;
-
 class X3DIndexedFaceSetTool :
 	virtual public IndexedFaceSet,
 	virtual public X3DComposedGeometryNodeTool,
@@ -227,20 +224,6 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_loadState ();
-
-	void
-	set_touch_sensor_hitPoint ();
-
-	void
-	set_plane_sensor_active (const bool);
-
-	void
-	set_plane_sensor_translation ();
-
 	///  @name Members
 
 	struct Fields
@@ -251,12 +234,6 @@ private:
 	};
 
 	Fields fields;
-
-	X3DPtr <TouchSensor>      touchSensor;
-	X3DPtr <PlaneSensor>      planeSensor;
-	Vector3d                  translation;
-	size_t                    translations;
-	UndoStepPtr               undoStep;
 
 };
 

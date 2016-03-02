@@ -48,46 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
 
 #include "../Geometry3D/X3DIndexedFaceSetTool.h"
-#include "../Geometry3D/X3DIndexedFaceSetOperationsObject.h"
-#include "../Geometry3D/X3DIndexedFaceSetKnifeObject.h"
-#include "../Geometry3D/X3DIndexedFaceSetTransformObject.h"
 
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSetTool :
-	virtual public X3DIndexedFaceSetTool,
-	public X3DIndexedFaceSetTransformObject,
-	public X3DIndexedFaceSetOperationsObject,
-	public X3DIndexedFaceSetKnifeObject
+class TouchSensor;
+class PlaneSensor;
+
+class X3DIndexedFaceSetTransformObject :
+	virtual public X3DIndexedFaceSetTool
 {
 public:
-
-	///  @name Construction
-
-	IndexedFaceSetTool (IndexedFaceSet* const );
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose ()
+	{ }
 
-	virtual
-	~IndexedFaceSetTool ();
+	~X3DIndexedFaceSetTransformObject ();
 
 
 protected:
 
 	///  @name Construction
 
+	X3DIndexedFaceSetTransformObject ();
+
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_loadState ();
+
+	void
+	set_touch_sensor_hitPoint ();
+
+	void
+	set_plane_sensor_active (const bool);
+
+	void
+	set_plane_sensor_translation ();
+
+	///  @name Members
+
+	X3DPtr <TouchSensor>      touchSensor;
+	X3DPtr <PlaneSensor>      planeSensor;
+	Vector3d                  translation;
+	size_t                    translations;
+	UndoStepPtr               undoStep;
 
 };
 

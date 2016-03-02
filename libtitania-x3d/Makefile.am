@@ -527,6 +527,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.cpp \
+	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
