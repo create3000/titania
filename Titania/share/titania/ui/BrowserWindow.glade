@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="Experimental" filename="icons/Experimental.svg"/>
       <source stock-id="Knife" filename="icons/Knife.svg"/>
       <source stock-id="Triangulate" filename="icons/Triangulate.svg"/>
       <source stock-id="Faces" filename="icons/Faces.svg"/>

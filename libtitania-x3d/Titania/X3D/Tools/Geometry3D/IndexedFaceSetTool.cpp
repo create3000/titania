@@ -187,7 +187,6 @@ IndexedFaceSetTool::set_loadState ()
 		touchSensor -> hitPoint_changed () .addInterest (this, &IndexedFaceSetTool::set_touch_sensor_hitPoint);
 
 		planeSensor -> isActive ()            .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_active);
-		planeSensor -> trackPoint_changed ()  .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_trackPoint);
 		planeSensor -> translation_changed () .addInterest (this, &IndexedFaceSetTool::set_plane_sensor_translation);
 	}
 	catch (const X3DError & error)
@@ -227,7 +226,8 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 						planeSensor -> enabled ()      = not paintSelection ();
 						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+						planeSensor -> offset ()       = Vector3d ();
+						planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 						break;
 					}
 					case 2:
@@ -239,7 +239,8 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 						planeSensor -> enabled ()      = not paintSelection ();
 						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+						planeSensor -> offset ()       = Vector3d ();
+						planeSensor -> maxPosition ()  = Vector2d (-1, 0);
 						break;
 					}
 					default:
@@ -254,7 +255,8 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 							planeSensor -> enabled ()      = not paintSelection ();
 							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> maxPosition ()  = Vector2f (-1, 0);
+							planeSensor -> offset ()       = Vector3d ();
+							planeSensor -> maxPosition ()  = Vector2d (-1, 0);
 						}
 						else
 						{
@@ -264,7 +266,8 @@ IndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 							planeSensor -> enabled ()      = not paintSelection ();
 							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> maxPosition ()  = Vector2f (-1, -1);
+							planeSensor -> offset ()       = Vector3d ();
+							planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 						}
 				
 						break;
@@ -349,24 +352,9 @@ IndexedFaceSetTool::set_plane_sensor_translation ()
 				break;
 			}
 		}
-
-		case ActionType::CUT:
-			break;
-	}
-}
-
-void
-IndexedFaceSetTool::set_plane_sensor_trackPoint ()
-{
-	switch (getActionType ())
-	{
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
-			break;
-
 		case ActionType::CUT:
 		{
-			set_knife_trackPoint ();
+			set_knife_translation ();
 			break;
 		}
 	}
@@ -771,18 +759,19 @@ IndexedFaceSetTool::set_knife_hitPoint  ()
 		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
 		                       math::point_type ());
 
-		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
-		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-		planeSensor -> enabled ()      = true;
-		planeSensor -> axisRotation () = axisRotation;
-		planeSensor -> maxPosition ()  = Vector2f (-1, -1);
-
 		if (getHotPoints () .size () == 1)
 			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
 
 		else
 			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());	   
+
+		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
+		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+		planeSensor -> enabled ()      = true;
+		planeSensor -> axisRotation () = axisRotation;
+		planeSensor -> offset ()       = touchSensor -> getHitPoint ();
+		planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 
 		knifeLineCoordinate -> point () [1] = knifeLineCoordinate -> point () [0];
 		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
@@ -806,9 +795,11 @@ IndexedFaceSetTool::set_knife_active ()
 }
 
 void
-IndexedFaceSetTool::set_knife_trackPoint ()
+IndexedFaceSetTool::set_knife_translation ()
 {
-	__LOG__ << planeSensor -> trackPoint_changed () << std::endl;
+	knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
+
+	__LOG__ << knifeLineCoordinate -> point () << std::endl;
 
 	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
 	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
@@ -818,27 +809,12 @@ IndexedFaceSetTool::set_knife_trackPoint ()
 	                      knifeLineCoordinate -> point () [1],
 	                      math::point_type ());
 
-	const auto edgeScreenLine = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	const auto cutScreenLine  = ViewVolume::projectLine (cutLine,  getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-	Vector3d screenClosestPoint;
-	                     
-	if (edgeScreenLine .closest_point (cutScreenLine, screenClosestPoint))           
+	Vector3d closestPoint;
+                     
+	if (edgeLine .closest_point (cutLine, closestPoint))
 	{
-		const auto hitRay = ViewVolume::unProjectLine (screenClosestPoint .x () ,screenClosestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());	  
-
-		Vector3d closestPoint;
-	                     
-		if (edgeLine .closest_point (hitRay, closestPoint))
-		{
-			knifeLineSwitch -> whichChoice ()   = true;	
-			knifeLineCoordinate -> point () [1] = planeSensor -> trackPoint_changed () .getValue ();	   
-			knifeEndPoint -> translation ()     = closestPoint;
-		}
-		else
-		{
-			knifeLineSwitch -> whichChoice () = false;	
-		}
+		knifeLineSwitch -> whichChoice () = true;	
+		knifeEndPoint -> translation ()   = closestPoint;
 	}
 	else
 	{

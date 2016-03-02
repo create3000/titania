@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.2.2, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Tue, 01 Mar 2016 18:23:55 GMT"
+META "modified" "Wed, 02 Mar 2016 06:41:20 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,23 +66,34 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF _1 DepthBuffer {
-              enabled FALSE
-              depthOffset 4000
+            value DEF Rectangle2D Transform {
               children Shape {
                 appearance Appearance {
-                  material Material {
-                    diffuseColor 0 0 0
-                    emissiveColor 1 1 1
-                  }
+                  material Material { }
                 }
-                geometry DEF _2 Circle2D {
-                  radius 3
-                }
+                geometry Rectangle2D { }
               }
             }
           }
         ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
       }
     ]
   }
@@ -93,7 +104,7 @@ Collision {
   children DEF Switch Switch {
     children [
       Group { }
-      DEF _3 TransformMatrix3D {
+      DEF _1 TransformMatrix3D {
         children [
           DEF SelectionGroup Group {
             children [
@@ -173,7 +184,7 @@ Collision {
           }
           DEF SelectedEdges Shape {
             appearance Appearance {
-              lineProperties DEF _4 LineProperties {
+              lineProperties DEF _2 LineProperties {
                 linewidthScaleFactor 2
               }
               material DEF SelectedMaterial Material {
@@ -185,7 +196,7 @@ Collision {
           }
           DEF SelectedPoints Shape {
             appearance Appearance {
-              lineProperties DEF _5 LineProperties {
+              lineProperties DEF _3 LineProperties {
                 linewidthScaleFactor 8
               }
               material USE SelectedMaterial
@@ -202,7 +213,7 @@ Collision {
                 children [
                   DEF ActiveEdges Shape {
                     appearance Appearance {
-                      lineProperties USE _4
+                      lineProperties USE _2
                       material DEF ActiveMaterial Material {
                         diffuseColor 0 0 0
                         emissiveColor 0.5 0.0792565 0
@@ -231,7 +242,7 @@ Collision {
                 children [
                   DEF ActivePoints Shape {
                     appearance Appearance {
-                      lineProperties USE _5
+                      lineProperties USE _3
                       material USE ActiveMaterial
                     }
                     geometry PointSet {
@@ -240,7 +251,7 @@ Collision {
                   }
                   DEF HotPoints Shape {
                     appearance Appearance {
-                      lineProperties USE _5
+                      lineProperties USE _3
                       material USE HotMaterial_1
                     }
                     geometry PointSet {
@@ -258,7 +269,7 @@ Collision {
               Group {
                 children [
                   DEF KnifeStartPoint Transform {
-                    children DEF _6 Billboard {
+                    children DEF _4 Billboard {
                       axisOfRotation 0 0 0
                       children ScreenGroup {
                         children [
@@ -275,10 +286,24 @@ Collision {
                                   diffuseColor 0 0 0
                                 }
                               }
-                              geometry USE _2
+                              geometry DEF _5 Circle2D {
+                                radius 3
+                              }
                             }
                           }
-                          USE _1
+                          DepthBuffer {
+                            enabled FALSE
+                            depthOffset 4000
+                            children Shape {
+                              appearance Appearance {
+                                material Material {
+                                  diffuseColor 0 0 0
+                                  emissiveColor 1 1 1
+                                }
+                              }
+                              geometry USE _5
+                            }
+                          }
                         ]
                       }
                     }
@@ -289,14 +314,14 @@ Collision {
                       Group {
                         children [
                           DEF KnifeEndPoint Transform {
-                            children USE _6
+                            children USE _4
                           }
                           DepthBuffer {
                             enabled FALSE
                             depthOffset 1000
                             children Shape {
                               appearance Appearance {
-                                lineProperties DEF _7 LineProperties {
+                                lineProperties DEF _6 LineProperties {
                                   linetype 2
                                   linewidthScaleFactor 3
                                 }
@@ -304,7 +329,7 @@ Collision {
                                   diffuseColor 0 0 0
                                 }
                               }
-                              geometry DEF _8 LineSet {
+                              geometry DEF _7 LineSet {
                                 vertexCount 2
                                 coord DEF KnifeLineCoordinate CoordinateDouble {
                                   point [
@@ -320,7 +345,7 @@ Collision {
                             depthOffset 2000
                             children Shape {
                               appearance Appearance {
-                                lineProperties DEF _9 LineProperties {
+                                lineProperties DEF _8 LineProperties {
                                   linetype 2
                                   linewidthScaleFactor 1
                                 }
@@ -329,7 +354,7 @@ Collision {
                                   emissiveColor 1 1 1
                                 }
                               }
-                              geometry USE _8
+                              geometry USE _7
                             }
                           }
                         ]
@@ -346,6 +371,8 @@ Collision {
   }
 }
 
+USE Rectangle2D
+
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
 ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
 ROUTE MagicPointsSwitch.whichChoice_changed TO MagicEdgesSwitch.set_whichChoice
@@ -359,8 +386,8 @@ ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveCol
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
 ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
-ROUTE _7.linetype_changed TO _9.set_linetype
-ROUTE _9.linetype_changed TO _7.set_linetype
+ROUTE _6.linetype_changed TO _8.set_linetype
+ROUTE _8.linetype_changed TO _6.set_linetype
 
 EXPORT ActiveEdgesGeometry
 EXPORT ActiveFaceGeometry
@@ -384,4 +411,4 @@ EXPORT SelectionCoord
 EXPORT SelectionShape
 EXPORT Switch
 EXPORT TouchSensor
-EXPORT _3 AS TransformMatrix3D
+EXPORT _1 AS TransformMatrix3D

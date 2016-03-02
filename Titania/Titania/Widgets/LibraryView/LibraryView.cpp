@@ -63,10 +63,11 @@ namespace puck {
 
 namespace Columns {
 
-static constexpr int ICON    = 0;
-static constexpr int NAME    = 1;
-static constexpr int TITANIA = 2;
-static constexpr int COBWEB  = 3;
+static constexpr int ICON         = 0;
+static constexpr int NAME         = 1;
+static constexpr int TITANIA      = 2;
+static constexpr int COBWEB       = 3;
+static constexpr int EXPERIMENTAL = 4;
 
 };
 
@@ -84,6 +85,10 @@ LibraryView::initialize ()
 {
 	try
 	{
+	   #ifndef TITANIA_DEBUG
+	   getExperimantalColumn () -> set_visible (false);
+	   #endif
+
 		append (getRoot ());
 
 		restoreExpanded ();
@@ -176,6 +181,7 @@ void
 LibraryView::append (const std::string & path) const
 {
 	static const std::string empty_string;
+	static const std::string experimental_icon ("Experimental");
 	static const std::string titania_icon ("Titania");
 	static const std::string cobweb_icon ("Cobweb");
 
@@ -193,24 +199,32 @@ LibraryView::append (const std::string & path) const
 					iter -> set_value (Columns::ICON, std::string ("gtk-directory"));
 					iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 					append (iter, directory -> get_child (fileInfo -> get_name ()));
-					break;
+					continue;
 				}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
-					const auto basename = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
+
+					#ifndef TITANIA_DEBUG
+					if (experimental)
+					   continue;
+					#endif
+
 					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
 					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
 					const auto iter     = getTreeStore () -> append ();
 
-					iter -> set_value (Columns::ICON,    std::string ("gtk-file"));
-					iter -> set_value (Columns::NAME,    fileInfo -> get_name ());
-					iter -> set_value (Columns::TITANIA, titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::COBWEB,  cobweb  ? cobweb_icon  : empty_string);
-					break;
+					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
+					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
+					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
+					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
+					iter -> set_value (Columns::COBWEB,       cobweb  ? cobweb_icon  : empty_string);
+					continue;
 				}
 				default:
-					break;
+					continue;
 			}
 		}
 	}
@@ -222,6 +236,7 @@ void
 LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory) const
 {
 	static const std::string empty_string;
+	static const std::string experimental_icon ("Experimental");
 	static const std::string titania_icon ("Titania");
 	static const std::string cobweb_icon ("Cobweb");
 
@@ -237,24 +252,32 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 						iter -> set_value (Columns::ICON, std::string ("gtk-directory"));
 						iter -> set_value (Columns::NAME, fileInfo -> get_name ());
 						append (iter, directory -> get_child (fileInfo -> get_name ()));
-						break;
+						continue;
 					}
 				case Gio::FILE_TYPE_REGULAR:
 				case Gio::FILE_TYPE_SYMBOLIC_LINK:
 				{
-					const auto basename = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
+					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
+
+					#ifndef TITANIA_DEBUG
+					if (experimental)
+					   continue;
+					#endif
+
 					const bool titania  = os::file_exists (directory -> get_path () + "/.Titania/" + basename);
 					const bool cobweb   = os::file_exists (directory -> get_path () + "/.Cobweb/" + basename);
 					const auto iter     = getTreeStore () -> append (parent -> children ());
 
-					iter -> set_value (Columns::ICON,    std::string ("gtk-file"));
-					iter -> set_value (Columns::NAME,    fileInfo -> get_name ());
-					iter -> set_value (Columns::TITANIA, titania ? titania_icon : empty_string);
-					iter -> set_value (Columns::COBWEB,  cobweb  ? cobweb_icon  : empty_string);
-					break;
+					iter -> set_value (Columns::ICON,         std::string ("gtk-file"));
+					iter -> set_value (Columns::NAME,         fileInfo -> get_name ());
+					iter -> set_value (Columns::EXPERIMENTAL, experimental ? experimental_icon : empty_string);
+					iter -> set_value (Columns::TITANIA,      titania ? titania_icon : empty_string);
+					iter -> set_value (Columns::COBWEB,       cobweb  ? cobweb_icon  : empty_string);
+					continue;
 				}
 				default:
-					break;
+					continue;
 			}
 		}
 	}

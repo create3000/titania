@@ -104,8 +104,8 @@ public:
 	{ return m_TreeStore; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getFile () const
-	{ return m_File; }
+	getFileColumn () const
+	{ return m_FileColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getIconRenderer () const
@@ -116,16 +116,24 @@ public:
 	{ return m_NameRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getTitania () const
-	{ return m_Titania; }
+	getExperimantalColumn () const
+	{ return m_ExperimantalColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
+	getExperimantalRenderer () const
+	{ return m_ExperimantalRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTitaniaColumn () const
+	{ return m_TitaniaColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getTitaniaRenderer () const
 	{ return m_TitaniaRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getCobweb () const
-	{ return m_Cobweb; }
+	getCobwebColumn () const
+	{ return m_CobwebColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getCobwebRenderer () const
@@ -180,12 +188,14 @@ private:
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
 	Glib::RefPtr <Gtk::TreeStore>          m_TreeStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_File;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_FileColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::CellRendererText>   m_NameRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_Titania;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_ExperimantalColumn;
+	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ExperimantalRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_TitaniaColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_Cobweb;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_CobwebColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;

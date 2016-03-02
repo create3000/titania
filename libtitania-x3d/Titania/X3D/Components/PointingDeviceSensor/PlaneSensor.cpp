@@ -145,19 +145,17 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 
 			if (minPosition () .getX () == maxPosition () .getX ())
 			{
-				planeSensor = false;
-
 				const auto direction = Vector3d (0, std::abs (maxPosition () .getY () - minPosition () .getY ()), 0) * axisRotation;
 
-				line = Line3d (hitPoint, normalize (direction));
+				planeSensor = false;
+				line        = Line3d (hitPoint, normalize (direction));
 			}
 			else if (minPosition () .getY () == maxPosition () .getY ())
 			{
-				planeSensor = false;
-
 				const auto direction = Vector3d (std::abs (maxPosition () .getX () - minPosition () .getX ()), 0, 0) * axisRotation;
 
-				line = Line3d (hitPoint, normalize (direction));
+				planeSensor = false;
+				line        = Line3d (hitPoint, normalize (direction));
 			}
 			else
 			{

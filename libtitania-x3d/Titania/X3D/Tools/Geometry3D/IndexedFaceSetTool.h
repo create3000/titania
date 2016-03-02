@@ -293,9 +293,6 @@ private:
 	set_plane_sensor_translation ();
 
 	void
-	set_plane_sensor_trackPoint ();
-
-	void
 	set_mergePoints ();
 
 	void
@@ -329,7 +326,7 @@ private:
 	set_knife_active ();
 
 	void
-	set_knife_trackPoint ();
+	set_knife_translation ();
 
 	std::vector <int32_t>
 	splitPoints (const std::set <int32_t> &);

@@ -2466,7 +2466,6 @@
     <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\UniversalJoint" />
     <None Include="share\titania\Library\Components\Titania\.Titania\TouchGroup" />
     <None Include="share\titania\Library\Components\Titania\TouchGroup.x3dv" />
-    <None Include="share\titania\Library\Components\PointingDeviceSensor\.Titania\TouchGroup" />
     <None Include="Titania\Editors\GeometryEditor\GeometryEditor.h" />
     <None Include="Titania\UserInterfaces\X3DGeometryEditorInterface.h" />
     <None Include="share\titania\ui\Editors\GeometryEditor.glade" />
@@ -2509,6 +2508,15 @@
     <None Include="share\titania\ui\icons\Triangulate.svg" />
     <None Include="share\titania\ui\icons\Knife.svg" />
     <None Include="share\titania\Library\Primitives\Rendering\LineSet.x3dv" />
+    <None Include="share\titania\ui\icons\Experimental.svg" />
+    <None Include="share\titania\Library\Components\PointingDeviceSensor\TouchGroup.x3dv" />
+    <None Include="share\titania\Library\Components\PointingDeviceSensor\.experimental\TouchGroup" />
+    <None Include="share\titania\Library\Components\Rendering\.experimental\DepthBuffer" />
+    <None Include="share\titania\Library\Components\Rendering\DepthBuffer.x3dv" />
+    <None Include="share\titania\Library\Components\Rendering\PolygonOffset.x3dv" />
+    <None Include="share\titania\Library\Components\Rendering\.experimental\PolygonOffset" />
+    <None Include="share\titania\Library\Components\Grouping\.experimental\TransformMatrix3D" />
+    <None Include="share\titania\Library\Components\Grouping\TransformMatrix3D.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2598,6 +2606,7 @@
     <Folder Include="Titania\Editors\BindableNodeEditor\" />
     <Folder Include="Titania\Widgets\BindableNodeList\" />
     <Folder Include="Titania\Editors\SoundEditor\" />
+    <Folder Include="share\titania\Library\Components\PointingDeviceSensor\.experimental\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
