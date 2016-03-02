@@ -66,7 +66,7 @@
 #include "../Texturing3D/TextureCoordinate3D.h"
 #include "../Texturing3D/TextureCoordinate4D.h"
 
-#include "../../Tools/Geometry3D/IndexedFaceSetTool.h"
+#include "../../Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h"
 
 namespace titania {
 namespace X3D {

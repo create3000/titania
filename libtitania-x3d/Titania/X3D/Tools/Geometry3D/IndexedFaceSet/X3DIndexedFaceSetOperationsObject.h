@@ -48,34 +48,85 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_OPERATIONS_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_OPERATIONS_OBJECT_H__
 
-#include "../Geometry3D/X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetTool.h"
 
 namespace titania {
 namespace X3D {
 
-class Switch;
-class Transform;
-class TouchSensor;
-class PlaneSensor;
-class CoordinateDouble;
-
-class X3DIndexedFaceSetKnifeObject :
+class X3DIndexedFaceSetOperationsObject :
 	virtual public X3DIndexedFaceSetTool
+
 {
 public:
 
 	///  @name Hidden fields
 
-	SFBool &
-	cutPolygons ()
-	{ return *fields .cutPolygons; }
+	SFTime &
+	mergePoints ()
+	{ return *fields .mergePoints; }
 
-	const SFBool &
-	cutPolygons () const
-	{ return *fields .cutPolygons; }
+	const SFTime &
+	mergePoints () const
+	{ return *fields .mergePoints; }
+
+	SFTime &
+	splitPoints ()
+	{ return *fields .splitPoints; }
+
+	const SFTime &
+	splitPoints () const
+	{ return *fields .splitPoints; }
+
+	SFTime &
+	formNewFace ()
+	{ return *fields .formNewFace; }
+
+	const SFTime &
+	formNewFace () const
+	{ return *fields .formNewFace; }
+
+	SFTime &
+	extrudeSelectedEdges ()
+	{ return *fields .extrudeSelectedEdges; }
+
+	const SFTime &
+	extrudeSelectedEdges () const
+	{ return *fields .extrudeSelectedEdges; }
+
+	SFTime &
+	extrudeSelectedFaces ()
+	{ return *fields .extrudeSelectedFaces; }
+
+	const SFTime &
+	extrudeSelectedFaces () const
+	{ return *fields .extrudeSelectedFaces; }
+
+	SFTime &
+	chipOfSelectedFaces ()
+	{ return *fields .chipOfSelectedFaces; }
+
+	const SFTime &
+	chipOfSelectedFaces () const
+	{ return *fields .chipOfSelectedFaces; }
+
+	SFTime &
+	flipVertexOrdering ()
+	{ return *fields .flipVertexOrdering; }
+
+	const SFTime &
+	flipVertexOrdering () const
+	{ return *fields .flipVertexOrdering; }
+
+	SFTime &
+	deleteSelectedFaces ()
+	{ return *fields .deleteSelectedFaces; }
+
+	const SFTime &
+	deleteSelectedFaces () const
+	{ return *fields .deleteSelectedFaces; }
 
 	///  @name Destruction
 
@@ -84,14 +135,14 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetKnifeObject ();
+	~X3DIndexedFaceSetOperationsObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DIndexedFaceSetKnifeObject ();
+	X3DIndexedFaceSetOperationsObject ();
 
 	virtual
 	void
@@ -103,19 +154,48 @@ private:
 	///  @name Event handlers
 
 	void
-	set_loadState ();
+	set_mergePoints ();
 
 	void
-	set_cutPolygons ();
+	set_splitPoints ();
 
 	void
-	set_touch_sensor_hitPoint ();
+	set_formNewFace ();
 
 	void
-	set_plane_sensor_active ();
+	set_extrudeSelectedEdges ();
 
 	void
-	set_plane_sensor_translation ();
+	set_extrudeSelectedFaces ();
+
+	void
+	set_chipOfSelectedFaces ();
+
+	void
+	set_flipVertexOrdering ();
+
+	void
+	set_deleteSelectedFaces ();
+
+	///  @name Operations
+
+	std::vector <int32_t>
+	splitPoints (const std::set <int32_t> &);
+
+	std::vector <int32_t>
+	formNewFace (const std::vector <std::vector <int32_t>> &);
+
+	std::vector <int32_t>
+	extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> &, const std::set <size_t> &);
+
+	std::vector <int32_t>
+	chipOf (const std::set <size_t> &);
+
+	void
+	flipVertexOrdering (const std::set <size_t> &);
+
+	void
+	erasePoints (const std::vector <int32_t> &);
 
 	///  @name Members
 
@@ -123,18 +203,17 @@ private:
 	{
 		Fields ();
 
-		SFBool* const cutPolygons;
+		SFTime* const mergePoints;
+		SFTime* const splitPoints;
+		SFTime* const formNewFace;
+		SFTime* const extrudeSelectedEdges;
+		SFTime* const extrudeSelectedFaces;
+		SFTime* const chipOfSelectedFaces;
+		SFTime* const flipVertexOrdering;
+		SFTime* const deleteSelectedFaces;
 	};
 
 	Fields fields;
-
-	X3DPtr <TouchSensor>      touchSensor;
-	X3DPtr <PlaneSensor>      planeSensor;
-	X3DPtr <Switch>           knifeSwitch;
-	X3DPtr <Transform>        knifeStartPoint;
-	X3DPtr <Transform>        knifeEndPoint;
-	X3DPtr <Switch>           knifeLineSwitch;
-	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 
 };
 

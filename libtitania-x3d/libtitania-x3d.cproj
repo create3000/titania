@@ -782,18 +782,18 @@
     <None Include="Titania\X3D\Tools\Sound\X3DSoundNodeTool.h" />
     <None Include="Titania\X3D\Tools\Sound\SoundTool.h" />
     <None Include="share\titania\tools\library\QuadSphere.x3dv" />
-    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetSelectionObject.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.h" />
     <None Include="Titania\X3D\Components\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetKnifeObject.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTransformObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetKnifeObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetOperationsObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSelectionObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1325,18 +1325,18 @@
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Sound\SoundTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetSelectionObject.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetKnifeObject.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTransformObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\IndexedFaceSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetKnifeObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetOperationsObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSelectionObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1409,6 +1409,7 @@
     <Folder Include="Titania\X3D\Tools\Geometry3D\" />
     <Folder Include="Titania\X3D\Editing\Selection\" />
     <Folder Include="Titania\X3D\Tools\Sound\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

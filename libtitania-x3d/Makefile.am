@@ -522,12 +522,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
-	Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp \
-	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetKnifeObject.cpp \
-	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.cpp \
-	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp \
-	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.cpp \
-	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTransformObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetOperationsObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetSelectionObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTool.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \

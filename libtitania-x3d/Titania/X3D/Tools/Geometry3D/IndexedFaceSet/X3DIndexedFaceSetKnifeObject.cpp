@@ -50,14 +50,14 @@
 
 #include "X3DIndexedFaceSetKnifeObject.h"
 
-#include "../Rendering/CoordinateTool.h"
+#include "../../Rendering/CoordinateTool.h"
 
-#include "../../Components/Grouping/Transform.h"
-#include "../../Components/Grouping/Switch.h"
-#include "../../Components/PointingDeviceSensor/TouchSensor.h"
-#include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Components/NURBS/CoordinateDouble.h"
-#include "../../Editing/Selection/FaceSelection.h"
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Grouping/Switch.h"
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../../Components/NURBS/CoordinateDouble.h"
+#include "../../../Editing/Selection/FaceSelection.h"
 
 namespace titania {
 namespace X3D {

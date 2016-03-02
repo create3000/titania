@@ -51,10 +51,10 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
 
-#include "../Geometry3D/X3DIndexedFaceSetTool.h"
-#include "../Geometry3D/X3DIndexedFaceSetOperationsObject.h"
-#include "../Geometry3D/X3DIndexedFaceSetKnifeObject.h"
-#include "../Geometry3D/X3DIndexedFaceSetTransformObject.h"
+#include "X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetOperationsObject.h"
+#include "X3DIndexedFaceSetKnifeObject.h"
+#include "X3DIndexedFaceSetTransformObject.h"
 
 namespace titania {
 namespace X3D {

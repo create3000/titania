@@ -48,14 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_TOOL_H__
 
-#include "../Geometry3D/X3DIndexedFaceSetSelectionObject.h"
-#include "../Rendering/X3DComposedGeometryNodeTool.h"
-
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Editing/Undo/UndoStepContainer.h"
+#include "../../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../../Editing/Undo/UndoStepContainer.h"
+#include "../../Rendering/X3DComposedGeometryNodeTool.h"
+#include "X3DIndexedFaceSetSelectionObject.h"
 
 namespace titania {
 namespace X3D {

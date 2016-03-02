@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_SELECTION_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_SELECTION_OBJECT_H__
 
-#include "../Rendering/X3DComposedGeometryNodeTool.h"
+#include "../../Rendering/X3DComposedGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {

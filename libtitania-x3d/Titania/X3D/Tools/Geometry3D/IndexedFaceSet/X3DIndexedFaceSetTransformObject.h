@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
 
-#include "../Geometry3D/X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetTool.h"
 
 namespace titania {
 namespace X3D {

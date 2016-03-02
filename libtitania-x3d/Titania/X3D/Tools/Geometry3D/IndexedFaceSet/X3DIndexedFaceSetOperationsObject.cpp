@@ -50,7 +50,7 @@
 
 #include "X3DIndexedFaceSetOperationsObject.h"
 
-#include "../../Editing/Selection/FaceSelection.h"
+#include "../../../Editing/Selection/FaceSelection.h"
 
 namespace titania {
 namespace X3D {

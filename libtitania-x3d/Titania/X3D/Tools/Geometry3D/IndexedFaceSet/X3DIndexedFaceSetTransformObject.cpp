@@ -50,12 +50,12 @@
 
 #include "X3DIndexedFaceSetTransformObject.h"
 
-#include "../Rendering/CoordinateTool.h"
+#include "../../Rendering/CoordinateTool.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Components/PointingDeviceSensor/TouchSensor.h"
-#include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Editing/Selection/FaceSelection.h"
+#include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../../Editing/Selection/FaceSelection.h"
 
 #include <Titania/String/sprintf.h>
 

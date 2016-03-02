@@ -50,17 +50,17 @@
 
 #include "X3DIndexedFaceSetSelectionObject.h"
 
-#include "../Rendering/CoordinateTool.h"
+#include "../../Rendering/CoordinateTool.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Grouping/Switch.h"
-#include "../../Components/NURBS/CoordinateDouble.h"
-#include "../../Components/PointingDeviceSensor/TouchSensor.h"
-#include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
-#include "../../Editing/Selection/FaceSelection.h"
-#include "../../Rendering/Tessellator.h"
+#include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../../Components/Grouping/Switch.h"
+#include "../../../Components/NURBS/CoordinateDouble.h"
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../../Components/Rendering/IndexedLineSet.h"
+#include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Rendering/Tessellator.h"
 
 namespace titania {
 namespace X3D {
