@@ -746,7 +746,7 @@ IndexedFaceSetTool::set_cutPolygons ()
 	knifeSwitch -> whichChoice () = cutPolygons ();
 }
 
-bool
+void
 IndexedFaceSetTool::set_knife_hitPoint  ()
 {
 	if (planeSensor -> isActive ())
@@ -754,6 +754,9 @@ IndexedFaceSetTool::set_knife_hitPoint  ()
 	else
 	{
 	   // Set start point
+
+	   if (getHotEdge () .empty ())
+	      return;
 
 		const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
 		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
@@ -777,8 +780,6 @@ IndexedFaceSetTool::set_knife_hitPoint  ()
 		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
 		knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
 	}
-
-	return true;
 }
 
 void
@@ -786,11 +787,11 @@ IndexedFaceSetTool::set_knife_active ()
 {
 	knifeLineSwitch -> whichChoice () = planeSensor -> isActive ();	 
   
-	if (touchSensor -> isActive ())
-	   ;
+	if (planeSensor -> isActive ())
+	{
+	}
 	else
 	{
-
 	}
 }
 
@@ -798,8 +799,6 @@ void
 IndexedFaceSetTool::set_knife_translation ()
 {
 	knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
-
-	__LOG__ << knifeLineCoordinate -> point () << std::endl;
 
 	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
 	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),

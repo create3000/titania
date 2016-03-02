@@ -319,7 +319,7 @@ private:
 	void
 	set_cutPolygons ();
 
-	bool
+	void
 	set_knife_hitPoint  ();
 
 	void
