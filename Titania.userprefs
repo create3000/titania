@@ -1,15 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Tools/Core/Tool.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.h" Line="6" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.h" Line="68" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="26" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp" Line="98" Column="98" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.h" Line="28" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp" Line="23" Column="23" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="6" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/X3DFaceSelection.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.h" Line="63" Column="63" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" Line="47" Column="47" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/CoordinateTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Rendering/X3DGeometricPropertyNodeTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/Tool.cpp" Line="32" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/Tool.h" Line="6" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -415,10 +415,7 @@ X3DLayerNode::display (const TraverseType type)
 void
 X3DLayerNode::collect (const TraverseType type)
 {
-	group -> traverse (type);
-
-	getModelViewMatrix () .identity ();
-
+	group   -> traverse (type);
 	friends -> traverse (type);
 }
 

@@ -135,7 +135,16 @@ X3DShapeNode::set_appearance ()
 void
 X3DShapeNode::set_geometry ()
 {
+	if (geometryNode)
+	   geometryNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
+
+	if (geometryNode)
+	{
+	   geometryNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	   setCameraObject (geometryNode -> isCameraObject ());
+	}
 }
 
 void

@@ -137,8 +137,13 @@ X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
 	
 		enabled = true;
 	
-		if (getModelViewMatrix () .get () not_eq transformNode -> getMatrix ())
-			transformNode -> setMatrix (getModelViewMatrix () .get ());
+		if (type == TraverseType::DISPLAY)
+		{
+		   const auto transformationMatrix = getModelViewMatrix () .get () * getCameraSpaceMatrix ();
+
+			if (transformationMatrix not_eq transformNode -> getMatrix ())
+				transformNode -> setMatrix (transformationMatrix);
+		}
 	}
 	catch (const X3DError & error)
 	{ }

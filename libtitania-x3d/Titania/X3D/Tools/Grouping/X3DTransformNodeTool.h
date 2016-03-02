@@ -359,10 +359,10 @@ X3DTransformNodeTool::reshape ()
 
 		const auto bbox = getNode <X3DTransformNode> () -> X3DGroupingNode::getBBox ();
 
-		getToolNode () -> template setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		getToolNode () -> template setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
-		getToolNode () -> template setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
-		getToolNode () -> template setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
+		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
 
 		getBrowser () -> processEvents ();
 		getBrowser () -> beginUpdateForFrame ();

@@ -85,8 +85,6 @@ X3DGridTool::X3DGridTool () :
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);
-
-	getTool () -> setWithCameraSpaceMatrix (true);
 }
 
 void

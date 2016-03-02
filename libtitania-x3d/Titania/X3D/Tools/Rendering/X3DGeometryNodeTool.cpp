@@ -108,6 +108,8 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
+	setCameraObject (true);
+
 	pickable () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
 	getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
 

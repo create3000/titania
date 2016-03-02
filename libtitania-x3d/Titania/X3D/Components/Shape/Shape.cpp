@@ -131,12 +131,17 @@ Shape::traverse (const TraverseType type)
 {
 	if (getGeometry ())
 	{
+		getGeometry () -> traverse (type);
 
 		switch (type)
 		{
 			case TraverseType::POINTER:
 			{
 				pointer ();
+				break;
+			}
+			case TraverseType::CAMERA:
+			{
 				break;
 			}
 			case TraverseType::COLLISION:
@@ -147,12 +152,9 @@ Shape::traverse (const TraverseType type)
 			case TraverseType::DISPLAY:
 			case TraverseType::DEPTH:
 			{
-				getGeometry () -> traverse (type);
 				getCurrentLayer () -> addShape (this);
 				break;
 			}
-			default:
-				break;
 		}
 	}
 }

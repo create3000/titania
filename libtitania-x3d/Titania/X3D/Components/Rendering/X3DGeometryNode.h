@@ -107,6 +107,14 @@ public:
 	///  @name Member access
 
 	virtual
+	const SFBool &
+	isCameraObject () const
+	{ return cameraObject; }
+
+	void
+	setCameraObject (const bool);
+
+	virtual
 	const Box3d &
 	getBBox () const
 	{ return bbox; }
@@ -318,6 +326,7 @@ private:
 
 	///  @name Members
 
+	SFBool                                cameraObject;
 	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;

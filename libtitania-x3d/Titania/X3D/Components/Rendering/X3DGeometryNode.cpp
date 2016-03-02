@@ -63,6 +63,7 @@ namespace X3D {
 
 X3DGeometryNode::X3DGeometryNode () :
 	          X3DNode (),
+	     cameraObject (),
 	             bbox (),
 	      attribNodes (),
 	           colors (),
@@ -82,7 +83,8 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
-	addChildren (texCoordNode);
+	addChildren (cameraObject,
+	             texCoordNode);
 }
 
 void
@@ -100,6 +102,13 @@ X3DGeometryNode::setup ()
 
 		update ();
 	}
+}
+
+void
+X3DGeometryNode::setCameraObject (const bool value)
+{
+	if (value not_eq cameraObject)
+	   cameraObject = value;
 }
 
 Box3d

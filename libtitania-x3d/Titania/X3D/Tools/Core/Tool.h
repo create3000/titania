@@ -99,14 +99,6 @@ public:
 
 	///  @name Operations
 
-	void
-	setWithCameraSpaceMatrix (const bool value)
-	{ withCameraSpaceMatrix = value; }
-
-	bool
-	getWithCameraSpaceMatrix () const
-	{ return withCameraSpaceMatrix; }
-
 	const Matrix4d &
 	getTransformationMatrix () const
 	{ return transformationMatrix; }
@@ -143,7 +135,6 @@ private:
 
 	///  @name Members
 
-	bool     withCameraSpaceMatrix;
 	Matrix4d transformationMatrix;
 
 };

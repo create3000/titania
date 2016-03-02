@@ -64,7 +64,6 @@ Tool::Tool (X3DExecutionContext* const executionContext) :
 	          X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	         X3DChildNode (),
 	        X3DToolObject (),
-	withCameraSpaceMatrix (false),
 	 transformationMatrix ()
 {
 	addType (X3DConstants::Tool);
@@ -97,17 +96,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 Tool::traverse (const TraverseType type)
 {
-	getModelViewMatrix () .push ();
-
 	if (type == TraverseType::CAMERA)
 		transformationMatrix = getModelViewMatrix () .get ();
 
-	else if (withCameraSpaceMatrix)
-		getCurrentLayer () -> getViewpoint () -> transform ();
-
 	X3DToolObject::traverse (type);
-
-	getModelViewMatrix () .pop ();
 }
 
 void
