@@ -763,7 +763,6 @@
     <None Include="Titania\X3D\Browser\Tools\TransformToolOptions.h" />
     <None Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DGeometryNodeTool.h" />
-    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DComposedGeometryNodeTool.h" />
     <None Include="Titania\X3D\Components\Grouping\TransformMatrix3D.h" />
     <None Include="share\titania\tools\IndexedFaceSetTool.x3dv" />
@@ -790,6 +789,9 @@
     <None Include="Titania\X3D\Components\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1306,7 +1308,6 @@
     <Compile Include="Titania\X3D\Browser\Tools\X3DToolContext.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\TransformToolOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\CubeMapTexturing\X3DCubeMapTexturingContext.cpp" />
-    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\TransformMatrix3D.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\NormalTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DNormalNodeTool.cpp" />
@@ -1329,6 +1330,9 @@
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
