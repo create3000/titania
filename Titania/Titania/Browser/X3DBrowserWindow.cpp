@@ -95,6 +95,8 @@ X3DBrowserWindow::initialize ()
 {
 	X3DBrowserEditor::initialize ();
 
+	geometryEditor -> getWidget () .property_reveal_child () .signal_changed () .connect (sigc::mem_fun (this, &X3DBrowserWindow::on_geometry_editor_reveal_child_changed));
+
 	geometryEditor -> reparent (getBrowserOverlay (), getWindow ());
 	sidebar        -> reparent (getSidebarBox (),     getWindow ());
 	footer         -> reparent (getFooterBox (),      getWindow ());
@@ -107,7 +109,7 @@ X3DBrowserWindow::isEditor (const bool value)
 {
 	X3DBrowserEditor::isEditor (value);
 
-	geometryEditor -> getWidget () .set_reveal_child (value);
+	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getBoolean ("geometryEditor"));
 }
 
 void
@@ -216,6 +218,18 @@ X3DBrowserWindow::set_clipboard (const X3D::SFString & string)
 }
 
 void
+X3DBrowserWindow::on_geometry_editor_clicked ()
+{
+	geometryEditor -> getWidget () .set_reveal_child (true);
+}
+
+void
+X3DBrowserWindow::on_geometry_editor_reveal_child_changed ()
+{
+	getConfig () -> setItem ("geometryEditor", geometryEditor -> getWidget () .get_reveal_child ());
+}
+
+void
 X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
 	getCurrentBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
@@ -236,6 +250,12 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 
 	if  (not paths .empty ())
 		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::M_PHI);
+}
+
+void
+X3DBrowserWindow::store ()
+{
+	X3DBrowserEditor::store ();
 }
 
 void

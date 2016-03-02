@@ -161,6 +161,12 @@ GeometryEditor::initialize ()
 }
 
 void
+GeometryEditor::on_geometry_editor_clicked ()
+{
+	getWidget () .set_reveal_child (false);
+}
+
+void
 GeometryEditor::on_map ()
 {
 	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);

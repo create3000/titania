@@ -11,9 +11,8 @@
         <property name="halign">start</property>
         <property name="valign">start</property>
         <property name="margin_left">1</property>
-        <property name="margin_top">3</property>
-        <property name="transition_type">slide-right</property>
-        <property name="transition_duration">300</property>
+        <property name="transition_type">slide-up</property>
+        <property name="transition_duration">618</property>
         <property name="reveal_child">True</property>
         <signal name="map" handler="on_map" swapped="no"/>
         <signal name="unmap" handler="on_unmap" swapped="no"/>
@@ -29,19 +28,54 @@
                 <property name="can_focus">False</property>
                 <property name="row_spacing">1</property>
                 <property name="column_spacing">1</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkBox" id="box2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel" id="label2">
+                      <object class="GtkButton" id="GeometryEditorButton">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Geometry</property>
-                        <property name="xalign">0</property>
-                        <style>
-                          <class name="titania-small"/>
-                        </style>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Hide Geometry Editor.</property>
+                        <signal name="clicked" handler="on_geometry_editor_clicked" swapped="no"/>
+                        <child>
+                          <object class="GtkBox" id="box1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">8</property>
+                            <child>
+                              <object class="GtkLabel" id="label2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Geometry</property>
+                                <property name="xalign">0</property>
+                                <style>
+                                  <class name="titania-small"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage" id="image16">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="stock">gtk-go-up</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -110,6 +144,8 @@
                 <property name="can_focus">False</property>
                 <property name="row_spacing">1</property>
                 <property name="column_spacing">1</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkToggleButton" id="NormalEnabledToggleButton">
                     <property name="visible">True</property>

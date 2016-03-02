@@ -111,6 +111,10 @@ public:
 	getGeometryEditorBox () const
 	{ return *m_GeometryEditorBox; }
 
+	Gtk::Button &
+	getGeometryEditorButton () const
+	{ return *m_GeometryEditorButton; }
+
 	Gtk::ToggleButton &
 	getEditToggleButton () const
 	{ return *m_EditToggleButton; }
@@ -208,6 +212,10 @@ public:
 	virtual
 	void
 	on_unmap () = 0;
+
+	virtual
+	void
+	on_geometry_editor_clicked () = 0;
 
 	virtual
 	void
@@ -314,6 +322,7 @@ private:
 	Gtk::Window*                m_Window;
 	Gtk::Revealer*              m_Widget;
 	Gtk::Box*                   m_GeometryEditorBox;
+	Gtk::Button*                m_GeometryEditorButton;
 	Gtk::ToggleButton*          m_EditToggleButton;
 	Gtk::Button*                m_HammerButton;
 	Gtk::Grid*                  m_GeometryToolsBox;

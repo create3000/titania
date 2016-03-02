@@ -157,12 +157,15 @@ protected:
 
 	virtual
 	void
-	initialize ();
+	initialize () override;
 
 	virtual
 	void
 	setBrowser (const X3D::BrowserPtr &) override;
 
+	virtual
+	void
+	store () override;
 
 
 private:
@@ -176,6 +179,13 @@ private:
 
 	void
 	set_clipboard (const X3D::SFString &);
+
+	virtual
+	void
+	on_geometry_editor_clicked () final override;
+
+	void
+	on_geometry_editor_reveal_child_changed ();
 
 	void
 	expandNodesImpl (const X3D::MFNode &);

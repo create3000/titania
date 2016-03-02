@@ -370,6 +370,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
 	m_builder -> get_widget ("TextEditorButton", m_TextEditorButton);
 	m_builder -> get_widget ("GeometryPropertiesEditorButton", m_GeometryPropertiesEditorButton);
+	m_builder -> get_widget ("GeometryEditorButton", m_GeometryEditorButton);
 	m_builder -> get_widget ("ColorPerVertexEditorButton", m_ColorPerVertexEditorButton);
 	m_builder -> get_widget ("TextureCoordinateEditorButton", m_TextureCoordinateEditorButton);
 	m_builder -> get_widget ("LayerEditorButton", m_LayerEditorButton);
@@ -675,6 +676,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
 	m_TextEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_text_editor_clicked));
 	m_GeometryPropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_properties_editor_clicked));
+	m_GeometryEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_geometry_editor_clicked));
 	m_ColorPerVertexEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
 	m_TextureCoordinateEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_mapping_editor_clicked));
 	m_LayerEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_layer_editor_clicked));

@@ -66,6 +66,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
+	m_builder -> get_widget ("GeometryEditorButton", m_GeometryEditorButton);
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("GeometryToolsBox", m_GeometryToolsBox);
@@ -92,6 +93,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Revealer with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap));
+
+	// Connect object Gtk::Button with id 'GeometryEditorButton'.
+	m_GeometryEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
 	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));

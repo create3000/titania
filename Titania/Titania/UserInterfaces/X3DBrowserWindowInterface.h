@@ -1328,6 +1328,10 @@ public:
 	{ return *m_GeometryPropertiesEditorButton; }
 
 	Gtk::ToolButton &
+	getGeometryEditorButton () const
+	{ return *m_GeometryEditorButton; }
+
+	Gtk::ToolButton &
 	getColorPerVertexEditorButton () const
 	{ return *m_ColorPerVertexEditorButton; }
 
@@ -1951,6 +1955,10 @@ public:
 
 	virtual
 	void
+	on_geometry_editor_clicked () = 0;
+
+	virtual
+	void
 	on_layer_editor_clicked () = 0;
 
 	virtual
@@ -2378,6 +2386,7 @@ private:
 	Gtk::ToolButton*                 m_TextureEditorButton;
 	Gtk::ToolButton*                 m_TextEditorButton;
 	Gtk::ToolButton*                 m_GeometryPropertiesEditorButton;
+	Gtk::ToolButton*                 m_GeometryEditorButton;
 	Gtk::ToolButton*                 m_ColorPerVertexEditorButton;
 	Gtk::ToolButton*                 m_TextureCoordinateEditorButton;
 	Gtk::ToolButton*                 m_LayerEditorButton;
