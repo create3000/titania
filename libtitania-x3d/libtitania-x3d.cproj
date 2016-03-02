@@ -792,6 +792,7 @@
     <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetKnifeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1333,6 +1334,7 @@
     <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetOperationsObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\X3DIndexedFaceSetKnifeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

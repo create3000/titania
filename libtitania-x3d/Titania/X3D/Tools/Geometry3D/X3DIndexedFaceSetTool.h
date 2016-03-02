@@ -60,16 +60,13 @@
 namespace titania {
 namespace X3D {
 
-class Switch;
-class Transform;
 class TouchSensor;
 class PlaneSensor;
-class CoordinateDouble;
 
 class X3DIndexedFaceSetTool :
 	virtual public IndexedFaceSet,
 	virtual public X3DComposedGeometryNodeTool,
-	public X3DIndexedFaceSetSelectionObject
+	virtual public X3DIndexedFaceSetSelectionObject
 {
 public:
 
@@ -136,14 +133,6 @@ public:
 	{ return getNode <IndexedFaceSet> () -> coordIndex (); }
 
 	///  @name Hidden fields
-
-	SFBool &
-	cutPolygons ()
-	{ return *fields .cutPolygons; }
-
-	const SFBool &
-	cutPolygons () const
-	{ return *fields .cutPolygons; }
 
 	UndoStepContainerPtr &
 	undo_changed ()
@@ -252,25 +241,12 @@ private:
 	void
 	set_plane_sensor_translation ();
 
-	void
-	set_cutPolygons ();
-
-	void
-	set_knife_hitPoint  ();
-
-	void
-	set_knife_active ();
-
-	void
-	set_knife_translation ();
-
 	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
-		SFBool* const cutPolygons;
 		UndoStepContainerPtr* const undo_changed;
 	};
 
@@ -278,11 +254,6 @@ private:
 
 	X3DPtr <TouchSensor>      touchSensor;
 	X3DPtr <PlaneSensor>      planeSensor;
-	X3DPtr <Switch>           knifeSwitch;
-	X3DPtr <Transform>        knifeStartPoint;
-	X3DPtr <Transform>        knifeEndPoint;
-	X3DPtr <Switch>           knifeLineSwitch;
-	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 	Vector3d                  translation;
 	size_t                    translations;
 	UndoStepPtr               undoStep;

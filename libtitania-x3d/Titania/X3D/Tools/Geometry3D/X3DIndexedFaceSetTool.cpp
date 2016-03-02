@@ -53,11 +53,8 @@
 #include "../Rendering/CoordinateTool.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Grouping/Transform.h"
-#include "../../Components/Grouping/Switch.h"
 #include "../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Components/PointingDeviceSensor/PlaneSensor.h"
-#include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Editing/Selection/FaceSelection.h"
 
 #include <Titania/String/sprintf.h>
@@ -68,7 +65,6 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTool::Fields::Fields () :
-	 cutPolygons (new SFBool ()),
 	undo_changed (new UndoStepContainerPtr ())
 { }
 
@@ -79,26 +75,14 @@ X3DIndexedFaceSetTool::X3DIndexedFaceSetTool () :
 	                          fields (),
 	                     touchSensor (),
 	                     planeSensor (),
-	                     knifeSwitch (),
-	                 knifeStartPoint (),
-	                   knifeEndPoint (),
-	                 knifeLineSwitch (),
-	             knifeLineCoordinate (),
 	                     translation (),
 	                    translations (0),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	//addType (X3DConstants::X3DIndexedFaceSetTool);
 
-	cutPolygons () .isHidden (true);
-
 	addChildren (touchSensor,
-	             planeSensor,
-	             knifeSwitch,
-	             knifeStartPoint,
-	             knifeEndPoint,
-	             knifeLineSwitch,
-	             knifeLineCoordinate);
+	             planeSensor);
 }
 
 void
@@ -108,8 +92,6 @@ X3DIndexedFaceSetTool::initialize ()
 	X3DIndexedFaceSetSelectionObject::initialize ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTool::set_loadState);
-
-	cutPolygons () .addInterest (this, &X3DIndexedFaceSetTool::set_cutPolygons);
 }
 
 void
@@ -120,13 +102,8 @@ X3DIndexedFaceSetTool::set_loadState ()
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
-		planeSensor         = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
-		touchSensor         = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
-		knifeSwitch         = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
-		knifeStartPoint     = inlineNode -> getExportedNode <Transform>        ("KnifeStartPoint");
-		knifeEndPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
-		knifeLineSwitch     = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
-		knifeLineCoordinate = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
+		planeSensor = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
+		touchSensor = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 
 		getBrowser () -> hasControlKey ()  .addInterest (this, &X3DIndexedFaceSetTool::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTool::set_touch_sensor_hitPoint);
@@ -221,11 +198,8 @@ X3DIndexedFaceSetTool::set_touch_sensor_hitPoint ()
 
 				break;
 			}
-			case ActionType::CUT:
-			{
-				set_knife_hitPoint  ();
-				break;
-			}
+			default:
+			   break;
 		}
 	}
 	catch (const std::exception & error)
@@ -265,11 +239,8 @@ X3DIndexedFaceSetTool::set_plane_sensor_active (const bool active)
 
 			break;
 		}
-		case ActionType::CUT:
-		{
-			set_knife_active ();
-			break;
-		}
+		default:
+		   break;
 	}
 }
 
@@ -297,105 +268,8 @@ X3DIndexedFaceSetTool::set_plane_sensor_translation ()
 				break;
 			}
 		}
-		case ActionType::CUT:
-		{
-			set_knife_translation ();
-			break;
-		}
-	}
-}
-
-void
-X3DIndexedFaceSetTool::set_cutPolygons ()
-{
-	__LOG__ <<std::endl;
-
-	if (cutPolygons ())
-		setActionType (ActionType::CUT);
-	else
-		setActionType (ActionType::SELECT);
-
-	knifeSwitch -> whichChoice () = cutPolygons ();
-}
-
-void
-X3DIndexedFaceSetTool::set_knife_hitPoint  ()
-{
-	if (planeSensor -> isActive ())
-	   ;
-	else
-	{
-	   // Set start point
-
-	   if (getHotEdge () .empty ())
-	      return;
-
-		if (getHotPoints () .size () == 1)
-			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
-
-		else
-		{
-			const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-			                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-			                       math::point_type ());
-
-			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());
-		}  
-
-		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
-		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-		planeSensor -> enabled ()      = true;
-		planeSensor -> axisRotation () = axisRotation;
-		planeSensor -> offset ()       = touchSensor -> getHitPoint ();
-		planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-
-		knifeLineCoordinate -> point () [1] = knifeLineCoordinate -> point () [0];
-		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
-		knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
-	}
-}
-
-void
-X3DIndexedFaceSetTool::set_knife_active ()
-{
-	knifeLineSwitch -> whichChoice () = planeSensor -> isActive ();	 
-  
-	if (planeSensor -> isActive ())
-	{
-	}
-	else
-	{
-	}
-}
-
-void
-X3DIndexedFaceSetTool::set_knife_translation ()
-{
-	if (getHotPoints () .size () == 1)
-		knifeLineCoordinate -> point () [1] = getCoord () -> get1Point (getHotPoints () .front ());
-
-	else
-		knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
-
-	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-	                       math::point_type ());
-	                      
-	const Line3d cutLine (knifeLineCoordinate -> point () [0],
-	                      knifeLineCoordinate -> point () [1],
-	                      math::point_type ());
-
-	Vector3d closestPoint;
-                     
-	if (edgeLine .closest_point (cutLine, closestPoint))
-	{
-		knifeLineSwitch -> whichChoice () = true;	
-		knifeEndPoint -> translation ()   = closestPoint;
-	}
-	else
-	{
-		knifeLineSwitch -> whichChoice () = false;	
+		default:
+		   break;
 	}
 }
 

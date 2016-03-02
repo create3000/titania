@@ -48,44 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
 
 #include "../Geometry3D/X3DIndexedFaceSetTool.h"
-#include "../Geometry3D/X3DIndexedFaceSetOperationsObject.h"
-#include "../Geometry3D/X3DIndexedFaceSetKnifeObject.h"
 
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSetTool :
-	virtual public X3DIndexedFaceSetTool,
-	public X3DIndexedFaceSetOperationsObject,
-	public X3DIndexedFaceSetKnifeObject
+class Switch;
+class Transform;
+class TouchSensor;
+class PlaneSensor;
+class CoordinateDouble;
+
+class X3DIndexedFaceSetKnifeObject :
+	virtual public X3DIndexedFaceSetTool
 {
 public:
 
-	///  @name Construction
+	///  @name Hidden fields
 
-	IndexedFaceSetTool (IndexedFaceSet* const );
+	SFBool &
+	cutPolygons ()
+	{ return *fields .cutPolygons; }
+
+	const SFBool &
+	cutPolygons () const
+	{ return *fields .cutPolygons; }
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose ()
+	{ }
 
-	virtual
-	~IndexedFaceSetTool ();
+	~X3DIndexedFaceSetKnifeObject ();
 
 
 protected:
 
 	///  @name Construction
 
+	X3DIndexedFaceSetKnifeObject ();
+
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_loadState ();
+
+	void
+	set_cutPolygons ();
+
+	void
+	set_touch_sensor_hitPoint ();
+
+	void
+	set_plane_sensor_active ();
+
+	void
+	set_plane_sensor_translation ();
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const cutPolygons;
+	};
+
+	Fields fields;
+
+	X3DPtr <TouchSensor>      touchSensor;
+	X3DPtr <PlaneSensor>      planeSensor;
+	X3DPtr <Switch>           knifeSwitch;
+	X3DPtr <Transform>        knifeStartPoint;
+	X3DPtr <Transform>        knifeEndPoint;
+	X3DPtr <Switch>           knifeLineSwitch;
+	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 
 };
 

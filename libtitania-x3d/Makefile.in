@@ -640,6 +640,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Core/Tool.lo \
 	Titania/X3D/Tools/Core/X3DToolObject.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.lo \
+	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetKnifeObject.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.lo \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.lo \
@@ -1420,6 +1421,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.cpp \
+	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetKnifeObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetSelectionObject.cpp \
 	Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetTool.cpp \
@@ -3511,6 +3513,9 @@ Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Geometry3D/IndexedFaceSetTool.lo:  \
 	Titania/X3D/Tools/Geometry3D/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetKnifeObject.lo:  \
+	Titania/X3D/Tools/Geometry3D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Geometry3D/X3DIndexedFaceSetOperationsObject.lo:  \
 	Titania/X3D/Tools/Geometry3D/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry3D/$(DEPDIR)/$(am__dirstamp)
@@ -4323,6 +4328,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/Tool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DToolObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/IndexedFaceSetTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetKnifeObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetOperationsObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetSelectionObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/$(DEPDIR)/X3DIndexedFaceSetTool.Plo@am__quote@
