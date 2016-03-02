@@ -365,7 +365,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 
 	setMagicSelection (touchSensor -> getHitPoint (), coincidentPoints);
 
-	if (touchSensor -> isActive () and paintSelection ())
+	if (paintSelection () and touchSensor -> isActive ())
 		set_touch_sensor_touchTime ();
 }
 
@@ -499,6 +499,9 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, 
 		case ActionType::SELECT:
 		case ActionType::TRANSLATE:
 		{
+		   if (ActionType::SELECT == getActionType () and touchSensor -> isActive ())
+		      break;
+
 			const auto point    = getCoord () -> get1Point (index);
 			const auto vertices = selection -> getFaceVertices (face);
 
