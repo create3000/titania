@@ -849,3 +849,9 @@ RadioButton::group_changed
   virtual void on_group_changed();
 RadioButton::button_press_event
   virtual bool on_button_press_event(GdkEventButton* event);
+Button::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+Button::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);
+Button::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* event);

@@ -865,6 +865,19 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 }
 
 void
+X3DBrowserWidget::set_scene ()
+{
+	loadIcon ();
+	setTitle ();
+
+	#ifdef TITANIA_DEBUG
+	loadTime = chrono::now () - loadTime;
+	timeout .disconnect ();
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
+	#endif
+}
+
+void
 X3DBrowserWidget::set_executionContext ()
 {
 	if (getCurrentBrowser () -> getExecutionContext () == executionContext)
@@ -879,22 +892,6 @@ X3DBrowserWidget::set_executionContext ()
 		scene = std::move (currentScene);
 
 	executionContext = getCurrentBrowser () -> getExecutionContext ();
-}
-
-void
-X3DBrowserWidget::set_scene ()
-{
-	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.wrl"))
-	   getCurrentScene () -> setWorldURL ("");
-
-	loadIcon ();
-	setTitle ();
-
-	#ifdef TITANIA_DEBUG
-	loadTime = chrono::now () - loadTime;
-	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
-	#endif
 }
 
 void

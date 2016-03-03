@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -15,10 +15,7 @@
  * create3000.
  *
  * No permission is granted to copy, distribute, or create derivative works from
- * the conten	virtual
-	void
-	isEditor (const bool) final override;
-ts of this software, in whole or in part, without the prior written
+ * the contents of this software, in whole or in part, without the prior written
  * permission of create3000.
  *
  * NON-MILITARY USE ONLY
@@ -195,7 +192,7 @@ protected:
 	friend class X3DBrowserSelection;
 
 	///  @name Member types
-	
+
 	enum ToolType
 	{
 		NONE_TOOL,
@@ -252,6 +249,9 @@ private:
 	connectShutdown ();
 
 	void
+	set_scene ();
+
+	void
 	set_executionContext ();
 
 	void
@@ -277,7 +277,7 @@ private:
 
 	///  @name Members
 
-	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4d, X3D::Vector3d>> ;
+	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
 
 	X3D::SFBool                        enabled;
 	std::unique_ptr <BrowserSelection> selection;

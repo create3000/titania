@@ -109,7 +109,7 @@ X3DBrowserWindow::isEditor (const bool value)
 {
 	X3DBrowserEditor::isEditor (value);
 
-	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getBoolean ("geometryEditor"));
+	geometryEditor -> isEnabled (value and getConfig () -> getBoolean ("geometryEditor"));
 }
 
 void
@@ -220,13 +220,13 @@ X3DBrowserWindow::set_clipboard (const X3D::SFString & string)
 void
 X3DBrowserWindow::on_geometry_editor_clicked ()
 {
-	geometryEditor -> getWidget () .set_reveal_child (true);
+	geometryEditor -> isEnabled (not geometryEditor -> isEnabled ());
 }
 
 void
 X3DBrowserWindow::on_geometry_editor_reveal_child_changed ()
 {
-	getConfig () -> setItem ("geometryEditor", geometryEditor -> getWidget () .get_reveal_child ());
+	getConfig () -> setItem ("geometryEditor", geometryEditor -> isEnabled ());
 }
 
 void

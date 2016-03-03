@@ -214,8 +214,16 @@ public:
 	on_unmap () = 0;
 
 	virtual
-	void
-	on_geometry_editor_clicked () = 0;
+	bool
+	on_geometry_editor_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_geometry_editor_button_release_event (GdkEventButton* event) = 0;
+
+	virtual
+	bool
+	on_geometry_editor_button_motion_notify_event (GdkEventMotion* event) = 0;
 
 	virtual
 	void

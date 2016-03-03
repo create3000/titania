@@ -92,6 +92,8 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	             browser);
 
 	normalEnabled .setUndo (false);
+	select        .setUndo (false);
+	cutPolygons   .setUndo (false);
 
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "load",   new X3D::SFBool ());
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
@@ -119,6 +121,10 @@ void
 GeometryEditor::configure ()
 {
 	X3DGeometryEditorInterface::configure ();
+
+	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
+	getWidget () .set_margin_left (margin .x ());
+	getWidget () .set_margin_top  (margin .y ());
 
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
@@ -150,26 +156,67 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
+	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
+
+	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &GeometryEditor::on_geometry_editor_reveal_child));
+	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &GeometryEditor::on_geometry_editor_child_revealed));
+
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
 	getPaintSelectionButton () .set_group (selectionGroup);
 	getCutPolygonsButton    () .set_group (selectionGroup);
 
-	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
-
 	normalEditor -> setup ();
 	coordEditor  -> setup ();
 
-	select      .setNodes ({ coordEditor });
-	cutPolygons .setNodes ({ coordEditor });
-
+	select         .setNodes ({ coordEditor });
+	cutPolygons    .setNodes ({ coordEditor });
 	normalEnabled  .setNodes ({ normalEditor });
 }
 
 void
-GeometryEditor::on_geometry_editor_clicked ()
+GeometryEditor::isEnabled (const bool value)
 {
-	getWidget () .set_reveal_child (false);
+	getWidget () .set_reveal_child (value);
+}
+
+bool
+GeometryEditor::isEnabled () const
+{
+	return getWidget () .get_reveal_child ();
+}
+
+bool
+GeometryEditor::on_geometry_editor_button_press_event (GdkEventButton* event)
+{
+	int x, y;
+
+	getWidget () .translate_coordinates (getBrowserWindow () -> getWidget (), event -> x, event -> y, x, y);
+
+	position = X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ());
+	pointer  = X3D::Vector2d (x, y);
+	return true;
+}
+
+bool
+GeometryEditor::on_geometry_editor_button_release_event (GdkEventButton* event)
+{
+	// Prevent click.
+	return true;
+}
+
+bool
+GeometryEditor::on_geometry_editor_button_motion_notify_event (GdkEventMotion* event)
+{
+	int x, y;
+
+	getWidget () .translate_coordinates (getBrowserWindow () -> getWidget (), event -> x, event -> y, x, y);
+
+	const auto margin = position + X3D::Vector2d (x, y) - pointer;
+
+	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width ()));
+	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
+	return true;
 }
 
 void
@@ -189,92 +236,17 @@ GeometryEditor::on_unmap ()
 }
 
 void
-GeometryEditor::set_browser (const X3D::BrowserPtr & value)
+GeometryEditor::on_geometry_editor_reveal_child ()
 {
-	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-
-	browser = value;
-
-	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
-
-	set_viewer ();
+	if (getWidget () .get_reveal_child ())
+		getWidget () .set_visible (true);
 }
 
 void
-GeometryEditor::set_executionContext ()
+GeometryEditor::on_geometry_editor_child_revealed ()
 {
-	try
-	{
-		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
-
-		children -> isPrivate (true);
-		previousSelection = children -> value ();
-
-		set_viewer ();
-	}
-	catch (const std::exception & error)
-	{
-		previousSelection .clear ();
-	}
-
-	getCutPolygonsButton () .set_active (false);
-}
-
-void
-GeometryEditor::set_viewer ()
-{
-	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
-		return;
-
-	changing = true;
-
-	switch (getCurrentBrowser () -> getCurrentViewer ())
-	{
-		case X3D::X3DConstants::RectangleSelection:
-		{
-			if (selector not_eq SelectorType::RECTANGLE)
-				set_selector (selector);
-
-			else
-				getPaintSelectionButton () .set_active (true);
-
-			break;
-		}
-		case X3D::X3DConstants::LassoSelection:
-		{
-			if (selector not_eq SelectorType::LASSO)
-				set_selector (selector);
-
-			else
-				getPaintSelectionButton () .set_active (true);
-
-			break;
-		}
-		default:
-		{
-		   if (getPaintSelectionButton () .get_active ())
-		   {
-				if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
-					getBrowserWindow () -> getArrowButton () .set_active (true);
-			}
-
-			privateViewer = browser-> getPrivateViewer ();
-			break;
-		}
-	}
-
-	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
-
-	changing = false;
-}
-
-void
-GeometryEditor::connectViewer ()
-{
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
+	if (not getWidget () .get_reveal_child ())
+		getWidget () .set_visible (false);
 }
 
 void
@@ -368,11 +340,11 @@ GeometryEditor::connect ()
 						innerNode -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
 						innerNode -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
 
-						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						innerNode -> setField <X3D::SFBool>      ("pickable",         coordEditor -> getField <X3D::SFBool>      ("pickable"),       true);
 						innerNode -> setField <X3D::SFBool>      ("select",           coordEditor -> getField <X3D::SFBool>      ("select"),         true);
 						innerNode -> setField <X3D::SFString>    ("selectionType",    coordEditor -> getField <X3D::SFString>    ("selectionType"),  true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
+						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
 
 						break;
@@ -394,6 +366,95 @@ GeometryEditor::connect ()
 	set_selectedEdges  ();
 	set_selectedHoles  ();
 	set_selectedFaces  ();
+}
+
+void
+GeometryEditor::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+
+	browser = value;
+
+	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
+
+	set_viewer ();
+}
+
+void
+GeometryEditor::set_executionContext ()
+{
+	try
+	{
+		const auto worldInfo   = getWorldInfo ();
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
+
+		children -> isPrivate (true);
+		previousSelection = children -> value ();
+
+		set_viewer ();
+	}
+	catch (const std::exception & error)
+	{
+		previousSelection .clear ();
+	}
+
+	getCutPolygonsButton () .set_active (false);
+}
+
+void
+GeometryEditor::set_viewer ()
+{
+	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
+		return;
+
+	changing = true;
+
+	switch (getCurrentBrowser () -> getCurrentViewer ())
+	{
+		case X3D::X3DConstants::RectangleSelection:
+		{
+			if (selector not_eq SelectorType::RECTANGLE)
+				set_selector (selector);
+
+			else
+				getPaintSelectionButton () .set_active (true);
+
+			break;
+		}
+		case X3D::X3DConstants::LassoSelection:
+		{
+			if (selector not_eq SelectorType::LASSO)
+				set_selector (selector);
+
+			else
+				getPaintSelectionButton () .set_active (true);
+
+			break;
+		}
+		default:
+		{
+		   if (getPaintSelectionButton () .get_active ())
+		   {
+				if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
+					getBrowserWindow () -> getArrowButton () .set_active (true);
+			}
+
+			privateViewer = browser-> getPrivateViewer ();
+			break;
+		}
+	}
+
+	coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
+
+	changing = false;
+}
+
+void
+GeometryEditor::connectViewer ()
+{
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 }
 
 bool
@@ -923,6 +984,8 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
+	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
+
 	getConfig () -> set ("normalEnabled",   normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",    normalEditor -> getField <X3D::SFFloat>     ("length"));
 	getConfig () -> set ("normalColor",     normalEditor -> getField <X3D::SFColorRGBA> ("color"));

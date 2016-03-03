@@ -95,7 +95,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap));
 
 	// Connect object Gtk::Button with id 'GeometryEditorButton'.
-	m_GeometryEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_clicked));
+	m_GeometryEditorButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_press_event), false);
+	m_GeometryEditorButton -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_release_event), false);
+	m_GeometryEditorButton -> signal_motion_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_motion_notify_event), false);
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
 	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));

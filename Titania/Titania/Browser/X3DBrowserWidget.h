@@ -255,10 +255,10 @@ private:
 	on_browser_reordered (Gtk::Widget* page, guint page_num) final override;
 
 	void
-	set_executionContext ();
+	set_scene ();
 
 	void
-	set_scene ();
+	set_executionContext ();
 
 	void
 	set_urlError ();
