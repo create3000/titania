@@ -79,7 +79,7 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 		if (worldURL .basename () .empty ())
 		{
 			getWindow () .set_current_folder (os::home ());
-			getWindow () .set_current_name (_ ("scene.x3dv"));
+			getWindow () .set_current_name (_ ("scene.x3d"));
 		}
 		else
 			getWindow () .set_current_name (worldURL .basename ());

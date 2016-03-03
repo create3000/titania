@@ -544,7 +544,7 @@ X3DBrowserEditor::blank ()
 {
 	if (isEditor ())
 	{
-		append (X3D::createBrowser (getMasterBrowser ()), "");
+		append (X3D::createBrowser (getMasterBrowser ()), get_page ("about/new.wrl"));
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
 	}
 	else

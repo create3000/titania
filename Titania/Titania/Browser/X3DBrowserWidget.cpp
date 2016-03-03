@@ -525,10 +525,10 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 
 	loadTime = chrono::now ();
 
-		if (URL .empty ())
-			return;
+	if (URL .empty ())
+		return;
 
-		browser -> loadURL ({ URL .str () }, { });
+	browser -> loadURL ({ URL .str () }, { });
 }
 
 bool
@@ -884,15 +884,17 @@ X3DBrowserWidget::set_executionContext ()
 void
 X3DBrowserWidget::set_scene ()
 {
-	loadTime = chrono::now () - loadTime;
-
-	#ifdef TITANIA_DEBUG
-	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
-	#endif
+	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.wrl"))
+	   getCurrentScene () -> setWorldURL ("");
 
 	loadIcon ();
 	setTitle ();
+
+	#ifdef TITANIA_DEBUG
+	loadTime = chrono::now () - loadTime;
+	timeout .disconnect ();
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
+	#endif
 }
 
 void

@@ -2650,6 +2650,10 @@
     <Content Include="share\titania\ui\MotionBlurEditor.glade" />
     <Content Include="share\titania\ui\OutlineEditor.glade" />
     <Content Include="share\titania\ui\BindableNodeList.glade" />
+    <Content Include="share\titania\pages\about\new.wrl">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
