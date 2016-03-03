@@ -150,8 +150,8 @@ private:
 		Fields ();
 
 		SFBool* const set_boolean;
-		SFBool* const inputTrue;
 		SFBool* const inputFalse;
+		SFBool* const inputTrue;
 		SFBool* const inputNegate;
 	};
 
