@@ -123,8 +123,8 @@ GeometryEditor::configure ()
 	X3DGeometryEditorInterface::configure ();
 
 	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
-	getWidget () .set_margin_left (margin .x ());
-	getWidget () .set_margin_top  (margin .y ());
+	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width ()));
+	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
 
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
@@ -174,18 +174,6 @@ GeometryEditor::initialize ()
 	normalEnabled  .setNodes ({ normalEditor });
 }
 
-void
-GeometryEditor::isEnabled (const bool value)
-{
-	getWidget () .set_reveal_child (value);
-}
-
-bool
-GeometryEditor::isEnabled () const
-{
-	return getWidget () .get_reveal_child ();
-}
-
 bool
 GeometryEditor::on_geometry_editor_button_press_event (GdkEventButton* event)
 {
@@ -223,6 +211,9 @@ void
 GeometryEditor::on_map ()
 {
 	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
+
+	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width  ()));
+	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
 
 	set_browser (getCurrentBrowser ());
 }
@@ -319,20 +310,20 @@ GeometryEditor::connect ()
 
 						// Coord
 
-						coordEditor -> getField <X3D::SFBool>      ("pickable")             .addInterest (innerNode -> getField <X3D::SFBool>       ("pickable"));
-						coordEditor -> getField <X3D::SFBool>      ("select")               .addInterest (innerNode -> getField <X3D::SFBool>       ("select"));
-						coordEditor -> getField <X3D::SFString>    ("selectionType")        .addInterest (innerNode -> getField <X3D::SFString>     ("selectionType"));
-						coordEditor -> getField <X3D::SFBool>      ("paintSelection")       .addInterest (innerNode -> getField <X3D::SFBool>       ("paintSelection"));
-						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("mergePoints"));
-						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (innerNode -> getField <X3D::SFTime>       ("splitPoints"));
-						coordEditor -> getField <X3D::SFTime>      ("formNewFace")          .addInterest (innerNode -> getField <X3D::SFTime>       ("formNewFace"));
-						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges") .addInterest (innerNode -> getField <X3D::SFTime>       ("extrudeSelectedEdges"));
-						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>       ("extrudeSelectedFaces"));
-						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("chipOfSelectedFaces"));
-						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")   .addInterest (innerNode -> getField <X3D::SFTime>       ("flipVertexOrdering"));
-						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>       ("deleteSelectedFaces"));
-						coordEditor -> getField <X3D::SFBool>      ("cutPolygons")          .addInterest (innerNode -> getField <X3D::SFBool>       ("cutPolygons"));
-						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA>  ("color"));
+						coordEditor -> getField <X3D::SFBool>      ("pickable")             .addInterest (innerNode -> getField <X3D::SFBool>      ("pickable"));
+						coordEditor -> getField <X3D::SFBool>      ("select")               .addInterest (innerNode -> getField <X3D::SFBool>      ("select"));
+						coordEditor -> getField <X3D::SFString>    ("selectionType")        .addInterest (innerNode -> getField <X3D::SFString>    ("selectionType"));
+						coordEditor -> getField <X3D::SFBool>      ("paintSelection")       .addInterest (innerNode -> getField <X3D::SFBool>      ("paintSelection"));
+						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (innerNode -> getField <X3D::SFTime>      ("mergePoints"));
+						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (innerNode -> getField <X3D::SFTime>      ("splitPoints"));
+						coordEditor -> getField <X3D::SFTime>      ("formNewFace")          .addInterest (innerNode -> getField <X3D::SFTime>      ("formNewFace"));
+						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges") .addInterest (innerNode -> getField <X3D::SFTime>      ("extrudeSelectedEdges"));
+						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces") .addInterest (innerNode -> getField <X3D::SFTime>      ("extrudeSelectedFaces"));
+						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>      ("chipOfSelectedFaces"));
+						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")   .addInterest (innerNode -> getField <X3D::SFTime>      ("flipVertexOrdering"));
+						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")  .addInterest (innerNode -> getField <X3D::SFTime>      ("deleteSelectedFaces"));
+						coordEditor -> getField <X3D::SFBool>      ("cutPolygons")          .addInterest (innerNode -> getField <X3D::SFBool>      ("cutPolygons"));
+						coordEditor -> getField <X3D::SFColorRGBA> ("color")                .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
 						innerNode -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
 						innerNode -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
