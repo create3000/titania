@@ -247,7 +247,7 @@ protected:
 	   FACES
 	};
 
-	enum class SelectType :
+	enum class SelectActionType :
 	   uint8_t
 	{
 	   REPLACE,
@@ -357,8 +357,8 @@ protected:
 	void
 	updateMagicSelection ();
 
-	SelectType
-	getSelectType () const;
+	SelectActionType
+	getSelectActionType () const;
 
 	bool
 	isInSelection (const std::vector <size_t> &) const;
@@ -461,16 +461,16 @@ private:
 	clearSelection ();
 
 	void
-	select (const std::vector <int32_t> &, const SelectType);
+	select (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectPoints (const std::vector <int32_t> &, const SelectType);
+	selectPoints (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectEdges (const std::vector <int32_t> &, const SelectType);
+	selectEdges (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectEdge (const std::vector <size_t> &, const SelectType);
+	selectEdge (const std::vector <size_t> &, const SelectActionType);
 
 	void
 	selectHoles ();
@@ -488,10 +488,10 @@ private:
 		         std::vector <std::vector <int32_t>> &) const;
 
 	void
-	selectFaces (const std::vector <int32_t> &, const SelectType);
+	selectFaces (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectFace (const size_t, const SelectType);
+	selectFace (const size_t, const SelectActionType);
 
 	void
 	addSelectedPointsFunction (const std::vector <int32_t> &);

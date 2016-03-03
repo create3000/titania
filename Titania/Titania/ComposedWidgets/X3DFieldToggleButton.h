@@ -248,6 +248,13 @@ X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton>::set_inconsistent (con
 {
 }
 
+template <>
+inline
+void
+X3DFieldToggleButton <X3D::SFBool, Gtk::RadioToolButton>::set_inconsistent (const bool)
+{
+}
+
 } // puck
 } // titania
 

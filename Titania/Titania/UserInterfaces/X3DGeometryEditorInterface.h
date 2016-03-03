@@ -128,8 +128,8 @@ public:
 	{ return *m_GeometryToolsBox; }
 
 	Gtk::ToggleButton &
-	getNormalEnabledToggleButton () const
-	{ return *m_NormalEnabledToggleButton; }
+	getNormalEnabledButton () const
+	{ return *m_NormalEnabledButton; }
 
 	Gtk::Button &
 	getMergePointsButton () const
@@ -258,10 +258,6 @@ public:
 	on_flip_vertex_ordering_clicked () = 0;
 
 	virtual
-	void
-	on_cut_polygons_toggled () = 0;
-
-	virtual
 	bool
 	on_selection_type_button_press_event (GdkEventButton* event) = 0;
 
@@ -326,7 +322,7 @@ private:
 	Gtk::ToggleButton*          m_EditToggleButton;
 	Gtk::Button*                m_HammerButton;
 	Gtk::Grid*                  m_GeometryToolsBox;
-	Gtk::ToggleButton*          m_NormalEnabledToggleButton;
+	Gtk::ToggleButton*          m_NormalEnabledButton;
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_FormNewFaceButton;
