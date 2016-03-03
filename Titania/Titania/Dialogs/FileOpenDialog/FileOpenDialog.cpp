@@ -75,7 +75,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 		getWindow () .set_uri (worldURL .filename () .str ());
 
 	else
-		getWindow () .set_filename (os::home () + _ ("scene.x3dv"));
+		getWindow () .set_filename (os::home () + _ ("scene.x3d"));
 
 	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
 
