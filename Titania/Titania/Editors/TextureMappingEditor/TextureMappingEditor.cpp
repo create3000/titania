@@ -2195,10 +2195,7 @@ void
 TextureMappingEditor::set_right_touchTime ()
 {
 	const auto   touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
-	const auto & intersection     = touchSensor -> getIntersection ();
-	const auto & triangle         = intersection -> triangle;
-	const auto   closestPoint     = triangle_closest_point (triangle [0], triangle [1], triangle [2], intersection -> point);
-	const auto   coincidentPoints = rightSelection -> getCoincidentPoints (triangle [closestPoint]);
+	const auto   coincidentPoints = rightSelection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 	const auto   adjacentFaces    = rightSelection -> getAdjacentFaces (coincidentPoints);
 	const auto   nearestFace      = rightSelection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
 

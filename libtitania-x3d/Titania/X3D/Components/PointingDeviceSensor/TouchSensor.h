@@ -117,10 +117,6 @@ public:
 
 	///  @name Member access
 
-	const IntersectionPtr &
-	getIntersection () const
-	{ return intersection; }
-
 	const Vector3d &
 	getHitPoint () const
 	{ return hitPoint; }

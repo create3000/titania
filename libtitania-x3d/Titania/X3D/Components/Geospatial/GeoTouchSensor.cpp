@@ -120,7 +120,7 @@ GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
 			const Vector3d   hitPoint        = intersection -> point * ~modelViewMatrix;
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
-			hitNormal_changed ()   = intersection -> normal;
+			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
 			hitPoint_changed ()    = hitPoint;
 			hitGeoCoord_changed () = getGeoCoord (hitPoint);
 		}
