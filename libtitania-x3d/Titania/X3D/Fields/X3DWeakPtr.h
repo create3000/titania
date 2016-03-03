@@ -62,7 +62,6 @@ class X3DWeakPtr :
 {
 public:
 
-
 	typedef ValueType* internal_type;
 	typedef ValueType* value_type;
 
@@ -70,9 +69,6 @@ public:
 	using X3DField <ValueType*>::addEvent;
 	using X3DField <ValueType*>::addInterest;
 	using X3DField <ValueType*>::setValue;
-	using X3DField <ValueType*>::getValue;
-	using X3DField <ValueType*>::operator =;
-
 
 	///  @name Constructors
 
@@ -158,31 +154,7 @@ public:
 		return false;
 	}
 
-	///  @name Observers
-
-	ValueType*
-	operator -> () const
-	throw (Error <DISPOSED>)
-	{
-	   const auto value = getValue ();
-
-	   if (value)
-			return value;
-
-		throw Error <DISPOSED> ("X3DWeakPtr::operator -> ()");
-	}
-
-	ValueType &
-	operator * () const
-	throw (Error <DISPOSED>)
-	{
-	   const auto value = getValue ();
-
-	   if (value)
-			return *value;
-
-		throw Error <DISPOSED> ("X3DWeakPtr::operator * ()");
-	}
+	///  @name Boolean operator
 
 	operator bool () const
 	{ return getValue () and getValue () -> getReferenceCount (); }
@@ -239,6 +211,11 @@ private:
 
 	template <class Up>
 	friend class X3DWeakPtr;
+
+	using X3DField <ValueType*>::getValue;
+	using X3DField <ValueType*>::operator const value_type &;
+	using X3DField <ValueType*>::operator ==;
+	using X3DField <ValueType*>::operator not_eq;
 
 	///  @name Set value services
 

@@ -204,7 +204,7 @@ void
 X3DExecutionContext::setWorldInfo (const WorldInfoPtr & value)
 throw (Error <DISPOSED>)
 {
-	worldInfo .setValue (value);
+	worldInfo = value;
 }
 
 WorldInfoPtr
