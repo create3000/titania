@@ -26,6 +26,7 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
 	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
+	Titania/ComposedWidgets/MFStringTextView.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \
 	Titania/ComposedWidgets/NameEntry.cpp \
 	Titania/ComposedWidgets/NormalTool.cpp \
@@ -103,6 +104,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
+	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SoundEditor/SoundEditor.cpp \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \

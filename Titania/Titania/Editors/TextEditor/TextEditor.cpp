@@ -63,17 +63,15 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DTextEditorInterface (get_ui ("Editors/TextEditor.glade")),
 	X3DFontStyleNodeEditor (),
+	                string (this, getTextStringTextView (), "string"),
+	             maxExtent (this, getTextMaxExtentAdjustment (), getTextMaxExtentSpinButton (), "maxExtent"),
 	            shapeNodes (),
 	    geometryNodeBuffer (),
 	                  text (),
 	               measure (),
 	              undoStep (),
 	        lengthUndoStep (),
-	              changing (false),
-	             maxExtent (this,
-	                        getTextMaxExtentAdjustment (),
-	                        getTextMaxExtentSpinButton (),
-	                        "maxExtent")
+	              changing (false)
 {
 	addChildren (shapeNodes, geometryNodeBuffer, text, measure);
 
@@ -182,9 +180,6 @@ TextEditor::set_node ()
 {
 	undoStep .reset ();
 
-	if (text)
-		text -> string () .removeInterest (this, &TextEditor::set_string);
-
 	auto  tuple             = getSelection <X3D::Text> (shapeNodes, "geometry");
 	const int32_t active    = std::get <1> (tuple);
 	const bool    hasParent = std::get <2> (tuple);
@@ -226,68 +221,10 @@ TextEditor::set_node ()
 
 	changing = false;
 
-	text -> string () .addInterest (this, &TextEditor::set_string);
-
-	set_string ();
-	
+	string    .setNodes ({ text });
 	maxExtent .setNodes ({ text });
 
 	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
-}
-
-/***********************************************************************************************************************
- *
- *  string
- *
- **********************************************************************************************************************/
-
-void
-TextEditor::on_string_changed ()
-{
-	if (changing)
-		return;
-
-	addUndoFunction (text, text -> string (), undoStep);
-
-	text -> string () .removeInterest (this, &TextEditor::set_string);
-	text -> string () .addInterest (this, &TextEditor::connectString);
-
-	text -> string () .clear ();
-
-	const auto string = basic::split (getTextStringTextBuffer () -> get_text (), "\n");
-
-	for (auto & value : string)
-		text -> string () .emplace_back (std::move (value));
-
-	addRedoFunction (text, text -> string (), undoStep);
-}
-
-void
-TextEditor::set_string ()
-{
-	changing = true;
-
-	getTextStringTextBuffer () -> set_text ("");
-
-	if (not text -> string () .empty ())
-	{
-		for (const auto & value : text -> string ())
-		{
-			getTextStringTextBuffer () -> insert (getTextStringTextBuffer () -> end (), value);
-			getTextStringTextBuffer () -> insert (getTextStringTextBuffer () -> end (), "\n");
-		}
-
-		getTextStringTextBuffer () -> erase (-- getTextStringTextBuffer () -> end (), getTextStringTextBuffer () -> end ());
-	}
-
-	changing = false;
-}
-
-void
-TextEditor::connectString (const X3D::MFString & field)
-{
-	field .removeInterest (this, &TextEditor::connectString);
-	field .addInterest (this, &TextEditor::set_string);
 }
 
 void

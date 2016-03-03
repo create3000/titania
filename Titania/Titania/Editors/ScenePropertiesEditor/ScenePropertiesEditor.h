@@ -18,7 +18,7 @@
  * the contents of this software, in whole or in part, without the prior written
  * permission of create3000.
  *
- * NON-MILITARY USE ONLY
+ * NON-MILITARY USE ONLYX3DWorldInfoEditor
  *
  * All create3000 software are effectively free software with a non-military use
  * restriction. It is free. Well commented source is provided. You may reuse the
@@ -53,13 +53,15 @@
 
 #include "../../UserInterfaces/X3DScenePropertiesEditorInterface.h"
 #include "X3DUnitEditor.h"
+#include "X3DWorldInfoEditor.h"
 
 namespace titania {
 namespace puck {
 
 class ScenePropertiesEditor :
 	virtual public X3DScenePropertiesEditorInterface,
-	public X3DUnitEditor
+	public X3DUnitEditor,
+	public X3DWorldInfoEditor
 {
 public:
 
@@ -77,7 +79,15 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
+
+	virtual
+	void
+	store () final override;
 
 };
 

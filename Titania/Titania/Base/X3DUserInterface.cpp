@@ -165,8 +165,27 @@ X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
 		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
 		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
 		{
-			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DUserInterface::on_remove_accelerators));
-			widget -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_add_accelerators));
+			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DUserInterface::on_focus_in_event));
+			widget -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_focus_out_event));
+		}
+	}
+}
+
+void
+X3DUserInterface::removeFocus (Gtk::Widget & parent)
+{
+	for (auto & widget : getWidgets <Gtk::Widget> (parent))
+	{
+		const auto instance = widget -> gobj ();
+
+		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
+		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
+		{
+			if (widget -> has_focus ())
+			{
+			   getBrowserWindow () -> hasAccelerators (true);
+			   break;
+			}
 		}
 	}
 }
@@ -218,22 +237,24 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 }
 
 bool
-X3DUserInterface::on_add_accelerators (GdkEventFocus* event)
-{
-	getBrowserWindow () -> hasAccelerators (true);
-	return false;
-}
-
-bool
-X3DUserInterface::on_remove_accelerators (GdkEventFocus* event)
+X3DUserInterface::on_focus_in_event (GdkEventFocus* event)
 {
 	getBrowserWindow () -> hasAccelerators (false);
 	return false;
 }
 
 bool
+X3DUserInterface::on_focus_out_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
+
+bool
 X3DUserInterface::on_delete_event (GdkEventAny*)
 {
+	removeFocus (getWidget ());
+
 	return quit ();
 }
 

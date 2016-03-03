@@ -268,6 +268,8 @@
     <Compile Include="Titania\Editors\SoundEditor\SoundEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DSoundEditorInterface.cpp" />
     <Compile Include="Titania\Editors\SoundEditor\X3DSoundSourceNodeEditor.cpp" />
+    <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.cpp" />
+    <Compile Include="Titania\ComposedWidgets\MFStringTextView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2517,6 +2519,8 @@
     <None Include="share\titania\Library\Components\Rendering\.experimental\PolygonOffset" />
     <None Include="share\titania\Library\Components\Grouping\.experimental\TransformMatrix3D" />
     <None Include="share\titania\Library\Components\Grouping\TransformMatrix3D.x3dv" />
+    <None Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.h" />
+    <None Include="Titania\ComposedWidgets\MFStringTextView.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

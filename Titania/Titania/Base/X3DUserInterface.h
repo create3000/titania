@@ -197,6 +197,9 @@ private:
 	void
 	connectFocusEvent (Gtk::Widget &);
 
+	void
+	removeFocus (Gtk::Widget &);
+
 	///  @name Event handlers
 
 	void
@@ -215,10 +218,10 @@ private:
 	on_delete_event (GdkEventAny*);
 
 	bool
-	on_remove_accelerators (GdkEventFocus*);
+	on_focus_in_event (GdkEventFocus*);
 
 	bool
-	on_add_accelerators (GdkEventFocus*);
+	on_focus_out_event (GdkEventFocus*);
 
 	///  @name Operations
 

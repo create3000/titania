@@ -24,10 +24,7 @@
  * restriction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
  * marked to indicate is contains 'non-military use only' components.
- *	virtual
-	void
-	set_selection (const X3D::MFNode &) final override;
-
+ *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
@@ -51,105 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
-#define __TITANIA_TEXT_EDITOR_TEXT_EDITOR_H__
+#include "X3DWorldInfoEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../ComposedWidgets/MFStringTextView.h"
-#include "../../UserInterfaces/X3DTextEditorInterface.h"
-#include "X3DFontStyleNodeEditor.h"
+#include <Titania/X3D/Components/Core/WorldInfo.h>
 
 namespace titania {
 namespace puck {
 
-class TextEditor :
-	virtual public X3DTextEditorInterface,
-	public X3DFontStyleNodeEditor
+X3DWorldInfoEditor::X3DWorldInfoEditor () :
+	X3DScenePropertiesEditorInterface (),
+		                         title (this, getWorldInfoTitleTextView (), "title"),
+		                          info (this, getWorldInfoInfoTextView (),  "info")
+{ }
+
+void
+X3DWorldInfoEditor::initialize ()
 {
-public:
+	title .setNodes ({ createWorldInfo () });
+	info  .setNodes ({ createWorldInfo () });
+}
 
-	///  @name Construction
-
-	TextEditor (X3DBrowserWindow* const);
-	
-	virtual
-	~TextEditor ();
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	void
-	configure () final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) final override;
-
-	///  @name text
-
-	virtual
-	void
-	on_text_unlink_clicked () final override;
-
-	virtual
-	void
-	on_text_toggled () final override;
-
-	void
-	set_geometry ();
-
-	void
-	connectGeometry (const X3D::SFNode &);
-
-	void
-	set_node ();
-
-	///  @name string
-
-	void
-	set_lineBounds ();
-
-	virtual
-	void
-	on_char_spacing_changed () final override;
-
-	void
-	set_char_spacing (const double);
-
-	void
-	set_length ();
-
-	void
-	connectLength (const X3D::MFFloat &);
-
-	virtual
-	void
-	store () final override;
-
-	///  @name Members
-
-	MFStringTextView                  string;
-	X3DFieldAdjustment <X3D::SFFloat> maxExtent;
-
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::SFTime                          geometryNodeBuffer;
-	X3D::X3DPtr <X3D::Text>              text;
-	X3D::X3DPtr <X3D::Text>              measure;
-	X3D::UndoStepPtr                     undoStep;
-	X3D::UndoStepPtr                     lengthUndoStep;
-	bool                                 changing;
-
-
-};
+X3DWorldInfoEditor::~X3DWorldInfoEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif

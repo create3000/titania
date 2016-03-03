@@ -115,6 +115,14 @@ public:
 	getUnitMassAdjustment () const
 	{ return m_UnitMassAdjustment; }
 
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getWorldInfoInfoTextBuffer () const
+	{ return m_WorldInfoInfoTextBuffer; }
+
+	const Glib::RefPtr <Gtk::TextBuffer> &
+	getWorldInfoInfoTitleTextBuffer () const
+	{ return m_WorldInfoInfoTitleTextBuffer; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -124,8 +132,8 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Notebook &
-	getScenePropertiesNotebook () const
-	{ return *m_ScenePropertiesNotebook; }
+	getNotebook () const
+	{ return *m_Notebook; }
 
 	Gtk::Expander &
 	getUnitsExpander () const
@@ -162,6 +170,18 @@ public:
 	Gtk::Entry &
 	getUnitAngleEntry () const
 	{ return *m_UnitAngleEntry; }
+
+	Gtk::Expander &
+	getWorldInfoExpander () const
+	{ return *m_WorldInfoExpander; }
+
+	Gtk::TextView &
+	getWorldInfoTitleTextView () const
+	{ return *m_WorldInfoTitleTextView; }
+
+	Gtk::TextView &
+	getWorldInfoInfoTextView () const
+	{ return *m_WorldInfoInfoTextView; }
 
 	///  @name Signal handlers
 
@@ -243,9 +263,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_UnitForceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_UnitLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_UnitMassAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTextBuffer;
+	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTitleTextBuffer;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::Notebook*                 m_ScenePropertiesNotebook;
+	Gtk::Notebook*                 m_Notebook;
 	Gtk::Expander*                 m_UnitsExpander;
 	Gtk::ComboBoxText*             m_UnitMassCombo;
 	Gtk::Entry*                    m_UnitMassEntry;
@@ -255,6 +277,9 @@ private:
 	Gtk::Entry*                    m_UnitForceEntry;
 	Gtk::ComboBoxText*             m_UnitAngleCombo;
 	Gtk::Entry*                    m_UnitAngleEntry;
+	Gtk::Expander*                 m_WorldInfoExpander;
+	Gtk::TextView*                 m_WorldInfoTitleTextView;
+	Gtk::TextView*                 m_WorldInfoInfoTextView;
 
 };
 

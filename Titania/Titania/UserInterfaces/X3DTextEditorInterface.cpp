@@ -114,9 +114,6 @@ X3DTextEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Adjustment with id 'TextCharSpacingAdjustment'.
 	m_TextCharSpacingAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_char_spacing_changed));
 
-	// Connect object Gtk::TextBuffer with id 'TextStringTextBuffer'.
-	m_TextStringTextBuffer -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_string_changed));
-
 	// Connect object Gtk::CheckButton with id 'TextCheckButton'.
 	m_TextCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextEditorInterface::on_text_toggled));
 

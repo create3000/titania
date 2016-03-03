@@ -30,6 +30,8 @@
     <property name="page_increment">0.10000000000000001</property>
     <signal name="value-changed" handler="on_unit_mass_changed" swapped="no"/>
   </object>
+  <object class="GtkTextBuffer" id="WorldInfoInfoTextBuffer"/>
+  <object class="GtkTextBuffer" id="WorldInfoInfoTitleTextBuffer"/>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
     <property name="can_focus">False</property>
@@ -85,7 +87,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="ScenePropertiesNotebook">
+          <object class="GtkNotebook" id="Notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
@@ -442,6 +444,110 @@
               </object>
               <packing>
                 <property name="position">3</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkExpander" id="WorldInfoExpander">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="border_width">8</property>
+                <property name="expanded">True</property>
+                <child>
+                  <object class="GtkGrid" id="grid2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">8</property>
+                    <property name="row_spacing">8</property>
+                    <property name="column_spacing">16</property>
+                    <child>
+                      <object class="GtkLabel" id="label20">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Info:</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label21">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Title:</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow1">
+                        <property name="height_request">48</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTextView" id="WorldInfoTitleTextView">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="buffer">WorldInfoInfoTitleTextBuffer</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow2">
+                        <property name="height_request">96</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTextView" id="WorldInfoInfoTextView">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="buffer">WorldInfoInfoTextBuffer</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="label25">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="hexpand">True</property>
+                    <property name="label" translatable="yes">WorlInfo</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="label17">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">World Info</property>
+              </object>
+              <packing>
+                <property name="position">4</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

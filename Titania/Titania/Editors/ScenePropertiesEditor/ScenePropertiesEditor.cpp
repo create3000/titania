@@ -59,9 +59,16 @@ namespace puck {
 ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.glade")),
-	                    X3DUnitEditor ()
+	                    X3DUnitEditor (),
+	               X3DWorldInfoEditor ()
 {
 	setup ();
+}
+
+void
+ScenePropertiesEditor::configure ()
+{
+	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void
@@ -69,6 +76,13 @@ ScenePropertiesEditor::initialize ()
 {
 	X3DScenePropertiesEditorInterface::initialize ();
 	X3DUnitEditor::initialize ();
+	X3DWorldInfoEditor::initialize ();
+}
+
+void
+ScenePropertiesEditor::store ()
+{
+	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 }
 
 ScenePropertiesEditor::~ScenePropertiesEditor ()

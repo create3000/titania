@@ -295,10 +295,6 @@ public:
 
 	virtual
 	void
-	on_string_changed () = 0;
-
-	virtual
-	void
 	on_text_toggled () = 0;
 
 	virtual

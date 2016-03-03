@@ -364,7 +364,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UndoButton", m_UndoButton);
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("SeparatorToolItem2", m_SeparatorToolItem2);
-	m_builder -> get_widget ("NodeEditorButton", m_NodeEditorButton);
+	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
 	m_builder -> get_widget ("NodePropertiesEditorButton", m_NodePropertiesEditorButton);
 	m_builder -> get_widget ("AppearanceEditorButton", m_AppearanceEditorButton);
 	m_builder -> get_widget ("TextureEditorButton", m_TextureEditorButton);
@@ -382,7 +382,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("InlineEditorButton", m_InlineEditorButton);
 	m_builder -> get_widget ("PrecisionPlacementPanelButton", m_PrecisionPlacementPanelButton);
 	m_builder -> get_widget ("CreatePrototypeInstanceButton", m_CreatePrototypeInstanceButton);
-	m_builder -> get_widget ("NodeIndexButton", m_NodeIndexButton);
+	m_builder -> get_widget ("NodeEditorButton", m_NodeEditorButton);
 	m_builder -> get_widget ("VPaned", m_VPaned);
 	m_builder -> get_widget ("HPaned", m_HPaned);
 	m_builder -> get_widget ("BrowserOverlay", m_BrowserOverlay);
@@ -670,7 +670,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
-	m_NodeEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_editor_clicked));
+	m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked));
 	m_NodePropertiesEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_properties_editor_clicked));
 	m_AppearanceEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_appearance_editor_clicked));
 	m_TextureEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_editor_clicked));
@@ -688,7 +688,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_InlineEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_inline_editor_clicked));
 	m_PrecisionPlacementPanelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_precision_placement_panel_clicked));
 	m_CreatePrototypeInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_prototype_instance_dialog_clicked));
-	m_NodeIndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_index_clicked));
+	m_NodeEditorButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_node_editor_clicked));
 
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
 	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_notebook_button_press_event), false);

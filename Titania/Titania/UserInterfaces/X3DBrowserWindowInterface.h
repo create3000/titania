@@ -1304,8 +1304,8 @@ public:
 	{ return *m_SeparatorToolItem2; }
 
 	Gtk::ToolButton &
-	getNodeEditorButton () const
-	{ return *m_NodeEditorButton; }
+	getNodeIndexButton () const
+	{ return *m_NodeIndexButton; }
 
 	Gtk::ToolButton &
 	getNodePropertiesEditorButton () const
@@ -1376,8 +1376,8 @@ public:
 	{ return *m_CreatePrototypeInstanceButton; }
 
 	Gtk::ToolButton &
-	getNodeIndexButton () const
-	{ return *m_NodeIndexButton; }
+	getNodeEditorButton () const
+	{ return *m_NodeEditorButton; }
 
 	Gtk::Paned &
 	getVPaned () const
@@ -1931,7 +1931,7 @@ public:
 
 	virtual
 	void
-	on_node_editor_clicked () = 0;
+	on_node_index_clicked () = 0;
 
 	virtual
 	void
@@ -1995,7 +1995,7 @@ public:
 
 	virtual
 	void
-	on_node_index_clicked () = 0;
+	on_node_editor_clicked () = 0;
 
 	virtual
 	bool
@@ -2380,7 +2380,7 @@ private:
 	Gtk::ToolButton*                 m_UndoButton;
 	Gtk::ToolButton*                 m_RedoButton;
 	Gtk::SeparatorToolItem*          m_SeparatorToolItem2;
-	Gtk::ToolButton*                 m_NodeEditorButton;
+	Gtk::ToolButton*                 m_NodeIndexButton;
 	Gtk::ToolButton*                 m_NodePropertiesEditorButton;
 	Gtk::ToolButton*                 m_AppearanceEditorButton;
 	Gtk::ToolButton*                 m_TextureEditorButton;
@@ -2398,7 +2398,7 @@ private:
 	Gtk::ToolButton*                 m_InlineEditorButton;
 	Gtk::ToolButton*                 m_PrecisionPlacementPanelButton;
 	Gtk::ToolButton*                 m_CreatePrototypeInstanceButton;
-	Gtk::ToolButton*                 m_NodeIndexButton;
+	Gtk::ToolButton*                 m_NodeEditorButton;
 	Gtk::Paned*                      m_VPaned;
 	Gtk::Paned*                      m_HPaned;
 	Gtk::Overlay*                    m_BrowserOverlay;

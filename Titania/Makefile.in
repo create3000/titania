@@ -123,6 +123,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringTextView.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT) \
 	Titania/ComposedWidgets/NameEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/NormalTool.$(OBJEXT) \
@@ -200,6 +201,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT) \
+	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.$(OBJEXT) \
 	Titania/Editors/SoundEditor/SoundEditor.$(OBJEXT) \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextEditor/TextEditor.$(OBJEXT) \
@@ -570,6 +572,7 @@ titania_SOURCES = \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
 	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
+	Titania/ComposedWidgets/MFStringTextView.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \
 	Titania/ComposedWidgets/NameEntry.cpp \
 	Titania/ComposedWidgets/NormalTool.cpp \
@@ -647,6 +650,7 @@ titania_SOURCES = \
 	Titania/Editors/PrototypeEditor/PrototypeEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
+	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SoundEditor/SoundEditor.cpp \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
@@ -933,6 +937,9 @@ Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringTextView.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT):  \
@@ -1316,6 +1323,9 @@ Titania/Editors/ScenePropertiesEditor/ScenePropertiesEditor.$(OBJEXT):  \
 	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT):  \
+	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
+	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.$(OBJEXT):  \
 	Titania/Editors/ScenePropertiesEditor/$(am__dirstamp) \
 	Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/SoundEditor/$(am__dirstamp):
@@ -1799,6 +1809,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringComboBoxText.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringGeoSystem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringTextView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringURLWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NameEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NormalTool.Po@am__quote@
@@ -1876,6 +1887,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrototypeEditor/$(DEPDIR)/PrototypeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/ScenePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/SoundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/X3DSoundSourceNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/TextEditor.Po@am__quote@

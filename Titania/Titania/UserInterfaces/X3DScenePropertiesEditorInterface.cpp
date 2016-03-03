@@ -61,15 +61,17 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_UnitAngleAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitAngleAdjustment"));
-	m_UnitForceAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitForceAdjustment"));
-	m_UnitLengthAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitLengthAdjustment"));
-	m_UnitMassAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitMassAdjustment"));
+	m_UnitAngleAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitAngleAdjustment"));
+	m_UnitForceAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitForceAdjustment"));
+	m_UnitLengthAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitLengthAdjustment"));
+	m_UnitMassAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("UnitMassAdjustment"));
+	m_WorldInfoInfoTextBuffer      = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("WorldInfoInfoTextBuffer"));
+	m_WorldInfoInfoTitleTextBuffer = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("WorldInfoInfoTitleTextBuffer"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("ScenePropertiesNotebook", m_ScenePropertiesNotebook);
+	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("UnitsExpander", m_UnitsExpander);
 	m_builder -> get_widget ("UnitMassCombo", m_UnitMassCombo);
 	m_builder -> get_widget ("UnitMassEntry", m_UnitMassEntry);
@@ -79,6 +81,9 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UnitForceEntry", m_UnitForceEntry);
 	m_builder -> get_widget ("UnitAngleCombo", m_UnitAngleCombo);
 	m_builder -> get_widget ("UnitAngleEntry", m_UnitAngleEntry);
+	m_builder -> get_widget ("WorldInfoExpander", m_WorldInfoExpander);
+	m_builder -> get_widget ("WorldInfoTitleTextView", m_WorldInfoTitleTextView);
+	m_builder -> get_widget ("WorldInfoInfoTextView", m_WorldInfoInfoTextView);
 
 	// Connect object Gtk::Adjustment with id 'UnitAngleAdjustment'.
 	m_UnitAngleAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_changed));
