@@ -116,82 +116,74 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 	{
 		// Setup PlaneSensor
 
-		switch (getActionType ())
+		if (not select ())
+		   return;
+
+		if (planeSensor -> isActive ())
+			return;
+
+		switch (getHotPoints () .size ())
 		{
-			case ActionType::SELECT:
-			case ActionType::TRANSLATE:
+			case 0:
 			{
-				if (planeSensor -> isActive ())
-					return;
+				planeSensor -> enabled () = false;
+				break;
+			}
+			case 1:
+			{
+				// Translate over screen plane
 
-				switch (getHotPoints () .size ())
-				{
-					case 0:
-					{
-						planeSensor -> enabled () = false;
-						break;
-					}
-					case 1:
-					{
-						// Translate over screen plane
+				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-						const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-						const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
+				planeSensor -> enabled ()      = not paintSelection ();
+				planeSensor -> axisRotation () = axisRotation;
+				planeSensor -> offset ()       = Vector3d ();
+				planeSensor -> maxPosition ()  = Vector2d (-1, -1);
+				break;
+			}
+			case 2:
+			{
+				// Translate along edge
 
-						planeSensor -> enabled ()      = not paintSelection ();
-						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> offset ()       = Vector3d ();
-						planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-						break;
-					}
-					case 2:
-					{
-						// Translate along edge
+				const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
+				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-						const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
-						const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
-
-						planeSensor -> enabled ()      = not paintSelection ();
-						planeSensor -> axisRotation () = axisRotation;
-						planeSensor -> offset ()       = Vector3d ();
-						planeSensor -> maxPosition ()  = Vector2d (-1, 0);
-						break;
-					}
-					default:
-					{
-						const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
-							
-						if (getBrowser () -> hasControlKey ())
-						{
-							// Translate along face normal
-
-							const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
-
-							planeSensor -> enabled ()      = not paintSelection ();
-							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> offset ()       = Vector3d ();
-							planeSensor -> maxPosition ()  = Vector2d (-1, 0);
-						}
-						else
-						{
-							// Translate along plane
-
-							const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-							planeSensor -> enabled ()      = not paintSelection ();
-							planeSensor -> axisRotation () = axisRotation;
-							planeSensor -> offset ()       = Vector3d ();
-							planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-						}
-				
-						break;
-					}
-				}
-
+				planeSensor -> enabled ()      = not paintSelection ();
+				planeSensor -> axisRotation () = axisRotation;
+				planeSensor -> offset ()       = Vector3d ();
+				planeSensor -> maxPosition ()  = Vector2d (-1, 0);
 				break;
 			}
 			default:
-			   break;
+			{
+				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
+					
+				if (getBrowser () -> hasControlKey ())
+				{
+					// Translate along face normal
+
+					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+
+					planeSensor -> enabled ()      = not paintSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> offset ()       = Vector3d ();
+					planeSensor -> maxPosition ()  = Vector2d (-1, 0);
+				}
+				else
+				{
+					// Translate along plane
+
+					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+					planeSensor -> enabled ()      = not paintSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> offset ()       = Vector3d ();
+					planeSensor -> maxPosition ()  = Vector2d (-1, -1);
+				}
+		
+				break;
+			}
 		}
 	}
 	catch (const std::exception & error)
@@ -201,67 +193,51 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 void
 X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 {
-	switch (getActionType ())
+	if (not select ())
+	   return;
+
+	if (active)
 	{
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
-		{
-			if (active)
-			{
-				// Create undo step for translation.
+		// Create undo step for translation.
 
-				undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
-			   undoSetCoordPoint (undoStep);
-			}
-			else
-			{
-				setActionType (ActionType::SELECT);
+	   undoSetCoordPoint (undoStep);
+	}
+	else
+	{
+		setTranslate (false);
 
-				redoSetCoordPoint (undoStep);
+		redoSetCoordPoint (undoStep);
 
-				// Reset fields and send undo step.
+		// Reset fields and send undo step.
 
-				if (abs (translation))
-					undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+		if (abs (translation))
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
-				translation   = Vector3d ();
-				translations  = 0;
-			}
-
-			break;
-		}
-		default:
-		   break;
+		translation   = Vector3d ();
+		translations  = 0;
 	}
 }
 
 void
 X3DIndexedFaceSetTransformObject::set_plane_sensor_translation ()
 {
-	switch (getActionType ())
+	if (not select ())
+	   return;
+
+	// Prevent accidentially move.
+	if (translations ++ < TRANSLATIONS_EVENTS)
+	   return;
+
+	translation = planeSensor -> translation_changed () .getValue ();
+
+	if (abs (translation))
 	{
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
-		{
-			// Prevent accidentially move.
-			if (translations ++ < TRANSLATIONS_EVENTS)
-			   return;
+		setTranslate (true);
 
-			translation = planeSensor -> translation_changed () .getValue ();
-
-			if (abs (translation))
-			{
-				setActionType (ActionType::TRANSLATE);
-
-				for (const auto & pair : getSelectedPoints ())
-					getCoord () -> set1Point (pair .first, pair .second + translation);
-
-				break;
-			}
-		}
-		default:
-		   break;
+		for (const auto & pair : getSelectedPoints ())
+			getCoord () -> set1Point (pair .first, pair .second + translation);
 	}
 }
 

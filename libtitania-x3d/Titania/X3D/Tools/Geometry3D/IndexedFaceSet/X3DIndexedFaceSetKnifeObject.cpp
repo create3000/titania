@@ -137,11 +137,11 @@ X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
 
 	if (cutPolygons ())
 	{
-		setActionType (ActionType::CUT);
+		select () = false;
 		getHotSwitch () -> whichChoice () = true;
 	}
 	else
-		setActionType (ActionType::SELECT);
+		select () = true;
 
 	knifeSwitch -> whichChoice () = cutPolygons ();
 }

@@ -89,6 +89,14 @@ public:
 
 	///  @name Hidden fields
 
+	SFBool &
+	select ()
+	{ return *fields .select; }
+
+	const SFBool &
+	select () const
+	{ return *fields .select; }
+
 	SFString &
 	selectionType ()
 	{ return *fields .selectionType; }
@@ -247,14 +255,6 @@ protected:
 	   REMOVE
 	};
 
-	enum class ActionType :
-	   uint8_t
-	{
-		SELECT,
-	   TRANSLATE,
-	   CUT
-	};
-
 	using SelectedEdges = std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>>;
 	using SelectedHoles = std::vector <std::vector <int32_t>>;
 
@@ -271,13 +271,6 @@ protected:
 	const X3DPtr <Switch> &
 	getHotSwitch () const
 	{ return hotSwitch; }
-
-	void
-	setActionType (const ActionType);
-
-	ActionType
-	getActionType () const
-	{ return actionType; }
 
 	const X3DPtr <FaceSelection> &
 	getFaceSelection () const
@@ -351,6 +344,14 @@ protected:
 	getSelectedFaces () const
 	{ return selectedFaces; }
 
+	void
+	setTranslate (const bool value)
+	{ translate = value; }
+
+	bool
+	getTranslate () const
+	{ return translate; }
+
 	///  @name Operations
 
 	void
@@ -388,6 +389,12 @@ private:
 	///  @name Event handler
 
 	void
+	set_loadState ();
+
+	void
+	set_select ();
+
+	void
 	set_selectionType ();
 
 	void
@@ -416,9 +423,6 @@ private:
 
 	void
 	set_removeSelectedFaces_ ();
-
-	void
-	set_loadState ();
 
 	void
 	set_coord ();
@@ -537,6 +541,7 @@ private:
 	{
 		Fields ();
 
+		SFBool* const select;
 		SFString* const selectionType;
 		SFBool* const paintSelection;
 		MFInt32* const replaceSelection;
@@ -570,8 +575,6 @@ private:
 	X3DPtr <X3DCoordinateNode> coordNode;
 	X3DPtr <FaceSelection>     selection;
 
-	ActionType actionType;
-
 	std::vector <int32_t> hotPoints;    // coord indices
 	std::vector <size_t>  hotEdge;      // index of coord indices
 	size_t                hotFace;      // index of first coord index of face
@@ -588,6 +591,7 @@ private:
 	SelectedHoles                selectedHoles;     // index of coord indices
 	std::set <size_t>            selectedFaces;     // index to first vertex of face to coordIndex array
 
+	bool translate;
 };
 
 } // X3D
