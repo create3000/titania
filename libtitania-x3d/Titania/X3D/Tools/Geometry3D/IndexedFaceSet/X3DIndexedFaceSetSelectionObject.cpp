@@ -108,9 +108,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	               activePoints (),
 	                 activeEdge (),
 	                 activeFace (0),
-	                   cutPoint (-1),
-	                    cutFace (0),
-	                   cutFaces (),
 	                       type (SelectionType::POINTS),
 	                masterPoint (-1),
 	             selectedPoints (),
@@ -351,22 +348,23 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
-	if (getActionType () == ActionType::TRANSLATE)
-		return;
+	switch (getActionType ())
+	{
+		case ActionType::SELECT:
+		{
+			// Set active points.
 
-	// Find closest points.
+			if (not setMagicSelection ())
+			   return;
 
-	const auto coincidentPoints = selection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
+			if (paintSelection () and touchSensor -> isActive ())
+				set_touch_sensor_touchTime ();
 
-	if (coincidentPoints .empty ())
-		return;
-
-	// Set active points.
-
-	setMagicSelection (touchSensor -> getHitPoint (), coincidentPoints);
-
-	if (paintSelection () and touchSensor -> isActive ())
-		set_touch_sensor_touchTime ();
+			break;
+		}
+		default:
+		   break;
+	}
 }
 
 void
@@ -454,160 +452,115 @@ X3DIndexedFaceSetSelectionObject::set_plane_sensor_active ()
 			set_coord_point ();
 			break;
 		}
-		case ActionType::CUT:
-		{
-			hotSwitch -> whichChoice () = true;
+		default:
 			break;
-		}
 	} 
 }
 
 ///  Determine and update hot and active points, edges and face
-void
-X3DIndexedFaceSetSelectionObject::setMagicSelection (const Vector3d & hitPoint, const std::vector <int32_t> & coincidentPoints)
+bool
+X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 {
-	auto       index = coincidentPoints [0];
-	const auto faces = selection -> getAdjacentFaces (coincidentPoints);
-	auto       face  = selection -> getNearestFace (hitPoint, faces) .index;
+	// Find closest points.
 
-	switch (getActionType ())
+	const auto coincidentPoints = getFaceSelection () -> getCoincidentPoints (touchSensor -> getClosestPoint ());
+
+	if (coincidentPoints .empty ())
+		return false;
+			
+	const auto & hitPoint = touchSensor -> getHitPoint ();
+	auto         index    = coincidentPoints [0];
+	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto         face     = getFaceSelection () -> getNearestFace (hitPoint, faces) .index;
+
+	if (touchSensor -> isActive ())
+      return false;
+
+	const auto point    = getCoord () -> get1Point (index);
+	const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+	hotFace = face;
+	hotFaces  .clear ();
+	hotPoints .clear ();
+
+	activeFace = face;
+	activeEdge   .clear ();
+	activePoints .clear ();
+
+	if (vertices .size () >= 3)
 	{
-		case ActionType::CUT:
+		const auto edge          = getFaceSelection () -> getEdge (hitPoint, vertices);
+		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
+		const auto pointDistance = getDistance (hitPoint, point);
+
+		// Hot edge and points for near point or face
+
+		hotEdge = { edge .index0, edge .index1 };
+	
+		switch (getActionType ())
 		{
-			if (planeSensor -> isActive ())
+			case ActionType::SELECT:
+			case ActionType::TRANSLATE:
 			{
-				if (cutFaces .count (face))
+				if (pointDistance > SELECTION_DISTANCE)
 				{
-					cutPoint = index;
-					cutFace  = face;				   
+					if (edgeDistance > SELECTION_DISTANCE)
+					{
+						// Face
+						for (const auto & vertex : vertices)
+							hotPoints .emplace_back (coordIndex () [vertex]);
+					}
+					else
+					{
+						// Edge
+						hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+					}
 				}
 				else
 				{
-					face  = selection -> getNearestFace (hitPoint, std::vector <size_t> (cutFaces .begin (), cutFaces .end ())) .index;
-					index = cutPoint;
+					// Point
+					hotPoints = { index };
 				}
-			}
-			else
-			{
-				cutPoint = index;
-				cutFace  = face;
-				cutFaces = hotFaces;
-			}
 
-			// Procced with next step:
+				break;
+			}
+			default:
+			   break;
 		}
-		case ActionType::SELECT:
-		case ActionType::TRANSLATE:
+
+		// Active points for near point or face
+	
+		switch (getSelectionType ())
 		{
-		   if (ActionType::SELECT == getActionType () and touchSensor -> isActive ())
-		      break;
-
-			const auto point    = getCoord () -> get1Point (index);
-			const auto vertices = selection -> getFaceVertices (face);
-
-			hotFace = face;
-			hotFaces  .clear ();
-			hotPoints .clear ();
-
-			activeFace = face;
-			activeEdge   .clear ();
-			activePoints .clear ();
-
-			if (vertices .size () >= 3)
+			case SelectionType::POINTS:
 			{
-				const auto edge          = selection -> getEdge (hitPoint, vertices);
-				const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
-				const auto pointDistance = getDistance (hitPoint, point);
+				if (pointDistance <= SELECTION_DISTANCE)
+					activePoints = { index };
 
-				// Hot edge and points for near point or face
-
-				hotEdge = { edge .index0, edge .index1 };
-			
-				switch (getActionType ())
-				{
-					case ActionType::CUT:
-					{
-						if (pointDistance > SELECTION_DISTANCE)
-						{
-							// Edge
-							hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-
-							for (const auto & face : getFaceSelection () -> getAdjacentFaces (edge))
-								hotFaces .emplace (face);
-						}
-						else
-						{
-							// Point
-							hotPoints = { index };
-
-							for (const auto & face : faces)
-								hotFaces .emplace (face .index);
-						}
-
-						break;
-					}
-					case ActionType::SELECT:
-					case ActionType::TRANSLATE:
-					{
-						if (pointDistance > SELECTION_DISTANCE)
-						{
-							if (edgeDistance > SELECTION_DISTANCE)
-							{
-								// Face
-								for (const auto & vertex : vertices)
-									hotPoints .emplace_back (coordIndex () [vertex]);
-							}
-							else
-							{
-								// Edge
-								hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-							}
-						}
-						else
-						{
-							// Point
-							hotPoints = { index };
-						}
-
-						break;
-					}
-				}
-
-				// Active points for near point or face
-			
-				switch (getSelectionType ())
-				{
-					case SelectionType::POINTS:
-					{
-						if (pointDistance <= SELECTION_DISTANCE)
-							activePoints = { index };
-
-						break;
-					}
-					case SelectionType::EDGES:
-					{
-						if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
-						{
-							activeEdge     = { edge .index0, edge .index1 };
-							activePoints   = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-						}
-
-						break;
-					}
-					case SelectionType::FACES:
-					{
-						for (const auto & vertex : vertices)
-							activePoints .emplace_back (coordIndex () [vertex]);
-
-						break;
-					}
-				}
+				break;
 			}
+			case SelectionType::EDGES:
+			{
+				if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
+				{
+					activeEdge     = { edge .index0, edge .index1 };
+					activePoints   = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+				}
 
-			updateMagicSelection ();
-			break;
+				break;
+			}
+			case SelectionType::FACES:
+			{
+				for (const auto & vertex : vertices)
+					activePoints .emplace_back (coordIndex () [vertex]);
+
+				break;
+			}
 		}
 	}
+
+	updateMagicSelection ();
+	return true;
 }
 
 void
@@ -1214,6 +1167,20 @@ X3DIndexedFaceSetSelectionObject::updateGeometries ()
 	updateMagicPoints ();
 }
 
+X3DIndexedFaceSetSelectionObject::SelectType
+X3DIndexedFaceSetSelectionObject::getSelectType () const
+{
+	if (getBrowser () -> hasControlKey ())
+		return SelectType::REMOVE;
+
+	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
+
+	if (replace)
+		return SelectType::REPLACE;
+	
+	return SelectType::ADD;
+}
+
 ///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 
 bool
 X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & vertices) const
@@ -1227,20 +1194,6 @@ X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & ve
 	}
 
 	return true;
-}
-
-X3DIndexedFaceSetSelectionObject::SelectType
-X3DIndexedFaceSetSelectionObject::getSelectType () const
-{
-	if (getBrowser () -> hasControlKey ())
-		return SelectType::REMOVE;
-
-	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
-
-	if (replace)
-		return SelectType::REPLACE;
-	
-	return SelectType::ADD;
 }
 
 ///  Returns the sceen distance in pixels between @a point1 and @a point2.

@@ -268,6 +268,10 @@ protected:
 
 	///  @name Member access
 
+	const X3DPtr <Switch> &
+	getHotSwitch () const
+	{ return hotSwitch; }
+
 	void
 	setActionType (const ActionType);
 
@@ -279,17 +283,37 @@ protected:
 	getFaceSelection () const
 	{ return selection; }
 
+	void
+	setHotPoints (const std::vector <int32_t> & value)
+	{ hotPoints = value; }
+
 	const std::vector <int32_t> &
 	getHotPoints () const
 	{ return hotPoints; }
+
+	void
+	setHotEdge (const std::vector <size_t> & value)
+	{ hotEdge = value; }
 
 	const std::vector <size_t> &
 	getHotEdge () const
 	{ return hotEdge; }
 
+	void
+	setHotFace (size_t value)
+	{ hotFace = value; }
+
 	size_t
 	getHotFace () const
 	{ return hotFace; }
+
+	void
+	setHotFaces (const std::set <size_t> & value)
+	{ hotFaces = value; }
+
+	const std::set <size_t> &
+	getHotFaces () const
+	{ return hotFaces; }
 
 	const std::vector <int32_t> &
 	getActivePoints () const
@@ -328,6 +352,23 @@ protected:
 	{ return selectedFaces; }
 
 	///  @name Operations
+
+	void
+	updateMagicSelection ();
+
+	SelectType
+	getSelectType () const;
+
+	bool
+	isInSelection (const std::vector <size_t> &) const;
+
+	double
+	getDistance (const Vector3d &, const Vector3d &);
+
+	double
+	getArea (const std::vector <size_t> &);
+
+	///  @name Undo/redo handling
 
 	void
 	undoRestoreSelection (const UndoStepPtr &);
@@ -403,11 +444,8 @@ private:
 	void
 	set_plane_sensor_active ();
 
-	void
-	setMagicSelection (const Vector3d &, const std::vector <int32_t> &);
-
-	void
-	updateMagicSelection ();
+	bool
+	setMagicSelection ();
 
 	void
 	updateMagicPoints ();
@@ -481,18 +519,6 @@ private:
 	void
 	updateGeometries ();
 
-	SelectType
-	getSelectType () const;
-
-	bool
-	isInSelection (const std::vector <size_t> &) const;
-
-	double
-	getDistance (const Vector3d &, const Vector3d &);
-
-	double
-	getArea (const std::vector <size_t> &);
-
 	static
 	void
 	restoreSelection (const SFNode &, const std::vector <int32_t> &);
@@ -554,10 +580,6 @@ private:
 	std::vector <int32_t> activePoints;   // coord indices
 	std::vector <size_t>  activeEdge;     // index of coord indices
 	size_t                activeFace;     // index of first coord index of face
-
-	int32_t           cutPoint ;   // coord indices
-	size_t            cutFace;     // index of first coord index of face
-	std::set <size_t> cutFaces;    // adjacent faces of hot point, edge or the face itself 
 
 	SelectionType                type;
 	int32_t                      masterPoint;       // coord index,

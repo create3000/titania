@@ -117,6 +117,9 @@ private:
 	void
 	set_plane_sensor_translation ();
 
+	bool
+	setMagicSelection ();
+
 	///  @name Members
 
 	struct Fields
@@ -135,6 +138,10 @@ private:
 	X3DPtr <Transform>        knifeEndPoint;
 	X3DPtr <Switch>           knifeLineSwitch;
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
+
+	int32_t           cutPoint;    // coord indices
+	size_t            cutFace;     // index of first coord index of face
+	std::set <size_t> cutFaces;    // adjacent faces of hot point, edge or the face itself 
 
 };
 

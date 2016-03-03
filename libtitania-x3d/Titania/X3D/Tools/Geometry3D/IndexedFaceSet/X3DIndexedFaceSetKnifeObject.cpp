@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr double SELECTION_DISTANCE = 8;
+
 X3DIndexedFaceSetKnifeObject::Fields::Fields () :
 	 cutPolygons (new SFBool ())
 { }
@@ -75,7 +77,10 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                 knifeStartPoint (),
 	                   knifeEndPoint (),
 	                 knifeLineSwitch (),
-	             knifeLineCoordinate ()
+	             knifeLineCoordinate (),
+	                        cutPoint (-1),
+	                         cutFace (0),
+	                        cutFaces ()
 {
 	cutPolygons () .isHidden (true);
 
@@ -131,7 +136,10 @@ X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
 	__LOG__ <<std::endl;
 
 	if (cutPolygons ())
+	{
 		setActionType (ActionType::CUT);
+		getHotSwitch () -> whichChoice () = true;
+	}
 	else
 		setActionType (ActionType::SELECT);
 
@@ -144,6 +152,11 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 	if (not cutPolygons ())
 	   return;
 
+	// Set hot points.
+
+	if (not setMagicSelection ())
+	   return;
+	
 	if (planeSensor -> isActive ())
 	   ;
 	else
@@ -190,9 +203,6 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	if (planeSensor -> isActive ())
 	{
 	}
-	else
-	{
-	}
 }
 
 void
@@ -226,6 +236,88 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 	{
 		knifeLineSwitch -> whichChoice () = false;	
 	}
+}
+
+///  Determine and update hot and active points, edges and face
+bool
+X3DIndexedFaceSetKnifeObject::setMagicSelection ()
+{
+	// Find closest points.
+
+	const auto coincidentPoints = getFaceSelection () -> getCoincidentPoints (touchSensor -> getClosestPoint ());
+
+	if (coincidentPoints .empty ())
+		return false;
+			
+	const auto & hitPoint = touchSensor -> getHitPoint ();
+	auto         index    = coincidentPoints [0];
+	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto         face     = getFaceSelection () -> getNearestFace (hitPoint, faces) .index;
+
+	if (planeSensor -> isActive ())
+	{
+		if (cutFaces .count (face))
+		{
+			cutPoint = index;
+			cutFace  = face;				   
+		}
+		else
+		{
+			face  = getFaceSelection () -> getNearestFace (hitPoint, std::vector <size_t> (cutFaces .begin (), cutFaces .end ())) .index;
+			index = cutPoint;
+		}
+	}
+	else
+	{
+		cutPoint = index;
+		cutFace  = face;
+		cutFaces = getHotFaces ();
+	}
+
+	const auto point    = getCoord () -> get1Point (index);
+	const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+	setHotFace (face);
+	setHotFaces ({ });
+	setHotPoints ({ });
+
+	if (vertices .size () >= 3)
+	{
+		const auto edge          = getFaceSelection () -> getEdge (hitPoint, vertices);
+		const auto pointDistance = getDistance (hitPoint, point);
+
+		// Hot edge and points for near point or face
+
+		setHotEdge ({ edge .index0, edge .index1 });
+	
+		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
+		{
+			// Edge
+			std::set <size_t> hotFaces;
+
+			setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
+
+			for (const auto & face : getFaceSelection () -> getAdjacentFaces (edge))
+				hotFaces .emplace (face);
+			
+			setHotFaces (hotFaces);
+		}
+		else
+		{
+			// Point
+			std::set <size_t> hotFaces;
+
+			setHotPoints ({ index });
+
+			for (const auto & face : faces)
+				hotFaces .emplace (face .index);
+			
+			setHotFaces (hotFaces);
+		}
+	}
+
+	updateMagicSelection ();
+	return true;
 }
 
 X3DIndexedFaceSetKnifeObject::~X3DIndexedFaceSetKnifeObject ()
