@@ -730,7 +730,8 @@ X3DBrowserEditor::quit ()
 			return true;
 		}
 
-		open (browsers .back () -> getWorldURL ());
+		if (not browsers .back () -> getWorldURL () .empty ())
+			open (browsers .back () -> getWorldURL ());
 	}
 
 	return X3DBrowserWidget::quit ();
