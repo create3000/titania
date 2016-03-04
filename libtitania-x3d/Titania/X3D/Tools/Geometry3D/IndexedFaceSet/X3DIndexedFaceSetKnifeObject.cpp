@@ -82,8 +82,6 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                         cutFace (0),
 	                        cutFaces ()
 {
-	cutPolygons () .isHidden (true);
-
 	//addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
 	addChildren (touchSensor,

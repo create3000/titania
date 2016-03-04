@@ -97,14 +97,6 @@ public:
 	select () const
 	{ return *fields .select; }
 
-	SFString &
-	selectionType ()
-	{ return *fields .selectionType; }
-
-	const SFString &
-	selectionType () const
-	{ return *fields .selectionType; }
-
 	SFBool &
 	paintSelection ()
 	{ return *fields .paintSelection; }
@@ -112,6 +104,14 @@ public:
 	const SFBool &
 	paintSelection () const
 	{ return *fields .paintSelection; }
+
+	SFString &
+	selectionType ()
+	{ return *fields .selectionType; }
+
+	const SFString &
+	selectionType () const
+	{ return *fields .selectionType; }
 
 	// Selection
 
@@ -542,8 +542,8 @@ private:
 		Fields ();
 
 		SFBool* const select;
-		SFString* const selectionType;
 		SFBool* const paintSelection;
+		SFString* const selectionType;
 		MFInt32* const replaceSelection;
 		MFInt32* const addSelection;
 		MFInt32* const removeSelection;

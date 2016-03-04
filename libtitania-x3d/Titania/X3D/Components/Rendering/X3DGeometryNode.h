@@ -161,8 +161,8 @@ public:
 	intersects (Line3d, std::vector <IntersectionPtr> &) const;
 
 	virtual
-	void
-	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &);
+	std::vector <Vector3d>
+	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &, std::vector <IntersectionPtr> &);
 
 	virtual
 	bool

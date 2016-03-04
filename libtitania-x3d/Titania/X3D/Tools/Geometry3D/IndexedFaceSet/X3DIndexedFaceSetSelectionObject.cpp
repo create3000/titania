@@ -69,8 +69,8 @@ static constexpr double SELECTION_DISTANCE = 8;
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	                select (new SFBool (true)),
-	         selectionType (new SFString ("POINTS")),
 	        paintSelection (new SFBool ()),
+	         selectionType (new SFString ("POINTS")),
 	      replaceSelection (new MFInt32 ()),
 	          addSelection (new MFInt32 ()),
 	       removeSelection (new MFInt32 ()),
@@ -117,23 +117,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                  translate (false)
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
-
-	select ()                 .isHidden (true);
-	selectionType ()          .isHidden (true);
-	paintSelection ()         .isHidden (true);
-	replaceSelection ()       .isHidden (true);
-	addSelection ()           .isHidden (true);
-	removeSelection ()        .isHidden (true);
-	replaceSelectedEdges ()   .isHidden (true);
-	addSelectedEdges ()       .isHidden (true);
-	removeSelectedEdges ()    .isHidden (true);
-	replaceSelectedFaces ()   .isHidden (true);
-	addSelectedFaces ()       .isHidden (true);
-	removeSelectedFaces ()    .isHidden (true);
-	selectedPoints_changed () .isHidden (true);
-	selectedEdges_changed ()  .isHidden (true);
-	selectedHoles_changed ()  .isHidden (true);
-	selectedFaces_changed ()  .isHidden (true);
 
 	addChildren (touchSensor,
 	             planeSensor,
@@ -424,9 +407,6 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 void
 X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints)
 {
-	if (pickable () and not select ())
-	   return;
-
 	if (getTranslate ())
 		return;
 

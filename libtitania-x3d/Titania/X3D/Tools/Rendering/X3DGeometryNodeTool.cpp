@@ -50,24 +50,23 @@
 
 #include "X3DGeometryNodeTool.h"
 
-#include "../Rendering/NormalTool.h"
 #include "../Rendering/CoordinateTool.h"
+#include "../Rendering/NormalTool.h"
 
-#include "../../Browser/X3DBrowser.h"
 #include "../../Browser/Selection.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
-#include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
 namespace X3D {
 
 X3DGeometryNodeTool::Fields::Fields () :
-	         pickable (new SFBool (true)),
-	       normalTool (new SFNode ()),
-	        coordTool (new SFNode ())
+	  pickable (new SFBool (true)),
+	normalTool (new SFNode ()),
+	 coordTool (new SFNode ())
 { }
 
 X3DGeometryNodeTool::X3DGeometryNodeTool () :
@@ -82,15 +81,11 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 {
 	addType (X3DConstants::X3DGeometryNodeTool);
 
-	pickable ()   .isHidden (true);
-	normalTool () .isHidden (true);
-	coordTool  () .isHidden (true);
-
 	normalTool () .set (normalToolNode);
 	coordTool  () .set (coordToolNode);
 
 	addChildren (normalToolNode,
-                coordToolNode);
+	             coordToolNode);
 }
 
 void
@@ -124,62 +119,6 @@ X3DGeometryNodeTool::initialize ()
 }
 
 void
-X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer)
-{
-	try
-	{
-		if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
-			return;
-
-		std::vector <Vector3d> selection;
-	
-		const auto & depth               = depthBuffer -> getDepth ();
-		const auto   modelViewProjection = getModelViewMatrix () * getProjectionMatrix ();
-		const auto   invProjection       = inverse (getProjectionMatrix ());
-
-		for (const Vector3d & vertex : getVertices ())
-		{
-			const auto screen = ViewVolume::projectPoint (vertex, modelViewProjection, getViewport ());
-			const auto x      = std::floor (screen .x ());
-			const auto y      = std::floor (screen .y ());
-
-			if (x < 0 or x >= frameBuffer -> getWidth ())
-				continue;
-
-			if (y < 0 or y >= frameBuffer -> getHeight ())
-				continue;
-
-			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
-			const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, getViewport ());
-			const auto world  = vertex * getModelViewMatrix ();
-
-			if (world .z () > 0)
-			   continue;
-	
-			if (world .z () - zWorld .z () < -0.05)
-				continue;
-	
-			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
-	
-			if (frameBuffer -> getPixels () [index])
-				selection .emplace_back (vertex);
-		}
-	
-		std::sort (selection .begin (), selection .end ());
-	
-		const auto last = std::unique (selection .begin (), selection .end ());
-
-		selection .erase (last, selection .end ());
-	
-		set_selection (selection);
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
 X3DGeometryNodeTool::set_loadState ()
 {
 	try
@@ -198,9 +137,9 @@ X3DGeometryNodeTool::set_pickable ()
 {
 	try
 	{
-		const bool enabled = pickable () and
-		                     getBrowser () -> getSelection () -> isEnabled () and
-		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
+		const bool                     enabled = pickable () and
+		                               getBrowser () -> getSelection () -> isEnabled () and
+		                               not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);
 	}
@@ -221,14 +160,14 @@ X3DGeometryNodeTool::eventProcessed ()
 	try
 	{
 		// Normals
-	
+
 		const auto & inlineNode        = normalToolNode -> getInlineNode ();
 		auto &       normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
 		auto &       normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
-	
+
 		normalVertexCount .resize (size, SFInt32 (2));
 		normalPoint       .resize (2 * size);
-	
+
 		for (size_t i = 0; i < size; ++ i)
 		{
 			normalPoint [2 * i + 0] = vertices [i];
@@ -251,24 +190,24 @@ X3DGeometryNodeTool::eventProcessed ()
 		size_t first = 0;
 		size_t p     = 0;
 		size_t v     = 0;
-	
+
 		for (const auto & element : elements)
 		{
 			switch (element .vertexMode)
 			{
 				case GL_TRIANGLES :
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
-						edgesVertexCount .set1Value (v ++, 4);
-						edgesPoint       .set1Value (p ++, vertices [i + 0]);
-						edgesPoint       .set1Value (p ++, vertices [i + 1]);
-						edgesPoint       .set1Value (p ++, vertices [i + 2]);
-						edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						for (size_t i = first, size = first + element .count; i < size; i += 3)
+						{
+							edgesVertexCount .set1Value (v ++, 4);
+							edgesPoint       .set1Value (p ++, vertices [i + 0]);
+							edgesPoint       .set1Value (p ++, vertices [i + 1]);
+							edgesPoint       .set1Value (p ++, vertices [i + 2]);
+							edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						}
+
+						break;
 					}
-	
-					break;
-				}
 				case GL_QUADS:
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 4)
@@ -280,7 +219,7 @@ X3DGeometryNodeTool::eventProcessed ()
 						edgesPoint       .set1Value (p ++, vertices [i + 3]);
 						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
-	
+
 					break;
 				}
 				case GL_QUAD_STRIP:
@@ -294,26 +233,26 @@ X3DGeometryNodeTool::eventProcessed ()
 						edgesPoint       .set1Value (p ++, vertices [i + 2]);
 						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
-	
+
 					break;
 				}
 				case GL_POLYGON:
 				{
 					edgesVertexCount .set1Value (v ++, element .count + 1);
-	
+
 					for (size_t i = first, size = first + element .count; i < size; ++ i)
 						edgesPoint .set1Value (p ++, vertices [i]);
-	
-					edgesPoint.set1Value (p ++, vertices [first]);
+
+					edgesPoint .set1Value (p ++, vertices [first]);
 					break;
 				}
 				default:
 					break;
 			}
-	
+
 			first += element .count;
 		}
-	
+
 		edgesVertexCount .resize (v);
 		edgesPoint       .resize (p);
 	}
@@ -321,6 +260,21 @@ X3DGeometryNodeTool::eventProcessed ()
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
+}
+
+std::vector <Vector3d>
+X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+                                 const std::shared_ptr <FrameBuffer> & depthBuffer,
+                                 std::vector <IntersectionPtr> & intersections)
+{
+	if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
+		return std::vector <Vector3d> ();
+
+	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (frameBuffer, depthBuffer, intersections);
+
+	set_selection (hitPoints);
+
+	return hitPoints;
 }
 
 void
@@ -337,7 +291,7 @@ X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 {
 	if (PolygonMode (GL_FILL) .front () == GL_FILL)
 	{
-	   PolygonOffset polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
+		PolygonOffset polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 
 		getNode <X3DGeometryNode> () -> draw (container);
 	}

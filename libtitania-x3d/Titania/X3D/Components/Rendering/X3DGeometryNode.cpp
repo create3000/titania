@@ -53,6 +53,7 @@
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../Layering/X3DLayerNode.h"
 
@@ -272,11 +273,59 @@ X3DGeometryNode::isClipped (const Vector3d & point,
 	                    [&point, &modelViewMatrix] (const std::shared_ptr <X3DCollectableObject> & node)
 	                    { return node -> isClipped (point, modelViewMatrix); });
 }
-
-void
-X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer)
+	                    	                   
+std::vector <Vector3d>
+X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+                       	     const std::shared_ptr <FrameBuffer> & depthBuffer,
+                       	     std::vector <IntersectionPtr> & intersections)
 {
-	// Implemented in X3DGeometryNodeTool.
+	try
+	{
+		std::vector <Vector3d> hitPoints;
+
+		const auto & depth               = depthBuffer -> getDepth ();
+		const auto & viewport            = getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ();
+		const auto   modelViewProjection = getModelViewMatrix () .get () * ProjectionMatrix4d ();
+		const auto   invProjection       = inverse (ProjectionMatrix4d ());
+
+		for (const Vector3d & vertex : vertices)
+		{
+			const auto screen = ViewVolume::projectPoint (vertex, modelViewProjection, viewport);
+			const auto x      = std::floor (screen .x ());
+			const auto y      = std::floor (screen .y ());
+
+			if (x < 0 or x >= frameBuffer -> getWidth ())
+				continue;
+
+			if (y < 0 or y >= frameBuffer -> getHeight ())
+				continue;
+
+			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
+			const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, viewport);
+			const auto world  = vertex * getModelViewMatrix () .get () ;
+
+			if (world .z () > 0)
+			   continue;
+	
+			if (world .z () - zWorld .z () < -0.05)
+				continue;
+	
+			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
+	
+			if (frameBuffer -> getPixels () [index])
+				hitPoints .emplace_back (vertex);
+		}
+	
+		const auto last = std::unique (hitPoints .begin (), hitPoints .end ());
+
+		hitPoints .erase (last, hitPoints .end ());
+
+		return hitPoints;
+	}
+	catch (const std::exception & error)
+	{
+		return std::vector <Vector3d> ();
+	}
 }
 
 bool

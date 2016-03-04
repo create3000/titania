@@ -168,8 +168,8 @@ public:
 	{ return false; }
 
 	virtual
-	void
-	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &) final override;
+	std::vector <Vector3d>
+	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer, std::vector <IntersectionPtr> &) final override;
 
 	virtual
 	bool
@@ -235,8 +235,7 @@ protected:
 
 	virtual
 	void
-	set_selection (const std::vector <Vector3d> &)
-	{ }
+	set_selection (const std::vector <Vector3d> &) = 0;
 
 
 private:

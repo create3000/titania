@@ -172,15 +172,15 @@ Shape::pointer ()
 	if (not getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
 		return;
 
+	std::vector <IntersectionPtr> itersections;
+
 	if (getBrowser () -> getSelectionBuffer ())
 	{
-		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer ());
+		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer (), itersections);
 		return;
 	}
 
 	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ());
-
-	std::vector <IntersectionPtr> itersections;
 
 	if (not getGeometry () -> intersects (hitRay, itersections))
 		return;

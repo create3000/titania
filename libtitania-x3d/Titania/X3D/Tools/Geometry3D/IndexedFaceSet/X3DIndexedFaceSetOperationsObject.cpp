@@ -70,15 +70,6 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 	       IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetTool ()
 {
-	mergePoints ()          .isHidden (true);
-	splitPoints ()          .isHidden (true);
-	formNewFace ()          .isHidden (true);
-	extrudeSelectedEdges () .isHidden (true);
-	extrudeSelectedFaces () .isHidden (true);
-	chipOfSelectedFaces ()  .isHidden (true);
-	flipVertexOrdering ()   .isHidden (true);
-	deleteSelectedFaces ()  .isHidden (true);
-
 	//addType (X3DConstants::X3DIndexedFaceSetOperationsObject);
 }
 
