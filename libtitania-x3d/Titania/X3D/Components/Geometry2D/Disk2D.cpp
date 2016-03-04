@@ -99,10 +99,6 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	innerRadius () .addInterest (this, &Disk2D::update);
-	outerRadius () .addInterest (this, &Disk2D::update);
-	solid ()       .addInterest (this, &Disk2D::update);
-
 	getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
 }
 

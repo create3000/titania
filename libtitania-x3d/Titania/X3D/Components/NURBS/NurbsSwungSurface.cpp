@@ -60,11 +60,12 @@ const std::string   NurbsSwungSurface::typeName       = "NurbsSwungSurface";
 const std::string   NurbsSwungSurface::containerField = "geometry";
 
 NurbsSwungSurface::Fields::Fields () :
-	   profileCurve (new SFNode ()),
+	profileCurve (new SFNode ()),
 	trajectoryCurve (new SFNode ()),
-	          solid (new SFBool (true)),
-	            ccw (new SFBool (true))
+	solid (new SFBool (true)),
+	ccw (new SFBool (true))
 { }
+
 NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParametricGeometryNode (),
@@ -84,17 +85,6 @@ NurbsSwungSurface::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSwungSurface (executionContext);
 }
-
-void
-NurbsSwungSurface::initialize ()
-{
-	X3DParametricGeometryNode::initialize ();
-
-	profileCurve ()    .addInterest (this, &NurbsSwungSurface::update);
-	trajectoryCurve () .addInterest (this, &NurbsSwungSurface::update);
-	solid ()           .addInterest (this, &NurbsSwungSurface::update);
-	ccw ()             .addInterest (this, &NurbsSwungSurface::update);
- }
 
 void
 NurbsSwungSurface::build ()

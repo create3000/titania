@@ -186,18 +186,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) = 0;
 
-	///  @name Private fields
-
-	virtual
-	SFTime &
-	changed ()
-	{ return eventsBuffer; }
-
-	virtual
-	const SFTime &
-	changed () const
-	{ return eventsBuffer; }
-
 	///  @name Destruction
 
 	virtual
@@ -336,9 +324,6 @@ private:
 	void
 	buildTexCoords ();
 
-	void
-	set_events ();
-
 	///  @name Members
 
 	SFBool                                cameraObject;
@@ -358,8 +343,6 @@ private:
 	std::vector <GLuint> texCoordBufferIds;
 	GLuint               normalBufferId;
 	GLuint               vertexBufferId;
-
-	SFTime eventsBuffer;
 
 };
 

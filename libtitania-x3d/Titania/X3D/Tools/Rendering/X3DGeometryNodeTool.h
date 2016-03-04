@@ -67,7 +67,7 @@ class X3DGeometryNodeTool :
 {
 public:
 
-	///  @name Hidden fields
+	///  @name Private fields
 
 	SFBool &
 	pickable ()
@@ -201,18 +201,6 @@ public:
 	       Error <DISPOSED>) override
 	{ return getNode <X3DGeometryNode> () -> toPrimitive (); }
 
-	///  @name Private fields
-
-	virtual
-	SFTime &
-	changed () final override
-	{ return getNode <X3DGeometryNode> () -> changed (); }
-
-	virtual
-	const SFTime &
-	changed () const final override
-	{ return getNode <X3DGeometryNode> () -> changed (); }
-
 	///  @name Destruction
 
 	virtual
@@ -262,7 +250,7 @@ private:
 	set_pickable ();
 
 	void
-	set_events ();
+	eventProcessed ();
 
 	///  @name Members
 

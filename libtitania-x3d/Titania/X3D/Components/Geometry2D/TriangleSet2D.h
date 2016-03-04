@@ -125,12 +125,6 @@ public:
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
 	///  @name Operations
 
 	virtual

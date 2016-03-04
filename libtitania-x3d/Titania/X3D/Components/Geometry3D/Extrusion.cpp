@@ -114,17 +114,6 @@ void
 Extrusion::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	beginCap ()     .addInterest (this, &Extrusion::update);
-	endCap ()       .addInterest (this, &Extrusion::update);
-	solid ()        .addInterest (this, &Extrusion::update);
-	ccw ()          .addInterest (this, &Extrusion::update);
-	convex ()       .addInterest (this, &Extrusion::update);
-	creaseAngle ()  .addInterest (this, &Extrusion::update);
-	crossSection () .addInterest (this, &Extrusion::update);
-	orientation ()  .addInterest (this, &Extrusion::update);
-	scale ()        .addInterest (this, &Extrusion::update);
-	spine ()        .addInterest (this, &Extrusion::update);
 }
 
 std::vector <Vector3d>

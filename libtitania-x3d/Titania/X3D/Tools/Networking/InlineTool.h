@@ -96,6 +96,16 @@ public:
 
 	///  @name Member access
 
+	///  Copys this node and sets the execution context to @a executionContext.
+	virtual
+	X3DUrlObject*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) final override
+	{ return getNode <Inline> () -> copy (executionContext, type); }
+
+	///  @name Member access
+
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)

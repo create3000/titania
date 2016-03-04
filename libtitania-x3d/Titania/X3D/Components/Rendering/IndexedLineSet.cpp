@@ -111,14 +111,6 @@ IndexedLineSet::initialize ()
 	color ()  .addInterest (this, &IndexedLineSet::set_color);
 	coord ()  .addInterest (this, &IndexedLineSet::set_coord);
 
-	colorPerVertex () .addInterest (this, &IndexedLineSet::update);
-	colorIndex ()     .addInterest (this, &IndexedLineSet::update);
-	coordIndex ()     .addInterest (this, &IndexedLineSet::update);
-	attrib ()         .addInterest (this, &IndexedLineSet::update);
-	fogCoord ()       .addInterest (this, &IndexedLineSet::update);
-	color ()          .addInterest (this, &IndexedLineSet::update);
-	coord ()          .addInterest (this, &IndexedLineSet::update);
-
 	set_attrib ();
 	set_color ();
 	set_coord ();
@@ -128,7 +120,7 @@ void
 IndexedLineSet::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this, &IndexedLineSet::update);
+		node -> removeInterest (this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -143,7 +135,7 @@ IndexedLineSet::set_attrib ()
 	attribNodes .set (value .begin (), value .end ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this, &IndexedLineSet::update);
+		node -> addInterest (this);
 }
 
 void
@@ -151,16 +143,16 @@ IndexedLineSet::set_color ()
 {
 	if (colorNode)
 	{
+		colorNode -> removeInterest (this);
 		colorNode -> removeInterest (this, &IndexedLineSet::set_transparency);
-		colorNode -> removeInterest (this, &IndexedLineSet::update);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
+		colorNode -> addInterest (this);
 		colorNode -> addInterest (this, &IndexedLineSet::set_transparency);
-		colorNode -> addInterest (this, &IndexedLineSet::update);
 		
 		set_transparency ();
 	}
@@ -178,12 +170,12 @@ void
 IndexedLineSet::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &IndexedLineSet::update);
+		coordNode -> removeInterest (this);
 
 	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
 
 	if (coordNode)
-		coordNode -> addInterest (this, &IndexedLineSet::update);
+		coordNode -> addInterest (this);
 }
 
 size_t

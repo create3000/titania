@@ -61,8 +61,6 @@ class IndexedTriangleFanSet :
 {
 public:
 
-	///  @name Construction
-
 	IndexedTriangleFanSet (X3DExecutionContext* const);
 
 	virtual
@@ -120,8 +118,6 @@ public:
 
 
 private:
-
-	///  @name Construction
 
 	virtual
 	void

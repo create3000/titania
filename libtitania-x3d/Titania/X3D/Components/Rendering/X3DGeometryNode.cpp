@@ -78,15 +78,13 @@ X3DGeometryNode::X3DGeometryNode () :
 	    colorBufferId (0),
 	texCoordBufferIds (),
 	   normalBufferId (0),
-	   vertexBufferId (0),
-	     eventsBuffer ()
+	   vertexBufferId (0)
 
 {
 	addType (X3DConstants::X3DGeometryNode);
 
 	addChildren (cameraObject,
-	             texCoordNode,
-	             eventsBuffer);
+	             texCoordNode);
 }
 
 void
@@ -100,9 +98,9 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &vertexBufferId);
 
-		eventsBuffer .addInterest (this, &X3DGeometryNode::set_events);
+		addInterest (this, &X3DGeometryNode::update);
 
-		set_events ();
+		update ();
 	}
 }
 
@@ -652,12 +650,6 @@ X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 
 void
 X3DGeometryNode::update ()
-{
-	eventsBuffer .addEvent ();
-}
-
-void
-X3DGeometryNode::set_events ()
 {
 	clear ();
 	build ();

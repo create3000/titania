@@ -107,12 +107,6 @@ LineSet::initialize ()
 	color ()  .addInterest (this, &LineSet::set_color);
 	coord ()  .addInterest (this, &LineSet::set_coord);
 
-	vertexCount () .addInterest (this, &LineSet::update);
-	attrib ()      .addInterest (this, &LineSet::update);
-	fogCoord ()    .addInterest (this, &LineSet::update);
-	color ()       .addInterest (this, &LineSet::update);
-	coord ()       .addInterest (this, &LineSet::update);
-
 	set_attrib ();
 	set_color ();
 	set_coord ();
@@ -122,7 +116,7 @@ void
 LineSet::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this, &LineSet::update);
+		node -> removeInterest (this);
 
 	std::vector <X3DVertexAttributeNode*> value;
 
@@ -137,7 +131,7 @@ LineSet::set_attrib ()
 	attribNodes .set (value .begin (), value .end ());
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this, &LineSet::update);
+		node -> addInterest (this);
 }
 
 void
@@ -145,16 +139,16 @@ LineSet::set_color ()
 {
 	if (colorNode)
 	{
+		colorNode -> removeInterest (this);
 		colorNode -> removeInterest (this, &LineSet::set_transparency);
-		colorNode -> removeInterest (this, &LineSet::update);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
 
 	if (colorNode)
 	{
+		colorNode -> addInterest (this);
 		colorNode -> addInterest (this, &LineSet::set_transparency);
-		colorNode -> addInterest (this, &LineSet::update);
 		
 		set_transparency ();
 	}
@@ -172,12 +166,12 @@ void
 LineSet::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &LineSet::update);
+		coordNode -> removeInterest (this);
 
 	coordNode .set (x3d_cast <X3DCoordinateNode*> (coord ()));
 
 	if (coordNode)
-		coordNode -> addInterest (this, &LineSet::update);
+		coordNode -> addInterest (this);
 }
 
 void

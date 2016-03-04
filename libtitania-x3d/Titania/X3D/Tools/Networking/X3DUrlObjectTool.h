@@ -64,6 +64,24 @@ class X3DUrlObjectTool :
 {
 public:
 
+	///  @name Construction
+
+	///  Copys this node and sets the execution context to @a executionContext.
+	virtual
+	X3DUrlObject*
+	copy (const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) override
+	{ return getNode <X3DUrlObject> () -> copy (type); }
+
+	///  Copys this node and sets the execution context to @a executionContext.
+	virtual
+	X3DUrlObject*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) override
+	{ return getNode <X3DUrlObject> () -> copy (executionContext, type); }
+
 	///  @name Fields
 
 	virtual

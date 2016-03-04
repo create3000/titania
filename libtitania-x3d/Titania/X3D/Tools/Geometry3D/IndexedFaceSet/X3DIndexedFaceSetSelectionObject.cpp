@@ -354,15 +354,13 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 			selectedPoint .second = getCoord () -> get1Point (selectedPoint .first);
 	}
 	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	{ }
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
-	if (not select ())
+	if (not select () and not paintSelection ())
 	   return;
 
 	if (getTranslate ())
@@ -397,7 +395,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 {
-	if (not select ())
+	if (not select () and not paintSelection ())
 	   return;
 
 	if (getTranslate ())
@@ -426,7 +424,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 void
 X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints)
 {
-	if (not select ())
+	if (pickable () and not select ())
 	   return;
 
 	if (getTranslate ())

@@ -112,6 +112,7 @@ public:
 	       Error <NOT_SUPPORTED>);
 
 	///  Assigns @a node. @a node must be of the same type as this node.
+	virtual
 	void
 	assign (const X3DBaseNode* const, const bool = false)
 	throw (Error <INVALID_NODE>,
@@ -247,6 +248,7 @@ public:
 	       Error <DISPOSED>);
 
 	///  Return the field with @a name.
+	virtual
 	X3DFieldDefinition*
 	getField (const std::string &) const
 	throw (Error <INVALID_NAME>,
@@ -281,18 +283,21 @@ public:
 	throw (Error <DISPOSED>);
 
 	///  Returns an array with all pre defined fields of this node.
+	virtual
 	FieldDefinitionArray
 	getPreDefinedFields () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  Returns an array with all user defined fields of this node.
+	virtual
 	FieldDefinitionArray
 	getUserDefinedFields () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
+	virtual
 	const FieldDefinitionArray &
 	getFieldDefinitions () const
 	throw (Error <INVALID_OPERATION_TIMING>,

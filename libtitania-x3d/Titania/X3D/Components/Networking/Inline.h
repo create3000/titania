@@ -188,13 +188,6 @@ public:
 	void
 	addTool () override;
 
-	///  @name Input/Output
-
-	virtual
-	void
-	toStream (std::ostream & ostream) const override
-	{ X3DBaseNode::toStream (ostream); }
-
 	///  @name Destruction
 
 	virtual

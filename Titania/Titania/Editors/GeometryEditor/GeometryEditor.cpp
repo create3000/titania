@@ -785,37 +785,38 @@ GeometryEditor::on_paint_selection_toggled ()
 	{
 		case SelectorType::BRUSH:
 		{
+			if (getPaintSelectionButton () .get_active ())
+			{
+				getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+				getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
+
+				getCurrentBrowser () -> setPrivateViewer (privateViewer);
+			}
+
+			coordEditor -> setField <X3D::SFBool> ("pickable",      true);
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionButton () .get_active ());
-
-			getCurrentBrowser () -> setPrivateViewer (privateViewer);
-			coordEditor -> setField <X3D::SFBool> ("pickable", true);
-
-			getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-			getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
 			break;
 		}
 		case SelectorType::RECTANGLE:
 		{
-			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
-
 			if (getPaintSelectionButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::RectangleSelection);
 			else
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 
-			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("pickable",       not getPaintSelectionButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 			break;
 		}
 		case SelectorType::LASSO:
 		{
-			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
-
 			if (getPaintSelectionButton () .get_active ())
 				getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LassoSelection);
 			else
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 
-			coordEditor -> setField <X3D::SFBool> ("pickable", not getPaintSelectionButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("pickable",       not getPaintSelectionButton () .get_active ());
+			coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 			break;
 		}
 	}

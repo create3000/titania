@@ -92,9 +92,6 @@ Rectangle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	size ()  .addInterest (this, &Rectangle2D::update);
-	solid () .addInterest (this, &Rectangle2D::update);
-
 	getBrowser () -> getRectangle2DOptions () .addInterest (this, &Rectangle2D::update);
 }
 

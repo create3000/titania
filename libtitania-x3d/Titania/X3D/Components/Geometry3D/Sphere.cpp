@@ -91,9 +91,6 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	radius () .addInterest (this, &Sphere::update);
-	solid ()  .addInterest (this, &Sphere::update);
-
 	getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
 }
 

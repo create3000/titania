@@ -96,14 +96,6 @@ IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-IndexedQuadSet::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	index () .addInterest (this, &IndexedQuadSet::update);
-}
-
-void
 IndexedQuadSet::build ()
 {
 	X3DComposedGeometryNode::build (4, index () .size ());

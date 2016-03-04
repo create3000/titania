@@ -91,9 +91,6 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	size ()  .addInterest (this, &Box::update);
-	solid () .addInterest (this, &Box::update);
-
 	//getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
 }
 

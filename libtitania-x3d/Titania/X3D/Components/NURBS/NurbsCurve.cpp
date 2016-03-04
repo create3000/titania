@@ -67,6 +67,7 @@ NurbsCurve::Fields::Fields () :
 	        knot (new MFDouble ()),
 	       order (new SFInt32 (3))
 { }
+
 NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DParametricGeometryNode (),
@@ -87,19 +88,6 @@ X3DBaseNode*
 NurbsCurve::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsCurve (executionContext);
-}
-
-void
-NurbsCurve::initialize ()
-{
-	X3DParametricGeometryNode::initialize ();
-
-	controlPoint () .addInterest (this, &NurbsCurve::update);
-	tessellation () .addInterest (this, &NurbsCurve::update);
-	weight ()       .addInterest (this, &NurbsCurve::update);
-	closed ()       .addInterest (this, &NurbsCurve::update);
-	knot ()         .addInterest (this, &NurbsCurve::update);
-	order ()        .addInterest (this, &NurbsCurve::update);
 }
 
 void

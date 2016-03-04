@@ -199,12 +199,6 @@ protected:
 
 	using Vertices = std::vector <size_t>;
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
 	///  @name Member access
 
 	size_t

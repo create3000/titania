@@ -108,10 +108,6 @@ NurbsTrimmedSurface::initialize ()
 	removeTrimmingContour () .addInterest (this, &NurbsTrimmedSurface::set_removeTrimmingContour);
 	trimmingContour ()       .addInterest (this, &NurbsTrimmedSurface::set_trimmingContour);
 
-	addTrimmingContour ()    .addInterest (this, &NurbsTrimmedSurface::update);
-	removeTrimmingContour () .addInterest (this, &NurbsTrimmedSurface::update);
-	trimmingContour ()       .addInterest (this, &NurbsTrimmedSurface::update);
-
 	set_trimmingContour ();
 }
 

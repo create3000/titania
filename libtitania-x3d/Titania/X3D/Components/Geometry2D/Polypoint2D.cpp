@@ -84,14 +84,6 @@ Polypoint2D::create (X3DExecutionContext* const executionContext) const
 	return new Polypoint2D (executionContext);
 }
 
-
-void
-Polypoint2D::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	point () .addInterest (this, &Polypoint2D::update);
-}
 void
 Polypoint2D::build ()
 {

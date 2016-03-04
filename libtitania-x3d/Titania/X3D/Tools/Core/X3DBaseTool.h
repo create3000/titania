@@ -95,11 +95,52 @@ public:
 	getUserData () const final override
 	{ return node -> getUserData (); }
 
+	///  Copys this node and sets the execution context to @a executionContext.
+	virtual
+	X3DBaseNode*
+	copy (const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) override
+	{ return node -> copy (type); }
+
+	///  Copys this node and sets the execution context to @a executionContext.
+	virtual
+	X3DBaseNode*
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
+	throw (Error <INVALID_NAME>,
+	       Error <NOT_SUPPORTED>) override
+	{ return node -> copy (executionContext, type); }
+
+	virtual
+	void
+	assign (const X3DBaseNode* const other, const bool compare = false)
+	throw (Error <INVALID_NODE>,
+	       Error <INVALID_FIELD>) final override
+	{ node -> assign (other, compare); }
+
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
+
+	///  Return the field with @a name.
+	virtual
+	X3DFieldDefinition*
+	getField (const std::string & name) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{
+		try
+		{
+		   return node -> getField (name);
+		}
+		catch (const Error <INVALID_NAME> &)
+		{
+			return X3D::X3DBaseNode::getField (name);
+		}
+	}
 
 	///  Adds @a field to the set of user defined fields of this node.
 	virtual
@@ -108,26 +149,56 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>) final override
-	{
-		node -> addUserDefinedField (accessType, name, field);
-		X3DBaseNode::addUserDefinedField (accessType, name, field);
-	}
+	{ node -> addUserDefinedField (accessType, name, field); }
 
 	///  Removes the field named @a name from the set of user defined fields of this node.
 	virtual
 	void
 	removeUserDefinedField (const std::string & name)
 	throw (Error <DISPOSED>) final override
-	{
-		node -> removeUserDefinedField (name);
-		X3DBaseNode::removeUserDefinedField (name);
-	}
+	{ node -> removeUserDefinedField (name); }
+
+	///  Returns an array with all pre defined fields of this node.
+	virtual
+	FieldDefinitionArray
+	getPreDefinedFields () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return node -> getPreDefinedFields (); }
+
+	///  Returns an array with all user defined fields of this node.
+	virtual
+	FieldDefinitionArray
+	getUserDefinedFields () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return node -> getUserDefinedFields (); }
+
+	///  Return all field definition for this node, that is all predefined field and user defined fields.
+	virtual
+	const FieldDefinitionArray &
+	getFieldDefinitions () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return node -> getFieldDefinitions (); }
 
 	///  Field that processes its interests when the set of fields has changed.
 	virtual
 	const SFTime &
 	fields_changed () const final override
 	{ return node -> fields_changed (); }
+
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
+	virtual
+	MFString*
+	getCDATA () final override
+	{ return node -> getCDATA (); }
+
+	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
+	virtual
+	const MFString*
+	getCDATA () const final override
+	{ return node -> getCDATA (); }
 
 	virtual
 	void
@@ -164,12 +235,39 @@ public:
 	virtual
 	void
 	addEvent () final override
-	{ node -> addEvent (); }
+	{
+		node -> addEvent ();
+		X3DBaseNode::addEvent ();
+	}
 	
 	virtual
 	void
 	traverse (const TraverseType) override
 	{ }
+
+	///  @name Input/Output
+
+	///  NOT SUPPORTED
+	virtual
+	void
+	fromStream (std::istream & istream)
+	throw (Error <INVALID_X3D>,
+	       Error <NOT_SUPPORTED>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ node -> fromStream (istream); }
+
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override
+	{ node -> toStream (ostream); }
+
+	///  Inserts this object into @a ostream in X3D XML Encoding.
+	virtual
+	void
+	toXMLStream (std::ostream & ostream) const final override
+	{ node -> toXMLStream (ostream); }
 
 	///  @name Destruction
 
@@ -200,40 +298,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Event handling
-
-	virtual
-	void
-	addChild (X3DChildObject & child) final override
-	{
-		X3DBaseNode::addChild (child);
-
-		children .emplace (&child);
-	}
-
-	virtual
-	void
-	removeChild (X3DChildObject & child) final override
-	{
-		X3DBaseNode::removeChild (child);
-
-		children .erase (&child);
-	}
-
-	virtual
-	void
-	addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
-	throw (Error <INVALID_NAME>,
-	       Error <INVALID_FIELD>,
-	       Error <DISPOSED>) final override
-	{
-		X3DBaseNode::addField (accessType, name, field);
-
-		children .emplace (&field);
-
-		//const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
-	}
-
 	///  @name Member access
 
 	template <class Type>
@@ -249,28 +313,9 @@ protected:
 
 private:
 
-	///  @name Event handling
-
-	virtual
-	void
-	addEvent (X3DChildObject* const object) final override
-	{
-		if (children .count (object))
-			X3DBaseNode::addEvent (object);
-	}
-
-	virtual
-	void
-	addEvent (X3DChildObject* const object, const EventPtr & event) final override
-	{
-		if (children .count (object))
-			X3DBaseNode::addEvent (object, event);
-	}
-
 	///  @name Members
 
-	X3DBaseNode* const         node;
-	std::set <X3DChildObject*> children;
+	X3DBaseNode* const node;
 
 };
 
@@ -286,19 +331,11 @@ inline
 X3DBaseTool::X3DBaseTool (X3DBaseNode* node) :
 	  X3DBaseNode (),
 	X3DToolObject (),
-	         node (node),
-	     children ()
+	         node (node)
 {
 	isPrivate (node -> isPrivate ());
 
 	node -> addParent (this);
-	node -> isPrivate (true);
-
-	for (auto & field : node -> getPreDefinedFields ())
-		X3DBaseNode::addField (field -> getAccessType (), field -> getName (), *field);
-
-	for (auto & field : node -> getUserDefinedFields ())
-		X3DBaseNode::addUserDefinedField (field -> getAccessType (), field -> getName (), field);
 }
 
 inline

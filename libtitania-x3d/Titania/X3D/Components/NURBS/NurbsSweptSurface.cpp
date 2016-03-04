@@ -61,9 +61,9 @@ const std::string   NurbsSweptSurface::containerField = "geometry";
 
 NurbsSweptSurface::Fields::Fields () :
 	crossSectionCurve (new SFNode ()),
-	  trajectoryCurve (new SFNode ()),
-	            solid (new SFBool (true)),
-	              ccw (new SFBool (true))
+	trajectoryCurve (new SFNode ()),
+	solid (new SFBool (true)),
+	ccw (new SFBool (true))
 { }
 
 NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContext) :
@@ -85,17 +85,6 @@ NurbsSweptSurface::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsSweptSurface (executionContext);
 }
-
-void
-NurbsSweptSurface::initialize ()
-{
-	X3DParametricGeometryNode::initialize ();
-
-	crossSectionCurve () .addInterest (this, &NurbsSweptSurface::update);
-	trajectoryCurve ()   .addInterest (this, &NurbsSweptSurface::update);
-	solid ()             .addInterest (this, &NurbsSweptSurface::update);
-	ccw ()               .addInterest (this, &NurbsSweptSurface::update);
- }
 
 void
 NurbsSweptSurface::build ()

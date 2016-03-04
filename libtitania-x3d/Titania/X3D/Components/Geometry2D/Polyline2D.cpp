@@ -89,14 +89,6 @@ Polyline2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Polyline2D::initialize ()
-{
-	X3DGeometryNode::initialize ();
-
-	lineSegments () .addInterest (this, &Polyline2D::update);
-}
-
-void
 Polyline2D::build ()
 {
 	for (const auto & vertex : lineSegments ())

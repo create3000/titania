@@ -102,17 +102,6 @@ X3DComposedGeometryNode::initialize ()
 	normal ()   .addInterest (this, &X3DComposedGeometryNode::set_normal);
 	coord ()    .addInterest (this, &X3DComposedGeometryNode::set_coord);
 
-	colorPerVertex ()  .addInterest (this, &X3DComposedGeometryNode::update);
-	normalPerVertex () .addInterest (this, &X3DComposedGeometryNode::update);
-	solid ()           .addInterest (this, &X3DComposedGeometryNode::update);
-	ccw ()             .addInterest (this, &X3DComposedGeometryNode::update);
-	attrib ()          .addInterest (this, &X3DComposedGeometryNode::update);
-	fogCoord ()        .addInterest (this, &X3DComposedGeometryNode::update);
-	color ()           .addInterest (this, &X3DComposedGeometryNode::update);
-	texCoord ()        .addInterest (this, &X3DComposedGeometryNode::update);
-	normal ()          .addInterest (this, &X3DComposedGeometryNode::update);
-	coord ()           .addInterest (this, &X3DComposedGeometryNode::update);
-
 	set_attrib ();
 	set_color ();
 	set_texCoord ();
@@ -124,7 +113,7 @@ void
 X3DComposedGeometryNode::set_attrib ()
 {
 	for (const auto & node : attribNodes)
-		node -> removeInterest (this, &X3DComposedGeometryNode::update);
+		node -> removeInterest (this);
 
 	for (const auto & node : attrib ())
 	{
@@ -135,7 +124,7 @@ X3DComposedGeometryNode::set_attrib ()
 	}
 
 	for (const auto & node : attribNodes)
-		node -> addInterest (this, &X3DComposedGeometryNode::update);
+		node -> addInterest (this);
 }
 
 void
@@ -143,17 +132,17 @@ X3DComposedGeometryNode::set_color ()
 {
 	if (colorNode)
 	{
+		colorNode -> removeInterest (this);
 		colorNode -> removeInterest (this, &X3DComposedGeometryNode::set_transparency);
-		colorNode -> removeInterest (this, &X3DComposedGeometryNode::update);
 	}
 
 	colorNode = x3d_cast <X3DColorNode*> (color ());
 
 	if (colorNode)
 	{
+		colorNode -> addInterest (this);
 		colorNode -> addInterest (this, &X3DComposedGeometryNode::set_transparency);
-		colorNode -> addInterest (this, &X3DComposedGeometryNode::update);
-
+		
 		set_transparency ();
 	}
 	else
@@ -170,36 +159,36 @@ void
 X3DComposedGeometryNode::set_texCoord ()
 {
 	if (texCoordNode)
-		texCoordNode -> removeInterest (this, &X3DComposedGeometryNode::update);
+		texCoordNode -> removeInterest (this);
 
 	texCoordNode = x3d_cast <X3DTextureCoordinateNode*> (texCoord ());
 
 	if (texCoordNode)
-		texCoordNode -> addInterest (this, &X3DComposedGeometryNode::update);
+		texCoordNode -> addInterest (this);
 }
 
 void
 X3DComposedGeometryNode::set_normal ()
 {
 	if (normalNode)
-		normalNode -> removeInterest (this, &X3DComposedGeometryNode::update);
+		normalNode -> removeInterest (this);
 
 	normalNode = x3d_cast <X3DNormalNode*> (normal ());
 
 	if (normalNode)
-		normalNode -> addInterest (this, &X3DComposedGeometryNode::update);
+		normalNode -> addInterest (this);
 }
 
 void
 X3DComposedGeometryNode::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &X3DComposedGeometryNode::update);
+		coordNode -> removeInterest (this);
 
 	coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
 
 	if (coordNode)
-		coordNode -> addInterest (this, &X3DComposedGeometryNode::update);
+		coordNode -> addInterest (this);
 }
 
 void

@@ -91,8 +91,6 @@ Circle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	radius () .addInterest (this, &Circle2D::update);
-
 	getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
 }
 

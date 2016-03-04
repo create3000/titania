@@ -95,14 +95,6 @@ IndexedTriangleSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-IndexedTriangleSet::initialize ()
-{
-	X3DComposedGeometryNode::initialize ();
-
-	index () .addInterest (this, &IndexedTriangleSet::update);
-}
-
-void
 IndexedTriangleSet::build ()
 {
 	X3DComposedGeometryNode::build (3, index () .size ());
