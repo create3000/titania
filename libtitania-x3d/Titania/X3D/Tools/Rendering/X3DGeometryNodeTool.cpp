@@ -137,9 +137,9 @@ X3DGeometryNodeTool::set_pickable ()
 {
 	try
 	{
-		const bool                     enabled = pickable () and
-		                               getBrowser () -> getSelection () -> isEnabled () and
-		                               not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
+		const bool enabled = pickable () and
+		                     getBrowser () -> getSelection () -> isEnabled () and
+		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);
 	}

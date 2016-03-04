@@ -184,7 +184,7 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 		planeSensor -> offset ()       = touchSensor -> getHitPoint ();
 		planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 
-		knifeLineCoordinate -> point () [1] = knifeLineCoordinate -> point () [0];
+		knifeLineCoordinate -> point () [1] = touchSensor -> getHitPoint ();
 		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
 		knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
 	}
@@ -219,13 +219,13 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
 	                       math::point_type ());
 	                      
-	const Line3d cutLine (knifeLineCoordinate -> point () [0],
-	                      knifeLineCoordinate -> point () [1],
-	                      math::point_type ());
+	const Line3d cutRay (knifeLineCoordinate -> point () [0],
+	                     knifeLineCoordinate -> point () [1],
+	                     math::point_type ());
 
 	Vector3d closestPoint;
                      
-	if (edgeLine .closest_point (cutLine, closestPoint))
+	if (edgeLine .closest_point (cutRay, closestPoint))
 	{
 		knifeLineSwitch -> whichChoice () = true;	
 		knifeEndPoint -> translation ()   = closestPoint;
@@ -247,6 +247,10 @@ X3DIndexedFaceSetKnifeObject::setMagicSelection ()
 	if (coincidentPoints .empty ())
 		return false;
 			
+	const Line3d cutRay (knifeLineCoordinate -> point () [0],
+	                     knifeLineCoordinate -> point () [1],
+	                     math::point_type ());
+
 	const auto & hitPoint = touchSensor -> getHitPoint ();
 	auto         index    = coincidentPoints [0];
 	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
@@ -272,19 +276,22 @@ X3DIndexedFaceSetKnifeObject::setMagicSelection ()
 		cutFaces = getHotFaces ();
 	}
 
-	const auto point    = getCoord () -> get1Point (index);
-	const auto vertices = getFaceSelection () -> getFaceVertices (face);
-
 	setHotFace (face);
 	setHotFaces ({ });
 	setHotPoints ({ });
 
+	const auto point    = getCoord () -> get1Point (index);
+	const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
 	if (vertices .size () >= 3)
 	{
-		const auto edge          = getFaceSelection () -> getEdge (hitPoint, vertices);
+		const auto facesEdge     = getFaceSelection () -> getNearestEdge (cutRay, cutFaces);
+		const auto edge          = planeSensor -> isActive () ? facesEdge : getFaceSelection () -> getNearestEdge (hitPoint, vertices);
 		const auto pointDistance = getDistance (hitPoint, point);
 
 		// Hot edge and points for near point or face
+
+		cutEdge = edge;
 
 		setHotEdge ({ edge .index0, edge .index1 });
 	

@@ -53,6 +53,8 @@
 
 #include "X3DIndexedFaceSetTool.h"
 
+#include "../../../Editing/Selection/X3DFaceSelection.h"
+
 namespace titania {
 namespace X3D {
 
@@ -139,9 +141,10 @@ private:
 	X3DPtr <Switch>           knifeLineSwitch;
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 
-	int32_t           cutPoint;    // coord indices
-	size_t            cutFace;     // index of first coord index of face
-	std::set <size_t> cutFaces;    // adjacent faces of hot point, edge or the face itself 
+	int32_t                cutPoint;  // coord indices
+	X3DFaceSelection::Edge cutEdge;   // coord indices
+	size_t                 cutFace;   // index of first coord index of face
+	std::set <size_t>      cutFaces;  // adjacent faces of hot point, edge or the face itself 
 
 };
 

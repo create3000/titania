@@ -107,6 +107,9 @@ public:
 
 	///  @name Operations
 
+	bool
+	is_between (const vector3 <Type> & point) const;
+
 	Type
 	distance (const vector3 <Type> & point) const;
 
@@ -122,6 +125,16 @@ private:
 	Value value;
 
 };
+
+///  Returns true if @a point lies between point1 and point2.
+template <class Type>
+inline
+bool
+line_segment3 <Type>::is_between (const vector3 <Type> & point) const
+{
+	const auto closest = line () .closest_point (point);
+	return abs ((closest - point0 ()) + (closest - point1 ())) <= abs (point0 () - point1 ());
+}
 
 ///  Returns the distance to @a point.
 template <class Type>

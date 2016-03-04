@@ -424,7 +424,7 @@ FaceSelection::getNumFaces () const
 
 ///  Return the nearest edge for hitPoint.
 FaceSelection::Edge
-FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
+FaceSelection::getNearestEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
 {
 	std::vector <std::vector <size_t>> polygon;
 
@@ -485,6 +485,42 @@ FaceSelection::getEdge (const Vector3d & hitPoint, const std::vector <size_t> & 
 		segments [i],
 		isEdge (vertices, indices [i] .first, indices [i] .second)
 	};
+}
+
+///  Return the nearest edge for hitPoint.
+FaceSelection::Edge
+FaceSelection::getNearestEdge (const Line3d & hitRay, const std::set <size_t> & faces) const
+{
+	static constexpr double epsilon = 1e-6;
+
+	std::vector <Edge>      edges;
+	std::map <double, Edge> distances;
+
+	for (const auto & face : faces)
+	{
+	   const auto vertices = getFaceVertices (face);
+
+		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+		{
+			const auto i0           = vertices [i];
+			const auto i1           = vertices [(i + 1) % size];
+			const auto point0       = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
+			const auto point1       = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto segment      = LineSegment3d (point0, point1);
+			auto       closestPoint = Vector3d (0, 0, 0);
+			const auto close        = hitRay .closest_point (segment .line (), closestPoint);
+			const auto plane        = Plane3d (hitRay .point (), hitRay .direction ());
+			const auto distance     = plane .distance (closestPoint);
+			const auto between      = segment .is_between (closestPoint);
+	
+			distances .emplace (close and distance > epsilon and between
+			                    ? distance
+			                    : std::numeric_limits <double>::infinity (),
+			                    Edge { i0, i1, LineSegment3d (point0, point1), true });
+		}
+	}
+
+	return distances .begin () -> second;
 }
 
 bool

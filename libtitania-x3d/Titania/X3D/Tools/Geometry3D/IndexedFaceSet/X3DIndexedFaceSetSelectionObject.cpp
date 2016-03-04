@@ -464,7 +464,7 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 
 	if (vertices .size () >= 3)
 	{
-		const auto edge          = getFaceSelection () -> getEdge (hitPoint, vertices);
+		const auto edge          = getFaceSelection () -> getNearestEdge (hitPoint, vertices);
 		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
 		const auto pointDistance = getDistance (hitPoint, point);
 

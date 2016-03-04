@@ -64,8 +64,15 @@ class X3DFaceSelection :
 {
 public:
 
-
 	///  @name Member types
+
+	struct Edge
+	{
+		int32_t index0;
+		int32_t index1;
+		LineSegment3d segment;
+		bool isEdge;
+	};
 
 	struct Face
 	{

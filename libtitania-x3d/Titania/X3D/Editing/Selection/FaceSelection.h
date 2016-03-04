@@ -66,14 +66,6 @@ class FaceSelection :
 {
 public:
 
-	struct Edge
-	{
-		int32_t index0;
-		int32_t index1;
-		LineSegment3d segment;
-		bool isEdge;
-	};
-
 	///  @name Construction
 
 	FaceSelection (X3DExecutionContext* const);
@@ -142,7 +134,10 @@ public:
 	getNumFaces () const;
 
 	Edge
-	getEdge (const Vector3d &, const std::vector <size_t> &) const;
+	getNearestEdge (const Vector3d &, const std::vector <size_t> &) const;
+
+	Edge
+	getNearestEdge (const Line3d &, const std::set <size_t> &) const;
 
 	bool
 	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;
