@@ -521,6 +521,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/Texture3DLoader.cpp \
 	Titania/X3D/Thread/TextureLoader.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
+	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp \

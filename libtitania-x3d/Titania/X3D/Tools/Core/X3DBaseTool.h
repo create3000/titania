@@ -130,17 +130,7 @@ public:
 	getField (const std::string & name) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{
-		try
-		{
-		   return node -> getField (name);
-		}
-		catch (const Error <INVALID_NAME> &)
-		{
-			return X3D::X3DBaseNode::getField (name);
-		}
-	}
+	       Error <DISPOSED>) final override;
 
 	///  Adds @a field to the set of user defined fields of this node.
 	virtual
@@ -234,11 +224,7 @@ public:
 
 	virtual
 	void
-	addEvent () final override
-	{
-		node -> addEvent ();
-		X3DBaseNode::addEvent ();
-	}
+	addEvent () final override;
 	
 	virtual
 	void
@@ -318,62 +304,6 @@ private:
 	X3DBaseNode* const node;
 
 };
-
-inline
-X3DBaseTool::X3DBaseTool () :
-   X3DBaseNode (),
-          node (nullptr)
-{
-   throw Error <NOT_SUPPORTED> ("X3DBaseTool::X3DBaseTool");
-}
- 
-inline
-X3DBaseTool::X3DBaseTool (X3DBaseNode* node) :
-	  X3DBaseNode (),
-	X3DToolObject (),
-	         node (node)
-{
-	isPrivate (node -> isPrivate ());
-
-	node -> addParent (this);
-}
-
-inline
-void
-X3DBaseTool::initialize ()
-{
-	X3DBaseNode::initialize ();
-	X3DToolObject::initialize ();
-}
-
-inline
-void
-X3DBaseTool::setExecutionContext (X3DExecutionContext* const value)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	node -> setExecutionContext (value);
-
-	X3DToolObject::setExecutionContext (value);
-}
-
-inline
-void
-X3DBaseTool::removeTool (const bool)
-{
-	X3DBaseNode::removeTool (node);
-}
-
-inline
-void
-X3DBaseTool::dispose ()
-{
-	node -> isPrivate (isPrivate ());
-	node -> removeParent (this);
-
-	X3DToolObject::dispose ();
-	X3DBaseNode::dispose ();
-}
 
 } // X3D
 } // titania

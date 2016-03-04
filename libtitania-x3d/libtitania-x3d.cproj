@@ -1337,6 +1337,7 @@
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSelectionObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\X3DBaseTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
