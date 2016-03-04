@@ -71,7 +71,6 @@ X3DNurbsSurfaceGeometryNode::Fields::Fields () :
 	     texCoord (new SFNode ()),
 	 controlPoint (new SFNode ())
 { }
-
 X3DNurbsSurfaceGeometryNode::X3DNurbsSurfaceGeometryNode () :
 	X3DParametricGeometryNode (),
 	                   fields (),
@@ -98,6 +97,21 @@ X3DNurbsSurfaceGeometryNode::initialize ()
 	texCoord ()     .addInterest (this, &X3DNurbsSurfaceGeometryNode::set_texCoord);
 	controlPoint () .addInterest (this, &X3DNurbsSurfaceGeometryNode::set_controlPoint);
 	
+	uTessellation () .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	vTessellation () .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	uClosed ()       .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	vClosed ()       .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	solid ()         .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	uOrder ()        .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	vOrder ()        .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	uDimension ()    .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	vDimension ()    .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	uKnot ()         .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	vKnot ()         .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	weight ()        .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	texCoord ()      .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+	controlPoint ()  .addInterest (this, &X3DNurbsSurfaceGeometryNode::update);
+
 	set_texCoord ();
 	set_controlPoint ();
 }

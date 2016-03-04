@@ -105,6 +105,13 @@ Cylinder::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
+	top ()    .addInterest (this, &Cylinder::update);
+	side ()   .addInterest (this, &Cylinder::update);
+	bottom () .addInterest (this, &Cylinder::update);
+	height () .addInterest (this, &Cylinder::update);
+	radius () .addInterest (this, &Cylinder::update);
+	solid ()  .addInterest (this, &Cylinder::update);
+
 	getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
 }
 

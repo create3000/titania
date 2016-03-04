@@ -97,6 +97,10 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
+	startAngle () .addInterest (this, &Arc2D::update);
+	endAngle ()   .addInterest (this, &Arc2D::update);
+	radius ()     .addInterest (this, &Arc2D::update);
+
 	getBrowser () -> getArcClose2DOptions () .addInterest (this, &Arc2D::update);
 }
 

@@ -61,6 +61,8 @@ class IndexedTriangleSet :
 {
 public:
 
+	///  @name Construction
+
 	IndexedTriangleSet (X3DExecutionContext* const);
 
 	virtual
@@ -119,10 +121,20 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Member access
+
 	virtual
 	size_t
 	getIndex (const size_t i) const final override
 	{ return index () [i]; }
+
+	///  @name Operations
 
 	virtual
 	void

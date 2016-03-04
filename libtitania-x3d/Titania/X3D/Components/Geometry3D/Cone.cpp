@@ -103,6 +103,12 @@ Cone::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
+	side ()         .addInterest (this, &Cone::update);
+	bottom ()       .addInterest (this, &Cone::update);
+	height ()       .addInterest (this, &Cone::update);
+	bottomRadius () .addInterest (this, &Cone::update);
+	solid ()        .addInterest (this, &Cone::update);
+
 	getBrowser () -> getCylinderOptions () .addInterest (this, &Cone::update);
 }
 

@@ -100,6 +100,7 @@ IndexedTriangleStripSet::initialize ()
 	X3DComposedGeometryNode::initialize ();
 
 	index () .addInterest (this, &IndexedTriangleStripSet::set_index);
+	index () .addInterest (this, &IndexedTriangleStripSet::update);
 
 	set_index ();
 }

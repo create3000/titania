@@ -133,6 +133,10 @@ private:
 
 	virtual
 	void
+	initialize () final override;
+
+	virtual
+	void
 	build () final override;
 
 

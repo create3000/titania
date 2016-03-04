@@ -83,7 +83,6 @@ IndexedFaceSet::Fields::Fields () :
 	  normalIndex (new MFInt32 ()),
 	   coordIndex (new MFInt32 ())
 { }
-
 IndexedFaceSet::IndexedFaceSet (X3DExecutionContext* const executionContext) :
 	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DComposedGeometryNode (),
@@ -119,6 +118,19 @@ X3DBaseNode*
 IndexedFaceSet::create (X3DExecutionContext* const executionContext) const
 {
 	return new IndexedFaceSet (executionContext);
+}
+
+void
+IndexedFaceSet::initialize ()
+{
+	X3DComposedGeometryNode::initialize ();
+
+	convex ()        .addInterest (this, &IndexedFaceSet::update);
+	creaseAngle ()   .addInterest (this, &IndexedFaceSet::update);
+	texCoordIndex () .addInterest (this, &IndexedFaceSet::update);
+	colorIndex ()    .addInterest (this, &IndexedFaceSet::update);
+	normalIndex ()   .addInterest (this, &IndexedFaceSet::update);
+	coordIndex ()    .addInterest (this, &IndexedFaceSet::update);
 }
 
 size_t

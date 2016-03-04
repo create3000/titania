@@ -111,7 +111,13 @@ Text::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	fontStyle () .addInterest (this, &Text::set_fontStyle);
+	fontStyle ()  .addInterest (this, &Text::set_fontStyle);
+
+	string ()    .addInterest (this, &Text::update);
+	length ()    .addInterest (this, &Text::update);
+	maxExtent () .addInterest (this, &Text::update);
+	solid ()     .addInterest (this, &Text::update);
+	fontStyle () .addInterest (this, &Text::update);
 
 	set_fontStyle ();
 }

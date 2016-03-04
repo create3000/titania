@@ -100,6 +100,7 @@ IndexedTriangleFanSet::initialize ()
 	X3DComposedGeometryNode::initialize ();
 
 	index () .addInterest (this, &IndexedTriangleFanSet::set_index);
+	index () .addInterest (this, &IndexedTriangleFanSet::update);
 
 	set_index ();
 }

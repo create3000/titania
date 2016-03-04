@@ -88,6 +88,15 @@ TriangleSet2D::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+TriangleSet2D::initialize ()
+{
+	X3DGeometryNode::initialize ();
+
+	vertices () .addInterest (this, &TriangleSet2D::update);
+	solid ()    .addInterest (this, &TriangleSet2D::update);
+}
+
+void
 TriangleSet2D::build ()
 {
 	const size_t elements = solid () ? 1 : 2;
