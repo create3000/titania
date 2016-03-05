@@ -120,7 +120,13 @@ private:
 	set_plane_sensor_translation ();
 
 	bool
-	setMagicSelection ();
+	setStartMagicSelection ();
+
+	bool
+	setEndMagicSelection ();
+
+	void
+	cut ();
 
 	///  @name Members
 
@@ -141,10 +147,9 @@ private:
 	X3DPtr <Switch>           knifeLineSwitch;
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 
-	int32_t                cutPoint;  // coord indices
-	X3DFaceSelection::Edge cutEdge;   // coord indices
-	size_t                 cutFace;   // index of first coord index of face
-	std::set <size_t>      cutFaces;  // adjacent faces of hot point, edge or the face itself 
+	size_t                         cutFace;   // index of first coord index of face
+	std::pair <Vector3d, Vector3d> cutEdge;
+
 
 };
 

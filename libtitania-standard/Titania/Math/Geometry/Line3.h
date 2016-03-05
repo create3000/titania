@@ -195,7 +195,9 @@ public:
 	}
 
 	///  Returns the closest point from @a line to this line on this line.
-	bool
+	///  The return value is the angle between both lines. The return value
+	///  must be checked whether both lines are parallel.
+	Type
 	closest_point (const line3 & line, vector3 <Type> & point) const
 	{
 		const auto & p1 = this -> point ();
@@ -204,25 +206,23 @@ public:
 		const auto & d1 = direction ();
 		const auto & d2 = line .direction ();
 
-		Type t = dot (d1, d2);
+		const auto theta = dot (d1, d2); // angle between both lines
+		const auto u     = p2 - p1;
+		const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
 
-		if (std::abs (t) >= 1)
-			return false;  // lines are parallel
-
-		const auto u = p2 - p1;
-
-		t     = (dot (u, d1) - t * dot (u, d2)) / (1 - t * t);
 		point = p1 + t * d1;
 
-		return true;
+		return theta;
 	}
 
 	///  @name Intersection
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.
 	bool
-	intersects (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &,
-	           Type &, Type &, Type &) const;
+	intersects (const vector3 <Type> &,
+	            const vector3 <Type> &,
+	            const vector3 <Type> &,
+	            Type &, Type &, Type &) const;
 
 
 private:
@@ -239,8 +239,10 @@ private:
 
 template <class Type>
 bool
-line3 <Type>::intersects (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C,
-                         Type & u, Type & v, Type & t) const
+line3 <Type>::intersects (const vector3 <Type> & A,
+                          const vector3 <Type> & B,
+                          const vector3 <Type> & C,
+                          Type & u, Type & v, Type & t) const
 {
 	// find vectors for two edges sharing vert0
 	const vector3 <Type> edge1 = B - A;

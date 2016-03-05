@@ -866,7 +866,7 @@ ColorEditor::set_hitPoint ()
 			return;
 
 		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
-		const auto nearestFace   = selection -> getNearestFace (touchSensor -> getHitPoint (), adjacentFaces);
+		const auto nearestFace   = selection -> getClosestFace (touchSensor -> getHitPoint (), adjacentFaces);
 
 		// Setup cross hair
 
@@ -984,7 +984,7 @@ ColorEditor::set_touchTime ()
 			return;
 
 		const auto adjacentFaces = selection -> getAdjacentFaces (coincidentPoints);
-		const auto nearestFace   = selection -> getNearestFace (touchSensor -> getHitPoint (), adjacentFaces);
+		const auto nearestFace   = selection -> getClosestFace (touchSensor -> getHitPoint (), adjacentFaces);
 		const auto index         = previewGeometry -> colorIndex () .get1Value (nearestFace .index + nearestFace .vertex);
 
 		colorButton .setIndex (index);

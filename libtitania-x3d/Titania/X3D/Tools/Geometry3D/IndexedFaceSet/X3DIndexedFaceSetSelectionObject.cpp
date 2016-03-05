@@ -104,7 +104,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                  hotPoints (),
 	                    hotEdge (),
 	                    hotFace (0),
-	                   hotFaces (),
 	               activePoints (),
 	                 activeEdge (),
 	                 activeFace (0),
@@ -449,13 +448,12 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 	const auto & hitPoint = touchSensor -> getHitPoint ();
 	auto         index    = coincidentPoints [0];
 	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
-	auto         face     = getFaceSelection () -> getNearestFace (hitPoint, faces) .index;
+	auto         face     = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
 
 	const auto point    = getCoord () -> get1Point (index);
 	const auto vertices = getFaceSelection () -> getFaceVertices (face);
 
 	hotFace = face;
-	hotFaces  .clear ();
 	hotPoints .clear ();
 
 	activeFace = face;
@@ -464,7 +462,7 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 
 	if (vertices .size () >= 3)
 	{
-		const auto edge          = getFaceSelection () -> getNearestEdge (hitPoint, vertices);
+		const auto edge          = getFaceSelection () -> getClosestEdge (hitPoint, vertices);
 		const auto edgeDistance  = getDistance (hitPoint, edge .segment .line () .closest_point (hitPoint));
 		const auto pointDistance = getDistance (hitPoint, point);
 

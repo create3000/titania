@@ -119,10 +119,10 @@ public:
 	getAdjacentFaces (const Edge &) const;
 
 	Face
-	getNearestFace (const Vector3d & , const Faces &);
+	getClosestFace (const Vector3d & , const Faces &);
 
 	Face
-	getNearestFace (const Vector3d & , const std::vector <size_t> &);
+	getClosestFace (const Vector3d & , const std::vector <size_t> &);
 
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;
@@ -134,10 +134,10 @@ public:
 	getNumFaces () const;
 
 	Edge
-	getNearestEdge (const Vector3d &, const std::vector <size_t> &) const;
+	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 
 	Edge
-	getNearestEdge (const Line3d &, const std::set <size_t> &) const;
+	getClosestEdge (const Line3d &, const std::vector <size_t> &) const;
 
 	bool
 	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;
@@ -150,6 +150,9 @@ public:
 
 	std::vector <size_t>
 	getVertices (const int32_t) const;
+
+	int32_t
+	getClosestPoint (const Vector3d &, const std::vector <size_t> &) const;
 
 	///  @name Destruction
 

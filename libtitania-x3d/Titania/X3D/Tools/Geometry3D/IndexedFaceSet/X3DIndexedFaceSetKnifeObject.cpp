@@ -52,6 +52,7 @@
 
 #include "../../Rendering/CoordinateTool.h"
 
+#include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Grouping/Switch.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
@@ -78,9 +79,8 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                   knifeEndPoint (),
 	                 knifeLineSwitch (),
 	             knifeLineCoordinate (),
-	                        cutPoint (-1),
 	                         cutFace (0),
-	                        cutFaces ()
+	                         cutEdge ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
@@ -152,42 +152,42 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 
 	// Set hot points.
 
-	if (not setMagicSelection ())
-	   return;
-	
 	if (planeSensor -> isActive ())
-	   ;
+	   return;
+
+	if (not setStartMagicSelection ())
+	   return;
+
+   // Set start point
+
+   if (getHotEdge () .empty ())
+      return;
+
+	if (getHotPoints () .size () == 1)
+		cutEdge .first = getCoord () -> get1Point (getHotPoints () .front ());
+
 	else
 	{
-	   // Set start point
+		const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
+		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
+		                       math::point_type ());
 
-	   if (getHotEdge () .empty ())
-	      return;
+		cutEdge .first = edgeLine .closest_point (touchSensor -> getHitPoint ());
+	}  
 
-		if (getHotPoints () .size () == 1)
-			knifeLineCoordinate -> point () [0] = getCoord () -> get1Point (getHotPoints () .front ());
+	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
+	const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 
-		else
-		{
-			const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-			                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-			                       math::point_type ());
+	planeSensor -> enabled ()      = true;
+	planeSensor -> axisRotation () = axisRotation;
+	planeSensor -> offset ()       = touchSensor -> getHitPoint ();
+	planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 
-			knifeLineCoordinate -> point () [0] = edgeLine .closest_point (touchSensor -> getHitPoint ());
-		}  
-
-		const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
-		const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-		planeSensor -> enabled ()      = true;
-		planeSensor -> axisRotation () = axisRotation;
-		planeSensor -> offset ()       = touchSensor -> getHitPoint ();
-		planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-
-		knifeLineCoordinate -> point () [1] = touchSensor -> getHitPoint ();
-		knifeStartPoint -> translation ()   = knifeLineCoordinate -> point () [0] .getValue ();
-		knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
-	}
+	cutEdge .second                     = cutEdge .first;
+	knifeLineCoordinate -> point () [0] = cutEdge .first;
+	knifeLineCoordinate -> point () [1] = cutEdge .first;
+	knifeStartPoint -> translation ()   = cutEdge .first;
+	knifeEndPoint -> translation ()     = touchSensor -> getHitPoint ();
 }
 
 void
@@ -199,8 +199,9 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	knifeLineSwitch -> whichChoice () = planeSensor -> isActive ();	 
   
 	if (planeSensor -> isActive ())
-	{
-	}
+		return;
+
+	cut ();
 }
 
 void
@@ -209,36 +210,43 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 	if (not cutPolygons ())
 	   return;
 
-	if (getHotPoints () .size () == 1)
-		knifeLineCoordinate -> point () [1] = getCoord () -> get1Point (getHotPoints () .front ());
+	if (not setEndMagicSelection ())
+	   return;
+
+ 	if (getHotPoints () .size () == 1)
+		cutEdge .second = getCoord () -> get1Point (getHotPoints () .front ());
 
 	else
-		knifeLineCoordinate -> point () [1] = planeSensor -> translation_changed () .getValue ();
+		cutEdge .second = planeSensor -> translation_changed () .getValue ();
 
-	const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-	                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-	                       math::point_type ());
-	                      
-	const Line3d cutRay (knifeLineCoordinate -> point () [0],
-	                     knifeLineCoordinate -> point () [1],
-	                     math::point_type ());
+	const auto edgeLine = Line3d (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]), getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]), math::point_type ());	                   
+	const auto cutRay   = Line3d (cutEdge .first, cutEdge .second, math::point_type ());
+
+	const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 	Vector3d closestPoint;
                      
-	if (edgeLine .closest_point (cutRay, closestPoint))
-	{
-		knifeLineSwitch -> whichChoice () = true;	
-		knifeEndPoint -> translation ()   = closestPoint;
-	}
-	else
-	{
-		knifeLineSwitch -> whichChoice () = false;	
-	}
+	edgeScreen .closest_point (cutScreen, closestPoint);
+
+	const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+	edgeLine .closest_point (hitRay, closestPoint);
+
+	knifeLineCoordinate -> point () [1] = cutEdge .second;
+	knifeEndPoint -> translation ()     = closestPoint;
+
+	// Ugly fallback if the track point lies behind the screen.
+
+	const auto trackPoint = Vector3d (planeSensor -> trackPoint_changed () .getValue ()) * getModelViewMatrix ();
+
+	if (trackPoint .z () > 0)
+		knifeLineCoordinate -> point () [1] = getBrowser () -> getHitRay (getModelViewMatrix (), getProjectionMatrix (), getViewport ()) .point ();
 }
 
 ///  Determine and update hot and active points, edges and face
 bool
-X3DIndexedFaceSetKnifeObject::setMagicSelection ()
+X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 {
 	// Find closest points.
 
@@ -247,37 +255,14 @@ X3DIndexedFaceSetKnifeObject::setMagicSelection ()
 	if (coincidentPoints .empty ())
 		return false;
 			
-	const Line3d cutRay (knifeLineCoordinate -> point () [0],
-	                     knifeLineCoordinate -> point () [1],
-	                     math::point_type ());
+	const auto  hitPoint = touchSensor -> getHitPoint ();
+	auto        index    = coincidentPoints [0];
+	const auto  faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
+	auto        face     = getFaceSelection () -> getClosestFace (hitPoint, faces) .index;
 
-	const auto & hitPoint = touchSensor -> getHitPoint ();
-	auto         index    = coincidentPoints [0];
-	const auto   faces    = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
-	auto         face     = getFaceSelection () -> getNearestFace (hitPoint, faces) .index;
-
-	if (planeSensor -> isActive ())
-	{
-		if (cutFaces .count (face))
-		{
-			cutPoint = index;
-			cutFace  = face;				   
-		}
-		else
-		{
-			face  = getFaceSelection () -> getNearestFace (hitPoint, std::vector <size_t> (cutFaces .begin (), cutFaces .end ())) .index;
-			index = cutPoint;
-		}
-	}
-	else
-	{
-		cutPoint = index;
-		cutFace  = face;
-		cutFaces = getHotFaces ();
-	}
+	cutFace = face;
 
 	setHotFace (face);
-	setHotFaces ({ });
 	setHotPoints ({ });
 
 	const auto point    = getCoord () -> get1Point (index);
@@ -285,45 +270,71 @@ X3DIndexedFaceSetKnifeObject::setMagicSelection ()
 
 	if (vertices .size () >= 3)
 	{
-		const auto facesEdge     = getFaceSelection () -> getNearestEdge (cutRay, cutFaces);
-		const auto edge          = planeSensor -> isActive () ? facesEdge : getFaceSelection () -> getNearestEdge (hitPoint, vertices);
+		const auto edge          = getFaceSelection () -> getClosestEdge (hitPoint, vertices);
 		const auto pointDistance = getDistance (hitPoint, point);
 
 		// Hot edge and points for near point or face
-
-		cutEdge = edge;
 
 		setHotEdge ({ edge .index0, edge .index1 });
 	
 		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 		{
 			// Edge
-			std::set <size_t> hotFaces;
-
 			setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
-
-			for (const auto & face : getFaceSelection () -> getAdjacentFaces (edge))
-				hotFaces .emplace (face);
-			
-			setHotFaces (hotFaces);
 		}
 		else
 		{
 			// Point
-			std::set <size_t> hotFaces;
-
 			setHotPoints ({ index });
-
-			for (const auto & face : faces)
-				hotFaces .emplace (face .index);
-			
-			setHotFaces (hotFaces);
 		}
 	}
 
 	updateMagicSelection ();
 	return true;
 }
+
+///  Determine and update hot and active points, edges and face
+bool
+X3DIndexedFaceSetKnifeObject::setEndMagicSelection ()
+{
+	const auto hitPoint = Vector3d (planeSensor -> translation_changed () .getValue ());
+	const auto cutRay   = Line3d (cutEdge .first, cutEdge .second, math::point_type ());
+
+	setHotFace (cutFace);
+	setHotPoints ({ });
+
+	const auto vertices = getFaceSelection () -> getFaceVertices (cutFace);
+
+	if (vertices .size () >= 3)
+	{
+		const auto edge          = getFaceSelection () -> getClosestEdge (cutRay, vertices);
+		const auto cutPoint      = getFaceSelection () -> getClosestPoint (hitPoint, vertices);
+		const auto point         = getCoord () -> get1Point (cutPoint);
+		const auto pointDistance = getDistance (hitPoint, point);
+
+		// Hot edge and points for near point or face
+
+		setHotEdge ({ edge .index0, edge .index1 });
+	
+		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
+		{
+			// Edge
+			setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
+		}
+		else
+		{
+			// Point
+			setHotPoints ({ cutPoint });
+		}
+	}
+
+	updateMagicSelection ();
+	return true;
+}
+
+void
+X3DIndexedFaceSetKnifeObject::cut ()
+{ }
 
 X3DIndexedFaceSetKnifeObject::~X3DIndexedFaceSetKnifeObject ()
 { }

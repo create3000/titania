@@ -119,7 +119,7 @@ throw (std::domain_error)
 	auto       trackPoint1    = screenLine .closest_point (Vector3d (hit -> pointer .x (), hit -> pointer .y (), 0));
 	const auto trackPointLine = ViewVolume::unProjectLine (trackPoint1 .x (), trackPoint1 .y (), modelViewMatrix, projectionMatrix, viewport);
 
-	return line .closest_point (trackPointLine, trackPoint);
+	return std::abs (line .closest_point (trackPointLine, trackPoint)) < 1;
 }
 
 void
@@ -167,11 +167,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 			{
 				if (plane .intersects (hitRay, startPoint))
 				{
-					Vector3d trackPoint;
-
-					Plane3d (Vector3d (), plane .normal ()) .intersects (hitRay, trackPoint);
-
-					trackStart (trackPoint);
+					trackStart (startPoint);
 				}
 			}
 			else
@@ -221,13 +217,11 @@ PlaneSensor::set_motion (const HitPtr & hit)
 		{
 			const auto hitRay = hit -> hitRay * inverseModelViewMatrix;
 
-			Vector3d endPoint, trackPoint;
+			Vector3d endPoint;
 
 			if (plane .intersects (hitRay, endPoint))
 			{
-				Plane3d (Vector3d (), plane .normal ()) .intersects (hitRay, trackPoint);
-
-				track (endPoint, trackPoint);
+				track (endPoint, endPoint);
 			}
 			else
 				throw std::domain_error ("Plane and line are parallel.");
@@ -254,10 +248,7 @@ PlaneSensor::set_motion (const HitPtr & hit)
 		}
 	}
 	catch (const std::domain_error &)
-	{
-		trackPoint_changed ()  .addEvent ();
-		translation_changed () .addEvent ();
-	}
+	{ }
 }
 
 void

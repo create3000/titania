@@ -300,14 +300,6 @@ protected:
 	getHotFace () const
 	{ return hotFace; }
 
-	void
-	setHotFaces (const std::set <size_t> & value)
-	{ hotFaces = value; }
-
-	const std::set <size_t> &
-	getHotFaces () const
-	{ return hotFaces; }
-
 	const std::vector <int32_t> &
 	getActivePoints () const
 	{ return activePoints; }
@@ -578,7 +570,6 @@ private:
 	std::vector <int32_t> hotPoints;    // coord indices
 	std::vector <size_t>  hotEdge;      // index of coord indices
 	size_t                hotFace;      // index of first coord index of face
-	std::set <size_t>     hotFaces;     // adjacent faces of hot point, edge or the face itself 
 
 	std::vector <int32_t> activePoints;   // coord indices
 	std::vector <size_t>  activeEdge;     // index of coord indices

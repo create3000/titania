@@ -270,10 +270,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 		}
 	}
 	catch (const std::domain_error &)
-	{
-		trackPoint_changed () .addEvent ();
-		rotation_changed ()   .addEvent ();
-	}
+	{ }
 }
 
 } // X3D

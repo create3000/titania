@@ -2166,7 +2166,7 @@ TextureMappingEditor::set_right_selection (const X3D::Vector3d & hitPoint, const
 	{
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 		const auto adjacentFaces     = rightSelection -> getAdjacentFaces (coincidentPoints);
-		const auto nearestFace       = rightSelection -> getNearestFace (hitPoint, adjacentFaces);
+		const auto nearestFace       = rightSelection -> getClosestFace (hitPoint, adjacentFaces);
 		const auto vertices          = rightSelection -> getFaceVertices (nearestFace .index);
 
 		if (vertices .size () < 3)
@@ -2197,7 +2197,7 @@ TextureMappingEditor::set_right_touchTime ()
 	const auto   touchSensor      = right -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 	const auto   coincidentPoints = rightSelection -> getCoincidentPoints (touchSensor -> getClosestPoint ());
 	const auto   adjacentFaces    = rightSelection -> getAdjacentFaces (coincidentPoints);
-	const auto   nearestFace      = rightSelection -> getNearestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
+	const auto   nearestFace      = rightSelection -> getClosestFace (touchSensor -> hitPoint_changed () .getValue (), adjacentFaces);
 
 	if (coincidentPoints .empty ())
 		return;

@@ -194,10 +194,7 @@ SphereSensor::set_motion (const HitPtr & hit)
 		rotation_changed () = startOffset * rotation;
 	}
 	catch (const std::domain_error &)
-	{
-		trackPoint_changed () .addEvent ();
-		rotation_changed ()   .addEvent ();
-	}
+	{ }
 }
 
 } // X3D
