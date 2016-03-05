@@ -206,7 +206,33 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	if (planeSensor -> isActive ())
 		return;
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
+
+	undoRestoreSelection (undoStep);
+	undoSetColorIndex (undoStep);
+	undoSetTexCoordIndex (undoStep);
+	undoSetNormalIndex (undoStep);
+	undoSetCoordIndex (undoStep);
+	undoSetColorColor (undoStep);
+	undoSetTexCoordPoint (undoStep);
+	undoSetNormalVector (undoStep);
+	undoSetCoordPoint (undoStep);
+
 	cut ();
+
+	replaceSelection () = MFInt32 ();
+
+	redoSetCoordPoint (undoStep);
+	redoSetNormalVector (undoStep);
+	redoSetTexCoordPoint (undoStep);
+	redoSetColorColor (undoStep);
+	redoSetCoordIndex (undoStep);
+	redoSetNormalIndex (undoStep);
+	redoSetTexCoordIndex (undoStep);
+	redoSetColorIndex (undoStep);
+	redoRestoreSelection ({ }, undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 void
