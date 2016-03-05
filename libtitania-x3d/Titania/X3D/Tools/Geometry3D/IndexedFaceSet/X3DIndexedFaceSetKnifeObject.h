@@ -125,7 +125,7 @@ private:
 	bool
 	setEndMagicSelection ();
 
-	void
+	bool
 	cut ();
 
 	///  @name Members
@@ -149,6 +149,13 @@ private:
 
 	size_t                         cutFace;   // index of first coord index of face
 	std::pair <Vector3d, Vector3d> cutEdge;
+	std::pair <Vector3d, Vector3d> cutPoints;
+
+
+	std::vector <int32_t>      startPoints;
+	std::vector <int32_t>      endPoints;
+	std::pair <size_t, size_t> startEdge;
+	std::pair <size_t, size_t> endEdge;
 
 
 };

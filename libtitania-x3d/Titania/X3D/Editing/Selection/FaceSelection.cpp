@@ -565,11 +565,11 @@ FaceSelection::getVertices (const int32_t point) const
 	return vertices;
 }
 
-int32_t
-FaceSelection::getClosestPoint (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
+size_t
+FaceSelection::getClosestVertex (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
 {
-	double  distance = std::numeric_limits <double>::infinity ();
-	int32_t index    = -1;
+	double distance = std::numeric_limits <double>::infinity ();
+	size_t index    = -1;
 
 	for (const auto i : vertices)
 	{
@@ -580,7 +580,7 @@ FaceSelection::getClosestPoint (const Vector3d & hitPoint, const std::vector <si
 		if (d < distance)
 		{
 			distance = d;
-			index    = i0;
+			index    = i;
 		}
 	}
 

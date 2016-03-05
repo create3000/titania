@@ -151,8 +151,8 @@ public:
 	std::vector <size_t>
 	getVertices (const int32_t) const;
 
-	int32_t
-	getClosestPoint (const Vector3d &, const std::vector <size_t> &) const;
+	size_t
+	getClosestVertex (const Vector3d &, const std::vector <size_t> &) const;
 
 	///  @name Destruction
 
