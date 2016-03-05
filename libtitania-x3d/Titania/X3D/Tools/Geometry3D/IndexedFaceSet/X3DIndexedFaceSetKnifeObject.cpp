@@ -346,17 +346,30 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection ()
 	return true;
 }
 
-bool
+void
 X3DIndexedFaceSetKnifeObject::cut ()
 {
-	const auto vertices     = getFaceSelection () -> getFaceVertices (cutFace);
-	int32_t    startPoint   = -1;
-	int32_t    endPoint     = -1;
-	size_t     startVertex1 = -1;
-	size_t     startVertex2 = -1;
-	size_t     endVertex1   = -1;
-	size_t     endVertex2   = -1;
+	const auto vertices = getFaceSelection () -> getFaceVertices (cutFace);
 
+	int32_t startColor   = -1;
+	int32_t endColor     = -1;
+	int32_t startTex     = -1;
+	int32_t endTex       = -1;
+	int32_t startNormal  = -1;
+	int32_t endNormal    = -1;
+	int32_t startPoint   = -1;
+	int32_t endPoint     = -1;
+	size_t  startVertex1 = -1;
+	size_t  startVertex2 = -1;
+	size_t  endVertex1   = -1;
+	size_t  endVertex2   = -1;
+
+	std::vector <int32_t> colorFace1;
+	std::vector <int32_t> colorFace2;
+	std::vector <int32_t> texFace1;
+	std::vector <int32_t> texFace2;
+	std::vector <int32_t> normalFace1;
+	std::vector <int32_t> normalFace2;
 	std::vector <int32_t> face1;
 	std::vector <int32_t> face2;
 
@@ -364,20 +377,60 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	{
 		case 1:
 		{
-			if (cutEdge .first == getCoord () -> get1Point (startPoints [0]))
-			{
-				const auto iter = std::find_if (vertices .begin (), vertices .end (), [&] (const size_t v) { return coordIndex () [v] == startPoints [0]; });
+			const auto iter = std::find_if (vertices .begin (), vertices .end (), [&] (const size_t v) { return coordIndex () [v] == startPoints [0]; });
 
-				startVertex1 = *iter;
-				endVertex2   = *iter;
-			}
-
+			startVertex1 = *iter;
+			endVertex2   = *iter;
 			break;
 		}
 		case 2:
 		{
-			startPoint = getCoord () -> getSize ();
+			const auto  point1 = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .first));
+			const auto  point2 = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .second));
+			const float t      = abs (cutEdge .first - point1) / abs (point2 - point1);
 
+			if (colorIndex () .size () and getColor ())
+			{
+			   if (colorPerVertex ())
+			   {
+					const auto color1 = getColor () -> get1Color (colorIndex () .get1Value (startEdge .first));
+					const auto color2 = getColor () -> get1Color (colorIndex () .get1Value (startEdge .second));
+
+					startColor = getColor () -> getSize ();
+					getColor () -> set1Color (startColor, clerp (color1, color2, t));
+				}
+				else
+				{
+
+				}
+			}
+
+			if (normalIndex () .size () and getNormal ())
+			{
+			   if (normalPerVertex ())
+			   {
+					const auto normal1 = getNormal () -> get1Vector (normalIndex () .get1Value (startEdge .first));
+					const auto normal2 = getNormal () -> get1Vector (normalIndex () .get1Value (startEdge .second));
+
+					startNormal = getNormal () -> getSize ();
+					getNormal () -> set1Vector (startNormal, lerp (normal1, normal2, t));
+				}
+				else
+				{
+
+				}
+			}
+
+			if (texCoordIndex () .size () and getTexCoord ())
+			{
+				const auto tex1 = getTexCoord () -> get1Point (texCoordIndex () .get1Value (startEdge .first));
+				const auto tex2 = getTexCoord () -> get1Point (texCoordIndex () .get1Value (startEdge .second));
+
+				startTex = getTexCoord () -> getSize ();
+				getTexCoord () -> set1Point (startTex, lerp (tex1, tex2, t));
+			}
+			
+			startPoint = getCoord () -> getSize ();
 			getCoord () -> set1Point (startPoint, cutEdge .first);
 
 			startVertex1 = startEdge .second;
@@ -385,27 +438,67 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return false;
+			return;
 	}
 
 	switch (endPoints .size ())
 	{
 		case 1:
 		{
-			if (cutEdge .first == getCoord () -> get1Point (endPoints [0]))
-			{
-				const auto iter = std::find_if (vertices .begin (), vertices .end (), [&] (const size_t v) { return coordIndex () [v] == endPoints [0]; });
+			const auto iter = std::find_if (vertices .begin (), vertices .end (), [&] (const size_t v) { return coordIndex () [v] == endPoints [0]; });
 
-				endVertex1   = *iter;
-				startVertex2 = *iter;
-			}
-
+			endVertex1   = *iter;
+			startVertex2 = *iter;
 			break;
 		}
 		case 2:
 		{
-			endPoint = getCoord () -> getSize ();
+			const auto  point1 = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .first));
+			const auto  point2 = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .second));
+			const float t      = abs (cutEdge .second - point1) / abs (point2 - point1);
 
+			if (colorIndex () .size () and getColor ())
+			{
+			   if (colorPerVertex ())
+			   {
+					const auto color1 = getColor () -> get1Color (colorIndex () .get1Value (endEdge .first));
+					const auto color2 = getColor () -> get1Color (colorIndex () .get1Value (endEdge .second));
+
+					endColor = getColor () -> getSize ();
+					getColor () -> set1Color (endColor, clerp (color1, color2, t));
+				}
+				else
+				{
+
+				}
+			}
+
+			if (normalIndex () .size () and getNormal ())
+			{
+			   if (normalPerVertex ())
+			   {
+					const auto normal1 = getNormal () -> get1Vector (normalIndex () .get1Value (endEdge .first));
+					const auto normal2 = getNormal () -> get1Vector (normalIndex () .get1Value (endEdge .second));
+
+					endNormal = getNormal () -> getSize ();
+					getNormal () -> set1Vector (endNormal, lerp (normal1, normal2, t));
+				}
+				else
+				{
+
+				}
+			}
+			
+			if (texCoordIndex () .size () and getTexCoord ())
+			{
+				const auto tex1 = getTexCoord () -> get1Point (texCoordIndex () .get1Value (endEdge .first));
+				const auto tex2 = getTexCoord () -> get1Point (texCoordIndex () .get1Value (endEdge .second));
+
+				endTex = getTexCoord () -> getSize ();
+				getTexCoord () -> set1Point (endTex, lerp (tex1, tex2, t));
+			}
+			
+			endPoint = getCoord () -> getSize ();
 			getCoord () -> set1Point (endPoint, cutEdge .second);
 
 			endVertex1   = endEdge .first;
@@ -413,8 +506,10 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return false;
+			return;
 	}
+
+	// Rewrite indices.
 
 	startVertex1 = std::find (vertices .begin (), vertices .end (), startVertex1) - vertices .begin ();
 	startVertex2 = std::find (vertices .begin (), vertices .end (), startVertex2) - vertices .begin ();
@@ -427,31 +522,160 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	if (endVertex2 < startVertex2)
 		endVertex2 += vertices .size ();	
 
-	//
+	// Add start points.
 
 	if (startPoints .size () == 2)
+	{
+		if (colorIndex () .size () and getColor ())
+			if (colorPerVertex ())
+				colorFace1 .emplace_back (startColor);
+
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace1 .emplace_back (startTex);
+
+		if (normalIndex () .size () and getNormal ())
+			if (normalPerVertex ())
+				normalFace1 .emplace_back (startNormal);
+
 		face1 .emplace_back (startPoint);
+	}
 
 	if (endPoints .size () == 2)
-		face2 .emplace_back (endPoint);
+	{
+		if (colorIndex () .size () and getColor ())
+			if (colorPerVertex ())
+				colorFace2 .emplace_back (endColor);
 
-	//
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace2 .emplace_back (endTex);
+
+		if (normalIndex () .size () and getNormal ())
+			if (normalPerVertex ())
+				normalFace2 .emplace_back (endNormal);
+
+		face2 .emplace_back (endPoint);
+	}
+
+	// Add face points.
 
 	for (size_t i = startVertex1; i <= endVertex1; ++ i)
-		face1 .emplace_back (coordIndex () [vertices [i % vertices .size ()]]);
+	{
+		const auto vertex = vertices [i % vertices .size ()];
+
+		if (colorIndex () .size () and getColor ())
+			colorFace1 .emplace_back (colorIndex () .get1Value (vertex));
+
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace1 .emplace_back (texCoordIndex () .get1Value (vertex));
+
+		if (normalIndex () .size () and getNormal ())
+			normalFace1 .emplace_back (normalIndex () .get1Value (vertex));
+
+		face1 .emplace_back (coordIndex () .get1Value (vertex));
+	}
 
 	for (size_t i = startVertex2; i <= endVertex2; ++ i)
-		face2 .emplace_back (coordIndex () [vertices [i % vertices .size ()]]);
+	{
+		const auto vertex = vertices [i % vertices .size ()];
 
-	//
+		if (colorIndex () .size () and getColor ())
+			colorFace2 .emplace_back (colorIndex () .get1Value (vertex));
+
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace2 .emplace_back (texCoordIndex () .get1Value (vertex));
+
+		if (normalIndex () .size () and getNormal ())
+			normalFace2 .emplace_back (normalIndex () .get1Value (vertex));
+
+		face2 .emplace_back (coordIndex () .get1Value (vertex));
+	}
+
+	// Add end points.
 	
 	if (endPoints .size () == 2)
+	{
+		if (colorIndex () .size () and getColor ())
+			if (colorPerVertex ())
+				colorFace1 .emplace_back (endColor);
+
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace1 .emplace_back (endTex);
+
+		if (normalIndex () .size () and getNormal ())
+			if (normalPerVertex ())
+				normalFace1 .emplace_back (endNormal);
+
 		face1 .emplace_back (endPoint);
+	}
 	
 	if (startPoints .size () == 2)
-		face2 .emplace_back (startPoint);
+	{
+		if (colorIndex () .size () and getColor ())
+			if (colorPerVertex ())
+				colorFace2 .emplace_back (startColor);
 
-	// add new faces
+		if (texCoordIndex () .size () and getTexCoord ())
+			texFace2 .emplace_back (startTex);
+
+		if (normalIndex () .size () and getNormal ())
+			if (normalPerVertex ())
+				normalFace2 .emplace_back (startNormal);
+
+		face2 .emplace_back (startPoint);
+	}
+
+	// Add new color faces.
+
+	if (colorIndex () .size () and getColor ())
+	{
+		if (colorPerVertex ())
+		{
+			for (const auto & point : colorFace1)
+				colorIndex () .emplace_back (point);
+
+			colorIndex () .emplace_back (-1);
+
+			for (const auto & point : colorFace2)
+				colorIndex () .emplace_back (point);
+
+			colorIndex () .emplace_back (-1);
+		}
+	}
+
+	// Add new tex faces.
+
+	if (texCoordIndex () .size () and getTexCoord ())
+	{
+		for (const auto & point : texFace1)
+			texCoordIndex () .emplace_back (point);
+
+		texCoordIndex () .emplace_back (-1);
+
+		for (const auto & point : texFace2)
+			texCoordIndex () .emplace_back (point);
+
+		texCoordIndex () .emplace_back (-1);
+	}
+
+	// Add new normal faces.
+
+	if (normalIndex () .size () and getNormal ())
+	{
+		if (normalPerVertex ())
+		{
+			for (const auto & vector : normalFace1)
+				normalIndex () .emplace_back (vector);
+
+			normalIndex () .emplace_back (-1);
+
+			for (const auto & vector : normalFace2)
+				normalIndex () .emplace_back (vector);
+
+			normalIndex () .emplace_back (-1);
+		}
+	}
+
+	// Add new faces.
 
 	for (const auto & point : face1)
 		coordIndex () .emplace_back (point);
@@ -463,11 +687,20 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 	coordIndex () .emplace_back (-1);
 
-	// erase old face
+	// Erase old face.
+
+	if (vertices .back () < colorIndex () .size () and getColor ())
+		if (vertices .back () < colorIndex () .size () and getColor ())
+			colorIndex () .erase (colorIndex () .begin () + vertices .front (), colorIndex () .begin () + vertices .back () + 1);
+
+	if (vertices .back () < texCoordIndex () .size () and getTexCoord ())
+		texCoordIndex () .erase (texCoordIndex () .begin () + vertices .front (), texCoordIndex () .begin () + vertices .back () + 1);
+
+	if (normalPerVertex ())
+		if (vertices .back () < normalIndex () .size () and getNormal ())
+			normalIndex () .erase (normalIndex () .begin () + vertices .front (), normalIndex () .begin () + vertices .back () + 1);
 
 	coordIndex () .erase (coordIndex () .begin () + vertices .front (), coordIndex () .begin () + vertices .back () + 1);
-
-	return true;
 }
 
 X3DIndexedFaceSetKnifeObject::~X3DIndexedFaceSetKnifeObject ()
