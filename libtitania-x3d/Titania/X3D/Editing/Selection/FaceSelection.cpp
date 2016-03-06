@@ -493,7 +493,8 @@ FaceSelection::getClosestEdge (const Line3d & hitRay, const std::vector <size_t>
 {
 	using Key = std::pair <double, double>;
 
-	static constexpr double epsilon = 1e-4;
+	static constexpr double EPSILON_DISTANCE = 1e-4;
+	static constexpr double EPSILON_ANGLE    = 0.99999;
 
 	std::map <Key, Edge> distances;
 
@@ -509,7 +510,9 @@ FaceSelection::getClosestEdge (const Line3d & hitRay, const std::vector <size_t>
 		const auto distance     = abs (hitRay .point () - closestPoint);
 		const auto between      = segment .is_between (closestPoint);
 
-		distances .emplace (distance > epsilon and abs (theta) < 0.9
+		__LOG__ << between << " : " << theta << std::endl;
+
+		distances .emplace (distance > EPSILON_DISTANCE and abs (theta) < EPSILON_ANGLE
 		                    ? Key (not between, distance)
 		                    : Key (2, 0),
 		                    Edge { i0, i1, LineSegment3d (point0, point1), true });

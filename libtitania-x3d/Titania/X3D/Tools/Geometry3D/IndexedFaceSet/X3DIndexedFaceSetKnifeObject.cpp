@@ -227,7 +227,8 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	undoSetNormalVector (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	cut ();
+	if (not cut ())
+		return;
 
 	replaceSelection () .clear ();
 
@@ -381,10 +382,12 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection ()
 	return true;
 }
 
-void
+bool
 X3DIndexedFaceSetKnifeObject::cut ()
 {
-	const auto vertices = getFaceSelection () -> getFaceVertices (cutFace);
+	const auto numFaces   = getFaceSelection () -> getNumFaces ();
+	const auto faceNumber = getFaceSelection () -> getFaceNumber (cutFace);
+	const auto vertices   = getFaceSelection () -> getFaceVertices (cutFace);
 
 	int32_t startColor   = -1;
 	int32_t endColor     = -1;
@@ -420,9 +423,13 @@ X3DIndexedFaceSetKnifeObject::cut ()
 		}
 		case 2:
 		{
-			const auto  point1 = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .first));
-			const auto  point2 = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .second));
-			const float t      = abs (cutEdge .first - point1) / abs (point2 - point1);
+			const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .first));
+			const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (startEdge .second));
+			const auto  segment = LineSegment3d (point1, point2);
+			const float t       = abs (cutEdge .first - point1) / abs (point2 - point1);
+
+			if (not segment .is_between (cutEdge .first))
+				return false;
 
 			if (colorIndex () .size () and getColor ())
 			{
@@ -433,10 +440,6 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 					startColor = getColor () -> getSize ();
 					getColor () -> set1Color (startColor, clerp (color1, color2, t));
-				}
-				else
-				{
-
 				}
 			}
 
@@ -449,10 +452,6 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 					startNormal = getNormal () -> getSize ();
 					getNormal () -> set1Vector (startNormal, lerp (normal1, normal2, t));
-				}
-				else
-				{
-
 				}
 			}
 
@@ -473,7 +472,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return;
+			return false;
 	}
 
 	switch (endPoints .size ())
@@ -488,9 +487,13 @@ X3DIndexedFaceSetKnifeObject::cut ()
 		}
 		case 2:
 		{
-			const auto  point1 = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .first));
-			const auto  point2 = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .second));
-			const float t      = abs (cutEdge .second - point1) / abs (point2 - point1);
+			const auto  point1  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .first));
+			const auto  point2  = getCoord () -> get1Point (coordIndex () .get1Value (endEdge .second));
+			const auto  segment = LineSegment3d (point1, point2);
+			const float t       = abs (cutEdge .second - point1) / abs (point2 - point1);
+
+			if (not segment .is_between (cutEdge .second))
+				return false;
 
 			if (colorIndex () .size () and getColor ())
 			{
@@ -501,10 +504,6 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 					endColor = getColor () -> getSize ();
 					getColor () -> set1Color (endColor, clerp (color1, color2, t));
-				}
-				else
-				{
-
 				}
 			}
 
@@ -517,10 +516,6 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 					endNormal = getNormal () -> getSize ();
 					getNormal () -> set1Vector (endNormal, lerp (normal1, normal2, t));
-				}
-				else
-				{
-
 				}
 			}
 			
@@ -541,7 +536,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return;
+			return false;
 	}
 
 	// Rewrite indices.
@@ -659,6 +654,14 @@ X3DIndexedFaceSetKnifeObject::cut ()
 		face2 .emplace_back (startPoint);
 	}
 
+	// Check if there are degenerated faces.
+
+	if (face1 .size () < 3)
+		return false;
+
+	if (face2 .size () < 3)
+		return false;
+
 	// Add new color faces.
 
 	if (colorIndex () .size () and getColor ())
@@ -674,6 +677,11 @@ X3DIndexedFaceSetKnifeObject::cut ()
 				colorIndex () .emplace_back (point);
 
 			colorIndex () .emplace_back (-1);
+		}
+		else
+		{
+			colorIndex () .set1Value (numFaces + 0, colorIndex () .get1Value (faceNumber));
+			colorIndex () .set1Value (numFaces + 1, colorIndex () .get1Value (faceNumber));
 		}
 	}
 
@@ -708,6 +716,11 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 			normalIndex () .emplace_back (-1);
 		}
+		else
+		{
+			normalIndex () .set1Value (numFaces + 0, normalIndex () .get1Value (faceNumber));
+			normalIndex () .set1Value (numFaces + 1, normalIndex () .get1Value (faceNumber));
+		}
 	}
 
 	// Add new faces.
@@ -736,6 +749,8 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			normalIndex () .erase (normalIndex () .begin () + vertices .front (), normalIndex () .begin () + vertices .back () + 1);
 
 	coordIndex () .erase (coordIndex () .begin () + vertices .front (), coordIndex () .begin () + vertices .back () + 1);
+
+	return true;
 }
 
 X3DIndexedFaceSetKnifeObject::~X3DIndexedFaceSetKnifeObject ()

@@ -125,7 +125,7 @@ private:
 	bool
 	setEndMagicSelection ();
 
-	void
+	bool
 	cut ();
 
 	///  @name Members
