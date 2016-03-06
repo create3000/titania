@@ -125,6 +125,8 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 
 		planeSensor -> isActive ()            .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation);
+
+		set_cutPolygons ();
 	}
 	catch (const X3DError & error)
 	{
@@ -137,15 +139,22 @@ X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
 {
 	__LOG__ <<std::endl;
 
-	if (cutPolygons ())
+	try
 	{
-		select () = false;
-		getHotSwitch () -> whichChoice () = true;
-	}
-	else
-		select () = true;
+		if (cutPolygons ())
+		{
+			select () = false;
+			getHotSwitch () -> whichChoice () = true;
+		}
+		else
+			select () = true;
 
-	knifeSwitch -> whichChoice () = cutPolygons ();
+		knifeSwitch -> whichChoice () = cutPolygons ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -220,7 +229,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 
 	cut ();
 
-	replaceSelection () = MFInt32 ();
+	replaceSelection () .clear ();
 
 	redoSetCoordPoint (undoStep);
 	redoSetNormalVector (undoStep);

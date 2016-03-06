@@ -335,6 +335,7 @@ GeometryEditor::connect ()
 						innerNode -> setField <X3D::SFBool>      ("select",           coordEditor -> getField <X3D::SFBool>      ("select"),         true);
 						innerNode -> setField <X3D::SFString>    ("selectionType",    coordEditor -> getField <X3D::SFString>    ("selectionType"),  true);
 						innerNode -> setField <X3D::SFBool>      ("paintSelection",   coordEditor -> getField <X3D::SFBool>      ("paintSelection"), true);
+						innerNode -> setField <X3D::SFBool>      ("cutPolygons",      coordEditor -> getField <X3D::SFBool>      ("cutPolygons"),    true);
 						coordTool -> setField <X3D::SFBool>      ("load",             true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color",            coordEditor -> getField <X3D::SFColorRGBA> ("color"),          true);
 
