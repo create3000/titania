@@ -1455,7 +1455,7 @@ public:
 	getLookAtAllButton () const
 	{ return *m_LookAtAllButton; }
 
-	Gtk::ToggleToolButton &
+	Gtk::RadioToolButton &
 	getLookAtButton () const
 	{ return *m_LookAtButton; }
 
@@ -2418,7 +2418,7 @@ private:
 	Gtk::SeparatorToolItem*          m_LookAtSeparator;
 	Gtk::ToolButton*                 m_LookAtSelectionButton;
 	Gtk::ToolButton*                 m_LookAtAllButton;
-	Gtk::ToggleToolButton*           m_LookAtButton;
+	Gtk::RadioToolButton*            m_LookAtButton;
 	Gtk::Box*                        m_FooterBox;
 	Gtk::Box*                        m_SidebarBox;
 	Gtk::MessageDialog*              m_MessageDialog;

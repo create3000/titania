@@ -713,7 +713,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_LookAtSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_selection_clicked));
 	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked));
 
-	// Connect object Gtk::ToggleToolButton with id 'LookAtButton'.
+	// Connect object Gtk::RadioToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_toggled));
 
 	// Call construct handler of base class.

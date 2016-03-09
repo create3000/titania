@@ -82,6 +82,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CutPolygonsButton", m_CutPolygonsButton);
 	m_builder -> get_widget ("PaintSelectionButton", m_PaintSelectionButton);
 	m_builder -> get_widget ("PaintSelectionImage", m_PaintSelectionImage);
+	m_builder -> get_widget ("PolygonReducerButton", m_PolygonReducerButton);
 	m_builder -> get_widget ("SelectionTypeMenu", m_SelectionTypeMenu);
 	m_builder -> get_widget ("BrushMenuItem", m_BrushMenuItem);
 	m_builder -> get_widget ("RectangleMenuItem", m_RectangleMenuItem);

@@ -424,6 +424,8 @@ GeometryEditor::set_viewer ()
 
 			break;
 		}
+		case X3D::X3DConstants::LookAtViewer:
+			break;
 		default:
 		{
 		   if (getPaintSelectionButton () .get_active ())

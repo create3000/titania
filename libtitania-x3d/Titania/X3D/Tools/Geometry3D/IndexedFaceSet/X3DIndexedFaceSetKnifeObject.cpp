@@ -737,18 +737,34 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 	// Erase old face.
 
-	if (vertices .back () < colorIndex () .size () and getColor ())
-		if (vertices .back () < colorIndex () .size () and getColor ())
-			colorIndex () .erase (colorIndex () .begin () + vertices .front (), colorIndex () .begin () + vertices .back () + 1);
+	const size_t begin = vertices .front ();
+	const size_t end   = vertices .back () + 2;
 
-	if (vertices .back () < texCoordIndex () .size () and getTexCoord ())
-		texCoordIndex () .erase (texCoordIndex () .begin () + vertices .front (), texCoordIndex () .begin () + vertices .back () + 1);
+	if (colorIndex () .size () and getColor ())
+	{
+		if (colorPerVertex ())
+			colorIndex () .erase (colorIndex () .begin () + std::min (colorIndex () .size () - 1, begin), colorIndex () .begin () + std::min (colorIndex () .size (), end));
+		else
+			colorIndex () .erase (colorIndex () .begin () + std::min (colorIndex () .size () - 1, faceNumber));
+	}
 
-	if (normalPerVertex ())
-		if (vertices .back () < normalIndex () .size () and getNormal ())
-			normalIndex () .erase (normalIndex () .begin () + vertices .front (), normalIndex () .begin () + vertices .back () + 1);
+	if (texCoordIndex () .size () and getTexCoord ())
+		texCoordIndex () .erase (texCoordIndex () .begin () + std::min (texCoordIndex () .size () - 1, begin), texCoordIndex () .begin () + std::min (texCoordIndex () .size (), end));
 
-	coordIndex () .erase (coordIndex () .begin () + vertices .front (), coordIndex () .begin () + vertices .back () + 1);
+	if (normalIndex () .size () and getNormal ())
+	{
+		if (normalPerVertex ())
+			normalIndex () .erase (normalIndex () .begin () + std::min (normalIndex () .size () - 1, begin), normalIndex () .begin () + std::min (normalIndex () .size (), end));
+		else
+			normalIndex () .erase (normalIndex () .begin () + std::min (normalIndex () .size () - 1, faceNumber));
+	}
+
+	coordIndex () .erase (coordIndex () .begin () + begin, coordIndex () .begin () + end);
+
+	// 
+
+	startPoints .clear ();
+	endPoints   .clear ();
 
 	return true;
 }

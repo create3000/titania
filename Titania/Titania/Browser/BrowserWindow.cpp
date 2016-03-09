@@ -2349,7 +2349,10 @@ void
 BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
+	{
+		setViewer (viewer);
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
+	}
 
 	getConfig () -> setItem ("arrow", getArrowButton () .get_active ());
 }
@@ -2706,12 +2709,8 @@ BrowserWindow::set_viewer ()
 	{
 		case X3D::X3DConstants::LookAtViewer:
 		{
-			getHandButton ()  .set_sensitive (false);
-			getArrowButton () .set_sensitive (false);
-
-			//if (getArrowButton () .get_active ())
-			//getSelection () -> disconnect ();
-
+			//getHandButton ()  .set_sensitive (false);
+			//getArrowButton () .set_sensitive (false);
 			break;
 		}
 
@@ -2729,9 +2728,6 @@ BrowserWindow::set_viewer ()
 
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);
-
-			//if (getArrowButton () .get_active ())
-			//getSelection () -> connect ();
 
 			if (getLookAtButton () .get_active ())
 				getLookAtButton () .set_active (false);

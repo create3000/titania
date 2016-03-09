@@ -119,7 +119,10 @@ ColorRGBA::set1Color (const size_t index, const Color4f & value)
 Color4f
 ColorRGBA::get1Color (const size_t index)
 {
-	return color () .get1Value (index);
+	if (index < color () .size ())
+		return color () .get1Value (index);
+
+	return Color4f (1, 1, 1, 1);
 }
 
 void

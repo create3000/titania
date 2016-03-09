@@ -175,6 +175,10 @@ public:
 	getPaintSelectionImage () const
 	{ return *m_PaintSelectionImage; }
 
+	Gtk::Button &
+	getPolygonReducerButton () const
+	{ return *m_PolygonReducerButton; }
+
 	Gtk::Menu &
 	getSelectionTypeMenu () const
 	{ return *m_SelectionTypeMenu; }
@@ -342,6 +346,7 @@ private:
 	Gtk::RadioButton*           m_CutPolygonsButton;
 	Gtk::RadioButton*           m_PaintSelectionButton;
 	Gtk::Image*                 m_PaintSelectionImage;
+	Gtk::Button*                m_PolygonReducerButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;
