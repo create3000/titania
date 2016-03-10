@@ -66,7 +66,7 @@ class MediaStream
 {
 public:
 
-	using Player    = Gst::PlayBin2;
+	using Player    = Gst::PlayBin;
 	using VideoSink = Gst::XImageSink;
 
 	MediaStream ();
