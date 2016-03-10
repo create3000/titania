@@ -151,7 +151,7 @@ PKG_CHECK_MODULES(TITANIA,
 gtksourceviewmm-3.0)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
-gstreamermm-0.10
+gstreamermm-1.0
 fontconfig
 ftgl
 glu
