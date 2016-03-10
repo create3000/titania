@@ -50,6 +50,7 @@
 
 #include "MediaStream.h"
 
+#include <gstreamermm/xoverlay.h>
 #include "../../Rendering/OpenGL.h"
 
 namespace titania {
