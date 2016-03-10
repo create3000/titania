@@ -53,6 +53,8 @@
 
 #include <Titania/Basic/URI.h>
 #include <gstreamermm.h>
+#include <gstreamermm/playbin.h>
+#include <gstreamermm/ximagesink.h>
 
 extern "C"
 {
