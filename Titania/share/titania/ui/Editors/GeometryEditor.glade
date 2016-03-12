@@ -340,6 +340,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="tooltip_text" translatable="yes">Cut polygons.</property>
                     <property name="focus_on_click">False</property>
                     <property name="xalign">0.5</property>
                     <property name="active">True</property>
