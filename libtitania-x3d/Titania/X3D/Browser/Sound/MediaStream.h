@@ -200,7 +200,6 @@ private:
 	Display* display;
 	Pixmap   pixmap;
 
-	double                volume;
 	std::vector <uint8_t> image;
 
 };

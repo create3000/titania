@@ -70,8 +70,6 @@ MediaStream::MediaStream () :
 	          player (),
 	           vsink (),
 	         display (nullptr),
-	          pixmap (0),
-	          volume (0),
 	           image ()
 {
 	// Static init
@@ -103,7 +101,7 @@ MediaStream::setup ()
 	gst_base_sink_set_last_sample_enabled (vsink -> Gst::BaseSink::gobj (), true);
 
 	player -> property_video_sink () = vsink;
-	player -> property_volume ()     = volume;
+	player -> property_volume ()     = 0;
 	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
 
 	const auto bus = player -> get_bus ();
