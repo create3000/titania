@@ -1,17 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Geometry/Line3.h">
     <Files>
       <File FileName="debian/control" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.h" Line="41" Column="41" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.h" Line="21" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp" Line="2" Column="2" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/X3DSoundSourceNode.h" Line="6" Column="6" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/X3DSoundSourceNode.cpp" Line="4" Column="4" />
-      <File FileName="libtitania-gzstream/Titania/gzstream.h" Line="12" Column="12" />
-      <File FileName="libtitania-gzstream/Titania/gzstream.cpp" Line="1" Column="1" />
-      <File FileName="experimental/main.cpp" Line="53" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/X3DSoundSourceNode.cpp" Line="40" Column="40" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/LineSegment3.h" Line="56" Column="56" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Line3.h" Line="55" Column="55" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

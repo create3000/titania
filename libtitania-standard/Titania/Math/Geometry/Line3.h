@@ -101,7 +101,6 @@ public:
 	{ }
 
 	///  Constructs a line of from @a point and @a point.
-	constexpr
 	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const point_type &) :
 		value { point1, normalize (point2 - point1) }
 

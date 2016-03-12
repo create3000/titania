@@ -86,7 +86,6 @@ public:
 	{ }
 
 	///  Constructs a line segment from @a point0 and @a point1.
-	constexpr
 	line_segment3 (const vector3 <Type> & point0, const vector3 <Type> & point1) :
 		value ({ point0, point1, line3 <Type> (point0, point1, point_type ()) })
 	{ }
@@ -128,7 +127,6 @@ private:
 
 ///  Returns true if @a point lies between point1 and point2.
 template <class Type>
-inline
 bool
 line_segment3 <Type>::is_between (const vector3 <Type> & point) const
 {
@@ -138,7 +136,6 @@ line_segment3 <Type>::is_between (const vector3 <Type> & point) const
 
 ///  Returns the distance to @a point.
 template <class Type>
-inline
 Type
 line_segment3 <Type>::distance (const vector3 <Type> & point) const
 {
