@@ -51,11 +51,28 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF _1 Sound { }
-        }
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF Movie MovieTexture {
+              url [
+                "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mp4",
+                "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mpv"
+              ]
+              loop TRUE
+              #loop TRUE
+              startTime 1452512631.64944
+              stopTime 1452512633.83991
+              repeatS FALSE
+              repeatT FALSE
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
     ]
   }
@@ -74,17 +91,7 @@ DEF MovieTexture Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture DEF Movie MovieTexture {
-        url [
-          "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mp4",
-          "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/stage/film6.mpv"
-        ]
-        #loop TRUE
-        startTime 1452512631.64944
-        stopTime 1452512633.83991
-        repeatS FALSE
-        repeatT FALSE
-      }
+      texture USE Movie
     }
     geometry Rectangle2D {
       size 2.66667 2
@@ -277,7 +284,7 @@ function set_duration (value)
 	"
 }
 
-USE _1
+Sound { }
 
 ROUTE Speed0.touchTime TO Debug.set_speed0
 ROUTE Speed1.touchTime TO Debug.set_speed1

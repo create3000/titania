@@ -54,6 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
 
+#include "../Sound/X3DSoundSourceNode.h"
+
 #include "../../Tools/Sound/SoundTool.h"
 
 namespace titania {
@@ -205,6 +207,9 @@ Sound::addTool ()
 {
 	X3DSoundNode::addTool (new SoundTool (this));
 }
+
+Sound::~Sound ()
+{ }
 
 } // X3D
 } // titania

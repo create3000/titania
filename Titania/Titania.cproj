@@ -1226,7 +1226,6 @@
     <None Include="share\titania\ui\icons\Disconnected.svg" />
     <None Include="share\titania\ui\icons\Recent.svg" />
     <None Include="share\titania\ui\icons\Environment.svg" />
-    <None Include="titania" />
     <None Include="Makefile.in" />
     <None Include="Titania.cproj" />
     <None Include="Titania.pidb" />

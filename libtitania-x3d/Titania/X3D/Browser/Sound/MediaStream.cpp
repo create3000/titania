@@ -50,26 +50,28 @@
 
 #include "MediaStream.h"
 
-#include <gstreamermm/xoverlay.h>
 #include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
 
-/* Playback speed
- *   http://docs.gstreamer.com/display/GstSDK/Basic+tutorial+13%3A+Playback+speed
- * Player
- *   http://code.metager.de/source/xref/freedesktop/gstreamer/gstreamermm/examples/media_player_gtkmm/player_window.cc
- * PlayBin2
- *   http://www.freedesktop.org/software/gstreamer-sdk/data/docs/latest/gst-plugins-base-plugins-0.10/gst-plugins-base-plugins-playbin2.html
+/* GStreamer
+ *   https://developer.gnome.org/gstreamermm/1.4/classGst_1_1Sample.html
+ * PlayBin
+ *   https://github.com/GNOME/gstreamermm/blob/master/examples/media_player_gtkmm/player_window.cc
  */
 
 MediaStream::MediaStream () :
-	 player (),
-	  vsink (),
-	 pixmap (0),
-	display (nullptr),
-	 volume (0)
+	X3DMediaStream (),
+	          load (),
+	buffer_changed (),
+	           end (),
+	        player (),
+	         vsink (),
+	       display (nullptr),
+	        pixmap (0),
+	        volume (0),
+	         image ()
 {
 	// Static init
 
@@ -82,13 +84,6 @@ MediaStream::MediaStream () :
 
 	player = Player::create ("player");
 	vsink  = VideoSink::create ("vsink");
-
-	player -> set_property ("video-sink", vsink);
-	player -> set_property ("volume", volume);
-
-	const auto bus = player -> get_bus ();
-	bus -> enable_sync_message_emission ();
-	bus -> signal_sync_message () .connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
 }
 
 void
@@ -101,6 +96,22 @@ MediaStream::setup ()
 
 	if (display)
 		pixmap = XCreatePixmap (display, 0, 0, 0, 0);
+
+	// X11
+
+	gst_base_sink_set_last_sample_enabled (vsink -> Gst::BaseSink::gobj (), true);
+
+	player -> set_property ("video-sink", vsink);
+	player -> set_property ("volume", volume);
+	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
+
+	const auto bus = player -> get_bus ();
+
+	bus -> enable_sync_message_emission ();
+	bus -> signal_sync_message () .connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
+
+	bus -> add_signal_watch ();
+	bus -> signal_message () .connect (sigc::mem_fun (*this, &MediaStream::on_message));
 }
 
 bool
@@ -130,7 +141,7 @@ MediaStream::setVolume (double value)
 {
 	value = math::clamp (value, 0.0, 1.0);
 
-	if ((std::abs (value - volume) > 0.05) or ((value == 0 or value == 1) and value not_eq volume))
+	if ((std::abs (value - volume) > 0.05)or ((value == 0 or value == 1) and value not_eq volume))
 	{
 		volume = value;
 		player -> set_property ("volume", volume);
@@ -208,6 +219,8 @@ MediaStream::start (const double speed, const double position)
 {
 	const auto format = Gst::FORMAT_TIME;
 
+	player -> set_state (Gst::STATE_NULL);
+
 	player -> seek (format,
 	                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
 	                position * double (Gst::SECOND));
@@ -236,20 +249,107 @@ MediaStream::stop ()
 void
 MediaStream::on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message)
 {
-	// ignore anything but 'prepare-xwindow-id' element messages
-	if (message -> get_message_type () not_eq Gst::MESSAGE_ELEMENT)
+	if (not gst_is_video_overlay_prepare_window_handle_message (message -> gobj ()))
 		return;
 
-	if (not message -> get_structure () .has_name ("prepare-xwindow-id"))
+	if (pixmap == 0)
 		return;
 
-	const auto element  = Glib::RefPtr <Gst::Element>::cast_dynamic (message -> get_source ());
-	const auto xOverlay = Gst::Interface::cast <Gst::XOverlay> (element);
+	vsink -> set_window_handle (pixmap);
+}
 
-	if (xOverlay)
+void
+MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
+{
+	switch (message -> get_message_type ())
 	{
-		if (pixmap)
-			xOverlay -> set_xwindow_id (pixmap);
+		case Gst::MESSAGE_EOS:
+		{
+			end .emit ();
+			break;
+		}
+		case Gst::MESSAGE_STATE_CHANGED:
+		{
+		   update ();
+			break;
+		}
+		case Gst::MESSAGE_ERROR:
+		{
+			__LOG__
+				<< "MESSAGE_ERROR: "
+				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse () .what ()
+				<< std::endl;
+
+			stop ();
+			break;
+		}
+		default:
+			break;
+	}
+}
+
+void
+MediaStream::on_video_changed ()
+{
+	Glib::RefPtr <Gst::Pad> pad = player -> get_video_pad (0);
+
+	if (pad)
+		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (*this, &MediaStream::on_video_pad_got_buffer));
+
+	update ();
+
+	load .emit ();
+}
+
+Gst::PadProbeReturn
+MediaStream::on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> & pad, const Gst::PadProbeInfo & data)
+{
+	update ();
+
+	return Gst::PAD_PROBE_OK;
+}
+
+void
+MediaStream::update ()
+{
+	const auto sample = gst_base_sink_get_last_sample (vsink -> Gst::BaseSink::gobj ());
+
+	if (sample)
+	{
+		const auto buffer = gst_sample_get_buffer (sample);
+
+		if (buffer)
+		{
+			const auto width  = vsink -> get_width ();
+			const auto height = vsink -> get_height ();
+
+			image .resize (width * 4 * height);
+
+			gst_buffer_extract (buffer, 0, image .data (), image .size ());
+
+			flip (width, height);
+
+			buffer_changed .emit ();
+		}
+
+		gst_sample_unref (sample);
+	}
+}
+
+void
+MediaStream::flip (const size_t width, const size_t height)
+{
+	// Flip image vertically
+
+	const size_t width4   = width * 4;
+	const size_t height_1 = height - 1;
+
+	for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
+	{
+		for (size_t c = 0; c < width4; ++ c)
+		{
+			std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
+		}
 	}
 }
 

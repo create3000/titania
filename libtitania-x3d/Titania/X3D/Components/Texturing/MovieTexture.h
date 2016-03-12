@@ -55,15 +55,14 @@
 #include "../Sound/X3DSoundSourceNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
 
-namespace Gst {
-class XImageSink;
-}
-
 namespace titania {
 namespace X3D {
 
 class MovieTexture :
-	public X3DTexture2DNode, public X3DSoundSourceNode, public X3DUrlObject
+	public X3DTexture2DNode,
+	public X3DSoundSourceNode,
+	public X3DUrlObject,
+	public sigc::trackable
 {
 public:
 
@@ -142,18 +141,17 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Operations
-	
-	virtual
+	///  @name Event handlers
+
 	void
-	prepareEvents () final override;
+	on_load ();
+
+	void
+	on_buffer_changed ();
 
 	virtual
 	void
 	update () final override;
-
-	const std::vector <uint8_t> &
-	flip (const size_t, const size_t, const uint8_t*);
 
 	///  @name Static members
 
@@ -163,7 +161,7 @@ private:
 
 	///  @name Members
 
-	std::vector <uint8_t> image;
+	bool first;
 
 };
 

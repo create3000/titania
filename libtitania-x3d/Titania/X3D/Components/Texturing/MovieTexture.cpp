@@ -48,10 +48,12 @@
  *
  ******************************************************************************/
 
-#include <gstreamermm.h>
+#include "../../Browser/Sound/MediaStream.h"
 
 #include "MovieTexture.h"
 
+#include "../../Browser/ContextLock.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -66,7 +68,7 @@ MovieTexture::MovieTexture (X3DExecutionContext* const executionContext) :
 	  X3DTexture2DNode (),
 	X3DSoundSourceNode (),
 	      X3DUrlObject (),
-	             image ()
+	             first (true)
 {
 	addType (X3DConstants::MovieTexture);
 
@@ -104,6 +106,9 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	getStream () -> signal_load ()           .connect (sigc::mem_fun (*this, &MovieTexture::on_load));
+	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (*this, &MovieTexture::on_buffer_changed));
+
 	url () .addInterest (this, &MovieTexture::update);
 
 	requestImmediateLoad ();
@@ -137,6 +142,8 @@ MovieTexture::requestImmediateLoad ()
 
 	for (const auto & URL : url ())
 	{
+		__LOG__ << URL << std::endl;
+
 		setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 
 		// Sync stream
@@ -144,31 +151,14 @@ MovieTexture::requestImmediateLoad ()
 		if (not sync ())
 			continue;
 
-		// Set image
-		
-		// We use the c versions of this functions here because get_last_buffer has a memory leak.
+		const auto width  = getStream () -> getWidth ();
+		const auto height = getStream () -> getHeight ();
 
-		GstBuffer* const buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
+		duration_changed () = getDuration ();
 
-		if (buffer)
-		{
-			const auto width  = getVideoSink () -> get_width ();
-			const auto height = getVideoSink () -> get_height ();
-			const auto data   = static_cast <uint8_t*> (GST_BUFFER_DATA (buffer));
+		setImage (GL_RGB, false, 3, width, height, GL_BGRA, std::vector <uint8_t> (width * 4 * height, 255) .data ());
 
-			duration_changed () = getDuration ();
-
-			setImage (GL_RGB, false, 3, 
-			          getVideoSink () -> get_width (),
-			          getVideoSink () -> get_height (),
-			          GL_BGRA,
-			          flip (width, height, data) .data ());
-
-			gst_buffer_unref (buffer);
-
-			setLoadState (COMPLETE_STATE);
-			break;
-		}
+		setLoadState (COMPLETE_STATE);
 	}
 
 	set_loop ();
@@ -184,26 +174,25 @@ MovieTexture::requestImmediateLoad ()
 }
 
 void
-MovieTexture::prepareEvents ()
+MovieTexture::on_load ()
+{ }
+
+void
+MovieTexture::on_buffer_changed ()
 {
-	X3DSoundSourceNode::prepareEvents ();
-
-	// We use the c versions of this functions here because get_last_buffer has a memory leak.
-
-	GstBuffer* const buffer = gst_base_sink_get_last_buffer (Glib::RefPtr <Gst::BaseSink>::cast_static (getVideoSink ()) -> gobj ());
-
-	if (buffer)
+	try
 	{
-		const auto width  = getVideoSink () -> get_width ();
-		const auto height = getVideoSink () -> get_height ();
-		const auto data   = static_cast <uint8_t*> (GST_BUFFER_DATA (buffer));
+	   ContextLock lock (getBrowser ());
 
-		// Transfer texture
+		const auto width  = getStream () -> getWidth ();
+		const auto height = getStream () -> getHeight ();
 
-		updateImage (width, height, GL_BGRA, flip (width, height, data) .data ());
-
-		gst_buffer_unref (buffer);
-	}	
+		updateImage (width, height, GL_BGRA, getStream () -> getBuffer () .data ());
+	}
+	catch (const X3DError & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -223,27 +212,6 @@ MovieTexture::update ()
 		else
 			do_stop ();
 	}
-}
-
-const std::vector <uint8_t> &
-MovieTexture::flip (const size_t width, const size_t height, const uint8_t* data)
-{
-	// Flip image vertically
-
-	const size_t width4   = width * 4;
-	const size_t height_1 = height - 1;
-
-	image .assign (data, data + width4 * height);
-
-	for (size_t r = 0, height1_2 = height / 2; r < height1_2; ++ r)
-	{
-		for (size_t c = 0; c < width4; ++ c)
-		{
-			std::swap (image [r * width4 + c], image [(height_1 - r) * width4 + c]);
-		}
-	}
-	
-	return image;
 }
 
 void

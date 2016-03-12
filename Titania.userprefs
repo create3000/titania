@@ -1,15 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
     <Files>
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.h" Line="36" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp" Line="8" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Selection/FaceSelection.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="24" Column="24" />
-      <File FileName="debian/control" Line="26" Column="26" />
+      <File FileName="debian/control" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.h" Line="41" Column="41" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Texturing/MovieTexture.cpp" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/X3DSoundSourceNode.h" Line="6" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Sound/X3DSoundSourceNode.cpp" Line="4" Column="4" />
+      <File FileName="libtitania-gzstream/Titania/gzstream.h" Line="12" Column="12" />
+      <File FileName="libtitania-gzstream/Titania/gzstream.cpp" Line="1" Column="1" />
+      <File FileName="experimental/main.cpp" Line="53" Column="53" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

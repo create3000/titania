@@ -48,12 +48,11 @@
  *
  ******************************************************************************/
 
-#include <gstreamermm.h>
+#include "../../Browser/Sound/MediaStream.h"
 
 #include "X3DSoundSourceNode.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Browser/Sound/MediaStream.h"
 
 namespace titania {
 namespace X3D {
@@ -71,13 +70,11 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 	X3DTimeDependentNode (),
 	              fields (),
 	                 end (),
-	         mediaStream (new MediaStream ())
+	         mediaStream ()
 {
 	addType (X3DConstants::X3DSoundSourceNode);
 
 	addChildren (end);
-
-	add_signal_watch ();
 }
 
 void
@@ -85,10 +82,13 @@ X3DSoundSourceNode::initialize ()
 {
 	X3DTimeDependentNode::initialize ();
 
+	mediaStream .reset (new MediaStream ());
+
 	speed () .addInterest (this, &X3DSoundSourceNode::set_speed);
 	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
 	end      .addInterest (this, &X3DSoundSourceNode::set_end);
 
+	mediaStream -> signal_end () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
 	mediaStream -> setup ();
 }
 
@@ -110,10 +110,10 @@ X3DSoundSourceNode::setVolume (const float value)
 	mediaStream -> setVolume (value);
 }
 
-const Glib::RefPtr <Gst::XImageSink> &
-X3DSoundSourceNode::getVideoSink () const
+const std::unique_ptr <MediaStream> &
+X3DSoundSourceNode::getStream () const
 {
-	return mediaStream -> getVideoSink ();
+	return mediaStream;
 }
 
 bool
@@ -129,28 +129,9 @@ X3DSoundSourceNode::prepareEvents ()
 }
 
 void
-X3DSoundSourceNode::on_message (const Glib::RefPtr <Gst::Message> & message)
+X3DSoundSourceNode::on_end ()
 {
-	switch (message -> get_message_type ())
-	{
-		case Gst::MESSAGE_EOS:
-		{
-			end = getCurrentTime ();
-			break;
-		}
-		case Gst::MESSAGE_ERROR:
-		{
-			__LOG__
-				<< "MESSAGE_ERROR: "
-				<< Glib::RefPtr <Gst::MessageError>::cast_dynamic (message) -> parse () .what ()
-				<< std::endl;
-
-			stop ();
-			break;
-		}
-		default:
-			break;
-	}
+	end = getCurrentTime ();
 }
 
 void
@@ -192,6 +173,8 @@ X3DSoundSourceNode::set_stop ()
 void
 X3DSoundSourceNode::set_end ()
 {
+	__LOG__ << std::endl;
+
 	if (loop ())
 	{
 		if (speed ())
@@ -207,28 +190,9 @@ X3DSoundSourceNode::set_end ()
 }
 
 void
-X3DSoundSourceNode::add_signal_watch ()
-{
-	const auto bus = mediaStream -> getPlayer () -> get_bus ();
-
-	bus -> add_signal_watch ();
-	bus -> signal_message () .connect (sigc::mem_fun (*this, &X3DSoundSourceNode::on_message));
-}
-
-void
-X3DSoundSourceNode::remove_signal_watch ()
-{
-	// Signal watch must be removed or there will be a memory leak.
-
-	const auto bus = mediaStream -> getPlayer () -> get_bus ();
-
-	bus -> remove_signal_watch ();
-}
-
-void
 X3DSoundSourceNode::dispose ()
 {
-	remove_signal_watch ();
+	mediaStream .reset ();
 
 	X3DTimeDependentNode::dispose ();
 }

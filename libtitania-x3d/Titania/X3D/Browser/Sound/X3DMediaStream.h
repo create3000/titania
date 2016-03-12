@@ -48,153 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
-#define __TITANIA_X3D_BROWSER_SOUND_MEDIA_STREAM_H__
+#ifndef __TITANIA_X3D_BROWSER_SOUND_X3DMEDIA_STREAM_H__
+#define __TITANIA_X3D_BROWSER_SOUND_X3DMEDIA_STREAM_H__
 
-#include "X3DMediaStream.h"
+namespace Gst {
 
-#include <Titania/Basic/URI.h>
+class PlayBin;
+class XImageSink;
+class Message;
 
-#include <gstreamermm.h>
-#include <gstreamermm/message.h>
-#include <gstreamermm/playbin.h>
-#include <gstreamermm/ximagesink.h>
-#include <glibmm/dispatcher.h>
-
-extern "C"
-{
-#include <X11/Xlib.h>
 }
 
 namespace titania {
 namespace X3D {
 
-class MediaStream :
-	X3DMediaStream
+class X3DMediaStream
 {
 public:
 
-	///  @name Construction
+	using Player    = Gst::PlayBin;
+	using VideoSink = Gst::XImageSink;
 
-	MediaStream ();
-
-	void
-	setup ();
-
-	///  @name Signals
-
-	Glib::Dispatcher &
-	signal_load ()
-	{ return load; }
-
-	const Glib::Dispatcher &
-	signal_load () const
-	{ return load; }
-
-	Glib::Dispatcher &
-	signal_buffer_changed ()
-	{ return buffer_changed; }
-
-	const Glib::Dispatcher &
-	signal_buffer_changed () const
-	{ return buffer_changed; }
-
-	Glib::Dispatcher &
-	signal_end ()
-	{ return end; }
-
-	const Glib::Dispatcher &
-	signal_end () const
-	{ return end; }
-
-	///  @name Member access
-
-	const Glib::RefPtr <Player> &
-	getPlayer () const
-	{ return player; }
-
-	const Glib::RefPtr <VideoSink> &
-	getVideoSink () const
-	{ return vsink; }
-
-	bool
-	setUri (const basic::uri & uri);
-
-	int
-	getWidth () const
-	{ return vsink -> get_width (); }
-
-	int
-	getHeight () const
-	{ return vsink -> get_height (); }
-
-	const std::vector <uint8_t> &
-	getBuffer () const
-	{ return image; }
-
-	double
-	getDuration () const;
-
-	void
-	setVolume (double value);
-
-	Gst::State
-	getState () const;
-
-	bool
-	sync () const;
-
-	void
-	start (const double speed, const double position);
-
-	void
-	pause ();
-
-	void
-	resume ();
-
-	void
-	stop ();
-
-	~MediaStream ();
+	virtual
+	~X3DMediaStream () = default;
 
 
-private:
+protected:
 
-	///  @name Event handlers
-
-	void
-	on_bus_message_sync (const Glib::RefPtr <Gst::Message> & message);
-
-	void
-	on_message (const Glib::RefPtr <Gst::Message> &);
-
-	void
-	on_video_changed ();
-
-	Gst::PadProbeReturn
-	on_video_pad_got_buffer (const Glib::RefPtr <Gst::Pad> &, const Gst::PadProbeInfo &);
-
-	void
-	update ();
-
-	void
-	flip (const size_t, const size_t);
-
-	///  @name Member access
-
-	Glib::Dispatcher load;
-	Glib::Dispatcher buffer_changed;
-	Glib::Dispatcher end;
-
-	Glib::RefPtr <Player>    player;
-	Glib::RefPtr <VideoSink> vsink;
-
-	Display* display;
-	Pixmap   pixmap;
-
-	double                volume;
-	std::vector <uint8_t> image;
+	X3DMediaStream () = default;
 
 };
 

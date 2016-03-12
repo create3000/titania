@@ -230,14 +230,8 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.x3dv"));
 
-	float width  = 1;
-	float height = 1;
-
-	if (mediaStream .getVideoSink () -> get_last_buffer ())
-	{
-		width  = mediaStream .getVideoSink () -> get_width  () / 72.0 * M_INCH;
-		height = mediaStream .getVideoSink () -> get_height () / 72.0 * M_INCH;
-	}
+	float width  = mediaStream .getVideoSink () -> get_width  () / 72.0 * M_INCH;
+	float height = mediaStream .getVideoSink () -> get_height () / 72.0 * M_INCH;
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
 	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);

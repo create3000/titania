@@ -311,6 +311,212 @@ public:
 
 };
 
+template <class Type>
+class memorystreambuf :
+	public std::streambuf
+{
+public:
+
+	memorystreambuf ();
+
+	bool
+	is_open () const
+	{ return open; }
+
+	~memorystreambuf ();
+
+
+protected:
+
+	virtual
+	int
+	overflow (int c = EOF);
+
+	virtual
+	int
+	underflow ();
+
+	///  @name Static members
+
+	static constexpr size_t READ  = 0;
+	static constexpr size_t WRITE = 1;
+
+	///  @name Members
+
+	int                              input_output [2];
+	std::array <char, sizeof (Type)> buffer;
+	bool                             open;
+
+};
+
+template <class Type>
+memorystreambuf <Type>::memorystreambuf () :
+	input_output (),
+	      buffer (),
+	        open (false)
+{
+	// The buffer is initially empty.
+	setg (buffer .begin (), // beginning of get area
+	      buffer .end (),   // read position
+	      buffer .end ());  // end position
+
+	// The buffer is always full.
+	setp (0,  // beginning of put area
+	      0); // end position
+
+	open = (pipe (input_output) == 0);
+
+	__LOG__ << open << std::endl;
+}
+
+template <class Type>
+int
+memorystreambuf <Type>::overflow (int c)
+{
+	// Used for output buffer only.
+
+	__LOG__ << c << std::endl;
+
+	if (::write (input_output [WRITE], buffer .data (), 1) not_eq 1)
+	   return traits_type::eof ();
+
+	__LOG__ << c << std::endl;
+
+	return c;
+}
+
+template <class Type>
+int
+memorystreambuf <Type>::underflow ()
+{
+	// Used for input buffer only.
+
+	const auto bytesRead = ::read (input_output [READ], buffer .data (), buffer .size ());
+
+	__LOG__ << bytesRead << std::endl;
+
+	for (int i = 0; i < bytesRead; ++ i)
+	   std::clog << int (buffer [i]) << std::endl;
+
+	std::clog << std::endl;
+
+	// Reset buffer pointers.
+	setg (buffer .begin (),              // Beginning of get area
+	      buffer .begin (),              // Read position
+	      buffer .begin () + bytesRead); // End of buffer
+
+	// return next character
+	return traits_type::to_int_type (*gptr ());
+}
+
+
+template <class Type>
+memorystreambuf <Type>::~memorystreambuf ()
+{
+	close (input_output [READ]);
+	close (input_output [WRITE]);
+}
+
+template <class Type>
+class memorystream :
+	public std::istream,
+	public std::ostream
+{
+public:
+
+	/// @name Constructors
+
+	memorystream ();
+
+	/// @name Operations
+
+	memorystream &
+	operator << (const Type &);
+
+	memorystream &
+	operator >> (Type &);
+
+	/// @name Destructor
+
+	~memorystream ()
+	{ }
+
+
+private:
+
+	/// @name Member types
+
+	union data_type
+	{
+	   Type  value;
+		char  buffer [sizeof (Type)];
+	};
+
+	/// @name Members
+
+	std::unique_ptr <memorystreambuf <Type>> buf;
+
+};
+
+template <class Type>
+memorystream <Type>::memorystream () :
+   buf (new memorystreambuf <Type> ())
+{
+	rdbuf (buf .get ());
+
+	if (not buf -> is_open ())
+		clear (std::ios::badbit);
+}
+
+template <class Type>
+memorystream <Type> &
+memorystream <Type>::operator << (const Type & value)
+{
+	data_type data { value };
+
+	write (data .buffer, sizeof (Type));
+
+	return *this;
+}
+
+template <class Type>
+memorystream <Type> &
+memorystream <Type>::operator >> (Type & value)
+{
+	data_type data;
+
+	read (data .buffer, sizeof (Type));
+
+	value = data .value;
+
+	return *this;
+}
+
+void
+from_thread1 (memorystream <double> & istream)
+{
+	for (auto i = 3; i-- > 0;)
+	{
+		istream << chrono::now ();
+
+		sleep (1);
+	}
+}
+
+void
+from_thread2 (memorystream <double> & istream)
+{
+	for (auto i = 3; i-- > 0;)
+	{
+		double time;
+
+		istream >> time;
+
+		__LOG__ << time << std::endl;
+		sleep (1);
+	}
+}
+
 int
 main (int argc, char** argv)
 {
@@ -328,7 +534,13 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Ct (123);
+	memorystream <double> sstream;
+
+	auto t1 = std::thread (from_thread1, std::ref (sstream));
+	auto t2 = std::thread (from_thread2, std::ref (sstream));
+
+	t1 .join ();
+	t2 .join ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
