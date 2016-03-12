@@ -107,18 +107,24 @@ public:
 	signal_end () const
 	{ return end; }
 
+	Glib::Dispatcher &
+	signal_duration_changed ()
+	{ return duration_changed; }
+
+	const Glib::Dispatcher &
+	signal_duration_changed () const
+	{ return duration_changed; }
+
 	///  @name Member access
-
-	const Glib::RefPtr <Player> &
-	getPlayer () const
-	{ return player; }
-
-	const Glib::RefPtr <VideoSink> &
-	getVideoSink () const
-	{ return vsink; }
 
 	bool
 	setUri (const basic::uri & uri);
+
+	void
+	setVolume (double value);
+
+	double
+	getDuration () const;
 
 	int
 	getWidth () const
@@ -132,14 +138,7 @@ public:
 	getBuffer () const
 	{ return image; }
 
-	double
-	getDuration () const;
-
-	void
-	setVolume (double value);
-
-	Gst::State
-	getState () const;
+	///  @name Operations
 
 	bool
 	sync () const;
@@ -156,10 +155,17 @@ public:
 	void
 	stop ();
 
+	///  @name Destruction
+
 	~MediaStream ();
 
 
 private:
+
+	///  @name Operations
+
+	Gst::State
+	getState () const;
 
 	///  @name Event handlers
 
@@ -186,6 +192,7 @@ private:
 	Glib::Dispatcher load;
 	Glib::Dispatcher buffer_changed;
 	Glib::Dispatcher end;
+	Glib::Dispatcher duration_changed;
 
 	Glib::RefPtr <Player>    player;
 	Glib::RefPtr <VideoSink> vsink;

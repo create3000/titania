@@ -98,6 +98,8 @@ X3DBrowserContext::X3DBrowserContext () :
 	                  notification (new Notification (this)),
 	                       console (new Console (this))
 {
+	initialized () .setName ("initialized");
+
 	addType (X3DConstants::X3DBrowserContext);
 
 	addChildren (initialized (),
@@ -312,6 +314,15 @@ noexcept (true)
 		   << getName () << " "
 			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
+	}
+	catch (const std::exception & exception)
+	{
+		std::clog
+		   << getName () << " "
+			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
+			<< "  " << exception .what () << std::endl;
+
+		throw;
 	}
 }
 

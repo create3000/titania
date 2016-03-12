@@ -233,7 +233,12 @@ void
 X3DSoundSourceNodeEditor::set_node ()
 {
 	if (soundSourceNode)
-	   soundSourceNode -> isEvenLive (false);
+	{
+		soundSourceNode -> isEvenLive (false);
+
+		soundSourceNode -> isPaused () .removeInterest (this, &X3DSoundSourceNodeEditor::set_playing);
+		soundSourceNode -> isActive () .removeInterest (this, &X3DSoundSourceNodeEditor::set_playing);
+	}
 
 	undoStep           .reset ();
 	startTimeUndoStep  .reset ();
@@ -261,6 +266,8 @@ X3DSoundSourceNodeEditor::set_node ()
 		soundSourceNode = audioClip;
 
 	soundSourceNode -> isEvenLive (true);
+	soundSourceNode -> isPaused () .addInterest (this, &X3DSoundSourceNodeEditor::set_playing);
+	soundSourceNode -> isActive () .addInterest (this, &X3DSoundSourceNodeEditor::set_playing);
 
 	changing = true;
 
@@ -291,9 +298,10 @@ X3DSoundSourceNodeEditor::set_node ()
 	getSoundSourceComboBoxText () .set_sensitive (hasField);
 	getSoundSourceUnlinkButton () .set_sensitive (active > 0 and soundSourceNode -> getCloneCount () > 1);
 
-	changing = false;
-
 	set_widgets ();
+	set_playing ();
+
+	changing = false;
 }
 
 void
@@ -316,6 +324,35 @@ X3DSoundSourceNodeEditor::set_widgets ()
 	cycleTime        .setNodes (nodes);
 	elapsedTime      .setNodes (nodes);
 	duration_changed .setNodes (nodes);
+}
+
+void
+X3DSoundSourceNodeEditor::set_playing ()
+{
+	if (soundSourceNode -> isActive ())
+	{
+		if (soundSourceNode -> isPaused ())
+		{
+			getSoundSourceStartTimeButton  () .set_sensitive (false);
+			getSoundSourcePauseTimeButton  () .set_sensitive (false);
+			getSoundSourceResumeTimeButton () .set_sensitive (true);
+			getSoundSourceStopTimeButton   () .set_sensitive (true);
+		}
+		else
+		{
+			getSoundSourceStartTimeButton  () .set_sensitive (false);
+			getSoundSourcePauseTimeButton  () .set_sensitive (true);
+			getSoundSourceResumeTimeButton () .set_sensitive (false);
+			getSoundSourceStopTimeButton   () .set_sensitive (true);
+		}
+	}
+	else
+	{
+		getSoundSourceStartTimeButton  () .set_sensitive (true);
+		getSoundSourcePauseTimeButton  () .set_sensitive (false);
+		getSoundSourceResumeTimeButton () .set_sensitive (false);
+		getSoundSourceStopTimeButton   () .set_sensitive (false);
+	}
 }
 
 void

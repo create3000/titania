@@ -62,16 +62,17 @@ namespace X3D {
  */
 
 MediaStream::MediaStream () :
-	X3DMediaStream (),
-	          load (),
-	buffer_changed (),
-	           end (),
-	        player (),
-	         vsink (),
-	       display (nullptr),
-	        pixmap (0),
-	        volume (0),
-	         image ()
+	  X3DMediaStream (),
+	            load (),
+	  buffer_changed (),
+	             end (),
+	duration_changed (),
+	          player (),
+	           vsink (),
+	         display (nullptr),
+	          pixmap (0),
+	          volume (0),
+	           image ()
 {
 	// Static init
 
@@ -101,8 +102,8 @@ MediaStream::setup ()
 
 	gst_base_sink_set_last_sample_enabled (vsink -> Gst::BaseSink::gobj (), true);
 
-	player -> set_property ("video-sink", vsink);
-	player -> set_property ("volume", volume);
+	player -> property_video_sink () = vsink;
+	player -> property_volume ()     = volume;
 	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
 
 	const auto bus = player -> get_bus ();
@@ -118,7 +119,7 @@ bool
 MediaStream::setUri (const basic::uri & uri)
 {
 	player -> set_state (Gst::STATE_NULL);
-	player -> set_property ("uri", uri .str ());
+	player -> property_uri () = uri .str ();
 	player -> set_state (Gst::STATE_PAUSED);
 
 	return true;
@@ -139,13 +140,7 @@ MediaStream::getDuration () const
 void
 MediaStream::setVolume (double value)
 {
-	value = math::clamp (value, 0.0, 1.0);
-
-	if ((std::abs (value - volume) > 0.05)or ((value == 0 or value == 1) and value not_eq volume))
-	{
-		volume = value;
-		player -> set_property ("volume", volume);
-	}
+	player -> property_volume () = math::clamp (value, 0.0, 1.0);
 }
 
 Gst::State
@@ -273,6 +268,16 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		   update ();
 			break;
 		}
+		case Gst::MESSAGE_DURATION_CHANGED:
+		{
+			__LOG__
+				<< "MESSAGE_DURATION_CHANGED: "
+				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
+				<< std::endl;
+
+		   duration_changed .emit ();
+			break;
+		}
 		case Gst::MESSAGE_ERROR:
 		{
 			__LOG__
@@ -291,6 +296,8 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 void
 MediaStream::on_video_changed ()
 {
+	__LOG__ << std::endl;
+
 	Glib::RefPtr <Gst::Pad> pad = player -> get_video_pad (0);
 
 	if (pad)

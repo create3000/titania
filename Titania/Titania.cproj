@@ -2520,6 +2520,7 @@
     <None Include="share\titania\Library\Components\Grouping\TransformMatrix3D.x3dv" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringTextView.h" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

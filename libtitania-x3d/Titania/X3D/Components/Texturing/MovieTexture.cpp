@@ -106,8 +106,9 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> signal_load ()           .connect (sigc::mem_fun (*this, &MovieTexture::on_load));
-	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (*this, &MovieTexture::on_buffer_changed));
+	getStream () -> signal_load ()             .connect (sigc::mem_fun (*this, &MovieTexture::on_load));
+	getStream () -> signal_buffer_changed ()   .connect (sigc::mem_fun (*this, &MovieTexture::on_buffer_changed));
+	getStream () -> signal_duration_changed () .connect (sigc::mem_fun (*this, &MovieTexture::on_duration_changed));
 
 	url () .addInterest (this, &MovieTexture::update);
 
@@ -154,8 +155,6 @@ MovieTexture::requestImmediateLoad ()
 		const auto width  = getStream () -> getWidth ();
 		const auto height = getStream () -> getHeight ();
 
-		duration_changed () = getDuration ();
-
 		setImage (GL_RGB, false, 3, width, height, GL_BGRA, std::vector <uint8_t> (width * 4 * height, 255) .data ());
 
 		setLoadState (COMPLETE_STATE);
@@ -193,6 +192,12 @@ MovieTexture::on_buffer_changed ()
 	{
 	   __LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+MovieTexture::on_duration_changed ()
+{
+	duration_changed () = getDuration ();
 }
 
 void

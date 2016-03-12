@@ -149,6 +149,9 @@ private:
 	void
 	on_buffer_changed ();
 
+	void
+	on_duration_changed ();
+
 	virtual
 	void
 	update () final override;

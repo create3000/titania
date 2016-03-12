@@ -55,12 +55,17 @@
 std::string
 _ (const std::string & msgid)
 {
-	return gettext (msgid .c_str ());
+	return _ (msgid .c_str ());
 }
 
 std::string
 _ (const char* msgid)
 {
-	return gettext (msgid);
+	const auto string = gettext (msgid);
+
+	if (string)
+	   return string;
+
+	return "";
 }
 

@@ -1,48 +1,113 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V1.2.2
 
-Sound {
-  source DEF Song AudioClip {
-    url "04. Like A Virgin.mp3"
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              3.8886218193697
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 Sound {
+              source DEF Song AudioClip {
+                url "04. Like A Virgin.mp3"
+                startTime 1457769356.12777
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
   }
+  title "AudioClip"
 }
+
+USE _1
 
 DEF Max Transform {
   scale 10 10 10
-  children [
-    Shape {
-      appearance Appearance {
-        material Material {
-          transparency 0.3
-        }
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.3
       }
-      geometry Sphere { }
     }
-  ]
+    geometry Sphere { }
+  }
 }
 
 DEF Min Transform {
-  children [
-    Shape {
-      appearance Appearance {
-        material Material {
-          transparency 0.3
-        }
+  children Shape {
+    appearance Appearance {
+      material Material {
+        transparency 0.3
       }
-      geometry Sphere { }
     }
-  ]
+    geometry Sphere { }
+  }
 }
 
 Transform {
   translation 0 2 0
-  children [
-    Shape {
-      appearance Appearance {
-        material Material { }
-      }
-      geometry DEF ElapsedTime Text { string "0" }
+  children Shape {
+    appearance Appearance {
+      material Material { }
     }
-  ]
+    geometry DEF ElapsedTime Text {
+      string "6.8"
+    }
+  }
 }
 
 Transform {
@@ -76,11 +141,11 @@ Transform {
 }
 
 DEF Debug Script {
-  eventIn  SFTime set_startTime
-  eventIn  SFTime set_stopTime
-  eventIn  SFBool set_active
-  eventIn  SFTime set_elapsedTime
-  eventIn  SFTime set_duration
+  eventIn  SFTime   set_startTime
+  eventIn  SFTime   set_stopTime
+  eventIn  SFBool   set_active
+  eventIn  SFTime   set_elapsedTime
+  eventIn  SFTime   set_duration
   eventOut MFString string_changed
 
   url "vrmlscript:
@@ -120,4 +185,3 @@ ROUTE Song.isActive TO Debug.set_active
 ROUTE Song.elapsedTime TO Debug.set_elapsedTime
 ROUTE Song.duration_changed TO Debug.set_duration
 ROUTE Debug.string_changed TO ElapsedTime.set_string
-

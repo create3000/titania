@@ -114,6 +114,9 @@ private:
 	void
 	set_widgets ();
 
+	void
+	set_playing ();
+
 	virtual
 	void
 	on_sound_source_start_time_clicked () final override;

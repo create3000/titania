@@ -67,6 +67,9 @@ sprintf (const std::string & format, ...)
 
 	va_end (arglist);
 
+	if (not ret)
+	   return "";
+
 	std::string str (ret, n);
 	free (ret);
 
@@ -84,6 +87,9 @@ sprintf (const char* const format, ...)
 	const int n = vasprintf (&ret, format, arglist);
 
 	va_end (arglist);
+
+	if (not ret)
+	   return "";
 
 	std::string str (ret, n);
 	free (ret);

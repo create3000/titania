@@ -47,7 +47,7 @@ perl -p -e '
 	replace (sub { $_ [0] =~ s/\)\((\w)/) ($1/sgo });                                                   # add space between )(
 	replace (sub { $_ [0] =~ s/(\s[\w\d\)\]]+)\.([a-zA-Z])/$1 .$2/go })
 		unless /\w\.\w+?[\>"]/ or /^\s*(\/?\*|\/\/)/go;                                        # change variable.member to variable .member
-   replace (sub { $_ [0] =~ s/\)and/) and/sgo });
+   replace (sub { $_ [0] =~ s/\)(and|or|xor)/) $1/sgo });
    replace (sub { $_ [0] =~ s/([)])(override|final)/$1 $2/so });                                         # add space before final or override
    replace (sub { $_ [0] =~ s/<\:\:/< ::/so });                                                          # add space :: in template argument list
    replace (sub { $_ [0] =~ s/\s(not_eq|and|or)\s*\*\s*/ $1 */sgo });                                             # not_eq *
