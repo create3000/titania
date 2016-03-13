@@ -53,8 +53,6 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "LODRangeWidget.h"
-
 #include <Titania/X3D/Components/Navigation/LOD.h>
 
 namespace titania {
@@ -70,13 +68,6 @@ X3DLODEditor::X3DLODEditor () :
 	                                     getLODCenterZAdjustment (),
 	                                     getLODCenterBox (),
 	                                     "center"),
-//	                               range (new LODRangeWidget (this,
-//	                                     getLODRangeMinAdjustment (),
-//	                                     getLODRangeMaxAdjustment (),
-//	                                     getLODRangeMinSpinButton (),
-//	                                     getLODRangeMaxSpinButton (),
-//	                                     getLODMaxCheckButton (),
-//	                                     getLODRangeBox ())),
 		  	            			   range (this, "Range", getRangeGradientBox ()),
 	                        singleRange (this, getLODRangeAdjustment (), getLODRangeSpinButton (), "range"),
 	                      level_changed (this,

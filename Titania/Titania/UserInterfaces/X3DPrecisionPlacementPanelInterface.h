@@ -268,14 +268,6 @@ public:
 	{ return m_LODRangeAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getLODRangeMaxAdjustment () const
-	{ return m_LODRangeMaxAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getLODRangeMinAdjustment () const
-	{ return m_LODRangeMinAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
 	getLayoutOffsetXAdjustment () const
 	{ return m_LayoutOffsetXAdjustment; }
 
@@ -290,6 +282,10 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getLayoutSizeYAdjustment () const
 	{ return m_LayoutSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getRangeColorAdjustment () const
+	{ return m_RangeColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getSwitchWhichChoiceAdjustment () const
@@ -550,22 +546,6 @@ public:
 	Gtk::Button &
 	getLODMoveCenterButton () const
 	{ return *m_LODMoveCenterButton; }
-
-	Gtk::Box &
-	getLODRangeBox () const
-	{ return *m_LODRangeBox; }
-
-	Gtk::SpinButton &
-	getLODRangeMinSpinButton () const
-	{ return *m_LODRangeMinSpinButton; }
-
-	Gtk::SpinButton &
-	getLODRangeMaxSpinButton () const
-	{ return *m_LODRangeMaxSpinButton; }
-
-	Gtk::CheckButton &
-	getLODMaxCheckButton () const
-	{ return *m_LODMaxCheckButton; }
 
 	Gtk::SpinButton &
 	getLODRangeSpinButton () const
@@ -993,12 +973,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_LODCenterZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODLevelAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODRangeAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMaxAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_LODRangeMinAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutOffsetYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LayoutSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_RangeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SwitchWhichChoiceAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TransformCenterYAdjustment;
@@ -1064,10 +1043,6 @@ private:
 	Gtk::SpinButton*               m_LODCenterYSpinButton;
 	Gtk::SpinButton*               m_LODCenterZSpinButton;
 	Gtk::Button*                   m_LODMoveCenterButton;
-	Gtk::Box*                      m_LODRangeBox;
-	Gtk::SpinButton*               m_LODRangeMinSpinButton;
-	Gtk::SpinButton*               m_LODRangeMaxSpinButton;
-	Gtk::CheckButton*              m_LODMaxCheckButton;
 	Gtk::SpinButton*               m_LODRangeSpinButton;
 	Gtk::SpinButton*               m_LODLevelSpinButton;
 	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;

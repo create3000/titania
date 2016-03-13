@@ -1884,7 +1884,6 @@
     <None Include="Titania\UserInterfaces\X3DNodeEditorInterface.h" />
     <None Include="Titania\Editors\NodeEditor\NodeEditor.h" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DLODEditor.h" />
-    <None Include="Titania\Editors\PrecisionPlacementPanel\LODRangeWidget.h" />
     <None Include="Titania\UserInterfaces\X3DSidebarInterface.h" />
     <None Include="Titania\Widgets\Sidebar\Sidebar.h" />
     <None Include="share\titania\ui\Footer.glade" />

@@ -103,12 +103,11 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_LODCenterZAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODCenterZAdjustment"));
 	m_LODLevelAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODLevelAdjustment"));
 	m_LODRangeAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeAdjustment"));
-	m_LODRangeMaxAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMaxAdjustment"));
-	m_LODRangeMinAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODRangeMinAdjustment"));
 	m_LayoutOffsetXAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetXAdjustment"));
 	m_LayoutOffsetYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutOffsetYAdjustment"));
 	m_LayoutSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeXAdjustment"));
 	m_LayoutSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LayoutSizeYAdjustment"));
+	m_RangeColorAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RangeColorAdjustment"));
 	m_SwitchWhichChoiceAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SwitchWhichChoiceAdjustment"));
 	m_TransformCenterXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterXAdjustment"));
 	m_TransformCenterYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TransformCenterYAdjustment"));
@@ -176,10 +175,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODCenterYSpinButton", m_LODCenterYSpinButton);
 	m_builder -> get_widget ("LODCenterZSpinButton", m_LODCenterZSpinButton);
 	m_builder -> get_widget ("LODMoveCenterButton", m_LODMoveCenterButton);
-	m_builder -> get_widget ("LODRangeBox", m_LODRangeBox);
-	m_builder -> get_widget ("LODRangeMinSpinButton", m_LODRangeMinSpinButton);
-	m_builder -> get_widget ("LODRangeMaxSpinButton", m_LODRangeMaxSpinButton);
-	m_builder -> get_widget ("LODMaxCheckButton", m_LODMaxCheckButton);
 	m_builder -> get_widget ("LODRangeSpinButton", m_LODRangeSpinButton);
 	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
 	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
