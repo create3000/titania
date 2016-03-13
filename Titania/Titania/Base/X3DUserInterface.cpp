@@ -281,7 +281,7 @@ X3DUserInterface::addDialog (const std::string & name, const bool present)
 		const auto dialog = createDialog (name);
 
 		dialogs -> emplace (name, dialog);
-		dialog -> getWindow () .signal_hide () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
+		dialog -> getWindow () .signal_unmap () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
 
 		if (present)
 			dialog -> getWindow () .present ();
