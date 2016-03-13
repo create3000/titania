@@ -144,13 +144,10 @@ private:
 	///  @name Event handlers
 
 	void
-	on_load ();
+	on_loaded ();
 
 	void
 	on_buffer_changed ();
-
-	void
-	on_duration_changed ();
 
 	virtual
 	void

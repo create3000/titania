@@ -149,17 +149,8 @@ protected:
 
 	///  @name Opertions
 
-	void
-	setUri (const basic::uri &);
-
-	float
-	getDuration () const;
-
 	const std::unique_ptr <MediaStream> &
 	getStream () const;
-
-	bool
-	sync () const;
 
 	///  @name Event handlers
 
@@ -199,6 +190,9 @@ private:
 
 	void
 	set_end ();
+
+	void
+	on_duration_changed ();
 
 	///  @name Members
 

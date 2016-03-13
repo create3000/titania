@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include <gstreamermm.h>
+#include "../../Browser/Sound/MediaStream.h"
 
 #include "AudioClip.h"
 
@@ -123,27 +123,20 @@ AudioClip::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	if (url () .empty ())
-	{
-		setLoadState (FAILED_STATE);
-		return;
-	}
-
 	for (const auto & URL : url ())
 	{
-		setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+		getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 
 		// Sync stream
 
-		if (not sync ())
+		if (not getStream () -> sync ())
 			continue;
 
 		// Get audio
 
-		duration_changed () = getDuration ();
+		duration_changed () = getStream () -> getDuration ();
 
 		setLoadState (COMPLETE_STATE);
-
 		break;
 	}
 

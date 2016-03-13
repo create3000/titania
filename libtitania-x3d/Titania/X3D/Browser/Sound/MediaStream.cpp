@@ -63,7 +63,7 @@ namespace X3D {
 
 MediaStream::MediaStream () :
 	  X3DMediaStream (),
-	            load (),
+	          loaded (),
 	  buffer_changed (),
 	             end (),
 	duration_changed (),
@@ -103,6 +103,7 @@ MediaStream::setup ()
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = 0;
 	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
+	player -> signal_audio_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_audio_changed));
 
 	const auto bus = player -> get_bus ();
 
@@ -273,7 +274,7 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
 				<< std::endl;
 
-		   duration_changed .emit ();
+			duration_changed .emit ();
 			break;
 		}
 		case Gst::MESSAGE_ERROR:
@@ -292,6 +293,11 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 }
 
 void
+MediaStream::on_audio_changed ()
+{
+}
+
+void
 MediaStream::on_video_changed ()
 {
 	__LOG__ << std::endl;
@@ -301,9 +307,8 @@ MediaStream::on_video_changed ()
 	if (pad)
 		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (*this, &MediaStream::on_video_pad_got_buffer));
 
+	loaded .emit ();
 	update ();
-
-	load .emit ();
 }
 
 Gst::PadProbeReturn

@@ -106,9 +106,8 @@ MovieTexture::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getStream () -> signal_load ()             .connect (sigc::mem_fun (*this, &MovieTexture::on_load));
-	getStream () -> signal_buffer_changed ()   .connect (sigc::mem_fun (*this, &MovieTexture::on_buffer_changed));
-	getStream () -> signal_duration_changed () .connect (sigc::mem_fun (*this, &MovieTexture::on_duration_changed));
+	getStream () -> signal_loaded ()         .connect (sigc::mem_fun (this, &MovieTexture::on_loaded));
+	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
 	url () .addInterest (this, &MovieTexture::update);
 
@@ -143,14 +142,14 @@ MovieTexture::requestImmediateLoad ()
 
 	for (const auto & URL : url ())
 	{
-		__LOG__ << URL << std::endl;
-
-		setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
+		getStream () -> setUri (getExecutionContext () -> getWorldURL () .transform (URL .str ()));
 
 		// Sync stream
 
-		if (not sync ())
+		if (not getStream () -> sync ())
 			continue;
+
+		duration_changed () = getStream () -> getDuration ();
 
 		const auto width  = getStream () -> getWidth ();
 		const auto height = getStream () -> getHeight ();
@@ -173,7 +172,7 @@ MovieTexture::requestImmediateLoad ()
 }
 
 void
-MovieTexture::on_load ()
+MovieTexture::on_loaded ()
 { }
 
 void
@@ -192,12 +191,6 @@ MovieTexture::on_buffer_changed ()
 	{
 	   __LOG__ << error .what () << std::endl;
 	}
-}
-
-void
-MovieTexture::on_duration_changed ()
-{
-	duration_changed () = getDuration ();
 }
 
 void

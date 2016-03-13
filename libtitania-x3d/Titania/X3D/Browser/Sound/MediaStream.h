@@ -84,12 +84,12 @@ public:
 	///  @name Signals
 
 	Glib::Dispatcher &
-	signal_load ()
-	{ return load; }
+	signal_loaded ()
+	{ return loaded; }
 
 	const Glib::Dispatcher &
-	signal_load () const
-	{ return load; }
+	signal_loaded () const
+	{ return loaded; }
 
 	Glib::Dispatcher &
 	signal_buffer_changed ()
@@ -176,6 +176,9 @@ private:
 	on_message (const Glib::RefPtr <Gst::Message> &);
 
 	void
+	on_audio_changed ();
+
+	void
 	on_video_changed ();
 
 	Gst::PadProbeReturn
@@ -189,7 +192,7 @@ private:
 
 	///  @name Member access
 
-	Glib::Dispatcher load;
+	Glib::Dispatcher loaded;
 	Glib::Dispatcher buffer_changed;
 	Glib::Dispatcher end;
 	Glib::Dispatcher duration_changed;

@@ -88,20 +88,9 @@ X3DSoundSourceNode::initialize ()
 	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
 	end      .addInterest (this, &X3DSoundSourceNode::set_end);
 
-	mediaStream -> signal_end () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
+	mediaStream -> signal_end ()              .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
+	mediaStream -> signal_duration_changed () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_duration_changed));
 	mediaStream -> setup ();
-}
-
-void
-X3DSoundSourceNode::setUri (const basic::uri & uri)
-{
-	mediaStream -> setUri (uri);
-}
-
-float
-X3DSoundSourceNode::getDuration () const
-{
-	return mediaStream -> getDuration ();
 }
 
 void
@@ -114,12 +103,6 @@ const std::unique_ptr <MediaStream> &
 X3DSoundSourceNode::getStream () const
 {
 	return mediaStream;
-}
-
-bool
-X3DSoundSourceNode::sync () const
-{
-	return mediaStream -> sync ();
 }
 
 void
@@ -173,8 +156,6 @@ X3DSoundSourceNode::set_stop ()
 void
 X3DSoundSourceNode::set_end ()
 {
-	__LOG__ << std::endl;
-
 	if (loop ())
 	{
 		if (speed ())
@@ -187,6 +168,12 @@ X3DSoundSourceNode::set_end ()
 	}
 	else
 		stop ();
+}
+
+void
+X3DSoundSourceNode::on_duration_changed ()
+{
+	duration_changed () = mediaStream -> getDuration ();
 }
 
 void
