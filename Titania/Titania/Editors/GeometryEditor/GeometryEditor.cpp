@@ -68,7 +68,7 @@ namespace puck {
 
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGeometryEditorInterface (get_ui ("Editors/GeometryEditor.glade")),
+	X3DGeometryEditorInterface (get_ui ("Overlays/GeometryEditor.glade")),
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
 	                    select (this, browserWindow -> getArrowButton (), "select"),
 	               cutPolygons (this, getCutPolygonsButton (), "cutPolygons"),
@@ -122,10 +122,6 @@ GeometryEditor::configure ()
 {
 	X3DGeometryEditorInterface::configure ();
 
-	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
-	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
-
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
 	if (getConfig () -> hasItem ("normalLength"))
@@ -174,46 +170,10 @@ GeometryEditor::initialize ()
 	normalEnabled  .setNodes ({ normalEditor });
 }
 
-bool
-GeometryEditor::on_geometry_editor_button_press_event (GdkEventButton* event)
-{
-	int x, y;
-
-	getWidget () .translate_coordinates (getBrowserWindow () -> getWidget (), event -> x, event -> y, x, y);
-
-	position = X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ());
-	pointer  = X3D::Vector2d (x, y);
-	return true;
-}
-
-bool
-GeometryEditor::on_geometry_editor_button_release_event (GdkEventButton* event)
-{
-	// Prevent click.
-	return true;
-}
-
-bool
-GeometryEditor::on_geometry_editor_button_motion_notify_event (GdkEventMotion* event)
-{
-	int x, y;
-
-	getWidget () .translate_coordinates (getBrowserWindow () -> getWidget (), event -> x, event -> y, x, y);
-
-	const auto margin = position + X3D::Vector2d (x, y) - pointer;
-
-	getWidget () .set_margin_left (X3D::clamp <double> (margin .x (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (margin .y (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
-	return true;
-}
-
 void
 GeometryEditor::on_map ()
 {
 	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
-
-	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width  ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
 
 	set_browser (getCurrentBrowser ());
 }
@@ -979,8 +939,6 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
-	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
-
 	getConfig () -> set ("normalEnabled",   normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",    normalEditor -> getField <X3D::SFFloat>     ("length"));
 	getConfig () -> set ("normalColor",     normalEditor -> getField <X3D::SFColorRGBA> ("color"));

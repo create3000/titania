@@ -66,7 +66,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
-	m_builder -> get_widget ("GeometryEditorButton", m_GeometryEditorButton);
+	m_builder -> get_widget ("TitleButton", m_TitleButton);
 	m_builder -> get_widget ("EditToggleButton", m_EditToggleButton);
 	m_builder -> get_widget ("HammerButton", m_HammerButton);
 	m_builder -> get_widget ("GeometryToolsBox", m_GeometryToolsBox);
@@ -95,10 +95,10 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap));
 
-	// Connect object Gtk::Button with id 'GeometryEditorButton'.
-	m_GeometryEditorButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_press_event), false);
-	m_GeometryEditorButton -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_release_event), false);
-	m_GeometryEditorButton -> signal_motion_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_geometry_editor_button_motion_notify_event), false);
+	// Connect object Gtk::Button with id 'TitleButton'.
+	m_TitleButton -> signal_button_press_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_press_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_button_release_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_release_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_motion_notify_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_motion_notify_event), sigc::ref (*m_TitleButton)), false);
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
 	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));

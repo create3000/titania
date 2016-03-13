@@ -34,14 +34,14 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkButton" id="GeometryEditorButton">
+                      <object class="GtkButton" id="TitleButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Hide Geometry Editor.</property>
-                        <signal name="button-press-event" handler="on_geometry_editor_button_press_event" after="yes" swapped="no"/>
-                        <signal name="button-release-event" handler="on_geometry_editor_button_release_event" after="yes" swapped="no"/>
-                        <signal name="motion-notify-event" handler="on_geometry_editor_button_motion_notify_event" after="yes" swapped="no"/>
+                        <signal name="button-press-event" handler="on_title_button_press_event" after="yes" swapped="yes"/>
+                        <signal name="button-release-event" handler="on_title_button_release_event" after="yes" swapped="yes"/>
+                        <signal name="motion-notify-event" handler="on_title_button_motion_notify_event" after="yes" swapped="yes"/>
                         <child>
                           <object class="GtkBox" id="box1">
                             <property name="visible">True</property>

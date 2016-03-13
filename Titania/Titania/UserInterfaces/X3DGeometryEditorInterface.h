@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
 #define __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
 
-#include "../Base/X3DEditorInterface.h"
+#include "../Base/X3DOverlayInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,20 +61,20 @@ namespace puck {
  *  Gtk Interface for GeometryEditor.
  */
 class X3DGeometryEditorInterface :
-	public X3DEditorInterface
+	public X3DOverlayInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DGeometryEditorInterface () :
-		X3DEditorInterface ()
+		X3DOverlayInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DGeometryEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DEditorInterface (m_widgetName, arguments ...),
-		          filename (filename)
+		X3DOverlayInterface (m_widgetName, arguments ...),
+		           filename (filename)
 	{ create (filename); }
 
 	///  @name Member access
@@ -112,8 +112,8 @@ public:
 	{ return *m_GeometryEditorBox; }
 
 	Gtk::Button &
-	getGeometryEditorButton () const
-	{ return *m_GeometryEditorButton; }
+	getTitleButton () const
+	{ return *m_TitleButton; }
 
 	Gtk::ToggleButton &
 	getEditToggleButton () const
@@ -218,18 +218,6 @@ public:
 	on_unmap () = 0;
 
 	virtual
-	bool
-	on_geometry_editor_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_geometry_editor_button_release_event (GdkEventButton* event) = 0;
-
-	virtual
-	bool
-	on_geometry_editor_button_motion_notify_event (GdkEventMotion* event) = 0;
-
-	virtual
 	void
 	on_edit_toggled () = 0;
 
@@ -314,7 +302,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DEditorInterface::construct (); }
+	{ X3DOverlayInterface::construct (); }
 
 	void
 	create (const std::string &);
@@ -330,7 +318,7 @@ private:
 	Gtk::Window*                m_Window;
 	Gtk::Revealer*              m_Widget;
 	Gtk::Box*                   m_GeometryEditorBox;
-	Gtk::Button*                m_GeometryEditorButton;
+	Gtk::Button*                m_TitleButton;
 	Gtk::ToggleButton*          m_EditToggleButton;
 	Gtk::Button*                m_HammerButton;
 	Gtk::Grid*                  m_GeometryToolsBox;
