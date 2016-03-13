@@ -113,7 +113,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	              selectedEdges (),
 	              selectedHoles (),
 	              selectedFaces (),
-	                  translate (false)
+	                  translate (false),
+	                translation ()
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
@@ -380,7 +381,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 	if (not select () and not paintSelection ())
 	   return;
 
-	if (getTranslate ())
+	if (abs (translation))
 		return;
 
 	switch (getSelectionType ())

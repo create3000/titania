@@ -69,7 +69,6 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	           X3DIndexedFaceSetTool (),
 	                     touchSensor (),
 	                     planeSensor (),
-	                     translation (),
 	                    translations (0),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
@@ -203,20 +202,21 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
 	   undoSetCoordPoint (undoStep);
+	
+		translations = 0;
+
+		setTranslation (Vector3d ());
 	}
 	else
 	{
-		setTranslate (false);
-
 		redoSetCoordPoint (undoStep);
 
 		// Reset fields and send undo step.
 
-		if (abs (translation))
+		if (abs (getTranslation ()))
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
-		translation   = Vector3d ();
-		translations  = 0;
+		setTranslate (false);
 	}
 }
 
@@ -230,15 +230,11 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_translation ()
 	if (translations ++ < TRANSLATIONS_EVENTS)
 	   return;
 
-	translation = planeSensor -> translation_changed () .getValue ();
+	setTranslate (true);
+	setTranslation (planeSensor -> translation_changed () .getValue ());
 
-	if (abs (translation))
-	{
-		setTranslate (true);
-
-		for (const auto & pair : getSelectedPoints ())
-			getCoord () -> set1Point (pair .first, pair .second + translation);
-	}
+	for (const auto & pair : getSelectedPoints ())
+		getCoord () -> set1Point (pair .first, pair .second + getTranslation ());
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()

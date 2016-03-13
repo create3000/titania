@@ -344,6 +344,14 @@ protected:
 	getTranslate () const
 	{ return translate; }
 
+	void
+	setTranslation (const Vector3d value)
+	{ translation = value; }
+
+	const Vector3d &
+	getTranslation () const
+	{ return translation; }
+
 	///  @name Operations
 
 	void
@@ -582,7 +590,8 @@ private:
 	SelectedHoles                selectedHoles;     // index of coord indices
 	std::set <size_t>            selectedFaces;     // index to first vertex of face to coordIndex array
 
-	bool translate;
+	bool     translate;
+	Vector3d translation;
 };
 
 } // X3D
