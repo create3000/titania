@@ -323,7 +323,7 @@ Parser::x3dScene ()
 
 	try
 	{
-		scene -> setWorldURL (scene -> getMetaData ("identifier"));
+		scene -> setWorldURL (scene -> getMetaData ("titania-identifier"));
 	}
 	catch (const X3DError &)
 	{ }

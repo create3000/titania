@@ -195,7 +195,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 		<< "#" << LATEST_VERSION << " utf8 " << executionContext -> getBrowser () -> getName ()
 		<< std::endl
 		<< std::endl
-		<< "META \"identifier\" " << SFString (executionContext -> getWorldURL () .str ())
+		<< "META \"titania-identifier\" " << SFString (executionContext -> getWorldURL () .str ())
 		<< std::endl
 		<< std::endl;
 
