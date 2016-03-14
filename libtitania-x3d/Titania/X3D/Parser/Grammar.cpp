@@ -127,7 +127,9 @@ Grammar::LongDouble (std::istream & istream, long double & value)
 		return true;
 
 	istream .clear ();
-	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
 
 	if (inf (istream))
 	{
@@ -166,7 +168,9 @@ Grammar::Double (std::istream & istream, double & value)
 		return true;
 
 	istream .clear ();
-	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
 
 	if (inf (istream))
 	{
@@ -205,7 +209,9 @@ Grammar::Float (std::istream & istream, float & value)
 		return true;
 
 	istream .clear ();
-	istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
 
 	if (inf (istream))
 	{

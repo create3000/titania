@@ -88,6 +88,12 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	setup ();
 }
 
+basic::uri
+FileSaveDialog::getURL () const
+{
+	return "file://" + getWindow () .get_file () -> get_path ();
+}
+
 void
 FileSaveDialog::saveScene (const bool copy)
 {
@@ -100,7 +106,7 @@ FileSaveDialog::saveScene (const bool copy)
 	const auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
-		getBrowserWindow () -> save (Glib::uri_unescape_string (getWindow () .get_uri ()), getCompressFileButton () .get_active (), copy);
+		getBrowserWindow () -> save (getURL (), getCompressFileButton () .get_active (), copy);
 
 	quit ();
 }
@@ -234,9 +240,7 @@ FileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X
 	{
 		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
-		worldURL = Glib::uri_unescape_string (getWindow () .get_uri ());
-
-		exportNodes (nodes, worldURL, getCompressFileButton () .get_active (), undoStep);
+		exportNodes (nodes, getURL (), getCompressFileButton () .get_active (), undoStep);
 	}
 
 	quit ();

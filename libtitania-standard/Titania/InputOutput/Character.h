@@ -143,7 +143,7 @@ inline
 bool
 basic_character <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istream) const
 {
-	return static_cast <bool> (istream .seekg (-1, std::ios_base::cur));
+	return static_cast <bool> (istream .unget ());
 }
 
 typedef basic_character <char>    character;

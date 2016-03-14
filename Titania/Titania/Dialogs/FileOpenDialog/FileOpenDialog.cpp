@@ -125,7 +125,7 @@ FileOpenDialog::setURL (const basic::uri & URL)
 basic::uri
 FileOpenDialog::getURL () const
 {
-	return Glib::uri_unescape_string (getWindow () .get_uri ());
+	return "file://" + getWindow () .get_file () -> get_path ();
 }
 
 void
@@ -152,7 +152,7 @@ FileOpenDialog::run ()
 
 	if (getWindow () .get_filter ())
 		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
-	
+
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)

@@ -300,8 +300,6 @@ MediaStream::on_audio_changed ()
 void
 MediaStream::on_video_changed ()
 {
-	__LOG__ << std::endl;
-
 	Glib::RefPtr <Gst::Pad> pad = player -> get_video_pad (0);
 
 	if (pad)

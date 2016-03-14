@@ -272,7 +272,6 @@ ifilestream::guess_content_type (const basic::uri & url, std::istream* const ist
 	static constexpr size_t BUFFER_SIZE = 255;
 
 	const auto state = istream -> rdstate ();
-	const auto pos   = istream -> tellg ();
 
 	// Guess content type.
 
@@ -287,7 +286,9 @@ ifilestream::guess_content_type (const basic::uri & url, std::istream* const ist
 	// Reset stream.
 
 	istream -> clear (state);
-	istream -> seekg (pos - istream -> tellg (), std::ios_base::cur);
+
+	for (size_t i = 0; i < data_size; ++ i)
+		istream -> unget ();
 }
 
 void

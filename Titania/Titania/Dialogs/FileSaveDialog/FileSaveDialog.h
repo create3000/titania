@@ -65,6 +65,9 @@ public:
 
 	FileSaveDialog (X3DBrowserWindow* const);
 
+	basic::uri
+	getURL () const;
+
 	void
 	saveScene (const bool copy);
 

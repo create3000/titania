@@ -108,7 +108,7 @@ private:
 	using int_type = typename std::basic_istream <CharT, Traits>::int_type;
 
 	const std::basic_string <CharT> value;
-	const int                       size;
+	const size_t                    size;
 
 };
 
@@ -125,14 +125,16 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 {
 	const auto state = istream .rdstate ();
 
-	for (int i = 0; i < size; ++ i)
+	for (size_t count = 0; count < size; ++ count)
 	{
-		if (istream .peek () not_eq (int_type) value [i])
+		if (istream .peek () not_eq (int_type) value [count])
 		{
-			if (i)
+			if (count)
 			{
-				istream .seekg (-i, std::ios_base::cur);
 				istream .clear (state);
+
+				for (size_t i = 0; i < count; ++ i)
+					istream .unget ();
 			}
 	
 			return false;
@@ -152,8 +154,11 @@ basic_string <CharT, Traits>::lookahead (std::basic_istream <CharT, Traits> & is
 
 	if (operator () (istream))
 	{
-		istream .seekg (-size, std::ios_base::cur);
 		istream .clear (state);
+
+		for (size_t i = 0; i < size; ++ i)
+			istream .unget ();
+
 		return true;
 	}
 
@@ -165,7 +170,10 @@ inline
 bool
 basic_string <CharT, Traits>::rewind (std::basic_istream <CharT, Traits> & istream) const
 {
-	return static_cast <bool> (istream .seekg (-size, std::ios_base::cur));
+	for (size_t i = 0; i < size; ++ i)
+		istream .unget ();
+
+	return static_cast <bool> (istream);
 }
 
 typedef basic_string <char>    string;

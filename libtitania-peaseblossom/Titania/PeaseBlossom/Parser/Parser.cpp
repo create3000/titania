@@ -189,7 +189,9 @@ void
 Parser::setState (const State & value)
 {
 	istream .clear (std::get <0> (value));
-	istream .seekg (std::get <1> (value) - istream .tellg (), std::ios_base::cur);
+
+	for (size_t i = 0, size = istream .tellg () - std::get <1> (value) ; i < size; ++ i)
+		istream .unget ();
 }
 
 Parser::State

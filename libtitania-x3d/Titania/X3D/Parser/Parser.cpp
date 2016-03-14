@@ -1578,10 +1578,13 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 		// Reset stream position.
 
-		istream .clear (state);
-		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
 		lineNumber = ln;
 		currentComments .resize (com);
+
+		istream .clear (state);
+
+		for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+			istream .unget ();
 	}
 
 	X3DFieldDefinition* _field = interfaceDeclaration ();

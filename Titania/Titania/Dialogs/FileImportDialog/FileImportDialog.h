@@ -65,6 +65,9 @@ public:
 
 	FileImportDialog (X3DBrowserWindow* const);
 
+	basic::uri
+	getURL () const;
+
 	void
 	run ();
 

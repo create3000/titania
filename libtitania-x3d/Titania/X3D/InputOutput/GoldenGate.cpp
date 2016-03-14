@@ -162,7 +162,8 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 {
 	// Test
 
-	const auto pos = istream .tellg ();
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
 
 	try
 	{
@@ -170,7 +171,10 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 	}
 	catch (const X3DError & error)
 	{
-		istream .seekg (pos - istream .tellg (), std::ios_base::cur);
+		istream .clear (state);
+
+		for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+			istream .unget ();
 
 		return golden_x3d (scene, uri, istream);
 	}

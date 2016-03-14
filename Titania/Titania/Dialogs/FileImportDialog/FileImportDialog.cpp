@@ -116,6 +116,12 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	setup ();
 }
 
+basic::uri
+FileImportDialog::getURL () const
+{
+	return "file://" + getWindow () .get_file () -> get_path ();
+}
+
 void
 FileImportDialog::setFilter (const std::string & name)
 {
@@ -160,8 +166,8 @@ FileImportDialog::run ()
 
 				try
 				{
-					const auto uri   = getWindow () .get_uri ();
-					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (uri) });
+					const auto uri   = getURL ();
+					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ uri .str () });
 
 					for (const auto & prototype : scene -> getProtoDeclarations ())
 					{
@@ -204,7 +210,7 @@ FileImportDialog::run ()
 
 					getConfig () -> setItem ("importType", ImportType::PROTOS);
 
-					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ Glib::uri_unescape_string (getWindow () .get_uri ()) });
+					const auto scene = getCurrentBrowser () -> createX3DFromURL ({ getURL () .str () });
 
 					for (const auto & prototype : scene -> getProtoDeclarations ())
 						getCurrentContext () -> updateProtoDeclaration (prototype -> getName (), prototype);
@@ -221,7 +227,7 @@ FileImportDialog::run ()
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import As Inline"));
 
-				const auto nodes = getBrowserWindow () -> import ({ Glib::uri_unescape_string (getWindow () .get_uri ()) }, undoStep);
+				const auto nodes = getBrowserWindow () -> import ({ getURL () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
@@ -233,7 +239,7 @@ FileImportDialog::run ()
 
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 
-				const auto nodes = getBrowserWindow () -> importAsInline ({ Glib::uri_unescape_string (getWindow () .get_uri ()) }, undoStep);
+				const auto nodes = getBrowserWindow () -> importAsInline ({ getURL () }, undoStep);
 
 				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
