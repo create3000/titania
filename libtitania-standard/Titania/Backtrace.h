@@ -52,14 +52,15 @@
 #define __TITANIA_BACKTRACE_H__
 
 #include <cstdlib>
+#include <string>
 
 namespace titania {
 
-void
-backtrace_fn (size_t = 30, int = 0);
+std::string
+backtrace_symbols (size_t = 30);
 
 void
-enable_backtrace ();
+backtrace ();
 
 } // titania
 

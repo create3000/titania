@@ -94,7 +94,7 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	         inShutdown (0),
 	             future ()
 {
-	enable_backtrace ();
+	backtrace ();
 
 	setName ("Titania");
 	addType (X3DConstants::X3DBrowser);
@@ -632,7 +632,7 @@ throw (Error <DISPOSED>)
 void
 X3DBrowser::dispose ()
 {
-	__LOG__ << this << " : " << getWorldURL () << std::endl;
+	__LOG__ << this << std::endl;
 
 	future .reset ();
 

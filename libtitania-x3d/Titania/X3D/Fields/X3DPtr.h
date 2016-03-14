@@ -53,6 +53,8 @@
 
 #include "../Basic/X3DField.h"
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 
@@ -316,7 +318,7 @@ public:
 	   if (value)
 			return value;
 
-		throw Error <DISPOSED> ("X3DPtr::operator -> ()");
+		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
 	ValueType &
@@ -328,7 +330,7 @@ public:
 	   if (value)
 			return *value;
 
-		throw Error <DISPOSED> ("X3DPtr::operator * ()");
+		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
 	operator bool () const

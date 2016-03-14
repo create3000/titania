@@ -57,7 +57,7 @@
 namespace titania {
 
 void
-backtrace_fn (size_t size, int sig)
+backtrace_print (size_t size, int sig)
 {
 	std::clog
 		<< std::string (80, '#') << std::endl
@@ -66,17 +66,33 @@ backtrace_fn (size_t size, int sig)
 		<< "#" << std::endl
 		<< "# Error: signal " << sig << std::endl
 		<< "#" << std::endl
-		<< std::string (80, '#') << std::endl;
+		<< std::string (80, '#') << std::endl
+		<< backtrace_symbols (size)
+		<< std::endl;
+}
 
+std::string
+backtrace_symbols (size_t size)
+{
 	void* array [size];
 
 	// get void*'s for all entries on the stack
 	size = ::backtrace (array, size);
 
-	// print out all the frames to stderr
-	backtrace_symbols_fd (array, size, 2);
+	// Get all the frames.
+	const auto symbols = ::backtrace_symbols (array, size);
 
-	std::clog << std::endl;
+	std::string string;
+
+	for (size_t i = 0; i < size; ++ i)
+	{
+		string += symbols [i];
+		string += "\n";
+	}
+
+	free (symbols);
+
+	return string;
 }
 
 static
@@ -84,7 +100,7 @@ void
 backtrace_signal_handler (int sig)
 {
 	// print out all the frames to stderr
-	backtrace_fn (100, sig);
+	backtrace_print (100, sig);
 	exit (1);
 }
 
@@ -93,12 +109,12 @@ void
 backtrace_terminate_handler ()
 {
 	// print out all the frames to stderr
-	backtrace_fn (100, SIGABRT);
+	backtrace_print (100, SIGABRT);
 	exit (1);
 }
 
 void
-enable_backtrace ()
+backtrace ()
 {
 	// install our handler
 	std::signal (SIGSEGV, &backtrace_signal_handler);
