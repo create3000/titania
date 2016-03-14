@@ -255,7 +255,7 @@ GeometryEditor::connect ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						const auto & normalTool = innerNode -> getField <X3D::SFNode> ("normalTool");
 						const auto & coordTool  = innerNode -> getField <X3D::SFNode> ("coordTool");
@@ -456,6 +456,84 @@ GeometryEditor::on_delete ()
 	return false;
 }
 
+bool
+GeometryEditor::on_select_all ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		for (const auto & node : geometryNodes)
+		{
+			try
+			{
+				const auto innerNode = node -> getInnerNode ();
+
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				{
+					switch (type)
+					{
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							innerNode -> getField <X3D::SFTime> ("selectAll") = chrono::now ();
+							break;
+						}
+						default:
+							continue;
+					}
+
+					break;
+				}
+			}
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+GeometryEditor::on_deselect_all ()
+{
+	if (getEditToggleButton () .get_active ())
+	{
+		for (const auto & node : geometryNodes)
+		{
+			try
+			{
+				const auto innerNode = node -> getInnerNode ();
+
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				{
+					switch (type)
+					{
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							innerNode -> getField <X3D::SFTime> ("deselectAll") = chrono::now ();
+							break;
+						}
+						default:
+							continue;
+					}
+
+					break;
+				}
+			}
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
@@ -477,10 +555,10 @@ GeometryEditor::set_selectedPoints ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
-					   break;
+						break;
 					}
 					default:
 						continue;
@@ -517,10 +595,10 @@ GeometryEditor::set_selectedEdges ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
-					   break;
+						break;
 					}
 					default:
 						continue;
@@ -555,10 +633,10 @@ GeometryEditor::set_selectedHoles ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
-					   break;
+						break;
 					}
 					default:
 						continue;
@@ -593,10 +671,10 @@ GeometryEditor::set_selectedFaces ()
 			{
 				switch (type)
 				{
-					case X3D::X3DConstants::X3DGeometryNodeTool:
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
-					   break;
+						break;
 					}
 					default:
 						continue;

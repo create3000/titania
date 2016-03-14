@@ -68,6 +68,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "select",                 select ());
 	addField (inputOutput, "paintSelection",         paintSelection ());
 	addField (inputOutput, "selectionType",          selectionType ());
+	addField (inputOutput, "selectAll",              selectAll ());
+	addField (inputOutput, "deselectAll",            deselectAll ());
 	addField (inputOutput, "replaceSelection",       replaceSelection ());
 	addField (inputOutput, "addSelection",           addSelection ());
 	addField (inputOutput, "removeSelection",        removeSelection ());

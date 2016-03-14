@@ -115,6 +115,22 @@ public:
 
 	// Selection
 
+	SFTime &
+	selectAll ()
+	{ return *fields .selectAll; }
+
+	const SFTime &
+	selectAll () const
+	{ return *fields .selectAll; }
+
+	SFTime &
+	deselectAll ()
+	{ return *fields .deselectAll; }
+
+	const SFTime &
+	deselectAll () const
+	{ return *fields .deselectAll; }
+
 	MFInt32 &
 	replaceSelection ()
 	{ return *fields .replaceSelection; }
@@ -398,6 +414,12 @@ private:
 	set_selectionType ();
 
 	void
+	set_selectAll_ ();
+
+	void
+	set_deselectAll_ ();
+
+	void
 	set_replaceSelection_ ();
 
 	void
@@ -442,8 +464,12 @@ private:
 	void
 	set_touch_sensor_touchTime ();
 
+	virtual
 	void
 	set_selection (const std::vector <Vector3d> &) final override;
+
+	void
+	set_selection (const std::vector <Vector3d> &, const SelectActionType);
 
 	void
 	set_plane_sensor_active ();
@@ -544,6 +570,8 @@ private:
 		SFBool* const select;
 		SFBool* const paintSelection;
 		SFString* const selectionType;
+		SFTime* const selectAll;
+		SFTime* const deselectAll;
 		MFInt32* const replaceSelection;
 		MFInt32* const addSelection;
 		MFInt32* const removeSelection;

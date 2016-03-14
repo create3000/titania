@@ -71,6 +71,8 @@ X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	                select (new SFBool (true)),
 	        paintSelection (new SFBool ()),
 	         selectionType (new SFString ("POINTS")),
+	             selectAll (new SFTime ()),
+	           deselectAll (new SFTime ()),
 	      replaceSelection (new MFInt32 ()),
 	          addSelection (new MFInt32 ()),
 	       removeSelection (new MFInt32 ()),
@@ -141,6 +143,8 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 	select ()               .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_select);
 	selectionType ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectionType);
 	getCoord ()             .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord);
+	selectAll ()            .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectAll_);
+	deselectAll ()          .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_deselectAll_);
 	replaceSelection ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelection_);
 	addSelection ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelection_);
 	removeSelection ()      .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelection_);
@@ -234,6 +238,26 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 	}
 
 	//select ({ }, true);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
+{
+	__LOG__ << std::endl;
+
+	auto       vertices = getPolygonVertices ();
+	const auto last     = std::unique (vertices .begin (), vertices .end ());
+
+	vertices .erase (last, vertices .end ());
+
+	set_selection (vertices, SelectActionType::REPLACE);
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_deselectAll_ ()
+{
+	__LOG__ << std::endl;
+	select ({ }, SelectActionType::REPLACE);
 }
 
 void
@@ -410,6 +434,12 @@ X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & 
 	if (getTranslate ())
 		return;
 
+	set_selection (hitPoints, getSelectActionType ());
+}
+
+void
+X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints, const SelectActionType selectAction)
+{
 	std::vector <int32_t> points;
 
 	for (const auto & hitPoint : hitPoints)
@@ -418,7 +448,7 @@ X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & 
 		points .insert (points .end (), coincidentPoints .begin (), coincidentPoints .end ());
 	}
 
-	select (points, getSelectActionType ());
+	select (points, selectAction);
 }
 
 void
@@ -603,20 +633,20 @@ X3DIndexedFaceSetSelectionObject::clearSelection ()
 
 ///  Select points, edges or faces depending on selection type.
 void
-X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
 	switch (getSelectionType ())
 	{
 		case SelectionType::POINTS:
-			selectPoints (points, selectActionType);
+			selectPoints (points, selectAction);
 			break;
 
 		case SelectionType::EDGES:
-			selectEdges (points, selectActionType);
+			selectEdges (points, selectAction);
 			break;
 
 		case SelectionType::FACES:
-			selectFaces  (points, selectActionType);
+			selectFaces  (points, selectAction);
 			break;
 	}
 
@@ -625,9 +655,9 @@ X3DIndexedFaceSetSelectionObject::select (const std::vector <int32_t> & points, 
 
 ///  Select points.
 void
-X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
-	switch (selectActionType)
+	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
 		{
@@ -650,9 +680,9 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 
 ///  Select edges.
 void
-X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
-	switch (selectActionType)
+	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
 		{
@@ -724,9 +754,9 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 
 ///  Select one edge.
 void
-X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::selectEdge (const std::vector <size_t> & edge, const SelectActionType selectAction)
 {
-	switch (selectActionType)
+	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
 		{
@@ -884,9 +914,9 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 
 ///  Select faces.
 void
-X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
-	switch (selectActionType)
+	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
 		{
@@ -896,7 +926,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::ADD:
 		{
-			selectPoints (points, selectActionType);
+			selectPoints (points, selectAction);
 
 			for (const auto & point : points)
 			{
@@ -912,7 +942,7 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::REMOVE:
 		{
-			selectPoints (points, selectActionType);
+			selectPoints (points, selectAction);
 
 			for (const auto & point : points)
 			{
@@ -936,9 +966,9 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 
 ///  Select one face.
 void
-X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectActionType selectActionType)
+X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectActionType selectAction)
 {
-	switch (selectActionType)
+	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
 		{
@@ -957,7 +987,7 @@ X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectAct
 		case SelectActionType::REMOVE:
 		{
 			for (const auto & vertex : selection -> getFaceVertices (face))
-				selectPoints ({ coordIndex () [vertex] }, selectActionType);
+				selectPoints ({ coordIndex () [vertex] }, selectAction);
 
 			removeSelectedFacesFunction ({ face });
 			break;

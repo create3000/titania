@@ -846,7 +846,7 @@ void
 BrowserWindow::on_copy_activated ()
 {
 	if (getGeometryEditor () -> on_copy ())
-	   return;
+		return;
 
 	const auto selection = getSelection () -> getChildren ();
 
@@ -860,7 +860,7 @@ void
 BrowserWindow::on_paste_activated ()
 {
 	if (getGeometryEditor () -> on_paste ())
-	   return;
+		return;
 
 	auto selection = getSelection () -> getChildren ();
 
@@ -877,7 +877,7 @@ void
 BrowserWindow::on_delete_activated ()
 {
 	if (getGeometryEditor () -> on_delete ())
-	   return;
+		return;
 
 	const auto selection = getSelection () -> getChildren ();
 
@@ -1857,6 +1857,9 @@ BrowserWindow::set_fullscreen (const bool value)
 void
 BrowserWindow::on_select_all_activated ()
 {
+	if (getGeometryEditor () -> on_select_all ())
+		return;
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
 	getSelection () -> setChildren (getCurrentContext () -> getRootNodes (), undoStep);
@@ -1865,6 +1868,9 @@ BrowserWindow::on_select_all_activated ()
 void
 BrowserWindow::on_deselect_all_activated ()
 {
+	if (getGeometryEditor () -> on_deselect_all ())
+		return;
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
 	getSelection () -> clear (undoStep);
