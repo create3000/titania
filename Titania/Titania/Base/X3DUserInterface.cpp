@@ -193,6 +193,8 @@ X3DUserInterface::removeFocus (Gtk::Widget & parent)
 void
 X3DUserInterface::configure ()
 {
+std::clog << "X3DUserInterface::configure: " << getWidgetName () << std::endl;
+
 	// Restore dialogs
 
 	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
@@ -267,6 +269,8 @@ X3DUserInterface::hasDialog (const std::string & name) const
 std::shared_ptr <X3DUserInterface>
 X3DUserInterface::addDialog (const std::string & name, const bool present)
 {
+std::clog << "X3DUserInterface::addDialog: " << getWidgetName () << " : " << name << std::endl;
+
 	try
 	{
 		const auto dialog = dialogs -> at (name);
@@ -299,12 +303,16 @@ X3DUserInterface::createDialog (const std::string & name) const
 void
 X3DUserInterface::removeDialog (const std::string & name)
 {
+std::clog << "X3DUserInterface::removeDialog: " << getWidgetName () << " : " << name << std::endl;
+
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialogImpl), name));
 }
 
 void
 X3DUserInterface::removeDialogImpl (const std::string & name)
 {
+std::clog << "X3DUserInterface::removeDialogImpl: " << getWidgetName () << " : " << name << std::endl;
+
 	dialogs -> erase (name);
 }
 
@@ -385,6 +393,8 @@ X3DUserInterface::saveInterface ()
 bool
 X3DUserInterface::quit ()
 {
+std::clog << "X3DUserInterface::quit: " << getWidgetName () << std::endl;
+
 	// Save sessions
 
 	if (this == userInterfaces .front ())
@@ -401,6 +411,8 @@ X3DUserInterface::quit ()
 void
 X3DUserInterface::store ()
 {
+std::clog << "X3DUserInterface::store: " << getWidgetName () << std::endl;
+
 	// Save dialogs
 
 	std::string dialogNames;
