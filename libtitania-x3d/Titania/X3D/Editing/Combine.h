@@ -48,63 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
-#define __TITANIA_BROWSER_X3DOBJECT_OPERATIONS_H__
+#ifndef __TITANIA_X3D_EDITING_COMBINE_H__
+#define __TITANIA_X3D_EDITING_COMBINE_H__
 
-#include "../UserInterfaces/X3DBrowserWindowInterface.h"
-
-#include <Titania/X3D/Components/Geometry3D/IndexedFaceSet.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-#include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
+#include "../Components/Geometry3D/IndexedFaceSet.h"
+#include "../Components/Rendering/X3DCoordinateNode.h"
+#include "../Components/Shape/X3DShapeNode.h"
+#include "../Execution/X3DExecutionContext.h"
+#include "../Editing/X3DEditor.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class X3DObjectOperations :
-	virtual public X3DBrowserWindowInterface
+class Combine :
+	protected X3DEditor
 {
 public:
 
 	///  @name Construction
 
-	X3DObjectOperations ();
+	Combine ();
+
+	///  @name Operations
+
+	void
+	combine (const X3DExecutionContextPtr &,
+	         const X3DPtrArray <X3DShapeNode> &,
+	         const UndoStepPtr &) const
+	throw (Error <DISPOSED>,
+	       std::out_of_range);
+
+	void
+	removeShapes (const X3DExecutionContextPtr &,
+	              const MFNode &,
+	              const X3DPtrArray <X3DGroupingNode> &,
+	              const X3DPtrArray <X3DShapeNode> &,
+	              const X3DPtr <X3DShapeNode> &,
+	              const UndoStepPtr & undoStep) const;
 
 	///  @name Destruction
 
-	virtual
-	~X3DObjectOperations ();
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override
-	{ }
+	~Combine ();
 
 
 private:
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_combine_activated () final override;
+	///  @name Operations
 
 	void
-	combineCoordinates (const X3D::X3DPtrArray <X3D::X3DShapeNode> &,
-	                    const X3D::X3DPtr <X3D::IndexedFaceSet> &,
-	                    const X3D::X3DPtr <X3D::X3DCoordinateNode> &,
-	                    const X3D::Matrix4d &);
-
-	void
-	removeShapes (const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::MFNode &, const X3D::X3DPtr <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &);
+	combineCoordinates (const X3DExecutionContextPtr &,
+	                    const X3DPtrArray <X3DShapeNode> &,
+	                    const X3DPtr <IndexedFaceSet> &,
+	                    const X3DPtr <X3DCoordinateNode> &,
+	                    const Matrix4d &) const;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

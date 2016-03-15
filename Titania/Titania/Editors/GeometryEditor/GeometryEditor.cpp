@@ -154,9 +154,6 @@ GeometryEditor::initialize ()
 
 	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
 
-	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &GeometryEditor::on_geometry_editor_reveal_child));
-	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &GeometryEditor::on_geometry_editor_child_revealed));
-
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
 	getPaintSelectionButton () .set_group (selectionGroup);
@@ -184,20 +181,6 @@ GeometryEditor::on_unmap ()
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
 	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
-}
-
-void
-GeometryEditor::on_geometry_editor_reveal_child ()
-{
-	if (getWidget () .get_reveal_child ())
-		getWidget () .set_visible (true);
-}
-
-void
-GeometryEditor::on_geometry_editor_child_revealed ()
-{
-	if (not getWidget () .get_reveal_child ())
-		getWidget () .set_visible (false);
 }
 
 void

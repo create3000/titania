@@ -795,6 +795,7 @@
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
     <None Include="Titania\X3D\Browser\Sound\X3DMediaStream.h" />
+    <None Include="Titania\X3D\Editing\Combine.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1339,6 +1340,7 @@
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DBaseTool.cpp" />
+    <Compile Include="Titania\X3D\Editing\Combine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

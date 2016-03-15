@@ -198,7 +198,7 @@ X3DUserInterface::configure ()
 	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
 	{
 		if (restorableDialogs .count (dialogName))
-			addDialog (dialogName);
+			addDialog (dialogName, true);
 	}
 }
 
@@ -299,16 +299,12 @@ X3DUserInterface::createDialog (const std::string & name) const
 void
 X3DUserInterface::removeDialog (const std::string & name)
 {
-std::clog << getWidgetName () << " : " << name << std::endl;
-
 	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialogImpl), name), Glib::PRIORITY_HIGH);
 }
 
 void
 X3DUserInterface::removeDialogImpl (const std::string & name)
 {
-std::clog << getWidgetName () << " : " << name << std::endl;
-
 	dialogs -> erase (name);
 }
 

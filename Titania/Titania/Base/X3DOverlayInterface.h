@@ -61,6 +61,12 @@ class X3DOverlayInterface :
 {
 public:
 
+	/// @name Member access
+
+	virtual
+	Gtk::Revealer &
+	getWidget () const = 0;
+
 	/// @name Destruction
 
 	virtual
@@ -111,6 +117,12 @@ private:
 
 	void
 	on_map ();
+
+	void
+	on_reveal_child ();
+
+	void
+	on_child_revealed ();
 
 	/// @name Members
 

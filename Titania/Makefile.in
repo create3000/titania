@@ -117,7 +117,6 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Browser/X3DBrowserEditor.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWidget.$(OBJEXT) \
 	Titania/Browser/X3DBrowserWindow.$(OBJEXT) \
-	Titania/Browser/X3DObjectOperations.$(OBJEXT) \
 	Titania/ComposedWidgets/BackgroundTool.$(OBJEXT) \
 	Titania/ComposedWidgets/Cairo.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
@@ -567,7 +566,6 @@ titania_SOURCES = \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
-	Titania/Browser/X3DObjectOperations.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \
@@ -915,9 +913,6 @@ Titania/Browser/X3DBrowserWidget.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/X3DBrowserWindow.$(OBJEXT):  \
-	Titania/Browser/$(am__dirstamp) \
-	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
-Titania/Browser/X3DObjectOperations.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/$(am__dirstamp):
@@ -1808,7 +1803,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DBrowserWindow.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/X3DObjectOperations.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/BackgroundTool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/Cairo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@

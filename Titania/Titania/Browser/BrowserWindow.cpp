@@ -79,6 +79,7 @@
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
+#include <Titania/X3D/Editing/Combine.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
@@ -99,7 +100,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	         X3DBaseInterface (this, browser),
 	X3DBrowserWindowInterface (get_ui ("BrowserWindow.glade")),
 	         X3DBrowserWindow (browser),
-	      X3DObjectOperations (),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
@@ -148,7 +148,6 @@ void
 BrowserWindow::initialize ()
 {
 	X3DBrowserWindow::initialize ();
-	X3DObjectOperations::initialize ();
 
 	loadStyles ();
 
@@ -1981,10 +1980,37 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 // Layout
 
 void
+BrowserWindow::on_combine_activated ()
+{
+	__LOG__ << "on_combine_activated" << std::endl;
+
+	try
+	{
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Combine Objects"));
+		const auto selection = getSelection () -> getChildren ();
+		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
+		const auto groups    = X3DEditorObject::getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
+
+		if (shapes .empty ())
+			return;
+
+		X3D::Combine () .combine      (getCurrentContext (), shapes, undoStep);
+		X3D::Combine () .removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
+
+		// Select target
+
+		getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const std::exception & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+	}
+}
+
+void
 BrowserWindow::on_transform_to_zero_activated ()
 {
-	__LOG__ << "on_transform_to_zero_activate" << std::endl;
-
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Transform To Zero"));
 
 	transformToZero (getSelection () -> getChildren (), undoStep);

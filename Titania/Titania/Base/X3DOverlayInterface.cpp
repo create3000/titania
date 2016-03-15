@@ -78,6 +78,9 @@ X3DOverlayInterface::initialize ()
 	X3DEditorInterface::initialize ();
 
 	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DOverlayInterface::on_map));
+	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DOverlayInterface::on_reveal_child));
+	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DOverlayInterface::on_child_revealed));
+
 }
 	           	          
 void
@@ -85,6 +88,20 @@ X3DOverlayInterface::on_map ()
 {
 	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width  ()));
 	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
+}
+
+void
+X3DOverlayInterface::on_reveal_child ()
+{
+	if (getWidget () .get_reveal_child ())
+		getWidget () .set_visible (true);
+}
+
+void
+X3DOverlayInterface::on_child_revealed ()
+{
+	if (not getWidget () .get_reveal_child ())
+		getWidget () .set_visible (false);
 }
 
 bool

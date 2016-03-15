@@ -179,7 +179,6 @@
     <Compile Include="Titania\Editors\GridEditor\X3DAngleEditor.cpp" />
     <Compile Include="Titania\Editors\AppearanceEditor\X3DMaterialPaletteEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.cpp" />
-    <Compile Include="Titania\Browser\X3DObjectOperations.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
@@ -1195,7 +1194,6 @@
     <None Include="Titania\Editors\TextureEditor\X3DTexturePaletteEditor.h" />
     <None Include="share\titania\Library\Backgrounds\Funny.x3dv" />
     <None Include="share\titania\ui\icons\Combine.svg" />
-    <None Include="Titania\Browser\X3DObjectOperations.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\X3DPrimitiveCountEditor.h" />
     <None Include="Titania\ComposedWidgets\MFColorRGBAButton.h" />
     <None Include="share\titania\ui\icons\ColorAdjacentVertices.svg" />

@@ -20,7 +20,6 @@ titania_SOURCES =  \
 	Titania/Browser/X3DBrowserEditor.cpp \
 	Titania/Browser/X3DBrowserWidget.cpp \
 	Titania/Browser/X3DBrowserWindow.cpp \
-	Titania/Browser/X3DObjectOperations.cpp \
 	Titania/ComposedWidgets/BackgroundTool.cpp \
 	Titania/ComposedWidgets/Cairo.cpp \
 	Titania/ComposedWidgets/MFColorButton.cpp \

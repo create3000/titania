@@ -529,6 +529,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Configuration/Unit.lo \
 	Titania/X3D/Configuration/UnitArray.lo \
 	Titania/X3D/Configuration/X3DUnitContext.lo \
+	Titania/X3D/Editing/Combine.lo \
 	Titania/X3D/Editing/Selection/FaceSelection.lo \
 	Titania/X3D/Editing/Undo/UndoGroup.lo \
 	Titania/X3D/Editing/Undo/UndoHistory.lo \
@@ -1302,6 +1303,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Configuration/Unit.cpp \
 	Titania/X3D/Configuration/UnitArray.cpp \
 	Titania/X3D/Configuration/X3DUnitContext.cpp \
+	Titania/X3D/Editing/Combine.cpp \
 	Titania/X3D/Editing/Selection/FaceSelection.cpp \
 	Titania/X3D/Editing/Undo/UndoGroup.cpp \
 	Titania/X3D/Editing/Undo/UndoHistory.cpp \
@@ -3067,6 +3069,14 @@ Titania/X3D/Configuration/UnitArray.lo:  \
 Titania/X3D/Configuration/X3DUnitContext.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Editing/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Editing
+	@: > Titania/X3D/Editing/$(am__dirstamp)
+Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Editing/$(DEPDIR)
+	@: > Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Editing/Combine.lo: Titania/X3D/Editing/$(am__dirstamp) \
+	Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Editing/Selection/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Editing/Selection
 	@: > Titania/X3D/Editing/Selection/$(am__dirstamp)
@@ -3094,12 +3104,6 @@ Titania/X3D/Editing/Undo/UndoStep.lo:  \
 Titania/X3D/Editing/Undo/UndoStepContainer.lo:  \
 	Titania/X3D/Editing/Undo/$(am__dirstamp) \
 	Titania/X3D/Editing/Undo/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Editing/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/Editing
-	@: > Titania/X3D/Editing/$(am__dirstamp)
-Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/X3D/Editing/$(DEPDIR)
-	@: > Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Editing/X3DEditor.lo: Titania/X3D/Editing/$(am__dirstamp) \
 	Titania/X3D/Editing/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Execution/$(am__dirstamp):
@@ -4217,6 +4221,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/Unit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/UnitArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/X3DUnitContext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/$(DEPDIR)/Combine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/$(DEPDIR)/X3DEditor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Selection/$(DEPDIR)/FaceSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Editing/Undo/$(DEPDIR)/UndoGroup.Plo@am__quote@

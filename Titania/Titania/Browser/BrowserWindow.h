@@ -52,14 +52,12 @@
 #define __TITANIA_BROWSER_BROWSER_WINDOW_H__
 
 #include "../Browser/X3DBrowserWindow.h"
-#include "../Browser/X3DObjectOperations.h"
 
 namespace titania {
 namespace puck {
 
 class BrowserWindow :
-	public X3DBrowserWindow,
-	public X3DObjectOperations
+	public X3DBrowserWindow
 {
 public:
 
@@ -562,6 +560,10 @@ private:
 	on_follow_primary_selection_toggled () final override;
 
 	///  @name Layout
+
+	virtual
+	void
+	on_combine_activated () final override;
 
 	virtual
 	void
