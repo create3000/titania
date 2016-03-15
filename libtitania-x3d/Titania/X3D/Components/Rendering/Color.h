@@ -101,6 +101,11 @@ public:
 
 	virtual
 	bool
+	getTransparent () const final override
+	{ return false; }
+
+	virtual
+	bool
 	isTransparent () const final override
 	{ return false; }
 

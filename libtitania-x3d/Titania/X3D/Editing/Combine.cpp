@@ -54,6 +54,8 @@
 #include "../Components/Grouping/X3DGroupingNode.h"
 #include "../Components/Texturing/TextureCoordinate.h"
 #include "../Components/Rendering/Coordinate.h"
+#include "../Components/Rendering/Color.h"
+#include "../Components/Rendering/X3DNormalNode.h"
 
 #include <Titania/Utility/Map.h>
 
@@ -151,6 +153,10 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 
 	// Combine
 
+	const auto targetColor    = X3DPtr <X3DColorNode> (targetGeometry -> color ());
+	const auto targetTexCoord = X3DPtr <TextureCoordinate> (targetGeometry -> texCoord ());
+	const auto targetNormal   = X3DPtr <X3DNormalNode> (targetGeometry -> normal ());
+
 	for (const auto & shape : shapes)
 	{
 		const X3DPtr <IndexedFaceSet>    geometry (shape -> geometry ());
@@ -162,16 +168,31 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 		if (not coord)
 			continue;
 	
-		const X3DPtr <TextureCoordinate> targetTexCoord (targetGeometry -> texCoord ());
-		const X3DPtr <TextureCoordinate> texCoord (geometry -> texCoord ());
+		const auto color    = X3DPtr <X3DColorNode> (geometry -> color ());
+		const auto texCoord = X3DPtr <TextureCoordinate> (geometry -> texCoord ());
+		const auto normal   = X3DPtr <X3DNormalNode> (geometry -> normal ());
 
+		std::map <int32_t, int32_t> colorIndex;
 		std::map <int32_t, int32_t> texCoordIndex;
+		std::map <int32_t, int32_t> normalIndex;
 		std::map <int32_t, int32_t> coordIndex;
+
+		for (const auto & index : geometry -> colorIndex ())
+		{
+			if (index >= 0)
+				colorIndex .emplace (index, colorIndex .size ());
+		}
 
 		for (const auto & index : geometry -> texCoordIndex ())
 		{
 			if (index >= 0)
 				texCoordIndex .emplace (index, texCoordIndex .size ());
+		}
+
+		for (const auto & index : geometry -> normalIndex ())
+		{
+			if (index >= 0)
+				normalIndex .emplace (index, normalIndex .size ());
 		}
 
 		for (const auto & index : geometry -> coordIndex ())
@@ -192,27 +213,76 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 			{
 				++ face;
 
+				if (targetColor)
+					targetGeometry -> colorIndex () .emplace_back (-1);
+
 				if (targetTexCoord)
 					targetGeometry -> texCoordIndex () .emplace_back (-1);
+
+				if (targetNormal)
+					targetGeometry -> normalIndex () .emplace_back (-1);
 
 				targetGeometry -> coordIndex () .emplace_back (-1);
 				continue;
 			}
 
+			if (targetColor)
+			{
+				if (geometry -> colorPerVertex ())
+					targetGeometry -> colorIndex () .emplace_back (colorIndex [geometry -> colorIndex () [i]] + targetColor -> getSize ());
+				else
+					targetGeometry -> colorIndex () .emplace_back (colorIndex [geometry -> colorIndex () [face]] + targetColor -> getSize ());
+			}
+
 			if (targetTexCoord)
 				targetGeometry -> texCoordIndex () .emplace_back (texCoordIndex [geometry -> texCoordIndex () [i]] + targetTexCoord -> getSize ());
 
+			if (targetNormal)
+			{
+				if (geometry -> normalPerVertex ())
+					targetGeometry -> normalIndex () .emplace_back (normalIndex [geometry -> normalIndex () [i]] + targetNormal -> getSize ());
+				else
+					targetGeometry -> normalIndex () .emplace_back (normalIndex [geometry -> normalIndex () [face]] + targetNormal -> getSize ());
+			}
+
 			targetGeometry -> coordIndex () .emplace_back (coordIndex [index] + targetCoord -> getSize ());
+		}
+
+		if (targetColor)
+		{
+			for (const auto & index : basic::reverse (colorIndex))
+				targetColor -> set1Color (targetColor -> getSize (), color -> get1Color (index .second));
 		}
 
 		if (targetTexCoord)
 		{
 			for (const auto & index : basic::reverse (texCoordIndex))
-				targetTexCoord -> point () .set1Value (targetTexCoord -> getSize (), texCoord -> point () .get1Value (index .second));
+				targetTexCoord -> set1Point (targetTexCoord -> getSize (), texCoord -> get1Point (index .second));
+		}
+
+		if (targetNormal)
+		{
+			for (const auto & index : basic::reverse (normalIndex))
+				targetNormal -> set1Vector (targetNormal -> getSize (), normal -> get1Vector (index .second));
 		}
 
 		for (const auto & index : basic::reverse (coordIndex))
 			targetCoord -> set1Point (targetCoord -> getSize (), coord -> get1Point (index .second) * matrix);
+	}
+
+	// Add Color instead of ColorRGBA if not transparent.
+
+	if (targetColor)
+	{
+		if (not targetColor -> getTransparent ())
+		{
+			const auto colorNode = executionContext -> createNode <Color> ();
+
+			for (size_t i = 0, size = targetColor -> getSize (); i < size; ++ i)
+				colorNode -> set1Color (i, targetColor -> get1Color (i));
+		
+		   targetGeometry -> color () = colorNode;
+		}
 	}
 }
 

@@ -468,12 +468,16 @@ IndexedFaceSet::addColors ()
 {
 	const auto colorNode = getExecutionContext () -> createNode <ColorRGBA> ();
 
+	colorIndex () .clear ();
+	color () = colorNode;
+
+	if (coordIndex () .empty ())
+		return;
+
 	colorNode -> color () .emplace_back (Color4f (1, 1, 1, 1));
 
-	colorIndex () .clear ();
-
 	for (const auto & index : coordIndex ())
-	   colorIndex () .emplace_back (index < 0 ? -1 : 0);
+		colorIndex () .emplace_back (index < 0 ? -1 : 0);
 }
 
 void

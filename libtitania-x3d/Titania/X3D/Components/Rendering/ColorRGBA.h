@@ -101,6 +101,10 @@ public:
 
 	virtual
 	bool
+	getTransparent () const final override;
+
+	virtual
+	bool
 	isTransparent () const final override
 	{ return transparent; }
 

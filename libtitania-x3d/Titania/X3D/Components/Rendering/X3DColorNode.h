@@ -63,6 +63,10 @@ public:
 
 	virtual
 	bool
+	getTransparent () const = 0;
+
+	virtual
+	bool
 	isTransparent () const = 0;
 
 	virtual

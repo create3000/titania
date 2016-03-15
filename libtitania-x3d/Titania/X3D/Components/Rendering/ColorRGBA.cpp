@@ -91,6 +91,14 @@ ColorRGBA::initialize ()
 		set_color ();
 }
 
+bool
+ColorRGBA::getTransparent () const
+{
+	return std::any_of (color () .begin (),
+	                    color () .end (),
+	                    [ ] (const Color4f & value) { return value .a () < 1; });	                  
+}
+
 void
 ColorRGBA::setDynamicTransparency (const bool value)
 {
@@ -156,9 +164,7 @@ ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 void
 ColorRGBA::set_color ()
 {
-	transparent = std::any_of (color () .begin (),
-	                           color () .end (),
-	                           [ ] (const Color4f & value) { return value .a () < 1; });
+	transparent = getTransparent ();
 
 	if (isInitialized ())
 		addEvent ();
