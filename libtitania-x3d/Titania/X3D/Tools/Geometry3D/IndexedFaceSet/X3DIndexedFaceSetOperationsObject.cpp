@@ -119,7 +119,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 		const auto undoStep     = std::make_shared <X3D::UndoStep> (_ ("Paste Faces"));
 		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
 		auto       geometries   = Editor () .getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
-		const auto targetMatrix = ~Editor () .getModelViewMatrix (getExecutionContext (), this);
+		const auto targetMatrix = ~Editor () .getModelViewMatrix (getMasterScene (), this);
 
 		undoRestoreSelection (undoStep);
 		undoSetColorIndex (undoStep);

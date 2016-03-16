@@ -107,8 +107,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	             selection,
 	             notification,
 	             console);
-
-	isPrivate (true);
 }
 
 void

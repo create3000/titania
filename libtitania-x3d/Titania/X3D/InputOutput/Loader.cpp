@@ -107,10 +107,13 @@ throw (Error <INVALID_X3D>,
 
 	golden_gate (scene, worldURL, istream);
 
-	scene -> setExecutionContext (executionContext);
-	scene -> isLive () = executionContext -> isLive ();
-	scene -> isPrivate (executionContext -> getScene () -> isPrivate ());
+	if (executionContext not_eq executionContext -> getBrowser ())
+	{
+		scene -> setExecutionContext (executionContext);
+		scene -> isPrivate (executionContext -> isPrivate ());
+	}
 
+	scene -> isLive () = executionContext -> isLive ();
 	scene -> isCompressed (istream .is_compressed ());
 	scene -> setup ();
 
@@ -126,9 +129,13 @@ throw (Error <INVALID_URL>,
 
 	parseIntoScene (scene, url);
 
-	scene -> setExecutionContext (executionContext);
+	if (executionContext not_eq executionContext -> getBrowser ())
+	{
+		scene -> setExecutionContext (executionContext);
+		scene -> isPrivate (executionContext -> isPrivate ());
+	}
+
 	scene -> isLive () = executionContext -> isLive ();
-	scene -> isPrivate (executionContext -> getScene () -> isPrivate ());
 	scene -> setup ();
 
 	return scene;

@@ -81,7 +81,7 @@ throw (Error <DISPOSED>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = ~getModelViewMatrix (executionContext, SFNode (masterShape));
+	const auto   targetMatrix   = ~getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
 
 	targetGeometry -> coord () = targetCoord;
 
@@ -101,7 +101,29 @@ throw (Error <DISPOSED>,
 
 	// Combine Coordinates
 
+	for (const auto & geometry : geometries)
+	{
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> colorIndex    ()), geometry -> colorIndex    ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> normalIndex   ()), geometry -> normalIndex   ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> color         ()), geometry -> color         ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> texCoord      ()), geometry -> texCoord      ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> normal        ()), geometry -> normal        ());
+	}
+
 	combine (executionContext, geometries, targetGeometry, targetCoord, targetMatrix);
+
+	for (const auto & geometry : geometries)
+	{
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> colorIndex    ()), geometry -> colorIndex    ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> normalIndex   ()), geometry -> normalIndex   ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> color         ()), geometry -> color         ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> texCoord      ()), geometry -> texCoord      ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> normal        ()), geometry -> normal        ());
+	}
+
+	// Replace node
 
 	replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 }
@@ -121,35 +143,71 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometry : geometries)
 	{
-		if (geometry -> colorIndex () .size () and geometry -> getColor ())
+		if (geometry -> getColor ())
 			addColors = true;
 	
-		if (geometry -> texCoordIndex () .size () and geometry -> getTexCoord ())
+		if (geometry -> getTexCoord ())
 			addTexCoords = true;
 
-		if (geometry -> normalIndex () .size () and geometry -> getNormal ())
+		if (geometry -> getNormal ())
 			addNormals = true;
 	}
 
-	if (addColors and not targetGeometry -> getColor ())
-		targetGeometry -> addColors ();
+	if (addColors)
+	{
+		if (targetGeometry -> colorIndex () .empty () and targetGeometry -> getColor ())
+			targetGeometry -> colorIndex () = targetGeometry -> coordIndex ();
 
-	if (addTexCoords and not targetGeometry -> getTexCoord ())
-		targetGeometry -> addTexCoords ();
+		else if (not targetGeometry -> getColor ())
+			targetGeometry -> addColors ();
+	}
 
-	if (addNormals and not targetGeometry -> getNormal ())
-		targetGeometry -> addNormals ();
+	if (addTexCoords)
+	{
+		if (targetGeometry -> texCoordIndex () .empty () and targetGeometry -> getTexCoord ())
+			targetGeometry -> texCoordIndex () = targetGeometry -> coordIndex ();
+
+		else if (not targetGeometry -> getTexCoord ())
+			targetGeometry -> addTexCoords ();
+	}
+
+	if (addNormals)
+	{
+		if (targetGeometry -> normalIndex () .empty () and targetGeometry -> getNormal ())
+			targetGeometry -> normalIndex () = targetGeometry -> coordIndex ();
+
+		else if (not targetGeometry -> getNormal ())
+			targetGeometry -> addNormals ();
+	}
 
 	for (const auto & geometry : geometries)
 	{
-		if (addColors and not (geometry -> colorIndex () .size () and geometry -> getColor ()))
-			geometry -> addColors ();
+		if (addColors)
+		{
+			if (geometry -> colorIndex () .empty () and geometry -> getColor ())
+				geometry -> colorIndex () = geometry -> coordIndex ();
 
-		if (addTexCoords and not (geometry -> texCoordIndex () .size () and geometry -> getTexCoord ()))
-			geometry -> addTexCoords ();
+			else if (not geometry -> getColor ())
+				geometry -> addColors ();
+		}
 
-		if (addNormals and not (geometry -> normalIndex () .size () and geometry -> getNormal ()))
-			geometry -> addNormals ();
+		if (addTexCoords)
+		{
+			if (geometry -> texCoordIndex () .empty () and geometry -> getTexCoord ())
+				geometry -> texCoordIndex () = geometry -> coordIndex ();
+
+			else if (not geometry -> getTexCoord ())
+				geometry -> addTexCoords ();
+		}
+
+		if (addNormals)
+		{
+			if (geometry -> normalIndex () .empty () and geometry -> getNormal ())
+				geometry -> normalIndex () = geometry -> coordIndex ();
+
+			else if (not geometry -> getTexCoord ())
+				geometry -> addNormals ();
+		}
 	}
 
 	// Combine
@@ -198,7 +256,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				coordIndex .emplace (index, coordIndex .size ());
 		}
 
-		const auto matrix = getModelViewMatrix (executionContext, SFNode (geometry)) * targetMatrix;
+		const auto matrix = getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
 
 		size_t face   = 0;
 		size_t first  = 0;
