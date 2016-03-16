@@ -550,7 +550,9 @@ GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 void
 GeometryEditor::set_clipboard (const X3D::SFString & string)
 {
-	__LOG__ << string << std::endl;
+	std::clog << string << std::endl;
+
+	getBrowserWindow () -> getClipboard () -> set_string () = string;
 }
 
 void

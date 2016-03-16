@@ -51,7 +51,9 @@
 #include "X3DIndexedFaceSetOperationsObject.h"
 
 #include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
+#include "../../../Components/Shape/Shape.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Combine.h"
 #include "../../../Editing/Editor.h"
@@ -110,31 +112,39 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 {
 	__LOG__ << std::endl;
 
-	const auto geometry = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
+	const auto transformationMatrix = Editor () .getModelViewMatrix (getMasterScene (), this);
+	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
+	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = ccw ();
 	geometry -> convex ()          = convex ();
 	geometry -> colorPerVertex ()  = colorPerVertex ();
 	geometry -> normalPerVertex () = normalPerVertex ();
 
+	X3DPtr <X3DColorNode> color;
+	X3DPtr <X3DTextureCoordinateNode> texCoord;
+	X3DPtr <X3DNormalNode> normal;
 	X3DPtr <X3DCoordinateNode> coord;
 
 	if (getColor ())
 	{
-		geometry -> color () = getColor () -> copy (FLAT_COPY);
+		geometry -> color () = getColor () -> create (getExecutionContext ());
 		geometry -> color () -> setup ();
+		color = geometry -> color ();
 	}
 
 	if (getTexCoord ())
 	{
-		geometry -> texCoord () = getTexCoord () -> copy (FLAT_COPY);
+		geometry -> texCoord () = getTexCoord () -> create (getExecutionContext ());
 		geometry -> texCoord () -> setup ();
+		texCoord = geometry -> texCoord ();
 	}
 
 	if (getNormal ())
 	{
-		geometry -> normal () = getNormal () -> copy (FLAT_COPY);
+		geometry -> normal () = getNormal () -> create (getExecutionContext ());
 		geometry -> normal () -> setup ();
+		normal = geometry -> normal ();
 	}
 		
 	if (getCoord ())
@@ -158,6 +168,14 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 
 		for (const auto & vertex : vertices)
 		{
+			if (texCoord)
+			{
+				if (vertex < texCoordIndex () .size ())
+					texCoordIndex_ .emplace (texCoordIndex () [vertex], texCoordIndex_ .size ());
+				else
+					texCoordIndex_ .emplace (coordIndex () [vertex], texCoordIndex_ .size ());
+			}
+
 			coordIndex_ .emplace (coordIndex () [vertex], coordIndex_ .size ());
 		}
 	}
@@ -168,19 +186,42 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 
 		for (const auto & vertex : vertices)
 		{
+			if (texCoord)
+			{
+				if (vertex < texCoordIndex () .size ())
+					geometry -> texCoordIndex () .emplace_back (texCoordIndex_ [texCoordIndex () [vertex]]);
+				else
+					geometry -> texCoordIndex () .emplace_back (texCoordIndex_ [coordIndex () [vertex]]);
+			}
+
 			geometry -> coordIndex () .emplace_back (coordIndex_ [coordIndex () [vertex]]);
 		}
 
+		if (texCoord)
+			geometry -> texCoordIndex () .emplace_back (-1);
+	
 		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	if (texCoord)
+	{
+		for (const auto & index : basic::reverse (texCoordIndex_))
+			texCoord -> set1Point (texCoord -> getSize (), getTexCoord () -> get1Point (index .second));
 	}
 
 	if (coord)
 	{
 		for (const auto & index : basic::reverse (coordIndex_))
-			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second));
+			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second) * transformationMatrix);
 	}
 
-	clipboard_changed () = geometry -> toString ();
+	const auto transform = getExecutionContext () -> createNode <Transform> ();
+	const auto shape     = getExecutionContext () -> createNode <Shape> ();
+
+	transform -> children () .emplace_back (shape);
+	shape -> geometry () = geometry;
+
+	clipboard_changed () = transform -> toString ();
 }
 
 void
