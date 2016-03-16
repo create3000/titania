@@ -97,6 +97,10 @@ public:
 
 	///  @name Tool handling
 
+	const X3D::ClipboardPtr &
+	getClipboard () const
+	{ return clipboard; }
+
 	const std::shared_ptr <GeometryEditor> &
 	getGeometryEditor () const
 	{ return geometryEditor; }
@@ -192,13 +196,13 @@ private:
 
 	///  @name Members
 
+	X3D::ClipboardPtr                   clipboard;
 	std::shared_ptr <GeometryEditor>    geometryEditor;
 	std::shared_ptr <Sidebar>           sidebar;
 	std::shared_ptr <Footer>            footer;
 	std::shared_ptr <X3DGridTool>       gridTool;
 	std::shared_ptr <X3DGridTool>       angleTool;
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
-	X3D::ClipboardPtr                   clipboard;
 
 	X3D::Keys keys;
 	bool      accelerators;

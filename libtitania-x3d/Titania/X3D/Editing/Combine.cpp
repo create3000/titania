@@ -71,42 +71,23 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
                   const X3DPtrArray <X3DShapeNode> & shapes,
                   const UndoStepPtr & undoStep) const
 throw (Error <DISPOSED>,
-       std::out_of_range)
+       std::domain_error)
 {
 	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
 		executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
 
 	// Choose target
 
-	const auto & masterShape = shapes .back ();
-
-	X3DPtr <IndexedFaceSet>    masterGeometry (masterShape -> geometry ());
-	X3DPtr <IndexedFaceSet>    targetGeometry (executionContext -> createNode <IndexedFaceSet> ());
-	X3DPtr <X3DCoordinateNode> targetCoord (executionContext -> createNode <Coordinate> ());
+	const auto & masterShape    = shapes .back ();
+	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
+	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
+	const auto   targetMatrix   = ~getModelViewMatrix (executionContext, SFNode (masterShape));
 
 	targetGeometry -> coord () = targetCoord;
 
-	// Combine Coordinates
+	// Filter geometries.
 
-	const auto targetMatrix = ~getModelViewMatrix (executionContext, SFNode (masterShape));
-
-	combineCoordinates (executionContext, shapes, targetGeometry, targetCoord, targetMatrix);
-
-	replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
-}
-
-void
-Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
-                             const X3DPtrArray <X3DShapeNode> & shapes,
-                             const X3DPtr <IndexedFaceSet> & targetGeometry,
-                             const X3DPtr <X3DCoordinateNode> & targetCoord,
-                             const Matrix4d & targetMatrix) const
-{
-	// Add colors, texCoords and normals if needed.
-
-	bool addColors    = false;
-	bool addTexCoords = false;
-	bool addNormals   = false;
+	X3DPtrArray <IndexedFaceSet> geometries;
 
 	for (const auto & shape : shapes)
 	{
@@ -115,6 +96,31 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 		if (not geometry)
 			continue;
 
+		geometries .emplace_back (geometry);
+	}
+
+	// Combine Coordinates
+
+	combine (executionContext, geometries, targetGeometry, targetCoord, targetMatrix);
+
+	replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+}
+
+void
+Combine::combine (const X3DExecutionContextPtr & executionContext,
+                  const X3DPtrArray <IndexedFaceSet> & geometries,
+                  const X3DPtr <IndexedFaceSet> & targetGeometry,
+                  const X3DPtr <X3DCoordinateNode> & targetCoord,
+                  const Matrix4d & targetMatrix) const
+{
+	// Add colors, texCoords and normals if needed.
+
+	bool addColors    = targetGeometry -> getColor ();
+	bool addTexCoords = targetGeometry -> getTexCoord ();
+	bool addNormals   = targetGeometry -> getNormal ();
+
+	for (const auto & geometry : geometries)
+	{
 		if (geometry -> colorIndex () .size () and geometry -> getColor ())
 			addColors = true;
 	
@@ -125,22 +131,17 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 			addNormals = true;
 	}
 
-	if (addColors)
+	if (addColors and not targetGeometry -> getColor ())
 		targetGeometry -> addColors ();
 
-	if (addTexCoords)
+	if (addTexCoords and not targetGeometry -> getTexCoord ())
 		targetGeometry -> addTexCoords ();
 
-	if (addNormals)
+	if (addNormals and not targetGeometry -> getNormal ())
 		targetGeometry -> addNormals ();
 
-	for (const auto & shape : shapes)
+	for (const auto & geometry : geometries)
 	{
-		const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
-
-		if (not geometry)
-			continue;
-
 		if (addColors and not (geometry -> colorIndex () .size () and geometry -> getColor ()))
 			geometry -> addColors ();
 
@@ -157,14 +158,10 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 	const auto targetTexCoord = X3DPtr <TextureCoordinate> (targetGeometry -> texCoord ());
 	const auto targetNormal   = X3DPtr <X3DNormalNode> (targetGeometry -> normal ());
 
-	for (const auto & shape : shapes)
+	for (const auto & geometry : geometries)
 	{
-		const X3DPtr <IndexedFaceSet>    geometry (shape -> geometry ());
 		const X3DPtr <X3DCoordinateNode> coord (geometry -> coord ());
 
-		if (not geometry)
-			continue;
-		
 		if (not coord)
 			continue;
 	
@@ -203,7 +200,9 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 
 		const auto matrix = getModelViewMatrix (executionContext, SFNode (geometry)) * targetMatrix;
 
-		size_t face = 0;
+		size_t face   = 0;
+		size_t first  = 0;
+		size_t points = targetGeometry -> coordIndex () .size ();
 
 		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
 		{
@@ -211,7 +210,33 @@ Combine::combineCoordinates (const X3DExecutionContextPtr & executionContext,
 
 			if (index < 0)
 			{
+				if (geometry -> ccw () not_eq targetGeometry -> ccw ())
+				{
+					// Flip vertex ordering.
+
+					const size_t s = i - first;
+
+					for (size_t f = 0, s1_2 = s / 2; f < s1_2; ++ f)
+					{
+						const auto i0 = points + first + f;
+						const auto i1 = points + first + (s - f - 1);
+
+						if (targetColor and targetGeometry -> colorIndex () .size () >= i1)
+							std::swap (targetGeometry -> colorIndex () [i0], targetGeometry -> colorIndex () [i1]);
+
+						if (targetTexCoord and targetGeometry -> texCoordIndex () .size () >= i1)
+							std::swap (targetGeometry -> texCoordIndex () [i0], targetGeometry -> texCoordIndex () [i1]);
+
+						if (targetNormal and targetGeometry -> normalIndex () .size () >= i1)
+							std::swap (targetGeometry -> normalIndex () [i0], targetGeometry -> normalIndex () [i1]);
+
+						std::swap (targetGeometry -> coordIndex () [i0], targetGeometry -> coordIndex () [i1]);
+					}
+				}
+
 				++ face;
+
+				first = i + 1;
 
 				if (targetColor)
 					targetGeometry -> colorIndex () .emplace_back (-1);

@@ -74,14 +74,14 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
-	X3DBrowserEditor (browser),
+	 X3DBrowserEditor (browser),
+	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	   geometryEditor (new GeometryEditor (this)),
 	          sidebar (new Sidebar (this)),
 	           footer (new Footer (this)),
 	         gridTool (new GridTool (this)),
 	        angleTool (new AngleTool (this)),
 	viewpointObserver (new ViewpointObserver (this)),
-	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	             keys (),
 	     accelerators (true)
 {

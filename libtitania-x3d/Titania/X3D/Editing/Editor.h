@@ -48,57 +48,27 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITING_COMBINE_H__
-#define __TITANIA_X3D_EDITING_COMBINE_H__
+#ifndef __TITANIA_X3D_EDITING_EDITOR_H__
+#define __TITANIA_X3D_EDITING_EDITOR_H__
 
-#include "../Components/Geometry3D/IndexedFaceSet.h"
-#include "../Components/Rendering/X3DCoordinateNode.h"
-#include "../Components/Shape/X3DShapeNode.h"
-#include "../Execution/X3DExecutionContext.h"
-#include "../Editing/X3DEditor.h"
+#include "X3DEditor.h"
 
 namespace titania {
 namespace X3D {
 
-class Combine :
-	protected X3DEditor
+class Editor :
+	public X3DEditor
 {
 public:
 
 	///  @name Construction
 
-	Combine ();
-
-	///  @name Operations
-
-	void
-	combine (const X3DExecutionContextPtr &,
-	         const X3DPtrArray <X3DShapeNode> &,
-	         const UndoStepPtr &) const
-	throw (Error <DISPOSED>,
-	       std::domain_error);
-
-	void
-	combine (const X3DExecutionContextPtr &,
-	         const X3DPtrArray <IndexedFaceSet> &,
-	         const X3DPtr <IndexedFaceSet> &,
-	         const X3DPtr <X3DCoordinateNode> &,
-	         const Matrix4d &) const;
-
-	void
-	removeShapes (const X3DExecutionContextPtr &,
-	              const MFNode &,
-	              const X3DPtrArray <X3DGroupingNode> &,
-	              const X3DPtrArray <X3DShapeNode> &,
-	              const X3DPtr <X3DShapeNode> &,
-	              const UndoStepPtr & undoStep) const;
+	Editor () = default;
 
 	///  @name Destruction
 
-	~Combine ();
-
-
-private:
+	virtual
+	~Editor () = default;
 
 };
 

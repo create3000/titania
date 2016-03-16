@@ -50,12 +50,19 @@
 
 #include "X3DIndexedFaceSetOperationsObject.h"
 
+#include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/NURBS/CoordinateDouble.h"
 #include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Editing/Combine.h"
+#include "../../../Editing/Editor.h"
 
 namespace titania {
 namespace X3D {
 
 X3DIndexedFaceSetOperationsObject::Fields::Fields () :
+	     cutSelectedFaces (new SFTime ()),
+	    copySelectedFaces (new SFTime ()),
+	           pasteFaces (new SFString ()),
 	          mergePoints (new SFTime ()),
 	          splitPoints (new SFTime ()),
 	          formNewFace (new SFTime ()),
@@ -63,7 +70,8 @@ X3DIndexedFaceSetOperationsObject::Fields::Fields () :
 	 extrudeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
 	   flipVertexOrdering (new SFTime ()),
-	  deleteSelectedFaces (new SFTime ())
+	  deleteSelectedFaces (new SFTime ()),
+	    clipboard_changed (new SFString ())
 { }
 
 X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
@@ -76,6 +84,9 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 void
 X3DIndexedFaceSetOperationsObject::initialize ()
 {
+	cutSelectedFaces ()     .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces);
+	copySelectedFaces ()    .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_copySelectedFaces);
+	pasteFaces ()           .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_pasteFaces);
 	mergePoints ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_mergePoints);
 	splitPoints ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_splitPoints);
 	formNewFace ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_formNewFace);
@@ -84,6 +95,57 @@ X3DIndexedFaceSetOperationsObject::initialize ()
 	chipOfSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces);
 	flipVertexOrdering ()   .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering);
 	deleteSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces);
+}
+
+void
+X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
+{
+	__LOG__ << std::endl;
+
+	try
+	{
+		const auto undoStep     = std::make_shared <X3D::UndoStep> (_ ("Paste Faces"));
+		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
+		auto       geometries   = Editor () .getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
+		const auto targetMatrix = ~Editor () .getModelViewMatrix (getExecutionContext (), this);
+
+		undoRestoreSelection (undoStep);
+		undoSetColorIndex (undoStep);
+		undoSetTexCoordIndex (undoStep);
+		undoSetNormalIndex (undoStep);
+		undoSetCoordIndex (undoStep);
+		undoSetColorColor (undoStep);
+		undoSetTexCoordPoint (undoStep);
+		undoSetNormalVector (undoStep);
+		undoSetCoordPoint (undoStep);
+
+		Combine () .combine (getExecutionContext (), geometries, this, getCoord (), targetMatrix);
+
+		redoSetCoordPoint (undoStep);
+		redoSetNormalVector (undoStep);
+		redoSetTexCoordPoint (undoStep);
+		redoSetColorColor (undoStep);
+		redoSetCoordIndex (undoStep);
+		redoSetNormalIndex (undoStep);
+		redoSetTexCoordIndex (undoStep);
+		redoSetColorIndex (undoStep);
+
+		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
@@ -362,7 +424,11 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Flip Vertex Ordering"));
 
 	undoRestoreSelection (undoStep);
+	undoSetColorIndex (undoStep);
+	undoSetTexCoordIndex (undoStep);
+	undoSetNormalIndex (undoStep);
 	undoSetCoordIndex (undoStep);
+	undoSetNormalVector (undoStep);
 
 	flipVertexOrdering (getSelectedFaces ());
 
@@ -377,7 +443,11 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 
 	// Redo
 
+	redoSetNormalVector (undoStep);
 	redoSetCoordIndex (undoStep);
+	redoSetNormalIndex (undoStep);
+	redoSetTexCoordIndex (undoStep);
+	redoSetColorIndex (undoStep);
 	redoRestoreSelectedFaces (selection, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
@@ -697,33 +767,45 @@ X3DIndexedFaceSetOperationsObject::chipOf (const std::set <size_t> & selectedVer
 void
 X3DIndexedFaceSetOperationsObject::flipVertexOrdering (const std::set <size_t> & faces)
 {
+	std::set <int32_t> indices;
+
 	for (const auto & face : faces)
 	{
-		const auto vertices = getFaceSelection () -> getFaceVertices (face);
-		const auto size     = vertices .size ();
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (face);
+		const auto vertices   = getFaceSelection () -> getFaceVertices (face);
+		const auto size       = vertices .size ();
 		
 		for (size_t i = 0, size1_2 = size / 2; i < size1_2; ++ i)
 		{
 			const auto i0 = vertices [i];
 			const auto i1 = vertices [size - i - 1];
 			
+			if (colorPerVertex () and colorIndex () .size () >= i1)
+				std::swap (colorIndex () [i0], colorIndex () [i1]);
+
+			if (texCoordIndex () .size () >= i1)
+				std::swap (texCoordIndex () [i0], texCoordIndex () [i1]);
+
+			if (normalPerVertex () and normalIndex () .size () >= i1)
+				std::swap (normalIndex () [i0], normalIndex () [i1]);
+
 			std::swap (coordIndex () [i0], coordIndex () [i1]);
 		}
 
 		if (not normalIndex () .empty () and getNormal ())
 		{
-		   std::set <int32_t> indices;
-
 		   if (normalPerVertex ())
 		   {
 				for (size_t i = 0; i < size; ++ i)
 					indices .emplace (normalIndex () .get1Value (vertices [i]));
 			}
-
-			for (const auto index : indices)
-				getNormal () -> set1Vector (index, negate (getNormal () -> get1Vector (index)));
+			else
+			   indices .emplace (normalIndex () .get1Value (faceNumber));
 		}
 	}
+
+	for (const auto index : indices)
+		getNormal () -> set1Vector (index, negate (getNormal () -> get1Vector (index)));
 }
 
 ///  A unique and sorted list of points given, the point will be removed from coords and the coord index will be updated.

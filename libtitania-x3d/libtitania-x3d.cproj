@@ -796,6 +796,7 @@
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
     <None Include="Titania\X3D\Browser\Sound\X3DMediaStream.h" />
     <None Include="Titania\X3D\Editing\Combine.h" />
+    <None Include="Titania\X3D\Editing\Editor.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

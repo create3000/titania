@@ -79,6 +79,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "replaceSelectedFaces",   replaceSelectedFaces ());
 	addField (inputOutput, "addSelectedFaces",       addSelectedFaces ());
 	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
+	addField (inputOutput, "cutSelectedFaces",       cutSelectedFaces ());
+	addField (inputOutput, "copySelectedFaces",      copySelectedFaces ());
+	addField (inputOutput, "pasteFaces",             pasteFaces ());
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
 	addField (inputOutput, "formNewFace",            formNewFace ());
@@ -93,6 +96,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (outputOnly,  "selectedHoles_changed",  selectedHoles_changed ());
 	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
 	addField (outputOnly , "undo_changed",           undo_changed ());
+	addField (outputOnly,  "clipboard_changed",      clipboard_changed ());
 	addField (inputOutput, "normalTool",             normalTool ());
 	addField (inputOutput, "coordTool",              coordTool ());
 }

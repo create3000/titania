@@ -54,7 +54,7 @@
 #include "../Base/X3DBaseInterface.h"
 #include "../Browser/X3DBrowserWindow.h"
 
-#include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Basic/FieldSet.h>
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <Titania/X3D/Fields/X3DPtrArray.h>
@@ -90,7 +90,8 @@ public:
 	template <class NodeType>
 	static
 	X3D::X3DPtrArray <NodeType>
-	getNodes (const X3D::MFNode &, const std::set <X3D::X3DConstants::NodeType> &);
+	getNodes (const X3D::MFNode & nodes, const std::set <X3D::X3DConstants::NodeType> & types)
+	{ return X3D::X3DEditor::getNodes <NodeType> (nodes, types); }
 
 	///  @name Destruction
 
@@ -229,34 +230,6 @@ X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & ty
 	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 	return getNodes <NodeType> (selection, types);
-}
-
-/***
- *  Traverses @a selection and returns all nodes of a type specified in @a types.
- */
-template <class NodeType>
-X3D::X3DPtrArray <NodeType>
-X3DEditorObject::getNodes (const X3D::MFNode & selection, const std::set <X3D::X3DConstants::NodeType> & types)
-{
-	// Find X3DGeometryNodes
-
-	X3D::X3DPtrArray <NodeType> nodes;
-
-	X3D::traverse (const_cast <X3D::MFNode &> (selection), [&] (X3D::SFNode & node)
-	               {
-	                  for (const auto & type: node -> getType ())
-	                  {
-	                     if (types .count (type))
-								{
-								   nodes .emplace_back (node);
-								   return true;
-								}
-							}
-
-	                  return true;
-						});
-
-	return nodes;
 }
 
 /***
