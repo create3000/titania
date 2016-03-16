@@ -567,6 +567,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 void
 X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 {
+	try
 	{
 		size_t i = 0;
 
@@ -575,7 +576,10 @@ X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 		
 		hotPointCoord -> point () .resize (i);
 	}
+	catch (const X3DError &)
+	{ }
 
+	try
 	{
 		size_t i = 0;
 
@@ -584,12 +588,15 @@ X3DIndexedFaceSetSelectionObject::updateMagicPoints ()
 		
 		activePointCoord -> point () .resize (i);
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 ///  Update hot and active face geometry.
 void
 X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 {
+	try
 	{
 		size_t i = 0;
 
@@ -604,7 +611,10 @@ X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 
 		hotEdgesGeometry -> coordIndex () .resize (i);
 	}
+	catch (const X3DError &)
+	{ }
 
+	try
 	{
 		size_t i = 0;
 
@@ -619,6 +629,8 @@ X3DIndexedFaceSetSelectionObject::updateMagicFace ()
 
 		activeEdgesGeometry -> coordIndex () .resize (i);
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 ///  Clear selection.
@@ -1022,14 +1034,19 @@ X3DIndexedFaceSetSelectionObject::removeSelectedPointsFunction (const std::vecto
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedPoints ()
 {
-	size_t i = 0;
+	try
+	{
+		size_t i = 0;
 
-	for (auto & selectedPoint : selectedPoints)
-		selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
+		for (auto & selectedPoint : selectedPoints)
+			selectionCoord -> point () .set1Value (i ++, getCoord () -> get1Point (selectedPoint .first));
 
-	selectionCoord -> point () .resize (i);
+		selectionCoord -> point () .resize (i);
 
-	selectedPoints_changed () = i;
+		selectedPoints_changed () = i;
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 ///  Determine edges from @a vertices and add them to selected edges.
@@ -1080,22 +1097,27 @@ X3DIndexedFaceSetSelectionObject::removeSelectedEdgesFunction (const std::vector
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 {
-	size_t i = 0;
-
-	for (const auto & edge : selectedEdges)
+	try
 	{
-		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
-			continue;
+		size_t i = 0;
 
-		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .first);
-		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .second);
-		selectedEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+		for (const auto & edge : selectedEdges)
+		{
+			if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+				continue;
+
+			selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .first);
+			selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .second);
+			selectedEdgesGeometry -> coordIndex () .set1Value (i ++, -1);
+		}
+
+		selectedEdgesGeometry -> coordIndex () .resize (i);
+
+		selectedEdges_changed () = i / 3;
+		selectedHoles_changed () = selectedHoles .size ();
 	}
-
-	selectedEdgesGeometry -> coordIndex () .resize (i);
-
-	selectedEdges_changed () = i / 3;
-	selectedHoles_changed () = selectedHoles .size ();
+	catch (const X3DError &)
+	{ }
 }
 
 ///  Add @a faces to selection of faces.
@@ -1134,19 +1156,24 @@ X3DIndexedFaceSetSelectionObject::removeSelectedFacesFunction (const std::set <s
 void
 X3DIndexedFaceSetSelectionObject::updateSelectedFaces ()
 {
-	size_t i = 0;
-
-	for (const auto & index : selectedFaces)
+	try
 	{
-		for (const auto & vertex : selection -> getFaceVertices (index))
-			selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [vertex]);
-	
-		selectedFacesGeometry -> coordIndex () .set1Value (i ++, -1);
+		size_t i = 0;
+
+		for (const auto & index : selectedFaces)
+		{
+			for (const auto & vertex : selection -> getFaceVertices (index))
+				selectedFacesGeometry -> coordIndex () .set1Value (i ++, coordIndex () [vertex]);
+		
+			selectedFacesGeometry -> coordIndex () .set1Value (i ++, -1);
+		}
+
+		selectedFacesGeometry -> coordIndex () .resize (i);
+
+		selectedFaces_changed () = selectedFaces .size ();
 	}
-
-	selectedFacesGeometry -> coordIndex () .resize (i);
-
-	selectedFaces_changed () = selectedFaces .size ();
+	catch (const X3DError &)
+	{ }
 }
 
 ///  Update selection geometries.

@@ -56,6 +56,8 @@
 #include "../../../Editing/Combine.h"
 #include "../../../Editing/Editor.h"
 
+#include <Titania/Utility/Map.h>
+
 namespace titania {
 namespace X3D {
 
@@ -107,6 +109,78 @@ void
 X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 {
 	__LOG__ << std::endl;
+
+	const auto geometry = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
+
+	geometry -> ccw ()             = ccw ();
+	geometry -> convex ()          = convex ();
+	geometry -> colorPerVertex ()  = colorPerVertex ();
+	geometry -> normalPerVertex () = normalPerVertex ();
+
+	X3DPtr <X3DCoordinateNode> coord;
+
+	if (getColor ())
+	{
+		geometry -> color () = getColor () -> copy (FLAT_COPY);
+		geometry -> color () -> setup ();
+	}
+
+	if (getTexCoord ())
+	{
+		geometry -> texCoord () = getTexCoord () -> copy (FLAT_COPY);
+		geometry -> texCoord () -> setup ();
+	}
+
+	if (getNormal ())
+	{
+		geometry -> normal () = getNormal () -> copy (FLAT_COPY);
+		geometry -> normal () -> setup ();
+	}
+		
+	if (getCoord ())
+	{
+		geometry -> coord () = getCoord () -> create (getExecutionContext ());
+		geometry -> coord () -> setup ();
+		coord = geometry -> coord ();
+	}
+
+	geometry -> setup ();
+
+	std::map <int32_t, int32_t> colorIndex_;
+	std::map <int32_t, int32_t> texCoordIndex_;
+	std::map <int32_t, int32_t> normalIndex_;
+	std::map <int32_t, int32_t> coordIndex_;
+
+	for (const auto & face : getSelectedFaces ())
+	{
+	   const auto faceNumber = getFaceSelection () -> getFaceNumber (face);
+		const auto vertices   = getFaceSelection () -> getFaceVertices (face);
+
+		for (const auto & vertex : vertices)
+		{
+			coordIndex_ .emplace (coordIndex () [vertex], coordIndex_ .size ());
+		}
+	}
+
+	for (const auto & face : getSelectedFaces ())
+	{
+		const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+		for (const auto & vertex : vertices)
+		{
+			geometry -> coordIndex () .emplace_back (coordIndex_ [coordIndex () [vertex]]);
+		}
+
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	if (coord)
+	{
+		for (const auto & index : basic::reverse (coordIndex_))
+			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second));
+	}
+
+	clipboard_changed () = geometry -> toString ();
 }
 
 void

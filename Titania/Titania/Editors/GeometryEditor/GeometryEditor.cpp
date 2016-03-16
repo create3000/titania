@@ -272,6 +272,7 @@ GeometryEditor::connect ()
 						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (this, &GeometryEditor::set_selectedHoles);
 						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
 						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
+						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (this, &GeometryEditor::set_clipboard);
 
 						node -> setField <X3D::SFBool>   ("pickable",       coordEditor -> getField <X3D::SFBool>   ("pickable"),       true);
 						node -> setField <X3D::SFBool>   ("select",         coordEditor -> getField <X3D::SFBool>   ("select"),         true);
@@ -398,6 +399,14 @@ GeometryEditor::on_cut ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
+		try
+		{
+			if (not geometryNodes .empty ())
+				geometryNodes .back () -> setField <X3D::SFTime> ("cutSelectedFaces", chrono::now ());
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
 		return true;
 	}
 
@@ -409,6 +418,14 @@ GeometryEditor::on_copy ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
+		try
+		{
+			if (not geometryNodes .empty ())
+				geometryNodes .back () -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
 		return true;
 	}
 
@@ -420,8 +437,8 @@ GeometryEditor::on_paste ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
-	   try
-	   {
+		try
+		{
 			if (not geometryNodes .empty ())
 				geometryNodes .back () -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
 		}
@@ -528,6 +545,12 @@ void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
 	getBrowserWindow () -> addUndoStep (container -> getUndoStep ());
+}
+
+void
+GeometryEditor::set_clipboard (const X3D::SFString & string)
+{
+	__LOG__ << string << std::endl;
 }
 
 void
