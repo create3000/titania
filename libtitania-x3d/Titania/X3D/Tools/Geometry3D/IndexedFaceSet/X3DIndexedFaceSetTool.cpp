@@ -125,6 +125,7 @@ X3DIndexedFaceSetTool::undoSetCoordIndex (const UndoStepPtr & undoStep)
 void
 X3DIndexedFaceSetTool::redoSetCoordIndex (const UndoStepPtr & undoStep)
 {
+	undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (coordIndex ()), coordIndex ());
 }
 

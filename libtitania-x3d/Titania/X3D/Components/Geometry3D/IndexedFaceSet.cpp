@@ -737,7 +737,7 @@ IndexedFaceSet::rebuildColor ()
 
 	std::map <int32_t, int32_t> map;
 
-	for (const auto & index : colorIndex ())
+	for (const auto & index : colorIndex () .empty () ? coordIndex () : colorIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -754,7 +754,7 @@ IndexedFaceSet::rebuildColor ()
 	   
 	std::vector <int32_t> indices;
 
-	for (const auto & index : colorIndex ())
+	for (const auto & index : colorIndex () .empty () ? coordIndex () : colorIndex ())
 	{
 		if (index < 0)
 		{
@@ -810,7 +810,7 @@ IndexedFaceSet::rebuildTexCoord ()
 
 	std::map <int32_t, int32_t> map;
 
-	for (const auto & index : texCoordIndex ())
+	for (const auto & index : texCoordIndex () .empty () ? coordIndex () : texCoordIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -827,7 +827,7 @@ IndexedFaceSet::rebuildTexCoord ()
 	   
 	std::vector <int32_t> indices;
 
-	for (const auto & index : texCoordIndex ())
+	for (const auto & index : texCoordIndex () .empty () ? coordIndex () : texCoordIndex ())
 	{
 		if (index < 0)
 		{
@@ -915,7 +915,7 @@ IndexedFaceSet::rebuildNormal ()
 
 	std::map <int32_t, int32_t> map;
 
-	for (const auto & index : normalIndex ())
+	for (const auto & index : normalIndex () .empty () ? coordIndex () : normalIndex ())
 	{
 		if (index < 0)
 			continue;
@@ -932,7 +932,7 @@ IndexedFaceSet::rebuildNormal ()
 	   
 	std::vector <int32_t> indices;
 
-	for (const auto & index : normalIndex ())
+	for (const auto & index : normalIndex () .empty () ? coordIndex () : normalIndex ())
 	{
 		if (index < 0)
 		{
