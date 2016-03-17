@@ -4100,7 +4100,7 @@
                                 <child>
                                   <object class="GtkToolButton" id="SelectChildrenButton">
                                     <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Selects the next lower children objects within the selected group in the hierarchy.</property>
+                                    <property name="tooltip_text" translatable="yes">Selects the next lower children within the selected group in the hierarchy.</property>
                                     <property name="label" translatable="yes">Select Children</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">gtk-go-down</property>

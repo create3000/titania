@@ -218,28 +218,28 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
 
 	undoRestoreSelection (undoStep);
-	undoSetColorIndex (undoStep);
+	undoSetColorIndex    (undoStep);
 	undoSetTexCoordIndex (undoStep);
-	undoSetNormalIndex (undoStep);
-	undoSetCoordIndex (undoStep);
-	undoSetColorColor (undoStep);
+	undoSetNormalIndex   (undoStep);
+	undoSetCoordIndex    (undoStep);
+	undoSetColorColor    (undoStep);
 	undoSetTexCoordPoint (undoStep);
-	undoSetNormalVector (undoStep);
-	undoSetCoordPoint (undoStep);
+	undoSetNormalVector  (undoStep);
+	undoSetCoordPoint    (undoStep);
 
 	if (not cut ())
 		return;
 
 	replaceSelection () .clear ();
 
-	redoSetCoordPoint (undoStep);
-	redoSetNormalVector (undoStep);
+	redoSetCoordPoint    (undoStep);
+	redoSetNormalVector  (undoStep);
 	redoSetTexCoordPoint (undoStep);
-	redoSetColorColor (undoStep);
-	redoSetCoordIndex (undoStep);
-	redoSetNormalIndex (undoStep);
+	redoSetColorColor    (undoStep);
+	redoSetCoordIndex    (undoStep);
+	redoSetNormalIndex   (undoStep);
 	redoSetTexCoordIndex (undoStep);
-	redoSetColorIndex (undoStep);
+	redoSetColorIndex    (undoStep);
 	redoRestoreSelection ({ }, undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);

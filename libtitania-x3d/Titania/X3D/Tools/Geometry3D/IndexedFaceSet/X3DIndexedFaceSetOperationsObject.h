@@ -218,6 +218,9 @@ private:
 	void
 	set_deleteSelectedFaces ();
 
+	void
+	deleteSelectedFaces (const UndoStepPtr &);
+
 	///  @name Operations
 
 	std::vector <int32_t>

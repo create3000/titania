@@ -104,8 +104,12 @@ X3DIndexedFaceSetOperationsObject::initialize ()
 void
 X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
 {
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Selected Faces"));
+
 	set_copySelectedFaces ();
-	set_deleteSelectedFaces ();
+	deleteSelectedFaces (undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 void
@@ -624,6 +628,14 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Selected Faces"));
 
+	deleteSelectedFaces (undoStep);
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+}
+
+void
+X3DIndexedFaceSetOperationsObject::deleteSelectedFaces (const UndoStepPtr & undoStep)
+{
 	undoRestoreSelection (undoStep);
 	undoSetColorIndex    (undoStep);
 	undoSetTexCoordIndex (undoStep);
