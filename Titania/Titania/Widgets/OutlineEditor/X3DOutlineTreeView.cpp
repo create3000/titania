@@ -145,6 +145,8 @@ X3DOutlineTreeView::on_style_updated ()
 	cellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
 	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
+
+	queue_draw ();
 }
 
 void

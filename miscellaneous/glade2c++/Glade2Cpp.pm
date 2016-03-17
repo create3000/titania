@@ -855,3 +855,15 @@ Button::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
 Button::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* event);
+Label::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+Label::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);
+Label::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* event);
+EventBox::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);
+EventBox::button_release_event
+  virtual bool on_button_release_event(GdkEventButton* event);
+EventBox::motion_notify_event
+  virtual bool on_motion_notify_event(GdkEventMotion* event);
