@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.0
 
 UNIT angle degree 0.0174532925199433
 
 META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 01 Mar 2016 08:54:02 GMT"
+META "modified" "Thu, 17 Mar 2016 09:05:36 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -272,415 +272,419 @@ PROTO TransformTool [
       DEF _1 DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
-        children [
-          DEF AdjustmentHandles Transform {
-            translation IS bboxCenter
-            children [
-              DEF X Group {
-                children [
-                  DEF Front_1 Group {
-                    children [
-                      DEF XHandle Transform {
-                        children ScreenGroup {
-                          children DEF XSwitch Switch {
-                            children [
-                              Transform {
-                                translation 10.5 0 0
-                                rotation 0 0 -1 1.5708
-                                children Shape {
-                                  appearance DEF Red Appearance {
-                                    material Material {
-                                      diffuseColor 1 0 0
-                                    }
-                                    shaders ToolShader {
-                                      diffuseColor 1 0 0
-                                      shininess 0
-                                    }
-                                  }
-                                  geometry DEF Arrow Cone {
-                                    height 21
-                                    bottomRadius 7
-                                  }
-                                }
-                              }
-                              Transform {
-                                translation 8 0 0
-                                children Shape {
-                                  appearance USE Red
-                                  geometry DEF Sphere Sphere {
-                                    radius 8
-                                  }
-                                }
-                              }
-                              Transform {
-                                translation 6 0 0
-                                children DEF _2 Shape {
-                                  appearance USE Red
-                                  geometry DEF Box Box {
-                                    size 12 12 12
-                                  }
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      DEF ModeTouch TouchSensor {
-                        enabled IS set_enabled
-                      }
-                      DEF XTranslationSensor PlaneSensor {
-                        enabled IS set_enabled
-                        description "x-Axis"
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                      DEF XScaleSensor PlaneSensor {
-                        description "x-Axis"
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                  DEF Back_1 Group {
-                    children [
-                      DEF XBack Transform {
-                        children ScreenGroup {
-                          children DEF _3 Switch {
-                            children [
-                              DEF _4 Transform {
-                                translation -3.5 0 0
-                                rotation 0 0 -1 1.5708
-                                children Shape {
-                                  appearance USE Red
-                                  geometry DEF _5 Cylinder {
-                                    height 8
-                                    radius 7
-                                  }
-                                }
-                              }
-                              USE _4
-                              Transform {
-                                translation -4 0 0
-                                scale 0.666667 1 1
-                                children USE _2
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      USE ModeTouch
-                      USE XTranslationSensor
-                      #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
-                      DEF XScaleBackSensor PlaneSensor {
-                        description "x-Axis"
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                ]
-              }
-              DEF Y Group {
-                children [
-                  DEF Front_2 Group {
-                    children [
-                      DEF YHandle Transform {
-                        children ScreenGroup {
-                          children DEF YSwitch Switch {
-                            children [
-                              Transform {
-                                translation 0 10.5 0
-                                children Shape {
-                                  appearance DEF Green Appearance {
-                                    material Material {
-                                      diffuseColor 0 1 0
-                                    }
-                                    shaders ToolShader {
-                                      diffuseColor 0 1 0
-                                      shininess 0
-                                    }
-                                  }
-                                  geometry USE Arrow
-                                }
-                              }
-                              Transform {
-                                translation 0 8 0
-                                children Shape {
-                                  appearance USE Green
-                                  geometry USE Sphere
-                                }
-                              }
-                              Transform {
-                                translation 0 6 0
-                                children DEF _6 Shape {
-                                  appearance USE Green
-                                  geometry USE Box
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      USE ModeTouch
-                      DEF YTranslationSensor PlaneSensor {
-                        enabled IS set_enabled
-                        description "y-Axis"
-                        autoOffset FALSE
-                        maxPosition 0 -1
-                        isActive IS isActive
-                      }
-                      DEF YScaleSensor PlaneSensor {
-                        description "y-Axis"
-                        autoOffset FALSE
-                        maxPosition 0 -1
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                  DEF Back_2 Group {
-                    children [
-                      DEF YBack Transform {
-                        children ScreenGroup {
-                          children DEF _7 Switch {
-                            children [
-                              DEF _8 Transform {
-                                translation 0 -3.5 0
-                                children Shape {
-                                  appearance USE Green
-                                  geometry USE _5
-                                }
-                              }
-                              USE _8
-                              Transform {
-                                translation 0 -4 0
-                                scale 1 0.666667 1
-                                children USE _6
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      USE ModeTouch
-                      USE YTranslationSensor
-                      #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
-                      DEF YScaleBackSensor PlaneSensor {
-                        description "y-Axis"
-                        autoOffset FALSE
-                        maxPosition 0 -1
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                ]
-              }
-              DEF Z Group {
-                children [
-                  DEF Front_3 Group {
-                    children [
-                      DEF ZHandle Transform {
-                        children ScreenGroup {
-                          children DEF ZSwitch Switch {
-                            children [
-                              Transform {
-                                translation 0 0 10.5
-                                rotation 1 0 0 1.5708
-                                children Shape {
-                                  appearance DEF Blue Appearance {
-                                    material Material {
-                                      diffuseColor 0 0 1
-                                    }
-                                    shaders ToolShader {
-                                      diffuseColor 0 0 1
-                                      shininess 0
-                                    }
-                                  }
-                                  geometry USE Arrow
-                                }
-                              }
-                              Transform {
-                                translation 0 0 8
-                                children Shape {
-                                  appearance USE Blue
-                                  geometry USE Sphere
-                                }
-                              }
-                              Transform {
-                                translation 0 0 6
-                                children DEF _9 Shape {
-                                  appearance USE Blue
-                                  geometry USE Box
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      USE ModeTouch
-                      DEF ZTranslationSensor PlaneSensor {
-                        enabled IS set_enabled
-                        description "z-Axis"
-                        axisRotation 0 -1 0 1.5708
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                      DEF ZScaleSensor PlaneSensor {
-                        description "z-Axis"
-                        axisRotation 0 -1 0 1.5708
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                  DEF Back_3 Group {
-                    children [
-                      DEF ZBack Transform {
-                        children ScreenGroup {
-                          children DEF _10 Switch {
-                            children [
-                              DEF _11 Transform {
-                                translation 0 0 -3.5
-                                rotation 1 0 0 1.5708
-                                children Shape {
-                                  appearance USE Blue
-                                  geometry USE _5
-                                }
-                              }
-                              USE _11
-                              Transform {
-                                translation 0 0 -4
-                                scale 1 1 0.666667
-                                children USE _9
-                              }
-                            ]
-                          }
-                        }
-                      }
-                      USE ModeTouch
-                      USE ZTranslationSensor
-                      #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
-                      DEF ZScaleBackSensor PlaneSensor {
-                        description "z-Axis"
-                        axisRotation 0 -1 0 1.5708
-                        autoOffset FALSE
-                        maxPosition -1 0
-                        isActive IS isActive
-                      }
-                    ]
-                  }
-                ]
-              }
-              DEF ScaleTool Switch {
-                children [
-                  Group { }
-                  Group { }
-                  Group {
-                    children [
-                      DEF ScaleHandle1 Transform {
-                        children [
-                          DEF ScaleSensor1 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          DEF ScaleHandle ScreenGroup {
-                            children Transform {
+        children DEF AdjustmentHandles Transform {
+          translation IS bboxCenter
+          children [
+            DEF X Group {
+              children [
+                DEF Front_1 Group {
+                  children [
+                    DEF XHandle Transform {
+                      children ScreenGroup {
+                        children DEF XSwitch Switch {
+                          children [
+                            Transform {
+                              translation 10.5 0 0
+                              rotation 0 0 -1 1.5708
                               children Shape {
-                                appearance DEF White Appearance {
+                                appearance DEF Red Appearance {
                                   material Material {
-                                    diffuseColor 1 1 1
+                                    diffuseColor 1 0 0
                                   }
                                   shaders ToolShader {
-                                    diffuseColor 1 1 1
+                                    diffuseColor 1 0 0
                                     shininess 0
                                   }
                                 }
+                                geometry DEF Arrow Cone {
+                                  height 21
+                                  bottomRadius 7
+                                }
+                              }
+                            }
+                            Transform {
+                              translation 8 0 0
+                              children Shape {
+                                appearance USE Red
+                                geometry DEF Sphere Sphere {
+                                  radius 8
+                                }
+                              }
+                            }
+                            Transform {
+                              translation 6 0 0
+                              children DEF _2 Shape {
+                                appearance USE Red
+                                geometry DEF Box Box {
+                                  size 12 12 12
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                    DEF ModeTouch TouchSensor {
+                      enabled IS set_enabled
+                    }
+                    DEF XTranslationSensor PlaneSensor {
+                      enabled IS set_enabled
+                      description "x-Axis"
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                    DEF XScaleSensor PlaneSensor {
+                      description "x-Axis"
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                  ]
+                }
+                DEF Back_1 Group {
+                  children [
+                    DEF XBack Transform {
+                      children ScreenGroup {
+                        children DEF _3 Switch {
+                          children [
+                            DEF _4 Transform {
+                              translation -3.5 0 0
+                              rotation 0 0 -1 1.5708
+                              children Shape {
+                                appearance USE Red
+                                geometry DEF _5 Cylinder {
+                                  height 8
+                                  radius 7
+                                }
+                              }
+                            }
+                            USE _4
+                            Transform {
+                              translation -4 0 0
+                              scale 0.666667 1 1
+                              children USE _2
+                            }
+                          ]
+                        }
+                      }
+                    }
+                    USE ModeTouch
+                    USE XTranslationSensor
+                    #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                    DEF XScaleBackSensor PlaneSensor {
+                      description "x-Axis"
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF Y Group {
+              children [
+                DEF Front_2 Group {
+                  children [
+                    DEF YHandle Transform {
+                      children ScreenGroup {
+                        children DEF YSwitch Switch {
+                          children [
+                            Transform {
+                              translation 0 10.5 0
+                              children Shape {
+                                appearance DEF Green Appearance {
+                                  material Material {
+                                    diffuseColor 0 1 0
+                                  }
+                                  shaders ToolShader {
+                                    diffuseColor 0 1 0
+                                    shininess 0
+                                  }
+                                }
+                                geometry USE Arrow
+                              }
+                            }
+                            Transform {
+                              translation 0 8 0
+                              children Shape {
+                                appearance USE Green
+                                geometry USE Sphere
+                              }
+                            }
+                            Transform {
+                              translation 0 6 0
+                              children DEF _6 Shape {
+                                appearance USE Green
                                 geometry USE Box
                               }
                             }
-                          }
-                        ]
+                          ]
+                        }
                       }
-                      DEF ScaleHandle2 Transform {
-                        children [
-                          DEF ScaleSensor2 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
+                    }
+                    USE ModeTouch
+                    DEF YTranslationSensor PlaneSensor {
+                      enabled IS set_enabled
+                      description "y-Axis"
+                      autoOffset FALSE
+                      maxPosition 0 -1
+                      isActive IS isActive
+                    }
+                    DEF YScaleSensor PlaneSensor {
+                      description "y-Axis"
+                      autoOffset FALSE
+                      maxPosition 0 -1
+                      isActive IS isActive
+                    }
+                  ]
+                }
+                DEF Back_2 Group {
+                  children [
+                    DEF YBack Transform {
+                      children ScreenGroup {
+                        children DEF _7 Switch {
+                          children [
+                            DEF _8 Transform {
+                              translation 0 -3.5 0
+                              children Shape {
+                                appearance USE Green
+                                geometry USE _5
+                              }
+                            }
+                            USE _8
+                            Transform {
+                              translation 0 -4 0
+                              scale 1 0.666667 1
+                              children USE _6
+                            }
+                          ]
+                        }
                       }
-                      DEF ScaleHandle3 Transform {
-                        children [
-                          DEF ScaleSensor3 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
+                    }
+                    USE ModeTouch
+                    USE YTranslationSensor
+                    #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                    DEF YScaleBackSensor PlaneSensor {
+                      description "y-Axis"
+                      autoOffset FALSE
+                      maxPosition 0 -1
+                      isActive IS isActive
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF Z Group {
+              children [
+                DEF Front_3 Group {
+                  children [
+                    DEF ZHandle Transform {
+                      children ScreenGroup {
+                        children DEF ZSwitch Switch {
+                          children [
+                            Transform {
+                              translation 0 0 10.5
+                              rotation 1 0 0 1.5708
+                              children Shape {
+                                appearance DEF Blue Appearance {
+                                  material Material {
+                                    diffuseColor 0 0 1
+                                  }
+                                  shaders ToolShader {
+                                    diffuseColor 0 0 1
+                                    shininess 0
+                                  }
+                                }
+                                geometry USE Arrow
+                              }
+                            }
+                            Transform {
+                              translation 0 0 8
+                              children Shape {
+                                appearance USE Blue
+                                geometry USE Sphere
+                              }
+                            }
+                            Transform {
+                              translation 0 0 6
+                              children DEF _9 Shape {
+                                appearance USE Blue
+                                geometry USE Box
+                              }
+                            }
+                          ]
+                        }
                       }
-                      DEF ScaleHandle4 Transform {
-                        children [
-                          DEF ScaleSensor4 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
+                    }
+                    USE ModeTouch
+                    DEF ZTranslationSensor PlaneSensor {
+                      enabled IS set_enabled
+                      description "z-Axis"
+                      axisRotation 0 -1 0 1.5708
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                    DEF ZScaleSensor PlaneSensor {
+                      description "z-Axis"
+                      axisRotation 0 -1 0 1.5708
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                  ]
+                }
+                DEF Back_3 Group {
+                  children [
+                    DEF ZBack Transform {
+                      children ScreenGroup {
+                        children DEF _10 Switch {
+                          children [
+                            DEF _11 Transform {
+                              translation 0 0 -3.5
+                              rotation 1 0 0 1.5708
+                              children Shape {
+                                appearance USE Blue
+                                geometry USE _5
+                              }
+                            }
+                            USE _11
+                            Transform {
+                              translation 0 0 -4
+                              scale 1 1 0.666667
+                              children USE _9
+                            }
+                          ]
+                        }
                       }
-                      DEF ScaleHandle5 Transform {
-                        children [
-                          DEF ScaleSensor5 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
+                    }
+                    USE ModeTouch
+                    USE ZTranslationSensor
+                    #file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv
+                    DEF ZScaleBackSensor PlaneSensor {
+                      description "z-Axis"
+                      axisRotation 0 -1 0 1.5708
+                      autoOffset FALSE
+                      maxPosition -1 0
+                      isActive IS isActive
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF ScaleTool Switch {
+              children [
+                Group { }
+                Group { }
+                Group {
+                  children [
+                    DEF ScaleHandle1 Transform {
+                      children [
+                        DEF ScaleSensor1 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        DEF ScaleHandle ScreenGroup {
+                          children Transform {
+                            children Shape {
+                              appearance DEF White Appearance {
+                                material Material {
+                                  diffuseColor 1 1 1
+                                }
+                                shaders ToolShader {
+                                  diffuseColor 1 1 1
+                                  shininess 0
+                                }
+                              }
+                              geometry USE Box
+                            }
                           }
-                          USE ScaleHandle
-                        ]
-                      }
-                      DEF ScaleHandle6 Transform {
-                        children [
-                          DEF ScaleSensor6 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
-                      }
-                      DEF ScaleHandle7 Transform {
-                        children [
-                          DEF ScaleSensor7 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
-                      }
-                      DEF ScaleHandle8 Transform {
-                        children [
-                          DEF ScaleSensor8 PlaneSensor {
-                            autoOffset FALSE
-                            maxPosition -1 0
-                            isActive IS isActive
-                          }
-                          USE ScaleHandle
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
+                        }
+                      ]
+                    }
+                    DEF ScaleHandle2 Transform {
+                      children [
+                        DEF ScaleSensor2 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle3 Transform {
+                      children [
+                        DEF ScaleSensor3 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle4 Transform {
+                      children [
+                        DEF ScaleSensor4 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle5 Transform {
+                      children [
+                        DEF ScaleSensor5 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle6 Transform {
+                      children [
+                        DEF ScaleSensor6 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle7 Transform {
+                      children [
+                        DEF ScaleSensor7 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                    DEF ScaleHandle8 Transform {
+                      children [
+                        DEF ScaleSensor8 PlaneSensor {
+                          autoOffset FALSE
+                          maxPosition -1 0
+                          isActive IS isActive
+                        }
+                        USE ScaleHandle
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+      DEF _12 DepthBuffer {
+        enabled FALSE
+        depthOffset 1000000000
+        children [
           DEF CenterLine Shape {
             appearance Appearance {
               lineProperties LineProperties {
@@ -708,14 +712,14 @@ PROTO TransformTool [
           }
           DEF CenterPoint Transform {
             children [
-              DEF _12 TouchSensor {
+              DEF _13 TouchSensor {
                 enabled IS set_enabled
               }
               ScreenGroup {
-                children DEF _13 BooleanSwitch {
+                children DEF _14 BooleanSwitch {
                   bboxSize 0 0 0
                   children [
-                    DEF _14 Shape {
+                    DEF _15 Shape {
                       appearance Appearance {
                         material Material {
                           diffuseColor 1 1 0
@@ -725,13 +729,13 @@ PROTO TransformTool [
                           shininess 0
                         }
                       }
-                      geometry DEF _15 Sphere {
+                      geometry DEF _16 Sphere {
                         radius 5
                       }
                     }
-                    DEF _16 Shape {
+                    DEF _17 Shape {
                       appearance USE Red
-                      geometry USE _15
+                      geometry USE _16
                     }
                   ]
                 }
@@ -888,9 +892,9 @@ PROTO TransformTool [
     ]
   }
 
-  DEF _17 BooleanFilter { }
+  DEF _18 BooleanFilter { }
 
-  DEF _18 TimeTrigger { }
+  DEF _19 TimeTrigger { }
 
   DEF ModeDoubleClick DoubleClick { }
 
@@ -958,6 +962,7 @@ function set_whichChoice (value)
     inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
     inputOutput    SFVec3f    bboxSize IS bboxSize
     outputOnly     SFDouble   handlesDepthOffset_changed
+    outputOnly     SFDouble   rotationHandlesDepthOffset_changed
     initializeOnly SFFloat    offset 0.01
     initializeOnly SFVec3f    xAxis 1 0 0
     initializeOnly SFVec3f    yAxis 0 1 0
@@ -1034,7 +1039,8 @@ function eventsProcessed ()
 	yBack .translation = new SFVec3f (0, -bboxSize1_2 .y, 0);
 	zBack .translation = new SFVec3f (0, 0, -bboxSize1_2 .z);
 	
-	handlesDepthOffset_changed = 1000 * bboxSize .length () + 1.e9;
+	handlesDepthOffset_changed         = 2000 * bboxSize .length () + 1.e9;
+	rotationHandlesDepthOffset_changed = 1000 * bboxSize .length () + 1.e9;
 }"
     directOutput TRUE
   }
@@ -1853,24 +1859,24 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-  ROUTE _12.touchTime TO CenterDoubleClick.set_time
+  ROUTE _13.touchTime TO CenterDoubleClick.set_time
   ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-  ROUTE CenterScript.keepCenter_changed TO _13.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO _14.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-  ROUTE _18.triggerTime TO ModeDoubleClick.set_time
-  ROUTE XRotationSensor.isActive TO _17.set_boolean
-  ROUTE YRotationSensor.isActive TO _17.set_boolean
-  ROUTE ZRotationSensor.isActive TO _17.set_boolean
-  ROUTE _17.inputFalse TO _18.set_boolean
-  ROUTE ScaleSensor1.isActive TO _17.set_boolean
-  ROUTE ScaleSensor2.isActive TO _17.set_boolean
-  ROUTE ScaleSensor3.isActive TO _17.set_boolean
-  ROUTE ScaleSensor4.isActive TO _17.set_boolean
-  ROUTE ScaleSensor5.isActive TO _17.set_boolean
-  ROUTE ScaleSensor6.isActive TO _17.set_boolean
-  ROUTE ScaleSensor7.isActive TO _17.set_boolean
-  ROUTE ScaleSensor8.isActive TO _17.set_boolean
+  ROUTE _19.triggerTime TO ModeDoubleClick.set_time
+  ROUTE XRotationSensor.isActive TO _18.set_boolean
+  ROUTE YRotationSensor.isActive TO _18.set_boolean
+  ROUTE ZRotationSensor.isActive TO _18.set_boolean
+  ROUTE _18.inputFalse TO _19.set_boolean
+  ROUTE ScaleSensor1.isActive TO _18.set_boolean
+  ROUTE ScaleSensor2.isActive TO _18.set_boolean
+  ROUTE ScaleSensor3.isActive TO _18.set_boolean
+  ROUTE ScaleSensor4.isActive TO _18.set_boolean
+  ROUTE ScaleSensor5.isActive TO _18.set_boolean
+  ROUTE ScaleSensor6.isActive TO _18.set_boolean
+  ROUTE ScaleSensor7.isActive TO _18.set_boolean
+  ROUTE ScaleSensor8.isActive TO _18.set_boolean
   ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
   ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
   ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
@@ -1883,6 +1889,7 @@ function sgn (value)
   ROUTE XSwitch.whichChoice_changed TO _3.set_whichChoice
   ROUTE ZSwitch.whichChoice_changed TO _10.set_whichChoice
   ROUTE YSwitch.whichChoice_changed TO _7.set_whichChoice
+  ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _12.set_depthOffset
   ROUTE BBoxScript.handlesDepthOffset_changed TO _1.set_depthOffset
 }
 
