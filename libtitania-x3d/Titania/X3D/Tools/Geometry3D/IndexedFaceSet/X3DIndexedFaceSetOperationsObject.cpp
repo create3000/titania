@@ -156,64 +156,119 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 
 	geometry -> setup ();
 
-	std::map <int32_t, int32_t> colorIndex_;
-	std::map <int32_t, int32_t> texCoordIndex_;
-	std::map <int32_t, int32_t> normalIndex_;
-	std::map <int32_t, int32_t> coordIndex_;
+	// Generate mappings arrays.
+
+	std::map <int32_t, int32_t> colorArray;
+	std::map <int32_t, int32_t> texCoordArray;
+	std::map <int32_t, int32_t> normalArray;
+	std::map <int32_t, int32_t> coordArray;
 
 	for (const auto & face : getSelectedFaces ())
 	{
-	   const auto faceNumber = getFaceSelection () -> getFaceNumber (face);
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (face);
 		const auto vertices   = getFaceSelection () -> getFaceVertices (face);
 
 		for (const auto & vertex : vertices)
 		{
-			if (texCoord)
+			if (color)
 			{
-				if (vertex < texCoordIndex () .size ())
-					texCoordIndex_ .emplace (texCoordIndex () [vertex], texCoordIndex_ .size ());
+				if (colorPerVertex ())
+					colorArray .emplace (getVertexColorIndex (vertex), colorArray .size ());
 				else
-					texCoordIndex_ .emplace (coordIndex () [vertex], texCoordIndex_ .size ());
+					colorArray .emplace (getFaceColorIndex (faceNumber), colorArray .size ());
 			}
 
-			coordIndex_ .emplace (coordIndex () [vertex], coordIndex_ .size ());
+			if (texCoord)
+				texCoordArray .emplace (getVertexTexCoordIndex (vertex), texCoordArray .size ());
+
+			if (normal)
+			{
+				if (normalPerVertex ())
+					normalArray .emplace (getVertexNormalIndex (vertex), normalArray .size ());
+				else
+					normalArray .emplace (getFaceNormalIndex (faceNumber), normalArray .size ());
+			}
+
+			coordArray .emplace (coordIndex () [vertex], coordArray .size ());
 		}
 	}
 
+	// Generate indices
+
 	for (const auto & face : getSelectedFaces ())
 	{
-		const auto vertices = getFaceSelection () -> getFaceVertices (face);
+		const auto vertices   = getFaceSelection () -> getFaceVertices (face);
+		const auto faceNumber = getFaceSelection () -> getFaceNumber (face);
 
 		for (const auto & vertex : vertices)
 		{
-			if (texCoord)
+			if (color)
 			{
-				if (vertex < texCoordIndex () .size ())
-					geometry -> texCoordIndex () .emplace_back (texCoordIndex_ [texCoordIndex () [vertex]]);
-				else
-					geometry -> texCoordIndex () .emplace_back (texCoordIndex_ [coordIndex () [vertex]]);
+				if (colorPerVertex ())
+					geometry -> colorIndex () .emplace_back (colorArray [getVertexColorIndex (vertex)]);
 			}
-
-			geometry -> coordIndex () .emplace_back (coordIndex_ [coordIndex () [vertex]]);
+	
+			if (texCoord)
+				geometry -> texCoordIndex () .emplace_back (texCoordArray [getVertexTexCoordIndex (vertex)]);
+	
+			if (normal)
+			{
+				if (normalPerVertex ())
+					geometry -> normalIndex () .emplace_back (normalArray [getVertexNormalIndex (vertex)]);
+			}
+	
+			geometry -> coordIndex () .emplace_back (coordArray [coordIndex () [vertex]]);
 		}
 
+		if (color)
+		{
+			if (colorPerVertex ())
+			   geometry -> colorIndex () .emplace_back (-1);
+			else
+				geometry -> colorIndex () .emplace_back (colorArray [getFaceColorIndex (faceNumber)]);
+		}
+	
 		if (texCoord)
 			geometry -> texCoordIndex () .emplace_back (-1);
+	
+		if (normal)
+		{
+			if (normalPerVertex ())
+			   geometry -> normalIndex () .emplace_back (-1);
+			else
+				geometry -> normalIndex () .emplace_back (normalArray [getFaceNormalIndex (faceNumber)]);
+		}
 	
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
+	// Generate points
+
+	if (color)
+	{
+		for (const auto & index : basic::reverse (colorArray))
+			color -> set1Color (color -> getSize (), getColor () -> get1Color (index .second));
+	}
+
 	if (texCoord)
 	{
-		for (const auto & index : basic::reverse (texCoordIndex_))
+		for (const auto & index : basic::reverse (texCoordArray))
 			texCoord -> set1Point (texCoord -> getSize (), getTexCoord () -> get1Point (index .second));
+	}
+
+	if (normal)
+	{
+		for (const auto & index : basic::reverse (normalArray))
+			normal -> set1Vector (normal -> getSize (), getNormal () -> get1Vector (index .second));
 	}
 
 	if (coord)
 	{
-		for (const auto & index : basic::reverse (coordIndex_))
+		for (const auto & index : basic::reverse (coordArray))
 			coord -> set1Point (coord -> getSize (), getCoord () -> get1Point (index .second) * transformationMatrix);
 	}
+
+	// Print out geometry
 
 	const auto transform = getExecutionContext () -> createNode <Transform> ();
 	const auto shape     = getExecutionContext () -> createNode <Shape> ();

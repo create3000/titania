@@ -227,33 +227,33 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		const auto texCoord = X3DPtr <TextureCoordinate> (geometry -> texCoord ());
 		const auto normal   = X3DPtr <X3DNormalNode> (geometry -> normal ());
 
-		std::map <int32_t, int32_t> colorIndex;
-		std::map <int32_t, int32_t> texCoordIndex;
-		std::map <int32_t, int32_t> normalIndex;
-		std::map <int32_t, int32_t> coordIndex;
+		std::map <int32_t, int32_t> colorArray;
+		std::map <int32_t, int32_t> texCoordArray;
+		std::map <int32_t, int32_t> normalArray;
+		std::map <int32_t, int32_t> coordArray;
 
 		for (const auto & index : geometry -> colorIndex ())
 		{
 			if (index >= 0)
-				colorIndex .emplace (index, colorIndex .size ());
+				colorArray .emplace (index, colorArray .size ());
 		}
 
 		for (const auto & index : geometry -> texCoordIndex ())
 		{
 			if (index >= 0)
-				texCoordIndex .emplace (index, texCoordIndex .size ());
+				texCoordArray .emplace (index, texCoordArray .size ());
 		}
 
 		for (const auto & index : geometry -> normalIndex ())
 		{
 			if (index >= 0)
-				normalIndex .emplace (index, normalIndex .size ());
+				normalArray .emplace (index, normalArray .size ());
 		}
 
 		for (const auto & index : geometry -> coordIndex ())
 		{
 			if (index >= 0)
-				coordIndex .emplace (index, coordIndex .size ());
+				coordArray .emplace (index, coordArray .size ());
 		}
 
 		const auto matrix = getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
@@ -312,44 +312,44 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			if (targetColor)
 			{
 				if (geometry -> colorPerVertex ())
-					targetGeometry -> colorIndex () .emplace_back (colorIndex [geometry -> colorIndex () [i]] + targetColor -> getSize ());
+					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> colorIndex () [i]] + targetColor -> getSize ());
 				else
-					targetGeometry -> colorIndex () .emplace_back (colorIndex [geometry -> colorIndex () [face]] + targetColor -> getSize ());
+					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> colorIndex () [face]] + targetColor -> getSize ());
 			}
 
 			if (targetTexCoord)
-				targetGeometry -> texCoordIndex () .emplace_back (texCoordIndex [geometry -> texCoordIndex () [i]] + targetTexCoord -> getSize ());
+				targetGeometry -> texCoordIndex () .emplace_back (texCoordArray [geometry -> texCoordIndex () [i]] + targetTexCoord -> getSize ());
 
 			if (targetNormal)
 			{
 				if (geometry -> normalPerVertex ())
-					targetGeometry -> normalIndex () .emplace_back (normalIndex [geometry -> normalIndex () [i]] + targetNormal -> getSize ());
+					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> normalIndex () [i]] + targetNormal -> getSize ());
 				else
-					targetGeometry -> normalIndex () .emplace_back (normalIndex [geometry -> normalIndex () [face]] + targetNormal -> getSize ());
+					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> normalIndex () [face]] + targetNormal -> getSize ());
 			}
 
-			targetGeometry -> coordIndex () .emplace_back (coordIndex [index] + targetCoord -> getSize ());
+			targetGeometry -> coordIndex () .emplace_back (coordArray [index] + targetCoord -> getSize ());
 		}
 
 		if (targetColor)
 		{
-			for (const auto & index : basic::reverse (colorIndex))
+			for (const auto & index : basic::reverse (colorArray))
 				targetColor -> set1Color (targetColor -> getSize (), color -> get1Color (index .second));
 		}
 
 		if (targetTexCoord)
 		{
-			for (const auto & index : basic::reverse (texCoordIndex))
+			for (const auto & index : basic::reverse (texCoordArray))
 				targetTexCoord -> set1Point (targetTexCoord -> getSize (), texCoord -> get1Point (index .second));
 		}
 
 		if (targetNormal)
 		{
-			for (const auto & index : basic::reverse (normalIndex))
+			for (const auto & index : basic::reverse (normalArray))
 				targetNormal -> set1Vector (targetNormal -> getSize (), normal -> get1Vector (index .second));
 		}
 
-		for (const auto & index : basic::reverse (coordIndex))
+		for (const auto & index : basic::reverse (coordArray))
 			targetCoord -> set1Point (targetCoord -> getSize (), coord -> get1Point (index .second) * matrix);
 	}
 
