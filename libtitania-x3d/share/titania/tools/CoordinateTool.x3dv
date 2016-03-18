@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.0
 
 META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Thu, 03 Mar 2016 07:15:37 GMT"
+META "modified" "Fri, 18 Mar 2016 07:39:17 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,16 +66,10 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF Edges Shape {
-              appearance Appearance {
-                material DEF EdgesMaterial Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.702794 0.852152 1
-                }
-              }
-              geometry DEF EdgesLineSet LineSet {
-                coord DEF EdgesCoord CoordinateDouble { }
-              }
+            value DEF PlaneSensorNormal PlaneSensor {
+              enabled FALSE
+              autoOffset FALSE
+              maxPosition -1 0
             }
           }
         ]
@@ -129,6 +123,7 @@ Collision {
                 autoOffset FALSE
                 maxPosition -1 0
               }
+              USE PlaneSensorNormal
             ]
           }
           DEF SelectedFaces Shape {
@@ -175,7 +170,17 @@ Collision {
               ]
             }
           }
-          USE Edges
+          DEF Edges Shape {
+            appearance Appearance {
+              material DEF EdgesMaterial Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.702794 0.852152 1
+              }
+            }
+            geometry DEF EdgesLineSet LineSet {
+              coord DEF EdgesCoord CoordinateDouble { }
+            }
+          }
           DEF SelectedEdges Shape {
             appearance Appearance {
               lineProperties DEF _3 LineProperties {
@@ -396,6 +401,7 @@ EXPORT KnifeLineSwitch
 EXPORT KnifeStartPoint
 EXPORT KnifeSwitch
 EXPORT PlaneSensor
+EXPORT PlaneSensorNormal
 EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord

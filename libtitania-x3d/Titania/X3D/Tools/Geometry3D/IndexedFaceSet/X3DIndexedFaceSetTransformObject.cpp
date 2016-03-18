@@ -69,13 +69,15 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	           X3DIndexedFaceSetTool (),
 	                     touchSensor (),
 	                     planeSensor (),
+	               planeSensorNormal (),
 	                    translations (0),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	//addType (X3DConstants::X3DIndexedFaceSetTransformObject);
 
 	addChildren (touchSensor,
-	             planeSensor);
+	             planeSensor,
+	             planeSensorNormal);
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_loadState);
 }
@@ -93,8 +95,9 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
-		planeSensor = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
-		touchSensor = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
+		touchSensor       = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
+		planeSensor       = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensor");
+		planeSensorNormal = inlineNode -> getExportedNode <PlaneSensor> ("PlaneSensorNormal");
 
 		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
@@ -125,7 +128,8 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 		{
 			case 0:
 			{
-				planeSensor -> enabled () = false;
+				planeSensor       -> enabled () = false;
+				planeSensorNormal -> enabled () = false;
 				break;
 			}
 			case 1:
@@ -134,6 +138,8 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 
 				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
 				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
+
+				planeSensorNormal -> enabled () = false;
 
 				planeSensor -> enabled ()      = not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
@@ -148,6 +154,8 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 				const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
 				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
+				planeSensorNormal -> enabled () = false;
+
 				planeSensor -> enabled ()      = not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
 				planeSensor -> offset ()       = Vector3d ();
@@ -158,28 +166,19 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 			{
 				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
 					
-				if (getBrowser () -> getControlKey ())
-				{
-					// Translate along face normal
+				// Translate along face normal
 
-					const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+				planeSensorNormal -> enabled ()      = not paintSelection ();
+				planeSensorNormal -> axisRotation () = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
+				planeSensorNormal -> offset ()       = Vector3d ();
+				planeSensorNormal -> maxPosition ()  = Vector2d (-1, 0);
 
-					planeSensor -> enabled ()      = not paintSelection ();
-					planeSensor -> axisRotation () = axisRotation;
-					planeSensor -> offset ()       = Vector3d ();
-					planeSensor -> maxPosition ()  = Vector2d (-1, 0);
-				}
-				else
-				{
-					// Translate along plane
+				// Translate along plane
 
-					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
-
-					planeSensor -> enabled ()      = not paintSelection ();
-					planeSensor -> axisRotation () = axisRotation;
-					planeSensor -> offset ()       = Vector3d ();
-					planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-				}
+				planeSensor -> enabled ()      = not paintSelection ();
+				planeSensor -> axisRotation () = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+				planeSensor -> offset ()       = Vector3d ();
+				planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 		
 				break;
 			}
@@ -233,8 +232,17 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_translation ()
 	setTranslate (true);
 	setTranslation (planeSensor -> translation_changed () .getValue ());
 
-	for (const auto & pair : getSelectedPoints ())
-		getCoord () -> set1Point (pair .first, pair .second + getTranslation ());
+	if (getBrowser () -> getControlKey () and getHotPoints () .size () >= 3)
+	{
+	   // Translate along plane normal
+		for (const auto & pair : getSelectedPoints ())
+			getCoord () -> set1Point (pair .first, pair .second + Vector3d (planeSensorNormal -> translation_changed () .getValue ()));
+	}
+	else
+	{
+		for (const auto & pair : getSelectedPoints ())
+			getCoord () -> set1Point (pair .first, pair .second + getTranslation ());
+	}
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()
