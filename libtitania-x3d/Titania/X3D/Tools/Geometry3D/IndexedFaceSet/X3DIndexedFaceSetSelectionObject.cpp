@@ -1190,10 +1190,10 @@ X3DIndexedFaceSetSelectionObject::updateGeometries ()
 X3DIndexedFaceSetSelectionObject::SelectActionType
 X3DIndexedFaceSetSelectionObject::getSelectActionType () const
 {
-	if (getBrowser () -> hasControlKey ())
+	if (getBrowser () -> getControlKey ())
 		return SelectActionType::REMOVE;
 
-	const bool replace = not paintSelection () and not getBrowser () -> hasShiftKey () and not getBrowser () -> hasControlKey ();
+	const bool replace = not paintSelection () and not getBrowser () -> getShiftKey () and not getBrowser () -> getControlKey ();
 
 	if (replace)
 		return SelectActionType::REPLACE;

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BITS_KEYS_H__
 #define __TITANIA_X3D_BITS_KEYS_H__
 
-#include <gdkmm.h>
+#include <gdk/gdk.h>
 
 namespace titania {
 namespace X3D {

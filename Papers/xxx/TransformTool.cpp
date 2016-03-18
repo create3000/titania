@@ -86,14 +86,14 @@ TransformTool::realize ()
 
 	try
 	{
-		getBrowser () -> hasControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
-		getBrowser () -> hasShiftKey () .addInterest (getToolNode () -> getField ("shiftKey"));
-		getBrowser () -> hasAltKey () .addInterest (getToolNode () -> getField ("altKey"));
+		getBrowser () -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
+		getBrowser () -> getShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
+		getBrowser () -> getAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
-		getToolNode () -> setField <SFBool> ("controlKey", getBrowser () -> hasControlKey ());
-		getToolNode () -> setField <SFBool> ("shiftKey",   getBrowser () -> hasShiftKey ());
-		getToolNode () -> setField <SFBool> ("altKey",     getBrowser () -> hasAltKey ());
+		getToolNode () -> setField <SFBool> ("controlKey", getBrowser () -> getControlKey ());
+		getToolNode () -> setField <SFBool> ("shiftKey",   getBrowser () -> getShiftKey ());
+		getToolNode () -> setField <SFBool> ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> setField <SFNode> ("transform",  getNode ());
 	}
 	catch (const X3DError & error)

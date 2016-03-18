@@ -176,7 +176,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 	if (event -> type not_eq GDK_BUTTON_PRESS)
 		return true;
 
-	if (getBrowser () -> hasShiftKey () and getBrowser () -> hasControlKey ())
+	if (getBrowser () -> getShiftKey () and getBrowser () -> getControlKey ())
 		return false;
 
 	button = event -> button;

@@ -235,15 +235,15 @@ X3DTransformNodeTool::realize ()
 	try
 	{
 		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
-		getBrowser ()  -> hasControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
-		getBrowser ()  -> hasShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
-		getBrowser ()  -> hasAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
+		getBrowser ()  -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
+		getBrowser ()  -> getShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
+		getBrowser ()  -> getAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 
 		getToolNode () -> template setField <SFDouble> ("snapAngle",  getBrowser () -> getTransformToolOptions () -> snapAngle ());
-		getToolNode () -> template setField <SFBool>   ("controlKey", getBrowser () -> hasControlKey ());
-		getToolNode () -> template setField <SFBool>   ("shiftKey",   getBrowser () -> hasShiftKey ());
-		getToolNode () -> template setField <SFBool>   ("altKey",     getBrowser () -> hasAltKey ());
+		getToolNode () -> template setField <SFBool>   ("controlKey", getBrowser () -> getControlKey ());
+		getToolNode () -> template setField <SFBool>   ("shiftKey",   getBrowser () -> getShiftKey ());
+		getToolNode () -> template setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> template setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 	}
 	catch (const X3DError & error)

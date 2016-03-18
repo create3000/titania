@@ -519,11 +519,14 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 {
 	getKeys () .press (event);
 
-	if (not hasAccelerators ())
+	if (getCurrentBrowser () -> on_external_key_press_event (event))
 		return false;
 
 	if (not getCurrentBrowser () -> has_focus ())
 	   return false;
+
+	if (not hasAccelerators ())
+		return false;
 
 	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
 
@@ -616,6 +619,9 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control ()
 	                            ? X3D::Selection::MULTIPLE
 	                            : X3D::Selection::SINGLE);
+
+	if (getCurrentBrowser () -> on_external_key_release_event (event))
+		return false;
 
 	return false;
 }

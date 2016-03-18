@@ -96,7 +96,7 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		planeSensor = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
 		touchSensor = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 
-		getBrowser () -> hasControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
+		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 
 		planeSensor -> isActive ()            .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_active);
@@ -158,7 +158,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 			{
 				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
 					
-				if (getBrowser () -> hasControlKey ())
+				if (getBrowser () -> getControlKey ())
 				{
 					// Translate along face normal
 

@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields.h"
+#include "Keys.h"
 
 namespace titania {
 namespace X3D {
@@ -82,28 +83,31 @@ public:
 	{ return keyDeviceSensorNodeOutput; }
 
 	void
-	hasControlKey (const bool value)
-	{ controlKey = value; }
+	setControlKey (const bool);
 
 	const SFBool &
-	hasControlKey () const
+	getControlKey () const
 	{ return controlKey; }
 
 	void
-	hasShiftKey (const bool value)
-	{ shiftKey = value; }
+	setShiftKey (const bool);
 
 	const SFBool &
-	hasShiftKey () const
+	getShiftKey () const
 	{ return shiftKey; }
 
 	void
-	hasAltKey (const bool value)
-	{ altKey = value; }
+	setAltKey(const bool);
 
 	const SFBool &
-	hasAltKey () const
+	getAltKey () const
 	{ return altKey; }
+
+	bool
+	on_external_key_press_event (GdkEventKey*);
+
+	bool
+	on_external_key_release_event (GdkEventKey*);
 
 	///  @name Destruction
 
@@ -134,6 +138,10 @@ private:
 	SFBool                  controlKey;
 	SFBool                  shiftKey;
 	SFBool                  altKey;
+	bool                    internalControlKey;
+	bool                    internalShiftKey;
+	bool                    internalAltKey;
+	Keys                    externalKeys;
 
 };
 

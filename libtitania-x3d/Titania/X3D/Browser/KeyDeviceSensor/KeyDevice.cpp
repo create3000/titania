@@ -116,14 +116,9 @@ KeyDevice::on_focus_out_event (GdkEventFocus*)
 {
 	keys .clear ();
 
-	if (getBrowser () -> hasControlKey ())
-		getBrowser () -> hasControlKey (false);
-
-	if (getBrowser () -> hasShiftKey ())
-		getBrowser () -> hasShiftKey (false);
-
-	if (getBrowser () -> hasAltKey ())
-		getBrowser () -> hasAltKey (false);
+	getBrowser () -> setControlKey (false);
+	getBrowser () -> setShiftKey   (false);
+	getBrowser () -> setAltKey     (false);
 
 	if (getBrowser () -> getKeyDeviceSensorNode ())
 		getBrowser () -> getKeyDeviceSensorNode () -> setKeyReleaseEvent ();
@@ -136,14 +131,9 @@ KeyDevice::on_action_key_press_event (GdkEventKey* event)
 {
 	keys .press (event);
 
-	if (keys .control () not_eq getBrowser () -> hasControlKey ())
-		getBrowser () -> hasControlKey (keys .control ());
-
-	if (keys .shift () not_eq getBrowser () -> hasShiftKey ())
-		getBrowser () -> hasShiftKey (keys .shift ());
-
-	if (keys .alt () not_eq getBrowser () -> hasAltKey ())
-		getBrowser () -> hasAltKey (keys .alt ());
+	getBrowser () -> setControlKey (keys .control ());
+	getBrowser () -> setShiftKey   (keys .shift   ());
+	getBrowser () -> setAltKey     (keys .alt     ());
 
 	return false;
 }
@@ -153,15 +143,10 @@ KeyDevice::on_action_key_release_event (GdkEventKey* event)
 {
 	keys .release (event);
 
-	if (keys .control () not_eq getBrowser () -> hasControlKey ())
-		getBrowser () -> hasControlKey (keys .control ());
+	getBrowser () -> setControlKey (keys .control ());
+	getBrowser () -> setShiftKey   (keys .shift   ());
+	getBrowser () -> setAltKey     (keys .alt     ());
 
-	if (keys .shift () not_eq getBrowser () -> hasShiftKey ())
-		getBrowser () -> hasShiftKey (keys .shift ());
-
-	if (keys .alt () not_eq getBrowser () -> hasAltKey ())
-		getBrowser () -> hasAltKey (keys .alt ());
-	
 	return false;
 }
 

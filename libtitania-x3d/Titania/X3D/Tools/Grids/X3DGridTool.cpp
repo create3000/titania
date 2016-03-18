@@ -252,7 +252,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
 			return;
 
 		if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
@@ -337,7 +337,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> hasControlKey () or getBrowser () -> hasShiftKey ())
+		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
 			return;
 
 		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
@@ -461,7 +461,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
+		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 	
 		const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
@@ -547,7 +547,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis] * sgn;
 
-	if (not getBrowser () -> hasShiftKey ()) // Scale from corner.
+	if (not getBrowser () -> getShiftKey ()) // Scale from corner.
 	{
 		after  += before;
 		before *= 2;
@@ -603,7 +603,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	const auto points = bbox .points ();
 	double     min    = infinity;
 
-	if (getBrowser () -> hasShiftKey ())
+	if (getBrowser () -> getShiftKey ())
 	{
 	   // Scale from center.
 
@@ -666,7 +666,7 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 
 	Vector3d distanceFromCenter = bbox .center ();
 
-	if (not getBrowser () -> hasShiftKey ()) // Scale from corner.
+	if (not getBrowser () -> getShiftKey ()) // Scale from corner.
 		distanceFromCenter -= offset;
 
 	Matrix4d translation;

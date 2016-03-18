@@ -101,7 +101,7 @@ X3DFlyViewer::initialize ()
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
 
-	getBrowser () -> hasControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
+	getBrowser () -> getControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
 
 	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
 }
@@ -127,7 +127,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				getActiveViewpoint () -> transitionStop ();
 				addCollision ();
 
-				if (getBrowser () -> hasControlKey ())
+				if (getBrowser () -> getControlKey ())
 				{
 					// Look around.
 
@@ -200,7 +200,7 @@ X3DFlyViewer::on_motion_notify_event (GdkEventMotion* event)
 		{
 			case 1:
 			{
-				if (getBrowser () -> hasControlKey ())
+				if (getBrowser () -> getControlKey ())
 				{
 					// Look around
 
@@ -306,7 +306,7 @@ X3DFlyViewer::fly ()
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();
-		speedFactor *= getBrowser () -> hasShiftKey () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
+		speedFactor *= getBrowser () -> getShiftKey () ? SHIFT_SPEED_FACTOR : SPEED_FACTOR;
 		speedFactor *= dt;
 
 		const auto translation = getTranslationOffset (speedFactor * direction);
@@ -351,7 +351,7 @@ X3DFlyViewer::pan ()
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();
-		speedFactor *= getBrowser () -> hasShiftKey () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
+		speedFactor *= getBrowser () -> getShiftKey () ? PAN_SHIFT_SPEED_FACTOR : PAN_SPEED_FACTOR;
 		speedFactor *= dt;
 
 		const auto orientation = viewpoint -> getUserOrientation () * Rotation4d (yAxis * viewpoint -> getUserOrientation (), upVector);

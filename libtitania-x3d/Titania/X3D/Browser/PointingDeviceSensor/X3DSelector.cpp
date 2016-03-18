@@ -85,7 +85,7 @@ X3DSelector::initialize ()
 bool
 X3DSelector::on_button_press_event (GdkEventButton* event)
 {
-	if (getBrowser () -> hasControlKey () and getBrowser () -> hasShiftKey ())
+	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 		return X3DExamineViewer::on_button_press_event (event);
 
 	if (event -> button not_eq 1)
