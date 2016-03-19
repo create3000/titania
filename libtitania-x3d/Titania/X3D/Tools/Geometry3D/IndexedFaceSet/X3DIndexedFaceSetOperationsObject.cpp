@@ -301,7 +301,9 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 		undoSetNormalVector  (undoStep);
 		undoSetCoordPoint    (undoStep);
 
-		Combine () .combine (getExecutionContext (), geometries, this, getCoord (), targetMatrix);
+		const auto selection = Combine () .combine (getExecutionContext (), geometries, this, getCoord (), targetMatrix);
+
+		replaceSelection () .assign (selection .begin (), selection .end ());
 
 		redoSetCoordPoint    (undoStep);
 		redoSetNormalVector  (undoStep);
@@ -311,6 +313,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 		redoSetNormalIndex   (undoStep);
 		redoSetTexCoordIndex (undoStep);
 		redoSetColorIndex    (undoStep);
+		redoRestoreSelection (selection, undoStep);
 
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}

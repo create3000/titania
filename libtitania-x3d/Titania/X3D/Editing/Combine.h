@@ -78,7 +78,7 @@ public:
 	throw (Error <DISPOSED>,
 	       std::domain_error);
 
-	void
+	std::vector <int32_t>
 	combine (const X3DExecutionContextPtr &,
 	         const X3DPtrArray <IndexedFaceSet> &,
 	         const X3DPtr <IndexedFaceSet> &,

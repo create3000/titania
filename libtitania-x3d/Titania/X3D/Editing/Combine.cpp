@@ -128,13 +128,15 @@ throw (Error <DISPOSED>,
 	replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 }
 
-void
+std::vector <int32_t>
 Combine::combine (const X3DExecutionContextPtr & executionContext,
                   const X3DPtrArray <IndexedFaceSet> & geometries,
                   const X3DPtr <IndexedFaceSet> & targetGeometry,
                   const X3DPtr <X3DCoordinateNode> & targetCoord,
                   const Matrix4d & targetMatrix) const
 {
+	std::set <int32_t> points;
+
 	// Add colors, texCoords and normals if needed.
 
 	bool addColors    = targetGeometry -> getColor ();
@@ -258,9 +260,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 		const auto matrix = getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
 
-		size_t face   = 0;
-		size_t first  = 0;
-		size_t points = targetGeometry -> coordIndex () .size ();
+		size_t face       = 0;
+		size_t first      = 0;
+		size_t targetSize = targetGeometry -> coordIndex () .size ();
 
 		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
 		{
@@ -276,8 +278,8 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 					for (size_t f = 0, s1_2 = s / 2; f < s1_2; ++ f)
 					{
-						const auto i0 = points + first + f;
-						const auto i1 = points + first + (s - f - 1);
+						const auto i0 = targetSize + first + f;
+						const auto i1 = targetSize + first + (s - f - 1);
 
 						if (targetColor and targetGeometry -> colorIndex () .size () >= i1)
 							std::swap (targetGeometry -> colorIndex () [i0], targetGeometry -> colorIndex () [i1]);
@@ -328,7 +330,10 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> normalIndex () [face]] + targetNormal -> getSize ());
 			}
 
-			targetGeometry -> coordIndex () .emplace_back (coordArray [index] + targetCoord -> getSize ());
+			const auto point = coordArray [index] + targetCoord -> getSize ();
+
+			targetGeometry -> coordIndex () .emplace_back (point);
+			points .emplace (point);
 		}
 
 		if (targetColor)
@@ -367,6 +372,8 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		   targetGeometry -> color () = colorNode;
 		}
 	}
+
+	return std::vector <int32_t> (points .begin (), points .end ());
 }
 
 void
