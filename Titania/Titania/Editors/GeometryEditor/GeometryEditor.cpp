@@ -69,7 +69,7 @@ namespace puck {
 
 GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGeometryEditorInterface (get_ui ("Overlays/GeometryEditor.glade")),
+	X3DGeometryEditorInterface (get_ui ("Revealer/GeometryEditor.glade")),
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
 	                    select (this, browserWindow -> getArrowButton (), "select"),
 	               cutPolygons (this, getCutPolygonsButton (), "cutPolygons"),

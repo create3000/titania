@@ -89,8 +89,6 @@ X3DRevealerInterface::on_map ()
 void
 X3DRevealerInterface::on_reveal_child ()
 {
-	__LOG__ << getWidget () .get_reveal_child () << std::endl;
-
 	if (getWidget () .get_reveal_child ())
 		getWidget () .set_visible (true);
 }
@@ -98,8 +96,6 @@ X3DRevealerInterface::on_reveal_child ()
 void
 X3DRevealerInterface::on_child_revealed ()
 {
-	__LOG__ << getWidget () .get_reveal_child () << std::endl;
-
 	if (not getWidget () .get_reveal_child ())
 		getWidget () .set_visible (false);
 }

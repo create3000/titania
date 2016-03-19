@@ -181,11 +181,20 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 
 	else
 	{
-		const Line3d edgeLine (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]),
-		                       getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]),
-		                       math::point_type ());
+		const auto point1       = getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]);
+		const auto point2       = getCoord () -> get1Point (coordIndex () [getHotEdge () .back  ()]);
+		const auto edgeLine     = Line3d (point1, point2, math::point_type ());
+		const auto closestPoint = edgeLine .closest_point (touchSensor -> getHitPoint ());
+		const auto center       = (point1 + point2) / 2.0;
+		const auto distance     = getDistance (center, closestPoint);
 
-		cutPoints .first = edgeLine .closest_point (touchSensor -> getHitPoint ());
+		if (distance > SELECTION_DISTANCE)
+			cutPoints .first = closestPoint;
+		else
+		{
+			// Snap to center of edge.
+			cutPoints .first = center;
+		}
 	}  
 
 	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));		               
@@ -254,25 +263,37 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 	if (not setEndMagicSelection ())
 	   return;
 
+	Vector3d closestPoint;
+	                     
  	if (getHotPoints () .size () == 1)
+	{
 		cutPoints .second = getCoord () -> get1Point (getHotPoints () .front ());
-
+		closestPoint      = cutPoints .second;
+	}
 	else
+	{
+		const auto point1     = getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]);
+		const auto point2     = getCoord () -> get1Point (coordIndex () [getHotEdge () .back  ()]);
+		const auto edgeLine   = Line3d (point1, point2, math::point_type ());	                   
+		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
+		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+		edgeScreen .closest_point (cutScreen, closestPoint);
+
+		const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+		edgeLine .closest_point (hitRay, closestPoint);
+
 		cutPoints .second = planeSensor -> translation_changed () .getValue ();
 
-	const auto edgeLine = Line3d (getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]), getCoord () -> get1Point (coordIndex () [getHotEdge () .back ()]), math::point_type ());	                   
-	const auto cutRay   = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
+		const auto center   = (point1 + point2) / 2.0;
+		const auto distance = getDistance (center, closestPoint);
 
-	const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-	Vector3d closestPoint;
-                     
-	edgeScreen .closest_point (cutScreen, closestPoint);
-
-	const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-	edgeLine .closest_point (hitRay, closestPoint);
+		// Snap to center of edge.
+		if (distance <= SELECTION_DISTANCE)
+		   closestPoint = center;
+	}
 
 	knifeLineCoordinate -> point () [1] = cutPoints .second;
 	knifeEndPoint -> translation ()     = closestPoint;

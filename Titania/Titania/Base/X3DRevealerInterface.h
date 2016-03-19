@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BASE_X3DOVERLAY_INTERFACE_H__
-#define __TITANIA_BASE_X3DOVERLAY_INTERFACE_H__
+#ifndef __TITANIA_BASE_X3DREVEALER_INTERFACE_H__
+#define __TITANIA_BASE_X3DREVEALER_INTERFACE_H__
 
 #include "../Base/X3DEditorInterface.h"
 
