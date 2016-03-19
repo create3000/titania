@@ -105,6 +105,9 @@
                         <property name="stock">gtk-edit</property>
                       </object>
                     </child>
+                    <style>
+                      <class name="titania-tool-button"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -126,6 +129,9 @@
                         <property name="icon_size">1</property>
                       </object>
                     </child>
+                    <style>
+                      <class name="titania-tool-button"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -161,6 +167,9 @@
                         <property name="icon_size">1</property>
                       </object>
                     </child>
+                    <style>
+                      <class name="titania-tool-button"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -378,6 +387,9 @@
                         <property name="icon_size">1</property>
                       </object>
                     </child>
+                    <style>
+                      <class name="titania-tool-button"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>

@@ -48,22 +48,29 @@
  *
  ******************************************************************************/
 
-#include "X3DOverlayInterface.h"
+#include "X3DRevealerInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DOverlayInterface::X3DOverlayInterface (const std::string & widgetName) :
+X3DRevealerInterface::X3DRevealerInterface (const std::string & widgetName) :
 	X3DEditorInterface (widgetName),
 	          position (),
 	           pointer ()
 { }
 
-X3DOverlayInterface::~X3DOverlayInterface ()
-{ }
+void
+X3DRevealerInterface::construct ()
+{
+	X3DEditorInterface::construct ();
+
+	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_reveal_child));
+	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_child_revealed));
+	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_map));
+}
 
 void
-X3DOverlayInterface::configure ()
+X3DRevealerInterface::configure ()
 {
 	X3DEditorInterface::configure ();
 
@@ -71,41 +78,34 @@ X3DOverlayInterface::configure ()
 	getWidget () .set_margin_left (margin .x ());
 	getWidget () .set_margin_top  (margin .y ());
 }
-
-void
-X3DOverlayInterface::initialize ()
-{
-	X3DEditorInterface::initialize ();
-
-	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DOverlayInterface::on_map));
-	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DOverlayInterface::on_reveal_child));
-	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DOverlayInterface::on_child_revealed));
-
-}
 	           	          
 void
-X3DOverlayInterface::on_map ()
+X3DRevealerInterface::on_map ()
 {
 	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width  ()));
 	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
 }
 
 void
-X3DOverlayInterface::on_reveal_child ()
+X3DRevealerInterface::on_reveal_child ()
 {
+	__LOG__ << getWidget () .get_reveal_child () << std::endl;
+
 	if (getWidget () .get_reveal_child ())
 		getWidget () .set_visible (true);
 }
 
 void
-X3DOverlayInterface::on_child_revealed ()
+X3DRevealerInterface::on_child_revealed ()
 {
+	__LOG__ << getWidget () .get_reveal_child () << std::endl;
+
 	if (not getWidget () .get_reveal_child ())
 		getWidget () .set_visible (false);
 }
 
 bool
-X3DOverlayInterface::on_title_button_press_event (GdkEventButton* event, Gtk::Button &)
+X3DRevealerInterface::on_title_button_press_event (GdkEventButton* event, Gtk::Button &)
 {
 	int x, y;
 
@@ -117,14 +117,14 @@ X3DOverlayInterface::on_title_button_press_event (GdkEventButton* event, Gtk::Bu
 }
 
 bool
-X3DOverlayInterface::on_title_button_release_event (GdkEventButton* event, Gtk::Button &)
+X3DRevealerInterface::on_title_button_release_event (GdkEventButton* event, Gtk::Button &)
 {
 	// Prevent click.
 	return true;
 }
 
 bool
-X3DOverlayInterface::on_title_button_motion_notify_event (GdkEventMotion* event, Gtk::Button &)
+X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event, Gtk::Button &)
 {
 	int x, y;
 
@@ -138,12 +138,15 @@ X3DOverlayInterface::on_title_button_motion_notify_event (GdkEventMotion* event,
 }
 
 void
-X3DOverlayInterface::store ()
+X3DRevealerInterface::store ()
 {
 	X3DEditorInterface::store ();
 
 	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
 }
+
+X3DRevealerInterface::~X3DRevealerInterface ()
+{ }
 
 } // puck
 } // titania

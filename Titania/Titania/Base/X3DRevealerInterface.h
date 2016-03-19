@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-class X3DOverlayInterface :
+class X3DRevealerInterface :
 	public X3DEditorInterface
 {
 public:
@@ -70,25 +70,25 @@ public:
 	/// @name Destruction
 
 	virtual
-	~X3DOverlayInterface ();
+	~X3DRevealerInterface ();
 
 
 protected:
 
 	/// @name Construction
 
-	X3DOverlayInterface ()
+	X3DRevealerInterface ()
 	{ }
 
-	X3DOverlayInterface (const std::string &);
+	X3DRevealerInterface (const std::string &);
+
+	virtual
+	void
+	construct ();
 
 	virtual
 	void
 	configure () override;
-
-	virtual
-	void
-	initialize () override;
 
 	/// @name Event handlers
 

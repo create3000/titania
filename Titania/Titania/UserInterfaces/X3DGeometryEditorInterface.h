@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
 #define __TMP_GLAD2CPP_GEOMETRY_EDITOR_H__
 
-#include "../Base/X3DOverlayInterface.h"
+#include "../Base/X3DRevealerInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,20 +61,20 @@ namespace puck {
  *  Gtk Interface for GeometryEditor.
  */
 class X3DGeometryEditorInterface :
-	public X3DOverlayInterface
+	public X3DRevealerInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DGeometryEditorInterface () :
-		X3DOverlayInterface ()
+		X3DRevealerInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DGeometryEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DOverlayInterface (m_widgetName, arguments ...),
-		           filename (filename)
+		X3DRevealerInterface (m_widgetName, arguments ...),
+		            filename (filename)
 	{ create (filename); }
 
 	///  @name Member access
@@ -302,7 +302,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DOverlayInterface::construct (); }
+	{ X3DRevealerInterface::construct (); }
 
 	void
 	create (const std::string &);

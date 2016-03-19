@@ -401,8 +401,7 @@ GeometryEditor::on_cut ()
 	{
 		try
 		{
-			if (not geometryNodes .empty ())
-				geometryNodes .back () -> setField <X3D::SFTime> ("cutSelectedFaces", chrono::now ());
+			geometryNodes .back () -> setField <X3D::SFTime> ("cutSelectedFaces", chrono::now ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -420,8 +419,7 @@ GeometryEditor::on_copy ()
 	{
 		try
 		{
-			if (not geometryNodes .empty ())
-				geometryNodes .back () -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
+			geometryNodes .back () -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -439,8 +437,7 @@ GeometryEditor::on_paste ()
 	{
 		try
 		{
-			if (not geometryNodes .empty ())
-				geometryNodes .back () -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
+			geometryNodes .back () -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
 		}
 		catch (const X3D::X3DError &)
 		{ }

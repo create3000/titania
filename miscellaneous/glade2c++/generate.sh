@@ -38,6 +38,6 @@ echo "Generating Interfaces\n"
 -n titania -n puck \
 -p X3D \
 -s Interface \
--b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DOverlayInterface.h \
+-b /home/holger/Projekte/Titania/Titania/Titania/Base/X3DRevealerInterface.h \
 -o /home/holger/Projekte/Titania/Titania/Titania/UserInterfaces \
-`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Overlays/ -maxdepth 1 -name \*.glade;`
+`find /home/holger/Projekte/Titania/Titania/share/titania/ui/Revealer/ -maxdepth 1 -name \*.glade;`

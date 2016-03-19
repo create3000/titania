@@ -106,7 +106,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Base/X3DDialogInterface.$(OBJEXT) \
 	Titania/Base/X3DEditorInterface.$(OBJEXT) \
 	Titania/Base/X3DEditorObject.$(OBJEXT) \
-	Titania/Base/X3DOverlayInterface.$(OBJEXT) \
+	Titania/Base/X3DRevealerInterface.$(OBJEXT) \
 	Titania/Base/X3DUserInterface.$(OBJEXT) \
 	Titania/Browser/BrowserHistory.$(OBJEXT) \
 	Titania/Browser/BrowserSelection.$(OBJEXT) \
@@ -555,7 +555,7 @@ titania_SOURCES = \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorInterface.cpp \
 	Titania/Base/X3DEditorObject.cpp \
-	Titania/Base/X3DOverlayInterface.cpp \
+	Titania/Base/X3DRevealerInterface.cpp \
 	Titania/Base/X3DUserInterface.cpp \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
@@ -878,7 +878,7 @@ Titania/Base/X3DEditorInterface.$(OBJEXT):  \
 	Titania/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/Base/X3DEditorObject.$(OBJEXT): Titania/Base/$(am__dirstamp) \
 	Titania/Base/$(DEPDIR)/$(am__dirstamp)
-Titania/Base/X3DOverlayInterface.$(OBJEXT):  \
+Titania/Base/X3DRevealerInterface.$(OBJEXT):  \
 	Titania/Base/$(am__dirstamp) \
 	Titania/Base/$(DEPDIR)/$(am__dirstamp)
 Titania/Base/X3DUserInterface.$(OBJEXT): Titania/Base/$(am__dirstamp) \
@@ -1792,7 +1792,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DDialogInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DEditorObject.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DOverlayInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DRevealerInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Base/$(DEPDIR)/X3DUserInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserHistory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserSelection.Po@am__quote@

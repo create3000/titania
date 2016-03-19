@@ -269,7 +269,7 @@
     <Compile Include="Titania\Editors\SoundEditor\X3DSoundSourceNodeEditor.cpp" />
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFStringTextView.cpp" />
-    <Compile Include="Titania\Base\X3DOverlayInterface.cpp" />
+    <Compile Include="Titania\Base\X3DRevealerInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2518,8 +2518,8 @@
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringTextView.h" />
     <None Include="titania" />
-    <None Include="Titania\Base\X3DOverlayInterface.h" />
-    <None Include="share\titania\ui\Overlays\GeometryEditor.glade" />
+    <None Include="Titania\Base\X3DRevealerInterface.h" />
+    <None Include="share\titania\ui\Revealer\GeometryEditor.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2610,7 +2610,7 @@
     <Folder Include="Titania\Widgets\BindableNodeList\" />
     <Folder Include="Titania\Editors\SoundEditor\" />
     <Folder Include="share\titania\Library\Components\PointingDeviceSensor\.experimental\" />
-    <Folder Include="share\titania\ui\Overlays\" />
+    <Folder Include="share\titania\ui\Revealer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
