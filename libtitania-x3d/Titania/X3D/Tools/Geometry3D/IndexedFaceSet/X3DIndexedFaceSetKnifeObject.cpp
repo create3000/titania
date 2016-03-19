@@ -79,6 +79,8 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                   knifeEndPoint (),
 	                 knifeLineSwitch (),
 	             knifeLineCoordinate (),
+	                  knifeArcSwitch (),
+	                        knifeArc (),
 	                         cutFace (0),
 	                         cutEdge (),
 	                     startPoints (),
@@ -94,7 +96,9 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	             knifeStartPoint,
 	             knifeEndPoint,
 	             knifeLineSwitch,
-	             knifeLineCoordinate);
+	             knifeLineCoordinate,
+	             knifeArcSwitch,
+	             knifeArc);
 }
 
 void
@@ -120,6 +124,8 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 		knifeEndPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
 		knifeLineSwitch     = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
 		knifeLineCoordinate = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
+		knifeArcSwitch      = inlineNode -> getExportedNode <Switch>           ("KnifeArcSwitch");
+		knifeArc            = inlineNode -> getExportedNode <Transform>        ("KnifeArc");
 
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint);
 
@@ -177,8 +183,10 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
       return;
 
 	if (getHotPoints () .size () == 1)
+	{
+		// Snap to vertex.
 		cutPoints .first = getCoord () -> get1Point (getHotPoints () .front ());
-
+	}
 	else
 	{
 		const auto point1       = getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]);
@@ -224,6 +232,10 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_active ()
 	if (planeSensor -> isActive ())
 		return;
 
+	knifeArcSwitch -> whichChoice () = false;
+
+	// Cut
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
 
 	undoRestoreSelection (undoStep);
@@ -267,6 +279,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 	                     
  	if (getHotPoints () .size () == 1)
 	{
+		// Snap to vertex.
 		cutPoints .second = getCoord () -> get1Point (getHotPoints () .front ());
 		closestPoint      = cutPoints .second;
 	}
@@ -278,21 +291,34 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
 		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
 		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto orthoPoint = edgeLine .closest_point (cutPoints .first);
 
+		// Determine closeset point.
 		edgeScreen .closest_point (cutScreen, closestPoint);
-
 		const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
 		edgeLine .closest_point (hitRay, closestPoint);
 
 		cutPoints .second = planeSensor -> translation_changed () .getValue ();
 
-		const auto center   = (point1 + point2) / 2.0;
-		const auto distance = getDistance (center, closestPoint);
+		if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE)
+		{
+		   // Snap to ortho point of edge.
+			closestPoint = orthoPoint;
 
-		// Snap to center of edge.
-		if (distance <= SELECTION_DISTANCE)
-		   closestPoint = center;
+			knifeArcSwitch -> whichChoice () = true;
+			knifeArc       -> translation () = orthoPoint;
+		}
+		else
+		{
+			const auto center   = (point1 + point2) / 2.0;
+			const auto distance = getDistance (center, closestPoint);
+
+			// Snap to center of edge.
+			if (distance <= SELECTION_DISTANCE)
+			   closestPoint = center;
+
+			knifeArcSwitch -> whichChoice () = false;
+		}
 	}
 
 	knifeLineCoordinate -> point () [1] = cutPoints .second;

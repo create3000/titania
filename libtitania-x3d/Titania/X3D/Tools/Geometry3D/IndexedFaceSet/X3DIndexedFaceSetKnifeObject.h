@@ -146,6 +146,8 @@ private:
 	X3DPtr <Transform>        knifeEndPoint;
 	X3DPtr <Switch>           knifeLineSwitch;
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
+	X3DPtr <Switch>           knifeArcSwitch;
+	X3DPtr <Transform>        knifeArc;
 
 	size_t                         cutFace;   // index of first coord index of face
 	std::pair <Vector3d, Vector3d> cutEdge;
