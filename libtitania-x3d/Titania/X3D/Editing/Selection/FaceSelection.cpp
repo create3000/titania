@@ -56,6 +56,7 @@
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Rendering/Tessellator.h"
+#include "../../Rendering/ViewVolume.h"
 
 namespace titania {
 namespace X3D {
@@ -487,40 +488,55 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 }
 
 ///  Return the nearest edge for hitPoint.
-FaceSelection::Edge
-FaceSelection::getClosestEdge (const LineSegment3d & hitRay, const std::vector <size_t> & faces) const
+std::pair <FaceSelection::Edge, size_t>
+FaceSelection::getClosestEdge (LineSegment3d cutSegment, const std::vector <size_t> & faces, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
+throw (std::domain_error)
 {
 	static constexpr double EPSILON_DISTANCE = 1e-4;
 
-	std::map <double, Edge> distances;
+	std::map <double, std::pair <Edge, size_t>> distances;
+
+	cutSegment = LineSegment3d (ViewVolume::projectPoint (cutSegment .point0 (), modelViewMatrix, projectionMatrix, viewport),
+	                            ViewVolume::projectPoint (cutSegment .point1 (), modelViewMatrix, projectionMatrix, viewport));
+
+	const auto plane = Plane3d (cutSegment .point0 (), cutSegment .line () .direction ());
 
 	for (const auto & face : faces)
 	{
-	   const auto vertices = getFaceVertices (face);
+		const auto vertices = getFaceVertices (face);
 
 		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 		{
 			const auto i0            = vertices [i];
 			const auto i1            = vertices [(i + 1) % size];
-			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
-			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto point0        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i0]), modelViewMatrix, projectionMatrix, viewport);
+			const auto point1        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i1]), modelViewMatrix, projectionMatrix, viewport);
 			const auto segment       = LineSegment3d (point0, point1);
-			const auto closestPoint0 = segment .line () .closest_point (hitRay .point0 ());
+			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point0 ());
 			auto       closestPoint1 = Vector3d (0, 0, 0);
 
-			hitRay .line () .closest_point (segment .line (), closestPoint1);
+			cutSegment .line () .closest_point (segment .line (), closestPoint1);
 
-			const auto distance = segment .distance (hitRay .point1 ());
+			const auto distance = segment .distance (cutSegment .point1 ());
 			const auto between  = segment .is_between (closestPoint1);
 
-			if (between and abs (closestPoint0 - closestPoint1) > EPSILON_DISTANCE)
-			{
-				distances .emplace (distance, Edge { i0, i1, segment, true });
-			}
+			if (abs (closestPoint0 - cutSegment .point0 ()) < EPSILON_DISTANCE)
+				continue;
+
+			if (plane .distance (closestPoint1) < 0)
+				continue;
+
+			if (not between)
+				continue;
+
+			distances .emplace (distance, std::make_pair (Edge { i0, i1, segment, true }, face));
 		}
 	}
 
-	return distances .begin () -> second;
+	if (distances .size ())
+		return distances .begin () -> second;
+	
+	throw std::domain_error ("FaceSelection::getClosestEdge");
 }
 
 bool

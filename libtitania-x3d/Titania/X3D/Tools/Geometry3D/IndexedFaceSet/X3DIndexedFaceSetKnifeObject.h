@@ -156,17 +156,17 @@ private:
 	X3DPtr <Switch>           knifeArcSwitch;
 	X3DPtr <Transform>        knifeArc;
 
-	std::vector <size_t>           cutFaces;  // indices of first coord index of face
-	size_t                         cutFaceIndex;
-	size_t                         cutFace;   // index of first coord index of face
-	std::pair <Vector3d, Vector3d> cutEdge;
-	std::pair <Vector3d, Vector3d> cutPoints;
+	std::vector <size_t>           cutFaces;     // indices of first coord index of face
+	size_t                         cutFaceIndex; // index of cut face in cutFaces
+	size_t                         cutFace;      // index of first coord index of face
+	std::pair <Vector3d, Vector3d> cutEdge;      // points of visual cut line
+	std::pair <Vector3d, Vector3d> cutPoints;    // points of cut edge
 
 
-	std::vector <int32_t>      startPoints;
-	std::vector <int32_t>      endPoints;
-	std::pair <size_t, size_t> startEdge;
-	std::pair <size_t, size_t> endEdge;
+	std::vector <int32_t>      startPoints; // One ot two points, depending on whether start from point or edge
+	std::vector <int32_t>      endPoints;   // One ot two points, depending on whether end at point or edge
+	std::pair <size_t, size_t> startEdge;   // Start edge, must be determined again when cut
+	std::pair <size_t, size_t> endEdge;     // End edge, must be determined again when cut
 
 
 };

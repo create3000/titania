@@ -136,8 +136,9 @@ public:
 	Edge
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 
-	Edge
-	getClosestEdge (const LineSegment3d &, const std::vector <size_t> &) const;
+	std::pair <Edge, size_t>
+	getClosestEdge (LineSegment3d, const std::vector <size_t> &, const Matrix4d &, const Matrix4d &, const Vector4i &) const
+	throw (std::domain_error);
 
 	bool
 	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;

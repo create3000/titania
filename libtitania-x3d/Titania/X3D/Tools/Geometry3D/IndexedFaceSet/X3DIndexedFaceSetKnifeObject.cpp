@@ -430,57 +430,61 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection ()
 {
 	// Find closest points.
 
-	const auto coincidentPoints = getFaceSelection () -> getCoincidentPoints (knifeTouchSensor -> getClosestPoint ());
-
-	if (coincidentPoints .empty ())
-		return false;
-			
-	const auto faces = getFaceSelection () -> getAdjacentFaces (coincidentPoints);
-	const auto face  = getFaceSelection () -> getClosestFace (knifeTouchSensor -> getHitPoint (), faces) .index;
-
-	if (std::count (cutFaces .begin (), cutFaces .end (), face))
-		cutFace = face;
-	else
-		cutFace = getFaceSelection () -> getClosestFace (knifeTouchSensor -> getHitPoint (), cutFaces) .index;
-
-	cutFaceIndex = std::find (cutFaces .begin (), cutFaces .end (), cutFace) - cutFaces .begin ();
-
-	const auto hitPoint = knifeTouchSensor -> getHitPoint ();
-	const auto cutRay   = LineSegment3d (cutPoints .first, hitPoint);
-	const auto edge     = getFaceSelection () -> getClosestEdge (cutRay, cutFaces);
-
-	setHotPoints ({ });
-
-	const auto vertices = getFaceSelection () -> getFaceVertices (cutFace);
-
-	if (vertices .size () >= 3)
+	try
 	{
-		const auto cutVertex     = getFaceSelection () -> getClosestVertex (hitPoint, vertices);
-		const auto cutPoint      = coordIndex () [cutVertex];
-		const auto point         = getCoord () -> get1Point (cutPoint);
-		const auto pointDistance = getDistance (hitPoint, point);
+		const auto coincidentPoints = getFaceSelection () -> getCoincidentPoints (knifeTouchSensor -> getClosestPoint ());
 
-		// Hot edge and points for near point or face
+		if (coincidentPoints .empty ())
+			return false;
 
-		setHotEdge ({ edge .index0, edge .index1 });
-	
-		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
+		setHotPoints ({ });
+
+		const auto hitPoint = knifeTouchSensor -> isOver ()
+		                      ? knifeTouchSensor -> getHitPoint ()
+		                      : Vector3d (planeSensors [cutFaceIndex] -> translation_changed () .getValue ());
+
+		const auto cutSegment  = LineSegment3d (cutEdge .first, hitPoint);
+		const auto closestEdge = getFaceSelection () -> getClosestEdge (cutSegment, cutFaces, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto edge        = closestEdge .first;
+
+		cutFace      = closestEdge .second;
+		cutFaceIndex = std::find (cutFaces .begin (), cutFaces .end (), cutFace) - cutFaces .begin ();
+
+		const auto vertices = getFaceSelection () -> getFaceVertices (cutFace);
+
+		if (vertices .size () >= 3)
 		{
-			// Edge
-			setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
-		}
-		else
-		{
-			// Point
-			setHotPoints ({ cutPoint });
+			const auto cutVertex     = getFaceSelection () -> getClosestVertex (hitPoint, vertices);
+			const auto cutPoint      = coordIndex () [cutVertex];
+			const auto point         = getCoord () -> get1Point (cutPoint);
+			const auto pointDistance = getDistance (hitPoint, point);
+
+			// Hot edge and points for near point or face
+
+			setHotEdge ({ edge .index0, edge .index1 });
+		
+			if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
+			{
+				// Edge
+				setHotPoints ({ coordIndex () [edge .index0], coordIndex () [edge .index1] });
+			}
+			else
+			{
+				// Point
+				setHotPoints ({ cutPoint });
+			}
+
+			endPoints = getHotPoints ();
+			endEdge   = std::make_pair (edge .index0, edge .index1);
 		}
 
-		endPoints = getHotPoints ();
-		endEdge   = std::make_pair (edge .index0, edge .index1);
+		updateMagicSelection ();
+		return true;
 	}
-
-	updateMagicSelection ();
-	return true;
+	catch (const std::domain_error &)
+	{
+	   return false;
+	}
 }
 
 bool
@@ -845,11 +849,17 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 	// AdjacentFaces
 
-	for (const auto & face : adjacentFaces1)
-		addPoint (face, startPoint, cutEdge .first);
+	if (startPoints .size () == 2)
+	{
+		for (const auto & face : adjacentFaces1)
+			addPoint (face, startPoint, cutEdge .first);
+	}
 
-	for (const auto & face : adjacentFaces2)
-		addPoint (face, endPoint, cutEdge .second);
+	if (endPoints .size () == 2)
+	{
+		for (const auto & face : adjacentFaces2)
+			addPoint (face, endPoint, cutEdge .second);
+	}
 
 	// Invalidate old face.
 

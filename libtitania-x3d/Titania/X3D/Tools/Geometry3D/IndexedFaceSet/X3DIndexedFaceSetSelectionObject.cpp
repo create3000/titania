@@ -243,8 +243,6 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 void
 X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
 {
-	__LOG__ << std::endl;
-
 	auto       vertices = getPolygonVertices ();
 	const auto last     = std::unique (vertices .begin (), vertices .end ());
 
@@ -256,35 +254,30 @@ X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_deselectAll_ ()
 {
-	__LOG__ << std::endl;
 	select ({ }, SelectActionType::REPLACE);
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
 {
-	__LOG__ << replaceSelection () .size () << std::endl;
 	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), SelectActionType::REPLACE);
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
 {
-	__LOG__ << addSelection () .size () << std::endl;
 	select (std::vector <int32_t> (addSelection () .begin (), addSelection () .end ()), SelectActionType::ADD);
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_removeSelection_ ()
 {
-	__LOG__ << removeSelection () .size () << std::endl;
 	select (std::vector <int32_t> (removeSelection () .begin (), removeSelection () .end ()), SelectActionType::REMOVE);
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_ ()
 {
-	__LOG__ << replaceSelectedEdges () .size () << std::endl;
 	selectEdges (std::vector <int32_t> (replaceSelectedEdges () .begin (), replaceSelectedEdges () .end ()), SelectActionType::REPLACE);
 	updateGeometries ();
 }
@@ -292,7 +285,6 @@ X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_ ()
 {
-	__LOG__ << addSelectedEdges () .size () << std::endl;
 	selectEdges (std::vector <int32_t> (addSelectedEdges () .begin (), addSelectedEdges () .end ()), SelectActionType::ADD);
 	updateGeometries ();
 }
@@ -300,7 +292,6 @@ X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_ ()
 {
-	__LOG__ << removeSelectedEdges () .size () << std::endl;
 	selectEdges (std::vector <int32_t> (removeSelectedEdges () .begin (), removeSelectedEdges () .end ()), SelectActionType::REMOVE);
 	updateGeometries ();
 }
@@ -308,7 +299,6 @@ X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_ ()
 {
-	__LOG__ << replaceSelectedFaces () .size () << std::endl;
 	selectFaces (std::vector <int32_t> (replaceSelectedFaces () .begin (), replaceSelectedFaces () .end ()), SelectActionType::REPLACE);
 	updateGeometries ();
 }
@@ -316,7 +306,6 @@ X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_ ()
 {
-	__LOG__ << addSelectedFaces () .size () << std::endl;
 	selectFaces (std::vector <int32_t> (addSelectedFaces () .begin (), addSelectedFaces () .end ()), SelectActionType::ADD);
 	updateGeometries ();
 }
@@ -324,7 +313,6 @@ X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_ ()
 void
 X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_ ()
 {
-	__LOG__ << removeSelectedFaces () .size () << std::endl;
 	selectFaces (std::vector <int32_t> (removeSelectedFaces () .begin (), removeSelectedFaces () .end ()), SelectActionType::REMOVE);
 	updateGeometries ();
 }
@@ -1227,59 +1215,73 @@ X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & ve
 double
 X3DIndexedFaceSetSelectionObject::getDistance (const Vector3d & point1, const Vector3d & point2)
 {
-	const auto p1 = ViewVolume::projectPoint (point1, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	try
+	{
+		const auto p1 = ViewVolume::projectPoint (point1, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto p2 = ViewVolume::projectPoint (point2, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
-	return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
+		return abs (Vector2d (p1. x (), p1 .y ()) - Vector2d (p2. x (), p2 .y ()));
+	}
+	catch (const std::domain_error &)
+	{
+	   return 0;
+	}
 }
 
 ///  Returns the sceen area in pixels of @a polygon.
 double
 X3DIndexedFaceSetSelectionObject::getArea (const std::vector <size_t> & vertices)
 {
-	double area = 0;
-
-	if (convex ())
+	try
 	{
-		for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
+		double area = 0;
+
+		if (convex ())
 		{
-			auto p0 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [0]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-			auto p1 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-			auto p2 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i + 1]]), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+			for (size_t i = 0, size = vertices .size () - 1; i < size; ++ i)
+			{
+				auto p0 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [0]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+				auto p1 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i]]),     getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+				auto p2 = ViewVolume::projectPoint (getCoord () -> get1Point (coordIndex () [vertices [i + 1]]), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
-			p0 .z (0);
-			p1 .z (0);
-			p2 .z (0);
+				p0 .z (0);
+				p1 .z (0);
+				p2 .z (0);
 
-			area += math::area (p0, p1, p2);
+				area += math::area (p0, p1, p2);
+			}
 		}
+		else
+		{
+			opengl::tessellator <size_t> tessellator;
+
+			tessellator .begin_polygon ();
+			tessellator .begin_contour ();
+
+			for (const auto vertex : vertices)
+			{
+				const auto point = getCoord () -> get1Point (coordIndex () [vertex]);
+				auto       p     = ViewVolume::projectPoint (point, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+				p .z (0);
+
+				tessellator .add_vertex (p);
+			}
+
+			tessellator .end_contour ();
+			tessellator .end_polygon ();
+
+			const auto triangles = tessellator .triangles ();
+
+			for (size_t v = 0, size = triangles .size (); v < size; v += 3)
+				area += math::area (triangles [v] .point (), triangles [v + 1] .point (), triangles [v + 2] .point ());
+		}
+
+		return area;
 	}
-	else
+	catch (const std::domain_error &)
 	{
-		opengl::tessellator <size_t> tessellator;
-
-		tessellator .begin_polygon ();
-		tessellator .begin_contour ();
-
-		for (const auto vertex : vertices)
-		{
-			const auto point = getCoord () -> get1Point (coordIndex () [vertex]);
-			auto       p     = ViewVolume::projectPoint (point, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-			p .z (0);
-
-			tessellator .add_vertex (p);
-		}
-
-		tessellator .end_contour ();
-		tessellator .end_polygon ();
-
-		const auto triangles = tessellator .triangles ();
-
-		for (size_t v = 0, size = triangles .size (); v < size; v += 3)
-			area += math::area (triangles [v] .point (), triangles [v + 1] .point (), triangles [v + 2] .point ());
+	   return 0;
 	}
-
-	return area;
 }
 
 void
