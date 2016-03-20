@@ -323,11 +323,11 @@ FaceSelection::getClosestFace (const Vector3d & hitPoint, const Faces & faces)
 
 		if (geometryNode -> convex () or vertices .size () == 3)
 		{
-			for (size_t v = 0, size = vertices .size (); v < size; ++ v)
+			for (size_t v = 0, size = vertices .size () - 2; v < size; ++ v)
 			{
-			   const auto i0       = vertices [v == 0 ? vertices .size () - 1 : v - 1];
-			   const auto i1       = vertices [v];
-			   const auto i2       = vertices [(v + 1) % vertices .size ()];
+			   const auto i0       = vertices [0];
+			   const auto i1       = vertices [v + 1];
+			   const auto i2       = vertices [v + 2];
 				const auto index0   = geometryNode -> coordIndex () [i0] .getValue ();
 				const auto index1   = geometryNode -> coordIndex () [i1] .getValue ();
 				const auto index2   = geometryNode -> coordIndex () [i2] .getValue ();
