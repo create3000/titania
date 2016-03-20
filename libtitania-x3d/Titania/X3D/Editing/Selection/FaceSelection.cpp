@@ -277,8 +277,8 @@ FaceSelection::getAdjacentFaces (const Points & points) const
 std::vector <size_t>
 FaceSelection::getAdjacentFaces (const Edge & edge) const
 {
-	const auto faces0 = getAdjacentFaces (Points { geometryNode -> coordIndex () [edge .index0] });
-	const auto faces1 = getAdjacentFaces (Points { geometryNode -> coordIndex () [edge .index1] });
+	const auto faces0 = getAdjacentFaces (geometryNode -> coordIndex () [edge .index0]);
+	const auto faces1 = getAdjacentFaces (geometryNode -> coordIndex () [edge .index1]);
 
 	std::vector <size_t> set0;
 	std::vector <size_t> set1;
@@ -293,10 +293,9 @@ FaceSelection::getAdjacentFaces (const Edge & edge) const
 	std::sort (set0 .begin (), set0 .end ());
 	std::sort (set1 .begin (), set1 .end ());
 
-	std::set_intersection (set0 .begin(), set0 .end(),
-	                       set1 .begin(), set1 .end (),
+	std::set_intersection (set0 .begin (), set0 .end (),
+	                       set1 .begin (), set1 .end (),
 	                       std::back_inserter (intersection));
-
 
 	return intersection;
 }
@@ -489,31 +488,36 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 
 ///  Return the nearest edge for hitPoint.
 FaceSelection::Edge
-FaceSelection::getClosestEdge (const Line3d & hitRay, const std::vector <size_t> & vertices) const
+FaceSelection::getClosestEdge (const LineSegment3d & hitRay, const std::vector <size_t> & faces) const
 {
-	using Key = std::pair <double, double>;
-
 	static constexpr double EPSILON_DISTANCE = 1e-4;
-	static constexpr double EPSILON_ANGLE    = 0.99999;
 
-	std::map <Key, Edge> distances;
+	std::map <double, Edge> distances;
 
-	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+	for (const auto & face : faces)
 	{
-		const auto i0           = vertices [i];
-		const auto i1           = vertices [(i + 1) % size];
-		const auto point0       = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
-		const auto point1       = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
-		const auto segment      = LineSegment3d (point0, point1);
-		auto       closestPoint = Vector3d (0, 0, 0);
-		const auto theta        = hitRay .closest_point (segment .line (), closestPoint);
-		const auto distance     = abs (hitRay .point () - closestPoint);
-		const auto between      = segment .is_between (closestPoint);
+	   const auto vertices = getFaceVertices (face);
 
-		distances .emplace (distance > EPSILON_DISTANCE and abs (theta) < EPSILON_ANGLE
-		                    ? Key (not between, distance)
-		                    : Key (2, 0),
-		                    Edge { i0, i1, LineSegment3d (point0, point1), true });
+		for (size_t i = 0, size = vertices .size (); i < size; ++ i)
+		{
+			const auto i0            = vertices [i];
+			const auto i1            = vertices [(i + 1) % size];
+			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
+			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
+			const auto segment       = LineSegment3d (point0, point1);
+			const auto closestPoint0 = segment .line () .closest_point (hitRay .point0 ());
+			auto       closestPoint1 = Vector3d (0, 0, 0);
+
+			hitRay .line () .closest_point (segment .line (), closestPoint1);
+
+			const auto distance = segment .distance (hitRay .point1 ());
+			const auto between  = segment .is_between (closestPoint1);
+
+			if (between and abs (closestPoint0 - closestPoint1) > EPSILON_DISTANCE)
+			{
+				distances .emplace (distance, Edge { i0, i1, segment, true });
+			}
+		}
 	}
 
 	return distances .begin () -> second;

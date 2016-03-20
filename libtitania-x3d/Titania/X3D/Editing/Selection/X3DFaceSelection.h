@@ -68,8 +68,8 @@ public:
 
 	struct Edge
 	{
-		int32_t index0;
-		int32_t index1;
+		size_t index0;
+		size_t index1;
 		LineSegment3d segment;
 		bool isEdge;
 	};

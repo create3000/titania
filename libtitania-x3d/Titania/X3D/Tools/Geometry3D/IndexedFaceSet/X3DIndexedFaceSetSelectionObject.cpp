@@ -485,6 +485,7 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 	const auto vertices = getFaceSelection () -> getFaceVertices (face);
 
 	hotFace = face;
+	hotFaces  .clear ();
 	hotPoints .clear ();
 
 	activeFace = face;
@@ -508,17 +509,23 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 				// Face
 				for (const auto & vertex : vertices)
 					hotPoints .emplace_back (coordIndex () [vertex]);
+
+				hotFaces = { face };
 			}
 			else
 			{
 				// Edge
 				hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+				hotFaces  = getFaceSelection () -> getAdjacentFaces (edge); 
 			}
 		}
 		else
 		{
 			// Point
 			hotPoints = { index };
+
+			for (const auto face : faces)
+				hotFaces .emplace_back (face .index); 
 		}
 
 		// Active points for near point or face

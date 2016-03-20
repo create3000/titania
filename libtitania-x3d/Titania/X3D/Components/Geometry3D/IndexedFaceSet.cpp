@@ -659,9 +659,8 @@ IndexedFaceSet::rebuildIndices ()
 
 	size_t face = 0;
 
-	for (size_t i = 0, size = indices .size (); i < size; ++ i)
+	for (const auto & vertex : indices)
 	{
-		const size_t  vertex     = indices [i];
 		const int32_t index      = coordIndex () [vertex];
 		const size_t  faceNumber = faceNumbers [face];
 
@@ -709,7 +708,7 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 {
 	const auto size = indices .size ();
 
-	for (size_t i = faceIndex, size = faceIndex + count; i < size; ++ i)
+	for (size_t i = faceIndex, last = faceIndex + count; i < last; ++ i)
 	{
 		const auto i0 = i;
 		const auto i1 = i + 1 == size ? faceIndex : i + 1;
@@ -719,11 +718,13 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	}
 
 	if (indices .size () - size < 3)
-	   indices .resize (size);
+	{
+		indices .resize (size);
+	}
 	else
 	{
-	   indices .emplace_back (faceIndex + count);
-	   faceNumbers .emplace_back (faceNumber);
+		indices .emplace_back (faceIndex + count);
+		faceNumbers .emplace_back (faceNumber);
 	}
 }
 
@@ -778,7 +779,10 @@ IndexedFaceSet::rebuildColor ()
 			std::vector <Color3f> colors;
 
 			for (const auto & pair : map)
-			   colors .emplace_back (node -> color () [pair .first]);
+			{
+				const auto c = node -> get1Color (pair .first);
+				colors .emplace_back (c .r (), c .g (), c .b ());
+			}
 
 			node -> color () .assign (colors .begin (), colors .end ());
 			break;
@@ -790,7 +794,7 @@ IndexedFaceSet::rebuildColor ()
 			std::vector <Color4f> colors;
 
 			for (const auto & pair : map)
-			   colors .emplace_back (node -> color () [pair .first]);
+			   colors .emplace_back (node -> get1Color (pair .first));
 
 			node -> color () .assign (colors .begin (), colors .end ());
 			break;
@@ -871,7 +875,10 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			std::vector <Vector2f> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (node -> point () [pair .first]);
+			{
+				const auto t = node -> get1Point (pair .first);
+				points .emplace_back (t .x (), t .y ());
+			}
 
 			node -> point () .assign (points .begin (), points .end ());
 			break;
@@ -883,7 +890,10 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			std::vector <Vector3f> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (node -> point () [pair .first]);
+			{
+				const auto t = node -> get1Point (pair .first);
+				points .emplace_back (t .x (), t .y (), t .z ());
+			}
 
 			node -> point () .assign (points .begin (), points .end ());
 			break;
@@ -895,7 +905,7 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 			std::vector <Vector4f> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (node -> point () [pair .first]);
+			   points .emplace_back (node -> get1Point (pair .first));
 
 			node -> point () .assign (points .begin (), points .end ());
 			break;
@@ -956,7 +966,7 @@ IndexedFaceSet::rebuildNormal ()
 			std::vector <Vector3f> normals;
 
 			for (const auto & pair : map)
-			   normals .emplace_back (node -> vector () [pair .first]);
+			   normals .emplace_back (node -> get1Vector (pair .first));
 
 			node -> vector () .assign (normals .begin (), normals .end ());
 			break;
@@ -1017,7 +1027,7 @@ IndexedFaceSet::rebuildCoord ()
 			std::vector <Vector3f> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> point () [pair .first]);
+			   points .emplace_back (coordinate -> get1Point (pair .first));
 
 			coordinate -> point () .assign (points .begin (), points .end ());
 			break;
@@ -1029,7 +1039,7 @@ IndexedFaceSet::rebuildCoord ()
 			std::vector <Vector3d> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> point () [pair .first]);
+			   points .emplace_back (coordinate -> get1Point (pair .first));
 
 			coordinate -> point () .assign (points .begin (), points .end ());
 			break;
@@ -1041,7 +1051,7 @@ IndexedFaceSet::rebuildCoord ()
 			std::vector <Vector3d> points;
 
 			for (const auto & pair : map)
-			   points .emplace_back (coordinate -> point () [pair .first]);
+			   points .emplace_back (coordinate -> get1Point (pair .first));
 
 			coordinate -> point () .assign (points .begin (), points .end ());
 			break;

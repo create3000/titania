@@ -137,7 +137,7 @@ public:
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 
 	Edge
-	getClosestEdge (const Line3d &, const std::vector <size_t> &) const;
+	getClosestEdge (const LineSegment3d &, const std::vector <size_t> &) const;
 
 	bool
 	isEdge (const std::vector <size_t> & vertices, const size_t, const size_t) const;

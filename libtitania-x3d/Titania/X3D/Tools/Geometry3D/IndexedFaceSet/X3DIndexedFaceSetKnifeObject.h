@@ -114,7 +114,10 @@ private:
 	set_touch_sensor_hitPoint ();
 
 	void
-	set_plane_sensor_active ();
+	set_touch_sensor_active ();
+
+	void
+	set_plane_sensor (const X3DPtr <PlaneSensor> &, size_t);
 
 	void
 	set_plane_sensor_translation ();
@@ -128,6 +131,9 @@ private:
 	bool
 	cut ();
 
+	void
+	addPoint (const size_t &, const int32_t, const Vector3d &);
+
 	///  @name Members
 
 	struct Fields
@@ -139,8 +145,9 @@ private:
 
 	Fields fields;
 
-	X3DPtr <TouchSensor>      touchSensor;
-	X3DPtr <PlaneSensor>      planeSensor;
+	X3DPtr <Group>            knifeSelectionGroup;
+	X3DPtr <TouchSensor>      knifeTouchSensor;
+	X3DPtrArray <PlaneSensor> planeSensors;
 	X3DPtr <Switch>           knifeSwitch;
 	X3DPtr <Transform>        knifeStartPoint;
 	X3DPtr <Transform>        knifeEndPoint;
@@ -149,6 +156,8 @@ private:
 	X3DPtr <Switch>           knifeArcSwitch;
 	X3DPtr <Transform>        knifeArc;
 
+	std::vector <size_t>           cutFaces;  // indices of first coord index of face
+	size_t                         cutFaceIndex;
 	size_t                         cutFace;   // index of first coord index of face
 	std::pair <Vector3d, Vector3d> cutEdge;
 	std::pair <Vector3d, Vector3d> cutPoints;
