@@ -284,8 +284,12 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	undoSetNormalVector  (undoStep);
 	undoSetCoordPoint    (undoStep);
 
-	if (not cut ())
+	const auto selection = cut ();
+
+	if (selection .empty ())
 		return;
+
+	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	// Remove degenerated edges and faces.
 	rebuildIndices  ();
@@ -293,8 +297,6 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	rebuildTexCoord ();
 	rebuildNormal   ();
 	rebuildCoord    ();
-
-	replaceSelection () .clear ();
 
 	redoSetCoordPoint    (undoStep);
 	redoSetNormalVector  (undoStep);
@@ -497,7 +499,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection ()
 	}
 }
 
-bool
+std::vector <int32_t>
 X3DIndexedFaceSetKnifeObject::cut ()
 {
 	const auto numFaces   = getFaceSelection () -> getNumFaces ();
@@ -505,6 +507,8 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	const auto vertices   = getFaceSelection () -> getFaceVertices (cutFace);
 	const auto startEdge  = getFaceSelection () -> getClosestEdge (cutEdge .first,  vertices);
 	const auto endEdge    = getFaceSelection () -> getClosestEdge (cutEdge .second, vertices);
+
+	std::vector <int32_t> selection;
 
 	int32_t startColor   = -1;
 	int32_t endColor     = -1;
@@ -549,7 +553,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			const float t       = abs (cutEdge .first - point1) / abs (point2 - point1);
 
 			if (not segment .is_between (cutEdge .first))
-				return false;
+				return selection;
 
 			if (colorIndex () .size () and getColor ())
 			{
@@ -593,7 +597,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return false;
+			return selection;
 	}
 
 	switch (endPoints .size ())
@@ -614,7 +618,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			const float t       = abs (cutEdge .second - point1) / abs (point2 - point1);
 
 			if (not segment .is_between (cutEdge .second))
-				return false;
+				return selection;
 
 			if (colorIndex () .size () and getColor ())
 			{
@@ -658,7 +662,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 			break;
 		}
 		default:
-			return false;
+			return selection;
 	}
 
 	// Rewrite indices.
@@ -779,10 +783,10 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	// Check if there are degenerated faces.
 
 	if (face1 .size () < 3)
-		return false;
+		return selection;
 
 	if (face2 .size () < 3)
-		return false;
+		return selection;
 
 	// Add new color faces.
 
@@ -883,7 +887,11 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	startPoints .clear ();
 	endPoints   .clear ();
 
-	return true;
+	// 
+
+	selection = { startPoint, endPoint };
+
+	return selection;
 }
 
 void

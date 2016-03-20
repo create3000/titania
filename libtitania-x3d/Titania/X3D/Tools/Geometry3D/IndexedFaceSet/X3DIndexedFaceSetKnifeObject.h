@@ -128,7 +128,7 @@ private:
 	bool
 	setEndMagicSelection ();
 
-	bool
+	std::vector <int32_t>
 	cut ();
 
 	void
