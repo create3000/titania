@@ -204,18 +204,29 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 
 	// Configure plane sensors.
 
-	planeSensors .clear ();
-	knifeSelectionGroup -> children () .resize (2);
+	size_t i = 0;
 
-	for (const auto & cutFace : cutFaces)
+	for (const size_t size = std::min (cutFaces .size (), planeSensors .size ()); i < size; ++ i)
+		set_plane_sensor (planeSensors [i], cutFaces [i]);
+	
+	if (cutFaces .size () > planeSensors .size ())
 	{
-		const auto & scene       = getCoordinateTool () -> getInlineNode () -> getInternalScene ();
-		const auto   planeSensor = scene -> createNode <PlaneSensor> ();
+		const auto & scene = getCoordinateTool () -> getInlineNode () -> getInternalScene ();
 
-		planeSensors .emplace_back (planeSensor);
-		knifeSelectionGroup -> children () .emplace_back (planeSensor);
+		for (const size_t size = cutFaces .size (); i < size; ++ i)
+		{
+			const auto planeSensor = scene -> createNode <PlaneSensor> ();
 
-		set_plane_sensor (planeSensor, cutFace);
+			planeSensors .emplace_back (planeSensor);
+			knifeSelectionGroup -> children () .emplace_back (planeSensor);
+
+			set_plane_sensor (planeSensor, cutFace);
+		}
+	}
+	else
+	{
+	   for (const size_t size = planeSensors .size (); i < size; ++ i)
+	      planeSensors [i] -> enabled () = false;
 	}
 
 	// Set up visual cut ray.
@@ -236,6 +247,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & pla
 
 	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation);
 
+	planeSensor -> enabled ()      = true;
 	planeSensor -> axisRotation () = axisRotation;
 	planeSensor -> autoOffset ()   = false;
 	planeSensor -> offset ()       = knifeTouchSensor -> getHitPoint ();
