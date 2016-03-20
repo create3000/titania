@@ -66,7 +66,7 @@ static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELE
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	    X3DBaseNode (),
-	        pickable (true),
+	       pickable (true),
 	        pointer (),
 	         hitRay (),
 	           hits (),
@@ -174,7 +174,7 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 }
 
 bool
-X3DPointingDeviceSensorContext::motionNotifyEvent (const double x, const double y)
+X3DPointingDeviceSensorContext::setMotionNotifyEvent (const double x, const double y)
 {
 	hasMoved |= pointer not_eq Vector2d (x, y);
 
@@ -239,7 +239,7 @@ X3DPointingDeviceSensorContext::motion ()
 }
 
 bool
-X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y)
+X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const double y)
 {
 	pressTime = chrono::now ();
 	hasMoved  = false;
@@ -264,8 +264,10 @@ X3DPointingDeviceSensorContext::buttonPressEvent (const double x, const double y
 }
 
 bool
-X3DPointingDeviceSensorContext::buttonReleaseEvent ()
+X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
 {
+	// Selection
+
 	if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
 	{
 		if (getBrowser () -> getSelection () -> select ())
@@ -284,14 +286,11 @@ X3DPointingDeviceSensorContext::buttonReleaseEvent ()
 		pointingDeviceSensorNode -> set_active (nearestHit, false);
 
 	activeSensors .clear ();
-
-	// Selection
-
 	return true;
 }
 
 void
-X3DPointingDeviceSensorContext::leaveNotifyEvent ()
+X3DPointingDeviceSensorContext::setLeaveNotifyEvent ()
 {
 	// Clear hits.
 

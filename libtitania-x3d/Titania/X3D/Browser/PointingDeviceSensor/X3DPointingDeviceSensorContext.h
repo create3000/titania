@@ -140,16 +140,16 @@ public:
 	///  @name Event handlers
 
 	bool
-	motionNotifyEvent (const double, const double);
+	setMotionNotifyEvent (const double, const double);
 
 	bool
-	buttonPressEvent (const double, const double);
+	setButtonPressEvent (const double, const double);
 
 	bool
-	buttonReleaseEvent ();
+	setButtonReleaseEvent ();
 
 	void
-	leaveNotifyEvent ();
+	setLeaveNotifyEvent ();
 
 	///  @name Destruction
 

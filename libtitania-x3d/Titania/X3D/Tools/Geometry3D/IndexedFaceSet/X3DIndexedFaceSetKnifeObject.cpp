@@ -76,18 +76,23 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	             knifeSelectionGroup (),
 	                knifeTouchSensor (),
 	                    planeSensors (),
+	                     knifeSwitch (),
 	                 knifeStartPoint (),
 	                   knifeEndPoint (),
 	                 knifeLineSwitch (),
 	             knifeLineCoordinate (),
 	                  knifeArcSwitch (),
 	                        knifeArc (),
+	                        cutFaces (),
+	                    cutFaceIndex (),
 	                         cutFace (0),
 	                         cutEdge (),
+	                       cutPoints (),
 	                     startPoints (),
 	                       endPoints (),
 	                       startEdge (),
-	                         endEdge ()
+	                         endEdge (),
+	                          active (false)
 {
 	//addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
@@ -166,8 +171,8 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 {
 	// Set hot points.
 
-	if (knifeTouchSensor -> isActive ())
-	   return;
+	if (active)
+		return;
 
 	if (not setStartMagicSelection ())
 	   return;
@@ -245,7 +250,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & pla
 	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (cutFace));		               
 	const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 
-	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation);
+	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation, planeSensor .getValue ());
 
 	planeSensor -> enabled ()      = true;
 	planeSensor -> axisRotation () = axisRotation;
@@ -256,9 +261,11 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & pla
 void
 X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 {
-	knifeLineSwitch -> whichChoice () = knifeTouchSensor -> isActive ();	 
+	active = knifeTouchSensor -> isActive ();	 
   
-	if (knifeTouchSensor -> isActive ())
+	knifeLineSwitch -> whichChoice () = active;	 
+  
+	if (active)
 		return;
 
 	knifeArcSwitch -> whichChoice () = false;
@@ -303,10 +310,13 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 }
 
 void
-X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation ()
+X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const planeSensor)
 {
 	if (not setEndMagicSelection ())
 	   return;
+
+	if (planeSensor not_eq planeSensors [cutFaceIndex])
+		return;
 	
 	Vector3d closestPoint;
 	                     

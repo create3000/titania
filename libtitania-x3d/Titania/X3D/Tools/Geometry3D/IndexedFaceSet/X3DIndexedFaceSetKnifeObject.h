@@ -120,7 +120,7 @@ private:
 	set_plane_sensor (const X3DPtr <PlaneSensor> &, size_t);
 
 	void
-	set_plane_sensor_translation ();
+	set_plane_sensor_translation (PlaneSensor* const);
 
 	bool
 	setStartMagicSelection ();
@@ -167,6 +167,8 @@ private:
 	std::vector <int32_t>      endPoints;   // One ot two points, depending on whether end at point or edge
 	std::pair <size_t, size_t> startEdge;   // Start edge, must be determined again when cut
 	std::pair <size_t, size_t> endEdge;     // End edge, must be determined again when cut
+
+	bool active;
 
 
 };
