@@ -204,30 +204,69 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 
 		for (const auto & vertex : vertices)
 		{
+		   const auto point = coordArray [coordIndex () [vertex]];
+
 			if (color)
 			{
 				if (colorPerVertex ())
-					geometry -> colorIndex () .emplace_back (colorArray [getVertexColorIndex (vertex)]);
+				{
+					try
+					{
+						geometry -> colorIndex () .emplace_back (colorArray .at (getVertexColorIndex (vertex)));
+					}
+					catch (const std::out_of_range &)
+					{
+						geometry -> colorIndex () .emplace_back (point);
+					}
+				}
 			}
 	
 			if (texCoord)
-				geometry -> texCoordIndex () .emplace_back (texCoordArray [getVertexTexCoordIndex (vertex)]);
+			{
+				try
+				{
+					geometry -> texCoordIndex () .emplace_back (texCoordArray .at (getVertexTexCoordIndex (vertex)));
+				}
+				catch (const std::out_of_range &)
+				{
+					geometry -> texCoordIndex () .emplace_back (point);
+				}
+			}
 	
 			if (normal)
 			{
 				if (normalPerVertex ())
-					geometry -> normalIndex () .emplace_back (normalArray [getVertexNormalIndex (vertex)]);
+				{
+					try
+					{
+						geometry -> normalIndex () .emplace_back (normalArray .at (getVertexNormalIndex (vertex)));
+					}
+					catch (const std::out_of_range &)
+					{
+						geometry -> normalIndex () .emplace_back (point);
+					}
+				}
 			}
 	
-			geometry -> coordIndex () .emplace_back (coordArray [coordIndex () [vertex]]);
+			geometry -> coordIndex () .emplace_back (point);
 		}
 
 		if (color)
 		{
 			if (colorPerVertex ())
 			   geometry -> colorIndex () .emplace_back (-1);
+
 			else
-				geometry -> colorIndex () .emplace_back (colorArray [getFaceColorIndex (faceNumber)]);
+			{
+				try
+				{
+					geometry -> colorIndex () .emplace_back (colorArray .at (getFaceColorIndex (faceNumber)));
+				}
+				catch (const std::out_of_range &)
+				{
+					geometry -> colorIndex () .emplace_back (faceNumber);
+				}
+			}
 		}
 	
 		if (texCoord)
@@ -237,8 +276,18 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 		{
 			if (normalPerVertex ())
 			   geometry -> normalIndex () .emplace_back (-1);
+
 			else
-				geometry -> normalIndex () .emplace_back (normalArray [getFaceNormalIndex (faceNumber)]);
+			{
+				try
+				{
+					geometry -> normalIndex () .emplace_back (normalArray .at (getFaceNormalIndex (faceNumber)));
+				}
+				catch (const std::out_of_range &)
+				{
+					geometry -> normalIndex () .emplace_back (faceNumber);
+				}
+			}
 		}
 	
 		geometry -> coordIndex () .emplace_back (-1);
