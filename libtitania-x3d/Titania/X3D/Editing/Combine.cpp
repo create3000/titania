@@ -288,33 +288,36 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		std::map <int32_t, int32_t> normalArray;
 		std::map <int32_t, int32_t> coordArray;
 
-		for (const auto & index : geometry -> colorIndex ())
-		{
-			if (index >= 0)
-				colorArray .emplace (index, colorArray .size ());
-		}
+		size_t face = 0;
 
-		for (const auto & index : geometry -> texCoordIndex ())
+		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
 		{
-			if (index >= 0)
-				texCoordArray .emplace (index, texCoordArray .size ());
-		}
+		   const int32_t index = geometry -> coordIndex () [i];
 
-		for (const auto & index : geometry -> normalIndex ())
-		{
-			if (index >= 0)
-				normalArray .emplace (index, normalArray .size ());
-		}
+		   if (index < 0)
+		   {
+		      ++ face;
+		      continue;
+		   }
 
-		for (const auto & index : geometry -> coordIndex ())
-		{
-			if (index >= 0)
-				coordArray .emplace (index, coordArray .size ());
+			if (geometry -> colorPerVertex ())
+				colorArray .emplace (geometry -> getVertexColorIndex (i), colorArray .size ());
+			else
+				colorArray .emplace (geometry -> getFaceColorIndex (face), colorArray .size ());
+
+			texCoordArray .emplace (geometry -> getVertexTexCoordIndex (i), texCoordArray .size ());
+
+			if (geometry -> normalPerVertex ())
+				normalArray .emplace (geometry -> getVertexNormalIndex (i), normalArray .size ());
+			else
+				normalArray .emplace (geometry -> getFaceNormalIndex (face), normalArray .size ());
+
+			coordArray .emplace (index, coordArray .size ());
 		}
 
 		const auto matrix = getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
 
-		size_t face       = 0;
+		face              = 0;
 		size_t first      = 0;
 		size_t targetSize = targetGeometry -> coordIndex () .size ();
 
