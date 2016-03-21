@@ -303,7 +303,7 @@ FaceSelection::getAdjacentFaces (const Edge & edge) const
 
 ///  Finds the nearest face for hitPoint in faces.
 FaceSelection::Face
-FaceSelection::getClosestFace (const Vector3d & hitPoint, const Faces & faces)
+FaceSelection::getClosestFace (const Vector3d & hitPoint, const Faces & faces) const
 {
 	// Get distances of faces to hitPoint.
 	
@@ -320,57 +320,13 @@ FaceSelection::getClosestFace (const Vector3d & hitPoint, const Faces & faces)
 			++ i;
 			continue;
 		}
-
-		if (geometryNode -> convex () or vertices .size () == 3)
-		{
-			for (size_t v = 0, size = vertices .size () - 2; v < size; ++ v)
-			{
-			   const auto i0       = vertices [0];
-			   const auto i1       = vertices [v + 1];
-			   const auto i2       = vertices [v + 2];
-				const auto index0   = geometryNode -> coordIndex () [i0] .getValue ();
-				const auto index1   = geometryNode -> coordIndex () [i1] .getValue ();
-				const auto index2   = geometryNode -> coordIndex () [i2] .getValue ();
-				const auto point0   = coordNode -> get1Point (index0);
-				const auto point1   = coordNode -> get1Point (index1);
-				const auto point2   = coordNode -> get1Point (index2);
-				const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
 	
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					minIndex    = i;
-				}
-			}
-		}
-		else
-		{
-			opengl::tessellator <size_t> tessellator;
-		
-			tessellator .begin_polygon ();
-			tessellator .begin_contour ();
-		
-			for (const auto & vertex : vertices)
-				tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
-		
-			tessellator .end_contour ();
-			tessellator .end_polygon ();
-		
-			const auto triangles = tessellator .triangles ();
+		const auto distance = getFaceDistance (hitPoint, vertices);
 	
-			for (size_t v = 0, size = triangles .size (); v < size; )
-			{
-				const auto point0   = triangles [v ++] .point ();
-				const auto point1   = triangles [v ++] .point ();
-				const auto point2   = triangles [v ++] .point ();
-				const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
-
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					minIndex    = i;
-				}
-			}
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			minIndex    = i;
 		}
 
 		++ i;
@@ -379,9 +335,69 @@ FaceSelection::getClosestFace (const Vector3d & hitPoint, const Faces & faces)
 	return faces [minIndex];
 }
 
+/// Returns the distance of @a face to hitPoint.
+double
+FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
+{
+	// Get distances of face to hitPoint.
+	
+	double minDistance = std::numeric_limits <double>::infinity ();
+
+	if (vertices .size () < 3)
+		return 0;
+
+	if (geometryNode -> convex () or vertices .size () == 3)
+	{
+		for (size_t v = 0, size = vertices .size () - 2; v < size; ++ v)
+		{
+		   const auto i0       = vertices [0];
+		   const auto i1       = vertices [v + 1];
+		   const auto i2       = vertices [v + 2];
+			const auto index0   = geometryNode -> coordIndex () [i0] .getValue ();
+			const auto index1   = geometryNode -> coordIndex () [i1] .getValue ();
+			const auto index2   = geometryNode -> coordIndex () [i2] .getValue ();
+			const auto point0   = coordNode -> get1Point (index0);
+			const auto point1   = coordNode -> get1Point (index1);
+			const auto point2   = coordNode -> get1Point (index2);
+			const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
+
+			if (distance < minDistance)
+				minDistance = distance;
+		}
+	}
+	else
+	{
+		opengl::tessellator <size_t> tessellator;
+	
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+	
+		for (const auto & vertex : vertices)
+			tessellator .add_vertex (coordNode -> get1Point (geometryNode -> coordIndex () [vertex]), vertex);
+	
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+	
+		const auto triangles = tessellator .triangles ();
+
+		for (size_t v = 0, size = triangles .size (); v < size; )
+		{
+			const auto point0   = triangles [v ++] .point ();
+			const auto point1   = triangles [v ++] .point ();
+			const auto point2   = triangles [v ++] .point ();
+			const auto distance = triangle_distance_to_point (point0, point1, point2, hitPoint);
+
+			if (distance < minDistance)
+				minDistance = distance;
+		}
+	}
+
+	return minDistance;
+}
+
 ///  Finds the nearest face for hitPoint in faces.
 FaceSelection::Face
-FaceSelection::getClosestFace (const Vector3d & hitPoint, const std::vector <size_t> & indices)
+FaceSelection::getClosestFace (const Vector3d & hitPoint, const std::vector <size_t> & indices) const
 {
 	Faces faces;
 
@@ -489,15 +505,12 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 
 ///  Return the nearest edge for hitPoint.
 std::pair <FaceSelection::Edge, size_t>
-FaceSelection::getClosestEdge (LineSegment3d cutSegment, const std::vector <size_t> & faces, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
+FaceSelection::getClosestEdge (const LineSegment3d & cutSegment, const std::vector <size_t> & faces) const
 throw (std::domain_error)
 {
 	static constexpr double EPSILON_DISTANCE = 1e-4;
 
-	std::map <double, std::pair <Edge, size_t>> distances;
-
-//	cutSegment = LineSegment3d (ViewVolume::projectPoint (cutSegment .point0 (), modelViewMatrix, projectionMatrix, viewport),
-//	                            ViewVolume::projectPoint (cutSegment .point1 (), modelViewMatrix, projectionMatrix, viewport));
+	std::map <std::pair <double, double>, std::pair <Edge, size_t>> distances;
 
 	const auto plane = Plane3d (cutSegment .point0 (), cutSegment .line () .direction ());
 
@@ -509,8 +522,6 @@ throw (std::domain_error)
 		{
 			const auto i0            = vertices [i];
 			const auto i1            = vertices [(i + 1) % size];
-//			const auto point0        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i0]), modelViewMatrix, projectionMatrix, viewport);
-//			const auto point1        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i1]), modelViewMatrix, projectionMatrix, viewport);
 			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
 			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
 			const auto segment       = LineSegment3d (point0, point1);
@@ -531,7 +542,8 @@ throw (std::domain_error)
 			if (not between)
 				continue;
 
-			distances .emplace (distance, std::make_pair (Edge { i0, i1, segment, true }, face));
+			distances .emplace (std::make_pair (getFaceDistance (cutSegment .point1 (), vertices), distance),
+			                    std::make_pair (Edge { i0, i1, segment, true }, face));
 		}
 	}
 

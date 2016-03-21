@@ -119,10 +119,13 @@ public:
 	getAdjacentFaces (const Edge &) const;
 
 	Face
-	getClosestFace (const Vector3d & , const Faces &);
+	getClosestFace (const Vector3d & , const Faces &) const;
 
 	Face
-	getClosestFace (const Vector3d & , const std::vector <size_t> &);
+	getClosestFace (const Vector3d & , const std::vector <size_t> &) const;
+
+	double
+	getFaceDistance (const Vector3d &, const std::vector <size_t> &) const;
 
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;
@@ -137,7 +140,7 @@ public:
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 
 	std::pair <Edge, size_t>
-	getClosestEdge (LineSegment3d, const std::vector <size_t> &, const Matrix4d &, const Matrix4d &, const Vector4i &) const
+	getClosestEdge (const LineSegment3d &, const std::vector <size_t> &) const
 	throw (std::domain_error);
 
 	bool

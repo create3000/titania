@@ -510,7 +510,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 		                      : Vector3d (planeSensor -> translation_changed () .getValue ());
 
 		const auto cutSegment  = LineSegment3d (cutEdge .first, hitPoint);
-		const auto closestEdge = getFaceSelection () -> getClosestEdge (cutSegment, cutFaces, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto closestEdge = getFaceSelection () -> getClosestEdge (cutSegment, cutFaces);
 		const auto edge        = closestEdge .first;
 		const auto face        = closestEdge .second;
 		const auto index       = std::find (cutFaces .begin (), cutFaces .end (), face) - cutFaces .begin ();
