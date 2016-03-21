@@ -155,8 +155,10 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			addNormals = true;
 	}
 
-	const auto vertices = targetGeometry -> coordIndex () .size ();
-	const auto faces    = std::count_if (targetGeometry -> coordIndex () .begin (), targetGeometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; });
+	const auto numVertices = targetGeometry -> coordIndex () .size ();
+	const auto numFaces    = targetGeometry -> colorPerVertex () or targetGeometry -> normalPerVertex ()
+	                         ? std::count_if (targetGeometry -> coordIndex () .begin (), targetGeometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
+	                         : 0;
 
 	if (addColors)
 	{
@@ -164,12 +166,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		{
 			if (targetGeometry -> colorPerVertex ())
 			{
-				for (size_t i = targetGeometry -> colorIndex () .size (); i < vertices; ++ i)
+				for (size_t i = targetGeometry -> colorIndex () .size (); i < numVertices; ++ i)
 					targetGeometry -> colorIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
 			}
 			else
 			{
-				for (size_t i = targetGeometry -> colorIndex () .size (); i < faces; ++ i)
+				for (size_t i = targetGeometry -> colorIndex () .size (); i < numFaces; ++ i)
 					targetGeometry -> colorIndex () .emplace_back (i);
 			}
 		}
@@ -181,7 +183,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	{
 		if (targetGeometry -> getTexCoord ())
 		{
-			for (size_t i = targetGeometry -> texCoordIndex () .size (); i < vertices; ++ i)
+			for (size_t i = targetGeometry -> texCoordIndex () .size (); i < numVertices; ++ i)
 				targetGeometry -> texCoordIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
 		}
 		else
@@ -194,12 +196,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		{
 			if (targetGeometry -> normalPerVertex ())
 			{
-			   for (size_t i = targetGeometry -> normalIndex () .size (); i < vertices; ++ i)
+			   for (size_t i = targetGeometry -> normalIndex () .size (); i < numVertices; ++ i)
 					targetGeometry -> normalIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
 			}
 			else
 			{
-				for (size_t i = targetGeometry -> normalIndex () .size (); i < faces; ++ i)
+				for (size_t i = targetGeometry -> normalIndex () .size (); i < numFaces; ++ i)
 					targetGeometry -> normalIndex () .emplace_back (i);
 			}
 		}
@@ -209,8 +211,10 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 	for (const auto & geometry : geometries)
 	{
-		const auto vertices = geometry -> coordIndex () .size ();
-		const auto faces    = std::count_if (geometry -> coordIndex () .begin (), geometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; });
+		const auto numVertices = geometry -> coordIndex () .size ();
+		const auto numFaces    = geometry -> colorPerVertex () or geometry -> normalPerVertex ()
+	                            ? std::count_if (geometry -> coordIndex () .begin (), geometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
+	                            : 0;
 
 		if (addColors)
 		{
@@ -218,12 +222,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			{
 				if (geometry -> colorPerVertex ())
 				{
-					for (size_t i = geometry -> colorIndex () .size (); i < vertices; ++ i)
+					for (size_t i = geometry -> colorIndex () .size (); i < numVertices; ++ i)
 						geometry -> colorIndex () .emplace_back (geometry -> coordIndex () [i]);
 				}
 				else
 				{
-					for (size_t i = geometry -> colorIndex () .size (); i < faces; ++ i)
+					for (size_t i = geometry -> colorIndex () .size (); i < numFaces; ++ i)
 						geometry -> colorIndex () .emplace_back (i);
 				}
 			}
@@ -235,7 +239,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		{
 			if (geometry -> getTexCoord ())
 			{
-				for (size_t i = geometry -> texCoordIndex () .size (); i < vertices; ++ i)
+				for (size_t i = geometry -> texCoordIndex () .size (); i < numVertices; ++ i)
 					geometry -> texCoordIndex () .emplace_back (geometry -> coordIndex () [i]);
 			}
 			else
@@ -248,12 +252,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			{
 				if (geometry -> normalPerVertex ())
 				{
-				   for (size_t i = geometry -> normalIndex () .size (); i < vertices; ++ i)
+				   for (size_t i = geometry -> normalIndex () .size (); i < numVertices; ++ i)
 						geometry -> normalIndex () .emplace_back (geometry -> coordIndex () [i]);
 				}
 				else
 				{
-					for (size_t i = geometry -> normalIndex () .size (); i < faces; ++ i)
+					for (size_t i = geometry -> normalIndex () .size (); i < numFaces; ++ i)
 						geometry -> normalIndex () .emplace_back (i);
 				}
 			}
@@ -419,7 +423,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			for (size_t i = 0, size = targetColor -> getSize (); i < size; ++ i)
 				colorNode -> set1Color (i, targetColor -> get1Color (i));
 		
-		   targetGeometry -> color () = colorNode;
+			targetGeometry -> color () = colorNode;
 		}
 	}
 
