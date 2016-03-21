@@ -367,21 +367,44 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			if (targetColor)
 			{
-				if (geometry -> colorPerVertex ())
-					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> getVertexColorIndex (i)] + targetColor -> getSize ());
-				else
-					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> getFaceColorIndex (face)] + targetColor -> getSize ());
+				try
+				{
+					if (geometry -> colorPerVertex ())
+						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getVertexColorIndex (i)) + targetColor -> getSize ());
+					else
+						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getFaceColorIndex (face)) + targetColor -> getSize ());
+				}
+				catch (const std::out_of_range &)
+				{
+					targetGeometry -> colorIndex () .emplace_back (0);
+				}
 			}
 
 			if (targetTexCoord)
-				targetGeometry -> texCoordIndex () .emplace_back (texCoordArray [geometry -> getVertexTexCoordIndex (i)] + targetTexCoord -> getSize ());
+			{
+				try
+				{
+					targetGeometry -> texCoordIndex () .emplace_back (texCoordArray .at (geometry -> getVertexTexCoordIndex (i)) + targetTexCoord -> getSize ());
+				}
+				catch (const std::out_of_range &)
+				{
+					targetGeometry -> texCoordIndex () .emplace_back (0);
+				}
+			}
 
 			if (targetNormal)
 			{
-				if (geometry -> normalPerVertex ())
-					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> getVertexNormalIndex (i)] + targetNormal -> getSize ());
-				else
-					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> getFaceNormalIndex (face)] + targetNormal -> getSize ());
+				try
+				{
+					if (geometry -> normalPerVertex ())
+						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getVertexNormalIndex (i)) + targetNormal -> getSize ());
+					else
+						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getFaceNormalIndex (face)) + targetNormal -> getSize ());
+				}
+				catch (const std::out_of_range &)
+				{
+					targetGeometry -> normalIndex () .emplace_back (0);
+				}
 			}
 
 			const auto point = coordArray [index] + targetCoord -> getSize ();
