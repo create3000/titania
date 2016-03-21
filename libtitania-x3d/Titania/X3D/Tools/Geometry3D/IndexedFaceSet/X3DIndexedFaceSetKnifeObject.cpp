@@ -332,8 +332,6 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 
 	Vector3d closestPoint;
 
-	__LOG__ << getHotPoints () .size () << std::endl;
-	                     
  	if (getHotPoints () .size () == 1)
 	{
 		// Snap to vertex.
@@ -354,7 +352,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 		closestPoint = getClosestPoint (endEdge, cutPoints);	                   
 
 		if (snapToVertex (cutFace, endPoints, closestPoint))
-			__LOG__ <<  getHotPoints () .size () << " : " << endPoints .size () << std::endl;
+			;
 		else
 		{
 			if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE)
@@ -596,16 +594,12 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	std::vector <size_t> adjacentFaces1;
 	std::vector <size_t> adjacentFaces2;
 
-	__LOG__ << startPoints .size () << std::endl;
-	__LOG__ << endPoints   .size () << std::endl;
-
 	switch (startPoints .size ())
 	{
 		case 1:
 		{
 			startVertex1 = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (startPoints [0]), vertices);
 			endVertex2   = startVertex1;
-			__LOG__ << startVertex1 << std::endl;
 			break;
 		}
 		case 2:
@@ -669,7 +663,6 @@ X3DIndexedFaceSetKnifeObject::cut ()
 		{
 			endVertex1   = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (endPoints [0]), vertices);
 			startVertex2 = endVertex1;
-			__LOG__ << endVertex1 << std::endl;
 			break;
 		}
 		case 2:
