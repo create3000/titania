@@ -365,18 +365,31 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				continue;
 			}
 
+			const auto point = coordArray [index] + targetCoord -> getSize ();
+
 			if (targetColor)
 			{
-				try
+				if (geometry -> colorPerVertex ())
 				{
-					if (geometry -> colorPerVertex ())
+					try
+					{
 						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getVertexColorIndex (i)) + targetColor -> getSize ());
-					else
-						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getFaceColorIndex (face)) + targetColor -> getSize ());
+					}
+					catch (const std::out_of_range &)
+					{
+						targetGeometry -> colorIndex () .emplace_back (point);
+					}
 				}
-				catch (const std::out_of_range &)
+				else
 				{
-					targetGeometry -> colorIndex () .emplace_back (0);
+					try
+					{
+						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getFaceColorIndex (face)) + targetColor -> getSize ());
+					}
+					catch (const std::out_of_range &)
+					{
+						targetGeometry -> colorIndex () .emplace_back (face);
+					}
 				}
 			}
 
@@ -388,26 +401,35 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				}
 				catch (const std::out_of_range &)
 				{
-					targetGeometry -> texCoordIndex () .emplace_back (0);
+					targetGeometry -> texCoordIndex () .emplace_back (point);
 				}
 			}
 
 			if (targetNormal)
 			{
-				try
+				if (geometry -> normalPerVertex ())
 				{
-					if (geometry -> normalPerVertex ())
+					try
+					{
 						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getVertexNormalIndex (i)) + targetNormal -> getSize ());
-					else
-						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getFaceNormalIndex (face)) + targetNormal -> getSize ());
+					}
+					catch (const std::out_of_range &)
+					{
+						targetGeometry -> normalIndex () .emplace_back (point);
+					}
 				}
-				catch (const std::out_of_range &)
+				else
 				{
-					targetGeometry -> normalIndex () .emplace_back (0);
+					try
+					{
+						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getFaceNormalIndex (face)) + targetNormal -> getSize ());
+					}
+					catch (const std::out_of_range &)
+					{
+						targetGeometry -> normalIndex () .emplace_back (face);
+					}
 				}
 			}
-
-			const auto point = coordArray [index] + targetCoord -> getSize ();
 
 			targetGeometry -> coordIndex () .emplace_back (point);
 			points .emplace (point);
