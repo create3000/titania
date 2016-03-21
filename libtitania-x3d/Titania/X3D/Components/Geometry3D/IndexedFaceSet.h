@@ -168,6 +168,23 @@ public:
 	isLineGeometry () const override
 	{ return false; }
 
+	///  @name Member access
+
+	size_t
+	getVertexTexCoordIndex (const size_t) const;
+
+	size_t
+	getVertexColorIndex (const size_t) const;
+
+	size_t
+	getFaceColorIndex (const size_t) const;
+
+	size_t
+	getVertexNormalIndex (const size_t) const;
+
+	size_t
+	getFaceNormalIndex (const size_t) const;
+
 	///  @name Operations
 
 	virtual
@@ -198,23 +215,6 @@ protected:
 	///  @name Member types
 
 	using Vertices = std::vector <size_t>;
-
-	///  @name Member access
-
-	size_t
-	getVertexTexCoordIndex (const size_t) const;
-
-	size_t
-	getVertexColorIndex (const size_t) const;
-
-	size_t
-	getFaceColorIndex (const size_t) const;
-
-	size_t
-	getVertexNormalIndex (const size_t) const;
-
-	size_t
-	getFaceNormalIndex (const size_t) const;
 
 	///  @name Operations
 

@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 20 Mar 2016 01:53:24 GMT"
+META "modified" "Sun, 20 Mar 2016 18:45:52 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,7 +66,9 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF KnifeTouchSensor TouchSensor { }
+            value DEF KnifeArcGeometry Arc2D {
+              radius 10
+            }
           }
         ]
       }
@@ -132,7 +134,7 @@ Collision {
               DEF KnifeSelectionGroup Group {
                 children [
                   USE SelectionShape
-                  USE KnifeTouchSensor
+                  DEF KnifeTouchSensor TouchSensor { }
                 ]
               }
             ]
@@ -384,9 +386,7 @@ Collision {
                                   }
                                   material USE _8
                                 }
-                                geometry DEF _11 Arc2D {
-                                  radius 10
-                                }
+                                geometry USE KnifeArcGeometry
                               }
                             }
                             DepthBuffer {
@@ -399,7 +399,7 @@ Collision {
                                     emissiveColor 1 1 1
                                   }
                                 }
-                                geometry USE _11
+                                geometry USE KnifeArcGeometry
                               }
                             }
                           ]
@@ -448,6 +448,7 @@ EXPORT HotFaceGeometry
 EXPORT HotPointCoord
 EXPORT MagicPointsSwitch AS HotSwitch
 EXPORT KnifeArc
+EXPORT KnifeArcGeometry
 EXPORT KnifeArcSwitch
 EXPORT KnifeEndPoint
 EXPORT KnifeLineCoordinate

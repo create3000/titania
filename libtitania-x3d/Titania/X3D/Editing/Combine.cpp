@@ -155,59 +155,109 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			addNormals = true;
 	}
 
+	const auto vertices = targetGeometry -> coordIndex () .size ();
+	const auto faces    = std::count_if (targetGeometry -> coordIndex () .begin (), targetGeometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; });
+
 	if (addColors)
 	{
-		if (targetGeometry -> colorIndex () .empty () and targetGeometry -> getColor ())
-			targetGeometry -> colorIndex () = targetGeometry -> coordIndex ();
-
-		else if (not targetGeometry -> getColor ())
+		if (targetGeometry -> getColor ())
+		{
+			if (targetGeometry -> colorPerVertex ())
+			{
+				for (size_t i = targetGeometry -> colorIndex () .size (); i < vertices; ++ i)
+					targetGeometry -> colorIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+			}
+			else
+			{
+				for (size_t i = targetGeometry -> colorIndex () .size (); i < faces; ++ i)
+					targetGeometry -> colorIndex () .emplace_back (i);
+			}
+		}
+		else
 			targetGeometry -> addColors ();
 	}
 
 	if (addTexCoords)
 	{
-		if (targetGeometry -> texCoordIndex () .empty () and targetGeometry -> getTexCoord ())
-			targetGeometry -> texCoordIndex () = targetGeometry -> coordIndex ();
-
-		else if (not targetGeometry -> getTexCoord ())
+		if (targetGeometry -> getTexCoord ())
+		{
+			for (size_t i = targetGeometry -> texCoordIndex () .size (); i < vertices; ++ i)
+				targetGeometry -> texCoordIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+		}
+		else
 			targetGeometry -> addTexCoords ();
 	}
 
 	if (addNormals)
 	{
-		if (targetGeometry -> normalIndex () .empty () and targetGeometry -> getNormal ())
-			targetGeometry -> normalIndex () = targetGeometry -> coordIndex ();
-
-		else if (not targetGeometry -> getNormal ())
+		if (targetGeometry -> getNormal ())
+		{
+			if (targetGeometry -> normalPerVertex ())
+			{
+			   for (size_t i = targetGeometry -> normalIndex () .size (); i < vertices; ++ i)
+					targetGeometry -> normalIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
+			}
+			else
+			{
+				for (size_t i = targetGeometry -> normalIndex () .size (); i < faces; ++ i)
+					targetGeometry -> normalIndex () .emplace_back (i);
+			}
+		}
+		else
 			targetGeometry -> addNormals ();
 	}
 
 	for (const auto & geometry : geometries)
 	{
+		const auto vertices = geometry -> coordIndex () .size ();
+		const auto faces    = std::count_if (geometry -> coordIndex () .begin (), geometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; });
+
 		if (addColors)
 		{
-			if (geometry -> colorIndex () .empty () and geometry -> getColor ())
-				geometry -> colorIndex () = geometry -> coordIndex ();
-
-			else if (not geometry -> getColor ())
+			if (geometry -> getColor ())
+			{
+				if (geometry -> colorPerVertex ())
+				{
+					for (size_t i = geometry -> colorIndex () .size (); i < vertices; ++ i)
+						geometry -> colorIndex () .emplace_back (geometry -> coordIndex () [i]);
+				}
+				else
+				{
+					for (size_t i = geometry -> colorIndex () .size (); i < faces; ++ i)
+						geometry -> colorIndex () .emplace_back (i);
+				}
+			}
+			else
 				geometry -> addColors ();
 		}
 
 		if (addTexCoords)
 		{
-			if (geometry -> texCoordIndex () .empty () and geometry -> getTexCoord ())
-				geometry -> texCoordIndex () = geometry -> coordIndex ();
-
-			else if (not geometry -> getTexCoord ())
+			if (geometry -> getTexCoord ())
+			{
+				for (size_t i = geometry -> texCoordIndex () .size (); i < vertices; ++ i)
+					geometry -> texCoordIndex () .emplace_back (geometry -> coordIndex () [i]);
+			}
+			else
 				geometry -> addTexCoords ();
 		}
 
 		if (addNormals)
 		{
-			if (geometry -> normalIndex () .empty () and geometry -> getNormal ())
-				geometry -> normalIndex () = geometry -> coordIndex ();
-
-			else if (not geometry -> getTexCoord ())
+			if (geometry -> getNormal ())
+			{
+				if (geometry -> normalPerVertex ())
+				{
+				   for (size_t i = geometry -> normalIndex () .size (); i < vertices; ++ i)
+						geometry -> normalIndex () .emplace_back (geometry -> coordIndex () [i]);
+				}
+				else
+				{
+					for (size_t i = geometry -> normalIndex () .size (); i < faces; ++ i)
+						geometry -> normalIndex () .emplace_back (i);
+				}
+			}
+			else
 				geometry -> addNormals ();
 		}
 	}
@@ -314,20 +364,20 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			if (targetColor)
 			{
 				if (geometry -> colorPerVertex ())
-					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> colorIndex () [i]] + targetColor -> getSize ());
+					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> getVertexColorIndex (i)] + targetColor -> getSize ());
 				else
-					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> colorIndex () [face]] + targetColor -> getSize ());
+					targetGeometry -> colorIndex () .emplace_back (colorArray [geometry -> getFaceColorIndex (face)] + targetColor -> getSize ());
 			}
 
 			if (targetTexCoord)
-				targetGeometry -> texCoordIndex () .emplace_back (texCoordArray [geometry -> texCoordIndex () [i]] + targetTexCoord -> getSize ());
+				targetGeometry -> texCoordIndex () .emplace_back (texCoordArray [geometry -> getVertexTexCoordIndex (i)] + targetTexCoord -> getSize ());
 
 			if (targetNormal)
 			{
 				if (geometry -> normalPerVertex ())
-					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> normalIndex () [i]] + targetNormal -> getSize ());
+					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> getVertexNormalIndex (i)] + targetNormal -> getSize ());
 				else
-					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> normalIndex () [face]] + targetNormal -> getSize ());
+					targetGeometry -> normalIndex () .emplace_back (normalArray [geometry -> getFaceNormalIndex (face)] + targetNormal -> getSize ());
 			}
 
 			const auto point = coordArray [index] + targetCoord -> getSize ();

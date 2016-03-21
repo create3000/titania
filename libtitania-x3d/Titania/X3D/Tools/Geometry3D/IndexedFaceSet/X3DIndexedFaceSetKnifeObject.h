@@ -63,6 +63,7 @@ class Transform;
 class TouchSensor;
 class PlaneSensor;
 class CoordinateDouble;
+class Arc2D;
 
 class X3DIndexedFaceSetKnifeObject :
 	virtual public X3DIndexedFaceSetTool
@@ -155,6 +156,7 @@ private:
 	X3DPtr <CoordinateDouble> knifeLineCoordinate;
 	X3DPtr <Switch>           knifeArcSwitch;
 	X3DPtr <Transform>        knifeArc;
+	X3DPtr <Arc2D>            knifeArcGeometry;
 
 	std::vector <size_t>           cutFaces;     // indices of first coord index of face
 	size_t                         cutFaceIndex; // index of cut face in cutFaces
