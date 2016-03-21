@@ -142,10 +142,10 @@ GeometryEditor::configure ()
 		getEdgesMenuItem () .set_active (true);
 	else
 		getPointsMenuItem () .set_active (true);
-	
-	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 
 	getPaintSelectionButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
+	
+	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
 
 void
@@ -325,7 +325,8 @@ GeometryEditor::set_executionContext ()
 		children -> isPrivate (true);
 		previousSelection = children -> value ();
 
-		set_selector (selector);
+		if (getPaintSelectionButton () .get_active ())
+			set_selector (selector);
 	}
 	catch (const std::exception & error)
 	{
