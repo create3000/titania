@@ -124,13 +124,16 @@ private:
 	set_plane_sensor_translation (PlaneSensor* const);
 
 	bool
-	snapToVertex (const size_t, std::vector <int32_t> &, Vector3d &);
-
-	bool
 	setStartMagicSelection ();
 
 	bool
 	setEndMagicSelection (PlaneSensor* const planeSensor);
+
+	bool
+	snapToCenter (const std::pair <size_t, size_t> &, Vector3d &);
+
+	bool
+	snapToVertex (const size_t, std::vector <int32_t> &, Vector3d &);
 
 	std::vector <int32_t>
 	cut ();

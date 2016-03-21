@@ -197,12 +197,10 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 	}
 	else
 	{
-		const auto point1       = getCoord () -> get1Point (coordIndex () [getHotEdge () .front ()]);
-		const auto point2       = getCoord () -> get1Point (coordIndex () [getHotEdge () .back  ()]);
+		const auto point1       = getCoord () -> get1Point (coordIndex () [startEdge .first]);
+		const auto point2       = getCoord () -> get1Point (coordIndex () [startEdge .second]);
 		const auto edgeLine     = Line3d (point1, point2, math::point_type ());
 		const auto closestPoint = edgeLine .closest_point (knifeTouchSensor -> getHitPoint ());
-		const auto center       = (point1 + point2) / 2.0;
-		const auto distance     = getDistance (center, closestPoint);
 
 		cutPoints .first = closestPoint;
 
@@ -210,14 +208,11 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 			;
 		else
 		{
-			if (distance <= SELECTION_DISTANCE)
-			{
-				// Snap to center of edge.
-				cutPoints .first = center;
-			}
+			if (snapToCenter (startEdge, cutPoints .first))
+				;
+			else
+				knifeArcSwitch -> whichChoice () = false;
 		}
-
-		knifeArcSwitch -> whichChoice () = false;
 	}  
 
 	// Configure plane sensors.
@@ -362,18 +357,15 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 
 				knifeArcSwitch   -> whichChoice () = true;
 				knifeArc         -> translation () = orthoPoint;
+				knifeArcGeometry -> startAngle ()  = 0;
 				knifeArcGeometry -> endAngle ()    = M_PI / 2;
 			}
 			else
 			{
-				const auto center   = (point1 + point2) / 2.0;
-				const auto distance = getDistance (center, closestPoint);
-
-				// Snap to center of edge.
-				if (distance <= SELECTION_DISTANCE)
-				   closestPoint = center;
-
-				knifeArcSwitch -> whichChoice () = false;
+				if (snapToCenter (endEdge, closestPoint))
+					;
+				else
+					knifeArcSwitch -> whichChoice () = false;
 			}
 		}
 	}
@@ -388,26 +380,6 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 
 	if (trackPoint .z () > 0)
 		knifeLineCoordinate -> point () [1] = getBrowser () -> getHitRay (getModelViewMatrix (), getProjectionMatrix (), getViewport ()) .point ();
-}
-
-bool
-X3DIndexedFaceSetKnifeObject::snapToVertex (const size_t face, std::vector <int32_t> & points, Vector3d & vertex)
-{
-	const auto vertices      = getFaceSelection () -> getFaceVertices (face);
-	const auto closestPoint  = coordIndex () [getFaceSelection () -> getClosestVertex (vertex, vertices)];
-	const auto closestVertex = getCoord () -> get1Point (closestPoint);
-
-	if (getDistance (closestVertex, vertex) > SELECTION_DISTANCE)
-	   return false;
-
-	setHotPoints (points = { closestPoint });
-	vertex = closestVertex;
-
-   // Snap to vertex
-	knifeArcSwitch   -> whichChoice () = true;
-	knifeArc         -> translation () = closestVertex;
-	knifeArcGeometry -> endAngle () = 0;
-	return true;
 }
 
 Vector3d
@@ -556,6 +528,48 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 	{
 	   return false;
 	}
+}
+
+bool
+X3DIndexedFaceSetKnifeObject::snapToCenter (const std::pair <size_t, size_t> & edge, Vector3d & point)
+{
+	const auto point1   = getCoord () -> get1Point (coordIndex () [edge .first]);
+	const auto point2   = getCoord () -> get1Point (coordIndex () [edge .second]);
+	const auto center   = (point1 + point2) / 2.0;
+	const auto distance = getDistance (center, point);
+
+	// Snap to center of edge.
+	if (distance > SELECTION_DISTANCE)
+	   return false;
+
+	point = center;
+
+	knifeArcSwitch   -> whichChoice () = true;
+	knifeArc         -> translation () = center;
+	knifeArcGeometry -> startAngle ()  = M_PI;
+	knifeArcGeometry -> endAngle ()    = M_PI * 2;
+	return true;
+}
+
+bool
+X3DIndexedFaceSetKnifeObject::snapToVertex (const size_t face, std::vector <int32_t> & points, Vector3d & vertex)
+{
+	const auto vertices      = getFaceSelection () -> getFaceVertices (face);
+	const auto closestPoint  = coordIndex () [getFaceSelection () -> getClosestVertex (vertex, vertices)];
+	const auto closestVertex = getCoord () -> get1Point (closestPoint);
+
+	if (getDistance (closestVertex, vertex) > SELECTION_DISTANCE)
+	   return false;
+
+	setHotPoints (points = { closestPoint });
+	vertex = closestVertex;
+
+   // Snap to vertex
+	knifeArcSwitch   -> whichChoice () = true;
+	knifeArc         -> translation () = closestVertex;
+	knifeArcGeometry -> startAngle ()  = 0;
+	knifeArcGeometry -> endAngle ()    = 0;
+	return true;
 }
 
 std::vector <int32_t>
