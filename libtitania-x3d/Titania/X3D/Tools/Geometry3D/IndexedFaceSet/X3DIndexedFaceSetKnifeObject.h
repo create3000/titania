@@ -124,16 +124,23 @@ private:
 	set_plane_sensor_translation (PlaneSensor* const);
 
 	bool
+	snapToVertex (const size_t, std::vector <int32_t> &, Vector3d &);
+
+	bool
 	setStartMagicSelection ();
 
 	bool
-	setEndMagicSelection ();
+	setEndMagicSelection (PlaneSensor* const planeSensor);
 
 	std::vector <int32_t>
 	cut ();
 
 	void
 	addPoint (const size_t &, const int32_t, const Vector3d &);
+
+	Vector3d
+	getClosestPoint (const std::pair <size_t, size_t> &,
+	                 const std::pair <Vector3d, Vector3d> &) const;
 
 	///  @name Members
 
@@ -161,8 +168,8 @@ private:
 	std::vector <size_t>           cutFaces;     // indices of first coord index of face
 	size_t                         cutFaceIndex; // index of cut face in cutFaces
 	size_t                         cutFace;      // index of first coord index of face
-	std::pair <Vector3d, Vector3d> cutEdge;      // points of visual cut line
-	std::pair <Vector3d, Vector3d> cutPoints;    // points of cut edge
+	std::pair <Vector3d, Vector3d> cutEdge;      // points of cut edge
+	std::pair <Vector3d, Vector3d> cutPoints;    // points of visual cut line
 
 
 	std::vector <int32_t>      startPoints; // One ot two points, depending on whether start from point or edge

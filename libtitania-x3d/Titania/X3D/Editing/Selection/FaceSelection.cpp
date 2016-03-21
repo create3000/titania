@@ -496,8 +496,8 @@ throw (std::domain_error)
 
 	std::map <double, std::pair <Edge, size_t>> distances;
 
-	cutSegment = LineSegment3d (ViewVolume::projectPoint (cutSegment .point0 (), modelViewMatrix, projectionMatrix, viewport),
-	                            ViewVolume::projectPoint (cutSegment .point1 (), modelViewMatrix, projectionMatrix, viewport));
+//	cutSegment = LineSegment3d (ViewVolume::projectPoint (cutSegment .point0 (), modelViewMatrix, projectionMatrix, viewport),
+//	                            ViewVolume::projectPoint (cutSegment .point1 (), modelViewMatrix, projectionMatrix, viewport));
 
 	const auto plane = Plane3d (cutSegment .point0 (), cutSegment .line () .direction ());
 
@@ -509,8 +509,10 @@ throw (std::domain_error)
 		{
 			const auto i0            = vertices [i];
 			const auto i1            = vertices [(i + 1) % size];
-			const auto point0        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i0]), modelViewMatrix, projectionMatrix, viewport);
-			const auto point1        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i1]), modelViewMatrix, projectionMatrix, viewport);
+//			const auto point0        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i0]), modelViewMatrix, projectionMatrix, viewport);
+//			const auto point1        = ViewVolume::projectPoint (coordNode -> get1Point (geometryNode -> coordIndex () [i1]), modelViewMatrix, projectionMatrix, viewport);
+			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
+			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
 			const auto segment       = LineSegment3d (point0, point1);
 			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point0 ());
 			auto       closestPoint1 = Vector3d (0, 0, 0);
