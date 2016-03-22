@@ -35,7 +35,7 @@ X3DChildObject::X3DChildObject () :
 	          X3DObject (),
 	X3DGarbageCollector (),
 	            parents (),
-	               root (nullptr),
+	         bestParent (nullptr),
 	            tainted (false)
 { }
 
@@ -60,12 +60,12 @@ X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
 void
 X3DChildObject::addParent (X3DChildObject* const parent)
 {
-	// Determine the best guess for the shortest way to a rooted object.
+	// Determine the best parent for the shortest way to a rooted object.
 
-	if ((not root)
-	    or (parent -> getParents () .size () < root -> getParents () .size ()))
+	if ((not bestParent)
+	    or (parent -> getParents () .size () < bestParent -> getParents () .size ()))
 	{
-		root = parent;
+		bestParent = parent;
 	}
 
 	// Add parent
@@ -79,11 +79,11 @@ X3DChildObject::replaceParent (X3DChildObject* const parentToRemove, X3DChildObj
 {
 	// Determine the best guess for the shortest way to a rooted object.
 
-	if ((not root)
-	    or (root == parentToRemove)
-	    or (parentToAdd -> getParents () .size () < root -> getParents () .size ()))
+	if ((not bestParent)
+	    or (bestParent == parentToRemove)
+	    or (parentToAdd -> getParents () .size () < bestParent -> getParents () .size ()))
 	{
-		root = parentToAdd;
+		bestParent = parentToAdd;
 	}
 
 	// Replace parent
@@ -112,8 +112,8 @@ X3DChildObject::removeParent (X3DChildObject* const parent)
 {
 	if (parents .erase (parent))
 	{
-		if (root == parent)
-			root = nullptr;
+		if (bestParent == parent)
+			bestParent = nullptr;
 
 		removeReferenceCount ();
 
@@ -166,8 +166,8 @@ X3DChildObject::addWeakParent (X3DChildObject* const parent)
 void
 X3DChildObject::removeWeakParent (X3DChildObject* const parent)
 {
-	if (root == parent)
-		root = nullptr;
+	if (bestParent == parent)
+		bestParent = nullptr;
 
 	parents .erase (parent);
 }
@@ -185,11 +185,11 @@ X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 
 	if (seen .emplace (this) .second)
 	{
-		// First test way with the »best guess parent«, it is named here »root«.
+		// First test way with the »best guess parent«, it is named here »bestParent«.
 
-		if (root)
+		if (bestParent)
 		{
-			if (root -> hasRootedObjects (seen))
+			if (bestParent -> hasRootedObjects (seen))
 				return true;
 		}
 
@@ -199,14 +199,14 @@ X3DChildObject::hasRootedObjects (ChildObjectSet & seen)
 		{
 			if (parent -> hasRootedObjects (seen))
 			{
-				root = parent;
+				bestParent = parent;
 				return true;
 			}
 		}
 
-		// We have no root and must test the next time again as parents can change.
+		// We have no best parent and must test the next time again as parents can change.
 
-		root = nullptr;
+		bestParent = nullptr;
 	}
 
 	return false;

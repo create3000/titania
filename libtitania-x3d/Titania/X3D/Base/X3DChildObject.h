@@ -226,7 +226,7 @@ private:
 	///  @name Members
 
 	ChildObjectSet  parents;
-	X3DChildObject* root;
+	X3DChildObject* bestParent;
 	bool            tainted;
 
 };
