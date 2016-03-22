@@ -105,7 +105,7 @@ public:
 	point () const
 	{ return *fields .point; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	void
@@ -136,6 +136,13 @@ public:
 	size_t
 	getSize () const final override
 	{ return point () .size (); }
+
+	///  @name Operations
+	
+	virtual
+	void
+	resize (const size_t value) final override
+	{ point () .resize (value); }
 
 
 private:

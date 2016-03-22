@@ -59,5 +59,16 @@ X3DColorNode::X3DColorNode () :
 	addType (X3DConstants::X3DColorNode);
 }
 
+void
+X3DColorNode::assign (const X3DPtr <X3DColorNode> & other)
+{
+	const auto size = other -> getSize ();
+
+	for (size_t i = 0; i < size; ++ i)
+		set1Color (i, other -> get1Color (i));
+
+	resize (size);
+}
+
 } // X3D
 } // titania

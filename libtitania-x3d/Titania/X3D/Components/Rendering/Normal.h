@@ -97,7 +97,7 @@ public:
 	vector () const
 	{ return *fields .vector; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	void
@@ -120,6 +120,13 @@ public:
 	size_t
 	getSize () const final override
 	{ return vector () .size (); }
+
+	///  @name Operations
+	
+	virtual
+	void
+	resize (const size_t value) final override
+	{ vector () .resize (value); }
 
 
 private:

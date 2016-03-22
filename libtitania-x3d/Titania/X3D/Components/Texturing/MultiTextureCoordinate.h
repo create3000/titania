@@ -97,7 +97,7 @@ public:
 	texCoord () const
 	{ return *fields .texCoord; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	void
@@ -125,6 +125,26 @@ public:
 	{ return texCoords; }
 
 	virtual
+	bool
+	isEmpty () const final override
+	{ return true; }
+
+	virtual
+	size_t
+	getSize () const final override
+	{ return 0; }
+
+	///  @name Operations
+
+	virtual
+	void
+	assign (const X3DPtr <X3DTextureCoordinateNode> & other) final override;
+	
+	virtual
+	void
+	resize (const size_t value) final override;
+
+	virtual
 	void
 	enable (const std::vector <GLuint> &) const final override;
 
@@ -141,16 +161,6 @@ public:
 	void
 	disable (const int32_t) const final override
 	{ }
-
-	virtual
-	bool
-	isEmpty () const final override
-	{ return true; }
-
-	virtual
-	size_t
-	getSize () const final override
-	{ return 0; }
 
 
 private:

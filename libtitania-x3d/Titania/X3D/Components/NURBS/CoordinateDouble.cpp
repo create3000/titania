@@ -183,11 +183,5 @@ CoordinateDouble::erasePoint (const size_t index)
 	point () .erase (point () .begin () + index);
 }
 
-void
-CoordinateDouble::resize (const size_t size)
-{
-	point () .resize (size);
-}
-
 } // X3D
 } // titania

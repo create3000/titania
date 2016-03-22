@@ -100,7 +100,7 @@ public:
 	point () const
 	{ return *fields .point; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	Box3d
@@ -139,10 +139,6 @@ public:
 	erasePoint (const size_t) final override;
 
 	virtual
-	void
-	resize (const size_t) final override;
-
-	virtual
 	bool
 	isEmpty () const final override
 	{ return point () .empty (); }
@@ -151,6 +147,13 @@ public:
 	size_t
 	getSize () const final override
 	{ return point () .size (); }
+
+	///  @name Operations
+	
+	virtual
+	void
+	resize (const size_t value) final override
+	{ point () .resize (value); }
 
 	///  @name Destruction
 	

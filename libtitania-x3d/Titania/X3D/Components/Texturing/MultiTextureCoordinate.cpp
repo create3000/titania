@@ -156,6 +156,20 @@ MultiTextureCoordinate::addTexCoord (const size_t, TexCoordArray & texCoordArray
 }
 
 void
+MultiTextureCoordinate::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
+{
+	for (const auto & texCoordNode : texCoords)
+	   texCoordNode -> assign (other);
+}
+
+void
+MultiTextureCoordinate::resize (const size_t value)
+{
+	for (const auto & texCoordNode : texCoords)
+		texCoordNode -> resize (value);
+}
+
+void
 MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) const
 {
 	X3DTextureCoordinateNode* last    = nullptr;

@@ -93,5 +93,16 @@ X3DTextureCoordinateNode::disable () const
 	}
 }
 
+void
+X3DTextureCoordinateNode::assign (const X3DPtr <X3DTextureCoordinateNode> & other)
+{
+	const auto size = other -> getSize ();
+
+	for (size_t i = 0; i < size; ++ i)
+		set1Point (i, other -> get1Point(i));
+
+	resize (size);
+}
+
 } // X3D
 } // titania

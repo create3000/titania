@@ -97,7 +97,7 @@ public:
 	color () const
 	{ return *fields .color; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	bool
@@ -134,6 +134,13 @@ public:
 	size_t
 	getSize () const final override
 	{ return color () .size (); }
+
+	///  @name Operations
+	
+	virtual
+	void
+	resize (const size_t value) final override
+	{ color () .resize (value); }
 
 
 private:

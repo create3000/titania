@@ -61,7 +61,7 @@ class X3DNormalNode :
 {
 public:
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	void
@@ -82,6 +82,15 @@ public:
 	virtual
 	size_t
 	getSize () const = 0;
+
+	///  @name Operations
+
+	void
+	assign (const X3DPtr <X3DNormalNode> & other);
+	
+	virtual
+	void
+	resize (const size_t value) = 0;
 
 
 protected:

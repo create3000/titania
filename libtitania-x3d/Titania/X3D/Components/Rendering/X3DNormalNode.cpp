@@ -59,5 +59,16 @@ X3DNormalNode::X3DNormalNode () :
 	addType (X3DConstants::X3DNormalNode);
 }
 
+void
+X3DNormalNode::assign (const X3DPtr <X3DNormalNode> & other)
+{
+	const auto size = other -> getSize ();
+
+	for (size_t i = 0; i < size; ++ i)
+		set1Vector (i, other -> get1Vector (i));
+
+	resize (size);
+}
+
 } // X3D
 } // titania

@@ -59,5 +59,16 @@ X3DCoordinateNode::X3DCoordinateNode () :
 	addType (X3DConstants::X3DCoordinateNode);
 }
 
+void
+X3DCoordinateNode::assign (const X3DPtr <X3DCoordinateNode> & other)
+{
+	const auto size = other -> getSize ();
+
+	for (size_t i = 0; i < size; ++ i)
+		set1Point (i, other -> get1Point (i));
+
+	resize (size);
+}
+
 } // X3D
 } // titania

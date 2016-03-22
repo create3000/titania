@@ -219,12 +219,6 @@ GeoCoordinate::erasePoint (const size_t index)
 }
 
 void
-GeoCoordinate::resize (const size_t size)
-{
-	point () .resize (size);
-}
-
-void
 GeoCoordinate::dispose ()
 {
 	X3DGeospatialObject::dispose ();

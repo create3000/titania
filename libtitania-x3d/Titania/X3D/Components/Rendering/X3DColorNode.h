@@ -61,6 +61,8 @@ class X3DColorNode :
 {
 public:
 
+	/// @name Member access
+
 	virtual
 	bool
 	getTransparent () const = 0;
@@ -92,6 +94,15 @@ public:
 	virtual
 	size_t
 	getSize () const = 0;
+
+	///  @name Operations
+
+	void
+	assign (const X3DPtr <X3DColorNode> & other);
+	
+	virtual
+	void
+	resize (const size_t value) = 0;
 
 
 protected:

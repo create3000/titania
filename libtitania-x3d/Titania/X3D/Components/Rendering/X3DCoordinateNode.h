@@ -71,7 +71,7 @@ class X3DCoordinateNode :
 {
 public:
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	Box3d
@@ -110,16 +110,21 @@ public:
 	erasePoint (const size_t) = 0;
 
 	virtual
-	void
-	resize (const size_t) = 0;
-
-	virtual
 	bool
 	isEmpty () const = 0;
 
 	virtual
 	size_t
 	getSize () const = 0;
+
+	///  @name Operations
+
+	void
+	assign (const X3DPtr <X3DCoordinateNode> & other);
+	
+	virtual
+	void
+	resize (const size_t value) = 0;
 
 
 protected:

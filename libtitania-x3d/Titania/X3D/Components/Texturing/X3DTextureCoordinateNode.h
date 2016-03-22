@@ -62,7 +62,7 @@ class X3DTextureCoordinateNode :
 {
 public:
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	void
@@ -111,6 +111,16 @@ public:
 	virtual
 	size_t
 	getSize () const = 0;
+
+	///  @name Operations
+
+	virtual
+	void
+	assign (const X3DPtr <X3DTextureCoordinateNode> & other);
+	
+	virtual
+	void
+	resize (const size_t value) = 0;
 
 
 protected:

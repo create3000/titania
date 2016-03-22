@@ -125,6 +125,8 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 	geometry -> colorPerVertex ()  = colorPerVertex ();
 	geometry -> normalPerVertex () = normalPerVertex ();
 
+	// Generate nodes, we do not setup the nodes as it is not needed for stringification.
+
 	X3DPtr <X3DColorNode> color;
 	X3DPtr <X3DTextureCoordinateNode> texCoord;
 	X3DPtr <X3DNormalNode> normal;
@@ -133,28 +135,24 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 	if (getColor ())
 	{
 		geometry -> color () = getColor () -> create (getExecutionContext ());
-		geometry -> color () -> setup ();
 		color = geometry -> color ();
 	}
 
 	if (getTexCoord ())
 	{
 		geometry -> texCoord () = getTexCoord () -> create (getExecutionContext ());
-		geometry -> texCoord () -> setup ();
 		texCoord = geometry -> texCoord ();
 	}
 
 	if (getNormal ())
 	{
 		geometry -> normal () = getNormal () -> create (getExecutionContext ());
-		geometry -> normal () -> setup ();
 		normal = geometry -> normal ();
 	}
 		
 	if (getCoord ())
 	{
 		geometry -> coord () = getCoord () -> create (getExecutionContext ());
-		geometry -> coord () -> setup ();
 		coord = geometry -> coord ();
 	}
 
