@@ -165,6 +165,14 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 }
 
 void
+X3DIndexedFaceSetSelectionObject::setTranslate (const bool value)
+{
+	translate = value;
+
+	set_coord_point ();
+}
+
+void
 X3DIndexedFaceSetSelectionObject::set_loadState ()
 {
 	try
@@ -336,9 +344,6 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 {
 	try
 	{
-		if (not select ())
-		   return;
-
 		updateMagicPoints ();
 		updateSelectedPoints ();
 

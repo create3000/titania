@@ -132,14 +132,6 @@ public:
 	{ return *m_NormalEnabledButton; }
 
 	Gtk::Button &
-	getMergePointsButton () const
-	{ return *m_MergePointsButton; }
-
-	Gtk::Button &
-	getSplitPointsButton () const
-	{ return *m_SplitPointsButton; }
-
-	Gtk::Button &
 	getFormNewFaceButton () const
 	{ return *m_FormNewFaceButton; }
 
@@ -176,8 +168,16 @@ public:
 	{ return *m_PaintSelectionImage; }
 
 	Gtk::Button &
-	getPolygonReducerButton () const
-	{ return *m_PolygonReducerButton; }
+	getSplitPointsButton () const
+	{ return *m_SplitPointsButton; }
+
+	Gtk::Button &
+	getMergePointsButton () const
+	{ return *m_MergePointsButton; }
+
+	Gtk::ToggleButton &
+	getTransformToolButton () const
+	{ return *m_TransformToolButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -227,14 +227,6 @@ public:
 
 	virtual
 	void
-	on_merge_points_clicked () = 0;
-
-	virtual
-	void
-	on_split_points_clicked () = 0;
-
-	virtual
-	void
 	on_form_new_face_clicked () = 0;
 
 	virtual
@@ -264,6 +256,18 @@ public:
 	virtual
 	void
 	on_paint_selection_toggled () = 0;
+
+	virtual
+	void
+	on_split_points_clicked () = 0;
+
+	virtual
+	void
+	on_merge_points_clicked () = 0;
+
+	virtual
+	void
+	on_transform_tool_toggled () = 0;
 
 	virtual
 	void
@@ -323,8 +327,6 @@ private:
 	Gtk::Button*                m_HammerButton;
 	Gtk::Grid*                  m_GeometryToolsBox;
 	Gtk::ToggleButton*          m_NormalEnabledButton;
-	Gtk::Button*                m_MergePointsButton;
-	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_FormNewFaceButton;
 	Gtk::Button*                m_ExtrudeSelectedEdgesButton;
 	Gtk::Button*                m_ExtrudeSelectedFacesButton;
@@ -334,7 +336,9 @@ private:
 	Gtk::RadioButton*           m_CutPolygonsButton;
 	Gtk::RadioButton*           m_PaintSelectionButton;
 	Gtk::Image*                 m_PaintSelectionImage;
-	Gtk::Button*                m_PolygonReducerButton;
+	Gtk::Button*                m_SplitPointsButton;
+	Gtk::Button*                m_MergePointsButton;
+	Gtk::ToggleButton*          m_TransformToolButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

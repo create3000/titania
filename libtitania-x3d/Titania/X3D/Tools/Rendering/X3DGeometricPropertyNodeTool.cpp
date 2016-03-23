@@ -121,7 +121,7 @@ X3DGeometricPropertyNodeTool::set_activeLayer ()
 {
 	try
 	{
-		switchNode -> setField <SFInt32> ("whichChoice", 0, true);
+		switchNode -> setField <SFInt32> ("whichChoice", false, true);
 	}
 	catch (const X3DError & error)
 	{ }

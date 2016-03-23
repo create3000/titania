@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 20 Mar 2016 18:45:52 GMT"
+META "modified" "Wed, 23 Mar 2016 15:48:44 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,9 +66,6 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF KnifeArcGeometry Arc2D {
-              radius 10
-            }
           }
         ]
       }
@@ -277,10 +274,18 @@ Collision {
           DEF KnifeSwitch Switch {
             whichChoice 0
             children [
-              Group { }
-              Group {
+              DEF TransformToolSwitch Switch {
+                children [
+                  Group { }
+                  DEF Transform Transform {
+                    bboxSize 1 1 1
+                  }
+                ]
+              }
+              DEF Knife Group {
                 children [
                   DEF KnifeStartPoint Transform {
+                    rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
                     children DEF _5 ScreenGroup {
                       children [
                         DepthBuffer {
@@ -323,6 +328,7 @@ Collision {
                       Group {
                         children [
                           DEF KnifeEndPoint Transform {
+                            rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
                             children USE _5
                           }
                           DepthBuffer {
@@ -374,6 +380,7 @@ Collision {
                     children [
                       Group { }
                       DEF KnifeArc Transform {
+                        rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
                         children ScreenGroup {
                           children [
                             DepthBuffer {
@@ -386,7 +393,9 @@ Collision {
                                   }
                                   material USE _8
                                 }
-                                geometry USE KnifeArcGeometry
+                                geometry DEF KnifeArcGeometry Arc2D {
+                                  radius 10
+                                }
                               }
                             }
                             DepthBuffer {
@@ -465,4 +474,6 @@ EXPORT SelectionCoord
 EXPORT SelectionShape
 EXPORT Switch
 EXPORT TouchSensor
+EXPORT Transform
 EXPORT _1 AS TransformMatrix3D
+EXPORT TransformToolSwitch

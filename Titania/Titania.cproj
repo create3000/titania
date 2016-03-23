@@ -2520,6 +2520,7 @@
     <None Include="titania" />
     <None Include="Titania\Base\X3DRevealerInterface.h" />
     <None Include="share\titania\ui\Revealer\GeometryEditor.glade" />
+    <None Include="share\titania\ui\icons\TransformTool.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

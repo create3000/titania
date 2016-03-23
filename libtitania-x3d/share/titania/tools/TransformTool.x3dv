@@ -7,7 +7,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Thu, 17 Mar 2016 09:05:36 GMT"
+META "modified" "Wed, 23 Mar 2016 17:27:46 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -63,18 +63,19 @@ function set_time (value, time)
 
 PROTO TransformTool [
   # required fields
-  inputOnly   SFBool     set_enabled
-  outputOnly  SFBool     isActive
-  outputOnly  SFBool     keepCenter_changed
-  outputOnly  SFInt32    activeTool_changed
+  inputOutput SFBool     enabled TRUE
   inputOutput SFDouble   snapAngle 0.196349540849362
   inputOutput SFBool     controlKey FALSE
   inputOutput SFBool     shiftKey FALSE
   inputOutput SFBool     altKey FALSE
   inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
   inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFBool     bbox TRUE
   inputOutput SFVec3f    bboxSize 0 0 0
   inputOutput SFVec3f    bboxCenter 0 0 0
+  outputOnly  SFBool     isActive
+  outputOnly  SFBool     keepCenter_changed
+  outputOnly  SFInt32    activeTool_changed
   inputOutput SFNode     transform NULL
 ]
 {
@@ -97,6 +98,39 @@ PROTO TransformTool [
         children Transform {
           translation IS bboxCenter
           children [
+            DEF XYZ Shape {
+              geometry IndexedLineSet {
+                colorPerVertex FALSE
+                coordIndex [
+                  0,
+                  1,
+                  -1,
+                  2,
+                  3,
+                  -1,
+                  4,
+                  5,
+                  -1
+                ]
+                color Color {
+                  color [
+                    1 0 0,
+                    0 1 0,
+                    0 0 1
+                  ]
+                }
+                coord DEF Axes Coordinate {
+                  point [
+                    -0 0 0,
+                    0 0 0,
+                    0 0 0,
+                    0 -0 0,
+                    0 0 -0,
+                    0 0 0
+                  ]
+                }
+              }
+            }
             DEF BoundingBox Shape {
               appearance Appearance {
                 lineProperties DEF LineProperties LineProperties {
@@ -135,141 +169,130 @@ PROTO TransformTool [
                 ]
                 coord DEF BBox Coordinate {
                   point [
-                    -0.5 0.5 0.5,
-                    -0.5 -0.5 0.5,
-                    0.5 -0.5 0.5,
-                    0.5 0.5 0.5,
-                    -0.5 0.5 -0.5,
-                    -0.5 -0.5 -0.5,
-                    0.5 -0.5 -0.5,
-                    0.5 0.5 -0.5
+                    -0 0 0,
+                    -0 -0 0,
+                    0 -0 0,
+                    0 0 0,
+                    -0 0 -0,
+                    -0 -0 -0,
+                    0 -0 -0,
+                    0 0 -0
                   ]
                 }
               }
             }
-            DEF XYZ Shape {
-              geometry IndexedLineSet {
-                colorPerVertex FALSE
-                coordIndex [
-                  0,
-                  1,
-                  -1,
-                  2,
-                  3,
-                  -1,
-                  4,
-                  5,
-                  -1
-                ]
-                color Color {
-                  color [
-                    1 0 0,
-                    0 1 0,
-                    0 0 1
-                  ]
-                }
-                coord DEF Axes Coordinate {
-                  point [
-                    -0.5 0 0,
-                    0.5 0 0,
-                    0 -0.5 0,
-                    0 0.5 0,
-                    0 0 -0.5,
-                    0 0 0.5
-                  ]
-                }
-              }
-            }
-            DEF Front Transform {
-              children Transform {
-                children [
-                  DEF FrontSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  DEF Plane Shape {
-                    appearance DEF Transparent Appearance {
-                      material Material {
-                        transparency 1
+            BooleanSwitch {
+              whichChoice IS bbox
+              children [
+                DEF _1 Group { }
+                DEF _2 Group {
+                  children [
+                    DEF Front Transform {
+                      translation 0 0 0.01
+                      scale 0 0 0
+                      children Transform {
+                        children [
+                          DEF FrontSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          DEF Plane Shape {
+                            appearance DEF Transparent Appearance {
+                              material Material {
+                                transparency 1
+                              }
+                            }
+                            geometry Rectangle2D {
+                              size 1 1
+                            }
+                          }
+                        ]
                       }
                     }
-                    geometry Rectangle2D {
-                      size 1 1
+                    DEF Right Transform {
+                      translation 0.01 0 0
+                      scale 0 0 0
+                      children Transform {
+                        rotation 0 1 0 1.5708
+                        children [
+                          DEF RightSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          USE Plane
+                        ]
+                      }
                     }
-                  }
-                ]
-              }
-            }
-            DEF Right Transform {
-              children Transform {
-                rotation 0 1 0 1.5708
-                children [
-                  DEF RightSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  USE Plane
-                ]
-              }
-            }
-            DEF Back Transform {
-              children Transform {
-                rotation 0 1 0 3.14159
-                children [
-                  DEF BackSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  USE Plane
-                ]
-              }
-            }
-            DEF Left Transform {
-              children Transform {
-                rotation 0 -1 0 1.5708
-                children [
-                  DEF LeftSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  USE Plane
-                ]
-              }
-            }
-            DEF Top Transform {
-              children Transform {
-                rotation -1 0 0 1.5708
-                children [
-                  DEF TopSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  USE Plane
-                ]
-              }
-            }
-            DEF Bottom Transform {
-              children Transform {
-                rotation 1 0 0 1.5708
-                children [
-                  DEF BottomSensor PlaneSensor {
-                    enabled IS set_enabled
-                    autoOffset FALSE
-                    isActive IS isActive
-                  }
-                  USE Plane
-                ]
-              }
+                    DEF Back Transform {
+                      translation 0 0 -0.01
+                      scale 0 0 0
+                      children Transform {
+                        rotation 0 1 0 3.14159
+                        children [
+                          DEF BackSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          USE Plane
+                        ]
+                      }
+                    }
+                    DEF Left Transform {
+                      translation -0.01 0 0
+                      scale 0 0 0
+                      children Transform {
+                        rotation 0 -1 0 1.5708
+                        children [
+                          DEF LeftSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          USE Plane
+                        ]
+                      }
+                    }
+                    DEF Top Transform {
+                      translation 0 0.01 0
+                      scale 0 0 0
+                      children Transform {
+                        rotation -1 0 0 1.5708
+                        children [
+                          DEF TopSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          USE Plane
+                        ]
+                      }
+                    }
+                    DEF Bottom Transform {
+                      translation 0 -0.01 0
+                      scale 0 0 0
+                      children Transform {
+                        rotation 1 0 0 1.5708
+                        children [
+                          DEF BottomSensor PlaneSensor {
+                            enabled IS enabled
+                            autoOffset FALSE
+                            isActive IS isActive
+                          }
+                          USE Plane
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
       }
-      DEF _1 DepthBuffer {
+      DEF _3 DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
         children DEF AdjustmentHandles Transform {
@@ -313,7 +336,7 @@ PROTO TransformTool [
                             }
                             Transform {
                               translation 6 0 0
-                              children DEF _2 Shape {
+                              children DEF _4 Shape {
                                 appearance USE Red
                                 geometry DEF Box Box {
                                   size 12 12 12
@@ -325,10 +348,9 @@ PROTO TransformTool [
                       }
                     }
                     DEF ModeTouch TouchSensor {
-                      enabled IS set_enabled
+                      enabled IS enabled
                     }
                     DEF XTranslationSensor PlaneSensor {
-                      enabled IS set_enabled
                       description "x-Axis"
                       autoOffset FALSE
                       maxPosition -1 0
@@ -346,24 +368,24 @@ PROTO TransformTool [
                   children [
                     DEF XBack Transform {
                       children ScreenGroup {
-                        children DEF _3 Switch {
+                        children DEF _5 Switch {
                           children [
-                            DEF _4 Transform {
+                            DEF _6 Transform {
                               translation -3.5 0 0
                               rotation 0 0 -1 1.5708
                               children Shape {
                                 appearance USE Red
-                                geometry DEF _5 Cylinder {
+                                geometry DEF _7 Cylinder {
                                   height 8
                                   radius 7
                                 }
                               }
                             }
-                            USE _4
+                            USE _6
                             Transform {
                               translation -4 0 0
                               scale 0.666667 1 1
-                              children USE _2
+                              children USE _4
                             }
                           ]
                         }
@@ -414,7 +436,7 @@ PROTO TransformTool [
                             }
                             Transform {
                               translation 0 6 0
-                              children DEF _6 Shape {
+                              children DEF _8 Shape {
                                 appearance USE Green
                                 geometry USE Box
                               }
@@ -425,7 +447,6 @@ PROTO TransformTool [
                     }
                     USE ModeTouch
                     DEF YTranslationSensor PlaneSensor {
-                      enabled IS set_enabled
                       description "y-Axis"
                       autoOffset FALSE
                       maxPosition 0 -1
@@ -443,20 +464,20 @@ PROTO TransformTool [
                   children [
                     DEF YBack Transform {
                       children ScreenGroup {
-                        children DEF _7 Switch {
+                        children DEF _9 Switch {
                           children [
-                            DEF _8 Transform {
+                            DEF _10 Transform {
                               translation 0 -3.5 0
                               children Shape {
                                 appearance USE Green
-                                geometry USE _5
+                                geometry USE _7
                               }
                             }
-                            USE _8
+                            USE _10
                             Transform {
                               translation 0 -4 0
                               scale 1 0.666667 1
-                              children USE _6
+                              children USE _8
                             }
                           ]
                         }
@@ -508,7 +529,7 @@ PROTO TransformTool [
                             }
                             Transform {
                               translation 0 0 6
-                              children DEF _9 Shape {
+                              children DEF _11 Shape {
                                 appearance USE Blue
                                 geometry USE Box
                               }
@@ -519,7 +540,6 @@ PROTO TransformTool [
                     }
                     USE ModeTouch
                     DEF ZTranslationSensor PlaneSensor {
-                      enabled IS set_enabled
                       description "z-Axis"
                       axisRotation 0 -1 0 1.5708
                       autoOffset FALSE
@@ -539,21 +559,21 @@ PROTO TransformTool [
                   children [
                     DEF ZBack Transform {
                       children ScreenGroup {
-                        children DEF _10 Switch {
+                        children DEF _12 Switch {
                           children [
-                            DEF _11 Transform {
+                            DEF _13 Transform {
                               translation 0 0 -3.5
                               rotation 1 0 0 1.5708
                               children Shape {
                                 appearance USE Blue
-                                geometry USE _5
+                                geometry USE _7
                               }
                             }
-                            USE _11
+                            USE _13
                             Transform {
                               translation 0 0 -4
                               scale 1 1 0.666667
-                              children USE _9
+                              children USE _11
                             }
                           ]
                         }
@@ -681,7 +701,7 @@ PROTO TransformTool [
           ]
         }
       }
-      DEF _12 DepthBuffer {
+      DEF _14 DepthBuffer {
         enabled FALSE
         depthOffset 1000000000
         children [
@@ -712,14 +732,14 @@ PROTO TransformTool [
           }
           DEF CenterPoint Transform {
             children [
-              DEF _13 TouchSensor {
-                enabled IS set_enabled
+              DEF _15 TouchSensor {
+                enabled IS enabled
               }
               ScreenGroup {
-                children DEF _14 BooleanSwitch {
+                children DEF _16 BooleanSwitch {
                   bboxSize 0 0 0
                   children [
-                    DEF _15 Shape {
+                    DEF _17 Shape {
                       appearance Appearance {
                         material Material {
                           diffuseColor 1 1 0
@@ -729,13 +749,13 @@ PROTO TransformTool [
                           shininess 0
                         }
                       }
-                      geometry DEF _16 Sphere {
+                      geometry DEF _18 Sphere {
                         radius 5
                       }
                     }
-                    DEF _17 Shape {
+                    DEF _19 Shape {
                       appearance USE Red
-                      geometry USE _16
+                      geometry USE _18
                     }
                   ]
                 }
@@ -892,33 +912,33 @@ PROTO TransformTool [
     ]
   }
 
-  DEF _18 BooleanFilter { }
+  DEF _20 BooleanFilter { }
 
-  DEF _19 TimeTrigger { }
+  DEF _21 TimeTrigger { }
 
   DEF ModeDoubleClick DoubleClick { }
 
   DEF CenterDoubleClick DoubleClick { }
 
   DEF ModeScript Script {
-    inputOnly  SFBool  set_enabled IS set_enabled
-    inputOnly  SFBool  set_active
-    inputOnly  SFTime  set_time
-    outputOnly SFTime  touchTime
-    outputOnly SFBool  move
-    outputOnly SFBool  rotate
-    outputOnly SFBool  scale
-    outputOnly SFInt32 whichChoice_changed
+    inputOutput SFBool  enabled IS enabled
+    inputOnly   SFBool  set_active
+    inputOnly   SFTime  set_time
+    outputOnly  SFTime  touchTime
+    outputOnly  SFBool  move
+    outputOnly  SFBool  rotate
+    outputOnly  SFBool  scale
+    outputOnly  SFInt32 whichChoice_changed
 
     url "peaseblossom:
 function initialize ()
 {
-	set_whichChoice (0);
+	set_enabled (enabled);
 }
 
 function set_enabled (value, time)
 {
-	move = value;
+	set_whichChoice (value ? 0 : -1);
 }
 
 function set_active (value, time)
@@ -984,6 +1004,12 @@ function set_whichChoice (value)
     inputOutput    SFNode     transform IS transform
 
     url "peaseblossom:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -1466,7 +1492,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_scale7
     inputOnly      SFVec3f    set_scale8
     inputOnly      SFVec3f    set_linetype
-    inputOutput    SFBool     scaleFromCenter IS shiftKey
+    inputOutput    SFBool     scaleFromCenter IS controlKey
     inputOutput    SFBool     altKey IS altKey
     inputOutput    SFBool     keepCenter FALSE
     inputOutput    SFVec3f    bboxSize IS bboxSize
@@ -1478,6 +1504,11 @@ function eventsProcessed ()
     initializeOnly SFVec3f    center 0 0 0
     initializeOnly SFVec3f    distanceFromCenter 0 0 0
     initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    initializeOnly SFBool     active FALSE
+    initializeOnly SFVec3f    scaleValue 1 1 1
+    initializeOnly SFFloat    scaleSgn 1
+    initializeOnly SFVec3f    scaleCenterOffset 0 0 0
+    initializeOnly SFInt32    events 0
     # Sensors below are not used anymore
     initializeOnly MFNode     sensors [
       USE XScaleSensor
@@ -1498,7 +1529,6 @@ function eventsProcessed ()
     # Sensors above are not used anymore
     initializeOnly SFNode     lineProperties USE LineProperties
     initializeOnly SFNode     self USE ScaleScript
-    initializeOnly SFInt32    events 0
 
     url "peaseblossom:
 
@@ -1522,15 +1552,23 @@ function set_linetype (scale)
 	var y = new SFVec3f (matrix [4], matrix [5], matrix [6]);
 	var z = new SFVec3f (matrix [8], matrix [9], matrix [10]);
 
-	if (x .cross (y) .dot (z) > 0)
+	if (x .cross (y) .dot (z) >= 0)
 		lineProperties .linetype = 1; // SOLID
 	else
 		lineProperties .linetype = 2;
 }
 
+function set_scaleFromCenter ()
+{
+	if (active)
+		set_scale (scaleValue, scaleSgn, scaleCenterOffset);
+}
+
 function set_active (value)
 {
-	if (value)
+	active = value;
+
+	if (active)
 	{
 		for (var i in sensors)
 		{
@@ -1552,7 +1590,10 @@ function set_active (value)
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
 
-		events = 4;
+      scaleValue  = new SFVec3f (1, 1, 1);
+      scaleSgn    = 1
+      scaleOffset = new SFVec3f ();
+		events      = 4;
 	}
 	else
 		activeTool_changed = 0;
@@ -1675,6 +1716,10 @@ function set_scale8 (value)
 
 function set_scale (value, sgn, centerOffset)
 {
+	scaleValue        = value;
+	scaleSgn          = sgn;
+	scaleCenterOffset = centerOffset;
+
 	if (scaleFromCenter)
 	{
 		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
@@ -1859,24 +1904,24 @@ function sgn (value)
   ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
   ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
   ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-  ROUTE _13.touchTime TO CenterDoubleClick.set_time
+  ROUTE _15.touchTime TO CenterDoubleClick.set_time
   ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
   ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-  ROUTE CenterScript.keepCenter_changed TO _14.set_whichChoice
+  ROUTE CenterScript.keepCenter_changed TO _16.set_whichChoice
   ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-  ROUTE _19.triggerTime TO ModeDoubleClick.set_time
-  ROUTE XRotationSensor.isActive TO _18.set_boolean
-  ROUTE YRotationSensor.isActive TO _18.set_boolean
-  ROUTE ZRotationSensor.isActive TO _18.set_boolean
-  ROUTE _18.inputFalse TO _19.set_boolean
-  ROUTE ScaleSensor1.isActive TO _18.set_boolean
-  ROUTE ScaleSensor2.isActive TO _18.set_boolean
-  ROUTE ScaleSensor3.isActive TO _18.set_boolean
-  ROUTE ScaleSensor4.isActive TO _18.set_boolean
-  ROUTE ScaleSensor5.isActive TO _18.set_boolean
-  ROUTE ScaleSensor6.isActive TO _18.set_boolean
-  ROUTE ScaleSensor7.isActive TO _18.set_boolean
-  ROUTE ScaleSensor8.isActive TO _18.set_boolean
+  ROUTE _21.triggerTime TO ModeDoubleClick.set_time
+  ROUTE XRotationSensor.isActive TO _20.set_boolean
+  ROUTE YRotationSensor.isActive TO _20.set_boolean
+  ROUTE ZRotationSensor.isActive TO _20.set_boolean
+  ROUTE _20.inputFalse TO _21.set_boolean
+  ROUTE ScaleSensor1.isActive TO _20.set_boolean
+  ROUTE ScaleSensor2.isActive TO _20.set_boolean
+  ROUTE ScaleSensor3.isActive TO _20.set_boolean
+  ROUTE ScaleSensor4.isActive TO _20.set_boolean
+  ROUTE ScaleSensor5.isActive TO _20.set_boolean
+  ROUTE ScaleSensor6.isActive TO _20.set_boolean
+  ROUTE ScaleSensor7.isActive TO _20.set_boolean
+  ROUTE ScaleSensor8.isActive TO _20.set_boolean
   ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
   ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
   ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
@@ -1886,11 +1931,11 @@ function sgn (value)
   ROUTE ModeScript.scale TO ZScaleBackSensor.set_enabled
   ROUTE ModeScript.scale TO YScaleBackSensor.set_enabled
   ROUTE ModeScript.scale TO XScaleBackSensor.set_enabled
-  ROUTE XSwitch.whichChoice_changed TO _3.set_whichChoice
-  ROUTE ZSwitch.whichChoice_changed TO _10.set_whichChoice
-  ROUTE YSwitch.whichChoice_changed TO _7.set_whichChoice
-  ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _12.set_depthOffset
-  ROUTE BBoxScript.handlesDepthOffset_changed TO _1.set_depthOffset
+  ROUTE XSwitch.whichChoice_changed TO _5.set_whichChoice
+  ROUTE ZSwitch.whichChoice_changed TO _12.set_whichChoice
+  ROUTE YSwitch.whichChoice_changed TO _9.set_whichChoice
+  ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _14.set_depthOffset
+  ROUTE BBoxScript.handlesDepthOffset_changed TO _3.set_depthOffset
 }
 
 WorldInfo {
@@ -1944,17 +1989,10 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-          }
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-            value NULL
-          }
-        ]
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
       }
     ]
   }

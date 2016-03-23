@@ -123,6 +123,28 @@ public:
 	center () const final override
 	{ return getNode <X3DTransformNode> () -> center (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFBool &
+	bbox ()
+	{ return *fields .bbox; }
+
+	virtual
+	const SFBool &
+	bbox () const
+	{ return *fields .bbox; }
+
+	virtual
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	virtual
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
 	///  @name Member access
 
 	virtual
@@ -198,207 +220,21 @@ private:
 
 	///  @name Members
 
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const bbox;
+		SFBool* const isActive;
+	};
+
+	Fields fields;
+
 	Matrix4d transformationMatrix;
 	Matrix4d matrix;
 	bool     changing;
 
 };
-
-inline
-X3DTransformNodeTool::X3DTransformNodeTool () :
-	            X3DTransformNode (),
-	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
-	        transformationMatrix (),
-	                      matrix (),
-	                    changing (false)
-{
-	addType (X3DConstants::X3DTransformNodeTool);
-
-	setCameraObject (true);
-}
-
-inline
-void
-X3DTransformNodeTool::initialize ()
-{
-	X3DBaseTool::initialize ();
-
-	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
-}
-
-inline
-void
-X3DTransformNodeTool::realize ()
-{
-	getNode <X3DTransformNode> () -> addInterest (this, &X3DTransformNodeTool::eventsProcessed);
-
-	try
-	{
-		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
-		getBrowser ()  -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
-		getBrowser ()  -> getShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
-		getBrowser ()  -> getAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
-		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
-
-		getToolNode () -> template setField <SFDouble> ("snapAngle",  getBrowser () -> getTransformToolOptions () -> snapAngle ());
-		getToolNode () -> template setField <SFBool>   ("controlKey", getBrowser () -> getControlKey ());
-		getToolNode () -> template setField <SFBool>   ("shiftKey",   getBrowser () -> getShiftKey ());
-		getToolNode () -> template setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
-		getToolNode () -> template setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-inline
-bool
-X3DTransformNodeTool::getKeepCenter () const
-{
-	try
-	{
-		return getToolNode () -> template getField <SFBool> ("keepCenter_changed");
-	}
-	catch (const X3DError & error)
-	{
-		return false;
-	}
-}
-
-// Functions for grouping X3DTransformNodeTools together
-
-inline
-void
-X3DTransformNodeTool::setMatrix (const Matrix4d & matrix)
-{
-	changing = true;
-
-	getNode <X3DTransformNode> () -> setMatrix (matrix);
-}
-
-inline
-void
-X3DTransformNodeTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
-{
-	changing = true;
-
-	getNode <X3DTransformNode> () -> setMatrixWithCenter (matrix, center);
-}
-
-inline
-void
-X3DTransformNodeTool::setMatrixKeepCenter (const Matrix4d & matrix)
-{
-	changing = true;
-
-	getNode <X3DTransformNode> () -> setMatrixKeepCenter (matrix);
-}
-
-inline
-void
-X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
-throw (Error <NOT_SUPPORTED>)
-{
-	try
-	{
-		const auto matrix = Matrix4d (getMatrix ()) * transformationMatrix * absoluteMatrix * ~transformationMatrix;
-
-		if (keepCenter)
-			setMatrixKeepCenter (matrix);
-		else
-			setMatrix (matrix);
-	}
-	catch (const std::domain_error &)
-	{ }
-}
-
-inline
-void
-X3DTransformNodeTool::eventsProcessed ()
-{
-	try
-	{
-		if (changing)
-			changing = false;
-
-		else
-		{
-			//getBrowser () -> setDescription (getDescription ());
-
-			const auto differenceMatrix = ~(matrix * transformationMatrix) * Matrix4d (getMatrix ()) * transformationMatrix;
-
-			for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
-			{
-				try
-				{
-					if (node == this)
-						continue;
-
-					const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
-
-					if (transform)
-						transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-				}
-				catch (const Error <NOT_SUPPORTED> &)
-				{ }
-			}
-		}
-	}
-	catch (const std::domain_error &)
-	{ }
-}
-
-// Traverse
-
-inline
-void
-X3DTransformNodeTool::reshape ()
-{
-	try
-	{
-		getBrowser () -> endUpdateForFrame ();
-
-		const auto bbox = getNode <X3DTransformNode> () -> X3DGroupingNode::getBBox ();
-
-		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
-		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                 true);
-		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),               true);
-
-		getBrowser () -> processEvents ();
-		getBrowser () -> beginUpdateForFrame ();
-	}
-	catch (const X3DError & error)
-	{
-		getBrowser () -> beginUpdateForFrame ();
-	}
-}
-
-inline
-void
-X3DTransformNodeTool::traverse (const TraverseType type)
-{
-	getNode <X3DTransformNode> () -> traverse (type);
-
-	// Remember matrices
-
-	if (type == TraverseType::CAMERA)
-	{
-		transformationMatrix = getModelViewMatrix () .get ();
-		matrix               = getMatrix ();
-	}
-
-	// Tool
-
-	getModelViewMatrix () .push ();
-	getModelViewMatrix () .mult_left (getMatrix ());
-
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
-
-	X3DToolObject::traverse (type);
-
-	getModelViewMatrix () .pop ();
-}
 
 } // X3D
 } // titania

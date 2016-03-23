@@ -361,8 +361,7 @@ protected:
 	{ return selectedFaces; }
 
 	void
-	setTranslate (const bool value)
-	{ translate = value; }
+	setTranslate (const bool value);
 
 	bool
 	getTranslate () const

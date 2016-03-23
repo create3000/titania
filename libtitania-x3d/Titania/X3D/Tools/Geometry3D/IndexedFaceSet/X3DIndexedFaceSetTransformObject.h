@@ -58,11 +58,25 @@ namespace X3D {
 
 class TouchSensor;
 class PlaneSensor;
+class Transform;
+class Switch;
+class ScreenGroup;
+class CoordinateDouble;
 
 class X3DIndexedFaceSetTransformObject :
 	virtual public X3DIndexedFaceSetTool
 {
 public:
+
+	///  @name Hidden fields
+
+	SFBool &
+	transform ()
+	{ return *fields .transform; }
+
+	const SFBool &
+	transform () const
+	{ return *fields .transform; }
 
 	///  @name Destruction
 
@@ -93,6 +107,12 @@ private:
 	set_loadState ();
 
 	void
+	set_transform ();
+
+	void
+	set_selection ();
+
+	void
 	set_touch_sensor_hitPoint ();
 
 	void
@@ -101,12 +121,34 @@ private:
 	void
 	set_plane_sensor_translation ();
 
+	void
+	set_transform_active (const bool);
+
+	void
+	set_transform_modelViewMatrix ();
+
 	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFBool* const transform;
+	};
+
+	///  @name Members
+
+	Fields fields;
 
 	X3DPtr <TouchSensor>      touchSensor;
 	X3DPtr <PlaneSensor>      planeSensor;
 	X3DPtr <PlaneSensor>      planeSensorNormal;
+	X3DPtr <Switch>           transformToolSwitch;
+	X3DPtr <Transform>        transformNode;
+
+	X3DPtr <CoordinateDouble> selectionCoord;
 	size_t                    translations;
+	bool                      active;
 	UndoStepPtr               undoStep;
 
 };

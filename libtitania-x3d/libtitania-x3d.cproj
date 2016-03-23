@@ -1342,6 +1342,7 @@
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DBaseTool.cpp" />
     <Compile Include="Titania\X3D\Editing\Combine.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\X3DTransformNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
