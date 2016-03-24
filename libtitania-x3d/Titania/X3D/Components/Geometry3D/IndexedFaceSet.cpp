@@ -626,6 +626,61 @@ IndexedFaceSet::getPolygonNormal (const Vertices & vertices) const
 	return normalize (Vector3f (x, y, z));
 }
 
+double
+IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
+{
+	double area = 0;
+
+	// Get distances of face to hitPoint.
+	
+	if (vertices .size () < 3)
+		return 0;
+
+	if (convex () or vertices .size () == 3)
+	{
+		for (size_t v = 0, size = vertices .size () - 2; v < size; ++ v)
+		{
+		   const auto i0       = vertices [0];
+		   const auto i1       = vertices [v + 1];
+		   const auto i2       = vertices [v + 2];
+			const auto index0   = coordIndex () [i0] .getValue ();
+			const auto index1   = coordIndex () [i1] .getValue ();
+			const auto index2   = coordIndex () [i2] .getValue ();
+			const auto point0   = getCoord () -> get1Point (index0);
+			const auto point1   = getCoord () -> get1Point (index1);
+			const auto point2   = getCoord () -> get1Point (index2);
+
+			area += math::area (point0, point1, point2);
+		}
+	}
+	else
+	{
+		opengl::tessellator <size_t> tessellator;
+	
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+	
+		for (const auto & vertex : vertices)
+			tessellator .add_vertex (getCoord () -> get1Point (coordIndex () [vertex]), vertex);
+	
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+	
+		const auto triangles = tessellator .triangles ();
+
+		for (size_t v = 0, size = triangles .size (); v < size; )
+		{
+			const auto point0   = triangles [v ++] .point ();
+			const auto point1   = triangles [v ++] .point ();
+			const auto point2   = triangles [v ++] .point ();
+
+			area += math::area (point0, point1, point2);
+		}
+	}
+
+	return area;
+}
+
 ///  Removes degenerated edges and faces from coordIndex and rewites color, texCoord, normal index.
 void
 IndexedFaceSet::rebuildIndices ()

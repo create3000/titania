@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Wed, 23 Mar 2016 15:48:44 GMT"
+META "modified" "Thu, 24 Mar 2016 01:22:03 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,6 +66,11 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
+            value DEF Transform Transform {
+              children DEF TransformTool Transform {
+                bboxSize 1 1 1
+              }
+            }
           }
         ]
       }
@@ -277,9 +282,7 @@ Collision {
               DEF TransformToolSwitch Switch {
                 children [
                   Group { }
-                  DEF Transform Transform {
-                    bboxSize 1 1 1
-                  }
+                  USE Transform
                 ]
               }
               DEF Knife Group {
@@ -476,4 +479,5 @@ EXPORT Switch
 EXPORT TouchSensor
 EXPORT Transform
 EXPORT _1 AS TransformMatrix3D
+EXPORT TransformTool
 EXPORT TransformToolSwitch

@@ -413,7 +413,15 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 
 		case SelectionType::FACES:
 		{
-			selectFace (activeFace, getSelectActionType ());
+			std::vector <int32_t> points;
+
+			for (const auto & face : activeFaces)
+			{
+				for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+					points .emplace_back (coordIndex () [vertex]);
+			}
+
+			selectFaces (points, getSelectActionType ());
 			break;
 		}
 	}
@@ -523,33 +531,9 @@ X3DIndexedFaceSetSelectionObject::setMagicSelection ()
 
 		// Active points for near point or face
 	
-		switch (getSelectionType ())
-		{
-			case SelectionType::POINTS:
-			{
-				if (pointDistance <= SELECTION_DISTANCE)
-					activePoints = { index };
-
-				break;
-			}
-			case SelectionType::EDGES:
-			{
-				if (edge .isEdge and edgeDistance <= SELECTION_DISTANCE and pointDistance > std::sqrt (2) * SELECTION_DISTANCE)
-				{
-					activeEdge     = { edge .index0, edge .index1 };
-					activePoints   = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-				}
-
-				break;
-			}
-			case SelectionType::FACES:
-			{
-				for (const auto & vertex : vertices)
-					activePoints .emplace_back (coordIndex () [vertex]);
-
-				break;
-			}
-		}
+		activePoints = hotPoints;
+		activeEdge   = hotEdge;
+		activeFaces  = hotFaces;
 	}
 
 	updateMagicSelection ();

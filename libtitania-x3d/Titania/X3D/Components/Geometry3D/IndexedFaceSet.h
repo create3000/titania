@@ -221,6 +221,9 @@ protected:
 	Vector3f
 	getPolygonNormal (const Vertices &) const;
 
+	double
+	getPolygonArea (const Vertices &) const;
+
 	void
 	rebuildIndices ();
 

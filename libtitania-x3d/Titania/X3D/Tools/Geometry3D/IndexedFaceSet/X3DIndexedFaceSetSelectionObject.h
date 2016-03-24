@@ -618,6 +618,7 @@ private:
 	std::vector <int32_t> activePoints;   // coord indices
 	std::vector <size_t>  activeEdge;     // index of coord indices
 	size_t                activeFace;     // index of first coord index of face
+	std::vector <size_t>  activeFaces;     // index of first coord index of face
 
 	SelectionType                type;
 	int32_t                      masterPoint;       // coord index,

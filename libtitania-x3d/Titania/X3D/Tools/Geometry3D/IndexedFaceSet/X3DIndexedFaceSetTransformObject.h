@@ -78,6 +78,14 @@ public:
 	transform () const
 	{ return *fields .transform; }
 
+	SFBool &
+	alignToNormal ()
+	{ return *fields .alignToNormal; }
+
+	const SFBool &
+	alignToNormal () const
+	{ return *fields .alignToNormal; }
+
 	///  @name Destruction
 
 	virtual
@@ -110,6 +118,9 @@ private:
 	set_transform ();
 
 	void
+	set_alignToNormal ();
+
+	void
 	set_selection ();
 
 	void
@@ -127,6 +138,9 @@ private:
 	void
 	set_transform_modelViewMatrix ();
 
+	Rotation4d
+	getAxisRotation () const;
+
 	///  @name Members
 
 	struct Fields
@@ -134,6 +148,7 @@ private:
 		Fields ();
 
 		SFBool* const transform;
+		SFBool* const alignToNormal;
 	};
 
 	///  @name Members
@@ -145,9 +160,11 @@ private:
 	X3DPtr <PlaneSensor>      planeSensorNormal;
 	X3DPtr <Switch>           transformToolSwitch;
 	X3DPtr <Transform>        transformNode;
+	X3DPtr <Transform>        transformTool;
 
 	X3DPtr <CoordinateDouble> selectionCoord;
 	size_t                    translations;
+	Matrix4d                  axisRotation;
 	bool                      active;
 	UndoStepPtr               undoStep;
 

@@ -64,7 +64,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("TransformToolMenu", m_TransformToolMenu);
-	m_builder -> get_widget ("MenuItem", m_MenuItem);
+	m_builder -> get_widget ("AlignToNormalMenuItem", m_AlignToNormalMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
@@ -93,8 +93,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EdgesMenuItem", m_EdgesMenuItem);
 	m_builder -> get_widget ("FacesMenuItem", m_FacesMenuItem);
 
-	// Connect object Gtk::CheckMenuItem with id 'MenuItem'.
-	m_MenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_align_to_face_normal_toggled));
+	// Connect object Gtk::CheckMenuItem with id 'AlignToNormalMenuItem'.
+	m_AlignToNormalMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_align_to_normal_toggled));
 
 	// Connect object Gtk::Revealer with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));

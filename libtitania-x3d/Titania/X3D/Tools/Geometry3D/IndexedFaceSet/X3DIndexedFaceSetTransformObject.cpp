@@ -69,7 +69,8 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
-	 transform (new SFBool ())
+	         transform (new SFBool ()),
+	 alignToNormal (new SFBool ())
 { }
 
 X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
@@ -81,8 +82,10 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	    planeSensorNormal (),
 	  transformToolSwitch (),
 	        transformNode (),
+	        transformTool (),
 	       selectionCoord (),
 	         translations (0),
+	         axisRotation (),
 	               active (false),
 	             undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
@@ -93,6 +96,7 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	             planeSensorNormal,
 	             transformToolSwitch,
 	             transformNode,
+	             transformTool,
 	             selectionCoord);
 }
 
@@ -116,9 +120,11 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		planeSensorNormal    = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensorNormal");
 		transformToolSwitch  = inlineNode -> getExportedNode <Switch>           ("TransformToolSwitch");
 		transformNode        = inlineNode -> getExportedNode <Transform>        ("Transform");
+		transformTool        = inlineNode -> getExportedNode <Transform>        ("TransformTool");
 		selectionCoord       = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
-		transform () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
+		transform ()     .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
+		alignToNormal () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_alignToNormal);
 
 		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
@@ -128,10 +134,10 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 
 		// Transform Tool
 
-		transformNode -> addTool ();
-		transformNode -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
-		transformNode -> getField <SFBool> ("isActive") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
-		transformNode -> setField <SFBool> ("bbox", false);
+		transformTool -> addTool ();
+		transformTool -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
+		transformTool -> getField <SFBool> ("isActive") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
+		transformTool -> setField <SFBool> ("bbox", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_selection);
 
@@ -149,16 +155,29 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	if (active)
 		return;
 
+	const auto rotation = getAxisRotation ();
+	
+	axisRotation = Matrix4d (rotation);
+
+	const auto bbox = selectionCoord -> getBBox () * ~axisRotation;
+
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
+	transformNode       -> rotation ()    = rotation;
 
-	transformNode -> translation ()      = Vector3f ();
-	transformNode -> rotation ()         = Rotation4f ();
-	transformNode -> scale ()            = Vector3f (1, 1, 1);
-	transformNode -> scaleOrientation () = Rotation4f ();
-	transformNode -> center ()           = selectionCoord -> getBBox () .center ();
+	transformTool -> translation ()      = Vector3f ();
+	transformTool -> rotation ()         = Rotation4f ();
+	transformTool -> scale ()            = Vector3f (1, 1, 1);
+	transformTool -> scaleOrientation () = Rotation4f ();
+	transformTool -> center ()           = bbox .center ();
 
-	transformNode -> bboxCenter () = selectionCoord -> getBBox () .center ();
-	transformNode -> bboxSize ()   = max (selectionCoord -> getBBox () .size (), Vector3d (0.1, 0.1, 0.1));
+	transformTool -> bboxCenter () = bbox .center ();
+	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (0.1, 0.1, 0.1));
+}
+
+void
+X3DIndexedFaceSetTransformObject::set_alignToNormal ()
+{
+	set_transform ();
 }
 
 void
@@ -317,10 +336,79 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	setTranslate (true);
 	setTranslation (Vector3f (1, 1, 1));
 
-	const auto & T = transformNode -> getMatrix ();
+	const auto & M = ~axisRotation * transformTool -> getMatrix () * axisRotation;
 
 	for (const auto & pair : getSelectedPoints ())
-		getCoord () -> set1Point (pair .first, pair .second * T);
+		getCoord () -> set1Point (pair .first, pair .second * M);
+}
+
+Rotation4d
+X3DIndexedFaceSetTransformObject::getAxisRotation () const
+{
+	Rotation4d rotation;
+	
+	if (alignToNormal ())
+	{
+		switch (getSelectionType ())
+		{
+			case SelectionType::POINTS:
+			{
+				Vector3d          normal;
+				std::set <size_t> faces;
+				
+				for (const auto & point : getSelectedPoints ())
+				{
+					for (const auto & face : getFaceSelection () -> getAdjacentFaces (point .first))
+						faces. emplace (face .index);
+				}
+
+				for (const auto & face : faces)
+					normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+				
+				rotation = Rotation4d (Vector3d (0, 0, 1), normal);
+				break;
+			}
+			case SelectionType::EDGES:
+			{
+				Vector3d          normal;
+				std::set <size_t> faces;
+				
+				for (const auto & edges : getSelectedEdges ())
+				{
+					for (const auto & edge : edges .second)
+					{
+						for (const auto & face : getFaceSelection () -> getAdjacentFaces (X3DFaceSelection::Edge { edge .first, edge .second }))
+							faces. emplace (face);
+						
+						break;
+					}
+				}
+
+				for (const auto & face : faces)
+				{
+				   const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+					if (getPolygonArea (vertices))
+						normal += getPolygonNormal (vertices);
+				}
+
+				rotation = abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
+				break;
+			}
+			case SelectionType::FACES:
+			{
+				Vector3d normal;
+				
+				for (const auto & face : getSelectedFaces ())
+					normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+				
+				rotation = Rotation4d (Vector3d (0, 0, 1), normal);
+				break;
+			}
+		}
+	}
+
+	return rotation;
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()

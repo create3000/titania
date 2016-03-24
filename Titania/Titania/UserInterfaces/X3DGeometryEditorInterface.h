@@ -104,8 +104,8 @@ public:
 	{ return *m_TransformToolMenu; }
 
 	Gtk::CheckMenuItem &
-	getMenuItem () const
-	{ return *m_MenuItem; }
+	getAlignToNormalMenuItem () const
+	{ return *m_AlignToNormalMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -219,7 +219,7 @@ public:
 
 	virtual
 	void
-	on_align_to_face_normal_toggled () = 0;
+	on_align_to_normal_toggled () = 0;
 
 	virtual
 	void
@@ -336,7 +336,7 @@ private:
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Gtk::Menu*                  m_TransformToolMenu;
-	Gtk::CheckMenuItem*         m_MenuItem;
+	Gtk::CheckMenuItem*         m_AlignToNormalMenuItem;
 	Gtk::Window*                m_Window;
 	Gtk::Revealer*              m_Widget;
 	Gtk::Box*                   m_GeometryEditorBox;
