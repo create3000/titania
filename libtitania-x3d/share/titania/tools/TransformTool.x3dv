@@ -1505,9 +1505,6 @@ function eventsProcessed ()
     initializeOnly SFVec3f    distanceFromCenter 0 0 0
     initializeOnly SFMatrix4f matrix 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
     initializeOnly SFBool     active FALSE
-    initializeOnly SFVec3f    scaleValue 1 1 1
-    initializeOnly SFFloat    scaleSgn 1
-    initializeOnly SFVec3f    scaleCenterOffset 0 0 0
     initializeOnly SFInt32    events 0
     # Sensors below are not used anymore
     initializeOnly MFNode     sensors [
@@ -1560,11 +1557,30 @@ function set_linetype (scale)
 
 function set_scaleFromCenter ()
 {
-	//if (active)
-	// if (uniformScale)
-	//	set_scale (scaleValue, scaleSgn, scaleCenterOffset);
-	//	else
-	//		set_axisScale ...
+	for (var i in sensors)
+	{
+		if (sensors [i] .isActive)
+		{
+		   var fun = [
+		      set_xScale,
+				set_yScale,
+				set_zScale,
+				set_xScaleBack,
+				set_yScaleBack,
+				set_zScaleBack,
+				set_scale1,
+				set_scale2,
+				set_scale3,
+				set_scale4,
+				set_scale5,
+				set_scale6,
+				set_scale7,
+				set_scale8,
+		   ];
+
+			fun [i] (sensors [i] .translation_changed);
+		}
+	}
 }
 
 function set_active (value)
@@ -1592,11 +1608,6 @@ function set_active (value)
 		                      transform .center);
 
 		distanceFromCenter = bboxCenter .subtract (transform .center);
-
-      scaleValue  = new SFVec3f (1, 1, 1);
-      scaleSgn    = 1
-      scaleOffset = new SFVec3f ();
-		events      = 4;
 	}
 	else
 		activeTool_changed = 0;
@@ -1719,10 +1730,6 @@ function set_scale8 (value)
 
 function set_scale (value, sgn, centerOffset)
 {
-	scaleValue        = value;
-	scaleSgn          = sgn;
-	scaleCenterOffset = centerOffset;
-
 	if (scaleFromCenter)
 	{
 		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
