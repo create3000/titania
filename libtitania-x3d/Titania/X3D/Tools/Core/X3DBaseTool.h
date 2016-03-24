@@ -63,7 +63,34 @@ class X3DBaseTool :
 {
 public:
 
-	///  @name Member access
+	///  @name X3DOutput
+
+	virtual
+	bool
+	checkInterest (const void* const object, const void* const memberFunction) const final override
+	{ return node -> checkInterest (object, memberFunction); }
+
+	virtual
+	bool
+	insertInterest (const Requester & function, const void* const object, const void* const memberFunction) const final override
+	{ return node -> insertInterest (function, object, memberFunction); }
+
+	virtual
+	void
+	insertInput (const X3DInput* const input, const void* const memberFunction) const final override
+	{ node -> insertInput (input, memberFunction); }
+
+	virtual
+	void
+	eraseInterest (const void* const object, const void* const memberFunction) const final override
+	{ node -> eraseInterest (object, memberFunction); }
+
+	virtual
+	void
+	eraseInput (const X3DInput* const input, void* const memberFunction) const final override
+	{ node -> eraseInput (input, memberFunction); }
+
+	///  @name X3DObject
 
 	virtual
 	size_t
@@ -94,6 +121,8 @@ public:
 	const UserDataPtr &
 	getUserData () const final override
 	{ return node -> getUserData (); }
+
+	///  @name X3DBaseNode
 
 	///  Copys this node and sets the execution context to @a executionContext.
 	virtual

@@ -161,6 +161,28 @@ public:
 	void
 	processInterests () const;
 
+	///  @name Virtual functions
+
+	virtual
+	bool
+	checkInterest (const void* const, const void* const) const;
+
+	virtual
+	bool
+	insertInterest (const Requester &, const void* const, const void* const) const;
+
+	virtual
+	void
+	insertInput (const X3DInput* const, const void* const) const;
+
+	virtual
+	void
+	eraseInterest (const void* const, const void* const) const;
+
+	virtual
+	void
+	eraseInput (const X3DInput* const, void* const) const;
+
 	///  @name Destruction
 
 	virtual
@@ -195,24 +217,9 @@ private:
 
 	///  @name Operations
 
-	bool
-	checkInterest (const void* const, const void* const) const;
-
-	bool
-	insertInterest (const Requester &, const void* const, const void* const) const;
-
-	void
-	insertInput (const X3DInput* const, const void* const) const;
-
 	void
 	insertInput (const void* const, const void* const) const
 	{ }
-
-	void
-	eraseInterest (const void* const, const void* const) const;
-
-	void
-	eraseInput (const X3DInput* const, void* const) const;
 
 	void
 	eraseInput (const void* const, void* const) const

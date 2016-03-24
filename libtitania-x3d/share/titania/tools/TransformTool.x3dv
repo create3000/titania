@@ -1560,8 +1560,11 @@ function set_linetype (scale)
 
 function set_scaleFromCenter ()
 {
-	if (active)
-		set_scale (scaleValue, scaleSgn, scaleCenterOffset);
+	//if (active)
+	// if (uniformScale)
+	//	set_scale (scaleValue, scaleSgn, scaleCenterOffset);
+	//	else
+	//		set_axisScale ...
 }
 
 function set_active (value)

@@ -63,6 +63,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("TransformToolMenu", m_TransformToolMenu);
+	m_builder -> get_widget ("MenuItem", m_MenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("GeometryEditorBox", m_GeometryEditorBox);
@@ -90,6 +92,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PointsMenuItem", m_PointsMenuItem);
 	m_builder -> get_widget ("EdgesMenuItem", m_EdgesMenuItem);
 	m_builder -> get_widget ("FacesMenuItem", m_FacesMenuItem);
+
+	// Connect object Gtk::CheckMenuItem with id 'MenuItem'.
+	m_MenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_align_to_face_normal_toggled));
 
 	// Connect object Gtk::Revealer with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
@@ -121,6 +126,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformToolButton'.
+	m_TransformToolButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_transform_tool_button_press_event));
 	m_TransformToolButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_transform_tool_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.

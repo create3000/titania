@@ -2,6 +2,19 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkMenu" id="TransformToolMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="MenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Align To Face Normal</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_align_to_face_normal_toggled" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <child>
@@ -389,6 +402,8 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Toggle Transform Tool.</property>
+                    <signal name="button-press-event" handler="on_transform_tool_button_press_event" swapped="no"/>
                     <signal name="toggled" handler="on_transform_tool_toggled" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image17">

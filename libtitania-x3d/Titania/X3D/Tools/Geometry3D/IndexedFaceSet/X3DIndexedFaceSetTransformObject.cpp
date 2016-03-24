@@ -126,10 +126,12 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		planeSensor -> isActive ()            .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_active);
 		planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_translation);
 
-		transformNode -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
+		// Transform Tool
+
 		transformNode -> addTool ();
-		transformNode -> setField <SFBool> ("bbox", false);
+		transformNode -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
 		transformNode -> getField <SFBool> ("isActive") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
+		transformNode -> setField <SFBool> ("bbox", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_selection);
 
@@ -144,8 +146,6 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
-	__LOG__ << std::endl;
-
 	if (active)
 		return;
 
@@ -158,7 +158,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformNode -> center ()           = selectionCoord -> getBBox () .center ();
 
 	transformNode -> bboxCenter () = selectionCoord -> getBBox () .center ();
-	transformNode -> bboxSize ()   = max (selectionCoord -> getBBox () .size (), Vector3d (0.0001, 0.0001, 0.0001));
+	transformNode -> bboxSize ()   = max (selectionCoord -> getBBox () .size (), Vector3d (0.1, 0.1, 0.1));
 }
 
 void
@@ -309,8 +309,6 @@ X3DIndexedFaceSetTransformObject::set_transform_active (const bool value)
 void
 X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 {
-	__LOG__ << transformNode -> getMatrix () << std::endl;
-
 	if (not active)
 		return;
 

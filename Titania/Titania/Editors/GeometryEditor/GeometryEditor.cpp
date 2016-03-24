@@ -981,6 +981,22 @@ GeometryEditor::on_transform_tool_toggled ()
 	coordEditor -> setField <X3D::SFBool> ("transform", getTransformToolButton () .get_active ());
 }
 
+bool
+GeometryEditor::on_transform_tool_button_press_event (GdkEventButton* event)
+{
+	if (event -> button not_eq 3)
+		return false;
+
+	getTransformToolMenu () .popup (event -> button, event -> time);
+	return true;
+}
+
+void
+GeometryEditor::on_align_to_face_normal_toggled ()
+{
+
+}
+
 void
 GeometryEditor::on_merge_points_clicked ()
 {
