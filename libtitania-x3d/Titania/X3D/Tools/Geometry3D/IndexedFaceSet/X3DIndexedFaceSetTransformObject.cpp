@@ -193,9 +193,6 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 	{
 		// Setup PlaneSensor
 
-		if (not select ())
-		   return;
-
 		if (planeSensor -> isActive ())
 			return;
 
@@ -214,7 +211,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
 				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
 
-				planeSensorNormal -> enabled () = select () and false;
+				planeSensorNormal -> enabled () = false;
 
 				planeSensor -> enabled ()      = select () and not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
@@ -229,7 +226,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 				const auto vector       = getCoord () -> get1Point (getHotPoints () [0]) - getCoord () -> get1Point (getHotPoints () [1]);
 				const auto axisRotation = Rotation4d (Vector3d (1, 0, 0), vector);
 
-				planeSensorNormal -> enabled () = select () and false;
+				planeSensorNormal -> enabled () = false;
 
 				planeSensor -> enabled ()      = select () and not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
@@ -386,7 +383,7 @@ X3DIndexedFaceSetTransformObject::getAxisRotation () const
 
 				for (const auto & face : faces)
 				{
-				   const auto vertices = getFaceSelection () -> getFaceVertices (face);
+					const auto vertices = getFaceSelection () -> getFaceVertices (face);
 
 					if (getPolygonArea (vertices))
 						normal += getPolygonNormal (vertices);
@@ -400,9 +397,14 @@ X3DIndexedFaceSetTransformObject::getAxisRotation () const
 				Vector3d normal;
 				
 				for (const auto & face : getSelectedFaces ())
-					normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+				{
+					const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+					if (getPolygonArea (vertices))
+						normal += getPolygonNormal (vertices);
+				}
 				
-				rotation = Rotation4d (Vector3d (0, 0, 1), normal);
+				rotation = abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
 				break;
 			}
 		}

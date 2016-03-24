@@ -840,7 +840,7 @@ GeometryEditor::on_paint_selection_toggled ()
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 			}
 
-			coordEditor -> setField <X3D::SFBool> ("pickable",      true);
+			coordEditor -> setField <X3D::SFBool> ("pickable",       true);
 			coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionButton () .get_active ());
 			break;
 		}
