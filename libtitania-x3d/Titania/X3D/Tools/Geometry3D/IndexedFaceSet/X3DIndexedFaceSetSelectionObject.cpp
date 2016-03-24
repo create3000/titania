@@ -922,33 +922,29 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::ADD:
 		{
-			selectPoints (points, selectAction);
+			std::set <size_t> faces;
 
 			for (const auto & point : points)
 			{
-				std::set <size_t> faces;
-
 				for (const auto & face : selection -> getAdjacentFaces (point))
 					faces .emplace (face .index);
-
-				addSelectedFacesFunction (faces);
 			}
 
+			addSelectedFacesFunction (faces, std::set <int32_t> (points .begin (), points .end ()));
 			break;
 		}
 		case SelectActionType::REMOVE:
 		{
-			selectPoints (points, selectAction);
+			std::set <size_t> faces;
 
 			for (const auto & point : points)
 			{
-				std::set <size_t> faces;
-
 				for (const auto & face : selection -> getAdjacentFaces (point))
 					faces .emplace (face .index);
 
-				removeSelectedFacesFunction (faces);
 			}
+	
+			removeSelectedFacesFunction (faces, std::set <int32_t> (points .begin (), points .end ()));
 			break;
 		}
 	}
@@ -958,37 +954,6 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 	for (const auto & face : selectedFaces)
 		for (const auto & vertex : selection -> getFaceVertices (face))
 		   selectedPoints .emplace (coordIndex () [vertex], getCoord () -> get1Point (coordIndex () [vertex]));
-}
-
-///  Select one face.
-void
-X3DIndexedFaceSetSelectionObject::selectFace (const size_t face, const SelectActionType selectAction)
-{
-	switch (selectAction)
-	{
-		case SelectActionType::REPLACE:
-		{
-			clearSelection ();
-
-		   // Proceed with next step:
-		}
-		case SelectActionType::ADD:
-		{
-			for (const auto & vertex : selection -> getFaceVertices (face))
-				selectPoints ({ coordIndex () [vertex] }, SelectActionType::ADD);
-
-			addSelectedFacesFunction ({ face });
-			break;
-		}
-		case SelectActionType::REMOVE:
-		{
-			for (const auto & vertex : selection -> getFaceVertices (face))
-				selectPoints ({ coordIndex () [vertex] }, selectAction);
-
-			removeSelectedFacesFunction ({ face });
-			break;
-		}
-	}
 }
 
 ///  Add @a points to selection of points.
@@ -1106,13 +1071,13 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 
 ///  Add @a faces to selection of faces.
 void
-X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::set <size_t> & faces)
+X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::set <size_t> & faces, const std::set <int32_t> & points)
 {
 	for (const auto & face : faces)
 	{
 		const auto vertices = selection -> getFaceVertices (face);
 
-		if (isInSelection (vertices))
+		if (isInSelection (points, vertices))
 		{
 			addSelectedEdgesFunction (vertices);
 			selectedFaces .emplace (face);
@@ -1122,17 +1087,17 @@ X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::set <size
 
 ///  Remove @a faces from selection of faces.
 void
-X3DIndexedFaceSetSelectionObject::removeSelectedFacesFunction (const std::set <size_t> & faces)
+X3DIndexedFaceSetSelectionObject::removeSelectedFacesFunction (const std::set <size_t> & faces, const std::set <int32_t> & points)
 {
 	for (const auto & face : faces)
 	{
 		const auto vertices = selection -> getFaceVertices (face);
 
-		if (isInSelection (vertices))
-		   continue;
-
-		removeSelectedEdgesFunction (vertices);
-		selectedFaces .erase (face);
+		if (isInSelection (points, vertices))
+		{
+			removeSelectedEdgesFunction (vertices);
+			selectedFaces .erase (face);
+		}
 	}
 }
 
@@ -1187,11 +1152,11 @@ X3DIndexedFaceSetSelectionObject::getSelectActionType () const
 
 ///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 
 bool
-X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <size_t> & vertices) const
+X3DIndexedFaceSetSelectionObject::isInSelection (const std::set <int32_t> & points, const std::vector <size_t> & vertices) const
 {
 	for (const auto & vertex : vertices)
 	{
-		if (selectedPoints .count (coordIndex () [vertex]))
+		if (points .count (coordIndex () [vertex]))
 			continue;
 
 		return false;

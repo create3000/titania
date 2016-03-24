@@ -785,6 +785,8 @@ GeometryEditor::on_hammer_clicked ()
 void
 GeometryEditor::on_edit_toggled ()
 {
+	getBrowserWindow () -> getSelection () -> setSelectGeometry (getEditToggleButton () .get_active ());
+
 	if (changing)
 		return;
 

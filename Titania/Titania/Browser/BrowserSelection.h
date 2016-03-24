@@ -90,6 +90,13 @@ public:
 	getSelectLowest () const
 	{ return selectLowest; }
 
+	void
+	setSelectGeometry (const bool);
+
+	const bool
+	getSelectGeometry () const
+	{ return selectGeometry; }
+
 	const X3D::SFBool &
 	isOver () const
 	{ return over; }
@@ -152,6 +159,7 @@ private:
 	bool                          enabled;
 	X3D::Selection::SelectionType mode;
 	bool                          selectLowest;
+	bool                          selectGeometry;
 
 	X3D::SFBool     over;
 	X3D::SFBool     active;

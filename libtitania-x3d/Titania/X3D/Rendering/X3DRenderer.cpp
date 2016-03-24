@@ -264,12 +264,7 @@ X3DRenderer::getDepth () const
 
 	depthBuffer -> bind ();
 
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-
-	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
-		context -> draw ();
+	const_cast <X3DRenderer*> (this) -> depth ();
 
 	// Get distance from depth buffer
 		
@@ -307,16 +302,15 @@ X3DRenderer::render (const TraverseType type)
 			numTransparentShapes = 0;
 
 			collect (type);
-			display (true);
+			display ();
 			break;
 		}
 		case TraverseType::DEPTH:
 		{
-			numOpaqueShapes      = 0;
-			numTransparentShapes = 0;
+			numCollisionContainers = 0;
 
 			collect (type);
-			display (false);
+			depth ();
 			break;
 		}
 		default:
@@ -492,7 +486,7 @@ X3DRenderer::gravite ()
 }
 
 void
-X3DRenderer::display (const bool transparent)
+X3DRenderer::display ()
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
@@ -514,13 +508,10 @@ X3DRenderer::display (const bool transparent)
 
 	// Render transparent objects
 
-	if (transparent)
-	{
-		glDepthMask (GL_FALSE);
-		glEnable (GL_BLEND);
+	glDepthMask (GL_FALSE);
+	glEnable (GL_BLEND);
 
-		std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
-	}
+	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
 	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 		context -> display ();
@@ -536,6 +527,17 @@ X3DRenderer::display (const bool transparent)
 	// Reset to default OpenGL appearance
 
 	getBrowser () -> getAppearance () -> draw ();
+}
+
+void
+X3DRenderer::depth ()
+{
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
+
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
+		context -> draw ();
 }
 
 void

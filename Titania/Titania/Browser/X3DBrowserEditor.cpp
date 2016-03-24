@@ -395,7 +395,10 @@ X3DBrowserEditor::setMetaData ()
 	{
 		const auto worldInfo = createWorldInfo ();
 
-		if (not getSelection () -> getChildren () .empty ())
+		if (getSelection () -> getChildren () .empty ())
+			worldInfo -> removeMetaData ("/Titania/Selection/children");
+
+		else
 		{
 			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
 			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
@@ -403,8 +406,6 @@ X3DBrowserEditor::setMetaData ()
 			children -> isPrivate (true);
 			children -> value () = getSelection () -> getChildren ();
 		}
-		else
-			worldInfo -> removeMetaData ("/Titania/Selection/children");
 	}
 
 	if (true)
@@ -667,34 +668,19 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 {
 	setMetaData ();
 
-	try
-	{
-		const auto worldInfo   = createWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
-		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
+	const auto worldInfo   = createWorldInfo ();
+	const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+	const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+	const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
 
-		children -> isPrivate (false);
-		previous -> isPrivate (false);
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	children -> isPrivate (false);
+	previous -> isPrivate (false);
 
 	// Save world
 	const bool saved = X3DBrowserWidget::save (worldURL, compressed, copy);
 
-	try
-	{
-		const auto worldInfo   = createWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
-		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
-
-		children -> isPrivate (true);
-		previous -> isPrivate (true);
-	}
-	catch (const X3D::X3DError &)
-	{ }
+	children -> isPrivate (true);
+	previous -> isPrivate (true);
 
 	if (saved)
 	{

@@ -1050,10 +1050,10 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 	size_t fieldTypeLength  = 0;
 	size_t accessTypeLength = 0;
 
+	const auto userDefinedFields = getUserDefinedFields ();
+
 	if (canUserDefinedFields ())
 	{
-		const auto userDefinedFields = std::make_pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
-
 		switch (Generator::Style ())
 		{
 			case Generator::SMALLEST:
@@ -1073,19 +1073,19 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 			}
 		}
 
-		if (numUserDefinedFields)
+		if (userDefinedFields .size ())
 		{
 			ostream
 				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
-			for (const auto & field : std::make_pair (userDefinedFields .first, userDefinedFields .second - 1))
+			for (const auto & field : std::make_pair (userDefinedFields .begin (), userDefinedFields .end () - 1))
 			{
 				toStreamUserDefinedField (ostream, field, fieldTypeLength, accessTypeLength);
 				ostream << Generator::Break;
 			}
 
-			toStreamUserDefinedField (ostream, *(userDefinedFields .second - 1), fieldTypeLength, accessTypeLength);
+			toStreamUserDefinedField (ostream, *(userDefinedFields .end () - 1), fieldTypeLength, accessTypeLength);
 			ostream << Generator::Break;
 
 			ostream
@@ -1098,14 +1098,14 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	if (fields .empty ())
 	{
-		if (numUserDefinedFields)
+		if (not userDefinedFields .empty ())
 			ostream << Generator::Indent;
 		else
 			ostream << Generator::TidySpace;
 	}
 	else
 	{
-		if (numUserDefinedFields == 0)
+		if (userDefinedFields .empty ())
 			ostream << Generator::TidyBreak;
 
 		ostream << Generator::IncIndent;
@@ -1432,8 +1432,8 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	const FieldDefinitionArray fields            = getChangedFields ();
-	const auto                 userDefinedFields = std::make_pair (fieldDefinitions .end () - numUserDefinedFields, fieldDefinitions .end ());
+	const auto fields            = getChangedFields ();
+	const auto userDefinedFields = getUserDefinedFields ();
 
 	FieldDefinitionArray references;
 	FieldDefinitionArray childNodes;
@@ -1521,7 +1521,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::DecIndent;
 
-	if ((not canUserDefinedFields () or numUserDefinedFields == 0) and references .empty () and childNodes .empty () and not cdata)
+	if ((not canUserDefinedFields () or userDefinedFields .empty ()) and references .empty () and childNodes .empty () and not cdata)
 	{
 		ostream << "/>";
 	}
@@ -1702,7 +1702,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 }
 
 /***
- *  Disposes this node.  Note: it is normaly not needed to call this function.
+ *  Disposes this node.  Note: it is normaly not needed to call this function directly.
  */
 void
 X3DBaseNode::dispose ()

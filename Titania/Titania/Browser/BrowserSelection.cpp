@@ -60,6 +60,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	         enabled (getCurrentBrowser () -> getSelection () -> isEnabled ()),  
 	            mode (getCurrentBrowser () -> getSelection () -> getMode ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
+	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
 	            over (),
 	          active (),
 	       touchTime (),
@@ -93,6 +94,7 @@ BrowserSelection::set_browser ()
 		selection -> isEnabled (enabled);
 		selection -> setMode (mode);
 		selection -> setSelectLowest (selectLowest);
+		selection -> setSelectGeometry (selectGeometry);
 
 		selection -> isOver ()        .addInterest (over);
 		selection -> isActive ()      .addInterest (active);
@@ -122,6 +124,13 @@ BrowserSelection::setSelectLowest (const bool value)
 {
 	selectLowest = value;
 	browser -> getSelection () -> setSelectLowest (value);
+}
+
+void
+BrowserSelection::setSelectGeometry (const bool value)
+{
+	selectGeometry = value;
+	browser -> getSelection () -> setSelectGeometry (value);
 }
 
 void

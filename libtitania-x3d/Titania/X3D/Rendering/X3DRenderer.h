@@ -190,7 +190,10 @@ private:
 	gravite ();
 
 	void
-	display (const bool);
+	display ();
+
+	void
+	depth ();
 
 	///  @name Members
 

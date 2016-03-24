@@ -296,6 +296,11 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	///  Returns an array of all fields with non default value.
+	virtual
+	FieldDefinitionArray
+	getChangedFields () const;
+
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
 	virtual
 	const FieldDefinitionArray &
@@ -515,10 +520,6 @@ protected:
 	void
 	removeField (const std::string &)
 	throw (Error <DISPOSED>);
-
-	///  Returns an array of all fields with non default value.
-	FieldDefinitionArray
-	getChangedFields () const;
 
 	///  @name Tool support
 

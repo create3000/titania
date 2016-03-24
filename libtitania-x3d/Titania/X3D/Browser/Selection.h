@@ -132,6 +132,14 @@ public:
 	getSelectLowest () const
 	{ return selectLowest; }
 
+	void
+	setSelectGeometry (const bool value)
+	{ selectGeometry = value; }
+	
+	const SFBool &
+	getSelectGeometry () const
+	{ return selectGeometry; }
+
 	SFBool &
 	isOver ()
 	{ return over; }
@@ -198,6 +206,7 @@ private:
 	SFBool                 enabled;
 	SFEnum <SelectionType> mode;
 	SFBool                 selectLowest;
+	SFBool                 selectGeometry;
 	SFBool                 over;
 	SFBool                 active;
 	SFBool                 touchTime;

@@ -193,6 +193,12 @@ public:
 	       Error <DISPOSED>) final override
 	{ return node -> getUserDefinedFields (); }
 
+	///  Returns an array of all fields with non default value.
+	virtual
+	FieldDefinitionArray
+	getChangedFields () const final override
+	{ return node -> getChangedFields (); }
+
 	///  Return all field definition for this node, that is all predefined field and user defined fields.
 	virtual
 	const FieldDefinitionArray &
@@ -259,30 +265,6 @@ public:
 	void
 	traverse (const TraverseType) override
 	{ }
-
-	///  @name Input/Output
-
-	///  NOT SUPPORTED
-	virtual
-	void
-	fromStream (std::istream & istream)
-	throw (Error <INVALID_X3D>,
-	       Error <NOT_SUPPORTED>,
-	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ node -> fromStream (istream); }
-
-	///  Inserts this object into @a ostream in VRML Classic Encoding.
-	virtual
-	void
-	toStream (std::ostream & ostream) const final override
-	{ node -> toStream (ostream); }
-
-	///  Inserts this object into @a ostream in X3D XML Encoding.
-	virtual
-	void
-	toXMLStream (std::ostream & ostream) const final override
-	{ node -> toXMLStream (ostream); }
 
 	///  @name Destruction
 

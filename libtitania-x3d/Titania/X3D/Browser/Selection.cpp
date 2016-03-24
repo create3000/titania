@@ -68,20 +68,22 @@ const std::string   Selection::typeName       = "Selection";
 const std::string   Selection::containerField = "selection";
 
 Selection::Selection (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     enabled (false),
-	        mode (SINGLE),
-	selectLowest (false),
-	        over (),
-	      active (),
-	   touchTime (),
-	    children ()
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       enabled (false),
+	          mode (SINGLE),
+	  selectLowest (false),
+	selectGeometry (false),
+	          over (),
+	        active (),
+	     touchTime (),
+	      children ()
 {
 	addType (X3DConstants::Selection);
 
 	X3DParentObject::addChildren (enabled,
 	                              mode,
 	                              selectLowest,
+	                              selectGeometry,
 	                              over,
 	                              active,
 	                              touchTime,
@@ -203,74 +205,58 @@ Selection::select ()
 
 	if (getBrowser () -> getHits () .empty ())
 	{
+		if (selectGeometry)
+		   return false;
+
 		clear ();
 		return false;
 	}
 
-	const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
-	                             getBrowser () -> getNearestHit () -> shape,
-	                             TRAVERSE_ROOT_NODES |
-	                             TRAVERSE_PROTOTYPE_INSTANCES |
-	                             TRAVERSE_INLINE_NODES |
-	                             TRAVERSE_TOOL_OBJECTS |
-	                             TRAVERSE_VISIBLE_NODES);
-
-
-	if (hierarchy .empty ())
-		return false;
-
 	SFNode node;
 
-	if (selectLowest)
+	if (selectGeometry)
 	{
-		for (const auto & object : basic::make_reverse_range (hierarchy))
-		{
-			const SFNode lowest (object);
-
-			if (not lowest)
-				continue;
-
-			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-				continue;
-				
-			if (not node)
-				node = lowest;
-
-			if (dynamic_cast <Transform*> (lowest .getValue ()))
-			{
-				node = lowest;
-				break;
-			}
-		}
+		node = getBrowser () -> getNearestHit () -> shape -> getGeometry ();
 	}
 	else
 	{
-		// Find highest Transform
-	
-		for (const auto & object : hierarchy)
+		const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+		                             getBrowser () -> getNearestHit () -> shape,
+		                             TRAVERSE_ROOT_NODES |
+		                             TRAVERSE_PROTOTYPE_INSTANCES |
+		                             TRAVERSE_INLINE_NODES |
+		                             TRAVERSE_TOOL_OBJECTS |
+		                             TRAVERSE_VISIBLE_NODES);
+
+		if (hierarchy .empty ())
+			return false;
+
+		if (selectLowest)
 		{
-			const SFNode highest (object);
-
-			if (not highest)
-				continue;
-
-			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-				continue;
-
-			if (not node)
-				node = highest;
-
-			if (dynamic_cast <Transform*> (highest .getValue ()))
+			for (const auto & object : basic::make_reverse_range (hierarchy))
 			{
-				node = highest;
-				break;
+				const SFNode lowest (object);
+
+				if (not lowest)
+					continue;
+
+				if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+					continue;
+					
+				if (not node)
+					node = lowest;
+
+				if (dynamic_cast <Transform*> (lowest .getValue ()))
+				{
+					node = lowest;
+					break;
+				}
 			}
 		}
-
-		// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
-
-		if (x3d_cast <LayerSet*> (node))
+		else
 		{
+			// Find highest Transform
+		
 			for (const auto & object : hierarchy)
 			{
 				const SFNode highest (object);
@@ -281,10 +267,35 @@ Selection::select ()
 				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 					continue;
 
-				if (x3d_cast <X3DChildNode*> (highest))
+				if (not node)
+					node = highest;
+
+				if (dynamic_cast <Transform*> (highest .getValue ()))
 				{
 					node = highest;
 					break;
+				}
+			}
+
+			// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+
+			if (x3d_cast <LayerSet*> (node))
+			{
+				for (const auto & object : hierarchy)
+				{
+					const SFNode highest (object);
+
+					if (not highest)
+						continue;
+
+					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+						continue;
+
+					if (x3d_cast <X3DChildNode*> (highest))
+					{
+						node = highest;
+						break;
+					}
 				}
 			}
 		}
@@ -294,10 +305,13 @@ Selection::select ()
 	{
 		if (isSelected (node))
 		{
+		   if (selectGeometry)
+		      return false;
+
 			if (getMode () == Selection::MULTIPLE)
 				removeChildren ({ node });
-			else
-				node -> addTool ();
+	
+			return false;
 		}
 		else
 		{
@@ -310,7 +324,7 @@ Selection::select ()
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 

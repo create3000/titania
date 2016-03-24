@@ -145,12 +145,12 @@ Shape::traverse (const TraverseType type)
 				break;
 			}
 			case TraverseType::COLLISION:
+			case TraverseType::DEPTH:
 			{
 				getCurrentLayer () -> addCollision (this);
 				break;
 			}
 			case TraverseType::DISPLAY:
-			case TraverseType::DEPTH:
 			{
 				getCurrentLayer () -> addShape (this);
 				break;

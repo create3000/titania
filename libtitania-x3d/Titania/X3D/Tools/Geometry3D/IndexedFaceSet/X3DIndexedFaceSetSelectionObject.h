@@ -384,7 +384,7 @@ protected:
 	getSelectActionType () const;
 
 	bool
-	isInSelection (const std::vector <size_t> &) const;
+	isInSelection (const std::set <int32_t> &, const std::vector <size_t> &) const;
 
 	double
 	getDistance (const Vector3d &, const Vector3d &);
@@ -524,9 +524,6 @@ private:
 	selectFaces (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectFace (const size_t, const SelectActionType);
-
-	void
 	addSelectedPointsFunction (const std::vector <int32_t> &);
 
 	void
@@ -545,10 +542,10 @@ private:
 	updateSelectedEdges ();
 
 	void
-	addSelectedFacesFunction (const std::set <size_t> &);
+	addSelectedFacesFunction (const std::set <size_t> &, const std::set <int32_t> &);
 
 	void
-	removeSelectedFacesFunction (const std::set <size_t> &);
+	removeSelectedFacesFunction (const std::set <size_t> &, const std::set <int32_t> &);
 
 	void
 	updateSelectedFaces ();
