@@ -522,7 +522,10 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 			continue;
 
 	   for (const auto & pair : edge .second)
+	   {
 			edges .emplace (pair);
+			break;
+		}
 	}
 
 	const auto selection = extrudeSelectedEdges (edges, { });

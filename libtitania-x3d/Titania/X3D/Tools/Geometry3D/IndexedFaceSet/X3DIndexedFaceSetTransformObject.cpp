@@ -342,8 +342,6 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 Rotation4d
 X3DIndexedFaceSetTransformObject::getAxisRotation () const
 {
-	Rotation4d rotation;
-	
 	if (alignToNormal ())
 	{
 		switch (getSelectionType ())
@@ -362,12 +360,10 @@ X3DIndexedFaceSetTransformObject::getAxisRotation () const
 				for (const auto & face : faces)
 					normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
 				
-				rotation = Rotation4d (Vector3d (0, 0, 1), normal);
-				break;
+				return Rotation4d (Vector3d (0, 0, 1), normal);
 			}
 			case SelectionType::EDGES:
 			{
-				Vector3d          normal;
 				std::set <size_t> faces;
 				
 				for (const auto & edges : getSelectedEdges ())
@@ -381,16 +377,50 @@ X3DIndexedFaceSetTransformObject::getAxisRotation () const
 					}
 				}
 
-				for (const auto & face : faces)
+				if (faces .size () == 1)
 				{
-					const auto vertices = getFaceSelection () -> getFaceVertices (face);
+					Vector3d xAxis;
+
+					const auto vertices = getFaceSelection () -> getFaceVertices (*faces .begin ());
+					const auto normal   = getPolygonNormal (vertices);
 
 					if (getPolygonArea (vertices))
-						normal += getPolygonNormal (vertices);
-				}
+					{
+						for (const auto & edges : getSelectedEdges ())
+						{
+							const auto point1 = getCoord () -> get1Point (edges .first .first);
+							const auto point2 = getCoord () -> get1Point (edges .first .second);
 
-				rotation = abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
-				break;
+							xAxis += normalize (point2 - point1);
+						}
+					}
+
+					xAxis .normalize ();
+
+					const auto zAxis = normalize (cross <double> (xAxis, normal));
+					const auto yAxis = normalize (cross <double> (zAxis, xAxis));
+
+					if (abs (xAxis))
+						return Rotation4d (Matrix3d (xAxis .x (), xAxis .y (), xAxis .z (),
+						                             yAxis .x (), yAxis .y (), yAxis .z (),
+						                             zAxis .x (), zAxis .y (), zAxis .z ()));
+
+					return Rotation4d (Matrix3d (axisRotation));
+				}
+				else
+				{
+					Vector3d normal;
+
+					for (const auto & face : faces)
+					{
+						const auto vertices = getFaceSelection () -> getFaceVertices (face);
+
+						if (getPolygonArea (vertices))
+							normal += getPolygonNormal (vertices);
+					}
+
+					return abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
+				}
 			}
 			case SelectionType::FACES:
 			{
@@ -404,13 +434,12 @@ X3DIndexedFaceSetTransformObject::getAxisRotation () const
 						normal += getPolygonNormal (vertices);
 				}
 				
-				rotation = abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
-				break;
+				return abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
 			}
 		}
 	}
 
-	return rotation;
+	return Rotation4d ();
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()
