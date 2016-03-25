@@ -101,11 +101,6 @@ CoordinateTool::realize ()
 		if (getInlineNode () -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-__LOG__ << std::endl;
-__LOG__ << std::endl;
-__LOG__ << std::endl;
-
-
 		const auto hotEdgesGeometry      = getInlineNode () -> getExportedNode ("HotEdgesGeometry");
 		const auto hotFaceGeometry       = getInlineNode () -> getExportedNode ("HotFaceGeometry");
 		const auto activeEdgesGeometry   = getInlineNode () -> getExportedNode ("ActiveEdgesGeometry");

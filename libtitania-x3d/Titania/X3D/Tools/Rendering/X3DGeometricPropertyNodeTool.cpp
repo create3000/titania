@@ -85,7 +85,7 @@ X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
 {
 	try
 	{
-	   tool -> traverse (type);
+		tool -> traverse (type);
 	}
 	catch (const X3DError & error)
 	{ }

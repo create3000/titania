@@ -431,7 +431,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 
 	if (flags & TRAVERSE_ROOT_NODES)
 	{
-		for (const auto & node : executionContext -> getRootNodes ())
+		for (const auto & node : basic::make_reverse_range (executionContext -> getRootNodes ()))
 		{
 			if (find (node, object, flags, hierarchy, seen))
 				return true;
@@ -494,7 +494,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 		}
 	}
 
-	for (const auto & field : node -> getFieldDefinitions ())
+	for (const auto & field : basic::make_reverse_range (node -> getFieldDefinitions ()))
 	{
 		if (field == object)
 		{
@@ -608,7 +608,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, st
 
 				hierarchy .emplace_back (field);
 
-				for (const auto & value : *mfnode)
+				for (const auto & value : basic::make_reverse_range (*mfnode))
 				{
 					if (find (value, object, flags, hierarchy, seen))
 						return true;
@@ -685,7 +685,7 @@ CONTINUE:;
 					{
 						const auto tool = dynamic_cast <X3DToolObject*> (node);
 
-						for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+						for (const auto & rootNode : basic::make_reverse_range (tool -> getInlineNode () -> getRootNodes ()))
 						{
 							if (find (rootNode, object, flags, hierarchy, seen))
 								return true;
@@ -734,7 +734,7 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object, const int flags)
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
 
-	for (const auto & node : nodes)
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
 		if (find (node, object, flags, hierarchy, seen))
 			return hierarchy;
