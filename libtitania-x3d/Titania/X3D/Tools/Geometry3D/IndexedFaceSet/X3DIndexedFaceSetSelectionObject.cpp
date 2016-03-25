@@ -1052,7 +1052,7 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 
 		for (const auto & edge : selectedEdges)
 		{
-			if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+			if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1 and selectedFaces .size ()) or edge .second .empty ())
 				continue;
 
 			selectedEdgesGeometry -> coordIndex () .set1Value (i ++, edge .first .first);

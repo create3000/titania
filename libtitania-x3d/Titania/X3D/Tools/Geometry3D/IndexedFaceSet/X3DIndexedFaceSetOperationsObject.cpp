@@ -518,7 +518,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 
 	for (const auto & edge : getSelectedEdges ())
 	{
-		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
+		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1 and getSelectedFaces () .size ()) or edge .second .empty ())
 			continue;
 
 	   for (const auto & pair : edge .second)
