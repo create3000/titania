@@ -1492,7 +1492,7 @@ function eventsProcessed ()
     inputOnly      SFVec3f    set_scale7
     inputOnly      SFVec3f    set_scale8
     inputOnly      SFVec3f    set_linetype
-    inputOutput    SFBool     scaleFromCenter IS controlKey
+    inputOutput    SFBool     scaleFromEdge IS controlKey
     inputOutput    SFBool     altKey IS altKey
     inputOutput    SFBool     keepCenter FALSE
     inputOutput    SFVec3f    bboxSize IS bboxSize
@@ -1649,13 +1649,14 @@ function set_axisScale (axis, value, sgn)
 {
 	value = value [axis];
 
-	if (scaleFromCenter)
+	if (scaleFromEdge)
 	{
 		var
 			vector = new SFVec3f (1, 1, 1),
 			offset = new SFVec3f ();
 	
-		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
+		vector [axis] = 1 + sgn * value / bboxSize [axis];
+		offset [axis] = -sgn * bboxSize [axis] / 2;
 
 		scale (vector, offset);
 	}
@@ -1665,8 +1666,7 @@ function set_axisScale (axis, value, sgn)
 			vector = new SFVec3f (1, 1, 1),
 			offset = new SFVec3f ();
 	
-		vector [axis] = 1 + sgn * value / bboxSize [axis];
-		offset [axis] = -sgn * bboxSize [axis] / 2;
+		vector [axis] = 1 + 2 * sgn * value / bboxSize [axis];
 
 		scale (vector, offset);
 	}
@@ -1730,19 +1730,19 @@ function set_scale8 (value)
 
 function set_scale (value, sgn, centerOffset)
 {
-	if (scaleFromCenter)
-	{
-		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
-
-		scale (new SFVec3f (s, s, s), new SFVec3f ());
-	}
-	else
+	if (scaleFromEdge)
 	{
 		centerOffset = centerOffset .multVec (bboxSize .divide (2));
 
 		var s = 1 + sgn * value .length () / bboxSize .length ();
 
 		scale (new SFVec3f (s, s, s), centerOffset);
+	}
+	else
+	{
+		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
+
+		scale (new SFVec3f (s, s, s), new SFVec3f ());
 	}
 }
 
