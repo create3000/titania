@@ -257,7 +257,7 @@ X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
 
 	vertices .erase (last, vertices .end ());
 
-	set_selection (vertices, SelectActionType::REPLACE);
+	set_selection (MFVec3d (vertices .begin (), vertices .end ()), SelectActionType::REPLACE);
 }
 
 void
@@ -431,20 +431,19 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints)
+X3DIndexedFaceSetSelectionObject::set_selection (const MFVec3d & hitPoints)
 {
-	if (getTranslate ())
-		return;
-
 	set_selection (hitPoints, getSelectActionType ());
+
+	X3DComposedGeometryNodeTool::set_selection (hitPoints);
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_selection (const std::vector <Vector3d> & hitPoints, const SelectActionType selectAction)
+X3DIndexedFaceSetSelectionObject::set_selection (const MFVec3d & hitPoints, const SelectActionType selectAction)
 {
 	std::vector <int32_t> points;
 
-	for (const auto & hitPoint : hitPoints)
+	for (const Vector3d & hitPoint : hitPoints)
 	{
 		const auto coincidentPoints = selection -> getCoincidentPoints (hitPoint);
 		points .insert (points .end (), coincidentPoints .begin (), coincidentPoints .end ());

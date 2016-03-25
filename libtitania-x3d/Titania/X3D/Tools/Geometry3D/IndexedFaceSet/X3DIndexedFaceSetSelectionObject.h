@@ -473,10 +473,10 @@ private:
 
 	virtual
 	void
-	set_selection (const std::vector <Vector3d> &) final override;
+	set_selection (const MFVec3d &) final override;
 
 	void
-	set_selection (const std::vector <Vector3d> &, const SelectActionType);
+	set_selection (const MFVec3d &, const SelectActionType);
 
 	void
 	set_plane_sensor_active ();

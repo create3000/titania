@@ -73,6 +73,7 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	 X3DGeometryNode (),
 	     X3DNodeTool (),
 	          fields (),
+	       selection (),
 	  normalToolNode (new NormalTool (getExecutionContext ())),
 	   coordToolNode (new CoordinateTool (getExecutionContext ())),
 	        viewport (),
@@ -84,7 +85,8 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	normalTool () .set (normalToolNode);
 	coordTool  () .set (coordToolNode);
 
-	addChildren (normalToolNode,
+	addChildren (selection,
+	             normalToolNode,
 	             coordToolNode);
 }
 
@@ -107,6 +109,8 @@ X3DGeometryNodeTool::initialize ()
 
 	pickable () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
 	getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
+
+	selection .addInterest (this, &X3DGeometryNodeTool::set_selection);
 
 	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
 	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
@@ -269,9 +273,15 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
 {
 	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (frameBuffer, depthBuffer, intersections);
 
-	set_selection (hitPoints);
+	selection .insert (selection .end (), hitPoints .begin (), hitPoints .end ());
 
 	return hitPoints;
+}
+
+void
+X3DGeometryNodeTool::set_selection (const MFVec3d &)
+{
+	selection .set ({ });
 }
 
 void

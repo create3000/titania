@@ -235,7 +235,7 @@ protected:
 
 	virtual
 	void
-	set_selection (const std::vector <Vector3d> &) = 0;
+	set_selection (const MFVec3d &);
 
 
 private:
@@ -264,6 +264,7 @@ private:
 
 	Fields fields;
 
+	MFVec3d                 selection;
 	X3DPtr <NormalTool>     normalToolNode;
 	X3DPtr <CoordinateTool> coordToolNode;
 
