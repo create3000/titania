@@ -1,10 +1,11 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.0
 
 META "comment" "World of Titania"
 META "created" "Fri, 05 Feb 2016 11:30:37 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Tue, 09 Feb 2016 03:05:21 GMT"
+META "generator" "Titania V1.4.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/NormalTool.x3dv"
+META "modified" "Fri, 25 Mar 2016 07:02:56 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -37,9 +38,9 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.254005253314972,
-              0.957971334457397,
-              0.133312597870827,
+              -0.254005253936681,
+              0.957971336802148,
+              0.133312598197126,
               1.00235295295715
             ]
           }
@@ -54,54 +55,36 @@ WorldInfo {
           }
         ]
       }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF TransformMatrix3D TransformMatrix3D {
-            children Shape {
-              appearance Appearance {
-                material DEF Material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.7 0.85 1
-                }
-              }
-              geometry DEF NormalsLineSet LineSet {
-                vertexCount [
-                  2,
-                  2,
-                  2
-                ]
-                coord DEF NormalsCoord CoordinateDouble {
-                  point [
-                    -2 0 0,
-                    2 0 0,
-                    0 -2 0,
-                    0 2 0,
-                    0 0 -2,
-                    0 0 2
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
     ]
   }
 }
 
-DEF Switch Switch {
-  children [
-    Group { }
-    USE TransformMatrix3D
-  ]
+Shape {
+  appearance Appearance {
+    material DEF Material Material {
+      diffuseColor 0 0 0
+      emissiveColor 0.7 0.85 1
+    }
+  }
+  geometry DEF NormalsLineSet LineSet {
+    vertexCount [
+      2,
+      2,
+      2
+    ]
+    coord DEF NormalsCoord CoordinateDouble {
+      point [
+        -2 0 0,
+        2 0 0,
+        0 -2 0,
+        0 2 0,
+        0 0 -2,
+        0 0 2
+      ]
+    }
+  }
 }
 
 EXPORT Material
 EXPORT NormalsCoord
 EXPORT NormalsLineSet
-EXPORT Switch
-EXPORT TransformMatrix3D
