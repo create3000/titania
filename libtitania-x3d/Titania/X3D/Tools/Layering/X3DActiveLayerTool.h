@@ -80,6 +80,7 @@ public:
 
 	const X3DPtr <Inline> &
 	getInlineNode () const
+	throw (Error <DISPOSED>)
 	{ return tool -> getInlineNode (); }
 
 	const SFNode &

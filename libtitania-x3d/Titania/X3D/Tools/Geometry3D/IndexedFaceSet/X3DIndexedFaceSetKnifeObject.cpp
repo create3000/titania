@@ -60,6 +60,7 @@
 #include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
 #include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Rendering/ViewVolume.h"
 
 namespace titania {
 namespace X3D {

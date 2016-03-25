@@ -116,9 +116,8 @@ private:
 	void
 	initialize () final override;
 
-	virtual
 	void
-	realize () final override;
+	realize ();
 
 	///  @name Event handler
 

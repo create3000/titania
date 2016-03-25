@@ -68,13 +68,14 @@ X3DToolObject::X3DToolObject () :
 	addType (X3DConstants::X3DToolObject);
 
 	addChildren (inlineNode, toolNode);
+
+	inlineNode -> load () = false;
 }
 
 void
 X3DToolObject::initialize ()
 {
 	inlineNode -> checkLoadState () .addInterest (this, &X3DToolObject::set_loadState);
-	inlineNode -> load () = false;
 	inlineNode -> setup ();
 }
 

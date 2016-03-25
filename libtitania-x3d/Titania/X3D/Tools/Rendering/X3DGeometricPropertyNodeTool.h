@@ -51,16 +51,14 @@
 #ifndef __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_TOOL_H__
 #define __TITANIA_X3D_TOOLS_RENDERING_X3DGEOMETRIC_PROPERTY_NODE_TOOL_H__
 
-#include "../Layering/X3DActiveLayerTool.h"
+#include "../Core/Tool.h"
+#include "../../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Switch;
-class TransformMatrix3D;
-
 class X3DGeometricPropertyNodeTool :
-	public X3DActiveLayerTool
+	public X3DNode
 {
 public:
 
@@ -73,6 +71,13 @@ public:
 	const SFBool &
 	load () const
 	{ return *fields .load; }
+
+	///  @name Memeber access
+
+	const X3DPtr <Inline> &
+	getInlineNode () const
+	throw (Error <DISPOSED>)
+	{ return tool -> getInlineNode (); }
 
 	///  @name Operations
 
@@ -94,20 +99,8 @@ protected:
 	void
 	initialize () override;
 
-	virtual
-	void
-	realize () override;
-
 
 private:
-
-	///  @name Event handler
-
-	void
-	prepareEvent ();
-
-	void
-	set_activeLayer ();
 
 	///  @name Members
 
@@ -119,11 +112,9 @@ private:
 	};
 
 	Fields fields;
-	
-	bool                       enabled;
-	X3DPtr <Switch>            switchNode;
-	X3DPtr <TransformMatrix3D> transformNode;
 
+	X3DPtr <Tool> tool;
+	
 };
 
 } // X3D

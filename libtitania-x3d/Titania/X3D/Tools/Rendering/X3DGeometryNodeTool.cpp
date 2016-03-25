@@ -267,9 +267,6 @@ X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuff
                                  const std::shared_ptr <FrameBuffer> & depthBuffer,
                                  std::vector <IntersectionPtr> & intersections)
 {
-	if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
-		return std::vector <Vector3d> ();
-
 	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (frameBuffer, depthBuffer, intersections);
 
 	set_selection (hitPoints);
@@ -295,9 +292,6 @@ X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 
 		getNode <X3DGeometryNode> () -> draw (container);
 	}
-
-	if (getCurrentLayer () not_eq coordToolNode -> getActiveLayer ())
-		return;
 
 	viewport         = Viewport4i ();
 	projectionMatrix = ProjectionMatrix4d ();

@@ -208,6 +208,7 @@
     <None Include="JavaScript\V8.h" />
     <None Include="Papers.mdproj" />
     <None Include="Papers.pidb" />
+    <None Include="An Exact Algorithm for Finding Minimum Oriented Bounding Boxes, Jukka Jylänki, 2015.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

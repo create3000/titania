@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Thu, 24 Mar 2016 01:22:03 GMT"
+META "modified" "Fri, 25 Mar 2016 05:59:38 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -58,21 +58,10 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-          }
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-            value DEF Transform Transform {
-              children DEF TransformTool Transform {
-                bboxSize 1 1 1
-              }
-            }
-          }
-        ]
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
       }
       DEF AngleGrid MetadataSet {
         name "AngleGrid"
@@ -99,334 +88,331 @@ WorldInfo {
 
 Collision {
   enabled FALSE
-  children DEF Switch Switch {
-    children [
-      Group { }
-      DEF _1 TransformMatrix3D {
-        children [
-          DEF _2 ProximitySensor {
-            size -1 -1 -1
-          }
-          DEF SelectionSwitch Switch {
-            whichChoice 0
-            children [
-              DEF SelectionGroup Group {
-                children [
-                  DEF SelectionShape Shape {
-                    appearance Appearance {
-                      texture PixelTexture {
-                        image 1 1 2
-                          0
-                      }
-                    }
-                  }
-                  DEF TouchSensor TouchSensor { }
-                  DEF PlaneSensor PlaneSensor {
-                    enabled FALSE
-                    autoOffset FALSE
-                    maxPosition -1 0
-                  }
-                  DEF PlaneSensorNormal PlaneSensor {
-                    enabled FALSE
-                    autoOffset FALSE
-                    maxPosition -1 0
-                  }
-                ]
-              }
-              DEF KnifeSelectionGroup Group {
-                children [
-                  USE SelectionShape
-                  DEF KnifeTouchSensor TouchSensor { }
-                ]
-              }
-            ]
-          }
-          DEF SelectedFaces Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 0
-                emissiveColor 0.8 0.8 0.8
-                transparency 0.6
+  children [
+    DEF _1 ProximitySensor {
+      size -1 -1 -1
+    }
+    DEF SelectionSwitch Switch {
+      whichChoice 0
+      children [
+        DEF SelectionGroup Group {
+          children [
+            DEF SelectionShape Shape {
+              appearance Appearance {
+                texture PixelTexture {
+                  image 1 1 2
+                    0
+                }
               }
             }
-            geometry DEF SelectedFacesGeometry IndexedFaceSet {
+            DEF TouchSensor TouchSensor { }
+            DEF PlaneSensor PlaneSensor {
+              enabled FALSE
+              autoOffset FALSE
+              maxPosition -1 0
+            }
+            DEF PlaneSensorNormal PlaneSensor {
+              enabled FALSE
+              autoOffset FALSE
+              maxPosition -1 0
+            }
+          ]
+        }
+        DEF KnifeSelectionGroup Group {
+          children [
+            USE SelectionShape
+            DEF KnifeTouchSensor TouchSensor { }
+          ]
+        }
+      ]
+    }
+    DEF SelectedFaces Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+          emissiveColor 0.8 0.8 0.8
+          transparency 0.6
+        }
+      }
+      geometry DEF SelectedFacesGeometry IndexedFaceSet {
+        solid FALSE
+      }
+    }
+    DepthBuffer {
+      enabled FALSE
+      children DEF MagicFaceSwitch Switch {
+        whichChoice 0
+        children [
+          DEF ActiveFace Shape {
+            appearance Appearance {
+              material DEF ActvieFaceMaterial Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.5 0.0792565 0
+                transparency 0.635417
+              }
+            }
+            geometry DEF ActiveFaceGeometry IndexedFaceSet {
               solid FALSE
             }
           }
-          DepthBuffer {
-            enabled FALSE
-            children DEF MagicFaceSwitch Switch {
-              whichChoice 0
-              children [
-                DEF ActiveFace Shape {
-                  appearance Appearance {
-                    material DEF ActvieFaceMaterial Material {
-                      diffuseColor 0 0 0
-                      emissiveColor 0.5 0.0792565 0
-                      transparency 0.635417
-                    }
-                  }
-                  geometry DEF ActiveFaceGeometry IndexedFaceSet {
-                    solid FALSE
-                  }
+          DEF HotFace Shape {
+            appearance Appearance {
+              material DEF HotMaterial Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.519546 0.173182 0.865911
+                transparency 0.635417
+              }
+            }
+            geometry DEF HotFaceGeometry IndexedFaceSet {
+              solid FALSE
+            }
+          }
+        ]
+      }
+    }
+    DEF Edges Shape {
+      appearance Appearance {
+        material DEF EdgesMaterial Material {
+          diffuseColor 0 0 0
+          emissiveColor 0.702794 0.852152 1
+        }
+      }
+      geometry DEF EdgesLineSet LineSet {
+        coord DEF EdgesCoord CoordinateDouble { }
+      }
+    }
+    DEF SelectedEdges Shape {
+      appearance Appearance {
+        lineProperties DEF _2 LineProperties {
+          linewidthScaleFactor 2
+        }
+        material DEF SelectedMaterial Material {
+          diffuseColor 0 0 0
+          emissiveColor 1 0.75154 0
+        }
+      }
+      geometry DEF SelectedEdgesGeometry IndexedLineSet { }
+    }
+    DEF SelectedPoints Shape {
+      appearance Appearance {
+        lineProperties DEF _3 LineProperties {
+          linewidthScaleFactor 8
+        }
+        material USE SelectedMaterial
+      }
+      geometry PointSet {
+        coord DEF SelectionCoord CoordinateDouble { }
+      }
+    }
+    DepthBuffer {
+      enabled FALSE
+      children [
+        DEF MagicEdgesSwitch Switch {
+          whichChoice 0
+          children [
+            DEF ActiveEdges Shape {
+              appearance Appearance {
+                lineProperties USE _2
+                material DEF ActiveMaterial Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.5 0.0792565 0
+                  transparency 0.207602
                 }
-                DEF HotFace Shape {
-                  appearance Appearance {
-                    material DEF HotMaterial Material {
-                      diffuseColor 0 0 0
-                      emissiveColor 0.519546 0.173182 0.865911
-                      transparency 0.635417
+              }
+              geometry DEF ActiveEdgesGeometry IndexedLineSet { }
+            }
+            DEF HotEdges Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linewidthScaleFactor 2
+                }
+                material DEF HotMaterial_1 Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.519546 0.173182 0.865911
+                  transparency 0.207602
+                }
+              }
+              geometry DEF HotEdgesGeometry IndexedLineSet { }
+            }
+          ]
+        }
+        DEF MagicPointsSwitch Switch {
+          whichChoice 0
+          children [
+            DEF ActivePoints Shape {
+              appearance Appearance {
+                lineProperties USE _3
+                material USE ActiveMaterial
+              }
+              geometry PointSet {
+                coord DEF ActivePointCoord CoordinateDouble { }
+              }
+            }
+            DEF HotPoints Shape {
+              appearance Appearance {
+                lineProperties USE _3
+                material USE HotMaterial_1
+              }
+              geometry PointSet {
+                coord DEF HotPointCoord CoordinateDouble { }
+              }
+            }
+          ]
+        }
+      ]
+    }
+    DEF KnifeSwitch Switch {
+      whichChoice 0
+      children [
+        DEF TransformToolSwitch Switch {
+          children [
+            Group { }
+            DEF Transform Transform {
+              children DEF TransformTool Transform {
+                bboxSize 1 1 1
+              }
+            }
+          ]
+        }
+        DEF Knife Group {
+          children [
+            DEF KnifeStartPoint Transform {
+              rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
+              children DEF _4 ScreenGroup {
+                children [
+                  DepthBuffer {
+                    enabled FALSE
+                    depthOffset 3000
+                    children Shape {
+                      appearance Appearance {
+                        lineProperties LineProperties {
+                          linetype 2
+                          linewidthScaleFactor 1
+                        }
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry DEF _5 Circle2D {
+                        radius 3
+                      }
                     }
                   }
-                  geometry DEF HotFaceGeometry IndexedFaceSet {
-                    solid FALSE
+                  DepthBuffer {
+                    enabled FALSE
+                    depthOffset 4000
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 0
+                          emissiveColor 1 1 1
+                        }
+                      }
+                      geometry USE _5
+                    }
+                  }
+                ]
+              }
+            }
+            DEF KnifeLineSwitch Switch {
+              children [
+                Group { }
+                Group {
+                  children [
+                    DEF KnifeEndPoint Transform {
+                      rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
+                      children USE _4
+                    }
+                    DepthBuffer {
+                      enabled FALSE
+                      depthOffset 1000
+                      children Shape {
+                        appearance Appearance {
+                          lineProperties DEF _6 LineProperties {
+                            linetype 2
+                            linewidthScaleFactor 3
+                          }
+                          material DEF _7 Material {
+                            diffuseColor 0 0 0
+                          }
+                        }
+                        geometry DEF _8 LineSet {
+                          vertexCount 2
+                          coord DEF KnifeLineCoordinate CoordinateDouble {
+                            point [
+                              0 0 0,
+                              0 0 0
+                            ]
+                          }
+                        }
+                      }
+                    }
+                    DepthBuffer {
+                      enabled FALSE
+                      depthOffset 2000
+                      children Shape {
+                        appearance Appearance {
+                          lineProperties DEF _9 LineProperties {
+                            linetype 2
+                            linewidthScaleFactor 1
+                          }
+                          material Material {
+                            diffuseColor 0 0 0
+                            emissiveColor 1 1 1
+                          }
+                        }
+                        geometry USE _8
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+            DEF KnifeArcSwitch Switch {
+              children [
+                Group { }
+                DEF KnifeArc Transform {
+                  rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
+                  children ScreenGroup {
+                    children [
+                      DepthBuffer {
+                        enabled FALSE
+                        depthOffset 1000
+                        children Shape {
+                          appearance Appearance {
+                            lineProperties LineProperties {
+                              linewidthScaleFactor 3
+                            }
+                            material USE _7
+                          }
+                          geometry DEF KnifeArcGeometry Arc2D {
+                            radius 10
+                          }
+                        }
+                      }
+                      DepthBuffer {
+                        enabled FALSE
+                        depthOffset 2000
+                        children Shape {
+                          appearance Appearance {
+                            material Material {
+                              diffuseColor 0 0 0
+                              emissiveColor 1 1 1
+                            }
+                          }
+                          geometry USE KnifeArcGeometry
+                        }
+                      }
+                    ]
                   }
                 }
               ]
             }
-          }
-          DEF Edges Shape {
-            appearance Appearance {
-              material DEF EdgesMaterial Material {
-                diffuseColor 0 0 0
-                emissiveColor 0.702794 0.852152 1
-              }
-            }
-            geometry DEF EdgesLineSet LineSet {
-              coord DEF EdgesCoord CoordinateDouble { }
-            }
-          }
-          DEF SelectedEdges Shape {
-            appearance Appearance {
-              lineProperties DEF _3 LineProperties {
-                linewidthScaleFactor 2
-              }
-              material DEF SelectedMaterial Material {
-                diffuseColor 0 0 0
-                emissiveColor 1 0.75154 0
-              }
-            }
-            geometry DEF SelectedEdgesGeometry IndexedLineSet { }
-          }
-          DEF SelectedPoints Shape {
-            appearance Appearance {
-              lineProperties DEF _4 LineProperties {
-                linewidthScaleFactor 8
-              }
-              material USE SelectedMaterial
-            }
-            geometry PointSet {
-              coord DEF SelectionCoord CoordinateDouble { }
-            }
-          }
-          DepthBuffer {
-            enabled FALSE
-            children [
-              DEF MagicEdgesSwitch Switch {
-                whichChoice 0
-                children [
-                  DEF ActiveEdges Shape {
-                    appearance Appearance {
-                      lineProperties USE _3
-                      material DEF ActiveMaterial Material {
-                        diffuseColor 0 0 0
-                        emissiveColor 0.5 0.0792565 0
-                        transparency 0.207602
-                      }
-                    }
-                    geometry DEF ActiveEdgesGeometry IndexedLineSet { }
-                  }
-                  DEF HotEdges Shape {
-                    appearance Appearance {
-                      lineProperties LineProperties {
-                        linewidthScaleFactor 2
-                      }
-                      material DEF HotMaterial_1 Material {
-                        diffuseColor 0 0 0
-                        emissiveColor 0.519546 0.173182 0.865911
-                        transparency 0.207602
-                      }
-                    }
-                    geometry DEF HotEdgesGeometry IndexedLineSet { }
-                  }
-                ]
-              }
-              DEF MagicPointsSwitch Switch {
-                whichChoice 0
-                children [
-                  DEF ActivePoints Shape {
-                    appearance Appearance {
-                      lineProperties USE _4
-                      material USE ActiveMaterial
-                    }
-                    geometry PointSet {
-                      coord DEF ActivePointCoord CoordinateDouble { }
-                    }
-                  }
-                  DEF HotPoints Shape {
-                    appearance Appearance {
-                      lineProperties USE _4
-                      material USE HotMaterial_1
-                    }
-                    geometry PointSet {
-                      coord DEF HotPointCoord CoordinateDouble { }
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-          DEF KnifeSwitch Switch {
-            whichChoice 0
-            children [
-              DEF TransformToolSwitch Switch {
-                children [
-                  Group { }
-                  USE Transform
-                ]
-              }
-              DEF Knife Group {
-                children [
-                  DEF KnifeStartPoint Transform {
-                    rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
-                    children DEF _5 ScreenGroup {
-                      children [
-                        DepthBuffer {
-                          enabled FALSE
-                          depthOffset 3000
-                          children Shape {
-                            appearance Appearance {
-                              lineProperties LineProperties {
-                                linetype 2
-                                linewidthScaleFactor 1
-                              }
-                              material Material {
-                                diffuseColor 0 0 0
-                              }
-                            }
-                            geometry DEF _6 Circle2D {
-                              radius 3
-                            }
-                          }
-                        }
-                        DepthBuffer {
-                          enabled FALSE
-                          depthOffset 4000
-                          children Shape {
-                            appearance Appearance {
-                              material Material {
-                                diffuseColor 0 0 0
-                                emissiveColor 1 1 1
-                              }
-                            }
-                            geometry USE _6
-                          }
-                        }
-                      ]
-                    }
-                  }
-                  DEF KnifeLineSwitch Switch {
-                    children [
-                      Group { }
-                      Group {
-                        children [
-                          DEF KnifeEndPoint Transform {
-                            rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
-                            children USE _5
-                          }
-                          DepthBuffer {
-                            enabled FALSE
-                            depthOffset 1000
-                            children Shape {
-                              appearance Appearance {
-                                lineProperties DEF _7 LineProperties {
-                                  linetype 2
-                                  linewidthScaleFactor 3
-                                }
-                                material DEF _8 Material {
-                                  diffuseColor 0 0 0
-                                }
-                              }
-                              geometry DEF _9 LineSet {
-                                vertexCount 2
-                                coord DEF KnifeLineCoordinate CoordinateDouble {
-                                  point [
-                                    0 0 0,
-                                    0 0 0
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                          DepthBuffer {
-                            enabled FALSE
-                            depthOffset 2000
-                            children Shape {
-                              appearance Appearance {
-                                lineProperties DEF _10 LineProperties {
-                                  linetype 2
-                                  linewidthScaleFactor 1
-                                }
-                                material Material {
-                                  diffuseColor 0 0 0
-                                  emissiveColor 1 1 1
-                                }
-                              }
-                              geometry USE _9
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                  DEF KnifeArcSwitch Switch {
-                    children [
-                      Group { }
-                      DEF KnifeArc Transform {
-                        rotation -0.779918307187823 0.610519875063569 0.137814789720281 1.12693450683852
-                        children ScreenGroup {
-                          children [
-                            DepthBuffer {
-                              enabled FALSE
-                              depthOffset 1000
-                              children Shape {
-                                appearance Appearance {
-                                  lineProperties LineProperties {
-                                    linewidthScaleFactor 3
-                                  }
-                                  material USE _8
-                                }
-                                geometry DEF KnifeArcGeometry Arc2D {
-                                  radius 10
-                                }
-                              }
-                            }
-                            DepthBuffer {
-                              enabled FALSE
-                              depthOffset 2000
-                              children Shape {
-                                appearance Appearance {
-                                  material Material {
-                                    diffuseColor 0 0 0
-                                    emissiveColor 1 1 1
-                                  }
-                                }
-                                geometry USE KnifeArcGeometry
-                              }
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+          ]
+        }
+      ]
+    }
+  ]
 }
 
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedFacesGeometry.set_coord
@@ -442,11 +428,11 @@ ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveCol
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
 ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
-ROUTE _7.linetype_changed TO _10.set_linetype
-ROUTE _10.linetype_changed TO _7.set_linetype
-ROUTE _2.orientation_changed TO KnifeStartPoint.set_rotation
-ROUTE _2.orientation_changed TO KnifeEndPoint.set_rotation
-ROUTE _2.orientation_changed TO KnifeArc.set_rotation
+ROUTE _6.linetype_changed TO _9.set_linetype
+ROUTE _9.linetype_changed TO _6.set_linetype
+ROUTE _1.orientation_changed TO KnifeStartPoint.set_rotation
+ROUTE _1.orientation_changed TO KnifeEndPoint.set_rotation
+ROUTE _1.orientation_changed TO KnifeArc.set_rotation
 ROUTE KnifeSwitch.whichChoice_changed TO SelectionSwitch.set_whichChoice
 
 EXPORT ActiveEdgesGeometry
@@ -475,9 +461,7 @@ EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord
 EXPORT SelectionShape
-EXPORT Switch
 EXPORT TouchSensor
 EXPORT Transform
-EXPORT _1 AS TransformMatrix3D
 EXPORT TransformTool
 EXPORT TransformToolSwitch

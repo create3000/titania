@@ -88,16 +88,24 @@ CoordinateTool::initialize ()
 {
 	X3DCoordinateNodeTool::initialize ();
 
+	getInlineNode () -> checkLoadState () .addInterest (this, &CoordinateTool::realize);
+
 	getInlineNode () -> url () = { get_tool ("CoordinateTool.x3dv") .str () };
 }
 	
 void
 CoordinateTool::realize ()
 {
-	X3DCoordinateNodeTool::realize ();
-
 	try
 	{
+		if (getInlineNode () -> checkLoadState () not_eq COMPLETE_STATE)
+			return;
+
+__LOG__ << std::endl;
+__LOG__ << std::endl;
+__LOG__ << std::endl;
+
+
 		const auto hotEdgesGeometry      = getInlineNode () -> getExportedNode ("HotEdgesGeometry");
 		const auto hotFaceGeometry       = getInlineNode () -> getExportedNode ("HotFaceGeometry");
 		const auto activeEdgesGeometry   = getInlineNode () -> getExportedNode ("ActiveEdgesGeometry");

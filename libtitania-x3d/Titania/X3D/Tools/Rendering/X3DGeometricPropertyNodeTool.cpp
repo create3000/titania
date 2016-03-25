@@ -51,9 +51,6 @@
 #include "X3DGeometricPropertyNodeTool.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Rendering/ShapeContainer.h"
-#include "../../Components/Grouping/Switch.h"
-#include "../../Components/Grouping/TransformMatrix3D.h"
 
 namespace titania {
 namespace X3D {
@@ -63,68 +60,24 @@ X3DGeometricPropertyNodeTool::Fields::Fields () :
 { }
 
 X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
-	X3DActiveLayerTool (),
-	          enabled (false),
-	       switchNode (),
-	    transformNode ()
+	X3DNode (),
+	   tool (new Tool (getBrowser ()))
 {
 	addType (X3DConstants::X3DGeometricPropertyNodeTool);
 
-	addChildren (switchNode,
-                transformNode);
+	addChildren (tool);
 }
 
 void
 X3DGeometricPropertyNodeTool::initialize ()
 {
-	X3DActiveLayerTool::initialize ();
+	X3DNode::initialize ();
 
-	getActiveLayer () .addInterest (this, &X3DGeometricPropertyNodeTool::set_activeLayer);
+	tool -> setup ();
+
 	load () .addInterest (getInlineNode () -> load ());
 
 	getInlineNode () -> load () = load ();
-}
-
-void
-X3DGeometricPropertyNodeTool::realize ()
-{
-	X3DActiveLayerTool::realize ();
-
-	try
-	{
-		getBrowser () -> prepareEvents () .addInterest (this, &X3DGeometricPropertyNodeTool::prepareEvent);
-
-		switchNode    = getInlineNode () -> getExportedNode <Switch> ("Switch");
-		transformNode = getInlineNode () -> getExportedNode <TransformMatrix3D> ("TransformMatrix3D");
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DGeometricPropertyNodeTool::prepareEvent ()
-{
-	try
-	{
-		switchNode -> setField <SFInt32> ("whichChoice", int32_t (enabled), true);
-	}
-	catch (const X3DError & error)
-	{ }
-
-	enabled = false;
-}
-
-void
-X3DGeometricPropertyNodeTool::set_activeLayer ()
-{
-	try
-	{
-		switchNode -> setField <SFInt32> ("whichChoice", false, true);
-	}
-	catch (const X3DError & error)
-	{ }
 }
 
 void
@@ -132,18 +85,7 @@ X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
 {
 	try
 	{
-		if (getCurrentLayer () != getActiveLayer ())
-			return;
-	
-		enabled = true;
-	
-		if (type == TraverseType::DISPLAY)
-		{
-		   const auto transformationMatrix = getModelViewMatrix () .get () * getCameraSpaceMatrix ();
-
-			if (transformationMatrix not_eq transformNode -> getMatrix ())
-				transformNode -> setMatrix (transformationMatrix);
-		}
+	   tool -> traverse (type);
 	}
 	catch (const X3DError & error)
 	{ }

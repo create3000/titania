@@ -61,6 +61,7 @@
 #include "../../../Components/Rendering/IndexedLineSet.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Rendering/Tessellator.h"
+#include "../../../Rendering/ViewVolume.h"
 
 namespace titania {
 namespace X3D {
