@@ -241,6 +241,8 @@ PrototypeEditor::on_create_proto_clicked ()
 	const auto proto    = getCurrentContext () -> createProtoDeclaration (typeName, { });
 
 	getCurrentContext () -> updateProtoDeclaration (typeName, proto);
+
+	set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (proto));
 }
 
 void
@@ -250,6 +252,8 @@ PrototypeEditor::on_create_externproto_clicked ()
 	const auto externProto = getCurrentContext () -> createExternProtoDeclaration (typeName, { }, { });
 
 	getCurrentContext () -> updateExternProtoDeclaration (typeName, externProto);
+
+	set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (externProto));
 }
 
 void
