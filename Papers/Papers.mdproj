@@ -209,6 +209,34 @@
     <None Include="Papers.mdproj" />
     <None Include="Papers.pidb" />
     <None Include="An Exact Algorithm for Finding Minimum Oriented Bounding Boxes, Jukka Jylänki, 2015.html" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald.html" />
+    <None Include="QuickHull.pdf" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\P1030586_1.jpg" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\a" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\a_002" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\colorbox.css" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\comment-reply.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\css.css" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_gray_P1020777_1.jpg" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_person_schwarz.jpg" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_10_FIFO_00-785x392.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_10_FIFO_01-785x785.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_2000_FIFO_00-300x300.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_2000_LIFO_00-300x300.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_373_FIFO_00.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_99996_FIFO_01-300x300.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\diewald_quickhull_99996_LIFO_01-300x300.png" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\flexslider.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\genericons.css" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\global.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\jquery-migrate.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\jquery.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\jquery_002.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\masonry.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\style.css" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\swfobject.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\wp-embed.js" />
+    <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\wp-emoji-release.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -220,6 +248,7 @@
     <Folder Include="fluid\" />
     <Folder Include="GPU Gems 2 Chapter 46 - GPU Sort\" />
     <Folder Include="JavaScript\" />
+    <Folder Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="xxx\ImageTexture.cpp" />

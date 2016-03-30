@@ -156,7 +156,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 		return;
 
 	const auto rotation = getAxisRotation ();
-	
+
 	axisRotation = Matrix4d (rotation);
 
 	const auto bbox = selectionCoord -> getBBox () * ~axisRotation;
@@ -171,7 +171,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformTool -> center ()           = bbox .center ();
 
 	transformTool -> bboxCenter () = bbox .center ();
-	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (0.1, 0.1, 0.1));
+	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (1e-5, 1e-5, 1e-5));
 }
 
 void

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="js" lang="en-US"><head profile="http://gmpg.org/xfn/11">
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+				
+				 
+		<title>Convex Hull 3D – Quickhull Algorithm – Thomas Diewald</title>
+<script>document.documentElement.className = document.documentElement.className.replace("no-js","js");</script>
+<link rel="alternate" type="application/rss+xml" title="Thomas Diewald » Feed" href="http://thomasdiewald.com/?feed=rss2">
+<link rel="alternate" type="application/rss+xml" title="Thomas Diewald » Comments Feed" href="http://thomasdiewald.com/?feed=comments-rss2">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/thomasdiewald.com\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.4.2"}};
+			!function(a,b,c){function d(a){var c,d=b.createElement("canvas"),e=d.getContext&&d.getContext("2d"),f=String.fromCharCode;return e&&e.fillText?(e.textBaseline="top",e.font="600 32px Arial","flag"===a?(e.fillText(f(55356,56806,55356,56826),0,0),d.toDataURL().length>3e3):"diversity"===a?(e.fillText(f(55356,57221),0,0),c=e.getImageData(16,16,1,1).data.toString(),e.fillText(f(55356,57221,55356,57343),0,0),c!==e.getImageData(16,16,1,1).data.toString()):("simple"===a?e.fillText(f(55357,56835),0,0):e.fillText(f(55356,57135),0,0),0!==e.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8"),diversity:d("diversity")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8&&c.supports.diversity||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/wp-emoji-release.js"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="fukasawa_googleFonts-css" href="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="fukasawa_genericons-css" href="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="fukasawa_style-css" href="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="lightboxStyle-css" href="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/colorbox.css" type="text/css" media="screen">
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/jquery_002.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/jquery-migrate.js"></script>
+<link rel="https://api.w.org/" href="http://thomasdiewald.com/?rest_route=/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://thomasdiewald.com/blog/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://thomasdiewald.com/blog/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Space Partitioning: Kd-Tree [2] – using WebGL" href="http://thomasdiewald.com/?p=1825">
+<link rel="next" title="Triangle Texture Atlas" href="http://thomasdiewald.com/?p=1958">
+<meta name="generator" content="WordPress 4.4.2">
+<link rel="canonical" href="http://thomasdiewald.com/?p=1888">
+<link rel="shortlink" href="http://thomasdiewald.com/?p=1888">
+<link rel="alternate" type="application/json+oembed" href="http://thomasdiewald.com/?rest_route=%2Foembed%2F1.0%2Fembed&amp;url=http%3A%2F%2Fthomasdiewald.com%2F%3Fp%3D1888">
+<link rel="alternate" type="text/xml+oembed" href="http://thomasdiewald.com/?rest_route=%2Foembed%2F1.0%2Fembed&amp;url=http%3A%2F%2Fthomasdiewald.com%2F%3Fp%3D1888&amp;format=xml">
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/swfobject.js"></script>
+      
+	      <!-- Customizer CSS --> 
+	      
+	      <style type="text/css">
+	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           	           
+	           	           	           	           
+	           	           	           	           	      </style> 
+	      
+	      <!--/Customizer CSS-->
+	      
+      <link rel="icon" href="http://thomasdiewald.com/blog/wp-content/uploads/2016/01/radiosity6.gif" sizes="32x32">
+<link rel="icon" href="http://thomasdiewald.com/blog/wp-content/uploads/2016/01/radiosity6.gif" sizes="192x192">
+<link rel="apple-touch-icon-precomposed" href="http://thomasdiewald.com/blog/wp-content/uploads/2016/01/radiosity6.gif">
+<meta name="msapplication-TileImage" content="http://thomasdiewald.com/blog/wp-content/uploads/2016/01/radiosity6.gif">
+	
+	</head>
+	
+	<body class="single single-post postid-1888 single-format-standard wp-is-not-mobile">
+	
+		<div style="display: none;" class="mobile-navigation">
+	
+			<ul class="mobile-menu">
+						
+				<li id="menu-item-90" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-90"><a href="http://thomasdiewald.com/blog/"><b>POSTS</b></a></li>
+<li id="menu-item-89" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-89"><a href="http://thomasdiewald.com/?page_id=14"><b>ABOUT</b></a></li>
+<li id="menu-item-863" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-863"><a href="http://www.openprocessing.org/portal/?userID=5654">Openprocessing</a></li>
+<li id="menu-item-864" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-864"><a href="https://github.com/diwi/">Github</a></li>
+				
+			 </ul>
+		 
+		</div> <!-- /mobile-navigation -->
+	
+		<div class="sidebar">
+		
+					
+				<h1 class="blog-title">
+					<a href="http://thomasdiewald.com/" title="Thomas Diewald — thomasdiewald.com" rel="home">Thomas Diewald</a>
+				</h1>
+				
+						
+			<a class="nav-toggle hidden" title="Click to view the navigation" href="#">
+			
+				<div class="bars">
+				
+					<div class="bar"></div>
+					<div class="bar"></div>
+					<div class="bar"></div>
+					
+					<div class="clear"></div>
+				
+				</div>
+				
+				<p>
+					<span class="menu">Menu</span>
+					<span class="close">Close</span>
+				</p>
+			
+			</a>
+			
+			<ul class="main-menu">
+				
+				<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-90"><a href="http://thomasdiewald.com/blog/"><b>POSTS</b></a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-89"><a href="http://thomasdiewald.com/?page_id=14"><b>ABOUT</b></a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-863"><a href="http://www.openprocessing.org/portal/?userID=5654">Openprocessing</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-864"><a href="https://github.com/diwi/">Github</a></li>
+				
+			 </ul>
+			 
+			 <div class="widgets">
+			 
+			 	<div class="widget widget_search"><div class="widget-content"><form method="get" class="search-form" id="search-form" action="http://thomasdiewald.com/">
+	<input class="search-field" placeholder="Search form" name="s" id="s" type="search"> 
+	<a id="searchsubmit" class="search-button" onclick="document.getElementById('search-form').submit(); return false;"><div class="genericon genericon-search"></div></a>
+</form></div><div class="clear"></div></div><div class="widget widget_sp_image"><div class="widget-content"><img alt="" class="attachment-full" style="max-width: 100%;" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_person_schwarz.jpg" height="1024" width="462"></div><div class="clear"></div></div><div class="widget widget_widget_tptn_pop"><div class="widget-content"><h3 class="widget-title"> </h3><div class="tptn_posts_daily  tptn_posts_widget"><ul><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1888" class="tptn_link"><span class="tptn_title">Convex Hull 3D – Quickhull Algorithm</span></a> <span class="tptn_list_count">(11)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1488" class="tptn_link"><span class="tptn_title">Space Partitioning: Octree vs. BVH</span></a> <span class="tptn_list_count">(5)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=743" class="tptn_link"><span class="tptn_title">Adaptive Folding Structure</span></a> <span class="tptn_list_count">(4)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1994" class="tptn_link"><span class="tptn_title">Distance Transform</span></a> <span class="tptn_list_count">(3)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?page_id=14" class="tptn_link"><span class="tptn_title">ABOUT</span></a> <span class="tptn_list_count">(2)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=407" class="tptn_link"><span class="tptn_title">Parametric Facade [Grasshopper]</span></a> <span class="tptn_list_count">(2)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=95" class="tptn_link"><span class="tptn_title">Processing Library – Fluid Simulation</span></a> <span class="tptn_list_count">(1)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=122" class="tptn_link"><span class="tptn_title">Gyroid Pavilion Design</span></a> <span class="tptn_list_count">(1)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=248" class="tptn_link"><span class="tptn_title">Parametric Panel Design</span></a> <span class="tptn_list_count">(1)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1158" class="tptn_link"><span class="tptn_title">Processing Tool – TabManager</span></a> <span class="tptn_list_count">(1)</span></span></li></ul><div class="tptn_clear"></div></div></div><div class="clear"></div></div><div class="widget widget_widget_tptn_pop"><div class="widget-content"><h3 class="widget-title"> </h3><div class="tptn_posts  tptn_posts_widget"><ul><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1488" class="tptn_link"><span class="tptn_title">Space Partitioning: Octree vs. BVH</span></a> <span class="tptn_list_count">(17,495)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1888" class="tptn_link"><span class="tptn_title">Convex Hull 3D – Quickhull Algorithm</span></a> <span class="tptn_list_count">(16,687)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=743" class="tptn_link"><span class="tptn_title">Adaptive Folding Structure</span></a> <span class="tptn_list_count">(15,988)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=109" class="tptn_link"><span class="tptn_title">Processing Library – Kinect</span></a> <span class="tptn_list_count">(9,064)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=95" class="tptn_link"><span class="tptn_title">Processing Library – Fluid Simulation</span></a> <span class="tptn_list_count">(8,567)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1825" class="tptn_link"><span class="tptn_title">Space Partitioning: Kd-Tree [2] – using WebGL</span></a> <span class="tptn_list_count">(6,848)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=407" class="tptn_link"><span class="tptn_title">Parametric Facade [Grasshopper]</span></a> <span class="tptn_list_count">(6,784)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1382" class="tptn_link"><span class="tptn_title">Java shapeFile Reader</span></a> <span class="tptn_list_count">(6,556)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=1107" class="tptn_link"><span class="tptn_title">Processing Library – Computer Vision –…</span></a> <span class="tptn_list_count">(6,287)</span></span></li><li><span class="tptn_after_thumb"><a href="http://thomasdiewald.com/?p=855" class="tptn_link"><span class="tptn_title">Processing Library – Barcode</span></a> <span class="tptn_list_count">(6,158)</span></span></li></ul><div class="tptn_clear"></div></div></div><div class="clear"></div></div><div class="widget widget_sp_image"><div class="widget-content"><img alt="" class="attachment-full" style="max-width: 100%;" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/P1030586_1.jpg" height="900" width="1200"></div><div class="clear"></div></div><div class="widget widget_categories"><div class="widget-content"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-44"><a href="http://thomasdiewald.com/?cat=44">algorithms</a> (7)
+</li>
+	<li class="cat-item cat-item-9"><a href="http://thomasdiewald.com/?cat=9">architecture</a> (12)
+</li>
+	<li class="cat-item cat-item-27"><a href="http://thomasdiewald.com/?cat=27">arduino</a> (1)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://thomasdiewald.com/?cat=22">Augmented Reality</a> (7)
+</li>
+	<li class="cat-item cat-item-20"><a href="http://thomasdiewald.com/?cat=20">coding</a> (33)
+</li>
+	<li class="cat-item cat-item-42"><a href="http://thomasdiewald.com/?cat=42">datavis</a> (2)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://thomasdiewald.com/?cat=10">design</a> (10)
+</li>
+	<li class="cat-item cat-item-26"><a href="http://thomasdiewald.com/?cat=26">exhibition</a> (7)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://thomasdiewald.com/?cat=21">geometry</a> (17)
+</li>
+	<li class="cat-item cat-item-25"><a href="http://thomasdiewald.com/?cat=25">installation</a> (6)
+</li>
+	<li class="cat-item cat-item-37"><a href="http://thomasdiewald.com/?cat=37">javascript</a> (3)
+</li>
+	<li class="cat-item cat-item-31"><a href="http://thomasdiewald.com/?cat=31">just for fun</a> (1)
+</li>
+	<li class="cat-item cat-item-29"><a href="http://thomasdiewald.com/?cat=29">libraries</a> (8)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://thomasdiewald.com/?cat=30">movie</a> (1)
+</li>
+	<li class="cat-item cat-item-43"><a href="http://thomasdiewald.com/?cat=43">OpenCL</a> (2)
+</li>
+	<li class="cat-item cat-item-32"><a href="http://thomasdiewald.com/?cat=32">photography</a> (1)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://thomasdiewald.com/?cat=15">physics</a> (4)
+</li>
+	<li class="cat-item cat-item-18"><a href="http://thomasdiewald.com/?cat=18">processing / JAVA</a> (24)
+</li>
+	<li class="cat-item cat-item-35"><a href="http://thomasdiewald.com/?cat=35">processing tool</a> (1)
+</li>
+	<li class="cat-item cat-item-19"><a href="http://thomasdiewald.com/?cat=19">rendering &amp; modelling</a> (20)
+</li>
+	<li class="cat-item cat-item-23"><a href="http://thomasdiewald.com/?cat=23">tracking</a> (8)
+</li>
+	<li class="cat-item cat-item-36"><a href="http://thomasdiewald.com/?cat=36">webgl</a> (3)
+</li>
+		</ul>
+</div><div class="clear"></div></div><div class="widget widget_sp_image"><div class="widget-content"><img alt="" class="attachment-full" style="max-width: 100%;" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_gray_P1020777_1.jpg" height="768" width="1024"></div><div class="clear"></div></div>			 
+			 </div>
+			 
+			 <div class="credits">
+			 
+			 	<p>© 2016 <a href="http://thomasdiewald.com/">Thomas Diewald</a>.</p>
+			 	<p>Powered by <a href="http://www.wordpress.org/">WordPress</a>.</p>
+			 	<p>Theme by <a href="http://www.andersnoren.se/">Anders Norén</a>.</p>
+			 	
+			 </div>
+			
+			 <div class="clear"></div>
+							
+		</div> <!-- /sidebar -->
+	
+		<div class="wrapper" id="wrapper">
+<div class="content thin">
+											        
+			
+		<div id="post-1888" class="single post-1888 post type-post status-publish format-standard has-post-thumbnail hentry category-algorithms category-processing-java category-rednering-modelling">
+		
+						
+								
+				<div class="featured-media">
+		
+					<img src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_373_FIFO_00.png" class="attachment-post-image size-post-image wp-post-image" alt="diewald_quickhull_373_FIFO_00" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_373_FIFO_00-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_373_FIFO_00-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_373_FIFO_00-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_373_FIFO_00-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_373_FIFO_00.png 800w" sizes="(max-width: 800px) 100vw, 800px" height="800" width="800">					
+				</div> <!-- /featured-media -->
+					
+						
+			<div class="post-inner">
+				
+				<div class="post-header">
+													
+					<h1 class="post-title">Convex Hull 3D – Quickhull Algorithm</h1>
+															
+				</div> <!-- /post-header -->
+				    
+			    <div class="post-content">
+			    
+			    	<p><a class="cboxElement" href="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_00.png" rel="lightbox[1888]" title="diewald_quickhull_10_FIFO_00"><img class="size-large wp-image-1919 alignnone" title="diewald_quickhull_10_FIFO_00" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_10_FIFO_00-785x392.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_00-300x150.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_00-785x392.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_00-210x105.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_00.png 800w" sizes="(max-width: 720px) 100vw, 720px" height="359" width="720"></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline;"><strong>Quickhull Algorithm</strong></span></p>
+<p>A fast and quite simple algorithm to create a convex hull of a huge 
+number of 3d points is the quickhull algorithm. Here’s an short overview
+ of my implementation. For mesh-representation i use the <strong>Half Edge</strong> data structure. It allows fast queries on any kind of neighboring mesh-elements and also fast mesh-modifications.</p>
+<p>&nbsp;</p>
+<p>online-demo (java applet): <a href="http://www.openprocessing.org/sketch/94632" target="_blank">http://www.openprocessing.org/sketch/94632</a></p>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline;"><strong>1) Initial phase</strong></span></p>
+<ol>
+<li><strong>Create initial simplex</strong> (tetrahedron, 4 vertices). 
+To do this, the 6 Extreme Points [EP], min/max points in X,Y and Z, of 
+the given pointcloud are extracted. From those 6 EP the two most distant
+ build the base-line of the base triangle. The most distant point of EP 
+to the base line is the 3rd point of the base-triangle. To find the 
+pyramids apex, the most distant point to the base-triangle is searched 
+for in the whole point-list. Now having 4 points, the inital pyramid can
+ easily be created.</li>
+<li><strong>Assign points to faces</strong>. Each point in the 
+point-list is assigned to the first face the point is in front of 
+(“point can see face”). So each point is assigned to only one face, and 
+each face contains its own point-set. Points that are behind all faces, 
+are therefore automatically ignored and not used in the further process.
+ I use a separate 2 dimensional dynamic structure for the faces 
+point-sets.</li>
+<li><strong>Push the 4 faces on the stack.</strong> Faces without points are ignored.</li>
+</ol>
+<p><span style="text-decoration: underline;"><strong>2) Iteration Phase </strong></span></p>
+<ol>
+<li><strong>If Stack is not empty Pop Face from Stack</strong> . … and 
+check if it has a point-set, otherwise continue next iteration. Although
+ in fact empty faces are not pushed to the stack in the first place.</li>
+<li><strong>Get most distant point of the face’s point-set.</strong></li>
+<li><strong>Find all faces that can be seen from that point</strong>. 
+Those faces must be adjacent to the current face. I call them 
+light-faces in my implementation, and therefore the point can be seen as
+ a point-light. All found light-faces are labeled as such and also 
+temporarily saved to a heap for later use.</li>
+<li><strong>Extract horizon edges of light-faces and extrude to Point.</strong>
+ Clearly there is exactly one closed and convex horizon from the points 
+view that encloses all light-faces. Now each horizon-segement and the 
+current point build a new triangle. So the horizon is somehow projected 
+to the point. The new faces are build and attached to the mesh (and also
+ temporarly saved to a heap) while iteration through the horizon-edges, 
+which automatically detaches all light-faces.</li>
+<li><strong>Assign all points off all light-faces to the new created faces.</strong>
+ This is extacly the same procedure as in 1.2. Each point is assigned to
+ the first face it can see. I tried different assigning priorities, but 
+it didn’t help much. But again, points behind all faces, are ignored in 
+the further process.</li>
+<li><strong>Push new created faces on the stack, and start at (2.1).</strong> Faces without points are ignored.</li>
+</ol>
+<p>&nbsp;</p>
+<p>My implementation mainly works as described in this paper:</p>
+<p><a href="http://www.cise.ufl.edu/%7Eungor/courses/fall06/papers/QuickHull.pdf" target="_blank">http://www.cise.ufl.edu/~ungor/courses/fall06/papers/QuickHull.pdf</a></p>
+<p>&nbsp;</p>
+<p><strong>Extending an existing Hull</strong></p>
+<p>To extend an existing convex-hull by another point-cloud, the inital 
+phase starts at point 2, which can take a while when the existing hull 
+already has a lot of faces. So this is only efficient when the extending
+ point-cloud has a reasonable (big) number of points, otherwise it may 
+be faster, to merge the point-cloud with the vertices of the hull and 
+build a completely new hull.</p>
+<p>&nbsp;</p>
+<p><strong>One Iteration Explained<br>
+</strong></p>
+<p>The following image shows one iteration. The light blue points are 
+the given point-cloud. The light-pink triangle shows the current face 
+from the stack. The dark bluish-pink points are the point-set of that 
+face. The light-pink point is the most distant point of the face’s 
+point-set. The dark-pink triangles are all (neighboring) faces, seen 
+from that point. The cyan lines show the horizon and therefore the new 
+faces that are going to be created during this iteration. All pink faces
+ are removed then. The interactive online-demo (link above) shows the 
+process much better.</p>
+<p><img class="size-large wp-image-1914 alignnone" title="diewald_quickhull_10_FIFO_01" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_10_FIFO_01-785x785.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_01-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_01-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_01-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_01-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_10_FIFO_01.png 800w" sizes="(max-width: 720px) 100vw, 720px" height="720" width="720"></p>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline;"><strong>Stack Traversal</strong></span></p>
+<p>An interesting and important thing to mention is the different 
+behaviour (performance and convergence) when changing the 
+stack-traversal type (depth-first or breadth-first).</p>
+<p>&nbsp;</p>
+<p><strong>Depth-First, LIFO: </strong></p>
+<p>in general this seems to be the faster way of generating the convex 
+hull. I guess basically because Stack-Size is always kept at minimum, 
+although it takes more iterations than breath-first to build the hull. 
+In a worst case-scenario, which is, when most poinst or even all, are 
+convex-hull vertices depth-first was about 2-3 times faster than 
+breadth-first while the number of iterations is the same. The drawback i
+ noticed is, that sometimes there were errors during horizon-creation. 
+Especially when the input points are distributed in a cubic volume, some
+ lightfaces were not recogniced as such, and therefore, the horizon 
+cannot be build in a proper way. The reason for this is basically due to
+ the fact that all my calculations are based on floats and not double.</p>
+<p>The pictures shows, that each face gets further and further 
+subdivided bevore the other faces are processed. So in generall, details
+ are modelled first.</p>
+<p>The following images show some stats for the worst case scenario for LIFO, when all points are on the convex hull.</p>
+<p>&nbsp;</p>
+<div id="attachment_1912" style="width: 310px" class="wp-caption alignleft"><a class="cboxElement" href="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00.png" rel="lightbox[1888]" title="diewald_quickhull_2000_LIFO_00"><img class="wp-image-1912 size-medium" title="diewald_quickhull_2000_LIFO_00" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_2000_LIFO_00-300x300.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_LIFO_00.png 800w" sizes="(max-width: 300px) 100vw, 300px" height="300" width="300"></a><p class="wp-caption-text">LIFO, 2000 iterations</p></div>
+<div id="attachment_1910" style="width: 310px" class="wp-caption alignright"><a class="cboxElement" href="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01.png" rel="lightbox[1888]" title="diewald_quickhull_99996_LIFO_01"><img class="wp-image-1910 size-medium" title="diewald_quickhull_99996_LIFO_01" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_99996_LIFO_01-300x300.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_LIFO_01.png 800w" sizes="(max-width: 300px) 100vw, 300px" height="300" width="300"></a><p class="wp-caption-text">LIFO, finished</p></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><strong>Breadth-First, FIFO:</strong></p>
+<p>slightly slower in general, but therefore stable in all cases. 
+Breadth-first also needs the lowest number of iterations, but the 
+overall needed stack-size is bigger too. This methods also has the 
+advandage that, even after a few iterations, you get a coarse 
+approximation of the final convex hull, which can be usefull in certain 
+situations.</p>
+<p>The following images show some stats for the worst case scenario for FIFO, when all points are on the convex hull.</p>
+<div id="attachment_1911" style="width: 310px" class="wp-caption alignleft"><a class="cboxElement" href="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00.png" rel="lightbox[1888]" title="diewald_quickhull_2000_FIFO_00"><img class="wp-image-1911 size-medium" title="diewald_quickhull_2000_FIFO_00" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_2000_FIFO_00-300x300.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_2000_FIFO_00.png 800w" sizes="(max-width: 300px) 100vw, 300px" height="300" width="300"></a><p class="wp-caption-text">FIFO, 2000 iterations</p></div>
+<div id="attachment_1909" style="width: 310px" class="wp-caption alignright"><a class="cboxElement" href="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01.png" rel="lightbox[1888]" title="diewald_quickhull_99996_FIFO_01"><img class="wp-image-1909 size-medium" title="diewald_quickhull_99996_FIFO_01" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/diewald_quickhull_99996_FIFO_01-300x300.png" alt="" srcset="http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01-145x145.png 145w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01-300x300.png 300w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01-785x785.png 785w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01-210x210.png 210w, http://thomasdiewald.com/blog/wp-content/uploads/2013/03/diewald_quickhull_99996_FIFO_01.png 800w" sizes="(max-width: 300px) 100vw, 300px" height="300" width="300"></a><p class="wp-caption-text">FIFO, finished</p></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<script type="text/javascript" async="" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/a"></script><div class="tptn_counter" id="tptn_counter_1888"><script type="text/javascript" data-cfasync="false" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/a_002"></script><br><br>(Visited 16,688 times, 12 visits today)</div>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$.post('http://thomasdiewald.com/blog/wp-admin/admin-ajax.php', {action: 'wpt_view_count', id: '1888'});
+});
+</script>			    
+			    </div> <!-- /post-content -->
+			    
+			    <div class="clear"></div>
+				
+				<div class="post-meta-bottom">
+				
+									
+					<ul>
+						<li class="post-date"><a href="http://thomasdiewald.com/?p=1888">March 29, 2013</a></li>
+													<li class="post-categories">In <a href="http://thomasdiewald.com/?cat=44" rel="category">algorithms</a>, <a href="http://thomasdiewald.com/?cat=18" rel="category">processing / JAVA</a>, <a href="http://thomasdiewald.com/?cat=19" rel="category">rendering &amp; modelling</a></li>
+																							</ul>
+					
+					<div class="clear"></div>
+					
+				</div> <!-- /post-meta-bottom -->
+			
+			</div> <!-- /post-inner -->
+			
+						
+			<div class="post-navigation">
+			
+								
+					<a class="post-nav-prev" title="Previous post: Space Partitioning: Kd-Tree [2] – using WebGL" href="http://thomasdiewald.com/?p=1825">
+						<p>← Previous post</p>
+					</a>
+								
+									
+					<a class="post-nav-next" title="Next post: Triangle Texture Atlas" href="http://thomasdiewald.com/?p=1958">					
+						<p>Next post →</p>
+					</a>
+			
+								
+				<div class="clear"></div>
+			
+			</div> <!-- /post-navigation -->
+								
+			
+
+
+	<div class="comments-container">
+	
+		<div class="comments-inner">
+
+			<p class="no-comments">Comments are closed.</p>
+		
+		</div>
+		
+	</div>
+	
+
+		
+		</div> <!-- /post -->
+									                        
+   	    
+
+</div> <!-- /content -->
+		
+</div> <!-- /wrapper -->
+
+<!-- Lightbox Plus Colorbox v2.7.2/1.5.9 - 2013.01.24 - Message: 0-->
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  $("a[rel*=lightbox]").colorbox({transition:"fade",speed:0,width:false,height:false,innerWidth:false,innerHeight:false,initialWidth:false,initialHeight:false,maxWidth:"100%",maxHeight:"100%",opacity:0,current:" {current}  {total}",previous:"",next:"",close:"",scrolling:false,top:false,right:false,bottom:false,left:false,fixed:true});
+});
+</script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/comment-reply.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/masonry.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/flexslider.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/global.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/jquery.js"></script>
+<script type="text/javascript" src="Convex%20Hull%203D%20%E2%80%93%20Quickhull%20Algorithm%20%E2%80%93%20Thomas%20Diewald-Dateien/wp-embed.js"></script>
+
+
+<div style="display: none;" id="cboxOverlay"></div><div style="display: none;" tabindex="-1" role="dialog" class="" id="colorbox"><div id="cboxWrapper"><div><div style="float: left;" id="cboxTopLeft"></div><div style="float: left;" id="cboxTopCenter"></div><div style="float: left;" id="cboxTopRight"></div></div><div style="clear: left;"><div style="float: left;" id="cboxMiddleLeft"></div><div style="float: left;" id="cboxContent"><div style="float: left;" id="cboxTitle"></div><div style="float: left;" id="cboxCurrent"></div><button id="cboxPrevious" type="button"></button><button id="cboxNext" type="button"></button><button id="cboxSlideshow"></button><div style="float: left;" id="cboxLoadingOverlay"></div><div style="float: left;" id="cboxLoadingGraphic"></div></div><div style="float: left;" id="cboxMiddleRight"></div></div><div style="clear: left;"><div style="float: left;" id="cboxBottomLeft"></div><div style="float: left;" id="cboxBottomCenter"></div><div style="float: left;" id="cboxBottomRight"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div></body></html>

@@ -67,6 +67,7 @@
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
 #include <Titania/Math/Geometry/Triangle3.h>
+#include <Titania/Math/Geometry/ConvexHull3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Math/Numbers/Rotation4.h>
@@ -112,98 +113,6 @@
 
 using namespace titania;
 using namespace titania::basic;
-
-//void
-//print_time (double time)
-//{
-//	std::clog
-//		<< std::setiosflags (std::ios::fixed)
-//		<< std::setprecision (std::numeric_limits <double>::digits10)
-//		<< time
-//		<< std::endl;
-//}
-//
-///*basic::ifilestream
-// * get_stream ()
-// * {
-// * titania::TestURI ();
-// *
-// * basic::uri url0 = std::move (basic::uri ("http://titania.create3000.de"));
-// * basic::uri url1 = std::move (basic::uri ("http://titania.create3000.de/documentation/examples/hello_world.wrl"));
-// *
-// * basic::uri url2 = "file:///home/holger/Projekte/Titania/Titania/share/titania/puck/pages/about/home.wrl";
-// * basic::uri url3 = "holger/Titania/Titania/share/titania/puck/pages/about/home.wrl";
-// *
-// * basic::uri url4 = "http://lockalhost:1235";
-// * basic::uri url5 = "about";
-// *
-// * basic::uri url6 = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
-// *
-// * //
-// *
-// * //
-// *
-// * //
-// *
-// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url0) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url0) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url0) << std::endl;
-// *
-// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url1) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url1) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url1) << std::endl;
-// *
-// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url2) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url2) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url2) << std::endl;
-// *
-// * std::clog << "resolve: " << basic::uri ("h1.wrl",    url3) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("../h1.wrl", url3) << std::endl;
-// * std::clog << "resolve: " << basic::uri ("/h1.wrl",   url3) << std::endl;
-// *
-// * std::clog << "box: " << math::box3 <float> () .max () << std::endl;
-// * std::clog << "box: " << math::box3 <float> () .size () << std::endl;
-// *
-// * //
-// *
-// * basic::uri         url = "urn:iso:std:iso:9999:-1:ed-2:en:amd:1";
-// * basic::ifilestream stream (basic::http::method::GET, url5);
-// *
-// * if (stream)
-// * {
-// *    // Request Headers
-// *
-// *    stream .request_header ("User-Agent", "Horst Jochen Scholz Graupner");
-// *
-// *    std::clog << "Request Headers" << std::endl;
-// *
-// *    for (const auto & request_header : stream .request_headers ())
-// *       std::clog << request_header .first << ": " << request_header .second << std::endl;
-// *
-// *    std::clog << std::endl;
-// *
-// *    // Send
-// *
-// *    stream .send ();
-// * }
-// * else
-// *    std::clog << "Open fails." << std::endl;
-// *
-// * return stream;
-// * }
-// */
-//
-//void
-//test_path (const basic::path & path)
-//{
-//	std::clog << std::endl;
-//	std::clog << "path:   " << path << std::endl;
-//	std::clog << "parent: " << path .remove_dot_segments () .parent () << std::endl;
-//	std::clog << "remove: " << path .remove_dot_segments () << std::endl;
-//
-//}
-
 using namespace titania::math;
 
 using Quaternionf = math::quaternion <float>;
@@ -215,6 +124,7 @@ using Rotation4d  = math::rotation4 <double>;
 using Rotation4f  = math::rotation4 <float>;
 using Box2f       = math::box2 <float>;
 using Box3f       = math::box3 <float>;
+using Box3d       = math::box3 <double>;
 using Cylinder3f  = math::cylinder3 <float>;
 using Plane3f     = math::plane3 <float>;
 using Line3d      = math::line3 <double>;
@@ -224,298 +134,7 @@ using Matrix3f    = math::matrix3 <float>;
 using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
-
-class A
-{
-public:
-
-	A ()
-	{
-		throw 1;
-	}
-
-	A (int)
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-class B :
-	virtual public A
-{
-public:
-
-	B () :
-	   A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-class C :
-	virtual public B
-{
-public:
-
-	C (int i) :
-	   A (i)
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-class At :
-	virtual public A
-{
-public:
-
-	At () :
-	   A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-class Bt :
-	virtual public B,
-	public At
-{
-public:
-
-	Bt () :
-	   B (),
-	   At ()
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-class Ct :
-	virtual public C,
-	public Bt
-{
-public:
-
-	Ct (int i) :
-	   A (i),
-	   C (i),
-	   Bt ()
-	{
-		__LOG__ << std::endl;
-	}
-
-};
-
-template <class Type>
-class memorystreambuf :
-	public std::streambuf
-{
-public:
-
-	memorystreambuf ();
-
-	bool
-	is_open () const
-	{ return open; }
-
-	~memorystreambuf ();
-
-
-protected:
-
-	virtual
-	int
-	overflow (int c = EOF);
-
-	virtual
-	int
-	underflow ();
-
-	///  @name Static members
-
-	static constexpr size_t READ  = 0;
-	static constexpr size_t WRITE = 1;
-
-	///  @name Members
-
-	int                              input_output [2];
-	std::array <char, sizeof (Type)> buffer;
-	bool                             open;
-
-};
-
-template <class Type>
-memorystreambuf <Type>::memorystreambuf () :
-	input_output (),
-	      buffer (),
-	        open (false)
-{
-	// The buffer is initially empty.
-	setg (buffer .begin (), // beginning of get area
-	      buffer .end (),   // read position
-	      buffer .end ());  // end position
-
-	// The buffer is always full.
-	setp (0,  // beginning of put area
-	      0); // end position
-
-	open = (pipe (input_output) == 0);
-
-	__LOG__ << open << std::endl;
-}
-
-template <class Type>
-int
-memorystreambuf <Type>::overflow (int c)
-{
-	// Used for output buffer only.
-
-	__LOG__ << c << std::endl;
-
-	if (::write (input_output [WRITE], buffer .data (), 1) not_eq 1)
-	   return traits_type::eof ();
-
-	__LOG__ << c << std::endl;
-
-	return c;
-}
-
-template <class Type>
-int
-memorystreambuf <Type>::underflow ()
-{
-	// Used for input buffer only.
-
-	const auto bytesRead = ::read (input_output [READ], buffer .data (), buffer .size ());
-
-	__LOG__ << bytesRead << std::endl;
-
-	for (int i = 0; i < bytesRead; ++ i)
-	   std::clog << int (buffer [i]) << std::endl;
-
-	std::clog << std::endl;
-
-	// Reset buffer pointers.
-	setg (buffer .begin (),              // Beginning of get area
-	      buffer .begin (),              // Read position
-	      buffer .begin () + bytesRead); // End of buffer
-
-	// return next character
-	return traits_type::to_int_type (*gptr ());
-}
-
-
-template <class Type>
-memorystreambuf <Type>::~memorystreambuf ()
-{
-	close (input_output [READ]);
-	close (input_output [WRITE]);
-}
-
-template <class Type>
-class memorystream :
-	public std::istream,
-	public std::ostream
-{
-public:
-
-	/// @name Constructors
-
-	memorystream ();
-
-	/// @name Operations
-
-	memorystream &
-	operator << (const Type &);
-
-	memorystream &
-	operator >> (Type &);
-
-	/// @name Destructor
-
-	~memorystream ()
-	{ }
-
-
-private:
-
-	/// @name Member types
-
-	union data_type
-	{
-	   Type  value;
-		char  buffer [sizeof (Type)];
-	};
-
-	/// @name Members
-
-	std::unique_ptr <memorystreambuf <Type>> buf;
-
-};
-
-template <class Type>
-memorystream <Type>::memorystream () :
-   buf (new memorystreambuf <Type> ())
-{
-	rdbuf (buf .get ());
-
-	if (not buf -> is_open ())
-		clear (std::ios::badbit);
-}
-
-template <class Type>
-memorystream <Type> &
-memorystream <Type>::operator << (const Type & value)
-{
-	data_type data { value };
-
-	write (data .buffer, sizeof (Type));
-
-	return *this;
-}
-
-template <class Type>
-memorystream <Type> &
-memorystream <Type>::operator >> (Type & value)
-{
-	data_type data;
-
-	read (data .buffer, sizeof (Type));
-
-	value = data .value;
-
-	return *this;
-}
-
-void
-from_thread1 (memorystream <double> & istream)
-{
-	for (auto i = 3; i-- > 0;)
-	{
-		istream << chrono::now ();
-
-		sleep (1);
-	}
-}
-
-void
-from_thread2 (memorystream <double> & istream)
-{
-	for (auto i = 3; i-- > 0;)
-	{
-		double time;
-
-		istream >> time;
-
-		__LOG__ << time << std::endl;
-		sleep (1);
-	}
-}
+using ConvexHull3 = math::convex_hull3 <double>;
 
 int
 main (int argc, char** argv)
@@ -534,13 +153,24 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	memorystream <double> sstream;
 
-	auto t1 = std::thread (from_thread1, std::ref (sstream));
-	auto t2 = std::thread (from_thread2, std::ref (sstream));
+	std::vector <Vector3d> points = {
+		Vector3d (0, 0, 0),
+		Vector3d (1, 0, 0),
+		Vector3d (1, 1, 0),
+		Vector3d (0, 1, 0),
+		Vector3d (0, 0, 1),
+		Vector3d (1, 0, 1),
+		Vector3d (1, 1, 1),
+		Vector3d (0, 1, 1),
+	};
 
-	t1 .join ();
-	t2 .join ();
+	const auto hull = ConvexHull3 (points);
+
+	std::clog << hull .faces () .size () << std::endl;
+
+	for (const auto & face : hull .faces ())
+	   std::clog << face .indices [0] << " " << face .indices [1] << " " << face .indices [2] << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
