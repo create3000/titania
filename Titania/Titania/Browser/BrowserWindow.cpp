@@ -721,7 +721,11 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 			const auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (const auto & string : strings)
-				uris .emplace_back (Glib::uri_unescape_string (string));
+			{
+			   const auto file = Gio::File::create_for_uri (Glib::uri_unescape_string (string));
+
+				uris .emplace_back ("file://" + file -> get_path ());
+			}
 		}
 
 		if (not uris .empty ())
