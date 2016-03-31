@@ -110,7 +110,7 @@ private:
 			realize ();
 
 		for (const auto & file : files)
-			browserWindow -> open (Glib::uri_unescape_string (file -> get_uri ()));
+			browserWindow -> open ("file://" + file -> get_path ());
 
 		browserWindow -> getWindow () .present ();
 
