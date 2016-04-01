@@ -603,27 +603,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 	const auto points = bbox .points ();
 	double     min    = infinity;
 
-	if (getBrowser () -> getShiftKey ())
-	{
-	   // Scale from center.
-
-		for (const auto & point : points)
-		{
-			const auto before = point - position;
-			const auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
-			const auto delta  = after - before;
-			const auto ratio  = after / before;
-
-			for (size_t i = 0; i < 3; ++ i)
-			{
-				const auto r = std::abs (ratio [i] - 1);
-
-				if (delta [i] and r < std::abs (min - 1))
-					min = ratio [i];
-			}
-		}
-	}
-	else
+	if (getBrowser () -> getControlKey ())
 	{
 		// Uniform scale from corner.
 
@@ -644,6 +624,26 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 			if (delta [i] and r < std::abs (min - 1))
 				min = ratio [i];
 		}		
+	}
+	else
+	{
+	   // Scale from center.
+
+		for (const auto & point : points)
+		{
+			const auto before = point - position;
+			const auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
+			const auto delta  = after - before;
+			const auto ratio  = after / before;
+
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				const auto r = std::abs (ratio [i] - 1);
+
+				if (delta [i] and r < std::abs (min - 1))
+					min = ratio [i];
+			}
+		}
 	}
 
 	// We must procced with the original current matrix and a snap scale of [1 1 1], for correct grouped event handling.
@@ -666,7 +666,7 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 
 	Vector3d distanceFromCenter = bbox .center ();
 
-	if (not getBrowser () -> getShiftKey ()) // Scale from corner.
+	if (getBrowser () -> getControlKey ()) // Scale from corner.
 		distanceFromCenter -= offset;
 
 	Matrix4d translation;
