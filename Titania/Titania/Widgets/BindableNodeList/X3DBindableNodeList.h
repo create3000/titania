@@ -484,11 +484,10 @@ X3DBindableNodeList <Type>::on_bind_toggled (const Gtk::TreePath & path)
 	const auto node  = getList (activeLayer) -> at (index);
 
 	if (node -> isBound ())
-	   return;
+		node -> transitionStart (node);
 
-	// Change Bind State Of Node
-
-	node -> set_bind () = true;
+	else
+		node -> set_bind () = true;
 }
 
 template <class Type>
