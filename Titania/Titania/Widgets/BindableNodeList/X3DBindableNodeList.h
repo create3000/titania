@@ -278,7 +278,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value)
 {
-	if (not editor or value == getList (activeLayer) -> at (0))
+	if (not editor or (activeLayer and value == getList (activeLayer) -> at (0)))
 		selection = nullptr;
 	else
 		selection = value;
@@ -356,23 +356,26 @@ X3DBindableNodeList <Type>::set_list ()
 
 	// Fill the TreeView's model
 
-	const auto & list = getList (activeLayer);
-
-	if (not list -> empty ())
+	if (activeLayer)
 	{
-		for (size_t i = 0, size = list -> size (); i < size; ++ i)
+		const auto & list = getList (activeLayer);
+
+		if (not list -> empty ())
 		{
-		   X3D::X3DPtr <Type> node = list -> at (i);
-
-			if (not editor and getDescription (node) .empty ())
-			   continue;
-
-			getListStore () -> append () -> set_value (Columns::INDEX, i);
-
-			if (editor)
+			for (size_t i = 0, size = list -> size (); i < size; ++ i)
 			{
-				node -> name_changed () .addInterest (this, &X3DBindableNodeList::set_stack);
-				nodes .emplace_back (std::move (node));
+			   X3D::X3DPtr <Type> node = list -> at (i);
+
+				if (not editor and getDescription (node) .empty ())
+				   continue;
+
+				getListStore () -> append () -> set_value (Columns::INDEX, i);
+
+				if (editor)
+				{
+					node -> name_changed () .addInterest (this, &X3DBindableNodeList::set_stack);
+					nodes .emplace_back (std::move (node));
+				}
 			}
 		}
 	}
@@ -390,6 +393,9 @@ void
 X3DBindableNodeList <Type>::set_stack ()
 {
 	// Update list store
+
+	if (not activeLayer)
+		return;
 
 	const auto & list = getList (activeLayer);
 	auto         row  = getListStore () -> children () .begin ();
@@ -431,6 +437,9 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
+	if (not activeLayer)
+		return;
+
 	guint index;
 
 	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
@@ -478,6 +487,9 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_bind_toggled (const Gtk::TreePath & path)
 {
+	if (not activeLayer)
+		return;
+
 	// Get Node
 
 	const auto index = path [0];
