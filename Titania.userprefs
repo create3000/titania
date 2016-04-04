@@ -1,22 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
-    <Files>
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextEditor/X3DFontStyleNodeEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/TextEditor/MFStringFamilyWidget.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/MFStringURLWidget.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/BindableNodeList/ViewpointList.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/BindableNodeList/X3DBindableNodeList.h" Line="2" Column="2" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/holger/Projekte/Titania/miscellaneous/makefiles/generate.pl" line="64" column="1" />
