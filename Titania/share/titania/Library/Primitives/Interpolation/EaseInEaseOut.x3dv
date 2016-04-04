@@ -2,5 +2,5 @@
 
 EaseInEaseOut {
   key [ 0, 1 ]
-  easeInEaseOut [ 0 0, 0 0 ]
+  easeInEaseOut [ 0 1, 1 0 ]
 }

@@ -205,7 +205,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool haveSelection = inScene and selection .size ();
 		//const bool haveSelections = inScene and selection .size () > 1;
 
-		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance, X3D::X3DConstants::IndexedFaceSet });
+		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
 
 		if (selection not_eq geometryNodes)
 		   previousSelection = selection;
