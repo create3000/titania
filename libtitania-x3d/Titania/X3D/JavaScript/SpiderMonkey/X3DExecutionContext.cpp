@@ -94,6 +94,9 @@ JSPropertySpec X3DExecutionContext::properties [ ] = {
 };
 
 JSFunctionSpec X3DExecutionContext::functions [ ] = {
+	{ "fromUnit", fromUnit, 2, 0 },
+	{ "toUnit",   toUnit,   2, 0 },
+
 	{ "createNode",  createNode,  1, 0 },
 	{ "createProto", createProto, 1, 0 },
 
@@ -115,6 +118,13 @@ JSFunctionSpec X3DExecutionContext::functions [ ] = {
 
 	{ 0 }
 
+};
+
+const std::set <int32_t> X3DExecutionContext::unitCategories = {
+	(int32_t) X3D::UnitCategory::ANGLE,
+	(int32_t) X3D::UnitCategory::FORCE,
+	(int32_t) X3D::UnitCategory::LENGTH,
+	(int32_t) X3D::UnitCategory::MASS
 };
 
 JSObject*
@@ -290,6 +300,54 @@ X3DExecutionContext::routes (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 // Functions
+
+JSBool
+X3DExecutionContext::fromUnit (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .fromUnit: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <X3DExecutionContext> (cx, vp) -> getScene ();
+		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
+		const auto value        = getArgument <double> (cx, argv, 1);
+
+		if (unitCategories .count (unitCategory) == 0)
+			return ThrowException (cx, "%s .fromUnit: unknown base unit.", getClass () -> name);
+
+		return JS_NewNumberValue (cx, scene -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .fromUnit: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DExecutionContext::toUnit (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 2)
+		return ThrowException (cx, "%s .toUnit: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv         = JS_ARGV (cx, vp);
+		const auto scene        = getThis <X3DExecutionContext> (cx, vp) -> getScene ();
+		const auto unitCategory = getArgument <int32_t> (cx, argv, 0);
+		const auto value        = getArgument <double> (cx, argv, 1);
+
+		if (unitCategories .count (unitCategory) == 0)
+			return ThrowException (cx, "%s .toUnit: unknown base unit.", getClass () -> name);
+
+		return JS_NewNumberValue (cx, scene -> toUnit (X3D::UnitCategory (unitCategory), value), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toUnit: %s.", getClass () -> name, error .what ());
+	}
+}
 
 JSBool
 X3DExecutionContext::createNode (JSContext* cx, uint32_t argc, jsval* vp)

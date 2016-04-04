@@ -119,10 +119,10 @@ protected:
 	static JSBool rootNodes    (JSContext*, JSObject*, jsid, jsval*);
 	static JSBool routes       (JSContext*, JSObject*, jsid, jsval*);
 
+	///  @name Functions
+
 	static JSBool createNode  (JSContext*, uint32_t, jsval*);
 	static JSBool createProto (JSContext*, uint32_t, jsval*);
-
-	///  @name Functions
 
 	static JSBool addNamedNode    (JSContext*, uint32_t, jsval*);
 	static JSBool removeNamedNode (JSContext*, uint32_t, jsval*);
@@ -140,8 +140,17 @@ protected:
 	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
 	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
 
+	///  @name Static members
+
+	static const std::set <int32_t> unitCategories;
+
 
 private:
+
+	///  @name Functions
+
+	static JSBool fromUnit (JSContext *, uint32_t, jsval*);
+	static JSBool toUnit   (JSContext *, uint32_t, jsval*);
 
 	///  @name Static members
 

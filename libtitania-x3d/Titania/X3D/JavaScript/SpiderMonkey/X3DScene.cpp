@@ -88,13 +88,6 @@ JSFunctionSpec X3DScene::functions [ ] = {
 
 };
 
-const std::set <int32_t> X3DScene::unitCategories = {
-	(int32_t) X3D::UnitCategory::ANGLE,
-	(int32_t) X3D::UnitCategory::FORCE,
-	(int32_t) X3D::UnitCategory::LENGTH,
-	(int32_t) X3D::UnitCategory::MASS
-};
-
 JSObject*
 X3DScene::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
