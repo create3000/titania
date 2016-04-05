@@ -604,8 +604,8 @@ LayerEditor::on_new_layer_set_button_clicked ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayerSet"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayerSet> ());
 
-	getCurrentContext () -> realize ();
 	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), node, undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -628,8 +628,8 @@ LayerEditor::on_new_layer_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Layer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::Layer> ());
 
-	getCurrentContext () -> realize ();
 	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (layerSet), layerSet -> layers (), node, undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	// Add to tree view
@@ -649,8 +649,8 @@ LayerEditor::on_new_layout_layer_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayoutLayer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayoutLayer> ());
 
-	getCurrentContext () -> realize ();
 	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (layerSet), layerSet -> layers (), node, undoStep);
+	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	// Add to tree view
