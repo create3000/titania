@@ -629,6 +629,23 @@ ceil (const vector4 <Type> & arg)
 	                       std::ceil (arg .w ()));
 }
 
+/**
+ * @returns Computes the nearest integer value to arg (in floating-point format),
+ *          rounding halfway cases away from zero, regardless of the current rounding mode.
+ * @param a vector4 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector4 <Type>
+round (const vector4 <Type> & arg)
+{
+	return vector4 <Type> (std::round (arg .x ()),
+	                       std::round (arg .y ()),
+	                       std::round (arg .z ()),
+	                       std::round (arg .w ()));
+}
+
 ///  @relates vector4
 ///  @name Input/Output operations
 

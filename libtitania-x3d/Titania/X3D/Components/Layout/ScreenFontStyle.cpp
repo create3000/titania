@@ -55,6 +55,7 @@
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Text/Text.h"
 
@@ -132,6 +133,9 @@ ScreenText::setTextBounds ()
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
+			if (size_t (text -> textBounds () .getX ()) & 1)
+				text -> textBounds () .setX (text -> textBounds () .getX () + 1);
+			
 			min .x (std::round (min .x ()));
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
@@ -149,6 +153,9 @@ ScreenText::setTextBounds ()
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
+			if (size_t (text -> textBounds () .getY ()) & 1)
+				text -> textBounds () .setY (text -> textBounds () .getY () + 1);
+			
 			max .y (std::round (max .y ()));
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
@@ -303,7 +310,7 @@ ScreenText::build ()
 	//if (surface -> get_width () and surface -> get_height ())
 	//	surface -> write_to_png ("/home/holger/test.png");
 
-	// Set RGB to white, but leave alpha channel.
+	// Set RGB to white, but leave alpha channel for better antialiasing results.
 
 	{
 		unsigned char* first = surface -> get_data ();
@@ -381,24 +388,40 @@ ScreenText::getBBox () const
 
 // Same as in ScreenGroup
 void
-ScreenText::scale ()
+ScreenText::transform (const ShapeContainer* const context)
 {
 	try
 	{
-		const auto modelViewMatrix = ModelViewMatrix4d ();
+		const auto & modelViewMatrix = context -> getModelViewMatrix ();
 
 		Vector3d   translation, scale;
 		Rotation4d rotation;
 
 		modelViewMatrix .get (translation, rotation, scale);
 
-		const Vector3d screenScale = fontStyle -> getCurrentViewpoint () -> getScreenScale (modelViewMatrix .origin (), Viewport4i ());
+		const auto projectionMatrix = ProjectionMatrix4d ();
+		const auto viewport         = Viewport4i ();
+		const auto screenScale      = fontStyle -> getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
 		Matrix4d screenMatrix;
 
 		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
 		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
 		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+
+		// Snap to whole pixel
+		
+		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
+
+		screenPoint .x (std::round (screenPoint .x ()));
+		screenPoint .y (std::round (screenPoint .y ()));
+
+		auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
+
+		offset .z (0);
+		screenMatrix .translate (offset);
+
+		// Assign modelViewMatrix and relative matrix
 
 		glLoadMatrixd (screenMatrix .data ());
 
@@ -409,11 +432,11 @@ ScreenText::scale ()
 }
 
 void
-ScreenText::display ()
+ScreenText::display (const ShapeContainer* const context)
 {
-	scale ();
+	transform (context);
 
-	X3DTextGeometry::display ();
+	X3DTextGeometry::display (context);
 }
 
 ScreenText::~ScreenText ()

@@ -163,7 +163,7 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 
 		line *= ~matrix;
 
-		if (not getBBox () .intersects (line))
+		if (not bbox .intersects (line))
 			return false;
 
 		bool   intersected = false;
@@ -253,7 +253,7 @@ X3DGeometryNode::intersects (const Line3d & line,
 	if (isClipped (point, modelViewMatrix))
 		return false;
 
-	intersections .emplace_back (new Intersection { texCoord, normal, point, std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
+	intersections .emplace_back (new Intersection { texCoord, normal, point * getMatrix (), std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
 	return true;
 }
 

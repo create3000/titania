@@ -10,8 +10,8 @@
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DExecutionContext.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.cpp" Line="37" Column="37" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="47" Column="47" />
+      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -173,7 +173,7 @@ Text::build ()
 		// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
 	
 		const Box3d bbox = textGeometry -> X3DTextGeometry::getBBox ();
-	
+
 		/* const */ Vector3d min, max;
 		bbox .extents (min, max);
 	
@@ -204,9 +204,9 @@ Text::build ()
 }
 
 void
-Text::draw (const ShapeContainer* const)
+Text::draw (const ShapeContainer* const context)
 {
-	textGeometry -> display ();
+	textGeometry -> display (context);
 }
 
 SFNode

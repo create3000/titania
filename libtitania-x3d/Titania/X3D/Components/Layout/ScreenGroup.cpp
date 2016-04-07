@@ -114,11 +114,28 @@ ScreenGroup::scale (const TraverseType type)
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	const Vector3d screenScale = getCurrentViewpoint () -> getScreenScale (modelViewMatrix .origin (), Viewport4i ());
+	const auto projectionMatrix = ProjectionMatrix4d ();
+	const auto viewport         = Viewport4i ();
+	const auto screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
 	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
 	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+
+
+	// Snap to whole pixel
+		
+	auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
+
+	screenPoint .x (std::round (screenPoint .x ()));
+	screenPoint .y (std::round (screenPoint .y ()));
+
+	auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
+
+	offset .z (0);
+	screenMatrix .translate (offset);
+
+	// Assign modelViewMatrix and relative matrix
 
 	getModelViewMatrix () .set (screenMatrix);
 }

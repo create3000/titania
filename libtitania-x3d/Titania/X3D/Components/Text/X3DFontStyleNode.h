@@ -60,6 +60,7 @@ namespace X3D {
 
 class Text;
 class X3DFontStyleNode;
+class ShapeContainer;
 
 class X3DTextGeometry
 {
@@ -81,7 +82,7 @@ public:
 
 	virtual
 	void
-	display ();
+	display (const ShapeContainer* const);
 
 	virtual
 	~X3DTextGeometry ();

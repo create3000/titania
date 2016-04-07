@@ -53,6 +53,7 @@
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../Text/Text.h"
 
 #include <Titania/OS/file_exists.h>
@@ -284,7 +285,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 			
 			const int glyphNumber = topToBottom ? g : numChars - g - 1;
 
-			translations [t] = Vector2d ((spacing - size .x ()) / 2, -glyphNumber * height);
+			translations [t] = Vector2d ((spacing - size .x () - min .x ()) / 2, -glyphNumber * height);
 			
 			// Calculate center.
 
@@ -515,9 +516,9 @@ X3DTextGeometry::compile (Text* const text)
 }
 
 void
-X3DTextGeometry::display ()
+X3DTextGeometry::display (const ShapeContainer* const context)
 {
-	glFrontFace (ModelViewMatrix4d () .determinant3 () > 0 ? GL_CCW : GL_CW);
+	glFrontFace (context -> getModelViewMatrix () .determinant3 () > 0 ? GL_CCW : GL_CW);
 
 	glCallList (listId);
 }

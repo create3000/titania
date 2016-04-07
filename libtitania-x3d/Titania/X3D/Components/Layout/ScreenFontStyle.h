@@ -59,6 +59,7 @@ namespace titania {
 namespace X3D {
 
 class ScreenFontStyle;
+class ShapeContainer;
 
 class ScreenText :
 	public X3DTextGeometry
@@ -83,7 +84,7 @@ public:
 
 	virtual
 	void
-	display () final override;
+	display (const ShapeContainer* const) final override;
 
 	virtual
 	~ScreenText ();
@@ -108,7 +109,7 @@ private:
 	draw () final override;
 
 	void
-	scale ();
+	transform (const ShapeContainer* const);
 
 	Text* const                  text;
 	const ScreenFontStyle* const fontStyle;
