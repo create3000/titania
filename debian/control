@@ -42,10 +42,6 @@ Depends: ${shlibs:Depends},
          libcurl3,
          libsqlite3-0,
          libgstreamermm-1.0-0v5,
-         gstreamer1.0-plugins-base,
-         gstreamer1.0-plugins-good,
-         gstreamer1.0-plugins-bad,
-         gstreamer1.0-plugins-ugly,
          zlib1g,
          libgtop-2.0-10,
          gettext,
@@ -53,6 +49,10 @@ Depends: ${shlibs:Depends},
          libxml-libxml-perl,
          libglib-perl,
          libswitch-perl
+Recommends: gstreamer1.0-plugins-base,
+            gstreamer1.0-plugins-good,
+            gstreamer1.0-plugins-bad,
+            gstreamer1.0-plugins-ugly
 Conflicts:
 Replaces:
 Provides: titania
