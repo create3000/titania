@@ -736,13 +736,9 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 	{
 		case OutlineIterType::X3DFieldValue:
 		{
-			int height         = 0;
-			int natural_height = 0;
-
 			int icon_width    = 0;
 			int natural_width = 0;
 
-			get_preferred_height (widget, height, natural_height);
 			cellrenderer_icon .get_preferred_width (widget, icon_width, natural_width);
 
 			Gtk::TreePath parentPath (path);
@@ -760,9 +756,9 @@ OutlineCellRenderer::start_editing_vfunc (GdkEvent* event,
 			textview -> set_text (puck::get_field_value (scene, field, false, treeView -> get_use_locale ()));
 			textview -> set_margin_left (margin);
 			textview -> set_padding (property_ypad (), property_xpad (), property_ypad (), property_xpad ());
-			textview -> set_size_request (cell_area .get_width () - margin, height);
+			textview -> set_size_request (cell_area .get_width () - margin, cell_area .get_height ());
 
-			textview -> signal_editing_done () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_editing_done));
+			textview -> signal_editing_done ()  .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_editing_done));
 			textview -> signal_remove_widget () .connect (sigc::mem_fun (this, &OutlineCellRenderer::on_remove_widget));
 
 			return textview .get ();
