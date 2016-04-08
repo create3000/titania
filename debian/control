@@ -29,7 +29,6 @@ Package: titania
 Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
-         debhelper (>= 5),
          libgtkmm-3.0-1v5,
          libgtksourceviewmm-3.0-0v5,
          libglu1-mesa,
