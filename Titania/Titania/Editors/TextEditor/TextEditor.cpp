@@ -77,6 +77,12 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
 
+	getTextCharSpacingAdjustment () -> set_step_increment (1e-3);
+	getTextMaxExtentAdjustment ()   -> set_step_increment (1e-3);
+
+	getTextCharSpacingSpinButton () .property_climb_rate () = 1e-2;
+	getTextMaxExtentSpinButton ()   .property_climb_rate () = 1e-2;
+
 	setup ();
 }
 
