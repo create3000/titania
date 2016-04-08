@@ -27,8 +27,7 @@ Build-Depends: debhelper (>= 5),
 Homepage: http://titania.create3000.de/
 Package: titania
 Architecture: any
-Depends: ${shlibs:Depends},
-         ${misc:Depends},
+Depends: ${misc:Depends},
          libgtkmm-3.0-1v5,
          libgtksourceviewmm-3.0-0v5,
          libglu1-mesa,
