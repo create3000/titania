@@ -656,20 +656,20 @@ public:
 	{ return *m_ViewportClipBoundaryBox; }
 
 	Gtk::SpinButton &
-	getViewportClipBoundarySpinButton3 () const
-	{ return *m_ViewportClipBoundarySpinButton3; }
+	getViewportClipBoundaryTopSpinButton () const
+	{ return *m_ViewportClipBoundaryTopSpinButton; }
 
 	Gtk::SpinButton &
-	getViewportClipBoundarySpinButton0 () const
-	{ return *m_ViewportClipBoundarySpinButton0; }
+	getViewportClipBoundaryLeftSpinButton () const
+	{ return *m_ViewportClipBoundaryLeftSpinButton; }
 
 	Gtk::SpinButton &
-	getViewportClipBoundarySpinButton1 () const
-	{ return *m_ViewportClipBoundarySpinButton1; }
+	getViewportClipBoundaryRightSpinButton () const
+	{ return *m_ViewportClipBoundaryRightSpinButton; }
 
 	Gtk::SpinButton &
-	getViewportClipBoundarySpinButton2 () const
-	{ return *m_ViewportClipBoundarySpinButton2; }
+	getViewportClipBoundaryBottomSpinButton () const
+	{ return *m_ViewportClipBoundaryBottomSpinButton; }
 
 	Gtk::Expander &
 	getGeoTransformExpander () const
@@ -1070,10 +1070,10 @@ private:
 	Gtk::CheckButton*              m_ViewportCheckButton;
 	Gtk::Grid*                     m_ViewportBox;
 	Gtk::Grid*                     m_ViewportClipBoundaryBox;
-	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton3;
-	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton0;
-	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton1;
-	Gtk::SpinButton*               m_ViewportClipBoundarySpinButton2;
+	Gtk::SpinButton*               m_ViewportClipBoundaryTopSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryLeftSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryRightSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryBottomSpinButton;
 	Gtk::Expander*                 m_GeoTransformExpander;
 	Gtk::Grid*                     m_GeoTransformBox;
 	Gtk::Box*                      m_GeoTransformTranslationBox;

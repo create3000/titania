@@ -2362,14 +2362,14 @@
                         <property name="row_spacing">2</property>
                         <property name="column_spacing">2</property>
                         <child>
-                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton3">
+                          <object class="GtkSpinButton" id="ViewportClipBoundaryTopSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Top</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">ViewportClipBoundaryTopAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">4</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2378,14 +2378,14 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton0">
+                          <object class="GtkSpinButton" id="ViewportClipBoundaryLeftSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Left</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">ViewportClipBoundaryLeftAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">4</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2394,14 +2394,14 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton1">
+                          <object class="GtkSpinButton" id="ViewportClipBoundaryRightSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Right</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">ViewportClipBoundaryRightAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">4</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>
@@ -2410,14 +2410,14 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="ViewportClipBoundarySpinButton2">
+                          <object class="GtkSpinButton" id="ViewportClipBoundaryBottomSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="tooltip_text" translatable="yes">Bottom</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">ViewportClipBoundaryBottomAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">4</property>
                             <property name="numeric">True</property>
                           </object>
                           <packing>

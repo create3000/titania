@@ -62,19 +62,24 @@ X3DViewportEditor::X3DViewportEditor () :
 	                           viewport (),
 	                           undoStep (),
 	                           changing (false),
-	                      clipBoundary0 (this, getViewportClipBoundaryLeftAdjustment (),   getViewportClipBoundarySpinButton0 (), "clipBoundary"),
-	                      clipBoundary1 (this, getViewportClipBoundaryRightAdjustment (),  getViewportClipBoundarySpinButton1 (), "clipBoundary"),
-	                      clipBoundary2 (this, getViewportClipBoundaryBottomAdjustment (), getViewportClipBoundarySpinButton2 (), "clipBoundary"),
-	                      clipBoundary3 (this, getViewportClipBoundaryTopAdjustment (),    getViewportClipBoundarySpinButton3 (), "clipBoundary")
+	                      clipBoundary0 (this, getViewportClipBoundaryLeftAdjustment (),   getViewportClipBoundaryLeftSpinButton (),   "clipBoundary"),
+	                      clipBoundary1 (this, getViewportClipBoundaryRightAdjustment (),  getViewportClipBoundaryRightSpinButton (),  "clipBoundary"),
+	                      clipBoundary2 (this, getViewportClipBoundaryBottomAdjustment (), getViewportClipBoundaryBottomSpinButton (), "clipBoundary"),
+	                      clipBoundary3 (this, getViewportClipBoundaryTopAdjustment (),    getViewportClipBoundaryTopSpinButton (),    "clipBoundary")
 {
 	addChildren (nodes, viewportBuffer);
 
 	viewportBuffer .addInterest (this, &X3DViewportEditor::set_node);
 
-	getViewportClipBoundaryLeftAdjustment ()   -> set_step_increment (0.001);
-	getViewportClipBoundaryRightAdjustment ()  -> set_step_increment (0.001);
-	getViewportClipBoundaryBottomAdjustment () -> set_step_increment (0.001);
-	getViewportClipBoundaryTopAdjustment ()    -> set_step_increment (0.001);
+	getViewportClipBoundaryLeftAdjustment ()   -> set_step_increment (1e-4);
+	getViewportClipBoundaryRightAdjustment ()  -> set_step_increment (1e-4);
+	getViewportClipBoundaryBottomAdjustment () -> set_step_increment (1e-4);
+	getViewportClipBoundaryTopAdjustment ()    -> set_step_increment (1e-4);
+
+	getViewportClipBoundaryLeftSpinButton ()   .property_climb_rate () = 1e-3;
+	getViewportClipBoundaryRightSpinButton ()  .property_climb_rate () = 1e-3;
+	getViewportClipBoundaryBottomSpinButton () .property_climb_rate () = 1e-3;
+	getViewportClipBoundaryTopSpinButton ()    .property_climb_rate () = 1e-3;
 
 	clipBoundary0 .setIndex (0);
 	clipBoundary1 .setIndex (1);
