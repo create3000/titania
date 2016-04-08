@@ -1,3 +1,9 @@
+titania (1.4.1) xenial; urgency=medium
+
+  * Fixed some bugs, and added some enhancements.
+
+ -- Holger Seelig <holger@qualle>  Thu, 8 April 2016 16:46:00 +0200
+
 titania (1.4.0) xenial; urgency=medium
 
   * Implemented Geometry Editor.
