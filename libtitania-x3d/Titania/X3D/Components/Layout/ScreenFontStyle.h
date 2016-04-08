@@ -75,12 +75,17 @@ public:
 
 	virtual
 	const Box3d &
-	getBBox () const final override;
+	getBBox () const final override
+	{ return bbox; }
 
 	virtual
 	Matrix4d
 	getMatrix () const final override
 	{ return matrix; }
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
 
 	virtual
 	void
@@ -109,7 +114,7 @@ private:
 	draw () final override;
 
 	void
-	transform (const ShapeContainer* const);
+	transform (const TraverseType type);
 
 	Text* const                  text;
 	const ScreenFontStyle* const fontStyle;

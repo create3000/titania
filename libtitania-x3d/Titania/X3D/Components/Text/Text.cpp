@@ -204,6 +204,12 @@ Text::build ()
 }
 
 void
+Text::traverse (const TraverseType type)
+{
+	textGeometry -> traverse (type);
+}
+
+void
 Text::draw (const ShapeContainer* const context)
 {
 	textGeometry -> display (context);

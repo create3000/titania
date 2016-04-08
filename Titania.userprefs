@@ -1,17 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h">
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/tools/GridTool.x3dv" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DExecutionContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DScene.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/X3DExecutionContext.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/InlineEditor/InlineEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/LayerEditor/LayerEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

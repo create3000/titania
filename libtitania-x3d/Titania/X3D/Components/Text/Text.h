@@ -195,6 +195,10 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType) final override;
+
+	virtual
+	void
 	draw (const ShapeContainer* const) final override;
 
 	virtual

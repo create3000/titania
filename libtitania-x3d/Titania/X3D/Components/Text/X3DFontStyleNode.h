@@ -82,6 +82,11 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType)
+	{ }
+
+	virtual
+	void
 	display (const ShapeContainer* const);
 
 	virtual

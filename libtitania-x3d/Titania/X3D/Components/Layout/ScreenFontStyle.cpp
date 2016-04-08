@@ -133,9 +133,6 @@ ScreenText::setTextBounds ()
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
-			if (size_t (text -> textBounds () .getX ()) & 1)
-				text -> textBounds () .setX (text -> textBounds () .getX () + 1);
-			
 			min .x (std::round (min .x ()));
 			max .x (min .x () + text -> textBounds () .getX ());
 			break;
@@ -153,9 +150,6 @@ ScreenText::setTextBounds ()
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
-			if (size_t (text -> textBounds () .getY ()) & 1)
-				text -> textBounds () .setY (text -> textBounds () .getY () + 1);
-			
 			max .y (std::round (max .y ()));
 			min .y (max .y () - text -> textBounds () .getY ());
 			break;
@@ -344,6 +338,11 @@ ScreenText::build ()
 	              surface -> get_data ());
 
 	glBindTexture (GL_TEXTURE_2D, 0);
+
+	bbox = Box3d (Vector3d (std::numeric_limits <double>::infinity (),
+	                        std::numeric_limits <double>::infinity (),
+	                        std::numeric_limits <double>::infinity ()),
+	              Vector3d ());
 }
 
 void
@@ -378,21 +377,13 @@ ScreenText::draw ()
 	glDisable (GL_TEXTURE_2D);
 }
 
-const Box3d &
-ScreenText::getBBox () const
-{
-	const_cast <ScreenText*> (this) -> bbox = X3DTextGeometry::getBBox () * getMatrix ();
-	
-	return bbox;
-}
-
 // Same as in ScreenGroup
 void
-ScreenText::transform (const ShapeContainer* const context)
+ScreenText::transform (const TraverseType type)
 {
 	try
 	{
-		const auto & modelViewMatrix = context -> getModelViewMatrix ();
+		const auto modelViewMatrix = fontStyle -> getModelViewMatrix (type);
 
 		Vector3d   translation, scale;
 		Rotation4d rotation;
@@ -423,18 +414,25 @@ ScreenText::transform (const ShapeContainer* const context)
 
 		// Assign modelViewMatrix and relative matrix
 
-		glLoadMatrixd (screenMatrix .data ());
-
 		matrix = screenMatrix * inverse (modelViewMatrix);
+		bbox   = X3DTextGeometry::getBBox () * matrix;
 	}
 	catch (const std::domain_error &)
 	{ }
 }
 
 void
+ScreenText::traverse (const TraverseType type)
+{
+	transform (type);
+}
+
+void
 ScreenText::display (const ShapeContainer* const context)
 {
-	transform (context);
+	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
+
+	glLoadMatrixd (modelViewMatrix .data ());
 
 	X3DTextGeometry::display (context);
 }
