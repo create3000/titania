@@ -653,6 +653,8 @@ function initialize ()
 
 function set_translation (value)
 {
+	print ('set_translation');
+
 	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
 	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
 
@@ -663,21 +665,9 @@ function set_translation (value)
 
 function eventsProcessed ()
 {
+	print ('eventsProcessed');
+
 	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
-	                                   
-	var
-		scene  = Browser .currentScene,
-		scaleX = scene .toUnit (X3DConstants .LENGTH, scale .x),
-		scaleY = scene .toUnit (X3DConstants .LENGTH, scale .y),
-		scaleZ = scene .toUnit (X3DConstants .LENGTH, scale .z),
-		sizeX  = scaleX * dimension [0],
-		sizeY  = scaleY * dimension [1],
-		sizeZ  = scaleZ * dimension [2];
-	                                   
-	Browser .description = \"Grid Layout Tool\\n\" +
-                          \"dimension \" + dimension [0] + \" ×  \" + dimension [1] + \" ×  \" + dimension [2] + \"\\n\" +
-                          \"scale \" + scaleX .toFixed (3) + \" × \" + scaleY .toFixed (3) + \" × \" + scaleZ .toFixed (3) + \"\\n\" +
-                          \"size \" + sizeX .toFixed (3) + \" × \" + sizeY .toFixed (3) + \" × \" + sizeZ .toFixed (3);
 }"
 }
 
@@ -723,5 +713,4 @@ ROUTE _2.isActive TO Tool.set_isActive
 ROUTE _5.isActive TO Tool.set_isActive
 ROUTE _7.isActive TO Tool.set_isActive
 
-EXPORT ScaleScript
 EXPORT Tool

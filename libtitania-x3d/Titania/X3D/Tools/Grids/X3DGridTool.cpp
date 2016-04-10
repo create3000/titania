@@ -103,13 +103,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DActiveLayerTool::setExecutionContext (executionContext);
 
 	set_selection (getBrowser () -> getSelection ());
-
-	try
-	{
-		getInlineNode () -> getExportedNode ("ScaleScript") -> setExecutionContext (executionContext);
-	}
-	catch (const X3DError & error)
-	{ }
 }
 
 void
@@ -119,8 +112,6 @@ X3DGridTool::realize ()
 
 	try
 	{
-		getInlineNode () -> getExportedNode ("ScaleScript") -> setExecutionContext (getExecutionContext ());
-
 		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
 		translation ()  .addInterest (set_translation);
 		set_translation .addInterest (translation ());

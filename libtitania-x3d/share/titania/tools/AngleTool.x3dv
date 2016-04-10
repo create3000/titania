@@ -753,25 +753,7 @@ function eventsProcessed ()
 	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
 	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
 	                                   0,
-	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
-	                                   
-	var
-		scene  = Browser .currentScene,
-		scaleX = scene .toUnit (X3DConstants .LENGTH, scale .x),
-		scaleY = scene .toUnit (X3DConstants .LENGTH, scale .y),
-		scaleZ = scene .toUnit (X3DConstants .LENGTH, scale .z),
-		sizeX  = scaleX * dimension [0],
-		sizeY  = scaleY * dimension [1],
-		sizeZ  = scaleZ * dimension [2],
-		angle  = scene .toUnit (X3DConstants .ANGLE, 2 * Math .PI / dimension [1]);
-	                                   
-	Browser .description = \"Angle Layout Tool\\n\" +
-                          \"rings \" + dimension [0] + \"\\n\" +
-                          \"sectors \" + dimension [1] + \"\\n\" +
-                          \"height \" + dimension [2] + \"\\n\" +
-                          \"scale \" + scaleX .toFixed (3) + \" x \" + scaleY .toFixed (3) + \" x \" + scaleZ .toFixed (3) + \"\\n\" +
-                          \"size \" + sizeX .toFixed (3) + \" x \" + sizeY .toFixed (3) + \" x \" + sizeZ .toFixed (3) + \"\\n\" +
-	                       \"angle \" + angle .toFixed (3);
+	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));	                                   
 }"
 }
 
@@ -821,5 +803,4 @@ ROUTE _6.isActive TO Tool.set_isActive
 ROUTE _8.isActive TO Tool.set_isActive
 ROUTE _10.isActive TO Tool.set_isActive
 
-EXPORT ScaleScript
 EXPORT Tool
