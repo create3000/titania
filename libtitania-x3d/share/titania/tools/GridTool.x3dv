@@ -644,7 +644,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "peaseblossom:
 
 function initialize ()
 {
@@ -653,8 +653,6 @@ function initialize ()
 
 function set_translation (value)
 {
-	print ('set_translation');
-
 	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
 	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
 
@@ -665,8 +663,6 @@ function set_translation (value)
 
 function eventsProcessed ()
 {
-	print ('eventsProcessed');
-
 	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
 }"
 }

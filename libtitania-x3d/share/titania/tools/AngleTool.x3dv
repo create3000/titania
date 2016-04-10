@@ -729,7 +729,7 @@ DEF ScaleScript Script {
   ]
   outputOnly  SFVec3f translation_changed
 
-  url "javascript:
+  url "peaseblossom:
 
 function initialize ()
 {
