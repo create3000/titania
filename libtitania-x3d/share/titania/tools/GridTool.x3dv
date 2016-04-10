@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.1
 
 PROFILE Full
 
@@ -7,8 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 31 Jan 2016 02:47:50 GMT"
+META "generator" "Titania V1.4.1, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/GridTool.x3dv"
+META "modified" "Sun, 10 Apr 2016 02:38:42 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -54,7 +55,7 @@ PROTO Grid [
     scale IS scale
     children [
       DEF Plane Transform {
-        rotation -3.09087e-08 0.707105 0.707108 3.14159
+        rotation -3.09087122910219e-08 0.70710528118436 0.707108281185553 3.14159
         scale 10 10 1
         children Shape {
           appearance Appearance {
@@ -410,10 +411,10 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.998934328556061,
-              0.0448422804474831,
-              -0.0109284929931164,
-              0.42597234249115
+              -0.998934301163994,
+              0.04484227921785,
+              -0.010928492693443,
+              0.425972342491149
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -430,40 +431,48 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF Tool Script {
-            inputOutput SFVec3f    translation 0 0 0
-            inputOutput SFRotation rotation 0 0 1 0
-            inputOutput SFVec3f    scale 1 1 1
-            inputOutput MFInt32    dimension [
-              10,
-              10,
-              10
-            ]
-            inputOutput MFInt32    majorLineEvery [
-              5,
-              5,
-              5
-            ]
-            inputOutput MFInt32    majorLineOffset [
-              0,
-              0,
-              0
-            ]
-            inputOutput SFColor    color 0.5 0.5 0.5
-            inputOutput SFFloat    transparency 0.8
-            inputOutput SFColor    lineColor 1 0.7 0.7
-            inputOutput SFFloat    lineTransparency 0.8
-            inputOutput SFColor    majorLineColor 1 0.7 0.7
-            inputOutput SFFloat    majorLineTransparency 0.6
-            inputOutput SFBool     isActive FALSE
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF ScaleScript Script {
+              inputOnly   SFVec3f set_translation
+              inputOutput SFVec3f scale 1 1 1
+              inputOutput MFInt32 dimension [
+                10,
+                10,
+                10
+              ]
+              outputOnly  SFVec3f translation_changed
 
-            url "ecmascript:
-// Empty body"
+              url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
+
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
+}"
+            }
           }
-        }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
     ]
   }
@@ -634,40 +643,38 @@ function set_rotation (value)
 }"
 }
 
-DEF ScaleScript Script {
-  inputOnly   SFVec3f set_translation
-  inputOutput SFVec3f scale 1 1 1
-  inputOutput MFInt32 dimension [
+USE ScaleScript
+
+DEF Tool Script {
+  inputOutput SFVec3f    translation 0 0 0
+  inputOutput SFRotation rotation 0 0 1 0
+  inputOutput SFVec3f    scale 1 1 1
+  inputOutput MFInt32    dimension [
     10,
     10,
     10
   ]
-  outputOnly  SFVec3f translation_changed
+  inputOutput MFInt32    majorLineEvery [
+    5,
+    5,
+    5
+  ]
+  inputOutput MFInt32    majorLineOffset [
+    0,
+    0,
+    0
+  ]
+  inputOutput SFColor    color 0.5 0.5 0.5
+  inputOutput SFFloat    transparency 0.8
+  inputOutput SFColor    lineColor 1 0.7 0.7
+  inputOutput SFFloat    lineTransparency 0.8
+  inputOutput SFColor    majorLineColor 1 0.7 0.7
+  inputOutput SFFloat    majorLineTransparency 0.6
+  inputOutput SFBool     isActive FALSE
 
-  url "peaseblossom:
-
-function initialize ()
-{
-	eventsProcessed ();
+  url "ecmascript:
+// Empty body"
 }
-
-function set_translation (value)
-{
-	var length = new SFVec2f (2 * value .x / dimension [0], -2 * value .z / dimension [2]) .length ();
-	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	translation_changed = new SFVec3f (scale .x * dimension [0] / 2, 0, -scale .z * dimension [2] / 2);
-}"
-}
-
-USE Tool
 
 ROUTE DimensionScript.translation_changed TO _6.set_translation
 ROUTE _5.translation_changed TO DimensionScript.set_translation

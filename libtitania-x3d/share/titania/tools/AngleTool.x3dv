@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.1
 
 PROFILE Full
 
@@ -7,8 +7,9 @@ COMPONENT Titania : 1
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Sun, 31 Jan 2016 03:00:21 GMT"
+META "generator" "Titania V1.4.1, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleTool.x3dv"
+META "modified" "Sun, 10 Apr 2016 02:38:36 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -54,7 +55,7 @@ PROTO AngleGrid [
     scale IS scale
     children [
       DEF Disk Transform {
-        rotation -5.25948e-13 0.707105 0.707108 3.14159
+        rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
         scale 5 5 1
         children Shape {
           appearance Appearance {
@@ -70,7 +71,7 @@ PROTO AngleGrid [
         }
       }
       DEF Rings Transform {
-        rotation 0 0.707105 0.707108 3.14159
+        rotation 0 0.70710528118436 0.707108281185553 3.14159
         children [
           Transform {
             children Shape {
@@ -491,40 +492,53 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF Tool Script {
-            inputOutput SFVec3f    translation 0 0 0
-            inputOutput SFRotation rotation 0 0 1 0
-            inputOutput SFVec3f    scale 1 1 1
-            inputOutput MFInt32    dimension [
-              5,
-              16,
-              10
-            ]
-            inputOutput MFInt32    majorLineEvery [
-              5,
-              2,
-              5
-            ]
-            inputOutput MFInt32    majorLineOffset [
-              0,
-              0,
-              0
-            ]
-            inputOutput SFColor    color 0.5 0.5 0.5
-            inputOutput SFFloat    transparency 0.8
-            inputOutput SFColor    lineColor 1 0.7 0.7
-            inputOutput SFFloat    lineTransparency 0.8
-            inputOutput SFColor    majorLineColor 1 0.7 0.7
-            inputOutput SFFloat    majorLineTransparency 0.6
-            inputOutput SFBool     isActive FALSE
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF ScaleScript Script {
+              inputOnly   SFVec3f set_translation
+              inputOutput SFVec3f scale 1 1 1
+              inputOutput MFInt32 dimension [
+                5,
+                16,
+                10
+              ]
+              outputOnly  SFVec3f translation_changed
 
-            url "ecmascript:
-// Empty body"
+              url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function set_translation (value)
+{
+	var length = new SFVec2f ( value .x / (dimension [0] * Math .cos (Math .PI / 4)),
+	                          -value .z / (dimension [0] * Math .sin (Math .PI / 4))) .length ();
+
+	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
+
+	scale .x *= factor;
+	scale .y *= factor;
+	scale .z *= factor;
+}
+
+function eventsProcessed ()
+{
+	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
+	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
+	                                   0,
+	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));
+}"
+            }
           }
-        }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
     ]
   }
@@ -570,7 +584,7 @@ DEF AngleTool Collision {
               offset 0.392699
             }
             DEF Handle Transform {
-              rotation 0 1 0 0.392699
+              rotation 0 1 0 0.392699092626572
               children DEF _7 Transform {
                 translation 0 0 4
                 children ScreenGroup {
@@ -719,45 +733,38 @@ function eventsProcessed ()
 "
 }
 
-DEF ScaleScript Script {
-  inputOnly   SFVec3f set_translation
-  inputOutput SFVec3f scale 1 1 1
-  inputOutput MFInt32 dimension [
+USE ScaleScript
+
+DEF Tool Script {
+  inputOutput SFVec3f    translation 0 0 0
+  inputOutput SFRotation rotation 0 0 1 0
+  inputOutput SFVec3f    scale 1 1 1
+  inputOutput MFInt32    dimension [
     5,
     16,
     10
   ]
-  outputOnly  SFVec3f translation_changed
+  inputOutput MFInt32    majorLineEvery [
+    5,
+    2,
+    5
+  ]
+  inputOutput MFInt32    majorLineOffset [
+    0,
+    0,
+    0
+  ]
+  inputOutput SFColor    color 0.5 0.5 0.5
+  inputOutput SFFloat    transparency 0.8
+  inputOutput SFColor    lineColor 1 0.7 0.7
+  inputOutput SFFloat    lineTransparency 0.8
+  inputOutput SFColor    majorLineColor 1 0.7 0.7
+  inputOutput SFFloat    majorLineTransparency 0.6
+  inputOutput SFBool     isActive FALSE
 
-  url "peaseblossom:
-
-function initialize ()
-{
-	eventsProcessed ();
+  url "ecmascript:
+// Empty body"
 }
-
-function set_translation (value)
-{
-	var length = new SFVec2f ( value .x / (dimension [0] * Math .cos (Math .PI / 4)),
-	                          -value .z / (dimension [0] * Math .sin (Math .PI / 4))) .length ();
-
-	var factor = length / new SFVec2f (scale .x, scale .z) .length ();
-
-	scale .x *= factor;
-	scale .y *= factor;
-	scale .z *= factor;
-}
-
-function eventsProcessed ()
-{
-	//translation_changed = new SFVec3f (scale .x * dimension [0], 0, -scale .z * dimension [0]);
-	translation_changed = new SFVec3f (scale .x * dimension [0] * Math .cos (Math .PI / 4),
-	                                   0,
-	                                   -scale .z * dimension [0] * Math .sin (Math .PI / 4));	                                   
-}"
-}
-
-USE Tool
 
 ROUTE AngleScript.rotation_changed TO Handle.set_rotation
 ROUTE _6.rotation_changed TO AngleScript.set_rotation
