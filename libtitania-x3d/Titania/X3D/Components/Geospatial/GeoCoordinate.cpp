@@ -95,9 +95,7 @@ GeoCoordinate::initialize ()
 	X3DCoordinateNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	geoSystem () .addInterest (this, &GeoCoordinate::eventsProcessed);
-	point ()     .addInterest (this, &GeoCoordinate::eventsProcessed);
-	geoOrigin () .addInterest (this, &GeoCoordinate::eventsProcessed);
+	addInterest (this, &GeoCoordinate::eventsProcessed);
 
 	eventsProcessed ();
 }
@@ -105,6 +103,8 @@ GeoCoordinate::initialize ()
 void
 GeoCoordinate::eventsProcessed ()
 {
+	//XXX: use std::transform???
+
 	points .clear ();
 
 	for (const auto & p : point ())

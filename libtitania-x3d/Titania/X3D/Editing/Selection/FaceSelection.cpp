@@ -164,42 +164,12 @@ void
 FaceSelection::set_coord (const X3DPtr <X3DCoordinateNode> & value)
 {
 	if (coordNode)
-	{
-		switch (coordNode -> getType () .back ())
-		{
-			case X3DConstants::Coordinate:
-				X3DPtr <Coordinate> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
-				break;
-			case X3DConstants::CoordinateDouble:
-				X3DPtr <CoordinateDouble> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
-				break;
-			case X3DConstants::GeoCoordinate:
-				X3DPtr <GeoCoordinate> (coordNode) -> point () .removeInterest (this, &FaceSelection::set_point);
-				break;
-			default:
-				break;
-		}
-	}
+		coordNode -> removeInterest (this, &FaceSelection::set_point);
 
 	coordNode = value;
 	
 	if (coordNode)
-	{
-		switch (coordNode -> getType () .back ())
-		{
-			case X3DConstants::Coordinate:
-				X3DPtr <Coordinate> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
-				break;
-			case X3DConstants::CoordinateDouble:
-				X3DPtr <CoordinateDouble> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
-				break;
-			case X3DConstants::GeoCoordinate:
-				X3DPtr <GeoCoordinate> (coordNode) -> point () .addInterest (this, &FaceSelection::set_point);
-				break;
-			default:
-				break;
-		}
-	}
+		coordNode -> addInterest (this, &FaceSelection::set_point);
 
 	set_point ();
 }
