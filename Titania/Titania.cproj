@@ -2522,6 +2522,7 @@
     <None Include="share\titania\ui\Revealer\GeometryEditor.glade" />
     <None Include="share\titania\ui\icons\TransformTool.svg" />
     <None Include="share\titania\Library\Prototypes\Geometry3D\RoundedExtrusion.x3dv" />
+    <None Include="share\titania\Library\Components\Layout\.Cobweb\ScreenFontStyle" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
