@@ -72,10 +72,11 @@ GeoOrigin::Fields::Fields () :
 { }
 
 GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	     fields (),
-	    radians (true)
+	   X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DNode (),
+	        fields (),
+	referenceFrame (),
+	       radians (true)
 {
 	addType (X3DConstants::GeoOrigin);
 
@@ -99,6 +100,8 @@ GeoOrigin::initialize ()
 {
 	X3DNode::initialize ();
 
+	geoSystem () .addInterest (this, &GeoOrigin::set_geoSystem);
+
 	switch (getExecutionContext () -> getSpecificationVersion ())
 	{
 		case VRML_V2_0:
@@ -110,12 +113,20 @@ GeoOrigin::initialize ()
 		default:
 			break;
 	}
+
+	set_geoSystem ();
+}
+
+void
+GeoOrigin::set_geoSystem ()
+{
+	referenceFrame = Geospatial::getReferenceFrame (geoSystem (), radians);
 }
 
 Vector3d
 GeoOrigin::getOrigin () const
 {
-	return Geospatial::getReferenceFrame (geoSystem (), radians) -> convert (geoCoords ());
+	return referenceFrame -> convert (geoCoords ());
 }
 
 } // X3D

@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GEOSPATIAL_GEO_ORIGIN_H__
 
 #include "../Core/X3DNode.h"
+#include "../../Browser/Geospatial/Geospatial.h"
 
 namespace titania {
 namespace X3D {
@@ -129,6 +130,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_geoSystem ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -148,7 +154,8 @@ private:
 
 	Fields fields;
 
-	bool radians;
+	Geospatial::ReferenceFramePtr referenceFrame;
+	bool                          radians;
 
 };
 
