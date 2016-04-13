@@ -73,7 +73,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	   standardOrder (true),
 	   geoOriginNode (),
 	          origin (),
-	         radians (false) // XXX: remove me
+	         radians (true)
 {
 	addType (X3DConstants::X3DGeospatialObject);
 
@@ -85,6 +85,18 @@ X3DGeospatialObject::initialize ()
 {
 	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
 	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
+
+	switch (getExecutionContext () -> getSpecificationVersion ())
+	{
+		case VRML_V2_0:
+		case X3D_V3_0:
+		case X3D_V3_1:
+		case X3D_V3_2:
+			radians = false;
+			break;
+		default:
+			break;
+	}
 
 	set_geoSystem ();
 	set_geoOrigin ();
