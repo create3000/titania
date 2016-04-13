@@ -118,8 +118,8 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 
 	geoGridOrigin () .setUnit (UnitCategory::LENGTH);
 	yScale ()        .setUnit (UnitCategory::LENGTH);
-	xSpacing ()      .setUnit (UnitCategory::LENGTH);
-	zSpacing ()      .setUnit (UnitCategory::LENGTH);
+	//xSpacing ()      .setUnit (UnitCategory::LENGTH); // degree
+	//zSpacing ()      .setUnit (UnitCategory::LENGTH); // degree
 	creaseAngle ()   .setUnit (UnitCategory::ANGLE);
 	height ()        .setUnit (UnitCategory::LENGTH);
 
