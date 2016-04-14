@@ -77,13 +77,13 @@ GeoTransform::GeoTransform (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoTransform);
 
 	addField (inputOutput,    "metadata",         metadata ());
-	addField (initializeOnly, "geoSystem",        geoSystem ());
 	addField (inputOutput,    "translation",      translation ());
 	addField (inputOutput,    "rotation",         rotation ());
 	addField (inputOutput,    "scale",            scale ());
 	addField (inputOutput,    "scaleOrientation", scaleOrientation ());
-	addField (inputOutput,    "geoCenter",        geoCenter ());
 	addField (initializeOnly, "geoOrigin",        geoOrigin ());
+	addField (initializeOnly, "geoSystem",        geoSystem ());
+	addField (inputOutput,    "geoCenter",        geoCenter ());
 	addField (initializeOnly, "bboxSize",         bboxSize ());
 	addField (initializeOnly, "bboxCenter",       bboxCenter ());
 	addField (inputOnly,      "addChildren",      addChildren ());
@@ -116,14 +116,27 @@ GeoTransform::initialize ()
 void
 GeoTransform::eventsProcessed ()
 {
-	Matrix4d transformation;
+	try
+	{
+		Matrix4d locationMatrix = getLocationMatrix (geoCenter ());
+		Matrix4d transformation;
+	
+		isHidden (scale () .getX () == 0 or
+		          scale () .getY () == 0 or
+		          scale () .getZ () == 0);
+	
+		transformation .set (translation () .getValue (),
+		                     rotation () .getValue (),
+		                     scale () .getValue (),
+		                     scaleOrientation () .getValue ());
 
-	transformation .set (translation () .getValue (),
-	                     rotation () .getValue (),
-	                     scale () .getValue (),
-	                     scaleOrientation () .getValue ());
-
-	setMatrix (transformation * getLocationMatrix (geoCenter ()));
+		setMatrix (~locationMatrix * transformation * locationMatrix);
+	}
+	catch (const std::domain_error &)
+	{
+		// Should normally not happen.
+		isHidden (true);
+	}
 }
 
 void

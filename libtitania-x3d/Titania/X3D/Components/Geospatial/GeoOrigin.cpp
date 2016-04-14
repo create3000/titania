@@ -81,9 +81,9 @@ GeoOrigin::GeoOrigin (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoOrigin);
 
 	addField (inputOutput,    "metadata",  metadata ());
-	addField (initializeOnly, "rotateYUp", rotateYUp ());
 	addField (initializeOnly, "geoSystem", geoSystem ());
 	addField (inputOutput,    "geoCoords", geoCoords ());
+	addField (initializeOnly, "rotateYUp", rotateYUp ());
 
 	geoCoords () .setUnit (UnitCategory::LENGTH);
 	geoCoords () .isGeospatial (true);

@@ -91,6 +91,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoLOD);
 
 	addField (inputOutput,    "metadata",      metadata ());
+	addField (initializeOnly, "geoOrigin",     geoOrigin ());
 	addField (initializeOnly, "geoSystem",     geoSystem ());
 	addField (initializeOnly, "rootUrl",       rootUrl ());
 	addField (initializeOnly, "child1Url",     child1Url ());
@@ -100,7 +101,6 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "center",        center ());
 	addField (initializeOnly, "range",         range ());
 	addField (outputOnly,     "level_changed", level_changed ());
-	addField (initializeOnly, "geoOrigin",     geoOrigin ());
 	addField (initializeOnly, "rootNode",      rootNode ());
 	addField (initializeOnly, "bboxSize",      bboxSize ());
 	addField (initializeOnly, "bboxCenter",    bboxCenter ());

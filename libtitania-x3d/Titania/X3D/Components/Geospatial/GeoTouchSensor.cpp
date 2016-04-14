@@ -75,9 +75,10 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoTouchSensor);
 
 	addField (inputOutput,    "metadata",            metadata ());
-	addField (inputOutput,    "enabled",             enabled ());
+	addField (initializeOnly, "geoOrigin",           geoOrigin ());
 	addField (initializeOnly, "geoSystem",           geoSystem ());
 	addField (inputOutput,    "description",         description ());
+	addField (inputOutput,    "enabled",             enabled ());
 	addField (outputOnly,     "hitTexCoord_changed", hitTexCoord_changed ());
 	addField (outputOnly,     "hitNormal_changed",   hitNormal_changed ());
 	addField (outputOnly,     "hitPoint_changed",    hitPoint_changed ());
@@ -85,7 +86,6 @@ GeoTouchSensor::GeoTouchSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isOver",              isOver ());
 	addField (outputOnly,     "isActive",            isActive ());
 	addField (outputOnly,     "touchTime",           touchTime ());
-	addField (initializeOnly, "geoOrigin",           geoOrigin ());
 
 	hitPoint_changed ()    .setUnit (UnitCategory::LENGTH);
 	hitGeoCoord_changed () .setUnit (UnitCategory::LENGTH);

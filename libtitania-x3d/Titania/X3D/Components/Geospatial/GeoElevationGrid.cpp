@@ -95,6 +95,7 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addType (X3DConstants::GeoElevationGrid);
 
 	addField (inputOutput,    "metadata",        metadata ());
+	addField (initializeOnly, "geoOrigin",       geoOrigin ());
 	addField (initializeOnly, "geoSystem",       geoSystem ());
 	addField (initializeOnly, "geoGridOrigin",   geoGridOrigin ());
 
@@ -114,7 +115,6 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addField (inputOutput,    "texCoord",        texCoord ());
 	addField (inputOutput,    "normal",          normal ());
 	addField (inputOutput,    "height",          height ());
-	addField (initializeOnly, "geoOrigin",       geoOrigin ());
 
 	geoGridOrigin () .setUnit (UnitCategory::LENGTH);
 	yScale ()        .setUnit (UnitCategory::LENGTH);

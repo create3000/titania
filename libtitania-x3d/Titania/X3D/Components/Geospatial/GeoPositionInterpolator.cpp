@@ -74,13 +74,13 @@ GeoPositionInterpolator::GeoPositionInterpolator (X3DExecutionContext* const exe
 	addType (X3DConstants::GeoPositionInterpolator);
 
 	addField (inputOutput,    "metadata",         metadata ());
+	addField (initializeOnly, "geoOrigin",        geoOrigin ());
 	addField (initializeOnly, "geoSystem",        geoSystem ());
 	addField (inputOnly,      "set_fraction",     set_fraction ());
 	addField (inputOutput,    "key",              key ());
 	addField (inputOutput,    "keyValue",         keyValue ());
 	addField (outputOnly,     "value_changed",    value_changed ());
 	addField (outputOnly,     "geovalue_changed", geovalue_changed ());
-	addField (initializeOnly, "geoOrigin",        geoOrigin ());
 
 	keyValue ()         .setUnit (UnitCategory::LENGTH);
 	value_changed ()    .setUnit (UnitCategory::LENGTH);

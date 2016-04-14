@@ -76,8 +76,9 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addType (X3DConstants::GeoProximitySensor);
 
 	addField (inputOutput,    "metadata",                 metadata ());
-	addField (inputOutput,    "enabled",                  enabled ());
+	addField (initializeOnly, "geoOrigin",                geoOrigin ());
 	addField (initializeOnly, "geoSystem",                geoSystem ());
+	addField (inputOutput,    "enabled",                  enabled ());
 	addField (inputOutput,    "size",                     size ());
 	addField (inputOutput,    "center",                   center ());
 	addField (outputOnly,     "isActive",                 isActive ());
@@ -87,7 +88,6 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addField (outputOnly,     "position_changed",         position_changed ());
 	addField (outputOnly,     "orientation_changed",      orientation_changed ());
 	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
-	addField (initializeOnly, "geoOrigin",                geoOrigin ());
 
 	addChildren (proximitySensor);
 

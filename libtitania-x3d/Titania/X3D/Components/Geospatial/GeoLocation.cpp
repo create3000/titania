@@ -72,9 +72,9 @@ GeoLocation::GeoLocation (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::GeoLocation);
 
 	addField (inputOutput,    "metadata",       metadata ());
+	addField (initializeOnly, "geoOrigin",      geoOrigin ());
 	addField (initializeOnly, "geoSystem",      geoSystem ());
 	addField (inputOutput,    "geoCoords",      geoCoords ());
-	addField (initializeOnly, "geoOrigin",      geoOrigin ());
 	addField (initializeOnly, "bboxSize",       bboxSize ());
 	addField (initializeOnly, "bboxCenter",     bboxCenter ());
 	addField (inputOnly,      "addChildren",    addChildren ());
