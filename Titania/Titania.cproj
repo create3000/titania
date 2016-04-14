@@ -1930,7 +1930,6 @@
     <None Include="share\titania\Library\Components\Core\.Titania\MetadataSet" />
     <None Include="share\titania\Library\Components\Core\.Titania\MetadataString" />
     <None Include="share\titania\Library\Components\Core\.Titania\WorldInfo" />
-    <None Include="share\titania\Library\Components\CubeMapTexturing\.ImageCubeMapTexture-Titania" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\ComposedCubeMapTexture.x3dv" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\GeneratedCubeMapTexture.x3dv" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\ImageCubeMapTexture.x3dv" />
@@ -2194,7 +2193,6 @@
     <None Include="share\titania\Library\Components\NURBS\NurbsTrimmedSurface.x3dv" />
     <None Include="share\titania\Library\Components\NURBS\.Cobweb\CoordinateDouble" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\CoordinateDouble" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPatchSurface" />
     <None Include="share\titania\Library\Components\Navigation\Billboard.x3dv" />
     <None Include="share\titania\Library\Components\Navigation\Collision.x3dv" />
     <None Include="share\titania\Library\Components\Navigation\LOD.x3dv" />
@@ -2334,7 +2332,6 @@
     <None Include="share\titania\Library\Components\Shaders\.Titania\FloatVertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\Matrix3VertexAttribute" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\Matrix4VertexAttribute" />
-    <None Include="share\titania\Library\Components\Shaders\.Titania\PackagedShader" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\ProgramShader" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\ShaderPart" />
     <None Include="share\titania\Library\Components\Shaders\.Titania\ShaderProgram" />
@@ -2415,54 +2412,9 @@
     <None Include="share\titania\Library\Components\Time\.Cobweb\TimeSensor" />
     <None Include="share\titania\Library\Components\Time\.Titania\TimeSensor" />
     <None Include="scripts\Library\Components.pl" />
-    <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\GeneratedCubeMapTexture" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\ImageCubeMapTexture" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\DISEntityManager" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\DISEntityTypeMapping" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\EspduTransform" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\ReceiverPdu" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\SignalPdu" />
-    <None Include="share\titania\Library\Components\DIS\.Titania\TransmitterPdu" />
-    <None Include="share\titania\Library\Components\EnvironmentalEffects\.Titania\FogCoordinate" />
     <None Include="share\titania\Library\Components\Grouping\.Titania\TransformMatrix3D" />
-    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimDisplacer" />
-    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimHumanoid" />
-    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimJoint" />
-    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSegment" />
-    <None Include="share\titania\Library\Components\H-Anim\.Titania\HAnimSite" />
-    <None Include="share\titania\Library\Components\KeyDeviceSensor\.Titania\StringSensor" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\Contour2D" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\ContourPolyline2D" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsCurve2D" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsOrientationInterpolator" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPositionInterpolator" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSet" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSurfaceInterpolator" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSweptSurface" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsSwungSurface" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTextureCoordinate" />
-    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTrimmedSurface" />
     <None Include="share\titania\Library\Components\ParticleSystems\.Titania\BoundedPhysicsModel" />
-    <None Include="share\titania\Library\Components\Picking\.Titania\LinePickSensor" />
-    <None Include="share\titania\Library\Components\Picking\.Titania\PickableGroup" />
-    <None Include="share\titania\Library\Components\Picking\.Titania\PointPickSensor" />
-    <None Include="share\titania\Library\Components\Picking\.Titania\PrimitivePickSensor" />
-    <None Include="share\titania\Library\Components\Picking\.Titania\VolumePickSensor" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\BallJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollidableOffset" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollidableShape" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionCollection" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionSensor" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\CollisionSpace" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\Contact" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\DoubleAxisHingeJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\MotorJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\RigidBody" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\RigidBodyCollection" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SingleAxisHingeJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\SliderJoint" />
-    <None Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\UniversalJoint" />
     <None Include="share\titania\Library\Components\Titania\.Titania\TouchGroup" />
     <None Include="share\titania\Library\Components\Titania\TouchGroup.x3dv" />
     <None Include="Titania\Editors\GeometryEditor\GeometryEditor.h" />
@@ -2523,6 +2475,13 @@
     <None Include="share\titania\ui\icons\TransformTool.svg" />
     <None Include="share\titania\Library\Prototypes\Geometry3D\RoundedExtrusion.x3dv" />
     <None Include="share\titania\Library\Components\Layout\.Cobweb\ScreenFontStyle" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\ColorChaser" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\CoordinateChaser" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\OrientationChaser" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\PositionChaser" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\PositionChaser2D" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\ScalarChaser" />
+    <None Include="share\titania\Library\Components\Followers\.Cobweb\TexCoordChaser2D" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2614,6 +2573,10 @@
     <Folder Include="Titania\Editors\SoundEditor\" />
     <Folder Include="share\titania\Library\Components\PointingDeviceSensor\.experimental\" />
     <Folder Include="share\titania\ui\Revealer\" />
+    <Folder Include="share\titania\Library\Components\DIS\.Titania\" />
+    <Folder Include="share\titania\Library\Components\H-Anim\.Titania\" />
+    <Folder Include="share\titania\Library\Components\Picking\.Titania\" />
+    <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
