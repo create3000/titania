@@ -1,10 +1,97 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.4.1
 
 META "comment" "World of Titania"
 META "created" "Mon, 13 Oct 2014 00:37:06 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Mon, 13 Oct 2014 00:37:06 GMT"
+META "generator" "Titania V1.4.1, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/GeoElevationGrid.x3dv"
+META "modified" "Fri, 15 Apr 2016 15:03:55 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF GeoElevationGrid Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material { }
+                  texture ImageTexture {
+                    url [
+                      "../images/earth.png",
+                      "file:///home/holger/Projekte/Titania/Library/Tests/images/earth.png"
+                    ]
+                  }
+                }
+                geometry GeoElevationGrid {
+                  geoGridOrigin -90 180 0
+                  xDimension 361
+                  zDimension 181
+                  creaseAngle 3.14159
+                }
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              30566136.1898537,
+              -2528233.5082396,
+              18470572.4175256
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.467020738700736,
+              -0.457100438766276,
+              -0.756935148148833,
+              4.57839218811725
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "GeoElevationGrid"
+}
 
 NavigationInfo { }
 
@@ -18,27 +105,7 @@ GeoViewpoint {
   orientation -1 0 0 1.5708
 }
 
-DEF GeoElevationGrid Transform {
-  children Shape {
-    appearance Appearance {
-      material Material { }
-      texture ImageTexture {
-        url [
-          "../images/earth.png",
-          "file:///home/holger/Projekte/Titania/Library/Tests/images/earth.png"
-        ]
-      }
-    }
-    geometry GeoElevationGrid {
-      geoGridOrigin -1.570963 3.1415927 0
-      xDimension 201
-      zDimension 101
-      xSpacing 0.031415927
-      zSpacing 0.031415927
-      creaseAngle 3.14159
-    }
-  }
-}
+USE GeoElevationGrid
 
 DEF Axes Transform {
   scale 1e+07 1e+07 1e+07
