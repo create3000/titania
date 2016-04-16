@@ -86,6 +86,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 	       child2Inline (new Inline (executionContext)),
 	       child3Inline (new Inline (executionContext)),
 	       child4Inline (new Inline (executionContext)),
+	     childrenLoaded (false),
 	   keepCurrentLevel (false)
 {
 	addType (X3DConstants::GeoLOD);
@@ -233,27 +234,43 @@ GeoLOD::set_childLoadState ()
 	if (level_changed () not_eq 1)
 		return;
 
+	int32_t loaded = 0;
+
 	children () .clear ();
 
 	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
+	{
 		children () .insert (children () .end (),
 		                     child1Inline -> getRootNodes () .begin (),
 		                     child1Inline -> getRootNodes () .end ());
+		++ loaded;
+	}
 
 	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
+	{
 		children () .insert (children () .end (),
 		                     child2Inline -> getRootNodes () .begin (),
 		                     child2Inline -> getRootNodes () .end ());
+		++ loaded;
+	}
 
 	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
+	{
 		children () .insert (children () .end (),
 		                     child3Inline -> getRootNodes () .begin (),
 		                     child3Inline -> getRootNodes () .end ());
+		++ loaded;
+	}
 
 	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
+	{
 		children () .insert (children () .end (),
 		                     child4Inline -> getRootNodes () .begin (),
 		                     child4Inline -> getRootNodes () .end ());
+		++ loaded;
+	}
+
+	childrenLoaded = loaded == 4;
 }
 
 size_t
@@ -303,6 +320,7 @@ GeoLOD::traverse (const TraverseType type)
 				child3Inline -> load () = false;
 				child4Inline -> load () = false;
 
+				childrenLoaded = false;
 				break;
 			}
 			case 1:
@@ -317,7 +335,7 @@ GeoLOD::traverse (const TraverseType type)
 		}
 	}
 
-	switch (level)
+	switch (childrenLoaded ? level : 0)
 	{
 		case 0:
 		{

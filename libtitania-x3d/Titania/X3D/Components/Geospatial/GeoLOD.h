@@ -295,6 +295,7 @@ private:
 	InlinePtr child2Inline;
 	InlinePtr child3Inline;
 	InlinePtr child4Inline;
+	bool      childrenLoaded;
 	bool      keepCurrentLevel;
 
 };

@@ -1,16 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoElevationGrid.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoElevationGrid.cpp" Line="43" Column="43" />
       <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoTransform.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Grouping/X3DTransformNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoOrigin.cpp" Line="62" Column="62" />
+      <File FileName="Titania/Titania/Editors/ViewpointEditor/ViewpointEditor.cpp" Line="2" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
