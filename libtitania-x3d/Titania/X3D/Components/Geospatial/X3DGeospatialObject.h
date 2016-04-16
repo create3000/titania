@@ -100,6 +100,9 @@ protected:
 	///  @name Operations
 
 	Vector3d
+	getCoord (const Vector3d &) const;
+
+	Vector3d
 	getGeoCoord (const Vector3d &) const;
 
 	double
@@ -107,9 +110,6 @@ protected:
 
 	Vector3d
 	getUpVector (const Vector3d &) const;
-
-	Vector3d
-	getCoord (const Vector3d &) const;
 
 	Matrix4d
 	getLocationMatrix (const Vector3d &) const;
@@ -135,6 +135,15 @@ private:
 	void
 	set_origin ();
 
+	void
+	set_originMatrix ();
+
+	void
+	set_rotateYUp ();
+
+	Matrix4d
+	getStandardLocationMatrix (const Vector3d &) const;
+
 	///  @name Member access
 
 	Geospatial::CoordinateSystemType
@@ -159,6 +168,9 @@ private:
 	bool                             standardOrder;
 	X3DPtr <GeoOrigin>               geoOriginNode;
 	Vector3d                         origin;
+	Matrix4d                         originMatrix;
+	Matrix4d                         invOriginMatrix;
+	bool                             rotateYUp;
 	bool                             radians;
 
 };

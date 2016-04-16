@@ -160,13 +160,11 @@ public:
 
 	virtual
 	void
-	setCenterOfRotation (const Vector3d & value) final override
-	{ centerOfRotation () = value; }
+	setCenterOfRotation (const Vector3d & value) final override;
 
 	virtual
 	Vector3d
-	getCenterOfRotation () const final override
-	{ return centerOfRotation () .getValue (); }
+	getCenterOfRotation () const final override;
 
 	virtual
 	Vector3d

@@ -74,7 +74,8 @@ public:
 		longitude_first (not latitude_first),
 		        degrees (not radians),
 		              a (spheroid .a ()),
-		           c2a2 (sqr (spheroid .c () / a)),
+		              c (spheroid .c ()),
+		           c2a2 (sqr (c / a)),
 		           ecc2 (1 - c2a2)
 	{ }
 
@@ -105,6 +106,7 @@ private:
 	const bool degrees;
 
 	const Type a;
+	const Type c;
 	const Type c2a2;
 	const Type ecc2;
 
@@ -190,6 +192,9 @@ geodetic <Type>::apply_radians (const vector3 <Type> & geocentric) const
 	const Type z = geocentric .z ();
 
 	const Type P = std::sqrt (x * x + y * y);
+
+	if (P == 0)
+		return vector3 <Type> (M_PI, 0, z - c);
 
 	Type latitude  = 0;
 	Type longitude = std::atan2 (y, x);

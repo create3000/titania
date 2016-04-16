@@ -73,6 +73,9 @@ X3DGeospatialObject::X3DGeospatialObject () :
 	   standardOrder (true),
 	   geoOriginNode (),
 	          origin (),
+	    originMatrix (),
+	 invOriginMatrix (),
+	       rotateYUp (false),
 	         radians (false)
 {
 	addType (X3DConstants::X3DGeospatialObject);
@@ -117,6 +120,7 @@ X3DGeospatialObject::set_geoOrigin ()
 	}
 
 	set_origin ();
+	set_rotateYUp ();
 }
 
 void
@@ -126,11 +130,71 @@ X3DGeospatialObject::set_origin ()
 		origin = geoOriginNode -> getOrigin ();
 	else
 		origin = Vector3d ();
+
+	set_originMatrix ();
+}
+
+void
+X3DGeospatialObject::set_originMatrix ()
+{
+	try
+	{
+		const Vector3d t = origin;
+	
+		// Let's work out the orientation at that location in order
+		// to maintain a view where +Y is in the direction of gravitional
+		// up for that region of the planet's surface. This will be the
+		// value of the rotation matrix for the transform.
+	
+		const Vector3d y = elevationFrame -> normal (t);
+		Vector3d       x = cross (Vector3d (0, 0, 1), y);
+	
+		// Tool poles
+	
+		if (x == Vector3d ())
+			x = Vector3d (1, 0, 0);
+	
+		Vector3d z = cross (x, y);
+	
+		x .normalize ();
+		z .normalize ();
+	
+		originMatrix = Matrix4d (x [0], x [1], x [2], 0,
+		                         y [0], y [1], y [2], 0,
+		                         z [0], z [1], z [2], 0,
+		                         t [0], t [1], t [2], 1);
+	
+		invOriginMatrix = ~originMatrix;
+	}
+	catch (std::domain_error &)
+	{
+		/// ???
+	}
+}
+
+void
+X3DGeospatialObject::set_rotateYUp ()
+{
+	rotateYUp = geoOriginNode and geoOriginNode -> rotateYUp ();
+}
+
+Vector3d
+X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
+{
+	const auto point = referenceFrame -> convert (geoPoint);
+
+	if (rotateYUp)
+		return point * invOriginMatrix;
+
+	return point - origin;
 }
 
 Vector3d
 X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
 {
+	if (rotateYUp)
+		return referenceFrame -> apply (point * originMatrix);
+
 	return referenceFrame -> apply (point + origin);
 }
 
@@ -143,29 +207,25 @@ X3DGeospatialObject::getElevation (const Vector3d & point) const
 Vector3d
 X3DGeospatialObject::getUpVector (const Vector3d & point) const
 {
+	if (rotateYUp)
+		return invOriginMatrix .mult_dir_matrix (elevationFrame -> normal (point * originMatrix));
+
 	return elevationFrame -> normal (point + origin);
 }
 
-Vector3d
-X3DGeospatialObject::getCoord (const Vector3d & geoPoint) const
-{
-	return referenceFrame -> convert (geoPoint) - origin;
-}
-
 Matrix4d
-X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
+X3DGeospatialObject::getStandardLocationMatrix (const Vector3d & geoPoint) const
 {
 	// Position
 
-	const Vector3d p = referenceFrame -> convert (geoPoint);
-	const Vector3d t = p - origin;
+	const Vector3d t = referenceFrame -> convert (geoPoint);
 
 	// Let's work out the orientation at that location in order
 	// to maintain a view where +Y is in the direction of gravitional
 	// up for that region of the planet's surface. This will be the
 	// value of the rotation matrix for the transform.
 
-	const Vector3d y = elevationFrame -> normal (p);
+	const Vector3d y = elevationFrame -> normal (t);
 	Vector3d       x = cross (Vector3d (0, 0, 1), y);
 
 	// Tool poles
@@ -182,6 +242,18 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	                 y [0], y [1], y [2], 0,
 	                 z [0], z [1], z [2], 0,
 	                 t [0], t [1], t [2], 1);
+}
+
+Matrix4d
+X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
+{
+	auto locationMatrix = getStandardLocationMatrix (geoPoint);
+
+	if (rotateYUp)
+		return locationMatrix * invOriginMatrix;
+
+	locationMatrix .translate (origin);
+	return locationMatrix;
 }
 
 Vector3d

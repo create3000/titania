@@ -207,6 +207,18 @@ GeoViewpoint::getOrientation () const
 	return Rotation4d (orientation () .getValue ()) * localOrientation;
 }
 
+void
+GeoViewpoint::setCenterOfRotation (const Vector3d & value)
+{
+	centerOfRotation () = getGeoCoord (value);
+}
+
+Vector3d
+GeoViewpoint::getCenterOfRotation () const
+{
+	return getCoord (centerOfRotation ());
+}
+
 //  Same as in Viewpoint
 double
 GeoViewpoint::getFieldOfView () const
