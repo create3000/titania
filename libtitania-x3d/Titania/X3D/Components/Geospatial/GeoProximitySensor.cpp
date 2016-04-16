@@ -137,7 +137,7 @@ GeoProximitySensor::initialize ()
 void
 GeoProximitySensor::set_position (const Vector3f & position)
 {
-	geoCoord_changed () = getGeoCoord (position);
+	geoCoord_changed () = getGeoCoord (proximitySensor -> getPosition ());
 }
 
 void

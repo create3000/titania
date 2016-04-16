@@ -73,6 +73,7 @@ ProximitySensor::ProximitySensor (X3DExecutionContext* const executionContext) :
 	                    fields (),
 	             viewpointNode (),
 	           modelViewMatrix (),
+	                  position (),
 	                    inside (false)
 {
 	addType (X3DConstants::ProximitySensor);
@@ -131,7 +132,8 @@ ProximitySensor::update ()
 			Rotation4d rotation;
 			modelViewMatrix .get (translation, rotation, scale);
 
-			const Vector3d   position         = inverse (modelViewMatrix) .origin ();
+			position = inverse (modelViewMatrix) .origin ();
+
 			const Rotation4d orientation      = ~rotation;
 			const Vector3d   centerOfRotation = centerOfRotationMatrix .origin ();
 

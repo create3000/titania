@@ -106,50 +106,56 @@ ScreenGroup::getMatrix () const
 // Same as in Text
 void
 ScreenGroup::scale (const TraverseType type)
+throw (std::domain_error)
 {
-	modelViewMatrix = getModelViewMatrix (type);
-
-	Vector3d   translation, scale;
-	Rotation4d rotation;
-
-	modelViewMatrix .get (translation, rotation, scale);
-
-	const auto projectionMatrix = ProjectionMatrix4d ();
-	const auto viewport         = Viewport4i ();
-	const auto screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
-
-	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
-
-
-	// Snap to whole pixel
-		
-	auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
-
-	screenPoint .x (std::round (screenPoint .x ()));
-	screenPoint .y (std::round (screenPoint .y ()));
-
-	auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
-
-	offset .z (0);
-	screenMatrix .translate (offset);
-
-	// Assign modelViewMatrix and relative matrix
-
-	getModelViewMatrix () .set (screenMatrix);
+		modelViewMatrix = getModelViewMatrix (type);
+	
+		Vector3d   translation, scale;
+		Rotation4d rotation;
+	
+		modelViewMatrix .get (translation, rotation, scale);
+	
+		const auto projectionMatrix = ProjectionMatrix4d ();
+		const auto viewport         = Viewport4i ();
+		const auto screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
+	
+		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+	
+	
+		// Snap to whole pixel
+			
+		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
+	
+		screenPoint .x (std::round (screenPoint .x ()));
+		screenPoint .y (std::round (screenPoint .y ()));
+	
+		auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
+	
+		offset .z (0);
+		screenMatrix .translate (offset);
+	
+		// Assign modelViewMatrix and relative matrix
+	
+		getModelViewMatrix () .set (screenMatrix);
 }
 
 void
 ScreenGroup::traverse (const TraverseType type)
 {
-	getModelViewMatrix () .push ();
-
-	scale (type);
-
-	X3DGroupingNode::traverse (type);
-
-	getModelViewMatrix () .pop ();
+	try
+	{
+		getModelViewMatrix () .push ();
+	
+		scale (type);
+	
+		X3DGroupingNode::traverse (type);
+	
+		getModelViewMatrix () .pop ();
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

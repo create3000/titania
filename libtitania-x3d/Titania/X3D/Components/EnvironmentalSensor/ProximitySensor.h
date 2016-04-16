@@ -122,6 +122,12 @@ public:
 	position_changed () const
 	{ return *fields .position_changed; }
 
+	///  @name Member access
+
+	const Vector3d &
+	getPosition () const
+	{ return position; }
+
 	///  @name Operations
 
 	virtual
@@ -174,6 +180,7 @@ private:
 
 	X3DViewpointNode* viewpointNode;
 	Matrix4d          modelViewMatrix;
+	Vector3d          position;
 	bool              inside;
 
 };

@@ -114,7 +114,8 @@ private:
 	///  @name Operations
 
 	void
-	scale (const TraverseType);	
+	scale (const TraverseType)
+	throw (std::domain_error);
 
 	///  @name Static members
 

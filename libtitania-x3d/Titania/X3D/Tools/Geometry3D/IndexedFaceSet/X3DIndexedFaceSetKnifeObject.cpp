@@ -387,21 +387,28 @@ Vector3d
 X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> & edge,
                                                const std::pair <Vector3d, Vector3d> & cutPoints) const
 {
-	Vector3d closestPoint;
-
-	const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
-	const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
-	const auto edgeLine   = Line3d (point1, point2, math::point_type ());	                   
-	const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
-	const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-	// Determine closeset point.
-	edgeScreen .closest_point (cutScreen, closestPoint);
-	const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	edgeLine .closest_point (hitRay, closestPoint);
-
-	return closestPoint;
+	try
+	{
+		Vector3d closestPoint;
+	
+		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
+		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
+		const auto edgeLine   = Line3d (point1, point2, math::point_type ());	                   
+		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
+		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+	
+		// Determine closeset point.
+		edgeScreen .closest_point (cutScreen, closestPoint);
+		const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		edgeLine .closest_point (hitRay, closestPoint);
+	
+		return closestPoint;
+	}
+	catch (const std::domain_error &)
+	{
+		return Vector3d ();
+	}
 }
 
 ///  Determine and update hot and active points, edges and face
