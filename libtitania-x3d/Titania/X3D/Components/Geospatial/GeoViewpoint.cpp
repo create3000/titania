@@ -310,8 +310,10 @@ GeoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const 
 //	const double geoZNear = zNear * std::max (elevation / 100, 1.0);
 //	const double geoZFar  = zFar;
 
-	const double geoZNear = std::max (math::lerp (std::min (zNear, 1e4), 1e4, elevation / 1e7), 0.1);
+	const double geoZNear = std::max (math::lerp (std::min (zNear, 1e4), 1e4, elevation / 1e7), 1.0);
 	const double geoZFar  = std::max (math::lerp (1e6, std::max (zFar, 1e6),  elevation / 1e7), 1e6);
+
+__LOG__ << elevation << std::endl;
 
 	return perspective (getFieldOfView (), geoZNear, geoZFar, viewport);
 }

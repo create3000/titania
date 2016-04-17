@@ -201,7 +201,7 @@ X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
 double
 X3DGeospatialObject::getElevation (const Vector3d & point) const
 {
-	return getGeoCoord (point + origin) .z ();
+	return getGeoCoord (point) .z ();
 }
 
 Vector3d
