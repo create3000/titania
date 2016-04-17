@@ -201,7 +201,7 @@ X3DGeospatialObject::getGeoCoord (const Vector3d & point) const
 double
 X3DGeospatialObject::getElevation (const Vector3d & point) const
 {
-	return elevationFrame -> apply_radians (point + origin) .z ();
+	return getGeoCoord (point + origin) .z ();
 }
 
 Vector3d

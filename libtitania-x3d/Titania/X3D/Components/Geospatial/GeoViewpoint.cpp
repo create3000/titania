@@ -307,8 +307,11 @@ GeoViewpoint::background (const double zNear, const double zFar)
 Matrix4d
 GeoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
 {
-	const double geoZNear = zNear * std::max (elevation / 100, 1.0);
-	const double geoZFar  = zFar;
+//	const double geoZNear = zNear * std::max (elevation / 100, 1.0);
+//	const double geoZFar  = zFar;
+
+	const double geoZNear = std::max (math::lerp (std::min (zNear, 1e4), 1e4, elevation / 1e7), 0.1);
+	const double geoZFar  = std::max (math::lerp (1e6, std::max (zFar, 1e6),  elevation / 1e7), 1e6);
 
 	return perspective (getFieldOfView (), geoZNear, geoZFar, viewport);
 }
