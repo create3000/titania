@@ -106,7 +106,10 @@ private:
 	saveTexture ();
 
 	std::shared_ptr <Magick::Image>
-	getImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &) const;
+	getImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &) const
+	throw (X3D::Error <X3D::INVALID_NODE>,
+	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
 
 	std::vector <uint8_t>
 	getImageData (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode) const

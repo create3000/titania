@@ -132,24 +132,32 @@ X3DPixelTextureEditor::on_pixel_texture_save_as_clicked ()
 void
 X3DPixelTextureEditor::saveTexture ()
 {
-	const auto dialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
-
-	dialog -> getWindow () .add_filter (dialog -> getFileFilterImage ());
-	dialog -> getWindow () .set_filter (dialog -> getFileFilterImage ());
-
-	dialog -> getWindow () .set_current_name (_ ("image.png"));
-
-	if (dialog -> run ())
+	try
 	{
-		const auto image = getImage (X3D::X3DPtr <X3D::X3DTexture2DNode> (pixelTexture));
-
-		image -> quality (100);
-		image -> write (Glib::uri_unescape_string (dialog -> getWindow () .get_filename ()));
+		const auto dialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
+	
+		dialog -> getWindow () .add_filter (dialog -> getFileFilterImage ());
+		dialog -> getWindow () .set_filter (dialog -> getFileFilterImage ());
+	
+		dialog -> getWindow () .set_current_name (_ ("image.png"));
+	
+		if (dialog -> run ())
+		{
+			const auto image = getImage (X3D::X3DPtr <X3D::X3DTexture2DNode> (pixelTexture));
+	
+			image -> quality (100);
+			image -> write (Glib::uri_unescape_string (dialog -> getWindow () .get_filename ()));
+		}
 	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 std::shared_ptr <Magick::Image>
 X3DPixelTextureEditor::getImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode) const
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
 {
 	// Process image.
 	const auto width     = texture2DNode -> getWidth ();
