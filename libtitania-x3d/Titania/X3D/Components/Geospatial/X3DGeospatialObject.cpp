@@ -252,7 +252,10 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	if (rotateYUp)
 		return locationMatrix * invOriginMatrix;
 
-	locationMatrix .translate (origin);
+	locationMatrix [3] [0] -= origin .x ();
+	locationMatrix [3] [1] -= origin .y ();
+	locationMatrix [3] [2] -= origin .z ();
+
 	return locationMatrix;
 }
 

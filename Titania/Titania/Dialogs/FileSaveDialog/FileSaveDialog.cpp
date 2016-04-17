@@ -94,21 +94,29 @@ FileSaveDialog::getURL () const
 	return "file://" + getWindow () .get_file () -> get_path ();
 }
 
+bool
+FileSaveDialog::run ()
+{
+	getCompressFileBox () .set_visible (true);
+	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
+	const auto responseId = getWindow () .run ();
+
+	quit ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+		return true;
+
+	return false;
+}
+
 void
 FileSaveDialog::saveScene (const bool copy)
 {
 	getWindow () .add_filter (getFileFilterX3D ());
 	getWindow () .set_filter (getFileFilterX3D ());
 
-	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
-
-	const auto responseId = getWindow () .run ();
-
-	if (responseId == Gtk::RESPONSE_OK)
+	if (run ())
 		getBrowserWindow () -> save (getURL (), getCompressFileButton () .get_active (), copy);
-
-	quit ();
 }
 
 // Export image
@@ -146,9 +154,9 @@ FileSaveDialog::exportImage ()
 			try
 			{
 				const auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-				                                                 getImageHeightAdjustment () -> get_value (),
-				                                                 getImageAlphaChannelSwitch () .get_active (),
-				                                                 getImageAntialiasingAdjustment () -> get_value ());
+				                                                        getImageHeightAdjustment () -> get_value (),
+				                                                        getImageAlphaChannelSwitch () .get_active (),
+				                                                        getImageAntialiasingAdjustment () -> get_value ());
 
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
 				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));

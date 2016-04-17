@@ -68,6 +68,9 @@ public:
 	basic::uri
 	getURL () const;
 
+	bool
+	run ();
+
 	void
 	saveScene (const bool copy);
 

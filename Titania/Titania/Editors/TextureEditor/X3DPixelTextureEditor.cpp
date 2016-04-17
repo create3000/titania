@@ -21,15 +21,9 @@
  * NON-MILITARY USE ONLY
  *
  * All create3000 software are effectively free software with a non-military use
- * res{
-	addChildren (pixelTexture);
-}
-triction. It is free. Well commented source is provided. You may reuse the
+ * restriction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
- * mar{
-	addChildren (pixelTexture);
-}
-ked to indicate is contains 'non-military use only' components.
+ * marked to indicate is contains 'non-military use only' components.
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -55,6 +49,10 @@ ked to indicate is contains 'non-military use only' components.
  ******************************************************************************/
 
 #include "X3DPixelTextureEditor.h"
+
+#include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
+
+#include <Titania/X3D/Browser/ContextLock.h>
 
 namespace titania {
 namespace puck {
@@ -117,6 +115,141 @@ X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	}
 
 	return pixelTexture;
+}
+
+void
+X3DPixelTextureEditor::on_pixel_texture_open_clicked ()
+{
+
+}
+
+void
+X3DPixelTextureEditor::on_pixel_texture_save_as_clicked ()
+{
+	saveTexture ();
+}
+
+void
+X3DPixelTextureEditor::saveTexture ()
+{
+	const auto dialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
+
+	dialog -> getWindow () .add_filter (dialog -> getFileFilterImage ());
+	dialog -> getWindow () .set_filter (dialog -> getFileFilterImage ());
+
+	dialog -> getWindow () .set_current_name (_ ("image.png"));
+
+	if (dialog -> run ())
+	{
+		const auto image = getImage (X3D::X3DPtr <X3D::X3DTexture2DNode> (pixelTexture));
+
+		image -> quality (100);
+		image -> write (Glib::uri_unescape_string (dialog -> getWindow () .get_filename ()));
+	}
+}
+
+std::shared_ptr <Magick::Image>
+X3DPixelTextureEditor::getImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode) const
+{
+	// Process image.
+	const auto width     = texture2DNode -> getWidth ();
+	const auto height    = texture2DNode -> getHeight ();
+	const bool opaque    = texture2DNode -> getComponents () % 2;
+	const auto imageData = getImageData (texture2DNode);
+	const auto image     = std::make_shared <Magick::Image> (width, height, opaque ? "RGB" : "RGBA", Magick::CharPixel, imageData .data ());
+
+	if (opaque)
+	{
+		image -> matte (false);
+		image -> type (Magick::TrueColorType);
+	}
+	else
+		image -> type (Magick::TrueColorMatteType);
+
+	image -> flip ();
+	image -> resolutionUnits (Magick::PixelsPerInchResolution);
+	image -> density (Magick::Geometry (72, 72));
+
+	return image;
+}
+
+std::vector <uint8_t>
+X3DPixelTextureEditor::getImageData (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode) const
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
+{
+	if (not texture2DNode)
+		throw X3D::Error <X3D::INVALID_NODE> ("Node is NULL.");
+
+	X3D::ContextLock lock (texture2DNode -> getBrowser ());
+
+	const auto   width      = texture2DNode -> getWidth ();
+	const auto   height     = texture2DNode -> getHeight ();
+	const auto   components = texture2DNode -> getComponents ();
+
+	switch (components)
+	{
+		case 1:
+		{
+			// Copy image to array.
+
+			const auto stride = 3;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 2:
+		{
+			// Copy image to array.
+
+			const auto stride    = 4;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 3:
+		{
+			// Copy image to array.
+
+			const auto stride    = components;
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 4:
+		{
+			// Copy image to array.
+
+			const auto stride = components;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, texture2DNode -> getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		default:
+			break;
+	}
+
+	throw X3D::Error <X3D::INVALID_NODE> ("Unsupported comonent count.");
 }
 
 } // puck

@@ -1389,9 +1389,75 @@
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkLabel" id="label36">
+                              <object class="GtkGrid" id="grid15">
+                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">PixelTextureBox</property>
+                                <property name="row_spacing">8</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel" id="label36">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="box18">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkButton" id="PixelTextureOpenButton">
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="tooltip_text" translatable="yes">Open image.</property>
+                                        <signal name="clicked" handler="on_pixel_texture_open_clicked" swapped="no"/>
+                                        <child>
+                                          <object class="GtkImage" id="image29">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="stock">gtk-open</property>
+                                            <property name="icon_size">1</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="PixelTextureSaveAsButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="tooltip_text" translatable="yes">Save texture to file.</property>
+                                        <signal name="clicked" handler="on_pixel_texture_save_as_clicked" swapped="no"/>
+                                        <child>
+                                          <object class="GtkImage" id="image30">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="stock">gtk-save-as</property>
+                                            <property name="icon_size">1</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>

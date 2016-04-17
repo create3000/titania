@@ -68,8 +68,8 @@ public:
 	universal_transverse_mercator (const spheroid3 <Type> & spheroid, const int zone, const bool northern_hemisphere = true, const bool northing_first = true) :
 		southern_hemisphere (not northern_hemisphere),
 		      easting_first (not northing_first),
-		                  a (spheroid .a ()),
-		               ecc2 (1 - sqr (spheroid .c () / a)),
+		                  a (spheroid .semi_major_axis ()),
+		               ecc2 (1 - sqr (spheroid .semi_minor_axis () / a)),
 		                 EE (ecc2 / (1 - ecc2)),
 		                 E8 (8 * EE),
 		                 E9 (9 * EE),

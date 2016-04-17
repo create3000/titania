@@ -73,8 +73,8 @@ public:
 	geodetic (const spheroid3 <Type> & spheroid, const bool latitude_first = true, const bool radians = true) :
 		longitude_first (not latitude_first),
 		        degrees (not radians),
-		              a (spheroid .a ()),
-		              c (spheroid .c ()),
+		              a (spheroid .semi_major_axis ()),
+		              c (spheroid .semi_minor_axis ()),
 		           c2a2 (sqr (c / a)),
 		           ecc2 (1 - c2a2)
 	{ }

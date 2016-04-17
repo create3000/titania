@@ -2482,6 +2482,17 @@
     <None Include="share\titania\Library\Components\Followers\.Cobweb\PositionChaser2D" />
     <None Include="share\titania\Library\Components\Followers\.Cobweb\ScalarChaser" />
     <None Include="share\titania\Library\Components\Followers\.Cobweb\TexCoordChaser2D" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoCoordinate" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoElevationGrid" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoLocation" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoLOD" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoMetadata" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoOrigin" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoPositionInterpolator" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoProximitySensor" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoTouchSensor" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoTransform" />
+    <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoViewpoint" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -92,41 +92,41 @@ public:
 
 	///  Constructs a spheroid of from @a a semi-major axis and @a c semi-minor axis.
 	constexpr
-	spheroid3 (const Type & a, const Type & c) :
-		value { a, c }
+	spheroid3 (const Type & semi_major_axis, const Type & semi_minor_axis) :
+		value { semi_major_axis, semi_minor_axis }
 
 	{ }
 
 	///  Constructs a spheroid of from @a a semi-major axis and @a f_1 inverse flattening.
 	constexpr
-	spheroid3 (const Type & a, const Type & f_1, const inv_flattening_type &) :
-		spheroid3 (a, a * (1 - 1 / f_1))
+	spheroid3 (const Type & semi_major_axis, const Type & inverse_flattening, const inv_flattening_type &) :
+		spheroid3 (semi_major_axis, semi_major_axis * (1 - 1 / inverse_flattening))
 	{ }
 
 	///  @name Element access
 
 	///  Returns the semi-major axis of this spheroid.
 	const Type &
-	a () const
-	{ return value .a; }
+	semi_major_axis () const
+	{ return value .semi_major_axis; }
 
 	///  Returns the semi-minor axis of this spheroid.
 	const Type &
-	c () const
-	{ return value .c; }
+	semi_minor_axis () const
+	{ return value .semi_minor_axis; }
 
 	///  Returns the semi-minor axis of this spheroid.
 	Type
 	f () const
-	{ return 1 - c () / a (); }
+	{ return 1 - semi_minor_axis () / semi_major_axis (); }
 
 
 private:
 
 	struct Value
 	{
-		Type a;
-		Type c;
+		Type semi_major_axis;
+		Type semi_minor_axis;
 	};
 
 	Value value;
@@ -157,7 +157,7 @@ inline
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const spheroid3 <Type> & spheroid)
 {
-	return ostream << spheroid .a () << "  " << spheroid .c ();
+	return ostream << spheroid .semi_major_axis () << "  " << spheroid .semi_minor_axis ();
 }
 
 extern template class spheroid3 <float>;

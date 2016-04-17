@@ -85,12 +85,34 @@ protected:
 	const X3D::X3DPtr <X3D::PixelTexture> &
 	getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_pixel_texture_open_clicked () final override;
+
+	virtual
+	void
+	on_pixel_texture_save_as_clicked () final override;
+
 
 private:
 
 	///  @name Members
 
 	X3D::X3DPtr <X3D::PixelTexture> pixelTexture;
+
+	void
+	saveTexture ();
+
+	std::shared_ptr <Magick::Image>
+	getImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &) const;
+
+	std::vector <uint8_t>
+	getImageData (const X3D::X3DPtr <X3D::X3DTexture2DNode> & texture2DNode) const
+	throw (X3D::Error <X3D::INVALID_NODE>,
+	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
 
 };
 

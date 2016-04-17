@@ -162,6 +162,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageTextureEmbedButton", m_ImageTextureEmbedButton);
 	m_builder -> get_widget ("ImageTextureURLReloadButton", m_ImageTextureURLReloadButton);
 	m_builder -> get_widget ("PixelTextureBox", m_PixelTextureBox);
+	m_builder -> get_widget ("PixelTextureOpenButton", m_PixelTextureOpenButton);
+	m_builder -> get_widget ("PixelTextureSaveAsButton", m_PixelTextureSaveAsButton);
 	m_builder -> get_widget ("MovieTextureBox", m_MovieTextureBox);
 	m_builder -> get_widget ("MovieTextureURLBox", m_MovieTextureURLBox);
 	m_builder -> get_widget ("MovieTextureURLTreeView", m_MovieTextureURLTreeView);
@@ -283,6 +285,8 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TextureUnlinkButton'.
 	m_TextureUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_unlink_clicked));
 	m_ImageTextureEmbedButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_embed_image_clicked));
+	m_PixelTextureOpenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_pixel_texture_open_clicked));
+	m_PixelTextureSaveAsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_pixel_texture_save_as_clicked));
 
 	// Connect object Gtk::CheckButton with id 'TexturePropertiesCheckButton'.
 	m_TexturePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureProperties_toggled));

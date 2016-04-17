@@ -495,6 +495,14 @@ public:
 	getPixelTextureBox () const
 	{ return *m_PixelTextureBox; }
 
+	Gtk::Button &
+	getPixelTextureOpenButton () const
+	{ return *m_PixelTextureOpenButton; }
+
+	Gtk::Button &
+	getPixelTextureSaveAsButton () const
+	{ return *m_PixelTextureSaveAsButton; }
+
 	Gtk::Box &
 	getMovieTextureBox () const
 	{ return *m_MovieTextureBox; }
@@ -967,6 +975,14 @@ public:
 
 	virtual
 	void
+	on_pixel_texture_open_clicked () = 0;
+
+	virtual
+	void
+	on_pixel_texture_save_as_clicked () = 0;
+
+	virtual
+	void
 	on_textureProperties_toggled () = 0;
 
 	virtual
@@ -1134,6 +1150,8 @@ private:
 	Gtk::Button*                           m_ImageTextureEmbedButton;
 	Gtk::Button*                           m_ImageTextureURLReloadButton;
 	Gtk::Box*                              m_PixelTextureBox;
+	Gtk::Button*                           m_PixelTextureOpenButton;
+	Gtk::Button*                           m_PixelTextureSaveAsButton;
 	Gtk::Box*                              m_MovieTextureBox;
 	Gtk::Box*                              m_MovieTextureURLBox;
 	Gtk::TreeView*                         m_MovieTextureURLTreeView;
