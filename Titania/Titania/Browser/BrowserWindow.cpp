@@ -2772,7 +2772,7 @@ BrowserWindow::set_viewer ()
 			getArrowButton () .set_sensitive (true);
 
 			if (getLookAtButton () .get_active ())
-				getLookAtButton () .set_active (false);
+				getArrowButton ()  .set_active (true);
 
 			break;
 		}
@@ -2807,9 +2807,7 @@ BrowserWindow::set_viewer ()
 		}
 		case X3D::X3DConstants::LookAtViewer:
 		{
-			if (not getLookAtButton () .get_active ())
-				getLookAtButton () .set_active (true);
-
+			getLookAtButton () .set_active (true);
 			break;
 		}
 		default:
