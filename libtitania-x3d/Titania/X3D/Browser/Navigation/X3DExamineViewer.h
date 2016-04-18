@@ -101,6 +101,26 @@ protected:
 
 private:
 
+	///  @name Event handler
+
+	bool
+	on_1button_press_event (GdkEventButton*);
+
+	bool
+	on_2button_press_event (GdkEventButton*);
+
+	bool
+	on_3button_press_event (GdkEventButton*);
+
+	bool
+	on_1button_release_event (GdkEventButton*);
+
+	bool
+	on_2button_release_event (GdkEventButton*);
+
+	bool
+	on_3button_release_event (GdkEventButton*);
+
 	///  @name Operations
 
 	void
