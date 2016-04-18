@@ -2493,6 +2493,7 @@
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoTouchSensor" />
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoTransform" />
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoViewpoint" />
+    <None Include="share\titania\Library\Components\EnvironmentalSensor\.Cobweb\TransformSensor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
