@@ -133,6 +133,7 @@ private:
 	time_type        pressTime;
 	time_type        motionTime;
 	guint            button;
+	int              numClicks;
 	sigc::connection spin_id;
 
 };

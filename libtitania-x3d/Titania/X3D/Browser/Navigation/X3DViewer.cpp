@@ -54,6 +54,7 @@
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Shape/X3DShapeNode.h"
 #include "../../Rendering/ViewVolume.h"
 
 namespace titania {
@@ -145,6 +146,43 @@ X3DViewer::tb_project_to_sphere (const double r, const double x, const double y)
 
 	const double t = r / std::sqrt (2);
 	return t * t / d;
+}
+
+bool
+X3DViewer::lookAt (const double x, const double y, const bool straightenHorizon, const bool seek) const
+{
+	if (touch (x, y))
+	{
+		const auto hit = getBrowser () -> getNearestHit ();
+
+		if (seek)
+		{
+			// Seek: look at selected point and fly a little closer.
+
+			getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - M_PHI, straightenHorizon);
+		}
+		else
+		{
+			// Look at as specification say.
+
+			const auto modelViewMatrix = hit -> modelViewMatrix * getActiveViewpoint () -> getCameraSpaceMatrix ();
+			const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
+
+			getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI, straightenHorizon);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+X3DViewer::touch (const double x, const double y) const
+{
+	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
+
+	return not getBrowser () -> getHits () .empty ();
 }
 
 } // X3D

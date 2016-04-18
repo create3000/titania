@@ -52,8 +52,6 @@
 
 #include "LookAtViewer.h"
 
-#include "../../Components/Shape/X3DShapeNode.h"
-
 namespace titania {
 namespace X3D {
 
@@ -133,29 +131,10 @@ LookAtViewer::on_button_release_event (GdkEventButton* event)
 		if (event -> button not_eq button)
 			return false;
 
-		constexpr bool seek = true;
 		button = 0;
 
-		if (not motion and touch (event -> x, event -> y))
-		{
-			const auto hit = getBrowser () -> getNearestHit ();
-	
-			if (seek)
-			{
-				// Seek: look at selected point and fly a little closer.
-
-				getActiveViewpoint () -> lookAt (hit -> intersection -> point * getActiveViewpoint () -> getCameraSpaceMatrix (), 2 - M_PHI);
-			}
-			else
-			{
-				// Look at as specification say.
-
-				const auto modelViewMatrix = hit -> modelViewMatrix * getActiveViewpoint () -> getCameraSpaceMatrix ();
-				const auto bbox            = hit -> shape -> getBBox () * modelViewMatrix;
-
-				getActiveViewpoint () -> lookAt (bbox, 2 - M_PHI);
-			}
-		}
+		if (not motion)
+			lookAt (event -> x, event -> y, false, true);
 
 		isActive () = false;
 	}
@@ -222,14 +201,6 @@ LookAtViewer::getOrientationOffset ()
 	{
 	   return Rotation4d ();
 	}
-}
-
-bool
-LookAtViewer::touch (const double x, const double y)
-{
-	getBrowser () -> touch (x, getBrowser () -> get_height () - y);
-
-	return not getBrowser () -> getHits () .empty ();
 }
 
 void

@@ -174,7 +174,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 
 	// Dont't handle double click events.
 	if (event -> type not_eq GDK_BUTTON_PRESS)
-		return true;
+		return false;
 
 	if (getBrowser () -> getShiftKey () and getBrowser () -> getControlKey ())
 		return false;

@@ -113,7 +113,13 @@ protected:
 	getDistanceToCenter () const;
 
 	Vector3d
-	trackballProjectToSphere (double, double) const;
+	trackballProjectToSphere (double x, double y) const;
+
+	bool
+	lookAt (const double x, const double y, const bool straightenHorizon, const bool seek) const;
+
+	bool
+	touch (const double, const double) const;
 
 
 private:

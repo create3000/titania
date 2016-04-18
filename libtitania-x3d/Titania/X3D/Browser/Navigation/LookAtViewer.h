@@ -123,9 +123,6 @@ private:
 	Rotation4d
 	getOrientationOffset ();
 
-	bool
-	touch (const double, const double);
-
 	///  @name Static members
 
 	static const ComponentType component;
