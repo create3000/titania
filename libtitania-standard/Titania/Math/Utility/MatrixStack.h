@@ -127,6 +127,16 @@ public:
 	void
 	pop ()
 	{ stack .pop_back (); }
+	
+	///  @name Capacity
+
+	bool
+	empty () const
+	{ return stack .empty (); }
+
+	typename std::vector <value_type>::size_type
+	size () const
+	{ return stack .size (); }
 
 	///  @name Arithmetic operations
 

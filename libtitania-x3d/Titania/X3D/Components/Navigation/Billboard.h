@@ -125,8 +125,8 @@ private:
 	///  @name Operations
 
 	void
-	rotate (const TraverseType);
-
+	rotate (const TraverseType)
+	throw (std::domain_error);
 
 	///  @name Static members
 

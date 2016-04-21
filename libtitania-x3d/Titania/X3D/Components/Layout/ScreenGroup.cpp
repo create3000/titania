@@ -144,18 +144,18 @@ throw (std::domain_error)
 void
 ScreenGroup::traverse (const TraverseType type)
 {
-	try
-	{
 		getModelViewMatrix () .push ();
 	
-		scale (type);
-	
-		X3DGroupingNode::traverse (type);
+		try
+		{
+			scale (type);
+		
+			X3DGroupingNode::traverse (type);
+		}
+		catch (const std::domain_error &)
+		{ }
 	
 		getModelViewMatrix () .pop ();
-	}
-	catch (const std::domain_error &)
-	{ }
 }
 
 void

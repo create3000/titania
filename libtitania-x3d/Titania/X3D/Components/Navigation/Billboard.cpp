@@ -102,43 +102,39 @@ Billboard::getBBox () const
 
 void
 Billboard::rotate (const TraverseType type)
+throw (std::domain_error)
 {
-	try
+	const Matrix4d modelViewMatrix        = getModelViewMatrix (type);
+	const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
+	const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
+
+	if (axisOfRotation () == Vector3f ())
 	{
-		const Matrix4d modelViewMatrix        = getModelViewMatrix (type);
-		const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
-		const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
+		const Vector3d viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
 
-		if (axisOfRotation () == Vector3f ())
-		{
-			const Vector3d viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
+		Vector3d x = cross (viewerYAxis, billboardToViewer);
+		Vector3d y = cross (billboardToViewer, x);
+		Vector3d z = billboardToViewer;
 
-			Vector3d x = cross (viewerYAxis, billboardToViewer);
-			Vector3d y = cross (billboardToViewer, x);
-			Vector3d z = billboardToViewer;
+		// Compose rotation
 
-			// Compose rotation
+		x .normalize ();
+		y .normalize ();
 
-			x .normalize ();
-			y .normalize ();
-
-			matrix = Matrix4d (x [0], x [1], x [2], 0,
-			                   y [0], y [1], y [2], 0,
-			                   z [0], z [1], z [2], 0,
-			                   0,     0,     0,     1);
-		}
-		else
-		{
-			const Vector3d N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
-			const Vector3d N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
-
-			matrix = Matrix4d (Rotation4d (N2, N1));                                       // Rotate zAxis in plane
-		}
-
-		getModelViewMatrix () .mult_left (matrix);
+		matrix = Matrix4d (x [0], x [1], x [2], 0,
+		                   y [0], y [1], y [2], 0,
+		                   z [0], z [1], z [2], 0,
+		                   0,     0,     0,     1);
 	}
-	catch (const std::domain_error &)
-	{ }
+	else
+	{
+		const Vector3d N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
+		const Vector3d N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
+
+		matrix = Matrix4d (Rotation4d (N2, N1));                                       // Rotate zAxis in plane
+	}
+
+	getModelViewMatrix () .mult_left (matrix);
 }
 
 void
@@ -146,9 +142,14 @@ Billboard::traverse (const TraverseType type)
 {
 	getModelViewMatrix () .push ();
 
-	rotate (type);
-
-	X3DGroupingNode::traverse (type);
+	try
+	{
+		rotate (type);
+	
+		X3DGroupingNode::traverse (type);
+	}
+	catch (const std::domain_error &)
+	{ }
 
 	getModelViewMatrix () .pop ();
 }

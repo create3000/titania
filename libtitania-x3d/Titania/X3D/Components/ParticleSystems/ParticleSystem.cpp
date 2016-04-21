@@ -95,16 +95,16 @@ struct ParticleSystem::Particle
 		elapsedTime (0),
 		   distance (0)
 	{ }
-
+	
 	///  @name Members
 
-	const int32_t seed;
-	const float lifetime;
-	const Vector3f position;
-	const Vector3f velocity;
-	const Color4f color;
-	const float elapsedTime;
-	const float distance;
+	int32_t seed;
+	float lifetime;
+	Vector3f position;
+	Vector3f velocity;
+	Color4f color;
+	float elapsedTime;
+	float distance;
 
 };
 
@@ -328,11 +328,11 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",          bboxSize ());
 	addField (initializeOnly, "bboxCenter",        bboxCenter ());
 	addField (initializeOnly, "emitter",           emitter ());
+	addField (initializeOnly, "physics",           physics ());
 	addField (initializeOnly, "colorRamp",         colorRamp ());
 	addField (initializeOnly, "texCoordRamp",      texCoordRamp ());
 	addField (inputOutput,    "appearance",        appearance ());
 	addField (inputOutput,    "geometry",          geometry ());
-	addField (initializeOnly, "physics",           physics ());
 
 	particleSize () .setUnit (UnitCategory::LENGTH);
 
@@ -424,7 +424,6 @@ ParticleSystem::initialize ()
 	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
 	createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
 	maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
-	particleLifetime ()  .addInterest (this, &ParticleSystem::set_particle_buffers);
 	lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
 	particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
 	colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
@@ -432,8 +431,8 @@ ParticleSystem::initialize ()
 	emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
 	colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
 	texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
-	geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 	physics ()           .addInterest (this, &ParticleSystem::set_physics);
+	geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
 
 	boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
 
@@ -441,10 +440,10 @@ ParticleSystem::initialize ()
 	set_enabled ();
 	set_geometryType ();
 	set_emitter ();
+	set_physics ();
 	set_colorRamp ();
 	set_texCoordRamp ();
 	set_geometry ();
-	set_physics ();
 }
 
 void
@@ -561,8 +560,6 @@ ParticleSystem::set_enabled ()
 			pauseTime = chrono::now ();
 
 		isActive () = true;
-
-		set_particle_buffers ();
 	}
 	else
 	{
@@ -574,6 +571,8 @@ ParticleSystem::set_enabled ()
 
 		isActive () = false;
 	}
+
+	set_particle_buffers ();
 }
 
 void
@@ -1021,8 +1020,13 @@ ParticleSystem::set_particle_buffers ()
 	const size_t maxParticles = std::max (0, this -> maxParticles () .getValue ());
 
 	// Particle buffers
+	
+	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+	const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
 
-	std::vector <Particle> particleArray (maxParticles);
+	std::vector <Particle> particleArray (particles, particles + std::min <size_t> (maxParticles, numParticles));
+
+	particleArray .resize (maxParticles);
 
 	for (size_t i = 0; i < 2; ++ i)
 	{
@@ -1031,6 +1035,8 @@ ParticleSystem::set_particle_buffers ()
 	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	
+	numParticles = std::min <size_t> (numParticles, maxParticles);
 
 	// Vertex buffer
 
@@ -1038,7 +1044,6 @@ ParticleSystem::set_particle_buffers ()
 
 	// Reset state
 
-	numParticles = 0;
 	creationTime = chrono::now ();
 }
 

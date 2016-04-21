@@ -214,13 +214,13 @@ X3DGroupingNode::add (const MFNode & children)
 
 	size_t i = 0;
 
-	for (const auto & child : children)
+	for (const auto & node : children)
 	{
-		if (child and (i >= getVisible () .size () or getVisible () [i]))
+		if (node and (i >= getVisible () .size () or getVisible () [i]))
 		{
 			try
 			{
-				const auto innerNode = child -> getInnerNode ();
+				const auto innerNode = node -> getInnerNode ();
 
 				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
@@ -229,17 +229,17 @@ X3DGroupingNode::add (const MFNode & children)
 						case X3DConstants::X3DPointingDeviceSensorNode:
 						{
 							pointingDeviceSensors .emplace_back (dynamic_cast <X3DPointingDeviceSensorNode*> (innerNode));
-							goto NEXT;
+							break;
 						}
 						case X3DConstants::ClipPlane:
 						{
 							clipPlanes .emplace_back (dynamic_cast <ClipPlane*> (innerNode));
-							goto NEXT;
+							break;
 						}
 						case X3DConstants::LocalFog :
 						{
 							localFogs .emplace_back (dynamic_cast <LocalFog*> (innerNode));
-							goto NEXT;
+							break;
 						}
 						case X3DConstants::X3DLightNodeTool:
 						{
@@ -253,7 +253,7 @@ X3DGroupingNode::add (const MFNode & children)
 						case X3DConstants::X3DLightNode:
 						{
 							lights .emplace_back (dynamic_cast <X3DLightNode*> (innerNode));
-							goto NEXT;
+							break;
 						}
 						case X3DConstants::X3DChildNode:
 						{
@@ -262,7 +262,7 @@ X3DGroupingNode::add (const MFNode & children)
 							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
 
 							childNodes .emplace_back (childNode);
-							goto NEXT;
+							break;
 						}
 						case X3DConstants::BooleanFilter:
 						case X3DConstants::BooleanToggle:
@@ -277,17 +277,18 @@ X3DGroupingNode::add (const MFNode & children)
 						case X3DConstants::X3DScriptNode:
 						case X3DConstants::X3DSequencerNode:
 						case X3DConstants::X3DTriggerNode:
-							goto NEXT;
-						default:
 							break;
+						default:
+							continue;
 					}
+
+					break;
 				}
 			}
 			catch (const X3DError &)
 			{ }
 		}
 
-NEXT:
 		++ i;
 	}
 
