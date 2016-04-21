@@ -2494,6 +2494,7 @@
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoTransform" />
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoViewpoint" />
     <None Include="share\titania\Library\Components\EnvironmentalSensor\.Cobweb\TransformSensor" />
+    <None Include="share\titania\Library\Effects\Fire3.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -648,6 +648,9 @@
     <None Include="Examples\Arcadia\stage\t2.png" />
     <None Include="Examples\Arcadia\stage\temple.wrl" />
     <None Include="Examples\Arcadia\stage\temple.x3d" />
+    <None Include="Tests\ParticleSystems\Fire3.x3dv" />
+    <None Include="Tests\ParticleSystems\fire3.png" />
+    <None Include="Tests\ParticleSystems\fire4.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
