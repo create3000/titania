@@ -436,10 +436,10 @@ ParticleSystem::initialize ()
 
 	boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
 
+	set_emitter ();
 	set_geometry_shader ();
 	set_enabled ();
 	set_geometryType ();
-	set_emitter ();
 	set_physics ();
 	set_colorRamp ();
 	set_texCoordRamp ();
@@ -1044,7 +1044,8 @@ ParticleSystem::set_particle_buffers ()
 
 	// Reset state
 
-	creationTime = chrono::now ();
+	if (not emitterNode -> isExplosive ())
+		creationTime = chrono::now ();
 }
 
 void
@@ -1087,13 +1088,13 @@ ParticleSystem::set_transform_shader ()
 
 	transformShader -> addUserDefinedField (inputOutput, "modelViewMatrix",   new SFMatrix4f ());
 	transformShader -> addUserDefinedField (inputOutput, "stride",            new SFInt32 (sizeof (Particle) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity) / sizeof (float)));
-	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",     new SFInt32 (offsetof (Particle, color) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "seedOffset",        new SFInt32 (offsetof (Particle, seed)        / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "lifetimeOffset",    new SFInt32 (offsetof (Particle, lifetime)    / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "positionOffset",    new SFInt32 (offsetof (Particle, position)    / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "velocityOffset",    new SFInt32 (offsetof (Particle, velocity)    / sizeof (float)));
+	//transformShader -> addUserDefinedField (inputOutput, "colorOffset",     new SFInt32 (offsetof (Particle, color)       / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "elapsedTimeOffset", new SFInt32 (offsetof (Particle, elapsedTime) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "distanceOffset",    new SFInt32 (offsetof (Particle, distance) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "distanceOffset",    new SFInt32 (offsetof (Particle, distance)    / sizeof (float)));
 
 	// Color ramp
 
@@ -1109,10 +1110,10 @@ ParticleSystem::set_transform_shader ()
 	// BHV
 
 	transformShader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH::ArrayValue) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type)  / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min)   / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max)   / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left)  / sizeof (float)));
 	transformShader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH::ArrayValue, right) / sizeof (float)));
 
 	// Sort algorithm
@@ -1246,20 +1247,12 @@ ParticleSystem::prepareEvents ()
 		if (emitterNode -> isExplosive ())
 		{
 			const time_type now = chrono::now ();
-
-			if (numParticles < maxParticles ())
+			
+			if (numParticles == 0 or now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
 			{
 				creationTime = now;
 				numParticles = maxParticles ();
 				emitterNode -> resetShader ();
-			}
-			else
-			{
-				if (now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
-				{
-					creationTime = now;
-					emitterNode -> resetShader ();
-				}
 			}
 		}
 		else
