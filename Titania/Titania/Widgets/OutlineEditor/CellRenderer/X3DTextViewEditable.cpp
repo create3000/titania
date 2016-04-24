@@ -57,8 +57,9 @@ namespace puck {
 
 X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 	        Gtk::CellEditable (),
-	      Gtk::ScrolledWindow (),
+	                 Gtk::Box (),
 	editing_canceled_property (*this, "editing-canceled", false),
+	           scrolledWindow (),
 	                 textview (),
 	                multiline (multiline),
 	                validated (false),
@@ -66,10 +67,12 @@ X3DTextViewEditable::X3DTextViewEditable (const bool multiline) :
 {
 	get_style_context () -> add_class ("titania-textview-editable");
 	get_style_context () -> add_class ("entry");
-	set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-	textview .set_editable (true);
-	add (textview);
+	scrolledWindow .set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	textview       .set_editable (true);
+
+	pack_start (scrolledWindow, true, true);
+	scrolledWindow .add (textview);
 
 	show_all ();
 

@@ -152,8 +152,8 @@ main (int argc, char** argv)
 
 	// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
 	os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
-	os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars.
-	os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars.
+	//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
+	//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
 
 	{
 		BrowserApplication browserApplication (argc, argv);

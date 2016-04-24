@@ -58,7 +58,7 @@ namespace puck {
 
 class X3DTextViewEditable :
 	public Gtk::CellEditable,
-	public Gtk::ScrolledWindow
+	public Gtk::Box
 {
 public:
 
@@ -148,6 +148,7 @@ private:
 	///  @name Members
 
 	Glib::Property <bool> editing_canceled_property;
+	Gtk::ScrolledWindow   scrolledWindow;
 	Gtk::TextView         textview;
 	bool                  multiline;
 	bool                  validated;

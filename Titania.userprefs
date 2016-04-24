@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="libtitania-anyoptions/libtitania-anyoptions.cproj">
+﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Chrono/StopWatch.h">
     <Files>
