@@ -111,6 +111,11 @@ public:
 	{ return getNode <X3DShapeNode> () -> isHidden (); }
 
 	virtual
+	Box3d
+	getBBox () const override
+	{ return getNode <X3DShapeNode> () -> getBBox (); }
+
+	virtual
 	bool
 	isTransparent () const override
 	{ return getNode <X3DShapeNode> () -> isTransparent (); }
