@@ -1,3 +1,10 @@
+titania (1.4.2) xenial; urgency=medium
+
+  * Bump version number.
+  * date -R
+
+ -- Holger Seelig <holger@qualle>  Thu, 24 April 2016 06:02:00 +0200
+
 titania (1.4.1) xenial; urgency=medium
 
   * Fixed some bugs, and added some enhancements.

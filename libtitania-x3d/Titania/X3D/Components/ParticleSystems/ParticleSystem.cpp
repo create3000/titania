@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra?e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -550,26 +550,32 @@ ParticleSystem::set_enabled ()
 {
 	if (enabled () and maxParticles ())
 	{
-		if (isLive () and getExecutionContext () -> isLive ())
+		if (not isActive ())
 		{
-			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
-			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
-			pauseTime = 0;
-		}
-		else
-			pauseTime = chrono::now ();
+			if (isLive () and getExecutionContext () -> isLive ())
+			{
+				getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
+				getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+				pauseTime = 0;
+			}
+			else
+				pauseTime = chrono::now ();
 
-		isActive () = true;
+			isActive () = true;
+		}
 	}
 	else
 	{
-		if (isLive () and getExecutionContext () -> isLive ())
+		if (isActive ())
 		{
-			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
-			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
-		}
+			if (isLive () and getExecutionContext () -> isLive ())
+			{
+				getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
+				getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+			}
 
-		isActive () = false;
+			isActive () = false;
+		}
 	}
 
 	set_particle_buffers ();
