@@ -293,7 +293,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	    texCoordRampBufferId ({ 0, 0 }),
 	         transformShader (),
 	          geometryShader (),
-	             emitterNode (),
+	             emitterNode (executionContext -> getBrowser () -> getEmitter ()),
 	           colorRampNode (),
 	        texCoordRampNode (),
 	               numColors (0),
