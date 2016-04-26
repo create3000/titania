@@ -54,7 +54,7 @@
 #include "../../Types/Geometry.h"
 #include "../../Execution/X3DScene.h"
 
-#include <Titania/Geospatial/Interpolation.h>
+//#include <Titania/Geospatial/Interpolation.h>
 
 namespace titania {
 namespace X3D {
@@ -259,23 +259,23 @@ X3DGeospatialObject::getLocationMatrix (const Vector3d & geoPoint) const
 	return locationMatrix;
 }
 
-Vector3d
-X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination, const double weight)
-{
-	switch (getCoordinateSystem ())
-	{
-		case Geospatial::CoordinateSystemType::GD:
-			return geospatial::gd_lerp <double> (source, destination, weight, standardOrder, radians);
-
-		case Geospatial::CoordinateSystemType::UTM:
-			return geospatial::utm_lerp (source, destination, weight);
-
-		case Geospatial::CoordinateSystemType::GC:
-			return geospatial::gc_lerp (source, destination, weight);
-	}
-
-	return Vector3d ();
-}
+//Vector3d
+//X3DGeospatialObject::lerp (const Vector3d & source, const Vector3d & destination, const double weight)
+//{
+//	switch (getCoordinateSystem ())
+//	{
+//		case Geospatial::CoordinateSystemType::GD:
+//			return geospatial::gd_lerp <double> (source, destination, weight, standardOrder, radians);
+//
+//		case Geospatial::CoordinateSystemType::UTM:
+//			return geospatial::utm_lerp (source, destination, weight);
+//
+//		case Geospatial::CoordinateSystemType::GC:
+//			return geospatial::gc_lerp (source, destination, weight);
+//	}
+//
+//	return Vector3d ();
+//}
 
 } // X3D
 } // titania

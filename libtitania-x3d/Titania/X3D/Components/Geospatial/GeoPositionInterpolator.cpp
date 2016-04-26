@@ -122,12 +122,17 @@ GeoPositionInterpolator::set_keyValue ()
 void
 GeoPositionInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	const auto keyValue0 = getCoord (keyValue () [index0]);
-	const auto keyValue1 = getCoord (keyValue () [index1]);
-	const auto coord     = geospatial::gc_lerp (keyValue0, keyValue1, double (weight));
-
-	geovalue_changed () = getGeoCoord (coord);
-	value_changed ()    = coord;
+	try
+	{
+		const auto keyValue0 = getCoord (keyValue () [index0]);
+		const auto keyValue1 = getCoord (keyValue () [index1]);
+		const auto coord     = geospatial::gc_lerp (keyValue0, keyValue1, double (weight));
+	
+		geovalue_changed () = getGeoCoord (coord);
+		value_changed ()    = coord;
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

@@ -118,8 +118,8 @@ protected:
 	isStandardOrder () const
 	{ return standardOrder; }
 
-	Vector3d
-	lerp (const Vector3d &, const Vector3d &, const double);
+//	Vector3d
+//	lerp (const Vector3d &, const Vector3d &, const double);
 
 
 private:
