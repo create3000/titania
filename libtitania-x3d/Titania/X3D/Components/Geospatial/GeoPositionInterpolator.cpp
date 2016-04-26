@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Geospatial/Interpolation.h>
+
 namespace titania {
 namespace X3D {
 
@@ -120,8 +122,12 @@ GeoPositionInterpolator::set_keyValue ()
 void
 GeoPositionInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	geovalue_changed () = lerp (keyValue () [index0], keyValue () [index1], weight);
-	value_changed ()    = getCoord (geovalue_changed ());
+	const auto keyValue0 = getCoord (keyValue () [index0]);
+	const auto keyValue1 = getCoord (keyValue () [index1]);
+	const auto coord     = geospatial::gc_lerp (keyValue0, keyValue1, double (weight));
+
+	geovalue_changed () = getGeoCoord (coord);
+	value_changed ()    = coord;
 }
 
 void

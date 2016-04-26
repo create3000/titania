@@ -108,9 +108,9 @@ NormalInterpolator::interpolate (size_t index0, size_t index1, const float weigh
 	{
 		try
 		{
-			value_changed () [i] = math::slerp <Vector3f> (keyValue () [index0 + i],
-				                                            keyValue () [index1 + i],
-				                                            weight);
+			value_changed () [i] = math::simple_slerp <Vector3f> (keyValue () [index0 + i],
+				                                                   keyValue () [index1 + i],
+				                                                   weight);
 		}
 		catch (const std::domain_error &)
 		{ }

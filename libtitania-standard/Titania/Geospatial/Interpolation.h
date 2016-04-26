@@ -71,10 +71,10 @@ vector_slerp (Type source, Type destination, const T & t)
 	const T source_length      = abs (source);
 	const T destination_length = abs (destination);
 
-	source .normalize ();
+	source      .normalize ();
 	destination .normalize ();
 
-	return slerp (source, destination, t) * lerp (source_length, destination_length, t);
+	return simple_slerp (source, destination, t) * lerp (source_length, destination_length, t);
 }
 
 ///  Spherical linear interpolate between two geodetic vectors @a source
