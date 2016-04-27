@@ -119,6 +119,7 @@ X3DUserDefinedFieldsEditor::X3DUserDefinedFieldsEditor () :
 	getMFVec4fMenuItem ()     .signal_activate () .connect (sigc::bind <std::string> (sigc::mem_fun (*this, &X3DUserDefinedFieldsEditor::on_field_type_activate), "MFVec4f"));
 
 	getUserDefinedFieldsTreeView () .set_model (getUserDefinedFieldsListStore ());
+	getUserDefinedFieldsTreeView () .set_reorderable (true);
 }
 
 void
@@ -155,7 +156,7 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 		else
 		{
 			getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-			getUserDefinedFieldsTreeView () .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+			getUserDefinedFieldsTreeView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
 		}
 	}
 	else

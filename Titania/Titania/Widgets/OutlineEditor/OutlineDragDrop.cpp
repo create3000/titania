@@ -75,10 +75,10 @@ OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
 	treeView -> set_reorderable (true);
 
 	treeView -> enable_model_drag_source ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
-	                                      Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
+	                                        Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
 	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
-	                                    Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
+	                                      Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
 	treeView -> signal_button_press_event () .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_button_press_event), false);
 	treeView -> signal_drag_motion ()        .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_drag_motion), false);

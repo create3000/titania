@@ -5,11 +5,11 @@
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="1" Column="1" />
       <File FileName="libtitania-standard/Titania/Math/Functional.h" Line="243" Column="17" />
-      <File FileName="libtitania-standard/Titania/Math/Numbers/Vector3.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Interpolation/NormalInterpolator.cpp" Line="111" Column="61" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="58" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoPositionInterpolator.cpp" Line="54" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Interpolation/NormalInterpolator.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.cpp" Line="49" Column="12" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoPositionInterpolator.cpp" Line="135" Column="4" />
       <File FileName="libtitania-standard/Titania/Geospatial/Interpolation.h" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/X3DGeospatialObject.h" Line="123" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
