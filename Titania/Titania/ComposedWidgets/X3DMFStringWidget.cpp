@@ -79,6 +79,8 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 
 	buffer .addInterest (this, &X3DMFStringWidget::set_buffer);
 
+	treeView .set_reorderable (true);
+
 	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_drag_data_received));
 	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_selection_changed));
 	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_edited));
@@ -86,7 +88,7 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_remove_clicked));
 
 	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	treeView .enable_model_drag_dest ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+	treeView .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
 	treeView .set_model (listStore);
 }
 
