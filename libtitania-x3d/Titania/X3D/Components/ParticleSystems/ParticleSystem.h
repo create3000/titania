@@ -386,7 +386,7 @@ private:
 	///  @name Operations
 
 	void
-	prepareEvents ();
+	animate ();
 
 	void
 	update ();

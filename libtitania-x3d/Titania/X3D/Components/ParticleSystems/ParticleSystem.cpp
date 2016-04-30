@@ -453,7 +453,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> prepareEvents ()   .removeInterest (this, &ParticleSystem::prepareEvents);
+		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::animate);
 		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::update);
 		getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
 	}
@@ -522,8 +522,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
-			getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animate);
+			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
 
 			if (pauseTime)
 			{
@@ -536,8 +536,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
-			getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animate);
+			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
 
 			if (pauseTime == 0)
 				pauseTime = chrono::now ();
@@ -554,8 +554,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> prepareEvents () .addInterest (this, &ParticleSystem::prepareEvents);
-				getBrowser () -> sensors ()       .addInterest (this, &ParticleSystem::update);
+				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animate);
+				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
 				pauseTime = 0;
 			}
 			else
@@ -570,8 +570,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> prepareEvents () .removeInterest (this, &ParticleSystem::prepareEvents);
-				getBrowser () -> sensors ()       .removeInterest (this, &ParticleSystem::update);
+				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animate);
+				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
 			}
 
 			isActive () = false;
@@ -1030,7 +1030,10 @@ ParticleSystem::set_particle_buffers ()
 	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 	const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
 
-	std::vector <Particle> particleArray (particles, particles + std::min <size_t> (maxParticles, numParticles));
+	std::vector <Particle> particleArray;
+
+	if (particles)
+		particleArray .assign (particles, particles + numParticles);
 
 	particleArray .resize (maxParticles);
 
@@ -1040,6 +1043,7 @@ ParticleSystem::set_particle_buffers ()
 		glBufferData (GL_ARRAY_BUFFER, particleArray .size () * sizeof (Particle), particleArray .data (), GL_STATIC_COPY);
 	}
 
+	glUnmapBuffer (GL_ARRAY_BUFFER);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 	
 	numParticles = std::min <size_t> (numParticles, maxParticles);
@@ -1244,7 +1248,7 @@ ParticleSystem::traverse (const TraverseType type)
 }
 
 void
-ParticleSystem::prepareEvents ()
+ParticleSystem::animate ()
 {
 	try
 	{
@@ -1418,7 +1422,7 @@ ParticleSystem::draw (const ShapeContainer* const context)
 {
 	try
 	{
-		const bool   solid     = false;
+		const bool   solid     = true;
 		const GLenum frontFace = GL_CCW;
 
 		if (solid)
