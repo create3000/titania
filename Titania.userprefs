@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="3" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="8" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="9" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -138,7 +138,7 @@ VolumeEmitter::initialize ()
 	coord ()      .addInterest (surfaceNode -> coord ());
 
 	surfaceNode -> isPrivate (true);
-	surfaceNode -> creaseAngle () = 0;
+	surfaceNode -> creaseAngle () = M_PI;
 	surfaceNode -> convex ()      = false;
 	surfaceNode -> coordIndex ()  = coordIndex ();
 	surfaceNode -> coord ()       = coord ();

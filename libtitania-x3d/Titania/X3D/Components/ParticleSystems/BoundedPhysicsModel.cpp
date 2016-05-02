@@ -118,7 +118,8 @@ BoundedPhysicsModel::addTriangles (std::vector <Vector3f> & normals, std::vector
 
 		geometryNode -> triangulate (colors, texCoords, normals, vertices);
 
-		vertices_ .assign (vertices .begin (), vertices .end ());
+		for (const auto vertex : vertices)
+			vertices_ .emplace_back (vertex);
 	}
 }
 
