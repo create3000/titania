@@ -1,3 +1,9 @@
+titania (1.4.4) xenial; urgency=medium
+
+  * Fixes fatal bug with infinite redraw of whole window.
+
+ -- Holger Seelig <holger@qualle>  Thu, 12 May 2016 06:32:03 +0200
+
 titania (1.4.3) xenial; urgency=medium
 
   * Bump version number.
