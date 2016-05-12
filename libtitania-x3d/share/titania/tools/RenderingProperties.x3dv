@@ -1,6 +1,11 @@
-#X3D V3.3 utf8 Titania V0.6.7
+#X3D V3.3 utf8 Titania V1.4.4
 
-META "generator" "Titania V0.6.7, http://titania.create3000.de"
+META "comment" "World of Titania"
+META "created" "Thu, 12 May 2016 09:18:21 GMT"
+META "creator" "holger"
+META "generator" "Titania V1.4.4, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/RenderingProperties.x3dv"
+META "modified" "Thu, 12 May 2016 09:18:21 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -19,6 +24,73 @@ PROTO Interface [
 ]
 {
   Group { }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "RenderingProperties"
 }
 
 DEF RenderingProperties Interface { }
@@ -47,32 +119,37 @@ LayoutGroup {
     DEF Background Transform {
       translation 10 10 0
       children [
-        DEF Surface Shape {
-          appearance Appearance {
-            material DEF BackgroundMaterial Material {
-              diffuseColor 0 0 0
-              transparency 0.5
+        Transform {
+          translation 0 0 -1
+          children DEF Surface Shape {
+            appearance Appearance {
+              material DEF BackgroundMaterial Material {
+                diffuseColor 0 0 0
+                transparency 0.5
+              }
             }
-          }
-          geometry DEF BackgroundGeometry RoundedRectangle2D {
-            cornerRadius 5
-            size 27 27
+            geometry DEF BackgroundGeometry RoundedRectangle2D {
+              cornerRadius 5
+              size 27 27
+            }
           }
         }
-        DEF Border Shape {
-          appearance Appearance {
-            fillProperties FillProperties {
-              filled FALSE
-              hatched FALSE
+        Transform {
+          children DEF Border Shape {
+            appearance Appearance {
+              fillProperties FillProperties {
+                filled FALSE
+                hatched FALSE
+              }
+              lineProperties DEF LineProperties LineProperties {
+                linewidthScaleFactor 1
+              }
+              material DEF BorderMaterial Material {
+                diffuseColor 1 1 1
+              }
             }
-            lineProperties DEF LineProperties LineProperties {
-              linewidthScaleFactor 1
-            }
-            material DEF BorderMaterial Material {
-              diffuseColor 1 1 1
-            }
+            geometry USE BackgroundGeometry
           }
-          geometry USE BackgroundGeometry
         }
       ]
     }
