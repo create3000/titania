@@ -470,20 +470,19 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 // Style
 
-
 void
 BrowserWindow::on_style_updated ()
 {
-	try
-	{
-		const auto styleContext = getWidget () .get_style_context ();
-		const auto fg_normal    = styleContext -> get_color (Gtk::STATE_FLAG_NORMAL);
-		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
-		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
-		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-
-		std::string string;
-
+//	try
+//	{
+//		const auto styleContext = getWidget () .get_style_context ();
+//		const auto fg_normal    = styleContext -> get_color (Gtk::STATE_FLAG_NORMAL);
+//		const auto fg_selected  = styleContext -> get_color (Gtk::STATE_FLAG_SELECTED);
+//		const auto bg_normal    = styleContext -> get_background_color (Gtk::STATE_FLAG_NORMAL);
+//		const auto bg_selected  = styleContext -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+//
+//		std::string string;
+//
 //		string += "#OutlineTreeViewEditor .titania-textview-editable GtkTextView {";
 //		string += "  background-color: mix (" + bg_selected .to_string () + ", " + bg_normal .to_string () + ", 0.9);";
 //		string += "}";
@@ -495,13 +494,13 @@ BrowserWindow::on_style_updated ()
 //		string += "GtkExpander > GtkLabel {";
 //		string += "	border-bottom: 1px solid " + fg_normal .to_string () + ";";
 //		string += "}";
-
-		cssProvider -> load_from_data (string);
-	}
-	catch (const Glib::Error & error)
-	{
-	   __LOG__ << error .what () << std::endl;
-	}
+//
+//		cssProvider -> load_from_data (string);
+//	}
+//	catch (const Glib::Error & error)
+//	{
+//	   __LOG__ << error .what () << std::endl;
+//	}
 }
 
 // Keys

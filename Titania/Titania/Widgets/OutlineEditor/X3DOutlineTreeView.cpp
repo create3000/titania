@@ -146,7 +146,7 @@ X3DOutlineTreeView::on_style_updated ()
 
 	padCellrenderer -> property_cell_background_rgba () = selectedBackgroundColor;
 
-	queue_draw ();
+//	queue_draw (); // XXX: forces infinite loop of redraw of whole window
 }
 
 void

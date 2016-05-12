@@ -61,143 +61,141 @@
 
 //#include <Titania/X3D/JavaScript/PeaseBlossom/pbParser.h>
 
-
-
 #include <gtkmm.h>
 
+//Tree model columns:
+class ModelColumns :
+	public Gtk::TreeModel::ColumnRecord
+{
+public:
 
-  //Tree model columns:
-  class ModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
+	ModelColumns ()
+	{ add (m_col_id); add (m_col_name); add (m_col_draggable); add (m_col_receivesdrags); }
 
-    ModelColumns()
-    { add(m_col_id); add(m_col_name); add(m_col_draggable); add(m_col_receivesdrags); }
+	Gtk::TreeModelColumn <int>           m_col_id;
+	Gtk::TreeModelColumn <Glib::ustring> m_col_name;
+	Gtk::TreeModelColumn <bool>          m_col_draggable;
+	Gtk::TreeModelColumn <bool>          m_col_receivesdrags;
 
-    Gtk::TreeModelColumn<int> m_col_id;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
-    Gtk::TreeModelColumn<bool> m_col_draggable;
-    Gtk::TreeModelColumn<bool> m_col_receivesdrags;
-  };
+};
 
-  ModelColumns m_Columns;
-
+ModelColumns m_Columns;
 
 #ifndef GTKMM_EXAMPLEWINDOW_H
 #define GTKMM_EXAMPLEWINDOW_H
 
-#include <gtkmm.h>
+ #include <gtkmm.h>
 
-
-class ExampleWindow : public Gtk::Window
+class ExampleWindow :
+	public Gtk::Window
 {
 public:
-  ExampleWindow();
-  virtual ~ExampleWindow();
+
+	ExampleWindow ();
+	virtual
+	~ExampleWindow ();
+
 
 protected:
-  //Signal handlers:
-  void on_button_quit();
 
+	//Signal handlers:
+	void
+	on_button_quit ();
 
-  //Child widgets:
-  Gtk::Box m_VBox;
+	//Child widgets:
+	Gtk::Box m_VBox;
 
-  Gtk::ScrolledWindow m_ScrolledWindow;
-  Gtk::TreeView m_TreeView;
-  Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
+	Gtk::DrawingArea              m_DrawingArea;
+	Gtk::ScrolledWindow           m_ScrolledWindow;
+	Gtk::TreeView                 m_TreeView;
+	Glib::RefPtr <Gtk::ListStore> m_refTreeModel;
 
-  Gtk::ButtonBox m_ButtonBox;
-  Gtk::Button m_Button_Quit;
+	Gtk::ButtonBox m_ButtonBox;
+	Gtk::Button    m_Button_Quit;
+
 };
 
 #endif //GTKMM_EXAMPLEWINDOW_H
 
-
-
 #include <iostream>
 
-
-ExampleWindow::ExampleWindow()
-: m_VBox(Gtk::ORIENTATION_VERTICAL),
-  m_Button_Quit("_Quit", true)
+ExampleWindow::ExampleWindow () :
+	       m_VBox (Gtk::ORIENTATION_VERTICAL),
+	m_Button_Quit ("_Quit", true)
 {
-  set_title("Gtk::TreeView (Drag and Drop) example");
-  set_border_width(5);
-  set_default_size(400, 200);
+	set_title ("Gtk::TreeView (Drag and Drop) example");
+	set_border_width (5);
+	set_default_size (400, 200);
 
-  add(m_VBox);
+	add (m_VBox);
+	m_VBox .pack_start (m_DrawingArea);
 
-  //Add the TreeView, inside a ScrolledWindow, with the button underneath:
-  m_ScrolledWindow.add(m_TreeView);
+	//Add the TreeView, inside a ScrolledWindow, with the button underneath:
+	m_ScrolledWindow .add (m_TreeView);
 
-  //Only show the scrollbars when they are necessary:
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+	//Only show the scrollbars when they are necessary:
+	m_ScrolledWindow .set_policy (Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-  m_VBox.pack_start(m_ScrolledWindow);
-  m_VBox.pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
+	m_VBox .pack_start (m_ScrolledWindow);
+	m_VBox .pack_start (m_ButtonBox, Gtk::PACK_SHRINK);
 
-  m_ButtonBox.pack_start(m_Button_Quit, Gtk::PACK_SHRINK);
-  m_ButtonBox.set_border_width(5);
-  m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
-  m_Button_Quit.signal_clicked().connect(sigc::mem_fun(*this,
-              &ExampleWindow::on_button_quit) );
+	m_ButtonBox .pack_start (m_Button_Quit, Gtk::PACK_SHRINK);
+	m_ButtonBox .set_border_width (5);
+	m_ButtonBox .set_layout (Gtk::BUTTONBOX_END);
+	m_Button_Quit .signal_clicked ().connect (sigc::mem_fun (*this,
+	                                                        &ExampleWindow::on_button_quit));
 
-  //Create the Tree model:
-  //Use our derived model, which overrides some Gtk::TreeDragDest and
-  //Gtk::TreeDragSource virtual functions:
-  //The columns are declared in the overridden TreeModel.
-  m_refTreeModel = Gtk::ListStore::create(m_Columns);
-  m_TreeView.set_model(m_refTreeModel);
+	//Create the Tree model:
+	//Use our derived model, which overrides some Gtk::TreeDragDest and
+	//Gtk::TreeDragSource virtual functions:
+	//The columns are declared in the overridden TreeModel.
+	m_refTreeModel = Gtk::ListStore::create (m_Columns);
+	m_TreeView .set_model (m_refTreeModel);
 
-  //Enable Drag-and-Drop of TreeView rows:
-  //See also the derived TreeModel's *_vfunc overrides.
-  m_TreeView.enable_model_drag_source(Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
+	//Enable Drag-and-Drop of TreeView rows:
+	//See also the derived TreeModel's *_vfunc overrides.
+	m_TreeView .enable_model_drag_source (Gdk::BUTTON1_MASK, Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
-  m_TreeView.enable_model_drag_dest(Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
+	m_TreeView .enable_model_drag_dest (Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
-  //Fill the TreeView's model
-  Gtk::TreeModel::Row row = *(m_refTreeModel->append());
-  row[m_Columns.m_col_id] = 1;
-  row[m_Columns.m_col_name] = "Billy Bob";
+	//Fill the TreeView's model
+	Gtk::TreeModel::Row row = *(m_refTreeModel -> append ());
+	row [m_Columns.m_col_id]   = 1;
+	row [m_Columns.m_col_name] = "Billy Bob";
 
+	row                        = *(m_refTreeModel -> append ());
+	row [m_Columns.m_col_id]   = 2;
+	row [m_Columns.m_col_name] = "Joey Jojo";
 
-  row = *(m_refTreeModel->append());
-  row[m_Columns.m_col_id] = 2;
-  row[m_Columns.m_col_name] = "Joey Jojo";
+	row                        = *(m_refTreeModel -> append ());
+	row [m_Columns.m_col_id]   = 3;
+	row [m_Columns.m_col_name] = "Rob McRoberts";
 
-  row = *(m_refTreeModel->append());
-  row[m_Columns.m_col_id] = 3;
-  row[m_Columns.m_col_name] = "Rob McRoberts";
+	//Add the TreeView's view columns:
+	m_TreeView .append_column ("ID", m_Columns .m_col_id);
+	m_TreeView .append_column ("Name", m_Columns .m_col_name);
 
-
-  //Add the TreeView's view columns:
-  m_TreeView.append_column("ID", m_Columns.m_col_id);
-  m_TreeView.append_column("Name", m_Columns.m_col_name);
-
-  show_all_children();
+	show_all_children ();
 }
 
-ExampleWindow::~ExampleWindow()
+ExampleWindow::~ExampleWindow ()
+{ }
+
+void
+ExampleWindow::on_button_quit ()
 {
+	hide ();
 }
-
-void ExampleWindow::on_button_quit()
-{
-  hide();
-}
-
-
-
 
 #include <gtkmm/application.h>
 
-int main(int argc, char *argv[])
+int
+main (int argc, char* argv [ ])
 {
-  auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
+	auto app = Gtk::Application::create (argc, argv, "org.gtkmm.example");
 
-  ExampleWindow window;
+	ExampleWindow window;
 
-  //Shows the window and returns when it is closed.
-  return app->run(window);
+	//Shows the window and returns when it is closed.
+	return app -> run (window);
 }
