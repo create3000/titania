@@ -5,7 +5,7 @@ META "created" "Thu, 12 May 2016 09:18:21 GMT"
 META "creator" "holger"
 META "generator" "Titania V1.4.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/RenderingProperties.x3dv"
-META "modified" "Thu, 12 May 2016 09:18:21 GMT"
+META "modified" "Thu, 12 May 2016 10:07:44 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -78,13 +78,33 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-          }
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 Transform {
+              children DEF Border Shape {
+                appearance Appearance {
+                  fillProperties DEF _2 FillProperties {
+                    filled FALSE
+                    hatched FALSE
+                  }
+                  lineProperties DEF LineProperties LineProperties {
+                    linewidthScaleFactor 4
+                  }
+                  material DEF BorderMaterial Material {
+                    diffuseColor 0.461 0.461 0.461
+                  }
+                }
+                geometry DEF BackgroundGeometry RoundedRectangle2D {
+                  cornerRadius 5
+                  size 27 27
+                }
+              }
+            }
           }
         ]
       }
@@ -93,7 +113,9 @@ WorldInfo {
   title "RenderingProperties"
 }
 
-DEF RenderingProperties Interface { }
+DEF RenderingProperties Interface {
+  linewidthScaleFactor 4
+}
 
 Background {
   transparency 1
@@ -125,32 +147,17 @@ LayoutGroup {
             appearance Appearance {
               material DEF BackgroundMaterial Material {
                 diffuseColor 0 0 0
-                transparency 0.5
+                emissiveColor 1 1 1
+                transparency 0.385057
               }
-            }
-            geometry DEF BackgroundGeometry RoundedRectangle2D {
-              cornerRadius 5
-              size 27 27
-            }
-          }
-        }
-        Transform {
-          children DEF Border Shape {
-            appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
-              lineProperties DEF LineProperties LineProperties {
-                linewidthScaleFactor 1
-              }
-              material DEF BorderMaterial Material {
-                diffuseColor 1 1 1
+              texture ImageTexture {
+                url "library/gradient.png"
               }
             }
             geometry USE BackgroundGeometry
           }
         }
+        USE _1
       ]
     }
     DEF Statistics Transform {
@@ -180,7 +187,7 @@ LayoutGroup {
 DEF RenderingPropertiesScript Script {
   inputOnly      SFVec2f set_textBounds
   inputOutput    SFFloat cornerRadius 5
-  inputOutput    SFFloat linewidthScaleFactor 1
+  inputOutput    SFFloat linewidthScaleFactor 4
   inputOutput    SFVec2f borderWidth 10 10
   initializeOnly SFNode  statistics USE Statistics
   initializeOnly SFNode  background USE Background

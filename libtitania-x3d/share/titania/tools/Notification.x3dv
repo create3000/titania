@@ -5,7 +5,7 @@ META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/Notification.x3dv"
-META "modified" "Thu, 12 May 2016 09:16:23 GMT"
+META "modified" "Thu, 12 May 2016 10:53:06 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -87,6 +87,109 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
+            value DEF NotificationScript Script {
+              inputOnly      SFString set_string
+              inputOnly      SFVec2f  set_textBounds
+              inputOnly      SFBool   set_start
+              inputOnly      SFBool   set_end
+              inputOutput    SFTime   cycleInterval 5
+              inputOutput    SFFloat  linewidthScaleFactor 4
+              inputOutput    SFVec2f  padding 18 10
+              outputOnly     SFBool   isActive
+              outputOnly     SFVec3f  translation_changed
+              outputOnly     SFVec2f  scale_changed
+              initializeOnly SFNode   background DEF BackgroundGeometry RoundedRectangle2D {
+                cornerRadius 4
+                size 36 20
+              }
+              initializeOnly SFNode   text DEF Text Text {
+                string ""
+                fontStyle ScreenFontStyle {
+                  family "SANS"
+                  pointSize 9
+                  spacing 1.6
+                  justify [
+                    "END",
+                    "BEGIN"
+                  ]
+                }
+              }
+              initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
+                startTime 1463050385.04147
+              }
+              initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
+                cycleInterval 2
+                startTime 1463050391.04147
+                stopTime 1463050385.04147
+              }
+
+              url "javascript:
+
+var cornerRadius = 4;
+
+function set_string (value, time)
+{
+	var array = value .split (\"\\n\");
+
+	for (var i = 0; i < array .length; ++ i)
+		text .string [i] = array [i];
+
+	text .string .length = array .length;
+
+	if (!isActive || endTimer .isActive)
+		startTimer .startTime = time;
+
+	endTimer .stopTime  = time;
+	endTimer .startTime = time + startTimer .cycleInterval + cycleInterval;
+}
+
+function set_textBounds (value, time)
+{
+	background .size = value .add (padding .multiply (2));
+	
+	// Align background line geometry on whole pixel
+	
+	if (is_odd (linewidthScaleFactor))
+	{
+		if (is_even (background .size .x))
+			++ background .size .x;
+		
+		if (is_even (background .size .y))
+			++ background .size .y;
+	}
+	
+	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 
+	                                   -background .size .y / 2,
+	                                   0);
+	                                   
+	scale_changed .x = 1;
+	scale_changed .y = background .size .x / background .size .y;
+}
+
+function set_start (value, time)
+{
+	if (value)
+		isActive = true;
+}
+
+function set_end (value, time)
+{
+	if (!value && !startTimer .isActive)
+		isActive = false;
+}
+
+function is_even (value)
+{
+	return ! is_odd (value);
+}
+
+function is_odd (value)
+{
+	return value & 1;
+}
+"
+              directOutput TRUE
+            }
           }
         ]
       }
@@ -97,6 +200,8 @@ WorldInfo {
 
 DEF Notification Interface {
   cycleInterval 5
+  linewidthScaleFactor 4
+  padding 18 10
   isActive TRUE
 }
 
@@ -135,7 +240,7 @@ LayoutGroup {
   }
   children [
     DEF _1 Transform {
-      translation -14 -8.5 0
+      translation -14 -10 0
       children [
         Transform {
           translation 0 0 -1
@@ -143,12 +248,16 @@ LayoutGroup {
             appearance Appearance {
               material DEF BackgroundMaterial Material {
                 diffuseColor 0 0 0
+                emissiveColor 1 1 1
+              }
+              texture ImageTexture {
+                url "library/gradient.png"
+              }
+              textureTransform DEF _2 TextureTransform {
+                scale 1 1.8
               }
             }
-            geometry DEF BackgroundGeometry RoundedRectangle2D {
-              cornerRadius 4
-              size 37 17
-            }
+            geometry USE BackgroundGeometry
           }
         }
         Transform {
@@ -159,10 +268,10 @@ LayoutGroup {
                 hatched FALSE
               }
               lineProperties DEF LineProperties LineProperties {
-                linewidthScaleFactor 1
+                linewidthScaleFactor 4
               }
               material DEF BorderMaterial Material {
-                diffuseColor 1 1 1
+                diffuseColor 0.461 0.461 0.461
               }
             }
             geometry USE BackgroundGeometry
@@ -171,25 +280,14 @@ LayoutGroup {
       ]
     }
     Transform {
-      translation -15 -8 0
+      translation -15 -10 0
       children Shape {
         appearance Appearance {
           material DEF TextMaterial Material {
             diffuseColor 1 1 1
           }
         }
-        geometry DEF Text Text {
-          string ""
-          fontStyle ScreenFontStyle {
-            family "SANS"
-            pointSize 9
-            spacing 1.6
-            justify [
-              "END",
-              "BEGIN"
-            ]
-          }
-        }
+        geometry USE Text
       }
     }
   ]
@@ -206,91 +304,7 @@ DEF FadeIn ScalarInterpolator {
   ]
 }
 
-DEF NotificationScript Script {
-  inputOnly      SFString set_string
-  inputOnly      SFVec2f  set_textBounds
-  inputOnly      SFBool   set_start
-  inputOnly      SFBool   set_end
-  inputOutput    SFTime   cycleInterval 5
-  inputOutput    SFFloat  linewidthScaleFactor 1
-  inputOutput    SFVec2f  padding 18 8
-  outputOnly     SFBool   isActive
-  outputOnly     SFVec3f  translation_changed
-  initializeOnly SFNode   background USE BackgroundGeometry
-  initializeOnly SFNode   text USE Text
-  initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
-    startTime 1452829911.62804
-  }
-  initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
-    cycleInterval 2
-    startTime 1452829915.62804
-    stopTime 1452829911.62804
-  }
-
-  url "javascript:
-
-var cornerRadius = 4;
-
-function set_string (value, time)
-{
-	var array = value .split (\"\\n\");
-
-	for (var i = 0; i < array .length; ++ i)
-		text .string [i] = array [i];
-
-	text .string .length = array .length;
-
-	if (!isActive || endTimer .isActive)
-		startTimer .startTime = time;
-
-	endTimer .stopTime  = time;
-	endTimer .startTime = time + startTimer .cycleInterval + cycleInterval;
-}
-
-function set_textBounds (value, time)
-{
-	background .size = value .add (padding .multiply (2));
-	
-	// Align background line geometry on whole pixel
-	
-	if (is_odd (linewidthScaleFactor))
-	{
-		if (is_even (background .size .x))
-			++ background .size .x;
-		
-		if (is_even (background .size .y))
-			++ background .size .y;
-	}
-	
-	translation_changed = new SFVec3f (Math .floor (value .x / -2) - padding .x + cornerRadius, 
-	                                   -background .size .y / 2,
-	                                   0);
-}
-
-function set_start (value, time)
-{
-	if (value)
-		isActive = true;
-}
-
-function set_end (value, time)
-{
-	if (!value && !startTimer .isActive)
-		isActive = false;
-}
-
-function is_even (value)
-{
-	return ! is_odd (value);
-}
-
-function is_odd (value)
-{
-	return value & 1;
-}
-"
-  directOutput TRUE
-}
+USE NotificationScript
 
 ROUTE Notification.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
 ROUTE Notification.linewidthScaleFactor_changed TO LineProperties.set_linewidthScaleFactor
@@ -316,5 +330,6 @@ ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
 ROUTE NotificationScript.translation_changed TO _1.set_translation
 ROUTE Notification.padding_changed TO NotificationScript.set_padding
+ROUTE NotificationScript.scale_changed TO _2.set_scale
 
 EXPORT Notification
