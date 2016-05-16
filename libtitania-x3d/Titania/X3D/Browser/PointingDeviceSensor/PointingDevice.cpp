@@ -68,7 +68,7 @@ PointingDevice::PointingDevice (X3DExecutionContext* const executionContext) :
 	button_release_conncection (),
 	 motion_notify_conncection (),
 	  leave_notify_conncection (),
-                       cursor (Gdk::TOP_LEFT_ARROW),
+                       cursor ("default"),
 	                    button (0),
 	                    isOver (false)
 { }
@@ -112,7 +112,7 @@ PointingDevice::set_pickable ()
 
 		getBrowser () -> setButtonReleaseEvent ();
 		getBrowser () -> setLeaveNotifyEvent ();
-		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+		getBrowser () -> setCursor ("default");
 	}
 
 	// Connect.
@@ -142,7 +142,7 @@ PointingDevice::set_motion (const double x, const double y)
 		{
 			isOver = true;
 			cursor = getBrowser () -> getCursor ();
-			getBrowser () -> setCursor (Gdk::HAND2);
+			getBrowser () -> setCursor (button == 1 ? "grabbing" : "grab");
 		}
 	}
 	else
@@ -150,7 +150,7 @@ PointingDevice::set_motion (const double x, const double y)
 		if (isOver)
 		{
 			isOver = false;
-			getBrowser () -> setCursor (cursor);
+			getBrowser () -> setCursor (button == 1 ? "grabbing" : cursor);
 		}
 	}
 }
@@ -185,7 +185,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 	{
 		if (getBrowser () -> setButtonPressEvent (event -> x, getBrowser () -> get_height () - event -> y))
 		{
-			getBrowser () -> setCursor (Gdk::HAND1);
+			getBrowser () -> setCursor ("grabbing");
 			getBrowser () -> finished () .addInterest (this, &PointingDevice::set_verify_motion, event -> x, event -> y);
 			return true;
 		}
@@ -201,15 +201,15 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 		getBrowser () -> setButtonReleaseEvent ();
 
 	if (isOver)
-		getBrowser () -> setCursor (Gdk::HAND2);
+		getBrowser () -> setCursor ("grab");
 	else
-		getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+		getBrowser () -> setCursor ("default");
 
 	getBrowser () -> finished () .addInterest (this, &PointingDevice::set_verify_motion, event -> x, event -> y);
 	getBrowser () -> addEvent ();
 
 	button = 0;
-	cursor = Gdk::TOP_LEFT_ARROW;
+	cursor = "default";
 	return false;
 }
 

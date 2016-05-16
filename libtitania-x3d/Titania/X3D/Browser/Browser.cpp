@@ -86,7 +86,7 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
-	         cursor (Gdk::X_CURSOR)
+	         cursor ("default")
 {
 	addType (X3DConstants::Browser);
 
@@ -103,7 +103,7 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
-	         cursor (Gdk::X_CURSOR)
+	         cursor ("default")
 {
 	addType (X3DConstants::Browser);
 
@@ -148,7 +148,7 @@ Browser::initialize ()
 	set_can_focus (true);
 	grab_focus ();
 
-	setCursor (Gdk::TOP_LEFT_ARROW);
+	setCursor ("default");
 }
 
 void
@@ -185,9 +185,9 @@ Browser::on_unmap ()
 }
 
 void
-Browser::set_cursor (const Gdk::CursorType value)
+Browser::set_cursor (const String & value)
 {
-	get_window () -> set_cursor (Gdk::Cursor::create (value));
+	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
 }
 
 void
@@ -195,7 +195,7 @@ Browser::set_viewer ()
 {
 	const auto type = getCurrentViewer ();
 
-	setCursor (Gdk::TOP_LEFT_ARROW);
+	setCursor ("default");
 
 	if (type not_eq viewer -> getType () .back ())
 	{

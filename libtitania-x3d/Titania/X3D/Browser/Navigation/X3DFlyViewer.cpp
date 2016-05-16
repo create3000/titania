@@ -123,7 +123,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				disconnect ();
 
 				getBrowser () -> addEvent ();
-				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> setCursor ("move");
 				getActiveViewpoint () -> transitionStop ();
 				addCollision ();
 
@@ -154,7 +154,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				disconnect ();
 
 				getBrowser () -> addEvent ();
-				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> setCursor ("move");
 				getActiveViewpoint () -> transitionStop ();
 				addCollision ();
 
@@ -182,7 +182,7 @@ X3DFlyViewer::on_button_release_event (GdkEventButton* event)
 	disconnect ();
 
 	getBrowser () -> addEvent ();
-	getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+	getBrowser () -> setCursor ("default");
 	removeCollision ();
 
 	isActive () = false;

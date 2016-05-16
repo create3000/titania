@@ -153,7 +153,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (not isOver)
 			{
-				getBrowser () -> setCursor (Gdk::TARGET);
+				getBrowser () -> setCursor ("cell");
 				isOver = true;
 			}
 		}
@@ -161,7 +161,7 @@ LookAtViewer::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (isOver)
 			{
-				getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+				getBrowser () -> setCursor ("default");
 				isOver = false;
 			}
 		}

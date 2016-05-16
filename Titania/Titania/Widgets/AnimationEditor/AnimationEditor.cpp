@@ -2458,7 +2458,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 
 	else if (button == 2)
 	{
-		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::FLEUR));
+		getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "move"));
 
 		fromPoint = X3D::Vector2d (event -> x, event -> y);
 	}
@@ -2469,7 +2469,7 @@ AnimationEditor::on_button_press_event (GdkEventButton* event)
 bool
 AnimationEditor::on_button_release_event (GdkEventButton* event)
 {
-	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::TOP_LEFT_ARROW));
+	getDrawingArea () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getDrawingArea () .queue_draw ();
 
 	if (button == 1)

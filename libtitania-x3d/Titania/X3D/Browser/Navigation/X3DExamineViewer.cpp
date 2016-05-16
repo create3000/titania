@@ -151,7 +151,7 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 	
 				disconnect ();
 	
-				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> setCursor ("move");
 				getActiveViewpoint () -> transitionStop ();
 	
 				fromVector = trackballProjectToSphere (event -> x, event -> y);
@@ -169,7 +169,7 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 	
 				disconnect ();
 	
-				getBrowser () -> setCursor (Gdk::FLEUR);
+				getBrowser () -> setCursor ("move");
 				getActiveViewpoint () -> transitionStop ();
 	
 				fromPoint = getPointOnCenterPlane (event -> x, event -> y);
@@ -229,7 +229,7 @@ X3DExamineViewer::on_1button_release_event (GdkEventButton* event)
 	{
 		case 1:
 		{
-			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+			getBrowser () -> setCursor ("default");
 
 			if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
 			{
@@ -243,7 +243,7 @@ X3DExamineViewer::on_1button_release_event (GdkEventButton* event)
 		}
 		case 2:
 		{
-			getBrowser () -> setCursor (Gdk::TOP_LEFT_ARROW);
+			getBrowser () -> setCursor ("default");
 
 			isActive () = false;
 			return false;

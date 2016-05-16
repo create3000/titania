@@ -88,7 +88,7 @@ PointingDevice::set_picking (bool value)
 		motion_notify_conncection  .disconnect ();
 		leave_notify_conncection   .disconnect ();
 
-		getBrowser () -> setCursor (Gdk::ARROW);
+		getBrowser () -> setCursor ("default");
 		isOver = false;
 
 		getBrowser () -> leaveNotifyEvent ();
@@ -105,7 +105,7 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (not isOver)
 			{
-				getBrowser () -> setCursor (Gdk::HAND2);
+				getBrowser () -> setCursor ("grab");
 				isOver = true;
 			}
 
@@ -115,7 +115,7 @@ PointingDevice::on_motion_notify_event (GdkEventMotion* event)
 		{
 			if (isOver)
 			{
-				getBrowser () -> setCursor (Gdk::ARROW);
+				getBrowser () -> setCursor ("default");
 				isOver = false;
 			}
 		}
@@ -139,17 +139,17 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 		{
 			getBrowser () -> buttonPressEvent ();
 
-			getBrowser () -> setCursor (Gdk::HAND1);
+			getBrowser () -> setCursor ("grabbing");
 
 			return true;
 		}
 		else
-			getBrowser () -> setCursor (Gdk::FLEUR);
+			getBrowser () -> setCursor ("move");
 	}
 
 	else if (button == 2)
 	{
-		getBrowser () -> setCursor (Gdk::FLEUR);
+		getBrowser () -> setCursor ("move");
 	}
 
 	return false;
@@ -163,10 +163,10 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	if (event -> button == 1)
 	{
 		if (isOver)
-			getBrowser () -> setCursor (Gdk::HAND2);
+			getBrowser () -> setCursor ("grab");
 
 		else
-			getBrowser () -> setCursor (Gdk::ARROW);
+			getBrowser () -> setCursor ("default");
 
 		getBrowser () -> buttonReleaseEvent ();
 	}
@@ -174,10 +174,10 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	else if (event -> button == 2)
 	{
 		if (isOver)
-			getBrowser () -> setCursor (Gdk::HAND2);
+			getBrowser () -> setCursor ("grab");
 
 		else
-			getBrowser () -> setCursor (Gdk::ARROW);
+			getBrowser () -> setCursor ("default");
 	}
 
 	return false;
@@ -186,7 +186,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 bool
 PointingDevice::on_leave_notify_event (GdkEventCrossing*)
 {
-	getBrowser () -> setCursor (Gdk::ARROW);
+	getBrowser () -> setCursor ("default");
 	isOver = false;
 
 	getBrowser () -> leaveNotifyEvent ();

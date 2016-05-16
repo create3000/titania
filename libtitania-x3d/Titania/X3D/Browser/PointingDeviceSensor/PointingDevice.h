@@ -142,9 +142,9 @@ private:
 	sigc::connection motion_notify_conncection;
 	sigc::connection leave_notify_conncection;
 
-	Gdk::CursorType cursor;
-	size_t          button;
-	bool            isOver;
+	std::string cursor;
+	size_t      button;
+	bool        isOver;
 
 };
 

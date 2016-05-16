@@ -169,7 +169,7 @@ BrowserWindow::initialize ()
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
 	// Window
-	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::TOP_LEFT_ARROW));
+	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getWidget () .grab_focus ();
 }
 

@@ -83,10 +83,10 @@ public:
 	///  @name Member access
 
 	void
-	setCursor (const Gdk::CursorType value)
+	setCursor (const std::string & value)
 	{ cursor = value; }
 
-	const SFEnum <Gdk::CursorType> &
+	const SFString &
 	getCursor () const
 	{ return cursor; }
 
@@ -151,7 +151,7 @@ private:
 	on_unmap () override;
 
 	void
-	set_cursor (const Gdk::CursorType);
+	set_cursor (const String &);
 
 	void
 	set_viewer ();
@@ -173,7 +173,7 @@ private:
 	X3DPtr <X3DViewer>       viewer;
 	X3DPtr <KeyDevice>       keyDevice;
 	X3DPtr <PointingDevice>  pointingDevice;
-	SFEnum <Gdk::CursorType> cursor;
+	SFString                 cursor;
 };
 
 } // X3D

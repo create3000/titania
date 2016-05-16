@@ -134,7 +134,7 @@ X3DUserInterface::on_constructed ()
 	constructed_connection .disconnect ();
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
-	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::TOP_LEFT_ARROW));
+	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 
 	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
