@@ -1,17 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="3" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/BoundedPhysicsModel.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="513" Column="1" />
+      <File FileName="Titania/share/titania/Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3d" Line="24" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/BoundedPhysicsModel.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/X3DParticleEmitterNode.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/ParticleSystems/Bits/BVH.h" Line="1" Column="1" />
-      <File FileName="debian/changelog" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="20" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
