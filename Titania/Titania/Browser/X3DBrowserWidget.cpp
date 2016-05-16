@@ -154,7 +154,9 @@ X3DBrowserWidget::set_initialized ()
 
 	// 
 
-	getCurrentScene () .addInterest (this, &X3DBrowserWidget::set_scene);
+	getCurrentScene ()  .addInterest (this, &X3DBrowserWidget::set_scene);
+	getCurrentScene ()  .addInterest (this, &X3DBrowserWidget::set_history);
+	worldURL_changed () .addInterest (this, &X3DBrowserWidget::set_history);
 
 	getBrowserNotebook () .set_visible (true);
 }
@@ -892,6 +894,28 @@ X3DBrowserWidget::set_executionContext ()
 		scene = std::move (currentScene);
 
 	executionContext = getCurrentBrowser () -> getExecutionContext ();
+}
+
+void
+X3DBrowserWidget::set_history ()
+{
+	const std::string title    = getCurrentScene () -> getTitle ();
+	const basic::uri  worldURL = getCurrentScene () -> getWorldURL ();
+
+	if (worldURL .empty ())
+		return;
+
+	try
+	{
+		if (getCurrentScene () -> getMetaData ("titania-history") == "FALSE")
+			return;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
+	// Update history.
+
+	getHistory () -> setItem (title, worldURL, getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 }
 
 void

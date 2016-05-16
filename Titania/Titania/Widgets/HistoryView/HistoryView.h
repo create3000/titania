@@ -97,9 +97,6 @@ private:
 	void
 	set_history ();
 
-	void
-	set_scene ();
-
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;

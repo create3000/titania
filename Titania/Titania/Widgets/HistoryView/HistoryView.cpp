@@ -68,7 +68,6 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())
 {
-	getCurrentScene () .addInterest (this, &HistoryView::set_scene);
 	setup ();
 }
 
@@ -112,14 +111,13 @@ HistoryView::initialize ()
 {
 	X3DHistoryViewInterface::initialize ();
 
-	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
+	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory")); // XXX: Put this in X3DBrowserWidget
 }
 
 void
 HistoryView::on_map ()
 {
 	getBrowserWindow () -> getHistory () -> addInterest (this, &HistoryView::set_history);
-	getBrowserWindow () -> worldURL_changed () .addInterest (this, &HistoryView::set_scene);
 
 	set_history ();
 }
@@ -128,13 +126,15 @@ void
 HistoryView::on_unmap ()
 {
 	getBrowserWindow () -> getHistory () -> removeInterest (this, &HistoryView::set_history);
-	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &HistoryView::set_scene);
 }
 
 void
 HistoryView::set_history ()
 {
 	// Fill model.
+
+	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
+	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
 	const auto rows = getTreeView () .get_selection () -> get_selected_rows ();
 
@@ -159,38 +159,6 @@ HistoryView::set_history ()
 
 	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
 	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
-}
-
-void
-HistoryView::set_scene ()
-{
-	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
-
-	const std::string title    = getCurrentScene () -> getTitle ();
-	const basic::uri  worldURL = getCurrentScene () -> getWorldURL ();
-
-	if (worldURL .empty ())
-		return;
-
-	try
-	{
-		if (getCurrentScene () -> getMetaData ("titania-history") == "FALSE")
-			return;
-	}
-	catch (const X3D::X3DError &)
-	{ }
-
-	// Update history.
-
-	getBrowserWindow () -> getHistory () -> setItem (title, worldURL, getBrowserWindow () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
-
-	// Move row.
-
-	if (not getWidget () .get_mapped ())
-		return;
-	
-	set_history ();
 }
 
 void

@@ -1,10 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="513" Column="1" />
-      <File FileName="Titania/share/titania/Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3d" Line="24" Column="1" />
+      <File FileName="Titania/share/titania/Prototypes/0.1/Geometry2D/RoundedRectangle2D.x3d" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="78" Column="54" />
+      <File FileName="Titania/run.pl" Line="33" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

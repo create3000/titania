@@ -261,6 +261,9 @@ private:
 	set_executionContext ();
 
 	void
+	set_history ();
+
+	void
 	set_urlError ();
 
 	///  @name Operations
