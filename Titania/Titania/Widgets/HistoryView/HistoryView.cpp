@@ -76,10 +76,10 @@ HistoryView::configure ()
 {
 	X3DHistoryViewInterface::configure ();
 			
-	if (not getConfig () -> hasItem ("rememberHistory"))
-		getConfig () -> setItem ("rememberHistory", 12);
+	if (not getBrowserWindow () -> getConfig () -> hasItem ("rememberHistory"))
+		getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", -1);
 
-	const auto rememberHistory = getConfig () -> getInteger ("rememberHistory");
+	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
 
 	switch (rememberHistory)
 	{
@@ -104,14 +104,6 @@ HistoryView::configure ()
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
 		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
-}
-
-void
-HistoryView::initialize ()
-{
-	X3DHistoryViewInterface::initialize ();
-
-	getBrowserWindow () -> getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory")); // XXX: Put this in X3DBrowserWidget
 }
 
 void
@@ -186,31 +178,31 @@ HistoryView::on_button_press_event (GdkEventButton* event)
 void
 HistoryView::on_never_toggled ()
 {
-	getConfig () -> setItem ("rememberHistory", 0);
+	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", 0);
 }
 
 void
 HistoryView::on_on_month_toggled ()
 {
-	getConfig () -> setItem ("rememberHistory", 1);
+	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", 1);
 }
 
 void
 HistoryView::on_half_year_toggled ()
 {
-	getConfig () -> setItem ("rememberHistory", 6);
+	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", 6);
 }
 
 void
 HistoryView::on_one_year_toggled ()
 {
-	getConfig () -> setItem ("rememberHistory", 12);
+	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", 12);
 }
 
 void
 HistoryView::on_always_toggled ()
 {
-	getConfig () -> setItem ("rememberHistory", -1);
+	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", -1);
 }
 
 HistoryView::~HistoryView ()

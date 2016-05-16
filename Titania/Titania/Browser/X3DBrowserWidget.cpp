@@ -106,6 +106,8 @@ X3DBrowserWidget::initialize ()
 	getMasterBrowser () -> setAntialiasing (4);
 	getMasterBrowser () -> show ();
 	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
+
+	getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
 }
 
 void

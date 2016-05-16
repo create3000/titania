@@ -96,6 +96,12 @@ public:
 	std::vector <Type*>
 	getWidgets (Gtk::Widget &);
 
+	///  @name Configuration handling
+
+	const std::shared_ptr <Configuration> &
+	getConfig () const
+	{ return config; }
+
 	/// @name Dialog handling
 	
 	bool
@@ -158,12 +164,6 @@ protected:
 	bool
 	isInitialized () const
 	{ return not constructed_connection .connected (); }
-
-	///  @name Configuration handling
-
-	const std::shared_ptr <Configuration> &
-	getConfig () const
-	{ return config; }
 
 	/// @name Member access
 	

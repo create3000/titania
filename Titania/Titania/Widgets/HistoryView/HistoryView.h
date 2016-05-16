@@ -84,10 +84,6 @@ private:
 
 	virtual
 	void
-	initialize () final override;
-
-	virtual
-	void
 	on_map () final override;
 
 	virtual
