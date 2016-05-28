@@ -437,54 +437,47 @@ X3DFlyViewer::disconnect ()
 void
 X3DFlyViewer::display ()
 {
-	try
-	{
-		PolygonMode polygonMode (GL_FILL);
+	PolygonMode polygonMode (GL_FILL);
 
-		// Configure HUD
+	// Configure HUD
 
-		const auto & viewport = getBrowser () -> getRectangle ();
-		const int    width    = viewport [2];
-		const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getRectangle ();
+	const int    width    = viewport [2];
+	const int    height   = viewport [3];
 
-		const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
+	const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
 
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (projection .data ());
-		glMatrixMode (GL_MODELVIEW);
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (projection .data ());
+	glMatrixMode (GL_MODELVIEW);
 
-		// Display Rubberband.
+	// Display Rubberband.
 
-		glDisable (GL_DEPTH_TEST);
+	glDisable (GL_DEPTH_TEST);
 
-		glLoadIdentity ();
+	glLoadIdentity ();
 
-		const Vector3d fromPoint (fromVector .x (), height - fromVector .z (), 0);
-		const Vector3d toPoint   (toVector   .x (), height - toVector   .z (), 0);
+	const Vector3d fromPoint (fromVector .x (), height - fromVector .z (), 0);
+	const Vector3d toPoint   (toVector   .x (), height - toVector   .z (), 0);
 
-		// Draw a black and a white line.
-		glLineWidth (2);
-		glColor3f (0, 0, 0);
+	// Draw a black and a white line.
+	glLineWidth (2);
+	glColor3f (0, 0, 0);
 
-		glBegin (GL_LINES);
-		glVertex3dv (fromPoint .data ());
-		glVertex3dv (toPoint   .data ());
-		glEnd ();
+	glBegin (GL_LINES);
+	glVertex3dv (fromPoint .data ());
+	glVertex3dv (toPoint   .data ());
+	glEnd ();
 
-		glLineWidth (1);
-		glColor3f (1, 1, 1);
+	glLineWidth (1);
+	glColor3f (1, 1, 1);
 
-		glBegin (GL_LINES);
-		glVertex3dv (fromPoint .data ());
-		glVertex3dv (toPoint   .data ());
-		glEnd ();
+	glBegin (GL_LINES);
+	glVertex3dv (fromPoint .data ());
+	glVertex3dv (toPoint   .data ());
+	glEnd ();
 
-		glEnable (GL_DEPTH_TEST);
-	}
-	catch (const std::domain_error &)
-	{
-		// unProjectPoint is not posible
-	}
+	glEnable (GL_DEPTH_TEST);
 }
 
 void

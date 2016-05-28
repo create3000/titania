@@ -75,7 +75,8 @@ X3DKeyDeviceSensorContext::setControlKey (const bool value)
 {
 	internalControlKey = value;
 
-	controlKey = internalControlKey or externalKeys .control ();
+	if ((internalControlKey or externalKeys .control ()) not_eq controlKey)
+		controlKey = internalControlKey or externalKeys .control ();
 }
 
 void
@@ -83,7 +84,8 @@ X3DKeyDeviceSensorContext::setShiftKey (const bool value)
 {
 	internalShiftKey = value;
 
-	shiftKey = internalShiftKey or externalKeys .shift ();
+	if ((internalShiftKey or externalKeys .shift ()) not_eq controlKey)
+		shiftKey = internalShiftKey or externalKeys .shift ();
 }
 
 void
@@ -91,7 +93,8 @@ X3DKeyDeviceSensorContext::setAltKey (const bool value)
 {
 	internalAltKey = value;
 
-	altKey = internalAltKey or externalKeys .alt ();
+	if ((internalAltKey or externalKeys .alt ()) not_eq controlKey)
+		altKey = internalAltKey or externalKeys .alt ();
 }
 
 bool
@@ -99,13 +102,13 @@ X3DKeyDeviceSensorContext::on_external_key_press_event (GdkEventKey* event)
 {
 	externalKeys .press (event);
 
-	if (internalControlKey or externalKeys .control () not_eq controlKey)
+	if ((internalControlKey or externalKeys .control ()) not_eq controlKey)
 		controlKey = internalControlKey or externalKeys .control ();
 
-	if (internalShiftKey or externalKeys .shift () not_eq shiftKey)
+	if ((internalShiftKey or externalKeys .shift ()) not_eq shiftKey)
 		shiftKey = internalShiftKey or externalKeys .shift ();
 
-	if (internalAltKey or externalKeys .alt () not_eq altKey )
+	if ((internalAltKey or externalKeys .alt ()) not_eq altKey)
 		altKey = internalAltKey or externalKeys .alt ();
 
 	return false;
@@ -116,13 +119,13 @@ X3DKeyDeviceSensorContext::on_external_key_release_event (GdkEventKey* event)
 {
 	externalKeys .release (event);
 
-	if (internalControlKey or externalKeys .control () not_eq controlKey)
+	if ((internalControlKey or externalKeys .control ()) not_eq controlKey)
 		controlKey = internalControlKey or externalKeys .control ();
 	
-	if (internalShiftKey or externalKeys .shift () not_eq shiftKey)
+	if ((internalShiftKey or externalKeys .shift ()) not_eq shiftKey)
 		shiftKey = internalShiftKey or externalKeys .shift ();
 	
-	if (internalAltKey or externalKeys .alt () not_eq altKey)
+	if ((internalAltKey or externalKeys .alt ()) not_eq altKey)
 		altKey = internalAltKey or externalKeys .alt ();
 
 	return false;
