@@ -390,9 +390,9 @@ ScreenText::transform (const TraverseType type)
 
 		modelViewMatrix .get (translation, rotation, scale);
 
-		const auto projectionMatrix = ProjectionMatrix4d ();
-		const auto viewport         = Viewport4i ();
-		const auto screenScale      = fontStyle -> getCurrentViewpoint () -> getScreenScale (translation, viewport);
+		const auto & projectionMatrix = getBrowser () -> getProjectionMatrix ();
+		const auto   viewport         = Viewport4i ();
+		const auto   screenScale      = fontStyle -> getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
 		Matrix4d screenMatrix;
 

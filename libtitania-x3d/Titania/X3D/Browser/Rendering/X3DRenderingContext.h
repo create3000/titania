@@ -73,6 +73,14 @@ public:
 
 	///  @name Member access
 
+	void
+	setProjectionMatrix (const Matrix4d & value)
+	{ projectionMatrix = value; }
+
+	Matrix4d
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
+
 	size_t
 	getMaxClipPlanes () const
 	{ return maxClipPlanes; }
@@ -122,6 +130,8 @@ private:
 
 	///  @name Members
 
+
+	Matrix4d            projectionMatrix;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
 	DepthTestStack      depthTest;

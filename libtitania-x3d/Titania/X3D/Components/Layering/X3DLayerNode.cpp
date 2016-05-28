@@ -347,7 +347,7 @@ X3DLayerNode::pointer ()
 
 		getModelViewMatrix () .identity ();
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), currentViewport -> getRectangle ());
+		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), getBrowser () -> getProjectionMatrix (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
 
 		currentViewport -> push ();

@@ -100,6 +100,9 @@ protected:
 	void
 	initialize (Text* const, const X3DFontStyleNode* const);
 
+	X3DBrowser*
+	getBrowser () const;
+
 	void
 	setBBox (const Box3d & value)
 	{ bbox = value; }

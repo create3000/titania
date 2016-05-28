@@ -608,11 +608,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::reshape (const double zNear, const double zFar)
 {
-	glMatrixMode (GL_PROJECTION);
-
-	glLoadMatrixd (getProjectionMatrix (zNear, zFar, Viewport4i ()) .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	getBrowser () -> setProjectionMatrix (getProjectionMatrix (zNear, zFar, Viewport4i ()));
 }
 
 void

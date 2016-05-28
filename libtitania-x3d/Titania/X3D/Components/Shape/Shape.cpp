@@ -180,7 +180,7 @@ Shape::pointer ()
 		return;
 	}
 
-	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), ProjectionMatrix4d (), Viewport4i ());
+	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), getBrowser () -> getProjectionMatrix (), Viewport4i ());
 
 	if (not getGeometry () -> intersects (hitRay, itersections))
 		return;

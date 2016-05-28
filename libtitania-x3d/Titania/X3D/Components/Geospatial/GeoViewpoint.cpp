@@ -297,11 +297,7 @@ GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 void
 GeoViewpoint::background (const double zNear, const double zFar)
 {
-	glMatrixMode (GL_PROJECTION);
-
-	glLoadMatrixd (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()) .data ());
-
-	glMatrixMode (GL_MODELVIEW);
+	getBrowser () -> setProjectionMatrix (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()));
 }
 
 Matrix4d

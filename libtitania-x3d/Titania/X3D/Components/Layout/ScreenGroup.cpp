@@ -115,13 +115,13 @@ throw (std::domain_error)
 	
 		modelViewMatrix .get (translation, rotation, scale);
 	
-		const auto projectionMatrix = ProjectionMatrix4d ();
-		const auto viewport         = Viewport4i ();
-		const auto screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
+		const auto & projectionMatrix = getBrowser () -> getProjectionMatrix ();
+		const auto   viewport         = Viewport4i ();
+		const auto   screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
 	
-		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (scale .x () < 0 ? -1 : 1),
+		                                                    screenScale .y () * (scale .y () < 0 ? -1 : 1),
+		                                                    screenScale .z () * (scale .z () < 0 ? -1 : 1)));
 	
 	
 		// Snap to whole pixel

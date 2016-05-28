@@ -348,6 +348,12 @@ X3DBackgroundNode::draw ()
 
 	getCurrentViewpoint () -> background (1, std::max (2.0, 3 * SIZE * scale .z ()));
 
+	// Setup projection matrix
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+	glMatrixMode (GL_MODELVIEW);
+
 	// Rotate and scale background
 
 	Vector3d   translation;

@@ -243,9 +243,7 @@ X3DRenderer::getDistance (const Vector3d & translation) const
 
 		modelViewMatrix .mult_right (projectionMatrix);
 	
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (modelViewMatrix .data ());
-		glMatrixMode (GL_MODELVIEW);
+		getBrowser () -> setProjectionMatrix (modelViewMatrix);
 
 		return getDepth ();
 	}
@@ -414,9 +412,7 @@ X3DRenderer::gravite ()
 
 		modelViewMatrix .mult_right (projectionMatrix);
 
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (modelViewMatrix .data ());
-		glMatrixMode (GL_MODELVIEW);
+		getBrowser () -> setProjectionMatrix (modelViewMatrix);
 
 		auto distance = getDepth ();
 
@@ -490,6 +486,12 @@ X3DRenderer::display ()
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
+	// Setup projection matrix
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+	glMatrixMode (GL_MODELVIEW);
+
 	// Enable global lights
 
 	for (const auto & object : getGlobalObjects ())
@@ -532,6 +534,14 @@ X3DRenderer::display ()
 void
 X3DRenderer::depth ()
 {
+	// Setup projection matrix
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+	glMatrixMode (GL_MODELVIEW);
+
+	// Render to depth buffer
+
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);

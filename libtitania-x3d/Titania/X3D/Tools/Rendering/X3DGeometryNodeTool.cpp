@@ -304,7 +304,7 @@ X3DGeometryNodeTool::draw (const ShapeContainer* const container)
 	}
 
 	viewport         = Viewport4i ();
-	projectionMatrix = ProjectionMatrix4d ();
+	projectionMatrix = getBrowser () -> getProjectionMatrix ();
 	modelViewMatrix  = container -> getModelViewMatrix ();
 }
 

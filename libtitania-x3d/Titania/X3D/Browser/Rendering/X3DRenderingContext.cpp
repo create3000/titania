@@ -54,18 +54,17 @@
 #include "../Rendering/MotionBlur.h"
 #include "../../Rendering/OpenGL.h"
 
-#include <Titania/String.h>
-
 namespace titania {
 namespace X3D {
 
 X3DRenderingContext::X3DRenderingContext () :
-	  X3DBaseNode (),
-	maxClipPlanes (0),
-	   clipPlanes (),
-	    depthTest (),
-	  depthOffset (),
-	   motionBlur (new MotionBlur (getExecutionContext ()))
+	     X3DBaseNode (),
+	projectionMatrix (),
+	   maxClipPlanes (0),
+	      clipPlanes (),
+	       depthTest (),
+	     depthOffset (),
+	      motionBlur (new MotionBlur (getExecutionContext ()))
 {
 	addChildren (motionBlur);
 

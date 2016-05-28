@@ -97,6 +97,12 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 		vertical (text, fontStyle);
 }
 
+X3DBrowser*
+X3DTextGeometry::getBrowser () const
+{
+	return fontStyle -> getBrowser ();
+}
+
 void
 X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fontStyle)
 {
