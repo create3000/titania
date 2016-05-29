@@ -175,7 +175,7 @@ throw (std::bad_alloc)
 	if (FT_New_Face (freetype, getFilename () .c_str (), 0, &face))
 		throw std::bad_alloc ();
 
-	return FontFace (FontFacePtr (face));
+	return FontFace (FreeTypePtr (freetype, FreeTypeDeleter ()), FontFacePtr (face, FontFace::FaceDeleter ()));
 }
 
 void

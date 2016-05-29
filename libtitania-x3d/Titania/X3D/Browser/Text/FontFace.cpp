@@ -56,11 +56,13 @@ namespace titania {
 namespace X3D {
 
 FontFace::FontFace (const FontFace & other) :
-	face (other .getFace ())
+	freetype (other .getLibrary ()),
+	    face (other .getFace ())
 { }
 
-FontFace::FontFace (const FontFacePtr & face) :
-	face (face)
+FontFace::FontFace (const FreeTypePtr & freetype, const FontFacePtr & face) :
+	freetype (freetype),
+	    face (face)
 { }
 
 const FontFacePtr &

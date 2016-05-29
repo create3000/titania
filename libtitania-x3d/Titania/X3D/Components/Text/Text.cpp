@@ -167,7 +167,7 @@ Text::build ()
 	try
 	{
 		// Let the fontStyle build the text geometry.
-	
+
 		textGeometry = fontStyleNode -> getTextGeometry (this);
 	
 		// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.

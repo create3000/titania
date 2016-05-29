@@ -84,7 +84,7 @@ X3DKeyDeviceSensorContext::setShiftKey (const bool value)
 {
 	internalShiftKey = value;
 
-	if ((internalShiftKey or externalKeys .shift ()) not_eq controlKey)
+	if ((internalShiftKey or externalKeys .shift ()) not_eq shiftKey)
 		shiftKey = internalShiftKey or externalKeys .shift ();
 }
 
@@ -93,7 +93,7 @@ X3DKeyDeviceSensorContext::setAltKey (const bool value)
 {
 	internalAltKey = value;
 
-	if ((internalAltKey or externalKeys .alt ()) not_eq controlKey)
+	if ((internalAltKey or externalKeys .alt ()) not_eq altKey)
 		altKey = internalAltKey or externalKeys .alt ();
 }
 
