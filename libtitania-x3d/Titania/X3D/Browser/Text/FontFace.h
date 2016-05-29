@@ -99,6 +99,8 @@ public:
 
 	///  @name Construction
 
+	FontFace ();
+
 	FontFace (const FontFace &);
 
 	///  @name Member access

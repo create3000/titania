@@ -196,6 +196,11 @@ public:
 	getFont () const final override
 	{ return font; }
 
+	virtual
+	const FontFace &
+	getFontFace () const final override
+	{ return fontFace; }
+
 	///  @name Destruction
 
 	virtual
@@ -238,7 +243,8 @@ private:
 
 	Fields fields;
 	
-	Font font;
+	Font     font;
+	FontFace fontFace;
 
 };
 

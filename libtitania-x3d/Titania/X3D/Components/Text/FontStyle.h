@@ -149,6 +149,11 @@ public:
 	getFont () const final override
 	{ return font; }
 
+	virtual
+	const FontFace &
+	getFontFace () const final override
+	{ return fontFace; }
+
 	const PolygonFontPtr &
 	getPolygonFont () const
 	{ return polygonFont; }
@@ -198,6 +203,7 @@ private:
 	Fields fields;
 
 	Font           font;
+	FontFace       fontFace;
 	PolygonFontPtr polygonFont;
 	double         lineHeight;
 	double         scale;

@@ -269,6 +269,10 @@ public:
 	getFont () const = 0;
 
 	virtual
+	const FontFace &
+	getFontFace () const = 0;
+
+	virtual
 	std::unique_ptr <X3DTextGeometry>
 	getTextGeometry (Text* const) const = 0;
 

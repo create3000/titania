@@ -55,6 +55,11 @@
 namespace titania {
 namespace X3D {
 
+FontFace::FontFace () :
+	freetype (),
+	    face ()
+{ }
+
 FontFace::FontFace (const FontFace & other) :
 	freetype (other .getLibrary ()),
 	    face (other .getFace ())
@@ -74,11 +79,14 @@ FontFace::getFace () const
 void
 FontFace::dispose ()
 {
-	face .reset ();
+	face     .reset ();
+	freetype .reset ();
 }
 
 FontFace::~FontFace ()
-{ }
+{
+	dispose ();
+}
 
 } // X3D
 } // titania/

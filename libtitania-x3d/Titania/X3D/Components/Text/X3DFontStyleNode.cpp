@@ -108,15 +108,14 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 {
 	Box2d bbox;
 
-	const Font &   font        = fontStyle -> getFont ();
-	const FontFace fontFace    = font .getFace (); // bad alloc!!!
-	const size_t   numLines    = text -> string () .size ();
-	const double   maxExtent   = std::max <double> (0, text -> maxExtent ());
-	const bool     topToBottom = fontStyle -> topToBottom ();
-	const double   lineHeight  = fontStyle -> getLineHeight ();
-	const double   scale       = fontStyle -> getScale ();
-	const double   factor      = lineHeight / fontStyle -> spacing (); // Scale factor of polygon font
-	const double   descender   = fontFace .getDescender () / double (fontFace .getUnitsPerEm ()) * factor;
+	const auto & fontFace    = fontStyle -> getFontFace ();
+	const size_t numLines    = text -> string () .size ();
+	const double maxExtent   = std::max <double> (0, text -> maxExtent ());
+	const bool   topToBottom = fontStyle -> topToBottom ();
+	const double lineHeight  = fontStyle -> getLineHeight ();
+	const double scale       = fontStyle -> getScale ();
+	const double factor      = lineHeight / fontStyle -> spacing (); // Scale factor of polygon font
+	const double descender   = fontFace .getDescender () / double (fontFace .getUnitsPerEm ()) * factor;
 
 	// Calculate bboxes.
 

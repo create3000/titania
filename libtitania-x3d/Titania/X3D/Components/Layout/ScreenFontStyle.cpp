@@ -462,7 +462,8 @@ ScreenFontStyle::ScreenFontStyle (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DFontStyleNode (),
 	          fields (),
-	            font ()
+	            font (),
+	        fontFace ()
 {
 	addType (X3DConstants::ScreenFontStyle);
 
@@ -524,13 +525,15 @@ ScreenFontStyle::getSize () const
 void
 ScreenFontStyle::set_font ()
 {
-	font = createFont ();
+	font     = createFont ();
+	fontFace = font .getFace ();
 }
 
 void
 ScreenFontStyle::dispose ()
 {
-	font .dispose ();
+	font     .dispose ();
+	fontFace .dispose ();
 
 	X3DFontStyleNode::dispose ();
 }

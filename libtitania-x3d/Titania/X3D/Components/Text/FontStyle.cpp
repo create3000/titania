@@ -170,6 +170,7 @@ FontStyle::FontStyle (X3DExecutionContext* const executionContext) :
 	X3DFontStyleNode (),
 	          fields (),
 	            font (),
+	        fontFace (),
 	     polygonFont (),
 	      lineHeight (1),
 	           scale (1)
@@ -259,7 +260,8 @@ FontStyle::getPolygonFont (const MFString & family) const
 		}
 	}
 
-	const_cast <Font &> (font) = createFont ("SERIF", isExactMatch);
+	const_cast <Font &> (font)         = createFont ("SERIF", isExactMatch);
+	const_cast <FontFace &> (fontFace) = font .getFace ();
 
 	return PolygonFontPtr (new FTPolygonFont (font .getFilename () .c_str ()));
 }
@@ -267,7 +269,8 @@ FontStyle::getPolygonFont (const MFString & family) const
 void
 FontStyle::dispose ()
 {
-	font .dispose ();
+	font        .dispose ();
+	fontFace    .dispose ();
 	polygonFont .reset ();
 
 	X3DFontStyleNode::dispose ();
