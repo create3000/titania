@@ -188,7 +188,6 @@ ArcClose2D::build ()
 
 	addElements (GL_POLYGON, getVertices () .size ());
 	setSolid (true);
-	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (GL_POLYGON, false);

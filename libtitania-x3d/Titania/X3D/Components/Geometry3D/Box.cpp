@@ -140,7 +140,6 @@ Box::build ()
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
-	setTextureCoordinate (nullptr);
 }
 
 SFNode

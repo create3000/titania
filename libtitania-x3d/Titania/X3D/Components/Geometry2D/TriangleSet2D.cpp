@@ -109,7 +109,6 @@ TriangleSet2D::build ()
 
 	addElements (GL_TRIANGLES, getVertices () .size ());
 	setSolid (true);
-	setTextureCoordinate (nullptr);
 }
 
 void

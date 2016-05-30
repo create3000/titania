@@ -497,7 +497,6 @@ Extrusion::build ()
 
 	setSolid (solid ());
 	setCCW (ccw ());
-	setTextureCoordinate (nullptr);
 
 	#undef INDEX
 }

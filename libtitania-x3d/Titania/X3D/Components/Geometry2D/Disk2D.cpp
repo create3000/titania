@@ -183,7 +183,6 @@ Disk2D::build ()
 
 		addElements (options -> getVertexMode (), getVertices () .size ());
 		setSolid (true);
-		setTextureCoordinate (nullptr);
 
 		if (not solid ())
 			addMirrorVertices (options -> getVertexMode (), true);
@@ -241,7 +240,6 @@ Disk2D::build ()
 
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
 	setSolid (true);
-	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (GL_QUAD_STRIP, true);

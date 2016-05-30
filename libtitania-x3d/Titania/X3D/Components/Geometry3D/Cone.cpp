@@ -207,7 +207,6 @@ Cone::build ()
 	}
 
 	setSolid (solid ());
-	setTextureCoordinate (nullptr);
 }
 
 SFNode

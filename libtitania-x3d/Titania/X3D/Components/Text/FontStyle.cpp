@@ -256,7 +256,11 @@ FontStyle::getPolygonFont (const MFString & family) const
 			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
 
 			if (not polygonFont -> Error ())
+			{
+				const_cast <FontFace &> (fontFace) = font .getFace ();
+
 				return polygonFont;
+			}
 		}
 	}
 

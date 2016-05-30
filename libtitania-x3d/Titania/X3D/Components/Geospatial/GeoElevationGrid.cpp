@@ -177,6 +177,8 @@ GeoElevationGrid::set_texCoord ()
 
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
+
+	setTextureCoordinate (texCoordNode);
 }
 
 void
@@ -405,7 +407,6 @@ GeoElevationGrid::build ()
 	addElements (GL_QUADS, getVertices () .size ());
 	setSolid (solid ());
 	setCCW (ccw ());
-	setTextureCoordinate (texCoordNode);
 }
 
 void

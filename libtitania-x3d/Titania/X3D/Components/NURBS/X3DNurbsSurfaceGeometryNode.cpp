@@ -339,7 +339,6 @@ X3DNurbsSurfaceGeometryNode::build ()
 	addElements (vertexMode, numVertices);
 	setSolid (solid ());
 	setCCW (true);
-	setTextureCoordinate (nullptr);
 }
 
 void

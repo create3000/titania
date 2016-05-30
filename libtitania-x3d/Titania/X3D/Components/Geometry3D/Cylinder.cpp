@@ -228,7 +228,6 @@ Cylinder::build ()
 	}
 
 	setSolid (solid ());
-	setTextureCoordinate (nullptr);
 }
 
 SFNode

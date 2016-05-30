@@ -146,7 +146,6 @@ Rectangle2D::build ()
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (true);
-	setTextureCoordinate (nullptr);
 
 	if (not solid ())
 		addMirrorVertices (options -> getVertexMode (), true);

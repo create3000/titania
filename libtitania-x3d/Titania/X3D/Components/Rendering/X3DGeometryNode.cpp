@@ -68,7 +68,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
-	     texCoordNode (),
+	     texCoordNode (getBrowser () -> getTexCoord ()),
 	        texCoords (),
 	          normals (),
 	         vertices (),
@@ -731,7 +731,6 @@ X3DGeometryNode::clear ()
 		glDeleteBuffers (texCoordBufferIds .size (), texCoordBufferIds .data ());
 
 	colors    .clear ();
-	texCoordNode .set (nullptr);
 	texCoords .clear ();
 	normals   .clear ();
 	vertices  .clear ();

@@ -165,6 +165,8 @@ X3DComposedGeometryNode::set_texCoord ()
 
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
+
+	setTextureCoordinate (texCoordNode);
 }
 
 void
@@ -271,7 +273,6 @@ X3DComposedGeometryNode::build (const size_t vertexCount, size_t size)
 	setSolid (solid ());
 	setCCW (ccw ());
 	setAttribs (getAttrib (), attribArrays);
-	setTextureCoordinate (texCoordNode);
 }
 
 void

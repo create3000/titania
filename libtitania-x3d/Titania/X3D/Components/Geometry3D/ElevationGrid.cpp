@@ -207,6 +207,8 @@ ElevationGrid::set_texCoord ()
 
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
+
+	setTextureCoordinate (texCoordNode);
 }
 
 void
@@ -447,7 +449,6 @@ ElevationGrid::build ()
 	setSolid (solid ());
 	setCCW (ccw ());
 	setAttribs (attribNodes, attribArrays);
-	setTextureCoordinate (texCoordNode);
 }
 
 void

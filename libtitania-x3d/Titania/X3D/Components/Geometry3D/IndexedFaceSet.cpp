@@ -278,7 +278,6 @@ IndexedFaceSet::build ()
 	setSolid (solid ());
 	setCCW (ccw ());
 	setAttribs (getAttrib (), attribArrays);
-	setTextureCoordinate (getTexCoord ());
 }
 
 void
