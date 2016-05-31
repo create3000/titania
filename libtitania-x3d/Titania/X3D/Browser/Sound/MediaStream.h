@@ -204,6 +204,7 @@ private:
 	Pixmap   pixmap;
 
 	std::vector <uint8_t> image;
+	double                volume;
 
 };
 

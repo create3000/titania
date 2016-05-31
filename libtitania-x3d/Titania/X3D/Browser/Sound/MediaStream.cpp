@@ -70,7 +70,8 @@ MediaStream::MediaStream () :
 	          player (),
 	           vsink (),
 	         display (nullptr),
-	           image ()
+	           image (),
+	          volume (0)
 {
 	// Static init
 
@@ -101,7 +102,7 @@ MediaStream::setup ()
 	gst_base_sink_set_last_sample_enabled (vsink -> Gst::BaseSink::gobj (), true);
 
 	player -> property_video_sink () = vsink;
-	player -> property_volume ()     = 0;
+	player -> property_volume ()     = volume;
 	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
 	player -> signal_audio_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_audio_changed));
 
@@ -139,7 +140,12 @@ MediaStream::getDuration () const
 void
 MediaStream::setVolume (double value)
 {
-	player -> property_volume () = math::clamp (value, 0.0, 1.0);
+	value = math::clamp (value, 0.0, 1.0);
+
+	if ((std::abs (value - volume) > 0.04) or (value == 0 and value not_eq volume))
+	{
+		player -> property_volume () = volume = value;
+	}
 }
 
 Gst::State
