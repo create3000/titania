@@ -1,3 +1,10 @@
+titania (1.4.5) xenial; urgency=medium
+
+  * Fixes performance leak in LOD and Switch
+  * Memory leak in Text
+
+ -- Holger Seelig <holger@qualle>  Tue, 31 May 2016 09:47:48 +0200
+
 titania (1.4.4) xenial; urgency=medium
 
   * Fixes fatal bug with infinite redraw of whole window.
