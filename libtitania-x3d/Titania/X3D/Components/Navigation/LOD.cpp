@@ -211,12 +211,8 @@ LOD::traverse (const TraverseType type)
 			set_child (level);
 	}
 
-	try
-	{
+	if (childNode)
 		childNode -> traverse (type);
-	}
-	catch (const X3DError &)
-	{ }
 }
 
 void
