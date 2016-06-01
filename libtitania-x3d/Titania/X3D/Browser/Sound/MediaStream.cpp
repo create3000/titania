@@ -119,7 +119,8 @@ bool
 MediaStream::setUri (const basic::uri & uri)
 {
 	player -> set_state (Gst::STATE_NULL);
-	player -> property_uri () = uri .str ();
+	player -> property_volume () = volume = 0;
+	player -> property_uri ()    = uri .str ();
 	player -> set_state (Gst::STATE_PAUSED);
 
 	return true;
@@ -137,14 +138,23 @@ MediaStream::getDuration () const
 	return -1;
 }
 
+//void
+//MediaStream::setVolume (double value)
+//{
+//	player -> property_volume () = math::clamp (value, 0.0, 1.0);
+//}
+
 void
 MediaStream::setVolume (double value)
 {
-	value = math::clamp (value, 0.0, 1.0);
+	static constexpr double granularity = 0.05;
 
-	if ((std::abs (value - volume) > 0.04) or (value == 0 and value not_eq volume))
+	value = std::round (math::clamp (value, 0.0, 1.0) / granularity) * granularity;
+
+	if (value not_eq volume)
 	{
-		player -> property_volume () = volume = value;
+		volume = value;
+		player -> property_volume () = value;
 	}
 }
 
@@ -265,16 +275,25 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 	{
 		case Gst::MESSAGE_EOS:
 		{
+			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
+			player -> property_volume () = volume;
+
 			end .emit ();
 			break;
 		}
 		case Gst::MESSAGE_STATE_CHANGED:
 		{
+			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
+			player -> property_volume () = volume;
+
 		   update ();
 			break;
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
 		{
+			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
+			player -> property_volume () = volume;
+
 			__LOG__
 				<< "MESSAGE_DURATION_CHANGED: "
 				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
