@@ -91,6 +91,9 @@
     <None Include="..\configure">
       <Link>configure</Link>
     </None>
+    <None Include="..\install-sh">
+      <Link>install-sh</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
