@@ -106,6 +106,9 @@
     <None Include="..\depcomp">
       <Link>depcomp</Link>
     </None>
+    <None Include="..\ltmain.sh">
+      <Link>ltmain.sh</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
