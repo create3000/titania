@@ -103,6 +103,9 @@
     <None Include="..\config.h.in">
       <Link>config.h.in</Link>
     </None>
+    <None Include="..\depcomp">
+      <Link>depcomp</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
