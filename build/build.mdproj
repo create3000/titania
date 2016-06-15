@@ -94,6 +94,42 @@
     <None Include="..\install-sh">
       <Link>install-sh</Link>
     </None>
+    <None Include="..\po\ChangeLog">
+      <Link>po\ChangeLog</Link>
+    </None>
+    <None Include="..\po\Makefile">
+      <Link>po\Makefile</Link>
+    </None>
+    <None Include="..\po\Makefile.in">
+      <Link>po\Makefile.in</Link>
+    </None>
+    <None Include="..\po\Makefile.in.in">
+      <Link>po\Makefile.in.in</Link>
+    </None>
+    <None Include="..\po\Makefile.in.in.~1~">
+      <Link>po\Makefile.in.in.~1~</Link>
+    </None>
+    <None Include="..\po\Makefile.in.~1~">
+      <Link>po\Makefile.in.~1~</Link>
+    </None>
+    <None Include="..\po\Makefile.in.~2~">
+      <Link>po\Makefile.in.~2~</Link>
+    </None>
+    <None Include="..\po\Makefile.~1~">
+      <Link>po\Makefile.~1~</Link>
+    </None>
+    <None Include="..\po\Makefile.~2~">
+      <Link>po\Makefile.~2~</Link>
+    </None>
+    <None Include="..\po\POTFILES">
+      <Link>po\POTFILES</Link>
+    </None>
+    <None Include="..\po\po.mdproj">
+      <Link>po\po.mdproj</Link>
+    </None>
+    <None Include="..\po\stamp-it">
+      <Link>po\stamp-it</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
