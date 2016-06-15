@@ -97,6 +97,9 @@
     <None Include="..\config.sub">
       <Link>config.sub</Link>
     </None>
+    <None Include="..\config.guess">
+      <Link>config.guess</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
