@@ -106,21 +106,6 @@
     <None Include="..\po\Makefile.in.in">
       <Link>po\Makefile.in.in</Link>
     </None>
-    <None Include="..\po\Makefile.in.in.~1~">
-      <Link>po\Makefile.in.in.~1~</Link>
-    </None>
-    <None Include="..\po\Makefile.in.~1~">
-      <Link>po\Makefile.in.~1~</Link>
-    </None>
-    <None Include="..\po\Makefile.in.~2~">
-      <Link>po\Makefile.in.~2~</Link>
-    </None>
-    <None Include="..\po\Makefile.~1~">
-      <Link>po\Makefile.~1~</Link>
-    </None>
-    <None Include="..\po\Makefile.~2~">
-      <Link>po\Makefile.~2~</Link>
-    </None>
     <None Include="..\po\POTFILES">
       <Link>po\POTFILES</Link>
     </None>
@@ -130,6 +115,7 @@
     <None Include="..\po\stamp-it">
       <Link>po\stamp-it</Link>
     </None>
+    <None Include="po\POTFILES.in" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
