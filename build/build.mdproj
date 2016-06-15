@@ -88,6 +88,9 @@
     <None Include="..\README">
       <Link>README</Link>
     </None>
+    <None Include="..\configure">
+      <Link>configure</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

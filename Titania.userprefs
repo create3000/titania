@@ -1,18 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/LookAtViewer.cpp" Line="156" Column="36" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Networking/X3DNetworkingContext.cpp" Line="154" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="188" Column="29" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="154" Column="24" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.h" Line="147" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp" Line="153" Column="36" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="172" Column="96" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DExamineViewer.cpp" Line="142" Column="2" />
-      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.cpp" Line="108" Column="1" />
-      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.h" Line="84" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="84" Column="28" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="278" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
