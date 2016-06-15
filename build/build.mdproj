@@ -100,6 +100,9 @@
     <None Include="..\config.guess">
       <Link>config.guess</Link>
     </None>
+    <None Include="..\config.h.in">
+      <Link>config.h.in</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
