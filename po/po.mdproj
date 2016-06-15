@@ -19,5 +19,6 @@
     <None Include="po.mdproj" />
     <None Include="POTFILES" />
     <None Include="stamp-it" />
+    <None Include="POTFILES.in" />
   </ItemGroup>
 </Project>
