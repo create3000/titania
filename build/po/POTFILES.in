@@ -1,4 +1,0 @@
-# The po/ directory should receive a file named POTFILES.in. This file tells which files,
-# among all program sources, have marked strings needing translation.
-
-
