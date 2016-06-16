@@ -718,8 +718,8 @@ run:
 	$(builddir)/$(bin_PROGRAMS)
 
 install-exec-hook:
-	cp -r share/ $(DESTDIR)/
-	gzip $(DESTDIR)/share/man/man1/x3dtidy.1
+	cp -r share/* $(DESTDIR)$(datadir)
+	gzip $(DESTDIR)$(datadir)/man/man1/x3dtidy.1
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
