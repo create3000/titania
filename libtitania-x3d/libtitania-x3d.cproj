@@ -478,7 +478,6 @@
     <None Include="share\titania\mime\model\vrml.png" />
     <None Include="share\titania\mime\model\x3d+vrml.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
-    <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
     <None Include="share\titania\mime\model\x3d+xml.png" />
     <None Include="Titania\X3D\Thread\TextureLoader.h" />
@@ -798,6 +797,10 @@
     <None Include="Titania\X3D\Editing\Combine.h" />
     <None Include="Titania\X3D\Editing\Editor.h" />
     <None Include="share\titania\tools\library\gradient.png" />
+    <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-TargetDirectoryId>CommonApplicationData</DeployService-TargetDirectoryId>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
