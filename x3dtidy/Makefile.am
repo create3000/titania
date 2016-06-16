@@ -38,4 +38,4 @@ run:
 
 install-exec-hook:
 	cp -r share/* $(DESTDIR)$(datadir)
-	gzip $(DESTDIR)$(datadir)/man/man1/x3dtidy.1
+	gzip $(DESTDIR)$(man1dir)/x3dtidy.1
