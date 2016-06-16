@@ -69,6 +69,7 @@
     <None Include="logo.mdproj" />
     <None Include="logo.pidb" />
     <None Include="website.15.10.svg" />
+    <None Include="logo\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="website\" />
