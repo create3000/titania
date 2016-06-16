@@ -485,10 +485,10 @@ uninstall-am:
 
 
 install-exec-hook:
-	install -m 0755 bin/titania-x3d2vrml $(prefix)/bin/
-	cp -r share/ $(prefix)/
-	find $(prefix)/share/titania/ -type d -exec chmod 755 {} \;
-	find $(prefix)/share/titania/ -type f -exec chmod 644 {} \;
+	install -m 0755 bin/titania-x3d2vrml $(DESTDIR)/bin/
+	cp -r share/ $(DESTDIR)/
+	find $(DESTDIR)/share/titania/ -type d -exec chmod 755 {} \;
+	find $(DESTDIR)/share/titania/ -type f -exec chmod 644 {} \;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -37,5 +37,5 @@ run:
 	$(builddir)/$(bin_PROGRAMS)
 
 install-exec-hook:
-	cp -r share/ $(prefix)/
-	gzip $(prefix)/share/man/man1/x3dtidy.1
+	cp -r share/ $(DESTDIR)/
+	gzip $(DESTDIR)/share/man/man1/x3dtidy.1
