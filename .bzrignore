@@ -23,3 +23,10 @@
 ./test/titania-test
 
 ./Documentation/Titania/html
+
+./build/snapcraft/parts
+./build/snapcraft/prime
+./build/snapcraft/stage
+./build/snapcraft/titania_*.snap
+
+
