@@ -32,10 +32,6 @@ AM_CPPFLAGS = $(TITANIA_ANYOPTIONS_CFLAGS)  \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream	
 
-run:
-	env XDG_DATA_DIRS="/home/holger/Projekte/Titania/Titania/share:/home/holger/Projekte/Titania/libtitania-x3d/share:"${XDG_DATA_DIRS} \
-	$(builddir)/$(bin_PROGRAMS)
-
 install-exec-hook:
 	cp -r share/* $(DESTDIR)$(datadir)
 	gzip $(DESTDIR)$(datadir)/man/man1/x3dtidy.1

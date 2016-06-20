@@ -1,0 +1,71 @@
+name: titania
+version: 1.4.5
+summary: Titania is a X3D/VRML editor and browser for Ubuntu.
+description: Titania is a X3D/VRML editor and browser for Ubuntu.
+confinement: strict
+
+apps:
+  titania:
+    command: ./bin/titania
+    plugs: [network, network-bind]
+  titania-info:
+    command: ./bin/titania-info
+    plugs: [network, network-bind]
+  titania-x3d2vrml:
+    command: ./bin/titania-x3d2vrml
+    plugs: [network, network-bind]
+  x3dtidy:
+    command: ./bin/x3dtidy
+    plugs: [network, network-bind]
+
+parts:
+  titania:
+    plugin: autotools
+    source: https://github.com/create3000/titania
+    source-type: git
+    build-packages:
+      - libgtkmm-3.0-dev
+      - libgtksourceviewmm-3.0-dev
+      - mesa-common-dev
+      - libglu1-mesa-dev
+      - libglew-dev
+      - libgl1-mesa-dev
+      - libmozjs185-dev
+      - libfontconfig1-dev
+      - libftgl-dev
+      - libpcre++-dev
+      - libmagick++-dev
+      - libcurl4-openssl-dev
+      - libsqlite3-dev
+      - libgstreamermm-1.0-dev
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - zlib1g
+      - intltool
+      - gettext
+      - libtool
+      - libtool-bin
+      - libgtop2-dev
+    stage-packages:
+      - libgtkmm-3.0-1v5
+      - libgtksourceviewmm-3.0-0v5
+      - libglu1-mesa
+      - libglew1.13
+      - libgl1-mesa-glx
+      - libmozjs185-1.0
+      - libfontconfig1
+      - libftgl2
+      - libpcrecpp0v5
+      - libmagick++-6.q16-5v5
+      - libcurl3
+      - libsqlite3-0
+      - libgstreamermm-1.0-0v5
+      - zlib1g
+      - libgtop-2.0-10
+      - gettext
+      - perl
+      - libxml-libxml-perl
+      - libglib-perl
+      - libswitch-perl
+
+ 

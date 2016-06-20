@@ -23,8 +23,8 @@ binary-arch: build
 	dh_installchangelogs
 
 # Make and install binaries
-	./autogen.sh --enable-parallel --prefix=`pwd`/debian/$(PACKAGE)/usr/
 	#make distclean
+	./autogen.sh --enable-parallel --prefix=`pwd`/debian/$(PACKAGE)/usr/
 	make -j4
 	make install
 

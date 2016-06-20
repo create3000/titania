@@ -4890,9 +4890,9 @@ uninstall-am: uninstall-libLTLIBRARIES
 
 
 install-exec-hook:
-	cp -r share/ $(DESTDIR)/
-	find $(DESTDIR)/share/titania/ -type d -exec chmod 755 {} \;
-	find $(DESTDIR)/share/titania/ -type f -exec chmod 644 {} \;
+	cp -r share/* $(DESTDIR)$(datadir)
+	find $(DESTDIR)$(datadir)/titania/ -type d -exec chmod 755 {} \;
+	find $(DESTDIR)$(datadir)/titania/ -type f -exec chmod 644 {} \;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
