@@ -68,7 +68,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
-	     texCoordNode (getBrowser () -> getTexCoord ()),
+	     texCoordNode (),
 	        texCoords (),
 	          normals (),
 	         vertices (),
@@ -92,6 +92,8 @@ void
 X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
+
+	texCoordNode = getBrowser () -> getTexCoord ();
 
 	if (glXGetCurrentContext ())
 	{
