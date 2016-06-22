@@ -571,6 +571,7 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	-I$(top_builddir)/libtitania-peaseblossom
 
 install-exec-hook:
+	mkdir -p $(DESTDIR)$(datadir)
 	cp -r share/* $(DESTDIR)$(datadir)
 	find $(DESTDIR)$(datadir)/titania/ -type d -exec chmod 755 {} \;
 	find $(DESTDIR)$(datadir)/titania/ -type f -exec chmod 644 {} \;

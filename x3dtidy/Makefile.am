@@ -33,5 +33,6 @@ AM_CPPFLAGS = $(TITANIA_ANYOPTIONS_CFLAGS)  \
 	-I$(top_builddir)/libtitania-stream	
 
 install-exec-hook:
+	mkdir -p $(DESTDIR)$(datadir)
 	cp -r share/* $(DESTDIR)$(datadir)
 	gzip $(DESTDIR)$(datadir)/man/man1/x3dtidy.1
