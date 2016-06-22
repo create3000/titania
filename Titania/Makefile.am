@@ -235,7 +235,7 @@ AM_CPPFLAGS = $(TITANIA_CFLAGS) \
 	-I$(top_builddir)/libtitania-stream
 
 install-exec-hook:
-	mkdir -p $(DESTDIR)$(datadir)
+	mkdir -m 755 -p $(DESTDIR)$(datadir)
 	cp -r share/* $(DESTDIR)$(datadir)
 	find $(DESTDIR)$(datadir)/titania/ -type d -exec chmod 755 {} \;
 	find $(DESTDIR)$(datadir)/titania/ -type f -exec chmod 644 {} \;
