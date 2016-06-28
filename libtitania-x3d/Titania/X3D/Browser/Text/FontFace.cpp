@@ -70,6 +70,15 @@ FontFace::FontFace (const FreeTypePtr & freetype, const FontFacePtr & face) :
 	    face (face)
 { }
 
+FontFace &
+FontFace::operator = (const FontFace & other)
+{
+	face     = other .getFace ();
+	freetype = other .getLibrary ();
+
+	return *this;
+}
+
 const FontFacePtr &
 FontFace::getFace () const
 {

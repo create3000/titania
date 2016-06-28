@@ -103,6 +103,9 @@ public:
 
 	FontFace (const FontFace &);
 
+	FontFace &
+	operator = (const FontFace &);
+
 	///  @name Member access
 
 	const FreeTypePtr &
