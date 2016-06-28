@@ -111,6 +111,7 @@
     </None>
     <None Include="snapcraft\snapcraft.yaml" />
     <None Include="snapcraft\setup\gui\icon.png" />
+    <None Include="snapcraft\titania-wrapper" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

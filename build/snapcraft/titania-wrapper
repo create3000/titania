@@ -1,0 +1,7 @@
+﻿#!/bin/sh
+
+echo "Launching Titania"
+
+export FONTCONFIG_PATH="$SNAP/etc/fonts"
+
+titania

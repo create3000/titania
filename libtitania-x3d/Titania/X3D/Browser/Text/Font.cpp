@@ -82,10 +82,12 @@ Font::setFamilyName (const std::string & value)
 std::string
 Font::getFamilyName () const
 {
-	FcChar8* familyName;
+	FcChar8* familyName = nullptr;
 
-	FcPatternGetString (pattern .get (), FC_FAMILY, 0, &familyName);
-	return (char*) familyName;
+	if (FcPatternGetString (pattern .get (), FC_FAMILY, 0, &familyName) == FcResultMatch)
+		return (char*) familyName;
+
+	return "";
 }
 
 void
@@ -140,8 +142,10 @@ Font::getFilename () const
 {
 	FcChar8* filename = nullptr;
 
-	FcPatternGetString (pattern .get (), FC_FILE, 0, &filename);
-	return (char*) filename;
+	if (FcPatternGetString (pattern .get (), FC_FILE, 0, &filename) == FcResultMatch)
+		return (char*) filename;
+
+	return "";
 }
 
 void

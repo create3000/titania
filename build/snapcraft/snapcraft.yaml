@@ -6,16 +6,19 @@ confinement: strict
 
 apps:
   titania:
-    command: ./bin/titania
+    command: bin/titania-wrapper
+    plugs: [network, network-bind]
+  titania-bin:
+    command: bin/titania
     plugs: [network, network-bind]
   titania-info:
-    command: ./bin/titania-info
+    command: bin/titania-info
     plugs: [network, network-bind]
   titania-x3d2vrml:
-    command: ./bin/titania-x3d2vrml
+    command: bin/titania-x3d2vrml
     plugs: [network, network-bind]
   x3dtidy:
-    command: ./bin/x3dtidy
+    command: bin/x3dtidy
     plugs: [network, network-bind]
 
 parts:
@@ -67,5 +70,8 @@ parts:
       - libxml-libxml-perl
       - libglib-perl
       - libswitch-perl
-
+  glue:
+    plugin: copy
+    files:
+      titania-wrapper: bin/
  
