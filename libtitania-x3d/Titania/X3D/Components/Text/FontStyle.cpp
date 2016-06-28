@@ -245,39 +245,28 @@ FontStyle::set_font ()
 PolygonFontPtr
 FontStyle::getPolygonFont (const MFString & family) const
 {
-__LOG__ << std::endl;
 	bool isExactMatch = false;
 
-__LOG__ << std::endl;
 	for (const auto & familyName : family)
 	{
-__LOG__ << std::endl;
 		const_cast <Font &> (font) = createFont (familyName, isExactMatch);
 
-__LOG__ << std::endl;
 		if (isExactMatch)
 		{
-__LOG__ << std::endl;
 			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
 
-__LOG__ << std::endl;
 			if (not polygonFont -> Error ())
 			{
-__LOG__ << std::endl;
 				const_cast <FontFace &> (fontFace) = font .getFace ();
 
-__LOG__ << std::endl;
 				return polygonFont;
 			}
 		}
 	}
 
-__LOG__ << std::endl;
 	const_cast <Font &> (font)         = createFont ("SERIF", isExactMatch);
-__LOG__ << std::endl;
 	const_cast <FontFace &> (fontFace) = font .getFace ();
 
-__LOG__ << std::endl;
 	return PolygonFontPtr (new FTPolygonFont (font .getFilename () .c_str ()));
 }
 

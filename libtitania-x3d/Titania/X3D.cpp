@@ -59,16 +59,31 @@ const BrowserApplicationPtr &
 getBrowser (/* parameter */)
 throw (Error <BROWSER_UNAVAILABLE>)
 {
+try
+{
+__LOG__ << std::endl;
 	static BrowserApplicationPtr browserApplication;
 
+__LOG__ << std::endl;
 	if (not browserApplication)
 	{
+__LOG__ << std::endl;
 		browserApplication = new BrowserApplication ({ }, { });
 
+__LOG__ << std::endl;
 		browserApplication -> setup ();
+__LOG__ << std::endl;
 	}
 
+__LOG__ << std::endl;
+
 	return browserApplication;
+}
+catch (const X3DError & error)
+{
+	__LOG__ << error .what () << std::endl;
+	throw;
+}
 }
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.

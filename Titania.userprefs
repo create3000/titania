@@ -1,17 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Text/FontFace.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="278" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Sound/MediaStream.h" Line="1" Column="1" />
       <File FileName="build/snapcraft/snapcraft.yaml" Line="1" Column="1" />
       <File FileName="build/snapcraft/titania-wrapper" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/Font.cpp" Line="182" Column="106" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.cpp" Line="267" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/X3DFontStyleNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontFace.cpp" Line="56" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Text/FontFace.h" Line="95" Column="4" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Text/FontStyle.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D.cpp" Line="85" Column="8" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="174" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/SupportedNodes.cpp" Line="206" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
