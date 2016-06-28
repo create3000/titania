@@ -1,3 +1,9 @@
+titania (1.4.7) xenial; urgency=medium
+
+  * Fixed fatal bug in FontFace.cpp.
+
+ -- Holger Seelig <holger@qualle>  Tue, 28 Jun 2016 12:39:20 +0200
+
 titania (1.4.6) xenial; urgency=medium
 
   * Fixed fatal bug in X3DGeometryNode creation
