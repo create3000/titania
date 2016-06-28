@@ -165,19 +165,19 @@ Font::getMatch () const
 
 FontFace
 Font::getFace () const
-throw (std::bad_alloc)
+throw (std::runtime_error)
 {
 	FcInit ();
 
 	FT_Library freetype;
 
 	if (FT_Init_FreeType (&freetype))
-		throw std::bad_alloc ();
+		throw std::runtime_error ("FT_Init_FreeType failed");
 
 	FT_Face face = nullptr;
 
 	if (FT_New_Face (freetype, getFilename () .c_str (), 0, &face))
-		throw std::bad_alloc ();
+		throw std::runtime_error ("FT_New_Face failed (there is probably a problem with your font file)");
 
 	return FontFace (FreeTypePtr (freetype, FreeTypeDeleter ()), FontFacePtr (face, FontFace::FaceDeleter ()));
 }

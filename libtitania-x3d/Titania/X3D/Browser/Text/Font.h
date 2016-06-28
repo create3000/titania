@@ -131,7 +131,7 @@ public:
 
 	FontFace
 	getFace () const
-	throw (std::bad_alloc);
+	throw (std::runtime_error);
 
 	///  @name Operations
 
