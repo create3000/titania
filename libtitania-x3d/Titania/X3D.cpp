@@ -79,7 +79,7 @@ __LOG__ << std::endl;
 
 	return browserApplication;
 }
-catch (const X3DError & error)
+catch (const std::exception & error)
 {
 	__LOG__ << error .what () << std::endl;
 	throw;

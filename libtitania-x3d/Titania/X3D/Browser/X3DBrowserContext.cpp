@@ -112,32 +112,58 @@ X3DBrowserContext::X3DBrowserContext () :
 void
 X3DBrowserContext::initialize ()
 {
+__LOG__ << std::endl;
 	X3DScene::initialize ();
+__LOG__ << std::endl;
 	X3DCoreContext::initialize ();
+__LOG__ << std::endl;
 	X3DShadingContext::initialize ();
+__LOG__ << std::endl;
 	X3DGeometry2DContext::initialize ();
+__LOG__ << std::endl;
 	X3DGeometry3DContext::initialize ();
+__LOG__ << std::endl;
 	X3DKeyDeviceSensorContext::initialize ();
+__LOG__ << std::endl;
 	X3DLayeringContext::initialize ();
+__LOG__ << std::endl;
 	X3DLayoutContext::initialize ();
+__LOG__ << std::endl;
 	X3DLightingContext::initialize ();
+__LOG__ << std::endl;
 	X3DNavigationContext::initialize ();
+__LOG__ << std::endl;
 	X3DNetworkingContext::initialize ();
+__LOG__ << std::endl;
 	X3DParticleSystemsContext::initialize ();
+__LOG__ << std::endl;
 	X3DPointingDeviceSensorContext::initialize ();
+__LOG__ << std::endl;
 	X3DRenderingContext::initialize ();
+__LOG__ << std::endl;
 	X3DScriptingContext::initialize ();
+__LOG__ << std::endl;
 	X3DShapeContext::initialize ();
+__LOG__ << std::endl;
 	X3DTextContext::initialize ();
+__LOG__ << std::endl;
 	X3DTexturingContext::initialize ();
+__LOG__ << std::endl;
 	X3DCubeMapTexturingContext::initialize ();
+__LOG__ << std::endl;
 	X3DTimeContext::initialize ();
+__LOG__ << std::endl;
 	X3DRouterObject::initialize ();
+__LOG__ << std::endl;
 	X3DToolContext::initialize ();
 
+__LOG__ << std::endl;
 	selection    -> setup ();
+__LOG__ << std::endl;
 	notification -> setup ();
+__LOG__ << std::endl;
 	console      -> setup ();
+__LOG__ << std::endl;
 }
 
 
