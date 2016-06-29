@@ -2,6 +2,9 @@
 
 echo "Launching Titania"
 
-export FONTCONFIG_PATH="$SNAP/etc/fonts"
+export FONTCONFIG_PATH="$SNAP/share/titania/fonts"
+
+ln -s "$SNAP/usr/share/fonts" "$HOME/.fonts"
+mkdir "$HOME/.fontconfig"
 
 titania

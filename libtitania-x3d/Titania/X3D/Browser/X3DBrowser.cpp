@@ -114,44 +114,32 @@ X3DBrowser::initialize ()
 {
 	__LOG__ << "Initializing browser " << this << "." << std::endl;
 
-__LOG__ << std::endl;
 	X3DBaseNode::initialize ();
-__LOG__ << std::endl;
 	X3DBrowserContext::initialize ();
 
-__LOG__ << std::endl;
 	browserOptions      -> setup ();
-__LOG__ << std::endl;
 	browserProperties   -> setup ();
-__LOG__ << std::endl;
 	renderingProperties -> setup ();
 
 	// Add necessary routes.
 
-__LOG__ << std::endl;
 	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
 
-__LOG__ << std::endl;
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
-__LOG__ << std::endl;
 	replaceWorld (executionContext);
 
-__LOG__ << std::endl;
 	if (url .empty ())
 	   initialized () = getCurrentTime ();
 	else
 	{
-__LOG__ << std::endl;
 	   initialized () .set (getCurrentTime ());
 
-__LOG__ << std::endl;
 	   loadURL (url, parameter);
 	}
 
 	// Welcome
 
-__LOG__ << std::endl;
 	print (std::boolalpha,
 	       '\n',
 	       std::string (80, '*'), '\n',
@@ -170,7 +158,6 @@ __LOG__ << std::endl;
 	       std::string (80, '*'), '\n',
 	       std::string (80, '*'), '\n',
 	       '\n');
-__LOG__ << std::endl;
 }
 
 void

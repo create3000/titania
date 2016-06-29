@@ -1420,6 +1420,7 @@
     <Folder Include="Titania\X3D\Editing\Selection\" />
     <Folder Include="Titania\X3D\Tools\Sound\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\" />
+    <Folder Include="share\titania\fonts\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -1450,6 +1451,10 @@
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
     <Content Include="share\titania\goldengate\video.x3dv">
+      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </Content>
+    <Content Include="share\titania\fonts\fonts.conf">
       <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </Content>
