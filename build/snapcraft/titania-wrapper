@@ -2,6 +2,8 @@
 
 echo "Launching Titania"
 
+export XDG_DATA_DIRS="$SNAP/share/:$SNAP/usr/share/:$XDG_DATA_DIRS"
+
 export FONTCONFIG_PATH="$SNAP/etc/fonts"
 
 # Better use XDG font dir: $HOME/.local/share/fonts
