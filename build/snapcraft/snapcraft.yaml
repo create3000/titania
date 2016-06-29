@@ -70,6 +70,8 @@ parts:
       - libxml-libxml-perl
       - libglib-perl
       - libswitch-perl
+      - locales
+      - libc-bin
   glue:
     plugin: copy
     files:
