@@ -137,35 +137,44 @@ private:
 int
 main (int argc, char** argv)
 {
-	using namespace titania;
-	using namespace titania::puck;
-
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::boolalpha
-		<< "Titania started ..." << std::endl
-		<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
-		<< std::endl;
-	#endif
-
-	std::locale::global (std::locale (""));
-
-	// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-	os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
-	//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-	//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
-
+	try
 	{
-		BrowserApplication browserApplication (argc, argv);
-
-		browserApplication .run ();
+		using namespace titania;
+		using namespace titania::puck;
+	
+		#ifdef TITANIA_DEBUG
+		std::clog
+			<< std::boolalpha
+			<< "Titania started ..." << std::endl
+			<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
+			<< std::endl;
+		#endif
+	
+		std::locale::global (std::locale (""));
+	
+		// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
+		os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
+		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
+		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
+	
+		{
+			BrowserApplication browserApplication (argc, argv);
+	
+			browserApplication .run ();
+		}
+	
+		#ifdef TITANIA_DEBUG
+		std::clog
+			<< std::endl
+			<< "Titania finished." << std::endl;
+		#endif
+	
+		return 0;
 	}
+	catch (const std::exception & error)
+	{
+		std::clog << error .what () << std::endl;
 
-	#ifdef TITANIA_DEBUG
-	std::clog
-		<< std::endl
-		<< "Titania finished." << std::endl;
-	#endif
-
-	return 0;
+		return 1;
+	}
 }
