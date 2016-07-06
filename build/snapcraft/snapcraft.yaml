@@ -70,7 +70,8 @@ parts:
       - libxml-libxml-perl
       - libglib-perl
       - libswitch-perl
-      - locales
+      - language-pack-en
+      - language-pack-de
       - libc-bin
   glue:
     plugin: copy

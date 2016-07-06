@@ -1,10 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="build/snapcraft/snapcraft.yaml">
     <Files>
-      <File FileName="build/snapcraft/snapcraft.yaml" Line="1" Column="1" />
-      <File FileName="build/snapcraft/titania-wrapper" Line="14" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="177" Column="1" />
+      <File FileName="build/snapcraft/snapcraft.yaml" Line="52" Column="19" />
+      <File FileName="build/snapcraft/titania-wrapper" Line="19" Column="1" />
+      <File FileName="Titania/Titania/main.cpp" Line="155" Column="1" />
+      <File FileName="Titania/run.pl" Line="30" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

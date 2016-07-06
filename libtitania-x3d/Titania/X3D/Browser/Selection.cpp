@@ -203,11 +203,11 @@ Selection::select ()
 
 	// Selected highest or lowest Node, or clear selection.
 
+	if (selectGeometry)
+		return false;
+
 	if (getBrowser () -> getHits () .empty ())
 	{
-		if (selectGeometry)
-		   return false;
-
 		clear ();
 		return false;
 	}
