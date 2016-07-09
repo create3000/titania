@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_GEOMETRY_CONVEX_HULL_H__
-#define __TITANIA_MATH_GEOMETRY_CONVEX_HULL_H__
+#ifndef __TITANIA_MATH_GEOMETRY_CONVEX_HULL3_H__
+#define __TITANIA_MATH_GEOMETRY_CONVEX_HULL3_H__
 
 #include "../Numbers/Vector3.h"
 #include "../Geometry/Plane3.h"

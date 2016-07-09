@@ -67,6 +67,7 @@
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
 #include <Titania/Math/Geometry/Triangle3.h>
+#include <Titania/Math/Geometry/ConvexHull2.h>
 #include <Titania/Math/Geometry/ConvexHull3.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
@@ -117,6 +118,7 @@ using namespace titania::math;
 
 using Quaternionf = math::quaternion <float>;
 using Vector2f    = math::vector2 <float>;
+using Vector2d    = math::vector2 <double>;
 using Vector3d    = math::vector3 <double>;
 using Vector3f    = math::vector3 <float>;
 using Vector4f    = math::vector4 <float>;
@@ -134,7 +136,8 @@ using Matrix3f    = math::matrix3 <float>;
 using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
-using ConvexHull3 = math::convex_hull3 <double>;
+using ConvexHull2d = math::convex_hull2 <double>;
+using ConvexHull3d = math::convex_hull3 <double>;
 
 int
 main (int argc, char** argv)
@@ -153,25 +156,35 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	throw std::runtime_error ("my error");
+	static std::default_random_engine
+	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
-	std::vector <Vector3d> points = {
-		Vector3d (0, 0, 0),
-		Vector3d (1, 0, 0),
-		Vector3d (1, 1, 0),
-		Vector3d (0, 1, 0),
-		Vector3d (0, 0, 1),
-		Vector3d (1, 0, 1),
-		Vector3d (1, 1, 1),
-		Vector3d (0, 1, 1),
+	std::uniform_real_distribution <double> random (0, 1);
+
+	std::vector <Vector2d> points = {
+		Vector2d (0, 0),
+		Vector2d (4, 0),
+		Vector2d (7, -1),
+		Vector2d (7, 5),
+		Vector2d (2, 2),
+		Vector2d (0, 4),
+		Vector2d (2, 7),
+		Vector2d (9, 8),
 	};
 
-	const auto hull = ConvexHull3 (points);
+	points .clear ();
 
-	std::clog << hull .faces () .size () << std::endl;
+	for (size_t i = 0; i < 10000000; ++ i)
+		points .emplace_back (random (random_engine), random (random_engine));
 
-	for (const auto & face : hull .faces ())
-	   std::clog << face .indices [0] << " " << face .indices [1] << " " << face .indices [2] << std::endl;
+	const auto t0 = chrono::now ();
+
+	const auto hull = ConvexHull2d (points);
+
+	std::clog << chrono::now () - t0 << std::endl;
+
+	for (const auto & i : hull .indices ())
+	   std::clog << i << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

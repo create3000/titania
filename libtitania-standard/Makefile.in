@@ -149,6 +149,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo \
 	Titania/Math/Geometry/Box2.lo Titania/Math/Geometry/Box3.lo \
 	Titania/Math/Geometry/CollisionSphere3.lo \
+	Titania/Math/Geometry/ConvexHull2.lo \
 	Titania/Math/Geometry/ConvexHull3.lo \
 	Titania/Math/Geometry/Cylinder3.lo \
 	Titania/Math/Geometry/Line3.lo \
@@ -442,6 +443,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/CollisionSphere3.cpp \
+	Titania/Math/Geometry/ConvexHull2.cpp \
 	Titania/Math/Geometry/ConvexHull3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \
 	Titania/Math/Geometry/Line3.cpp \
@@ -649,6 +651,9 @@ Titania/Math/Geometry/Box3.lo: Titania/Math/Geometry/$(am__dirstamp) \
 Titania/Math/Geometry/CollisionSphere3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Geometry/ConvexHull2.lo:  \
+	Titania/Math/Geometry/$(am__dirstamp) \
+	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/ConvexHull3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
@@ -824,6 +829,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/CollisionSphere3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line3.Plo@am__quote@

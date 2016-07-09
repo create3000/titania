@@ -149,6 +149,7 @@
     <None Include="Titania\Math\Geometry\CollisionSphere3.h" />
     <None Include="Titania\Math\Geometry\LineSegment3.h" />
     <None Include="Titania\Math\Geometry\ConvexHull3.h" />
+    <None Include="Titania\Math\Geometry\ConvexHull2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -213,6 +214,7 @@
     <Compile Include="Titania\Math\Geometry\CollisionSphere3.cpp" />
     <Compile Include="Titania\Math\Geometry\LineSegment3.cpp" />
     <Compile Include="Titania\Math\Geometry\ConvexHull3.cpp" />
+    <Compile Include="Titania\Math\Geometry\ConvexHull2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

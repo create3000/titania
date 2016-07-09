@@ -351,9 +351,9 @@ X3DViewpointNode::straightenHorizon (const Rotation4d & orientation) const
 {
 	// Taken from Billboard
 
-	Vector3d direction = zAxis * orientation;
-	Vector3d normal    = cross (direction, getUpVector ());
-	Vector3d vector    = cross (direction, yAxis * orientation);
+	const Vector3d direction = zAxis * orientation;
+	const Vector3d normal    = cross (direction, getUpVector ());
+	const Vector3d vector    = cross (direction, yAxis * orientation);
 
 	return Rotation4d (vector, normal);
 }
