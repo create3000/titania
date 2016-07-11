@@ -31,6 +31,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Geometry/ConvexHull2.cpp \
 	Titania/Math/Geometry/ConvexHull3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \
+	Titania/Math/Geometry/Line2.cpp \
 	Titania/Math/Geometry/Line3.cpp \
 	Titania/Math/Geometry/LineSegment3.cpp \
 	Titania/Math/Geometry/Plane3.cpp \

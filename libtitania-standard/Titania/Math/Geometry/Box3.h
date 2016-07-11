@@ -86,26 +86,26 @@ public:
 	///  Default constructor. Constructs an empty box.
 	constexpr
 	box3 () :
-		value (Type (0.5), 0, 0, 0,
-		       0, Type (0.5), 0, 0,
-		       0, 0, Type (0.5), 0,
-		       0, 0, 0, 0)
+		m_matrix (Type (0.5), 0, 0, 0,
+		          0, Type (0.5), 0, 0,
+		          0, 0, Type (0.5), 0,
+		          0, 0, 0, 0)
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	box3 (const box3 <Up> & box) :
-		value (box .matrix ())
+		m_matrix (box .matrix ())
 	{ }
 
 	///  Constructs a box of size @a size and center @a size.
 	constexpr
 	box3 (const vector3 <Type> & size, const vector3 <Type> & center) :
-		value (size .x () / 2, 0, 0, 0,
-		       0, size .y () / 2, 0, 0,
-		       0, 0, size .z () / 2, 0,
-		       center .x (), center .y (), center .z (), 1)
+		m_matrix (size .x () / 2, 0, 0, 0,
+		          0, size .y () / 2, 0, 0,
+		          0, 0, size .z () / 2, 0,
+		          center .x (), center .y (), center .z (), 1)
 	{ }
 
 	///  Constructs a box of min @a min and max @a max.
@@ -140,15 +140,19 @@ public:
 	box3 &
 	operator = (const box3 <Up> & box)
 	{
-		value = box .value;
+		m_matrix = box .m_matrix;
 		return *this;
 	}
 
 	///  @name Element access
 
+	void
+	matrix (const matrix4 <Type> & value)
+	{ m_matrix = value; }
+
 	const matrix4 <Type> &
 	matrix () const
-	{ return value; }
+	{ return m_matrix; }
 
 	///  Returns the min and max extents of this box.
 	void
@@ -157,7 +161,7 @@ public:
 	///  Returns whether this box is an empty box.
 	bool
 	empty () const
-	{ return value [3] [3] == 0; }
+	{ return m_matrix [3] [3] == 0; }
 
 	///  Returns the size of this box.
 	vector3 <Type>
@@ -166,7 +170,7 @@ public:
 	///  Returns the center of this box.
 	vector3 <Type>
 	center () const
-	{ return value .origin (); }
+	{ return m_matrix .origin (); }
 
 	///  Returns the transformed points of this box.
 	std::vector <vector3 <Type>> 
@@ -200,12 +204,12 @@ public:
 	///  Transform this box by @a matrix.
 	void
 	mult_matrix_box (const matrix4 <Type> & matrix)
-	{ value .mult_left (matrix); }
+	{ m_matrix .mult_left (matrix); }
 
 	///  Transform this box by @a matrix.
 	void
 	mult_box_matrix (const matrix4 <Type> & matrix)
-	{ value .mult_right (matrix); }
+	{ m_matrix .mult_right (matrix); }
 
 	///  Translate this box by @a translation.
 	void
@@ -214,13 +218,13 @@ public:
 		matrix4 <Type> t;
 
 		t .translate (translation);
-		value *= t;
+		m_matrix *= t;
 	}
 
 	///  Rotate this box by @a rotation.
 	void
 	rotate (const rotation4 <Type> & rotation)
-	{ value *= matrix4 <Type> (rotation); }
+	{ m_matrix *= matrix4 <Type> (rotation); }
 
 	///  Scale this box by @a scaleFactor.
 	void
@@ -229,7 +233,7 @@ public:
 		matrix4 <Type> s;
 
 		s .scale (scaleFactor);
-		value *= s;
+		m_matrix *= s;
 	}
 
 	///  @name Intersection
@@ -265,7 +269,7 @@ private:
 	void
 	absolute_extents (vector3 <Type> &, vector3 <Type> &) const;
 
-	matrix4 <Type> value;
+	matrix4 <Type> m_matrix;
 
 };
 
@@ -367,9 +371,9 @@ template <class Type>
 void
 box3 <Type>::absolute_extents (vector3 <Type> & min, vector3 <Type> & max) const
 {
-	const vector3 <Type> x (value .x ());
-	const vector3 <Type> y (value .y ());
-	const vector3 <Type> z (value .z ());
+	const vector3 <Type> x (m_matrix .x ());
+	const vector3 <Type> y (m_matrix .y ());
+	const vector3 <Type> z (m_matrix .z ());
 
 	const auto r1 = y + z;
 	const auto r2 = z - y;

@@ -152,7 +152,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Math/Geometry/ConvexHull2.lo \
 	Titania/Math/Geometry/ConvexHull3.lo \
 	Titania/Math/Geometry/Cylinder3.lo \
-	Titania/Math/Geometry/Line3.lo \
+	Titania/Math/Geometry/Line2.lo Titania/Math/Geometry/Line3.lo \
 	Titania/Math/Geometry/LineSegment3.lo \
 	Titania/Math/Geometry/Plane3.lo \
 	Titania/Math/Geometry/Sphere3.lo \
@@ -446,6 +446,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Math/Geometry/ConvexHull2.cpp \
 	Titania/Math/Geometry/ConvexHull3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \
+	Titania/Math/Geometry/Line2.cpp \
 	Titania/Math/Geometry/Line3.cpp \
 	Titania/Math/Geometry/LineSegment3.cpp \
 	Titania/Math/Geometry/Plane3.cpp \
@@ -660,6 +661,8 @@ Titania/Math/Geometry/ConvexHull3.lo:  \
 Titania/Math/Geometry/Cylinder3.lo:  \
 	Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
+Titania/Math/Geometry/Line2.lo: Titania/Math/Geometry/$(am__dirstamp) \
+	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/Line3.lo: Titania/Math/Geometry/$(am__dirstamp) \
 	Titania/Math/Geometry/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/LineSegment3.lo:  \
@@ -832,6 +835,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Cylinder3.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Line3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/LineSegment3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Plane3.Plo@am__quote@

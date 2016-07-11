@@ -63,6 +63,7 @@
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Geometry/Cylinder3.h>
+#include <Titania/Math/Geometry/Line2.h>
 #include <Titania/Math/Geometry/Line3.h>
 #include <Titania/Math/Geometry/Plane3.h>
 #include <Titania/Math/Geometry/Spheroid3.h>
@@ -129,6 +130,8 @@ using Box3f       = math::box3 <float>;
 using Box3d       = math::box3 <double>;
 using Cylinder3f  = math::cylinder3 <float>;
 using Plane3f     = math::plane3 <float>;
+using Line2d      = math::line2 <double>;
+using Line2f      = math::line2 <float>;
 using Line3d      = math::line3 <double>;
 using Line3f      = math::line3 <float>;
 using Sphere3f    = math::sphere3 <float>;
@@ -138,6 +141,148 @@ using Matrix4f    = math::matrix4 <float>;
 using Spheroid3d  = math::spheroid3 <double>;
 using ConvexHull2d = math::convex_hull2 <double>;
 using ConvexHull3d = math::convex_hull3 <double>;
+
+template <class Type>
+math::box2 <Type>
+minimum_bounding_rectangle (const std::vector <vector2 <Type>> & convex_hull)
+{
+	math::box2 <Type> rectangle;
+
+	// Find most left and most right points.
+
+	const auto size = convex_hull .size ();
+
+	const auto resultX = std::minmax_element (convex_hull .begin (),
+	                                          convex_hull .end (),
+	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
+                                             { return a .x () < b .x (); });
+
+	// Find most lower and most upper points.
+
+	const auto resultY = std::minmax_element (convex_hull .begin (),
+	                                          convex_hull .end (),
+	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
+                                             { return a .y () < b .y (); });
+
+	std::vector <size_t> indices; // Index of hull point on line.
+
+	indices .emplace_back (resultY .second - convex_hull .begin ());
+	indices .emplace_back (resultX .second - convex_hull .begin ());
+	indices .emplace_back (resultY .first  - convex_hull .begin ());
+	indices .emplace_back (resultX .first  - convex_hull .begin ());
+
+	// Construct initial bounding rectangle lines.
+
+	//          a
+	//    <------------
+	//    |           |
+	//  d |           | b
+	//    |           |
+	//    ------------>
+	//          c
+
+	const auto yMax = convex_hull [indices [0]] .y ();
+	const auto xMax = convex_hull [indices [1]] .x ();
+	const auto yMin = convex_hull [indices [2]] .y ();
+	const auto xMin = convex_hull [indices [3]] .x ();
+
+	std::vector <line2 <Type>> lines;
+
+	lines .emplace_back (vector2 <Type> (xMax, yMax), vector2 <Type> (xMin, yMax), point_type ());
+	lines .emplace_back (vector2 <Type> (xMax, yMin), vector2 <Type> (xMax, yMax), point_type ());
+	lines .emplace_back (vector2 <Type> (xMin, yMin), vector2 <Type> (xMax, yMin), point_type ());
+	lines .emplace_back (vector2 <Type> (xMin, yMax), vector2 <Type> (xMin, yMin), point_type ());
+
+
+	//for (size_t i = 0; i < 4; ++ i)
+	//	std::clog << indices [i] << " ";
+	//std::clog << " : ";
+
+	//const Type xSize = lines [0] .distance (convex_hull [indices [2]]);
+	//const Type ySize = lines [1] .distance (convex_hull [indices [3]]);
+	//std::clog << xSize * ySize << std::endl;
+
+	// Rotate lines about vertex with the smalles angle to the next vertex.
+
+	Type min_area = std::numeric_limits <Type>::infinity ();
+	Type rotation = 0;
+
+	while (rotation < M_PI)
+	{
+		Type max_cos_theta = -std::numeric_limits <Type>::infinity ();
+		int  maxIndex      = -1;
+
+		for (size_t i = 0; i < 4; ++ i)
+		{
+			const auto & A = convex_hull [indices [i]];
+			const auto & B = convex_hull [(indices [i] + 1) % size];
+	
+			const auto cos_theta = dot (lines [i] .direction (), normalize (B - A));
+	
+			if (cos_theta > max_cos_theta)
+			{
+				max_cos_theta = cos_theta;
+				maxIndex      = i;
+			}
+		}
+
+		// Rotate lines.
+
+		const auto theta = std::acos (clamp <Type> (max_cos_theta, 0, 1));
+
+		matrix3 <Type> matrix;
+
+		for (size_t i = 0; i < 4; ++ i)
+		{
+			matrix .set (vector2 <Type> (), theta, vector2 <Type> (1, 1), Type (0), convex_hull [indices [i]]);
+
+			lines [i] .mult_line_matrix (matrix);
+		}
+
+		rotation += theta;
+
+		// Assign next point to line with closest angle.
+
+		indices [maxIndex] = (indices [maxIndex] + 1) % size;
+
+		//for (size_t i = 0; i < 4; ++ i)
+		//	std::clog << indices [i] << " ";
+		//std::clog << " : ";
+
+		auto       xAxis = lines [0] .perpendicular_vector (convex_hull [indices [2]]);
+		auto       yAxis = lines [1] .perpendicular_vector (convex_hull [indices [3]]);
+		const Type area  = abs (xAxis) * abs (yAxis);
+
+		if (area < min_area)
+		{
+			min_area = area;
+
+			// Determine center.
+
+			vector2 <Type> A, B;
+
+			lines [0] .closest_point (lines [1], A);
+			lines [2] .closest_point (lines [3], B);
+
+			const auto center = (A + B) / Type (2);
+
+			// Build minimum area rectangle.
+
+			xAxis /= Type (2);
+			yAxis /= Type (2);
+
+			rectangle .matrix (matrix3 <Type> (xAxis  .x (), xAxis  .y (), 0,
+			                                   yAxis  .x (), yAxis  .y (), 0,
+			                                   center .x (), center .y (), 1));
+		}
+
+		//std::clog << area << std::endl;
+	}
+
+	//std::clog << std::endl;
+
+	return rectangle;
+}
 
 int
 main (int argc, char** argv)
@@ -169,7 +314,7 @@ main (int argc, char** argv)
 		Vector2d (2, 2),
 		Vector2d (0, 4),
 		Vector2d (2, 7),
-		Vector2d (9, 8),
+//		Vector2d (9, 8),
 	};
 
 	points .clear ();
@@ -185,6 +330,13 @@ main (int argc, char** argv)
 
 	for (const auto & i : hull .indices ())
 	   std::clog << i << std::endl;
+
+	const auto rectangle = minimum_bounding_rectangle (hull .polygon ());
+
+	std::clog << std::endl;
+	std::clog << rectangle .area () << std::endl;
+	std::clog << rectangle .matrix () << std::endl;
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

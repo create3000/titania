@@ -63,6 +63,15 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent a convex hull in 2D space.
+ *  This class is implemented using the quick hull algorithm.
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of values.
+ */
 template <class Type>
 class convex_hull2
 {
@@ -70,13 +79,19 @@ public:
 
 	///  @name Construction
 
+	///  Constructs a convex_hull2 from a set of 2D points.
 	convex_hull2 (const std::vector <vector2 <Type>> &);
 
 	///  @name Member access
 
+	///  Returns the indices from the set of points of the convex hull in counterclockwise order.
 	const std::vector <size_t> &
 	indices () const
 	{ return m_indices; }
+
+	const std::vector <vector2 <Type>> &
+	polygon () const
+	{ return m_polygon; }
 
 
 private:
@@ -84,47 +99,52 @@ private:
 	///  @name Operations
 
 	void
-	quick_hull (const std::vector <vector2 <Type>> & points, const size_t, const size_t);
+	quick_hull (const size_t, const size_t);
 
 	///  @name Member types
 
-	std::vector <size_t> m_indices;
-	std::vector <bool>   m_set;
+	const std::vector <vector2 <Type>> & m_points;
+	std::vector <size_t>                 m_indices;
+	std::vector <bool>                   m_set;
+	std::vector <vector2 <Type>>         m_polygon;
 
 };
 
 template <class Type>
 convex_hull2 <Type>::convex_hull2 (const std::vector <vector2 <Type>> & points) :
+	 m_points (points),
 	m_indices (),
-	    m_set (points .size ())
+	    m_set (points .size ()),
+	m_polygon ()
 {
-	// Find most left and most right point to have a start condition.
+	// Find most left and most right points to have a start condition.
 
-	const auto result = std::minmax_element (points .begin (),
-	                                         points .end (),
+	const auto result = std::minmax_element (m_points .begin (),
+	                                         m_points .end (),
 	                                         [ ] (const vector2 <Type> & a, const vector2 <Type> & b)
                                             { return a .x () < b .x (); });
 
-	m_indices .emplace_back (result .first  - points .begin ());
-	m_indices .emplace_back (result .second - points .begin ());
+	m_indices .emplace_back (result .first  - m_points .begin ());
+	m_indices .emplace_back (result .second - m_points .begin ());
 
 	m_set [m_indices [0]] = true;
 	m_set [m_indices [1]] = true;
 
-	quick_hull (points, 0, 1);
-	quick_hull (points, 1, 0);
+	quick_hull (0, 1);
+	quick_hull (1, 0);
+
+	for (const auto & index : m_indices)
+		m_polygon .emplace_back (m_points [index]);
 }
 
 template <class Type>
 void
-convex_hull2 <Type>::quick_hull (const std::vector <vector2 <Type>> & points,
-                                 const size_t i0,
-                                 const size_t i1)
+convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
 {
 	// Construct plane from points for distance determination.
 
-	const auto & p0 = points [m_indices [i0]];
-	const auto & p1 = points [m_indices [i1]];
+	const auto & p0 = m_points [m_indices [i0]];
+	const auto & p1 = m_points [m_indices [i1]];
 
 	const auto p03 = vector3 <Type> (p0 .x (), p0 .y (), 0);
 	const auto p13 = vector3 <Type> (p1 .x (), p1 .y (), 0);
@@ -137,12 +157,12 @@ convex_hull2 <Type>::quick_hull (const std::vector <vector2 <Type>> & points,
 	auto   dMax = -std::numeric_limits <Type>::infinity ();
 	size_t iMax = -1;
 
-	for (size_t i = 0, size = points .size (); i < size; ++ i)
+	for (size_t i = 0, size = m_points .size (); i < size; ++ i)
 	{
 		if (m_set [i])
 			continue;
 
-		const auto & p = points [i];
+		const auto & p = m_points [i];
 		const auto   d = plane .distance (vector3 <Type> (p .x (), p .y (), 0));
 
 		if (d > dMax)
@@ -157,8 +177,8 @@ convex_hull2 <Type>::quick_hull (const std::vector <vector2 <Type>> & points,
 
 	m_set [iMax] = true;
 
-//	const auto result = std::max_element (points .begin (),
-//	                                      points .end (),
+//	const auto result = std::max_element (m_points .begin (),
+//	                                      m_points .end (),
 //	                                      [&plane] (const vector2 <Type> & a, const vector2 <Type> & b)
 //                                         {
 //		                                       const auto d1 = plane .distance (vector3 <Type> (a .x (), a .y (), 0));
@@ -167,7 +187,7 @@ convex_hull2 <Type>::quick_hull (const std::vector <vector2 <Type>> & points,
 //	                                          return d1 < d2;
 //	                                      });
 //
-//	const size_t iMax = result - points .begin ();
+//	const size_t iMax = result - m_points .begin ();
 //
 //	if (m_set [iMax])
 //		return;
@@ -186,20 +206,21 @@ convex_hull2 <Type>::quick_hull (const std::vector <vector2 <Type>> & points,
 	{
 		m_indices .insert (m_indices .begin () + (i1 + 1), iMax);
 
-		quick_hull (points, i0,     i1 + 1);
-		quick_hull (points, i1 + 1, i1);
+		quick_hull (i0,     i1 + 1);
+		quick_hull (i1 + 1, i1);
 	}
 	else
 	{
 		m_indices .insert (m_indices .begin () + i0, iMax);
 
-		quick_hull (points, i0 + 1, i0);
-		quick_hull (points, i0,     i1);
+		quick_hull (i0 + 1, i0);
+		quick_hull (i0,     i1);
 	}
 }
 
 extern template class convex_hull2 <float>;
 extern template class convex_hull2 <double>;
+extern template class convex_hull2 <long double>;
 
 } // math
 } // titania

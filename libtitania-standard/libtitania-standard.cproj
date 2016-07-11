@@ -150,6 +150,7 @@
     <None Include="Titania\Math\Geometry\LineSegment3.h" />
     <None Include="Titania\Math\Geometry\ConvexHull3.h" />
     <None Include="Titania\Math\Geometry\ConvexHull2.h" />
+    <None Include="Titania\Math\Geometry\Line2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -215,6 +216,7 @@
     <Compile Include="Titania\Math\Geometry\LineSegment3.cpp" />
     <Compile Include="Titania\Math\Geometry\ConvexHull3.cpp" />
     <Compile Include="Titania\Math\Geometry\ConvexHull2.cpp" />
+    <Compile Include="Titania\Math\Geometry\Line2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

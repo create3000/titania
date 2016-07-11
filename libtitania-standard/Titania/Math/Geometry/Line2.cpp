@@ -48,14 +48,24 @@
  *
  ******************************************************************************/
 
-#include "ConvexHull2.h"
+#include "Line2.h"
 
 namespace titania {
 namespace math {
 
-template class convex_hull2 <float>;
-template class convex_hull2 <double>;
-template class convex_hull2 <long double>;
+template class line2 <float>;
+template class line2 <double>;
+template class line2 <long double>;
+
+//
+template std::istream & operator >> (std::istream &, line2 <float> &);
+template std::istream & operator >> (std::istream &, line2 <double> &);
+template std::istream & operator >> (std::istream &, line2 <long double> &);
+
+//
+template std::ostream & operator << (std::ostream &, const line2 <float> &);
+template std::ostream & operator << (std::ostream &, const line2 <double> &);
+template std::ostream & operator << (std::ostream &, const line2 <long double> &);
 
 } // math
 } // titania
