@@ -133,6 +133,12 @@ public:
 		*this = box3 (min, max, extents_type ());
 	}
 
+	///  Constructs a box from @a matrix.
+	constexpr
+	box3 (const matrix4 <Type> & matrix) :
+		m_matrix (matrix)
+	{ }
+
 	///  @name Assignment operator
 
 	///  Assign @a box3 to this box3.

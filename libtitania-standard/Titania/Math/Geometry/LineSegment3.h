@@ -87,7 +87,7 @@ public:
 
 	///  Constructs a line segment from @a point0 and @a point1.
 	line_segment3 (const vector3 <Type> & point0, const vector3 <Type> & point1) :
-		value ({ point0, point1, line3 <Type> (point0, point1, point_type ()) })
+		value ({ point0, point1, line3 <Type> (point0, point1, points_type ()) })
 	{ }
 
 	///  @name Member access

@@ -84,11 +84,12 @@ public:
 
 	///  @name Member access
 
-	///  Returns the indices from the set of points of the convex hull in counterclockwise order.
+	///  Returns the indices within the set of points of the convex hull in counterclockwise order.
 	const std::vector <size_t> &
 	indices () const
 	{ return m_indices; }
 
+	///  Returns the points of the convex hull in counterclockwise order.
 	const std::vector <vector2 <Type>> &
 	polygon () const
 	{ return m_polygon; }

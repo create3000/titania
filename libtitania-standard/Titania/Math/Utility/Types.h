@@ -58,7 +58,7 @@ namespace math {
 
 struct iterator_type { };
 struct extents_type { };
-struct point_type { };
+struct points_type { };
 
 } // math
 } // titania

@@ -101,7 +101,7 @@ public:
 	{ }
 
 	///  Constructs a line of from @a point1 to @a point2.
-	line2 (const vector2 <Type> & point1, const vector2 <Type> & point2, const point_type &) :
+	line2 (const vector2 <Type> & point1, const vector2 <Type> & point2, const points_type &) :
 		    m_point (point1),
 		m_direction (normalize (point2 - point1))
 	{ }

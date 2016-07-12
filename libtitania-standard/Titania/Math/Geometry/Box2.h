@@ -53,10 +53,12 @@
 
 #include "../Numbers/Matrix3.h"
 #include "../Numbers/Vector2.h"
+#include "../Geometry/Line2.h"
 #include "../Utility/Types.h"
 #include "../Functional.h"
 #include "../../Utility/Range.h"
 
+#include <algorithm>
 #include <array>
 #include <vector>
 
@@ -128,6 +130,12 @@ public:
 
 		*this = box2 (min, max, extents_type ());
 	}
+
+	///  Constructs a box from @a matrix.
+	constexpr
+	box2 (const matrix3 <Type> & matrix) :
+		m_matrix (matrix)
+	{ }
 
 	///  @name Assignment operator
 
@@ -484,6 +492,154 @@ extern template std::istream & operator >> (std::istream &, box2 <long double> &
 extern template std::ostream & operator << (std::ostream &, const box2 <float> &);
 extern template std::ostream & operator << (std::ostream &, const box2 <double> &);
 extern template std::ostream & operator << (std::ostream &, const box2 <long double> &);
+
+///  @relates box2
+///  @name Misc
+
+///  Returns the minimum bounding rectangle from @a polygon, where polygon must be convex.
+///  References: http://www-cgrl.cs.mcgill.ca/~godfried/research/calipers.html
+///  https://en.wikipedia.org/wiki/Rotating_calipers
+template <class Type>
+math::box2 <Type>
+minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
+{
+	math::box2 <Type> rectangle;
+
+	// Find most left and most right points.
+
+	const auto size = polygon .size ();
+
+	const auto resultX = std::minmax_element (polygon .begin (),
+	                                          polygon .end (),
+	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
+                                             { return a .x () < b .x (); });
+
+	// Find most lower and most upper points.
+
+	const auto resultY = std::minmax_element (polygon .begin (),
+	                                          polygon .end (),
+	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
+                                             { return a .y () < b .y (); });
+
+	std::vector <size_t> indices; // Index of hull point on line.
+
+	indices .emplace_back (resultY .second - polygon .begin ());
+	indices .emplace_back (resultX .second - polygon .begin ());
+	indices .emplace_back (resultY .first  - polygon .begin ());
+	indices .emplace_back (resultX .first  - polygon .begin ());
+
+	// Construct initial bounding rectangle lines.
+
+	//          a
+	//    <------------
+	//    |           |
+	//  d |           | b
+	//    |           |
+	//    ------------>
+	//          c
+
+	const auto yMax = polygon [indices [0]] .y ();
+	const auto xMax = polygon [indices [1]] .x ();
+	const auto yMin = polygon [indices [2]] .y ();
+	const auto xMin = polygon [indices [3]] .x ();
+
+	std::vector <line2 <Type>> lines;
+
+	lines .emplace_back (vector2 <Type> (xMax, yMax), vector2 <Type> (xMin, yMax), points_type ());
+	lines .emplace_back (vector2 <Type> (xMax, yMin), vector2 <Type> (xMax, yMax), points_type ());
+	lines .emplace_back (vector2 <Type> (xMin, yMin), vector2 <Type> (xMax, yMin), points_type ());
+	lines .emplace_back (vector2 <Type> (xMin, yMax), vector2 <Type> (xMin, yMin), points_type ());
+
+
+	//for (size_t i = 0; i < 4; ++ i)
+	//	std::clog << indices [i] << " ";
+	//std::clog << " : ";
+
+	//const Type xSize = lines [0] .distance (polygon [indices [2]]);
+	//const Type ySize = lines [1] .distance (polygon [indices [3]]);
+	//std::clog << xSize * ySize << std::endl;
+
+	// Rotate lines about vertex with the smalles angle to the next vertex.
+
+	Type min_area = std::numeric_limits <Type>::infinity ();
+	Type rotation = 0;
+
+	while (rotation < M_PI)
+	{
+		Type max_cos_theta = -std::numeric_limits <Type>::infinity ();
+		int  maxIndex      = -1;
+
+		for (size_t i = 0; i < 4; ++ i)
+		{
+			const auto & A = polygon [indices [i]];
+			const auto & B = polygon [(indices [i] + 1) % size];
+	
+			const auto cos_theta = dot (lines [i] .direction (), normalize (B - A));
+	
+			if (cos_theta > max_cos_theta)
+			{
+				max_cos_theta = cos_theta;
+				maxIndex      = i;
+			}
+		}
+
+		// Rotate lines.
+
+		const auto theta = std::acos (clamp <Type> (max_cos_theta, 0, 1));
+
+		matrix3 <Type> matrix;
+
+		for (size_t i = 0; i < 4; ++ i)
+		{
+			matrix .set (vector2 <Type> (), theta, vector2 <Type> (1, 1), Type (0), polygon [indices [i]]);
+
+			lines [i] .mult_line_matrix (matrix);
+		}
+
+		rotation += theta;
+
+		// Associate index of next point to line with closest angle.
+
+		indices [maxIndex] = (indices [maxIndex] + 1) % size;
+
+		//for (size_t i = 0; i < 4; ++ i)
+		//	std::clog << indices [i] << " ";
+		//std::clog << " : ";
+
+		auto       xAxis = lines [3] .perpendicular_vector (polygon [indices [1]]);
+		auto       yAxis = lines [2] .perpendicular_vector (polygon [indices [0]]);
+		const Type area  = abs (xAxis) * abs (yAxis);
+
+		if (area < min_area)
+		{
+			min_area = area;
+
+			// Determine center.
+
+			vector2 <Type> A, B;
+
+			lines [0] .closest_point (lines [1], A);
+			lines [2] .closest_point (lines [3], B);
+
+			const auto center = (A + B) / Type (2);
+
+			// Build minimum area rectangle.
+
+			xAxis /= Type (2);
+			yAxis /= Type (2);
+
+			rectangle .matrix (matrix3 <Type> (xAxis  .x (), xAxis  .y (), 0,
+			                                   yAxis  .x (), yAxis  .y (), 0,
+			                                   center .x (), center .y (), 1));
+		}
+
+		//std::clog << area << std::endl;
+	}
+
+	//std::clog << std::endl;
+
+	return rectangle;
+}
 
 } // math
 } // titania

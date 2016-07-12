@@ -200,7 +200,7 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 	{
 		const auto point1       = getCoord () -> get1Point (coordIndex () [startEdge .first]);
 		const auto point2       = getCoord () -> get1Point (coordIndex () [startEdge .second]);
-		const auto edgeLine     = Line3d (point1, point2, math::point_type ());
+		const auto edgeLine     = Line3d (point1, point2, math::points_type ());
 		const auto closestPoint = edgeLine .closest_point (knifeTouchSensor -> getHitPoint ());
 
 		cutPoints .first = closestPoint;
@@ -342,7 +342,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 
 		const auto point1     = getCoord () -> get1Point (coordIndex () [endEdge .first]);
 		const auto point2     = getCoord () -> get1Point (coordIndex () [endEdge .second]);
-		const auto edgeLine   = Line3d (point1, point2, math::point_type ());
+		const auto edgeLine   = Line3d (point1, point2, math::points_type ());
 		const auto orthoPoint = edgeLine .closest_point (cutPoints .first);
 
 		closestPoint = getClosestPoint (endEdge, cutPoints);	                   
@@ -393,8 +393,8 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 	
 		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
 		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
-		const auto edgeLine   = Line3d (point1, point2, math::point_type ());	                   
-		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::point_type ());
+		const auto edgeLine   = Line3d (point1, point2, math::points_type ());	                   
+		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::points_type ());
 		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 	
