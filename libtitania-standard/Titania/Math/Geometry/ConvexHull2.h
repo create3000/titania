@@ -95,7 +95,7 @@ private:
 	///  @name Operations
 
 	void
-	quick_hull (const size_t, const size_t);
+	quick_hull (const size_t, const size_t, const std::vector <size_t> &);
 
 	///  @name Member types
 
@@ -129,13 +129,17 @@ convex_hull2 <Type>::convex_hull2 (const std::vector <vector2 <Type>> & points) 
 
 	// Determine convex hull.
 
-	quick_hull (0, 1);
-	quick_hull (1, 0);
+	std::vector <size_t> pointsset (points .size ());
+
+	std::iota (pointsset .begin (), pointsset .end (), 0);
+
+	quick_hull (0, 1, pointsset);
+	quick_hull (1, 0, pointsset);
 }
 
 template <class Type>
 void
-convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
+convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1, const std::vector <size_t> & points)
 {
 	// Construct plane from points for distance determination.
 
@@ -148,23 +152,32 @@ convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
 
 	const auto plane = plane3 <Type> (p03, n3);
 
-	// Find most distant point to plane in set.
+	// Find most distant point to plane in set. Points below the line can be ignored.
+
+	std::vector <size_t> upper_points;
 
 	auto   dMax = -std::numeric_limits <Type>::infinity ();
 	size_t iMax = -1;
 
-	for (size_t i = 0, size = m_points .size (); i < size; ++ i)
+	for (size_t i = 0, size = points .size (); i < size; ++ i)
 	{
-		if (m_set [i])
+		const auto index = points [i];
+
+		if (m_set [index])
 			continue;
 
-		const auto & p = m_points [i];
+		const auto & p = m_points [index];
 		const auto   d = plane .distance (vector3 <Type> (p .x (), p .y (), 0));
+
+		if (d <= 0)
+			continue;
+
+		upper_points .emplace_back (index);
 
 		if (d > dMax)
 		{
 			dMax = d;
-			iMax = i;
+			iMax = index;
 		}
 	}
 
@@ -176,24 +189,26 @@ convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
 
 	m_set [iMax] = true;
 
-//	const auto result = std::max_element (m_points .begin (),
-//	                                      m_points .end (),
-//	                                      [&plane] (const vector2 <Type> & a, const vector2 <Type> & b)
+//	const auto result = std::max_element (points .begin (),
+//	                                      points .end (),
+//	                                      [&plane, this] (const size_t & a, const size_t & b)
 //                                         {
-//		                                       const auto d1 = plane .distance (vector3 <Type> (a .x (), a .y (), 0));
-//		                                       const auto d2 = plane .distance (vector3 <Type> (b .x (), b .y (), 0));
+//		                                       const auto & p0 = m_points [a];
+//		                                       const auto & p1 = m_points [b];
+//		                                       const auto   d1 = plane .distance (vector3 <Type> (p0 .x (), p0 .y (), 0));
+//		                                       const auto   d2 = plane .distance (vector3 <Type> (p1 .x (), p1 .y (), 0));
 //
 //	                                          return d1 < d2;
 //	                                      });
 //
-//	const size_t iMax = result - m_points .begin ();
+//	const size_t iMax = *result;
 //
 //	if (m_set [iMax])
 //		return;
 //
 //	m_set [iMax] = true;
 //
-//	const auto & p = *result;
+//	const auto & p = m_points [iMax];
 //	const auto   d = plane .distance (vector3 <Type> (p .x (), p .y (), 0));
 //
 //	if (d <= 0)
@@ -205,15 +220,15 @@ convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
 	{
 		m_indices .insert (m_indices .begin () + (i1 + 1), iMax);
 
-		quick_hull (i0,     i1 + 1);
-		quick_hull (i1 + 1, i1);
+		quick_hull (i0,     i1 + 1, upper_points);
+		quick_hull (i1 + 1, i1,     upper_points);
 	}
 	else
 	{
 		m_indices .insert (m_indices .begin () + i0, iMax);
 
-		quick_hull (i0 + 1, i0);
-		quick_hull (i0,     i1);
+		quick_hull (i0 + 1, i0, upper_points);
+		quick_hull (i0,     i1, upper_points);
 	}
 }
 

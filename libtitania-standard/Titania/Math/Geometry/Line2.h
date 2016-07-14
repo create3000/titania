@@ -166,7 +166,7 @@ public:
 	///  The return value is the angle between both lines. The return value
 	///  must be checked whether both lines are parallel.
 	Type
-	closest_point (const line2 & line, vector2 <Type> & point) const
+	intersects (const line2 & line, vector2 <Type> & point) const
 	{
 		const auto & p1 = this -> point ();
 		const auto & p2 = line .point ();

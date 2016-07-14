@@ -623,8 +623,8 @@ minimum_bounding_rectangle (const convex_hull2 <Type> & hull, const std::vector 
 
 			vector2 <Type> A, B;
 
-			lines [0] .closest_point (lines [1], A);
-			lines [2] .closest_point (lines [3], B);
+			lines [0] .intersects (lines [1], A);
+			lines [2] .intersects (lines [3], B);
 
 			const auto center = (A + B) / Type (2);
 
