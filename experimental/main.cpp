@@ -142,23 +142,9 @@ using Spheroid3d  = math::spheroid3 <double>;
 using ConvexHull2d = math::convex_hull2 <double>;
 using ConvexHull3d = math::convex_hull3 <double>;
 
-int
-main (int argc, char** argv)
+void
+c2 ()
 {
-	std::clog << "Starting main ..." << std::endl;
-	std::clog << std::boolalpha;
-	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
-	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
-	std::clog .imbue (std::locale (""));
-
-	std::locale::global (std::locale (""));
-
-	#ifdef _GLIBCXX_PARALLEL
-	std::clog << "in parallel mode ..." << std::endl;
-	#endif
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	static std::default_random_engine
 	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
@@ -194,7 +180,42 @@ main (int argc, char** argv)
 	std::clog << std::endl;
 	std::clog << rectangle .area () << std::endl;
 	std::clog << rectangle .matrix () << std::endl;
+}
 
+void
+c3 ()
+{
+	std::vector <Vector3d> points = {
+		Vector3d ( 0,  0,  0),
+		Vector3d (10,  1,  0),
+		Vector3d ( 5,  0, 10),
+		Vector3d ( 5, 10,  5),
+		Vector3d ( 5,  5,  5),
+		Vector3d ( 9,  9,  1),
+	};
+
+	const auto hull = ConvexHull3d (points);
+
+}
+
+int
+main (int argc, char** argv)
+{
+	std::clog << "Starting main ..." << std::endl;
+	std::clog << std::boolalpha;
+	std::clog << std::setprecision (std::numeric_limits <float>::digits10);
+	//std::clog << std::setprecision (std::numeric_limits <double>::digits10);
+	std::clog .imbue (std::locale (""));
+
+	std::locale::global (std::locale (""));
+
+	#ifdef _GLIBCXX_PARALLEL
+	std::clog << "in parallel mode ..." << std::endl;
+	#endif
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	c3 ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

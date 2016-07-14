@@ -128,8 +128,13 @@ convex_hull2 <Type>::convex_hull2 (const std::vector <vector2 <Type>> & points) 
 	m_indices .emplace_back (result .first  - m_points .begin ());
 	m_indices .emplace_back (result .second - m_points .begin ());
 
+	// Mark each line point as beeing used in a triangle to prevent floating point errors when determining the distance
+	// to this point as the result will probably be not exactly zero.
+
 	m_set [m_indices [0]] = true;
 	m_set [m_indices [1]] = true;
+
+	// Determine convex hull.
 
 	quick_hull (0, 1);
 	quick_hull (1, 0);
@@ -175,6 +180,9 @@ convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1)
 
 	if (dMax <= 0)
 		return;
+
+	// Mark new triangle point as beeing used in a triangle to prevent floating point errors when determining the distance
+	// to this point as the result will probably be not exactly zero.
 
 	m_set [iMax] = true;
 

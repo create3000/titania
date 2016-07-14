@@ -52,10 +52,17 @@
 #define __TITANIA_MATH_GEOMETRY_CONVEX_HULL3_H__
 
 #include "../Numbers/Vector3.h"
+#include "../Geometry/Line3.h"
 #include "../Geometry/Plane3.h"
 
+#include <algorithm>
+#include <array>
+#include <limits>
 #include <map>
+#include <stack>
 #include <vector>
+
+#include "../../LOG.h"
 
 namespace titania {
 namespace math {
@@ -65,144 +72,381 @@ class convex_hull3
 {
 public:
 
-	struct face_t
-	{
-		face_t (const size_t, const size_t, const size_t, const size_t, const std::vector <vector3 <Type>> &);
-
-		size_t indices [3];
-		plane3 <Type> plane;
-	};
-
 	convex_hull3 (const std::vector <vector3 <Type>> &);
-
-	const std::vector <face_t> &
-	faces () const
-	{ return m_faces; }
 
 private:
 
-	struct edge_t
-	{
-		edge_t () :
-			a (-1),
-			b (-1)
-		{ }
+	std::vector <size_t>
+	create_simplex () const;
 
-		void
-		insert (size_t x)
-		{ (a == EMPTY ? a : b) = x; }
+	std::vector <std::pair <size_t, size_t>>
+	extract_horizon_edges (const std::vector <size_t> &, const std::vector <std::array <size_t, 3>>&) const;
 
-		bool
-		contains (size_t x)
-		{ return a == x or b == x; }
+	const std::vector <vector3 <Type>> & m_points;
 
-		void
-		erase (size_t x)
-		{ (a == x ? a : b) = EMPTY; }
-
-		size_t
-		size ()
-		{ return (a not_eq EMPTY) + (b not_eq EMPTY); }
-
-		static constexpr size_t EMPTY = -1;
-
-		size_t a, b;
-	};
-
-	std::vector <face_t> m_faces;
+	std::vector <bool> m_set;
 
 };
 
 template <class Type>
-convex_hull3 <Type>::face_t::face_t (const size_t i, const size_t j, const size_t k, const size_t inside, const std::vector <vector3 <Type>> & points) :
-	indices { i, j, k },
-	  plane (points [i], points [j], points [k])
-{
-	if (plane .distance (points [inside]) >= 0)
-		plane = plane3 <Type> (points [k], points [j], points [i]);
-}
-
-template <class Type>
 convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) :
-	m_faces ()
+	m_points (points),
+	   m_set (points .size ())
 {
-	std::vector <std::map <size_t, edge_t>>  edges (points .size ());
+	__LOG__ << "convex_hull3" << std::endl;
 
-	// Initially construct the hull as containing only the first four points.
-	for (size_t i = 0; i < 4; ++ i)
+	// Create initial simplex (tetrahedron, 4 vertices).
+
+	auto simplex = create_simplex ();
+
+	// Mark each simplex point as beeing used in a plane to prevent floating point errors when determining the distance
+	// to this point as the result will probably be not exactly zero.
+
+	for (const auto & index : simplex)
+		m_set [index] = true;
+
+	// Assign points to faces. Each point in the point-list is assigned to the first face the point is in front of
+	// (¡°point can see face¡±). So each point is assigned to only one face, and each face contains its own point-set.
+	// Points that are behind all faces, are therefore automatically ignored and not used in the further process.
+
+	std::map <size_t, plane3 <Type>> faces = {
+		std::make_pair (0, plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]], m_points [simplex [2]])),
+		std::make_pair (1, plane3 <Type> (m_points [simplex [1]], m_points [simplex [0]], m_points [simplex [3]])),
+		std::make_pair (2, plane3 <Type> (m_points [simplex [0]], m_points [simplex [2]], m_points [simplex [3]])),
+		std::make_pair (3, plane3 <Type> (m_points [simplex [2]], m_points [simplex [1]], m_points [simplex [3]])),
+	};
+
+	std::vector <std::array <size_t, 3>> triangles = {
+		{ simplex [0], simplex [1], simplex [2] },
+		{ simplex [1], simplex [0], simplex [3] },
+		{ simplex [0], simplex [2], simplex [3] },
+		{ simplex [2], simplex [1], simplex [3] },
+	};
+
+	std::vector <std::vector <size_t>> points_to_faces (4);
+
+	for (size_t i = 0, size = m_points .size (); i < size; ++ i)
 	{
-		for (size_t j = i + 1; j < 4; ++ j)
-		{
-			for (size_t k = j + 1; k < 4; ++ k)
-			{
-				edges [j] [k] .insert (i);
-				edges [i] [k] .insert (j);
-				edges [i] [j] .insert (k);
+		if (m_set [i])
+			continue;
 
-				m_faces .emplace_back (i, j, k, 6 - i - j - k, points);
+		for (size_t k = 0; k < 4; ++ k)
+		{
+			if (faces [k] .distance (m_points [i]) > 0)
+			{
+				points_to_faces [k] .emplace_back (i);
+				break;
 			}
 		}
 	}
+	
+	__LOG__ << "points_to_faces" << std::endl;
 
-	__LOG__ << m_faces .size () << std::endl;
+	for (const auto & face : points_to_faces)
+		__LOG__ << face .size () << std::endl;
 
-	// Now add a point into the hull one at a time.
-	for (size_t i = 4; i < points .size (); ++ i)
+	// Push the 4 faces on the stack. Faces without points are ignored.
+
+	auto faces_stack = std::vector <size_t> ();
+
+	for (size_t i = 0; i < 4; ++ i)
 	{
-		// Find and delete all faces with their outside 'illuminated' by this point.
-		for (size_t j = 0; j < m_faces .size (); ++ j)
+		if (points_to_faces [i] .empty ())
+			continue;
+
+		faces_stack .push_back (i);
+	}
+
+	while (not faces_stack .empty ())
+	{
+		// If Stack is not empty Pop Face from Stack .
+
+		const auto f = faces_stack .back ();
+
+		faces_stack .pop_back ();
+
+		// Check if it has a point-set, otherwise continue next iteration.
+		// Although in fact empty faces are not pushed to the stack in the first place.
+
+		auto & point_set = points_to_faces [f];
+
+		if (point_set .empty ())
 		{
-			const auto face = m_faces [j];
+			point_set .clear ();
+			continue;
+		}
 
-			if (face .plane .distance (points [i]) >= 0)
+		// Get most distant point of the face¡¯s point-set.
+
+		const auto & face = faces [f];
+
+		const auto result = std::max_element (point_set .begin (),
+                                            point_set .end (),
+		                                      [this, &face] (const size_t a, const size_t b)
+		                                      { return face .distance (m_points [a]) < face .distance (m_points [b]); });
+
+		const auto   most_distant_point_index = *result;
+		const auto & most_distant_point       = m_points [most_distant_point_index];
+
+		m_set [most_distant_point_index] = true;
+
+		__LOG__ << "most_distant_point " << most_distant_point << std::endl;
+
+		// Find all faces that can be seen from that point. Those faces must be adjacent to the current face. I call them
+		// lit-faces in my implementation, and therefore the point can be seen as a point-light. All found lit-faces
+		// are labeled as such and also temporarily saved to a heap for later use.
+
+		std::vector <size_t> lit_faces;
+
+		for (const auto & pair : faces)
+		{
+			const auto   index = pair .first;
+			const auto & face  = pair .second;
+
+			__LOG__ << "distance " << index << " " << face .distance (most_distant_point) << std::endl;
+
+			if (face .distance (most_distant_point) > 0)
+				lit_faces .emplace_back (index);
+		}
+
+		for (const auto & i : lit_faces)
+			__LOG__ << "lit_faces " << i << std::endl;
+
+		// Extract horizon edges of lit-faces and extrude to Point. Clearly there is exactly one closed and convex
+		// horizon from the points view that encloses all lit-faces. Now each horizon-segement and the current point
+		// build a new triangle. So the horizon is somehow projected to the point. The new faces are build and attached
+		// to the mesh (and also temporarly saved to a heap) while iteration through the horizon-edges, which
+		// automatically detaches all light-faces.
+
+		const auto horizon_edges = extract_horizon_edges (lit_faces, triangles);
+
+		for (const auto & edge : horizon_edges)
+			__LOG__ << "horizon_edges " << edge .first << " " << edge .second << std::endl;
+
+		const auto first = triangles .size ();
+
+		for (const auto & edge : horizon_edges)
+		{
+			const auto p0 = edge .first;
+			const auto p1 = edge .second;
+			const auto p2 = most_distant_point_index;
+			const auto f  = triangles .size ();
+
+			faces_stack .push_back (f);
+
+			faces .emplace (f, plane3 <Type> (m_points [p0], m_points [p1], m_points [p2]));
+
+			triangles .emplace_back (std::array <size_t, 3> { p0, p1, p2 });
+
+			points_to_faces .emplace_back ();
+		}
+
+		// Assign all points off all lit-faces to the new created faces. This is extacly the same procedure as in 1.2.
+		// Each point is assigned to the first face it can see. I tried different assigning priorities, but it didn¡¯t help
+		// much. But again, points behind all faces, are ignored in the further process.
+
+		for (const auto & k : lit_faces)
+		{
+			for (const auto & p : points_to_faces [k])
 			{
-				edges [face .indices [0]] [face .indices [1]] .erase (face .indices [2]);
-				edges [face .indices [0]] [face .indices [2]] .erase (face .indices [1]);
-				edges [face .indices [1]] [face .indices [2]] .erase (face .indices [0]);
+				if (m_set [p])
+					continue;
 
-				m_faces [j --] = m_faces .back ();
-
-				m_faces .pop_back ();
+				for (size_t i = first, size = triangles .size (); i < size; ++ i)
+				{
+					if (faces [i] .distance (m_points [p]) > 0)
+					{
+						points_to_faces [i] .emplace_back (p);
+						break;
+					}
+				}
 			}
 		}
 
-		__LOG__ << m_faces .size () << std::endl;
+		for (const auto & i : lit_faces)
+			faces .erase (i);
 
-		// Now for any edge still in the hull that is only part of one face
-		// add another face containing the new point and that edge to the hull.
-		size_t numFaces = m_faces .size ();
+		// Push newly created faces on the stack, and start at (2.1). Faces without points are ignored.
+	}
 
-		for (size_t j = 0; j < numFaces; ++ j)
+	for (const auto & pair : faces)
+	{
+		const auto & triangle = triangles [pair .first];
+		const auto   p0       = triangle [0];
+		const auto   p1       = triangle [1];
+		const auto   p2       = triangle [2];
+
+		__LOG__ << "triangle " << p0 << " " << p1 << " " << p2 << std::endl;
+	}
+}
+
+template <class Type>
+std::vector <std::pair <size_t, size_t>>
+convex_hull3 <Type>::extract_horizon_edges (const std::vector <size_t> & lit_faces, const std::vector <std::array <size_t, 3>> & triangles) const
+{
+	__LOG__ << "extract_horizon_edges" << std::endl;
+
+	// Horizon edges are all edges who belong only to one lit face.
+
+	std::vector <std::pair <size_t, size_t>> horizon_edges;
+
+	std::map <std::pair <size_t, size_t>, size_t> index;
+
+	for (const auto & f : lit_faces)
+	{
+		const auto & triangle = triangles [f];
+		const auto   p0       = triangle [0];
+		const auto   p1       = triangle [1];
+		const auto   p2       = triangle [2];
+
+		++ index [p0 < p1 ? std::make_pair (p0, p1) : std::make_pair (p1, p0)];
+		++ index [p1 < p2 ? std::make_pair (p1, p2) : std::make_pair (p2, p1)];
+		++ index [p2 < p0 ? std::make_pair (p2, p0) : std::make_pair (p0, p2)];
+	}
+
+	for (const auto & f : lit_faces)
+	{
+		const auto & triangle = triangles [f];
+		const auto   p0       = triangle [0];
+		const auto   p1       = triangle [1];
+		const auto   p2       = triangle [2];
+
+		if (index [p0 < p1 ? std::make_pair (p0, p1) : std::make_pair (p1, p0)] == 1)
 		{
-			const auto face = m_faces [j];
+			horizon_edges .emplace_back (p0, p1);
+		}
 
-			for (size_t a = 0; a < 3; ++ a)
+		if (index [p1 < p2 ? std::make_pair (p1, p2) : std::make_pair (p2, p1)] == 1)
+		{
+			horizon_edges .emplace_back (p1, p2);
+		}
+
+		if (index [p2 < p0 ? std::make_pair (p2, p0) : std::make_pair (p0, p2)] == 1)
+		{
+			horizon_edges .emplace_back (p2, p0);
+		}
+	}
+
+	return horizon_edges;
+}
+
+template <class Type>
+std::vector <size_t>
+convex_hull3 <Type>::create_simplex () const
+{
+	__LOG__ << "create_simplex" << std::endl;
+
+	// Create initial simplex (tetrahedron, 4 vertices).
+
+	auto simplex = std::vector <size_t> (4);
+
+	// To do this, the 6 Extreme Points [EP], min/max points in X,Y and Z, of the given pointcloud are extracted.
+	
+	const auto resultX = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .x () < b .x (); });
+
+	const auto resultY = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .y () < b .y (); });
+
+	const auto resultZ = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .z () < b .z (); });
+
+	const std::vector <size_t> extreme_points = {
+		resultX .first  - m_points .begin (),
+		resultX .second - m_points .begin (),
+		resultY .first  - m_points .begin (),
+		resultY .second - m_points .begin (),
+		resultZ .first  - m_points .begin (),
+		resultZ .second - m_points .begin (),
+	};
+
+	// From those 6 EP the two most distant build the base-line of the base triangle.
+
+	{
+		Type max_distance = -std::numeric_limits <Type>::infinity ();
+	
+		for (size_t i = 0; i < 6; ++ i)
+		{
+			for (size_t k = 0; k < 6; ++ k)
 			{
-				for (size_t b = a + 1; b < 3; ++ b)
+				const auto distance = abs (extreme_points [i] - extreme_points [k]);
+	
+				if (distance > max_distance)
 				{
-					const size_t c = 3 - a - b;
-
-					const auto x = face .indices [a];
-					const auto y = face .indices [b];
-					const auto z = i;
-
-					__LOG__ << edges [x] [y] .size () << std::endl;
-
-					if (edges [x] [y] .size () == 2)
-						continue;
-
-					edges [y] [z] .insert (x);
-					edges [x] [z] .insert (y);
-					edges [x] [y] .insert (z);
-
-					m_faces .emplace_back (x, y, z, face .indices [c], points);
-
-					__LOG__ << m_faces .size () << std::endl;
+					max_distance = distance;
+					simplex [0]  = i;
+					simplex [1]  = k;
 				}
 			}
 		}
 	}
+
+	// The most distant point of EP to the base line is the 3rd point of the base-triangle.
+
+	{
+		const auto base_line    = line3 <Type> (m_points [simplex [0]], m_points [simplex [1]], points_type ());
+		Type       max_distance = -std::numeric_limits <Type>::infinity ();
+	
+		for (size_t i = 0; i < 6; ++ i)
+		{
+			const auto distance = base_line .distance (m_points [extreme_points [i]]);
+	
+			if (distance > max_distance)
+			{
+				max_distance = distance;
+				simplex [2]  = i;
+			}
+		}
+	}
+
+	// To find the pyramids apex, the most distant point to the base-triangle is searched for in the whole point-list.
+	// Now having 4 points, the inital pyramid can easily be created.
+
+	{
+		const auto base_plane  = plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]],  m_points [simplex [2]]);
+		bool       swap        = false;
+		Type       max_distance = -std::numeric_limits <Type>::infinity ();
+
+		__LOG__ << base_plane .normal () << std::endl;
+
+		for (size_t i = 0, size = m_points .size (); i < size; ++ i)
+		{
+			const auto distance     = base_plane .distance (m_points [i]);
+			const auto abs_distance = std::abs (distance);
+
+			__LOG__ << "distance " << distance << std::endl;
+	
+			if (abs_distance > max_distance)
+			{
+				max_distance = abs_distance;
+				swap         = distance > 0;
+				simplex [3]  = i;
+			}
+		}
+
+		// Ensure base triangle is in counter clockwise order.
+
+		if (swap)
+			std::swap (simplex [0], simplex [1]);
+	}
+
+	__LOG__ << simplex [0] << std::endl;
+	__LOG__ << simplex [1] << std::endl;
+	__LOG__ << simplex [2] << std::endl;
+	__LOG__ << simplex [3] << std::endl;
+	
+	return simplex;
 }
+
+extern template class convex_hull3 <float>;
+extern template class convex_hull3 <double>;
+extern template class convex_hull3 <long double>;
 
 } // math
 } // titania

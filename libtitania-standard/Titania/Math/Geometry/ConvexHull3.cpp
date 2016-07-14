@@ -53,6 +53,10 @@
 namespace titania {
 namespace math {
 
+template class convex_hull3 <float>;
+template class convex_hull3 <double>;
+template class convex_hull3 <long double>;
+
 
 } // math
 } // titania
