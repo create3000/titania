@@ -53,6 +53,7 @@
 
 #include "../Numbers/Matrix3.h"
 #include "../Numbers/Vector2.h"
+#include "../Geometry/ConvexHull2.h"
 #include "../Geometry/Line2.h"
 #include "../Utility/Types.h"
 #include "../Functional.h"
@@ -501,9 +502,13 @@ extern template std::ostream & operator << (std::ostream &, const box2 <long dou
 ///  https://en.wikipedia.org/wiki/Rotating_calipers
 template <class Type>
 math::box2 <Type>
-minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
+minimum_bounding_rectangle (const convex_hull2 <Type> & hull, const std::vector <vector2 <Type>> & points)
 {
+	// minimum_bounding_rectangle
+
 	math::box2 <Type> rectangle;
+
+	const auto & polygon = hull .indices ();
 
 	// Find most left and most right points.
 
@@ -511,15 +516,15 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
 
 	const auto resultX = std::minmax_element (polygon .begin (),
 	                                          polygon .end (),
-	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
-                                             { return a .x () < b .x (); });
+	                                          [&points] (const size_t & a, const size_t & b)
+                                             { return points [a] .x () < points [b] .x (); });
 
 	// Find most lower and most upper points.
 
 	const auto resultY = std::minmax_element (polygon .begin (),
 	                                          polygon .end (),
-	                                          [] (const vector2 <Type> & a, const vector2 <Type> & b)
-                                             { return a .y () < b .y (); });
+	                                          [&points] (const size_t & a, const size_t & b)
+                                             { return points [a] .y () < points [b] .y (); });
 
 	std::vector <size_t> indices; // Index of hull point on line.
 
@@ -538,10 +543,10 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
 	//    ------------>
 	//          c
 
-	const auto yMax = polygon [indices [0]] .y ();
-	const auto xMax = polygon [indices [1]] .x ();
-	const auto yMin = polygon [indices [2]] .y ();
-	const auto xMin = polygon [indices [3]] .x ();
+	const auto yMax = points [polygon [indices [0]]] .y ();
+	const auto xMax = points [polygon [indices [1]]] .x ();
+	const auto yMin = points [polygon [indices [2]]] .y ();
+	const auto xMin = points [polygon [indices [3]]] .x ();
 
 	std::vector <line2 <Type>> lines;
 
@@ -571,8 +576,8 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
 
 		for (size_t i = 0; i < 4; ++ i)
 		{
-			const auto & A = polygon [indices [i]];
-			const auto & B = polygon [(indices [i] + 1) % size];
+			const auto & A = points [polygon [indices [i]]];
+			const auto & B = points [polygon [(indices [i] + 1) % size]];
 	
 			const auto cos_theta = dot (lines [i] .direction (), normalize (B - A));
 	
@@ -591,7 +596,7 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
 
 		for (size_t i = 0; i < 4; ++ i)
 		{
-			matrix .set (vector2 <Type> (), theta, vector2 <Type> (1, 1), Type (0), polygon [indices [i]]);
+			matrix .set (vector2 <Type> (), theta, vector2 <Type> (1, 1), Type (0), points [polygon [indices [i]]]);
 
 			lines [i] .mult_line_matrix (matrix);
 		}
@@ -606,8 +611,8 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & polygon)
 		//	std::clog << indices [i] << " ";
 		//std::clog << " : ";
 
-		auto       xAxis = lines [3] .perpendicular_vector (polygon [indices [1]]);
-		auto       yAxis = lines [2] .perpendicular_vector (polygon [indices [0]]);
+		auto       xAxis = lines [3] .perpendicular_vector (points [polygon [indices [1]]]);
+		auto       yAxis = lines [2] .perpendicular_vector (points [polygon [indices [0]]]);
 		const Type area  = abs (xAxis) * abs (yAxis);
 
 		if (area < min_area)

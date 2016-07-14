@@ -67,12 +67,30 @@
 namespace titania {
 namespace math {
 
+/**
+ *  Template to represent a convex hull in 3D space.
+ *  This class is implemented using the quick hull algorithm.
+ *  http://thomasdiewald.com/blog/?p=1888
+ *
+ *  Extern instantiations for float, double, and long double are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  Type  Type of values.
+ */
 template <class Type>
 class convex_hull3
 {
 public:
 
+	///  @name Construction
+
+	///  Constructs a convex_hull3 from a set of 3D points.
 	convex_hull3 (const std::vector <vector3 <Type>> &);
+
+	const std::vector <size_t> &
+	indices () const
+	{ return m_indices; }
+	
 
 private:
 
@@ -82,25 +100,30 @@ private:
 	std::vector <std::pair <size_t, size_t>>
 	extract_horizon_edges (const std::vector <size_t> &, const std::vector <std::array <size_t, 3>>&) const;
 
+	///  @name Member access
+
+	///  Returns the indices within the set of points of the convex hull in counterclockwise order.
 	const std::vector <vector3 <Type>> & m_points;
 
-	std::vector <bool> m_set;
+	std::vector <size_t> m_indices;
 
 };
 
 template <class Type>
 convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) :
-	m_points (points),
-	   m_set (points .size ())
+	   m_points (points),
+	  m_indices ()
 {
-	__LOG__ << "convex_hull3" << std::endl;
+	//__LOG__ << "convex_hull3" << std::endl;
 
 	// Create initial simplex (tetrahedron, 4 vertices).
 
-	auto simplex = create_simplex ();
+	const auto simplex = create_simplex ();
 
 	// Mark each simplex point as beeing used in a plane to prevent floating point errors when determining the distance
 	// to this point as the result will probably be not exactly zero.
+
+	std::vector <bool> m_set (m_points .size ());
 
 	for (const auto & index : simplex)
 		m_set [index] = true;
@@ -140,10 +163,10 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 		}
 	}
 	
-	__LOG__ << "points_to_faces" << std::endl;
+	//__LOG__ << "points_to_faces" << std::endl;
 
-	for (const auto & face : points_to_faces)
-		__LOG__ << face .size () << std::endl;
+	//for (const auto & face : points_to_faces)
+	//	__LOG__ << face .size () << std::endl;
 
 	// Push the 4 faces on the stack. Faces without points are ignored.
 
@@ -190,7 +213,7 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 
 		m_set [most_distant_point_index] = true;
 
-		__LOG__ << "most_distant_point " << most_distant_point << std::endl;
+		//__LOG__ << "most_distant_point " << most_distant_point << std::endl;
 
 		// Find all faces that can be seen from that point. Those faces must be adjacent to the current face. I call them
 		// lit-faces in my implementation, and therefore the point can be seen as a point-light. All found lit-faces
@@ -203,14 +226,14 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 			const auto   index = pair .first;
 			const auto & face  = pair .second;
 
-			__LOG__ << "distance " << index << " " << face .distance (most_distant_point) << std::endl;
+			//__LOG__ << "distance " << index << " " << face .distance (most_distant_point) << std::endl;
 
 			if (face .distance (most_distant_point) > 0)
 				lit_faces .emplace_back (index);
 		}
 
-		for (const auto & i : lit_faces)
-			__LOG__ << "lit_faces " << i << std::endl;
+		//for (const auto & i : lit_faces)
+		//	__LOG__ << "lit_faces " << i << std::endl;
 
 		// Extract horizon edges of lit-faces and extrude to Point. Clearly there is exactly one closed and convex
 		// horizon from the points view that encloses all lit-faces. Now each horizon-segement and the current point
@@ -220,8 +243,8 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 
 		const auto horizon_edges = extract_horizon_edges (lit_faces, triangles);
 
-		for (const auto & edge : horizon_edges)
-			__LOG__ << "horizon_edges " << edge .first << " " << edge .second << std::endl;
+		//for (const auto & edge : horizon_edges)
+		//	__LOG__ << "horizon_edges " << edge .first << " " << edge .second << std::endl;
 
 		const auto first = triangles .size ();
 
@@ -276,15 +299,138 @@ convex_hull3 <Type>::convex_hull3 (const std::vector <vector3 <Type>> & points) 
 		const auto   p1       = triangle [1];
 		const auto   p2       = triangle [2];
 
-		__LOG__ << "triangle " << p0 << " " << p1 << " " << p2 << std::endl;
+		m_indices .emplace_back (p0);
+		m_indices .emplace_back (p1);
+		m_indices .emplace_back (p2);
+
+		//__LOG__ << "triangle " << p0 << " " << p1 << " " << p2 << std::endl;
 	}
+}
+
+template <class Type>
+std::vector <size_t>
+convex_hull3 <Type>::create_simplex () const
+{
+	//__LOG__ << "create_simplex" << std::endl;
+
+	// Create initial simplex (tetrahedron, 4 vertices).
+
+	auto simplex = std::vector <size_t> (4);
+
+	// To do this, the 6 Extreme Points [EP], min/max points in X,Y and Z, of the given pointcloud are extracted.
+	
+	const auto resultX = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .x () < b .x (); });
+
+	const auto resultY = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .y () < b .y (); });
+
+	const auto resultZ = std::minmax_element (m_points .begin (),
+	                                          m_points .end (),
+	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
+                                             { return a .z () < b .z (); });
+
+	const std::vector <size_t> extreme_points = {
+		resultX .first  - m_points .begin (),
+		resultX .second - m_points .begin (),
+		resultY .first  - m_points .begin (),
+		resultY .second - m_points .begin (),
+		resultZ .first  - m_points .begin (),
+		resultZ .second - m_points .begin (),
+	};
+
+	//for (const auto & p : extreme_points)
+	//	__LOG__ << "extreme_points " << p << std::endl;
+
+	// From those 6 EP the two most distant build the base-line of the base triangle.
+
+	{
+		Type max_distance = -std::numeric_limits <Type>::infinity ();
+	
+		for (size_t i = 0; i < 6; ++ i)
+		{
+			for (size_t k = 0; k < 6; ++ k)
+			{
+				const auto p0       = extreme_points [i];
+				const auto p1       = extreme_points [k];
+				const auto distance = abs (m_points [p0] - m_points [p1]);
+	
+				if (distance > max_distance)
+				{
+					max_distance = distance;
+					simplex [0]  = p0;
+					simplex [1]  = p1;
+				}
+			}
+		}
+	}
+
+	// The most distant point of EP to the base line is the 3rd point of the base-triangle.
+
+	{
+		const auto base_line    = line3 <Type> (m_points [simplex [0]], m_points [simplex [1]], points_type ());
+		Type       max_distance = -std::numeric_limits <Type>::infinity ();
+	
+		for (size_t i = 0; i < 6; ++ i)
+		{
+			const auto distance = base_line .distance (m_points [extreme_points [i]]);
+	
+			if (distance > max_distance)
+			{
+				max_distance = distance;
+				simplex [2]  = i;
+			}
+		}
+	}
+
+	// To find the pyramids apex, the most distant point to the base-triangle is searched for in the whole point-list.
+	// Now having 4 points, the inital pyramid can easily be created.
+
+	{
+		const auto base_plane  = plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]],  m_points [simplex [2]]);
+		bool       swap        = false;
+		Type       max_distance = -std::numeric_limits <Type>::infinity ();
+
+		//__LOG__ << base_plane .normal () << std::endl;
+
+		for (size_t i = 0, size = m_points .size (); i < size; ++ i)
+		{
+			const auto distance     = base_plane .distance (m_points [i]);
+			const auto abs_distance = std::abs (distance);
+
+			//__LOG__ << "distance " << distance << std::endl;
+	
+			if (abs_distance > max_distance)
+			{
+				max_distance = abs_distance;
+				swap         = distance > 0;
+				simplex [3]  = i;
+			}
+		}
+
+		// Ensure base triangle is in counter clockwise order.
+
+		if (swap)
+			std::swap (simplex [0], simplex [1]);
+	}
+
+	//__LOG__ << simplex [0] << std::endl;
+	//__LOG__ << simplex [1] << std::endl;
+	//__LOG__ << simplex [2] << std::endl;
+	//__LOG__ << simplex [3] << std::endl;
+
+	return simplex;
 }
 
 template <class Type>
 std::vector <std::pair <size_t, size_t>>
 convex_hull3 <Type>::extract_horizon_edges (const std::vector <size_t> & lit_faces, const std::vector <std::array <size_t, 3>> & triangles) const
 {
-	__LOG__ << "extract_horizon_edges" << std::endl;
+	//__LOG__ << "extract_horizon_edges" << std::endl;
 
 	// Horizon edges are all edges who belong only to one lit face.
 
@@ -328,120 +474,6 @@ convex_hull3 <Type>::extract_horizon_edges (const std::vector <size_t> & lit_fac
 	}
 
 	return horizon_edges;
-}
-
-template <class Type>
-std::vector <size_t>
-convex_hull3 <Type>::create_simplex () const
-{
-	__LOG__ << "create_simplex" << std::endl;
-
-	// Create initial simplex (tetrahedron, 4 vertices).
-
-	auto simplex = std::vector <size_t> (4);
-
-	// To do this, the 6 Extreme Points [EP], min/max points in X,Y and Z, of the given pointcloud are extracted.
-	
-	const auto resultX = std::minmax_element (m_points .begin (),
-	                                          m_points .end (),
-	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
-                                             { return a .x () < b .x (); });
-
-	const auto resultY = std::minmax_element (m_points .begin (),
-	                                          m_points .end (),
-	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
-                                             { return a .y () < b .y (); });
-
-	const auto resultZ = std::minmax_element (m_points .begin (),
-	                                          m_points .end (),
-	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
-                                             { return a .z () < b .z (); });
-
-	const std::vector <size_t> extreme_points = {
-		resultX .first  - m_points .begin (),
-		resultX .second - m_points .begin (),
-		resultY .first  - m_points .begin (),
-		resultY .second - m_points .begin (),
-		resultZ .first  - m_points .begin (),
-		resultZ .second - m_points .begin (),
-	};
-
-	// From those 6 EP the two most distant build the base-line of the base triangle.
-
-	{
-		Type max_distance = -std::numeric_limits <Type>::infinity ();
-	
-		for (size_t i = 0; i < 6; ++ i)
-		{
-			for (size_t k = 0; k < 6; ++ k)
-			{
-				const auto distance = abs (extreme_points [i] - extreme_points [k]);
-	
-				if (distance > max_distance)
-				{
-					max_distance = distance;
-					simplex [0]  = i;
-					simplex [1]  = k;
-				}
-			}
-		}
-	}
-
-	// The most distant point of EP to the base line is the 3rd point of the base-triangle.
-
-	{
-		const auto base_line    = line3 <Type> (m_points [simplex [0]], m_points [simplex [1]], points_type ());
-		Type       max_distance = -std::numeric_limits <Type>::infinity ();
-	
-		for (size_t i = 0; i < 6; ++ i)
-		{
-			const auto distance = base_line .distance (m_points [extreme_points [i]]);
-	
-			if (distance > max_distance)
-			{
-				max_distance = distance;
-				simplex [2]  = i;
-			}
-		}
-	}
-
-	// To find the pyramids apex, the most distant point to the base-triangle is searched for in the whole point-list.
-	// Now having 4 points, the inital pyramid can easily be created.
-
-	{
-		const auto base_plane  = plane3 <Type> (m_points [simplex [0]], m_points [simplex [1]],  m_points [simplex [2]]);
-		bool       swap        = false;
-		Type       max_distance = -std::numeric_limits <Type>::infinity ();
-
-		__LOG__ << base_plane .normal () << std::endl;
-
-		for (size_t i = 0, size = m_points .size (); i < size; ++ i)
-		{
-			const auto distance     = base_plane .distance (m_points [i]);
-			const auto abs_distance = std::abs (distance);
-
-			__LOG__ << "distance " << distance << std::endl;
-	
-			if (abs_distance > max_distance)
-			{
-				max_distance = abs_distance;
-				swap         = distance > 0;
-				simplex [3]  = i;
-			}
-		}
-
-		// Ensure base triangle is in counter clockwise order.
-
-		if (swap)
-			std::swap (simplex [0], simplex [1]);
-	}
-
-	__LOG__ << simplex [0] << std::endl;
-	__LOG__ << simplex [1] << std::endl;
-	__LOG__ << simplex [2] << std::endl;
-	__LOG__ << simplex [3] << std::endl;
-	
-	return simplex;
 }
 
 extern template class convex_hull3 <float>;

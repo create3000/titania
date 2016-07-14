@@ -89,11 +89,6 @@ public:
 	indices () const
 	{ return m_indices; }
 
-	///  Returns the points of the convex hull in counterclockwise order.
-	const std::vector <vector2 <Type>> &
-	polygon () const
-	{ return m_polygon; }
-
 
 private:
 
@@ -107,7 +102,6 @@ private:
 	const std::vector <vector2 <Type>> & m_points;
 	std::vector <size_t>                 m_indices;
 	std::vector <bool>                   m_set;
-	std::vector <vector2 <Type>>         m_polygon;
 
 };
 
@@ -115,8 +109,7 @@ template <class Type>
 convex_hull2 <Type>::convex_hull2 (const std::vector <vector2 <Type>> & points) :
 	 m_points (points),
 	m_indices (),
-	    m_set (points .size ()),
-	m_polygon ()
+	    m_set (points .size ())
 {
 	// Find most left and most right points to have a start condition.
 
@@ -138,9 +131,6 @@ convex_hull2 <Type>::convex_hull2 (const std::vector <vector2 <Type>> & points) 
 
 	quick_hull (0, 1);
 	quick_hull (1, 0);
-
-	for (const auto & index : m_indices)
-		m_polygon .emplace_back (m_points [index]);
 }
 
 template <class Type>
