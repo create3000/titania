@@ -501,13 +501,14 @@ extern template std::ostream & operator << (std::ostream &, const box2 <long dou
 ///  References: http://www-cgrl.cs.mcgill.ca/~godfried/research/calipers.html
 ///  https://en.wikipedia.org/wiki/Rotating_calipers
 template <class Type>
-math::box2 <Type>
-minimum_bounding_rectangle (const convex_hull2 <Type> & hull, const std::vector <vector2 <Type>> & points)
+box2 <Type>
+minimum_bounding_rectangle (const std::vector <vector2 <Type>> & points)
 {
 	// minimum_bounding_rectangle
 
-	math::box2 <Type> rectangle;
+	box2 <Type> rectangle;
 
+	const auto   hull    = convex_hull2 <Type> (points); 
 	const auto & polygon = hull .indices ();
 
 	// Find most left and most right points.

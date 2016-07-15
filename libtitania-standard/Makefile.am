@@ -13,6 +13,19 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
+	Titania/External/ApproxMVBB/AABB.cpp \
+	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.cpp \
+	Titania/External/ApproxMVBB/ConvexHull2D.cpp \
+	Titania/External/ApproxMVBB/Diameter/alloc.cpp \
+	Titania/External/ApproxMVBB/Diameter/EstimateDiameter.cpp \
+	Titania/External/ApproxMVBB/Diameter/rand.cpp \
+	Titania/External/ApproxMVBB/Diameter/util.cpp \
+	Titania/External/ApproxMVBB/GeometryPredicates/Predicates.cpp \
+	Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.cpp \
+	Titania/External/ApproxMVBB/MinAreaRectangle.cpp \
+	Titania/External/ApproxMVBB/OOBB.cpp \
+	Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
+	Titania/External/ApproxMVBB/RandomGenerators.cpp \
 	Titania/Geospatial/BasicConverter.cpp \
 	Titania/Geospatial/Geodetic.cpp \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \

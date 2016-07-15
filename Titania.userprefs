@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="experimental/experimental.cproj">
+﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="build/snapcraft/snapcraft.yaml">
     <Files>

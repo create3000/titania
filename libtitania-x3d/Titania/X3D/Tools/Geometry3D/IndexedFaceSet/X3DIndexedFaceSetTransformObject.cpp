@@ -48,6 +48,8 @@
  *
  ******************************************************************************/
 
+#include <Titania/Math/Geometry/MinimumBoundingBox.h>
+
 #include "X3DIndexedFaceSetTransformObject.h"
 
 #include "../../Rendering/CoordinateTool.h"
@@ -149,17 +151,44 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 	}
 }
 
+//void
+//X3DIndexedFaceSetTransformObject::set_transform ()
+//{
+//	if (active)
+//		return;
+//
+//	const auto rotation = getAxisRotation ();
+//
+//	axisRotation = Matrix4d (rotation);
+//
+//	const auto bbox = selectionCoord -> getBBox () * ~axisRotation;
+//
+//	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
+//	transformNode       -> rotation ()    = rotation;
+//
+//	transformTool -> translation ()      = Vector3f ();
+//	transformTool -> rotation ()         = Rotation4f ();
+//	transformTool -> scale ()            = Vector3f (1, 1, 1);
+//	transformTool -> scaleOrientation () = Rotation4f ();
+//	transformTool -> center ()           = bbox .center ();
+//
+//	transformTool -> bboxCenter () = bbox .center ();
+//	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (1e-5, 1e-5, 1e-5));
+//}
+
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
 	if (active)
 		return;
 
-	const auto rotation = getAxisRotation ();
+	const auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
+	const auto bbox   = points .empty () ? Box3d () : minimum_bounding_box (points);
 
-	axisRotation = Matrix4d (rotation);
+	Vector3d translation, scale;
+	Rotation4d rotation;
 
-	const auto bbox = selectionCoord -> getBBox () * ~axisRotation;
+	bbox .matrix () .get (translation, rotation, scale);
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = rotation;
@@ -168,10 +197,12 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformTool -> rotation ()         = Rotation4f ();
 	transformTool -> scale ()            = Vector3f (1, 1, 1);
 	transformTool -> scaleOrientation () = Rotation4f ();
-	transformTool -> center ()           = bbox .center ();
+	transformTool -> center ()           = translation;
 
-	transformTool -> bboxCenter () = bbox .center ();
-	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (1e-5, 1e-5, 1e-5));
+	transformTool -> bboxCenter () = translation;
+	transformTool -> bboxSize ()   = max (scale * 2.0, Vector3d (1e-5, 1e-5, 1e-5));
+
+	axisRotation = Matrix4d (rotation);
 }
 
 void

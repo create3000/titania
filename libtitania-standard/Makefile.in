@@ -135,6 +135,19 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Chrono/ClockBase.lo Titania/Chrono/CountingClock.lo \
 	Titania/Chrono/Now.lo Titania/Chrono/StopWatch.lo \
 	Titania/Chrono/SystemClock.lo \
+	Titania/External/ApproxMVBB/AABB.lo \
+	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo \
+	Titania/External/ApproxMVBB/ConvexHull2D.lo \
+	Titania/External/ApproxMVBB/Diameter/alloc.lo \
+	Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo \
+	Titania/External/ApproxMVBB/Diameter/rand.lo \
+	Titania/External/ApproxMVBB/Diameter/util.lo \
+	Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo \
+	Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo \
+	Titania/External/ApproxMVBB/MinAreaRectangle.lo \
+	Titania/External/ApproxMVBB/OOBB.lo \
+	Titania/External/ApproxMVBB/pugixml/pugixml.lo \
+	Titania/External/ApproxMVBB/RandomGenerators.lo \
 	Titania/Geospatial/BasicConverter.lo \
 	Titania/Geospatial/Geodetic.lo \
 	Titania/Geospatial/UniversalTransverseMercator.lo \
@@ -428,6 +441,19 @@ libtitania_standard_la_SOURCES = \
 	Titania/Chrono/Now.cpp \
 	Titania/Chrono/StopWatch.cpp \
 	Titania/Chrono/SystemClock.cpp \
+	Titania/External/ApproxMVBB/AABB.cpp \
+	Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.cpp \
+	Titania/External/ApproxMVBB/ConvexHull2D.cpp \
+	Titania/External/ApproxMVBB/Diameter/alloc.cpp \
+	Titania/External/ApproxMVBB/Diameter/EstimateDiameter.cpp \
+	Titania/External/ApproxMVBB/Diameter/rand.cpp \
+	Titania/External/ApproxMVBB/Diameter/util.cpp \
+	Titania/External/ApproxMVBB/GeometryPredicates/Predicates.cpp \
+	Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.cpp \
+	Titania/External/ApproxMVBB/MinAreaRectangle.cpp \
+	Titania/External/ApproxMVBB/OOBB.cpp \
+	Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
+	Titania/External/ApproxMVBB/RandomGenerators.cpp \
 	Titania/Geospatial/BasicConverter.cpp \
 	Titania/Geospatial/Geodetic.cpp \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \
@@ -589,6 +615,73 @@ Titania/Chrono/StopWatch.lo: Titania/Chrono/$(am__dirstamp) \
 	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
 Titania/Chrono/SystemClock.lo: Titania/Chrono/$(am__dirstamp) \
 	Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB
+	@: > Titania/External/ApproxMVBB/$(am__dirstamp)
+Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/$(DEPDIR)
+	@: > Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/AABB.lo:  \
+	Titania/External/ApproxMVBB/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Common/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/Common
+	@: > Titania/External/ApproxMVBB/Common/$(am__dirstamp)
+Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/Common/$(DEPDIR)
+	@: > Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Common/MyMatrixTypeDefs.lo:  \
+	Titania/External/ApproxMVBB/Common/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/ConvexHull2D.lo:  \
+	Titania/External/ApproxMVBB/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/Diameter
+	@: > Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/Diameter/$(DEPDIR)
+	@: > Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/alloc.lo:  \
+	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/EstimateDiameter.lo:  \
+	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/rand.lo:  \
+	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/Diameter/util.lo:  \
+	Titania/External/ApproxMVBB/Diameter/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/GeometryPredicates
+	@: > Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
+Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)
+	@: > Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/GeometryPredicates/Predicates.lo: Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/GeometryPredicates/PredicatesInit.lo: Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/MinAreaRectangle.lo:  \
+	Titania/External/ApproxMVBB/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/OOBB.lo:  \
+	Titania/External/ApproxMVBB/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/pugixml/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/pugixml
+	@: > Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
+Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/External/ApproxMVBB/pugixml/$(DEPDIR)
+	@: > Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/pugixml/pugixml.lo:  \
+	Titania/External/ApproxMVBB/pugixml/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+Titania/External/ApproxMVBB/RandomGenerators.lo:  \
+	Titania/External/ApproxMVBB/$(am__dirstamp) \
+	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
 Titania/Geospatial/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Geospatial
 	@: > Titania/Geospatial/$(am__dirstamp)
@@ -786,6 +879,16 @@ mostlyclean-compile:
 	-rm -f Titania/Basic/*.lo
 	-rm -f Titania/Chrono/*.$(OBJEXT)
 	-rm -f Titania/Chrono/*.lo
+	-rm -f Titania/External/ApproxMVBB/*.$(OBJEXT)
+	-rm -f Titania/External/ApproxMVBB/*.lo
+	-rm -f Titania/External/ApproxMVBB/Common/*.$(OBJEXT)
+	-rm -f Titania/External/ApproxMVBB/Common/*.lo
+	-rm -f Titania/External/ApproxMVBB/Diameter/*.$(OBJEXT)
+	-rm -f Titania/External/ApproxMVBB/Diameter/*.lo
+	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/*.$(OBJEXT)
+	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/*.lo
+	-rm -f Titania/External/ApproxMVBB/pugixml/*.$(OBJEXT)
+	-rm -f Titania/External/ApproxMVBB/pugixml/*.lo
 	-rm -f Titania/Geospatial/*.$(OBJEXT)
 	-rm -f Titania/Geospatial/*.lo
 	-rm -f Titania/InputOutput/*.$(OBJEXT)
@@ -816,6 +919,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/Now.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/StopWatch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Chrono/$(DEPDIR)/SystemClock.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/AABB.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/ConvexHull2D.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/MinAreaRectangle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/OOBB.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/$(DEPDIR)/RandomGenerators.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Common/$(DEPDIR)/MyMatrixTypeDefs.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/EstimateDiameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/alloc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/rand.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/util.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/Geodetic.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo@am__quote@
@@ -905,6 +1021,11 @@ clean-libtool:
 	-rm -rf Titania/.libs Titania/_libs
 	-rm -rf Titania/Basic/.libs Titania/Basic/_libs
 	-rm -rf Titania/Chrono/.libs Titania/Chrono/_libs
+	-rm -rf Titania/External/ApproxMVBB/.libs Titania/External/ApproxMVBB/_libs
+	-rm -rf Titania/External/ApproxMVBB/Common/.libs Titania/External/ApproxMVBB/Common/_libs
+	-rm -rf Titania/External/ApproxMVBB/Diameter/.libs Titania/External/ApproxMVBB/Diameter/_libs
+	-rm -rf Titania/External/ApproxMVBB/GeometryPredicates/.libs Titania/External/ApproxMVBB/GeometryPredicates/_libs
+	-rm -rf Titania/External/ApproxMVBB/pugixml/.libs Titania/External/ApproxMVBB/pugixml/_libs
 	-rm -rf Titania/Geospatial/.libs Titania/Geospatial/_libs
 	-rm -rf Titania/InputOutput/.libs Titania/InputOutput/_libs
 	-rm -rf Titania/Math/.libs Titania/Math/_libs
@@ -1036,6 +1157,16 @@ distclean-generic:
 	-rm -f Titania/Basic/$(am__dirstamp)
 	-rm -f Titania/Chrono/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Chrono/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/Common/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/Common/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/Diameter/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/Diameter/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
 	-rm -f Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Geospatial/$(am__dirstamp)
 	-rm -f Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
@@ -1064,7 +1195,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1110,7 +1241,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

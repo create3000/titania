@@ -343,8 +343,8 @@ convex_hull3 <Type>::create_simplex () const
 		resultZ .second - m_points .begin (),
 	};
 
-	//for (const auto & p : extreme_points)
-	//	__LOG__ << "extreme_points " << p << std::endl;
+	for (const auto & p : extreme_points)
+		__LOG__ << "extreme_points " << p << std::endl;
 
 	// From those 6 EP the two most distant build the base-line of the base triangle.
 
@@ -377,12 +377,13 @@ convex_hull3 <Type>::create_simplex () const
 	
 		for (size_t i = 0; i < 6; ++ i)
 		{
-			const auto distance = base_line .distance (m_points [extreme_points [i]]);
+			const auto extreme_point = extreme_points [i];
+			const auto distance      = base_line .distance (m_points [extreme_point]);
 	
 			if (distance > max_distance)
 			{
 				max_distance = distance;
-				simplex [2]  = i;
+				simplex [2]  = extreme_point;
 			}
 		}
 	}
@@ -418,10 +419,10 @@ convex_hull3 <Type>::create_simplex () const
 			std::swap (simplex [0], simplex [1]);
 	}
 
-	//__LOG__ << simplex [0] << std::endl;
-	//__LOG__ << simplex [1] << std::endl;
-	//__LOG__ << simplex [2] << std::endl;
-	//__LOG__ << simplex [3] << std::endl;
+	__LOG__ << simplex [0] << std::endl;
+	__LOG__ << simplex [1] << std::endl;
+	__LOG__ << simplex [2] << std::endl;
+	__LOG__ << simplex [3] << std::endl;
 
 	return simplex;
 }

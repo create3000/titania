@@ -60,6 +60,7 @@
 #include <Titania/Geospatial/UniversalTransverseMercator.h>
 #include <Titania/InputOutput.h>
 #include <Titania/Math/Functional.h>
+#include <Titania/Math/Geometry/MinimumBoundingBox.h>
 #include <Titania/Math/Geometry/Box2.h>
 #include <Titania/Math/Geometry/Box3.h>
 #include <Titania/Math/Geometry/Cylinder3.h>
@@ -86,6 +87,12 @@
 
 #include <Titania/Algorithm.h>
 #include <Titania/LOG.h>
+
+
+
+#include <Titania/External/ApproxMVBB/ComputeApproxMVBB.hpp>
+
+
 
 #include <array>
 #include <cassert>
@@ -184,7 +191,7 @@ c2 ()
 	for (const auto & p : points)
 	   std::clog << p << " 0" << std::endl;
 
-	const auto rectangle = minimum_bounding_rectangle (hull, points);
+	const auto rectangle = minimum_bounding_rectangle (points);
 
 	std::clog << "minimum_bounding_rectangle" << std::endl;
 	std::clog << rectangle .area () << std::endl;
@@ -220,13 +227,10 @@ c3 ()
 
 	points .clear ();
 
-	for (size_t i = 0; i < 100; ++ i)
+	for (size_t i = 0; i < 10; ++ i)
 		points .emplace_back (random (random_engine), random (random_engine), random (random_engine));
 
-	points .clear ();
-
-
-
+//	points .clear ();
 //	points .emplace_back (0.299762, 0.112957, 0.925728);
 //	points .emplace_back (0.845464, 0.875754, 0.825147);
 //	points .emplace_back (0.278331, 0.850379, 0.394512);
@@ -328,6 +332,17 @@ c3 ()
 //	points .emplace_back (0.113851, 0.991539, 0.828853);
 //	points .emplace_back (0.111647, 0.710093, 0.615291);
 
+//	points .clear ();
+//	points .emplace_back (0.629167, 0.339149, 0.139768);
+//	points .emplace_back (0.406852, 0.929386, 0.937681);
+//	points .emplace_back (0.436667, 0.316243, 0.843655);
+//	points .emplace_back (0.423373, 0.250087, 0.327245);
+//	points .emplace_back (0.272361, 0.174687, 0.387482);
+//	points .emplace_back (0.664399, 0.439624, 0.617736);
+//	points .emplace_back (0.1147, 0.640273, 0.801625);
+//	points .emplace_back (0.948225, 0.44755, 0.805848);
+//	points .emplace_back (0.707887, 0.367739, 0.526084);
+//	points .emplace_back (0.802713, 0.605654, 0.556566);
 
 
 	const auto hull = ConvexHull3d (points);
@@ -341,6 +356,20 @@ c3 ()
 
 	for (const auto & p : points)
 	   std::clog << p << std::endl;
+
+	const auto box = minimum_bounding_box (points);
+
+	std::clog << "minimum_bounding_box " << box .matrix () << std::endl;
+
+	Vector3d t, s;
+	Rotation4d r, so;
+
+	box .matrix () .get (t, r, s, so);
+
+	std::clog << "translation " << t << std::endl;
+	std::clog << "rotation " << r << std::endl;
+	std::clog << "scale " << s << std::endl;
+	std::clog << "scaleOrientation " << so << std::endl;
 }
 
 int
@@ -360,7 +389,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	c2 ();
+	c3 ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
