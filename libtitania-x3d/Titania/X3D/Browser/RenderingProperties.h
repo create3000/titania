@@ -70,6 +70,16 @@ namespace X3D {
 // ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
 
+enum class ShadingType :
+	int32_t
+{
+	POINTSET,
+	WIREFRAME,
+	FLAT,
+	GOURAUD,
+	PHONG
+};
+
 class RenderingProperties :
 	public X3DBaseNode
 {
@@ -203,6 +213,10 @@ public:
 
 	///  @name Member access
 
+	ShadingType
+	getShading () const
+	{ return shading; }
+
 	double
 	getFPS () const
 	{ return 1 / clock .average (); }
@@ -232,6 +246,9 @@ private:
 
 	void
 	set_Enabled ();
+
+	void
+	set_Shading ();
 
 	void
 	reset ();
@@ -273,6 +290,8 @@ private:
 	};
 
 	Fields fields;
+
+	ShadingType shading;
 
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;

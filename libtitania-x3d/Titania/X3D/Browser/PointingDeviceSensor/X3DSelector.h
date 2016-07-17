@@ -100,11 +100,21 @@ private:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton*) final override;
+	on_1button_press_event (GdkEventButton*) final override;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton*) final override;
+	on_1button_release_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_2button_release_event (GdkEventButton* event) final override
+	{ return on_1button_release_event (event); }
+
+	virtual
+	bool
+	on_3button_release_event (GdkEventButton* event) final override
+	{ return on_1button_release_event (event); }
 
 	virtual
 	bool

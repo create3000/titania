@@ -96,6 +96,7 @@ RenderingProperties::Fields::Fields () :
 RenderingProperties::RenderingProperties (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (),
+	    shading (ShadingType::GOURAUD),
 	      world ()
 {
 	addType (X3DConstants::RenderingProperties);
@@ -148,6 +149,7 @@ RenderingProperties::initialize ()
 		ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
 		Enabled () .addInterest (this, &RenderingProperties::set_Enabled);
+		Shading () .addInterest (this, &RenderingProperties::set_Shading);
 
 		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_Enabled);
 		getBrowser () -> reshaped ()    .addInterest (this, &RenderingProperties::build);
@@ -194,6 +196,27 @@ RenderingProperties::set_Enabled ()
 		getBrowser () -> initialized ()   .removeInterest (this, &RenderingProperties::reset);
 		getBrowser () -> prepareEvents () .removeInterest (this, &RenderingProperties::prepare);
 		getBrowser () -> displayed ()     .removeInterest (this, &RenderingProperties::display);
+	}
+}
+
+void
+RenderingProperties::set_Shading ()
+{
+	static const std::map <std::string, ShadingType> shadings = {
+		std::make_pair ("POINTSET",  ShadingType::POINTSET),
+		std::make_pair ("WIREFRAME", ShadingType::WIREFRAME),
+		std::make_pair ("FLAT",      ShadingType::FLAT),
+		std::make_pair ("GOURAUD",   ShadingType::GOURAUD),
+		std::make_pair ("PHONG",     ShadingType::PHONG),
+	};
+
+	try
+	{
+		shading = shadings .at (Shading ());
+	}
+	catch (const std::out_of_range &)
+	{
+		shading = ShadingType::GOURAUD;
 	}
 }
 

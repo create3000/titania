@@ -175,7 +175,11 @@ X3DIndexedFaceSetSelectionObject::setTranslate (const bool value)
 {
 	translate = value;
 
-	set_coord_point ();
+	if (not translate)
+	{
+		for (auto & selectedPoint : selectedPoints)
+			selectedPoint .second = getCoord () -> get1Point (selectedPoint .first);
+	}
 }
 
 void
@@ -183,7 +187,7 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 {
 	try
 	{
-		const auto & inlineNode          = getCoordinateTool () -> getInlineNode ();
+		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
 
 		touchSensor           = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 		planeSensor           = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
@@ -599,7 +603,15 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 	
 				if (selectLineLoop ())
 				{
-					selectLineLoop (edge .index0, edge .index1);
+					activeEdges = selectLineLoop (edge .index0, edge .index1, face);
+
+					for (const auto & activeEdge : activeEdges)
+					{
+						activePoints .emplace_back (coordIndex () [activeEdge .first]);
+						activePoints .emplace_back (coordIndex () [activeEdge .second]);
+					}
+
+					activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 				}
 				else
 				{
@@ -620,7 +632,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 						case SelectionType::FACES:
 						{
 							activeFaces = getFaceSelection () -> getAdjacentFaces (edge);
-							activeEdges = getHorizonEdges (activeFaces);
+							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
 
 							for (const auto & activeFace : activeFaces)
 							{
@@ -668,7 +680,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 					for (const auto face : faces)
 						activeFaces .emplace_back (face .index); 
 
-					activeEdges = getHorizonEdges (activeFaces);
+					activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
 					break;
 				}
 			}
@@ -684,14 +696,70 @@ X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 	updateMagicPoints ();
 }
 
-void
-X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t, const size_t)
+std::vector <std::pair <size_t, size_t>>
+X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const size_t index2, const size_t face)
 {
-	__LOG__ << std::endl;
+	std::vector <std::pair <size_t, size_t>> lineLoop;
+	std::set <int32_t>                       points;
 
-//	hotPoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-//	hotEdges  = { edge .index0, edge .index1 };
-//	hotFaces  = getFaceSelection () -> getAdjacentFaces (edge);
+	lineLoop .emplace_back (index1, index2);
+	points .emplace (coordIndex () [index1]);
+	points .emplace (coordIndex () [index2]);
+
+	selectLineLoop (index1, index2, face, lineLoop, points);
+
+	if (coordIndex () [lineLoop .front () .first] == coordIndex () [lineLoop .back () .second])
+		return lineLoop;
+
+	selectLineLoop (index2, index1, face, lineLoop, points);
+
+	return lineLoop;
+}
+
+void
+X3DIndexedFaceSetSelectionObject::selectLineLoop (size_t index1,
+                                                  size_t index2,
+                                                  size_t face,
+                                                  std::vector <std::pair <size_t, size_t>> & lineLoop,
+                                                  std::set <int32_t> & points)
+{
+	const auto point1  = getCoord () -> get1Point (coordIndex () [index1]);
+	const auto point2  = getCoord () -> get1Point (coordIndex () [index2]);
+	auto       normal1 = normalize (point1 - point2);
+
+	do
+	{
+		const auto adjacentEdges = getFaceSelection () -> getAdjacentEdges ({ coordIndex () [index2] });
+		double     minCosAngle   = 2;
+		size_t     nextEdgeIndex = -1;
+		Vector3d   edgeNormal;
+
+		for (size_t i = 0, size = adjacentEdges .size (); i < size; ++ i)
+		{
+			const auto & adjacentEdge = adjacentEdges [i];
+			const auto   point1       = getCoord () -> get1Point (coordIndex () [adjacentEdge .first]);
+			const auto   point2       = getCoord () -> get1Point (coordIndex () [adjacentEdge .second]);
+			const auto   normal2      = normalize (point2 - point1);
+
+			const auto cosAngle = dot (normal1, normal2);
+	
+			if (cosAngle < minCosAngle)
+			{
+				minCosAngle   = cosAngle;
+				nextEdgeIndex = i;
+				edgeNormal    = normal2;
+			}
+		}
+	
+		const auto & nextEdge = adjacentEdges [nextEdgeIndex];
+
+		normal1 = -edgeNormal;
+		index1  = nextEdge .first;
+		index2  = nextEdge .second;
+
+		lineLoop .emplace_back (nextEdge);
+	}
+	while (points .emplace (coordIndex () [index2]) .second);
 }
 
 ///  Update hot and active points and edges geometries.
@@ -1261,44 +1329,6 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 	}
 	catch (const X3DError &)
 	{ }
-}
-
-std::vector <std::pair <size_t, size_t>>
-X3DIndexedFaceSetSelectionObject::getHorizonEdges (const std::vector <size_t> & faces)
-{
-	SelectedEdges selectedEdges;
-
-	for (const auto & face : faces)
-	{
-		for (const auto & edge : getFaceSelection () -> getFaceEdges (face))
-		{
-			auto i0 = edge .first;
-			auto i1 = edge .second;
-	
-			auto index0 = coordIndex () [i0] .getValue ();
-			auto index1 = coordIndex () [i1] .getValue ();
-	
-			if (i0 > i1)
-				std::swap (i0, i1);
-	
-			if (index0 > index1)
-				std::swap (index0, index1);
-	
-			selectedEdges [std::make_pair (index0, index1)] .emplace (std::make_pair (i0, i1)); 
-		}
-	}
-	
-	std::vector <std::pair <size_t, size_t>> horizonEdges;
-
-	for (const auto & edge : selectedEdges)
-	{
-		if (edge .second .size () not_eq 1)
-			continue;
-
-		horizonEdges .emplace_back (*edge .second .begin ());
-	}
-	
-	return horizonEdges;
 }
 
 ///  Add @a faces to selection of faces.

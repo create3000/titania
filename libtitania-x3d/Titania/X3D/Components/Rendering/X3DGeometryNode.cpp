@@ -51,6 +51,7 @@
 #include "X3DGeometryNode.h"
 
 #include "../../Browser/ContextLock.h"
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/FrameBuffer.h"
@@ -302,15 +303,25 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 			if (y < 0 or y >= frameBuffer -> getHeight ())
 				continue;
 
-			const auto z      = depth [x + y * depthBuffer -> getWidth ()];
-			const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, viewport);
-			const auto world  = vertex * getModelViewMatrix () .get () ;
+			const auto world = vertex * getModelViewMatrix () .get () ;
 
 			if (world .z () > 0)
 			   continue;
+
+			switch (getBrowser () -> getRenderingProperties () -> getShading ())
+			{
+				case ShadingType::GOURAUD:
+				case ShadingType::PHONG:
+				{
+					const auto z      = depth [x + y * depthBuffer -> getWidth ()];
+					const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, viewport);
 	
-			if (world .z () - zWorld .z () < -0.05)
-				continue;
+					if (world .z () - zWorld .z () < -0.05)
+						continue;
+				}
+				default:
+					break;
+			}
 	
 			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
 	

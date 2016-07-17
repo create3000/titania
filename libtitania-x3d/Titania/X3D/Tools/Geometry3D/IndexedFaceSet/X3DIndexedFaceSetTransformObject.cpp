@@ -134,8 +134,8 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 
 		// Transform Tool
 
-		transformTool -> addTool ();
 		transformTool -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
+		transformTool -> addTool ();
 		transformTool -> getField <SFBool> ("isActive") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
 		transformTool -> setField <SFBool> ("bbox", false);
 
@@ -341,10 +341,10 @@ X3DIndexedFaceSetTransformObject::set_transform_active (const bool value)
 {
 	active = value;
 
-	set_plane_sensor_active (active);
-
-	if (not active)
+	if (not active and getTranslate ())
 		set_transform ();
+
+	set_plane_sensor_active (active);
 }
 
 void

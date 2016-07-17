@@ -522,8 +522,11 @@ private:
 	void
 	selectEdges (const std::vector <std::pair <size_t, size_t>> &, const SelectActionType);
 
+	std::vector <std::pair <size_t, size_t>>
+	selectLineLoop (const size_t, const size_t, const size_t);
+
 	void
-	selectLineLoop (const size_t, const size_t);
+	selectLineLoop (size_t, size_t, size_t, std::vector <std::pair <size_t, size_t>> &, std::set <int32_t> &);
 
 	void
 	selectHoles ();
@@ -560,9 +563,6 @@ private:
 
 	void
 	updateSelectedEdges ();
-
-	std::vector <std::pair <size_t, size_t>>
-	getHorizonEdges (const std::vector <size_t> &);
 
 	void
 	addSelectedFacesFunction (const std::set <size_t> &, const std::set <int32_t> &);

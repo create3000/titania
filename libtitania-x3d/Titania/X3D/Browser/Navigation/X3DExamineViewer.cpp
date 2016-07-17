@@ -113,13 +113,21 @@ X3DExamineViewer::disconnect ()
 bool
 X3DExamineViewer::on_button_press_event (GdkEventButton* event)
 {
+	if (button)
+		return false;
+
+	button = event -> button;
+	
 	switch (event -> type)
 	{
 		case GDK_BUTTON_PRESS:
+			numClicks = 1;
 			return on_1button_press_event (event);
 		case GDK_2BUTTON_PRESS:
+			numClicks = 2;
 			return on_2button_press_event (event);
 		case GDK_3BUTTON_PRESS:
+			numClicks = 3;
 			return on_3button_press_event (event);
 		default:
 			return false;
@@ -133,22 +141,16 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 {
 	try
 	{
-		if (button)
-			return false;
-	
 		//do this everywhere
 		//if (not isInViewport (event))
 		// return;
 	
-		numClicks = 1;
 		pressTime = chrono::now ();
 	
 		switch (event -> button)
 		{
 			case 1:
 			{
-				button = event -> button;
-	
 				disconnect ();
 	
 				getBrowser () -> setCursor ("move");
@@ -165,8 +167,6 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 	
 			case 2:
 			{
-				button = event -> button;
-	
 				disconnect ();
 	
 				getBrowser () -> setCursor ("move");
@@ -188,14 +188,12 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_2button_press_event (GdkEventButton* event)
 {
-	numClicks = 2;
 	return false;
 }
 
 bool
 X3DExamineViewer::on_3button_press_event (GdkEventButton* event)
 {
-	numClicks = 3;
 	return false;
 }
 

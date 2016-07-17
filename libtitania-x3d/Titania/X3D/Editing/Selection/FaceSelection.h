@@ -142,6 +142,9 @@ public:
 	std::vector <std::pair <size_t, size_t>>
 	getAdjacentEdges (const Points &) const;
 
+	std::vector <std::pair <size_t, size_t>>
+	getHorizonEdges (const std::vector <size_t> &) const;
+
 	Edge
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;
 

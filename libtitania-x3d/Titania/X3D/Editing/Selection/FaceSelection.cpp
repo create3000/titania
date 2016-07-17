@@ -456,6 +456,44 @@ FaceSelection::getAdjacentEdges (const Points & points) const
 	return edges;
 }
 
+std::vector <std::pair <size_t, size_t>>
+FaceSelection::getHorizonEdges (const std::vector <size_t> & faces) const
+{
+	std::map <std::pair <int32_t, int32_t>, std::set <std::pair <size_t, size_t>>> selectedEdges;
+
+	for (const auto & face : faces)
+	{
+		for (const auto & edge : getFaceEdges (face))
+		{
+			auto i0 = edge .first;
+			auto i1 = edge .second;
+	
+			auto index0 = geometryNode -> coordIndex () [i0] .getValue ();
+			auto index1 = geometryNode -> coordIndex () [i1] .getValue ();
+	
+			if (i0 > i1)
+				std::swap (i0, i1);
+	
+			if (index0 > index1)
+				std::swap (index0, index1);
+	
+			selectedEdges [std::make_pair (index0, index1)] .emplace (std::make_pair (i0, i1)); 
+		}
+	}
+	
+	std::vector <std::pair <size_t, size_t>> horizonEdges;
+
+	for (const auto & edge : selectedEdges)
+	{
+		if (edge .second .size () not_eq 1)
+			continue;
+
+		horizonEdges .emplace_back (*edge .second .begin ());
+	}
+	
+	return horizonEdges;
+}
+
 ///  Return the nearest edge for hitPoint.
 FaceSelection::Edge
 FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <size_t> & vertices) const
