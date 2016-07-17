@@ -396,6 +396,31 @@ FaceSelection::getFaceVertices (const size_t face) const
 	return vertices;
 }
 
+///  Returns all indices to the coordIndex for this face.
+std::vector <std::pair <size_t, size_t>>
+FaceSelection::getFaceEdges (const size_t face) const
+{
+	std::vector <std::pair <size_t, size_t>> edges;
+
+	for (size_t i = face, size = geometryNode -> coordIndex () .size () - 1; i < size; ++ i)
+	{
+		const auto index = geometryNode -> coordIndex () [i] .getValue ();
+
+		if (index < 0)
+			break;
+
+		if (geometryNode -> coordIndex () [i + 1] .getValue () < 0)
+		{
+			edges .emplace_back (i, face);
+			break;
+		}
+
+		edges .emplace_back (i, i + 1);
+	}
+
+	return edges;
+}
+
 size_t
 FaceSelection::getFaceNumber (const size_t vertex) const
 {
@@ -406,6 +431,29 @@ size_t
 FaceSelection::getNumFaces () const
 {
 	return faceNumbers .size ();
+}
+
+std::vector <std::pair <size_t, size_t>>
+FaceSelection::getAdjacentEdges (const Points & points) const
+{
+	std::vector <std::pair <size_t, size_t>> edges;
+
+	for (const auto & point : points)
+	{
+		for (const auto & face : getAdjacentFaces ({ point }))
+		{
+			for (const auto & edge : getFaceEdges (face .index))
+			{
+				if (geometryNode -> coordIndex () [edge .first] .getValue () == point)
+					edges .emplace_back (edge);
+
+				if (geometryNode -> coordIndex () [edge .second] .getValue () == point)
+					edges .emplace_back (edge .second, edge .first);
+			}
+		}
+	}
+
+	return edges;
 }
 
 ///  Return the nearest edge for hitPoint.

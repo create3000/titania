@@ -207,6 +207,10 @@ public:
 	getFacesMenuItem () const
 	{ return *m_FacesMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getSelectLineLoopMenuItem () const
+	{ return *m_SelectLineLoopMenuItem; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -293,6 +297,10 @@ public:
 	void
 	on_faces_toggled () = 0;
 
+	virtual
+	void
+	on_select_line_loop_toggled () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -346,6 +354,7 @@ private:
 	Gtk::RadioMenuItem*         m_PointsMenuItem;
 	Gtk::RadioMenuItem*         m_EdgesMenuItem;
 	Gtk::RadioMenuItem*         m_FacesMenuItem;
+	Gtk::CheckMenuItem*         m_SelectLineLoopMenuItem;
 
 };
 

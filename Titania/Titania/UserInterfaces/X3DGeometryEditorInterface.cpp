@@ -90,6 +90,7 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PointsMenuItem", m_PointsMenuItem);
 	m_builder -> get_widget ("EdgesMenuItem", m_EdgesMenuItem);
 	m_builder -> get_widget ("FacesMenuItem", m_FacesMenuItem);
+	m_builder -> get_widget ("SelectLineLoopMenuItem", m_SelectLineLoopMenuItem);
 
 	// Connect object Gtk::Revealer with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
@@ -132,6 +133,9 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_PointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_points_toggled));
 	m_EdgesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edges_toggled));
 	m_FacesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_faces_toggled));
+
+	// Connect object Gtk::CheckMenuItem with id 'SelectLineLoopMenuItem'.
+	m_SelectLineLoopMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_select_line_loop_toggled));
 
 	// Call construct handler of base class.
 	construct ();

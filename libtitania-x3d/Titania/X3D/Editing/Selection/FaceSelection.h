@@ -130,11 +130,17 @@ public:
 	std::vector <size_t>
 	getFaceVertices (const size_t) const;
 
+	std::vector <std::pair <size_t, size_t>>
+	getFaceEdges (const size_t) const;
+
 	size_t
 	getFaceNumber (const size_t) const;
 
 	size_t
 	getNumFaces () const;
+
+	std::vector <std::pair <size_t, size_t>>
+	getAdjacentEdges (const Points &) const;
 
 	Edge
 	getClosestEdge (const Vector3d &, const std::vector <size_t> &) const;

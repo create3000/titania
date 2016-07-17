@@ -104,6 +104,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "select",               new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",             new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",       new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "selectLineLoop",       new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "transform",            new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",          new X3D::SFTime ());
@@ -144,8 +145,9 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getPaintSelectionButton ()  .set_active (getConfig () -> get <bool> ("paintSelection"));
-	getTransformToolButton ()   .set_active (getConfig () -> get <bool> ("transform"));
+	getPaintSelectionButton ()   .set_active (getConfig () -> get <bool> ("paintSelection"));
+	getSelectLineLoopMenuItem () .set_active (getConfig () -> get <bool> ("selectLineLoop"));
+	getTransformToolButton ()    .set_active (getConfig () -> get <bool> ("transform"));
 	
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
@@ -258,6 +260,7 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFBool>      ("select")               .addInterest (node -> getField <X3D::SFBool>   ("select"));
 						coordEditor -> getField <X3D::SFString>    ("selectionType")        .addInterest (node -> getField <X3D::SFString> ("selectionType"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")       .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
+						coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")       .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
 						coordEditor -> getField <X3D::SFBool>      ("transform")            .addInterest (node -> getField <X3D::SFBool>   ("transform"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
@@ -281,6 +284,7 @@ GeometryEditor::connect ()
 						node -> setField <X3D::SFBool>   ("select",            coordEditor -> getField <X3D::SFBool>   ("select"),         true);
 						node -> setField <X3D::SFString> ("selectionType",     coordEditor -> getField <X3D::SFString> ("selectionType"),  true);
 						node -> setField <X3D::SFBool>   ("paintSelection",    coordEditor -> getField <X3D::SFBool>   ("paintSelection"), true);
+						node -> setField <X3D::SFBool>   ("selectLineLoop",    coordEditor -> getField <X3D::SFBool>   ("selectLineLoop"), true);
 						node -> setField <X3D::SFBool>   ("transform",         coordEditor -> getField <X3D::SFBool>   ("transform"),      true);
 						node -> setField <X3D::SFBool>   ("cutPolygons",       coordEditor -> getField <X3D::SFBool>   ("cutPolygons"),    true);
 
@@ -978,6 +982,12 @@ GeometryEditor::on_faces_toggled ()
 }
 
 void
+GeometryEditor::on_select_line_loop_toggled ()
+{
+	coordEditor -> setField <X3D::SFBool> ("selectLineLoop", getSelectLineLoopMenuItem () .get_active ());
+}
+
+void
 GeometryEditor::on_transform_tool_toggled ()
 {
 	coordEditor -> setField <X3D::SFBool> ("transform", getTransformToolButton () .get_active ());
@@ -1034,13 +1044,14 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
-	getConfig () -> set ("normalEnabled", normalEditor -> getField <X3D::SFBool>      ("load"));
-	getConfig () -> set ("normalLength",  normalEditor -> getField <X3D::SFFloat>     ("length"));
-	getConfig () -> set ("normalColor",   normalEditor -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("selectionType", coordEditor  -> getField <X3D::SFString>    ("selectionType"));
-	getConfig () -> set ("transform",     getTransformToolButton () .get_active ());
-	getConfig () -> set ("edgeColor",     coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
-	getConfig () -> set ("selector",      size_t (selector));
+	getConfig () -> set ("normalEnabled",  normalEditor -> getField <X3D::SFBool>      ("load"));
+	getConfig () -> set ("normalLength",   normalEditor -> getField <X3D::SFFloat>     ("length"));
+	getConfig () -> set ("normalColor",    normalEditor -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("selectionType",  coordEditor  -> getField <X3D::SFString>    ("selectionType"));
+	getConfig () -> set ("selectLineLoop", getSelectLineLoopMenuItem () .get_active ());
+	getConfig () -> set ("transform",      getTransformToolButton () .get_active ());
+	getConfig () -> set ("edgeColor",      coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("selector",       size_t (selector));
 
 	X3DGeometryEditorInterface::store ();
 }

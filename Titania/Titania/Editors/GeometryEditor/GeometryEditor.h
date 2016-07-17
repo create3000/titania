@@ -232,6 +232,10 @@ private:
 
 	virtual
 	void
+	on_select_line_loop_toggled () final override;
+
+	virtual
+	void
 	on_transform_tool_toggled () final override;
 
 	virtual

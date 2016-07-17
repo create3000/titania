@@ -1,11 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="build/snapcraft/snapcraft.yaml">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="build/snapcraft/snapcraft.yaml" Line="52" Column="19" />
-      <File FileName="build/snapcraft/titania-wrapper" Line="19" Column="1" />
-      <File FileName="Titania/Titania/main.cpp" Line="155" Column="1" />
-      <File FileName="Titania/run.pl" Line="30" Column="1" />
+      <File FileName="experimental/main.cpp" Line="373" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/MinimumBoundingBox.h" Line="92" Column="94" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.h" Line="80" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp" Line="74" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="985" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.cpp" Line="71" Column="26" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="236" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

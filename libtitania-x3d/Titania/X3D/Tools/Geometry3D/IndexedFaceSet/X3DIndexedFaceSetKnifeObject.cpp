@@ -184,7 +184,7 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 
    // Set start point
 
-   if (getHotEdge () .empty ())
+   if (getHotEdges () .empty ())
       return;
 
 	// Determine first cut point.
@@ -440,7 +440,7 @@ X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 	
 		// Hot edge and points for near point or face
 
-		setHotEdge ({ edge .index0, edge .index1 });
+		setHotEdges ({ std::make_pair (edge .index0, edge .index1) });
 	
 		if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 		{
@@ -512,7 +512,7 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 
 			// Hot edge and points for near point or face
 
-			setHotEdge ({ edge .index0, edge .index1 });
+			setHotEdges ({ std::make_pair (edge .index0, edge .index1) });
 		
 			if (edge .isEdge and pointDistance > SELECTION_DISTANCE)
 			{

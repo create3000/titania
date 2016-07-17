@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.4.0
+#X3D V3.3 utf8 Titania V1.4.8
 
 META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.0, http://titania.create3000.de"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Fri, 25 Mar 2016 05:59:38 GMT"
+META "modified" "Sun, 17 Jul 2016 12:08:09 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -58,10 +58,28 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF ActiveFace Shape {
+              appearance Appearance {
+                material DEF ActvieFaceMaterial Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.5 0.0792565 0
+                  transparency 0.635417
+                }
+              }
+              geometry DEF ActiveFaceGeometry IndexedFaceSet {
+                solid FALSE
+              }
+            }
+          }
+        ]
       }
       DEF AngleGrid MetadataSet {
         name "AngleGrid"
@@ -143,18 +161,7 @@ Collision {
       children DEF MagicFaceSwitch Switch {
         whichChoice 0
         children [
-          DEF ActiveFace Shape {
-            appearance Appearance {
-              material DEF ActvieFaceMaterial Material {
-                diffuseColor 0 0 0
-                emissiveColor 0.5 0.0792565 0
-                transparency 0.635417
-              }
-            }
-            geometry DEF ActiveFaceGeometry IndexedFaceSet {
-              solid FALSE
-            }
-          }
+          USE ActiveFace
           DEF HotFace Shape {
             appearance Appearance {
               material DEF HotMaterial Material {
@@ -420,9 +427,7 @@ ROUTE ActiveEdgesGeometry.coord_changed TO ActiveFaceGeometry.set_coord
 ROUTE MagicPointsSwitch.whichChoice_changed TO MagicEdgesSwitch.set_whichChoice
 ROUTE ActiveEdgesGeometry.coord_changed TO HotEdgesGeometry.set_coord
 ROUTE MagicPointsSwitch.whichChoice_changed TO MagicFaceSwitch.set_whichChoice
-ROUTE ActiveEdgesGeometry.coordIndex_changed TO ActiveFaceGeometry.set_coordIndex
 ROUTE HotEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
-ROUTE HotEdgesGeometry.coordIndex_changed TO HotFaceGeometry.set_coordIndex
 ROUTE ActiveMaterial.emissiveColor_changed TO ActvieFaceMaterial.set_emissiveColor
 ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveColor
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor

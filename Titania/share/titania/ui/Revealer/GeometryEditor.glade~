@@ -390,7 +390,6 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Toggle Transform Tool.</property>
-                    <signal name="button-press-event" handler="on_transform_tool_button_press_event" swapped="no"/>
                     <signal name="toggled" handler="on_transform_tool_toggled" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image17">

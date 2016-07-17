@@ -105,6 +105,14 @@ public:
 	paintSelection () const
 	{ return *fields .paintSelection; }
 
+	SFBool &
+	selectLineLoop ()
+	{ return *fields .selectLineLoop; }
+
+	const SFBool &
+	selectLineLoop () const
+	{ return *fields .selectLineLoop; }
+
 	SFString &
 	selectionType ()
 	{ return *fields .selectionType; }
@@ -301,12 +309,12 @@ protected:
 	{ return hotPoints; }
 
 	void
-	setHotEdge (const std::vector <size_t> & value)
-	{ hotEdge = value; }
+	setHotEdges (const std::vector <std::pair <size_t, size_t>> & value)
+	{ hotEdges = value; }
 
-	const std::vector <size_t> &
-	getHotEdge () const
-	{ return hotEdge; }
+	const std::vector <std::pair <size_t, size_t>> &
+	getHotEdges () const
+	{ return hotEdges; }
 
 	void
 	setHotFaces (const std::vector <size_t> & value)
@@ -328,9 +336,9 @@ protected:
 	getActivePoints () const
 	{ return activePoints; }
 
-	const std::vector <size_t> &
-	getActiveEdge () const
-	{ return activeEdge; }
+	const std::vector <std::pair <size_t, size_t>> &
+	getActiveEdges () const
+	{ return activeEdges; }
 
 	size_t
 	getActiveFace () const
@@ -485,7 +493,16 @@ private:
 	setMagicSelection ();
 
 	void
+	setHotSelection (const std::vector <int32_t> &);
+
+	void
+	setActiveSelection (const std::vector <int32_t> &);
+
+	void
 	updateMagicPoints ();
+
+	void
+	updateMagicEdges ();
 
 	void
 	updateMagicFace ();
@@ -503,7 +520,10 @@ private:
 	selectEdges (const std::vector <int32_t> &, const SelectActionType);
 
 	void
-	selectEdge (const std::vector <size_t> &, const SelectActionType);
+	selectEdges (const std::vector <std::pair <size_t, size_t>> &, const SelectActionType);
+
+	void
+	selectLineLoop (const size_t, const size_t);
 
 	void
 	selectHoles ();
@@ -533,10 +553,10 @@ private:
 	updateSelectedPoints ();
 
 	void
-	addSelectedEdgesFunction (const std::vector <size_t> &);
+	addSelectedEdgesFunction (const std::vector <std::pair <size_t, size_t>> &);
 
 	void
-	removeSelectedEdgesFunction (const std::vector <size_t> &);
+	removeSelectedEdgesFunction (const std::vector <std::pair <size_t, size_t>> &);
 
 	void
 	updateSelectedEdges ();
@@ -573,6 +593,7 @@ private:
 
 		SFBool* const select;
 		SFBool* const paintSelection;
+		SFBool* const selectLineLoop;
 		SFString* const selectionType;
 		SFTime* const selectAll;
 		SFTime* const deselectAll;
@@ -599,23 +620,25 @@ private:
 	X3DPtr <Switch>            hotSwitch;
 	X3DPtr <CoordinateDouble>  hotPointCoord;
 	X3DPtr <IndexedLineSet>    hotEdgesGeometry;
+	X3DPtr <IndexedFaceSet>    hotFacesGeometry;
 	X3DPtr <CoordinateDouble>  activePointCoord;
 	X3DPtr <IndexedLineSet>    activeEdgesGeometry;
+	X3DPtr <IndexedFaceSet>    activeFacesGeometry;
 	X3DPtr <CoordinateDouble>  selectionCoord;
 	X3DPtr <IndexedLineSet>    selectedEdgesGeometry;
 	X3DPtr <IndexedFaceSet>    selectedFacesGeometry;
 	X3DPtr <X3DCoordinateNode> coordNode;
 	X3DPtr <FaceSelection>     selection;
 
-	std::vector <int32_t> hotPoints;    // coord indices
-	std::vector <size_t>  hotEdge;      // index of coord indices
-	size_t                hotFace;      // index of first coord index of face
-	std::vector <size_t>  hotFaces;     // indices of first coord index of face
+	std::vector <int32_t>                    hotPoints;    // coord indices
+	std::vector <std::pair <size_t, size_t>> hotEdges;     // index of coord indices
+	size_t                                   hotFace;      // index of first coord index of face
+	std::vector <size_t>                     hotFaces;     // indices of first coord index of face
 
-	std::vector <int32_t> activePoints;   // coord indices
-	std::vector <size_t>  activeEdge;     // index of coord indices
-	size_t                activeFace;     // index of first coord index of face
-	std::vector <size_t>  activeFaces;     // index of first coord index of face
+	std::vector <int32_t>                    activePoints;   // coord indices
+	std::vector <std::pair <size_t, size_t>> activeEdges;    // index of coord indices
+	size_t                                   activeFace;     // index of first coord index of face
+	std::vector <size_t>                     activeFaces;    // index of first coord index of face
 
 	SelectionType                type;
 	int32_t                      masterPoint;       // coord index,
