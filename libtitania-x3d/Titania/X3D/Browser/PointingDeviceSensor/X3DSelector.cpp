@@ -105,7 +105,7 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 
 	clear ();
 	addPoint (event -> x, event -> y);
-	return true;
+	return false;
 }
 
 bool
@@ -150,12 +150,12 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 		getBrowser () -> getSelectionBuffer () -> unbind ();
 		getBrowser () -> getSelectionBuffer () .reset ();
 		getBrowser () -> getDepthBuffer () .reset ();
-		return true;
+		return false;
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
-		return true;
+		return false;
 	}
 }
 
@@ -168,7 +168,7 @@ X3DSelector::on_motion_notify_event (GdkEventMotion* event)
 	getBrowser () -> addEvent ();
 
 	addPoint (event -> x, event -> y);
-	return true;
+	return false;
 }
 
 void
