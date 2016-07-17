@@ -71,8 +71,7 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
-	         transform (new SFBool ()),
-	 alignToNormal (new SFBool ())
+	transform (new SFBool ())
 { }
 
 X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
@@ -125,8 +124,7 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool        = inlineNode -> getExportedNode <Transform>        ("TransformTool");
 		selectionCoord       = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
-		transform ()     .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
-		alignToNormal () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_alignToNormal);
+		transform () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
 
 		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
@@ -182,13 +180,15 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	if (active)
 		return;
 
-	const auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
-	const auto bbox   = points .empty () ? Box3d () : minimum_bounding_box (points);
+	const auto bbox = getSelectionBBox ();
 
 	Vector3d translation, scale;
 	Rotation4d rotation;
 
 	bbox .matrix () .get (translation, rotation, scale);
+
+	translation = translation * ~rotation;
+	scale       = Vector3d (std::abs (scale .x ()), std::abs (scale .y ()), std::abs (scale .z ()));
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = rotation;
@@ -203,12 +203,6 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformTool -> bboxSize ()   = max (scale * 2.0, Vector3d (1e-5, 1e-5, 1e-5));
 
 	axisRotation = Matrix4d (rotation);
-}
-
-void
-X3DIndexedFaceSetTransformObject::set_alignToNormal ()
-{
-	set_transform ();
 }
 
 void
@@ -370,107 +364,73 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 		getCoord () -> set1Point (pair .first, pair .second * M);
 }
 
-Rotation4d
-X3DIndexedFaceSetTransformObject::getAxisRotation () const
+Box3d
+X3DIndexedFaceSetTransformObject::getSelectionBBox () const
 {
-	if (alignToNormal ())
+	const auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
+	auto       bbox   = Box3d ();
+
+	switch (points .size ())
 	{
-		switch (getSelectionType ())
+		case 0:
+			break;
+		case 1:
+			bbox = Box3d (Vector3d (1e-5, 1e-5, 1e-5), points .front ());
+			break;
+		case 2:
 		{
-			case SelectionType::POINTS:
+			switch (getSelectionType ())
 			{
-				Vector3d          normal;
-				std::set <size_t> faces;
-				
-				for (const auto & point : getSelectedPoints ())
+				case SelectionType::EDGES:
 				{
-					for (const auto & face : getFaceSelection () -> getAdjacentFaces (point .first))
-						faces. emplace (face .index);
-				}
-
-				for (const auto & face : faces)
-					normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
-				
-				return Rotation4d (Vector3d (0, 0, 1), normal);
-			}
-			case SelectionType::EDGES:
-			{
-				std::set <size_t> faces;
-				
-				for (const auto & edges : getSelectedEdges ())
-				{
-					for (const auto & edge : edges .second)
+					if (getSelectedEdges () .size () == 1)
 					{
-						for (const auto & face : getFaceSelection () -> getAdjacentFaces (X3DFaceSelection::Edge { edge .first, edge .second }))
-							faces. emplace (face);
+						const auto & edge = *getSelectedEdges () .begin ();
+
+						std::set <size_t> faces;
 						
-						break;
-					}
-				}
-
-				if (faces .size () == 1)
-				{
-					Vector3d xAxis;
-
-					const auto vertices = getFaceSelection () -> getFaceVertices (*faces .begin ());
-					const auto normal   = getPolygonNormal (vertices);
-
-					if (getPolygonArea (vertices))
-					{
-						for (const auto & edges : getSelectedEdges ())
+						for (const auto & e : edge .second)
 						{
-							const auto point1 = getCoord () -> get1Point (edges .first .first);
-							const auto point2 = getCoord () -> get1Point (edges .first .second);
-
-							xAxis += normalize (point2 - point1);
+							for (const auto & face : getFaceSelection () -> getAdjacentFaces (X3DFaceSelection::Edge { e .first, e .second }))
+								faces. emplace (face);
+							
+							break;
 						}
+		
+						Vector3d normal;
+		
+						for (const auto & face : faces)
+							normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+
+						const auto point1 = getCoord () -> get1Point (edge .first .first);
+						const auto point2 = getCoord () -> get1Point (edge .first .second);
+						const auto yAxis  = (point2 - point1) / 2.0;
+						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-5;
+						const auto xAxis  = normalize (cross <double> (zAxis, yAxis))  * 1e-5;
+						const auto center = (point2 + point1) / 2.0;
+
+						if (abs (xAxis))
+							return Box3d (Matrix4d (xAxis .x (), xAxis .y (), xAxis .z (), 0,
+							                        yAxis .x (), yAxis .y (), yAxis .z (), 0,
+							                        zAxis .x (), zAxis .y (), zAxis .z (), 0,
+							                        center .x (), center .y (), center .z (), 1));
 					}
 
-					xAxis .normalize ();
-
-					const auto zAxis = normalize (cross <double> (xAxis, normal));
-					const auto yAxis = normalize (cross <double> (zAxis, xAxis));
-
-					if (abs (xAxis))
-						return Rotation4d (Matrix3d (xAxis .x (), xAxis .y (), xAxis .z (),
-						                             yAxis .x (), yAxis .y (), yAxis .z (),
-						                             zAxis .x (), zAxis .y (), zAxis .z ()));
-
-					return Rotation4d (Matrix3d (axisRotation));
+					break;
 				}
-				else
-				{
-					Vector3d normal;
-
-					for (const auto & face : faces)
-					{
-						const auto vertices = getFaceSelection () -> getFaceVertices (face);
-
-						if (getPolygonArea (vertices))
-							normal += getPolygonNormal (vertices);
-					}
-
-					return abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
-				}
+				default:
+					break;
 			}
-			case SelectionType::FACES:
-			{
-				Vector3d normal;
-				
-				for (const auto & face : getSelectedFaces ())
-				{
-					const auto vertices = getFaceSelection () -> getFaceVertices (face);
 
-					if (getPolygonArea (vertices))
-						normal += getPolygonNormal (vertices);
-				}
-				
-				return abs (normal) ? Rotation4d (Vector3d (0, 0, 1), normal) : Rotation4d (Matrix3d (axisRotation));
-			}
+			bbox = minimum_bounding_box (points);
+			break;
 		}
+		default:
+			bbox = minimum_bounding_box (points);
+			break;
 	}
 
-	return Rotation4d ();
+	return bbox;
 }
 
 X3DIndexedFaceSetTransformObject::~X3DIndexedFaceSetTransformObject ()

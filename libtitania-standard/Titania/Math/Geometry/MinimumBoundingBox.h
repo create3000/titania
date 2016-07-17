@@ -89,7 +89,7 @@ minimum_bounding_box (const std::vector <vector3 <Type>> & points)
 
 	const auto rotation = rotation4 <Type> (quaternion <Type> (a_rotation .x (), a_rotation .y (), a_rotation .z (), a_rotation .w ()));
 	const auto size     = vector3 <Type> (a_size (0, 0), a_size (1, 0), a_size (2, 0));
-	const auto center   = vector3 <Type> (a_center (0, 0), a_center (1, 0), a_center (2, 0));
+	const auto center   = vector3 <Type> (a_center (0, 0), a_center (1, 0), a_center (2, 0)) * rotation;
 
 	matrix4 <Type> obb;
 

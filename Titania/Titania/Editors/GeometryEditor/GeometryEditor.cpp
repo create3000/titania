@@ -105,7 +105,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",             new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",       new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "transform",            new X3D::SFBool ());
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "alignToNormal",        new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "mergePoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "splitPoints",          new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "formNewFace",          new X3D::SFTime ());
@@ -147,7 +146,6 @@ GeometryEditor::configure ()
 
 	getPaintSelectionButton ()  .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getTransformToolButton ()   .set_active (getConfig () -> get <bool> ("transform"));
-	getAlignToNormalMenuItem () .set_active (getConfig () -> get <bool> ("alignToNormal"));
 	
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
@@ -261,7 +259,6 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFString>    ("selectionType")        .addInterest (node -> getField <X3D::SFString> ("selectionType"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")       .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
 						coordEditor -> getField <X3D::SFBool>      ("transform")            .addInterest (node -> getField <X3D::SFBool>   ("transform"));
-						coordEditor -> getField <X3D::SFBool>      ("alignToNormal")    .addInterest (node -> getField <X3D::SFBool>   ("alignToNormal"));
 						coordEditor -> getField <X3D::SFTime>      ("mergePoints")          .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
 						coordEditor -> getField <X3D::SFTime>      ("splitPoints")          .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
 						coordEditor -> getField <X3D::SFTime>      ("formNewFace")          .addInterest (node -> getField <X3D::SFTime>   ("formNewFace"));
@@ -285,7 +282,6 @@ GeometryEditor::connect ()
 						node -> setField <X3D::SFString> ("selectionType",     coordEditor -> getField <X3D::SFString> ("selectionType"),  true);
 						node -> setField <X3D::SFBool>   ("paintSelection",    coordEditor -> getField <X3D::SFBool>   ("paintSelection"), true);
 						node -> setField <X3D::SFBool>   ("transform",         coordEditor -> getField <X3D::SFBool>   ("transform"),      true);
-						node -> setField <X3D::SFBool>   ("alignToNormal",     coordEditor -> getField <X3D::SFBool>   ("alignToNormal"),  true);
 						node -> setField <X3D::SFBool>   ("cutPolygons",       coordEditor -> getField <X3D::SFBool>   ("cutPolygons"),    true);
 
 						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
@@ -987,22 +983,6 @@ GeometryEditor::on_transform_tool_toggled ()
 	coordEditor -> setField <X3D::SFBool> ("transform", getTransformToolButton () .get_active ());
 }
 
-bool
-GeometryEditor::on_transform_tool_button_press_event (GdkEventButton* event)
-{
-	if (event -> button not_eq 3)
-		return false;
-
-	getTransformToolMenu () .popup (event -> button, event -> time);
-	return true;
-}
-
-void
-GeometryEditor::on_align_to_normal_toggled ()
-{
-	coordEditor -> setField <X3D::SFBool> ("alignToNormal", getAlignToNormalMenuItem () .get_active ());
-}
-
 void
 GeometryEditor::on_merge_points_clicked ()
 {
@@ -1059,7 +1039,6 @@ GeometryEditor::store ()
 	getConfig () -> set ("normalColor",   normalEditor -> getField <X3D::SFColorRGBA> ("color"));
 	getConfig () -> set ("selectionType", coordEditor  -> getField <X3D::SFString>    ("selectionType"));
 	getConfig () -> set ("transform",     getTransformToolButton () .get_active ());
-	getConfig () -> set ("alignToNormal", getAlignToNormalMenuItem () .get_active ());
 	getConfig () -> set ("edgeColor",     coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
 	getConfig () -> set ("selector",      size_t (selector));
 

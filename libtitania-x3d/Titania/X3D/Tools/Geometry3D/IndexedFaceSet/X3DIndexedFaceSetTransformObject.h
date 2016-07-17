@@ -78,14 +78,6 @@ public:
 	transform () const
 	{ return *fields .transform; }
 
-	SFBool &
-	alignToNormal ()
-	{ return *fields .alignToNormal; }
-
-	const SFBool &
-	alignToNormal () const
-	{ return *fields .alignToNormal; }
-
 	///  @name Destruction
 
 	virtual
@@ -118,9 +110,6 @@ private:
 	set_transform ();
 
 	void
-	set_alignToNormal ();
-
-	void
 	set_selection ();
 
 	void
@@ -138,8 +127,8 @@ private:
 	void
 	set_transform_modelViewMatrix ();
 
-	Rotation4d
-	getAxisRotation () const;
+	Box3d
+	getSelectionBBox () const;
 
 	///  @name Members
 
@@ -148,7 +137,6 @@ private:
 		Fields ();
 
 		SFBool* const transform;
-		SFBool* const alignToNormal;
 	};
 
 	///  @name Members

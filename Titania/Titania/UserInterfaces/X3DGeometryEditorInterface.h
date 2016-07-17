@@ -99,14 +99,6 @@ public:
 		return widget;
 	}
 
-	Gtk::Menu &
-	getTransformToolMenu () const
-	{ return *m_TransformToolMenu; }
-
-	Gtk::CheckMenuItem &
-	getAlignToNormalMenuItem () const
-	{ return *m_AlignToNormalMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -219,10 +211,6 @@ public:
 
 	virtual
 	void
-	on_align_to_normal_toggled () = 0;
-
-	virtual
-	void
 	on_map () = 0;
 
 	virtual
@@ -278,10 +266,6 @@ public:
 	on_merge_points_clicked () = 0;
 
 	virtual
-	bool
-	on_transform_tool_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
 	void
 	on_transform_tool_toggled () = 0;
 
@@ -335,8 +319,6 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Menu*                  m_TransformToolMenu;
-	Gtk::CheckMenuItem*         m_AlignToNormalMenuItem;
 	Gtk::Window*                m_Window;
 	Gtk::Revealer*              m_Widget;
 	Gtk::Box*                   m_GeometryEditorBox;
