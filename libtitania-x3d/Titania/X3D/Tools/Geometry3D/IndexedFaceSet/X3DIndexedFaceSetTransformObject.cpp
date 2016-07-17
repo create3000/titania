@@ -221,8 +221,6 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 		if (planeSensor -> isActive ())
 			return;
 
-__LOG__ << getHotPoints () .size () << std::endl;
-
 		switch (getHotPoints () .size ())
 		{
 			case 0:

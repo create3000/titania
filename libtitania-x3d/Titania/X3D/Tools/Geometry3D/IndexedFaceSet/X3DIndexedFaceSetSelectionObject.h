@@ -561,6 +561,9 @@ private:
 	void
 	updateSelectedEdges ();
 
+	std::vector <std::pair <size_t, size_t>>
+	getHorizonEdges (const std::vector <size_t> &);
+
 	void
 	addSelectedFacesFunction (const std::set <size_t> &, const std::set <int32_t> &);
 

@@ -389,6 +389,8 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_over (const bool over)
 		return;
 
 	activePoints .clear ();
+	activeEdges  .clear ();
+	activeFaces  .clear ();
 	activeFace = -1;
 
 	updateMagicSelection ();
@@ -601,19 +603,24 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 				}
 				else
 				{
-					activeEdges = { std::make_pair (edge .index0, edge .index1) };
 
 					switch (getSelectionType ())
 					{
 						case SelectionType::POINTS:
+						{
+							activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+							break;
+						}
 						case SelectionType::EDGES:
 						{
+							activeEdges  = { std::make_pair (edge .index0, edge .index1) };
 							activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
 							break;
 						}
 						case SelectionType::FACES:
 						{
 							activeFaces = getFaceSelection () -> getAdjacentFaces (edge);
+							activeEdges = getHorizonEdges (activeFaces);
 
 							for (const auto & activeFace : activeFaces)
 							{
@@ -661,6 +668,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 					for (const auto face : faces)
 						activeFaces .emplace_back (face .index); 
 
+					activeEdges = getHorizonEdges (activeFaces);
 					break;
 				}
 			}
@@ -1253,6 +1261,44 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 	}
 	catch (const X3DError &)
 	{ }
+}
+
+std::vector <std::pair <size_t, size_t>>
+X3DIndexedFaceSetSelectionObject::getHorizonEdges (const std::vector <size_t> & faces)
+{
+	SelectedEdges selectedEdges;
+
+	for (const auto & face : faces)
+	{
+		for (const auto & edge : getFaceSelection () -> getFaceEdges (face))
+		{
+			auto i0 = edge .first;
+			auto i1 = edge .second;
+	
+			auto index0 = coordIndex () [i0] .getValue ();
+			auto index1 = coordIndex () [i1] .getValue ();
+	
+			if (i0 > i1)
+				std::swap (i0, i1);
+	
+			if (index0 > index1)
+				std::swap (index0, index1);
+	
+			selectedEdges [std::make_pair (index0, index1)] .emplace (std::make_pair (i0, i1)); 
+		}
+	}
+	
+	std::vector <std::pair <size_t, size_t>> horizonEdges;
+
+	for (const auto & edge : selectedEdges)
+	{
+		if (edge .second .size () not_eq 1)
+			continue;
+
+		horizonEdges .emplace_back (*edge .second .begin ());
+	}
+	
+	return horizonEdges;
 }
 
 ///  Add @a faces to selection of faces.
