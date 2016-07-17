@@ -83,16 +83,16 @@ X3DSelector::initialize ()
 }
 
 bool
-X3DSelector::on_1button_press_event (GdkEventButton* event)
+X3DSelector::on_button_press_event (GdkEventButton* event)
 {
 	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
-		return X3DExamineViewer::on_1button_press_event (event);
+		return X3DExamineViewer::on_button_press_event (event);
 
-	if (event -> button not_eq 1)
-		return X3DExamineViewer::on_1button_press_event (event);
+	if (event -> button not_eq 1 or event -> type not_eq GDK_BUTTON_PRESS)
+		return false;
 
 	if (button)
-		return true;
+		return false;
 
 	button = event -> button;
 
@@ -109,17 +109,20 @@ X3DSelector::on_1button_press_event (GdkEventButton* event)
 }
 
 bool
-X3DSelector::on_1button_release_event (GdkEventButton* event)
+X3DSelector::on_button_release_event (GdkEventButton* event)
 {
 	try
 	{
+		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+			return X3DExamineViewer::on_button_release_event (event);
+
 		if (event -> button not_eq button)
-			return X3DExamineViewer::on_1button_release_event (event);
+			return X3DExamineViewer::on_button_release_event (event);
 	
 		button = 0;
 	
 		if (points .empty ())
-			return true;
+			return false;
 	
 		ContextLock lock (getBrowser ());
 	

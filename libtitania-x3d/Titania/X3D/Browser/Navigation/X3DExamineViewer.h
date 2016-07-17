@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra遝 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -88,31 +88,7 @@ protected:
 
 	virtual
 	bool
-	on_1button_press_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_2button_press_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_3button_press_event (GdkEventButton*);
-
-	virtual
-	bool
 	on_button_release_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_1button_release_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_2button_release_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_3button_release_event (GdkEventButton*);
 
 	virtual
 	bool
@@ -126,6 +102,24 @@ protected:
 private:
 
 	///  @name Event handler
+
+	bool
+	on_1button_press_event (GdkEventButton*);
+
+	bool
+	on_2button_press_event (GdkEventButton*);
+
+	bool
+	on_3button_press_event (GdkEventButton*);
+
+	bool
+	on_1button_release_event (GdkEventButton*);
+
+	bool
+	on_2button_release_event (GdkEventButton*);
+
+	bool
+	on_3button_release_event (GdkEventButton*);
 
 	///  @name Operations
 
