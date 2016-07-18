@@ -78,6 +78,14 @@ public:
 	transform () const
 	{ return *fields .transform; }
 
+	SFBool &
+	axisAlignedBoundingBox ()
+	{ return *fields .axisAlignedBoundingBox; }
+
+	const SFBool &
+	axisAlignedBoundingBox () const
+	{ return *fields .axisAlignedBoundingBox; }
+
 	///  @name Destruction
 
 	virtual
@@ -137,6 +145,7 @@ private:
 		Fields ();
 
 		SFBool* const transform;
+		SFBool* const axisAlignedBoundingBox;
 	};
 
 	///  @name Members

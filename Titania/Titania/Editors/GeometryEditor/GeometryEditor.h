@@ -239,6 +239,14 @@ private:
 	on_transform_tool_toggled () final override;
 
 	virtual
+	bool
+	on_transform_tool_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	void
+	on_axis_aligned_bounding_box_toggled () final override;
+
+	virtual
 	void
 	on_merge_points_clicked () final override;
 

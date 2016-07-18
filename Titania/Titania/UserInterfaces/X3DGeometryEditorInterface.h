@@ -99,6 +99,14 @@ public:
 		return widget;
 	}
 
+	Gtk::Menu &
+	getTransformToolMenu () const
+	{ return *m_TransformToolMenu; }
+
+	Gtk::CheckMenuItem &
+	getAxisAlignedBoundingBoxMenuItem () const
+	{ return *m_AxisAlignedBoundingBoxMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -215,6 +223,10 @@ public:
 
 	virtual
 	void
+	on_axis_aligned_bounding_box_toggled () = 0;
+
+	virtual
+	void
 	on_map () = 0;
 
 	virtual
@@ -268,6 +280,10 @@ public:
 	virtual
 	void
 	on_merge_points_clicked () = 0;
+
+	virtual
+	bool
+	on_transform_tool_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -327,6 +343,8 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Menu*                  m_TransformToolMenu;
+	Gtk::CheckMenuItem*         m_AxisAlignedBoundingBoxMenuItem;
 	Gtk::Window*                m_Window;
 	Gtk::Revealer*              m_Widget;
 	Gtk::Box*                   m_GeometryEditorBox;

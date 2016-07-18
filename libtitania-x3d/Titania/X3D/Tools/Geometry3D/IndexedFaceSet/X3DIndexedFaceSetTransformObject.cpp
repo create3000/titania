@@ -71,7 +71,8 @@ namespace X3D {
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
-	transform (new SFBool ())
+	             transform (new SFBool ()),
+	axisAlignedBoundingBox (new SFBool ())
 { }
 
 X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
@@ -124,7 +125,8 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool        = inlineNode -> getExportedNode <Transform>        ("TransformTool");
 		selectionCoord       = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
-		transform () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
+		transform ()              .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
+		axisAlignedBoundingBox () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
 
 		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
 		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
@@ -180,15 +182,26 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	if (active)
 		return;
 
-	const auto bbox = getSelectionBBox ();
-
 	Vector3d translation, scale;
 	Rotation4d rotation;
 
-	bbox .matrix () .get (translation, rotation, scale);
+	if (axisAlignedBoundingBox ())
+	{
+		const auto bbox = selectionCoord -> getBBox ();
 
-	translation = translation * ~rotation;
-	scale       = Vector3d (std::abs (scale .x ()), std::abs (scale .y ()), std::abs (scale .z ()));
+		translation = bbox .center ();
+		scale       = bbox .size ();
+	}
+	else
+	{
+		const auto bbox = getSelectionBBox ();
+	
+		bbox .matrix () .get (translation, rotation, scale);
+	
+		translation = translation * ~rotation;
+		scale      *= 2.0;
+		scale       = Vector3d (std::abs (scale .x ()), std::abs (scale .y ()), std::abs (scale .z ()));
+	}
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = rotation;
@@ -200,7 +213,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformTool -> center ()           = translation;
 
 	transformTool -> bboxCenter () = translation;
-	transformTool -> bboxSize ()   = max (scale * 2.0, Vector3d (1e-5, 1e-5, 1e-5));
+	transformTool -> bboxSize ()   = max (scale, Vector3d (1e-5, 1e-5, 1e-5));
 
 	axisRotation = Matrix4d (rotation);
 }

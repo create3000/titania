@@ -612,7 +612,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 					{
 						if (selectLineLoop ())
 						{
-							activeEdges = selectLineLoop (edge .index0, edge .index1, face);
+							activeEdges = selectLineLoop (edge .index0, edge .index1);
 		
 							for (const auto & activeEdge : activeEdges)
 							{
@@ -697,7 +697,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 }
 
 std::vector <std::pair <size_t, size_t>>
-X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const size_t index2, const size_t face)
+X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const size_t index2)
 {
 	std::vector <std::pair <size_t, size_t>> lineLoop;
 	std::set <int32_t>                       points;
@@ -706,12 +706,12 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const siz
 	points .emplace (coordIndex () [index1]);
 	points .emplace (coordIndex () [index2]);
 
-	selectLineLoop (index1, index2, face, lineLoop, points);
+	selectLineLoop (index1, index2, lineLoop, points);
 
 	if (coordIndex () [lineLoop .front () .first] == coordIndex () [lineLoop .back () .second])
 		return lineLoop;
 
-	selectLineLoop (index2, index1, face, lineLoop, points);
+	selectLineLoop (index2, index1, lineLoop, points);
 
 	return lineLoop;
 }
@@ -719,7 +719,6 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const siz
 void
 X3DIndexedFaceSetSelectionObject::selectLineLoop (size_t index1,
                                                   size_t index2,
-                                                  size_t face,
                                                   std::vector <std::pair <size_t, size_t>> & lineLoop,
                                                   std::set <int32_t> & points)
 {

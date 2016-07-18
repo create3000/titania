@@ -532,5 +532,20 @@
         <signal name="toggled" handler="on_faces_toggled" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkCheckMenuItem" id="SelectLineLoopMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Select Line Loop</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_select_line_loop_toggled" swapped="no"/>
+      </object>
+    </child>
   </object>
 </interface>
