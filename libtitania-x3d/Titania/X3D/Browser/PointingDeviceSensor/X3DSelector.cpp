@@ -118,6 +118,12 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 		if (event -> button not_eq 1)
 			return X3DExamineViewer::on_button_release_event (event);
 
+		if (getButton () not_eq 100)
+		{
+			setButton (0);
+			return false;
+		}
+
 		setButton (0);
 	
 		if (points .empty ())

@@ -269,7 +269,7 @@ X3DGeometryNodeTool::eventProcessed ()
 bool
 X3DGeometryNodeTool::intersects (Line3d hitRay, std::vector <IntersectionPtr> & intersections) const
 {
-	return false;
+	return getNode <X3DGeometryNode> () -> intersects (hitRay, intersections);
 }
 
 std::vector <Vector3d>

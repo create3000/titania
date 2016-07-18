@@ -276,7 +276,9 @@ X3DExamineViewer::on_1button_release_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_2button_release_event (GdkEventButton* event)
 {
-	lookAt (event -> x, event -> y, false, true);
+	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+		lookAt (event -> x, event -> y, false, true);
+
 	return false;
 }
 
