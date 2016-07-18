@@ -153,7 +153,7 @@ X3DViewer::lookAt (const double x, const double y, const bool straightenHorizon,
 {
 	if (touch (x, y))
 	{
-		const auto hit = getBrowser () -> getNearestHit ();
+		const auto & hit = getBrowser () -> getNearestHit ();
 
 		if (seek)
 		{

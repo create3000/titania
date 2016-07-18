@@ -89,7 +89,7 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 		return X3DExamineViewer::on_button_press_event (event);
 
 	if (event -> button not_eq 1 or event -> type not_eq GDK_BUTTON_PRESS)
-		return false;
+		return X3DExamineViewer::on_button_press_event (event);
 
 	if (button)
 		return false;

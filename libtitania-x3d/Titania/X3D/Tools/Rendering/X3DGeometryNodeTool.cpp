@@ -266,6 +266,12 @@ X3DGeometryNodeTool::eventProcessed ()
 	}
 }
 
+bool
+X3DGeometryNodeTool::intersects (Line3d hitRay, std::vector <IntersectionPtr> & intersections) const
+{
+	return false;
+}
+
 std::vector <Vector3d>
 X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
                                  const std::shared_ptr <FrameBuffer> & depthBuffer,

@@ -164,8 +164,7 @@ public:
 
 	virtual
 	bool
-	intersects (Line3d, std::vector <IntersectionPtr> &) const final override
-	{ return false; }
+	intersects (Line3d, std::vector <IntersectionPtr> &) const final override;
 
 	virtual
 	std::vector <Vector3d>

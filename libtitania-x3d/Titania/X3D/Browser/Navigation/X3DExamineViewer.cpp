@@ -188,14 +188,34 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_2button_press_event (GdkEventButton* event)
 {
-	numClicks = 2;
+	switch (event -> button)
+	{
+		case 1:
+		{
+			button    = event -> button;
+			numClicks = 2;
+
+			return false;
+		}
+	}
+
 	return false;
 }
 
 bool
 X3DExamineViewer::on_3button_press_event (GdkEventButton* event)
 {
-	numClicks = 3;
+	switch (event -> button)
+	{
+		case 1:
+		{
+			button    = event -> button;
+			numClicks = 3;
+
+			return false;
+		}
+	}
+
 	return false;
 }
 
