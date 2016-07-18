@@ -66,7 +66,6 @@ namespace X3D {
 X3DSelector::X3DSelector () :
 	X3DExamineViewer (),
 	        pickable (false),
-	          button (0),
 	          points ()
 {
 	addType (X3DConstants::X3DSelector);
@@ -91,10 +90,10 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 	if (event -> button not_eq 1 or event -> type not_eq GDK_BUTTON_PRESS)
 		return X3DExamineViewer::on_button_press_event (event);
 
-	if (button)
+	if (getButton ())
 		return false;
 
-	button = event -> button;
+	setButton (100);
 
 	if (getBrowser () -> getActiveLayer ())
 		getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
@@ -116,10 +115,10 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return X3DExamineViewer::on_button_release_event (event);
 
-		if (event -> button not_eq button)
+		if (event -> button not_eq 1)
 			return X3DExamineViewer::on_button_release_event (event);
-	
-		button = 0;
+
+		setButton (0);
 	
 		if (points .empty ())
 			return false;
@@ -165,7 +164,7 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 bool
 X3DSelector::on_motion_notify_event (GdkEventMotion* event)
 {
-	if (button not_eq 1)
+	if (getButton () not_eq 100)
 		return X3DExamineViewer::on_motion_notify_event (event);
 
 	getBrowser () -> addEvent ();

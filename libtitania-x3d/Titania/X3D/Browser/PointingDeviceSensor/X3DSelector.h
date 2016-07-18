@@ -122,7 +122,6 @@ private:
 	///  @name Members
 
 	bool                   pickable;
-	guint                  button;
 	std::vector <Vector3d> points;
 
 };

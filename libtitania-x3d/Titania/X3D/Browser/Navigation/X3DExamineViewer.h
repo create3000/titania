@@ -80,6 +80,14 @@ protected:
 	void
 	initialize () override;
 
+	void
+	setButton (guint value)
+	{ button = value; }
+
+	guint
+	getButton () const
+	{ return button; }
+
 	///  @name Event handler
 
 	virtual
