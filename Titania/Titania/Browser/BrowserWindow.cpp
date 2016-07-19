@@ -2731,16 +2731,27 @@ BrowserWindow::set_viewer ()
 {
 	const auto type = getCurrentBrowser () -> getCurrentViewer ();
 
+
 	switch (type)
 	{
 		case X3D::X3DConstants::PlaneViewer:
 		case X3D::X3DConstants::NoneViewer:
 		{
+			getStraightenButton ()        .set_visible (false);
+			getStraightenHorizonButton () .set_visible (false);
+			break;
+		}
+		case X3D::X3DConstants::WalkViewer:
+		case X3D::X3DConstants::FlyViewer:
+		{
+			getStraightenButton ()        .set_visible (true);
 			getStraightenHorizonButton () .set_visible (false);
 			break;
 		}
 		default:
 		{
+			// ExamineViewer
+			getStraightenButton ()        .set_visible (false);
 			getStraightenHorizonButton () .set_visible (true);
 			break;
 		}
@@ -2904,17 +2915,21 @@ BrowserWindow::on_none_viewer_activated ()
 }
 
 void
+BrowserWindow::on_straighten_clicked ()
+{
+	const auto & activeLayer = getCurrentBrowser () -> getActiveLayer ();
+
+	if (activeLayer)
+		activeLayer -> getViewpoint () -> straighten (getCurrentBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
+}
+
+void
 BrowserWindow::on_straighten_horizon_toggled ()
 {
 	getCurrentBrowser () -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
 
 	if (getStraightenHorizonButton () .get_active ())
-	{
-		const auto & activeLayer = getCurrentBrowser () -> getActiveLayer ();
-
-		if (activeLayer)
-			activeLayer -> getViewpoint () -> straighten (getCurrentBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
-	}
+		on_straighten_clicked ();
 }
 
 /*

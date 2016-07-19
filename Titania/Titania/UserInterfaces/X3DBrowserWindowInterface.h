@@ -1439,6 +1439,10 @@ public:
 	getViewerButton () const
 	{ return *m_ViewerButton; }
 
+	Gtk::ToolButton &
+	getStraightenButton () const
+	{ return *m_StraightenButton; }
+
 	Gtk::ToggleToolButton &
 	getStraightenHorizonButton () const
 	{ return *m_StraightenHorizonButton; }
@@ -2039,6 +2043,10 @@ public:
 
 	virtual
 	void
+	on_straighten_clicked () = 0;
+
+	virtual
+	void
 	on_straighten_horizon_toggled () = 0;
 
 	virtual
@@ -2414,6 +2422,7 @@ private:
 	Gtk::ToolButton*                 m_SelectChildrenButton;
 	Gtk::SeparatorToolItem*          m_ViewerSeparator;
 	Gtk::MenuToolButton*             m_ViewerButton;
+	Gtk::ToolButton*                 m_StraightenButton;
 	Gtk::ToggleToolButton*           m_StraightenHorizonButton;
 	Gtk::SeparatorToolItem*          m_LookAtSeparator;
 	Gtk::ToolButton*                 m_LookAtSelectionButton;

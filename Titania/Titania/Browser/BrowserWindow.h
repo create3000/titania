@@ -772,6 +772,10 @@ private:
 
 	virtual
 	void
+	on_straighten_clicked () final override;
+
+	virtual
+	void
 	on_straighten_horizon_toggled () final override;
 
 	virtual
