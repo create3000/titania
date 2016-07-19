@@ -72,7 +72,7 @@ namespace puck {
 ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DColorEditorInterface (get_ui ("Editors/ColorEditor.glade")),
-	                preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/ColorEditorPreview.x3dv") })),
+	                preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/ColorEditorPreview.x3dv") })),
 	            colorButton (this,
 	                         getColorButton (),
 	                         getColorAdjustment (),
@@ -90,7 +90,7 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	                  coord (),
 	        previewGeometry (),
 	           previewColor (),
-	              selection (new X3D::FaceSelection (getBrowserWindow () -> getMasterBrowser ())),
+	              selection (new X3D::FaceSelection (getMasterBrowser ())),
 	            undoHistory ()
 {
 	addChildren (preview,

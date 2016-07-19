@@ -51,6 +51,7 @@
 #ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEOMETRY_SELECTION_EDITOR_H__
 #define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DGEOMETRY_SELECTION_EDITOR_H__
 
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
@@ -58,6 +59,7 @@ namespace X3D {
 
 class X3DGeometryNode;
 class IndexedFaceSetTool;
+class Transform;
 
 } // X3D
 } // titania
@@ -65,7 +67,7 @@ class IndexedFaceSetTool;
 namespace titania {
 namespace puck {
 
-class NormalTool;
+class RotationTool;
 
 class X3DGeometrySelectionEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
@@ -109,8 +111,30 @@ private:
 	void
 	set_touchTime ();
 
+	void
+	set_matrix ();
+
+	void
+	set_tool_matrix ();
+
+	void
+	connectMatrix ();
+
+	void
+	connectToolMatrix ();
+
 	X3D::X3DPtr <X3D::IndexedFaceSetTool>
 	getCurrentTool () const;
+
+	///  @name Members
+
+	X3DFieldAdjustment3 <X3D::SFVec3f>    translation;
+	SFRotationAdjustment                  rotation;
+	std::unique_ptr <RotationTool>        rotationTool;	
+	X3DFieldAdjustment3 <X3D::SFVec3f>    scale;
+
+	X3D::X3DPtr <X3D::Transform>          transformNode;
+	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
 
 };
 

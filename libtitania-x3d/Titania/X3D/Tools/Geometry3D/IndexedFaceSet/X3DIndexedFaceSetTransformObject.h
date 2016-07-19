@@ -102,6 +102,14 @@ public:
 	touchTime () const
 	{ return *fields .touchTime; }
 
+	X3DPtr <Transform> &
+	getSelectionTransform ()
+	{ return selectionTransform; }
+
+	const X3DPtr <Transform> &
+	getSelectionTransform () const
+	{ return selectionTransform; }
+
 	///  @name Destruction
 
 	virtual
@@ -176,6 +184,7 @@ private:
 	X3DPtr <Switch>           transformToolSwitch;
 	X3DPtr <Transform>        transformNode;
 	X3DPtr <Transform>        transformTool;
+	X3DPtr <Transform>        selectionTransform;
 
 	X3DPtr <CoordinateDouble> selectionCoord;
 	size_t                    translations;

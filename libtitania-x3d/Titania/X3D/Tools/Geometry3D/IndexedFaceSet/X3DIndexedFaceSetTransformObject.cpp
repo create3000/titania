@@ -87,6 +87,7 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	  transformToolSwitch (),
 	        transformNode (),
 	        transformTool (),
+	   selectionTransform (new Transform (getExecutionContext ())),
 	       selectionCoord (),
 	         translations (0),
 	         axisRotation (),
@@ -101,12 +102,15 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	             transformToolSwitch,
 	             transformNode,
 	             transformTool,
+	             selectionTransform,
 	             selectionCoord);
 }
 
 void
 X3DIndexedFaceSetTransformObject::initialize ()
 {
+	selectionTransform -> setup ();
+
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_loadState);
 
 	set_loadState ();
@@ -137,6 +141,18 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_translation);
 
 		// Transform Tool
+
+		selectionTransform -> translation ()      .addInterest (transformTool -> translation ());
+		selectionTransform -> rotation ()         .addInterest (transformTool -> rotation ());
+		selectionTransform -> scale ()            .addInterest (transformTool -> scale ());
+		selectionTransform -> scaleOrientation () .addInterest (transformTool -> scaleOrientation ());
+		selectionTransform -> center ()           .addInterest (transformTool -> center ());
+
+		transformTool -> translation ()      .addInterest (selectionTransform -> translation ());
+		transformTool -> rotation ()         .addInterest (selectionTransform -> rotation ());
+		transformTool -> scale ()            .addInterest (selectionTransform -> scale ());
+		transformTool -> scaleOrientation () .addInterest (selectionTransform -> scaleOrientation ());
+		transformTool -> center ()           .addInterest (selectionTransform -> center ());
 
 		transformTool -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
 		transformTool -> addTool ();

@@ -51,6 +51,7 @@
 #include "X3DGeometrySelectionEditor.h"
 
 #include "../GeometryEditor/GeometryEditor.h"
+#include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
@@ -59,18 +60,50 @@ namespace titania {
 namespace puck {
 
 X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
-	X3DPrecisionPlacementPanelInterface ()
-{ }
+	X3DPrecisionPlacementPanelInterface (),
+	                        translation (this,
+	                                     getGeometrySelectionTranslationXAdjustment (),
+	                                     getGeometrySelectionTranslationYAdjustment (),
+	                                     getGeometrySelectionTranslationZAdjustment (),
+	                                     getGeometrySelectionTranslationBox (),
+	                                     "translation"),
+	                           rotation (this,
+	                                     getGeometrySelectionRotationXAdjustment (),
+	                                     getGeometrySelectionRotationYAdjustment (),
+	                                     getGeometrySelectionRotationZAdjustment (),
+	                                     getGeometrySelectionRotationAAdjustment (),
+	                                     getGeometrySelectionRotationBox (),
+	                                     "rotation"),
+	                       rotationTool (new RotationTool (this, getGeometrySelectionRotationToolBox (), "rotation")),
+	                              scale (this,
+	                                     getGeometrySelectionScaleXAdjustment (),
+	                                     getGeometrySelectionScaleYAdjustment (),
+	                                     getGeometrySelectionScaleZAdjustment (),
+	                                     getGeometrySelectionScaleBox (),
+	                                     "scale"),
+	                      transformNode (),
+	                               tool ()
+{
+	addChildren (transformNode, tool);
+}
 
 void
 X3DGeometrySelectionEditor::configure ()
 {
+	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
+
 	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
 }
 
 void
 X3DGeometrySelectionEditor::initialize ()
-{ }
+{
+	translation .setUndo (false);
+	rotation    .setUndo (false);
+	scale       .setUndo (false);
+
+	rotationTool -> setUndo (false);
+ }
 
 void
 X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
@@ -79,8 +112,6 @@ X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
 void
 X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 {
-	__LOG__ << std::endl;
-
 	for (const auto & node : geometryNodes)
 	{
 		const auto tool = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
@@ -95,13 +126,64 @@ X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNode
 void
 X3DGeometrySelectionEditor::set_touchTime ()
 {
-	__LOG__ << std::endl;
+	if (tool)
+		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 
-	const auto tool = getCurrentTool ();
+	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
+	tool          = getCurrentTool ();
 
-	__LOG__ << bool (tool) << std::endl;
+	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+
+	const X3D::MFNode transforms ({ transformNode });
+
+	translation .setNodes (transforms);
+	rotation    .setNodes (transforms);
+	scale       .setNodes (transforms);
+	rotationTool -> setNodes (transforms);
 
 	getGeometrySelectionExpander () .set_visible (tool);
+
+	if (tool)
+	{
+		const auto & selectionTransform = tool -> getSelectionTransform ();
+
+		selectionTransform -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+	}
+}
+
+void
+X3DGeometrySelectionEditor::set_matrix ()
+{
+	__LOG__ << transformNode -> getMatrix () << std::endl;
+
+	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
+
+	//set coord points:
+	tool -> getSelectionTransform () -> setMatrix (transformNode -> getMatrix ());
+}
+
+void
+X3DGeometrySelectionEditor::set_tool_matrix ()
+{
+	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
+
+	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
+
+	transformNode -> setMatrixWithCenter (tool -> getSelectionTransform () -> getMatrix (), tool -> getSelectionTransform () -> center ());
+}
+
+void
+X3DGeometrySelectionEditor::connectMatrix ()
+{
+	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+}
+
+void
+X3DGeometrySelectionEditor::connectToolMatrix ()
+{
+	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 }
 
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
@@ -125,6 +207,8 @@ X3DGeometrySelectionEditor::getCurrentTool () const
 void
 X3DGeometrySelectionEditor::store ()
 {
+	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
+
 	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
 }
 
