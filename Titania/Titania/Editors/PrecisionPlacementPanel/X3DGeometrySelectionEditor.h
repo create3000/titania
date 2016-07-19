@@ -135,6 +135,7 @@ private:
 
 	X3D::X3DPtr <X3D::Transform>          transformNode;
 	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
+	X3D::Matrix4d                         lastMatrix; // Last absolute matrix of selection bbox set to transformNode.
 
 };
 

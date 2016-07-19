@@ -59,6 +59,8 @@
 namespace titania {
 namespace puck {
 
+static constexpr auto M2 = X3D::Matrix4d (2,0,0,0, 0,2,0,0, 0,0,2,0, 0,0,0,1);	
+
 X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	X3DPrecisionPlacementPanelInterface (),
 	                        translation (this,
@@ -82,7 +84,8 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	                                     getGeometrySelectionScaleBox (),
 	                                     "scale"),
 	                      transformNode (),
-	                               tool ()
+	                               tool (),
+	                         lastMatrix ()
 {
 	addChildren (transformNode, tool);
 }
@@ -132,7 +135,7 @@ X3DGeometrySelectionEditor::set_touchTime ()
 	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
 	tool          = getCurrentTool ();
 
-	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+	// Update composed widgets
 
 	const X3D::MFNode transforms ({ transformNode });
 
@@ -141,37 +144,53 @@ X3DGeometrySelectionEditor::set_touchTime ()
 	scale       .setNodes (transforms);
 	rotationTool -> setNodes (transforms);
 
+	//
+
 	getGeometrySelectionExpander () .set_visible (tool);
 
 	if (tool)
 	{
 		const auto & selectionTransform = tool -> getSelectionTransform ();
 
+		transformNode      -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 		selectionTransform -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+
+		set_tool_matrix ();
 	}
 }
 
 void
 X3DGeometrySelectionEditor::set_matrix ()
 {
-	__LOG__ << transformNode -> getMatrix () << std::endl;
+//	__LOG__ << transformNode -> getMatrix () << std::endl;
 
-	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
-	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
+//	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+//	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 
-	//set coord points:
-	tool -> getSelectionTransform () -> setMatrix (transformNode -> getMatrix ());
+	const auto & axisRotation = tool -> getAxisRotation ();
+	const auto & M            = ~axisRotation * ~lastMatrix * transformNode -> getMatrix () * axisRotation;
+
+	for (const auto & pair : tool -> getSelectedPoints ())
+		tool -> getCoord () -> set1Point (pair .first, pair .second * M);
 }
 
 void
 X3DGeometrySelectionEditor::set_tool_matrix ()
 {
-	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
-
 	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
+	
+	const auto & selectionTransform = tool -> getSelectionTransform ();
+	const auto & axisRotation       = tool -> getAxisRotation ();
+	const auto   T                  = M2 * selectionTransform -> getBBox () .matrix () * axisRotation;
 
-	transformNode -> setMatrixWithCenter (tool -> getSelectionTransform () -> getMatrix (), tool -> getSelectionTransform () -> center ());
+	transformNode -> setMatrix (T);
+
+	lastMatrix = T;
+
+//	__LOG__ << selectionTransform -> getBBox () .matrix () << std::endl;
+//	__LOG__ << selectionTransform -> getMatrix () << std::endl;
+//	__LOG__ << M << std::endl;
 }
 
 void

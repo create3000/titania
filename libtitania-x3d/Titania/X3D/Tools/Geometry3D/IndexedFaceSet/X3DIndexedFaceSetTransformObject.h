@@ -110,6 +110,10 @@ public:
 	getSelectionTransform () const
 	{ return selectionTransform; }
 
+	const Matrix4d &
+	getAxisRotation () const
+	{ return axisRotation; }
+
 	///  @name Destruction
 
 	virtual
@@ -161,6 +165,9 @@ private:
 
 	Box3d
 	getSelectionBBox () const;
+
+	Box3d
+	getMinimumBBox (const std::vector <Vector3d> &) const;
 
 	///  @name Fields
 

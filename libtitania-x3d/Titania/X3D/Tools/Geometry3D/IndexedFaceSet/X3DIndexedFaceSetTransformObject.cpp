@@ -232,8 +232,8 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	transformTool -> scaleOrientation () = Rotation4f ();
 	transformTool -> center ()           = translation;
 
-	transformTool -> bboxCenter () = translation;
-	transformTool -> bboxSize ()   = max (scale, Vector3d (1e-5, 1e-5, 1e-5));
+	selectionTransform -> bboxCenter () = transformTool -> bboxCenter () = translation;
+	selectionTransform -> bboxSize ()   = transformTool -> bboxSize ()   = max (scale, Vector3d (1e-5, 1e-5, 1e-5));
 
 	axisRotation = Matrix4d (rotation);
 }
@@ -391,7 +391,7 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	setTranslate (true);
 	setTranslation (Vector3f (1, 1, 1));
 
-	const auto & M = ~axisRotation * transformTool -> getMatrix () * axisRotation;
+	const auto M = ~axisRotation * transformTool -> getMatrix () * axisRotation;
 
 	for (const auto & pair : getSelectedPoints ())
 		getCoord () -> set1Point (pair .first, pair .second * M);
@@ -455,13 +455,42 @@ X3DIndexedFaceSetTransformObject::getSelectionBBox () const
 					break;
 			}
 
-			bbox = minimum_bounding_box (points);
+			bbox = getMinimumBBox (points);
 			break;
 		}
 		default:
-			bbox = minimum_bounding_box (points);
+		{
+			bbox = getMinimumBBox (points);
 			break;
+		}
 	}
+
+	return bbox;
+}
+
+Box3d
+X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> & points) const
+{
+	auto bbox = minimum_bounding_box (points);
+
+	auto       axes   = std::vector <X3D::Vector3d> ({ bbox .matrix () .x (), bbox .matrix () .y (), bbox .matrix () .z () });
+	const auto center = bbox .center ();
+
+	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b) { return abs (a) < abs (b); });
+
+	if (dot (axes [0], Vector3d (0, 0, 1)) < 0)
+		axes [0] .negate ();
+
+	if (dot (axes [1], Vector3d (1, 0, 0)) < 0)
+		axes [1] .negate ();
+
+	if (dot (axes [2], Vector3d (0, 1, 0)) < 0)
+		axes [2] .negate ();
+
+	bbox .matrix (Matrix4d (axes [1] .x (), axes [1] .y (), axes [1] .z (), 0,
+	                        axes [2] .x (), axes [2] .y (), axes [2] .z (), 0,
+	                        axes [0] .x (), axes [0] .y (), axes [0] .z (), 0,
+	                        center .x (), center .y (), center .z (), 1));
 
 	return bbox;
 }
