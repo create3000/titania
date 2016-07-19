@@ -123,6 +123,10 @@ private:
 	void
 	connectToolMatrix ();
 
+	virtual
+	void
+	on_geometry_selection_uniform_scale_toggled () final override;
+
 	X3D::X3DPtr <X3D::IndexedFaceSetTool>
 	getCurrentTool () const;
 

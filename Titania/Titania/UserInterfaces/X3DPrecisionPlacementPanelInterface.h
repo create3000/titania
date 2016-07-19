@@ -995,6 +995,10 @@ public:
 
 	virtual
 	void
+	on_geometry_selection_uniform_scale_toggled () = 0;
+
+	virtual
+	void
 	on_bbox_uniform_size_clicked () = 0;
 
 	virtual

@@ -298,6 +298,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
 	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
+	m_GeometrySelectionUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_uniform_scale_toggled));
 	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.

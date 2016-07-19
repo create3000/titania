@@ -205,6 +205,21 @@ X3DGeometrySelectionEditor::connectToolMatrix ()
 	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 }
 
+void
+X3DGeometrySelectionEditor::on_geometry_selection_uniform_scale_toggled ()
+{
+	if (getGeometrySelectionUniformScaleButton () .get_active ())
+	{
+		getGeometrySelectionUniformScaleImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (true);
+	}
+	else
+	{
+		getGeometrySelectionUniformScaleImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		scale .setUniform (false);
+	}
+}
+
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
 X3DGeometrySelectionEditor::getCurrentTool () const
 {

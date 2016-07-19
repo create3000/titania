@@ -3949,6 +3949,7 @@
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
                         <property name="halign">start</property>
+                        <signal name="toggled" handler="on_geometry_selection_uniform_scale_toggled" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="GeometrySelectionUniformScaleImage">
                             <property name="visible">True</property>
