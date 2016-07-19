@@ -94,6 +94,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "flipVertexOrdering",     flipVertexOrdering ());
 	addField (inputOutput, "deleteSelectedFaces",    deleteSelectedFaces ());
 	addField (inputOutput, "cutPolygons",            cutPolygons ());
+	addField (outputOnly,  "isActive",               isActive ());
+	addField (outputOnly,  "touchTime",              touchTime ());
 	addField (outputOnly,  "selectedPoints_changed", selectedPoints_changed ());
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
 	addField (outputOnly,  "selectedHoles_changed",  selectedHoles_changed ());

@@ -72,7 +72,9 @@ static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
 	             transform (new SFBool ()),
-	axisAlignedBoundingBox (new SFBool ())
+	axisAlignedBoundingBox (new SFBool ()),
+	              isActive (new SFBool ()),
+	             touchTime (new SFTime ())
 { }
 
 X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
@@ -138,7 +140,9 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 
 		transformTool -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
 		transformTool -> addTool ();
-		transformTool -> getField <SFBool> ("isActive") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
+		transformTool -> getField <SFBool> ("isActive")  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
+		transformTool -> getField <SFBool> ("isActive")  .addInterest (isActive ());
+		transformTool -> getField <SFTime> ("touchTime") .addInterest (touchTime ());
 		transformTool -> setField <SFBool> ("bbox", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_selection);

@@ -4146,6 +4146,7 @@
                                   <object class="GtkToolButton" id="StraightenButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">Straighens the view of the currently bound viewpoint.</property>
                                     <property name="label" translatable="yes">Straighten Viewpoint</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Straighten</property>
@@ -4160,7 +4161,7 @@
                                   <object class="GtkToggleToolButton" id="StraightenHorizonButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Straighens the horizon of the current viewpoint.</property>
+                                    <property name="tooltip_text" translatable="yes">Straighens the horizon of the currently bound viewpoint.</property>
                                     <property name="label" translatable="yes">Straighten Camera</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">Straighten</property>

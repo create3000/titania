@@ -264,6 +264,129 @@ X3DScalar <ValueType>::operator /= (const ValueType & value)
 }
 
 ///  @relates X3DScalar
+///  @name Comparision operations
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () < rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const ValueType& lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs < rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () < rhs;
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () > rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const ValueType& lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs > rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () > rhs;
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return rhs .getValue () <= lhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const ValueType& lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs <= rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () <= rhs;
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () >= rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const ValueType& lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs >= rhs .getValue ();
+}
+
+///  Compares two X3DScalar numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () >= rhs;
+}
+
+///  @relates X3DScalar
 ///  @name Aritmetic operators.
 
 template <class ValueType>

@@ -52,16 +52,15 @@
 
 #include "../GeometryEditor/GeometryEditor.h"
 
-#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
 
 namespace titania {
 namespace puck {
 
 X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	X3DPrecisionPlacementPanelInterface ()
-{
-}
+{ }
 
 void
 X3DGeometrySelectionEditor::configure ()
@@ -75,37 +74,20 @@ X3DGeometrySelectionEditor::initialize ()
 
 void
 X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
-{
-}
+{ }
 
 void
 X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 {
-__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	for (const auto & node : geometryNodes)
 	{
 		const auto tool = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
 
 		if (tool)
-		{
-			tool -> getTransformTool () .addInterest (this, &X3DGeometrySelectionEditor::set_transform_tool, tool .getValue ());
-
-			if (tool -> getTransformTool ())
-				tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &X3DGeometrySelectionEditor::set_touchTime);
-		}
+			tool -> touchTime () .addInterest (this, &X3DGeometrySelectionEditor::set_touchTime);
 	}
-
-	set_touchTime ();
-}
-
-void
-X3DGeometrySelectionEditor::set_transform_tool (X3D::IndexedFaceSetTool* const tool)
-{
-__LOG__ << std::endl;
-
-	if (tool -> getTransformTool ())
-		tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &X3DGeometrySelectionEditor::set_touchTime);
 
 	set_touchTime ();
 }
@@ -113,9 +95,11 @@ __LOG__ << std::endl;
 void
 X3DGeometrySelectionEditor::set_touchTime ()
 {
-__LOG__ << std::endl;
+	__LOG__ << std::endl;
 
 	const auto tool = getCurrentTool ();
+
+	__LOG__ << bool (tool) << std::endl;
 
 	getGeometrySelectionExpander () .set_visible (tool);
 }
@@ -125,26 +109,17 @@ X3DGeometrySelectionEditor::getCurrentTool () const
 {
 	const auto & geometryNodes = getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ();
 
-	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
-	double                                maxTouchTime = 0;
+	const auto result = std::max_element (geometryNodes .begin (),
+	                                      geometryNodes .end (),
+	                                      [ ] (const X3D::SFNode & a, const X3D::SFNode & b)
+	                                      {
+	                                         return a -> getField <X3D::SFTime> ("touchTime") <= b -> getField <X3D::SFTime> ("touchTime");
+												     });
 
-	for (const auto & node : geometryNodes)
-	{
-		auto current = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
+	if (result == geometryNodes .end ())
+		return nullptr;
 
-		if (not current)
-			continue;
-
-		if (not current -> getTransformTool ())
-			continue;
-
-		const auto touchTime = current -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .getValue ();
-
-		if (touchTime >= maxTouchTime)
-			tool = std::move (current);
-	}
-	
-	return tool;
+	return X3D::X3DPtr <X3D::IndexedFaceSetTool> (*result);
 }
 
 void

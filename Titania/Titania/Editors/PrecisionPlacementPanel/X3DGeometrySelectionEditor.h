@@ -107,9 +107,6 @@ private:
 	set_geometry_nodes (const X3D::MFNode &);
 
 	void
-	set_transform_tool (X3D::IndexedFaceSetTool* const);
-
-	void
 	set_touchTime ();
 
 	X3D::X3DPtr <X3D::IndexedFaceSetTool>

@@ -86,6 +86,22 @@ public:
 	axisAlignedBoundingBox () const
 	{ return *fields .axisAlignedBoundingBox; }
 
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFTime &
+	touchTime ()
+	{ return *fields .touchTime; }
+
+	const SFTime &
+	touchTime () const
+	{ return *fields .touchTime; }
+
 	///  @name Member access
 
 	const X3DPtr <Transform> &
@@ -144,7 +160,7 @@ private:
 	Box3d
 	getSelectionBBox () const;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -152,6 +168,8 @@ private:
 
 		SFBool* const transform;
 		SFBool* const axisAlignedBoundingBox;
+		SFBool* const isActive;
+		SFTime* const touchTime;
 	};
 
 	///  @name Members

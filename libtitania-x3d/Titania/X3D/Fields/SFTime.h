@@ -126,6 +126,36 @@ public:
 	getType () const final override
 	{ return type; }
 
+	///  @name Arithmetic operations
+
+	SFTime &
+	operator += (const SFTime &);
+
+	template <class ValueType>
+	SFTime &
+	operator += (const ValueType &);
+
+	SFTime &
+	operator -= (const SFTime &);
+
+	template <class ValueType>
+	SFTime &
+	operator -= (const ValueType &);
+
+	SFTime &
+	operator *= (const SFTime &);
+
+	template <class ValueType>
+	SFTime &
+	operator *= (const ValueType &);
+
+	SFTime &
+	operator /= (const SFTime &);
+
+	template <class ValueType>
+	SFTime &
+	operator /= (const ValueType &);
+
 	///  @name Operations
 
 	std::string
@@ -157,6 +187,309 @@ private:
 	static const X3DConstants::FieldType type;
 
 };
+
+inline
+SFTime &
+SFTime::operator += (const SFTime & value)
+{
+	get () += value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFTime &
+SFTime::operator += (const ValueType & value)
+{
+	get () += value;
+	addEvent ();
+	return *this;
+}
+
+inline
+SFTime &
+SFTime::operator -= (const SFTime & value)
+{
+	get () -= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFTime &
+SFTime::operator -= (const ValueType & value)
+{
+	get () -= value;
+	addEvent ();
+	return *this;
+}
+
+inline
+SFTime &
+SFTime::operator *= (const SFTime & value)
+{
+	get () *= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFTime &
+SFTime::operator *= (const ValueType & value)
+{
+	get () *= value;
+	addEvent ();
+	return *this;
+}
+
+inline
+SFTime &
+SFTime::operator /= (const SFTime & value)
+{
+	get () /= value .getValue ();
+	addEvent ();
+	return *this;
+}
+
+template <class ValueType>
+inline
+SFTime &
+SFTime::operator /= (const ValueType & value)
+{
+	get () /= value;
+	addEvent ();
+	return *this;
+}
+
+///  @relates SFTime
+///  @name Comparision operations
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than @a rhs.
+inline
+bool
+operator < (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () < rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const ValueType& lhs, const SFTime & rhs)
+{
+	return lhs < rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () < rhs;
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+inline
+bool
+operator > (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () > rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const ValueType& lhs, const SFTime & rhs)
+{
+	return lhs > rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () > rhs;
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than @a rhs.
+inline
+bool
+operator <= (const SFTime & lhs, const SFTime & rhs)
+{
+	return rhs .getValue () <= lhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const ValueType& lhs, const SFTime & rhs)
+{
+	return lhs <= rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () <= rhs;
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+inline
+bool
+operator >= (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () >= rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const ValueType& lhs, const SFTime & rhs)
+{
+	return lhs >= rhs .getValue ();
+}
+
+///  Compares two SFTime numbers.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () >= rhs;
+}
+
+///  @relates SFTime
+///  @name Aritmetic operators.
+
+template <class ValueType>
+inline
+ValueType
+operator - (const SFTime & scalar)
+{
+	return -scalar .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () + rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () + rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator + (const ValueType & lhs, const SFTime & rhs)
+{
+	return lhs + rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () - rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () - rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator - (const ValueType & lhs, const SFTime & rhs)
+{
+	return lhs - rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () * rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () * rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator * (const ValueType & lhs, const SFTime & rhs)
+{
+	return lhs * rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const SFTime & lhs, const SFTime & rhs)
+{
+	return lhs .getValue () / rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const SFTime & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () / rhs;
+}
+
+template <class ValueType>
+inline
+ValueType
+operator / (const ValueType & lhs, const SFTime & rhs)
+{
+	return lhs / rhs .getValue ();
+}
+
 
 } // X3D
 } // titania
