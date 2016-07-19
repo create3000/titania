@@ -245,6 +245,8 @@ X3DBrowserWidget::configure ()
 
 	if (getConfig () -> hasItem ("hPaned"))
 		getHPaned () .set_position (getConfig () -> getInteger ("hPaned"));
+
+	getStraightenHorizonButton () .set_active (getConfig () -> getBoolean ("straightenHorizon"));
 }
 
 void
@@ -271,8 +273,9 @@ X3DBrowserWidget::set_fullscreen (const bool value)
 void
 X3DBrowserWidget::store ()
 {
-	getConfig () -> setItem ("vPaned", getVPaned () .get_position ());
-	getConfig () -> setItem ("hPaned", getHPaned () .get_position ());
+	getConfig () -> setItem ("vPaned",            getVPaned () .get_position ());
+	getConfig () -> setItem ("hPaned",            getHPaned () .get_position ());
+	getConfig () -> setItem ("straightenHorizon", getStraightenHorizonButton () .get_active ());
 
 	X3DBrowserWindowInterface::store ();
 }
@@ -291,6 +294,8 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	
 	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
 	browser -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
+
+	browser -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
 
 	isLive (isLive ());
 }

@@ -2736,12 +2736,12 @@ BrowserWindow::set_viewer ()
 		case X3D::X3DConstants::PlaneViewer:
 		case X3D::X3DConstants::NoneViewer:
 		{
-			getStraightenButton () .set_visible (false);
+			getStraightenHorizonButton () .set_visible (false);
 			break;
 		}
 		default:
 		{
-			getStraightenButton () .set_visible (true);
+			getStraightenHorizonButton () .set_visible (true);
 			break;
 		}
 	}
@@ -2904,14 +2904,16 @@ BrowserWindow::on_none_viewer_activated ()
 }
 
 void
-BrowserWindow::on_straighten_clicked ()
+BrowserWindow::on_straighten_horizon_toggled ()
 {
-	if (getCurrentBrowser () -> getActiveLayer ())
+	getCurrentBrowser () -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
+
+	if (getStraightenHorizonButton () .get_active ())
 	{
-		if (getCurrentBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer)
-			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten (true);
-		else
-			getCurrentBrowser () -> getActiveLayer () -> getViewpoint () -> straighten ();
+		const auto & activeLayer = getCurrentBrowser () -> getActiveLayer ();
+
+		if (activeLayer)
+			activeLayer -> getViewpoint () -> straighten (getCurrentBrowser () -> getCurrentViewer () == X3D::X3DConstants::ExamineViewer);
 	}
 }
 

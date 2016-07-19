@@ -70,14 +70,16 @@ X3DNavigationContext::X3DNavigationContext () :
 	             privateViewer (X3DConstants::X3DBaseNode),
 	          availableViewers (),
 	     activeViewpointOutput (),
-	          activeCollisions ()
+	          activeCollisions (),
+	         straightenHorizon ()
 {
 	addChildren (activeLayer,
 	             activeNavigationInfoOutput,
 	             viewerType,
 	             privateViewer,
 	             availableViewers,
-	             activeViewpointOutput);
+	             activeViewpointOutput,
+	             straightenHorizon);
 }
 
 void

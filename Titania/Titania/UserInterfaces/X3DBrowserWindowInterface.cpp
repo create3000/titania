@@ -398,7 +398,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectChildrenButton", m_SelectChildrenButton);
 	m_builder -> get_widget ("ViewerSeparator", m_ViewerSeparator);
 	m_builder -> get_widget ("ViewerButton", m_ViewerButton);
-	m_builder -> get_widget ("StraightenButton", m_StraightenButton);
+	m_builder -> get_widget ("StraightenHorizonButton", m_StraightenHorizonButton);
 	m_builder -> get_widget ("LookAtSeparator", m_LookAtSeparator);
 	m_builder -> get_widget ("LookAtSelectionButton", m_LookAtSelectionButton);
 	m_builder -> get_widget ("LookAtAllButton", m_LookAtAllButton);
@@ -708,8 +708,10 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::MenuToolButton with id 'ViewerButton'.
 	m_ViewerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_clicked));
 
-	// Connect object Gtk::ToolButton with id 'StraightenButton'.
-	m_StraightenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_straighten_clicked));
+	// Connect object Gtk::ToggleToolButton with id 'StraightenHorizonButton'.
+	m_StraightenHorizonButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_straighten_horizon_toggled));
+
+	// Connect object Gtk::ToolButton with id 'LookAtSelectionButton'.
 	m_LookAtSelectionButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_selection_clicked));
 	m_LookAtAllButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_look_at_all_clicked));
 

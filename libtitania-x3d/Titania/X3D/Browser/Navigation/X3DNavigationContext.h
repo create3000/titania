@@ -111,6 +111,14 @@ public:
 	getActiveCollisions () const
 	{ return activeCollisions; }
 
+	void
+	setStraightenHorizon (const bool value)
+	{ straightenHorizon = value; }
+
+	const SFBool &
+	getStraightenHorizon () const
+	{ return straightenHorizon; }
+
 	///  @name Destruction
 
 	virtual
@@ -177,6 +185,7 @@ private:
 	MFEnum <X3DConstants::NodeType> availableViewers;
 	SFTime                          activeViewpointOutput;
 	std::set <const X3DBaseNode*>   activeCollisions;
+	SFBool                          straightenHorizon;
 
 };
 

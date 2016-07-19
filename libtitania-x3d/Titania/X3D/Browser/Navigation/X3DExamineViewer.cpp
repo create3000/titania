@@ -450,9 +450,17 @@ X3DExamineViewer::getOrientationOffset ()
 {
 	const auto & viewpoint = getActiveViewpoint ();
 
+	// Assign last value to global orientationOffset
 	orientationOffset = viewpoint -> orientationOffset ();
 
-	return ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
+	{
+		auto orientationOffset = ~viewpoint -> getOrientation () * rotation * viewpoint -> getUserOrientation ();
+
+		if (getBrowser () -> getStraightenHorizon ())
+			orientationOffset *= viewpoint -> straightenHorizon (viewpoint -> getOrientation () * orientationOffset);
+
+		return orientationOffset;
+	}
 }
 
 } // X3D
