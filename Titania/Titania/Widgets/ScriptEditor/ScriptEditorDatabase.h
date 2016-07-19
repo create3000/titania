@@ -137,8 +137,8 @@ private:
 		                 "VALUES ("
 		                 + database .quote (worldURL) + ","
 		                 + database .quote (nodeName) + ","
-		                 + database .quote (basic::to_string (hAdjustment)) + ","
-		                 + database .quote (basic::to_string (vAdjustment))
+		                 + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ","
+		                 + database .quote (basic::to_string (vAdjustment, std::locale::classic ()))
 		                 + ")");
 	}
 
@@ -147,8 +147,8 @@ private:
 	{
 		database .query ("UPDATE Scripts "
 		                 "SET "
-		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment)) + ", "
-		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment)) + ", "
+		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ", "
+		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment, std::locale::classic ())) + ", "
 		                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
 		                 "WHERE id = " + id);
 	}

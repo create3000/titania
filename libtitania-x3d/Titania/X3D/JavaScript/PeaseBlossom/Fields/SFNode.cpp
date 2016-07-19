@@ -264,7 +264,7 @@ SFNode::getNodeType (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 			size_t index = 0;
 
 			for (const auto & type : lhs -> getValue () -> getType ())
-				array -> put (basic::to_string (index ++), uint32_t (type));
+				array -> put (basic::to_string (index ++, std::locale::classic ()), uint32_t (type));
 		}
 
 		return array;

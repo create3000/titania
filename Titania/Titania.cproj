@@ -270,6 +270,7 @@
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFStringTextView.cpp" />
     <Compile Include="Titania\Base\X3DRevealerInterface.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2469,7 +2470,6 @@
     <None Include="share\titania\Library\Components\Grouping\TransformMatrix3D.x3dv" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DWorldInfoEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringTextView.h" />
-    <None Include="titania" />
     <None Include="Titania\Base\X3DRevealerInterface.h" />
     <None Include="share\titania\ui\Revealer\GeometryEditor.glade" />
     <None Include="share\titania\ui\icons\TransformTool.svg" />
@@ -2495,6 +2495,8 @@
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoViewpoint" />
     <None Include="share\titania\Library\Components\EnvironmentalSensor\.Cobweb\TransformSensor" />
     <None Include="share\titania\Library\Effects\Fire3.x3dv" />
+    <None Include="Titania" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

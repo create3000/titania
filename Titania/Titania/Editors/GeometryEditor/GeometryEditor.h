@@ -55,14 +55,6 @@
 #include "../../UserInterfaces/X3DGeometryEditorInterface.h"
 
 namespace titania {
-namespace X3D {
-
-class X3DGeometryNode;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class GeometryEditor :

@@ -179,7 +179,7 @@ SFMatrix4 <Type>::initialize (Context* const context, const pb::ptr <pb::Program
 
 	for (size_t index = 0; index < 16; ++ index)
 	{
-		const auto name = basic::to_string (index);
+		const auto name = basic::to_string (index, std::locale::classic ());
 
 		prototype -> addOwnProperty (name,
 		                             pb::undefined,
@@ -257,7 +257,7 @@ SFMatrix4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index, std::locale::classic ()) + "] is not generic.");
 	}
 }
 
@@ -273,7 +273,7 @@ SFMatrix4 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index, std::locale::classic ()) + "] is not generic.");
 	}
 }
 

@@ -125,7 +125,7 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 	const auto spaces      = line .find (trimmedLine);
 
 	getBrowser () -> print ('\n',
-	                        "#   JavaScript error at line ", lineNumber, (startColumn >= 0 ? ':' + basic::to_string (startColumn) : ""), ":\n",
+	                        "#   JavaScript error at line ", lineNumber, (startColumn >= 0 ? ':' + basic::to_string (startColumn, std::locale::classic ()) : ""), ":\n",
 	                        "#   in Script '", script -> getName (), "' url '", filename, "',\n",
 	                        "#   world url is '", script -> getExecutionContext () -> getWorldURL (), "'.\n",
 	                        "#   ", '\n',

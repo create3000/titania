@@ -147,7 +147,7 @@ main (int argc, char** argv)
 				if (out .is_relative ())
 					out = basic::uri (os::cwd ()) .transform (out);
 
-				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid ()) + out .suffix ();
+				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid (), std::locale::classic ()) + out .suffix ();
 
 				try
 				{

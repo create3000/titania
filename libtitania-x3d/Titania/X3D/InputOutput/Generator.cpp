@@ -330,7 +330,7 @@ Generator::Name (const X3DBaseNode* const baseNode)
 	else
 	{
 		size_t      i       = 0;
-		std::string newName = hasNumber ? name + '_' + basic::to_string (++ i) : name;
+		std::string newName = hasNumber ? name + '_' + basic::to_string (++ i, std::locale::classic ()) : name;
 
 		try
 		{
@@ -338,7 +338,7 @@ Generator::Name (const X3DBaseNode* const baseNode)
 			{
 				names .at (newName);
 
-				newName = name + '_' + basic::to_string (++ i);
+				newName = name + '_' + basic::to_string (++ i, std::locale::classic ());
 			}
 		}
 		catch (const std::out_of_range &)
@@ -392,7 +392,7 @@ Generator::getUniqueName ()
 
 	for (; ;)
 	{
-		name = '_' + basic::to_string (++ newName);
+		name = '_' + basic::to_string (++ newName, std::locale::classic ());
 
 		if (names .count (name))
 			continue;

@@ -235,7 +235,7 @@ Array <Type, InternalType>::enumerate (pb::pbObject* const object, const pb::Enu
 
 			if (index < array -> size ())
 			{
-				propertyName = basic::to_string (index);
+				propertyName = basic::to_string (index, std::locale::classic ());
 				index       += 1;
 				return true;
 			}
@@ -318,7 +318,7 @@ Array <Type, InternalType>::setLength (const pb::ptr <pb::pbExecutionContext> & 
 		const auto lhs  = getThis <Array <Type, InternalType>>  (ec, object);
 		const auto size = args [0] .toUInt32 ();
 
-		if (basic::to_string (size) == args [0] .toString ())
+		if (basic::to_string (size, std::locale::classic ()) == args [0] .toString ())
 		{
 			lhs -> resize (size);
 

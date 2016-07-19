@@ -96,7 +96,7 @@ public:
 	void
 	addExpression (ptr <pbStatement> && value)
 	{
-		identifiers .emplace_back (basic::to_string (identifiers .size ()));
+		identifiers .emplace_back (basic::to_string (identifiers .size (), std::locale::classic ()));
 		expressions .emplace_back (std::move (value));
 	}
 

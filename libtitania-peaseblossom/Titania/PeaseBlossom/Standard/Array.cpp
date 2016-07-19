@@ -68,7 +68,7 @@ struct Constructor
 		const auto array = new pb::Array (ec);
 
 		for (uint32_t i = 0, size = args .size (); i < size; ++ i)
-			array -> put (basic::to_string (i), args [i]);
+			array -> put (basic::to_string (i, std::locale::classic ()), args [i]);
 
 		return new pb::Array (ec);
 	}

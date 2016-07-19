@@ -88,7 +88,7 @@ ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
 ifilestream::ifilestream (const std::string & string) :
 	ifilestream ()
 {
-	file_response_headers .emplace ("Content-Length", basic::to_string (string .size ()));
+	file_response_headers .emplace ("Content-Length", basic::to_string (string .size (), std::locale::classic ()));
 	data_istream .reset (new std::istringstream (string));
 
 	rdbuf (data_istream -> rdbuf ());
@@ -176,7 +176,7 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 
 			data_istream .reset (new std::istringstream (data));
 
-			file_response_headers .emplace ("Content-Length", basic::to_string (data .size ()));
+			file_response_headers .emplace ("Content-Length", basic::to_string (data .size (), std::locale::classic ()));
 		}
 		else
 			data_istream .reset (new std::istringstream ());

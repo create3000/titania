@@ -163,7 +163,7 @@ void
 History::constrainSize (const int32_t months)
 {
 	if (months > 0)
-		database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months) + " month')");
+		database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months, std::locale::classic ()) + " month')");
 }
 
 const std::string &
@@ -297,7 +297,7 @@ History::getItems (const size_t offset, const size_t size, const Columns column,
 	std::string limit;
 
 	if (size)
-		limit = "LIMIT " + basic::to_string (size) + " OFFSET " + basic::to_string (offset);
+		limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
 
 	return database .query_assoc ("SELECT id, title, worldURL FROM History " + order + " " + limit);
 }

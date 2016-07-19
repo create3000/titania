@@ -263,7 +263,7 @@ Function::enter ()
 	++ recursionDepth;
 
 	if (recursionDepth > recursionLimit)
-		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit) + " exceeded while calling function '" + getName () .getString () + "'.");
+		throw RuntimeError ("Maximum recursion depth of " + basic::to_string (recursionLimit, std::locale::classic ()) + " exceeded while calling function '" + getName () .getString () + "'.");
 }
 
 void

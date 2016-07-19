@@ -599,7 +599,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 	if (not undo)
 		return;
 
-	const auto fieldName    = basic::to_string (node -> getId ()) + "." + basic::to_string (field .getId ());
+	const auto fieldName    = basic::to_string (node -> getId (), std::locale::classic ()) + "." + basic::to_string (field .getId (), std::locale::classic ());
 	const auto lastUndoStep = getUndoStep ();
 
 	if (undoStep and lastUndoStep == undoStep)
@@ -660,7 +660,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 	if (not undo)
 		return;
 
-	const auto fieldName = basic::to_string (node -> getId ()) + "." + basic::to_string (field .getId ());
+	const auto fieldName = basic::to_string (node -> getId (), std::locale::classic ()) + "." + basic::to_string (field .getId (), std::locale::classic ());
 
 	if (fields -> template getField <FieldType> (fieldName) == field)
 	{

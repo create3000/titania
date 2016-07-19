@@ -118,8 +118,8 @@ private:
 		                 "VALUES ("
 		                 + database .quote (worldURL) + ","
 		                 + database .quote (expanded) + ","
-		                 + database .quote (basic::to_string (hAdjustment)) + ","
-		                 + database .quote (basic::to_string (vAdjustment))
+		                 + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ","
+		                 + database .quote (basic::to_string (vAdjustment, std::locale::classic ()))
 		                 + ")");
 	}
 
@@ -129,8 +129,8 @@ private:
 		database .query ("UPDATE Paths "
 		                 "SET "
 		                 "expanded    = " + database .quote (expanded) + ", "
-		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment)) + ", "
-		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment)) + " "
+		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ", "
+		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment, std::locale::classic ())) + " "
 		                 "WHERE id = " + id);
 	}
 

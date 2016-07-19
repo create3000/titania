@@ -59,90 +59,90 @@ namespace basic {
 
 inline
 std::string
-to_string (const int value)
+to_string (const int value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const long value)
+to_string (const long value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const long long value)
+to_string (const long long value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const unsigned value)
+to_string (const unsigned value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const unsigned long value)
+to_string (const unsigned long value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const unsigned long long value)
+to_string (const unsigned long long value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const float value)
+to_string (const float value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const double value)
+to_string (const double value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }
 
 inline
 std::string
-to_string (const long double value)
+to_string (const long double value, const std::locale & locale = std::locale (""))
 {
 	std::ostringstream ostream;
-	ostream .imbue (std::locale::classic ());
+	ostream .imbue (locale);
 	ostream << value;
 	return ostream .str ();
 }

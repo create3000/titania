@@ -379,7 +379,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 				{
 					GLint textureUnit = 0;
 
-					const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i) + "]") .c_str ());
+					const GLint location = glGetUniformLocation (getProgramId (), (field -> getName () [0] + "[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ());
 
 					if (location not_eq -1)
 					{

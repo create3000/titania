@@ -131,7 +131,7 @@ golden_pipe (const std::string & program, const std::string & input)
 	waitpid (pid, &status, 0);
 
 	if (status)
-		throw Error <INVALID_X3D> ("Exit status :" + basic::to_string (status));
+		throw Error <INVALID_X3D> ("Exit status :" + basic::to_string (status, std::locale::classic ()));
 
 	return output;
 }
@@ -193,9 +193,9 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.x3dv"));
 
-	Name   .GlobalReplace (get_name_from_uri (uri),   &file);
-	Width  .GlobalReplace (basic::to_string (width),  &file);
-	Height .GlobalReplace (basic::to_string (height), &file);
+	Name   .GlobalReplace (get_name_from_uri (uri),                            &file);
+	Width  .GlobalReplace (basic::to_string (width,  std::locale::classic ()), &file);
+	Height .GlobalReplace (basic::to_string (height, std::locale::classic ()), &file);
 	URL    .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
 	// Parse into scene.
@@ -238,9 +238,9 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	float height = mediaStream .getHeight () / 72.0 * M_INCH;
 
 	Name        .GlobalReplace (get_name_from_uri (uri), &file);
-	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
-	Width       .GlobalReplace (basic::to_string (width),  &file);
-	Height      .GlobalReplace (basic::to_string (height), &file);
+	Description .GlobalReplace (SFString (uri .basename (false)) .toString (),      &file);
+	Width       .GlobalReplace (basic::to_string (width,  std::locale::classic ()), &file);
+	Height      .GlobalReplace (basic::to_string (height, std::locale::classic ()), &file);
 	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
 
 	// Parse into scene.

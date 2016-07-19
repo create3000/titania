@@ -369,7 +369,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 			newName  = name;
 			newName += '_';
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;
@@ -400,7 +400,7 @@ X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext,
 
 			newName  = name;
 			newName += '_';
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;
@@ -550,7 +550,7 @@ X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const exe
 
 			newName  = importedName;
 			newName += '_';
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;
@@ -756,7 +756,7 @@ throw (Error <DISPOSED>)
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
 			newName  = name;
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;
@@ -902,7 +902,7 @@ throw (Error <DISPOSED>)
 			std::uniform_int_distribution <size_t> random (min, i <<= 1);
 
 			newName  = name;
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;

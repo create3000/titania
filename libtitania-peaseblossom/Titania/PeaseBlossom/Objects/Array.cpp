@@ -102,11 +102,11 @@ Array::setLength (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 	const auto array = dynamic_cast <Array*> (object .getObject () .get ());
 	const auto size  = args [0] .toUInt32 ();
 
-	if (basic::to_string (size) not_eq args [0] .toString ())
+	if (basic::to_string (size, std::locale::classic ()) not_eq args [0] .toString ())
 		throw RangeError ("Invalid array length.");
 
 	for (uint32_t index = size; index < array -> length; ++ index)
-		array -> deleteOwnProperty (basic::to_string (index));
+		array -> deleteOwnProperty (basic::to_string (index, std::locale::classic ()));
 
 	array -> length = size;
 
@@ -131,7 +131,7 @@ Array::toStream (std::ostream & ostream) const
 	{
 		try
 		{
-			const var value = get (basic::to_string (index));
+			const var value = get (basic::to_string (index, std::locale::classic ()));
 		
 			if (value .isUndefined ())
 				ostream << ',';
@@ -146,7 +146,7 @@ Array::toStream (std::ostream & ostream) const
 
 	try
 	{
-		const var value = get (basic::to_string (length - 1));
+		const var value = get (basic::to_string (length - 1, std::locale::classic ()));
 
 		if (not value .isUndefined ())
 			ostream << value;

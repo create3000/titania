@@ -351,7 +351,7 @@ X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string export
 
 			newName = exportedName;
 			newName += '_';
-			newName += basic::to_string (random (random_engine));
+			newName += basic::to_string (random (random_engine), std::locale::classic ());
 		}
 		else
 			break;

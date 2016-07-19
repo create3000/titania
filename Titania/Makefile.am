@@ -95,6 +95,7 @@ titania_SOURCES =  \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DGeometrySelectionEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLayoutEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DLODEditor.cpp \

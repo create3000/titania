@@ -934,7 +934,7 @@ X3DBrowserWidget::set_urlError ()
 
 		osstream
 			<< get_page ("about/url_error.x3dv")
-			<< "?type=" << basic::to_string (21)
+			<< "?type=" << basic::to_string (21, std::locale::classic ())
 			<< ";what=" << Glib::uri_escape_string (error .str ());
 
 		const auto scene = getCurrentBrowser () -> createX3DFromURL ({ osstream .str () });

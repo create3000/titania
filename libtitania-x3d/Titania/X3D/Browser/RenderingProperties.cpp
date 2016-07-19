@@ -276,7 +276,7 @@ format_time (const time_type & time, const size_t fractions = 0)
 	const auto d = t;
 
 	if (fractions)
-		return basic::sprintf (("%02.0f:%02d:%02d:%02d.%0" + basic::to_string (fractions) + ".0f") .c_str (), d, h, m, s, f);
+		return basic::sprintf (("%02.0f:%02d:%02d:%02d.%0" + basic::to_string (fractions, std::locale::classic ()) + ".0f") .c_str (), d, h, m, s, f);
 
 	return basic::sprintf ("%02.0f:%02d:%02d:%02d", d, h, m, s);
 }

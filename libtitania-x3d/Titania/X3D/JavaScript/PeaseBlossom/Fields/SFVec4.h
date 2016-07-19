@@ -268,7 +268,7 @@ SFVec4 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index, std::locale::classic ()) + "] is not generic.");
 	}
 }
 
@@ -284,7 +284,7 @@ SFVec4 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index) + "] is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype[" + basic::to_string (index, std::locale::classic ()) + "] is not generic.");
 	}
 }
 

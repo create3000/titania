@@ -311,7 +311,7 @@ throw (Error <INVALID_URL>,
 
 	osstream
 		<< "Couldn't load URL '" << istream .url () << "'." << std::endl
-		<< "Status: " << basic::to_string (istream .status ()) << ", " << istream .reason () << std::endl;
+		<< "Status: " << basic::to_string (istream .status (), std::locale::classic ()) << ", " << istream .reason () << std::endl;
 
 	switch (istream .status ())
 	{

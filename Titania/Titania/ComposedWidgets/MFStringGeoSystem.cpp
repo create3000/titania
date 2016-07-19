@@ -174,7 +174,7 @@ MFStringGeoSystem::on_changed (const int id)
 
 			node -> geoSystem () .emplace_back ("UTM");
 			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
-			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value ()));
+			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value (), std::locale::classic ()));
 
 			if (hemisphere .get_active_row_number () > 0)
 				node -> geoSystem () .emplace_back ("S");

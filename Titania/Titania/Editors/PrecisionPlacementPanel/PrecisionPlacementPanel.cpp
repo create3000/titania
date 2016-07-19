@@ -68,6 +68,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                  X3DViewportEditor (),
 	              X3DGeoTransformEditor (),
 	               X3DGeoLocationEditor (),
+	         X3DGeometrySelectionEditor (),
 	                           nodeName (this, getNameEntry (), getRenameButton ()),
 	                           bboxSize (this,
 	                                     getBBoxSizeXAdjustment (),
@@ -96,6 +97,7 @@ PrecisionPlacementPanel::configure ()
 	X3DPrecisionPlacementPanelInterface::configure ();
 	X3DTransformEditor::configure ();
 	X3DGeoTransformEditor::configure ();
+	X3DGeometrySelectionEditor::configure ();
 
 	getBBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("bboxUniformSize"));
 }
@@ -112,6 +114,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DViewportEditor::initialize ();
 	X3DGeoTransformEditor::initialize ();
 	X3DGeoLocationEditor::initialize ();
+	X3DGeometrySelectionEditor::initialize ();
 }
 
 void
@@ -126,6 +129,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DViewportEditor::set_selection (selection);
 	X3DGeoTransformEditor::set_selection (selection);
 	X3DGeoLocationEditor::set_selection (selection);
+	X3DGeometrySelectionEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();
@@ -214,13 +218,13 @@ PrecisionPlacementPanel::on_bbox ()
 	const auto bboxSize   = bbox .size ();
 	const auto bboxCenter = bbox .center ();
 
-	getBBoxSizeXLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .x ())));
-	getBBoxSizeYLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .y ())));
-	getBBoxSizeZLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .z ())));
+	getBBoxSizeXLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .x ())));
+	getBBoxSizeYLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .y ())));
+	getBBoxSizeZLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .z ())));
 
-	getBBoxCenterXLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .x ())));
-	getBBoxCenterYLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .y ())));
-	getBBoxCenterZLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .z ())));
+	getBBoxCenterXLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .x ())));
+	getBBoxCenterYLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .y ())));
+	getBBoxCenterZLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .z ())));
 
 	return true;
 }
@@ -232,6 +236,7 @@ PrecisionPlacementPanel::store ()
 
 	getConfig () -> setItem ("bboxUniformSize", getBBoxUniformSizeButton () .get_active ());
 
+	X3DGeometrySelectionEditor::store ();
 	X3DGeoTransformEditor::store ();
 	X3DTransformEditor::store ();
 	X3DPrecisionPlacementPanelInterface::store ();
@@ -241,84 +246,6 @@ PrecisionPlacementPanel::~PrecisionPlacementPanel ()
 {
 	dispose ();
 }
-
-//#include "../GeometryEditor/GeometryEditor.h"
-//
-//#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
-//#include <Titania/X3D/Components/Grouping/Transform.h>
-//
-//
-//	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &PrecisionPlacementPanel::set_geometry_nodes);
-//	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &PrecisionPlacementPanel::set_geometry_nodes);
-//
-//
-//void
-//PrecisionPlacementPanel::set_geometry_nodes (const X3D::MFNode & geometryNodes)
-//{
-//__LOG__ << std::endl;
-//
-//	for (const auto & node : geometryNodes)
-//	{
-//		const auto tool = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
-//
-//		if (tool)
-//		{
-//			tool -> getTransformTool () .addInterest (this, &PrecisionPlacementPanel::set_transform_tool, tool .getValue ());
-//
-//			if (tool -> getTransformTool ())
-//				tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &PrecisionPlacementPanel::set_touchTime);
-//		}
-//	}
-//
-//	set_touchTime ();
-//}
-//
-//void
-//PrecisionPlacementPanel::set_transform_tool (X3D::IndexedFaceSetTool* const tool)
-//{
-//__LOG__ << std::endl;
-//
-//	if (tool -> getTransformTool ())
-//		tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &PrecisionPlacementPanel::set_touchTime);
-//
-//	set_touchTime ();
-//}
-//
-//void
-//PrecisionPlacementPanel::set_touchTime ()
-//{
-//__LOG__ << std::endl;
-//
-//	const auto & geometryNodes = getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ();
-//
-//	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
-//	double                                maxTouchTime = 0;
-//
-//	for (const auto & node : geometryNodes)
-//	{
-//		auto current = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
-//
-//		if (not current)
-//			continue;
-//
-//		if (not current -> getTransformTool ())
-//			continue;
-//
-//		const auto touchTime = current -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .getValue ();
-//
-//		if (touchTime >= maxTouchTime)
-//			tool = std::move (current);
-//	}
-//	
-//	if (not tool)
-//		return;
-//
-//__LOG__ << std::endl;
-//
-//	set_selection ({ tool -> getTransformTool () });
-//
-//	//X3DGeometrySelectionEditor::set_selection (selection);
-//}
 
 } // puck
 } // titania
