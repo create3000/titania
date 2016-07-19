@@ -126,6 +126,9 @@ private:
 	void
 	on_fill_bounding_box_fields_clicked () final override;
 
+	bool
+	on_bbox ();
+	
 	virtual
 	void
 	store () final override;
@@ -137,6 +140,8 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
 	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
+	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
+	sigc::connection                    bboxConnection;
 
 };
 

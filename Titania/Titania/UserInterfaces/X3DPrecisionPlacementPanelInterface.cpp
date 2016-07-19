@@ -92,6 +92,16 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_GeoTransformTranslationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformTranslationYAdjustment"));
 	m_GeoTransformTranslationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformTranslationZAdjustment"));
 	m_GeoTransformZoneAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoTransformZoneAdjustment"));
+	m_GeometrySelectionRotationAAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationAAdjustment"));
+	m_GeometrySelectionRotationXAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationXAdjustment"));
+	m_GeometrySelectionRotationYAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationYAdjustment"));
+	m_GeometrySelectionRotationZAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionRotationZAdjustment"));
+	m_GeometrySelectionScaleXAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionScaleXAdjustment"));
+	m_GeometrySelectionScaleYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionScaleYAdjustment"));
+	m_GeometrySelectionScaleZAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionScaleZAdjustment"));
+	m_GeometrySelectionTranslationXAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionTranslationXAdjustment"));
+	m_GeometrySelectionTranslationYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionTranslationYAdjustment"));
+	m_GeometrySelectionTranslationZAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeometrySelectionTranslationZAdjustment"));
 	m_LODBBoxCenterXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterXAdjustment"));
 	m_LODBBoxCenterYAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterYAdjustment"));
 	m_LODBBoxCenterZAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("LODBBoxCenterZAdjustment"));
@@ -240,6 +250,14 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoLocationGeoCoordsXSpinButton", m_GeoLocationGeoCoordsXSpinButton);
 	m_builder -> get_widget ("GeoLocationGeoCoordsYSpinButton", m_GeoLocationGeoCoordsYSpinButton);
 	m_builder -> get_widget ("GeoLocationGeoCoordsZSpinButton", m_GeoLocationGeoCoordsZSpinButton);
+	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
+	m_builder -> get_widget ("GeometrySelectionBox", m_GeometrySelectionBox);
+	m_builder -> get_widget ("GeometrySelectionTranslationBox", m_GeometrySelectionTranslationBox);
+	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
+	m_builder -> get_widget ("GeometrySelectionRotationToolBox", m_GeometrySelectionRotationToolBox);
+	m_builder -> get_widget ("GeometrySelectionScaleBox", m_GeometrySelectionScaleBox);
+	m_builder -> get_widget ("GeometrySelectionUniformScaleButton", m_GeometrySelectionUniformScaleButton);
+	m_builder -> get_widget ("GeometrySelectionUniformScaleImage", m_GeometrySelectionUniformScaleImage);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -253,6 +271,12 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
+	m_builder -> get_widget ("BBoxSizeXLabel", m_BBoxSizeXLabel);
+	m_builder -> get_widget ("BBoxSizeYLabel", m_BBoxSizeYLabel);
+	m_builder -> get_widget ("BBoxSizeZLabel", m_BBoxSizeZLabel);
+	m_builder -> get_widget ("BBoxCenterXLabel", m_BBoxCenterXLabel);
+	m_builder -> get_widget ("BBoxCenterYLabel", m_BBoxCenterYLabel);
+	m_builder -> get_widget ("BBoxCenterZLabel", m_BBoxCenterZLabel);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.

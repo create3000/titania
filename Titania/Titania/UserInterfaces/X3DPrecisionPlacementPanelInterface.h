@@ -224,6 +224,46 @@ public:
 	{ return m_GeoTransformZoneAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationAAdjustment () const
+	{ return m_GeometrySelectionRotationAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationXAdjustment () const
+	{ return m_GeometrySelectionRotationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationYAdjustment () const
+	{ return m_GeometrySelectionRotationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionRotationZAdjustment () const
+	{ return m_GeometrySelectionRotationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionScaleXAdjustment () const
+	{ return m_GeometrySelectionScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionScaleYAdjustment () const
+	{ return m_GeometrySelectionScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionScaleZAdjustment () const
+	{ return m_GeometrySelectionScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionTranslationXAdjustment () const
+	{ return m_GeometrySelectionTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionTranslationYAdjustment () const
+	{ return m_GeometrySelectionTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeometrySelectionTranslationZAdjustment () const
+	{ return m_GeometrySelectionTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getLODBBoxCenterXAdjustment () const
 	{ return m_LODBBoxCenterXAdjustment; }
 
@@ -808,6 +848,38 @@ public:
 	{ return *m_GeoLocationGeoCoordsZSpinButton; }
 
 	Gtk::Expander &
+	getGeometrySelectionExpander () const
+	{ return *m_GeometrySelectionExpander; }
+
+	Gtk::Grid &
+	getGeometrySelectionBox () const
+	{ return *m_GeometrySelectionBox; }
+
+	Gtk::Box &
+	getGeometrySelectionTranslationBox () const
+	{ return *m_GeometrySelectionTranslationBox; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationBox () const
+	{ return *m_GeometrySelectionRotationBox; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationToolBox () const
+	{ return *m_GeometrySelectionRotationToolBox; }
+
+	Gtk::Box &
+	getGeometrySelectionScaleBox () const
+	{ return *m_GeometrySelectionScaleBox; }
+
+	Gtk::ToggleButton &
+	getGeometrySelectionUniformScaleButton () const
+	{ return *m_GeometrySelectionUniformScaleButton; }
+
+	Gtk::Image &
+	getGeometrySelectionUniformScaleImage () const
+	{ return *m_GeometrySelectionUniformScaleImage; }
+
+	Gtk::Expander &
 	getBoundingBoxExpander () const
 	{ return *m_BoundingBoxExpander; }
 
@@ -858,6 +930,30 @@ public:
 	Gtk::Button &
 	getFillBoundingBoxFieldsButton () const
 	{ return *m_FillBoundingBoxFieldsButton; }
+
+	Gtk::Label &
+	getBBoxSizeXLabel () const
+	{ return *m_BBoxSizeXLabel; }
+
+	Gtk::Label &
+	getBBoxSizeYLabel () const
+	{ return *m_BBoxSizeYLabel; }
+
+	Gtk::Label &
+	getBBoxSizeZLabel () const
+	{ return *m_BBoxSizeZLabel; }
+
+	Gtk::Label &
+	getBBoxCenterXLabel () const
+	{ return *m_BBoxCenterXLabel; }
+
+	Gtk::Label &
+	getBBoxCenterYLabel () const
+	{ return *m_BBoxCenterYLabel; }
+
+	Gtk::Label &
+	getBBoxCenterZLabel () const
+	{ return *m_BBoxCenterZLabel; }
 
 	///  @name Signal handlers
 
@@ -962,6 +1058,16 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoTransformZoneAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeometrySelectionTranslationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_LODBBoxCenterZAdjustment;
@@ -1108,6 +1214,14 @@ private:
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsXSpinButton;
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsYSpinButton;
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsZSpinButton;
+	Gtk::Expander*                 m_GeometrySelectionExpander;
+	Gtk::Grid*                     m_GeometrySelectionBox;
+	Gtk::Box*                      m_GeometrySelectionTranslationBox;
+	Gtk::Box*                      m_GeometrySelectionRotationBox;
+	Gtk::Box*                      m_GeometrySelectionRotationToolBox;
+	Gtk::Box*                      m_GeometrySelectionScaleBox;
+	Gtk::ToggleButton*             m_GeometrySelectionUniformScaleButton;
+	Gtk::Image*                    m_GeometrySelectionUniformScaleImage;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;
@@ -1121,6 +1235,12 @@ private:
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
 	Gtk::Button*                   m_FillBoundingBoxFieldsButton;
+	Gtk::Label*                    m_BBoxSizeXLabel;
+	Gtk::Label*                    m_BBoxSizeYLabel;
+	Gtk::Label*                    m_BBoxSizeZLabel;
+	Gtk::Label*                    m_BBoxCenterXLabel;
+	Gtk::Label*                    m_BBoxCenterYLabel;
+	Gtk::Label*                    m_BBoxCenterZLabel;
 
 };
 

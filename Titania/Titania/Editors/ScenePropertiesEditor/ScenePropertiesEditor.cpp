@@ -68,6 +68,9 @@ ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWin
 void
 ScenePropertiesEditor::configure ()
 {
+	X3DUnitEditor::configure ();
+	X3DWorldInfoEditor::configure ();
+
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
@@ -83,6 +86,9 @@ void
 ScenePropertiesEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+
+	X3DWorldInfoEditor::store ();
+	X3DUnitEditor::store ();
 }
 
 ScenePropertiesEditor::~ScenePropertiesEditor ()

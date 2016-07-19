@@ -62,10 +62,24 @@ X3DWorldInfoEditor::X3DWorldInfoEditor () :
 { }
 
 void
-X3DWorldInfoEditor::initialize ()
+X3DWorldInfoEditor::configure ()
 {
-	title .setNodes ({ createWorldInfo () });
-	info  .setNodes ({ createWorldInfo () });
+	getCurrentScene () .addInterest (this, &X3DWorldInfoEditor::set_current_scene);
+}
+
+void
+X3DWorldInfoEditor::set_current_scene ()
+{
+	const auto worldInfo = X3D::MFNode ({ createWorldInfo () });
+
+	title .setNodes (worldInfo);
+	info  .setNodes (worldInfo);
+}
+
+void
+X3DWorldInfoEditor::store ()
+{
+	getCurrentScene () .removeInterest (this, &X3DWorldInfoEditor::set_current_scene);
 }
 
 X3DWorldInfoEditor::~X3DWorldInfoEditor ()

@@ -78,7 +78,19 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	void
+	set_current_scene ();
+
+	virtual
+	void
+	store () override;
 
 
 private:

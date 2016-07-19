@@ -81,9 +81,11 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                                     getBBoxCenterZAdjustment (),
 	                                     getBBoxCenterBox (),
 	                                     "bboxCenter"),
-	                      boundedObject ()
+	                      boundedObject (),
+	                       geometryNode (),
+	                     bboxConnection ()
 {
-	addChildren (boundedObject);
+	addChildren (boundedObject, geometryNode);
 
 	setup ();
 }
@@ -126,6 +128,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DGeoLocationEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
+	geometryNode  = selection .empty () ? nullptr : selection .back ();
 
 	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
 
@@ -135,6 +138,12 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 
 	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject);
 	getWindow () .resize (getWindow () .get_width (), 1);
+
+	if (boundedObject or geometryNode)
+	{
+		bboxConnection .disconnect ();
+		bboxConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &PrecisionPlacementPanel::on_bbox), 1000);
+	}
 }
 
 void
@@ -192,9 +201,35 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
+bool
+PrecisionPlacementPanel::on_bbox ()
+{
+	X3D::Box3d bbox;
+
+	if (boundedObject)
+		bbox = boundedObject -> getBBox ();
+	else if (geometryNode)
+		bbox = geometryNode -> getBBox ();
+
+	const auto bboxSize   = bbox .size ();
+	const auto bboxCenter = bbox .center ();
+
+	getBBoxSizeXLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .x ())));
+	getBBoxSizeYLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .y ())));
+	getBBoxSizeZLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxSize .z ())));
+
+	getBBoxCenterXLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .x ())));
+	getBBoxCenterYLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .y ())));
+	getBBoxCenterZLabel () .set_text (std::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .z ())));
+
+	return true;
+}
+
 void
 PrecisionPlacementPanel::store ()
 {
+	bboxConnection .disconnect ();
+
 	getConfig () -> setItem ("bboxUniformSize", getBBoxUniformSizeButton () .get_active ());
 
 	X3DGeoTransformEditor::store ();

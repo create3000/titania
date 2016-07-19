@@ -113,8 +113,6 @@ X3DExamineViewer::disconnect ()
 bool
 X3DExamineViewer::on_button_press_event (GdkEventButton* event)
 {
-__LOG__ << int (event -> type) << std::endl;
-
 	switch (event -> type)
 	{
 		case GDK_BUTTON_PRESS:
@@ -233,8 +231,6 @@ X3DExamineViewer::on_3button_press_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_button_release_event (GdkEventButton* event)
 {
-__LOG__ << numClicks << std::endl;
-
 	if (event -> button not_eq button)
 	{
 		button = 0;
