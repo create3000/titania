@@ -333,7 +333,7 @@ inline
 bool
 operator <= (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
 {
-	return rhs .getValue () <= lhs .getValue ();
+	return lhs .getValue () <= rhs .getValue ();
 }
 
 ///  Compares two X3DScalar numbers.

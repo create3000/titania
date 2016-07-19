@@ -102,12 +102,6 @@ public:
 	touchTime () const
 	{ return *fields .touchTime; }
 
-	///  @name Member access
-
-	const X3DPtr <Transform> &
-	getTransformTool () const
-	{ return transformTool; }
-
 	///  @name Destruction
 
 	virtual

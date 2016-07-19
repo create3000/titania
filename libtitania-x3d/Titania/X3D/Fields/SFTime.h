@@ -331,7 +331,7 @@ inline
 bool
 operator <= (const SFTime & lhs, const SFTime & rhs)
 {
-	return rhs .getValue () <= lhs .getValue ();
+	return lhs .getValue () <= rhs .getValue ();
 }
 
 ///  Compares two SFTime numbers.

@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.4.4
+#X3D V3.3 utf8 Titania V1.4.8
 
 META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.4, http://titania.create3000.de"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/Notification.x3dv"
-META "modified" "Thu, 12 May 2016 10:53:06 GMT"
+META "modified" "Tue, 19 Jul 2016 13:13:23 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -114,13 +114,9 @@ WorldInfo {
                   ]
                 }
               }
-              initializeOnly SFNode   startTimer DEF StartTimer TimeSensor {
-                startTime 1463050385.04147
-              }
+              initializeOnly SFNode   startTimer DEF StartTimer TimeSensor { }
               initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
                 cycleInterval 2
-                startTime 1463050391.04147
-                stopTime 1463050385.04147
               }
 
               url "javascript:
