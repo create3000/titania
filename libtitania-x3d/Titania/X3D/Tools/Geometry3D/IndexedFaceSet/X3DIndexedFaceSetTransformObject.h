@@ -86,6 +86,12 @@ public:
 	axisAlignedBoundingBox () const
 	{ return *fields .axisAlignedBoundingBox; }
 
+	///  @name Member access
+
+	const X3DPtr <Transform> &
+	getTransformTool () const
+	{ return transformTool; }
+
 	///  @name Destruction
 
 	virtual

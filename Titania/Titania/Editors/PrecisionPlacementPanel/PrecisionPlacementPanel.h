@@ -53,14 +53,22 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DLayoutEditor.h"
-#include "X3DTransformEditor.h"
 #include "X3DBillboardEditor.h"
-#include "X3DLODEditor.h"
-#include "X3DViewportEditor.h"
 #include "X3DGeoLocationEditor.h"
 #include "X3DGeoTransformEditor.h"
+#include "X3DLODEditor.h"
+#include "X3DLayoutEditor.h"
 #include "X3DSwitchEditor.h"
+#include "X3DTransformEditor.h"
+#include "X3DViewportEditor.h"
+
+namespace titania {
+namespace X3D {
+
+class IndexedFaceSetTool;
+
+} // X3D
+} // titania
 
 namespace titania {
 namespace puck {

@@ -249,6 +249,12 @@ public:
 	selectedFaces_changed () const
 	{ return *fields .selectedFaces_changed; }
 
+	///  @name Member access
+
+	const std::map <int32_t, Vector3d> &
+	getSelectedPoints () const
+	{ return selectedPoints; }
+
 	///  @name Destruction
 
 	virtual
@@ -351,10 +357,6 @@ protected:
 	int32_t
 	getMasterPoint () const
 	{ return masterPoint; }
-
-	const std::map <int32_t, Vector3d> &
-	getSelectedPoints () const
-	{ return selectedPoints; }
 
 	const SelectedEdges &
 	getSelectedEdges () const

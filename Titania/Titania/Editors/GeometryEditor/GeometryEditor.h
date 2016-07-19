@@ -84,6 +84,10 @@ public:
 	getCoordinateEditor () const
 	{ return coordEditor; }
 
+	const X3D::MFNode &
+	getGeometryNodes () const
+	{ return geometryNodes; }
+
 	bool
 	on_cut ();
 

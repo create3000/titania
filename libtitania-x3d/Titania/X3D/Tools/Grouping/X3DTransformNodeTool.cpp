@@ -54,8 +54,9 @@ namespace titania {
 namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
-	    bbox (new SFBool (true)),
-	isActive (new SFBool ())
+	     bbox (new SFBool (true)),
+	 isActive (new SFBool ()),
+	touchTime (new SFTime ())
 { }
 
 X3DTransformNodeTool::X3DTransformNodeTool () :
@@ -67,8 +68,9 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
-	addField (inputOutput, "bbox",     bbox ());
-	addField (outputOnly,  "isActive", isActive ());
+	addField (inputOutput, "bbox",      bbox ());
+	addField (outputOnly,  "isActive",  isActive ());
+	addField (outputOnly,  "touchTime", touchTime ());
 
 	setCameraObject (true);
 }
@@ -94,6 +96,7 @@ X3DTransformNodeTool::realize ()
 		getBrowser ()  -> getAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
 		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 		getToolNode () -> getField ("isActive") -> addInterest (isActive ());
+		getToolNode () -> getField ("touchTime") -> addInterest (touchTime ());
 
 		getToolNode () -> setField <SFDouble> ("snapAngle",  getBrowser () -> getTransformToolOptions () -> snapAngle ());
 		getToolNode () -> setField <SFBool>   ("controlKey", getBrowser () -> getControlKey ());

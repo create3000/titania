@@ -207,5 +207,83 @@ PrecisionPlacementPanel::~PrecisionPlacementPanel ()
 	dispose ();
 }
 
+//#include "../GeometryEditor/GeometryEditor.h"
+//
+//#include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>
+//#include <Titania/X3D/Components/Grouping/Transform.h>
+//
+//
+//	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &PrecisionPlacementPanel::set_geometry_nodes);
+//	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &PrecisionPlacementPanel::set_geometry_nodes);
+//
+//
+//void
+//PrecisionPlacementPanel::set_geometry_nodes (const X3D::MFNode & geometryNodes)
+//{
+//__LOG__ << std::endl;
+//
+//	for (const auto & node : geometryNodes)
+//	{
+//		const auto tool = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
+//
+//		if (tool)
+//		{
+//			tool -> getTransformTool () .addInterest (this, &PrecisionPlacementPanel::set_transform_tool, tool .getValue ());
+//
+//			if (tool -> getTransformTool ())
+//				tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &PrecisionPlacementPanel::set_touchTime);
+//		}
+//	}
+//
+//	set_touchTime ();
+//}
+//
+//void
+//PrecisionPlacementPanel::set_transform_tool (X3D::IndexedFaceSetTool* const tool)
+//{
+//__LOG__ << std::endl;
+//
+//	if (tool -> getTransformTool ())
+//		tool -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &PrecisionPlacementPanel::set_touchTime);
+//
+//	set_touchTime ();
+//}
+//
+//void
+//PrecisionPlacementPanel::set_touchTime ()
+//{
+//__LOG__ << std::endl;
+//
+//	const auto & geometryNodes = getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ();
+//
+//	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
+//	double                                maxTouchTime = 0;
+//
+//	for (const auto & node : geometryNodes)
+//	{
+//		auto current = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
+//
+//		if (not current)
+//			continue;
+//
+//		if (not current -> getTransformTool ())
+//			continue;
+//
+//		const auto touchTime = current -> getTransformTool () -> getField <X3D::SFTime> ("touchTime") .getValue ();
+//
+//		if (touchTime >= maxTouchTime)
+//			tool = std::move (current);
+//	}
+//	
+//	if (not tool)
+//		return;
+//
+//__LOG__ << std::endl;
+//
+//	set_selection ({ tool -> getTransformTool () });
+//
+//	//X3DGeometrySelectionEditor::set_selection (selection);
+//}
+
 } // puck
 } // titania

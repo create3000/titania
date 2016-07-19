@@ -100,15 +100,15 @@ private:
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton*) final override;
+	on_1button1_press_event (GdkEventButton*) final override;
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton*) final override;
+	on_1button1_release_event (GdkEventButton*) final override;
 
 	virtual
 	bool
-	on_motion_notify_event (GdkEventMotion*) final override;
+	on_motion1_notify_event (GdkEventMotion*) final override;
 
 	void
 	display ();

@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V1.4.0
+#X3D V3.3 utf8 Titania V1.4.8
 
 UNIT angle degree 0.0174532925199433
 
 META "comment" "World of Titania"
 META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.0, http://titania.create3000.de"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Wed, 23 Mar 2016 17:27:46 GMT"
+META "modified" "Mon, 18 Jul 2016 13:41:54 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -74,6 +74,7 @@ PROTO TransformTool [
   inputOutput SFVec3f    bboxSize 0 0 0
   inputOutput SFVec3f    bboxCenter 0 0 0
   outputOnly  SFBool     isActive
+  outputOnly  SFTime     touchTime
   outputOnly  SFBool     keepCenter_changed
   outputOnly  SFInt32    activeTool_changed
   inputOutput SFNode     transform NULL
@@ -189,7 +190,7 @@ PROTO TransformTool [
                   children [
                     DEF Front Transform {
                       translation 0 0 0.01
-                      scale 0 0 0
+                      scale 0 0 1
                       children Transform {
                         children [
                           DEF FrontSensor PlaneSensor {
@@ -212,7 +213,7 @@ PROTO TransformTool [
                     }
                     DEF Right Transform {
                       translation 0.01 0 0
-                      scale 0 0 0
+                      scale 1 0 0
                       children Transform {
                         rotation 0 1 0 1.5708
                         children [
@@ -227,7 +228,7 @@ PROTO TransformTool [
                     }
                     DEF Back Transform {
                       translation 0 0 -0.01
-                      scale 0 0 0
+                      scale 0 0 1
                       children Transform {
                         rotation 0 1 0 3.14159
                         children [
@@ -242,7 +243,7 @@ PROTO TransformTool [
                     }
                     DEF Left Transform {
                       translation -0.01 0 0
-                      scale 0 0 0
+                      scale 1 0 0
                       children Transform {
                         rotation 0 -1 0 1.5708
                         children [
@@ -257,7 +258,7 @@ PROTO TransformTool [
                     }
                     DEF Top Transform {
                       translation 0 0.01 0
-                      scale 0 0 0
+                      scale 0 1 0
                       children Transform {
                         rotation -1 0 0 1.5708
                         children [
@@ -272,7 +273,7 @@ PROTO TransformTool [
                     }
                     DEF Bottom Transform {
                       translation 0 -0.01 0
-                      scale 0 0 0
+                      scale 0 1 0
                       children Transform {
                         rotation 1 0 0 1.5708
                         children [
@@ -349,6 +350,7 @@ PROTO TransformTool [
                     }
                     DEF ModeTouch TouchSensor {
                       enabled IS enabled
+                      touchTime IS touchTime
                     }
                     DEF XTranslationSensor PlaneSensor {
                       description "x-Axis"
@@ -1999,10 +2001,16 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
     ]
   }

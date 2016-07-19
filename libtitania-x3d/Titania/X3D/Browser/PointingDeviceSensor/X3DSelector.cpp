@@ -82,22 +82,13 @@ X3DSelector::initialize ()
 }
 
 bool
-X3DSelector::on_button_press_event (GdkEventButton* event)
+X3DSelector::on_1button1_press_event (GdkEventButton* event)
 {
-	if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
-		return X3DExamineViewer::on_button_press_event (event);
-
-	if (event -> button not_eq 1 or event -> type not_eq GDK_BUTTON_PRESS)
-		return X3DExamineViewer::on_button_press_event (event);
-
-	if (getButton ())
-		return false;
-
-	setButton (100);
-
 	if (getBrowser () -> getActiveLayer ())
 		getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
-	
+
+	disconnect (); // from spinning
+
 	getBrowser () -> grab_focus ();
 	getBrowser () -> addEvent ();
 	getBrowser () -> displayed () .addInterest (this, &X3DSelector::display);
@@ -108,24 +99,10 @@ X3DSelector::on_button_press_event (GdkEventButton* event)
 }
 
 bool
-X3DSelector::on_button_release_event (GdkEventButton* event)
+X3DSelector::on_1button1_release_event (GdkEventButton* event)
 {
 	try
 	{
-		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
-			return X3DExamineViewer::on_button_release_event (event);
-
-		if (event -> button not_eq 1)
-			return X3DExamineViewer::on_button_release_event (event);
-
-		if (getButton () not_eq 100)
-		{
-			setButton (0);
-			return false;
-		}
-
-		setButton (0);
-	
 		if (points .empty ())
 			return false;
 	
@@ -168,11 +145,8 @@ X3DSelector::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-X3DSelector::on_motion_notify_event (GdkEventMotion* event)
+X3DSelector::on_motion1_notify_event (GdkEventMotion* event)
 {
-	if (getButton () not_eq 100)
-		return X3DExamineViewer::on_motion_notify_event (event);
-
 	getBrowser () -> addEvent ();
 
 	addPoint (event -> x, event -> y);

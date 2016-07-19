@@ -80,36 +80,40 @@ protected:
 	void
 	initialize () override;
 
-	void
-	setButton (guint value)
-	{ button = value; }
-
-	guint
-	getButton () const
-	{ return button; }
-
 	///  @name Event handler
 
 	virtual
 	bool
-	on_button_press_event (GdkEventButton*);
+	on_1button1_press_event (GdkEventButton*);
 
 	virtual
 	bool
-	on_button_release_event (GdkEventButton*);
+	on_1button2_press_event (GdkEventButton*);
 
 	virtual
 	bool
-	on_motion_notify_event (GdkEventMotion*);
+	on_1button1_release_event (GdkEventButton*);
+
+	virtual
+	bool
+	on_motion1_notify_event (GdkEventMotion*);
 
 	virtual
 	bool
 	on_scroll_event (GdkEventScroll*);
 
+	///  @name Operations
+
+	void
+	disconnect ();
+
 
 private:
 
 	///  @name Event handler
+
+	bool
+	on_button_press_event (GdkEventButton*);
 
 	bool
 	on_1button_press_event (GdkEventButton*);
@@ -121,7 +125,13 @@ private:
 	on_3button_press_event (GdkEventButton*);
 
 	bool
+	on_button_release_event (GdkEventButton*);
+
+	bool
 	on_1button_release_event (GdkEventButton*);
+
+	bool
+	on_1button2_release_event (GdkEventButton*);
 
 	bool
 	on_2button_release_event (GdkEventButton*);
@@ -129,10 +139,13 @@ private:
 	bool
 	on_3button_release_event (GdkEventButton*);
 
-	///  @name Operations
+	bool
+	on_motion_notify_event (GdkEventMotion*);
 
-	void
-	disconnect ();
+	bool
+	on_motion2_notify_event (GdkEventMotion*);
+
+	///  @name Operations
 
 	bool
 	spin ();

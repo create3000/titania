@@ -145,6 +145,16 @@ public:
 	isActive () const
 	{ return *fields .isActive; }
 
+	virtual
+	SFTime &
+	touchTime ()
+	{ return *fields .touchTime; }
+
+	virtual
+	const SFTime &
+	touchTime () const
+	{ return *fields .touchTime; }
+
 	///  @name Member access
 
 	virtual
@@ -226,6 +236,7 @@ private:
 
 		SFBool* const bbox;
 		SFBool* const isActive;
+		SFTime* const touchTime;
 	};
 
 	Fields fields;
