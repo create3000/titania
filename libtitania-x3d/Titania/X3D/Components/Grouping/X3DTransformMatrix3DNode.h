@@ -93,11 +93,11 @@ protected:
 	///  @name Member access
 
 	void
-	setMatrix (const Vector3f & t,
+	setMatrix (const Vector3d & t,
 	           const Rotation4d & r,
-	           const Vector3f & s,
+	           const Vector3d & s,
 	           const Rotation4d & so,
-	           const Vector3f & c)
+	           const Vector3d & c)
 	{ matrix .set (t, r, s, so, c); }
 
 

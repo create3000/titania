@@ -118,10 +118,17 @@ private:
 	set_tool_matrix ();
 
 	void
+	setMatrix ();
+
+	void
 	connectMatrix ();
 
 	void
 	connectToolMatrix ();
+
+	virtual
+	bool
+	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) final override;
 
 	virtual
 	void
@@ -140,6 +147,7 @@ private:
 	X3D::X3DPtr <X3D::Transform>          transformNode;
 	X3D::X3DPtr <X3D::IndexedFaceSetTool> tool;
 	X3D::Matrix4d                         lastMatrix; // Last absolute matrix of selection bbox set to transformNode.
+	X3D::UndoStepPtr                      undoStep;
 
 };
 

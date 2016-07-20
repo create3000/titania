@@ -85,7 +85,8 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	                                     "scale"),
 	                      transformNode (),
 	                               tool (),
-	                         lastMatrix ()
+	                         lastMatrix (),
+	                           undoStep ()
 {
 	addChildren (transformNode, tool);
 }
@@ -96,6 +97,8 @@ X3DGeometrySelectionEditor::configure ()
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
 
 	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
+
+	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
 
 void
@@ -162,47 +165,99 @@ X3DGeometrySelectionEditor::set_touchTime ()
 void
 X3DGeometrySelectionEditor::set_matrix ()
 {
-//	__LOG__ << transformNode -> getMatrix () << std::endl;
+	try
+	{
+		__LOG__ << transformNode -> getMatrix () << std::endl;
 
-//	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
-//	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
+		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+		tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 
-	const auto & axisRotation = tool -> getAxisRotation ();
-	const auto & M            = ~axisRotation * ~lastMatrix * transformNode -> getMatrix () * axisRotation;
+		const auto & coordinateNode         = tool -> getCoord ();
+		const auto & axisRotation           = tool -> getAxisRotation ();
+		const auto   relativeTransformation = ~(lastMatrix * axisRotation) * transformNode -> getMatrix () * axisRotation;
+		const auto   nodes                  = X3D::MFNode ({ coordinateNode });
 
-	for (const auto & pair : tool -> getSelectedPoints ())
-		tool -> getCoord () -> set1Point (pair .first, pair .second * M);
+		switch (coordinateNode -> getType () .back ())
+		{
+			case X3D::X3DConstants::Coordinate:
+				addUndoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
+				break;
+			default:
+				break;
+		}
+
+		// Triggers later setMatrix.
+		for (const auto & pair : tool -> getSelectedPoints ())
+			coordinateNode -> set1Point (pair .first, pair .second * relativeTransformation);
+
+		switch (coordinateNode -> getType () .back ())
+		{
+			case X3D::X3DConstants::Coordinate:
+				addRedoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
+				break;
+			default:
+				break;
+		}
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void
 X3DGeometrySelectionEditor::set_tool_matrix ()
 {
+	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
+
+	undoStep .reset ();
+
+	setMatrix ();
+}
+
+void
+X3DGeometrySelectionEditor::setMatrix ()
+{
+	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
+
 	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
 	
-	const auto & selectionTransform = tool -> getSelectionTransform ();
-	const auto & axisRotation       = tool -> getAxisRotation ();
-	const auto   T                  = M2 * selectionTransform -> getBBox () .matrix () * axisRotation;
+	const auto   bbox                = tool -> getSelectionTransform () -> getBBox () .matrix ();
+	const auto & axisRotation        = tool -> getAxisRotation ();
+	const auto   localTransformation = M2 * bbox * axisRotation;
 
-	transformNode -> setMatrix (T);
+	transformNode -> setMatrix (localTransformation);
 
-	lastMatrix = T;
-
-//	__LOG__ << selectionTransform -> getBBox () .matrix () << std::endl;
-//	__LOG__ << selectionTransform -> getMatrix () << std::endl;
-//	__LOG__ << M << std::endl;
+	lastMatrix = localTransformation;
 }
 
 void
 X3DGeometrySelectionEditor::connectMatrix ()
 {
+	__LOG__ << std::endl;
+
+	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
 	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 }
 
 void
 X3DGeometrySelectionEditor::connectToolMatrix ()
 {
+	__LOG__ << std::endl;
+
+	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+
+	setMatrix ();
+}
+
+bool
+X3DGeometrySelectionEditor::on_geometry_selection_focus_in_event (GdkEventFocus* focus_event)
+{
+	__LOG__ << std::endl;
+
+	undoStep .reset ();
+
+	return false;
 }
 
 void

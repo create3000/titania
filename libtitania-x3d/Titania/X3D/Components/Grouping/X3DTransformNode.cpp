@@ -93,11 +93,11 @@ X3DTransformNode::eventsProcessed ()
 	          scale () .getY () == 0 or
 	          scale () .getZ () == 0);
 
-	X3DTransformMatrix3DNode::setMatrix (translation (),
-	                                     rotation (),
-	                                     scale (),
-	                                     scaleOrientation (),
-	                                     center ());
+	X3DTransformMatrix3DNode::setMatrix (translation ()      .getValue (),
+	                                     rotation ()         .getValue (),
+	                                     scale ()            .getValue (),
+	                                     scaleOrientation () .getValue (),
+	                                     center ()           .getValue ());
 }
 
 Matrix4d
@@ -117,31 +117,24 @@ X3DTransformNode::getCurrentMatrix () const
 void
 X3DTransformNode::setMatrix (const Matrix4d & matrix)
 {
-	setMatrixWithCenter (matrix, center ());
+	setMatrixWithCenter (matrix, center () .getValue ());
 }
 
 void
-X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & c)
+X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3d & c)
 {
-	Vector3f   t, s;
+	Vector3d   t, s;
 	Rotation4d r, so;
 
 	matrix .get (t, r, s, so, c);
 
-	if (not almost_equal (t, translation () .getValue (), 17))
-		translation () = t;
-
-	if (not almost_equal (r, rotation () .getValue (), 17))
-		rotation () = r;
-
-	if (not almost_equal (s, scale () .getValue (), 17))
-		scale () = s;
+	translation () = t;
+	rotation ()    = r;
+	scale ()       = s;
+	center ()      = c;
 
 	if (not almost_equal (so, scaleOrientation () .getValue (), 17))
 		scaleOrientation () = so;
-
-	if (not almost_equal (c, center () .getValue (), 17))
-		center () = c;
 
 	X3DTransformMatrix3DNode::setMatrix (matrix);
 }

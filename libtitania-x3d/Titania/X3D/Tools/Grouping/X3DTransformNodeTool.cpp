@@ -136,7 +136,7 @@ X3DTransformNodeTool::setMatrix (const Matrix4d & matrix)
 }
 
 void
-X3DTransformNodeTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3f & center)
+X3DTransformNodeTool::setMatrixWithCenter (const Matrix4d & matrix, const Vector3d & center)
 {
 	changing = true;
 

@@ -172,7 +172,7 @@ public:
 
 	virtual
 	void
-	setMatrixWithCenter (const Matrix4d &, const Vector3f &) final override;
+	setMatrixWithCenter (const Matrix4d &, const Vector3d &) final override;
 
 	virtual
 	void

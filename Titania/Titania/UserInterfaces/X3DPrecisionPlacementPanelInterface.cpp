@@ -253,11 +253,21 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
 	m_builder -> get_widget ("GeometrySelectionBox", m_GeometrySelectionBox);
 	m_builder -> get_widget ("GeometrySelectionTranslationBox", m_GeometrySelectionTranslationBox);
-	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
-	m_builder -> get_widget ("GeometrySelectionRotationToolBox", m_GeometrySelectionRotationToolBox);
+	m_builder -> get_widget ("GeometrySelectionTranslationXButton", m_GeometrySelectionTranslationXButton);
+	m_builder -> get_widget ("GeometrySelectionTranslationYXButton", m_GeometrySelectionTranslationYXButton);
+	m_builder -> get_widget ("GeometrySelectionTranslationZButton", m_GeometrySelectionTranslationZButton);
 	m_builder -> get_widget ("GeometrySelectionScaleBox", m_GeometrySelectionScaleBox);
+	m_builder -> get_widget ("GeometrySelectionScaleXButton", m_GeometrySelectionScaleXButton);
+	m_builder -> get_widget ("GeometrySelectionScaleYButton", m_GeometrySelectionScaleYButton);
+	m_builder -> get_widget ("GeometrySelectionScaleZButton", m_GeometrySelectionScaleZButton);
 	m_builder -> get_widget ("GeometrySelectionUniformScaleButton", m_GeometrySelectionUniformScaleButton);
 	m_builder -> get_widget ("GeometrySelectionUniformScaleImage", m_GeometrySelectionUniformScaleImage);
+	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
+	m_builder -> get_widget ("GeometrySelectionRotationToolBox", m_GeometrySelectionRotationToolBox);
+	m_builder -> get_widget ("GeometrySelectionRotationXButton", m_GeometrySelectionRotationXButton);
+	m_builder -> get_widget ("GeometrySelectionRotationYButton", m_GeometrySelectionRotationYButton);
+	m_builder -> get_widget ("GeometrySelectionRotationZButton", m_GeometrySelectionRotationZButton);
+	m_builder -> get_widget ("GeometrySelectionRotationAButton", m_GeometrySelectionRotationAButton);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -271,6 +281,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
+	m_builder -> get_widget ("CalculatedBoundingBoxExpander", m_CalculatedBoundingBoxExpander);
+	m_builder -> get_widget ("CalculatedBoundingBoxBox", m_CalculatedBoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeXLabel", m_BBoxSizeXLabel);
 	m_builder -> get_widget ("BBoxSizeYLabel", m_BBoxSizeYLabel);
 	m_builder -> get_widget ("BBoxSizeZLabel", m_BBoxSizeZLabel);
@@ -298,7 +310,25 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
 	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
+
+	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
+	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionTranslationYXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionTranslationZButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionScaleXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionScaleYButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionScaleZButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+
+	// Connect object Gtk::ToggleButton with id 'GeometrySelectionUniformScaleButton'.
 	m_GeometrySelectionUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_uniform_scale_toggled));
+
+	// Connect object Gtk::SpinButton with id 'GeometrySelectionRotationXButton'.
+	m_GeometrySelectionRotationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionRotationYButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionRotationZButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+	m_GeometrySelectionRotationAButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));
+
+	// Connect object Gtk::ToggleButton with id 'BBoxUniformSizeButton'.
 	m_BBoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_bbox_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.

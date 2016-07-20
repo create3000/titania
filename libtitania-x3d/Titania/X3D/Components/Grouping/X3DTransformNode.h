@@ -131,7 +131,7 @@ public:
 
 	virtual
 	void
-	setMatrixWithCenter (const Matrix4d &, const Vector3f &);
+	setMatrixWithCenter (const Matrix4d &, const Vector3d &);
 
 	virtual
 	void

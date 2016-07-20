@@ -147,7 +147,7 @@ X3DTransformEditor::on_transform_move_center_button ()
 	undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
 	                             transform,
 	                             transform -> getMatrix (),
-	                             transform -> center ());
+	                             transform -> center () .getValue ());
 
 	undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
 	                             transform,

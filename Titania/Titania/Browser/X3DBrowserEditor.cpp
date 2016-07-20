@@ -273,7 +273,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 						undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
 						                             transform,
 						                             transform -> getMatrix (),
-						                             transform -> center ());
+						                             transform -> center () .getValue ());
 					}
 				}
 				catch (const std::out_of_range &)
@@ -766,7 +766,7 @@ X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const X3D::UndoS
 void
 X3DBrowserEditor::undo ()
 {
-	getCurrentBrowser () -> grab_focus ();
+//	getCurrentBrowser () -> grab_focus ();
 
 	getUndoHistory (getCurrentBrowser ()) .undo ();
 }
@@ -774,7 +774,7 @@ X3DBrowserEditor::undo ()
 void
 X3DBrowserEditor::redo ()
 {
-	getCurrentBrowser () -> grab_focus ();
+//	getCurrentBrowser () -> grab_focus ();
 
 	getUndoHistory (getCurrentBrowser ()) .redo ();
 }
@@ -881,7 +881,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 				matrix .set (offset);
 				matrix = transform -> getCurrentMatrix () * matrix;
 
-				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixKeepCenter, transform, matrix);
 				transform -> setMatrixKeepCenter (matrix);
 
@@ -905,9 +905,9 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 						continue;
 					}
 
-					nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center ());
+					nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 					transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
-					nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center ());
+					nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center () .getValue ());
 				}
 			}
 			else

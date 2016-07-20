@@ -859,17 +859,33 @@ public:
 	getGeometrySelectionTranslationBox () const
 	{ return *m_GeometrySelectionTranslationBox; }
 
-	Gtk::Box &
-	getGeometrySelectionRotationBox () const
-	{ return *m_GeometrySelectionRotationBox; }
+	Gtk::SpinButton &
+	getGeometrySelectionTranslationXButton () const
+	{ return *m_GeometrySelectionTranslationXButton; }
 
-	Gtk::Box &
-	getGeometrySelectionRotationToolBox () const
-	{ return *m_GeometrySelectionRotationToolBox; }
+	Gtk::SpinButton &
+	getGeometrySelectionTranslationYXButton () const
+	{ return *m_GeometrySelectionTranslationYXButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionTranslationZButton () const
+	{ return *m_GeometrySelectionTranslationZButton; }
 
 	Gtk::Box &
 	getGeometrySelectionScaleBox () const
 	{ return *m_GeometrySelectionScaleBox; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionScaleXButton () const
+	{ return *m_GeometrySelectionScaleXButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionScaleYButton () const
+	{ return *m_GeometrySelectionScaleYButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionScaleZButton () const
+	{ return *m_GeometrySelectionScaleZButton; }
 
 	Gtk::ToggleButton &
 	getGeometrySelectionUniformScaleButton () const
@@ -878,6 +894,30 @@ public:
 	Gtk::Image &
 	getGeometrySelectionUniformScaleImage () const
 	{ return *m_GeometrySelectionUniformScaleImage; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationBox () const
+	{ return *m_GeometrySelectionRotationBox; }
+
+	Gtk::Box &
+	getGeometrySelectionRotationToolBox () const
+	{ return *m_GeometrySelectionRotationToolBox; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionRotationXButton () const
+	{ return *m_GeometrySelectionRotationXButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionRotationYButton () const
+	{ return *m_GeometrySelectionRotationYButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionRotationZButton () const
+	{ return *m_GeometrySelectionRotationZButton; }
+
+	Gtk::SpinButton &
+	getGeometrySelectionRotationAButton () const
+	{ return *m_GeometrySelectionRotationAButton; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -930,6 +970,14 @@ public:
 	Gtk::Button &
 	getFillBoundingBoxFieldsButton () const
 	{ return *m_FillBoundingBoxFieldsButton; }
+
+	Gtk::Expander &
+	getCalculatedBoundingBoxExpander () const
+	{ return *m_CalculatedBoundingBoxExpander; }
+
+	Gtk::Grid &
+	getCalculatedBoundingBoxBox () const
+	{ return *m_CalculatedBoundingBoxBox; }
 
 	Gtk::Label &
 	getBBoxSizeXLabel () const
@@ -992,6 +1040,10 @@ public:
 	virtual
 	void
 	on_geo_transform_uniform_scale_clicked () = 0;
+
+	virtual
+	bool
+	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) = 0;
 
 	virtual
 	void
@@ -1221,11 +1273,21 @@ private:
 	Gtk::Expander*                 m_GeometrySelectionExpander;
 	Gtk::Grid*                     m_GeometrySelectionBox;
 	Gtk::Box*                      m_GeometrySelectionTranslationBox;
-	Gtk::Box*                      m_GeometrySelectionRotationBox;
-	Gtk::Box*                      m_GeometrySelectionRotationToolBox;
+	Gtk::SpinButton*               m_GeometrySelectionTranslationXButton;
+	Gtk::SpinButton*               m_GeometrySelectionTranslationYXButton;
+	Gtk::SpinButton*               m_GeometrySelectionTranslationZButton;
 	Gtk::Box*                      m_GeometrySelectionScaleBox;
+	Gtk::SpinButton*               m_GeometrySelectionScaleXButton;
+	Gtk::SpinButton*               m_GeometrySelectionScaleYButton;
+	Gtk::SpinButton*               m_GeometrySelectionScaleZButton;
 	Gtk::ToggleButton*             m_GeometrySelectionUniformScaleButton;
 	Gtk::Image*                    m_GeometrySelectionUniformScaleImage;
+	Gtk::Box*                      m_GeometrySelectionRotationBox;
+	Gtk::Box*                      m_GeometrySelectionRotationToolBox;
+	Gtk::SpinButton*               m_GeometrySelectionRotationXButton;
+	Gtk::SpinButton*               m_GeometrySelectionRotationYButton;
+	Gtk::SpinButton*               m_GeometrySelectionRotationZButton;
+	Gtk::SpinButton*               m_GeometrySelectionRotationAButton;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;
@@ -1239,6 +1301,8 @@ private:
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
 	Gtk::Button*                   m_FillBoundingBoxFieldsButton;
+	Gtk::Expander*                 m_CalculatedBoundingBoxExpander;
+	Gtk::Grid*                     m_CalculatedBoundingBoxBox;
 	Gtk::Label*                    m_BBoxSizeXLabel;
 	Gtk::Label*                    m_BBoxSizeYLabel;
 	Gtk::Label*                    m_BBoxSizeZLabel;

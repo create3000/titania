@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,12 +55,12 @@
 #include "../../Rendering/CoordinateTool.h"
 
 #include "../../../Browser/X3DBrowser.h"
-#include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Grouping/Switch.h"
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Layout/ScreenGroup.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
-#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 
 #include <Titania/String/sprintf.h>
@@ -123,13 +123,13 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 	{
 		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
 
-		touchSensor          = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
-		planeSensor          = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
-		planeSensorNormal    = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensorNormal");
-		transformToolSwitch  = inlineNode -> getExportedNode <Switch>           ("TransformToolSwitch");
-		transformNode        = inlineNode -> getExportedNode <Transform>        ("Transform");
-		transformTool        = inlineNode -> getExportedNode <Transform>        ("TransformTool");
-		selectionCoord       = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
+		touchSensor         = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
+		planeSensor         = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
+		planeSensorNormal   = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensorNormal");
+		transformToolSwitch = inlineNode -> getExportedNode <Switch>           ("TransformToolSwitch");
+		transformNode       = inlineNode -> getExportedNode <Transform>        ("Transform");
+		transformTool       = inlineNode -> getExportedNode <Transform>        ("TransformTool");
+		selectionCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
 		transform ()              .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
 		axisAlignedBoundingBox () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
@@ -199,43 +199,52 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
+	__LOG__ << std::endl;
+
 	if (active)
 		return;
 
-	Vector3d translation, scale;
-	Rotation4d rotation;
+	Vector3d   center, size;
+	Rotation4d orientation;
 
 	if (axisAlignedBoundingBox ())
 	{
-		const auto bbox = selectionCoord -> getBBox ();
+		// AABB
 
-		translation = bbox .center ();
-		scale       = bbox .size ();
+		auto       bbox = selectionCoord -> getBBox ();
+		const auto min  = Box3d (Vector3d (1e-5, 1e-5, 1e-5), bbox .center ());
+
+		bbox += min;
+
+		center = bbox .center ();
+		size   = bbox .size ();
 	}
 	else
 	{
+		// OBB
+
 		const auto bbox = getSelectionBBox ();
-	
-		bbox .matrix () .get (translation, rotation, scale);
-	
-		translation = translation * ~rotation;
-		scale      *= 2.0;
-		scale       = Vector3d (std::abs (scale .x ()), std::abs (scale .y ()), std::abs (scale .z ()));
+
+		bbox .matrix () .get (center, orientation, size);
+
+		center = center * ~orientation;
+		size  *= 2.0;
+		size   = max (max (size, -size), Vector3d (1e-5, 1e-5, 1e-5)); // max (v, -v): Componentwise abs.
 	}
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
-	transformNode       -> rotation ()    = rotation;
+	transformNode       -> rotation ()    = orientation;
 
 	transformTool -> translation ()      = Vector3f ();
 	transformTool -> rotation ()         = Rotation4f ();
 	transformTool -> scale ()            = Vector3f (1, 1, 1);
 	transformTool -> scaleOrientation () = Rotation4f ();
-	transformTool -> center ()           = translation;
+	transformTool -> center ()           = center;
 
-	selectionTransform -> bboxCenter () = transformTool -> bboxCenter () = translation;
-	selectionTransform -> bboxSize ()   = transformTool -> bboxSize ()   = max (scale, Vector3d (1e-5, 1e-5, 1e-5));
+	selectionTransform -> bboxCenter () = transformTool -> bboxCenter () = center;
+	selectionTransform -> bboxSize ()   = transformTool -> bboxSize ()   = size;
 
-	axisRotation = Matrix4d (rotation);
+	axisRotation = Matrix4d (orientation);
 }
 
 void
@@ -295,7 +304,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 			default:
 			{
 				const auto normal = getPolygonNormal (getFaceSelection () -> getFaceVertices (getHotFace ()));
-					
+
 				// Translate along face normal
 
 				planeSensorNormal -> enabled ()      = select () and not paintSelection ();
@@ -309,7 +318,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 				planeSensor -> axisRotation () = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 				planeSensor -> offset ()       = Vector3d ();
 				planeSensor -> maxPosition ()  = Vector2d (-1, -1);
-		
+
 				break;
 			}
 		}
@@ -327,8 +336,8 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 
 		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
-	   undoSetCoordPoint (undoStep);
-	
+		undoSetCoordPoint (undoStep);
+
 		translations = 0;
 
 		setTranslation (Vector3d ());
@@ -358,7 +367,7 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_translation ()
 
 	if (getBrowser () -> getControlKey () and getHotPoints () .size () >= 3)
 	{
-	   // Translate along plane normal
+		// Translate along plane normal
 		for (const auto & pair : getSelectedPoints ())
 			getCoord () -> set1Point (pair .first, pair .second + Vector3d (planeSensorNormal -> translation_changed () .getValue ()));
 	}
@@ -391,7 +400,7 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 	setTranslate (true);
 	setTranslation (Vector3f (1, 1, 1));
 
-	const auto M = ~axisRotation * transformTool -> getMatrix () * axisRotation;
+	const auto M = ~axisRotation* transformTool -> getMatrix () * axisRotation;
 
 	for (const auto & pair : getSelectedPoints ())
 		getCoord () -> set1Point (pair .first, pair .second * M);
@@ -421,17 +430,17 @@ X3DIndexedFaceSetTransformObject::getSelectionBBox () const
 						const auto & edge = *getSelectedEdges () .begin ();
 
 						std::set <size_t> faces;
-						
+
 						for (const auto & e : edge .second)
 						{
 							for (const auto & face : getFaceSelection () -> getAdjacentFaces (X3DFaceSelection::Edge { e .first, e .second }))
 								faces. emplace (face);
-							
+
 							break;
 						}
-		
+
 						Vector3d normal;
-		
+
 						for (const auto & face : faces)
 							normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
 
@@ -439,7 +448,7 @@ X3DIndexedFaceSetTransformObject::getSelectionBBox () const
 						const auto point2 = getCoord () -> get1Point (edge .first .second);
 						const auto yAxis  = (point2 - point1) / 2.0;
 						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-5;
-						const auto xAxis  = normalize (cross <double> (zAxis, yAxis))  * 1e-5;
+						const auto xAxis  = normalize (cross <double> (zAxis, yAxis)) * 1e-5;
 						const auto center = (point2 + point1) / 2.0;
 
 						if (abs (xAxis))
@@ -476,7 +485,7 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> &
 	auto       axes   = std::vector <X3D::Vector3d> ({ bbox .matrix () .x (), bbox .matrix () .y (), bbox .matrix () .z () });
 	const auto center = bbox .center ();
 
-	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b) { return abs (a) < abs (b); });
+	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b){ return abs (a) < abs (b); });
 
 	if (dot (axes [0], Vector3d (0, 0, 1)) < 0)
 		axes [0] .negate ();

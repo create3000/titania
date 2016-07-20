@@ -867,3 +867,5 @@ EventBox::button_release_event
   virtual bool on_button_release_event(GdkEventButton* event);
 EventBox::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* event);
+SpinButton::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
