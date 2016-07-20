@@ -182,6 +182,10 @@ X3DGeometrySelectionEditor::set_matrix ()
 			case X3D::X3DConstants::Coordinate:
 				addUndoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
 				break;
+			case X3D::X3DConstants::CoordinateDouble:
+			case X3D::X3DConstants::GeoCoordinate:
+				addUndoFunction <X3D::MFVec3d> (nodes, "point", undoStep);
+				break;
 			default:
 				break;
 		}
@@ -194,6 +198,10 @@ X3DGeometrySelectionEditor::set_matrix ()
 		{
 			case X3D::X3DConstants::Coordinate:
 				addRedoFunction <X3D::MFVec3f> (nodes, "point", undoStep);
+				break;
+			case X3D::X3DConstants::CoordinateDouble:
+			case X3D::X3DConstants::GeoCoordinate:
+				addRedoFunction <X3D::MFVec3d> (nodes, "point", undoStep);
 				break;
 			default:
 				break;
