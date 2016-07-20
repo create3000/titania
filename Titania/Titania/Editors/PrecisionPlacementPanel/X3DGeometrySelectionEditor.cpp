@@ -173,8 +173,7 @@ X3DGeometrySelectionEditor::set_matrix ()
 		tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 
 		const auto & coordinateNode         = tool -> getCoord ();
-		const auto & axisRotation           = tool -> getAxisRotation ();
-		const auto   relativeTransformation = ~(lastMatrix * axisRotation) * transformNode -> getMatrix () * axisRotation;
+		const auto   relativeTransformation = ~lastMatrix * transformNode -> getMatrix ();
 		const auto   nodes                  = X3D::MFNode ({ coordinateNode });
 
 		switch (coordinateNode -> getType () .back ())
