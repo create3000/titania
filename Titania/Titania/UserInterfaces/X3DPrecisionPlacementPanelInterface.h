@@ -896,6 +896,10 @@ public:
 	{ return *m_GeometrySelectionUniformScaleImage; }
 
 	Gtk::Box &
+	getGeometrySelectionRBox () const
+	{ return *m_GeometrySelectionRBox; }
+
+	Gtk::Box &
 	getGeometrySelectionRotationBox () const
 	{ return *m_GeometrySelectionRotationBox; }
 
@@ -1282,6 +1286,7 @@ private:
 	Gtk::SpinButton*               m_GeometrySelectionScaleZButton;
 	Gtk::ToggleButton*             m_GeometrySelectionUniformScaleButton;
 	Gtk::Image*                    m_GeometrySelectionUniformScaleImage;
+	Gtk::Box*                      m_GeometrySelectionRBox;
 	Gtk::Box*                      m_GeometrySelectionRotationBox;
 	Gtk::Box*                      m_GeometrySelectionRotationToolBox;
 	Gtk::SpinButton*               m_GeometrySelectionRotationXButton;

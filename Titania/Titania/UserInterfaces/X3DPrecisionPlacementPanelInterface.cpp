@@ -262,6 +262,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometrySelectionScaleZButton", m_GeometrySelectionScaleZButton);
 	m_builder -> get_widget ("GeometrySelectionUniformScaleButton", m_GeometrySelectionUniformScaleButton);
 	m_builder -> get_widget ("GeometrySelectionUniformScaleImage", m_GeometrySelectionUniformScaleImage);
+	m_builder -> get_widget ("GeometrySelectionRBox", m_GeometrySelectionRBox);
 	m_builder -> get_widget ("GeometrySelectionRotationBox", m_GeometrySelectionRotationBox);
 	m_builder -> get_widget ("GeometrySelectionRotationToolBox", m_GeometrySelectionRotationToolBox);
 	m_builder -> get_widget ("GeometrySelectionRotationXButton", m_GeometrySelectionRotationXButton);

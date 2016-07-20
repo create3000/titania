@@ -164,7 +164,7 @@ private:
 	set_transform_modelViewMatrix ();
 
 	Box3d
-	getSelectionBBox () const;
+	getMinimumBBox () const;
 
 	Box3d
 	getMinimumBBox (const std::vector <Vector3d> &) const;

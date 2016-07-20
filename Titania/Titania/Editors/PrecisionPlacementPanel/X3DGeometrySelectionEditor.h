@@ -112,6 +112,9 @@ private:
 	set_touchTime ();
 
 	void
+	set_selectedPoints ();
+
+	void
 	set_matrix ();
 
 	void

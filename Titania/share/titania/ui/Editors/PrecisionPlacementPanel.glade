@@ -3884,7 +3884,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box30">
+                  <object class="GtkBox" id="GeometrySelectionRBox">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">False</property>

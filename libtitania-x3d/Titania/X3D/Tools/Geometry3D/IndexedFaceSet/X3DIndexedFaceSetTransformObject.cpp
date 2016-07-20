@@ -223,7 +223,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	{
 		// OBB
 
-		const auto bbox = getSelectionBBox ();
+		const auto bbox = getMinimumBBox ();
 
 		bbox .matrix () .get (center, orientation, size);
 
@@ -407,17 +407,19 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 }
 
 Box3d
-X3DIndexedFaceSetTransformObject::getSelectionBBox () const
+X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 {
-	const auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
-	auto       bbox   = Box3d ();
+	auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
+	auto bbox   = Box3d ();
+
+	points .erase (std::unique (points .begin (), points .end ()), points .end ());
 
 	switch (points .size ())
 	{
 		case 0:
 			break;
 		case 1:
-			bbox = Box3d (Vector3d (1e-5, 1e-5, 1e-5), points .front ());
+			bbox = Box3d (Vector3d (), points .front ());
 			break;
 		case 2:
 		{

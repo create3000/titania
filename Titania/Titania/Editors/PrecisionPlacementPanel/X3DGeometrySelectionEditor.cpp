@@ -133,7 +133,10 @@ void
 X3DGeometrySelectionEditor::set_touchTime ()
 {
 	if (tool)
+	{
+		tool -> selectedPoints_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
 		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+	}
 
 	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
 	tool          = getCurrentTool ();
@@ -155,11 +158,19 @@ X3DGeometrySelectionEditor::set_touchTime ()
 	{
 		const auto & selectionTransform = tool -> getSelectionTransform ();
 
-		transformNode      -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
-		selectionTransform -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+		tool -> selectedPoints_changed () .addInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
+		transformNode                   -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+		selectionTransform              -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 
+		set_selectedPoints ();
 		set_tool_matrix ();
 	}
+}
+
+void
+X3DGeometrySelectionEditor::set_selectedPoints ()
+{
+	getGeometrySelectionBox () .set_sensitive (tool -> selectedPoints_changed ());
 }
 
 void
