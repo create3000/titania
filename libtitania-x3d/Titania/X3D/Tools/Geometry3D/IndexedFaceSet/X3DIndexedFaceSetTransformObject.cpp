@@ -171,31 +171,6 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 	}
 }
 
-//void
-//X3DIndexedFaceSetTransformObject::set_transform ()
-//{
-//	if (active)
-//		return;
-//
-//	const auto rotation = getAxisRotation ();
-//
-//	axisRotation = Matrix4d (rotation);
-//
-//	const auto bbox = selectionCoord -> getBBox () * ~axisRotation;
-//
-//	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
-//	transformNode       -> rotation ()    = rotation;
-//
-//	transformTool -> translation ()      = Vector3f ();
-//	transformTool -> rotation ()         = Rotation4f ();
-//	transformTool -> scale ()            = Vector3f (1, 1, 1);
-//	transformTool -> scaleOrientation () = Rotation4f ();
-//	transformTool -> center ()           = bbox .center ();
-//
-//	transformTool -> bboxCenter () = bbox .center ();
-//	transformTool -> bboxSize ()   = max (bbox .size (), Vector3d (1e-5, 1e-5, 1e-5));
-//}
-
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
@@ -390,18 +365,23 @@ X3DIndexedFaceSetTransformObject::set_transform_active (const bool value)
 void
 X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 {
-	if (not active)
-		return;
-
-	// The Transform Tool has own exidential event handling.
-
-	setTranslate (true);
-	setTranslation (Vector3f (1, 1, 1));
-
-	const auto M = ~axisRotation* transformTool -> getMatrix () * axisRotation;
-
-	for (const auto & pair : getSelectedPoints ())
-		getCoord () -> set1Point (pair .first, pair .second * M);
+	try
+	{
+		if (not active)
+			return;
+	
+		// The Transform Tool has own exidential event handling.
+	
+		setTranslate (true);
+		setTranslation (Vector3f (1, 1, 1));
+	
+		const auto M = ~axisRotation * transformTool -> getMatrix () * axisRotation;
+	
+		for (const auto & pair : getSelectedPoints ())
+			getCoord () -> set1Point (pair .first, pair .second * M);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 Box3d
