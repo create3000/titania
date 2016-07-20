@@ -178,8 +178,6 @@ X3DGeometrySelectionEditor::set_matrix ()
 {
 	try
 	{
-		__LOG__ << transformNode -> getMatrix () << std::endl;
-
 		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 		tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 
@@ -224,8 +222,6 @@ X3DGeometrySelectionEditor::set_matrix ()
 void
 X3DGeometrySelectionEditor::set_tool_matrix ()
 {
-	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
-
 	undoStep .reset ();
 
 	setMatrix ();
@@ -234,8 +230,6 @@ X3DGeometrySelectionEditor::set_tool_matrix ()
 void
 X3DGeometrySelectionEditor::setMatrix ()
 {
-	__LOG__ << tool -> getSelectionTransform () -> getMatrix () << std::endl;
-
 	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
 	
@@ -251,8 +245,6 @@ X3DGeometrySelectionEditor::setMatrix ()
 void
 X3DGeometrySelectionEditor::connectMatrix ()
 {
-	__LOG__ << std::endl;
-
 	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
 	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
 }
@@ -260,8 +252,6 @@ X3DGeometrySelectionEditor::connectMatrix ()
 void
 X3DGeometrySelectionEditor::connectToolMatrix ()
 {
-	__LOG__ << std::endl;
-
 	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
 	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 
@@ -271,8 +261,6 @@ X3DGeometrySelectionEditor::connectToolMatrix ()
 bool
 X3DGeometrySelectionEditor::on_geometry_selection_focus_in_event (GdkEventFocus* focus_event)
 {
-	__LOG__ << std::endl;
-
 	undoStep .reset ();
 
 	return false;

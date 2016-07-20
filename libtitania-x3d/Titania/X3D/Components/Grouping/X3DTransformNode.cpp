@@ -128,13 +128,22 @@ X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3d &
 
 	matrix .get (t, r, s, so, c);
 
-	translation () = t;
-	rotation ()    = r;
-	scale ()       = s;
-	center ()      = c;
+	if (not almost_equal <float> (t, translation () .getValue (), 17))
+		translation () = t;
 
-	if (not almost_equal (so, scaleOrientation () .getValue (), 17))
+	if (not almost_equal <float> (r, rotation () .getValue (), 17))
+		rotation () = r;
+
+	if (not almost_equal <float> (s, scale () .getValue (), 17))
+		scale () = s;
+
+	if (not almost_equal <float> (so, scaleOrientation () .getValue (), 17))
 		scaleOrientation () = so;
+
+	if (not almost_equal <float> (c, center () .getValue (), 17))
+		center () = c;
+
+	addEvent ();
 
 	X3DTransformMatrix3DNode::setMatrix (matrix);
 }

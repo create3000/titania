@@ -199,8 +199,6 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 void
 X3DIndexedFaceSetTransformObject::set_transform ()
 {
-	__LOG__ << std::endl;
-
 	if (active)
 		return;
 

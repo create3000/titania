@@ -766,6 +766,7 @@ X3DBrowserEditor::addUndoStep (const X3D::BrowserPtr & browser, const X3D::UndoS
 void
 X3DBrowserEditor::undo ()
 {
+	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
 	getUndoHistory (getCurrentBrowser ()) .undo ();
@@ -774,6 +775,7 @@ X3DBrowserEditor::undo ()
 void
 X3DBrowserEditor::redo ()
 {
+	// Focus out tree view cells.
 //	getCurrentBrowser () -> grab_focus ();
 
 	getUndoHistory (getCurrentBrowser ()) .redo ();
