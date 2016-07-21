@@ -932,12 +932,12 @@ public:
 	{ return *m_SelectedEdgesLabel; }
 
 	Gtk::Label &
-	getSelectedFacesLabel () const
-	{ return *m_SelectedFacesLabel; }
-
-	Gtk::Label &
 	getSelectedHolesLabel () const
 	{ return *m_SelectedHolesLabel; }
+
+	Gtk::Label &
+	getSelectedFacesLabel () const
+	{ return *m_SelectedFacesLabel; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -990,14 +990,6 @@ public:
 	Gtk::Button &
 	getFillBoundingBoxFieldsButton () const
 	{ return *m_FillBoundingBoxFieldsButton; }
-
-	Gtk::Expander &
-	getCalculatedBoundingBoxExpander () const
-	{ return *m_CalculatedBoundingBoxExpander; }
-
-	Gtk::Grid &
-	getCalculatedBoundingBoxBox () const
-	{ return *m_CalculatedBoundingBoxBox; }
 
 	Gtk::Label &
 	getBBoxSizeXLabel () const
@@ -1311,8 +1303,8 @@ private:
 	Gtk::SpinButton*               m_GeometrySelectionRotationAButton;
 	Gtk::Label*                    m_SelectedPointsLabel;
 	Gtk::Label*                    m_SelectedEdgesLabel;
-	Gtk::Label*                    m_SelectedFacesLabel;
 	Gtk::Label*                    m_SelectedHolesLabel;
+	Gtk::Label*                    m_SelectedFacesLabel;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;
@@ -1326,8 +1318,6 @@ private:
 	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
 	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
 	Gtk::Button*                   m_FillBoundingBoxFieldsButton;
-	Gtk::Expander*                 m_CalculatedBoundingBoxExpander;
-	Gtk::Grid*                     m_CalculatedBoundingBoxBox;
 	Gtk::Label*                    m_BBoxSizeXLabel;
 	Gtk::Label*                    m_BBoxSizeYLabel;
 	Gtk::Label*                    m_BBoxSizeZLabel;

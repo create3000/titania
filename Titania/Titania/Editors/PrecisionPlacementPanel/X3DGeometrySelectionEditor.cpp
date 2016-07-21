@@ -200,10 +200,6 @@ X3DGeometrySelectionEditor::set_selectedHoles ()
 void
 X3DGeometrySelectionEditor::set_selectedFaces ()
 {
-__LOG__ << "''" << tool -> selectedFaces_changed () << "''" << std::endl;
-__LOG__ << "''" << basic::to_string (tool -> selectedFaces_changed ()) << "''" << std::endl;
-__LOG__ << "''" << basic::to_string (tool -> selectedFaces_changed () .getValue ()) << "''" << std::endl;
-
 	getSelectedFacesLabel () .set_text (basic::to_string (tool -> selectedFaces_changed ()));
 }
 

@@ -271,8 +271,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometrySelectionRotationAButton", m_GeometrySelectionRotationAButton);
 	m_builder -> get_widget ("SelectedPointsLabel", m_SelectedPointsLabel);
 	m_builder -> get_widget ("SelectedEdgesLabel", m_SelectedEdgesLabel);
-	m_builder -> get_widget ("SelectedFacesLabel", m_SelectedFacesLabel);
 	m_builder -> get_widget ("SelectedHolesLabel", m_SelectedHolesLabel);
+	m_builder -> get_widget ("SelectedFacesLabel", m_SelectedFacesLabel);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);
@@ -286,8 +286,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
 	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
-	m_builder -> get_widget ("CalculatedBoundingBoxExpander", m_CalculatedBoundingBoxExpander);
-	m_builder -> get_widget ("CalculatedBoundingBoxBox", m_CalculatedBoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeXLabel", m_BBoxSizeXLabel);
 	m_builder -> get_widget ("BBoxSizeYLabel", m_BBoxSizeYLabel);
 	m_builder -> get_widget ("BBoxSizeZLabel", m_BBoxSizeZLabel);
