@@ -134,7 +134,11 @@ X3DGeometrySelectionEditor::set_touchTime ()
 {
 	if (tool)
 	{
-		tool -> selectedPoints_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
+		tool -> selectedPoints_changed () .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
+		tool -> selectedEdges_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedEdges);
+		tool -> selectedHoles_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedHoles);
+		tool -> selectedFaces_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedFaces);
+
 		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 	}
 
@@ -159,10 +163,17 @@ X3DGeometrySelectionEditor::set_touchTime ()
 		const auto & selectionTransform = tool -> getSelectionTransform ();
 
 		tool -> selectedPoints_changed () .addInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
-		transformNode                   -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
-		selectionTransform              -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+		tool -> selectedEdges_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedEdges);
+		tool -> selectedHoles_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedHoles);
+		tool -> selectedFaces_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedFaces);
+
+		transformNode      -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+		selectionTransform -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
 
 		set_selectedPoints ();
+		set_selectedEdges ();
+		set_selectedHoles ();
+		set_selectedFaces ();
 		set_tool_matrix ();
 	}
 }
@@ -171,6 +182,29 @@ void
 X3DGeometrySelectionEditor::set_selectedPoints ()
 {
 	getGeometrySelectionBox () .set_sensitive (tool -> selectedPoints_changed ());
+	getSelectedPointsLabel ()  .set_text (basic::to_string (tool -> selectedPoints_changed ()));
+}
+
+void
+X3DGeometrySelectionEditor::set_selectedEdges ()
+{
+	getSelectedEdgesLabel () .set_text (basic::to_string (tool -> selectedEdges_changed ()));
+}
+
+void
+X3DGeometrySelectionEditor::set_selectedHoles ()
+{
+	getSelectedHolesLabel () .set_text (basic::to_string (tool -> selectedHoles_changed ()));
+}
+
+void
+X3DGeometrySelectionEditor::set_selectedFaces ()
+{
+__LOG__ << "''" << tool -> selectedFaces_changed () << "''" << std::endl;
+__LOG__ << "''" << basic::to_string (tool -> selectedFaces_changed ()) << "''" << std::endl;
+__LOG__ << "''" << basic::to_string (tool -> selectedFaces_changed () .getValue ()) << "''" << std::endl;
+
+	getSelectedFacesLabel () .set_text (basic::to_string (tool -> selectedFaces_changed ()));
 }
 
 void

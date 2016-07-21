@@ -269,6 +269,10 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometrySelectionRotationYButton", m_GeometrySelectionRotationYButton);
 	m_builder -> get_widget ("GeometrySelectionRotationZButton", m_GeometrySelectionRotationZButton);
 	m_builder -> get_widget ("GeometrySelectionRotationAButton", m_GeometrySelectionRotationAButton);
+	m_builder -> get_widget ("SelectedPointsLabel", m_SelectedPointsLabel);
+	m_builder -> get_widget ("SelectedEdgesLabel", m_SelectedEdgesLabel);
+	m_builder -> get_widget ("SelectedFacesLabel", m_SelectedFacesLabel);
+	m_builder -> get_widget ("SelectedHolesLabel", m_SelectedHolesLabel);
 	m_builder -> get_widget ("BoundingBoxExpander", m_BoundingBoxExpander);
 	m_builder -> get_widget ("BoundingBoxBox", m_BoundingBoxBox);
 	m_builder -> get_widget ("BBoxSizeBox", m_BBoxSizeBox);

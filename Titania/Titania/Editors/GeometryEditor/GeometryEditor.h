@@ -169,9 +169,6 @@ private:
 	void
 	set_selectedHoles ();
 
-	void
-	set_face_selection ();
-
 	///  @name Geometry handling
 
 	virtual

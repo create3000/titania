@@ -584,10 +584,7 @@ GeometryEditor::set_selectedPoints ()
 
 	getMergePointsButton () .set_sensitive (numSelectedPoints > 1);
 	getSplitPointsButton () .set_sensitive (numSelectedPoints);
-
-	set_face_selection ();
 }
-
 
 void
 GeometryEditor::set_selectedEdges ()
@@ -623,8 +620,6 @@ GeometryEditor::set_selectedEdges ()
 	}
 
 	getExtrudeSelectedEdgesButton () .set_sensitive (numSelectedEdges);
-
-	set_face_selection ();
 }
 
 void
@@ -661,8 +656,6 @@ GeometryEditor::set_selectedHoles ()
 	}
 
 	getFormNewFaceButton () .set_sensitive (numSelectedHoles);
-
-	set_face_selection ();
 }
 
 void
@@ -702,24 +695,6 @@ GeometryEditor::set_selectedFaces ()
 	getChipOfFacesButton          () .set_sensitive (numSelectedFaces);
 	getDeleteFacesButton          () .set_sensitive (numSelectedFaces);
 	getFlipVertexOrderingButton   () .set_sensitive (numSelectedFaces);
-
-	set_face_selection ();
-}
-
-void
-GeometryEditor::set_face_selection ()
-{
-	#ifdef TITANIA_DEBUG
-	std::ostringstream ostream;
-
-	ostream
-		<< "Selected points: " << numSelectedPoints << std::endl
-		<< "Selected edges: "  << numSelectedEdges << std::endl
-		<< "Selected holes: "  << numSelectedHoles << std::endl
-		<< "Selected faces: "  << numSelectedFaces;
-
-	getCurrentBrowser () -> setDescription (ostream .str ());
-	#endif
 }
 
 void

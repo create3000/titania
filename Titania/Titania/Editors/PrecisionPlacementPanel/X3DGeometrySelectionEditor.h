@@ -115,6 +115,15 @@ private:
 	set_selectedPoints ();
 
 	void
+	set_selectedEdges ();
+	
+	void
+	set_selectedHoles ();
+	
+	void
+	set_selectedFaces ();
+
+	void
 	set_matrix ();
 
 	void

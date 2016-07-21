@@ -923,6 +923,22 @@ public:
 	getGeometrySelectionRotationAButton () const
 	{ return *m_GeometrySelectionRotationAButton; }
 
+	Gtk::Label &
+	getSelectedPointsLabel () const
+	{ return *m_SelectedPointsLabel; }
+
+	Gtk::Label &
+	getSelectedEdgesLabel () const
+	{ return *m_SelectedEdgesLabel; }
+
+	Gtk::Label &
+	getSelectedFacesLabel () const
+	{ return *m_SelectedFacesLabel; }
+
+	Gtk::Label &
+	getSelectedHolesLabel () const
+	{ return *m_SelectedHolesLabel; }
+
 	Gtk::Expander &
 	getBoundingBoxExpander () const
 	{ return *m_BoundingBoxExpander; }
@@ -1293,6 +1309,10 @@ private:
 	Gtk::SpinButton*               m_GeometrySelectionRotationYButton;
 	Gtk::SpinButton*               m_GeometrySelectionRotationZButton;
 	Gtk::SpinButton*               m_GeometrySelectionRotationAButton;
+	Gtk::Label*                    m_SelectedPointsLabel;
+	Gtk::Label*                    m_SelectedEdgesLabel;
+	Gtk::Label*                    m_SelectedFacesLabel;
+	Gtk::Label*                    m_SelectedHolesLabel;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;

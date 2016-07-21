@@ -252,15 +252,15 @@ X3DPrimitiveCountEditor::update ()
 		}
 	}
 
-	getPrimitiveCountNodesLabel ()             .set_text (X3D::SFInt32 (nodes)             .toLocaleString ());
-	getPrimitiveCountOpaqueShapesLabel ()      .set_text (X3D::SFInt32 (opaqueShapes)      .toLocaleString ());
-	getPrimitiveCountTransparentShapesLabel () .set_text (X3D::SFInt32 (transparentShapes) .toLocaleString ());
+	getPrimitiveCountNodesLabel ()             .set_text (basic::to_string (nodes));
+	getPrimitiveCountOpaqueShapesLabel ()      .set_text (basic::to_string (opaqueShapes));
+	getPrimitiveCountTransparentShapesLabel () .set_text (basic::to_string (transparentShapes));
 
-	getPrimitiveCountPolygonsLabel ()  .set_text (X3D::SFInt32 (polygons)  .toLocaleString ());
-	getPrimitiveCountQuadsLabel ()     .set_text (X3D::SFInt32 (quads)     .toLocaleString ());
-	getPrimitiveCountTrianglesLabel () .set_text (X3D::SFInt32 (triangles) .toLocaleString ());
-	getPrimitiveCountLinesLabel ()     .set_text (X3D::SFInt32 (lines)     .toLocaleString ());
-	getPrimitiveCountPointsLabel ()    .set_text (X3D::SFInt32 (points)    .toLocaleString ());
+	getPrimitiveCountPolygonsLabel ()  .set_text (basic::to_string (polygons));
+	getPrimitiveCountQuadsLabel ()     .set_text (basic::to_string (quads));
+	getPrimitiveCountTrianglesLabel () .set_text (basic::to_string (triangles));
+	getPrimitiveCountLinesLabel ()     .set_text (basic::to_string (lines));
+	getPrimitiveCountPointsLabel ()    .set_text (basic::to_string (points));
 }
 
 bool
@@ -347,8 +347,7 @@ X3DPrimitiveCountEditor::set_browser ()
 
 	browser = getCurrentBrowser ();
 
-	if (getPrimitiveCountCountButton () .get_active_row_number () == 1) // Rendered objects
-		browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
 }
 
 void
