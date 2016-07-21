@@ -79,8 +79,8 @@ X3DIndexedFaceSetOperationsObject::Fields::Fields () :
 { }
 
 X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
-	       IndexedFaceSet (getExecutionContext ()),
-	X3DIndexedFaceSetTool ()
+	                  IndexedFaceSet (getExecutionContext ()),
+	X3DIndexedFaceSetSelectionObject ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetOperationsObject);
 }

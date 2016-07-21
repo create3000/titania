@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_SELECTION_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_SELECTION_OBJECT_H__
 
-#include "../../Rendering/X3DComposedGeometryNodeTool.h"
+#include "X3DIndexedFaceSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -65,27 +65,9 @@ class IndexedLineSet;
 class IndexedFaceSet;
 
 class X3DIndexedFaceSetSelectionObject :
-	virtual public X3DComposedGeometryNodeTool
+	virtual public X3DIndexedFaceSetTool
 {
 public:
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	convex () = 0;
-
-	virtual
-	const SFBool &
-	convex () const = 0;
-
-	virtual
-	MFInt32 &
-	coordIndex () = 0;
-
-	virtual
-	const MFInt32 &
-	coordIndex () const = 0;
 
 	///  @name Hidden fields
 
@@ -525,10 +507,13 @@ private:
 	selectEdges (const std::vector <std::pair <size_t, size_t>> &, const SelectActionType);
 
 	std::vector <std::pair <size_t, size_t>>
-	selectLineLoop (const size_t, const size_t);
+	selectLineLoop (const size_t, const size_t) const;
 
 	void
-	selectLineLoop (size_t, size_t, std::vector <std::pair <size_t, size_t>> &, std::set <int32_t> &);
+	selectLineLoop (size_t, size_t, std::vector <std::pair <size_t, size_t>> &, std::set <int32_t> &) const;
+
+	std::vector <size_t>
+	selectFaceLoop (const size_t face) const;
 
 	void
 	selectHoles ();

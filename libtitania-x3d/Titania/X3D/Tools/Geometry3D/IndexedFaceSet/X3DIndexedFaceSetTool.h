@@ -54,15 +54,13 @@
 #include "../../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
 #include "../../Rendering/X3DComposedGeometryNodeTool.h"
-#include "X3DIndexedFaceSetSelectionObject.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DIndexedFaceSetTool :
 	virtual public IndexedFaceSet,
-	virtual public X3DComposedGeometryNodeTool,
-	virtual public X3DIndexedFaceSetSelectionObject
+	virtual public X3DComposedGeometryNodeTool
 {
 public:
 

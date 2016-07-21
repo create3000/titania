@@ -66,7 +66,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SELECTION_DISTANCE = 8;
+static constexpr double SELECTION_DISTANCE = 6; // in pixel
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 	                select (new SFBool (true)),
@@ -91,7 +91,8 @@ X3DIndexedFaceSetSelectionObject::Fields::Fields () :
 { }
 
 X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
-	X3DComposedGeometryNodeTool (),
+	             IndexedFaceSet (getExecutionContext ()),
+	      X3DIndexedFaceSetTool (),
 	                     fields (),
 	                touchSensor (),
 	                planeSensor (),
@@ -448,7 +449,7 @@ X3DIndexedFaceSetSelectionObject::set_selection (const MFVec3d & hitPoints)
 {
 	set_selection (hitPoints, getSelectActionType ());
 
-	X3DComposedGeometryNodeTool::set_selection (hitPoints);
+	X3DIndexedFaceSetTool::set_selection (hitPoints);
 }
 
 void
@@ -577,6 +578,7 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 			if (edgeDistance > SELECTION_DISTANCE)
 			{
 				// Face
+
 				for (const auto & vertex : vertices)
 					activePoints .emplace_back (coordIndex () [vertex]);
 
@@ -591,8 +593,25 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 					}
 					case SelectionType::FACES:
 					{
-						activeEdges = getFaceSelection () -> getFaceEdges (face);
-						activeFaces = { face };
+						if (selectLineLoop ())
+						{
+							activeFaces = selectFaceLoop (face);
+							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
+
+							for (const auto & face : activeFaces)
+							{
+								for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
+									activePoints .emplace_back (coordIndex () [vertex]);
+							}
+
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+						}
+						else
+						{
+							activeFaces = { face };
+							activeEdges = getFaceSelection () -> getFaceEdges (face);
+						}
+
 						break;
 					}
 				}
@@ -600,49 +619,119 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 			else
 			{
 				// Edge
-	
-				switch (getSelectionType ())
+
+				if (selectLineLoop ())
 				{
-					case SelectionType::POINTS:
+					const auto lineLoop = selectLineLoop (edge .index0, edge .index1);
+
+					switch (getSelectionType ())
 					{
-						activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
-						break;
-					}
-					case SelectionType::EDGES:
-					{
-						if (selectLineLoop ())
+						case SelectionType::POINTS:
 						{
-							activeEdges = selectLineLoop (edge .index0, edge .index1);
-		
-							for (const auto & activeEdge : activeEdges)
+							// Points
+
+							for (const auto & edge : lineLoop)
 							{
-								activePoints .emplace_back (coordIndex () [activeEdge .first]);
-								activePoints .emplace_back (coordIndex () [activeEdge .second]);
+								activePoints .emplace_back (coordIndex () [edge .first]);
+								activePoints .emplace_back (coordIndex () [edge .second]);
 							}
 		
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
 						}
-						else
+						case SelectionType::EDGES:
+						{
+							// Edges
+
+							activeEdges = lineLoop;
+
+							// Points
+
+							for (const auto & edge : lineLoop)
+							{
+								activePoints .emplace_back (coordIndex () [edge .first]);
+								activePoints .emplace_back (coordIndex () [edge .second]);
+							}
+		
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
+						}
+						case SelectionType::FACES:
+						{
+							// same as edge selectLineLoop
+
+							activeFaces = getFaceSelection () -> getAdjacentFaces (edge);
+							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
+	
+							for (const auto & activeFace : activeFaces)
+							{
+								for (const auto & index : getFaceSelection () -> getFaceVertices (activeFace))
+									activePoints .emplace_back (coordIndex () [index]);
+							}
+		
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
+						}
+//						{
+//							// Faces
+//
+//							for (const auto & edge : lineLoop)
+//							{
+//								const auto faces = getFaceSelection () -> getAdjacentFaces (edge);
+//
+//								activeFaces .insert (activeFaces .end (), faces .begin (), faces .end ());
+//							}
+//
+//							activeFaces .erase (std::unique (activeFaces .begin (), activeFaces .end ()), activeFaces .end ());
+//
+//							// Edges
+//
+//							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
+//
+//							// Points
+//
+//							for (const auto & edge : activeEdges)
+//							{
+//								activePoints .emplace_back (coordIndex () [edge .first]);
+//								activePoints .emplace_back (coordIndex () [edge .second]);
+//							}
+//
+//							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+//							break;
+//						}
+					}
+				}
+				else
+				{
+					switch (getSelectionType ())
+					{
+						case SelectionType::POINTS:
+						{
+							activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+							break;
+						}
+						case SelectionType::EDGES:
 						{
 							activeEdges  = { std::make_pair (edge .index0, edge .index1) };
 							activePoints = { coordIndex () [edge .index0], coordIndex () [edge .index1] };
+							break;
 						}
-
-						break;
-					}
-					case SelectionType::FACES:
-					{
-						activeFaces = getFaceSelection () -> getAdjacentFaces (edge);
-						activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
-
-						for (const auto & activeFace : activeFaces)
+						case SelectionType::FACES:
 						{
-							for (const auto & index : getFaceSelection () -> getFaceVertices (activeFace))
-								activePoints .emplace_back (coordIndex () [index]);
-						}
+							// same as edge selectLineLoop
+
+							activeFaces = getFaceSelection () -> getAdjacentFaces (edge);
+							activeEdges = getFaceSelection () -> getHorizonEdges (activeFaces);
 	
-						activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
-						break;
+							for (const auto & activeFace : activeFaces)
+							{
+								for (const auto & index : getFaceSelection () -> getFaceVertices (activeFace))
+									activePoints .emplace_back (coordIndex () [index]);
+							}
+		
+							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
+							break;
+						}
 					}
 				}
 			}
@@ -697,7 +786,7 @@ X3DIndexedFaceSetSelectionObject::updateMagicSelection ()
 }
 
 std::vector <std::pair <size_t, size_t>>
-X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const size_t index2)
+X3DIndexedFaceSetSelectionObject::selectLineLoop (const size_t index1, const size_t index2) const
 {
 	std::vector <std::pair <size_t, size_t>> lineLoop;
 	std::set <int32_t>                       points;
@@ -720,7 +809,7 @@ void
 X3DIndexedFaceSetSelectionObject::selectLineLoop (size_t index1,
                                                   size_t index2,
                                                   std::vector <std::pair <size_t, size_t>> & lineLoop,
-                                                  std::set <int32_t> & points)
+                                                  std::set <int32_t> & points) const
 {
 	const auto point1  = getCoord () -> get1Point (coordIndex () [index1]);
 	const auto point2  = getCoord () -> get1Point (coordIndex () [index2]);
@@ -759,6 +848,32 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (size_t index1,
 		lineLoop .emplace_back (nextEdge);
 	}
 	while (points .emplace (coordIndex () [index2]) .second);
+}
+
+std::vector <size_t>
+X3DIndexedFaceSetSelectionObject::selectFaceLoop (const size_t face) const
+{
+	std::vector <size_t> faceLoop;
+	std::set <size_t>    faces = { face };
+	
+	{
+		const auto faceNormal = getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+
+		for (const auto & edge : getFaceSelection () -> getFaceEdges (face))
+		{
+			const auto adjacentFaces = getFaceSelection () -> getAdjacentFaces (edge);
+
+			for (const auto & adjacentFace : adjacentFaces)
+			{
+				if (adjacentFace == face)
+					continue;
+
+				getPolygonNormal (getFaceSelection () -> getFaceVertices (adjacentFace));
+			}
+		}
+	}
+
+	return faceLoop;
 }
 
 ///  Update hot and active points and edges geometries.

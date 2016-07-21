@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
 
-#include "X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetSelectionObject.h"
 
 #include "../../../Editing/Selection/X3DFaceSelection.h"
 
@@ -66,7 +66,7 @@ class CoordinateDouble;
 class Arc2D;
 
 class X3DIndexedFaceSetKnifeObject :
-	virtual public X3DIndexedFaceSetTool
+	virtual public X3DIndexedFaceSetSelectionObject
 {
 public:
 

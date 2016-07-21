@@ -284,7 +284,7 @@ X3DGeometrySelectionEditor::on_geometry_selection_uniform_scale_toggled ()
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
 X3DGeometrySelectionEditor::getCurrentTool () const
 {
-	const auto & geometryNodes = getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ();
+	const auto geometryNodes = getNodes <X3D::X3DBaseNode> (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes (), { X3D::X3DConstants::IndexedFaceSetTool });
 
 	const auto result = std::max_element (geometryNodes .begin (),
 	                                      geometryNodes .end (),

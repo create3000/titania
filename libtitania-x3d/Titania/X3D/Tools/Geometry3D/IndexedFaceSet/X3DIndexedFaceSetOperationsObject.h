@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_OPERATIONS_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_OPERATIONS_OBJECT_H__
 
-#include "X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetSelectionObject.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DIndexedFaceSetOperationsObject :
-	virtual public X3DIndexedFaceSetTool
+	virtual public X3DIndexedFaceSetSelectionObject
 
 {
 public:

@@ -5,7 +5,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 17 Jul 2016 12:08:09 GMT"
+META "modified" "Wed, 20 Jul 2016 15:38:45 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -66,17 +66,18 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF ActiveFace Shape {
+            value DEF ActiveEdges Shape {
               appearance Appearance {
-                material DEF ActvieFaceMaterial Material {
+                lineProperties DEF _1 LineProperties {
+                  linewidthScaleFactor 2
+                }
+                material DEF ActiveMaterial Material {
                   diffuseColor 0 0 0
                   emissiveColor 0.5 0.0792565 0
-                  transparency 0.635417
+                  transparency 0.618
                 }
               }
-              geometry DEF ActiveFaceGeometry IndexedFaceSet {
-                solid FALSE
-              }
+              geometry DEF ActiveEdgesGeometry IndexedLineSet { }
             }
           }
         ]
@@ -107,7 +108,7 @@ WorldInfo {
 Collision {
   enabled FALSE
   children [
-    DEF _1 ProximitySensor {
+    DEF _2 ProximitySensor {
       size -1 -1 -1
     }
     DEF SelectionSwitch Switch {
@@ -148,7 +149,7 @@ Collision {
       appearance Appearance {
         material Material {
           diffuseColor 0 0 0
-          emissiveColor 0.8 0.8 0.8
+          emissiveColor 1 1 0.7
           transparency 0.6
         }
       }
@@ -161,7 +162,18 @@ Collision {
       children DEF MagicFaceSwitch Switch {
         whichChoice 0
         children [
-          USE ActiveFace
+          DEF ActiveFace Shape {
+            appearance Appearance {
+              material DEF ActvieFaceMaterial Material {
+                diffuseColor 0 0 0
+                emissiveColor 0.5 0.0792565 0
+                transparency 0.635417
+              }
+            }
+            geometry DEF ActiveFaceGeometry IndexedFaceSet {
+              solid FALSE
+            }
+          }
           DEF HotFace Shape {
             appearance Appearance {
               material DEF HotMaterial Material {
@@ -190,9 +202,7 @@ Collision {
     }
     DEF SelectedEdges Shape {
       appearance Appearance {
-        lineProperties DEF _2 LineProperties {
-          linewidthScaleFactor 2
-        }
+        lineProperties USE _1
         material DEF SelectedMaterial Material {
           diffuseColor 0 0 0
           emissiveColor 1 0.75154 0
@@ -217,17 +227,7 @@ Collision {
         DEF MagicEdgesSwitch Switch {
           whichChoice 0
           children [
-            DEF ActiveEdges Shape {
-              appearance Appearance {
-                lineProperties USE _2
-                material DEF ActiveMaterial Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.5 0.0792565 0
-                  transparency 0.207602
-                }
-              }
-              geometry DEF ActiveEdgesGeometry IndexedLineSet { }
-            }
+            USE ActiveEdges
             DEF HotEdges Shape {
               appearance Appearance {
                 lineProperties LineProperties {
@@ -435,9 +435,9 @@ ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
 ROUTE _6.linetype_changed TO _9.set_linetype
 ROUTE _9.linetype_changed TO _6.set_linetype
-ROUTE _1.orientation_changed TO KnifeStartPoint.set_rotation
-ROUTE _1.orientation_changed TO KnifeEndPoint.set_rotation
-ROUTE _1.orientation_changed TO KnifeArc.set_rotation
+ROUTE _2.orientation_changed TO KnifeStartPoint.set_rotation
+ROUTE _2.orientation_changed TO KnifeEndPoint.set_rotation
+ROUTE _2.orientation_changed TO KnifeArc.set_rotation
 ROUTE KnifeSwitch.whichChoice_changed TO SelectionSwitch.set_whichChoice
 
 EXPORT ActiveEdgesGeometry

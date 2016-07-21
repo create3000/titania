@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_TRANSFORM_OBJECT_H__
 
-#include "X3DIndexedFaceSetTool.h"
+#include "X3DIndexedFaceSetSelectionObject.h"
 
 namespace titania {
 namespace X3D {
@@ -64,7 +64,7 @@ class ScreenGroup;
 class CoordinateDouble;
 
 class X3DIndexedFaceSetTransformObject :
-	virtual public X3DIndexedFaceSetTool
+	virtual public X3DIndexedFaceSetSelectionObject
 {
 public:
 

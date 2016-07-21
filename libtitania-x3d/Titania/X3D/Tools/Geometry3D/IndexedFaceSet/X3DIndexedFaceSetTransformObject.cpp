@@ -78,21 +78,21 @@ X3DIndexedFaceSetTransformObject::Fields::Fields () :
 { }
 
 X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
-	       IndexedFaceSet (getExecutionContext ()),
-	X3DIndexedFaceSetTool (),
-	               fields (),
-	          touchSensor (),
-	          planeSensor (),
-	    planeSensorNormal (),
-	  transformToolSwitch (),
-	        transformNode (),
-	        transformTool (),
-	   selectionTransform (new Transform (getExecutionContext ())),
-	       selectionCoord (),
-	         translations (0),
-	         axisRotation (),
-	               active (false),
-	             undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
+	                  IndexedFaceSet (getExecutionContext ()),
+	X3DIndexedFaceSetSelectionObject (),
+	                          fields (),
+	                     touchSensor (),
+	                     planeSensor (),
+	               planeSensorNormal (),
+	             transformToolSwitch (),
+	                   transformNode (),
+	                   transformTool (),
+	              selectionTransform (new Transform (getExecutionContext ())),
+	                  selectionCoord (),
+	                    translations (0),
+	                    axisRotation (),
+	                          active (false),
+	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
 	//addType (X3DConstants::X3DIndexedFaceSetTransformObject);
 
@@ -413,7 +413,7 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 
 						for (const auto & e : edge .second)
 						{
-							for (const auto & face : getFaceSelection () -> getAdjacentFaces (X3DFaceSelection::Edge { e .first, e .second }))
+							for (const auto & face : getFaceSelection () -> getAdjacentFaces (e))
 								faces. emplace (face);
 
 							break;

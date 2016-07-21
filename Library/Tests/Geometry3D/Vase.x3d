@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Wed, 20 Jul 2016 13:53:04 GMT'/>
+    <meta name='modified' content='Thu, 21 Jul 2016 06:07:45 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -46,15 +46,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='0.242431020874476, 1.30468114585453, 0.895696978572671'/>
+              value='1.10186598785381, 1.25090110418995, 0.302830397850734'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.989026853670843, 0.142499988483874, 0.0389825088988389, 5.74348536297574'/>
+              value='-0.438965883999777, 0.86316537678208, 0.249508486847531, 1.16466492888476'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='0.319441457281788, 0.726053426166182, -0.0797049750686453'/>
+              value='0.398386777417695, 0.734403419573784, -0.116063814521438'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'

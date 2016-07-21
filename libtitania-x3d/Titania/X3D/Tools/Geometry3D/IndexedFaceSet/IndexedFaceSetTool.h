@@ -61,6 +61,7 @@ namespace X3D {
 
 class IndexedFaceSetTool :
 	virtual public X3DIndexedFaceSetTool,
+	virtual public X3DIndexedFaceSetSelectionObject,
 	public X3DIndexedFaceSetTransformObject,
 	public X3DIndexedFaceSetOperationsObject,
 	public X3DIndexedFaceSetKnifeObject

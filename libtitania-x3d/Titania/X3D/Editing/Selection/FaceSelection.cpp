@@ -246,10 +246,10 @@ FaceSelection::getAdjacentFaces (const Points & points) const
 }
 
 std::vector <size_t>
-FaceSelection::getAdjacentFaces (const Edge & edge) const
+FaceSelection::getAdjacentFaces (const std::pair <size_t, size_t> & edge) const
 {
-	const auto faces0 = getAdjacentFaces (geometryNode -> coordIndex () [edge .index0]);
-	const auto faces1 = getAdjacentFaces (geometryNode -> coordIndex () [edge .index1]);
+	const auto faces0 = getAdjacentFaces (geometryNode -> coordIndex () [edge .first]);
+	const auto faces1 = getAdjacentFaces (geometryNode -> coordIndex () [edge .second]);
 
 	std::vector <size_t> set0;
 	std::vector <size_t> set1;

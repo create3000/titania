@@ -116,7 +116,7 @@ public:
 	getAdjacentFaces (const Points &) const;
 
 	std::vector <size_t>
-	getAdjacentFaces (const Edge &) const;
+	getAdjacentFaces (const std::pair <size_t, size_t> &) const;
 
 	Face
 	getClosestFace (const Vector3d & , const Faces &) const;

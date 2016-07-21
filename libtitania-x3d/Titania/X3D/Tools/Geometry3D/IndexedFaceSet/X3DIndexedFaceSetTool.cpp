@@ -60,7 +60,6 @@ X3DIndexedFaceSetTool::Fields::Fields () :
 X3DIndexedFaceSetTool::X3DIndexedFaceSetTool () :
 	                  IndexedFaceSet (getExecutionContext ()),
 	     X3DComposedGeometryNodeTool (),
-	X3DIndexedFaceSetSelectionObject (),
 	                          fields ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetTool);
@@ -70,7 +69,6 @@ void
 X3DIndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool::initialize ();
-	X3DIndexedFaceSetSelectionObject::initialize ();
 }
 
 void
@@ -134,7 +132,6 @@ X3DIndexedFaceSetTool::dispose ()
 {
 	__LOG__ << std::endl;
 
-	X3DIndexedFaceSetSelectionObject::dispose ();
 	X3DComposedGeometryNodeTool::dispose ();
 }
 

@@ -73,7 +73,7 @@ X3DIndexedFaceSetKnifeObject::Fields::Fields () :
 
 X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                  IndexedFaceSet (getExecutionContext ()),
-	           X3DIndexedFaceSetTool (),
+	X3DIndexedFaceSetSelectionObject (),
 	                          fields (),
 	             knifeSelectionGroup (),
 	                knifeTouchSensor (),
