@@ -72,7 +72,7 @@ static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
 	             transform (new SFBool ()),
-	axisAlignedBoundingBox (new SFBool ()),
+	axisAlignedBoundingBox (new SFBool (true)),
 	              isActive (new SFBool ()),
 	             touchTime (new SFTime ())
 { }

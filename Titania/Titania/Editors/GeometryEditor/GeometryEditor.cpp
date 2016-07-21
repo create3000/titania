@@ -149,7 +149,7 @@ GeometryEditor::configure ()
 	getPaintSelectionButton ()           .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getSelectLineLoopMenuItem ()         .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()            .set_active (getConfig () -> get <bool> ("transform"));
-	getAxisAlignedBoundingBoxMenuItem () .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox"));
+	getAxisAlignedBoundingBoxMenuItem () .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
 	
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
