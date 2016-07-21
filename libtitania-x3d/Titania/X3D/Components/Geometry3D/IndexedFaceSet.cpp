@@ -208,10 +208,9 @@ IndexedFaceSet::build ()
 
 	// Fill GeometryNode
 
-	int    face              = 0;
-	GLenum vertexMode        = getVertexMode (polygons [0] .elements [0] .size ());
-	GLenum currentVertexMode = 0;
-	size_t numVertices       = 0;
+	int    face        = 0;
+	GLenum vertexMode  = getVertexMode (polygons [0] .elements [0] .size ());
+	size_t numVertices = 0;
 
 	for (const auto & polygon : polygons)
 	{
@@ -219,16 +218,16 @@ IndexedFaceSet::build ()
 
 		for (const auto & element : polygon .elements)
 		{
-			currentVertexMode = getVertexMode (element .size ());
+			const auto currentVertexMode  = getVertexMode (element .size ());
+			const auto currentNumVertices = getVertices () .size ();
 
-			if (currentVertexMode not_eq vertexMode or vertexMode == GL_POLYGON)
+			if (currentVertexMode not_eq vertexMode or (vertexMode == GL_POLYGON and currentNumVertices))
 			{
-				const size_t size  = getVertices () .size ();
-				const size_t count = size - numVertices;
+				const auto count = currentNumVertices - numVertices;
 
 				addElements (vertexMode, count);
 
-				numVertices = size;
+				numVertices = currentNumVertices;
 				vertexMode  = currentVertexMode;
 			}
 
@@ -765,7 +764,7 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	for (size_t i = faceIndex, last = faceIndex + count; i < last; ++ i)
 	{
 		const auto i0 = i;
-		const auto i1 = i + 1 == size ? faceIndex : i + 1;
+		const auto i1 = i + 1 == last ? faceIndex : i + 1;
 
 	   if (coordIndex () [i0] not_eq coordIndex () [i1])
 	      indices .emplace_back (i0);

@@ -109,6 +109,12 @@ public:
 	std::vector <size_t>
 	getFaces () const;
 
+	size_t
+	getNumFaces () const;
+
+	size_t
+	getFaceNumber (const size_t) const;
+
 	Faces
 	getAdjacentFaces (const int32_t) const;
 
@@ -133,11 +139,8 @@ public:
 	std::vector <std::pair <size_t, size_t>>
 	getFaceEdges (const size_t) const;
 
-	size_t
-	getFaceNumber (const size_t) const;
-
-	size_t
-	getNumFaces () const;
+	Vector3d
+	getFaceCenter (const size_t) const;
 
 	std::vector <std::pair <size_t, size_t>>
 	getAdjacentEdges (const Points &) const;

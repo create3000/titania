@@ -220,6 +220,18 @@ FaceSelection::getFaces () const
 	return faces;
 }
 
+size_t
+FaceSelection::getNumFaces () const
+{
+	return faceNumbers .size ();
+}
+
+size_t
+FaceSelection::getFaceNumber (const size_t vertex) const
+{
+	return faceNumbers [vertex];
+}
+
 FaceSelection::Faces
 FaceSelection::getAdjacentFaces (const int32_t index) const
 {
@@ -421,16 +433,26 @@ FaceSelection::getFaceEdges (const size_t face) const
 	return edges;
 }
 
-size_t
-FaceSelection::getFaceNumber (const size_t vertex) const
+Vector3d
+FaceSelection::getFaceCenter (const size_t face) const
 {
-	return faceNumbers [vertex];
-}
+	Vector3d center;
+	size_t   n = 0;
 
-size_t
-FaceSelection::getNumFaces () const
-{
-	return faceNumbers .size ();
+	for (size_t i = face, size = geometryNode -> coordIndex () .size () - 1; i < size; ++ i)
+	{
+		const auto index = geometryNode -> coordIndex () [i] .getValue ();
+
+		if (index < 0)
+			break;
+
+		center += coordNode -> get1Point (index);
+		n      += 1;
+	}
+
+	center /= n;
+
+	return center;
 }
 
 std::vector <std::pair <size_t, size_t>>

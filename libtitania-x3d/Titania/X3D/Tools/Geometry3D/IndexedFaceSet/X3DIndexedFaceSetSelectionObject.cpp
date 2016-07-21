@@ -851,27 +851,64 @@ X3DIndexedFaceSetSelectionObject::selectLineLoop (size_t index1,
 }
 
 std::vector <size_t>
-X3DIndexedFaceSetSelectionObject::selectFaceLoop (const size_t face) const
+X3DIndexedFaceSetSelectionObject::selectFaceLoop (size_t currentFace) const
 {
 	std::vector <size_t> faceLoop;
-	std::set <size_t>    faces = { face };
-	
-	{
-		const auto faceNormal = getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
+	std::set <size_t>    faces = { -1, currentFace };
 
-		for (const auto & edge : getFaceSelection () -> getFaceEdges (face))
+	size_t previousFace = -1;
+
+__LOG__ << std::endl;
+__LOG__ << currentFace << std::endl;
+
+	do
+	{
+		faceLoop .emplace_back (currentFace);
+
+		const auto faceCenter = getFaceSelection () -> getFaceCenter (currentFace);
+
+		double minCosAngle = 2;
+		size_t nextFace    = -1;
+
+		for (const auto & edge : getFaceSelection () -> getFaceEdges (currentFace))
 		{
 			const auto adjacentFaces = getFaceSelection () -> getAdjacentFaces (edge);
+			const auto point1        = getCoord () -> get1Point (coordIndex () [edge .first]);
+			const auto point2        = getCoord () -> get1Point (coordIndex () [edge .second]);
+			const auto edgeCenter    = (point1 + point2) / 2.0;
+			const auto edgeVector    = normalize (faceCenter - edgeCenter);
 
 			for (const auto & adjacentFace : adjacentFaces)
 			{
-				if (adjacentFace == face)
+				if (adjacentFace == currentFace)
 					continue;
 
-				getPolygonNormal (getFaceSelection () -> getFaceVertices (adjacentFace));
+				if (adjacentFace == previousFace)
+					continue;
+
+				const auto adjacentFaceCenter = getFaceSelection () -> getFaceCenter (adjacentFace);
+				const auto adjacentEdgeVector = normalize (adjacentFaceCenter - edgeCenter);
+				const auto cosAngle           = dot (edgeVector, adjacentEdgeVector);
+
+__LOG__ << "  " << cosAngle << " " << adjacentFace << std::endl;
+
+				if (cosAngle == -1)
+					continue;
+
+				if (cosAngle < minCosAngle)
+				{
+					minCosAngle = cosAngle;
+					nextFace    = adjacentFace;
+				}
 			}
 		}
+
+__LOG__ << nextFace << std::endl;
+
+		previousFace = currentFace;
+		currentFace  = nextFace;
 	}
+	while (faces .emplace (currentFace) .second);
 
 	return faceLoop;
 }

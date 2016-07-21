@@ -513,7 +513,7 @@ private:
 	selectLineLoop (size_t, size_t, std::vector <std::pair <size_t, size_t>> &, std::set <int32_t> &) const;
 
 	std::vector <size_t>
-	selectFaceLoop (const size_t face) const;
+	selectFaceLoop (size_t) const;
 
 	void
 	selectHoles ();
