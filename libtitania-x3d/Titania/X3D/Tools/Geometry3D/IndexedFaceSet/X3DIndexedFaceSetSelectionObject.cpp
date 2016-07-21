@@ -858,9 +858,6 @@ X3DIndexedFaceSetSelectionObject::selectFaceLoop (size_t currentFace) const
 
 	size_t previousFace = -1;
 
-__LOG__ << std::endl;
-__LOG__ << currentFace << std::endl;
-
 	do
 	{
 		faceLoop .emplace_back (currentFace);
@@ -890,8 +887,6 @@ __LOG__ << currentFace << std::endl;
 				const auto adjacentEdgeVector = normalize (adjacentFaceCenter - edgeCenter);
 				const auto cosAngle           = dot (edgeVector, adjacentEdgeVector);
 
-__LOG__ << "  " << cosAngle << " " << adjacentFace << std::endl;
-
 				if (cosAngle == -1)
 					continue;
 
@@ -902,8 +897,6 @@ __LOG__ << "  " << cosAngle << " " << adjacentFace << std::endl;
 				}
 			}
 		}
-
-__LOG__ << nextFace << std::endl;
 
 		previousFace = currentFace;
 		currentFace  = nextFace;
