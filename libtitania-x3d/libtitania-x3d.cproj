@@ -804,6 +804,7 @@
     <None Include="Titania\X3D\Browser\Tools\X3DSelector.h" />
     <None Include="Titania\X3D\Browser\Tools\LightSaber.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectionType.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetLightSaberObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1352,6 +1353,7 @@
     <Compile Include="Titania\X3D\Browser\Tools\RectangleSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\LightSaber.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetLightSaberObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

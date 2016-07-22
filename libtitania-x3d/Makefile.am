@@ -528,6 +528,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetCutObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetKnifeObject.cpp \
+	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetLightSaberObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetOperationsObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetSelectionObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTool.cpp \

@@ -48,49 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_LIGHT_SABER_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_LIGHT_SABER_OBJECT_H__
 
-#include "X3DIndexedFaceSetTool.h"
-#include "X3DIndexedFaceSetOperationsObject.h"
-#include "X3DIndexedFaceSetKnifeObject.h"
-#include "X3DIndexedFaceSetLightSaberObject.h"
-#include "X3DIndexedFaceSetTransformObject.h"
+#include "X3DIndexedFaceSetCutObject.h"
 
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSetTool :
-	virtual public X3DIndexedFaceSetTool,
-	virtual public X3DIndexedFaceSetSelectionObject,
-	public X3DIndexedFaceSetTransformObject,
-	public X3DIndexedFaceSetOperationsObject,
-	public X3DIndexedFaceSetKnifeObject,
-	public X3DIndexedFaceSetLightSaberObject
+class X3DIndexedFaceSetLightSaberObject :
+	virtual public X3DIndexedFaceSetCutObject
 {
 public:
-
-	///  @name Construction
-
-	IndexedFaceSetTool (IndexedFaceSet* const );
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose ()
+	{ }
 
-	virtual
-	~IndexedFaceSetTool ();
+	~X3DIndexedFaceSetLightSaberObject ();
 
 
 protected:
 
 	///  @name Construction
 
+	X3DIndexedFaceSetLightSaberObject ();
+
 	virtual
 	void
-	initialize () final override;
+	initialize () override
+	{ }
+
+
+private:
+
+	virtual
+	bool
+	cut (const Line2d &) final override;
 
 };
 

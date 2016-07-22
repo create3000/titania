@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,53 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_TOOL_H__
-
-#include "X3DIndexedFaceSetTool.h"
-#include "X3DIndexedFaceSetOperationsObject.h"
-#include "X3DIndexedFaceSetKnifeObject.h"
 #include "X3DIndexedFaceSetLightSaberObject.h"
-#include "X3DIndexedFaceSetTransformObject.h"
 
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSetTool :
-	virtual public X3DIndexedFaceSetTool,
-	virtual public X3DIndexedFaceSetSelectionObject,
-	public X3DIndexedFaceSetTransformObject,
-	public X3DIndexedFaceSetOperationsObject,
-	public X3DIndexedFaceSetKnifeObject,
-	public X3DIndexedFaceSetLightSaberObject
+X3DIndexedFaceSetLightSaberObject::X3DIndexedFaceSetLightSaberObject () :
+	            IndexedFaceSet (getExecutionContext ()),
+	X3DIndexedFaceSetCutObject ()
 {
-public:
+	//addType (X3DConstants::X3DIndexedFaceSetLightSaberObject);
+}
 
-	///  @name Construction
+bool
+X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
+{
+	__LOG__ << cutLine << std::endl;
 
-	IndexedFaceSetTool (IndexedFaceSet* const );
+	return false;
+}
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~IndexedFaceSetTool ();
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-};
+X3DIndexedFaceSetLightSaberObject::~X3DIndexedFaceSetLightSaberObject ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

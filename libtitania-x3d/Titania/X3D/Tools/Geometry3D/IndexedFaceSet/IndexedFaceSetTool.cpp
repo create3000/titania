@@ -61,7 +61,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	 X3DIndexedFaceSetSelectionObject (),
 	 X3DIndexedFaceSetTransformObject (),
 	X3DIndexedFaceSetOperationsObject (),
-	     X3DIndexedFaceSetKnifeObject ()
+	     X3DIndexedFaceSetKnifeObject (),
+	X3DIndexedFaceSetLightSaberObject ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
@@ -116,11 +117,13 @@ IndexedFaceSetTool::initialize ()
 	X3DIndexedFaceSetTransformObject::initialize ();
 	X3DIndexedFaceSetOperationsObject::initialize ();
 	X3DIndexedFaceSetKnifeObject::initialize ();
+	X3DIndexedFaceSetLightSaberObject::initialize ();
 }
 
 void
 IndexedFaceSetTool::dispose ()
 {
+	X3DIndexedFaceSetLightSaberObject::dispose ();
 	X3DIndexedFaceSetKnifeObject::dispose ();
 	X3DIndexedFaceSetOperationsObject::dispose ();
 	X3DIndexedFaceSetTransformObject::dispose ();
