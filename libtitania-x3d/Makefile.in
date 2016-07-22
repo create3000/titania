@@ -199,11 +199,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.lo \
-	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo \
-	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo \
-	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.lo \
 	Titania/X3D/Browser/Rendering/MotionBlur.lo \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.lo \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.lo \
@@ -221,7 +218,10 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Texturing/X3DTexture.lo \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.lo \
 	Titania/X3D/Browser/Texturing3D/Texture3D.lo \
+	Titania/X3D/Browser/Tools/LassoSelection.lo \
+	Titania/X3D/Browser/Tools/RectangleSelection.lo \
 	Titania/X3D/Browser/Tools/TransformToolOptions.lo \
+	Titania/X3D/Browser/Tools/X3DSelector.lo \
 	Titania/X3D/Browser/Tools/X3DToolContext.lo \
 	Titania/X3D/Browser/X3DBrowser.lo \
 	Titania/X3D/Browser/X3DBrowserContext.lo \
@@ -977,11 +977,8 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
@@ -999,7 +996,10 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
+	Titania/X3D/Browser/Tools/LassoSelection.cpp \
+	Titania/X3D/Browser/Tools/RectangleSelection.cpp \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
+	Titania/X3D/Browser/Tools/X3DSelector.cpp \
 	Titania/X3D/Browser/Tools/X3DToolContext.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
@@ -1822,19 +1822,10 @@ Titania/X3D/Browser/PointingDeviceSensor/Hit.lo:  \
 Titania/X3D/Browser/PointingDeviceSensor/HitArray.lo:  \
 	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.lo:  \
-	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
-	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo:  \
 	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.lo:  \
-	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
-	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo:  \
-	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
-	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.lo:  \
 	Titania/X3D/Browser/PointingDeviceSensor/$(am__dirstamp) \
 	Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Rendering/$(am__dirstamp):
@@ -1941,7 +1932,16 @@ Titania/X3D/Browser/Tools/$(am__dirstamp):
 Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Tools/$(DEPDIR)
 	@: > Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Tools/LassoSelection.lo:  \
+	Titania/X3D/Browser/Tools/$(am__dirstamp) \
+	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Tools/RectangleSelection.lo:  \
+	Titania/X3D/Browser/Tools/$(am__dirstamp) \
+	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Tools/TransformToolOptions.lo:  \
+	Titania/X3D/Browser/Tools/$(am__dirstamp) \
+	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Tools/X3DSelector.lo:  \
 	Titania/X3D/Browser/Tools/$(am__dirstamp) \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Tools/X3DToolContext.lo:  \
@@ -3915,11 +3915,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/ParticleSystems/$(DEPDIR)/X3DParticleSystemsContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/Hit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/HitArray.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/LassoSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/RectangleSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DSelector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo@am__quote@
@@ -3935,7 +3932,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/X3DToolContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADAssembly.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/CADGeometry/$(DEPDIR)/CADFace.Plo@am__quote@

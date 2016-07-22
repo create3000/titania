@@ -48,24 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_LASSO_SELECTION_H__
-#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_LASSO_SELECTION_H__
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_RECTANGLE_SELECTION_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_RECTANGLE_SELECTION_H__
 
-#include "../PointingDeviceSensor/X3DSelector.h"
+#include "../Tools/X3DSelector.h"
 
 namespace titania {
 namespace X3D {
 
 class Browser;
 
-class LassoSelection :
+class RectangleSelection :
 	public X3DSelector
 {
 public:
 
 	///  @name Construction
 
-	LassoSelection (X3DExecutionContext* const);
+	RectangleSelection (X3DExecutionContext* const);
 
 	virtual
 	X3DBaseNode*
@@ -94,11 +94,25 @@ public:
 
 private:
 
+	///  @name Operations
+
+	virtual
+	void
+	addPoint (const double, const double) final override;
+
+	virtual
+	void
+	clear () final override;
+
 	///  @name Static members
 
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	//  @name Members
+
+	Vector2d startPoint;
 
 };
 

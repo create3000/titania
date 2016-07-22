@@ -657,8 +657,6 @@
     <None Include="Titania\X3D\InputOutput\GoldenGate.h" />
     <None Include="Titania\X3D\Parser\Wavefront\Parser.h" />
     <None Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Arguments.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\Global.h" />
     <None Include="Titania\X3D\JavaScript\PeaseBlossom\ObjectType.h" />
@@ -772,7 +770,6 @@
     <None Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.h" />
     <None Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.h" />
-    <None Include="Titania\X3D\Browser\PointingDeviceSensor\RectangleSelection.h" />
     <None Include="share\titania\tools\CoordinateTool.x3dv" />
     <None Include="Titania\X3D\Editing\Selection\FaceSelection.h" />
     <None Include="Titania\X3D\Editing\Selection\X3DFaceSelection.h" />
@@ -802,6 +799,9 @@
       <DeployService-TargetDirectoryId>CommonApplicationData</DeployService-TargetDirectoryId>
     </None>
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetCutObject.h" />
+    <None Include="Titania\X3D\Browser\Tools\LassoSelection.h" />
+    <None Include="Titania\X3D\Browser\Tools\RectangleSelection.h" />
+    <None Include="Titania\X3D\Browser\Tools\X3DSelector.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1241,8 +1241,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\ConeOptions.cpp" />
     <Compile Include="Titania\X3D\InputOutput\GoldenGate.cpp" />
     <Compile Include="Titania\X3D\Parser\Wavefront\Parser.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\LassoSelection.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\X3DArrayField.cpp" />
     <Compile Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\ArrayFields.cpp" />
@@ -1325,7 +1323,6 @@
     <Compile Include="Titania\X3D\Tools\Rendering\X3DCoordinateNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DGeometricPropertyNodeTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Navigation\X3DExamineViewer.cpp" />
-    <Compile Include="Titania\X3D\Browser\PointingDeviceSensor\RectangleSelection.cpp" />
     <Compile Include="Titania\X3D\Editing\Selection\FaceSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Core\Clipboard.cpp" />
     <Compile Include="Titania\X3D\Base\International.cpp" />
@@ -1349,6 +1346,9 @@
     <Compile Include="Titania\X3D\Editing\Combine.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\X3DTransformNodeTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetCutObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\LassoSelection.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\RectangleSelection.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\X3DSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

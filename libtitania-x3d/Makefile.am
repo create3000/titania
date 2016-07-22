@@ -72,11 +72,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/ParticleSystems/X3DParticleSystemsContext.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/Hit.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/LassoSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/RectangleSelection.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
-	Titania/X3D/Browser/PointingDeviceSensor/X3DSelector.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
@@ -94,7 +91,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Texturing/X3DTexture.cpp \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
+	Titania/X3D/Browser/Tools/LassoSelection.cpp \
+	Titania/X3D/Browser/Tools/RectangleSelection.cpp \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
+	Titania/X3D/Browser/Tools/X3DSelector.cpp \
 	Titania/X3D/Browser/Tools/X3DToolContext.cpp \
 	Titania/X3D/Browser/X3DBrowser.cpp \
 	Titania/X3D/Browser/X3DBrowserContext.cpp \
