@@ -172,13 +172,24 @@ Shape::pointer ()
 	if (not getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
 		return;
 
-	std::vector <IntersectionPtr> itersections;
-
-	if (getBrowser () -> getSelectionBuffer ())
+	switch (getBrowser () -> getSelectionType ())
 	{
-		getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer (), itersections);
-		return;
+		case SelectionType::DEFAULT:
+			touch ();
+			break;
+		case SelectionType::LASSO:
+			lasso ();
+			break;
+		case SelectionType::CUT:
+			cut ();
+			break;
 	}
+}
+
+void
+Shape::touch ()
+{
+	std::vector <IntersectionPtr> itersections;
 
 	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), getBrowser () -> getProjectionMatrix (), Viewport4i ());
 
@@ -220,6 +231,20 @@ Shape::pointer ()
 	}
 
 	getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
+}
+
+void
+Shape::lasso ()
+{
+	std::vector <IntersectionPtr> itersections;
+
+	getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer (), itersections);
+}
+
+void
+Shape::cut ()
+{
+	getGeometry () -> cut (getBrowser () -> getCutLine ());
 }
 
 void

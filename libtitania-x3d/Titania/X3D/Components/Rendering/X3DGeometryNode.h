@@ -169,6 +169,10 @@ public:
 	intersects (CollisionSphere3d, const CollectableObjectArray &) const;
 
 	virtual
+	bool
+	cut (const Line2d &);
+
+	virtual
 	void
 	triangulate (std::vector <Color4f> &, TexCoordArray &, std::vector <Vector3f> &, std::vector <Vector3d> &) const;
 

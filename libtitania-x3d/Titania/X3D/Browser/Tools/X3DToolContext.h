@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtr.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -69,6 +70,14 @@ public:
 	const X3DPtr <TransformToolOptions> &
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
+
+	void
+	setCutLine (const Line2d & value)
+	{ cutLine = value; }
+
+	const Line2d &
+	getCutLine () const
+	{ return cutLine; }
 
 	///  @name Destruction
 
@@ -94,6 +103,7 @@ protected:
 private:
 
 	X3DPtr <TransformToolOptions> transformToolOptions;
+	Line2d                        cutLine;
 
 };
 

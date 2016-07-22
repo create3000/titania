@@ -162,6 +162,13 @@ public:
 		return d - dot (d, direction ()) * direction ();
 	}
 
+	///  Returns the closest point from @a point to this line on this line.
+	vector2 <Type>
+	closest_point (const vector2 <Type> & point) const
+	{
+		return this -> point () + direction () * dot (point - this -> point (), direction ());
+	}
+
 	///  Returns the closest point from @a line to this line on this line.
 	///  The return value is the angle between both lines. The return value
 	///  must be checked whether both lines are parallel.

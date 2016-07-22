@@ -397,7 +397,8 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 {
 	try
 	{
-		Vector3d closestPoint;
+		Vector2d closestPoint2d;
+		Vector3d closestPoint3d;
 	
 		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
 		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
@@ -405,13 +406,13 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::points_type ());
 		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-	
+
 		// Determine closeset point.
-		edgeScreen .closest_point (cutScreen, closestPoint);
-		const auto hitRay = ViewVolume::unProjectLine (closestPoint .x (), closestPoint .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		edgeLine .closest_point (hitRay, closestPoint);
-	
-		return closestPoint;
+		edgeScreen .intersects (cutScreen, closestPoint2d);
+		const auto hitRay = ViewVolume::unProjectLine (closestPoint2d .x (), closestPoint2d .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		edgeLine .closest_point (hitRay, closestPoint3d);
+
+		return closestPoint3d;
 	}
 	catch (const std::domain_error &)
 	{

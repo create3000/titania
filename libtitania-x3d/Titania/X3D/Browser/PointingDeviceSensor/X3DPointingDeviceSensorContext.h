@@ -57,6 +57,7 @@
 #include "../../Types/Pointer.h"
 #include "HitArray.h"
 #include "Intersection.h"
+#include "SelectionType.h"
 
 namespace titania {
 namespace X3D {
@@ -99,6 +100,14 @@ public:
 	size_t
 	getLayerNumber () const
 	{ return layerNumber; }
+
+	void
+	setSelectionType (const SelectionType value)
+	{ selectionType = value; }
+
+	SelectionType
+	getSelectionType () const
+	{ return selectionType; }
 
 	const std::shared_ptr <FrameBuffer> &
 	getSelectionBuffer () const
@@ -204,6 +213,7 @@ private:
 	size_t                                    layerNumber;
 	time_type                                 pressTime;
 	bool                                      hasMoved;
+	SelectionType                             selectionType;
 	std::shared_ptr <FrameBuffer>             selectionBuffer;
 	std::shared_ptr <FrameBuffer>             depthBuffer;
 

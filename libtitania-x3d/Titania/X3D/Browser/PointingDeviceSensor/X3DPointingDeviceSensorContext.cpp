@@ -77,6 +77,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	    layerNumber (0),
 	      pressTime (0),
 	       hasMoved (false),
+	  selectionType (SelectionType::DEFAULT),
 	selectionBuffer (),
 	    depthBuffer ()
 {

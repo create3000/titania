@@ -803,6 +803,7 @@
     <None Include="Titania\X3D\Browser\Tools\RectangleSelection.h" />
     <None Include="Titania\X3D\Browser\Tools\X3DSelector.h" />
     <None Include="Titania\X3D\Browser\Tools\LightSaber.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectionType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

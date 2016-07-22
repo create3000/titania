@@ -127,7 +127,7 @@ private:
 	void
 	display ();
 
-	Vector3d
+	Vector2d
 	getPoint (const double, const double) const;
 
 	///  @name Static members
@@ -138,7 +138,7 @@ private:
 
 	///  @name Members
 
-	std::vector <Vector3d> points;
+	std::vector <Vector2d> points;
 
 };
 

@@ -93,12 +93,7 @@ __LOG__ << std::endl;
 	getBrowser () -> addEvent ();
 	getBrowser () -> displayed () .addInterest (this, &LightSaber::display);
 
-	const auto & viewport = getBrowser () -> getRectangle ();
-	const double height   = viewport [3];
-
-	points [0] = Vector3d (event -> x, height - event -> y, 0);
-	points [1] = points [0];
-
+	points [0] = points [1] = getPoint (event -> x, event -> y);
 	return false;
 }
 
@@ -112,7 +107,17 @@ __LOG__ << std::endl;
 		getBrowser () -> addEvent ();
 		getBrowser () -> displayed () .removeInterest (this, &LightSaber::display);
 
-		points [0] = points [1] = getPoint (event -> x, event -> y);
+		points [1] = getPoint (event -> x, event -> y);
+
+		if (points [0] not_eq points [1])
+		{
+			const auto selectionType = getBrowser () -> getSelectionType ();
+			getBrowser () -> setSelectionType (SelectionType::CUT);
+			getBrowser () -> setCutLine (Line2d (points [0], points [1], points_type ()));
+			getBrowser () -> touch (points [0] .x (), points [0] .y ());
+			getBrowser () -> setSelectionType (selectionType);
+		}
+
 		return false;
 	}
 	catch (const X3DError & error)
@@ -151,7 +156,7 @@ LightSaber::display ()
 	glLoadIdentity ();
 
 	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_DOUBLE, 0, points .data ());
+	glVertexPointer (2, GL_DOUBLE, 0, points .data ());
 
 	glLineWidth (2);
 	glColor3f (0, 0, 0);
@@ -165,13 +170,13 @@ LightSaber::display ()
 	glEnable (GL_DEPTH_TEST);
 }
 
-Vector3d
+Vector2d
 LightSaber::getPoint (const double x, const double y) const
 {
 	const auto & viewport = getBrowser () -> getRectangle ();
 	const double height   = viewport [3];
 
-	return Vector3d (x, height - y, 0);
+	return Vector2d (x, height - y);
 }
 
 void

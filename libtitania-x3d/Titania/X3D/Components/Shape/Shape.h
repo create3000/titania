@@ -129,6 +129,15 @@ private:
 	void
 	pointer ();
 
+	void
+	touch ();
+
+	void
+	lasso ();
+
+	void
+	cut ();
+
 	virtual
 	void
 	draw (const ShapeContainer* const) final override;

@@ -210,17 +210,16 @@ throw (std::domain_error)
 	                 (1 + in .z () * d) / 2);
 }
 
-Line3d
+Line2d
 ViewVolume::projectLine (const Line3d & line, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
 	Vector3d point1 = ViewVolume::projectPoint (line .point (),                            modelview, projection, viewport);
 	Vector3d point2 = ViewVolume::projectPoint (line .point () + line .direction () * 1e9, modelview, projection, viewport);
 
-	point1 .z (0);
-	point2 .z (0);
-
-	return Line3d (point1, point2, points_type ());
+	return Line2d (Vector2d (point1 .x (), point1 .y ()),
+	               Vector2d (point2 .x (), point2 .y ()),
+	               points_type ());
 }
 
 } // X3D

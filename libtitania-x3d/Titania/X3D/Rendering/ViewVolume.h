@@ -104,7 +104,7 @@ public:
 	throw (std::domain_error);
 
 	static
-	Line3d
+	Line2d
 	projectLine (const Line3d &, const Matrix4d &, const Matrix4d &, const Vector4i &)
 	throw (std::domain_error);
 

@@ -423,6 +423,12 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 	return false;
 }
 
+bool
+X3DGeometryNode::cut (const Line2d & cutLine)
+{
+	return false;
+}
+
 void
 X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 	                          TexCoordArray & texCoords_,
