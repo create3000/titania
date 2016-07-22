@@ -51,9 +51,7 @@
 #ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_X3DINDEXED_FACE_SET_KNIFE_OBJECT_H__
 
-#include "X3DIndexedFaceSetSelectionObject.h"
-
-#include "../../../Editing/Selection/X3DFaceSelection.h"
+#include "X3DIndexedFaceSetCutObject.h"
 
 namespace titania {
 namespace X3D {
@@ -66,7 +64,7 @@ class CoordinateDouble;
 class Arc2D;
 
 class X3DIndexedFaceSetKnifeObject :
-	virtual public X3DIndexedFaceSetSelectionObject
+	virtual public X3DIndexedFaceSetCutObject
 {
 public:
 
@@ -79,14 +77,6 @@ public:
 	const SFBool &
 	cutPolygons () const
 	{ return *fields .cutPolygons; }
-
-	SFBool &
-	cutSnapping ()
-	{ return *fields .cutSnapping; }
-
-	const SFBool &
-	cutSnapping () const
-	{ return *fields .cutSnapping; }
 
 	///  @name Destruction
 
@@ -143,12 +133,6 @@ private:
 	bool
 	snapToVertex (const size_t, std::vector <int32_t> &, Vector3d &);
 
-	std::vector <int32_t>
-	cut ();
-
-	void
-	addPoint (const size_t &, const int32_t, const Vector3d &);
-
 	Vector3d
 	getClosestPoint (const std::pair <size_t, size_t> &,
 	                 const std::pair <Vector3d, Vector3d> &) const;
@@ -160,7 +144,6 @@ private:
 		Fields ();
 
 		SFBool* const cutPolygons;
-		SFBool* const cutSnapping;
 	};
 
 	Fields fields;
@@ -184,13 +167,12 @@ private:
 	std::pair <Vector3d, Vector3d> cutPoints;    // points of visual cut line
 
 
-	std::vector <int32_t>      startPoints; // One ot two points, depending on whether start from point or edge
-	std::vector <int32_t>      endPoints;   // One ot two points, depending on whether end at point or edge
+	std::vector <int32_t>      startPoints; // One or two points, depending on whether start from point or edge
+	std::vector <int32_t>      endPoints;   // One or two points, depending on whether end at point or edge
 	std::pair <size_t, size_t> startEdge;   // Start edge, must be determined again when cut
 	std::pair <size_t, size_t> endEdge;     // End edge, must be determined again when cut
 
 	bool active;
-
 
 };
 
