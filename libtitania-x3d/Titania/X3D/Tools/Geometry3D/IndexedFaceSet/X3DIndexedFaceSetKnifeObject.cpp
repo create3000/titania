@@ -65,10 +65,11 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double SELECTION_DISTANCE = 10;
+static constexpr double SELECTION_DISTANCE = 8; // in pixel
 
 X3DIndexedFaceSetKnifeObject::Fields::Fields () :
-	 cutPolygons (new SFBool ())
+	 cutPolygons (new SFBool ()),
+	 cutSnapping (new SFBool (true))
 { }
 
 X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
@@ -541,6 +542,9 @@ X3DIndexedFaceSetKnifeObject::setEndMagicSelection (PlaneSensor* const planeSens
 bool
 X3DIndexedFaceSetKnifeObject::snapToCenter (const std::pair <size_t, size_t> & edge, Vector3d & point)
 {
+	if (not cutSnapping ())
+		return false;
+
 	const auto point1   = getCoord () -> get1Point (coordIndex () [edge .first]);
 	const auto point2   = getCoord () -> get1Point (coordIndex () [edge .second]);
 	const auto center   = (point1 + point2) / 2.0;
@@ -562,6 +566,9 @@ X3DIndexedFaceSetKnifeObject::snapToCenter (const std::pair <size_t, size_t> & e
 bool
 X3DIndexedFaceSetKnifeObject::snapToVertex (const size_t face, std::vector <int32_t> & points, Vector3d & vertex)
 {
+	if (not cutSnapping ())
+		return false;
+
 	const auto vertices      = getFaceSelection () -> getFaceVertices (face);
 	const auto closestPoint  = coordIndex () [getFaceSelection () -> getClosestVertex (vertex, vertices)];
 	const auto closestVertex = getCoord () -> get1Point (closestPoint);

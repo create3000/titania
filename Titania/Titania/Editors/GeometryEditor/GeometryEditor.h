@@ -248,6 +248,14 @@ private:
 	on_split_points_clicked () final override;
 
 	virtual
+	bool
+	on_cut_polygons_button_press_event (GdkEventButton*) final override;
+
+	virtual
+	void
+	on_cut_polygons_enable_snapping_toggled () final override;
+
+	virtual
 	void
 	on_form_new_face_clicked () final override;
 

@@ -2,6 +2,32 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkMenu" id="CutPolygonsMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="CutPolygonsEnableSnappingMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Enable Snapping</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_cut_polygons_button_press_event" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="TransformToolMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkCheckMenuItem" id="AxisAlignedBoundingBoxMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Axis Aligned Bounding Box</property>
+        <property name="use_underline">True</property>
+        <signal name="toggled" handler="on_axis_aligned_bounding_box_toggled" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
     <child>
@@ -303,6 +329,7 @@
                     <property name="xalign">0.5</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">False</property>
+                    <signal name="button-press-event" handler="on_cut_polygons_button_press_event" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image15">
                         <property name="visible">True</property>
@@ -390,6 +417,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">Toggle Transform Tool.</property>
+                    <signal name="button-press-event" handler="on_transform_tool_button_press_event" swapped="no"/>
                     <signal name="toggled" handler="on_transform_tool_toggled" swapped="no"/>
                     <child>
                       <object class="GtkImage" id="image17">
@@ -542,7 +570,7 @@
       <object class="GtkCheckMenuItem" id="SelectLineLoopMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Select Line Loop</property>
+        <property name="label" translatable="yes">Select Point, Line Or Face Loop</property>
         <property name="use_underline">True</property>
         <signal name="toggled" handler="on_select_line_loop_toggled" swapped="no"/>
       </object>

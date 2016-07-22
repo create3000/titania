@@ -63,6 +63,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("CutPolygonsMenu", m_CutPolygonsMenu);
+	m_builder -> get_widget ("CutPolygonsEnableSnappingMenuItem", m_CutPolygonsEnableSnappingMenuItem);
 	m_builder -> get_widget ("TransformToolMenu", m_TransformToolMenu);
 	m_builder -> get_widget ("AxisAlignedBoundingBoxMenuItem", m_AxisAlignedBoundingBoxMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
@@ -94,7 +96,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FacesMenuItem", m_FacesMenuItem);
 	m_builder -> get_widget ("SelectLineLoopMenuItem", m_SelectLineLoopMenuItem);
 
-	// Connect object Gtk::CheckMenuItem with id 'AxisAlignedBoundingBoxMenuItem'.
+	// Connect object Gtk::CheckMenuItem with id 'CutPolygonsEnableSnappingMenuItem'.
+	m_CutPolygonsEnableSnappingMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_enable_snapping_toggled));
 	m_AxisAlignedBoundingBoxMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_axis_aligned_bounding_box_toggled));
 
 	// Connect object Gtk::Revealer with id 'Widget'.
@@ -118,7 +121,8 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_DeleteFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_delete_selected_faces_clicked));
 	m_FlipVertexOrderingButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_flip_vertex_ordering_clicked));
 
-	// Connect object Gtk::RadioButton with id 'PaintSelectionButton'.
+	// Connect object Gtk::RadioButton with id 'CutPolygonsButton'.
+	m_CutPolygonsButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_button_press_event));
 	m_PaintSelectionButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
 	m_PaintSelectionButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 

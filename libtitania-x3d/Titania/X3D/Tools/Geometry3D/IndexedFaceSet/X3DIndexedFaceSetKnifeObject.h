@@ -80,6 +80,14 @@ public:
 	cutPolygons () const
 	{ return *fields .cutPolygons; }
 
+	SFBool &
+	cutSnapping ()
+	{ return *fields .cutSnapping; }
+
+	const SFBool &
+	cutSnapping () const
+	{ return *fields .cutSnapping; }
+
 	///  @name Destruction
 
 	virtual
@@ -152,6 +160,7 @@ private:
 		Fields ();
 
 		SFBool* const cutPolygons;
+		SFBool* const cutSnapping;
 	};
 
 	Fields fields;

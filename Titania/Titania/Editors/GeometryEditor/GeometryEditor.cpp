@@ -116,6 +116,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "deleteSelectedFaces",    new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "flipVertexOrdering",     new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutPolygons",            new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutSnapping",            new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	setup ();
@@ -146,11 +147,12 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getPaintSelectionButton ()           .set_active (getConfig () -> get <bool> ("paintSelection"));
-	getSelectLineLoopMenuItem ()         .set_active (getConfig () -> get <bool> ("selectLineLoop"));
-	getTransformToolButton ()            .set_active (getConfig () -> get <bool> ("transform"));
-	getAxisAlignedBoundingBoxMenuItem () .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
-	
+	getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
+	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
+	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
+	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
+	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
+
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
 
@@ -274,6 +276,7 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")      .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
 						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
 						coordEditor -> getField <X3D::SFBool>      ("cutPolygons")             .addInterest (node -> getField <X3D::SFBool>   ("cutPolygons"));
+						coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                   .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
 						node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
@@ -291,6 +294,7 @@ GeometryEditor::connect ()
 						node -> setField <X3D::SFBool>   ("transform",              coordEditor -> getField <X3D::SFBool>   ("transform"),              true);
 						node -> setField <X3D::SFBool>   ("axisAlignedBoundingBox", coordEditor -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"), true);
 						node -> setField <X3D::SFBool>   ("cutPolygons",            coordEditor -> getField <X3D::SFBool>   ("cutPolygons"),            true);
+						node -> setField <X3D::SFBool>   ("cutSnapping",            coordEditor -> getField <X3D::SFBool>   ("cutSnapping"),            true);
 
 						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
@@ -1000,6 +1004,22 @@ GeometryEditor::on_split_points_clicked ()
 	coordEditor -> setField <X3D::SFTime> ("splitPoints", chrono::now ());
 }
 
+bool
+GeometryEditor::on_cut_polygons_button_press_event (GdkEventButton* event)
+{
+	if (event -> button not_eq 3)
+		return false;
+
+	getCutPolygonsMenu () .popup (event -> button, event -> time);
+	return true;
+}
+
+void
+GeometryEditor::on_cut_polygons_enable_snapping_toggled ()
+{
+	coordEditor -> setField <X3D::SFBool> ("cutSnapping", getCutPolygonsEnableSnappingMenuItem () .get_active ());
+}
+
 void
 GeometryEditor::on_form_new_face_clicked ()
 {
@@ -1048,6 +1068,7 @@ GeometryEditor::store ()
 	getConfig () -> set ("axisAlignedBoundingBox", getAxisAlignedBoundingBoxMenuItem () .get_active ());
 	getConfig () -> set ("edgeColor",              coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
 	getConfig () -> set ("selector",               size_t (selector));
+	getConfig () -> set ("cutSnapping",            getCutPolygonsEnableSnappingMenuItem () .get_active ());
 
 	X3DGeometryEditorInterface::store ();
 }

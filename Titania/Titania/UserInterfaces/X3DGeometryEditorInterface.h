@@ -100,6 +100,14 @@ public:
 	}
 
 	Gtk::Menu &
+	getCutPolygonsMenu () const
+	{ return *m_CutPolygonsMenu; }
+
+	Gtk::CheckMenuItem &
+	getCutPolygonsEnableSnappingMenuItem () const
+	{ return *m_CutPolygonsEnableSnappingMenuItem; }
+
+	Gtk::Menu &
 	getTransformToolMenu () const
 	{ return *m_TransformToolMenu; }
 
@@ -223,6 +231,10 @@ public:
 
 	virtual
 	void
+	on_cut_polygons_enable_snapping_toggled () = 0;
+
+	virtual
+	void
 	on_axis_aligned_bounding_box_toggled () = 0;
 
 	virtual
@@ -264,6 +276,10 @@ public:
 	virtual
 	void
 	on_flip_vertex_ordering_clicked () = 0;
+
+	virtual
+	bool
+	on_cut_polygons_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	bool
@@ -343,6 +359,8 @@ private:
 
 	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Menu*                  m_CutPolygonsMenu;
+	Gtk::CheckMenuItem*         m_CutPolygonsEnableSnappingMenuItem;
 	Gtk::Menu*                  m_TransformToolMenu;
 	Gtk::CheckMenuItem*         m_AxisAlignedBoundingBoxMenuItem;
 	Gtk::Window*                m_Window;
