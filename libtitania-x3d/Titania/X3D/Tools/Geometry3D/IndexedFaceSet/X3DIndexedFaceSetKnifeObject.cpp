@@ -430,6 +430,8 @@ X3DIndexedFaceSetKnifeObject::setStartMagicSelection ()
 	const auto  vertices = getFaceSelection () -> getFaceVertices (face);
 
 	setHotPoints ({ });
+	setHotEdges ({ });
+	setHotFaces ({ });
 
 	cutFace = face;
 
