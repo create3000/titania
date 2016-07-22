@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra遝 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,114 +48,87 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_NAVIGATION_X3DEXAMINE_VIEWER_H__
-#define __TITANIA_X3D_BROWSER_NAVIGATION_X3DEXAMINE_VIEWER_H__
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_LIGHT_SABER_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_LIGHT_SABER_H__
 
-#include <gdkmm.h>
-
-#include "../../Components/Navigation/Viewpoint.h"
-#include "../../Components/Navigation/X3DViewpointNode.h"
-#include "../../Fields/SFNode.h"
-#include "../Navigation/X3DViewer.h"
+#include "../Navigation/X3DExamineViewer.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DExamineViewer :
-	public X3DViewer
+class LightSaber :
+	public X3DExamineViewer
 {
 public:
 
+	///  @name Constructors
+
+	LightSaber (X3DExecutionContext* const);
+
 	virtual
-	~X3DExamineViewer () = default;
+	LightSaber*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+	virtual
+	~LightSaber ();
 
 
 protected:
 
-	///  @name Construction
-
-	X3DExamineViewer ();
+	///  @name Constructors
 
 	virtual
 	void
 	initialize () override;
 
-	///  @name Event handler
-
-	virtual
-	bool
-	on_1button1_press_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_1button2_press_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_1button1_release_event (GdkEventButton*);
-
-	virtual
-	bool
-	on_motion1_notify_event (GdkEventMotion*);
-
-	virtual
-	bool
-	on_scroll_event (GdkEventScroll*);
-
 
 private:
 
-	///  @name Event handler
+	///  @name Event handlers
+
+	virtual
+	bool
+	on_1button1_press_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_1button1_release_event (GdkEventButton*) final override;
+
+	virtual
+	bool
+	on_motion1_notify_event (GdkEventMotion*) final override;
 
 	void
-	disconnect ();
-
-	bool
-	on_button_press_event (GdkEventButton*);
-
-	bool
-	on_1button_press_event (GdkEventButton*);
-
-	bool
-	on_2button_press_event (GdkEventButton*);
-
-	bool
-	on_3button_press_event (GdkEventButton*);
-
-	bool
-	on_button_release_event (GdkEventButton*);
-
-	bool
-	on_1button_release_event (GdkEventButton*);
-
-	bool
-	on_1button2_release_event (GdkEventButton*);
-
-	bool
-	on_2button_release_event (GdkEventButton*);
-
-	bool
-	on_3button_release_event (GdkEventButton*);
-
-	bool
-	on_motion_notify_event (GdkEventMotion*);
-
-	bool
-	on_motion2_notify_event (GdkEventMotion*);
-
-	///  @name Operations
-
-	bool
-	spin ();
-
-	void
-	addSpinning ();
+	display ();
 
 	Vector3d
-	getPositionOffset () const;
-
-	Rotation4d
-	getOrientationOffset ();
+	getPoint (const double, const double) const;
 
 	///  @name Static members
 
@@ -165,15 +138,7 @@ private:
 
 	///  @name Members
 
-	Rotation4d       orientationOffset;
-	Rotation4d       rotation;
-	Vector3d         fromVector;
-	Vector3d         fromPoint;
-	time_type        pressTime;
-	time_type        motionTime;
-	guint            button;
-	int              numClicks;
-	sigc::connection spin_id;
+	std::vector <Vector3d> points;
 
 };
 

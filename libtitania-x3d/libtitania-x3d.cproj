@@ -802,6 +802,7 @@
     <None Include="Titania\X3D\Browser\Tools\LassoSelection.h" />
     <None Include="Titania\X3D\Browser\Tools\RectangleSelection.h" />
     <None Include="Titania\X3D\Browser\Tools\X3DSelector.h" />
+    <None Include="Titania\X3D\Browser\Tools\LightSaber.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1349,6 +1350,7 @@
     <Compile Include="Titania\X3D\Browser\Tools\LassoSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\RectangleSelection.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\X3DSelector.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\LightSaber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

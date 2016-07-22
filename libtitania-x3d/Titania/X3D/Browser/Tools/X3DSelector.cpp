@@ -84,12 +84,6 @@ X3DSelector::initialize ()
 bool
 X3DSelector::on_1button1_press_event (GdkEventButton* event)
 {
-	if (getBrowser () -> getActiveLayer ())
-		getBrowser () -> getActiveLayer () -> getViewpoint () -> transitionStop ();
-
-	disconnect (); // from spinning
-
-	getBrowser () -> grab_focus ();
 	getBrowser () -> addEvent ();
 	getBrowser () -> displayed () .addInterest (this, &X3DSelector::display);
 
@@ -171,91 +165,77 @@ X3DSelector::clear ()
 void
 X3DSelector::display ()
 {
-	try
-	{
-		PolygonMode polygonMode (GL_FILL);
+	PolygonMode polygonMode (GL_FILL);
 
-		// Configure HUD
+	// Configure HUD
 
-		const auto & viewport = getBrowser () -> getRectangle ();
-		const int    width    = viewport [2];
-		const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getRectangle ();
+	const int    width    = viewport [2];
+	const int    height   = viewport [3];
 
-		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+	const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (projection .data ());
-		glMatrixMode (GL_MODELVIEW);
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (projection .data ());
+	glMatrixMode (GL_MODELVIEW);
 
-		// Display Lasso.
-		// Draw a black and a white line.
+	// Display Lasso.
+	// Draw a black and a white line.
 
-		glDisable (GL_DEPTH_TEST);
-		glLoadIdentity ();
+	glDisable (GL_DEPTH_TEST);
+	glLoadIdentity ();
 
-		glEnable (GL_BLEND);
-		glDisable (GL_CULL_FACE);
-		glColor4f (1, 1, 1, 0.2);
-		polygon ();
-		glDisable (GL_BLEND);
+	glEnable (GL_BLEND);
+	glDisable (GL_CULL_FACE);
+	glColor4f (1, 1, 1, 0.2);
+	polygon ();
+	glDisable (GL_BLEND);
 
-		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_DOUBLE, 0, points .data ());
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (3, GL_DOUBLE, 0, points .data ());
 
-		glLineWidth (2);
-		glColor3f (0, 0, 0);
-		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
+	glLineWidth (2);
+	glColor3f (0, 0, 0);
+	glDrawArrays (GL_LINE_LOOP, 0, points .size ());
 
-		glLineWidth (1);
-		glColor3f (1, 1, 1);
-		glDrawArrays (GL_LINE_LOOP, 0, points .size ());
+	glLineWidth (1);
+	glColor3f (1, 1, 1);
+	glDrawArrays (GL_LINE_LOOP, 0, points .size ());
 
-		glDisableClientState (GL_VERTEX_ARRAY);
-		glEnable (GL_DEPTH_TEST);
-	}
-	catch (const std::domain_error &)
-	{
-		// unProjectPoint is not posible
-	}
+	glDisableClientState (GL_VERTEX_ARRAY);
+	glEnable (GL_DEPTH_TEST);
 }
 
 void
 X3DSelector::draw ()
 {
-	try
-	{
-		PolygonMode polygonMode (GL_FILL);
+	PolygonMode polygonMode (GL_FILL);
 
-		// Configure HUD
+	// Configure HUD
 
-		const auto & viewport = getBrowser () -> getRectangle ();
-		const int    width    = viewport [2];
-		const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getRectangle ();
+	const int    width    = viewport [2];
+	const int    height   = viewport [3];
 
-		const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+	const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
 
-		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (projection .data ());
-		glMatrixMode (GL_MODELVIEW);
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (projection .data ());
+	glMatrixMode (GL_MODELVIEW);
 
-		// Display Lasso.
-		// Draw a black and a white line.
+	// Display Lasso.
+	// Draw a black and a white line.
 
-		glDisable (GL_DEPTH_TEST);
-		glLoadIdentity ();
+	glDisable (GL_DEPTH_TEST);
+	glLoadIdentity ();
 
-		glEnable (GL_BLEND);
-		glDisable (GL_CULL_FACE);
-		glColor4f (1, 1, 1, 1);
-		polygon ();
-		glDisable (GL_BLEND);
-	}
-	catch (const std::domain_error &)
-	{
-		// unProjectPoint is not posible
-	}
+	glEnable (GL_BLEND);
+	glDisable (GL_CULL_FACE);
+	glColor4f (1, 1, 1, 1);
+	polygon ();
+	glDisable (GL_BLEND);
 }
 
 void

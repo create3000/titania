@@ -84,7 +84,7 @@
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
-      <source stock-id="Knife" filename="icons/Knife.svg"/>
+      <source stock-id="Scissor" filename="icons/Scissor.svg"/>
       <source stock-id="gtk-media-resume" filename="icons/Resume.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>

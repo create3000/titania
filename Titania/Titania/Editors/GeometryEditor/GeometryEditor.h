@@ -248,6 +248,13 @@ private:
 	on_split_points_clicked () final override;
 
 	virtual
+	void
+	on_cut_polygons_toggled () final override;
+
+	void
+	set_cut_polygons ();
+
+	virtual
 	bool
 	on_cut_polygons_button_press_event (GdkEventButton*) final override;
 

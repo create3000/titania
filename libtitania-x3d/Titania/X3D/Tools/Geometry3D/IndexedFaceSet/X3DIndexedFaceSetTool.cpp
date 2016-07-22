@@ -62,7 +62,7 @@ X3DIndexedFaceSetTool::X3DIndexedFaceSetTool () :
 	     X3DComposedGeometryNodeTool (),
 	                          fields ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetTool);
+	addType (X3DConstants::X3DIndexedFaceSetTool);
 }
 
 void

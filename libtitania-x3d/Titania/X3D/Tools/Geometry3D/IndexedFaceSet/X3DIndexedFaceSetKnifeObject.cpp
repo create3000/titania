@@ -97,7 +97,7 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	                   endEdge (),
 	                    active (false)
 {
-	//addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
+	addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
 	addChildren (knifeSelectionGroup,
 	             knifeTouchSensor,
@@ -159,6 +159,11 @@ X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
 		{
 			select () = false;
 			getHotSwitch () -> whichChoice () = true;
+
+			setHotPoints ({ });
+			setHotEdges ({ });
+			setHotFaces ({ });
+			updateMagicSelection ();
 		}
 		else
 			select () = true;

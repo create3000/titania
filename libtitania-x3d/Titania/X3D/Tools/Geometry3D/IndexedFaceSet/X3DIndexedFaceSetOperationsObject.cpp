@@ -82,7 +82,7 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 	                  IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetSelectionObject ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetOperationsObject);
+	addType (X3DConstants::X3DIndexedFaceSetOperationsObject);
 }
 
 void

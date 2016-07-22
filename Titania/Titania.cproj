@@ -2457,7 +2457,6 @@
     <None Include="share\titania\ui\icons\Lines.svg" />
     <None Include="share\titania\ui\icons\Points.svg" />
     <None Include="share\titania\ui\icons\Triangulate.svg" />
-    <None Include="share\titania\ui\icons\Knife.svg" />
     <None Include="share\titania\Library\Primitives\Rendering\LineSet.x3dv" />
     <None Include="share\titania\ui\icons\Experimental.svg" />
     <None Include="share\titania\Library\Components\PointingDeviceSensor\TouchGroup.x3dv" />
@@ -2497,6 +2496,7 @@
     <None Include="share\titania\Library\Effects\Fire3.x3dv" />
     <None Include="Titania" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.h" />
+    <None Include="share\titania\ui\icons\Scissor.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

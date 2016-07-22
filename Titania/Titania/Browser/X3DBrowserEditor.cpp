@@ -434,7 +434,8 @@ X3DBrowserEditor::setMetaData ()
 			std::make_pair (X3D::X3DConstants::NoneViewer,         "NONE"),
 			std::make_pair (X3D::X3DConstants::LookAtViewer,       "LOOKAT"),
 			std::make_pair (X3D::X3DConstants::LassoSelection,     "LASSO_SELECTION_create3000.de"),
-			std::make_pair (X3D::X3DConstants::RectangleSelection, "RECTANGLE_SELECTION_create3000.de")
+			std::make_pair (X3D::X3DConstants::RectangleSelection, "RECTANGLE_SELECTION_create3000.de"),
+			std::make_pair (X3D::X3DConstants::LightSaber,         "LIGHT_SABER_create3000.de"),
 		};
 
 		const auto worldInfo   = createWorldInfo ();
@@ -505,7 +506,8 @@ X3DBrowserEditor::getMetaData ()
 			std::make_pair ("NONE",                              X3D::X3DConstants::NoneViewer),
 			std::make_pair ("LOOKAT",                            X3D::X3DConstants::LookAtViewer),
 			std::make_pair ("LASSO_SELECTION_create3000.de",     X3D::X3DConstants::LassoSelection),
-			std::make_pair ("RECTANGLE_SELECTION_create3000.de", X3D::X3DConstants::RectangleSelection)
+			std::make_pair ("RECTANGLE_SELECTION_create3000.de", X3D::X3DConstants::RectangleSelection),
+			std::make_pair ("LIGHT_SABER_create3000.de",         X3D::X3DConstants::LightSaber),
 		};
 
 		const auto   worldInfo   = getWorldInfo ();

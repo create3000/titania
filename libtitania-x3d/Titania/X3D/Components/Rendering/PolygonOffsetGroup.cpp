@@ -75,7 +75,7 @@ PolygonOffsetGroup::PolygonOffsetGroup (X3DExecutionContext* const executionCont
 	X3DGroupingNode (),
 	     offsetType (GL_POLYGON_OFFSET_FILL)
 {
-	//addType (X3DConstants::PolygonOffsetGroup);
+	addType (X3DConstants::PolygonOffsetGroup);
 
 	addField (inputOutput,    "metadata",       metadata ());
 

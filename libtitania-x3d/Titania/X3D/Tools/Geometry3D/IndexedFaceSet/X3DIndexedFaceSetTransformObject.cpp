@@ -94,7 +94,7 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 	                          active (false),
 	                        undoStep (std::make_shared <X3D::UndoStep> (_ ("Empty UndoStep")))
 {
-	//addType (X3DConstants::X3DIndexedFaceSetTransformObject);
+	addType (X3DConstants::X3DIndexedFaceSetTransformObject);
 
 	addChildren (touchSensor,
 	             planeSensor,

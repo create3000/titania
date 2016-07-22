@@ -60,6 +60,7 @@
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../Browser/Tools/LightSaber.h"
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
 #include "../Components/EnvironmentalEffects/Fog.h"
@@ -146,6 +147,7 @@ Browser::initialize ()
 	            Gdk::KEY_RELEASE_MASK);
 
 	set_can_focus (true);
+	//set_focus_on_click (true); // uncomment if gtkmm 3.20 and see PointingDevice button press event
 	grab_focus ();
 
 	setCursor ("default");
@@ -239,6 +241,11 @@ Browser::set_viewer ()
 			case X3DConstants::LassoSelection:
 			{
 				viewer .setValue (new LassoSelection (this));
+				break;
+			}
+			case X3DConstants::LightSaber:
+			{
+				viewer .setValue (new LightSaber (this));
 				break;
 			}
 			default:

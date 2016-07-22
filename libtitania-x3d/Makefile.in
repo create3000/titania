@@ -219,6 +219,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.lo \
 	Titania/X3D/Browser/Texturing3D/Texture3D.lo \
 	Titania/X3D/Browser/Tools/LassoSelection.lo \
+	Titania/X3D/Browser/Tools/LightSaber.lo \
 	Titania/X3D/Browser/Tools/RectangleSelection.lo \
 	Titania/X3D/Browser/Tools/TransformToolOptions.lo \
 	Titania/X3D/Browser/Tools/X3DSelector.lo \
@@ -997,6 +998,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Texturing/X3DTexturingContext.cpp \
 	Titania/X3D/Browser/Texturing3D/Texture3D.cpp \
 	Titania/X3D/Browser/Tools/LassoSelection.cpp \
+	Titania/X3D/Browser/Tools/LightSaber.cpp \
 	Titania/X3D/Browser/Tools/RectangleSelection.cpp \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
 	Titania/X3D/Browser/Tools/X3DSelector.cpp \
@@ -1933,6 +1935,9 @@ Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/Tools/$(DEPDIR)
 	@: > Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Tools/LassoSelection.lo:  \
+	Titania/X3D/Browser/Tools/$(am__dirstamp) \
+	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Tools/LightSaber.lo:  \
 	Titania/X3D/Browser/Tools/$(am__dirstamp) \
 	Titania/X3D/Browser/Tools/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Tools/RectangleSelection.lo:  \
@@ -3933,6 +3938,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing/$(DEPDIR)/X3DTexturingContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Texturing3D/$(DEPDIR)/Texture3D.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/LassoSelection.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/LightSaber.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/RectangleSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/TransformToolOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Tools/$(DEPDIR)/X3DSelector.Plo@am__quote@

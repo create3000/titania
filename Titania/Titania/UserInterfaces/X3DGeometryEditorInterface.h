@@ -172,10 +172,6 @@ public:
 	{ return *m_FlipVertexOrderingButton; }
 
 	Gtk::RadioButton &
-	getCutPolygonsButton () const
-	{ return *m_CutPolygonsButton; }
-
-	Gtk::RadioButton &
 	getPaintSelectionButton () const
 	{ return *m_PaintSelectionButton; }
 
@@ -194,6 +190,10 @@ public:
 	Gtk::ToggleButton &
 	getTransformToolButton () const
 	{ return *m_TransformToolButton; }
+
+	Gtk::RadioButton &
+	getCutPolygonsButton () const
+	{ return *m_CutPolygonsButton; }
 
 	Gtk::Menu &
 	getSelectionTypeMenu () const
@@ -279,10 +279,6 @@ public:
 
 	virtual
 	bool
-	on_cut_polygons_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	bool
 	on_selection_type_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
@@ -304,6 +300,14 @@ public:
 	virtual
 	void
 	on_transform_tool_toggled () = 0;
+
+	virtual
+	bool
+	on_cut_polygons_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_cut_polygons_toggled () = 0;
 
 	virtual
 	void
@@ -377,12 +381,12 @@ private:
 	Gtk::Button*                m_ChipOfFacesButton;
 	Gtk::Button*                m_DeleteFacesButton;
 	Gtk::Button*                m_FlipVertexOrderingButton;
-	Gtk::RadioButton*           m_CutPolygonsButton;
 	Gtk::RadioButton*           m_PaintSelectionButton;
 	Gtk::Image*                 m_PaintSelectionImage;
 	Gtk::Button*                m_SplitPointsButton;
 	Gtk::Button*                m_MergePointsButton;
 	Gtk::ToggleButton*          m_TransformToolButton;
+	Gtk::RadioButton*           m_CutPolygonsButton;
 	Gtk::Menu*                  m_SelectionTypeMenu;
 	Gtk::ImageMenuItem*         m_BrushMenuItem;
 	Gtk::ImageMenuItem*         m_RectangleMenuItem;

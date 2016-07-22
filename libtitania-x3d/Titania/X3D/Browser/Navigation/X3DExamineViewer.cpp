@@ -149,24 +149,32 @@ X3DExamineViewer::on_button_press_event (GdkEventButton* event)
 bool
 X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 {
-	//do this everywhere
-	//if (not isInViewport (event))
-	// return;
-
-	pressTime = chrono::now ();
-
-	switch (event -> button)
+	try
 	{
-		case 1:
+		//do this everywhere
+		//if (not isInViewport (event))
+		// return;
+	
+		pressTime = chrono::now ();
+	
+		switch (event -> button)
 		{
-			if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
-				return X3DExamineViewer::on_1button1_press_event (event);
+			case 1:
+			{
+				disconnect ();
+				getActiveViewpoint () -> transitionStop ();
 
-			return on_1button1_press_event (event);
+				if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+					return X3DExamineViewer::on_1button1_press_event (event);
+	
+				return on_1button1_press_event (event);
+			}
+			case 2:
+				return on_1button2_press_event (event);
 		}
-		case 2:
-			return on_1button2_press_event (event);
 	}
+	catch (const X3DError &)
+	{ }
 
 	return false;
 }
@@ -176,10 +184,7 @@ X3DExamineViewer::on_1button1_press_event (GdkEventButton* event)
 {
 	try
 	{
-		disconnect ();
-
 		getBrowser () -> setCursor ("move");
-		getActiveViewpoint () -> transitionStop ();
 
 		fromVector = trackballProjectToSphere (event -> x, event -> y);
 		rotation   = Rotation4d ();

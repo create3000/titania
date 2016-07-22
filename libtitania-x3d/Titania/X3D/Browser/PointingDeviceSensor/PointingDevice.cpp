@@ -170,7 +170,7 @@ PointingDevice::set_verify_motion (const double x, const double y)
 bool
 PointingDevice::on_button_press_event (GdkEventButton* event)
 {
-	getBrowser () -> grab_focus ();
+	getBrowser () -> grab_focus (); // remove if gtkmm 3.20 and see Browser initialize
 
 	// Dont't handle double click events.
 	if (event -> type not_eq GDK_BUTTON_PRESS)

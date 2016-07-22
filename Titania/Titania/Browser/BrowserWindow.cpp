@@ -2731,7 +2731,6 @@ BrowserWindow::set_viewer ()
 {
 	const auto type = getCurrentBrowser () -> getCurrentViewer ();
 
-
 	switch (type)
 	{
 		case X3D::X3DConstants::PlaneViewer:
@@ -2768,6 +2767,7 @@ BrowserWindow::set_viewer ()
 
 		case X3D::X3DConstants::RectangleSelection:
 		case X3D::X3DConstants::LassoSelection:
+		case X3D::X3DConstants::LightSaber:
 		{
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);

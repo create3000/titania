@@ -76,7 +76,7 @@ X3DIndexedFaceSetCutObject::X3DIndexedFaceSetCutObject () :
 	X3DIndexedFaceSetSelectionObject (),
 	                          fields ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetCutObject);
+	addType (X3DConstants::X3DIndexedFaceSetCutObject);
 }
 
 /**

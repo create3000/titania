@@ -73,7 +73,7 @@ DepthBuffer::DepthBuffer (X3DExecutionContext* const executionContext) :
 	  X3DGroupingNode (),
 	depthFunctionType (GL_LEQUAL)
 {
-	//addType (X3DConstants::DepthBuffer);
+	addType (X3DConstants::DepthBuffer);
 
 	addField (inputOutput,    "metadata",       metadata ());
 

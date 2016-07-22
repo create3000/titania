@@ -166,7 +166,7 @@ GeometryEditor::initialize ()
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
 	getPaintSelectionButton () .set_group (selectionGroup);
-	getCutPolygonsButton    () .set_group (selectionGroup);
+	getCutPolygonsButton ()    .set_group (selectionGroup);
 
 	normalEditor -> setup ();
 	coordEditor  -> setup ();
@@ -348,8 +348,6 @@ GeometryEditor::set_executionContext ()
 	{
 		previousSelection .clear ();
 	}
-
-	getCutPolygonsButton () .set_active (false);
 }
 
 void
@@ -371,6 +369,14 @@ GeometryEditor::set_viewer ()
 		{
 			changing = true;
 			set_selector (SelectorType::LASSO);
+			changing = false;
+			break;
+		}
+		case X3D::X3DConstants::LightSaber:
+		{
+			changing = true;
+			getCutPolygonsButton () .set_active (true);
+			set_cut_polygons ();
 			changing = false;
 			break;
 		}
@@ -802,6 +808,8 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
+__LOG__ << getPaintSelectionButton () .get_active () << std::endl;
+
 	if (getEditToggleButton () .get_active ())
 		getConfig () -> set ("paintSelection", getPaintSelectionButton () .get_active ());
 
@@ -1002,6 +1010,28 @@ void
 GeometryEditor::on_split_points_clicked ()
 {
 	coordEditor -> setField <X3D::SFTime> ("splitPoints", chrono::now ());
+}
+
+void
+GeometryEditor::on_cut_polygons_toggled ()
+{
+__LOG__ << getCutPolygonsButton () .get_active () << std::endl;
+
+	if (changing)
+		return;
+
+	set_cut_polygons ();
+}
+
+void
+GeometryEditor::set_cut_polygons ()
+{
+__LOG__ << getCutPolygonsButton () .get_active () << std::endl;
+
+	if (getCutPolygonsButton () .get_active ())
+		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LightSaber);
+	else
+		getCurrentBrowser () -> setPrivateViewer (privateViewer);
 }
 
 bool

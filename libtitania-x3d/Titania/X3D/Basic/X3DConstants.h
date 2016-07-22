@@ -464,7 +464,9 @@ enum NodeType : uint16_t
 	// Non statndard
 
 	Clipboard,
+	DepthBuffer,
 	FaceSelection,
+	PolygonOffsetGroup,
 	TouchGroup,
 	TransformMatrix3D,
 	X3DFaceSelection,
@@ -510,9 +512,13 @@ enum NodeType : uint16_t
 	NoneViewer,
 	PlaneViewer,
 	WalkViewer,
+	X3DExamineViewer,
+
+	// Viewer tools
+
+	LightSaber,
 	RectangleSelection,
 	LassoSelection,
-	X3DExamineViewer,
 	X3DSelector,
 
 	// Tool nodes
@@ -568,7 +574,12 @@ enum NodeType : uint16_t
 	X3DGeospatialObjectTool,
 	X3DGridTool,
 	X3DGroupingNodeTool,
+	X3DIndexedFaceSetCutObject,
+	X3DIndexedFaceSetKnifeObject,
+	X3DIndexedFaceSetOperationsObject,
 	X3DIndexedFaceSetSelectionObject,
+	X3DIndexedFaceSetTool,
+	X3DIndexedFaceSetTransformObject,
 	X3DLightNodeTool,
 	X3DNodeTool,
 	X3DNormalNodeTool,
