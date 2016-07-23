@@ -389,11 +389,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Line2d l2 (Vector2d (), Vector2d (1, 1),    points_type ());
-	Line3d l3 (Vector3d (), Vector3d (1, 1, 0), points_type ());
-
-	__LOG__ << l2 .closest_point (Vector2d (0, 1)) << std::endl;
-	__LOG__ << l3 .closest_point (Vector3d (0, 1, 0)) << std::endl;
+	__LOG__ << dot (Vector2d (0.5, 0), Vector2d (-0.5, 0)) << std::endl;
+	__LOG__ << dot (Vector2d (1, 0), Vector2d (-1, 0)) << std::endl;
+	__LOG__ << dot (Vector2d (2, 0), Vector2d (-2, 0)) << std::endl;
+	__LOG__ << dot (Vector2d (2, 1), normalize (Vector2d ())) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

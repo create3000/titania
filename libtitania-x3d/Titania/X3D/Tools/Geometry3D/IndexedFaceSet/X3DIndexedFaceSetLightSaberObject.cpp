@@ -50,6 +50,9 @@
 
 #include "X3DIndexedFaceSetLightSaberObject.h"
 
+#include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Rendering/ViewVolume.h"
+
 namespace titania {
 namespace X3D {
 
@@ -60,13 +63,116 @@ X3DIndexedFaceSetLightSaberObject::X3DIndexedFaceSetLightSaberObject () :
 	//addType (X3DConstants::X3DIndexedFaceSetLightSaberObject);
 }
 
+/**
+ *  Cuts all faces intersecting with @a cutLine into two connected faces.
+ *
+ *  @param  cutLine  Line on viewport
+ */
+
 bool
 X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 {
-	__LOG__ << cutLine << std::endl;
+	try
+	{
+__LOG__ << cutLine << std::endl;
 
-	return false;
+		const auto modelViewProjection  = getModelViewMatrix () * getProjectionMatrix ();
+		const auto viewport             = getViewport ();
+		auto       intersectingFaces    = std::vector <size_t> ();
+		auto       intersectingVertices = std::vector <std::vector <size_t>> ();
+		auto       intersectingPoints   = std::vector <std::vector <Vector2d>> ();
+	
+		for (const auto & face : getFaceSelection () -> getFaces ())
+		{
+			auto vertices     = getFaceSelection () -> getFaceVertices (face);
+			auto screenPoints = std::vector <Vector2d> ();
+	
+			for (const auto & vertex : vertices)
+			{
+				const auto point       = getCoord () -> get1Point (coordIndex () [vertex]);
+				const auto screenPoint = ViewVolume::projectPoint (point, modelViewProjection, viewport);
+
+				screenPoints .emplace_back (screenPoint .x (), screenPoint .y ());
+			}
+	
+			if (cutLine .intersects (screenPoints .begin (), screenPoints .end ()))
+			{
+				intersectingFaces    .emplace_back (face);
+				intersectingVertices .emplace_back (std::move (vertices));
+				intersectingPoints   .emplace_back (std::move (screenPoints));
+			}
+		}
+	
+__LOG__ << intersectingFaces .size () << std::endl;
+	
+		if (intersectingFaces .empty ())
+			return false;
+
+		const auto invModelViewProjection = ~modelViewProjection;
+		auto       intersectingEdges      = std::vector <std::vector <std::vector <int32_t>>> ();
+		auto       cutPoints              = std::vector <std::vector <Vector3d>> ();
+
+		for (size_t i = 0, sizeI = intersectingPoints .size (); i < sizeI; ++ i)
+		{
+			const auto & vertices     = intersectingVertices [i];
+			const auto & screenPoints = intersectingPoints [i];
+			auto         edges        = std::vector <std::vector <int32_t>> ();
+			auto         points       = std::vector <Vector3d> (); // cut points for edge
+
+			for (size_t k = 0, sizeK = screenPoints .size (); k < sizeK; ++ k)
+			{
+				const auto index1       = k;
+				const auto index2       = (k + 1) % sizeK;
+				const auto lineSegment  = LineSegment2d (screenPoints [index1], screenPoints [index2]);
+				auto       intersection = Vector2d ();
+
+__LOG__ << lineSegment << std::endl;
+__LOG__ << lineSegment .line () << std::endl;
+
+				if (lineSegment .intersects (cutLine, intersection))
+				{
+					const auto point1   = coordIndex () [vertices [index1]];
+					const auto point2   = coordIndex () [vertices [index2]];
+					const auto line     = Line3d (getCoord () -> get1Point (point1), getCoord () -> get1Point (point2), points_type ());
+					const auto ray      = ViewVolume::unProjectRay (intersection .x (), intersection .y (), invModelViewProjection, viewport);
+					auto       cutPoint = Vector3d ();
+
+					line .closest_point (ray, cutPoint);
+
+__LOG__ << intersection << std::endl;
+__LOG__ << cutPoint << std::endl;
+
+					points .emplace_back (cutPoint);
+					edges  .emplace_back (std::vector <int32_t> { point1, point2 });
+				}
+			}
+
+if (edges .size () not_eq 2)
+	__LOG__ << edges .size () << std::endl;
+
+			intersectingEdges .emplace_back (std::move (edges));
+			cutPoints         .emplace_back (std::move (points));
+		}
+
+
+__LOG__ << std::endl;
+__LOG__ << intersectingFaces [0] << std::endl;
+__LOG__ << cutPoints [0] [0] << " : " << cutPoints [0] [1]  << std::endl;
+__LOG__ << intersectingEdges [0] [0] [0] << " : " << intersectingEdges [0] [0] [1]  << std::endl;
+__LOG__ << intersectingEdges [0] [1] [0] << " : " << intersectingEdges [0] [1] [1]  << std::endl;
+
+		X3DIndexedFaceSetCutObject::cut (intersectingFaces [0], std::make_pair (cutPoints [0] [0], cutPoints [0] [1]), intersectingEdges [0] [0], intersectingEdges [0] [1]);
+		return true;
+	}
+	catch (const std::domain_error &)
+	{
+		// Catch exception from ViewVolume::projectPoint and matrix inverse.
+		return false;
+	}
 }
+
+//	std::vector <int32_t>
+//	cut (const size_t, const std::pair <Vector3d, Vector3d> &, const std::vector <int32_t> &, const std::vector <int32_t> &);
 
 X3DIndexedFaceSetLightSaberObject::~X3DIndexedFaceSetLightSaberObject ()
 { }

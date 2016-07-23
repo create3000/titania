@@ -151,6 +151,7 @@ GeometryEditor::configure ()
 	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
 	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
+	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
 	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
 
 	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
@@ -229,7 +230,10 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	changing = false;
 
 	if (getEditToggleButton () .get_active ())
+	{
 	   getPaintSelectionButton () .set_active (getConfig () -> get <bool> ("paintSelection"));
+	   getCutPolygonsButton ()    .set_active (getConfig () -> get <bool> ("cutPolygons"));
+	}
 	else
 		getBrowserWindow () -> getArrowButton () .set_active (true);
 }
@@ -340,14 +344,17 @@ GeometryEditor::set_executionContext ()
 
 		children -> isPrivate (true);
 		previousSelection = children -> value ();
-
-		if (getPaintSelectionButton () .get_active ())
-			set_selector (selector);
 	}
 	catch (const std::exception & error)
 	{
 		previousSelection .clear ();
 	}
+
+	if (getPaintSelectionButton () .get_active ())
+		set_selector (selector);
+
+	if (getCutPolygonsButton () .get_active ())
+		set_cut_polygons ();
 }
 
 void
@@ -808,8 +815,6 @@ GeometryEditor::on_edit_toggled ()
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
-__LOG__ << getPaintSelectionButton () .get_active () << std::endl;
-
 	if (getEditToggleButton () .get_active ())
 		getConfig () -> set ("paintSelection", getPaintSelectionButton () .get_active ());
 
@@ -913,10 +918,10 @@ GeometryEditor::set_selection_brush ()
 	getPaintSelectionButton () .set_tooltip_text (_ ("Paint current selection."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionButton () .get_active ())
-		getPaintSelectionButton () .set_active (true);
-	else
+	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
+	else
+		getPaintSelectionButton () .set_active (true);
 
 	coordEditor -> setField <X3D::SFBool> ("pickable",      true);
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", getPaintSelectionButton () .get_active ());
@@ -928,10 +933,10 @@ GeometryEditor::set_selection_rectangle ()
 	getPaintSelectionButton () .set_tooltip_text (_ ("Use rectangle selection."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionButton () .get_active ())
-		getPaintSelectionButton () .set_active (true);
-	else
+	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
+	else
+		getPaintSelectionButton () .set_active (true);
 
 	coordEditor -> setField <X3D::SFBool> ("pickable",       not getPaintSelectionButton () .get_active ());
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
@@ -943,10 +948,10 @@ GeometryEditor::set_selection_lasso ()
 	getPaintSelectionButton () .set_tooltip_text (_ ("Use lasso selection."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
-	if (not getPaintSelectionButton () .get_active ())
-		getPaintSelectionButton () .set_active (true);
-	else
+	if (getPaintSelectionButton () .get_active ())
 		on_paint_selection_toggled ();
+	else
+		getPaintSelectionButton () .set_active (true);
 
 	coordEditor -> setField <X3D::SFBool> ("pickable",       not getPaintSelectionButton () .get_active ());
 	coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
@@ -1015,7 +1020,8 @@ GeometryEditor::on_split_points_clicked ()
 void
 GeometryEditor::on_cut_polygons_toggled ()
 {
-__LOG__ << getCutPolygonsButton () .get_active () << std::endl;
+	if (getEditToggleButton () .get_active ())
+		getConfig () -> set ("cutPolygons", getCutPolygonsButton () .get_active ());
 
 	if (changing)
 		return;
@@ -1026,8 +1032,6 @@ __LOG__ << getCutPolygonsButton () .get_active () << std::endl;
 void
 GeometryEditor::set_cut_polygons ()
 {
-__LOG__ << getCutPolygonsButton () .get_active () << std::endl;
-
 	if (getCutPolygonsButton () .get_active ())
 		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LightSaber);
 	else

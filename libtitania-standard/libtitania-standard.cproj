@@ -557,6 +557,7 @@
     <None Include="Titania\External\unsupported\Eigen\src\Splines\SplineFitting.h" />
     <None Include="Titania\External\unsupported\Eigen\src\Splines\SplineFwd.h" />
     <None Include="Titania\Math\Geometry\MinimumBoundingBox.h" />
+    <None Include="Titania\Math\Geometry\LineSegment2.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -636,6 +637,7 @@
     <Compile Include="Titania\External\ApproxMVBB\OOBB.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\pugixml\pugixml.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
+    <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -48,51 +48,24 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TYPES_GEOMETRY_H__
-#define __TITANIA_X3D_TYPES_GEOMETRY_H__
-
-#include <Titania/Math/Geometry/Box2.h>
-#include <Titania/Math/Geometry/Box3.h>
-#include <Titania/Math/Geometry/CollisionSphere3.h>
-#include <Titania/Math/Geometry/Cylinder3.h>
-#include <Titania/Math/Geometry/Line2.h>
-#include <Titania/Math/Geometry/Line3.h>
-#include <Titania/Math/Geometry/LineSegment2.h>
-#include <Titania/Math/Geometry/LineSegment3.h>
-#include <Titania/Math/Geometry/Plane3.h>
-#include <Titania/Math/Geometry/Sphere3.h>
-#include <Titania/Math/Geometry/Spheroid3.h>
-#include <Titania/Math/Geometry/Triangle3.h>
+#include "LineSegment2.h"
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-using namespace titania::math;
+template class line_segment2 <float>;
+template class line_segment2 <double>;
+template class line_segment2 <long double>;
 
-using Box2d             = box2 <double>;
-using Box2f             = box2 <float>;
-using Box3d             = box3 <double>;
-using Box3f             = box3 <float>;
-using CollisionSphere3f = collision_sphere3 <float>;
-using CollisionSphere3d = collision_sphere3 <double>;
-using Cylinder3d        = cylinder3 <double>;
-using Cylinder3f        = cylinder3 <float>;
-using Line2d            = line2 <double>;
-using Line2f            = line2 <float>;
-using Line3d            = line3 <double>;
-using Line3f            = line3 <float>;
-using LineSegment2d     = line_segment2 <double>;
-using LineSegment2f     = line_segment2 <float>;
-using LineSegment3d     = line_segment3 <double>;
-using LineSegment3f     = line_segment3 <float>;
-using Plane3d           = plane3 <double>;
-using Plane3f           = plane3 <float>;
-using Sphere3d          = sphere3 <double>;
-using Sphere3f          = sphere3 <float>;
-using Spheroid3d        = spheroid3 <double>;
-using Spheroid3f        = spheroid3 <double>;
+//
+template std::istream & operator >> (std::istream &, line_segment2 <float> &);
+template std::istream & operator >> (std::istream &, line_segment2 <double> &);
+template std::istream & operator >> (std::istream &, line_segment2 <long double> &);
 
-} // X3D
+//
+template std::ostream & operator << (std::ostream &, const line_segment2 <float> &);
+template std::ostream & operator << (std::ostream &, const line_segment2 <double> &);
+template std::ostream & operator << (std::ostream &, const line_segment2 <long double> &);
+
+} // math
 } // titania
-
-#endif

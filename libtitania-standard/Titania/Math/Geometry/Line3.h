@@ -81,40 +81,40 @@ public:
 	///  Default constructor. Constructs a line of from (0, 0, 0) to (0, 0, 1).
 	constexpr
 	line3 () :
-		value { { 0, 0, 0 }, { 0, 0, 1 } }
-
+		    m_point (),
+		m_direction (0, 0, 1)
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	line3 (const line3 <Up> & line) :
-		value { line .point (), line .direction () }
-
+		    m_point (line .point ()),
+		m_direction (line .direction ())
 	{ }
 
 	///  Constructs a line of from @a point and @a direction, where direction must be normalized.
 	constexpr
 	line3 (const vector3 <Type> & point, const vector3 <Type> & direction) :
-		value { point, direction }
-
+		    m_point (point),
+		m_direction (direction)
 	{ }
 
 	///  Constructs a line of from @a point and @a point.
 	line3 (const vector3 <Type> & point1, const vector3 <Type> & point2, const points_type &) :
-		value { point1, normalize (point2 - point1) }
-
+		    m_point (point1),
+		m_direction (normalize (point2 - point1))
 	{ }
 
 	///  @name Element access
 
 	///  Returns the point of this line.
 	const vector3 <Type> &
-	point () const { return value .point; }
+	point () const { return m_point; }
 
 	/// Returns the direction of this line as normal a vector.
 	const vector3 <Type> &
-	direction () const { return value .direction; }
+	direction () const { return m_direction; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -131,16 +131,16 @@ public:
 	void
 	mult_matrix_line (const matrix4 <Type> & matrix)
 	{
-		value .point     = matrix .mult_matrix_vec (value .point);
-		value .direction = normalize (matrix .mult_matrix_dir (value .direction));
+		m_point     = matrix .mult_matrix_vec (m_point);
+		m_direction = normalize (matrix .mult_matrix_dir (m_direction));
 	}
 
 	///  Transform this box by @a matrix.
 	void
 	mult_line_matrix (const matrix4 <Type> & matrix)
 	{
-		value .point     = matrix .mult_vec_matrix (value .point);
-		value .direction = normalize (matrix .mult_dir_matrix (value .direction));
+		m_point     = matrix .mult_vec_matrix (m_point);
+		m_direction = normalize (matrix .mult_dir_matrix (m_direction));
 	}
 
 	//  @name Distance
@@ -216,7 +216,7 @@ public:
 
 	///  @name Intersection
 
-	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line.
+	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line, otherwise false.
 	bool
 	intersects (const vector3 <Type> &,
 	            const vector3 <Type> &,
@@ -226,13 +226,8 @@ public:
 
 private:
 
-	struct Value
-	{
-		vector3 <Type> point;
-		vector3 <Type> direction;
-	};
-
-	Value value;
+	vector3 <Type> m_point;
+	vector3 <Type> m_direction;
 
 };
 

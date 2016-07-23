@@ -151,7 +151,7 @@ X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, con
 {
 	try
 	{
-		return ViewVolume::unProjectLine (pointer .x (), pointer .y (), modelViewMatrix, projectionMatrix, viewport);
+		return ViewVolume::unProjectRay (pointer .x (), pointer .y (), modelViewMatrix, projectionMatrix, viewport);
 	}
 	catch (const std::domain_error &)
 	{

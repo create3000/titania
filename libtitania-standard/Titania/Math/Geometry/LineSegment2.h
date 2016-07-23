@@ -48,11 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_GEOMETRY_LINE_SEGMENT3_H__
-#define __TITANIA_MATH_GEOMETRY_LINE_SEGMENT3_H__
+#ifndef __TITANIA_MATH_GEOMETRY_line_segment2_H__
+#define __TITANIA_MATH_GEOMETRY_line_segment2_H__
 
-#include "../Geometry/Line3.h"
-#include "../Numbers/Vector3.h"
+#include "../Geometry/Line2.h"
+#include "../Numbers/Vector2.h"
+#include "../Functional.h"
 
 namespace titania {
 namespace math {
@@ -66,7 +67,7 @@ namespace math {
  *  @param  Type  Type of the two point values.
  */
 template <class Type>
-class line_segment3
+class line_segment2
 {
 public:
 
@@ -74,7 +75,7 @@ public:
 
 	///  Default constructor. Constructs a line segement with length 0 on point (0, 0, 0).
 	constexpr
-	line_segment3 () :
+	line_segment2 () :
 		m_point1 (),
 		m_point2 (),
 		  m_line ()
@@ -83,14 +84,14 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	line_segment3 (const line_segment3 <Up> & other) :
+	line_segment2 (const line_segment2 <Up> & other) :
 		m_point1 (other .point1 ()),
 		m_point2 (other .point2 ()),
 		  m_line (other .line ())
 	{ }
 
 	///  Constructs a line segment from @a point1 and @a point2.
-	line_segment3 (const vector3 <Type> & point1, const vector3 <Type> & point2) :
+	line_segment2 (const vector2 <Type> & point1, const vector2 <Type> & point2) :
 		m_point1 (point1),
 		m_point2 (point2),
 		  m_line (point1, point2, points_type ())
@@ -98,75 +99,59 @@ public:
 
 	///  @name Member access
 
-	const vector3 <Type> &
+	const vector2 <Type> &
 	point1 () const
 	{ return m_point1; }
 
-	const vector3 <Type> &
+	const vector2 <Type> &
 	point2 () const
 	{ return m_point2; }
 
-	const line3 <Type> &
+	const line2 <Type> &
 	line () const
 	{ return m_line; }
 
 	///  @name Operations
 
+	/// Returns true if this line segment intersects with @a line, otherwise false.
 	bool
-	is_between (const vector3 <Type> & point) const;
+	intersects (const line2 <Type> & line, vector2 <Type> & point) const
+	{
+		const auto normal  = line .normal ();
+		const auto vector1 = line .perpendicular_vector (point1 ());
+		const auto vector2 = line .perpendicular_vector (point2 ());
+		const auto signum1 = signum (dot (normal, vector1));
+		const auto signum2 = signum (dot (normal, vector2));
 
-	Type
-	distance (const vector3 <Type> & point) const;
+		if (std::abs (signum1 - signum2) not_eq 2)
+			return false;
+
+		this -> line () .intersects (line, point);
+		return true;
+	}
 
 private:
 
-	vector3 <Type> m_point1;
-	vector3 <Type> m_point2;
-	line3 <Type>   m_line;
+	vector2 <Type> m_point1;
+	vector2 <Type> m_point2;
+	line2 <Type>   m_line;
 
 };
 
-///  Returns true if @a point lies between point2 and point2.
-template <class Type>
-bool
-line_segment3 <Type>::is_between (const vector3 <Type> & point) const
-{
-	const auto closest = line () .closest_point (point);
-	return abs ((closest - point1 ()) + (closest - point2 ())) <= abs (point1 () - point2 ());
-}
-
-///  Returns the distance to @a point.
-template <class Type>
-Type
-line_segment3 <Type>::distance (const vector3 <Type> & point) const
-{
-	const auto closest = line () .closest_point (point);
-	const auto between = abs ((closest - point1 ()) + (closest - point2 ())) <= abs (point1 () - point2 ());
-
-	// Closest point lies between point1 and point2.
-	if (between)
-		return abs (point - closest);
-
-	const auto distance0 = abs (point - point1 ());
-	const auto distance1 = abs (point - point2 ());
-
-	return std::min (distance0, distance1);
-}
-
-///  @relates line_segment3
+///  @relates line_segment2
 ///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, line_segment3 <Type> & segment)
+operator >> (std::basic_istream <CharT, Traits> & istream, line_segment2 <Type> & segment)
 {
-	vector3 <Type> point1, point2;
+	vector2 <Type> point1, point2;
 
 	istream >> point1 >> point2;
 
 	if (istream)
-		segment = line_segment3 <Type> (point1, point2);
+		segment = line_segment2 <Type> (point1, point2);
 
 	return istream;
 }
@@ -174,24 +159,24 @@ operator >> (std::basic_istream <CharT, Traits> & istream, line_segment3 <Type> 
 ///  Insertion operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const line_segment3 <Type> & segment)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const line_segment2 <Type> & segment)
 {
 	return ostream << segment .point1 () << "  " << segment .point2 ();
 }
 
-extern template class line_segment3 <float>;
-extern template class line_segment3 <double>;
-extern template class line_segment3 <long double>;
+extern template class line_segment2 <float>;
+extern template class line_segment2 <double>;
+extern template class line_segment2 <long double>;
 
 //
-extern template std::istream & operator >> (std::istream &, line_segment3 <float> &);
-extern template std::istream & operator >> (std::istream &, line_segment3 <double> &);
-extern template std::istream & operator >> (std::istream &, line_segment3 <long double> &);
+extern template std::istream & operator >> (std::istream &, line_segment2 <float> &);
+extern template std::istream & operator >> (std::istream &, line_segment2 <double> &);
+extern template std::istream & operator >> (std::istream &, line_segment2 <long double> &);
 
 //
-extern template std::ostream & operator << (std::ostream &, const line_segment3 <float> &);
-extern template std::ostream & operator << (std::ostream &, const line_segment3 <double> &);
-extern template std::ostream & operator << (std::ostream &, const line_segment3 <long double> &);
+extern template std::ostream & operator << (std::ostream &, const line_segment2 <float> &);
+extern template std::ostream & operator << (std::ostream &, const line_segment2 <double> &);
+extern template std::ostream & operator << (std::ostream &, const line_segment2 <long double> &);
 
 } // math
 } // titania

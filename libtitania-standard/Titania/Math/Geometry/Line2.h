@@ -55,8 +55,6 @@
 #include "../Numbers/Vector2.h"
 #include "../Utility/Types.h"
 
-#include "../../LOG.h"
-
 namespace titania {
 namespace math {
 
@@ -118,6 +116,13 @@ public:
 	direction () const
 	{ return m_direction; }
 
+	///  Returns a normal of this line, this vector is orthogonal to this line's direction.
+	vector2 <Type>
+	normal () const
+	{
+		return vector2 <Type> (-direction () .y (), direction () .x ());
+	}
+
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
 
@@ -169,6 +174,8 @@ public:
 		return this -> point () + direction () * dot (point - this -> point (), direction ());
 	}
 
+	///  @name Intersection
+
 	///  Returns the closest point from @a line to this line on this line.
 	///  The return value is the angle between both lines. The return value
 	///  must be checked whether both lines are parallel.
@@ -188,6 +195,39 @@ public:
 		point = p1 + t * d1;
 
 		return theta;
+	}
+	
+	///  Returns true if the polygon given by a range of points intersects with this line, otherwise false.
+	template <class Iterator>
+	bool
+	intersects (Iterator first, Iterator last) const
+	{
+		const auto n      = normal ();
+		int32_t    signum = 0;
+	
+		for (; first not_eq last; ++ first)
+		{
+			const auto theta = dot (perpendicular_vector (*first), n);
+
+			if (theta < 0)
+			{
+				if (signum > 0)
+					return true;
+	
+				signum = -1;
+			}
+			else if (theta > 0)
+			{
+				if (signum < 0)
+					return true;
+	
+				signum = 1;
+			}
+			else
+				return true;
+		}
+	
+		return false;
 	}
 
 

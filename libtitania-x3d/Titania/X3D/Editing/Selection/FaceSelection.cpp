@@ -590,7 +590,7 @@ throw (std::domain_error)
 
 	std::map <std::pair <double, double>, std::pair <Edge, size_t>> distances;
 
-	const auto plane = Plane3d (cutSegment .point0 (), cutSegment .line () .direction ());
+	const auto plane = Plane3d (cutSegment .point1 (), cutSegment .line () .direction ());
 
 	for (const auto & face : faces)
 	{
@@ -603,15 +603,15 @@ throw (std::domain_error)
 			const auto point0        = coordNode -> get1Point (geometryNode -> coordIndex () [i0]);
 			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
 			const auto segment       = LineSegment3d (point0, point1);
-			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point0 ());
+			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point1 ());
 			auto       closestPoint1 = Vector3d (0, 0, 0);
 
 			cutSegment .line () .closest_point (segment .line (), closestPoint1);
 
-			const auto distance = segment .distance (cutSegment .point1 ());
+			const auto distance = segment .distance (cutSegment .point2 ());
 			const auto between  = segment .is_between (closestPoint1);
 
-			if (abs (closestPoint0 - cutSegment .point0 ()) < EPSILON_DISTANCE)
+			if (abs (closestPoint0 - cutSegment .point1 ()) < EPSILON_DISTANCE)
 				continue;
 
 			if (plane .distance (closestPoint1) < 0)
@@ -620,7 +620,7 @@ throw (std::domain_error)
 			if (not between)
 				continue;
 
-			distances .emplace (std::make_pair (getFaceDistance (cutSegment .point1 (), vertices), distance),
+			distances .emplace (std::make_pair (getFaceDistance (cutSegment .point2 (), vertices), distance),
 			                    std::make_pair (Edge { i0, i1, segment, true }, face));
 		}
 	}

@@ -90,7 +90,12 @@ public:
 
 	static
 	Line3d
-	unProjectLine (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	unProjectRay (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	throw (std::domain_error);
+
+	static
+	Line3d
+	unProjectRay (double, double, const Matrix4d &, const Vector4i &)
 	throw (std::domain_error);
 
 	static

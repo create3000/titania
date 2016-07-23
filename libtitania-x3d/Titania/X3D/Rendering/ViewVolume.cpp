@@ -163,13 +163,18 @@ throw (std::domain_error)
 }
 
 Line3d
-ViewVolume::unProjectLine (double winx, double winy, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::unProjectRay (double winx, double winy, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	const Matrix4d matrix = ~(modelView * projection);
+	return unProjectRay (winx, winy, ~(modelView * projection), viewport);
+}
 
-	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, matrix, viewport);
-	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, matrix, viewport);
+Line3d
+ViewVolume::unProjectRay (double winx, double winy, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
+throw (std::domain_error)
+{
+	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, invModelViewProjection, viewport);
+	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, invModelViewProjection, viewport);
 
 	return Line3d (near, far, points_type ());
 }
