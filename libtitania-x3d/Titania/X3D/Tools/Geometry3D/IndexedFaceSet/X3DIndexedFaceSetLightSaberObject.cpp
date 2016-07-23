@@ -147,14 +147,43 @@ __LOG__ << intersectingFaces .size () << std::endl;
 
 		// Now cut faces.
 
-		X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
+	
+		undoRestoreSelection (undoStep);
+		undoSetColorIndex    (undoStep);
+		undoSetTexCoordIndex (undoStep);
+		undoSetNormalIndex   (undoStep);
+		undoSetCoordIndex    (undoStep);
+		undoSetColorColor    (undoStep);
+		undoSetTexCoordPoint (undoStep);
+		undoSetNormalVector  (undoStep);
+		undoSetCoordPoint    (undoStep);
 
-//		// Remove degenerated edges and faces.
-//		rebuildIndices  ();
-//		rebuildColor    ();
-//		rebuildTexCoord ();
-//		rebuildNormal   ();
-//		rebuildCoord    ();
+		const auto selection = X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
+	
+		if (selection .empty ())
+			return false;
+	
+		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+	
+		// Remove degenerated edges and faces.
+		rebuildIndices  ();
+		rebuildColor    ();
+		rebuildTexCoord ();
+		rebuildNormal   ();
+		rebuildCoord    ();
+	
+		redoSetCoordPoint    (undoStep);
+		redoSetNormalVector  (undoStep);
+		redoSetTexCoordPoint (undoStep);
+		redoSetColorColor    (undoStep);
+		redoSetCoordIndex    (undoStep);
+		redoSetNormalIndex   (undoStep);
+		redoSetTexCoordIndex (undoStep);
+		redoSetColorIndex    (undoStep);
+		redoRestoreSelection ({ }, undoStep);
+	
+		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
 		return true;
 	}
