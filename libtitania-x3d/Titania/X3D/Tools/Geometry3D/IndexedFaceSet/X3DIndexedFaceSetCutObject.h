@@ -87,6 +87,11 @@ protected:
 	std::vector <int32_t>
 	cut (const size_t, const std::pair <Vector3d, Vector3d> &, const std::vector <int32_t> &, const std::vector <int32_t> &);
 
+	std::vector <int32_t>
+	cut (const std::vector <size_t> &,
+	     const std::vector <std::vector <Vector3d>> &,
+	     const std::vector <std::vector <std::vector <int32_t>>> &);
+
 
 private:
 

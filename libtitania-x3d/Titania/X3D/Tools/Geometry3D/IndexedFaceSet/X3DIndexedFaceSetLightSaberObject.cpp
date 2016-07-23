@@ -126,9 +126,6 @@ __LOG__ << intersectingFaces .size () << std::endl;
 				const auto lineSegment  = LineSegment2d (screenPoints [index1], screenPoints [index2]);
 				auto       intersection = Vector2d ();
 
-__LOG__ << lineSegment << std::endl;
-__LOG__ << lineSegment .line () << std::endl;
-
 				if (lineSegment .intersects (cutLine, intersection))
 				{
 					const auto point1   = coordIndex () [vertices [index1]];
@@ -139,29 +136,26 @@ __LOG__ << lineSegment .line () << std::endl;
 
 					line .closest_point (ray, cutPoint);
 
-__LOG__ << intersection << std::endl;
-__LOG__ << cutPoint << std::endl;
-
 					points .emplace_back (cutPoint);
 					edges  .emplace_back (std::vector <int32_t> { point1, point2 });
 				}
 			}
 
-if (edges .size () not_eq 2)
-	__LOG__ << edges .size () << std::endl;
-
 			intersectingEdges .emplace_back (std::move (edges));
 			cutPoints         .emplace_back (std::move (points));
 		}
 
+		// Now cut faces.
 
-__LOG__ << std::endl;
-__LOG__ << intersectingFaces [0] << std::endl;
-__LOG__ << cutPoints [0] [0] << " : " << cutPoints [0] [1]  << std::endl;
-__LOG__ << intersectingEdges [0] [0] [0] << " : " << intersectingEdges [0] [0] [1]  << std::endl;
-__LOG__ << intersectingEdges [0] [1] [0] << " : " << intersectingEdges [0] [1] [1]  << std::endl;
+		X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
 
-		X3DIndexedFaceSetCutObject::cut (intersectingFaces [0], std::make_pair (cutPoints [0] [0], cutPoints [0] [1]), intersectingEdges [0] [0], intersectingEdges [0] [1]);
+//		// Remove degenerated edges and faces.
+//		rebuildIndices  ();
+//		rebuildColor    ();
+//		rebuildTexCoord ();
+//		rebuildNormal   ();
+//		rebuildCoord    ();
+
 		return true;
 	}
 	catch (const std::domain_error &)
