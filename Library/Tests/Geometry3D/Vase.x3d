@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Sat, 23 Jul 2016 07:17:43 GMT'/>
+    <meta name='modified' content='Sat, 23 Jul 2016 09:28:22 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -38,7 +38,7 @@
           <MetadataString DEF='type' containerField='value'
               name='type'
               reference='http://titania.create3000.de'
-              value='"LIGHT_SABER_create3000.de"'/>
+              value='"RECTANGLE_SELECTION_create3000.de"'/>
         </MetadataSet>
         <MetadataSet DEF='Viewpoint' containerField='value'
             name='Viewpoint'
@@ -46,7 +46,7 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='3.81612837685512, 0.473676112618188, 3.20277179614222'/>
+              value='3.81612849235535, 0.473676115274429, 3.20277190208435'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
@@ -54,7 +54,7 @@
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='3.19193032899121, -0.0736066271655495, 2.31291490794986'/>
+              value='3.19193029403687, -0.0736066251993179, 2.31291484832764'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
@@ -82,6 +82,10 @@
                       diffuseColor='0.904409 0.315531 0.544386'
                       specularColor='0.0955906 0.0955906 0.0955906'
                       shininess='0.078125'/>
+                  <ImageTexture
+                      url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
+                      repeatS='false'
+                      repeatT='false'/>
                 </Appearance>
                 <IndexedFaceSet USE='_1'/>
               </Shape>
