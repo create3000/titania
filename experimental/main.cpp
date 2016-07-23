@@ -170,7 +170,7 @@ c2 ()
 
 	points .clear ();
 
-	for (size_t i = 0; i < 10; ++ i)
+	for (size_t i = 0; i < 10000000; ++ i)
 		points .emplace_back (random (random_engine), random (random_engine));
 
 	const auto t0 = chrono::now ();
@@ -179,17 +179,17 @@ c2 ()
 
 	__LOG__ << chrono::now () - t0 << std::endl;
 
-	std::clog << "indices" << std::endl;
+//	std::clog << "indices" << std::endl;
+//
+//	for (const auto & i : hull .indices ())
+//	   std::clog << i << std::endl;
+//
+//	std::clog << hull .indices () .front () << std::endl;
 
-	for (const auto & i : hull .indices ())
-	   std::clog << i << std::endl;
-
-	std::clog << hull .indices () .front () << std::endl;
-
-	std::clog << "points" << std::endl;
-
-	for (const auto & p : points)
-	   std::clog << p << " 0" << std::endl;
+//	std::clog << "points" << std::endl;
+//
+//	for (const auto & p : points)
+//	   std::clog << p << " 0" << std::endl;
 
 	const auto rectangle = minimum_bounding_rectangle (points);
 
@@ -389,10 +389,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	__LOG__ << dot (Vector2d (0.5, 0), Vector2d (-0.5, 0)) << std::endl;
-	__LOG__ << dot (Vector2d (1, 0), Vector2d (-1, 0)) << std::endl;
-	__LOG__ << dot (Vector2d (2, 0), Vector2d (-2, 0)) << std::endl;
-	__LOG__ << dot (Vector2d (2, 1), normalize (Vector2d ())) << std::endl;
+	c2 ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -88,8 +88,6 @@ LightSaber::initialize ()
 bool
 LightSaber::on_1button1_press_event (GdkEventButton* event)
 {
-__LOG__ << std::endl;
-
 	getBrowser () -> addEvent ();
 	getBrowser () -> displayed () .addInterest (this, &LightSaber::display);
 
@@ -102,12 +100,8 @@ LightSaber::on_1button1_release_event (GdkEventButton* event)
 {
 	try
 	{
-__LOG__ << std::endl;
-
 		getBrowser () -> addEvent ();
 		getBrowser () -> displayed () .removeInterest (this, &LightSaber::display);
-
-		points [1] = getPoint (event -> x, event -> y);
 
 		if (points [0] not_eq points [1])
 		{
@@ -132,6 +126,17 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 	getBrowser () -> addEvent ();
 
 	points [1] = getPoint (event -> x, event -> y);
+
+	if (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ())
+	{
+		const auto direction = points [1] - points [0];
+
+		if (std::abs (direction .x ()) < std::abs (direction .y ()))
+			points [1] .x (points [0] .x ());
+		else
+			points [1] .y (points [0] .y ());
+	}
+
 	return false;
 }
 

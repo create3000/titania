@@ -602,6 +602,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 	auto texCoords = std::map <std::tuple <int32_t, int32_t, int32_t, int32_t>, int32_t> ();
 	auto normals   = std::map <std::tuple <int32_t, int32_t, int32_t, int32_t>, int32_t> ();
 	auto points    = std::map <std::pair <int32_t, int32_t>, int32_t> ();
+	auto numFaces  = getFaceSelection () -> getNumFaces ();
 
 	for (size_t f = 0, numCutFaces = cutFaceArray .size (); f < numCutFaces; ++ f)
 	{
@@ -613,7 +614,6 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 		const auto & startPoints = edgesArray   [f] [0];
 		const auto & endPoints   = edgesArray   [f] [1];
 
-		const auto numFaces   = getFaceSelection () -> getNumFaces ();
 		const auto faceNumber = getFaceSelection () -> getFaceNumber (cutFace);
 		const auto vertices   = getFaceSelection () -> getFaceVertices (cutFace);
 		const auto startEdge  = getFaceSelection () -> getClosestEdge (cutEdge [0], vertices);
@@ -1094,7 +1094,9 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 			coordIndex () .emplace_back (point);
 	
 		coordIndex () .emplace_back (-1);
-	
+
+		numFaces += 2;
+
 		// Invalidate old face.
 	
 		const size_t begin = vertices .front ();

@@ -232,6 +232,75 @@ convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1, const std::ve
 	}
 }
 
+// 2D version is much slower
+//
+//template <class Type>
+//void
+//convex_hull2 <Type>::quick_hull (const size_t i0, const size_t i1, const std::vector <size_t> & points)
+//{
+//	// Construct plane from points for distance determination.
+//
+//	const auto & p0   = m_points [m_indices [i0]];
+//	const auto & p1   = m_points [m_indices [i1]];
+//	const auto   line = line2 <Type> (p1, p0, points_type ());
+//	const auto   n    = line .normal ();
+//
+//	// Find most distant point to plane in set. Points below the line can be ignored.
+//
+//	std::vector <size_t> upper_points;
+//
+//	auto   dMax = -std::numeric_limits <Type>::infinity ();
+//	size_t iMax = -1;
+//
+//	for (size_t i = 0, size = points .size (); i < size; ++ i)
+//	{
+//		const auto index = points [i];
+//
+//		if (m_set [index])
+//			continue;
+//
+//		const auto & p = m_points [index];
+//		const auto   v = line .perpendicular_vector (p);
+//		const auto   d = abs (v);
+//
+//		if (dot (v, n) < 0)
+//			continue;
+//
+//		upper_points .emplace_back (index);
+//
+//		if (d > dMax)
+//		{
+//			dMax = d;
+//			iMax = index;
+//		}
+//	}
+//
+//	if (dMax <= 0)
+//		return;
+//
+//	// Mark new triangle point as beeing used in a triangle to prevent floating point errors when determining the distance
+//	// to this point as the result will probably be not exactly zero.
+//
+//	m_set [iMax] = true;
+//
+//	// Insert most distant point, and recurse. 
+//
+//	if (i0 < i1)
+//	{
+//		m_indices .insert (m_indices .begin () + (i1 + 1), iMax);
+//
+//		quick_hull (i0,     i1 + 1, upper_points);
+//		quick_hull (i1 + 1, i1,     upper_points);
+//	}
+//	else
+//	{
+//		m_indices .insert (m_indices .begin () + i0, iMax);
+//
+//		quick_hull (i0 + 1, i0, upper_points);
+//		quick_hull (i0,     i1, upper_points);
+//	}
+//}
+
 extern template class convex_hull2 <float>;
 extern template class convex_hull2 <double>;
 extern template class convex_hull2 <long double>;
