@@ -557,7 +557,12 @@ GeometryEditor::on_deselect_all ()
 void
 GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
-	getBrowserWindow () -> addUndoStep (container -> getUndoStep ());
+	const auto & undoStep = container -> getUndoStep ();
+
+	getBrowserWindow () -> getSelection () -> undoRestoreSelection (undoStep);
+	getBrowserWindow () -> getSelection () -> redoRestoreSelection (undoStep);
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
