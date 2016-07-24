@@ -155,19 +155,17 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 		undoSetNormalVector  (undoStep);
 		undoSetCoordPoint    (undoStep);
 
-		const auto selection = X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
+		auto selection = X3DIndexedFaceSetCutObject::cut (intersectingFaces, cutPoints, intersectingEdges);
 	
 		if (selection .empty ())
 			return false;
-	
-		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 	
 		// Remove degenerated edges and faces.
 		rebuildIndices  ();
 		rebuildColor    ();
 		rebuildTexCoord ();
 		rebuildNormal   ();
-		rebuildCoord    ();
+		rewriteArray (rebuildCoord (), selection);
 	
 		redoSetCoordPoint    (undoStep);
 		redoSetNormalVector  (undoStep);
@@ -179,6 +177,9 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 		redoSetColorIndex    (undoStep);
 		redoRestoreSelection ({ }, undoStep);
 	
+
+		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
 		return true;

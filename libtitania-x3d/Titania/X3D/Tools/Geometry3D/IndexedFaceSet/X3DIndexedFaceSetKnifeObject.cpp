@@ -298,7 +298,7 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	undoSetNormalVector  (undoStep);
 	undoSetCoordPoint    (undoStep);
 
-	const auto selection = cut (cutFace, cutEdge, startPoints, endPoints);
+	auto selection = cut (cutFace, cutEdge, startPoints, endPoints);
 
 	startPoints .clear ();
 	endPoints   .clear ();
@@ -306,14 +306,12 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	if (selection .empty ())
 		return;
 
-	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
-
 	// Remove degenerated edges and faces.
 	rebuildIndices  ();
 	rebuildColor    ();
 	rebuildTexCoord ();
 	rebuildNormal   ();
-	rebuildCoord    ();
+	rewriteArray (rebuildCoord (), selection);
 
 	redoSetCoordPoint    (undoStep);
 	redoSetNormalVector  (undoStep);
@@ -324,6 +322,8 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	redoSetTexCoordIndex (undoStep);
 	redoSetColorIndex    (undoStep);
 	redoRestoreSelection ({ }, undoStep);
+
+	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }

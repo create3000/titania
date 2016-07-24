@@ -236,7 +236,7 @@ protected:
 	void
 	rebuildNormal ();
 
-	void
+	std::map <int32_t, int32_t>
 	rebuildCoord ();
 
 

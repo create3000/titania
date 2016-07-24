@@ -72,6 +72,20 @@ X3DIndexedFaceSetTool::initialize ()
 }
 
 void
+X3DIndexedFaceSetTool::rewriteArray (const std::map <int32_t, int32_t> & map, std::vector <int32_t> & array) const
+{
+	for (auto & value : array)
+	{
+		try
+		{
+			value = map .at (value);
+		}
+		catch (const std::domain_error &)
+		{ }
+	}
+}
+
+void
 X3DIndexedFaceSetTool::undoSetColorIndex (const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));

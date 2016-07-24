@@ -1029,15 +1029,15 @@ IndexedFaceSet::rebuildNormal ()
 	}
 }
 
-void
+std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildCoord ()
 {
+	std::map <int32_t, int32_t> map;
+
 	if (not getCoord ())
-		return;
+		return map;
 
 	// Build indices map
-
-	std::map <int32_t, int32_t> map;
 
 	for (const auto & index : coordIndex ())
 	{
@@ -1112,6 +1112,8 @@ IndexedFaceSet::rebuildCoord ()
 		default:
 		   break;
 	}
+
+	return map;
 }
 
 SFNode

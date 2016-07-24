@@ -195,6 +195,9 @@ protected:
 	///  @name Operations
 
 	void
+	rewriteArray (const std::map <int32_t, int32_t> &, std::vector <int32_t> &) const;
+
+	void
 	undoSetColorIndex (const UndoStepPtr &);
 
 	void

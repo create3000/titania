@@ -1096,7 +1096,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		{
 			const std::set <int32_t> pointIndex (points .begin (), points .end ());
 
-			for (const auto & point : points)
+			for (const auto & point : pointIndex)
 			{
 				for (const auto & face : getFaceSelection () -> getAdjacentFaces (point))
 				{
@@ -1119,7 +1119,7 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		{
 			const std::set <int32_t> pointIndex (points .begin (), points .end ());
 
-			for (const auto & point : points)
+			for (const auto & point : pointIndex)
 			{
 				for (const auto & face : getFaceSelection () -> getAdjacentFaces (point))
 				{
