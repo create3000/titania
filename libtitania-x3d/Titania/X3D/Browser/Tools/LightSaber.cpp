@@ -129,7 +129,7 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 
 	if (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ())
 	{
-		static constexpr auto snapAngle = radians (11.25);
+		static constexpr auto snapAngle = radians (11.25); // or getBrowser () -> getTransformToolOptions () .snapAngle () .getValue ();
 
 		const auto direction = points [1] - points [0];
 
