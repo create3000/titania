@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Sat, 23 Jul 2016 22:09:24 GMT'/>
+    <meta name='modified' content='Sun, 24 Jul 2016 00:03:19 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -38,7 +38,7 @@
           <MetadataString DEF='type' containerField='value'
               name='type'
               reference='http://titania.create3000.de'
-              value='"LIGHT_SABER_create3000.de"'/>
+              value='"RECTANGLE_SELECTION_create3000.de"'/>
         </MetadataSet>
         <MetadataSet DEF='Viewpoint' containerField='value'
             name='Viewpoint'
@@ -46,15 +46,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='8.93332195281982, 2.54574751853943, 8.98530197143555'/>
+              value='7.15950056540126, 0.829220763857448, 2.86689347378983'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.48769063790282, -0.867291542633947, -0.0998159394965022, 5.81968875003663'/>
+              value='0.391115119431801, -0.916814928738434, -0.0804944084653559, 5.84154466956663'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='4.62703371047974, -0.0110427280887961, -1.09405589103699'/>
+              value='5.31957328132567, 0.00470220610256951, -1.41378971024788'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
@@ -63,15 +63,15 @@
               name='children'
               reference='http://titania.create3000.de'>
             <IndexedFaceSet DEF='_1' containerField='value'
-                colorIndex='0, 1, 2, 3, -1, 0, 1, 2, 3, -1'
-                texCoordIndex='0, 1, 2, 3, -1, 4, 5, 6, 7, -1'
-                coordIndex='0, 1, 2, 3, -1, 4, 5, 6, 7, -1'>
+                colorIndex='4, 2, 3, 5, -1, 5, 0, 1, 4, -1, 9, 6, 2, 8, -1, 10, 1, 6, 9, -1, 11, 3, 7, 12, -1, 12, 9, 8, 11, -1, 9, 13, 7, 0, 10, -1'
+                texCoordIndex='8, 2, 3, 9, -1, 9, 0, 1, 8, -1, 13, 10, 6, 12, -1, 14, 5, 10, 13, -1, 15, 7, 11, 16, -1, 16, 13, 12, 15, -1, 13, 17, 11, 4, 14, -1'
+                coordIndex='8, 2, 3, 9, -1, 9, 0, 1, 8, -1, 13, 10, 6, 12, -1, 14, 5, 10, 13, -1, 15, 7, 11, 16, -1, 16, 13, 12, 15, -1, 13, 16, 11, 4, 14, -1'>
               <Color
-                  color='1 0 0, 0.0162597 0 1, 0 1 0.551497, 0.798698 1 0'/>
+                  color='1 0 0, 0.0162597 0 1, 0 1 0.551497, 0.798698 1 0, 0.00581407 0.642424 0.711871, 0.870895 0.641352 0, 0.0057934 0.643695 0.711301, 0.870639 0.642623 0, 0.365472 1 0.299141, 0.404672 0.643201 0.383239, 0.476413 0 0.532242, 0.582085 1 0.14957, 0.654021 0.642892 0.17816, 0.654021 0.642892 0.17816'/>
               <TextureCoordinate
-                  point='0 0, 1 0, 1 1, 0 1, 0 0, 1 0, 1 1, 0 1'/>
+                  point='0 0, 1 0, 1 1, 0 1, 0 0, 1 0, 1 1, 0 1, 1 0.642424, 0 0.641352, 1 0.643695, 0 0.642623, 0.542416 1, 0.538786 0.643201, 0.532242 0, 0.271208 1, 0.25047 0.642892, 0.25047 0.642892'/>
               <Coordinate
-                  point='-1 -1 0, 1 -1 0, 1 1 0, -1 1 0, 1.37046 -1 0, 3.37046 -1 0, 3.37046 1 0, 1.37046 1 0'/>
+                  point='-1 -1 0, 1 -1 0, 1 1 0, -1 1 0, 1.37046 -1 0, 3.37046 -1 0, 3.37046 1 0, 1.37046 1 0, 1 0.284849 0, -1 0.282704 0, 3.37046 0.287391 0, 1.37046 0.285246 0, 2.45529 1 0, 2.44803 0.286402 0, 2.43494 -1 0, 1.91288 1 0, 1.8714 0.285783 0'/>
             </IndexedFaceSet>
           </MetadataSet>
           <MetadataSet DEF='previous' containerField='value'

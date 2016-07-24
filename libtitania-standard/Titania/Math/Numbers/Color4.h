@@ -60,6 +60,7 @@
 #include <tuple>
 
 #include "../Functional.h"
+#include "Vector4.h"
 
 namespace titania {
 namespace math {
@@ -383,7 +384,19 @@ operator >= (const color4 <Type> & lhs, const color4 <Type> & rhs)
 ///  @relates color4
 ///  @name Arithmetic operations
 
-///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t.
+///  Linear interpolate between @a source and @a destination by an amout of @a t in RGBA space.
+template <typename Type>
+color4 <Type>
+lerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
+{
+	const auto a = vector4 <Type> (source .r (), source .g (), source .b (), source .a ());
+	const auto b = vector4 <Type> (destination .r (), destination .g (), destination .b (), destination .a ());
+	const auto r = lerp (a, b, t);
+
+	return color4 <Type> (r .x (), r .y (), r .z (), r .w ());
+}
+
+///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSVA space.
 template <typename Type>
 color4 <Type>
 clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)

@@ -58,6 +58,7 @@
 #include <tuple>
 
 #include "../Functional.h"
+#include "Vector3.h"
 
 namespace titania {
 namespace math {
@@ -368,7 +369,19 @@ operator >= (const color3 <Type> & lhs, const color3 <Type> & rhs)
 ///  @relates color3
 ///  @name Arithmetic operations
 
-///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t.
+///  Linear interpolate between @a source and @a destination by an amout of @a t in RGB space.
+template <typename Type>
+color3 <Type>
+lerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
+{
+	const auto a = vector3 <Type> (source .r (), source .g (), source .b ());
+	const auto b = vector3 <Type> (destination .r (), destination .g (), destination .b ());
+	const auto r = lerp (a, b, t);
+
+	return color3 <Type> (r .x (), r .y (), r .z (), r .w ());
+}
+
+///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSV space.
 template <typename Type>
 color3 <Type>
 clerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
