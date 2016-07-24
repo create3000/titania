@@ -129,12 +129,15 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 
 	if (getBrowser () -> getControlKey () and not getBrowser () -> getShiftKey ())
 	{
+		static constexpr auto snapAngle = radians (11.25);
+
 		const auto direction = points [1] - points [0];
 
-		if (std::abs (direction .x ()) < std::abs (direction .y ()))
-			points [1] .x (points [0] .x ());
-		else
-			points [1] .y (points [0] .y ());
+		auto complex = std::complex <double> (direction .x (), direction .y ());
+
+		complex = std::polar (std::abs (complex), std::round (std::arg (complex) / snapAngle) * snapAngle);
+
+		points [1] = points [0] + Vector2d (complex .real (), complex .imag ());
 	}
 
 	return false;
