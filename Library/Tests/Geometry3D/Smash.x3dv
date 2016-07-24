@@ -7,7 +7,7 @@ META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv"
-META "modified" "Sun, 24 Jul 2016 16:33:42 GMT"
+META "modified" "Sun, 24 Jul 2016 16:55:40 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -129,18 +129,22 @@ WorldInfo {
             name "children"
             reference "http://titania.create3000.de"
             value DEF _1 Transform {
-              translation 3 12 4.40964e-05
+              translation 3 -3 0.999989
               children Shape {
                 appearance Appearance {
-                  lineProperties DEF _2 LineProperties {
-                    linewidthScaleFactor 4.55
-                  }
-                  material Material {
-                    emissiveColor 1 0 0
+                  material DEF _2 Material { }
+                  texture DEF _3 ImageTexture {
+                    url [
+                      "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+                      "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
+                    ]
+                    repeatS FALSE
+                    repeatT FALSE
                   }
                 }
-                geometry Circle2D {
-                  radius 0.5
+                geometry ArcClose2D {
+                  endAngle 0
+                  solid FALSE
                 }
               }
             }
@@ -164,9 +168,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              3.07967662811279,
-              12.9931988716125,
-              1.38619709014893
+              3.1593542098999,
+              -1.0136022567749,
+              3.77229595184326
             ]
           }
           DEF orientation MetadataDouble {
@@ -184,8 +188,8 @@ WorldInfo {
             reference "http://titania.create3000.de"
             value [
               3,
-              12,
-              4.40963995060883e-05
+              -3,
+              0.999988973140717
             ]
           }
         ]
@@ -211,14 +215,7 @@ DEF Box Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture DEF _3 ImageTexture {
-        url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
-        ]
-        repeatS FALSE
-        repeatT FALSE
-      }
+      texture USE _3
     }
     geometry Box { }
   }
@@ -839,13 +836,28 @@ Transform {
   }
 }
 
-USE _1
+Transform {
+  translation 3 12 4.40964e-05
+  children Shape {
+    appearance Appearance {
+      lineProperties DEF _6 LineProperties {
+        linewidthScaleFactor 4.55
+      }
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Circle2D {
+      radius 0.5
+    }
+  }
+}
 
 Transform {
   translation 3 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }
@@ -860,7 +872,7 @@ Transform {
   translation 6 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }
@@ -876,7 +888,7 @@ Transform {
   translation 3 5.99999 2.20482e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }
@@ -898,7 +910,7 @@ Transform {
   scale 0.681115 0.681115 0.681115
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }
@@ -941,25 +953,13 @@ Transform {
   }
 }
 
-Transform {
-  translation 3 -3 0.999989
-  children Shape {
-    appearance Appearance {
-      material DEF _6 Material { }
-      texture USE _3
-    }
-    geometry ArcClose2D {
-      endAngle 0
-      solid FALSE
-    }
-  }
-}
+USE _1
 
 Transform {
   translation 6 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
+      material USE _2
       texture USE _3
     }
     geometry ArcClose2D {
@@ -972,7 +972,7 @@ Transform {
   translation 6 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
+      material USE _2
       texture USE _3
     }
     geometry ArcClose2D {
@@ -987,7 +987,7 @@ Transform {
   translation 9 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
+      material USE _2
       texture USE _3
     }
     geometry ArcClose2D {
@@ -1001,7 +1001,7 @@ Transform {
   translation 9 -3 0.999989
   children Shape {
     appearance Appearance {
-      material USE _6
+      material USE _2
       texture USE _3
     }
     geometry ArcClose2D {
@@ -1017,7 +1017,7 @@ Transform {
   translation 3 -6.00001 -2.20483e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }
@@ -1357,7 +1357,7 @@ Transform {
   translation 25 12 4.40964e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _6
       material Material {
         emissiveColor 1 0 0
       }

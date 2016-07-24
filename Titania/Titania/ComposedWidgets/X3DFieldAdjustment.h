@@ -164,6 +164,7 @@ private:
 
 	const Glib::RefPtr <Gtk::Adjustment> adjustment;
 	Gtk::Widget &                        widget;
+	X3D::X3DScenePtr                     scene;
 	X3D::MFNode                          nodes;
 	const std::string                    name;
 	X3D::UndoStepPtr                     undoStep;
@@ -186,6 +187,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	       adjustment (adjustment),
 	           widget (widget),
+	            scene (editor -> getCurrentScene ()),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -197,7 +199,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
                empty (0),
                index (-1)
 {
-	addChildren (nodes, buffer);
+	addChildren (scene, nodes, buffer);
 
 	setup ();
 
@@ -211,12 +213,21 @@ template <class Type>
 void
 X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 {
+	// Connect units.
+
+	scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
+
+	scene = getCurrentScene ();
+
+	scene -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
+
+	// Connect field.
+
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getScene () -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
-			node -> getField <Type> (name)          .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -228,8 +239,7 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getScene () -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
-			node -> getField <Type> (name)          .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }

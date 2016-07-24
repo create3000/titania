@@ -110,6 +110,7 @@ private:
 
 	const std::vector <Glib::RefPtr <Gtk::Adjustment>>  adjustments;
 	Gtk::Widget &                                       widget;
+	X3D::X3DScenePtr                                    scene;
 	X3D::MFNode                                         nodes;
 	const std::string                                   name;
 	X3D::UndoStepPtr                                    undoStep;

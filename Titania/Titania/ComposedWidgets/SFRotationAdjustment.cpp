@@ -64,6 +64,7 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
 	           widget (widget),
+	            scene (editor -> getCurrentScene ()),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -73,7 +74,7 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	            lower (0),
 	            upper (0)
 {
-	addChildren (nodes, buffer);
+	addChildren (scene, nodes, buffer);
 	            
 	setup ();
 
@@ -91,11 +92,20 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 void
 SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 {
+	// Connect units.
+
+	scene -> units_changed () .removeInterest (this, &SFRotationAdjustment::set_field);
+
+	scene = getCurrentScene ();
+
+	scene -> units_changed () .addInterest (this, &SFRotationAdjustment::set_field);
+
+	// Connect field.
+
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getScene () -> units_changed ()  .removeInterest (this, &SFRotationAdjustment::set_field);
 			node -> getField <X3D::SFRotation> (name) .removeInterest (this, &SFRotationAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)
@@ -108,7 +118,6 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getScene () -> units_changed ()   .addInterest (this, &SFRotationAdjustment::set_field);
 			node -> getField <X3D::SFRotation> (name) .addInterest (this, &SFRotationAdjustment::set_field);
 		}
 		catch (const X3D::X3DError &)

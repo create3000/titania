@@ -164,6 +164,7 @@ private:
 
 	const std::vector <Glib::RefPtr <Gtk::Adjustment>>  adjustments;
 	Gtk::Widget &                                       widget;
+	X3D::X3DScenePtr                                    scene;
 	X3D::MFNode                                         nodes;
 	const std::string                                   name;
 	int                                                 index;
@@ -191,6 +192,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2, adjustment3 }),
 	           widget (widget),
+	            scene (editor -> getCurrentScene ()),
 	            nodes (),
 	             name (name),
 	            index (-1),
@@ -205,7 +207,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	            upper (),
                empty ()
 {
-	addChildren (nodes, buffer);
+	addChildren (scene, nodes, buffer);
 
 	setup ();
 
@@ -221,12 +223,21 @@ template <class Type>
 void
 X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 {
+	// Connect units.
+
+	scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment3::set_field);
+
+	scene = getCurrentScene ();
+
+	scene -> units_changed () .addInterest (this, &X3DFieldAdjustment3::set_field);
+
+	// Connect field.
+
 	for (const auto & node : nodes)
 	{
 		try
 		{
-			node -> getScene () -> units_changed () .removeInterest (this, &X3DFieldAdjustment3::set_field);
-			node -> getField <Type> (name)          .removeInterest (this, &X3DFieldAdjustment3::set_field);
+			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment3::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -238,8 +249,7 @@ X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getScene () -> units_changed () .addInterest (this, &X3DFieldAdjustment3::set_field);
-			node -> getField <Type> (name)          .addInterest (this, &X3DFieldAdjustment3::set_field);
+			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment3::set_field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
