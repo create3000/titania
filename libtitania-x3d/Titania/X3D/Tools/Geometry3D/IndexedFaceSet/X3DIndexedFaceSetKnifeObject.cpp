@@ -295,50 +295,9 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	knifeArcSwitch -> whichChoice () = false;
 
 	// Always cut regardless of isOver
-
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
-
-	undoRestoreSelection (undoStep);
-	undoSetColorIndex    (undoStep);
-	undoSetTexCoordIndex (undoStep);
-	undoSetNormalIndex   (undoStep);
-	undoSetCoordIndex    (undoStep);
-	undoSetColorColor    (undoStep);
-	undoSetTexCoordPoint (undoStep);
-	undoSetNormalVector  (undoStep);
-	undoSetCoordPoint    (undoStep);
-
-	auto selection = cut (cutFace, cutEdge, startPoints, endPoints);
-
-	startPoints .clear ();
-	endPoints   .clear ();
-
-	if (selection .empty ())
-		return;
-
-	// Remove degenerated edges and faces.
-	rebuildIndices  ();
-	rebuildColor    ();
-	rebuildTexCoord ();
-	rebuildNormal   ();
-	rewriteArray (rebuildCoord (), selection);
-
-	redoSetCoordPoint    (undoStep);
-	redoSetNormalVector  (undoStep);
-	redoSetTexCoordPoint (undoStep);
-	redoSetColorColor    (undoStep);
-	redoSetCoordIndex    (undoStep);
-	redoSetNormalIndex   (undoStep);
-	redoSetTexCoordIndex (undoStep);
-	redoSetColorIndex    (undoStep);
-	redoRestoreSelection ({ }, undoStep);
-
-	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
-
-	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+	cut ();
 
 	// Test isOver state after button up
-
 	set_touch_sensor_over ();
 }
 
@@ -414,35 +373,6 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 
 	if (trackPoint .z () > 0)
 		knifeLineCoordinate -> point () [1] = getBrowser () -> getHitRay (getModelViewMatrix (), getProjectionMatrix (), getViewport ()) .point ();
-}
-
-Vector3d
-X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> & edge,
-                                               const std::pair <Vector3d, Vector3d> & cutPoints) const
-{
-	try
-	{
-		Vector2d closestPoint2d;
-		Vector3d closestPoint3d;
-	
-		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
-		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
-		const auto edgeLine   = Line3d (point1, point2, math::points_type ());	                   
-		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::points_type ());
-		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-
-		// Determine closeset point.
-		edgeScreen .intersects (cutScreen, closestPoint2d);
-		const auto hitRay = ViewVolume::unProjectRay (closestPoint2d .x (), closestPoint2d .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		edgeLine .closest_point (hitRay, closestPoint3d);
-
-		return closestPoint3d;
-	}
-	catch (const std::domain_error &)
-	{
-		return Vector3d ();
-	}
 }
 
 ///  Determine and update hot and active points, edges and face
@@ -620,6 +550,80 @@ X3DIndexedFaceSetKnifeObject::snapToVertex (const size_t face, std::vector <int3
 	knifeArcGeometry -> startAngle ()  = 0;
 	knifeArcGeometry -> endAngle ()    = 0;
 	return true;
+}
+
+Vector3d
+X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> & edge,
+                                               const std::pair <Vector3d, Vector3d> & cutPoints) const
+{
+	try
+	{
+		Vector2d closestPoint2d;
+		Vector3d closestPoint3d;
+	
+		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
+		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
+		const auto edgeLine   = Line3d (point1, point2, math::points_type ());	                   
+		const auto cutRay     = Line3d (cutPoints .first, cutPoints .second, math::points_type ());
+		const auto edgeScreen = ViewVolume::projectLine (edgeLine, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+
+		// Determine closeset point.
+		edgeScreen .intersects (cutScreen, closestPoint2d);
+		const auto hitRay = ViewVolume::unProjectRay (closestPoint2d .x (), closestPoint2d .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		edgeLine .closest_point (hitRay, closestPoint3d);
+
+		return closestPoint3d;
+	}
+	catch (const std::domain_error &)
+	{
+		return Vector3d ();
+	}
+}
+
+void
+X3DIndexedFaceSetKnifeObject::cut ()
+{
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
+
+	undoRestoreSelection (undoStep);
+	undoSetColorIndex    (undoStep);
+	undoSetTexCoordIndex (undoStep);
+	undoSetNormalIndex   (undoStep);
+	undoSetCoordIndex    (undoStep);
+	undoSetColorColor    (undoStep);
+	undoSetTexCoordPoint (undoStep);
+	undoSetNormalVector  (undoStep);
+	undoSetCoordPoint    (undoStep);
+
+	auto selection = X3DIndexedFaceSetCutObject::cut (cutFace, cutEdge, startPoints, endPoints);
+
+	startPoints .clear ();
+	endPoints   .clear ();
+
+	if (selection .empty ())
+		return;
+
+	// Remove degenerated edges and faces.
+	rebuildIndices  ();
+	rebuildColor    ();
+	rebuildTexCoord ();
+	rebuildNormal   ();
+	rewriteArray (rebuildCoord (), selection);
+
+	redoSetCoordPoint    (undoStep);
+	redoSetNormalVector  (undoStep);
+	redoSetTexCoordPoint (undoStep);
+	redoSetColorColor    (undoStep);
+	redoSetCoordIndex    (undoStep);
+	redoSetNormalIndex   (undoStep);
+	redoSetTexCoordIndex (undoStep);
+	redoSetColorIndex    (undoStep);
+	redoRestoreSelection ({ }, undoStep);
+
+	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+
+	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 X3DIndexedFaceSetKnifeObject::~X3DIndexedFaceSetKnifeObject ()

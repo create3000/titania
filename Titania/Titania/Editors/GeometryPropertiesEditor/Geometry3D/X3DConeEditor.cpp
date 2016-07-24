@@ -50,6 +50,7 @@
 
 #include "X3DConeEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/ConeOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -60,7 +61,8 @@ X3DConeEditor::X3DConeEditor () :
 	                                side (this, getConeSideCheckButton (),"side"),
 	                              bottom (this, getConeBottomCheckButton (), "bottom"),
 	                              height (this, getConeHeightAdjustment (), getConeHeightSpinButton (), "height"),
-	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius")
+	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius"),
+	                          uDimension (this, getConeUDimensionAdjustment (), getConeUDimensionSpinButton (), "uDimension")
 { }
 
 void
@@ -82,8 +84,9 @@ X3DConeEditor::removeShapes ()
 void
 X3DConeEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Cone> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::Cone> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getConeOptions () }) : X3D::MFNode ();
 
 	getConeExpander () .set_visible (node);
 
@@ -91,6 +94,7 @@ X3DConeEditor::set_geometry ()
 	bottom       .setNodes (nodes);
 	height       .setNodes (nodes);
 	bottomRadius .setNodes (nodes);
+	uDimension   .setNodes (global);
 }
 
 X3DConeEditor::~X3DConeEditor ()

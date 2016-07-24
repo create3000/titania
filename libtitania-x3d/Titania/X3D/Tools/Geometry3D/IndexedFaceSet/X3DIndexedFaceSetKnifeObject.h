@@ -140,6 +140,9 @@ private:
 	getClosestPoint (const std::pair <size_t, size_t> &,
 	                 const std::pair <Vector3d, Vector3d> &) const;
 
+	void
+	cut ();
+
 	///  @name Members
 
 	struct Fields

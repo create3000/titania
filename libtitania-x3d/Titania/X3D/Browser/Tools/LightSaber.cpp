@@ -140,6 +140,7 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 		points [1] = points [0] + Vector2d (complex .real (), complex .imag ());
 	}
 
+	// Disable sensors of knife tool.
 	return true;
 }
 

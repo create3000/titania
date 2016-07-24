@@ -144,7 +144,7 @@ void
 Cylinder::build ()
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double vDimension = options -> vDimension ();
+	const double uDimension = options -> uDimension () - 1;
 
 	getTexCoords () .emplace_back ();
 
@@ -153,14 +153,14 @@ Cylinder::build ()
 
 	if (side ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const double u1     = i / vDimension;
+			const double u1     = i / uDimension;
 			const double theta1 = 2 * M_PI * u1;
 			const auto   n1     = std::polar <double> (-1, theta1);
 			const auto   p1     = n1 * double (radius () .getValue ());
 
-			const double u2     = (i + 1) / vDimension;
+			const double u2     = (i + 1) / uDimension;
 			const double theta2 = 2 * M_PI * u2;
 			const auto   n2     = std::polar <double> (-1, theta2);
 			const auto   p2     = n2 * double (radius () .getValue ());
@@ -190,14 +190,14 @@ Cylinder::build ()
 			getVertices () .emplace_back (p2 .imag (), y1, p2 .real ());
 		}
 
-		addElements (GL_QUADS, vDimension * 4);
+		addElements (GL_QUADS, uDimension * 4);
 	}
 
 	if (top ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const double u     = i / vDimension;
+			const double u     = i / uDimension;
 			const double theta = 2 * M_PI * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
@@ -207,14 +207,14 @@ Cylinder::build ()
 			getVertices () .emplace_back (p .imag (), y1, p .real ());
 		}
 
-		addElements (GL_POLYGON, vDimension);
+		addElements (GL_POLYGON, uDimension);
 	}
 
 	if (bottom ())
 	{
-		for (int32_t i = vDimension - 1; i > -1; -- i)
+		for (int32_t i = uDimension - 1; i > -1; -- i)
 		{
-			const double u     = i / vDimension;
+			const double u     = i / uDimension;
 			const double theta = 2 * M_PI * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
@@ -224,7 +224,7 @@ Cylinder::build ()
 			getVertices () .emplace_back (p .imag (), y2, p .real ());
 		}
 
-		addElements (GL_POLYGON, vDimension);
+		addElements (GL_POLYGON, uDimension);
 	}
 
 	setSolid (solid ());
@@ -236,7 +236,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double vDimension = options -> vDimension ();
+	const double uDimension = options -> uDimension () - 1;
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -253,9 +253,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (top () or side ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const double u     = i / vDimension;
+			const double u     = i / uDimension;
 			const double theta = 2 * M_PI * u;
 			const auto  t     = std::polar <double> (-1, theta);
 			const auto  p     = t * double (radius () .getValue ());
@@ -269,9 +269,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (bottom () or side ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const double u     = i / vDimension;
+			const double u     = i / uDimension;
 			const double theta = 2 * M_PI * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
@@ -285,9 +285,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (side ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
-			const double u = i / vDimension;
+			const double u = i / uDimension;
 
 			texCoord -> point () .emplace_back (u, 1);
 			texCoord -> point () .emplace_back (u, 0);
@@ -302,7 +302,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (top ())
 	{
-		for (int32_t i = 0; i < vDimension; ++ i)
+		for (int32_t i = 0; i < uDimension; ++ i)
 		{
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> coordIndex ()    .emplace_back (i);
@@ -311,15 +311,15 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
 
-		t += vDimension;
-		c += vDimension;
+		t += uDimension;
+		c += uDimension;
 	}
 	else if (side ())
-		c += vDimension;
+		c += uDimension;
 
 	if (bottom ())
 	{
-		for (int32_t i = 0, ts = t + vDimension - 1, cs = c + vDimension - 1; i < vDimension; ++ i)
+		for (int32_t i = 0, ts = t + uDimension - 1, cs = c + uDimension - 1; i < uDimension; ++ i)
 		{
 			geometry -> texCoordIndex () .emplace_back (ts - i);
 			geometry -> coordIndex ()    .emplace_back (cs - i);
@@ -328,12 +328,12 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
 	
-		t += vDimension;
+		t += uDimension;
 	}
 
 	if (side ())
 	{
-		for (int32_t i = 0, size = vDimension - 1; i < size; ++ i)
+		for (int32_t i = 0, size = uDimension - 1; i < size; ++ i)
 		{
 			const int32_t i2 = i * 2;
 		
@@ -344,32 +344,32 @@ throw (Error <NOT_SUPPORTED>,
 			geometry -> texCoordIndex () .emplace_back (-1);
 
 			geometry -> coordIndex () .emplace_back (i);
-			geometry -> coordIndex () .emplace_back (i + vDimension);
-			geometry -> coordIndex () .emplace_back (i + vDimension + 1);
+			geometry -> coordIndex () .emplace_back (i + uDimension);
+			geometry -> coordIndex () .emplace_back (i + uDimension + 1);
 			geometry -> coordIndex () .emplace_back (i + 1);
 			geometry -> coordIndex () .emplace_back (-1);
 		}
 
-		const int32_t vDimension2 = vDimension * 2;
+		const int32_t uDimension2 = uDimension * 2;
 
-		geometry -> texCoordIndex () .emplace_back (t + vDimension2 - 2);
-		geometry -> texCoordIndex () .emplace_back (t + vDimension2 - 1);
-		geometry -> texCoordIndex () .emplace_back (t + vDimension2 + 1);
-		geometry -> texCoordIndex () .emplace_back (t + vDimension2);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 - 2);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 - 1);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2 + 1);
+		geometry -> texCoordIndex () .emplace_back (t + uDimension2);
 		geometry -> texCoordIndex () .emplace_back (-1);
 
-		geometry -> coordIndex () .emplace_back (vDimension - 1);
-		geometry -> coordIndex () .emplace_back (vDimension - 1 + vDimension);
-		geometry -> coordIndex () .emplace_back (vDimension);
+		geometry -> coordIndex () .emplace_back (uDimension - 1);
+		geometry -> coordIndex () .emplace_back (uDimension - 1 + uDimension);
+		geometry -> coordIndex () .emplace_back (uDimension);
 		geometry -> coordIndex () .emplace_back (0);
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
 //	if (top ())
 //	{
-//		for (int32_t i = 0; i < vDimension; ++ i)
+//		for (int32_t i = 0; i < uDimension; ++ i)
 //		{
-//			const double u     = i / vDimension;
+//			const double u     = i / uDimension;
 //			const double theta = 2 * M_PI * u;
 //			const double x     = -std::sin (theta);
 //			const double z     = -std::cos (theta);
@@ -381,9 +381,9 @@ throw (Error <NOT_SUPPORTED>,
 //
 //	if (bottom ())
 //	{
-//		for (int32_t i = 0; i < vDimension; ++ i)
+//		for (int32_t i = 0; i < uDimension; ++ i)
 //		{
-//			const double u     = i / vDimension;
+//			const double u     = i / uDimension;
 //			const double theta = 2 * M_PI * u;
 //			const double x     = -std::sin (theta);
 //			const double z     = -std::cos (theta);
@@ -395,9 +395,9 @@ throw (Error <NOT_SUPPORTED>,
 //
 //	if (side ())
 //	{
-//		for (int32_t i = 0; i < vDimension; ++ i)
+//		for (int32_t i = 0; i < uDimension; ++ i)
 //		{
-//			const double u     = i / vDimension;
+//			const double u     = i / uDimension;
 //			const double theta = 2 * M_PI * u;
 //			const double x     = -std::sin (theta);
 //			const double z     = -std::cos (theta);
@@ -417,7 +417,7 @@ throw (Error <NOT_SUPPORTED>,
 //
 //	if (top ())
 //	{
-//		for (int32_t i = first; i < vDimension; ++ i)
+//		for (int32_t i = first; i < uDimension; ++ i)
 //		{
 //			geometry -> texCoordIndex () .emplace_back (i);
 //			geometry -> coordIndex ()    .emplace_back (i);
@@ -426,12 +426,12 @@ throw (Error <NOT_SUPPORTED>,
 //		geometry -> texCoordIndex () .emplace_back (-1);
 //		geometry -> coordIndex ()    .emplace_back (-1);
 //		
-//		first += vDimension;
+//		first += uDimension;
 //	}
 //
 //	if (bottom ())
 //	{
-//		for (int32_t i = first + vDimension - 1; i >= first; -- i)
+//		for (int32_t i = first + uDimension - 1; i >= first; -- i)
 //		{
 //			geometry -> texCoordIndex () .emplace_back (i);
 //			geometry -> coordIndex ()    .emplace_back (i);
@@ -440,14 +440,14 @@ throw (Error <NOT_SUPPORTED>,
 //		geometry -> texCoordIndex () .emplace_back (-1);
 //		geometry -> coordIndex ()    .emplace_back (-1);
 //
-//		first += vDimension;
+//		first += uDimension;
 //	}
 //
 //	if (side ())
 //	{
-//		const int32_t vDimension2 = vDimension * 2;
+//		const int32_t uDimension2 = uDimension * 2;
 //	
-//		for (int32_t i = 0, size = vDimension2 - 2; i < size; i += 2)
+//		for (int32_t i = 0, size = uDimension2 - 2; i < size; i += 2)
 //		{
 //			geometry -> texCoordIndex () .emplace_back (first + i);
 //			geometry -> texCoordIndex () .emplace_back (first + i + 1);
@@ -462,14 +462,14 @@ throw (Error <NOT_SUPPORTED>,
 //			geometry -> coordIndex () .emplace_back (-1);
 //		}
 //
-//		geometry -> texCoordIndex () .emplace_back (first + vDimension2 - 2);
-//		geometry -> texCoordIndex () .emplace_back (first + vDimension2 - 1);
-//		geometry -> texCoordIndex () .emplace_back (first + vDimension2 + 1);
-//		geometry -> texCoordIndex () .emplace_back (first + vDimension2);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 - 2);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 - 1);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2 + 1);
+//		geometry -> texCoordIndex () .emplace_back (first + uDimension2);
 //		geometry -> texCoordIndex () .emplace_back (-1);
 //
-//		geometry -> coordIndex () .emplace_back (first + vDimension2 - 2);
-//		geometry -> coordIndex () .emplace_back (first + vDimension2 - 1);
+//		geometry -> coordIndex () .emplace_back (first + uDimension2 - 2);
+//		geometry -> coordIndex () .emplace_back (first + uDimension2 - 1);
 //		geometry -> coordIndex () .emplace_back (first + 1);
 //		geometry -> coordIndex () .emplace_back (first + 0);
 //		geometry -> coordIndex () .emplace_back (-1);

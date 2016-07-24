@@ -50,6 +50,7 @@
 
 #include "X3DSphereEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -57,7 +58,9 @@ namespace puck {
 
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius")
+	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
+	                          uDimension (this, getSphereUDimensionAdjustment (), getSphereUDimensionSpinButton (), "uDimension"),
+	                          vDimension (this, getSphereVDimensionAdjustment (), getSphereVDimensionSpinButton (), "vDimension")
 { }
 
 void
@@ -79,12 +82,15 @@ X3DSphereEditor::removeShapes ()
 void
 X3DSphereEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Sphere> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::Sphere> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getSphereOptions () }) : X3D::MFNode ();
 
 	getSphereExpander () .set_visible (node);
 
-	radius .setNodes (nodes);
+	radius     .setNodes (nodes);
+	uDimension .setNodes (global);
+	vDimension .setNodes (global);
 }
 
 X3DSphereEditor::~X3DSphereEditor ()

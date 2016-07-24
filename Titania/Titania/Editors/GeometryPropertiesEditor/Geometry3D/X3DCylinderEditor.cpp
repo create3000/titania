@@ -50,6 +50,7 @@
 
 #include "X3DCylinderEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/CylinderOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -61,7 +62,8 @@ X3DCylinderEditor::X3DCylinderEditor () :
 	                                side (this, getCylinderSideCheckButton (),"side"),
 	                              bottom (this, getCylinderBottomCheckButton (), "bottom"),
 	                              height (this, getCylinderHeightAdjustment (), getCylinderHeightSpinButton (), "height"),
-	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius")
+	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius"),
+	                          uDimension (this, getCylinderUDimensionAdjustment (), getCylinderUDimensionSpinButton (), "uDimension")
 { }
 
 void
@@ -83,16 +85,18 @@ X3DCylinderEditor::removeShapes ()
 void
 X3DCylinderEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Cylinder> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::Cylinder> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getCylinderOptions () }) : X3D::MFNode ();
 
 	getCylinderExpander () .set_visible (node);
 
-	top    .setNodes (nodes);
-	side   .setNodes (nodes);
-	bottom .setNodes (nodes);
-	height .setNodes (nodes);
-	radius .setNodes (nodes);
+	top        .setNodes (nodes);
+	side       .setNodes (nodes);
+	bottom     .setNodes (nodes);
+	height     .setNodes (nodes);
+	radius     .setNodes (nodes);
+	uDimension .setNodes (global);
 }
 
 X3DCylinderEditor::~X3DCylinderEditor ()

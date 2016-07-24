@@ -60,8 +60,8 @@ const std::string   ConeOptions::typeName       = "ConeOptions";
 const std::string   ConeOptions::containerField = "coneOptions";
 
 ConeOptions::Fields::Fields () :
-	uDimension (new SFInt32 (1)),
-	vDimension (new SFInt32 (20))
+	uDimension (new SFInt32 (21)),
+	vDimension (new SFInt32 (1))
 { }
 
 ConeOptions::ConeOptions (X3DExecutionContext* const executionContext) :
