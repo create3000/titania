@@ -74,6 +74,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	               X3DElevationGridEditor (),
 	                   X3DExtrusionEditor (),
 	                      X3DSphereEditor (),
+	            X3DGeoElevationGridEditor (),
 	              X3DPrimitiveCountEditor (),
 	                      X3DGeometryTool (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
@@ -136,6 +137,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DElevationGridEditor::removeShapes ();
 	X3DExtrusionEditor::removeShapes ();
 	X3DSphereEditor::removeShapes ();
+	X3DGeoElevationGridEditor::removeShapes ();
 
 	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
@@ -153,6 +155,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DElevationGridEditor::addShapes ();
 	X3DExtrusionEditor::addShapes ();
 	X3DSphereEditor::addShapes ();
+	X3DGeoElevationGridEditor::addShapes ();
 
 	set_geometry ();
 }

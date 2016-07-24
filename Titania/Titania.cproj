@@ -272,6 +272,7 @@
     <Compile Include="Titania\Base\X3DRevealerInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DElevationGridEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\X3DGeoElevationGridEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2499,6 +2500,7 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.h" />
     <None Include="share\titania\ui\icons\Scissor.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DElevationGridEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\X3DGeoElevationGridEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

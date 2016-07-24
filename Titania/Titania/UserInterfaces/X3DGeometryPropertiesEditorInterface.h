@@ -212,6 +212,30 @@ public:
 	{ return m_ElevationGridZSpacingAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridXDimensionAdjustment () const
+	{ return m_GeoElevationGridXDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridXSpacingAdjustment () const
+	{ return m_GeoElevationGridXSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridYScaleAdjustment () const
+	{ return m_GeoElevationGridYScaleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridZDimensionAdjustment () const
+	{ return m_GeoElevationGridZDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridZSpacingAdjustment () const
+	{ return m_GeoElevationGridZSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridZoneAdjustment () const
+	{ return m_GeoElevationGridZoneAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
 	{ return m_NormalColorAdjustment; }
 
@@ -488,6 +512,58 @@ public:
 	{ return *m_SphereYDimensionSpinButton; }
 
 	Gtk::Expander &
+	getGeoElevationGridExpander () const
+	{ return *m_GeoElevationGridExpander; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridXDimensionSpinButton () const
+	{ return *m_GeoElevationGridXDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridZDimensionSpinButton () const
+	{ return *m_GeoElevationGridZDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridXSpacingSpinButton () const
+	{ return *m_GeoElevationGridXSpacingSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridZSpacingSpinButton () const
+	{ return *m_GeoElevationGridZSpacingSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridYScaleSpinButton () const
+	{ return *m_GeoElevationGridYScaleSpinButton; }
+
+	Gtk::ComboBoxText &
+	getGeoElevationGridCoordinateSystemComboBoxText () const
+	{ return *m_GeoElevationGridCoordinateSystemComboBoxText; }
+
+	Gtk::Box &
+	getGeoElevationGridEllipsoidBox () const
+	{ return *m_GeoElevationGridEllipsoidBox; }
+
+	Gtk::ComboBoxText &
+	getGeoElevationGridEllipsoidComboBoxText () const
+	{ return *m_GeoElevationGridEllipsoidComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoElevationGridGDOrderComboBoxText () const
+	{ return *m_GeoElevationGridGDOrderComboBoxText; }
+
+	Gtk::Box &
+	getGeoElevationGridGeoSystemUTMBox () const
+	{ return *m_GeoElevationGridGeoSystemUTMBox; }
+
+	Gtk::ComboBoxText &
+	getGeoElevationGridHemisphereComboBoxText () const
+	{ return *m_GeoElevationGridHemisphereComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getGeoElevationGridUTMOrderComboBoxText () const
+	{ return *m_GeoElevationGridUTMOrderComboBoxText; }
+
+	Gtk::Expander &
 	getGeometryExpander () const
 	{ return *m_GeometryExpander; }
 
@@ -711,6 +787,12 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridYScaleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
@@ -780,6 +862,19 @@ private:
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
 	Gtk::SpinButton*               m_SphereXDimensionSpinButton;
 	Gtk::SpinButton*               m_SphereYDimensionSpinButton;
+	Gtk::Expander*                 m_GeoElevationGridExpander;
+	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridZDimensionSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridXSpacingSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridZSpacingSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridYScaleSpinButton;
+	Gtk::ComboBoxText*             m_GeoElevationGridCoordinateSystemComboBoxText;
+	Gtk::Box*                      m_GeoElevationGridEllipsoidBox;
+	Gtk::ComboBoxText*             m_GeoElevationGridEllipsoidComboBoxText;
+	Gtk::ComboBoxText*             m_GeoElevationGridGDOrderComboBoxText;
+	Gtk::Box*                      m_GeoElevationGridGeoSystemUTMBox;
+	Gtk::ComboBoxText*             m_GeoElevationGridHemisphereComboBoxText;
+	Gtk::ComboBoxText*             m_GeoElevationGridUTMOrderComboBoxText;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
