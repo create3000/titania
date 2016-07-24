@@ -259,8 +259,9 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	{
 	   try
 	   {
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+			const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+			const auto shapeNodes = getShapes ();
+		   auto       node       = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 			getCurrentContext () -> addUninitializedNode (node);
 			getCurrentContext () -> realize ();
@@ -268,7 +269,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
 
-			for (const auto & shapeNode : getShapes ())
+			for (const auto & shapeNode : shapeNodes)
 			{
 				auto & field = shapeNode -> geometry ();
 
@@ -279,6 +280,8 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
+
+			getGeometryUnlinkButton () .set_sensitive (shapeNodes .size () > 1);
 		}
 		catch (const X3D::X3DError & error)
 		{

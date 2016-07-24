@@ -249,19 +249,14 @@
                           <item translatable="yes">None</item>
                           <item translatable="yes">Arc2D</item>
                           <item translatable="yes">ArcClose2D</item>
-                          <item translatable="yes">Circle2D</item>
-                          <item translatable="yes">Disk2D</item>
-                          <item translatable="yes">Polyline2D</item>
-                          <item translatable="yes">Polypoint2D</item>
-                          <item translatable="yes">Rectangle2D</item>
-                          <item translatable="yes">TriangleSet2D</item>
                           <item translatable="yes">Box</item>
+                          <item translatable="yes">Circle2D</item>
                           <item translatable="yes">Cone</item>
                           <item translatable="yes">Cylinder</item>
+                          <item translatable="yes">Disk2D</item>
                           <item translatable="yes">ElevationGrid</item>
                           <item translatable="yes">Extrusion</item>
                           <item translatable="yes">IndexedFaceSet</item>
-                          <item translatable="yes">Sphere</item>
                           <item translatable="yes">IndexedLineSet</item>
                           <item translatable="yes">IndexedQuadSet</item>
                           <item translatable="yes">IndexedTriangleFanSet</item>
@@ -269,9 +264,14 @@
                           <item translatable="yes">IndexedTriangleStripSet</item>
                           <item translatable="yes">LineSet</item>
                           <item translatable="yes">PointSet</item>
+                          <item translatable="yes">Polyline2D</item>
+                          <item translatable="yes">Polypoint2D</item>
                           <item translatable="yes">QuadSet</item>
+                          <item translatable="yes">Rectangle2D</item>
+                          <item translatable="yes">Sphere</item>
                           <item translatable="yes">Text</item>
                           <item translatable="yes">TriangleFanSet</item>
+                          <item translatable="yes">TriangleSet2D</item>
                           <item translatable="yes">TriangleSet</item>
                           <item translatable="yes">TriangleStripSet</item>
                         </items>
