@@ -62,7 +62,7 @@ X3DConeEditor::X3DConeEditor () :
 	                              bottom (this, getConeBottomCheckButton (), "bottom"),
 	                              height (this, getConeHeightAdjustment (), getConeHeightSpinButton (), "height"),
 	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius"),
-	                          uDimension (this, getConeUDimensionAdjustment (), getConeUDimensionSpinButton (), "uDimension")
+	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension")
 { }
 
 void
@@ -94,7 +94,7 @@ X3DConeEditor::set_geometry ()
 	bottom       .setNodes (nodes);
 	height       .setNodes (nodes);
 	bottomRadius .setNodes (nodes);
-	uDimension   .setNodes (global);
+	xDimension   .setNodes (global);
 }
 
 X3DConeEditor::~X3DConeEditor ()

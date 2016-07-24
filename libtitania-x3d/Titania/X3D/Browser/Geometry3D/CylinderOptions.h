@@ -88,20 +88,20 @@ public:
 	///  @name Fields
 
 	SFInt32 &
-	uDimension ()
-	{ return *fields .uDimension; }
+	xDimension ()
+	{ return *fields .xDimension; }
 
 	const SFInt32 &
-	uDimension () const
-	{ return *fields .uDimension; }
+	xDimension () const
+	{ return *fields .xDimension; }
 
 	SFInt32 &
-	vDimension ()
-	{ return *fields .vDimension; }
+	yDimension ()
+	{ return *fields .yDimension; }
 
 	const SFInt32 &
-	vDimension () const
-	{ return *fields .vDimension; }
+	yDimension () const
+	{ return *fields .yDimension; }
 
 
 private:
@@ -124,8 +124,8 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const uDimension;
-		SFInt32* const vDimension;
+		SFInt32* const xDimension;
+		SFInt32* const yDimension;
 	};
 
 	Fields fields;

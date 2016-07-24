@@ -59,8 +59,8 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                          uDimension (this, getSphereUDimensionAdjustment (), getSphereUDimensionSpinButton (), "uDimension"),
-	                          vDimension (this, getSphereVDimensionAdjustment (), getSphereVDimensionSpinButton (), "vDimension")
+	                          xDimension (this, getSphereXDimensionAdjustment (), getSphereXDimensionSpinButton (), "xDimension"),
+	                          yDimension (this, getSphereYDimensionAdjustment (), getSphereYDimensionSpinButton (), "yDimension")
 { }
 
 void
@@ -89,8 +89,8 @@ X3DSphereEditor::set_geometry ()
 	getSphereExpander () .set_visible (node);
 
 	radius     .setNodes (nodes);
-	uDimension .setNodes (global);
-	vDimension .setNodes (global);
+	xDimension .setNodes (global);
+	yDimension .setNodes (global);
 }
 
 X3DSphereEditor::~X3DSphereEditor ()

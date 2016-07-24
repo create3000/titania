@@ -63,7 +63,7 @@ X3DCylinderEditor::X3DCylinderEditor () :
 	                              bottom (this, getCylinderBottomCheckButton (), "bottom"),
 	                              height (this, getCylinderHeightAdjustment (), getCylinderHeightSpinButton (), "height"),
 	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius"),
-	                          uDimension (this, getCylinderUDimensionAdjustment (), getCylinderUDimensionSpinButton (), "uDimension")
+	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension")
 { }
 
 void
@@ -96,7 +96,7 @@ X3DCylinderEditor::set_geometry ()
 	bottom     .setNodes (nodes);
 	height     .setNodes (nodes);
 	radius     .setNodes (nodes);
-	uDimension .setNodes (global);
+	xDimension .setNodes (global);
 }
 
 X3DCylinderEditor::~X3DCylinderEditor ()

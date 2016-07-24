@@ -97,8 +97,8 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFFloat> radius;
-	X3DFieldAdjustment <X3D::SFInt32> uDimension;
-	X3DFieldAdjustment <X3D::SFInt32> vDimension;
+	X3DFieldAdjustment <X3D::SFInt32> xDimension;
+	X3DFieldAdjustment <X3D::SFInt32> yDimension;
 
 };
 

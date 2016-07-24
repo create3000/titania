@@ -84,7 +84,7 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="ConeUDimensionAdjustment">
+  <object class="GtkAdjustment" id="ConeXDimensionAdjustment">
     <property name="lower">4</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
@@ -105,7 +105,7 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="CylinderUDimensionAdjustment">
+  <object class="GtkAdjustment" id="CylinderXDimensionAdjustment">
     <property name="lower">4</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
@@ -157,13 +157,13 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="SphereUDimensionAdjustment">
+  <object class="GtkAdjustment" id="SphereXDimensionAdjustment">
     <property name="lower">4</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="SphereVDimensionAdjustment">
+  <object class="GtkAdjustment" id="SphereYDimensionAdjustment">
     <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
@@ -1289,7 +1289,7 @@
                           <object class="GtkLabel" id="label66">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">U Dimension:</property>
+                            <property name="label" translatable="yes">X Dimension:</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1298,11 +1298,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="ConeUDimensionSpinButton">
+                          <object class="GtkSpinButton" id="ConeXDimensionSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="text" translatable="yes">4</property>
-                            <property name="adjustment">ConeUDimensionAdjustment</property>
+                            <property name="adjustment">ConeXDimensionAdjustment</property>
                             <property name="climb_rate">0.01</property>
                             <property name="value">4</property>
                           </object>
@@ -1498,7 +1498,7 @@
                           <object class="GtkLabel" id="label64">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">U Dimension:</property>
+                            <property name="label" translatable="yes">X Dimension:</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1507,11 +1507,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="CylinderUDimensionSpinButton">
+                          <object class="GtkSpinButton" id="CylinderXDimensionSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="text" translatable="yes">3</property>
-                            <property name="adjustment">CylinderUDimensionAdjustment</property>
+                            <property name="adjustment">CylinderXDimensionAdjustment</property>
                             <property name="climb_rate">0.01</property>
                             <property name="value">3</property>
                           </object>
@@ -1652,7 +1652,7 @@
                           <object class="GtkLabel" id="label61">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">U Dimension:</property>
+                            <property name="label" translatable="yes">X Dimension:</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1664,7 +1664,7 @@
                           <object class="GtkLabel" id="label62">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">V Dimension:</property>
+                            <property name="label" translatable="yes">Y Dimension:</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1673,11 +1673,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="SphereUDimensionSpinButton">
+                          <object class="GtkSpinButton" id="SphereXDimensionSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="text" translatable="yes">0,000</property>
-                            <property name="adjustment">SphereUDimensionAdjustment</property>
+                            <property name="adjustment">SphereXDimensionAdjustment</property>
                             <property name="climb_rate">0.01</property>
                           </object>
                           <packing>
@@ -1686,11 +1686,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSpinButton" id="SphereVDimensionSpinButton">
+                          <object class="GtkSpinButton" id="SphereYDimensionSpinButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="text" translatable="yes">0</property>
-                            <property name="adjustment">SphereVDimensionAdjustment</property>
+                            <property name="adjustment">SphereYDimensionAdjustment</property>
                             <property name="climb_rate">0.01</property>
                           </object>
                           <packing>

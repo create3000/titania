@@ -60,8 +60,8 @@ const std::string   CylinderOptions::typeName       = "CylinderOptions";
 const std::string   CylinderOptions::containerField = "cylinderOptions";
 
 CylinderOptions::Fields::Fields () :
-	uDimension (new SFInt32 (21)),
-	vDimension (new SFInt32 (1))
+	xDimension (new SFInt32 (21)),
+	yDimension (new SFInt32 (1))
 { }
 
 CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
@@ -69,8 +69,8 @@ CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
 	X3DOptionNode (),
 	       fields ()
 {
-	addField (inputOutput, "uDimension", uDimension ());
-	addField (inputOutput, "vDimension", vDimension ());
+	addField (inputOutput, "xDimension", xDimension ());
+	addField (inputOutput, "yDimension", yDimension ());
 	//addField (inputOutput, "hDimension", hDimension ());
 }
 

@@ -138,7 +138,7 @@ void
 Cone::build ()
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double uDimension = options -> uDimension () - 1;
+	const double xDimension = options -> xDimension () - 1;
 
 	getTexCoords () .emplace_back ();
 
@@ -148,18 +148,18 @@ Cone::build ()
 
 	if (side ())
 	{
-		for (int32_t i = 0; i < uDimension; ++ i)
+		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u1     = (i + 0.5f) / uDimension;
+			const double u1     = (i + 0.5f) / xDimension;
 			const double theta1 = 2 * M_PI * u1;
 			const auto   n1     = std::polar <double> (nz .imag (), theta1);
 
-			const double u2     = i / uDimension;
+			const double u2     = i / xDimension;
 			const double theta2 = 2 * M_PI * u2;
 			const auto   p2     = std::polar <double> (-bottomRadius (), theta2);
 			const auto   n2     = std::polar <double> (nz .imag (), theta2);
 
-			const double u3     = (i + 1) / uDimension;
+			const double u3     = (i + 1) / xDimension;
 			const double theta3 = 2 * M_PI * u3;
 			const auto   p3     = std::polar <double> (-bottomRadius (), theta3);
 			const auto   n3     = std::polar <double> (nz .imag (), theta3);
@@ -191,9 +191,9 @@ Cone::build ()
 
 	if (bottom ())
 	{
-		for (int32_t i = uDimension - 1; i > -1; -- i)
+		for (int32_t i = xDimension - 1; i > -1; -- i)
 		{
-			const double u     = i / uDimension;
+			const double u     = i / xDimension;
 			const double theta = 2 * M_PI * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
@@ -203,7 +203,7 @@ Cone::build ()
 			getVertices () .emplace_back (p .imag (), y2, p .real ());
 		}
 
-		addElements (GL_POLYGON, uDimension);
+		addElements (GL_POLYGON, xDimension);
 	}
 
 	setSolid (solid ());
@@ -215,7 +215,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double uDimension = options -> uDimension () - 1;
+	const double xDimension = options -> xDimension () - 1;
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -234,10 +234,10 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		coord -> point () .emplace_back (0, y1, 0);
 
-		for (int32_t i = 0; i < uDimension; ++ i)
+		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u1 = (i + 0.5f) / uDimension;
-			const double u2 = i / uDimension;
+			const double u1 = (i + 0.5f) / xDimension;
+			const double u2 = i / xDimension;
 
 			texCoord -> point () .emplace_back (u1, 1);
 			texCoord -> point () .emplace_back (u2, 0);
@@ -248,9 +248,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (bottom () or side ())
 	{
-		for (int32_t i = 0; i < uDimension; ++ i)
+		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u     = i / uDimension;
+			const double u     = i / xDimension;
 			const double theta = 2 * M_PI * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
@@ -267,7 +267,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	if (side ())
 	{
-		for (int32_t i = 1; i < uDimension; ++ i)
+		for (int32_t i = 1; i < xDimension; ++ i)
 		{
 			const int32_t i2 = i * 2;
 
@@ -282,25 +282,25 @@ throw (Error <NOT_SUPPORTED>,
 			geometry -> coordIndex () .emplace_back (-1);
 		}
 
-		const int32_t uDimension2 = uDimension * 2;
+		const int32_t xDimension2 = xDimension * 2;
 
-		geometry -> texCoordIndex () .emplace_back (uDimension2 - 2);
-		geometry -> texCoordIndex () .emplace_back (uDimension2 - 1);
-		geometry -> texCoordIndex () .emplace_back (uDimension2);
+		geometry -> texCoordIndex () .emplace_back (xDimension2 - 2);
+		geometry -> texCoordIndex () .emplace_back (xDimension2 - 1);
+		geometry -> texCoordIndex () .emplace_back (xDimension2);
 		geometry -> texCoordIndex () .emplace_back (-1);
 
 		geometry -> coordIndex () .emplace_back (0);
-		geometry -> coordIndex () .emplace_back (uDimension);
+		geometry -> coordIndex () .emplace_back (xDimension);
 		geometry -> coordIndex () .emplace_back (1);
 		geometry -> coordIndex () .emplace_back (-1);
 
 		c += 1;
-		t += uDimension2 + 1;
+		t += xDimension2 + 1;
 	}
 
 	if (bottom ())
 	{
-		for (int32_t i = 0, ts = t + uDimension - 1, cs = c + uDimension - 1; i < uDimension; ++ i)
+		for (int32_t i = 0, ts = t + xDimension - 1, cs = c + xDimension - 1; i < xDimension; ++ i)
 		{
 			geometry -> texCoordIndex () .emplace_back (ts - i);
 			geometry -> coordIndex ()    .emplace_back (cs - i);

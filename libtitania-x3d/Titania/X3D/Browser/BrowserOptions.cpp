@@ -248,15 +248,15 @@ BrowserOptions::set_PrimitiveQuality ()
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 81;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 81;
-		getBrowser () -> getConeOptions ()       -> uDimension () = 33;
-		getBrowser () -> getCylinderOptions ()   -> uDimension () = 33;
+		getBrowser () -> getConeOptions ()       -> xDimension () = 33;
+		getBrowser () -> getCylinderOptions ()   -> xDimension () = 33;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
-			quadSphere -> uDimension () = 63;
-			quadSphere -> vDimension () = 31;
+			quadSphere -> xDimension () = 63;
+			quadSphere -> yDimension () = 31;
 		}
 
 		return;
@@ -268,15 +268,15 @@ BrowserOptions::set_PrimitiveQuality ()
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 21;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 21;
-		getBrowser () -> getConeOptions ()       -> uDimension () = 17;
-		getBrowser () -> getCylinderOptions ()   -> uDimension () = 17;
+		getBrowser () -> getConeOptions ()       -> xDimension () = 17;
+		getBrowser () -> getCylinderOptions ()   -> xDimension () = 17;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
-			quadSphere -> uDimension () = 21;
-			quadSphere -> vDimension () = 9;
+			quadSphere -> xDimension () = 21;
+			quadSphere -> yDimension () = 9;
 		}
 
 		return;
@@ -288,15 +288,15 @@ BrowserOptions::set_PrimitiveQuality ()
 	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
 	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 41;
 	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 41;
-	getBrowser () -> getConeOptions ()       -> uDimension () = 21;
-	getBrowser () -> getCylinderOptions ()   -> uDimension () = 21;
+	getBrowser () -> getConeOptions ()       -> xDimension () = 21;
+	getBrowser () -> getCylinderOptions ()   -> xDimension () = 21;
 
 	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 	if (quadSphere)
 	{
-		quadSphere -> uDimension () = 31;
-		quadSphere -> vDimension () = 15;
+		quadSphere -> xDimension () = 31;
+		quadSphere -> yDimension () = 15;
 	}
 }
 

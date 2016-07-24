@@ -160,8 +160,8 @@ public:
 	{ return m_ConeHeightAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getConeUDimensionAdjustment () const
-	{ return m_ConeUDimensionAdjustment; }
+	getConeXDimensionAdjustment () const
+	{ return m_ConeXDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getCreaseAngleAdjustment () const
@@ -176,8 +176,8 @@ public:
 	{ return m_CylinderRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getCylinderUDimensionAdjustment () const
-	{ return m_CylinderUDimensionAdjustment; }
+	getCylinderXDimensionAdjustment () const
+	{ return m_CylinderXDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getDisk2DDimensionAdjustment () const
@@ -216,12 +216,12 @@ public:
 	{ return m_SphereRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getSphereUDimensionAdjustment () const
-	{ return m_SphereUDimensionAdjustment; }
+	getSphereXDimensionAdjustment () const
+	{ return m_SphereXDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getSphereVDimensionAdjustment () const
-	{ return m_SphereVDimensionAdjustment; }
+	getSphereYDimensionAdjustment () const
+	{ return m_SphereYDimensionAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -392,8 +392,8 @@ public:
 	{ return *m_ConeBottomCheckButton; }
 
 	Gtk::SpinButton &
-	getConeUDimensionSpinButton () const
-	{ return *m_ConeUDimensionSpinButton; }
+	getConeXDimensionSpinButton () const
+	{ return *m_ConeXDimensionSpinButton; }
 
 	Gtk::Expander &
 	getCylinderExpander () const
@@ -420,8 +420,8 @@ public:
 	{ return *m_CylinderTopCheckButton; }
 
 	Gtk::SpinButton &
-	getCylinderUDimensionSpinButton () const
-	{ return *m_CylinderUDimensionSpinButton; }
+	getCylinderXDimensionSpinButton () const
+	{ return *m_CylinderXDimensionSpinButton; }
 
 	Gtk::Expander &
 	getExtrusionExpander () const
@@ -444,12 +444,12 @@ public:
 	{ return *m_SphereRadiusSpinButton; }
 
 	Gtk::SpinButton &
-	getSphereUDimensionSpinButton () const
-	{ return *m_SphereUDimensionSpinButton; }
+	getSphereXDimensionSpinButton () const
+	{ return *m_SphereXDimensionSpinButton; }
 
 	Gtk::SpinButton &
-	getSphereVDimensionSpinButton () const
-	{ return *m_SphereVDimensionSpinButton; }
+	getSphereYDimensionSpinButton () const
+	{ return *m_SphereYDimensionSpinButton; }
 
 	Gtk::Expander &
 	getGeometryExpander () const
@@ -662,11 +662,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeBottomRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ConeUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ConeXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CylinderUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_CylinderXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
@@ -676,8 +676,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SphereUDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SphereVDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_SphereXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_SphereYDimensionAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GeometryChildNotebook;
@@ -720,21 +720,21 @@ private:
 	Gtk::SpinButton*               m_ConeHeightSpinButton;
 	Gtk::CheckButton*              m_ConeSideCheckButton;
 	Gtk::CheckButton*              m_ConeBottomCheckButton;
-	Gtk::SpinButton*               m_ConeUDimensionSpinButton;
+	Gtk::SpinButton*               m_ConeXDimensionSpinButton;
 	Gtk::Expander*                 m_CylinderExpander;
 	Gtk::SpinButton*               m_CylinderRadiusSpinButton;
 	Gtk::SpinButton*               m_CylinderHeightSpinButton;
 	Gtk::CheckButton*              m_CylinderBottomCheckButton;
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
-	Gtk::SpinButton*               m_CylinderUDimensionSpinButton;
+	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
 	Gtk::Expander*                 m_SphereExpander;
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
-	Gtk::SpinButton*               m_SphereUDimensionSpinButton;
-	Gtk::SpinButton*               m_SphereVDimensionSpinButton;
+	Gtk::SpinButton*               m_SphereXDimensionSpinButton;
+	Gtk::SpinButton*               m_SphereYDimensionSpinButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
