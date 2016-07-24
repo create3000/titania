@@ -84,8 +84,8 @@ X3DBoxEditor::removeShapes ()
 void
 X3DBoxEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Box> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node  = getOneSelection <X3D::Box> (getShapes (), "geometry");
+	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
 	getBoxExpander () .set_visible (node);
 

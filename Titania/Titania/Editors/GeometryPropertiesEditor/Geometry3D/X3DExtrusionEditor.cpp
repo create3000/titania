@@ -80,8 +80,8 @@ X3DExtrusionEditor::removeShapes ()
 void
 X3DExtrusionEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Extrusion> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node  = getOneSelection <X3D::Extrusion> (getShapes (), "geometry");
+	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
 	getExtrusionExpander () .set_visible (node);
 

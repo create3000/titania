@@ -2592,6 +2592,7 @@
     <Folder Include="share\titania\Library\Components\H-Anim\.Titania\" />
     <Folder Include="share\titania\Library\Components\Picking\.Titania\" />
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

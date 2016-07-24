@@ -83,8 +83,8 @@ X3DRectangle2DEditor::removeShapes ()
 void
 X3DRectangle2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Rectangle2D> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node  = getOneSelection <X3D::Rectangle2D> (getShapes (), "geometry");
+	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
 	getRectangle2DExpander () .set_visible (node);
 
