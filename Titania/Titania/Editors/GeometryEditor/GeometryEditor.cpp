@@ -366,36 +366,22 @@ GeometryEditor::set_viewer ()
 	switch (getCurrentBrowser () -> getCurrentViewer ())
 	{
 		case X3D::X3DConstants::RectangleSelection:
-		{
-			changing = true;
-			set_selector (SelectorType::RECTANGLE);
-			changing = false;
-			break;
-		}
 		case X3D::X3DConstants::LassoSelection:
-		{
-			changing = true;
-			set_selector (SelectorType::LASSO);
-			changing = false;
-			break;
-		}
 		case X3D::X3DConstants::LightSaber:
-		{
-			changing = true;
-			getCutPolygonsButton () .set_active (true);
-			set_cut_polygons ();
-			changing = false;
-			break;
-		}
 		case X3D::X3DConstants::LookAtViewer:
 			break;
 		default:
 		{
+			// If active viewer button was clicked:
+
 			if (getPaintSelectionButton () .get_active ())
 			{
 				if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
 					getBrowserWindow () -> getArrowButton () .set_active (true);
 			}
+
+			if (getCutPolygonsButton () .get_active ())
+				getBrowserWindow () -> getArrowButton () .set_active (true);
 
 			privateViewer = browser-> getPrivateViewer ();
 			break;

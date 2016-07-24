@@ -433,9 +433,9 @@ X3DBrowserEditor::setMetaData ()
 			std::make_pair (X3D::X3DConstants::PlaneViewer,        "PLANE_create3000.de"),
 			std::make_pair (X3D::X3DConstants::NoneViewer,         "NONE"),
 			std::make_pair (X3D::X3DConstants::LookAtViewer,       "LOOKAT"),
-			std::make_pair (X3D::X3DConstants::LassoSelection,     "LASSO_SELECTION_create3000.de"),
-			std::make_pair (X3D::X3DConstants::RectangleSelection, "RECTANGLE_SELECTION_create3000.de"),
-			std::make_pair (X3D::X3DConstants::LightSaber,         "LIGHT_SABER_create3000.de"),
+			std::make_pair (X3D::X3DConstants::LassoSelection,     "EXAMINE"),
+			std::make_pair (X3D::X3DConstants::RectangleSelection, "EXAMINE"),
+			std::make_pair (X3D::X3DConstants::LightSaber,         "EXAMINE"),
 		};
 
 		const auto worldInfo   = createWorldInfo ();
@@ -498,16 +498,13 @@ X3DBrowserEditor::getMetaData ()
 	try
 	{
 		static const std::map <std::string, X3D::X3DConstants::NodeType> viewerTypes = {
-			std::make_pair ("EXAMINE",                           X3D::X3DConstants::ExamineViewer),
-			std::make_pair ("WALK",                              X3D::X3DConstants::WalkViewer),
-			std::make_pair ("FLY",                               X3D::X3DConstants::FlyViewer),
-			std::make_pair ("PLANE",                             X3D::X3DConstants::PlaneViewer),
-			std::make_pair ("PLANE_create3000.de",               X3D::X3DConstants::PlaneViewer),
-			std::make_pair ("NONE",                              X3D::X3DConstants::NoneViewer),
-			std::make_pair ("LOOKAT",                            X3D::X3DConstants::LookAtViewer),
-			std::make_pair ("LASSO_SELECTION_create3000.de",     X3D::X3DConstants::LassoSelection),
-			std::make_pair ("RECTANGLE_SELECTION_create3000.de", X3D::X3DConstants::RectangleSelection),
-			std::make_pair ("LIGHT_SABER_create3000.de",         X3D::X3DConstants::LightSaber),
+			std::make_pair ("EXAMINE",             X3D::X3DConstants::ExamineViewer),
+			std::make_pair ("WALK",                X3D::X3DConstants::WalkViewer),
+			std::make_pair ("FLY",                 X3D::X3DConstants::FlyViewer),
+			std::make_pair ("PLANE",               X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("PLANE_create3000.de", X3D::X3DConstants::PlaneViewer),
+			std::make_pair ("NONE",                X3D::X3DConstants::NoneViewer),
+			std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer),
 		};
 
 		const auto   worldInfo   = getWorldInfo ();
