@@ -79,6 +79,7 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	          knifeTouchSensor (),
 	              planeSensors (),
 	               knifeSwitch (),
+	     knifeStartPointSwitch (),
 	           knifeStartPoint (),
 	             knifeEndPoint (),
 	           knifeLineSwitch (),
@@ -103,6 +104,7 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	             knifeTouchSensor,
 	             planeSensors,
 	             knifeSwitch,
+	             knifeStartPointSwitch,
 	             knifeStartPoint,
 	             knifeEndPoint,
 	             knifeLineSwitch,
@@ -128,18 +130,20 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
-		knifeSelectionGroup = inlineNode -> getExportedNode <Group>            ("KnifeSelectionGroup");
-		knifeTouchSensor    = inlineNode -> getExportedNode <TouchSensor>      ("KnifeTouchSensor");
-		knifeSwitch         = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
-		knifeStartPoint     = inlineNode -> getExportedNode <Transform>        ("KnifeStartPoint");
-		knifeEndPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
-		knifeLineSwitch     = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
-		knifeLineCoordinate = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
-		knifeArcSwitch      = inlineNode -> getExportedNode <Switch>           ("KnifeArcSwitch");
-		knifeArc            = inlineNode -> getExportedNode <Transform>        ("KnifeArc");
-		knifeArcGeometry    = inlineNode -> getExportedNode <Arc2D>            ("KnifeArcGeometry");
+		knifeSelectionGroup   = inlineNode -> getExportedNode <Group>            ("KnifeSelectionGroup");
+		knifeTouchSensor      = inlineNode -> getExportedNode <TouchSensor>      ("KnifeTouchSensor");
+		knifeSwitch           = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
+		knifeStartPointSwitch = inlineNode -> getExportedNode <Switch>           ("KnifeStartPointSwitch");
+		knifeStartPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeStartPoint");
+		knifeEndPoint         = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
+		knifeLineSwitch       = inlineNode -> getExportedNode <Switch>           ("KnifeLineSwitch");
+		knifeLineCoordinate   = inlineNode -> getExportedNode <CoordinateDouble> ("KnifeLineCoordinate");
+		knifeArcSwitch        = inlineNode -> getExportedNode <Switch>           ("KnifeArcSwitch");
+		knifeArc              = inlineNode -> getExportedNode <Transform>        ("KnifeArc");
+		knifeArcGeometry      = inlineNode -> getExportedNode <Arc2D>            ("KnifeArcGeometry");
 
 		knifeTouchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint);
+		knifeTouchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_over);
 		knifeTouchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_active);
 
 		set_cutPolygons ();
@@ -259,24 +263,30 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint  ()
 }
 
 void
-X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & planeSensor, size_t cutFace)
+X3DIndexedFaceSetKnifeObject::set_touch_sensor_over ()
 {
-	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (cutFace));		               
-	const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+	if (knifeTouchSensor -> isActive ())
+      return;
 
-	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation, planeSensor .getValue ());
+	knifeStartPointSwitch -> whichChoice () = knifeTouchSensor -> isOver ();
 
-	planeSensor -> enabled ()      = true;
-	planeSensor -> axisRotation () = axisRotation;
-	planeSensor -> autoOffset ()   = false;
-	planeSensor -> offset ()       = knifeTouchSensor -> getHitPoint ();
+	if (knifeTouchSensor -> isOver ())
+      return;
+
+	knifeArcSwitch -> whichChoice () = false;
+
+	setHotPoints ({ });
+	setHotEdges ({ });
+	setHotFaces ({ });
+
+	updateMagicSelection ();
 }
 
 void
 X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 {
 	active = knifeTouchSensor -> isActive ();	 
-  
+ 
 	knifeLineSwitch -> whichChoice () = active;	 
   
 	if (active)
@@ -284,7 +294,7 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 
 	knifeArcSwitch -> whichChoice () = false;
 
-	// Cut
+	// Always cut regardless of isOver
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Polygons"));
 
@@ -326,6 +336,24 @@ X3DIndexedFaceSetKnifeObject::set_touch_sensor_active ()
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+
+	// Test isOver state after button up
+
+	set_touch_sensor_over ();
+}
+
+void
+X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & planeSensor, size_t cutFace)
+{
+	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (cutFace));		               
+	const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
+
+	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation, planeSensor .getValue ());
+
+	planeSensor -> enabled ()      = true;
+	planeSensor -> axisRotation () = axisRotation;
+	planeSensor -> autoOffset ()   = false;
+	planeSensor -> offset ()       = knifeTouchSensor -> getHitPoint ();
 }
 
 void

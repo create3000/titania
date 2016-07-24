@@ -113,6 +113,9 @@ private:
 	set_touch_sensor_hitPoint ();
 
 	void
+	set_touch_sensor_over ();
+
+	void
 	set_touch_sensor_active ();
 
 	void
@@ -152,6 +155,7 @@ private:
 	X3DPtr <TouchSensor>      knifeTouchSensor;
 	X3DPtrArray <PlaneSensor> planeSensors;
 	X3DPtr <Switch>           knifeSwitch;
+	X3DPtr <Switch>           knifeStartPointSwitch;
 	X3DPtr <Transform>        knifeStartPoint;
 	X3DPtr <Transform>        knifeEndPoint;
 	X3DPtr <Switch>           knifeLineSwitch;
