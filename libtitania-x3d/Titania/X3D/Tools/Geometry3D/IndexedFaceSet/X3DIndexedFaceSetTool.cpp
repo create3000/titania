@@ -80,7 +80,7 @@ X3DIndexedFaceSetTool::rewriteArray (const std::map <int32_t, int32_t> & map, st
 		{
 			value = map .at (value);
 		}
-		catch (const std::domain_error &)
+		catch (const std::out_of_range &)
 		{ }
 	}
 }
