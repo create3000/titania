@@ -50,6 +50,7 @@
 
 #include "X3DDisk2DEditor.h"
 
+#include <Titania/X3D/Browser/Geometry2D/Disk2DOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -58,7 +59,8 @@ namespace puck {
 X3DDisk2DEditor::X3DDisk2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                         innerRadius (this, getDisk2DInnerRadiusAdjustment (), getDisk2DInnerRadiusSpinButton (), "innerRadius"),
-	                         outerRadius (this, getDisk2DOuterRadiusAdjustment (), getDisk2DOuterRadiusSpinButton (), "outerRadius")
+	                         outerRadius (this, getDisk2DOuterRadiusAdjustment (), getDisk2DOuterRadiusSpinButton (), "outerRadius"),
+	                           dimension (this, getDisk2DDimensionAdjustment (), getDisk2DDimensionSpinButton (), "dimension")
 { }
 
 void
@@ -80,13 +82,15 @@ X3DDisk2DEditor::removeShapes ()
 void
 X3DDisk2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Disk2D> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::Disk2D> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getDisk2DOptions () }) : X3D::MFNode ();
 
 	getDisk2DExpander () .set_visible (node);
 
 	innerRadius .setNodes (nodes);
 	outerRadius .setNodes (nodes);
+	dimension   .setNodes (global);
 }
 
 X3DDisk2DEditor::~X3DDisk2DEditor ()

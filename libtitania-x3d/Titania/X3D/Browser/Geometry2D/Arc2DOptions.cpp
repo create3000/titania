@@ -70,6 +70,8 @@ Arc2DOptions::Arc2DOptions (X3DExecutionContext* const executionContext) :
 	       fields ()
 {
 	addField (inputOutput, "minAngle", minAngle ());
+
+	minAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 Arc2DOptions*

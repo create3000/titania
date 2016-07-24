@@ -70,6 +70,8 @@ ArcClose2DOptions::ArcClose2DOptions (X3DExecutionContext* const executionContex
 	       fields ()
 {
 	addField (inputOutput, "minAngle", minAngle ());
+
+	minAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 ArcClose2DOptions*

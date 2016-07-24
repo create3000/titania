@@ -88,12 +88,12 @@ public:
 	///  @name Fields
 
 	SFInt32 &
-	segments ()
-	{ return *fields .segments; }
+	dimension ()
+	{ return *fields .dimension; }
 
 	const SFInt32 &
-	segments () const
-	{ return *fields .segments; }
+	dimension () const
+	{ return *fields .dimension; }
 
 	virtual
 	GLenum
@@ -127,7 +127,7 @@ private:
 	{
 		Fields ();
 
-		SFInt32* const segments;
+		SFInt32* const dimension;
 	};
 
 	Fields fields;

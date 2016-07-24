@@ -246,8 +246,8 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 40;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
-		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 80;
-		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 80;
+		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 81;
+		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 81;
 		getBrowser () -> getConeOptions ()       -> uDimension () = 33;
 		getBrowser () -> getCylinderOptions ()   -> uDimension () = 33;
 
@@ -266,8 +266,8 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 10;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
-		getBrowser () -> getCircle2DOptions ()   -> segments ()   = 20;
-		getBrowser () -> getDisk2DOptions ()     -> segments ()   = 20;
+		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 21;
+		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 21;
 		getBrowser () -> getConeOptions ()       -> uDimension () = 17;
 		getBrowser () -> getCylinderOptions ()   -> uDimension () = 17;
 
@@ -286,8 +286,8 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 20;
 	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
-	getBrowser () -> getCircle2DOptions ()   -> segments ()   = 40;
-	getBrowser () -> getDisk2DOptions ()     -> segments ()   = 40;
+	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 41;
+	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 41;
 	getBrowser () -> getConeOptions ()       -> uDimension () = 21;
 	getBrowser () -> getCylinderOptions ()   -> uDimension () = 21;
 

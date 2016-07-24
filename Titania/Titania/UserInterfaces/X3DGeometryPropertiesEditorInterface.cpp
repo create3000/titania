@@ -62,14 +62,17 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Get objects.
 	m_Arc2DEndAngleAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DEndAngleAdjustment"));
+	m_Arc2DMinAngleAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DMinAngleAdjustment"));
 	m_Arc2DRadiusAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DRadiusAdjustment"));
 	m_Arc2DStartAngleAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DStartAngleAdjustment"));
 	m_ArcClose2DEndAngleAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DEndAngleAdjustment"));
+	m_ArcClose2DMinAngleAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DMinAngleAdjustment"));
 	m_ArcClose2DRadiusAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DRadiusAdjustment"));
 	m_ArcClose2DStartAngleAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DStartAngleAdjustment"));
 	m_BoxSizeXAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeXAdjustment"));
 	m_BoxSizeYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeYAdjustment"));
 	m_BoxSizeZAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeZAdjustment"));
+	m_Circle2DDimensionAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DDimensionAdjustment"));
 	m_Circle2DRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DRadiusAdjustment"));
 	m_ConeBottomRadiusAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
 	m_ConeHeightAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
@@ -78,6 +81,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_CylinderHeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderHeightAdjustment"));
 	m_CylinderRadiusAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
 	m_CylinderUDimensionAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderUDimensionAdjustment"));
+	m_Disk2DDimensionAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DDimensionAdjustment"));
 	m_Disk2DInnerRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
 	m_Disk2DOuterRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
 	m_EdgeColorAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EdgeColorAdjustment"));
@@ -100,16 +104,20 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Arc2DStartAngleSpinButton", m_Arc2DStartAngleSpinButton);
 	m_builder -> get_widget ("Arc2DEndAngleSpinButton", m_Arc2DEndAngleSpinButton);
 	m_builder -> get_widget ("Arc2DRadiusSpinButton", m_Arc2DRadiusSpinButton);
+	m_builder -> get_widget ("Arc2DMinAngleSpinButton", m_Arc2DMinAngleSpinButton);
 	m_builder -> get_widget ("ArcClose2DExpander", m_ArcClose2DExpander);
 	m_builder -> get_widget ("ArcClose2DRadiusSpinButton", m_ArcClose2DRadiusSpinButton);
 	m_builder -> get_widget ("ArcClose2DEndAngleSpinButton", m_ArcClose2DEndAngleSpinButton);
 	m_builder -> get_widget ("ArcClose2DStartAngleSpinButton", m_ArcClose2DStartAngleSpinButton);
 	m_builder -> get_widget ("ArcClose2DClosureTypeComboBoxText", m_ArcClose2DClosureTypeComboBoxText);
+	m_builder -> get_widget ("ArcClose2DMinAngleSpinButton", m_ArcClose2DMinAngleSpinButton);
 	m_builder -> get_widget ("Circle2DExpander", m_Circle2DExpander);
 	m_builder -> get_widget ("Circle2DRadiusSpinButton", m_Circle2DRadiusSpinButton);
+	m_builder -> get_widget ("Circle2DDimensionSpinButton", m_Circle2DDimensionSpinButton);
 	m_builder -> get_widget ("Disk2DExpander", m_Disk2DExpander);
 	m_builder -> get_widget ("Disk2DInnerRadiusSpinButton", m_Disk2DInnerRadiusSpinButton);
 	m_builder -> get_widget ("Disk2DOuterRadiusSpinButton", m_Disk2DOuterRadiusSpinButton);
+	m_builder -> get_widget ("Disk2DDimensionSpinButton", m_Disk2DDimensionSpinButton);
 	m_builder -> get_widget ("Rectangle2DExpander", m_Rectangle2DExpander);
 	m_builder -> get_widget ("Rectangle2DSizeBox", m_Rectangle2DSizeBox);
 	m_builder -> get_widget ("Rectangle2DSizeXSpinButton", m_Rectangle2DSizeXSpinButton);

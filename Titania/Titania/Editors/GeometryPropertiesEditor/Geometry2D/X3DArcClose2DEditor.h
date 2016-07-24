@@ -100,6 +100,7 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat> startAngle;
 	X3DFieldAdjustment <X3D::SFFloat> endAngle;
 	X3DFieldAdjustment <X3D::SFFloat> radius;
+	X3DFieldAdjustment <X3D::SFFloat> minAngle;
 
 };
 

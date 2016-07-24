@@ -61,7 +61,7 @@ const std::string   Circle2DOptions::typeName       = "Circle2DOptions";
 const std::string   Circle2DOptions::containerField = "circle2DOptions";
 
 Circle2DOptions::Fields::Fields () :
-	segments (new SFInt32 (32))
+	dimension (new SFInt32 (33))
 { }
 
 Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
@@ -69,7 +69,7 @@ Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
-	addField (inputOutput, "segments", segments ());
+	addField (inputOutput, "dimension", dimension ());
 }
 
 Circle2DOptions*
@@ -81,11 +81,11 @@ Circle2DOptions::create (X3DExecutionContext* const executionContext) const
 void
 Circle2DOptions::build ()
 {
-	getVertices () .reserve (segments ());
+	getVertices () .reserve (dimension () - 1);
 
-	const double angle = M_PI2 / segments ();
+	const double angle = M_PI2 / (dimension () - 1);
 
-	for (int32_t n = 0; n < segments (); ++ n)
+	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
 	{
 		const std::complex <double> point = std::polar <double> (1, angle * n);
 

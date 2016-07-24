@@ -50,6 +50,7 @@
 
 #include "X3DArcClose2DEditor.h"
 
+#include <Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -60,7 +61,8 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 	                         closureType (this, getArcClose2DClosureTypeComboBoxText (), "closureType"),
 	                          startAngle (this, getArcClose2DStartAngleAdjustment (), getArcClose2DStartAngleSpinButton (), "startAngle"),
 	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
-	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius")
+	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius"),
+	                            minAngle (this, getArcClose2DMinAngleAdjustment (), getArcClose2DMinAngleSpinButton (), "minAngle")
 { }
 
 void
@@ -82,8 +84,9 @@ X3DArcClose2DEditor::removeShapes ()
 void
 X3DArcClose2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () }) : X3D::MFNode ();
 
 	getArcClose2DExpander () .set_visible (node);
 
@@ -91,6 +94,7 @@ X3DArcClose2DEditor::set_geometry ()
 	startAngle  .setNodes (nodes);
 	endAngle    .setNodes (nodes);
 	radius      .setNodes (nodes);
+	minAngle    .setNodes (global);
 }
 
 X3DArcClose2DEditor::~X3DArcClose2DEditor ()

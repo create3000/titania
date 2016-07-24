@@ -61,7 +61,7 @@ const std::string   Disk2DOptions::typeName       = "Disk2DOptions";
 const std::string   Disk2DOptions::containerField = "disk2DOptions";
 
 Disk2DOptions::Fields::Fields () :
-	segments (new SFInt32 (60))
+	dimension (new SFInt32 (61))
 { }
 
 Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
@@ -69,7 +69,7 @@ Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
-	addField (inputOutput, "segments", segments ());
+	addField (inputOutput, "dimension", dimension ());
 }
 
 Disk2DOptions*
@@ -81,11 +81,11 @@ Disk2DOptions::create (X3DExecutionContext* const executionContext) const
 void
 Disk2DOptions::build ()
 {
-	getVertices () .reserve (segments ());
+	getVertices () .reserve (dimension () - 1);
 
-	const double angle = M_PI2 / segments ();
+	const double angle = M_PI2 / (dimension () - 1);
 
-	for (int32_t n = 0; n < segments (); ++ n)
+	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
 	{
 		const double theta = angle * n;
 

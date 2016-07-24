@@ -50,6 +50,7 @@
 
 #include "X3DCircle2DEditor.h"
 
+#include <Titania/X3D/Browser/Geometry2D/Circle2DOptions.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
@@ -57,7 +58,8 @@ namespace puck {
 
 X3DCircle2DEditor::X3DCircle2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                              radius (this, getCircle2DRadiusAdjustment (), getCircle2DRadiusSpinButton (), "radius")
+	                              radius (this, getCircle2DRadiusAdjustment (), getCircle2DRadiusSpinButton (), "radius"),
+	                           dimension (this, getCircle2DDimensionAdjustment (), getCircle2DDimensionSpinButton (), "dimension")
 { }
 
 void
@@ -79,12 +81,14 @@ X3DCircle2DEditor::removeShapes ()
 void
 X3DCircle2DEditor::set_geometry ()
 {
-	const auto        node  (getOneSelection <X3D::Circle2D> (getShapes (), "geometry"));
-	const X3D::MFNode nodes (node ? X3D::MFNode ({ node }) : X3D::MFNode ());
+	const auto node   = getOneSelection <X3D::Circle2D> (getShapes (), "geometry");
+	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getCircle2DOptions () }) : X3D::MFNode ();
 
 	getCircle2DExpander () .set_visible (node);
 
-	radius .setNodes (nodes);
+	radius    .setNodes (nodes);
+	dimension .setNodes (global);
 }
 
 X3DCircle2DEditor::~X3DCircle2DEditor ()

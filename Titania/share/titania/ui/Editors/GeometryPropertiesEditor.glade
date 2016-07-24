@@ -8,6 +8,12 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="Arc2DMinAngleAdjustment">
+    <property name="lower">0.01</property>
+    <property name="upper">6.2800000000000002</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="Arc2DRadiusAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
@@ -22,6 +28,12 @@
   <object class="GtkAdjustment" id="ArcClose2DEndAngleAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="ArcClose2DMinAngleAdjustment">
+    <property name="lower">0.01</property>
+    <property name="upper">6.2800000000000002</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
@@ -50,6 +62,12 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="Circle2DDimensionAdjustment">
+    <property name="lower">4</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="Circle2DRadiusAdjustment">
     <property name="upper">1000000000</property>
@@ -88,6 +106,12 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="CylinderUDimensionAdjustment">
+    <property name="lower">4</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="Disk2DDimensionAdjustment">
     <property name="lower">4</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
@@ -375,6 +399,62 @@
                             <property name="top_attach">2</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkBox" id="box19">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="label69">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">8</property>
+                                <property name="ypad">2</property>
+                                <property name="label" translatable="yes">Global Options</property>
+                                <property name="xalign">0</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label70">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Minimum Angle:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="Arc2DMinAngleSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">4</property>
+                            <property name="adjustment">Arc2DMinAngleAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">6</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">4</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                     <child type="label">
@@ -505,6 +585,63 @@
                             <property name="top_attach">0</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkBox" id="box20">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="label71">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">8</property>
+                                <property name="ypad">2</property>
+                                <property name="label" translatable="yes">Global Options</property>
+                                <property name="xalign">0</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">4</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label72">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Minimum Angle:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ArcClose2DMinAngleSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">4,000</property>
+                            <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">6</property>
+                            <property name="value">4</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">5</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                     <child type="label">
@@ -555,6 +692,61 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box21">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="label73">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">8</property>
+                                <property name="ypad">2</property>
+                                <property name="label" translatable="yes">Global Options</property>
+                                <property name="xalign">0</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label74">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Dimension:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="Circle2DDimensionSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">4</property>
+                            <property name="adjustment">Circle2DDimensionAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
                           </packing>
                         </child>
                       </object>
@@ -633,6 +825,74 @@
                           <packing>
                             <property name="left_attach">1</property>
                             <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box22">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="label75">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="margin_left">8</property>
+                                <property name="ypad">2</property>
+                                <property name="label" translatable="yes">Global Options</property>
+                                <property name="xalign">0</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box23">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkLabel" id="label76">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Dimension:</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="Disk2DDimensionSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">4</property>
+                            <property name="adjustment">Disk2DDimensionAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="value">4</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">3</property>
                           </packing>
                         </child>
                       </object>

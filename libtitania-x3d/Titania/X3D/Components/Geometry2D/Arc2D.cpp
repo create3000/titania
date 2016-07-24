@@ -97,7 +97,7 @@ Arc2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getArcClose2DOptions () .addInterest (this, &Arc2D::update);
+	getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
 }
 
 void
@@ -106,12 +106,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .removeInterest (this, &Arc2D::update);
+		getBrowser () -> getArc2DOptions () .removeInterest (this, &Arc2D::update);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .addInterest (this, &Arc2D::update);
+		getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
 }
 
 double

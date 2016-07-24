@@ -98,6 +98,7 @@ private:
 
 	X3DFieldAdjustment <X3D::SFFloat> innerRadius;
 	X3DFieldAdjustment <X3D::SFFloat> outerRadius;
+	X3DFieldAdjustment <X3D::SFInt32> dimension;
 
 };
 
