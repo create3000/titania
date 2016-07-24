@@ -391,7 +391,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Toggle Transform Tool.</property>
+                    <property name="tooltip_text" translatable="yes">Toggle Transform Tool. Right click to open menu.</property>
                     <signal name="button-press-event" handler="on_transform_tool_button_press_event" swapped="no"/>
                     <signal name="toggled" handler="on_transform_tool_toggled" swapped="no"/>
                     <child>
@@ -412,7 +412,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Cut polygons with scissor.</property>
+                    <property name="tooltip_text" translatable="yes">Cut polygons with scissor. Right click to open menu.</property>
                     <property name="focus_on_click">False</property>
                     <property name="xalign">0.5</property>
                     <property name="active">True</property>

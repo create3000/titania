@@ -906,7 +906,7 @@ GeometryEditor::set_selector (const SelectorType & type)
 void
 GeometryEditor::set_selection_brush ()
 {
-	getPaintSelectionButton () .set_tooltip_text (_ ("Paint current selection."));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Paint current selection. Right click to open menu."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("Brush"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
 	if (getPaintSelectionButton () .get_active ())
@@ -921,7 +921,7 @@ GeometryEditor::set_selection_brush ()
 void
 GeometryEditor::set_selection_rectangle ()
 {
-	getPaintSelectionButton () .set_tooltip_text (_ ("Use rectangle selection."));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Use rectangle selection. Right click to open menu."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("RectangleSelection"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
 	if (getPaintSelectionButton () .get_active ())
@@ -936,7 +936,7 @@ GeometryEditor::set_selection_rectangle ()
 void
 GeometryEditor::set_selection_lasso ()
 {
-	getPaintSelectionButton () .set_tooltip_text (_ ("Use lasso selection."));
+	getPaintSelectionButton () .set_tooltip_text (_ ("Use lasso selection. Right click to open menu."));
 	getPaintSelectionImage ()  .set (Gtk::StockID ("Lasso"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 
 	if (getPaintSelectionButton () .get_active ())

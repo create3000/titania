@@ -359,7 +359,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 			;
 		else
 		{
-			if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE)
+			if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE and cutSnapping ())
 			{
 			   // Snap to ortho point of edge.
 				closestPoint = orthoPoint;
@@ -369,13 +369,10 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 				knifeArcGeometry -> startAngle ()  = 0;
 				knifeArcGeometry -> endAngle ()    = M_PI / 2;
 			}
+			else if (snapToCenter (endEdge, closestPoint))
+				;
 			else
-			{
-				if (snapToCenter (endEdge, closestPoint))
-					;
-				else
-					knifeArcSwitch -> whichChoice () = false;
-			}
+				knifeArcSwitch -> whichChoice () = false;
 		}
 	}
 
