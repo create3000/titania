@@ -51,6 +51,7 @@
 #include "X3DSphereEditor.h"
 
 #include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
+#include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {

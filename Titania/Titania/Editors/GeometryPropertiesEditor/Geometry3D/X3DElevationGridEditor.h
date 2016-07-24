@@ -48,58 +48,60 @@
  *
  ******************************************************************************/
 
-#include "X3DArcClose2DEditor.h"
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DELEVATION_GRID_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DELEVATION_GRID_EDITOR_H__
 
-#include <Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.h>
-#include <Titania/X3D/Components/Geometry2D/ArcClose2D.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DArcClose2DEditor::X3DArcClose2DEditor () :
-	X3DGeometryPropertiesEditorInterface (),
-	                         closureType (this, getArcClose2DClosureTypeComboBoxText (), "closureType"),
-	                          startAngle (this, getArcClose2DStartAngleAdjustment (), getArcClose2DStartAngleSpinButton (), "startAngle"),
-	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
-	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius"),
-	                            minAngle (this, getArcClose2DMinAngleAdjustment (), getArcClose2DMinAngleSpinButton (), "minAngle")
-{ }
-
-void
-X3DArcClose2DEditor::addShapes ()
+class X3DElevationGridEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DArcClose2DEditor::set_geometry);
+public:
 
+	///  @name Destruction
+
+	virtual
+	~X3DElevationGridEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DElevationGridEditor ();
+
+	void
+	addShapes ();
+
+	void
+	removeShapes ();
+
+	virtual
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
+
+
+private:
+
+	///  @name Construction
+
+	void
 	set_geometry ();
-}
 
-void
-X3DArcClose2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DArcClose2DEditor::set_geometry);
-}
+	///  @name Members
 
-void
-X3DArcClose2DEditor::set_geometry ()
-{
-	const auto node   = getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () }) : X3D::MFNode ();
+	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
+	X3DFieldAdjustment <X3D::SFInt32>  zDimension;
+	X3DFieldAdjustment <X3D::SFFloat>  xSpacing;
+	X3DFieldAdjustment <X3D::SFFloat>  zSpacing;
 
-	getArcClose2DExpander () .set_visible (node);
-
-	closureType .setNodes (nodes);
-	startAngle  .setNodes (nodes);
-	endAngle    .setNodes (nodes);
-	radius      .setNodes (nodes);
-	minAngle    .setNodes (global);
-}
-
-X3DArcClose2DEditor::~X3DArcClose2DEditor ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif

@@ -71,6 +71,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                         X3DBoxEditor (),
 	                        X3DConeEditor (),
 	                    X3DCylinderEditor (),
+	               X3DElevationGridEditor (),
 	                   X3DExtrusionEditor (),
 	                      X3DSphereEditor (),
 	              X3DPrimitiveCountEditor (),
@@ -100,6 +101,8 @@ void
 GeometryPropertiesEditor::configure ()
 {
 	X3DGeometryPropertiesEditorInterface::configure ();
+	X3DRectangle2DEditor::configure ();
+	X3DBoxEditor::configure ();
 	X3DPrimitiveCountEditor::configure ();
 	X3DGeometryTool::configure ();
 
@@ -130,6 +133,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DBoxEditor::removeShapes ();
 	X3DConeEditor::removeShapes ();
 	X3DCylinderEditor::removeShapes ();
+	X3DElevationGridEditor::removeShapes ();
 	X3DExtrusionEditor::removeShapes ();
 	X3DSphereEditor::removeShapes ();
 
@@ -146,6 +150,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DBoxEditor::addShapes ();
 	X3DConeEditor::addShapes ();
 	X3DCylinderEditor::addShapes ();
+	X3DElevationGridEditor::addShapes ();
 	X3DExtrusionEditor::addShapes ();
 	X3DSphereEditor::addShapes ();
 
@@ -439,6 +444,8 @@ GeometryPropertiesEditor::store ()
 
 	X3DGeometryTool::store ();
 	X3DPrimitiveCountEditor::store ();
+	X3DBoxEditor::store ();
+	X3DRectangle2DEditor::store ();
 	X3DGeometryPropertiesEditorInterface::store ();
 }
 

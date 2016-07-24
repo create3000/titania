@@ -196,6 +196,22 @@ public:
 	{ return m_EdgeColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridXDimensionAdjustment () const
+	{ return m_ElevationGridXDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridXSpacingAdjustment () const
+	{ return m_ElevationGridXSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridZDimensionAdjustment () const
+	{ return m_ElevationGridZDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridZSpacingAdjustment () const
+	{ return m_ElevationGridZSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
 	{ return m_NormalColorAdjustment; }
 
@@ -422,6 +438,26 @@ public:
 	Gtk::SpinButton &
 	getCylinderXDimensionSpinButton () const
 	{ return *m_CylinderXDimensionSpinButton; }
+
+	Gtk::Expander &
+	getElevationGridExpander () const
+	{ return *m_ElevationGridExpander; }
+
+	Gtk::SpinButton &
+	getElevationGridXDimensionSpinButton () const
+	{ return *m_ElevationGridXDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getElevationGridZDimensionSpinButton () const
+	{ return *m_ElevationGridZDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getElevationGridXSpacingSpinButton () const
+	{ return *m_ElevationGridXSpacingSpinButton; }
+
+	Gtk::SpinButton &
+	getElevationGridZSpacingSpinButton () const
+	{ return *m_ElevationGridZSpacingSpinButton; }
 
 	Gtk::Expander &
 	getExtrusionExpander () const
@@ -671,6 +707,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
@@ -728,6 +768,11 @@ private:
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
 	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
+	Gtk::Expander*                 m_ElevationGridExpander;
+	Gtk::SpinButton*               m_ElevationGridXDimensionSpinButton;
+	Gtk::SpinButton*               m_ElevationGridZDimensionSpinButton;
+	Gtk::SpinButton*               m_ElevationGridXSpacingSpinButton;
+	Gtk::SpinButton*               m_ElevationGridZSpacingSpinButton;
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;

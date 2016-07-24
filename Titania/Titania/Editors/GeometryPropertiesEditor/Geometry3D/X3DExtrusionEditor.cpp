@@ -50,6 +50,7 @@
 
 #include "X3DExtrusionEditor.h"
 
+#include <Titania/X3D/Components/Geometry3D/Extrusion.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {

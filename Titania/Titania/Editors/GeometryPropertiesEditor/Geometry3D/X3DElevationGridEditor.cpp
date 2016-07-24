@@ -48,58 +48,55 @@
  *
  ******************************************************************************/
 
-#include "X3DArcClose2DEditor.h"
+#include "X3DElevationGridEditor.h"
 
-#include <Titania/X3D/Browser/Geometry2D/ArcClose2DOptions.h>
-#include <Titania/X3D/Components/Geometry2D/ArcClose2D.h>
+#include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
-X3DArcClose2DEditor::X3DArcClose2DEditor () :
+X3DElevationGridEditor::X3DElevationGridEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                         closureType (this, getArcClose2DClosureTypeComboBoxText (), "closureType"),
-	                          startAngle (this, getArcClose2DStartAngleAdjustment (), getArcClose2DStartAngleSpinButton (), "startAngle"),
-	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
-	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius"),
-	                            minAngle (this, getArcClose2DMinAngleAdjustment (), getArcClose2DMinAngleSpinButton (), "minAngle")
+	                          xDimension (this, getElevationGridXDimensionAdjustment (), getElevationGridXDimensionSpinButton (), "xDimension"),
+	                          zDimension (this, getElevationGridZDimensionAdjustment (), getElevationGridZDimensionSpinButton (), "zDimension"),
+	                            xSpacing (this, getElevationGridXSpacingAdjustment (), getElevationGridXSpacingSpinButton (), "xSpacing"),
+	                            zSpacing (this, getElevationGridZSpacingAdjustment (), getElevationGridZSpacingSpinButton (), "zSpacing")
 { }
 
 void
-X3DArcClose2DEditor::addShapes ()
+X3DElevationGridEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DArcClose2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (this, &X3DElevationGridEditor::set_geometry);
 
 	set_geometry ();
 }
 
 void
-X3DArcClose2DEditor::removeShapes ()
+X3DElevationGridEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DArcClose2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (this, &X3DElevationGridEditor::set_geometry);
 }
 
 void
-X3DArcClose2DEditor::set_geometry ()
+X3DElevationGridEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () }) : X3D::MFNode ();
+	const auto node  = getOneSelection <X3D::ElevationGrid> (getShapes (), "geometry");
+	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
-	getArcClose2DExpander () .set_visible (node);
+	getElevationGridExpander () .set_visible (node);
 
-	closureType .setNodes (nodes);
-	startAngle  .setNodes (nodes);
-	endAngle    .setNodes (nodes);
-	radius      .setNodes (nodes);
-	minAngle    .setNodes (global);
+	xDimension .setNodes (nodes);
+	zDimension .setNodes (nodes);
+	xSpacing   .setNodes (nodes);
+	zSpacing   .setNodes (nodes);
 }
 
-X3DArcClose2DEditor::~X3DArcClose2DEditor ()
-{ }
+X3DElevationGridEditor::~X3DElevationGridEditor ()
+{
+}
 
 } // puck
 } // titania

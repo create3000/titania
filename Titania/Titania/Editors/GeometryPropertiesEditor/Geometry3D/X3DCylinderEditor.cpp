@@ -51,6 +51,7 @@
 #include "X3DCylinderEditor.h"
 
 #include <Titania/X3D/Browser/Geometry3D/CylinderOptions.h>
+#include <Titania/X3D/Components/Geometry3D/Cylinder.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {

@@ -51,6 +51,7 @@
 #include "X3DRectangle2DEditor.h"
 
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
 
 namespace titania {
 namespace puck {
@@ -63,6 +64,12 @@ X3DRectangle2DEditor::X3DRectangle2DEditor () :
 	                                      getRectangle2DSizeBox (),
 	                                      "size")
 { }
+
+void
+X3DRectangle2DEditor::configure ()
+{
+	getRectangle2DUniformSizeButton () .set_active (getConfig () -> getBoolean ("rectangle2DUniformSize"));
+}
 
 void
 X3DRectangle2DEditor::addShapes ()
@@ -106,10 +113,14 @@ X3DRectangle2DEditor::on_rectangle2d_uniform_size_clicked ()
 	}
 }
 
-X3DRectangle2DEditor::~X3DRectangle2DEditor ()
+void
+X3DRectangle2DEditor::store ()
 {
 	getConfig () -> setItem ("rectangle2DUniformSize", getRectangle2DUniformSizeButton () .get_active ());
 }
+
+X3DRectangle2DEditor::~X3DRectangle2DEditor ()
+{ }
 
 } // puck
 } // titania

@@ -51,6 +51,7 @@
 #include "X3DDisk2DEditor.h"
 
 #include <Titania/X3D/Browser/Geometry2D/Disk2DOptions.h>
+#include <Titania/X3D/Components/Geometry2D/Disk2D.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {

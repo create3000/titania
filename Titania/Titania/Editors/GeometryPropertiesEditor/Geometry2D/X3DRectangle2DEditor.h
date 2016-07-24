@@ -54,8 +54,6 @@
 #include "../../../ComposedWidgets.h"
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
-#include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
-
 namespace titania {
 namespace puck {
 
@@ -76,6 +74,10 @@ protected:
 
 	X3DRectangle2DEditor ();
 
+	virtual
+	void
+	configure () override;
+
 	void
 	addShapes ();
 
@@ -85,6 +87,10 @@ protected:
 	virtual
 	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
 	getShapes () = 0;
+
+	virtual
+	void
+	store () override;
 
 
 private:

@@ -61,6 +61,7 @@
 #include "Geometry3D/X3DBoxEditor.h"
 #include "Geometry3D/X3DConeEditor.h"
 #include "Geometry3D/X3DCylinderEditor.h"
+#include "Geometry3D/X3DElevationGridEditor.h"
 #include "Geometry3D/X3DExtrusionEditor.h"
 #include "Geometry3D/X3DSphereEditor.h"
 #include "X3DPrimitiveCountEditor.h"
@@ -79,6 +80,7 @@ class GeometryPropertiesEditor :
 	public X3DBoxEditor,
 	public X3DConeEditor,
 	public X3DCylinderEditor,
+	public X3DElevationGridEditor,
 	public X3DExtrusionEditor,
 	public X3DSphereEditor,
 	public X3DPrimitiveCountEditor,

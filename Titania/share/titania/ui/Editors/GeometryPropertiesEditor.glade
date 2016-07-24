@@ -132,6 +132,28 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="ElevationGridXDimensionAdjustment">
+    <property name="lower">2</property>
+    <property name="upper">1000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="ElevationGridXSpacingAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="ElevationGridZDimensionAdjustment">
+    <property name="lower">2</property>
+    <property name="upper">1000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="ElevationGridZSpacingAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="NormalColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -315,6 +337,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="Arc2DExpander">
+                    <property name="name">Arc2DExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -473,6 +496,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="ArcClose2DExpander">
+                    <property name="name">ArcClose2DExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -660,6 +684,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="Circle2DExpander">
+                    <property name="name">Circle2DExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -767,6 +792,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="Disk2DExpander">
+                    <property name="name">Disk2DExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -913,6 +939,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="Rectangle2DExpander">
+                    <property name="name">Rectangle2DExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1021,6 +1048,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="BoxExpander">
+                    <property name="name">BoxExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1146,6 +1174,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="ConeExpander">
+                    <property name="name">ConeExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1329,6 +1358,7 @@
                 </child>
                 <child>
                   <object class="GtkExpander" id="CylinderExpander">
+                    <property name="name">CylinderExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1537,7 +1567,139 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkExpander" id="ElevationGridExpander">
+                    <property name="name">ElevationGridExpander</property>
+                    <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
+                    <child>
+                      <object class="GtkGrid" id="grid16">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="row_spacing">8</property>
+                        <property name="column_spacing">16</property>
+                        <child>
+                          <object class="GtkLabel" id="label78">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">X Dimension:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label79">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Z Dimension:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ElevationGridXDimensionSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">4</property>
+                            <property name="adjustment">ElevationGridXDimensionAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="value">4</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ElevationGridZDimensionSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">3</property>
+                            <property name="adjustment">ElevationGridZDimensionAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="value">3</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label77">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">X Spacing:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ElevationGridXSpacingSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">ElevationGridXSpacingAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label80">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Z Spacing:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkSpinButton" id="ElevationGridZSpacingSpinButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="text" translatable="yes">0,000</property>
+                            <property name="adjustment">ElevationGridZSpacingAdjustment</property>
+                            <property name="climb_rate">0.01</property>
+                            <property name="digits">3</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="label81">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">ElevationGrid</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkExpander" id="ExtrusionExpander">
+                    <property name="name">ExtrusionExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1609,11 +1771,12 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkExpander" id="SphereExpander">
+                    <property name="name">SphereExpander</property>
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <child>
@@ -1741,7 +1904,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                   </packing>
                 </child>
                 <child>
@@ -2067,7 +2230,7 @@
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                   </packing>
                 </child>
               </object>

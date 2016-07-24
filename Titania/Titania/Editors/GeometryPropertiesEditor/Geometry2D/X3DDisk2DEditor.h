@@ -54,8 +54,6 @@
 #include "../../../ComposedWidgets.h"
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
-#include <Titania/X3D/Components/Geometry2D/Disk2D.h>
-
 namespace titania {
 namespace puck {
 

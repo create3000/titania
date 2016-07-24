@@ -51,6 +51,7 @@
 #include "X3DBoxEditor.h"
 
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Components/Geometry3D/Box.h>
 
 namespace titania {
 namespace puck {
@@ -64,6 +65,12 @@ X3DBoxEditor::X3DBoxEditor () :
 	                                      getBoxSizeBox (),
 	                                      "size")
 { }
+
+void
+X3DBoxEditor::configure ()
+{
+	getBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("boxUniformSize"));
+}
 
 void
 X3DBoxEditor::addShapes ()
@@ -107,9 +114,14 @@ X3DBoxEditor::on_box_uniform_size_clicked ()
 	}
 }
 
-X3DBoxEditor::~X3DBoxEditor ()
+void
+X3DBoxEditor::store ()
 {
 	getConfig () -> setItem ("boxUniformSize", getBoxUniformSizeButton () .get_active ());
+}
+
+X3DBoxEditor::~X3DBoxEditor ()
+{
 }
 
 } // puck

@@ -7,7 +7,7 @@ META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv"
-META "modified" "Sun, 24 Jul 2016 18:35:38 GMT"
+META "modified" "Sun, 24 Jul 2016 19:34:46 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -143,6 +143,8 @@ WorldInfo {
                 geometry ElevationGrid {
                   xDimension 9
                   zDimension 9
+                  xSpacing 1.43
+                  zSpacing 1.33
                   creaseAngle 1.19952
                   normalPerVertex FALSE
                   height [
@@ -251,28 +253,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -11.9662403116191,
-              6.85916893687068,
-              4.98801090268063
+              -12.6201958461215,
+              8.6278304971423,
+              6.12204410674664
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.897382642415723,
-              0.407075320142062,
-              0.170276471722351,
-              5.41082110893224
+              0.888337502440176,
+              0.419839358834711,
+              0.185987619296578,
+              5.35800147980048
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              -10.5668157941577,
-              2.98531424921527,
-              1.43319116035401
+              -10.5668153762817,
+              2.98531413078308,
+              1.43319118022919
             ]
           }
         ]

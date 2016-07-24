@@ -51,6 +51,7 @@
 #include "X3DConeEditor.h"
 
 #include <Titania/X3D/Browser/Geometry3D/ConeOptions.h>
+#include <Titania/X3D/Components/Geometry3D/Cone.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {

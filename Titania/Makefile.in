@@ -165,6 +165,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DBoxEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DCylinderEditor.$(OBJEXT) \
+	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DElevationGridEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DExtrusionEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.$(OBJEXT) \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.$(OBJEXT) \
@@ -617,6 +618,7 @@ titania_SOURCES = \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DBoxEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DCylinderEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DElevationGridEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DExtrusionEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
@@ -1150,6 +1152,8 @@ Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DBoxEditor.$(OBJEXT): Tita
 Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.$(OBJEXT): Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DCylinderEditor.$(OBJEXT): Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(am__dirstamp) \
+	Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DElevationGridEditor.$(OBJEXT): Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DExtrusionEditor.$(OBJEXT): Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(am__dirstamp) \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/$(am__dirstamp)
@@ -1861,6 +1865,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DBoxEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DConeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DCylinderEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DElevationGridEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DExtrusionEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GeometryPropertiesEditor/Geometry3D/$(DEPDIR)/X3DSphereEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/GridEditor/$(DEPDIR)/AngleTool.Po@am__quote@
