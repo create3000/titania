@@ -311,6 +311,7 @@
                           <item translatable="yes">Disk2D</item>
                           <item translatable="yes">ElevationGrid</item>
                           <item translatable="yes">Extrusion</item>
+                          <item translatable="yes">GeoElevationGrid</item>
                           <item translatable="yes">IndexedFaceSet</item>
                           <item translatable="yes">IndexedLineSet</item>
                           <item translatable="yes">IndexedQuadSet</item>
