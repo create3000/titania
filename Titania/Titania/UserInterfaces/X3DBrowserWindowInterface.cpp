@@ -91,6 +91,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureQualityMediumAction   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TextureQualityMediumAction"));
 	m_ToolbarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ToolbarAction"));
 	m_TransformSensorsAction       = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformSensorsAction"));
+	m_TransformToolModeAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TransformToolModeAction"));
 	m_ViewpointsAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ViewpointsAction"));
 	m_VisibilitySensorsAction      = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("VisibilitySensorsAction"));
 	m_WireframeAction              = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
@@ -214,6 +215,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserShowAllObjectsMenuItem", m_BrowserShowAllObjectsMenuItem);
 	m_builder -> get_widget ("BrowserSelectLowestMenuItem", m_BrowserSelectLowestMenuItem);
 	m_builder -> get_widget ("BrowserFollowPrimarySelectionMenuItem", m_BrowserFollowPrimarySelectionMenuItem);
+	m_builder -> get_widget ("BrowserTransformToolModeMenuItem", m_BrowserTransformToolModeMenuItem);
 	m_builder -> get_widget ("BrowserGeometryMenuItem", m_BrowserGeometryMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
@@ -331,6 +333,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShowAllObjectsMenuItem", m_ShowAllObjectsMenuItem);
 	m_builder -> get_widget ("SelectLowestMenuItem", m_SelectLowestMenuItem);
 	m_builder -> get_widget ("FollowPrimarySelectionMenuItem", m_FollowPrimarySelectionMenuItem);
+	m_builder -> get_widget ("TransformToolModeMenuItem", m_TransformToolModeMenuItem);
 	m_builder -> get_widget ("GeometryMenuItem", m_GeometryMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
@@ -438,6 +441,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_TextureQualityMediumAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_texture_quality_medium_toggled));
 	m_ToolbarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_toolbar_toggled));
 	m_TransformSensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_sensors_toggled));
+	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
 	m_ViewpointsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
 	m_VisibilitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
 

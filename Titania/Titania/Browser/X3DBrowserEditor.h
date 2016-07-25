@@ -210,7 +210,7 @@ protected:
 
 	virtual
 	void
-	configure () final override;
+	configure () override;
 
 	virtual
 	void

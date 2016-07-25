@@ -7,7 +7,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Mon, 25 Jul 2016 09:27:59 GMT"
+META "modified" "Mon, 25 Jul 2016 09:54:46 GMT"
 
 EXTERNPROTO ToolShader [
   inputOutput SFFloat ambientIntensity
@@ -122,7 +122,7 @@ WorldInfo {
             reference "http://titania.create3000.de"
             value DEF Tool Script {
               inputOutput SFBool     enabled TRUE
-              inputOutput SFInt32    toolMode 1
+              inputOutput SFInt32    toolMode 0
               inputOutput SFDouble   snapAngle 0.196349540849362
               inputOutput SFBool     controlKey FALSE
               inputOutput SFBool     shiftKey FALSE
@@ -156,7 +156,7 @@ Collision {
       children DEF _1 Transform {
         children [
           DEF ToolModeSwitch Switch {
-            whichChoice 1
+            whichChoice 0
             children [
               DEF XYZ Shape {
                 geometry IndexedLineSet {
@@ -383,7 +383,7 @@ Collision {
       children DEF AdjustmentHandles Transform {
         children [
           DEF ToolModeSwitch_1 Switch {
-            whichChoice 1
+            whichChoice 0
             children [
               Group {
                 children [

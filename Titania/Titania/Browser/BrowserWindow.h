@@ -83,7 +83,15 @@ private:
 
 	virtual
 	void
-	initialize ();
+	configure () final override;
+	
+	virtual
+	void
+	store () final override;
+
+	virtual
+	void
+	initialize () final override;
 
 	void
 	loadStyles ();
@@ -558,6 +566,10 @@ private:
 	virtual
 	void
 	on_follow_primary_selection_toggled () final override;
+
+	virtual
+	void
+	on_transform_tool_mode_toggled () final override;
 
 	///  @name Layout
 

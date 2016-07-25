@@ -85,6 +85,14 @@ public:
 
 	///  @name Fields
 
+	SFInt32 &
+	toolMode ()
+	{ return *fields .toolMode; }
+
+	const SFInt32 &
+	toolMode () const
+	{ return *fields .toolMode; }
+
 	SFDouble &
 	snapAngle ()
 	{ return *fields .snapAngle; }
@@ -123,6 +131,7 @@ private:
 	{
 		Fields ();
 
+		SFInt32* const toolMode;
 		SFDouble* const snapAngle;
 	};
 

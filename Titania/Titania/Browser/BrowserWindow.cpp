@@ -70,6 +70,7 @@
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
 #include <Titania/X3D/Browser/Navigation/X3DViewer.h>
+#include <Titania/X3D/Browser/Tools/TransformToolOptions.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
@@ -142,6 +143,22 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	//	getWindow () .maximize ();
 
 	setup ();
+}
+
+void
+BrowserWindow::configure ()
+{
+	X3DBrowserWindow::configure ();
+
+	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
+}
+
+void
+BrowserWindow::store ()
+{
+	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
+
+	X3DBrowserWindow::store ();
 }
 
 void
@@ -240,6 +257,8 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
+
+	on_transform_tool_mode_toggled ();
 }
 
 void
@@ -1984,6 +2003,14 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 
 	else
 		getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
+}
+
+void
+BrowserWindow::on_transform_tool_mode_toggled ()
+{
+	__LOG__ << std::endl;
+
+	getCurrentBrowser () -> getTransformToolOptions () -> toolMode () = getTransformToolModeAction () -> get_active ();
 }
 
 // Layout

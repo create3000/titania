@@ -220,6 +220,10 @@ public:
 	{ return m_TransformSensorsAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getTransformToolModeAction () const
+	{ return m_TransformToolModeAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getViewpointsAction () const
 	{ return m_ViewpointsAction; }
 
@@ -703,6 +707,10 @@ public:
 	getBrowserFollowPrimarySelectionMenuItem () const
 	{ return *m_BrowserFollowPrimarySelectionMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getBrowserTransformToolModeMenuItem () const
+	{ return *m_BrowserTransformToolModeMenuItem; }
+
 	Gtk::MenuItem &
 	getBrowserGeometryMenuItem () const
 	{ return *m_BrowserGeometryMenuItem; }
@@ -1171,6 +1179,10 @@ public:
 	getFollowPrimarySelectionMenuItem () const
 	{ return *m_FollowPrimarySelectionMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getTransformToolModeMenuItem () const
+	{ return *m_TransformToolModeMenuItem; }
+
 	Gtk::MenuItem &
 	getGeometryMenuItem () const
 	{ return *m_GeometryMenuItem; }
@@ -1592,6 +1604,10 @@ public:
 	virtual
 	void
 	on_transform_sensors_toggled () = 0;
+
+	virtual
+	void
+	on_transform_tool_mode_toggled () = 0;
 
 	virtual
 	void
@@ -2117,6 +2133,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_TextureQualityMediumAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ToolbarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TransformSensorsAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_TransformToolModeAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_ViewpointsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_VisibilitySensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
@@ -2238,6 +2255,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserSelectLowestMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFollowPrimarySelectionMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserTransformToolModeMenuItem;
 	Gtk::MenuItem*                   m_BrowserGeometryMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTransformToZeroMenuItem;
@@ -2355,6 +2373,7 @@ private:
 	Gtk::MenuItem*                   m_ShowAllObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_SelectLowestMenuItem;
 	Gtk::CheckMenuItem*              m_FollowPrimarySelectionMenuItem;
+	Gtk::CheckMenuItem*              m_TransformToolModeMenuItem;
 	Gtk::MenuItem*                   m_GeometryMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
 	Gtk::ImageMenuItem*              m_TransformToZeroMenuItem;

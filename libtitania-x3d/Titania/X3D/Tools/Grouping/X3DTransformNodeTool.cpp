@@ -90,6 +90,7 @@ X3DTransformNodeTool::realize ()
 
 	try
 	{
+		getBrowser ()  -> getTransformToolOptions () -> toolMode ()  .addInterest (getToolNode () -> getField ("toolMode"));
 		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
 		getBrowser ()  -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
 		getBrowser ()  -> getShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
@@ -98,6 +99,7 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> getField ("isActive") -> addInterest (isActive ());
 		getToolNode () -> getField ("touchTime") -> addInterest (touchTime ());
 
+		getToolNode () -> setField <SFInt32>  ("toolMode",   getBrowser () -> getTransformToolOptions () -> toolMode ());
 		getToolNode () -> setField <SFDouble> ("snapAngle",  getBrowser () -> getTransformToolOptions () -> snapAngle ());
 		getToolNode () -> setField <SFBool>   ("controlKey", getBrowser () -> getControlKey ());
 		getToolNode () -> setField <SFBool>   ("shiftKey",   getBrowser () -> getShiftKey ());
