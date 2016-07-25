@@ -184,10 +184,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	{
 		// AABB
 
-		auto       bbox = selectionCoord -> getBBox ();
-		const auto min  = Box3d (Vector3d (1e-5, 1e-5, 1e-5), bbox .center ());
-
-		bbox += min;
+		const auto bbox = selectionCoord -> getBBox ();
 
 		center = bbox .center ();
 		size   = bbox .size ();
@@ -198,11 +195,27 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 
 		const auto bbox = getMinimumBBox ();
 
-		bbox .matrix () .get (center, orientation, size);
+		if (abs (bbox .size ()))
+		{
+			bbox .matrix () .get (center, orientation, size);
 
-		center = center * ~orientation;
-		size  *= 2.0;
-		size   = max (max (size, -size), Vector3d (1e-5, 1e-5, 1e-5)); // max (v, -v): Componentwise abs.
+			// Prepare size for TransformTool, if one component of size is probably zero.
+			for (size_t i = 0; i < 3; ++ i)
+			{
+				if (size [i] < 1e-5)
+					size [i] = 0;
+			}
+
+			center = center * ~orientation;
+			size  *= 2.0;
+			size   = max (size, -size); // max (v, -v): Componentwise abs.
+		}
+		else
+		{
+			// Point
+			center = bbox .center ();
+			size   = bbox .size ();
+		}
 	}
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
