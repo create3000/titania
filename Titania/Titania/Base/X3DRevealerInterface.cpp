@@ -66,7 +66,9 @@ X3DRevealerInterface::construct ()
 
 	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_reveal_child));
 	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_child_revealed));
-	getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_map));
+
+	getWidget () .signal_map ()           .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_map));
+	getWidget () .signal_size_allocate () .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_size_allocate));
 }
 
 void
@@ -75,15 +77,23 @@ X3DRevealerInterface::configure ()
 	X3DEditorInterface::configure ();
 
 	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
+
 	getWidget () .set_margin_left (margin .x ());
 	getWidget () .set_margin_top  (margin .y ());
 }
-	           	          
+
 void
 X3DRevealerInterface::on_map ()
+{ }
+
+void
+X3DRevealerInterface::on_size_allocate (Gtk::Allocation & allocation)
 {
-	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, getCurrentBrowser () -> get_width  () - getWidget () .get_width  ()));
-	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, getCurrentBrowser () -> get_height () - getWidget () .get_height ()));
+	const auto boxWidth  = getBrowserWindow () -> getBrowserOverlay () .get_width ();
+	const auto boxHeight = getBrowserWindow () -> getBrowserOverlay () .get_height ();
+
+	getWidget () .set_margin_left (X3D::clamp <double> (getWidget () .get_margin_left (), 0, boxWidth  - getWidget () .get_width  ()));
+	getWidget () .set_margin_top  (X3D::clamp <double> (getWidget () .get_margin_top  (), 0, boxHeight - getWidget () .get_height ()));
 }
 
 void
@@ -136,9 +146,9 @@ X3DRevealerInterface::on_title_button_motion_notify_event (GdkEventMotion* event
 void
 X3DRevealerInterface::store ()
 {
-	X3DEditorInterface::store ();
-
 	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
+
+	X3DEditorInterface::store ();
 }
 
 X3DRevealerInterface::~X3DRevealerInterface ()

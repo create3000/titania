@@ -2023,7 +2023,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoElevationGridXSpacingAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">9</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -2049,7 +2049,7 @@
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">GeoElevationGridZSpacingAdjustment</property>
                             <property name="climb_rate">0.01</property>
-                            <property name="digits">3</property>
+                            <property name="digits">9</property>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>

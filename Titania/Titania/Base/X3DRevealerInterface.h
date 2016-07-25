@@ -119,6 +119,9 @@ private:
 	on_map ();
 
 	void
+	on_size_allocate (Gtk::Allocation & allocation);
+
+	void
 	on_reveal_child ();
 
 	void

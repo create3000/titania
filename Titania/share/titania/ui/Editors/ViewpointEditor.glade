@@ -1679,7 +1679,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointPositionZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1733,7 +1733,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationXAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1750,7 +1750,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationYAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>
@@ -1767,7 +1767,7 @@
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">GeoViewpointCenterOfRotationZAdjustment</property>
                         <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
+                        <property name="digits">9</property>
                         <property name="numeric">True</property>
                       </object>
                       <packing>

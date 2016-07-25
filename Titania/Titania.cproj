@@ -2501,6 +2501,16 @@
     <None Include="share\titania\ui\icons\Scissor.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DElevationGridEditor.h" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\X3DGeoElevationGridEditor.h" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\BoundedPhysicsModel" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\ConeEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\ExplosionEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\ForcePhysicsModel" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\ParticleSystem" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\PointEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\PolylineEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\SurfaceEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\VolumeEmitter" />
+    <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\WindPhysicsModel" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2597,6 +2607,7 @@
     <Folder Include="share\titania\Library\Components\Picking\.Titania\" />
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\" />
+    <Folder Include="share\titania\Library\Components\ParticleSystems\.Cobweb\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
