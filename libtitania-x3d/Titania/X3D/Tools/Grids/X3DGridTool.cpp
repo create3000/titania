@@ -538,7 +538,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis] * sgn;
 
-	if (not getBrowser () -> getShiftKey ()) // Scale from corner.
+	if (getBrowser () -> getControlKey ()) // Scale from corner.
 	{
 		after  += before;
 		before *= 2;
