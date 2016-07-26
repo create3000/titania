@@ -77,7 +77,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
 	         previousSelection (),
-	                   browser (getCurrentBrowser ()),
+	                   browser (getMasterBrowser ()),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                  selector (SelectorType::BRUSH),
 	         numSelectedPoints (0),
@@ -191,6 +191,8 @@ GeometryEditor::on_unmap ()
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
 	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
 	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
+
+	browser = getMasterBrowser ();
 }
 
 void

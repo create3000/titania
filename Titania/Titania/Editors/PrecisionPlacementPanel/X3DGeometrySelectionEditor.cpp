@@ -109,7 +109,7 @@ X3DGeometrySelectionEditor::initialize ()
 	scale       .setUndo (false);
 
 	rotationTool -> setUndo (false);
- }
+}
 
 void
 X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)

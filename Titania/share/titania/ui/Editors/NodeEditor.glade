@@ -319,7 +319,6 @@
             </child>
             <child>
               <object class="GtkBox" id="SculpToolEditorBox">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
