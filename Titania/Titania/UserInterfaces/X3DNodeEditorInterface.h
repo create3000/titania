@@ -159,6 +159,10 @@ public:
 	getPrecisionPlacementPanelBox () const
 	{ return *m_PrecisionPlacementPanelBox; }
 
+	Gtk::Box &
+	getSculpToolEditorBox () const
+	{ return *m_SculpToolEditorBox; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -210,6 +214,7 @@ private:
 	Gtk::Box*                   m_SoundEditorBox;
 	Gtk::Box*                   m_InlineEditorBox;
 	Gtk::Box*                   m_PrecisionPlacementPanelBox;
+	Gtk::Box*                   m_SculpToolEditorBox;
 
 };
 

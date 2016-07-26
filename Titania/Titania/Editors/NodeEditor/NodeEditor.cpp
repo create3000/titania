@@ -96,6 +96,8 @@ NodeEditor::initialize ()
 	addPage ("SoundEditor",              getSoundEditorBox              ());
 	addPage ("InlineEditor",             getInlineEditorBox             ());
 	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
+
+	addPage ("SculpToolEditor",          getSculpToolEditorBox          ());
 }
 
 void

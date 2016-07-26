@@ -76,6 +76,7 @@
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 #include "../Editors/ScenePropertiesEditor/ScenePropertiesEditor.h"
+#include "../Editors/SculpToolEditor/SculpToolEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
 #include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
@@ -143,6 +144,7 @@ public:
 		         std::make_pair ("Console",                  constructDialog <Console>),
 		         std::make_pair ("ScriptEditor",             constructDialog <ScriptEditor>),
 		         std::make_pair ("AnimationEditor",          constructDialog <AnimationEditor>),
+		         std::make_pair ("SculpToolEditor",          constructDialog <SculpToolEditor>),
 				         })
 	{ }
 

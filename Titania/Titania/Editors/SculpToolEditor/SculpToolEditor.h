@@ -47,53 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DNodeEditorInterface.h"
+
+#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_SCULP_TOOL_EDITOR_H__
+#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_SCULP_TOOL_EDITOR_H__
+
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeEditorInterface::m_widgetName = "NodeEditor";
-
-void
-X3DNodeEditorInterface::create (const std::string & filename)
+class SculpToolEditor :
+	virtual public X3DSculpToolEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
+	///  @name Construction
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Label", m_Label);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("NodePropertiesEditorBox", m_NodePropertiesEditorBox);
-	m_builder -> get_widget ("AppearanceEditorBox", m_AppearanceEditorBox);
-	m_builder -> get_widget ("TextureEditorBox", m_TextureEditorBox);
-	m_builder -> get_widget ("GeometryPropertiesEditorBox", m_GeometryPropertiesEditorBox);
-	m_builder -> get_widget ("TextEditorBox", m_TextEditorBox);
-	m_builder -> get_widget ("LayerEditorBox", m_LayerEditorBox);
-	m_builder -> get_widget ("BindableNodeEditorBox", m_BindableNodeEditorBox);
-	m_builder -> get_widget ("LightEditorBox", m_LightEditorBox);
-	m_builder -> get_widget ("SoundEditorBox", m_SoundEditorBox);
-	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
-	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
-	m_builder -> get_widget ("SculpToolEditorBox", m_SculpToolEditorBox);
+	SculpToolEditor (X3DBrowserWindow* const);
 
-	// Connect object Gtk::Window with id 'Window'.
-	m_Window -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_map_window));
+	///  @name Destruction
 
-	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page));
+	virtual
+	~SculpToolEditor ();
 
-	// Call construct handler of base class.
-	construct ();
-}
 
-X3DNodeEditorInterface::~X3DNodeEditorInterface ()
-{
-	delete m_Window;
-}
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Members
+
+};
 
 } // puck
 } // titania
+
+#endif

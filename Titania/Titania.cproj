@@ -273,6 +273,8 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DElevationGridEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\X3DGeoElevationGridEditor.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DSculpToolEditorInterface.cpp" />
+    <Compile Include="Titania\Editors\SculpToolEditor\SculpToolEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2511,6 +2513,10 @@
     <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\SurfaceEmitter" />
     <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\VolumeEmitter" />
     <None Include="share\titania\Library\Components\ParticleSystems\.Cobweb\WindPhysicsModel" />
+    <None Include="share\titania\ui\Editors\SculpToolEditor.glade" />
+    <None Include="Titania\UserInterfaces\X3DSculpToolEditorInterface.h" />
+    <None Include="Titania\Editors\SculpToolEditor\SculpToolEditor.h" />
+    <None Include="share\titania\ui\icons\SculpTool.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2608,6 +2614,7 @@
     <Folder Include="share\titania\Library\Components\RigidBodyPhysics\.Titania\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\" />
     <Folder Include="share\titania\Library\Components\ParticleSystems\.Cobweb\" />
+    <Folder Include="Titania\Editors\SculpToolEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

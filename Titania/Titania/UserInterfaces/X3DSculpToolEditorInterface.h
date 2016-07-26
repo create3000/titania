@@ -47,53 +47,120 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DNodeEditorInterface.h"
+#ifndef __TMP_GLAD2CPP_SCULP_TOOL_EDITOR_H__
+#define __TMP_GLAD2CPP_SCULP_TOOL_EDITOR_H__
+
+#include "../Base/X3DEditorInterface.h"
+#include <gtkmm.h>
+#include <string>
 
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeEditorInterface::m_widgetName = "NodeEditor";
-
-void
-X3DNodeEditorInterface::create (const std::string & filename)
+/**
+ *  Gtk Interface for SculpToolEditor.
+ */
+class X3DSculpToolEditorInterface :
+	public X3DEditorInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
+	///  @name Construction
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Label", m_Label);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("NodePropertiesEditorBox", m_NodePropertiesEditorBox);
-	m_builder -> get_widget ("AppearanceEditorBox", m_AppearanceEditorBox);
-	m_builder -> get_widget ("TextureEditorBox", m_TextureEditorBox);
-	m_builder -> get_widget ("GeometryPropertiesEditorBox", m_GeometryPropertiesEditorBox);
-	m_builder -> get_widget ("TextEditorBox", m_TextEditorBox);
-	m_builder -> get_widget ("LayerEditorBox", m_LayerEditorBox);
-	m_builder -> get_widget ("BindableNodeEditorBox", m_BindableNodeEditorBox);
-	m_builder -> get_widget ("LightEditorBox", m_LightEditorBox);
-	m_builder -> get_widget ("SoundEditorBox", m_SoundEditorBox);
-	m_builder -> get_widget ("InlineEditorBox", m_InlineEditorBox);
-	m_builder -> get_widget ("PrecisionPlacementPanelBox", m_PrecisionPlacementPanelBox);
-	m_builder -> get_widget ("SculpToolEditorBox", m_SculpToolEditorBox);
+	X3DSculpToolEditorInterface () :
+		X3DEditorInterface ()
+	{ }
 
-	// Connect object Gtk::Window with id 'Window'.
-	m_Window -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_map_window));
+	template <class ... Arguments>
+	X3DSculpToolEditorInterface (const std::string & filename, const Arguments & ... arguments) :
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
+	{ create (filename); }
 
-	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DNodeEditorInterface::on_switch_page));
+	///  @name Member access
 
-	// Call construct handler of base class.
-	construct ();
-}
+	const Glib::RefPtr <Gtk::Builder> &
+	getBuilder () const
+	{ return m_builder; }
 
-X3DNodeEditorInterface::~X3DNodeEditorInterface ()
-{
-	delete m_Window;
-}
+	virtual
+	const std::string &
+	getWidgetName () const
+	{ return m_widgetName; }
+
+	template <class Type>
+	Type*
+	createWidget (const std::string & name) const
+	{
+		getBuilder () -> add_from_file (filename, name);
+
+		Type* widget = nullptr;
+		m_builder -> get_widget (name, widget);
+		return widget;
+	}
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getDepthAdjustment () const
+	{ return m_DepthAdjustment; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
+
+	Gtk::Expander &
+	getBrushExpander () const
+	{ return *m_BrushExpander; }
+
+	Gtk::Grid &
+	getBrushBox () const
+	{ return *m_BrushBox; }
+
+	///  @name Signal handlers
+
+	///  @name Destruction
+
+	virtual
+	~X3DSculpToolEditorInterface ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	construct () final override
+	{ X3DEditorInterface::construct (); }
+
+	void
+	create (const std::string &);
+
+	///  @name Static members
+
+	static const std::string m_widgetName;
+
+	///  @name Members
+
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_DepthAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_PreviewBox;
+	Gtk::Expander*                 m_BrushExpander;
+	Gtk::Grid*                     m_BrushBox;
+
+};
 
 } // puck
 } // titania
+
+#endif
