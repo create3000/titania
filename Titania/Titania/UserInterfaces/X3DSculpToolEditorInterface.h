@@ -100,8 +100,20 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getDepthAdjustment () const
-	{ return m_DepthAdjustment; }
+	getHardnessAdjustment () const
+	{ return m_HardnessAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getHeightAdjustment () const
+	{ return m_HeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getSharpnessAdjustment () const
+	{ return m_SharpnessAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getWarpAdjustment () const
+	{ return m_WarpAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -122,6 +134,22 @@ public:
 	Gtk::Grid &
 	getBrushBox () const
 	{ return *m_BrushBox; }
+
+	Gtk::Scale &
+	getHeightScale () const
+	{ return *m_HeightScale; }
+
+	Gtk::Scale &
+	getWarpScale () const
+	{ return *m_WarpScale; }
+
+	Gtk::Scale &
+	getSharpnessScale () const
+	{ return *m_SharpnessScale; }
+
+	Gtk::Scale &
+	getHardnessScale () const
+	{ return *m_HardnessScale; }
 
 	///  @name Signal handlers
 
@@ -151,12 +179,19 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_DepthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_HardnessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_HeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_SharpnessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_WarpAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::Expander*                 m_BrushExpander;
 	Gtk::Grid*                     m_BrushBox;
+	Gtk::Scale*                    m_HeightScale;
+	Gtk::Scale*                    m_WarpScale;
+	Gtk::Scale*                    m_SharpnessScale;
+	Gtk::Scale*                    m_HardnessScale;
 
 };
 

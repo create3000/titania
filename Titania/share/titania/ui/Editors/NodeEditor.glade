@@ -335,6 +335,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Sculp Tool</property>
+                <property name="margin_top">16</property>
                 <property name="stock">SculpTool</property>
               </object>
               <packing>

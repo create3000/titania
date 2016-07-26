@@ -64,7 +64,7 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	      adjustments ({ adjustment1, adjustment2, adjustment3, adjustment4 }),
 	           widget (widget),
-	            scene (editor -> getCurrentScene ()),
+	            scene (),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -94,7 +94,8 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 {
 	// Connect units.
 
-	scene -> units_changed () .removeInterest (this, &SFRotationAdjustment::set_field);
+	if (scene)
+		scene -> units_changed () .removeInterest (this, &SFRotationAdjustment::set_field);
 
 	scene = getCurrentScene ();
 

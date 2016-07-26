@@ -61,7 +61,10 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_DepthAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("DepthAdjustment"));
+	m_HardnessAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HardnessAdjustment"));
+	m_HeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
+	m_SharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SharpnessAdjustment"));
+	m_WarpAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("WarpAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -69,6 +72,10 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("BrushExpander", m_BrushExpander);
 	m_builder -> get_widget ("BrushBox", m_BrushBox);
+	m_builder -> get_widget ("HeightScale", m_HeightScale);
+	m_builder -> get_widget ("WarpScale", m_WarpScale);
+	m_builder -> get_widget ("SharpnessScale", m_SharpnessScale);
+	m_builder -> get_widget ("HardnessScale", m_HardnessScale);
 
 	// Call construct handler of base class.
 	construct ();

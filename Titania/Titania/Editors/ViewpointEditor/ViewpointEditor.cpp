@@ -153,6 +153,9 @@ ViewpointEditor::on_update_viewpoint_clicked ()
 void
 ViewpointEditor::on_lock_to_camera_toggled ()
 {
+	if (not viewpointNode)
+		return;
+
 	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 

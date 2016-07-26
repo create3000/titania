@@ -2517,6 +2517,7 @@
     <None Include="Titania\UserInterfaces\X3DSculpToolEditorInterface.h" />
     <None Include="Titania\Editors\SculpToolEditor\SculpToolEditor.h" />
     <None Include="share\titania\ui\icons\SculpTool.svg" />
+    <None Include="share\titania\ui\Editors\SculpToolBrush.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

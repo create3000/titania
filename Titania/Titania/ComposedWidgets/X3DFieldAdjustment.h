@@ -187,7 +187,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	X3DComposedWidget (editor),
 	       adjustment (adjustment),
 	           widget (widget),
-	            scene (editor -> getCurrentScene ()),
+	            scene (),
 	            nodes (),
 	             name (name),
 	         undoStep (),
@@ -215,7 +215,8 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 {
 	// Connect units.
 
-	scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
+	if (scene)
+		scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
 
 	scene = getCurrentScene ();
 

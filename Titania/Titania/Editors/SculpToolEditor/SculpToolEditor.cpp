@@ -57,8 +57,15 @@ namespace puck {
 
 SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade"))
+	X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
+	                     height (this, getHeightAdjustment (), getHeightScale (), "height"),
+	                       warp (this, getWarpAdjustment (), getWarpScale (), "warp"),
+	                  sharpness (this, getSharpnessAdjustment (), getSharpnessScale (), "sharpness"),
+	                   hardness (this, getHardnessAdjustment (), getHardnessScale (), "hardness"),
+	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrush.x3dv") }))
 {
+	addChildren (preview);
+
 	setup ();
 }
 
@@ -66,6 +73,32 @@ void
 SculpToolEditor::initialize ()
 {
 	X3DSculpToolEditorInterface::initialize ();
+
+	preview -> initialized () .addInterest (this, &SculpToolEditor::set_initalized);
+	preview -> setAntialiasing (4);
+	preview -> set_opacity (0);
+	preview -> show ();
+
+	getPreviewBox () .pack_start (*preview, true, true, 0);
+}
+
+void
+SculpToolEditor::set_initalized ()
+{
+	try
+	{
+		preview -> set_opacity (1);
+
+		const auto brush = preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
+		const auto nodes = X3D::MFNode ({ brush });
+
+		height    .setNodes (nodes);
+		warp      .setNodes (nodes);
+		sharpness .setNodes (nodes);
+		hardness  .setNodes (nodes);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 SculpToolEditor::~SculpToolEditor ()

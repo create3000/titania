@@ -80,7 +80,17 @@ private:
 	void
 	initialize () final override;
 
+	void
+	set_initalized ();
+
 	///  @name Members
+
+	X3DFieldAdjustment <X3D::SFDouble> height;
+	X3DFieldAdjustment <X3D::SFDouble> warp;
+	X3DFieldAdjustment <X3D::SFDouble> sharpness;
+	X3DFieldAdjustment <X3D::SFDouble> hardness;
+
+	X3D::BrowserPtr preview;
 
 };
 

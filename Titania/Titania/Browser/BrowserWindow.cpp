@@ -2008,8 +2008,6 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 void
 BrowserWindow::on_transform_tool_mode_toggled ()
 {
-	__LOG__ << std::endl;
-
 	getCurrentBrowser () -> getTransformToolOptions () -> toolMode () = getTransformToolModeAction () -> get_active ();
 }
 
