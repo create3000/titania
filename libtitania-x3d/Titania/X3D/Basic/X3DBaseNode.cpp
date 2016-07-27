@@ -417,8 +417,6 @@ X3DBaseNode::setExecutionContext (X3DExecutionContext* const value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> addEvent ();
-
 	if (value not_eq executionContext)
 	{
 		executionContext -> removeParent (this);

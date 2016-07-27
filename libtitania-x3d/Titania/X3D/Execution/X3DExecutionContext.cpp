@@ -128,6 +128,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		// Reset executionContext to set browser.
 		node -> setExecutionContext (this);
 	}
+
+//	for (const auto & uninitializedNode : uninitializedNodes)
+//		uninitializedNode -> setExecutionContext (this);
 }
 
 void

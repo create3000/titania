@@ -75,8 +75,8 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 	if (not executionContext)
 		return true;
 
-	if (executionContext -> isPrivate ())
-		return true;
+//	if (executionContext -> isPrivate ())
+//		return true;
 
 	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 	{
@@ -151,8 +151,8 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	if (not node)
 		return true;
 
-	if (node -> isPrivate ())
-		return true;
+//	if (node -> isPrivate ())
+//		return true;
 
 	if (flags & TRAVERSE_VISIBLE_NODES)
 	{
@@ -295,9 +295,9 @@ CONTINUE:;
 				{
 					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
 					{
-						SFNode externProto (node);
+						ExternProtoDeclarationPtr externProto (node);
 
-						if (traverse (externProto, callback, distinct, flags, seen))
+						if (traverse (externProto -> getInternalScene (), callback, distinct, flags, seen))
 							continue;
 
 						return false;

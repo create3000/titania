@@ -109,6 +109,17 @@ X3DGeometryNode::setup ()
 }
 
 void
+X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (texCoordNode == getBrowser () -> getTexCoord ())
+		texCoordNode .set (executionContext -> getBrowser () -> getTexCoord ());
+
+	X3DNode::setExecutionContext (executionContext);
+}
+
+void
 X3DGeometryNode::setCameraObject (const bool value)
 {
 	if (value not_eq cameraObject)

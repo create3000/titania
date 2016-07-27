@@ -135,6 +135,16 @@ GeoProximitySensor::initialize ()
 }
 
 void
+GeoProximitySensor::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	proximitySensor -> setExecutionContext (executionContext);
+
+	X3DEnvironmentalSensorNode::setExecutionContext (executionContext);
+}
+
+void
 GeoProximitySensor::set_position (const Vector3f & position)
 {
 	geoCoord_changed () = getGeoCoord (proximitySensor -> getPosition ());

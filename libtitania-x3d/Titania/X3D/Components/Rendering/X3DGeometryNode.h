@@ -93,6 +93,12 @@ public:
 	void
 	setup () final override;
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Tests
 
 	virtual

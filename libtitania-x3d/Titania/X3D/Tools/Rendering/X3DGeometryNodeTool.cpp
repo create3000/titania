@@ -96,6 +96,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	normalToolNode -> setExecutionContext (executionContext);
+	coordToolNode  -> setExecutionContext (executionContext);
 
 	X3DNodeTool::setExecutionContext (executionContext);
 }

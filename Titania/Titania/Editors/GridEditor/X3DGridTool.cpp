@@ -104,7 +104,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 	browser = value;
 
-	set_executionContext (browser == getMasterBrowser () ? X3D::X3DExecutionContextPtr (browser -> getPrivateScene ()) : getCurrentContext ());
+	getTool () -> setExecutionContext (browser -> getPrivateScene ());
 
 	browser -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
 
@@ -192,12 +192,6 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 }
 
 void
-X3DGridTool::set_executionContext (const X3D::X3DExecutionContextPtr & executionContext)
-{
-	getTool () -> setExecutionContext (executionContext);
-}
-
-void
 X3DGridTool::update ()
 {
 	if (isEnabled () and getBrowserWindow () -> isEditor ())
@@ -211,7 +205,6 @@ X3DGridTool::enable ()
 {
 	getCurrentBrowser () .addInterest (this, &X3DGridTool::set_browser);
 	getCurrentBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
-	getCurrentContext () .addInterest (this, &X3DGridTool::set_executionContext);
 
 	set_browser (getCurrentBrowser ());
 }
@@ -223,7 +216,6 @@ X3DGridTool::disable ()
 	{
 		getCurrentBrowser () .removeInterest (this, &X3DGridTool::set_browser);
 		getCurrentBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
-		getCurrentContext () .removeInterest (this, &X3DGridTool::set_executionContext);
 
 		set_browser (getMasterBrowser ());
 	}

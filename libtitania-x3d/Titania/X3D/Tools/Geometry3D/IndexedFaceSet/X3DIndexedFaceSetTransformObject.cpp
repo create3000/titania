@@ -117,6 +117,14 @@ X3DIndexedFaceSetTransformObject::initialize ()
 }
 
 void
+X3DIndexedFaceSetTransformObject::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	selectionTransform -> setExecutionContext (executionContext);
+}
+
+void
 X3DIndexedFaceSetTransformObject::set_loadState ()
 {
 	try

@@ -92,7 +92,7 @@ X3DGridTool::initialize ()
 {
 	X3DActiveLayerTool::initialize ();
 
-	set_selection (getExecutionContext () -> getBrowser () -> getSelection ());
+	set_selection (getBrowser () -> getSelection ());
 }
 
 void

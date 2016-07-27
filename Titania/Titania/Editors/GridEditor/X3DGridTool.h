@@ -157,9 +157,6 @@ private:
 	set_browser (const X3D::BrowserPtr &);
 
 	void
-	set_executionContext (const X3D::X3DExecutionContextPtr &);
-
-	void
 	enable ();
 
 	void

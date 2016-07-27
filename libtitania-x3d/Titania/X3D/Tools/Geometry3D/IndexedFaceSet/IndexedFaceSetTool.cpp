@@ -121,6 +121,16 @@ IndexedFaceSetTool::initialize ()
 }
 
 void
+IndexedFaceSetTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DIndexedFaceSetSelectionObject::setExecutionContext (executionContext);
+	X3DIndexedFaceSetTool::setExecutionContext (executionContext);
+	X3DIndexedFaceSetTransformObject::setExecutionContext (executionContext);
+}
+
+void
 IndexedFaceSetTool::dispose ()
 {
 	X3DIndexedFaceSetLightSaberObject::dispose ();
