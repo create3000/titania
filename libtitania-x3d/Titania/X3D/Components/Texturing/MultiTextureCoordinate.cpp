@@ -77,6 +77,8 @@ MultiTextureCoordinate::MultiTextureCoordinate (X3DExecutionContext* const execu
 
 	addField (inputOutput, "metadata", metadata ());
 	addField (inputOutput, "texCoord", texCoord ());
+
+	addChildren (texCoords);
 }
 
 X3DBaseNode*

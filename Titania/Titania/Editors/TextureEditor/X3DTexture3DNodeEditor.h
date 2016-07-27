@@ -95,12 +95,6 @@ protected:
 	getPixelTexture3D (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
 
 
-protected:
-
-	void
-	set_preview ();
-
-
 private:
 
 	///  @name Event handlers
@@ -115,7 +109,6 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                     preview;
 	X3D::X3DPtr <X3D::X3DTexture3DNode> texture3DNode;
 	X3DFieldToggleButton <X3D::SFBool>  repeatS;
 	X3DFieldToggleButton <X3D::SFBool>  repeatT;

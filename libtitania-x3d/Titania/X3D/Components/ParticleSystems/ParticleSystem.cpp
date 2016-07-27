@@ -296,6 +296,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	             emitterNode (executionContext -> getBrowser () -> getEmitter ()),
 	           colorRampNode (),
 	        texCoordRampNode (),
+	            geometryNode (),
 	               numColors (0),
 	             numTexCoord (0),
 	       physicsModelNodes (),
@@ -341,6 +342,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	             emitterNode,
 	             colorRampNode,
 	             texCoordRampNode,
+	             geometryNode,
 	             physicsModelNodes,
 	             boundedPhysicsModelNodes);
 }

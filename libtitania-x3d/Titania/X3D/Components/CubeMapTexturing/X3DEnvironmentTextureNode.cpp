@@ -65,6 +65,8 @@ X3DEnvironmentTextureNode::X3DEnvironmentTextureNode () :
 	texturePropertiesNode ()
 {
 	addType (X3DConstants::X3DEnvironmentTextureNode);
+
+	addChildren (texturePropertiesNode);
 }
 
 void

@@ -74,20 +74,20 @@ static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderer::X3DRenderer () :
-	             X3DNode (),
-	     viewVolumeStack (),
-	       globalObjects (),
-	        localObjects (),
-	          collisions (),
-	        opaqueShapes (),
-	   transparentShapes (),
-	     collisionShapes (),
-	    activeCollisions (),
-	         depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
-	               speed (),
-	     numOpaqueShapes (0),
-	numTransparentShapes (0),
-	  numCollisionContainers (0)
+	               X3DNode (),
+	       viewVolumeStack (),
+	         globalObjects (),
+	          localObjects (),
+	            collisions (),
+	          opaqueShapes (),
+	     transparentShapes (),
+	       collisionShapes (),
+	      activeCollisions (),
+	           depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
+	                 speed (),
+	       numOpaqueShapes (0),
+	  numTransparentShapes (0),
+	numCollisionContainers (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }

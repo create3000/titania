@@ -606,7 +606,6 @@ private:
 
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <PlaneSensor>       planeSensor;
-	X3DPtr <PlaneSensor>       knifePlaneSensor;
 	X3DPtr <Switch>            hotSwitch;
 	X3DPtr <CoordinateDouble>  hotPointCoord;
 	X3DPtr <IndexedLineSet>    hotEdgesGeometry;

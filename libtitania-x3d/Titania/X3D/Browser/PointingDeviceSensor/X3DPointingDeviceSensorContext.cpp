@@ -83,7 +83,8 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 {
 	addChildren (pickable,
 	             overSensors,
-	             activeSensors);
+	             activeSensors,
+	             selectedLayer);
 }
 
 void

@@ -222,7 +222,7 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 {
 	setName (name);
 
-	addChildren (browser, activeLayer, selection);
+	addChildren (browser, activeLayer, nodes, selection);
 
 	setup ();
 }

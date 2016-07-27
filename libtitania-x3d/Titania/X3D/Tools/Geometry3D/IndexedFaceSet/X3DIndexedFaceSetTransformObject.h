@@ -192,8 +192,8 @@ private:
 	X3DPtr <Transform>        transformNode;
 	X3DPtr <Transform>        transformTool;
 	X3DPtr <Transform>        selectionTransform;
-
 	X3DPtr <CoordinateDouble> selectionCoord;
+
 	size_t                    translations;
 	Matrix4d                  axisRotation;
 	bool                      active;
