@@ -207,6 +207,8 @@ Surface::set_map_event (GdkEventAny* const event)
 void
 Surface::on_style_updated ()
 {
+	Gtk::DrawingArea::on_style_updated ();
+
 	if (makeCurrent ())
 	{
 		if (background)
@@ -268,6 +270,8 @@ __LOG__ << this << std::endl;
 
 	context        .reset ();
 	sharingContext .reset ();
+
+	Gtk::DrawingArea::on_unrealize ();
 }
 
 void
