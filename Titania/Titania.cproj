@@ -2498,7 +2498,6 @@
     <None Include="share\titania\Library\Components\Geospatial\.Cobweb\GeoViewpoint" />
     <None Include="share\titania\Library\Components\EnvironmentalSensor\.Cobweb\TransformSensor" />
     <None Include="share\titania\Library\Effects\Fire3.x3dv" />
-    <None Include="Titania" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DGeometrySelectionEditor.h" />
     <None Include="share\titania\ui\icons\Scissor.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DElevationGridEditor.h" />
@@ -2518,6 +2517,7 @@
     <None Include="Titania\Editors\SculpToolEditor\SculpToolEditor.h" />
     <None Include="share\titania\ui\icons\SculpTool.svg" />
     <None Include="share\titania\ui\Editors\SculpToolBrush.x3dv" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

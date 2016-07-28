@@ -262,8 +262,19 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 }
 
 void
+Surface::on_unrealize ()
+{
+__LOG__ << this << std::endl;
+
+	context        .reset ();
+	sharingContext .reset ();
+}
+
+void
 Surface::dispose ()
 {
+__LOG__ << this << std::endl;
+
 	draw_connection .disconnect ();
 
 	notify_callbacks ();

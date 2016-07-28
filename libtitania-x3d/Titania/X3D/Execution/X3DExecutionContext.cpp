@@ -129,8 +129,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		node -> setExecutionContext (this);
 	}
 
-//	for (const auto & uninitializedNode : uninitializedNodes)
-//		uninitializedNode -> setExecutionContext (this);
+	for (const auto & uninitializedNode : uninitializedNodes)
+		uninitializedNode -> setExecutionContext (this);
 }
 
 void

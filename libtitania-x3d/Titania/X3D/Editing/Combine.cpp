@@ -99,6 +99,9 @@ throw (Error <DISPOSED>,
 		geometries .emplace_back (geometry);
 	}
 
+	if (not geometries .empty ())
+		targetGeometry -> creaseAngle () = geometries .back () -> creaseAngle ();
+
 	// Combine Coordinates
 
 	for (const auto & geometry : geometries)
@@ -164,6 +167,8 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	{
 		if (targetGeometry -> getColor ())
 		{
+			// If there are not enough indices in colorIndex, add them.
+
 			if (targetGeometry -> colorPerVertex ())
 			{
 				for (size_t i = targetGeometry -> colorIndex () .size (); i < numVertices; ++ i)
@@ -183,6 +188,8 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	{
 		if (targetGeometry -> getTexCoord ())
 		{
+			// If there are not enough indices in texCoordIndex, add them.
+
 			for (size_t i = targetGeometry -> texCoordIndex () .size (); i < numVertices; ++ i)
 				targetGeometry -> texCoordIndex () .emplace_back (targetGeometry -> coordIndex () [i]);
 		}
@@ -194,6 +201,8 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	{
 		if (targetGeometry -> getNormal ())
 		{
+			// If there are not enough indices in normalIndex, add them.
+
 			if (targetGeometry -> normalPerVertex ())
 			{
 			   for (size_t i = targetGeometry -> normalIndex () .size (); i < numVertices; ++ i)

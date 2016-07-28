@@ -114,6 +114,10 @@ protected:
 	void
 	update () = 0;
 
+	virtual
+	void
+	on_unrealize () override;
+
 
 private:
 
