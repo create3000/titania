@@ -123,7 +123,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DGeometryNode::setExecutionContext (executionContext);
 
-	set_fontStyle ();
+	if (isInitialized ())
+		set_fontStyle ();
 }
 
 void
@@ -135,7 +136,7 @@ Text::set_fontStyle ()
 	fontStyleNode .set (x3d_cast <X3DFontStyleNode*> (fontStyle ()));
 
 	if (not fontStyleNode)
-		fontStyleNode .set (getBrowser () -> getFontStyle ());
+		fontStyleNode .set (getBrowser () -> getDefaultFontStyle ());
 
 	fontStyleNode -> addInterest (this);
 }

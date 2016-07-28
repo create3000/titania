@@ -118,15 +118,15 @@ public:
 	{ return textureStages; }
 
 	const X3DPtr <X3DTextureCoordinateNode> &
-	getTexCoord () const
+	getDefaultTexCoord () const
 	{ return texCoord; }
 
 	const X3DPtr <TextureProperties> &
-	getTextureProperties () const
+	getDefaultTextureProperties () const
 	{ return textureProperties; }
 
 	const X3DPtr <X3DTextureTransformNode> &
-	getTextureTransform () const
+	getDefaultTextureTransform () const
 	{ return textureTransform; }
 
 	///  @name Destruction

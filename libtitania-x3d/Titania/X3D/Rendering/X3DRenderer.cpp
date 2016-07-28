@@ -528,7 +528,7 @@ X3DRenderer::display ()
 
 	// Reset to default OpenGL appearance
 
-	getBrowser () -> getAppearance () -> draw ();
+	getBrowser () -> getDefaultAppearance () -> draw ();
 }
 
 void

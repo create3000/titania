@@ -67,7 +67,7 @@ public:
 	///  @name Member access
 
 	const X3DPtr <X3DParticleEmitterNode> &
-	getEmitter () const
+	getDefaultEmitter () const
 	{ return emitter; }
 
 	///  @name Destruction

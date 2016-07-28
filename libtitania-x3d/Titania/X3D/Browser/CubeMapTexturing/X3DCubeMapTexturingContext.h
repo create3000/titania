@@ -68,7 +68,7 @@ class X3DCubeMapTexturingContext :
 public:
 
 	const X3DPtr <TextureProperties> &
-	getCubeMapTextureProperties () const
+	getDefaultCubeMapTextureProperties () const
 	{ return textureProperties; }
 
 	///  @name Destruction

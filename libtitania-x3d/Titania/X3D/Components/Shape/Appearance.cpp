@@ -142,9 +142,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DAppearanceNode::setExecutionContext (executionContext);
 
-	set_lineProperties ();
-	set_fillProperties ();
-	set_textureTransform ();
+	if (isInitialized ())
+	{
+		set_lineProperties ();
+		set_fillProperties ();
+		set_textureTransform ();
+	}
 }
 
 bool
@@ -170,7 +173,7 @@ Appearance::set_fillProperties ()
 	if (fillPropertiesNode)
 		return;
 
-	fillPropertiesNode .set (getBrowser () -> getFillProperties ());
+	fillPropertiesNode .set (getBrowser () -> getDefaultFillProperties ());
 }
 
 void
@@ -181,7 +184,7 @@ Appearance::set_lineProperties ()
 	if (linePropertiesNode)
 		return;
 
-	linePropertiesNode .set (getBrowser () -> getLineProperties ());
+	linePropertiesNode .set (getBrowser () -> getDefaultLineProperties ());
 }
 
 void
@@ -204,7 +207,7 @@ Appearance::set_textureTransform ()
 	if (textureTransformNode)
 		return;
 
-	textureTransformNode .set (getBrowser () -> getTextureTransform ());
+	textureTransformNode .set (getBrowser () -> getDefaultTextureTransform ());
 }
 
 void

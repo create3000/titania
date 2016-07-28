@@ -67,7 +67,7 @@ public:
 	///  @name Member access
 
 	const X3DPtr <X3DFontStyleNode> &
-	getFontStyle () const
+	getDefaultFontStyle () const
 	{ return fontStyle; }
 
 	///  @name Destruction

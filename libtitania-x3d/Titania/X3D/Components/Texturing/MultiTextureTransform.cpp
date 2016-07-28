@@ -121,7 +121,7 @@ MultiTextureTransform::set_textureTransform ()
 void
 MultiTextureTransform::draw ()
 {
-	X3DTextureTransformNode* const defaultTextureTransform = getBrowser () -> getTextureTransform ();
+	X3DTextureTransformNode* const defaultTextureTransform = getBrowser () -> getDefaultTextureTransform ();
 	X3DTextureTransformNode*       last                    = defaultTextureTransform;
 	size_t                         channel                 = 0;
 	const size_t                   size                    = getBrowser () -> getTextureStages () .size ();

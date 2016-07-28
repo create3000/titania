@@ -69,15 +69,15 @@ public:
 	///  @name Member access
 
 	const X3DPtr <LineProperties> &
-	getLineProperties () const
+	getDefaultLineProperties () const
 	{ return lineProperties; }
 
 	const X3DPtr <FillProperties> &
-	getFillProperties () const
+	getDefaultFillProperties () const
 	{ return fillProperties; }
 
 	const X3DPtr <X3DAppearanceNode> &
-	getAppearance () const
+	getDefaultAppearance () const
 	{ return appearance; }
 
 	///  @name Destruction

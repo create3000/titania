@@ -94,7 +94,7 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	texCoordNode = getBrowser () -> getTexCoord ();
+	texCoordNode = getBrowser () -> getDefaultTexCoord ();
 
 	if (glXGetCurrentContext ())
 	{
@@ -113,8 +113,11 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (texCoordNode == getBrowser () -> getTexCoord ())
-		texCoordNode .set (executionContext -> getBrowser () -> getTexCoord ());
+	if (isInitialized ())
+	{
+		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
+			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
+	}
 
 	X3DNode::setExecutionContext (executionContext);
 }
@@ -161,7 +164,7 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 		texCoordNode .set (value);
 
 	else
-		texCoordNode .set (getBrowser () -> getTexCoord ());
+		texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 }
 
 bool

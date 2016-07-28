@@ -86,7 +86,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DTextureNode::setExecutionContext (executionContext);
 
-	set_textureProperties ();
+	if (isInitialized ())
+		set_textureProperties ();
 }
 
 void
@@ -98,7 +99,7 @@ X3DEnvironmentTextureNode::set_textureProperties ()
 	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
 
 	if (not texturePropertiesNode)
-		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getCubeMapTextureProperties ()));
+		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getDefaultCubeMapTextureProperties ()));
 
 	texturePropertiesNode -> addInterest (this, &X3DEnvironmentTextureNode::updateTextureProperties);
 

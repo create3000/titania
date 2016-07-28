@@ -174,7 +174,7 @@ TextureProperties::getMinificationFilter () const
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMinificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getMinificationFilter ();
 	}
 }
 
@@ -195,7 +195,7 @@ TextureProperties::getMagnificationFilter () const
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getMagnificationFilter ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getMagnificationFilter ();
 	}
 }
 
@@ -217,7 +217,7 @@ TextureProperties::getTextureCompression () const
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getTextureProperties ()) -> getTextureCompression ();
+		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getTextureCompression ();
 	}
 }
 

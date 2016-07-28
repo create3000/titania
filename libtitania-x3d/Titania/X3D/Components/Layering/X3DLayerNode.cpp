@@ -181,7 +181,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DRenderer::setExecutionContext (executionContext);
 	X3DNode::setExecutionContext (executionContext);
 
-	set_viewport ();
+	if (isInitialized ())
+		set_viewport ();
 }
 
 void
@@ -251,7 +252,7 @@ X3DLayerNode::set_viewport ()
 	currentViewport .set (x3d_cast <X3DViewportNode*> (viewport ()));
 
 	if (not currentViewport)
-		currentViewport .set (getBrowser () -> getViewport ());
+		currentViewport .set (getBrowser () -> getDefaultViewport ());
 }
 
 void

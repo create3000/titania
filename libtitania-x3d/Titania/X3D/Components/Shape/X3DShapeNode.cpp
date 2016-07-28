@@ -105,7 +105,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DChildNode::setExecutionContext (executionContext);
 
-	set_appearance ();
+	if (isInitialized ())
+		set_appearance ();
 }
 
 void
@@ -129,7 +130,7 @@ X3DShapeNode::set_appearance ()
 	if (appearanceNode)
 		return;
 
-	appearanceNode .set (getBrowser () -> getAppearance ());
+	appearanceNode .set (getBrowser () -> getDefaultAppearance ());
 }
 
 void

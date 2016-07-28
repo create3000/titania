@@ -202,7 +202,7 @@ BrowserOptions::set_Antialiased ()
 void
 BrowserOptions::set_TextureQuality ()
 {
-	const auto & textureProperties = getBrowser () -> getTextureProperties ();
+	const auto & textureProperties = getBrowser () -> getDefaultTextureProperties ();
 
 	if (TextureQuality () == "HIGH")
 	{
