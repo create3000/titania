@@ -199,16 +199,12 @@ void
 History::setPreview (const std::string & worldURL, const std::string & image)
 throw (std::invalid_argument)
 {
-	disconnect ();
-
 	try
 	{
 		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL), image);
 	}
 	catch (const std::out_of_range &)
 	{ }
-
-	connect ();
 }
 
 std::string
@@ -225,8 +221,6 @@ throw (std::invalid_argument)
 void
 History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)
 {
-	disconnect ();
-
 	try
 	{
 		update (getId (worldURL), title);
@@ -237,18 +231,12 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 	}
 
 	database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
-
-	connect ();
 }
 
 void
 History::removeItem (const std::string & id)
 {
-	disconnect ();
-
 	database .query ("DELETE FROM History WHERE id = " + id);
-
-	connect ();
 }
 
 const sql::sqlite3::assoc_row_type &
