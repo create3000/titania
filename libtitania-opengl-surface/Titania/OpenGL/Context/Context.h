@@ -81,6 +81,10 @@ public:
 	swapBuffers () const;
 
 	virtual
+	void
+	dispose ();
+
+	virtual
 	~Context ();
 
 

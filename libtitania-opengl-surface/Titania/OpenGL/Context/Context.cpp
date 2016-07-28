@@ -85,6 +85,16 @@ Context::swapBuffers () const
 	glXSwapBuffers (xDisplay, xDrawable);
 }
 
+void
+Context::dispose ()
+{
+	if (xContext)
+	{
+		if (glXGetCurrentContext () == xContext)
+			glXMakeCurrent (xDisplay, None, None);
+	}
+}
+
 Context::~Context ()
 {
 	if (xContext)

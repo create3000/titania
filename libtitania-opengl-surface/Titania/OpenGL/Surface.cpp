@@ -266,7 +266,8 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 void
 Surface::on_unrealize ()
 {
-__LOG__ << this << std::endl;
+	if (context)
+		context -> dispose ();
 
 	context        .reset ();
 	sharingContext .reset ();
@@ -277,8 +278,6 @@ __LOG__ << this << std::endl;
 void
 Surface::dispose ()
 {
-__LOG__ << this << std::endl;
-
 	draw_connection .disconnect ();
 
 	notify_callbacks ();
@@ -290,6 +289,9 @@ __LOG__ << this << std::endl;
 		container -> remove (*this);
 	//
 
+	if (context)
+		context -> dispose ();
+
 	context        .reset ();
 	sharingContext .reset ();
 }
@@ -299,3 +301,4 @@ Surface::~Surface ()
 
 } // opengl
 } // titania
+

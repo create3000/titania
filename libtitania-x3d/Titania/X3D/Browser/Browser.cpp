@@ -281,9 +281,9 @@ noexcept (true)
 void
 Browser::dispose ()
 {
-	opengl::Surface::dispose ();
-
 	X3DBrowser::dispose ();
+
+	opengl::Surface::dispose ();
 }
 
 Browser::~Browser ()

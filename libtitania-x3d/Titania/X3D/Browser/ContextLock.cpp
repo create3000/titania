@@ -83,7 +83,7 @@ ContextLock::~ContextLock ()
 		const auto xCurrentDisplay = glXGetCurrentDisplay ();
 
 		if (xCurrentDisplay)
-			glXMakeCurrent (xCurrentDisplay, None, NULL);
+			glXMakeCurrent (xCurrentDisplay, None, nullptr);
 	}
 }
 
