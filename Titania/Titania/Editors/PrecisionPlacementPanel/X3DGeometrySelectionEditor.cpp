@@ -149,6 +149,8 @@ X3DGeometrySelectionEditor::set_touchTime ()
 
 	const X3D::MFNode transforms ({ transformNode });
 
+	transformNode -> scale () .setUnit (X3D::UnitCategory::LENGTH);
+
 	translation .setNodes (transforms);
 	rotation    .setNodes (transforms);
 	scale       .setNodes (transforms);

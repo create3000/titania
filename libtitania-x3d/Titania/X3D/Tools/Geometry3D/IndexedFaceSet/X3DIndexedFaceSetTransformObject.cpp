@@ -226,6 +226,8 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 		}
 	}
 
+	size = max (size, Vector3d (1e-7, 1e-7, 1e-7));
+
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = orientation;
 
