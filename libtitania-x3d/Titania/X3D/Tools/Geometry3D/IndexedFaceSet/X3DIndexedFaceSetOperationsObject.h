@@ -224,16 +224,16 @@ private:
 	///  @name Operations
 
 	std::vector <int32_t>
-	splitPoints (const std::set <int32_t> &);
+	splitPoints (const std::vector <int32_t> &);
 
 	std::vector <int32_t>
 	formNewFace (const std::vector <std::vector <int32_t>> &);
 
 	std::vector <int32_t>
-	extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> &, const std::set <size_t> &);
+	extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> &, const std::set <size_t> &);
 
 	std::vector <int32_t>
-	chipOf (const std::set <size_t> &);
+	chipOf (const std::vector <size_t> &);
 
 	void
 	flipVertexOrdering (const std::set <size_t> &);

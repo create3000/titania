@@ -465,10 +465,14 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 	undoSetCoordIndex    (undoStep);
 	undoSetCoordPoint    (undoStep);
 
-	std::set <int32_t> points;
+	std::vector <int32_t> points;
 
 	for (const auto & selectedPoint : getSelectedPoints ())
-		points .emplace (selectedPoint .first);
+		points .emplace_back (selectedPoint .first);
+
+	std::sort (points .begin (), points .end ());
+
+	points .erase (std::unique (points .begin (), points .end ()), points .end ());
 
 	const auto selection = splitPoints (points);
 
@@ -516,7 +520,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 	undoSetCoordIndex (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	std::set <std::pair <size_t, size_t>> edges;
+	std::vector <std::pair <size_t, size_t>> edges;
 
 	for (const auto & edge : getSelectedEdges ())
 	{
@@ -526,13 +530,17 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 	   for (const auto & pair : edge .second)
 	   {
 			if (pair .second - pair .first > 1)
-				edges .emplace (pair .second, pair .first);
+				edges .emplace_back (pair .second, pair .first);
 			else
-				edges .emplace (pair);
+				edges .emplace_back (pair);
 
 			break;
 		}
 	}
+
+	std::sort (edges .begin (), edges .end ());
+
+	edges .erase (std::unique (edges .begin (), edges .end ()), edges .end ());
 
 	const auto selection = extrudeSelectedEdges (edges, { });
 
@@ -560,37 +568,47 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 	undoSetCoordIndex (undoStep);
 	undoSetCoordPoint (undoStep);
 
-	std::set <std::pair <size_t, size_t>> edges;
-	std::set <int32_t>                    points;
+	std::vector <std::pair <size_t, size_t>> edges;
+	std::vector <int32_t>                    points;
 
 	for (const auto & edge : getSelectedEdges ())
 	{
 		if ((getSelectionType () == SelectionType::FACES and edge .second .size () not_eq 1) or edge .second .empty ())
 			continue;
 
-		points .emplace (edge .first .first);
-		points .emplace (edge .first .second);
+		points .emplace_back (edge .first .first);
+		points .emplace_back (edge .first .second);
 
 	   for (const auto & pair : edge .second)
 		{
 			if (pair .second - pair .first > 1)
-				edges .emplace (pair .second, pair .first);
+				edges .emplace_back (pair .second, pair .first);
 			else
-				edges .emplace (pair);
+				edges .emplace_back (pair);
 		}
 	}
 
+	std::sort (edges  .begin (), edges  .end ());
+	std::sort (points .begin (), points .end ());
+
+	edges  .erase (std::unique (edges  .begin (), edges  .end ()), edges  .end ());
+	points .erase (std::unique (points .begin (), points .end ()), points .end ());
+
 	//
 
-	std::set <int32_t> facesPoints;
+	std::vector <int32_t> facesPoints;
 
 	auto selection = extrudeSelectedEdges (edges, getSelectedFaces ());
 
 	for (const auto & face : getSelectedFaces ())
 	{
 		for (const auto & vertex : getFaceSelection () -> getFaceVertices (face))
-		   facesPoints .emplace (coordIndex () [vertex]);
+		   facesPoints .emplace_back (coordIndex () [vertex]);
 	}
+
+	std::sort (facesPoints .begin (), facesPoints .end ());
+
+	facesPoints .erase (std::unique (facesPoints .begin (), facesPoints .end ()), facesPoints .end ());
 
 	std::set_difference (facesPoints .begin (), facesPoints .end (), points .begin (), points .end (), std::inserter (selection, selection .begin ()));
 
@@ -619,16 +637,20 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 	undoSetCoordIndex    (undoStep);
 	undoSetCoordPoint    (undoStep);
 
-	std::set <size_t> vertices;
+	std::vector <size_t> vertices;
 
 	for (const auto & edge : getSelectedEdges ())
 	{
 	   for (const auto & pair : edge .second)
 		{
-			vertices .emplace (pair .first);
-			vertices .emplace (pair .second);
+			vertices .emplace_back (pair .first);
+			vertices .emplace_back (pair .second);
 		}
 	}
+
+	std::sort (vertices .begin (), vertices .end ());
+
+	vertices .erase (std::unique (vertices .begin (), vertices .end ()), vertices .end ());
 
 	auto selection = chipOf (vertices);
 
@@ -762,8 +784,9 @@ X3DIndexedFaceSetOperationsObject::deleteSelectedFaces (const UndoStepPtr & undo
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
+/// The array @a selectedPoints must be an array of unique points.
 std::vector <int32_t>
-X3DIndexedFaceSetOperationsObject::splitPoints (const std::set <int32_t> & selectedPoints)
+X3DIndexedFaceSetOperationsObject::splitPoints (const std::vector <int32_t> & selectedPoints)
 {
 	std::vector <int32_t> points;
 
@@ -864,8 +887,9 @@ X3DIndexedFaceSetOperationsObject::formNewFace (const std::vector <std::vector <
 	return selection;
 }
 
+/// The array @a edges must be an  array of unique edges.
 std::vector <int32_t>
-X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::set <std::pair <size_t, size_t>> & edges, const std::set <size_t> & faces)
+X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std::pair <size_t, size_t>> & edges, const std::set <size_t> & faces)
 {
 	std::map <int32_t, size_t>  pointIndex;
 	std::map <int32_t, int32_t> points;
@@ -970,7 +994,7 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::set <std::pa
 }
 
 std::vector <int32_t>
-X3DIndexedFaceSetOperationsObject::chipOf (const std::set <size_t> & selectedVertices)
+X3DIndexedFaceSetOperationsObject::chipOf (const std::vector <size_t> & selectedVertices)
 {
 	std::map <int32_t, std::vector <size_t>> pointIndex;
 
