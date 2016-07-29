@@ -1105,6 +1105,12 @@ X3DIndexedFaceSetSelectionObject::selectPoints (const std::vector <int32_t> & po
 void
 X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
+	std::vector <int32_t> pointIndex (points .begin (), points .end ());
+
+	std::sort (pointIndex .begin (), pointIndex .end ());
+
+	pointIndex .erase (std::unique (pointIndex .begin (), pointIndex .end ()), pointIndex .end ());
+
 	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
@@ -1115,8 +1121,6 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::ADD:
 		{
-			const std::set <int32_t> pointIndex (points .begin (), points .end ());
-
 			for (const auto & point : pointIndex)
 			{
 				for (const auto & face : getFaceSelection () -> getAdjacentFaces (point))
@@ -1128,8 +1132,11 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 						const auto i0 = vertices [i];
 						const auto i1 = vertices [(i + 1) % size];
 
-						if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
+						if (std::binary_search (pointIndex .begin (), pointIndex .end (), coordIndex () [i0]) and
+						    std::binary_search (pointIndex .begin (), pointIndex .end (), coordIndex () [i1]))
+						{
 							addSelectedEdgesFunction ({ std::make_pair (i0, i1) });
+						}
 					}
 				}
 			}
@@ -1138,8 +1145,6 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::REMOVE:
 		{
-			const std::set <int32_t> pointIndex (points .begin (), points .end ());
-
 			for (const auto & point : pointIndex)
 			{
 				for (const auto & face : getFaceSelection () -> getAdjacentFaces (point))
@@ -1151,8 +1156,11 @@ X3DIndexedFaceSetSelectionObject::selectEdges (const std::vector <int32_t> & poi
 						const auto i0 = vertices [i];
 						const auto i1 = vertices [(i + 1) % size];
 
-						if (pointIndex .count (coordIndex () [i0]) and pointIndex .count (coordIndex () [i1]))
+						if (std::binary_search (pointIndex .begin (), pointIndex .end (), coordIndex () [i0]) and
+						    std::binary_search (pointIndex .begin (), pointIndex .end (), coordIndex () [i1]))
+						{
 							removeSelectedEdgesFunction ({ std::make_pair (i0, i1) });
+						}
 					}
 				}
 			}
@@ -1339,6 +1347,12 @@ X3DIndexedFaceSetSelectionObject::selectHole (std::set <int32_t> & currentPoints
 void
 X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & points, const SelectActionType selectAction)
 {
+	std::vector <int32_t> pointIndex (points .begin (), points .end ());
+
+	std::sort (pointIndex .begin (), pointIndex .end ());
+
+	pointIndex .erase (std::unique (pointIndex .begin (), pointIndex .end ()), pointIndex .end ());
+
 	switch (selectAction)
 	{
 		case SelectActionType::REPLACE:
@@ -1349,29 +1363,37 @@ X3DIndexedFaceSetSelectionObject::selectFaces (const std::vector <int32_t> & poi
 		}
 		case SelectActionType::ADD:
 		{
-			std::set <size_t> faces;
+			std::vector <size_t> faces;
 
 			for (const auto & point : points)
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
-					faces .emplace (face .index);
+					faces .emplace_back (face .index);
 			}
 
-			addSelectedFacesFunction (faces, std::set <int32_t> (points .begin (), points .end ()));
+			std::sort (faces .begin (), faces .end ());
+
+			faces .erase (std::unique (faces .begin (), faces .end ()), faces .end ());
+
+			addSelectedFacesFunction (faces, pointIndex);
 			break;
 		}
 		case SelectActionType::REMOVE:
 		{
-			std::set <size_t> faces;
+			std::vector <size_t> faces;
 
 			for (const auto & point : points)
 			{
 				for (const auto & face : selection -> getAdjacentFaces (point))
-					faces .emplace (face .index);
+					faces .emplace_back (face .index);
 
 			}
+
+			std::sort (faces .begin (), faces .end ());
+
+			faces .erase (std::unique (faces .begin (), faces .end ()), faces .end ());
 	
-			removeSelectedFacesFunction (faces, std::set <int32_t> (points .begin (), points .end ()));
+			removeSelectedFacesFunction (faces, pointIndex);
 			break;
 		}
 	}
@@ -1485,8 +1507,9 @@ X3DIndexedFaceSetSelectionObject::updateSelectedEdges ()
 }
 
 ///  Add @a faces to selection of faces.
+///  The array @a points must be a unique array of sorted points.  
 void
-X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::set <size_t> & faces, const std::set <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::vector <size_t> & faces, const std::vector <int32_t> & points)
 {
 	for (const auto & face : faces)
 	{
@@ -1501,8 +1524,9 @@ X3DIndexedFaceSetSelectionObject::addSelectedFacesFunction (const std::set <size
 }
 
 ///  Remove @a faces from selection of faces.
+///  The array @a points must be a unique array of sorted points.  
 void
-X3DIndexedFaceSetSelectionObject::removeSelectedFacesFunction (const std::set <size_t> & faces, const std::set <int32_t> & points)
+X3DIndexedFaceSetSelectionObject::removeSelectedFacesFunction (const std::vector <size_t> & faces, const std::vector <int32_t> & points)
 {
 	for (const auto & face : faces)
 	{
@@ -1566,12 +1590,13 @@ X3DIndexedFaceSetSelectionObject::getSelectActionType () const
 }
 
 ///  Returns true if all points destribed by @a vertices are in the set of selected of points, otherwise false. 
+///  The array @a points must be a unique array of sorted points.  
 bool
-X3DIndexedFaceSetSelectionObject::isInSelection (const std::set <int32_t> & points, const std::vector <size_t> & vertices) const
+X3DIndexedFaceSetSelectionObject::isInSelection (const std::vector <int32_t> & points, const std::vector <size_t> & vertices) const
 {
 	for (const auto & vertex : vertices)
 	{
-		if (points .count (coordIndex () [vertex]))
+		if (std::binary_search (points .begin (), points .end (), coordIndex () [vertex]))
 			continue;
 
 		return false;

@@ -372,6 +372,40 @@ c3 ()
 	std::clog << "scaleOrientation " << so << std::endl;
 }
 
+void
+unique ()
+{
+	static std::default_random_engine
+	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
+
+	std::uniform_int_distribution <size_t> random (0, 1000);
+
+	std::vector <int32_t> values;
+
+	for (size_t i = 0; i < 100000000; ++ i)
+		values .emplace_back (random (random_engine));
+
+	{
+		const auto t0 = chrono::now ();
+	
+		std::set <int32_t> set (values .begin (), values .end ());
+	
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
+
+	{
+		const auto t0 = chrono::now ();
+	
+		std::vector <int32_t> vector (values .begin (), values .end ());
+	
+		std::sort (vector .begin (), vector .end ());
+	
+		vector .erase (std::unique (vector .begin (), vector .end ()), vector .end ());
+	
+		__LOG__ << chrono::now () - t0 << std::endl;
+	}
+}
+
 int
 main (int argc, char** argv)
 {
@@ -389,7 +423,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	c2 ();
+	unique ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
