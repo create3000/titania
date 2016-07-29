@@ -343,9 +343,9 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 				hitPoints .emplace_back (vertex);
 		}
 	
-		const auto last = std::unique (hitPoints .begin (), hitPoints .end ());
+		std::sort (hitPoints .begin (), hitPoints .end ());
 
-		hitPoints .erase (last, hitPoints .end ());
+		hitPoints .erase (std::unique (hitPoints .begin (), hitPoints .end ()), hitPoints .end ());
 
 		return hitPoints;
 	}

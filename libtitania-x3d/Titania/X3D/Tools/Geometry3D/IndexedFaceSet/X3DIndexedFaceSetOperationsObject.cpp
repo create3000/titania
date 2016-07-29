@@ -420,12 +420,12 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	{
 		// Erase points.
 
+		std::sort (pointsToRemove .begin (), pointsToRemove .end ());
+
 		const auto unique  = std::unique (pointsToRemove .begin (), pointsToRemove .end ());
 		const auto removed = std::remove (pointsToRemove .begin (), unique, masterPoint);
 	 
 		pointsToRemove .erase (removed, pointsToRemove .end ());
-
-		std::sort (pointsToRemove .begin (), pointsToRemove .end ());
 
 		masterPoint -= std::lower_bound (pointsToRemove .begin (), pointsToRemove .end (), masterPoint) - pointsToRemove .begin ();
 

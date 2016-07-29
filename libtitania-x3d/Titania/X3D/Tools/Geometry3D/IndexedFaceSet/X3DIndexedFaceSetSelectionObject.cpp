@@ -271,10 +271,11 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 void
 X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
 {
-	auto       vertices = getPolygonVertices ();
-	const auto last     = std::unique (vertices .begin (), vertices .end ());
+	auto vertices = getPolygonVertices ();
 
-	vertices .erase (last, vertices .end ());
+	std::sort (vertices .begin (), vertices .end ());
+
+	vertices .erase (std::unique (vertices .begin (), vertices .end ()), vertices .end ());
 
 	set_selection (MFVec3d (vertices .begin (), vertices .end ()), SelectActionType::REPLACE);
 }
@@ -612,6 +613,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 									activePoints .emplace_back (coordIndex () [vertex]);
 							}
 
+							std::sort (activePoints .begin (), activePoints .end ());
+
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 						}
 						else
@@ -644,6 +647,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 								activePoints .emplace_back (coordIndex () [edge .second]);
 							}
 		
+							std::sort (activePoints .begin (), activePoints .end ());
+
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 							break;
 						}
@@ -661,6 +666,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 								activePoints .emplace_back (coordIndex () [edge .second]);
 							}
 		
+							std::sort (activePoints .begin (), activePoints .end ());
+
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 							break;
 						}
@@ -677,6 +684,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 									activePoints .emplace_back (coordIndex () [index]);
 							}
 		
+							std::sort (activePoints .begin (), activePoints .end ());
+
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 							break;
 						}
@@ -737,6 +746,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 									activePoints .emplace_back (coordIndex () [index]);
 							}
 		
+							std::sort (activePoints .begin (), activePoints .end ());
+
 							activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 							break;
 						}
@@ -764,6 +775,8 @@ X3DIndexedFaceSetSelectionObject::setActiveSelection (const std::vector <int32_t
 						activePoints .emplace_back (coordIndex () [activeEdge .first]);
 						activePoints .emplace_back (coordIndex () [activeEdge .second]);
 					}
+
+					std::sort (activePoints .begin (), activePoints .end ());
 
 					activePoints .erase (std::unique (activePoints .begin (), activePoints .end ()), activePoints .end ());
 					break;

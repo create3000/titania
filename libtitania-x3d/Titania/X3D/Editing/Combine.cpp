@@ -138,7 +138,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
                   const X3DPtr <X3DCoordinateNode> & targetCoord,
                   const Matrix4d & targetMatrix) const
 {
-	std::set <int32_t> points;
+	std::vector <int32_t> points;
 
 	// Add colors, texCoords and normals if needed.
 
@@ -444,7 +444,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			}
 
 			targetGeometry -> coordIndex () .emplace_back (point);
-			points .emplace (point);
+			points .emplace_back (point);
 		}
 
 		if (targetColor)
@@ -484,7 +484,11 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		}
 	}
 
-	return std::vector <int32_t> (points .begin (), points .end ());
+	std::sort (points .begin (), points .end ());
+
+	points .erase (std::unique (points .begin (), points .end ()), points .end ());
+
+	return points;
 }
 
 void

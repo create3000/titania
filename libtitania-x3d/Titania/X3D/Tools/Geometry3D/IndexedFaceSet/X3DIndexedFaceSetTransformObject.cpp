@@ -226,6 +226,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 		}
 	}
 
+	// Use minimum size to prevent zero matrix.
 	size = max (size, Vector3d (1e-7, 1e-7, 1e-7));
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
@@ -412,6 +413,8 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 {
 	auto points = std::vector <Vector3d> (selectionCoord -> point () .begin (), selectionCoord -> point () .end ());
 	auto bbox   = Box3d ();
+
+	std::sort (points .begin (), points .end ());
 
 	points .erase (std::unique (points .begin (), points .end ()), points .end ());
 

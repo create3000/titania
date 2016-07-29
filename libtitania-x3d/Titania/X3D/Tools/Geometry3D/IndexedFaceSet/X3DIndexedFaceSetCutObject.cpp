@@ -1080,6 +1080,8 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 		selection .emplace_back (endPoint);
 	}
 
+	std::sort (selection .begin (), selection .end ());
+
 	selection .erase (std::unique (selection .begin (), selection .end ()), selection .end ());
 
 	return selection;

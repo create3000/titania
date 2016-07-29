@@ -472,7 +472,7 @@ IndexedFaceSet::addColors ()
 	if (coordIndex () .empty ())
 		return;
 
-	colorNode -> color () .emplace_back (Color4f (1, 1, 1, 1));
+	colorNode -> color () .emplace_back (1, 1, 1, 1);
 
 	for (const auto & index : coordIndex ())
 		colorIndex () .emplace_back (index < 0 ? -1 : 0);
