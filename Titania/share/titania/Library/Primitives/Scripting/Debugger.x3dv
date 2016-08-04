@@ -1,0 +1,266 @@
+#X3D V3.3 utf8 Titania V1.4.8
+
+META "comment" "World of Titania"
+META "created" "Thu, 04 Aug 2016 20:45:08 GMT"
+META "creator" "holger"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Scripting/Debugger.x3dv"
+META "modified" "Thu, 04 Aug 2016 20:54:08 GMT"
+
+DEF DebugerScript Script {
+  inputOnly SFBool      set_SFBool
+  inputOnly SFColor     set_SFColor
+  inputOnly SFColorRGBA set_SFColorRGBA
+  inputOnly SFDouble    set_SFDouble
+  inputOnly SFFloat     set_SFFloat
+  inputOnly SFImage     set_SFImage
+  inputOnly SFInt32     set_SFInt32
+  inputOnly SFMatrix3d  set_SFMatrix3d
+  inputOnly SFMatrix3f  set_SFMatrix3f
+  inputOnly SFMatrix4d  set_SFMatrix4d
+  inputOnly SFMatrix4f  set_SFMatrix4f
+  inputOnly SFNode      set_SFNode
+  inputOnly SFRotation  set_SFRotation
+  inputOnly SFString    set_SFString
+  inputOnly SFTime      set_SFTime
+  inputOnly SFVec2d     set_SFVec2d
+  inputOnly SFVec2f     set_SFVec2f
+  inputOnly SFVec3d     set_SFVec3d
+  inputOnly SFVec3f     set_SFVec3f
+  inputOnly SFVec4d     set_SFVec4d
+  inputOnly SFVec4f     set_SFVec4f
+  inputOnly MFBool      set_MFBool
+  inputOnly MFColor     set_MFColor
+  inputOnly MFColorRGBA set_MFColorRGBA
+  inputOnly MFDouble    set_MFDouble
+  inputOnly MFFloat     set_MFFloat
+  inputOnly MFImage     set_MFImage
+  inputOnly MFInt32     set_MFInt32
+  inputOnly MFMatrix3d  set_MFMatrix3d
+  inputOnly MFMatrix3f  set_MFMatrix3f
+  inputOnly MFMatrix4d  set_MFMatrix4d
+  inputOnly MFMatrix4f  set_MFMatrix4f
+  inputOnly MFNode      set_MFNode
+  inputOnly MFRotation  set_MFRotation
+  inputOnly MFString    set_MFString
+  inputOnly MFTime      set_MFTime
+  inputOnly MFVec2d     set_MFVec2d
+  inputOnly MFVec2f     set_MFVec2f
+  inputOnly MFVec3d     set_MFVec3d
+  inputOnly MFVec3f     set_MFVec3f
+  inputOnly MFVec4d     set_MFVec4d
+  inputOnly MFVec4f     set_MFVec4f
+
+  url "ecmascript:
+
+function set_SFBool (value, time)
+{
+	print (\"SFBool: \", value);
+}
+
+function set_SFColor (value, time)
+{
+	print (\"SFColor: \", value);
+}
+
+function set_SFColorRGBA (value, time)
+{
+	print (\"SFColorRGBA: \", value);
+}
+
+function set_SFDouble (value, time)
+{
+	print (\"SFDouble: \", value);
+}
+
+function set_SFFloat (value, time)
+{
+	print (\"SFFloat: \", value);
+}
+
+function set_SFImage (value, time)
+{
+	print (\"SFImage: \", value);
+}
+
+function set_SFInt32 (value, time)
+{
+	print (\"SFInt32: \", value);
+}
+
+function set_SFMatrix3d (value, time)
+{
+	print (\"SFMatrix3d: \", value);
+}
+
+function set_SFMatrix3f (value, time)
+{
+	print (\"SFMatrix3f: \", value);
+}
+
+function set_SFMatrix4d (value, time)
+{
+	print (\"SFMatrix4d: \", value);
+}
+
+function set_SFMatrix4f (value, time)
+{
+	print (\"SFMatrix4f: \", value);
+}
+
+function set_SFNode (value, time)
+{
+	print (\"SFNode: \", value);
+}
+
+function set_SFRotation (value, time)
+{
+	print (\"SFRotation: \", value);
+}
+
+function set_SFString (value, time)
+{
+	print (\"SFString: \", value);
+}
+
+function set_SFTime (value, time)
+{
+	print (\"SFTime: \", value);
+}
+
+function set_SFVec2d (value, time)
+{
+	print (\"SFVec2d: \", value);
+}
+
+function set_SFVec2f (value, time)
+{
+	print (\"SFVec2f: \", value);
+}
+
+function set_SFVec3d (value, time)
+{
+	print (\"SFVec3d: \", value);
+}
+
+function set_SFVec3f (value, time)
+{
+	print (\"SFVec3f: \", value);
+}
+
+function set_SFVec4d (value, time)
+{
+	print (\"SFVec4d: \", value);
+}
+
+function set_SFVec4f (value, time)
+{
+	print (\"SFVec4f: \", value);
+}
+
+function set_MFBool (value, time)
+{
+	print (\"MFBool: \", value);
+}
+
+function set_MFColor (value, time)
+{
+	print (\"MFColor: \", value);
+}
+
+function set_MFColorRGBA (value, time)
+{
+	print (\"MFColorRGBA: \", value);
+}
+
+function set_MFDouble (value, time)
+{
+	print (\"MFDouble: \", value);
+}
+
+function set_MFFloat (value, time)
+{
+	print (\"MFFloat: \", value);
+}
+
+function set_MFImage (value, time)
+{
+	print (\"MFImage: \", value);
+}
+
+function set_MFInt32 (value, time)
+{
+	print (\"MFInt32: \", value);
+}
+
+function set_MFMatrix3d (value, time)
+{
+	print (\"MFMatrix3d: \", value);
+}
+
+function set_MFMatrix3f (value, time)
+{
+	print (\"MFMatrix3f: \", value);
+}
+
+function set_MFMatrix4d (value, time)
+{
+	print (\"MFMatrix4d: \", value);
+}
+
+function set_MFMatrix4f (value, time)
+{
+	print (\"MFMatrix4f: \", value);
+}
+
+function set_MFNode (value, time)
+{
+	print (\"MFNode: \", value);
+}
+
+function set_MFRotation (value, time)
+{
+	print (\"MFRotation: \", value);
+}
+
+function set_MFString (value, time)
+{
+	print (\"MFString: \", value);
+}
+
+function set_MFTime (value, time)
+{
+	print (\"MFTime: \", value);
+}
+
+function set_MFVec2d (value, time)
+{
+	print (\"MFVec2d: \", value);
+}
+
+function set_MFVec2f (value, time)
+{
+	print (\"MFVec2f: \", value);
+}
+
+function set_MFVec3d (value, time)
+{
+	print (\"MFVec3d: \", value);
+}
+
+function set_MFVec3f (value, time)
+{
+	print (\"MFVec3f: \", value);
+}
+
+function set_MFVec4d (value, time)
+{
+	print (\"MFVec4d: \", value);
+}
+
+function set_MFVec4f (value, time)
+{
+	print (\"MFVec4f: \", value);
+}
+"
+}

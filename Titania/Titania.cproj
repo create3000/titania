@@ -881,7 +881,6 @@
     <None Include="share\titania\Library\Primitives\Geometry3D\ElevationGrid.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry3D\Extrusion.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry3D\Sphere.x3dv" />
-    <None Include="share\titania\Library\Primitives\Geometry3D\Text.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Arc2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\ArcClose2D.x3dv" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Circle2D.x3dv" />
@@ -2519,6 +2518,8 @@
     <None Include="share\titania\ui\Editors\SculpToolBrush.x3dv" />
     <None Include="titania" />
     <None Include="share\titania\Library\Primitives\Scripting\PhongShading.x3dv" />
+    <None Include="share\titania\Library\Primitives\Text\Text.x3dv" />
+    <None Include="share\titania\Library\Primitives\Scripting\Debugger.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2617,6 +2618,7 @@
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\" />
     <Folder Include="share\titania\Library\Components\ParticleSystems\.Cobweb\" />
     <Folder Include="Titania\Editors\SculpToolEditor\" />
+    <Folder Include="share\titania\Library\Primitives\Text\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
