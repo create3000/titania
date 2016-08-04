@@ -48,30 +48,36 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
-#define __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
+#include "FileSaveACopyDialog.h"
 
-#include "X3DFileSaveDialog.h"
+#include "../../Browser/X3DBrowserWindow.h"
 
 namespace titania {
 namespace puck {
 
-class FileSaveDialog :
-	public X3DFileSaveDialog
+FileSaveACopyDialog::FileSaveACopyDialog (X3DBrowserWindow* const browserWindow) :
+	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DFileSaveDialog ()
 {
-public:
+	setName ("FileSaveACopyDialog");
 
-	///  @name Construction
+	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
-	FileSaveDialog (X3DBrowserWindow* const);
+	if (getConfig () -> hasItem ("currentFolder"))
+	{
+		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+		getWindow () .set_current_name (worldURL .basename ());
+	}
 
-	///  @name Destruction
+	setup ();
+}
 
-	~FileSaveDialog ();
+FileSaveACopyDialog::~FileSaveACopyDialog ()
+{
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 
-};
+	dispose ();
+}
 
 } // puck
 } // titania
-
-#endif

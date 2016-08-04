@@ -53,6 +53,7 @@
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
@@ -790,7 +791,7 @@ BrowserWindow::on_save_as_activated ()
 void
 BrowserWindow::on_save_a_copy_activated ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> saveScene (true);
+	std::dynamic_pointer_cast <FileSaveACopyDialog> (addDialog ("FileSaveACopyDialog", false)) -> saveScene (true);
 }
 
 void

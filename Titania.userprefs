@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="812" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Networking/Inline.cpp" Line="196" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp" Line="1231" Column="27" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="518" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/Combine.cpp" Line="484" Column="4" />
+      <File FileName="experimental/main.cpp" Line="387" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="281" Column="5" />
+      <File FileName="Titania/share/titania/Library/Primitives/Scripting/Debugger.x3dv" Line="39" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DConstants.h" Line="161" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

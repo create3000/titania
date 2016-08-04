@@ -48,26 +48,62 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
-#define __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
 
-#include "X3DFileSaveDialog.h"
+#include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
 
 namespace titania {
 namespace puck {
 
-class FileSaveDialog :
-	public X3DFileSaveDialog
+class X3DFileSaveDialog :
+	public X3DFileSaveDialogInterface
 {
 public:
 
-	///  @name Construction
+	///  @name Member access
 
-	FileSaveDialog (X3DBrowserWindow* const);
+	basic::uri
+	getURL () const;
+
+	///  @name Operations
+
+	bool
+	run ();
+
+	void
+	saveScene (const bool copy);
+
+	void
+	exportImage ();
+
+	bool
+	exportNodes (X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 
-	~FileSaveDialog ();
+	virtual
+	~X3DFileSaveDialog ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DFileSaveDialog ();
+
+
+private:
+
+	///  @name Export image
+
+	bool
+	imageOptions ();
+
+	///  @name Export nodes
+
+	void
+	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const X3D::UndoStepPtr &);
 
 };
 

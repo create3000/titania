@@ -54,6 +54,7 @@
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
@@ -110,6 +111,7 @@ public:
 		         std::make_pair ("OpenLocationDialog",       constructDialog <OpenLocationDialog>),
 		         std::make_pair ("FileImportDialog",         constructDialog <FileImportDialog>),
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
+		         std::make_pair ("FileSaveACopyDialog",      constructDialog <FileSaveACopyDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),

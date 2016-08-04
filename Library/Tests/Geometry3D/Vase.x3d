@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Thu, 04 Aug 2016 20:37:49 GMT'/>
+    <meta name='modified' content='Thu, 04 Aug 2016 21:46:30 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -46,7 +46,7 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='-1.11232019255049, 5.06511277807739, 8.69179406547939'/>
+              value='-1.11232018470764, 5.06511259078979, 8.69179439544678'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'

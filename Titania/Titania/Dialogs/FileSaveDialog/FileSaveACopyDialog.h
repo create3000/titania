@@ -48,26 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
-#define __TITANIA_FILE_SAVE_DIALOG_FILE_SAVE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_SAVE_ACOPY_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_SAVE_ACOPY_DIALOG_H__
 
 #include "X3DFileSaveDialog.h"
 
 namespace titania {
 namespace puck {
 
-class FileSaveDialog :
+class FileSaveACopyDialog :
 	public X3DFileSaveDialog
 {
 public:
 
 	///  @name Construction
 
-	FileSaveDialog (X3DBrowserWindow* const);
+	FileSaveACopyDialog (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
-	~FileSaveDialog ();
+	~FileSaveACopyDialog ();
 
 };
 

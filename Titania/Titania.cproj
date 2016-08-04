@@ -275,6 +275,8 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geospatial\X3DGeoElevationGridEditor.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DSculpToolEditorInterface.cpp" />
     <Compile Include="Titania\Editors\SculpToolEditor\SculpToolEditor.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2520,6 +2522,8 @@
     <None Include="share\titania\Library\Primitives\Scripting\PhongShading.x3dv" />
     <None Include="share\titania\Library\Primitives\Text\Text.x3dv" />
     <None Include="share\titania\Library\Primitives\Scripting\Debugger.x3dv" />
+    <None Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.h" />
+    <None Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
