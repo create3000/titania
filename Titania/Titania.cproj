@@ -2518,6 +2518,7 @@
     <None Include="share\titania\ui\icons\SculpTool.svg" />
     <None Include="share\titania\ui\Editors\SculpToolBrush.x3dv" />
     <None Include="titania" />
+    <None Include="share\titania\Library\Primitives\Scripting\PhongShading.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

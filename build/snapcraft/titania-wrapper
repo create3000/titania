@@ -2,19 +2,19 @@
 
 echo "Launching Titania"
 
-export FONTCONFIG_PATH="$SNAP/etc/fonts"
-
-# Better use XDG font dir: $HOME/.local/share/fonts
-
-if [ ! -d "$HOME/.fonts" ]; then
-	ln -s "$SNAP/usr/share/fonts" "$HOME/.fonts"
-fi
-
-export LOCPATH="$SNAP/usr/share/locale"
-export I18NPATH="$SNAP/usr/share/i18n"
-
-export XDG_DATA_DIRS="$SNAP/share/:$SNAP/usr/share/:$XDG_DATA_DIRS"
-
-locale -a
+#export FONTCONFIG_PATH="$SNAP/etc/fonts"
+#
+## Better use XDG font dir: $HOME/.local/share/fonts
+#
+#if [ ! -d "$HOME/.fonts" ]; then
+#	ln -s "$SNAP/usr/share/fonts" "$HOME/.fonts"
+#fi
+#
+#export LOCPATH="$SNAP/usr/share/locale"
+#export I18NPATH="$SNAP/usr/share/i18n"
+#
+#export XDG_DATA_DIRS="$SNAP/share/:$SNAP/usr/share/:$XDG_DATA_DIRS"
+#
+#locale -a
 
 titania
