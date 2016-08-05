@@ -111,9 +111,6 @@ private:
 	setCurrentFolder (const size_t);
 
 	void
-	set_initialized (const size_t);
-
-	void
 	addMaterial (const std::string &);
 
 	void
@@ -193,6 +190,7 @@ private:
 	///  @name Members
 
 	X3D::BrowserPtr           preview;
+	X3D::GroupPtr             group;
 	std::vector <std::string> folders;
 	std::vector <std::string> files;
 	size_t                    numDefaultPalettes;

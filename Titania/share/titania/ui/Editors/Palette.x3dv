@@ -1,92 +1,163 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V1.4.8
 
 META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Fri, 17 Oct 2014 18:18:10 GMT"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Palette.x3dv"
+META "modified" "Fri, 05 Aug 2016 16:36:23 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
   metadata MetadataSet {
     name "Titania"
-    value MetadataSet {
-      name "Grid"
-      value [
-        MetadataBoolean {
-          name "enabled"
-          value TRUE
+    value [
+      MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value TRUE
+          }
+          MetadataFloat {
+            name "rotation"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0,
+              0,
+              1.5708
+            ]
+          }
+          MetadataFloat {
+            name "translation"
+            reference "http://titania.create3000.de"
+            value [
+              6.25,
+              -6.25,
+              -1
+            ]
+          }
+          MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              1.25,
+              1,
+              1.25
+            ]
+          }
+          MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              12,
+              2,
+              12
+            ]
+          }
+          MetadataFloat {
+            name "color"
+            reference "http://titania.create3000.de"
+            value [
+              0.5,
+              0.5,
+              0.5,
+              0.184314
+            ]
+          }
+          MetadataInteger {
+            name "majorLineEvery"
+            reference "http://titania.create3000.de"
+            value [
+              3,
+              5,
+              3
+            ]
+          }
+          MetadataFloat {
+            name "lineColor"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              1,
+              1,
+              0.2
+            ]
+          }
+          MetadataFloat {
+            name "majorLineColor"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              1,
+              1,
+              0.4
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF Items Group { }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
         }
-        MetadataFloat {
-          name "rotation"
-          value [
-            1,
-            0,
-            0,
-            1.5708
-          ]
-        }
-        MetadataFloat {
-          name "translation"
-          value [
-            6.25,
-            -6.25,
-            -1
-          ]
-        }
-        MetadataFloat {
-          name "scale"
-          value [
-            1.25,
-            1,
-            1.25
-          ]
-        }
-        MetadataInteger {
-          name "dimension"
-          value [
-            12,
-            2,
-            12
-          ]
-        }
-        MetadataFloat {
-          name "color"
-          value [
-            0.5,
-            0.5,
-            0.5,
-            0.184314
-          ]
-        }
-        MetadataInteger {
-          name "majorLineEvery"
-          value [
-            3,
-            5,
-            3
-          ]
-        }
-        MetadataFloat {
-          name "lineColor"
-          value [
-            1,
-            1,
-            1,
-            0.2
-          ]
-        }
-        MetadataFloat {
-          name "majorLineColor"
-          value [
-            1,
-            1,
-            1,
-            0.4
-          ]
-        }
-      ]
-    }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              6.25,
+              -6.25,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.0729983001947403,
+              1.48430001735687,
+              0
+            ]
+          }
+        ]
+      }
+    ]
   }
   title "Palette"
 }
@@ -95,7 +166,7 @@ NavigationInfo {
   type "NONE"
 }
 
-DEF Gray_1 Background {
+DEF Gray Background {
   transparency 0.5
 }
 
@@ -187,6 +258,8 @@ DEF Grid Transform {
   ]
 }
 
+USE Items
+
 DEF PrimitiveQuality Script {
   url "vrmlscript:
 function initialize ()
@@ -196,3 +269,5 @@ function initialize ()
 "
   directOutput TRUE
 }
+
+EXPORT Items

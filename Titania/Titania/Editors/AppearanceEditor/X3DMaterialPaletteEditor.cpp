@@ -75,7 +75,8 @@ static constexpr double DISTANCE  = 2.5;
 
 X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/Palette.x3dv") })),
+	                       group (),
 	                     folders (),
 	                       files (),
 	          numDefaultPalettes (0),
@@ -108,16 +109,25 @@ X3DMaterialPaletteEditor::initialize ()
 void
 X3DMaterialPaletteEditor::set_browser ()
 {
-	preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_browser);
-
-	refreshPalette ();
-
-	const size_t paletteIndex = getConfig () -> getInteger ("palette");
-
-	if (paletteIndex < folders .size ())
-		getPaletteComboBoxText () .set_active (paletteIndex);
-	else
-		getPaletteComboBoxText () .set_active (0);
+	try
+	{
+		preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_browser);
+	
+		group = preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("Items");
+	
+		refreshPalette ();
+	
+		const size_t paletteIndex = getConfig () -> getInteger ("palette");
+	
+		if (paletteIndex < folders .size ())
+			getPaletteComboBoxText () .set_active (paletteIndex);
+		else
+			getPaletteComboBoxText () .set_active (0);
+	}
+	catch (const X3D::X3DError &)
+	{
+		disable ();
+	}
 }
 
 void
@@ -170,15 +180,6 @@ X3DMaterialPaletteEditor::addLibrary (const std::string & libraryPath)
 void
 X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 {
-	preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_initialized);
-	preview -> initialized () .addInterest (this, &X3DMaterialPaletteEditor::set_initialized, paletteIndex);
-
-	preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") }, { });
-}
-
-void
-X3DMaterialPaletteEditor::set_initialized (const size_t paletteIndex)
-{
 	const bool customPalette = paletteIndex >= numDefaultPalettes;
 
 	getConfig () -> setItem ("palette", (int) paletteIndex);
@@ -194,6 +195,8 @@ X3DMaterialPaletteEditor::set_initialized (const size_t paletteIndex)
 	try
 	{
 		files .clear ();
+
+		group -> children () .clear ();
 
 		const auto folder = Gio::File::create_for_uri (folders .at (paletteIndex));
 
@@ -241,7 +244,7 @@ X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 	transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
 	transform -> children ()    = { inlineNode, touchSensor };
 
-	preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
+	group -> children () .emplace_back (transform);
 	preview -> getExecutionContext () -> realize ();
 
 	files .emplace_back (uri);
