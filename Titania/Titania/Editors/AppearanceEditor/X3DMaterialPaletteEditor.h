@@ -141,6 +141,9 @@ private:
 	on_palette_changed () final override;
 
 	void
+	set_over (const bool, const size_t);
+
+	void
 	set_touchTime (const size_t);
 	
 	virtual
@@ -194,6 +197,8 @@ private:
 	std::vector <std::string> files;
 	size_t                    numDefaultPalettes;
 	bool                      frontMaterial;
+	bool                      over;
+	size_t                    materialIndex;
 };
 
 } // puck

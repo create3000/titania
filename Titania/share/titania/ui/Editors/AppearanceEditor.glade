@@ -1981,6 +1981,7 @@
     <child>
       <object class="GtkImageMenuItem" id="RemoveMaterialMenuItem">
         <property name="label" translatable="yes">Remove Material</property>
+        <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="image">image13</property>
         <property name="use_stock">False</property>

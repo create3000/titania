@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Fri, 05 Aug 2016 13:38:51 GMT'/>
+    <meta name='modified' content='Fri, 05 Aug 2016 15:52:23 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -89,7 +89,8 @@
                 <Appearance>
                   <Material DEF='Winter8'
                       ambientIntensity='0.253968'
-                      diffuseColor='1 1 0.474361'
+                      diffuseColor='0.279399 0.589 0.394407'
+                      specularColor='0.39624 0.427003 0.00760637'
                       shininess='0.0378378'/>
                 </Appearance>
                 <IndexedFaceSet
