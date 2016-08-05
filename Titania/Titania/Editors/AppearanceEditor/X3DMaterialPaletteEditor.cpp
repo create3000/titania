@@ -189,7 +189,6 @@ X3DMaterialPaletteEditor::set_initialized (const size_t paletteIndex)
 	getRemovePaletteMenuItem () .set_sensitive (customPalette);
 	getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
-	getAddMaterialMenuItem ()    .set_sensitive (customPalette);
 	getRemoveMaterialMenuItem () .set_sensitive (false);
 
 	try
@@ -246,6 +245,13 @@ X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 	preview -> getExecutionContext () -> realize ();
 
 	files .emplace_back (uri);
+
+	//
+
+	const size_t paletteIndex  = getPaletteComboBoxText () .get_active_row_number ();
+	const bool   customPalette = paletteIndex >= numDefaultPalettes;
+
+	getAddMaterialMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
 void
@@ -467,8 +473,8 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 void
 X3DMaterialPaletteEditor::on_remove_material_activate ()
 {
-	__LOG__ << std::endl;
-	__LOG__ << materialIndex << std::endl;
+	if (materialIndex < files .size ())
+		Gio::File::create_for_uri (files [materialIndex]) -> remove ();
 
 	for (size_t i = materialIndex + 1, size = files .size (); i < size; ++ i)
 	{
@@ -477,9 +483,7 @@ X3DMaterialPaletteEditor::on_remove_material_activate ()
 		file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
 	}
 
-	const auto paletteIndex = getPaletteComboBoxText () .get_active_row_number ();
-
-	setCurrentFolder (paletteIndex);
+	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
 }
 
 void
