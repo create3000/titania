@@ -126,6 +126,12 @@ protected:
 	void
 	validateIdOnDelete (Gtk::Entry &, int, int);
 
+	void
+	validateFolderOnInsert (Gtk::Entry &, const Glib::ustring &, int);
+
+	void
+	validateFolderOnDelete (Gtk::Entry &, int, int);
+
 	static
 	Glib::ustring
 	refineName (const Glib::ustring &);
@@ -211,6 +217,9 @@ private:
 
 	bool
 	validateId (const std::string &) const;
+
+	bool
+	validateFolder (const std::string &) const;
 
 	///  @name Members
 

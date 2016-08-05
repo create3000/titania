@@ -95,10 +95,17 @@ private:
 	void
 	set_selection (const X3D::MFNode &) final override;
 
+	///  @name Member access
+
 	virtual
 	const X3D::BrowserPtr &
 	getPreview () const final override
 	{ return X3DMaterialEditor::getPreview (); }
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DMaterialNode> &
+	getMaterial () const
+	{ return X3DMaterialEditor::getMaterial (); }
 
 	///  @name Event handlers
 

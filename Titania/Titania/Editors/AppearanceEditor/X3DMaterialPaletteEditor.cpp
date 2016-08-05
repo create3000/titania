@@ -55,9 +55,15 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/LibraryView/LibraryView.h"
 
+#include <Titania/OS.h>
+#include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Shape.h>
+
+#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace puck {
@@ -72,6 +78,7 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
 	                     folders (),
 	                       files (),
+	          numDefaultPalettes (0),
 	               frontMaterial (true)
 {
 	addChildren (preview);
@@ -88,24 +95,6 @@ X3DMaterialPaletteEditor::configure ()
 void
 X3DMaterialPaletteEditor::initialize ()
 {
-	// Find material folders.
-
-	try
-	{
-		const auto folder = Gio::File::create_for_path (find_data_file ("Library/Materials"));
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-			{
-				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
-				getPaletteComboBoxText () .append (fileInfo -> get_name ());
-			}
-		}
-	}
-	catch (...)
-	{ }
-
 	// Show browser.
 
 	preview -> initialized () .addInterest (this, &X3DMaterialPaletteEditor::set_browser);
@@ -119,11 +108,7 @@ X3DMaterialPaletteEditor::set_browser ()
 {
 	preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_browser);
 
-	if (folders .empty ())
-	{
-		disable ();
-		return;
-	}
+	refreshPalette ();
 
 	const size_t index = getConfig () -> getInteger ("palette");
 
@@ -131,6 +116,53 @@ X3DMaterialPaletteEditor::set_browser ()
 		getPaletteComboBoxText () .set_active (index);
 	else
 		getPaletteComboBoxText () .set_active (0);
+}
+
+void
+X3DMaterialPaletteEditor::refreshPalette ()
+{
+	try
+	{
+		// Find materials in folders.
+	
+		folders .clear ();
+		getPaletteComboBoxText () .remove_all ();
+
+		addLibrary (find_data_file ("Library/Materials"));
+
+		numDefaultPalettes = folders .size ();
+
+		addLibrary (config_dir ("Materials"));
+	
+		if (folders .empty ())
+			disable ();
+		else
+			enable ();
+	}
+	catch (...)
+	{
+		disable ();
+	}
+}
+
+void
+X3DMaterialPaletteEditor::addLibrary (const std::string & libraryPath)
+{
+	try
+	{
+		const auto folder = Gio::File::create_for_path (libraryPath);
+
+		for (const auto & fileInfo : LibraryView::getChildren (folder))
+		{
+			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
+			{
+				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
+				getPaletteComboBoxText () .append (fileInfo -> get_name ());
+			}
+		}
+	}
+	catch (...)
+	{ }
 }
 
 void
@@ -145,10 +177,18 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t index)
 void
 X3DMaterialPaletteEditor::set_initialized (const size_t index)
 {
+	const bool customPalette = index >= numDefaultPalettes;
+
 	getConfig () -> setItem ("palette", (int) index);
 
 	getPalettePreviousButton () .set_sensitive (index > 0);
 	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());
+
+	getRemovePaletteMenuItem () .set_sensitive (customPalette);
+	getEditPaletteMenuItem ()   .set_sensitive (customPalette);
+
+	getAddMaterialMenuItem ()    .set_sensitive (customPalette);
+	getRemoveMaterialMenuItem () .set_sensitive (customPalette);
 
 	try
 	{
@@ -160,14 +200,12 @@ X3DMaterialPaletteEditor::set_initialized (const size_t index)
 		{
 			switch (fileInfo -> get_file_type ())
 			{
-				case Gio::FILE_TYPE_REGULAR       :
-				case Gio::FILE_TYPE_SYMBOLIC_LINK :
-					{
-						const std::string uri = Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
-						addMaterial (files .size (), uri);
-						files .emplace_back (uri);
-						break;
-					}
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					addMaterial (Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
+					break;
+				}
 				default:
 					break;
 			}
@@ -185,10 +223,11 @@ X3DMaterialPaletteEditor::set_initialized (const size_t index)
 }
 
 void
-X3DMaterialPaletteEditor::addMaterial (const size_t i, const std::string & uri)
+X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 {
-	const int column = i % COLUMNS;
-	const int row    = i / COLUMNS;
+	const auto i      = files .size ();
+	const int  column = i % COLUMNS;
+	const int  row    = i / COLUMNS;
 
 	const auto inlineNode  = preview -> getExecutionContext () -> createNode <X3D::Inline> ();
 	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
@@ -202,6 +241,14 @@ X3DMaterialPaletteEditor::addMaterial (const size_t i, const std::string & uri)
 
 	preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
 	preview -> getExecutionContext () -> realize ();
+
+	files .emplace_back (uri);
+}
+
+void
+X3DMaterialPaletteEditor::enable ()
+{
+	getPaletteBox () .set_sensitive (true);
 }
 
 void
@@ -256,6 +303,156 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+bool
+X3DMaterialPaletteEditor::on_palette_button_press_event (GdkEventButton* event)
+{
+	if (event -> button not_eq 3)
+		return false;
+
+	getPaletteMenu () .popup (event -> button, event -> time);
+	return true;
+}
+
+void
+X3DMaterialPaletteEditor::on_add_palette_activate ()
+{
+	getPaletteNameEntry () .set_text ("");
+
+	getEditPaletteDialog () .set_title (_ ("Add New Palette"));
+	getEditPaletteDialog () .present ();
+}
+
+void
+X3DMaterialPaletteEditor::on_remove_palette_activate ()
+{
+	try
+	{
+		const auto index  = getPaletteComboBoxText () .get_active_row_number ();
+		const auto folder = Gio::File::create_for_uri (folders .at (index));
+
+		for (const auto & fileInfo : LibraryView::getChildren (folder))
+		{
+			switch (fileInfo -> get_file_type ())
+			{
+				case Gio::FILE_TYPE_REGULAR:
+				case Gio::FILE_TYPE_SYMBOLIC_LINK:
+				{
+					folder -> get_child (fileInfo -> get_name ()) -> remove ();
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
+		folder -> remove ();
+
+		refreshPalette ();
+
+		getPaletteComboBoxText () .set_active (std::min <size_t> (folders .size () - 1, index));
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DMaterialPaletteEditor::on_edit_palette_activate ()
+{
+	__LOG__ << std::endl;
+}
+
+void
+X3DMaterialPaletteEditor::on_edit_palette_ok_clicked ()
+{
+	getEditPaletteDialog () .hide ();
+
+	const std::string paletteName = getPaletteNameEntry () .get_text ();
+	const auto        folder      = Gio::File::create_for_path (config_dir ("Materials/" + paletteName));
+
+	folder -> make_directory_with_parents ();
+
+	refreshPalette ();
+
+	const auto iter = std::find (folders .begin () + numDefaultPalettes, folders .end (), folder -> get_uri ());
+
+	if (iter == folders .end ())
+		return; // Should never happen.
+
+	getPaletteComboBoxText () .set_active (iter - folders .begin ());
+}
+
+void
+X3DMaterialPaletteEditor::on_edit_palette_cancel_clicked ()
+{
+	getEditPaletteDialog () .hide ();
+}
+
+void
+X3DMaterialPaletteEditor::on_palette_name_insert_text (const Glib::ustring & text, int* position)
+{
+	validateFolderOnInsert (getPaletteNameEntry (), text, *position);
+}
+
+void
+X3DMaterialPaletteEditor::on_palette_name_delete_text (int start_pos, int end_pos)
+{
+	validateFolderOnDelete (getPaletteNameEntry (), start_pos, end_pos);
+}
+
+void
+X3DMaterialPaletteEditor::on_palette_name_changed ()
+{
+	const std::string paletteName = getPaletteNameEntry () .get_text ();
+
+	getEditPaletteOkButton () .set_sensitive (not paletteName .empty () /*and not exists paletteName*/);
+}
+
+void
+X3DMaterialPaletteEditor::on_add_material_activate ()
+{
+	try
+	{
+		const auto scene      = getCurrentBrowser () -> createScene ();
+		const auto transform  = scene -> createNode <X3D::Transform> ();
+		const auto shape      = scene -> createNode <X3D::Shape> ();
+		const auto appearance = scene -> createNode <X3D::Appearance> ();
+		const auto sphere     = scene -> createNode <X3D::Sphere> ();
+	
+		scene -> getRootNodes ()  = { transform };
+		transform -> children ()  = { shape };
+		shape -> appearance ()    = appearance;
+		shape -> geometry ()      = sphere;
+		appearance -> material () = getMaterial () -> copy (scene, X3D::FLAT_COPY);
+	
+		scene -> setup ();
+		scene -> addStandardMetaData ();
+		scene -> setMetaData ("titania magic", "Material");
+
+		std::ostringstream osstream;
+
+		osstream << X3D::NicestStyle << scene << std::endl;
+
+		const auto index  = getPaletteComboBoxText () .get_active_row_number ();
+		const auto folder = Gio::File::create_for_uri (folders .at (index));
+		const auto number = basic::to_string (files .size () + 1, std::locale::classic ());
+		const auto file   = folder -> get_child (folder -> get_basename () + number + ".x3dv");
+
+		std::string etag;
+
+		file -> replace_contents (osstream .str (), "", etag);
+
+		addMaterial (Glib::uri_unescape_string (file -> get_uri ()));
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DMaterialPaletteEditor::on_remove_material_activate ()
+{
+	__LOG__ << std::endl;
 }
 
 void

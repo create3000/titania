@@ -108,6 +108,10 @@ public:
 	{ return m_HeightAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getRadiusAdjustment () const
+	{ return m_RadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getSharpnessAdjustment () const
 	{ return m_SharpnessAdjustment; }
 
@@ -151,6 +155,10 @@ public:
 	getHardnessScale () const
 	{ return *m_HardnessScale; }
 
+	Gtk::Scale &
+	getRadiusScale () const
+	{ return *m_RadiusScale; }
+
 	///  @name Signal handlers
 
 	///  @name Destruction
@@ -181,6 +189,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_HardnessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_HeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_RadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SharpnessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_WarpAdjustment;
 	Gtk::Window*                   m_Window;
@@ -192,6 +201,7 @@ private:
 	Gtk::Scale*                    m_WarpScale;
 	Gtk::Scale*                    m_SharpnessScale;
 	Gtk::Scale*                    m_HardnessScale;
+	Gtk::Scale*                    m_RadiusScale;
 
 };
 

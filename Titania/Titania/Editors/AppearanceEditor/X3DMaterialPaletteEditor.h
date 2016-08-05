@@ -53,6 +53,8 @@
 
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
+#include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
+
 namespace titania {
 namespace puck {
 
@@ -85,6 +87,12 @@ protected:
 	void
 	store () override;
 
+	///  @name Member access
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DMaterialNode> &
+	getMaterial () const = 0;
+
 
 private:
 
@@ -94,13 +102,22 @@ private:
 	set_browser ();
 
 	void
+	refreshPalette ();
+
+	void
+	addLibrary (const std::string &);
+
+	void
 	setCurrentFolder (const size_t);
 
 	void
 	set_initialized (const size_t);
 
 	void
-	addMaterial (const size_t, const std::string &);
+	addMaterial (const std::string &);
+
+	void
+	enable ();
 
 	void
 	disable ();
@@ -125,12 +142,57 @@ private:
 
 	void
 	set_touchTime (const size_t);
+	
+	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton*) final override;
+	
+	virtual
+	void
+	on_add_palette_activate () final override;
+	
+	virtual
+	void
+	on_remove_palette_activate () final override;
+	
+	virtual
+	void
+	on_edit_palette_activate () final override;
+	
+	virtual
+	void
+	on_edit_palette_ok_clicked () final override;
+	
+	virtual
+	void
+	on_edit_palette_cancel_clicked () final override;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring &, int*) final override;
+	
+	virtual
+	void
+	on_palette_name_delete_text (int, int) final override;
+	
+	virtual
+	void
+	on_palette_name_changed () final override;
+
+	virtual
+	void
+	on_add_material_activate () final override;
+	
+	virtual
+	void
+	on_remove_material_activate () final override;
 
 	///  @name Members
 
 	X3D::BrowserPtr           preview;
 	std::vector <std::string> folders;
 	std::vector <std::string> files;
+	size_t                    numDefaultPalettes;
 	bool                      frontMaterial;
 };
 

@@ -50,8 +50,9 @@
 
 #include "system.h"
 
-#include "../String/join.h"
-#include "../String/split.h"
+#include <regex>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace os {
@@ -60,9 +61,9 @@ namespace system_utility {
 std::string
 escape_argument (const std::string & argument)
 {
-	const auto array = basic::split (argument, " ");
+	static const std::regex escapeCharacters (R"(\s|'|")");
 
-	return basic::join (array, "\\ ");
+	return std::regex_replace (argument, escapeCharacters, "\\$&");
 }
 
 } // system_utility

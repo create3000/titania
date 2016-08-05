@@ -439,6 +439,46 @@ public:
 	getPaletteNextButton () const
 	{ return *m_PaletteNextButton; }
 
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
+
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
+
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
+
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddMaterialMenuItem () const
+	{ return *m_AddMaterialMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveMaterialMenuItem () const
+	{ return *m_RemoveMaterialMenuItem; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -494,6 +534,10 @@ public:
 	on_palette_face_changed () = 0;
 
 	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
 	void
 	on_palette_changed () = 0;
 
@@ -504,6 +548,46 @@ public:
 	virtual
 	void
 	on_palette_next_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_palette_activate () = 0;
+
+	virtual
+	void
+	on_edit_palette_activate () = 0;
+
+	virtual
+	void
+	on_add_material_activate () = 0;
+
+	virtual
+	void
+	on_remove_material_activate () = 0;
 
 	///  @name Destruction
 
@@ -616,6 +700,16 @@ private:
 	Gtk::ComboBoxText*             m_PaletteComboBoxText;
 	Gtk::Button*                   m_PalettePreviousButton;
 	Gtk::Button*                   m_PaletteNextButton;
+	Gtk::Dialog*                   m_EditPaletteDialog;
+	Gtk::Button*                   m_EditPaletteCancelButton;
+	Gtk::Button*                   m_EditPaletteOkButton;
+	Gtk::Entry*                    m_PaletteNameEntry;
+	Gtk::Menu*                     m_PaletteMenu;
+	Gtk::ImageMenuItem*            m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*            m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*            m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*            m_AddMaterialMenuItem;
+	Gtk::ImageMenuItem*            m_RemoveMaterialMenuItem;
 
 };
 

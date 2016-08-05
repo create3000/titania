@@ -148,6 +148,16 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
 	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
 	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
+	m_builder -> get_widget ("EditPaletteDialog", m_EditPaletteDialog);
+	m_builder -> get_widget ("EditPaletteCancelButton", m_EditPaletteCancelButton);
+	m_builder -> get_widget ("EditPaletteOkButton", m_EditPaletteOkButton);
+	m_builder -> get_widget ("PaletteNameEntry", m_PaletteNameEntry);
+	m_builder -> get_widget ("PaletteMenu", m_PaletteMenu);
+	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
+	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
+	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
+	m_builder -> get_widget ("AddMaterialMenuItem", m_AddMaterialMenuItem);
+	m_builder -> get_widget ("RemoveMaterialMenuItem", m_RemoveMaterialMenuItem);
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
@@ -183,11 +193,30 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteFaceCombo'.
 	m_PaletteFaceCombo -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_face_changed));
+
+	// Connect object Gtk::Box with id 'PalettePreviewBox'.
+	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_button_press_event));
+
+	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
 	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_changed));
 
 	// Connect object Gtk::Button with id 'PalettePreviousButton'.
 	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_previous_clicked));
 	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_next_clicked));
+	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_cancel_clicked));
+	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_ok_clicked));
+
+	// Connect object Gtk::Entry with id 'PaletteNameEntry'.
+	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_changed));
+	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_delete_text), false);
+	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_insert_text), false);
+
+	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
+	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_palette_activate));
+	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_palette_activate));
+	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_activate));
+	m_AddMaterialMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_material_activate));
+	m_RemoveMaterialMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_material_activate));
 
 	// Call construct handler of base class.
 	construct ();
@@ -196,6 +225,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 X3DAppearanceEditorInterface::~X3DAppearanceEditorInterface ()
 {
 	delete m_Window;
+	delete m_EditPaletteDialog;
 }
 
 } // puck

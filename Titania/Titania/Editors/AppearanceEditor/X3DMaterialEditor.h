@@ -84,13 +84,20 @@ protected:
 	initialize () override;
 
 	virtual
+	void
+	set_selection (const X3D::MFNode &) override;
+
+	///  @name Member access
+
+	virtual
 	const X3D::BrowserPtr &
 	getPreview () const
 	{ return preview; }
 
 	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
+	const X3D::X3DPtr <X3D::X3DMaterialNode> &
+	getMaterial () const
+	{ return materialNode; }
 
 
 private:

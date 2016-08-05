@@ -52,6 +52,8 @@
 
 #include <Titania/X3D/Parser/RegEx.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -110,6 +112,32 @@ bool
 X3DEditorObject::validateId (const std::string & text) const
 {
 	return X3D::RegEx::Id .FullMatch (text) and text not_eq "NULL";
+}
+
+void
+X3DEditorObject::validateFolderOnInsert (Gtk::Entry & entry, const Glib::ustring & insert, int position)
+{
+	const std::string text = entry .get_text () .insert (position, insert);
+
+	if (not validateFolder (text))
+		entry .signal_insert_text () .emission_stop ();
+}
+
+void
+X3DEditorObject::validateFolderOnDelete (Gtk::Entry & entry, int start_pos, int end_pos)
+{
+	const std::string text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+
+	if (not validateFolder (text))
+		entry .signal_delete_text () .emission_stop ();
+}
+
+bool
+X3DEditorObject::validateFolder (const std::string & text) const
+{
+	static const std::regex folderCharacters (R"([^/]*)");
+
+	return std::regex_match (text, folderCharacters);
 }
 
 /***********************************************************************************************************************
