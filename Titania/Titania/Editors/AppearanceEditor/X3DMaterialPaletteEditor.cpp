@@ -84,9 +84,7 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	                        over (false),
 	               materialIndex (-1)
 {
-	addChildren (preview);
-
-	preview -> setAntialiasing (4);
+	addChildren (preview, group);
 }
 
 void
@@ -101,6 +99,7 @@ X3DMaterialPaletteEditor::initialize ()
 	// Show browser.
 
 	preview -> initialized () .addInterest (this, &X3DMaterialPaletteEditor::set_browser);
+	preview -> setAntialiasing (4);
 	preview -> show ();
 
 	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
@@ -202,17 +201,8 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 
 		for (const auto & fileInfo : LibraryView::getChildren (folder))
 		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					addMaterial (Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
-					break;
-				}
-				default:
-					break;
-			}
+			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
+				addMaterial (Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
 
 			if (files .size () < PAGE_SIZE)
 				continue;
@@ -358,17 +348,8 @@ X3DMaterialPaletteEditor::on_remove_palette_activate ()
 
 		for (const auto & fileInfo : LibraryView::getChildren (folder))
 		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_REGULAR:
-				case Gio::FILE_TYPE_SYMBOLIC_LINK:
-				{
-					folder -> get_child (fileInfo -> get_name ()) -> remove ();
-					break;
-				}
-				default:
-					break;
-			}
+			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
+				folder -> get_child (fileInfo -> get_name ()) -> remove ();
 		}
 
 		folder -> remove ();

@@ -84,6 +84,8 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
 	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("CopyButton", m_CopyButton);
+	m_builder -> get_widget ("PasteButton", m_PasteButton);
 	m_builder -> get_widget ("SphereButton", m_SphereButton);
 	m_builder -> get_widget ("ModelButton", m_ModelButton);
 	m_builder -> get_widget ("SelectAppearanceBox", m_SelectAppearanceBox);
@@ -163,7 +165,9 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
 	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_paste));
 
-	// Connect object Gtk::Button with id 'SphereButton'.
+	// Connect object Gtk::Button with id 'CopyButton'.
+	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
+	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_paste));
 	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_sphere_clicked));
 	m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_model_clicked));
 

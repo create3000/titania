@@ -193,14 +193,12 @@ X3DMaterialEditor::on_paste ()
 {
 	try
 	{
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Paste"));
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Paste Material"));
 		const auto scene     = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
 		auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
-			return;
-
-		addUndoStep (undoStep);
+			addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -212,6 +210,7 @@ void
 X3DMaterialEditor::set_clipboard (const X3D::SFString & string)
 {
 	getPasteMenuItem () .set_sensitive (not string .empty ());
+	getPasteButton ()   .set_sensitive (not string .empty ());
 }
 
 /***********************************************************************************************************************

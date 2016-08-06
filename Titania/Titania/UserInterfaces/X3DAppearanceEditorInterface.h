@@ -184,6 +184,14 @@ public:
 	{ return *m_PreviewBox; }
 
 	Gtk::Button &
+	getCopyButton () const
+	{ return *m_CopyButton; }
+
+	Gtk::Button &
+	getPasteButton () const
+	{ return *m_PasteButton; }
+
+	Gtk::Button &
 	getSphereButton () const
 	{ return *m_SphereButton; }
 
@@ -636,6 +644,8 @@ private:
 	Gtk::ImageMenuItem*            m_CopyMenuItem;
 	Gtk::ImageMenuItem*            m_PasteMenuItem;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::Button*                   m_CopyButton;
+	Gtk::Button*                   m_PasteButton;
 	Gtk::Button*                   m_SphereButton;
 	Gtk::Button*                   m_ModelButton;
 	Gtk::Box*                      m_SelectAppearanceBox;
