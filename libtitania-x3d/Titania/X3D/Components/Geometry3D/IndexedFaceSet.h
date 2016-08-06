@@ -199,6 +199,21 @@ public:
 	void
 	addNormals () override;
 
+	void
+	rebuildIndices ();
+
+	std::map <int32_t, int32_t>
+	rebuildColor ();
+
+	std::map <int32_t, int32_t>
+	rebuildTexCoord ();
+
+	std::map <int32_t, int32_t>
+	rebuildNormal ();
+
+	std::map <int32_t, int32_t>
+	rebuildCoord ();
+
 	virtual
 	SFNode
 	toPrimitive () const
@@ -223,21 +238,6 @@ protected:
 
 	double
 	getPolygonArea (const Vertices &) const;
-
-	void
-	rebuildIndices ();
-
-	void
-	rebuildColor ();
-
-	void
-	rebuildTexCoord ();
-
-	void
-	rebuildNormal ();
-
-	std::map <int32_t, int32_t>
-	rebuildCoord ();
 
 
 private:

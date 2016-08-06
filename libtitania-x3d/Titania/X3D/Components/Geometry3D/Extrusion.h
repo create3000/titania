@@ -215,10 +215,10 @@ private:
 	getClosedSpine () const;
 
 	std::vector <Vector3d>
-	createPoints (const bool);
+	createPoints (const bool) const;
 
 	std::vector <Matrix4d>
-	createRotations ();
+	createRotations () const;
 
 	virtual
 	void

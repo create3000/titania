@@ -781,15 +781,15 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	}
 }
 
-void
+std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildColor ()
 {
+	std::map <int32_t, int32_t> map;
+
 	if (not getColor ())
-	   return;
+	   return map;
 
 	// Build indices map
-
-	std::map <int32_t, int32_t> map;
 
 	for (const auto & index : colorIndex () .empty () ? coordIndex () : colorIndex ())
 	{
@@ -855,17 +855,19 @@ IndexedFaceSet::rebuildColor ()
 		default:
 		   break;
 	}
+
+	return map;
 }
 
-void
+std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildTexCoord ()
 {
+	std::map <int32_t, int32_t> map;
+
 	if (not getTexCoord ())
-	   return;
+	   return map;
 
 	// Build indices map
-
-	std::map <int32_t, int32_t> map;
 
 	for (const auto & index : texCoordIndex () .empty () ? coordIndex () : texCoordIndex ())
 	{
@@ -914,6 +916,8 @@ IndexedFaceSet::rebuildTexCoord ()
 	      rebuildTexCoord (getTexCoord (), map);
 	      break;
 	}
+
+	return map;
 }
 
 void
@@ -968,15 +972,15 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 	}
 }
 
-void
+std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildNormal ()
 {
+	std::map <int32_t, int32_t> map;
+
 	if (not getNormal ())
-	   return;
+	   return map;
 
 	// Build indices map
-
-	std::map <int32_t, int32_t> map;
 
 	for (const auto & index : normalIndex () .empty () ? coordIndex () : normalIndex ())
 	{
@@ -1027,6 +1031,8 @@ IndexedFaceSet::rebuildNormal ()
 		default:
 		   break;
 	}
+
+	return map;
 }
 
 std::map <int32_t, int32_t>

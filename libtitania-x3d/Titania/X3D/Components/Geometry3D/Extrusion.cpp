@@ -129,7 +129,7 @@ Extrusion::getClosedSpine () const
 }
 
 std::vector <Vector3d>
-Extrusion::createPoints (const bool hasCaps)
+Extrusion::createPoints (const bool hasCaps) const
 {
 	size_t reserve = spine () .size () * crossSection () .size ();
 
@@ -196,7 +196,7 @@ Extrusion::createPoints (const bool hasCaps)
 }
 
 std::vector <Matrix4d>
-Extrusion::createRotations ()
+Extrusion::createRotations () const
 {
 	std::vector <Matrix4d> rotations;
 	rotations .reserve (spine () .size ());
@@ -533,7 +533,7 @@ Extrusion::build ()
 
 				for (size_t k = 0; k < numCapPoints; ++ k)
 				{
-					Vector2f t = (crossSection () [k] - min) / capMax;
+					const Vector2f t = (crossSection () [k] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
 					getVertices () .emplace_back (points [INDEX (j, k)]);
@@ -570,8 +570,8 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
                           const Vector2f & min,
                           const float capMax)
 {
-	#define I 0
-	#define K 1
+	constexpr size_t I = 0;
+	constexpr size_t K = 1;
 
 	const size_t size = getVertices () .size ();
 
@@ -700,11 +700,9 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	}
 
 	addElements (GL_TRIANGLES, getVertices () .size () - size);
-
-	#undef I
-	#undef K
 }
 
+/*
 SFNode
 Extrusion::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
@@ -848,6 +846,225 @@ throw (Error <NOT_SUPPORTED>,
 			geometry -> coordIndex ()    .emplace_back (-1);
 		}
 	}
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
+}
+*/
+
+SFNode
+Extrusion::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> metadata ()    = metadata ();
+	geometry -> solid ()       = solid ();
+	geometry -> ccw ()         = ccw ();
+	geometry -> convex ()      = convex ();
+	geometry -> creaseAngle () = creaseAngle ();
+	geometry -> texCoord ()    = texCoord;
+	geometry -> coord ()       = coord;
+
+	// Build geometry.
+
+	const size_t crossSectionSize = crossSection () .size (); // This one is used only in the INDEX macro.
+
+	#define INDEX(n, k) ((n) * crossSectionSize + (k))
+
+	const bool closedSpine        = getClosedSpine ();
+	const bool closedCrossSection = getClosedCrossSection ();
+
+	// For caps calculation
+
+	Vector2f min = crossSection () [0];
+	Vector2f max = crossSection () [0];
+
+	for (size_t k = 1, size = crossSection () .size (); k < size; k ++)
+	{
+		min = math::min <float> (min, crossSection () [k]);
+		max = math::max <float> (max, crossSection () [k]);
+	}
+
+	const auto   capSize      = max - min;
+	const auto   capMax       = std::max (capSize .x (), capSize .y ());
+	const size_t numCapPoints = closedCrossSection ? crossSection () .size () - 1 : crossSection () .size ();
+
+	// Create
+
+	const auto points = createPoints (capMax);
+
+	coord -> point () .assign (points .begin (), points .end ());
+
+	// Build body.
+
+	const float numCrossSection_1 = crossSection () .size () - 1;
+	const float numSpine_1        = spine () .size () - 1;
+
+	for (size_t n = 0, size = spine () .size () - 1; n < size; ++ n)
+	{
+		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
+		{
+			const size_t n1 = closedSpine        and n == spine ()        .size () - 2 ? 0 : n + 1;
+			const size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
+
+			// k      k+1
+			//
+			// p4 ----- p3   n+1
+			//  |     / |
+			//  |   /   |
+			//  | /     |
+			// p1 ----- p2   n
+
+			const auto p1 = INDEX (n,  k);
+			const auto p2 = INDEX (n,  k1);
+			const auto p3 = INDEX (n1, k1);
+			const auto p4 = INDEX (n1, k);
+
+			const auto t1 = INDEX (n,     k);
+			const auto t2 = INDEX (n,     k + 1);
+			const auto t3 = INDEX (n + 1, k + 1);
+			const auto t4 = INDEX (n + 1, k);
+
+			const auto texCoord1 = Vector2f (      k / numCrossSection_1,       n / numSpine_1);
+			const auto texCoord2 = Vector2f ((k + 1) / numCrossSection_1,       n / numSpine_1);
+			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
+			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
+
+			const bool length1 = abs (points [p2] - points [p3]) >= 1e-7;
+			const bool length2 = abs (points [p4] - points [p1]) >= 1e-7;
+
+			// Add a Texture coordinate point for p1.
+
+			if (length2)
+				texCoord -> point () .emplace_back (texCoord1);
+			else
+				// Cone case:
+				texCoord -> point () .emplace_back ((texCoord1 + texCoord4) / 2.0f);
+
+			// Add another Texture coordinate point for p2 if we are on the right side.
+
+			if (k == crossSection () .size () - 2)
+			{
+				if (length1)
+					texCoord -> point () .emplace_back (texCoord2);
+				else
+					// Cone case:
+					texCoord -> point () .emplace_back ((texCoord2 + texCoord3) / 2.0f);
+			}
+
+			// If there are coincident spine points then one length can be zero.
+
+			if (length1)
+			{
+				// p1
+				geometry -> texCoordIndex () .emplace_back (t1);
+				geometry -> coordIndex ()    .emplace_back (p1);
+	
+				// p2
+				//getTexCoords () [0] .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
+				geometry -> texCoordIndex () .emplace_back (t2);
+				geometry -> coordIndex ()    .emplace_back (p2);
+	
+				// p3
+				//getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
+				geometry -> texCoordIndex () .emplace_back (t3);
+				geometry -> coordIndex ()    .emplace_back (p3);
+
+				// Close polygon.
+				geometry -> texCoordIndex () .emplace_back (-1);
+				geometry -> coordIndex ()    .emplace_back (-1);
+			}
+
+			if (length2)
+			{
+				// p1
+				//getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				geometry -> texCoordIndex () .emplace_back (t1);
+				geometry -> coordIndex ()    .emplace_back (p1);
+
+				// p3
+				geometry -> texCoordIndex () .emplace_back (length1 ? t3 : t2);
+				geometry -> coordIndex ()    .emplace_back (p3);
+	
+				// p4
+				//getTexCoords () [0] .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
+				geometry -> texCoordIndex () .emplace_back (t4);
+				geometry -> coordIndex ()    .emplace_back (p4);
+
+				// Close polygon.
+				geometry -> texCoordIndex () .emplace_back (-1);
+				geometry -> coordIndex ()    .emplace_back (-1);
+			}
+		}
+	}
+
+	// Add TextureCoordinate points for the top cross section.
+	{
+		const auto n = spine () .size () - 2;
+	
+		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
+		{
+			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
+			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
+	
+			// Add a Texture coordinate point for p4.
+	
+			texCoord -> point () .emplace_back (texCoord4);
+	
+			// Add another Texture coordinate point for p3 if we are on the right side.
+	
+			if (k == crossSection () .size () - 2)
+				texCoord -> point () .emplace_back (texCoord3);
+		}
+	}
+
+	// Build caps
+
+	if (capMax and crossSection () .size () > 2)
+	{
+		if (beginCap ())
+		{
+			const size_t j = spine () .size ();
+
+			for (size_t k = 0; k < numCapPoints; ++ k)
+			{
+				geometry -> texCoordIndex () .emplace_back (texCoord -> point () .size ());
+				geometry -> coordIndex ()    .emplace_back (INDEX (j, numCapPoints - 1 - k));
+
+				texCoord -> point () .emplace_back ((crossSection () [numCapPoints - 1 - k] - min) / capMax);
+			}
+
+			// Close polygon.
+			geometry -> texCoordIndex () .emplace_back (-1);
+			geometry -> coordIndex ()    .emplace_back (-1);
+		}
+
+		if (endCap ())
+		{
+			const size_t j = spine () .size () + beginCap ();
+
+			for (size_t k = 0; k < numCapPoints; ++ k)
+			{
+				geometry -> texCoordIndex () .emplace_back (texCoord -> point () .size ());
+				geometry -> coordIndex ()    .emplace_back (INDEX (j, k));
+
+				texCoord -> point () .emplace_back ((crossSection () [k] - min) / capMax);
+			}
+
+			// Close polygon.
+			geometry -> texCoordIndex () .emplace_back (-1);
+			geometry -> coordIndex ()    .emplace_back (-1);
+		}
+	}
+
+	#undef INDEX
+
+	// Remove unused points from Coordinate and rebuild indices.
+	geometry -> rebuildCoord ();
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);

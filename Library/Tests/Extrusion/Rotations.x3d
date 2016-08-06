@@ -7,7 +7,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Extrusion/Rotations.x3d'/>
-    <meta name='modified' content='Sat, 06 Aug 2016 12:26:04 GMT'/>
+    <meta name='modified' content='Sat, 06 Aug 2016 15:26:53 GMT'/>
   </head>
   <Scene>
     <WorldInfo>
@@ -44,15 +44,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='1.4981073141098, 5.2479567527771, 5.27163791656494'/>
+              value='-2.6938069658708, -2.06565898624754, -0.863342017328568'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='-0.962875699879608, 0.269501524559358, -0.0154698041854707, 0.643921381920256'/>
+              value='-0.0514662853783932, 0.833182734244966, -0.550597632419022, 3.70344857553969'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='0, 0, -2'/>
+              value='-1.58384470206283, 0.41295388017639, -0.0510458299920946'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
@@ -63,23 +63,27 @@
           <MetadataSet DEF='children' containerField='value'
               name='children'
               reference='http://titania.create3000.de'>
-            <Extrusion DEF='Extrusion1' containerField='value'
-                crossSection='0 1, 1 0, 0 -1'
-                orientation='0 0 1 0, 0 0 1 0.199999999999999, 0 0 1 0.4, 0 0 1 0.6, 0 0 1 0.8'
-                spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
+            <Transform DEF='Extrusion' containerField='value'
+                translation='-2 0 0'>
+              <Shape>
+                <Appearance>
+                  <Material/>
+                  <ImageTexture
+                      url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
+                      repeatS='false'
+                      repeatT='false'/>
+                </Appearance>
+                <Extrusion DEF='Extrusion1'
+                    crossSection='0 1, 1 0, 0 -1'
+                    orientation='0 0 1 0, 0 0 1 0.199999999999999, 0 0 1 0.4, 0 0 1 0.6, 0 0 1 0.8'
+                    spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
+              </Shape>
+            </Transform>
           </MetadataSet>
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
-    <Transform DEF='Extrusion'
-        translation='-2 0 0'>
-      <Shape>
-        <Appearance>
-          <Material/>
-        </Appearance>
-        <Extrusion USE='Extrusion1'/>
-      </Shape>
-    </Transform>
+    <Transform USE='Extrusion'/>
     <Transform DEF='Extrusion_1'
         translation='2 0 0'>
       <Shape>
