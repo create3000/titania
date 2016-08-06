@@ -56,12 +56,14 @@
 #include "../../Widgets/LibraryView/LibraryView.h"
 
 #include <Titania/OS.h>
+#include <Titania/X3D/Components/Geometry3D/Extrusion.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
 
 #include <Titania/Backtrace.h>
 
@@ -420,25 +422,94 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 {
 	try
 	{
-		const auto scene      = getCurrentBrowser () -> createScene ();
-		const auto transform  = scene -> createNode <X3D::Transform> ();
-		const auto shape      = scene -> createNode <X3D::Shape> ();
-		const auto appearance = scene -> createNode <X3D::Appearance> ();
-		const auto sphere     = scene -> createNode <X3D::Sphere> ();
-	
-		scene -> getRootNodes ()  = { transform };
-		transform -> children ()  = { shape };
-		shape -> appearance ()    = appearance;
-		shape -> geometry ()      = sphere;
-		appearance -> material () = getMaterial () -> copy (scene, X3D::FLAT_COPY);
-	
+		const auto scene    = getCurrentBrowser () -> createScene ();
+		const auto material = getMaterial () -> copy (scene, X3D::FLAT_COPY);
+
+		scene -> removeNamedNode (material -> getName ());
+
+		// Create scene.
+
+		if (material -> getType () .back () == X3D::X3DConstants::TwoSidedMaterial)
+		{
+			static constexpr size_t X_DIMENSION = 32;
+			static constexpr size_t Y_DIMENSION = 16;
+
+			const auto transform1  = scene -> createNode <X3D::Transform> ();
+			const auto transform2  = scene -> createNode <X3D::Transform> ();
+			const auto shape1      = scene -> createNode <X3D::Shape> ();
+			const auto shape2      = scene -> createNode <X3D::Shape> ();
+			const auto appearance1 = scene -> createNode <X3D::Appearance> ();
+			const auto appearance2 = scene -> createNode <X3D::Appearance> ();
+			const auto material2   = X3D::X3DPtr <X3D::TwoSidedMaterial> (material -> copy (X3D::FLAT_COPY));
+			const auto halfSphere1 = scene -> createNode <X3D::Extrusion> ();
+
+			halfSphere1 -> beginCap ()    = false;
+			halfSphere1 -> endCap ()      = false;
+			halfSphere1 -> creaseAngle () = M_PI;
+
+			halfSphere1 -> crossSection () .clear ();
+			halfSphere1 -> crossSection () .clear ();
+			halfSphere1 -> orientation ()  .clear ();
+			halfSphere1 -> spine ()        .clear ();
+
+			for (size_t i = 0; i < Y_DIMENSION; ++ i)
+				halfSphere1 -> crossSection () .emplace_back (std::sin (M_PI * i / Y_DIMENSION), std::cos (M_PI * i / Y_DIMENSION));
+
+			halfSphere1 -> crossSection () .emplace_back (0, -1);
+
+			for (size_t i = 0; i < X_DIMENSION + 1; ++ i)
+				halfSphere1 -> orientation () .emplace_back (0, 0, 1, M_PI * i / X_DIMENSION);
+
+			for (size_t i = 0; i < X_DIMENSION + 1; ++ i)
+				halfSphere1 -> spine () .emplace_back (0, 0, 0);
+
+			const auto halfSphere2 = X3D::X3DPtr <X3D::Extrusion> (halfSphere1-> copy (scene, X3D::FLAT_COPY));	
+
+			halfSphere2 -> ccw ()   = false;
+			halfSphere2 -> solid () = false;
+
+			transform1 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0, -1, 0, M_PI / 2);
+			transform2 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0,  1, 0, M_PI / 2);
+
+			material2 -> transparency () = 1;
+
+			scene -> getRootNodes ()   = { transform1, transform2 };
+			transform1 -> children ()  = { shape1 };
+			transform2 -> children ()  = { shape2 };
+			shape1 -> appearance ()    = appearance1;
+			shape2 -> appearance ()    = appearance2;
+			shape1 -> geometry ()      = halfSphere1;
+			shape2 -> geometry ()      = halfSphere2;
+			appearance1 -> material () = material;
+			appearance2 -> material () = material2;
+		}
+		else
+		{
+			const auto transform  = scene -> createNode <X3D::Transform> ();
+			const auto shape      = scene -> createNode <X3D::Shape> ();
+			const auto appearance = scene -> createNode <X3D::Appearance> ();
+			const auto sphere     = scene -> createNode <X3D::Sphere> ();
+		
+			scene -> getRootNodes ()  = { transform };
+			transform -> children ()  = { shape };
+			shape -> appearance ()    = appearance;
+			shape -> geometry ()      = sphere;
+			appearance -> material () = material;
+		}
+
+		// Setup scene.
+
 		scene -> setup ();
 		scene -> addStandardMetaData ();
 		scene -> setMetaData ("titania magic", "Material");
 
+		// Print scene.
+
 		std::ostringstream osstream;
 
 		osstream << X3D::NicestStyle << scene << std::endl;
+
+		// Create file.
 
 		const auto paletteIndex = getPaletteComboBoxText () .get_active_row_number ();
 		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
@@ -447,7 +518,9 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 
 		std::string etag;
 
-		file -> replace_contents (osstream .str (), "", etag);
+		file -> replace_contents (osstream .str (), "", etag, false, Gio::FILE_CREATE_REPLACE_DESTINATION);
+
+		// Append material to palette preview.
 
 		addMaterial (Glib::uri_unescape_string (file -> get_uri ()));
 	}

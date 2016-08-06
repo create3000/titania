@@ -373,6 +373,9 @@ Extrusion::build ()
 	const float numCrossSection_1 = crossSection () .size () - 1;
 	const float numSpine_1        = spine () .size () - 1;
 
+	size_t indexLeft  = INDEX (0, 0);
+	size_t indexRight = INDEX (0, closedCrossSection ? 0 : crossSection () .size () - 1);
+
 	for (size_t n = 0, size = spine () .size () - 1; n < size; ++ n)
 	{
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
@@ -388,9 +391,9 @@ Extrusion::build ()
 			//  | /     |
 			// p1 ----- p2   n
 
-			const auto p1 = INDEX (n,  k);
+			auto       p1 = INDEX (n,  k);
 			const auto p2 = INDEX (n,  k1);
-			const auto p3 = INDEX (n1, k1);
+			auto       p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
 
 			const bool length1   = abs (points [p2] - points [p3]) >= 1e-7;
@@ -401,6 +404,24 @@ Extrusion::build ()
 			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
 			const auto normal1   = normal (points [p1], points [p2], points [p3]);
 			const auto normal2   = normal (points [p1], points [p3], points [p4]);
+
+			// Merge points on the left and right side if spine is coincident for better normal generation.
+
+			if (k == 0)
+			{
+				if (length2)
+					indexLeft = p1;
+				else
+					p1 = indexLeft;
+			}
+
+			if (k == crossSection () .size () - 2)
+			{
+				if (length1)
+					indexRight = p2;
+				else
+					p3 = indexRight;
+			}
 
 			// If there are coincident spine points then one length can be zero.
 
@@ -570,8 +591,8 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
                           const Vector2f & min,
                           const float capMax)
 {
-	constexpr size_t I = 0;
-	constexpr size_t K = 1;
+	static constexpr size_t I = 0;
+	static constexpr size_t K = 1;
 
 	const size_t size = getVertices () .size ();
 
@@ -702,156 +723,6 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	addElements (GL_TRIANGLES, getVertices () .size () - size);
 }
 
-/*
-SFNode
-Extrusion::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
-	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
-	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
-
-	geometry -> metadata ()    = metadata ();
-	geometry -> solid ()       = solid ();
-	geometry -> ccw ()         = ccw ();
-	geometry -> convex ()      = convex ();
-	geometry -> creaseAngle () = creaseAngle ();
-	geometry -> texCoord ()    = texCoord;
-	geometry -> coord ()       = coord;
-
-	const bool closedSpine        = getClosedSpine ();
-	const bool closedCrossSection = getClosedCrossSection ();
-	const auto crossSectionSize   = crossSection () .size () - closedCrossSection;
-
-	for (size_t n = 0, size = spine () .size (); n < size; ++ n)
-	{
-		const size_t o = closedSpine and n == spine () .size () - 2 ? (n + 1) * crossSectionSize : 0;
-
-		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
-		{
-			if (n == spine () .size () - 1)
-			{
-				const size_t v = (k + (n - 1) * (crossSection () .size () - 1)) * 6 + 5;
-
-				texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
-
-				if (not closedSpine)
-					coord -> point () .emplace_back (getVertices () [v]);
-
-				continue;
-			}
-
-			const size_t v = (k + n * (crossSection () .size () - 1)) * 6;
-
-			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
-			coord    -> point () .emplace_back (getVertices () [v]);
-
-			// coordIndex
-
-			const size_t t1 = k + n * crossSection () .size ();
-			const size_t c1 = k + n * crossSectionSize;
-			const size_t c2 = closedCrossSection and k == size - 1 ? n * crossSectionSize : c1 + 1;
-
-			geometry -> texCoordIndex () .emplace_back (t1);
-			geometry -> texCoordIndex () .emplace_back (t1 + 1);
-			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size () + 1);
-			geometry -> texCoordIndex () .emplace_back (-1);
-
-			geometry -> texCoordIndex () .emplace_back (t1);
-			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size () + 1);
-			geometry -> texCoordIndex () .emplace_back (t1 + crossSection () .size ());
-			geometry -> texCoordIndex () .emplace_back (-1);
-
-			geometry -> coordIndex () .emplace_back (c1);
-			geometry -> coordIndex () .emplace_back (c2);
-			geometry -> coordIndex () .emplace_back (c2 + crossSectionSize - o);
-			geometry -> coordIndex () .emplace_back (-1);
-
-			geometry -> coordIndex () .emplace_back (c1);
-			geometry -> coordIndex () .emplace_back (c2 + crossSectionSize - o);
-			geometry -> coordIndex () .emplace_back (c1 + crossSectionSize - o);
-			geometry -> coordIndex () .emplace_back (-1);
-		}
-
-		if (true)
-		{
-			const size_t k = crossSection () .size () - 2;
-			const size_t v = n == spine () .size () - 1
-			                 ? (k + (n - 1) * (crossSection () .size () - 1)) * 6 + 2
-			                 : (k + n * (crossSection () .size () - 1)) * 6 + 1;
-
-			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
-
-			if (not closedCrossSection)
-				coord -> point () .emplace_back (getVertices () [v]);
-		}
-	}
-
-	// For caps calculation
-
-	Vector2f min = crossSection () [0];
-	Vector2f max = crossSection () [0];
-
-	for (size_t k = 1, size = crossSection () .size (); k < size; k ++)
-	{
-		min = math::min <float> (min, crossSection () [k]);
-		max = math::max <float> (max, crossSection () [k]);
-	}
-
-	const auto capSize      = max - min;
-	const auto capMax       = std::max (capSize .x (), capSize .y ());
-	const auto numCapPoints = crossSectionSize;
-
-	if (capMax)
-	{
-		if (beginCap ())
-		{
-			const auto tf = texCoord -> point () .size ();
-			const auto cf = coord    -> point () .size ();
-
-			for (size_t k = 0; k < numCapPoints; ++ k)
-			{
-				const Vector2f t = (crossSection () [k] - min) / capMax;
-
-				texCoord -> point () .emplace_back (t .x (), t .y ());
-				coord    -> point () .emplace_back (coord -> point () [k]);
-
-				geometry -> texCoordIndex () .emplace_back (tf + numCapPoints - k - 1);
-				geometry -> coordIndex ()    .emplace_back (cf + numCapPoints - k - 1);
-			}
-
-			geometry -> texCoordIndex () .emplace_back (-1);
-			geometry -> coordIndex ()    .emplace_back (-1);
-		}
-
-		if (endCap ())
-		{
-			const auto tf = texCoord -> point () .size ();
-			const auto cf = coord    -> point () .size ();
-			const auto po = closedSpine ? 0 : crossSectionSize * (spine () .size () - 1);
-
-			for (size_t k = 0; k < numCapPoints; ++ k)
-			{
-				const Vector2f t = (crossSection () [k] - min) / capMax;
-
-				texCoord -> point () .emplace_back (t .x (), t .y ());
-				coord    -> point () .emplace_back (coord -> point () [k + po]);
-
-				geometry -> texCoordIndex () .emplace_back (tf + k);
-				geometry -> coordIndex ()    .emplace_back (cf + k);
-			}
-
-			geometry -> texCoordIndex () .emplace_back (-1);
-			geometry -> coordIndex ()    .emplace_back (-1);
-		}
-	}
-
-	getExecutionContext () -> realize ();
-	return SFNode (geometry);
-}
-*/
-
 SFNode
 Extrusion::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
@@ -904,6 +775,9 @@ throw (Error <NOT_SUPPORTED>,
 	const float numCrossSection_1 = crossSection () .size () - 1;
 	const float numSpine_1        = spine () .size () - 1;
 
+	size_t indexLeft  = INDEX (0, 0);
+	size_t indexRight = INDEX (0, closedCrossSection ? 0 : crossSection () .size () - 1);
+
 	for (size_t n = 0, size = spine () .size () - 1; n < size; ++ n)
 	{
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
@@ -919,9 +793,9 @@ throw (Error <NOT_SUPPORTED>,
 			//  | /     |
 			// p1 ----- p2   n
 
-			const auto p1 = INDEX (n,  k);
+			auto       p1 = INDEX (n,  k);
 			const auto p2 = INDEX (n,  k1);
-			const auto p3 = INDEX (n1, k1);
+			auto       p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
 
 			const auto t1 = INDEX (n,     k);
@@ -936,6 +810,24 @@ throw (Error <NOT_SUPPORTED>,
 
 			const bool length1 = abs (points [p2] - points [p3]) >= 1e-7;
 			const bool length2 = abs (points [p4] - points [p1]) >= 1e-7;
+
+			// Merge points on the left and right side if spine is coincident for better normal generation.
+
+			if (k == 0)
+			{
+				if (length2)
+					indexLeft = p1;
+				else
+					p1 = indexLeft;
+			}
+
+			if (k == crossSection () .size () - 2)
+			{
+				if (length1)
+					indexRight = p2;
+				else
+					p3 = indexRight;
+			}
 
 			// Add a Texture coordinate point for p1.
 
@@ -965,12 +857,10 @@ throw (Error <NOT_SUPPORTED>,
 				geometry -> coordIndex ()    .emplace_back (p1);
 	
 				// p2
-				//getTexCoords () [0] .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
 				geometry -> texCoordIndex () .emplace_back (t2);
 				geometry -> coordIndex ()    .emplace_back (p2);
 	
 				// p3
-				//getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
 				geometry -> texCoordIndex () .emplace_back (t3);
 				geometry -> coordIndex ()    .emplace_back (p3);
 
@@ -982,7 +872,6 @@ throw (Error <NOT_SUPPORTED>,
 			if (length2)
 			{
 				// p1
-				//getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
 				geometry -> texCoordIndex () .emplace_back (t1);
 				geometry -> coordIndex ()    .emplace_back (p1);
 
@@ -991,7 +880,6 @@ throw (Error <NOT_SUPPORTED>,
 				geometry -> coordIndex ()    .emplace_back (p3);
 	
 				// p4
-				//getTexCoords () [0] .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
 				geometry -> texCoordIndex () .emplace_back (t4);
 				geometry -> coordIndex ()    .emplace_back (p4);
 
@@ -1063,10 +951,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	#undef INDEX
 
+	getExecutionContext () -> realize ();
+
 	// Remove unused points from Coordinate and rebuild indices.
+	geometry -> rebuildTexCoord ();
 	geometry -> rebuildCoord ();
 
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 
