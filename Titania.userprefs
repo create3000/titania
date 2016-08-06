@@ -2,12 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="518" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/Combine.cpp" Line="484" Column="4" />
-      <File FileName="experimental/main.cpp" Line="387" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="281" Column="5" />
-      <File FileName="Titania/share/titania/Library/Primitives/Scripting/Debugger.x3dv" Line="39" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DConstants.h" Line="161" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="552" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="112" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="218" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp" Line="190" Column="1" />
+      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="288" Column="126" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="216" Column="18" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="209" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

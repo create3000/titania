@@ -94,7 +94,7 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	texCoordNode = getBrowser () -> getDefaultTexCoord ();
+	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 
 	if (glXGetCurrentContext ())
 	{

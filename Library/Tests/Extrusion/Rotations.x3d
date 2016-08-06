@@ -6,17 +6,10 @@
     <meta name='created' content='Sat, 06 Aug 2016 06:44:36 GMT'/>
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
-    <meta name='identifier' content='file:///home/holger/extrusion.x3d'/>
-    <meta name='modified' content='Sat, 06 Aug 2016 08:00:56 GMT'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Extrusion/Rotations.x3d'/>
+    <meta name='modified' content='Sat, 06 Aug 2016 10:07:05 GMT'/>
   </head>
   <Scene>
-    <ExternProtoDeclare name='Torus' url='"https://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/Torus.x3d", "http://cdn.rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/Torus.x3d", "https://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/Torus.x3d", "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/Torus.x3d"'>
-      <field accessType='inputOutput' type='SFFloat' name='minorRadius'/>
-      <field accessType='inputOutput' type='SFFloat' name='majorRadius'/>
-      <field accessType='inputOutput' type='SFInt32' name='minorDimension'/>
-      <field accessType='inputOutput' type='SFInt32' name='majorDimension'/>
-      <field accessType='initializeOnly' type='SFBool' name='solid'/>
-    </ExternProtoDeclare>
     <WorldInfo>
       <MetadataSet DEF='Titania'
           name='Titania'
@@ -51,24 +44,21 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='-2.52883129391597, 2.38825908189915, 5.37257991946005'/>
+              value='1.49810732354639, 5.24795669514719, 5.27163781729705'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='-0.622572820913195, -0.755611627779295, -0.203602923910514, 0.587167846728654'/>
+              value='-0.962875699879608, 0.269501524559358, -0.0154698041854707, 0.643921381920256'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='0.197318258314946, -0.154673508818456, -0.386308779686935'/>
+              value='0, 0, -2'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
             reference='http://titania.create3000.de'>
           <MetadataSet DEF='previous' containerField='value'
               name='previous'
-              reference='http://titania.create3000.de'/>
-          <MetadataSet DEF='children' containerField='value'
-              name='children'
               reference='http://titania.create3000.de'/>
         </MetadataSet>
       </MetadataSet>
@@ -90,10 +80,31 @@
       <Shape>
         <Appearance>
           <Material/>
+          <ImageTexture
+              url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
+              repeatS='false'
+              repeatT='false'/>
         </Appearance>
         <Extrusion
             creaseAngle='0.580624'
             crossSection='0 1, 1 0, 0 -1'
+            orientation='0 0 1 0, 0 0 1 0.196349540624999, 0 0 1 0.39269908125, 0 0 1 0.589048621875, 0 0 1 0.7853981625, 0 0 1 0.981747703125, 0 0 1 1.17809724375, 0 0 1 1.374446784375, 0 0 1 1.570796325, 0 0 1 1.767145865625, 0 0 1 1.96349540625, 0 0 1 2.159844946875, 0 0 1 2.3561944875, 0 0 1 2.552544028125, 0 0 1 2.74889356875, 0 0 1 2.945243109375, 0 0 1 3.14159265, 0 0 1 3.337942190625, 0 0 1 3.53429173125, 0 0 1 3.730641271875, 0 0 1 3.9269908125, 0 0 1 4.123340353125, 0 0 1 4.31968989375, 0 0 1 4.516039434375, 0 0 1 4.712388975, 0 0 1 4.908738515625, 0 0 1 5.10508805625, 0 0 1 5.301437596875, 0 0 1 5.4977871375, 0 0 1 5.694136678125, 0 0 1 5.89048621875, 0 0 1 6.086835759375, 0 0 1 0'
+            spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
+      </Shape>
+    </Transform>
+    <Transform DEF='Extrusion_2'
+        translation='0 0 -2'>
+      <Shape>
+        <Appearance>
+          <Material/>
+          <ImageTexture
+              url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
+              repeatS='false'
+              repeatT='false'/>
+        </Appearance>
+        <Extrusion
+            creaseAngle='0.580624'
+            crossSection='0 1, 0.19509 0.980785, 0.382683 0.92388, 0.55557 0.83147, 0.707107 0.707107, 0.83147 0.55557, 0.92388 0.382683, 0.980785 0.19509, 1 -2.32051e-08, 0.980785 -0.19509, 0.92388 -0.382683, 0.83147 -0.55557, 0.707107 -0.707107, 0.55557 -0.83147, 0.382683 -0.92388, 0.19509 -0.980785, -4.64102e-08 -1'
             orientation='0 0 1 0, 0 0 1 0.196349540624999, 0 0 1 0.39269908125, 0 0 1 0.589048621875, 0 0 1 0.7853981625, 0 0 1 0.981747703125, 0 0 1 1.17809724375, 0 0 1 1.374446784375, 0 0 1 1.570796325, 0 0 1 1.767145865625, 0 0 1 1.96349540625, 0 0 1 2.159844946875, 0 0 1 2.3561944875, 0 0 1 2.552544028125, 0 0 1 2.74889356875, 0 0 1 2.945243109375, 0 0 1 3.14159265, 0 0 1 3.337942190625, 0 0 1 3.53429173125, 0 0 1 3.730641271875, 0 0 1 3.9269908125, 0 0 1 4.123340353125, 0 0 1 4.31968989375, 0 0 1 4.516039434375, 0 0 1 4.712388975, 0 0 1 4.908738515625, 0 0 1 5.10508805625, 0 0 1 5.301437596875, 0 0 1 5.4977871375, 0 0 1 5.694136678125, 0 0 1 5.89048621875, 0 0 1 6.086835759375, 0 0 1 0'
             spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
       </Shape>

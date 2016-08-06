@@ -393,44 +393,74 @@ Extrusion::build ()
 			const auto p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
 
-			const auto normal1 = math::normal (points [p1], points [p2], points [p3]);
-			const auto normal2 = math::normal (points [p1], points [p3], points [p4]);
+			const auto length1   = abs (points [p2] - points [p3]);
+			const auto length2   = abs (points [p4] - points [p1]);
+			const auto texCoord1 = Vector2f (      k / numCrossSection_1,       n / numSpine_1);
+			const auto texCoord2 = Vector2f ((k + 1) / numCrossSection_1,       n / numSpine_1);
+			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
+			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
+			const auto normal1   = normal (points [p1], points [p2], points [p3]);
+			const auto normal2   = normal (points [p1], points [p3], points [p4]);
 
-			// p1
-			getTexCoords () [0] .emplace_back (k / numCrossSection_1, n / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p1);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal1);
+			if (length1)
+			{
+				// p1
+				if (length2)
+					getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				else
+				{
+					// Cone case:
+					const auto texCoord = (texCoord1 + texCoord4) / 2.0f;
 
-			// p2
-			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, n / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p2);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal1);
+					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
+				}
 
-			// p3
-			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p3);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal1);
+				coordIndex .emplace_back (p1);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal1);
+	
+				// p2
+				getTexCoords () [0] .emplace_back (texCoord2 .x (), texCoord2 .y (), 0, 1);
+				coordIndex .emplace_back (p2);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal1);
+	
+				// p3
+				getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
+				coordIndex .emplace_back (p3);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal1);
+			}
 
-			// p1
-			getTexCoords () [0] .emplace_back (k / numCrossSection_1, n / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p1);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal2);
+			if (length2)
+			{
+				// p1
+				getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
+				coordIndex .emplace_back (p1);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal2);
+	
+				// p3
+				if (length1)
+					getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
+				else
+				{
+					// Cone case:
+					const auto texCoord = (texCoord3 + texCoord2) / 2.0f;
 
-			// p3
-			getTexCoords () [0] .emplace_back ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p3);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal2);
+					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
+				}
 
-			// p4
-			getTexCoords () [0] .emplace_back (k / numCrossSection_1, (n + 1) / numSpine_1, 0, 1);
-			coordIndex .emplace_back (p4);
-			normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
-			getNormals () .emplace_back (normal2);
+				coordIndex .emplace_back (p3);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal2);
+	
+				// p4
+				getTexCoords () [0] .emplace_back (texCoord4 .x (), texCoord4 .y (), 0, 1);
+				coordIndex .emplace_back (p4);
+				normalIndex [coordIndex .back ()] .emplace_back (getNormals () .size ());
+				getNormals () .emplace_back (normal2);
+			}
 		}
 	}
 
@@ -549,17 +579,17 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	{
 		switch (polygonElement .type ())
 		{
-			case GL_TRIANGLE_FAN :
+			case GL_TRIANGLE_FAN:
+			{
+				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 				{
-					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
-					{
-						normal += math::normal (points [std::get < I > (polygonElement [0] .data ())],
-						                        points [std::get < I > (polygonElement [i] .data ())],
-						                        points [std::get < I > (polygonElement [i + 1] .data ())]);
-					}
-
-					break;
+					normal += math::normal (points [std::get < I > (polygonElement [0] .data ())],
+					                        points [std::get < I > (polygonElement [i] .data ())],
+					                        points [std::get < I > (polygonElement [i + 1] .data ())]);
 				}
+
+				break;
+			}
 			case GL_TRIANGLE_STRIP:
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
@@ -596,28 +626,28 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	{
 		switch (polygonElement .type ())
 		{
-			case GL_TRIANGLE_FAN :
+			case GL_TRIANGLE_FAN:
+			{
+				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
 				{
-					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
-					{
-						Vector2f t = (crossSection () [std::get < K > (polygonElement [0] .data ())] - min) / capMax;
-						getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get < I > (polygonElement [0] .data ())]);
+					Vector2f t = (crossSection () [std::get < K > (polygonElement [0] .data ())] - min) / capMax;
+					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals () .emplace_back (normal);
+					getVertices () .emplace_back (points [std::get < I > (polygonElement [0] .data ())]);
 
-						t = (crossSection () [std::get < K > (polygonElement [i] .data ())] - min) / capMax;
-						getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get < I > (polygonElement [i] .data ())]);
+					t = (crossSection () [std::get < K > (polygonElement [i] .data ())] - min) / capMax;
+					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals () .emplace_back (normal);
+					getVertices () .emplace_back (points [std::get < I > (polygonElement [i] .data ())]);
 
-						t = (crossSection () [std::get < K > (polygonElement [i + 1] .data ())] - min) / capMax;
-						getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
-						getNormals () .emplace_back (normal);
-						getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 1] .data ())]);
-					}
-
-					break;
+					t = (crossSection () [std::get < K > (polygonElement [i + 1] .data ())] - min) / capMax;
+					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
+					getNormals () .emplace_back (normal);
+					getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 1] .data ())]);
 				}
+
+				break;
+			}
 			case GL_TRIANGLE_STRIP:
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
@@ -713,8 +743,9 @@ throw (Error <NOT_SUPPORTED>,
 			}
 
 			const size_t v = (k + n * (crossSection () .size () - 1)) * 6;
+
 			texCoord -> point () .emplace_back (getTexCoords () [0] [v] .x (), getTexCoords () [0] [v] .y ());
-			coord -> point ()    .emplace_back (getVertices () [v]);
+			coord    -> point () .emplace_back (getVertices () [v]);
 
 			// coordIndex
 
@@ -777,27 +808,27 @@ throw (Error <NOT_SUPPORTED>,
 		if (beginCap ())
 		{
 			const auto tf = texCoord -> point () .size ();
-			const auto cf = coord -> point () .size ();
+			const auto cf = coord    -> point () .size ();
 
 			for (size_t k = 0; k < numCapPoints; ++ k)
 			{
 				const Vector2f t = (crossSection () [k] - min) / capMax;
 
 				texCoord -> point () .emplace_back (t .x (), t .y ());
-				coord -> point () .emplace_back (coord -> point () [k]);
+				coord    -> point () .emplace_back (coord -> point () [k]);
 
 				geometry -> texCoordIndex () .emplace_back (tf + numCapPoints - k - 1);
 				geometry -> coordIndex ()    .emplace_back (cf + numCapPoints - k - 1);
 			}
 
 			geometry -> texCoordIndex () .emplace_back (-1);
-			geometry -> coordIndex () .emplace_back (-1);
+			geometry -> coordIndex ()    .emplace_back (-1);
 		}
 
 		if (endCap ())
 		{
 			const auto tf = texCoord -> point () .size ();
-			const auto cf = coord -> point () .size ();
+			const auto cf = coord    -> point () .size ();
 			const auto po = closedSpine ? 0 : crossSectionSize * (spine () .size () - 1);
 
 			for (size_t k = 0; k < numCapPoints; ++ k)
@@ -805,14 +836,14 @@ throw (Error <NOT_SUPPORTED>,
 				const Vector2f t = (crossSection () [k] - min) / capMax;
 
 				texCoord -> point () .emplace_back (t .x (), t .y ());
-				coord -> point () .emplace_back (coord -> point () [k + po]);
+				coord    -> point () .emplace_back (coord -> point () [k + po]);
 
 				geometry -> texCoordIndex () .emplace_back (tf + k);
 				geometry -> coordIndex ()    .emplace_back (cf + k);
 			}
 
 			geometry -> texCoordIndex () .emplace_back (-1);
-			geometry -> coordIndex () .emplace_back (-1);
+			geometry -> coordIndex ()    .emplace_back (-1);
 		}
 	}
 
