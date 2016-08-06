@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Sat, 06 Aug 2016 05:35:44 GMT'/>
+    <meta name='modified' content='Sat, 06 Aug 2016 20:07:19 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -46,7 +46,7 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='-0.123856335701134, 4.92741928550223, 10.4333752078756'/>
+              value='-0.123856335878372, 4.92741918563843, 10.4333753585815'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
@@ -87,16 +87,16 @@
                 scale='2.01102 1 1'>
               <Shape>
                 <Appearance>
-                  <TwoSidedMaterial DEF='Winter8'
+                  <TwoSidedMaterial DEF='Rococo14'
                       separateBackColor='true'
-                      ambientIntensity='0.253968'
-                      diffuseColor='0.279399 0.589 0.394407'
-                      specularColor='0.39624 0.427003 0.00760637'
-                      shininess='0.0378378'
-                      backAmbientIntensity='0.253968'
-                      backDiffuseColor='0.117647 0.564706 1'
-                      backSpecularColor='0.39624 0.427003 0.00760637'
-                      backShininess='0.0378378'/>
+                      ambientIntensity='0.232978'
+                      diffuseColor='0.936975 0.0923259 0.42843'
+                      specularColor='0.805292 0.216986 0.36733'
+                      shininess='0.832432'
+                      backAmbientIntensity='0.0761043'
+                      backDiffuseColor='0.230477 0.106718 0.285207'
+                      backSpecularColor='0.487308 0 0.848649'
+                      backShininess='0.740541'/>
                 </Appearance>
                 <IndexedFaceSet
                     solid='false'
@@ -184,7 +184,7 @@
     <Transform DEF='Box'>
       <Shape>
         <Appearance>
-          <Material DEF='Rococo14'
+          <Material DEF='Rococo14_1'
               ambientIntensity='0.226102'
               diffuseColor='0.904409 0.315531 0.544386'
               specularColor='0.0955906 0.0955906 0.0955906'

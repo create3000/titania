@@ -7,7 +7,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Extrusion/Rotations.x3d'/>
-    <meta name='modified' content='Sat, 06 Aug 2016 19:08:24 GMT'/>
+    <meta name='modified' content='Sat, 06 Aug 2016 19:29:32 GMT'/>
   </head>
   <Scene>
     <WorldInfo>
@@ -44,15 +44,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='8.0469553547263, 3.37959813519559, 3.51093597191647'/>
+              value='2.79252147674561, 5.76409196853638, 4.20475006103516'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='-0.383934745949714, 0.913276559921538, 0.136088338774524, 0.694583856444163'/>
+              value='-0.882984838661416, 0.437083442792234, 0.17116027205798, 0.886694786879645'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='1, 0, -6'/>
+              value='0.5, 0, -1'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
@@ -63,29 +63,15 @@
           <MetadataSet DEF='children' containerField='value'
               name='children'
               reference='http://titania.create3000.de'>
-            <Transform DEF='Extrusion' containerField='value'
-                translation='0 0 -6'>
-              <Shape>
-                <Appearance>
-                  <Material/>
-                  <ImageTexture
-                      url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
-                      repeatS='false'
-                      repeatT='false'/>
-                </Appearance>
-                <Extrusion DEF='Extrusion1'
-                    beginCap='false'
-                    endCap='false'
-                    ccw='false'
-                    crossSection='2 1, 0 1, 0 -1, 2 -1, 2 1'
-                    spine='1 0 0, 1 1 0, 0 1 0, 0 1 0, 0 1 0, 0 1 0, 0 -1 0, 0 -1 0, 0 -1 0, 0 -1 0, 1 -1 0, 1 0 0'/>
-              </Shape>
-            </Transform>
+            <Viewpoint DEF='_1' containerField='value'
+                position='2.79252 5.76409 4.20475'
+                orientation='-0.882984838661416 0.437083442792234 0.17116027205798 0.886694786879645'
+                centerOfRotation='0.5 0 -1'/>
           </MetadataSet>
         </MetadataSet>
       </MetadataSet>
     </WorldInfo>
-    <Transform DEF='Extrusion_1'
+    <Transform DEF='Extrusion'
         translation='-2 0 0'>
       <Shape>
         <Appearance>
@@ -95,13 +81,13 @@
               repeatS='false'
               repeatT='false'/>
         </Appearance>
-        <Extrusion DEF='Extrusion1_1'
+        <Extrusion DEF='Extrusion1'
             crossSection='0 1, 1 0, 0 -1'
             orientation='0 0 1 0, 0 0 1 0.199999999999999, 0 0 1 0.4, 0 0 1 0.6, 0 0 1 0.8'
             spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
       </Shape>
     </Transform>
-    <Transform DEF='Extrusion_2'
+    <Transform DEF='Extrusion_1'
         translation='2 0 0'>
       <Shape>
         <Appearance>
@@ -118,7 +104,7 @@
             spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
       </Shape>
     </Transform>
-    <Transform DEF='Extrusion_3'
+    <Transform DEF='Extrusion_2'
         translation='0 0 -2'>
       <Shape>
         <Appearance>
@@ -135,6 +121,6 @@
             spine='0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0, 0 0 0'/>
       </Shape>
     </Transform>
-    <Transform USE='Extrusion'/>
+    <Viewpoint USE='_1'/>
   </Scene>
 </X3D>

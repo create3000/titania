@@ -431,8 +431,8 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 
 		if (material -> getType () .back () == X3D::X3DConstants::TwoSidedMaterial)
 		{
-			static constexpr size_t X_DIMENSION = 32;
-			static constexpr size_t Y_DIMENSION = 16;
+			static constexpr size_t X_DIMENSION = 33; // Of the half sphere.
+			static constexpr size_t Y_DIMENSION = 17; // Of the half sphere.
 
 			const auto transform1  = scene -> createNode <X3D::Transform> ();
 			const auto transform2  = scene -> createNode <X3D::Transform> ();
@@ -440,6 +440,7 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 			const auto shape2      = scene -> createNode <X3D::Shape> ();
 			const auto appearance1 = scene -> createNode <X3D::Appearance> ();
 			const auto appearance2 = scene -> createNode <X3D::Appearance> ();
+			const auto material1   = X3D::X3DPtr <X3D::TwoSidedMaterial> (material);
 			const auto material2   = X3D::X3DPtr <X3D::TwoSidedMaterial> (material -> copy (X3D::FLAT_COPY));
 			const auto halfSphere1 = scene -> createNode <X3D::Extrusion> ();
 
@@ -452,15 +453,15 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 			halfSphere1 -> orientation ()  .clear ();
 			halfSphere1 -> spine ()        .clear ();
 
-			for (size_t i = 0; i < Y_DIMENSION; ++ i)
-				halfSphere1 -> crossSection () .emplace_back (std::sin (M_PI * i / Y_DIMENSION), std::cos (M_PI * i / Y_DIMENSION));
+			for (size_t i = 0; i < Y_DIMENSION - 1; ++ i)
+				halfSphere1 -> crossSection () .emplace_back (std::sin (M_PI * i / (Y_DIMENSION - 1)), std::cos (M_PI * i / (Y_DIMENSION - 1)));
 
 			halfSphere1 -> crossSection () .emplace_back (0, -1);
 
-			for (size_t i = 0; i < X_DIMENSION + 1; ++ i)
-				halfSphere1 -> orientation () .emplace_back (0, 0, 1, M_PI * i / X_DIMENSION);
+			for (size_t i = 0; i < X_DIMENSION ; ++ i)
+				halfSphere1 -> orientation () .emplace_back (0, 0, 1, M_PI * i / (X_DIMENSION - 1));
 
-			for (size_t i = 0; i < X_DIMENSION + 1; ++ i)
+			for (size_t i = 0; i < X_DIMENSION; ++ i)
 				halfSphere1 -> spine () .emplace_back (0, 0, 0);
 
 			const auto halfSphere2 = X3D::X3DPtr <X3D::Extrusion> (halfSphere1-> copy (scene, X3D::FLAT_COPY));	
@@ -471,7 +472,9 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 			transform1 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0, -1, 0, M_PI / 2);
 			transform2 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0,  1, 0, M_PI / 2);
 
-			material2 -> transparency () = 1;
+			material1 -> separateBackColor () = true;
+			material2 -> separateBackColor () = true;
+			material2 -> transparency ()      = 1;
 
 			scene -> getRootNodes ()   = { transform1, transform2 };
 			transform1 -> children ()  = { shape1 };
@@ -480,7 +483,7 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 			shape2 -> appearance ()    = appearance2;
 			shape1 -> geometry ()      = halfSphere1;
 			shape2 -> geometry ()      = halfSphere2;
-			appearance1 -> material () = material;
+			appearance1 -> material () = material1;
 			appearance2 -> material () = material2;
 		}
 		else
