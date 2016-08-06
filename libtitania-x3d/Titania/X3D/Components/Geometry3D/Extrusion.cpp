@@ -393,14 +393,16 @@ Extrusion::build ()
 			const auto p3 = INDEX (n1, k1);
 			const auto p4 = INDEX (n1, k);
 
-			const auto length1   = abs (points [p2] - points [p3]);
-			const auto length2   = abs (points [p4] - points [p1]);
+			const bool length1   = abs (points [p2] - points [p3]) >= 1e-7;
+			const bool length2   = abs (points [p4] - points [p1]) >= 1e-7;
 			const auto texCoord1 = Vector2f (      k / numCrossSection_1,       n / numSpine_1);
 			const auto texCoord2 = Vector2f ((k + 1) / numCrossSection_1,       n / numSpine_1);
 			const auto texCoord3 = Vector2f ((k + 1) / numCrossSection_1, (n + 1) / numSpine_1);
 			const auto texCoord4 = Vector2f (      k / numCrossSection_1, (n + 1) / numSpine_1);
 			const auto normal1   = normal (points [p1], points [p2], points [p3]);
 			const auto normal2   = normal (points [p1], points [p3], points [p4]);
+
+			// If there are coincident spine points then one length can be zero.
 
 			if (length1)
 			{

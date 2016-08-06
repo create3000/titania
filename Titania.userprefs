@@ -1,17 +1,17 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="552" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="112" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="218" Column="2" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.h" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/AppearanceEditor/AppearanceEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp" Line="190" Column="1" />
-      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="288" Column="126" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="216" Column="18" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="209" Column="23" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/MagicImport.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="398" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
