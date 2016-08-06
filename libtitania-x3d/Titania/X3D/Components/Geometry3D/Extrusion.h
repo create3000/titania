@@ -208,6 +208,12 @@ private:
 
 	///  @name Operations
 
+	bool
+	getClosedCrossSection () const;
+	
+	bool
+	getClosedSpine () const;
+
 	std::vector <Vector3d>
 	createPoints (const bool);
 

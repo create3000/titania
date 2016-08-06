@@ -653,6 +653,7 @@
     <None Include="Tests\ParticleSystems\fire4.png" />
     <None Include="Tests\Geometry3D\Vase.x3d" />
     <None Include="Tests\Geometry3D\normal.distribution.x3d" />
+    <None Include="Tests\Extrusion\Rotations.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

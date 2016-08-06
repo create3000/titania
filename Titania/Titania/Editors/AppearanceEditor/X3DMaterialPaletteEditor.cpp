@@ -189,8 +189,6 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 	getRemovePaletteMenuItem () .set_sensitive (customPalette);
 	getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
-	getRemoveMaterialMenuItem () .set_sensitive (false);
-
 	try
 	{
 		files .clear ();
@@ -214,6 +212,9 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 	{
 		disable ();
 	}
+
+	getAddMaterialMenuItem ()    .set_sensitive (customPalette and files .size () < PAGE_SIZE);
+	getRemoveMaterialMenuItem () .set_sensitive (false);
 }
 
 void

@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Fri, 05 Aug 2016 15:52:23 GMT'/>
+    <meta name='modified' content='Sat, 06 Aug 2016 05:35:44 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -46,11 +46,11 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='-1.52934074401855, 5.15964269638062, 10.2080821990967'/>
+              value='-0.123856335701134, 4.92741928550223, 10.4333752078756'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.93486173789841, 0.330487470923455, 0.129659409902184, 5.80871114872592'/>
+              value='0.998933850763831, 0.0357346881521023, 0.0292265950944631, 5.85913245752255'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
@@ -87,11 +87,16 @@
                 scale='2.01102 1 1'>
               <Shape>
                 <Appearance>
-                  <Material DEF='Winter8'
+                  <TwoSidedMaterial DEF='Winter8'
+                      separateBackColor='true'
                       ambientIntensity='0.253968'
                       diffuseColor='0.279399 0.589 0.394407'
                       specularColor='0.39624 0.427003 0.00760637'
-                      shininess='0.0378378'/>
+                      shininess='0.0378378'
+                      backAmbientIntensity='0.253968'
+                      backDiffuseColor='0.117647 0.564706 1'
+                      backSpecularColor='0.39624 0.427003 0.00760637'
+                      backShininess='0.0378378'/>
                 </Appearance>
                 <IndexedFaceSet
                     solid='false'

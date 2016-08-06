@@ -116,6 +116,18 @@ Extrusion::initialize ()
 	X3DGeometryNode::initialize ();
 }
 
+bool
+Extrusion::getClosedCrossSection () const
+{
+	return crossSection () .front () == crossSection () .back ();
+}
+
+bool
+Extrusion::getClosedSpine () const
+{
+	return spine () .front () == spine () .back () and (orientation () .empty () or orientation () .front () == orientation () .back ());
+}
+
 std::vector <Vector3d>
 Extrusion::createPoints (const bool hasCaps)
 {
@@ -135,7 +147,7 @@ Extrusion::createPoints (const bool hasCaps)
 
 	// calculate SCP rotations
 
-	std::vector <Matrix4d> rotations = createRotations ();
+	const auto rotations = createRotations ();
 
 	// calculate vertices.
 
@@ -191,8 +203,9 @@ Extrusion::createRotations ()
 
 	// calculate SCP rotations
 
-	const bool closedSpine = spine () .front () == spine () .back ();
+	const bool closedSpine = getClosedSpine ();
 
+	Vector3f SCPyAxisPrevious;
 	Vector3f SCPzAxisPrevious;
 
 	Vector3f SCPxAxis;
@@ -221,6 +234,10 @@ Extrusion::createRotations ()
 		}
 	}
 
+	// The entire spine is coincident:
+	if (SCPyAxis == Vector3f ())
+		SCPyAxis = Vector3f (0, 1, 0);
+
 	// The entire spine is collinear:
 	if (SCPzAxis == Vector3f ())
 		SCPzAxis = Vector3f (0, 0, 1) * Rotation4f (Vector3f (0, 1, 0), SCPyAxis);
@@ -235,6 +252,7 @@ Extrusion::createRotations ()
 
 	// For all points other than the first or last:
 
+	SCPyAxisPrevious = SCPyAxis;
 	SCPzAxisPrevious = SCPzAxis;
 
 	for (size_t i = 1, size = spine () .size () - 1; i < size; i ++)
@@ -246,6 +264,12 @@ Extrusion::createRotations ()
 		// g.
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
 			SCPzAxis = -SCPzAxis;
+
+		// The two points used in computing the Y-axis are coincident.
+		if (SCPyAxis == Vector3f ())
+			SCPyAxis = SCPyAxisPrevious;
+		else
+			SCPyAxisPrevious = SCPyAxis;
 
 		// The three points used in computing the Z-axis are collinear.
 		if (SCPzAxis == Vector3f ())
@@ -280,6 +304,12 @@ Extrusion::createRotations ()
 		if (dot (SCPzAxisPrevious, SCPzAxis) < 0)
 			SCPzAxis = -SCPzAxis;
 
+		// The two points used in computing the Y-axis are coincident.
+		if (SCPyAxis == Vector3f ())
+			SCPyAxis = SCPyAxisPrevious;
+		else
+			SCPyAxisPrevious = SCPyAxis;
+
 		// The three points used in computing the Z-axis are collinear.
 		if (SCPzAxis == Vector3f ())
 			SCPzAxis = SCPzAxisPrevious;
@@ -308,8 +338,8 @@ Extrusion::build ()
 
 	#define INDEX(n, k) ((n) * crossSectionSize + (k))
 
-	const bool closedSpine        = spine () .front () == spine () .back ();
-	const bool closedCrossSection = crossSection () .front () == crossSection () .back ();
+	const bool closedSpine        = getClosedSpine ();
+	const bool closedCrossSection = getClosedCrossSection ();
 
 	// For caps calculation
 
@@ -332,10 +362,11 @@ Extrusion::build ()
 	std::vector <size_t> coordIndex;
 	NormalIndex normalIndex;
 
-	size_t reserve = (spine () .size () - 1) * (crossSection () .size () - 1) * 6 + (beginCap () ? (numCapPoints - 2) * 3 : 0) + (endCap () ? (numCapPoints - 2) * 3 : 0);
-	coordIndex .reserve (reserve);
+	const size_t reserve = (spine () .size () - 1) * (crossSection () .size () - 1) * 6 + (beginCap () ? (numCapPoints - 2) * 3 : 0) + (endCap () ? (numCapPoints - 2) * 3 : 0);
+
+	coordIndex          .reserve (reserve);
 	getTexCoords () [0] .reserve (reserve);
-	getNormals  () .reserve (reserve);
+	getNormals  ()      .reserve (reserve);
 
 	// Build body.
 
@@ -346,7 +377,7 @@ Extrusion::build ()
 	{
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
-			const size_t n1 = closedSpine and n == spine () .size () - 2 ? 0 : n + 1;
+			const size_t n1 = closedSpine        and n == spine ()        .size () - 2 ? 0 : n + 1;
 			const size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
 
 			// k      k+1
@@ -659,8 +690,8 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord ()    = texCoord;
 	geometry -> coord ()       = coord;
 
-	const bool closedSpine        = spine () .front () == spine () .back ();
-	const bool closedCrossSection = crossSection () .front () == crossSection () .back ();
+	const bool closedSpine        = getClosedSpine ();
+	const bool closedCrossSection = getClosedCrossSection ();
 	const auto crossSectionSize   = crossSection () .size () - closedCrossSection;
 
 	for (size_t n = 0, size = spine () .size (); n < size; ++ n)
