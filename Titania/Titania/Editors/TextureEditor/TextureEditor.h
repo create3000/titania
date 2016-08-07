@@ -81,6 +81,16 @@ public:
 	~TextureEditor ();
 
 
+protected:
+
+	///  @name Member access
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DTextureNode> &
+	getTexture () const
+	{ return X3DTextureNodeEditor::getTexture (); }
+
+
 private:
 
 	///  @name Construction

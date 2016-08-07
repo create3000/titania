@@ -94,6 +94,13 @@ protected:
 	void
 	store () override;
 
+	///  @name Member access
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DTextureNode> &
+	getTexture () const
+	{ return textureNode; }
+
 
 private:
 

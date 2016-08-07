@@ -123,6 +123,16 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_ImageTextureURLCellrendererPixbuf1           = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("ImageTextureURLCellrendererPixbuf1"));
 
 	// Get widgets.
+	m_builder -> get_widget ("EditPaletteDialog", m_EditPaletteDialog);
+	m_builder -> get_widget ("EditPaletteCancelButton", m_EditPaletteCancelButton);
+	m_builder -> get_widget ("EditPaletteOkButton", m_EditPaletteOkButton);
+	m_builder -> get_widget ("PaletteNameEntry", m_PaletteNameEntry);
+	m_builder -> get_widget ("PaletteMenu", m_PaletteMenu);
+	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
+	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
+	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
+	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
+	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("TextureChildNotebook", m_TextureChildNotebook);
@@ -279,6 +289,22 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
 	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 
+	// Connect object Gtk::Button with id 'EditPaletteCancelButton'.
+	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_edit_palette_cancel_clicked));
+	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_edit_palette_ok_clicked));
+
+	// Connect object Gtk::Entry with id 'PaletteNameEntry'.
+	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_name_changed));
+	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_name_delete_text), false);
+	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_name_insert_text), false);
+
+	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
+	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_add_palette_activate));
+	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_remove_palette_activate));
+	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_edit_palette_activate));
+	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_add_object_to_palette_activate));
+	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_remove_object_from_palette_activate));
+
 	// Connect object Gtk::ComboBoxText with id 'TextureComboBoxText'.
 	m_TextureComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_texture_changed));
 
@@ -310,6 +336,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'TextureCoordinateGeneratorUnlinkButton'.
 	m_TextureCoordinateGeneratorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_textureCoordinateGenerator_unlink_clicked));
 
+	// Connect object Gtk::Box with id 'PalettePreviewBox'.
+	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_button_press_event));
+
 	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
 	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_palette_changed));
 
@@ -323,6 +352,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 
 X3DTextureEditorInterface::~X3DTextureEditorInterface ()
 {
+	delete m_EditPaletteDialog;
 	delete m_Window;
 }
 

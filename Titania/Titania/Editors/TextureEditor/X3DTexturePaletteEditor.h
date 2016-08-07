@@ -52,12 +52,13 @@
 #define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
+#include "../PaletteEditor/X3DPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
 class X3DTexturePaletteEditor :
-	virtual public X3DTextureEditorInterface
+	public X3DPaletteEditor <X3DTextureEditorInterface>
 {
 public:
 
@@ -73,52 +74,28 @@ protected:
 
 	X3DTexturePaletteEditor ();
 
+	///  @name Member access
+
 	virtual
-	void
-	initialize () override;
+	const X3D::X3DPtr <X3D::X3DTextureNode> &
+	getTexture () const = 0;
 
 
 private:
 
-	///  @name Construction
-
-	void
-	set_browser ();
-
-	void
-	setCurrentFolder (const size_t);
-
-	void
-	set_initialized (const size_t);
-
-	void
-	addTexture (const size_t, const std::string &);
-
-	void
-	disable ();
-
-	///  @name Event handlers
-
-	void
-	set_touchTime (const size_t);
+	///  @name Operations
 
 	virtual
 	void
-	on_palette_previous_clicked () final override;
+	addObject (const std::string &) final override;
 
 	virtual
 	void
-	on_palette_next_clicked () final override;
+	setTouchTime (const std::string &) final override;
 
 	virtual
 	void
-	on_palette_changed () final override;
-
-	///  @name Members
-
-	X3D::BrowserPtr           preview;
-	std::vector <std::string> folders;
-	std::vector <std::string> files;
+	createScene (const X3D::X3DScenePtr &) final override;
 
 };
 

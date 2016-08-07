@@ -51,13 +51,9 @@
 #include "X3DTexturePaletteEditor.h"
 
 #include "../../Browser/MagicImport.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-#include "../../Widgets/LibraryView/LibraryView.h"
 
 #include <Titania/X3D/Components/Geometry2D/Rectangle2D.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
-#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Components/Texturing/ImageTexture.h>
@@ -65,168 +61,36 @@
 namespace titania {
 namespace puck {
 
-static constexpr size_t COLUMNS   = 6;
-static constexpr size_t ROWS      = 6;
-static constexpr size_t PAGE_SIZE = COLUMNS * ROWS;
-static constexpr double DISTANCE  = 2.5;
-
 X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
-	X3DTextureEditorInterface (),
-	                  preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
-	                  folders (),
-	                    files ()
-{
-	addChildren (preview);
-
-	preview -> setAntialiasing (4);
-}
+	X3DPaletteEditor <X3DTextureEditorInterface> ("Textures")
+{ }
 
 void
-X3DTexturePaletteEditor::initialize ()
-{
-	// Find material folders.
-
-	try
-	{
-		const auto folder = Gio::File::create_for_path (find_data_file ("Library/Textures"));
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-			{
-				const auto uri    = folder -> get_child (fileInfo -> get_name ()) -> get_uri ();
-				const auto folder = Gio::File::create_for_uri (uri);
-
-				if (not LibraryView::containsFiles (folder))
-					continue;
-
-				folders .emplace_back (uri);
-
-				getPaletteComboBoxText () .append (fileInfo -> get_name ());
-			}
-		}
-	}
-	catch (...)
-	{ }
-
-	// Show browser.
-
-	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
-
-	preview -> show ();
-	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_browser);
-}
-
-void
-X3DTexturePaletteEditor::set_browser ()
-{
-	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_browser);
-
-	if (folders .empty ())
-	{
-		disable ();
-		return;
-	}
-
-	const size_t index = getConfig () -> getInteger ("palette");
-
-	if (index < folders .size ())
-		getPaletteComboBoxText () .set_active (index);
-	else
-		getPaletteComboBoxText () .set_active (0);
-}
-
-void
-X3DTexturePaletteEditor::setCurrentFolder (const size_t index)
-{
-	preview -> initialized () .removeInterest (this, &X3DTexturePaletteEditor::set_initialized);
-	preview -> initialized () .addInterest (this, &X3DTexturePaletteEditor::set_initialized, index);
-
-	preview -> loadURL ({ get_ui ("Editors/Palette.x3dv") }, { });
-}
-
-void
-X3DTexturePaletteEditor::set_initialized (const size_t index)
-{
-	getConfig () -> setItem ("palette", (int) index);
-
-	getPalettePreviousButton () .set_sensitive (index > 0);
-	getPaletteNextButton ()     .set_sensitive (index + 1 < folders .size ());
-
-	try
-	{
-		files .clear ();
-
-		const auto folder = Gio::File::create_for_uri (folders .at (index));
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			switch (fileInfo -> get_file_type ())
-			{
-				case Gio::FILE_TYPE_REGULAR       :
-				case Gio::FILE_TYPE_SYMBOLIC_LINK :
-					{
-						const std::string uri = Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
-						addTexture (files .size (), uri);
-						files .emplace_back (uri);
-						break;
-					}
-				default:
-					break;
-			}
-
-			if (files .size () < PAGE_SIZE)
-				continue;
-
-			break;
-		}
-	}
-	catch (...)
-	{
-		disable ();
-	}
-}
-
-void
-X3DTexturePaletteEditor::addTexture (const size_t i, const std::string & uri)
+X3DTexturePaletteEditor::addObject (const std::string & uri)
 {
 	try
 	{
-		const int column = i % COLUMNS;
-		const int row    = i / COLUMNS;
-	
 		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Import"));
-		const auto scene       = preview -> createX3DFromURL ({ uri });
-		const auto appearance  = preview -> getExecutionContext () -> createNode <X3D::Appearance> ();
-		const auto rectangle   = preview -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
-		const auto shape       = preview -> getExecutionContext () -> createNode <X3D::Shape> ();
-		const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
-		const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
+		const auto scene       = getPreview () -> createX3DFromURL ({ uri });
+		const auto appearance  = getPreview () -> getExecutionContext () -> createNode <X3D::Appearance> ();
+		const auto rectangle   = getPreview () -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
+		const auto shape       = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
+		const auto transform   = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 	
-		shape -> appearance ()      = appearance;
-		shape -> geometry ()        = rectangle;
-		transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
-		transform -> children ()    = { shape, touchSensor };
+		shape -> appearance ()   = appearance;
+		shape -> geometry ()     = rectangle;
+		transform -> children () = { shape };
 	
-		MagicImport (getBrowserWindow ()) .import (preview -> getExecutionContext (), { transform }, scene, undoStep);
+		MagicImport (getBrowserWindow ()) .import (getPreview () -> getExecutionContext (), { transform }, scene, undoStep);
 	
-		touchSensor -> touchTime () .addInterest (this, &X3DTexturePaletteEditor::set_touchTime, i);
-		touchSensor -> description () = scene -> getRootNodes () .at (0) -> getName ();
-	
-		preview -> getExecutionContext () -> getRootNodes () .emplace_back (transform);
+		X3DPaletteEditor <X3DTextureEditorInterface>::addObject (uri, transform);
 	}
 	catch (...)
 	{ }
 }
 
 void
-X3DTexturePaletteEditor::disable ()
-{
-	getPaletteBox () .set_sensitive (false);
-}
-
-void
-X3DTexturePaletteEditor::set_touchTime (const size_t i)
+X3DTexturePaletteEditor::setTouchTime (const std::string & url)
 {
 	try
 	{
@@ -236,7 +100,7 @@ X3DTexturePaletteEditor::set_touchTime (const size_t i)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Palette"));
-		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
+		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ url });
 
 		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -246,21 +110,33 @@ X3DTexturePaletteEditor::set_touchTime (const size_t i)
 }
 
 void
-X3DTexturePaletteEditor::on_palette_previous_clicked ()
+X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
-}
+	try
+	{
+		const auto texture = getTexture () -> copy (scene, X3D::FLAT_COPY);
 
-void
-X3DTexturePaletteEditor::on_palette_next_clicked ()
-{
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () + 1);
-}
+		scene -> removeNamedNode (texture -> getName ());
 
-void
-X3DTexturePaletteEditor::on_palette_changed ()
-{
-	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
+		// Create scene.
+
+		const auto transform  = scene -> createNode <X3D::Transform> ();
+		const auto shape      = scene -> createNode <X3D::Shape> ();
+		const auto appearance = scene -> createNode <X3D::Appearance> ();
+		const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
+	
+		scene -> getRootNodes () = { transform };
+		transform -> children () = { shape };
+		shape -> appearance ()   = appearance;
+		shape -> geometry ()     = rectangle;
+		appearance -> texture () = texture;
+
+		// Setup scene.
+
+		scene -> setMetaData ("titania magic", "Texture");
+	}
+	catch (...)
+	{ }
 }
 
 X3DTexturePaletteEditor::~X3DTexturePaletteEditor ()

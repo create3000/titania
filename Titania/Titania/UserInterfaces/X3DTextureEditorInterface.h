@@ -339,6 +339,46 @@ public:
 	getImageTextureURLCellrendererPixbuf1 () const
 	{ return m_ImageTextureURLCellrendererPixbuf1; }
 
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
+
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
+
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
+
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem () const
+	{ return *m_AddObjectToPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem () const
+	{ return *m_RemoveObjectFromPaletteMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -963,6 +1003,46 @@ public:
 
 	virtual
 	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_palette_activate () = 0;
+
+	virtual
+	void
+	on_edit_palette_activate () = 0;
+
+	virtual
+	void
+	on_add_object_to_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_object_from_palette_activate () = 0;
+
+	virtual
+	void
 	on_texture_changed () = 0;
 
 	virtual
@@ -1012,6 +1092,10 @@ public:
 	virtual
 	void
 	on_textureCoordinateGenerator_unlink_clicked () = 0;
+
+	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton* event) = 0;
 
 	virtual
 	void
@@ -1111,6 +1195,16 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImageCubeMapTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageCubeMapTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
+	Gtk::Dialog*                           m_EditPaletteDialog;
+	Gtk::Button*                           m_EditPaletteCancelButton;
+	Gtk::Button*                           m_EditPaletteOkButton;
+	Gtk::Entry*                            m_PaletteNameEntry;
+	Gtk::Menu*                             m_PaletteMenu;
+	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_TextureChildNotebook;

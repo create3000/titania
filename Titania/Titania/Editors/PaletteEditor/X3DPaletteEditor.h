@@ -205,11 +205,11 @@ private:
 	
 	virtual
 	void
-	on_add_object_activate () final override;
+	on_add_object_to_palette_activate () final override;
 
 	virtual
 	void
-	on_remove_object_activate () final override;
+	on_remove_object_from_palette_activate () final override;
 
 	///  @name Members
 
@@ -333,7 +333,10 @@ X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath)
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 			{
-				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
+				const auto child = folder -> get_child (fileInfo -> get_name ());
+				const auto uri   = child -> get_uri ();
+
+				folders .emplace_back (uri);
 				this -> getPaletteComboBoxText () .append (fileInfo -> get_name ());
 			}
 		}
@@ -382,7 +385,7 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 		disable ();
 	}
 
-	this -> getAddObjectMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
+	this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
 template <class Type>
@@ -410,7 +413,7 @@ X3DPaletteEditor <Type>::addObject (const std::string & uri, const X3D::X3DPtr <
 	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
 	const bool   customPalette = paletteIndex >= numDefaultPalettes;
 
-	this -> getAddObjectMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
+	this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
 template <class Type>
@@ -437,13 +440,13 @@ X3DPaletteEditor <Type>::setSelection (const size_t i)
 		selectionSwitch -> whichChoice ()    = true;
 		selectionRectangle -> translation () = getPosition (i);
 
-		this -> getRemoveObjectMenuItem () .set_sensitive (customPalette);
+		this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette);
 	}
 	else
 	{
 		selectionSwitch -> whichChoice () = false;
 
-		this -> getRemoveObjectMenuItem () .set_sensitive (false);
+		this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (false);
 	}
 }
 
@@ -569,6 +572,7 @@ X3DPaletteEditor <Type>::on_edit_palette_ok_clicked ()
 {
 	this -> getEditPaletteDialog () .hide ();
 
+	const auto paletteIndex       = this -> getPaletteComboBoxText () .get_active_row_number ();
 	const std::string paletteName = this -> getPaletteNameEntry () .get_text ();
 	const auto        folder      = Gio::File::create_for_path (config_dir (libraryFolder + "/" + paletteName));
 
@@ -578,10 +582,10 @@ X3DPaletteEditor <Type>::on_edit_palette_ok_clicked ()
 
 	const auto iter = std::find (folders .begin () + numDefaultPalettes, folders .end (), folder -> get_uri ());
 
-	if (iter == folders .end ())
-		return; // Should never happen.
-
-	this -> getPaletteComboBoxText () .set_active (iter - folders .begin ());
+	if (iter not_eq folders .end ())
+		this -> getPaletteComboBoxText () .set_active (iter - folders .begin ());
+	else
+		this -> getPaletteComboBoxText () .set_active (paletteIndex);
 }
 
 template <class Type>
@@ -616,40 +620,47 @@ X3DPaletteEditor <Type>::on_palette_name_changed ()
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::on_add_object_activate ()
+X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 {
-	const auto scene = this -> getCurrentBrowser () -> createScene ();
-
-	createScene (scene);
-
-	scene -> setup ();
-	scene -> addStandardMetaData ();
-
-	// Print scene.
-
-	std::ostringstream osstream;
-
-	osstream << X3D::NicestStyle << scene << std::endl;
-
-	// Create file.
-
-	const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
-	const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-	const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
-	const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
-
-	std::string etag;
-
-	file -> replace_contents (osstream .str (), "", etag, false, Gio::FILE_CREATE_REPLACE_DESTINATION);
-
-	// Append material to palette preview.
-
-	addObject (Glib::uri_unescape_string (file -> get_uri ()));
+	try
+	{
+		const auto scene = this -> getCurrentBrowser () -> createScene ();
+	
+		createScene (scene);
+	
+		scene -> setup ();
+		scene -> addStandardMetaData ();
+	
+		// Print scene.
+	
+		std::ostringstream osstream;
+	
+		osstream << X3D::NicestStyle << scene << std::endl;
+	
+		// Create file.
+	
+		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
+		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
+		const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
+		const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
+	
+		std::string etag;
+	
+		file -> replace_contents (osstream .str (), "", etag, false, Gio::FILE_CREATE_REPLACE_DESTINATION);
+	
+		// Append material to palette preview.
+	
+		addObject (Glib::uri_unescape_string (file -> get_uri ()));
+	}
+	catch (...)
+	{
+		__LOG__ << std::endl;
+	}
 }
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::on_remove_object_activate ()
+X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 {
 	if (selectedIndex < files .size ())
 		Gio::File::create_for_uri (files [selectedIndex]) -> remove ();
