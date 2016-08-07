@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "LibraryView.h"
+#include "X3DLibraryView.h"
 
 #include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
@@ -71,17 +71,14 @@ static constexpr int EXPERIMENTAL = 4;
 
 };
 
-LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DLibraryViewInterface (get_ui ("LibraryView.glade")),
+X3DLibraryView::X3DLibraryView () :
+	X3DLibraryViewInterface (),
 	            hadjustment (new AdjustmentObject ()),
 	            vadjustment (new AdjustmentObject ())
-{
-	setup ();
-}
+{ }
 
 void
-LibraryView::initialize ()
+X3DLibraryView::initialize ()
 {
 	try
 	{
@@ -100,13 +97,13 @@ LibraryView::initialize ()
 }
 
 std::string
-LibraryView::getRoot () const
+X3DLibraryView::getRoot () const
 {
 	return find_data_file ("Library");
 }
 
 std::string
-LibraryView::getFilename (Gtk::TreeModel::Path path) const
+X3DLibraryView::getFilename (Gtk::TreeModel::Path path) const
 {
 	std::string filename;
 
@@ -126,7 +123,7 @@ LibraryView::getFilename (Gtk::TreeModel::Path path) const
 }
 
 std::vector <Glib::RefPtr <Gio::FileInfo>>
-LibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
+X3DLibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 {
 	std::vector <Glib::RefPtr <Gio::FileInfo>> fileInfos;
 
@@ -160,9 +157,9 @@ LibraryView::getChildren (const Glib::RefPtr <Gio::File> & directory)
 }
 
 bool
-LibraryView::containsFiles (const Glib::RefPtr <Gio::File> & directory)
+X3DLibraryView::containsFiles (const Glib::RefPtr <Gio::File> & directory)
 {
-	for (const auto & fileInfo : LibraryView::getChildren (directory))
+	for (const auto & fileInfo : X3DLibraryView::getChildren (directory))
 	{
 		switch (fileInfo -> get_file_type ())
 		{
@@ -178,7 +175,7 @@ LibraryView::containsFiles (const Glib::RefPtr <Gio::File> & directory)
 }
 
 void
-LibraryView::append (const std::string & path) const
+X3DLibraryView::append (const std::string & path) const
 {
 	static const std::string empty_string;
 	static const std::string experimental_icon ("Experimental");
@@ -233,7 +230,7 @@ LibraryView::append (const std::string & path) const
 }
 
 void
-LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory) const
+X3DLibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio::File> & directory) const
 {
 	static const std::string empty_string;
 	static const std::string experimental_icon ("Experimental");
@@ -286,7 +283,7 @@ LibraryView::append (Gtk::TreeModel::iterator & parent, const Glib::RefPtr <Gio:
 }
 
 void
-LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
+X3DLibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	try
 	{
@@ -313,7 +310,7 @@ LibraryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 }
 
 void
-LibraryView::restoreExpanded ()
+X3DLibraryView::restoreExpanded ()
 {
 	const auto expanded = getConfig () -> getString ("expanded");
 	const auto paths    = basic::split (expanded, ";");
@@ -326,7 +323,7 @@ LibraryView::restoreExpanded ()
 }
 
 void
-LibraryView::saveExpanded ()
+X3DLibraryView::saveExpanded ()
 {
 	std::deque <std::string> paths;
 
@@ -340,7 +337,7 @@ LibraryView::saveExpanded ()
 }
 
 void
-LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths) const
+X3DLibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque <std::string> & paths) const
 {
 	for (const auto & child : children)
 	{
@@ -355,12 +352,10 @@ LibraryView::getExpanded (const Gtk::TreeModel::Children & children, std::deque 
 	}
 }
 
-LibraryView::~LibraryView ()
+X3DLibraryView::~X3DLibraryView ()
 {
 	if (isInitialized ())
 		saveExpanded ();
-
-	dispose ();
 }
 
 } // puck

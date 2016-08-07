@@ -129,7 +129,6 @@
     <Compile Include="Titania\Widgets\OutlineEditor\OutlineTreeObserver.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\OutlineTreeViewEditor.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\X3DOutlineTreeView.cpp" />
-    <Compile Include="Titania\Widgets\LibraryView\LibraryView.cpp" />
     <Compile Include="Titania\Widgets\Console\Console.cpp" />
     <Compile Include="Titania\Widgets\HistoryView\History.cpp" />
     <Compile Include="Titania\Widgets\HistoryView\HistoryView.cpp" />
@@ -277,6 +276,9 @@
     <Compile Include="Titania\Editors\SculpToolEditor\SculpToolEditor.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.cpp" />
+    <Compile Include="Titania\Editors\LibraryView\LibraryView.cpp" />
+    <Compile Include="Titania\Editors\LibraryView\X3DLibraryView.cpp" />
+    <Compile Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1029,7 +1031,6 @@
     <None Include="Titania\Widgets\OutlineEditor\OutlineTreeObserver.h" />
     <None Include="Titania\Widgets\OutlineEditor\OutlineTreeViewEditor.h" />
     <None Include="Titania\Widgets\OutlineEditor\X3DOutlineTreeView.h" />
-    <None Include="Titania\Widgets\LibraryView\LibraryView.h" />
     <None Include="Titania\Widgets\Console\Console.h" />
     <None Include="Titania\Widgets\HistoryView\History.h" />
     <None Include="Titania\Widgets\HistoryView\HistoryView.h" />
@@ -1404,7 +1405,6 @@
     <None Include="share\titania\ui\icons\Node\X3DExecutionContext.96.svg" />
     <None Include="share\titania\ui\AnimationEditor.glade" />
     <None Include="share\titania\ui\BrowserWindow.glade" />
-    <None Include="share\titania\ui\LibraryView.glade" />
     <None Include="share\titania\ui\ScriptEditor.glade" />
     <None Include="share\titania\ui\Dialogs\FileImportDialog.glade" />
     <None Include="share\titania\ui\Dialogs\FileOpenDialog.glade" />
@@ -2525,6 +2525,10 @@
     <None Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.h" />
     <None Include="Titania\Editors\PaletteEditor\X3DPaletteEditor.h" />
+    <None Include="Titania\Editors\LibraryView\LibraryView.h" />
+    <None Include="Titania\Editors\LibraryView\X3DLibraryView.h" />
+    <None Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.h" />
+    <None Include="share\titania\ui\Editors\LibraryView.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2625,6 +2629,7 @@
     <Folder Include="Titania\Editors\SculpToolEditor\" />
     <Folder Include="share\titania\Library\Primitives\Text\" />
     <Folder Include="Titania\Editors\PaletteEditor\" />
+    <Folder Include="Titania\Editors\LibraryView\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

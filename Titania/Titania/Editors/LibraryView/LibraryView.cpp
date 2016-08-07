@@ -48,46 +48,50 @@
  *
  ******************************************************************************/
 
-#include "Sidebar.h"
+#include "LibraryView.h"
 
-#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-
-#include "../../Editors/LibraryView/LibraryView.h"
-#include "../../Editors/NodeEditor/NodeEditor.h"
-#include "../HistoryView/HistoryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../BindableNodeList/ViewpointList.h"
 
 namespace titania {
 namespace puck {
 
-Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DSidebarInterface (get_ui ("Sidebar.glade")),
-	X3DNotebook <X3DSidebarInterface> ()
+LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
+	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DLibraryViewInterface (get_ui ("Editors/LibraryView.glade")),
+	         X3DLibraryView (),
+	 X3DModelsPaletteEditor ()
 {
 	setup ();
 }
 
 void
-Sidebar::initialize ()
+LibraryView::configure ()
 {
-	X3DSidebarInterface::initialize ();
-	X3DNotebook <X3DSidebarInterface>::initialize ();
+	X3DLibraryViewInterface::configure ();
 
-	addPage ("ViewpointList", getViewpointListBox ());
-	addPage ("HistoryView",   getHistoryViewBox   ());
-	addPage ("LibraryView",   getLibraryViewBox   ());
-	addPage ("OutlineEditor", getOutlineEditorBox ());
-	addPage ("NodeEditor",    getNodeEditorBox    ());
+	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
-Sidebar::~Sidebar ()
+void
+LibraryView::initialize ()
 {
-	X3DNotebook <X3DSidebarInterface>::dispose ();
-	X3DSidebarInterface::dispose ();
+	X3DLibraryViewInterface::initialize ();
+	X3DLibraryView::initialize ();
+	X3DModelsPaletteEditor::initialize ();
+}
+
+void
+LibraryView::store ()
+{
+	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+
+	X3DLibraryViewInterface::store ();
+}
+
+LibraryView::~LibraryView ()
+{
+	dispose ();
 }
 
 } // puck

@@ -68,6 +68,7 @@
 #include "../Editors/GridEditor/GridEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
+#include "../Editors/LibraryView/LibraryView.h"
 #include "../Editors/LightEditor/LightEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
@@ -89,7 +90,6 @@
 #include "../Widgets/BindableNodeList/NavigationInfoList.h"
 #include "../Widgets/BindableNodeList/ViewpointList.h"
 #include "../Widgets/HistoryView/HistoryView.h"
-#include "../Widgets/LibraryView/LibraryView.h"
 #include "../Widgets/OutlineEditor/OutlineEditor.h"
 
 #include "../Widgets/AnimationEditor/AnimationEditor.h"

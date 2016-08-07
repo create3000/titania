@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,47 +48,54 @@
  *
  ******************************************************************************/
 
-#include "Sidebar.h"
+#ifndef __TITANIA_LIBRARY_LIBRARY_VIEW_H__
+#define __TITANIA_LIBRARY_LIBRARY_VIEW_H__
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-
-#include "../../Editors/LibraryView/LibraryView.h"
-#include "../../Editors/NodeEditor/NodeEditor.h"
-#include "../HistoryView/HistoryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../BindableNodeList/ViewpointList.h"
+#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include "X3DLibraryView.h"
+#include "X3DModelsPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
-Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DSidebarInterface (get_ui ("Sidebar.glade")),
-	X3DNotebook <X3DSidebarInterface> ()
-{
-	setup ();
-}
+class BrowserWindow;
 
-void
-Sidebar::initialize ()
+class LibraryView :
+	virtual public X3DLibraryViewInterface,
+	public X3DLibraryView,
+	public X3DModelsPaletteEditor
 {
-	X3DSidebarInterface::initialize ();
-	X3DNotebook <X3DSidebarInterface>::initialize ();
+public:
 
-	addPage ("ViewpointList", getViewpointListBox ());
-	addPage ("HistoryView",   getHistoryViewBox   ());
-	addPage ("LibraryView",   getLibraryViewBox   ());
-	addPage ("OutlineEditor", getOutlineEditorBox ());
-	addPage ("NodeEditor",    getNodeEditorBox    ());
-}
+	///  @name Construction
 
-Sidebar::~Sidebar ()
-{
-	X3DNotebook <X3DSidebarInterface>::dispose ();
-	X3DSidebarInterface::dispose ();
-}
+	LibraryView (X3DBrowserWindow* const);
+
+	///  @name Destruction
+
+	virtual
+	~LibraryView ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	configure () final override;
+
+	virtual
+	void
+	initialize () final override;
+
+	virtual
+	void
+	store () final override;
+
+};
 
 } // puck
 } // titania
+
+#endif

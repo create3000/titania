@@ -85,6 +85,9 @@ titania_SOURCES =  \
 	Titania/Editors/GridEditor/X3DGridTool.cpp \
 	Titania/Editors/InlineEditor/InlineEditor.cpp \
 	Titania/Editors/LayerEditor/LayerEditor.cpp \
+	Titania/Editors/LibraryView/LibraryView.cpp \
+	Titania/Editors/LibraryView/X3DLibraryView.cpp \
+	Titania/Editors/LibraryView/X3DModelsPaletteEditor.cpp \
 	Titania/Editors/LightEditor/LightEditor.cpp \
 	Titania/Editors/LightEditor/X3DDirectionalLightEditor.cpp \
 	Titania/Editors/LightEditor/X3DPointLightEditor.cpp \
@@ -191,7 +194,6 @@ titania_SOURCES =  \
 	Titania/Widgets/Footer/Footer.cpp \
 	Titania/Widgets/HistoryView/History.cpp \
 	Titania/Widgets/HistoryView/HistoryView.cpp \
-	Titania/Widgets/LibraryView/LibraryView.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \

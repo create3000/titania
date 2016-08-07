@@ -48,47 +48,62 @@
  *
  ******************************************************************************/
 
-#include "Sidebar.h"
+#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
+#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DMODELS_PALETTE_EDITOR_H__
 
-#include "../../Browser/BrowserSelection.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-
-#include "../../Editors/LibraryView/LibraryView.h"
-#include "../../Editors/NodeEditor/NodeEditor.h"
-#include "../HistoryView/HistoryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../BindableNodeList/ViewpointList.h"
+#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
-Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DSidebarInterface (get_ui ("Sidebar.glade")),
-	X3DNotebook <X3DSidebarInterface> ()
+class X3DModelsPaletteEditor :
+	public X3DPaletteEditor <X3DLibraryViewInterface>
 {
-	setup ();
-}
+public:
 
-void
-Sidebar::initialize ()
-{
-	X3DSidebarInterface::initialize ();
-	X3DNotebook <X3DSidebarInterface>::initialize ();
+	///  @name Destruction
 
-	addPage ("ViewpointList", getViewpointListBox ());
-	addPage ("HistoryView",   getHistoryViewBox   ());
-	addPage ("LibraryView",   getLibraryViewBox   ());
-	addPage ("OutlineEditor", getOutlineEditorBox ());
-	addPage ("NodeEditor",    getNodeEditorBox    ());
-}
+	virtual
+	~X3DModelsPaletteEditor ();
 
-Sidebar::~Sidebar ()
-{
-	X3DNotebook <X3DSidebarInterface>::dispose ();
-	X3DSidebarInterface::dispose ();
-}
+
+protected:
+
+	///  @name Construction
+
+	X3DModelsPaletteEditor ();
+
+
+private:
+
+	///  @name Operations
+
+	virtual
+	void
+	addObject (const std::string &) final override;
+
+	virtual
+	void
+	setTouchTime (const std::string &) final override;
+
+	virtual
+	void
+	createScene (const X3D::X3DScenePtr &) final override;
+	
+	void
+	set_loadState (const X3D::X3DPtr <X3D::Inline> & ,
+	               const X3D::X3DPtr <X3D::LoadSensor> &,
+	               const X3D::X3DPtr <X3D::Transform> &);
+	
+	void
+	set_loadTime (const X3D::X3DPtr <X3D::Inline> & ,
+	              const X3D::X3DPtr <X3D::LoadSensor> &,
+	              const X3D::X3DPtr <X3D::Transform> &);
+
+};
 
 } // puck
 } // titania
+
+#endif

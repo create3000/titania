@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,28 +48,25 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_LIBRARY_LIBRARY_VIEW_H__
-#define __TITANIA_LIBRARY_LIBRARY_VIEW_H__
+#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
+#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
 
 #include "../../UserInterfaces/X3DLibraryViewInterface.h"
 
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
 class AdjustmentObject;
 
-class LibraryView :
-	public X3DLibraryViewInterface
+class X3DLibraryView :
+	virtual public X3DLibraryViewInterface
 {
 public:
 
-	///  @name Construction
-
-	LibraryView (X3DBrowserWindow* const);
+	///  @name Operations
 
 	static
-	std::vector <Glib::RefPtr <Gio::FileInfo>>
+	std::vector <Glib::RefPtr <Gio::FileInfo>> 
 	getChildren (const Glib::RefPtr <Gio::File> &);
 
 	static
@@ -79,16 +76,23 @@ public:
 	///  @name Destruction
 
 	virtual
-	~LibraryView ();
+	~X3DLibraryView ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DLibraryView ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
+	///  @name Operations
 
 	std::string
 	getRoot () const;
@@ -108,11 +112,11 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
-	///  @name Expanded
-	
+	///  @name Expanded handling
+
 	void
 	restoreExpanded ();
-	
+
 	void
 	saveExpanded ();
 

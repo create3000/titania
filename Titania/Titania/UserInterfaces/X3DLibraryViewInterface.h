@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 #define __TMP_GLAD2CPP_LIBRARY_VIEW_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,20 +61,20 @@ namespace puck {
  *  Gtk Interface for LibraryView.
  */
 class X3DLibraryViewInterface :
-	public X3DUserInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DLibraryViewInterface () :
-		X3DUserInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DLibraryViewInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (m_widgetName, arguments ...),
-		        filename (filename)
+		X3DEditorInterface (m_widgetName, arguments ...),
+		          filename (filename)
 	{ create (filename); }
 
 	///  @name Member access
@@ -139,29 +139,21 @@ public:
 	getCobwebRenderer () const
 	{ return m_CobwebRenderer; }
 
-	Gtk::Menu &
-	getPaletteMenu () const
-	{ return *m_PaletteMenu; }
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
 
-	Gtk::ImageMenuItem &
-	getAddPaletteMenuItem () const
-	{ return *m_AddPaletteMenuItem; }
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
 
-	Gtk::ImageMenuItem &
-	getRemovePaletteMenuItem () const
-	{ return *m_RemovePaletteMenuItem; }
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
 
-	Gtk::ImageMenuItem &
-	getEditPaletteMenuItem () const
-	{ return *m_EditPaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getAddObjectToPaletteMenuItem () const
-	{ return *m_AddObjectToPaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getRemoveObjectFromPaletteMenuItem () const
-	{ return *m_RemoveObjectFromPaletteMenuItem; }
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
 
 	Gtk::Window &
 	getWindow () const
@@ -207,11 +199,91 @@ public:
 	getPaletteNextButton () const
 	{ return *m_PaletteNextButton; }
 
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem () const
+	{ return *m_AddObjectToPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem () const
+	{ return *m_RemoveObjectFromPaletteMenuItem; }
+
 	///  @name Signal handlers
 
 	virtual
 	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_palette_changed () = 0;
+
+	virtual
+	void
+	on_palette_previous_clicked () = 0;
+
+	virtual
+	void
+	on_palette_next_clicked () = 0;
+
+	virtual
+	void
+	on_add_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_palette_activate () = 0;
+
+	virtual
+	void
+	on_edit_palette_activate () = 0;
+
+	virtual
+	void
+	on_add_object_to_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_object_from_palette_activate () = 0;
 
 	///  @name Destruction
 
@@ -226,7 +298,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DUserInterface::construct (); }
+	{ X3DEditorInterface::construct (); }
 
 	void
 	create (const std::string &);
@@ -249,12 +321,10 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_CobwebColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
-	Gtk::Menu*                             m_PaletteMenu;
-	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
+	Gtk::Dialog*                           m_EditPaletteDialog;
+	Gtk::Button*                           m_EditPaletteCancelButton;
+	Gtk::Button*                           m_EditPaletteOkButton;
+	Gtk::Entry*                            m_PaletteNameEntry;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_Notebook;
@@ -266,6 +336,12 @@ private:
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
 	Gtk::Button*                           m_PalettePreviousButton;
 	Gtk::Button*                           m_PaletteNextButton;
+	Gtk::Menu*                             m_PaletteMenu;
+	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
 
 };
 
