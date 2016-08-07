@@ -5,7 +5,7 @@ META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Palette.x3dv"
-META "modified" "Fri, 05 Aug 2016 16:36:23 GMT"
+META "modified" "Sun, 07 Aug 2016 02:19:15 GMT"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -102,17 +102,10 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value [
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-            value DEF Items Group { }
-          }
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-          }
-        ]
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
       }
       DEF NavigationInfo MetadataSet {
         name "NavigationInfo"
@@ -258,7 +251,36 @@ DEF Grid Transform {
   ]
 }
 
-USE Items
+DEF Items Group { }
+
+DEF SelectionSwitch Switch {
+  whichChoice 0
+  children [
+    Group { }
+    DEF SelectionRectangle Transform {
+      scale 1.2 1.2 1.2
+      children Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 2
+          }
+          material DEF _2 Material {
+            emissiveColor 1 0 0
+          }
+        }
+        geometry Polyline2D {
+          lineSegments [
+            1 1,
+            -1 1,
+            -1 -1,
+            1 -1,
+            1 1
+          ]
+        }
+      }
+    }
+  ]
+}
 
 DEF PrimitiveQuality Script {
   url "vrmlscript:
@@ -271,3 +293,5 @@ function initialize ()
 }
 
 EXPORT Items
+EXPORT SelectionRectangle
+EXPORT SelectionSwitch

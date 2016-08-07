@@ -113,6 +113,9 @@ private:
 	void
 	addMaterial (const std::string &);
 
+	X3D::Vector3f
+	getPosition (const size_t i) const;
+
 	void
 	enable ();
 
@@ -120,6 +123,12 @@ private:
 	disable ();
 
 	///  @name Event handlers
+
+	void
+	set_over (const bool, const size_t);
+
+	void
+	set_touchTime (const size_t);
 
 	virtual
 	void
@@ -136,12 +145,6 @@ private:
 	virtual
 	void
 	on_palette_changed () final override;
-
-	void
-	set_over (const bool, const size_t);
-
-	void
-	set_touchTime (const size_t);
 	
 	virtual
 	bool
@@ -189,14 +192,16 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr           preview;
-	X3D::GroupPtr             group;
-	std::vector <std::string> folders;
-	std::vector <std::string> files;
-	size_t                    numDefaultPalettes;
-	bool                      frontMaterial;
-	bool                      over;
-	size_t                    materialIndex;
+	X3D::BrowserPtr              preview;
+	X3D::X3DPtr <X3D::Group>     group;
+	X3D::X3DPtr <X3D::Switch>    selectionSwitch;
+	X3D::X3DPtr <X3D::Transform> selectionRectangle;
+	std::vector <std::string>    folders;
+	std::vector <std::string>    files;
+	size_t                       numDefaultPalettes;
+	bool                         frontMaterial;
+	bool                         over;
+	size_t                       materialIndex;
 };
 
 } // puck

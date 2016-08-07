@@ -55,17 +55,16 @@
 #include "../../Configuration/config.h"
 #include "../../Widgets/LibraryView/LibraryView.h"
 
-#include <Titania/OS.h>
 #include <Titania/X3D/Components/Geometry3D/Extrusion.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
+#include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
-
-#include <Titania/Backtrace.h>
 
 namespace titania {
 namespace puck {
@@ -79,6 +78,8 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/Palette.x3dv") })),
 	                       group (),
+	             selectionSwitch (),
+	          selectionRectangle (),
 	                     folders (),
 	                       files (),
 	          numDefaultPalettes (0),
@@ -86,7 +87,7 @@ X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	                        over (false),
 	               materialIndex (-1)
 {
-	addChildren (preview, group);
+	addChildren (preview, group, selectionSwitch, selectionRectangle);
 }
 
 void
@@ -112,10 +113,20 @@ X3DMaterialPaletteEditor::set_browser ()
 {
 	try
 	{
+		// Disconnect.
+
 		preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_browser);
 	
-		group = preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("Items");
+		// Get exported nodes.
+
+		const auto scene = preview -> getExecutionContext () -> getScene ();
+
+		group              = scene -> getExportedNode <X3D::Group>     ("Items");
+		selectionSwitch    = scene -> getExportedNode <X3D::Switch>    ("SelectionSwitch");
+		selectionRectangle = scene -> getExportedNode <X3D::Transform> ("SelectionRectangle");
 	
+		// Refresh palette.
+
 		refreshPalette ();
 	
 		const size_t paletteIndex = getConfig () -> getInteger ("palette");
@@ -185,6 +196,8 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 
 	getConfig () -> setItem ("palette", (int) paletteIndex);
 
+	selectionSwitch -> whichChoice () = false;
+
 	getPalettePreviousButton () .set_sensitive (paletteIndex > 0);
 	getPaletteNextButton ()     .set_sensitive (paletteIndex + 1 < folders .size ());
 
@@ -222,9 +235,7 @@ X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
 void
 X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 {
-	const auto i      = files .size ();
-	const int  column = i % COLUMNS;
-	const int  row    = i / COLUMNS;
+	const auto i = files .size ();
 
 	const auto inlineNode  = preview -> getExecutionContext () -> createNode <X3D::Inline> ();
 	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
@@ -234,7 +245,7 @@ X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 	touchSensor -> touchTime () .addInterest (this, &X3DMaterialPaletteEditor::set_touchTime, i);
 
 	inlineNode -> url ()        = { uri };
-	transform -> translation () = X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
+	transform -> translation () = getPosition (i);
 	transform -> children ()    = { inlineNode, touchSensor };
 
 	group -> children () .emplace_back (transform);
@@ -250,6 +261,15 @@ X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
 	getAddMaterialMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
+X3D::Vector3f
+X3DMaterialPaletteEditor::getPosition (const size_t i) const
+{
+	const int column = i % COLUMNS;
+	const int row    = i / COLUMNS;
+
+	return X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
+}
+
 void
 X3DMaterialPaletteEditor::enable ()
 {
@@ -260,6 +280,44 @@ void
 X3DMaterialPaletteEditor::disable ()
 {
 	getPaletteBox () .set_sensitive (false);
+}
+
+void
+X3DMaterialPaletteEditor::set_over (const bool value, const size_t i)
+{
+	over          = value;
+	materialIndex = i;
+}
+
+void
+X3DMaterialPaletteEditor::set_touchTime (const size_t i)
+{
+	try
+	{
+		// Display and place selection rectangle.
+
+		selectionSwitch -> whichChoice ()    = true;
+		selectionRectangle -> translation () = getPosition (i);
+
+		// Apply selected material to selection.
+
+		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+		if (selection .empty ())
+			return;
+
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
+		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
+
+		MagicImport magicImport (getBrowserWindow ());
+
+		magicImport .setFrontMaterial (frontMaterial);
+
+		if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
+			getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -284,37 +342,6 @@ void
 X3DMaterialPaletteEditor::on_palette_changed ()
 {
 	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
-}
-
-void
-X3DMaterialPaletteEditor::set_over (const bool value, const size_t i)
-{
-	over          = value;
-	materialIndex = i;
-}
-
-void
-X3DMaterialPaletteEditor::set_touchTime (const size_t i)
-{
-	try
-	{
-		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
-
-		if (selection .empty ())
-			return;
-
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
-		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
-
-		MagicImport magicImport (getBrowserWindow ());
-
-		magicImport .setFrontMaterial (frontMaterial);
-
-		if (magicImport .import (getCurrentContext (), selection, scene, undoStep))
-			getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	catch (const X3D::X3DError &)
-	{ }
 }
 
 bool
@@ -432,7 +459,7 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 		if (material -> getType () .back () == X3D::X3DConstants::TwoSidedMaterial)
 		{
 			static constexpr size_t X_DIMENSION = 33; // Of the half sphere.
-			static constexpr size_t Y_DIMENSION = 17; // Of the half sphere.
+			static constexpr size_t Y_DIMENSION = 33; // Of the half sphere.
 
 			const auto transform1  = scene -> createNode <X3D::Transform> ();
 			const auto transform2  = scene -> createNode <X3D::Transform> ();

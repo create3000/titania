@@ -54,14 +54,6 @@
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
-namespace X3D {
-
-class X3DTextureNode;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class TexturePreview :

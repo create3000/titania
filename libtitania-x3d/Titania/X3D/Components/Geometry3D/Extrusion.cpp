@@ -370,8 +370,12 @@ Extrusion::build ()
 
 	// Build body.
 
-	const float numCrossSection_1 = crossSection () .size () - 1;
-	const float numSpine_1        = spine () .size () - 1;
+	const float  numCrossSection_1 = crossSection () .size () - 1;
+	const size_t numCrossSection_2 = crossSection () .size () - 2;
+	const float  numSpine_1        = spine () .size () - 1;
+	const size_t numSpine_2        = spine () .size () - 2;
+
+	// Remember the most left and most right points for better normal generation.
 
 	size_t indexLeft  = INDEX (0, 0);
 	size_t indexRight = INDEX (0, closedCrossSection ? 0 : crossSection () .size () - 1);
@@ -380,8 +384,8 @@ Extrusion::build ()
 	{
 		for (size_t k = 0, size = crossSection () .size () - 1; k < size; ++ k)
 		{
-			const size_t n1 = closedSpine        and n == spine ()        .size () - 2 ? 0 : n + 1;
-			const size_t k1 = closedCrossSection and k == crossSection () .size () - 2 ? 0 : k + 1;
+			const size_t n1 = closedSpine        and n == numSpine_2        ? 0 : n + 1;
+			const size_t k1 = closedCrossSection and k == numCrossSection_2 ? 0 : k + 1;
 
 			// k      k+1
 			//
@@ -405,7 +409,7 @@ Extrusion::build ()
 			const auto normal1   = normal (points [p1], points [p2], points [p3]);
 			const auto normal2   = normal (points [p1], points [p3], points [p4]);
 
-			// Merge points on the left and right side if spine is coincident for better normal generation.
+			// Merge points on the most left and most right side if spine is coincident for better normal generation.
 
 			if (k == 0)
 			{
@@ -415,7 +419,7 @@ Extrusion::build ()
 					p1 = indexLeft;
 			}
 
-			if (k == crossSection () .size () - 2)
+			if (k == numCrossSection_2)
 			{
 				if (length1)
 					indexRight = p2;
@@ -432,7 +436,7 @@ Extrusion::build ()
 					getTexCoords () [0] .emplace_back (texCoord1 .x (), texCoord1 .y (), 0, 1);
 				else
 				{
-					// Cone case:
+					// Cone case on the right side:
 					const auto texCoord = (texCoord1 + texCoord4) / 2.0f;
 
 					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
@@ -468,7 +472,7 @@ Extrusion::build ()
 					getTexCoords () [0] .emplace_back (texCoord3 .x (), texCoord3 .y (), 0, 1);
 				else
 				{
-					// Cone case:
+					// Cone case on the left side:
 					const auto texCoord = (texCoord3 + texCoord2) / 2.0f;
 
 					getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);

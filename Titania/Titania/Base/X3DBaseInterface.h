@@ -58,14 +58,6 @@
 #include <sigc++/trackable.h>
 
 namespace titania {
-namespace X3D {
-
-class MetadataSet;
-
-} // titania
-} // X3D
-
-namespace titania {
 namespace puck {
 
 class X3DBrowserWindow;

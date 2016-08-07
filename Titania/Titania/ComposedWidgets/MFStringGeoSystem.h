@@ -54,14 +54,6 @@
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
 namespace titania {
-namespace X3D {
-
-class X3DGeospatialObject;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class MFStringGeoSystem :

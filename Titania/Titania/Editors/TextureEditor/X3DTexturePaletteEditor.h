@@ -99,6 +99,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_touchTime (const size_t);
+
 	virtual
 	void
 	on_palette_previous_clicked () final override;
@@ -110,9 +113,6 @@ private:
 	virtual
 	void
 	on_palette_changed () final override;
-
-	void
-	set_touchTime (const size_t);
 
 	///  @name Members
 

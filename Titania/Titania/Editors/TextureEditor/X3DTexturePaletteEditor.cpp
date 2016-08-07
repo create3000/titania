@@ -226,24 +226,6 @@ X3DTexturePaletteEditor::disable ()
 }
 
 void
-X3DTexturePaletteEditor::on_palette_previous_clicked ()
-{
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
-}
-
-void
-X3DTexturePaletteEditor::on_palette_next_clicked ()
-{
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () + 1);
-}
-
-void
-X3DTexturePaletteEditor::on_palette_changed ()
-{
-	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
-}
-
-void
 X3DTexturePaletteEditor::set_touchTime (const size_t i)
 {
 	try
@@ -261,6 +243,24 @@ X3DTexturePaletteEditor::set_touchTime (const size_t i)
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+X3DTexturePaletteEditor::on_palette_previous_clicked ()
+{
+	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
+}
+
+void
+X3DTexturePaletteEditor::on_palette_next_clicked ()
+{
+	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () + 1);
+}
+
+void
+X3DTexturePaletteEditor::on_palette_changed ()
+{
+	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
 }
 
 X3DTexturePaletteEditor::~X3DTexturePaletteEditor ()

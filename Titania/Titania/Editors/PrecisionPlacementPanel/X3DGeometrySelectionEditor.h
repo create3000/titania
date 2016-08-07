@@ -57,9 +57,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DGeometryNode;
 class IndexedFaceSetTool;
-class Transform;
 
 } // X3D
 } // titania
