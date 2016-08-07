@@ -181,7 +181,12 @@ private:
 
 };
 
-//@{
+
+///  @relates SFString
+///  @name Comparision operations
+
+///  Compares two SFString values.
+///  Returns true if @a lhs is equal to @a rhs.
 inline
 bool
 operator == (const SFString & lhs, const char* rhs)
@@ -189,13 +194,33 @@ operator == (const SFString & lhs, const char* rhs)
 	return lhs .getValue () == rhs;
 }
 
+///  Compares two SFString values.
+///  Returns true if @a lhs is equal to @a rhs.
 inline
 bool
 operator == (const char* lhs, const SFString & rhs)
 {
 	return lhs == rhs .getValue ();
 }
-//@}
+
+///  Compares two SFString values.
+///  Returns true if @a lhs is not equal to @a rhs.
+inline
+bool
+operator not_eq (const SFString & lhs, const char* rhs)
+{
+	return lhs .getValue () not_eq rhs;
+}
+
+///  Compares two SFString values.
+///  Returns true if @a lhs is not equal to @a rhs.
+inline
+bool
+operator not_eq (const char* lhs, const SFString & rhs)
+{
+	return lhs not_eq rhs .getValue ();
+}
+
 
 } // X3D
 } // titania

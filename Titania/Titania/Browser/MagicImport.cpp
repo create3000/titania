@@ -404,6 +404,25 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 	                  return true;
 						});
 
+	// Prepend relative paths to url.
+
+	const X3D::X3DPtr <X3D::X3DUrlObject> urlObject (texture);
+
+	if (urlObject)
+	{
+		std::vector <std::string> relativePaths;
+
+		for (const auto & url : urlObject -> url ())
+		{
+			const auto relativePath = getCurrentContext () -> getWorldURL () .relative_path (url .str ());
+
+			if (relativePath not_eq url .str ())
+				relativePaths .emplace_back (relativePath);
+		}
+
+		urlObject -> url () .insert (urlObject -> url () .begin (), relativePaths .begin (), relativePaths .end ());
+	}
+
 	return true;
 }
 

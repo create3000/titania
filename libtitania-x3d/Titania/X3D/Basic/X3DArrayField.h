@@ -774,16 +774,20 @@ X3DArrayField <ValueType>::insert (const iterator & location, InputIterator firs
 
 	const auto iter = get () .begin () + pos;
 
-	for (auto & field : basic::make_range (iter, count))
+	if (count)
 	{
-		field = new ValueType (*first);
-
-		addChild (field);
-
-		++ first;
+		for (auto & field : basic::make_range (iter, count))
+		{
+			field = new ValueType (*first);
+	
+			addChild (field);
+	
+			++ first;
+		}
+	
+		addEvent ();
 	}
 
-	addEvent ();
 	return iterator (iter);
 }
 

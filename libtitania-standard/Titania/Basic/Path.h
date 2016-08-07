@@ -126,6 +126,10 @@ public:
 	{ return value .trailing_separator; }
 
 	///  Returns the root directory of this Path.
+	bool
+	is_relative () const;
+
+	///  Returns the root directory of this Path.
 	basic_path
 	root () const;
 
@@ -220,6 +224,13 @@ basic_path <StringT>::basic_path (const StringT & path, const StringT & separato
 }
 
 template <class StringT>
+bool
+basic_path <StringT>::is_relative () const
+{
+	return this -> empty () or this -> front () == dots;
+}
+
+template <class StringT>
 basic_path <StringT>
 basic_path <StringT>::root () const
 {
@@ -261,24 +272,28 @@ template <class StringT>
 basic_path <StringT>
 basic_path <StringT>::relative_path (const basic_path & descendant) const
 {
+	if (descendant .is_relative ())
+		return descendant;
+
 	basic_path path (separator ());
 
 	auto base_path       = remove_dot_segments () .base ();
 	auto descendant_path = descendant .remove_dot_segments ();
 
-	size_t i, j;
+	size_t i = 0, j = 0, size = 0;
 
-	for (i = 0; i < base_path .size () and i < descendant_path .size (); ++ i)
+	for (i = 0, size = std::min (base_path .size (), descendant_path .size ()); i < size; ++ i)
 	{
 		if (base_path [i] not_eq descendant_path [i])
 			break;
 	}
 
-	for (j = i; j < base_path .size (); ++ j)
+	for (j = i, size = base_path .size (); j < size; ++ j)
 		path .emplace_back (dots);
 
-	for (j = i; j < descendant_path .size (); ++ j)
-		path .emplace_back (descendant_path [j]);
+
+for (j = i, size = descendant_path .size (); j < size; ++ j)
+	path .emplace_back (descendant_path [j]);
 
 	return path;
 }

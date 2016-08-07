@@ -666,16 +666,50 @@ void
 X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 {
 	if (selectedIndex < files .size ())
+	{
+		// Remove and move files
+
 		Gio::File::create_for_uri (files [selectedIndex]) -> remove ();
 
-	for (size_t i = selectedIndex + 1, size = files .size (); i < size; ++ i)
-	{
-		const auto file = Gio::File::create_for_uri (files [i]);
-		
-		file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
-	}
+		for (size_t i = selectedIndex + 1, size = files .size (); i < size; ++ i)
+		{
+			const auto file = Gio::File::create_for_uri (files [i]);
+			
+			file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
+		}
 
-	setCurrentFolder (this -> getPaletteComboBoxText () .get_active_row_number ());
+		files .pop_back ();
+
+		// Move items
+
+		group -> children () .erase (group -> children () .begin () + selectedIndex);
+
+		for (size_t i = selectedIndex, size = group -> children () .size (); i < size; ++ i)
+		{
+			const auto & transform   = group -> children () [i];
+			const auto & touchSensor = transform -> getField <X3D::MFNode> ("children") .back ();
+	
+			transform -> getField <X3D::SFVec3f> ("translation") = getPosition (i);
+
+			touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (this, &X3DPaletteEditor::set_over);
+			touchSensor -> getField <X3D::SFTime> ("touchTime") .removeInterest (this, &X3DPaletteEditor::set_touchTime);
+
+			touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (this, &X3DPaletteEditor::set_over, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), i);
+			touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
+		}
+
+		// Handle AddObjectToPaletteMenuItem
+
+		const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
+		const bool   customPalette = paletteIndex >= numDefaultPalettes;
+	
+		this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette);
+
+		// Handle selection
+
+		if (selectedIndex >= files .size ())
+			setSelection (-1);
+	}
 }
 
 template <class Type>

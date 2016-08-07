@@ -104,6 +104,8 @@ X3DUrlObject::transform (MFString & url, const basic::uri & oldWorldURL, const b
 			value .set (newWorldURL .relative_path (transformed) .str ());
 		}
 	}
+
+	url .erase (std::unique (url .begin (), url .end ()), url .end ());
 }
 
 void
