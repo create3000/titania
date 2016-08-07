@@ -28,13 +28,21 @@
 
 #include "UrlStreamBuf.h"
 
+#include <Titania/Chrono/Now.h>
 #include <Titania/LOG.h>
-#include <cstring>
 
+#include <atomic>
+#include <cstring>
+#include <chrono>
+#include <thread>
 #include <regex>
 
 namespace titania {
 namespace basic {
+
+static constexpr size_t CONNECTIONS_PER_SECOND = 32;
+
+static std::atomic <double> lastAccess (0);
 
 urlstreambuf::urlstreambuf () :
 	std::streambuf (),
@@ -59,6 +67,10 @@ urlstreambuf::urlstreambuf () :
 urlstreambuf*
 urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 {
+	limit_connections ();
+
+	//
+
 	url (URL .add_file_scheme ());
 	timeout (Timeout);
 
@@ -115,6 +127,8 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 urlstreambuf*
 urlstreambuf::send (const headers_type & headers)
 {
+	limit_connections ();
+
 	// Add headers
 
 	struct curl_slist* headerlist = nullptr;
@@ -150,6 +164,20 @@ urlstreambuf::send (const headers_type & headers)
 	close ();
 
 	return nullptr;
+}
+
+/***
+ * Limit the number of connections per second.
+ */
+void
+urlstreambuf::limit_connections () const
+{
+	static constexpr size_t DELAY = 1000 / CONNECTIONS_PER_SECOND; // Miliseconds
+
+	while (chrono::now () - lastAccess .load () < DELAY / 1000.0)
+		std::this_thread::sleep_for (std::chrono::milliseconds (DELAY));
+
+	lastAccess .store (chrono::now ());
 }
 
 /***

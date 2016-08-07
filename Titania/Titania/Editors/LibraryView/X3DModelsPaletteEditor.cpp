@@ -82,10 +82,10 @@ X3DModelsPaletteEditor::addObject (const std::string & uri)
 		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
 		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 	
-		inlineNode -> checkLoadState () .addInterest (this, &X3DModelsPaletteEditor::set_loadState, inlineNode, loadSensor, group);
+		inlineNode -> checkLoadState () .addInterest (this, &X3DModelsPaletteEditor::set_loadState, inlineNode .getValue (), loadSensor .getValue (), group .getValue ());
 
 		inlineNode -> url () = { uri };
-		group -> children () = { inlineNode };
+		group -> children () = { inlineNode, loadSensor };
 
 		material -> transparency () = 0.9;
 		appearance -> material ()   = material;
@@ -123,7 +123,7 @@ X3DModelsPaletteEditor::set_loadState (const X3D::X3DPtr <X3D::Inline> & inlineN
 
 			else
 			{
-				loadSensor -> loadTime () .addInterest (this, &X3DModelsPaletteEditor::set_loadTime, inlineNode, loadSensor, transform);
+				loadSensor -> loadTime () .addInterest (this, &X3DModelsPaletteEditor::set_loadTime, inlineNode .getValue (), loadSensor .getValue (), transform .getValue ());
 
 				loadSensor -> watchList () = std::move (urlObjects);
 			}
@@ -148,7 +148,7 @@ X3DModelsPaletteEditor::set_loadTime (const X3D::X3DPtr <X3D::Inline> & inlineNo
 	const auto bbox   = inlineNode -> getBBox ();
 	const auto size   = bbox .size ();
 	const auto center = bbox .center ();
-	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / std::max (std::max (size .x (), size .y ()), size .z ());
+	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / std::max ({ size .x (), size .y (), size .z () });
 
 	transform -> translation () = -center * scale;
 	transform -> scale ()       = scale;

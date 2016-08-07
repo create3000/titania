@@ -111,6 +111,9 @@ private:
 	timeout (size_t value)
 	{ m_timeout = value; }
 
+	void
+	limit_connections () const;
+
 	int
 	wait ();
 
