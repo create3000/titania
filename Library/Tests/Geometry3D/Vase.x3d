@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Sun, 07 Aug 2016 05:55:54 GMT'/>
+    <meta name='modified' content='Sun, 07 Aug 2016 09:34:33 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -90,7 +90,7 @@
               <Shape>
                 <Appearance>
                   <ImageTexture
-                      url='"http://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://cdn.rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "http://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png", "https://rawgit.com/create3000/Library/master/Textures/Game/rockgold.png"'
+                      url='"../../../../../../Schreibtisch/imageBasedLighting.jpg", "file:///home/holger/Schreibtisch/imageBasedLighting.jpg"'
                       repeatS='false'
                       repeatT='false'/>
                 </Appearance>

@@ -627,8 +627,14 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 {
 	try
 	{
-		const auto scene = this -> getCurrentBrowser () -> createScene ();
+		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
+		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
+		const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
+		const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
+		const auto scene        = this -> getCurrentBrowser () -> createScene ();
 	
+		scene -> setWorldURL (file -> get_uri ());
+
 		createScene (scene);
 	
 		scene -> setup ();
@@ -641,11 +647,6 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 		osstream << X3D::NicestStyle << scene << std::endl;
 	
 		// Create file.
-	
-		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
-		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-		const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
-		const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
 	
 		std::string etag;
 	
