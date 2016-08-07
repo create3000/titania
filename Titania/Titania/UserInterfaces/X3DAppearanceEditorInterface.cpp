@@ -158,8 +158,8 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
 	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
 	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
-	m_builder -> get_widget ("AddMaterialMenuItem", m_AddMaterialMenuItem);
-	m_builder -> get_widget ("RemoveMaterialMenuItem", m_RemoveMaterialMenuItem);
+	m_builder -> get_widget ("AddObjectMenuItem", m_AddObjectMenuItem);
+	m_builder -> get_widget ("RemoveObjectMenuItem", m_RemoveObjectMenuItem);
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
@@ -219,8 +219,8 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_palette_activate));
 	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_palette_activate));
 	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_activate));
-	m_AddMaterialMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_material_activate));
-	m_RemoveMaterialMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_material_activate));
+	m_AddObjectMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_object_activate));
+	m_RemoveObjectMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_object_activate));
 
 	// Call construct handler of base class.
 	construct ();

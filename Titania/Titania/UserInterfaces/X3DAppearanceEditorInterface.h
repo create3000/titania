@@ -480,12 +480,12 @@ public:
 	{ return *m_EditPaletteMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getAddMaterialMenuItem () const
-	{ return *m_AddMaterialMenuItem; }
+	getAddObjectMenuItem () const
+	{ return *m_AddObjectMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getRemoveMaterialMenuItem () const
-	{ return *m_RemoveMaterialMenuItem; }
+	getRemoveObjectMenuItem () const
+	{ return *m_RemoveObjectMenuItem; }
 
 	///  @name Signal handlers
 
@@ -591,11 +591,11 @@ public:
 
 	virtual
 	void
-	on_add_material_activate () = 0;
+	on_add_object_activate () = 0;
 
 	virtual
 	void
-	on_remove_material_activate () = 0;
+	on_remove_object_activate () = 0;
 
 	///  @name Destruction
 
@@ -718,8 +718,8 @@ private:
 	Gtk::ImageMenuItem*            m_AddPaletteMenuItem;
 	Gtk::ImageMenuItem*            m_RemovePaletteMenuItem;
 	Gtk::ImageMenuItem*            m_EditPaletteMenuItem;
-	Gtk::ImageMenuItem*            m_AddMaterialMenuItem;
-	Gtk::ImageMenuItem*            m_RemoveMaterialMenuItem;
+	Gtk::ImageMenuItem*            m_AddObjectMenuItem;
+	Gtk::ImageMenuItem*            m_RemoveObjectMenuItem;
 
 };
 

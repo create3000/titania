@@ -2034,25 +2034,25 @@
       </object>
     </child>
     <child>
-      <object class="GtkImageMenuItem" id="AddMaterialMenuItem">
+      <object class="GtkImageMenuItem" id="AddObjectMenuItem">
         <property name="label" translatable="yes">Add Material</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="image">image14</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_add_material_activate" swapped="no"/>
+        <signal name="activate" handler="on_add_object_activate" swapped="no"/>
       </object>
     </child>
     <child>
-      <object class="GtkImageMenuItem" id="RemoveMaterialMenuItem">
+      <object class="GtkImageMenuItem" id="RemoveObjectMenuItem">
         <property name="label" translatable="yes">Remove Material</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="image">image13</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_remove_material_activate" swapped="no"/>
+        <signal name="activate" handler="on_remove_object_activate" swapped="no"/>
       </object>
     </child>
   </object>

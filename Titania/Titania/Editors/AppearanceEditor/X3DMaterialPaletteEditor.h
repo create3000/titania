@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DPALETTE_EDITOR_H__
 
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
+#include "../PaletteEditor/X3DPaletteEditor.h"
 
 #include <Titania/X3D/Components/Shape/X3DMaterialNode.h>
 
@@ -59,7 +60,7 @@ namespace titania {
 namespace puck {
 
 class X3DMaterialPaletteEditor :
-	virtual public X3DAppearanceEditorInterface
+	public X3DPaletteEditor <X3DAppearanceEditorInterface>
 {
 public:
 
@@ -81,10 +82,6 @@ protected:
 
 	virtual
 	void
-	initialize () override;
-
-	virtual
-	void
 	store () override;
 
 	///  @name Member access
@@ -96,112 +93,29 @@ protected:
 
 private:
 
-	///  @name Construction
+	///  @name Operations
 
+	virtual
 	void
-	set_browser ();
+	addObject (const std::string &) final override;
 
+	virtual
 	void
-	refreshPalette ();
+	setTouchTime (const std::string &) final override;
 
+	virtual
 	void
-	addLibrary (const std::string &);
-
-	void
-	setCurrentFolder (const size_t);
-
-	void
-	addMaterial (const std::string &);
-
-	X3D::Vector3f
-	getPosition (const size_t i) const;
-
-	void
-	enable ();
-
-	void
-	disable ();
+	createScene (const X3D::X3DScenePtr &) final override;
 
 	///  @name Event handlers
-
-	void
-	set_over (const bool, const size_t);
-
-	void
-	set_touchTime (const size_t);
 
 	virtual
 	void
 	on_palette_face_changed () final override;
 
-	virtual
-	void
-	on_palette_previous_clicked () final override;
-	
-	virtual
-	void
-	on_palette_next_clicked () final override;
-	
-	virtual
-	void
-	on_palette_changed () final override;
-	
-	virtual
-	bool
-	on_palette_button_press_event (GdkEventButton*) final override;
-	
-	virtual
-	void
-	on_add_palette_activate () final override;
-	
-	virtual
-	void
-	on_remove_palette_activate () final override;
-	
-	virtual
-	void
-	on_edit_palette_activate () final override;
-	
-	virtual
-	void
-	on_edit_palette_ok_clicked () final override;
-	
-	virtual
-	void
-	on_edit_palette_cancel_clicked () final override;
-
-	virtual
-	void
-	on_palette_name_insert_text (const Glib::ustring &, int*) final override;
-	
-	virtual
-	void
-	on_palette_name_delete_text (int, int) final override;
-	
-	virtual
-	void
-	on_palette_name_changed () final override;
-
-	virtual
-	void
-	on_add_material_activate () final override;
-	
-	virtual
-	void
-	on_remove_material_activate () final override;
-
 	///  @name Members
 
-	X3D::BrowserPtr              preview;
-	X3D::X3DPtr <X3D::Group>     group;
-	X3D::X3DPtr <X3D::Switch>    selectionSwitch;
-	X3D::X3DPtr <X3D::Transform> selectionRectangle;
-	std::vector <std::string>    folders;
-	std::vector <std::string>    files;
-	size_t                       numDefaultPalettes;
-	bool                         frontMaterial;
-	bool                         over;
-	size_t                       materialIndex;
+	bool frontMaterial;
 };
 
 } // puck

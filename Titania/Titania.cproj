@@ -2524,6 +2524,7 @@
     <None Include="share\titania\Library\Primitives\Scripting\Debugger.x3dv" />
     <None Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.h" />
+    <None Include="Titania\Editors\PaletteEditor\X3DPaletteEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2623,6 +2624,7 @@
     <Folder Include="share\titania\Library\Components\ParticleSystems\.Cobweb\" />
     <Folder Include="Titania\Editors\SculpToolEditor\" />
     <Folder Include="share\titania\Library\Primitives\Text\" />
+    <Folder Include="Titania\Editors\PaletteEditor\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

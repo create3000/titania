@@ -51,17 +51,10 @@
 #include "X3DMaterialPaletteEditor.h"
 
 #include "../../Browser/MagicImport.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-#include "../../Widgets/LibraryView/LibraryView.h"
 
 #include <Titania/X3D/Components/Geometry3D/Extrusion.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
-#include <Titania/X3D/Components/Grouping/Group.h>
-#include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
@@ -69,26 +62,10 @@
 namespace titania {
 namespace puck {
 
-static constexpr size_t COLUMNS   = 6;
-static constexpr size_t ROWS      = 6;
-static constexpr size_t PAGE_SIZE = COLUMNS * ROWS;
-static constexpr double DISTANCE  = 2.5;
-
 X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
-	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/Palette.x3dv") })),
-	                       group (),
-	             selectionSwitch (),
-	          selectionRectangle (),
-	                     folders (),
-	                       files (),
-	          numDefaultPalettes (0),
-	               frontMaterial (true),
-	                        over (false),
-	               materialIndex (-1)
-{
-	addChildren (preview, group, selectionSwitch, selectionRectangle);
-}
+	X3DPaletteEditor <X3DAppearanceEditorInterface> ("Materials"),
+	                                  frontMaterial (true)
+{ }
 
 void
 X3DMaterialPaletteEditor::configure ()
@@ -97,208 +74,22 @@ X3DMaterialPaletteEditor::configure ()
 }
 
 void
-X3DMaterialPaletteEditor::initialize ()
+X3DMaterialPaletteEditor::addObject (const std::string & uri)
 {
-	// Show browser.
+	const auto inlineNode  = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
+	const auto transform   = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 
-	preview -> initialized () .addInterest (this, &X3DMaterialPaletteEditor::set_browser);
-	preview -> setAntialiasing (4);
-	preview -> show ();
+	inlineNode -> url ()     = { uri };
+	transform -> children () = { inlineNode };
 
-	getPalettePreviewBox () .pack_start (*preview, true, true, 0);
+	X3DPaletteEditor <X3DAppearanceEditorInterface>::addObject (uri, transform);
 }
 
 void
-X3DMaterialPaletteEditor::set_browser ()
+X3DMaterialPaletteEditor::setTouchTime (const std::string & url)
 {
 	try
 	{
-		// Disconnect.
-
-		preview -> initialized () .removeInterest (this, &X3DMaterialPaletteEditor::set_browser);
-	
-		// Get exported nodes.
-
-		const auto scene = preview -> getExecutionContext () -> getScene ();
-
-		group              = scene -> getExportedNode <X3D::Group>     ("Items");
-		selectionSwitch    = scene -> getExportedNode <X3D::Switch>    ("SelectionSwitch");
-		selectionRectangle = scene -> getExportedNode <X3D::Transform> ("SelectionRectangle");
-	
-		// Refresh palette.
-
-		refreshPalette ();
-	
-		const size_t paletteIndex = getConfig () -> getInteger ("palette");
-	
-		if (paletteIndex < folders .size ())
-			getPaletteComboBoxText () .set_active (paletteIndex);
-		else
-			getPaletteComboBoxText () .set_active (0);
-	}
-	catch (const X3D::X3DError &)
-	{
-		disable ();
-	}
-}
-
-void
-X3DMaterialPaletteEditor::refreshPalette ()
-{
-	try
-	{
-		// Find materials in folders.
-	
-		folders .clear ();
-		getPaletteComboBoxText () .remove_all ();
-
-		addLibrary (find_data_file ("Library/Materials"));
-
-		numDefaultPalettes = folders .size ();
-
-		addLibrary (config_dir ("Materials"));
-	
-		if (folders .empty ())
-			disable ();
-		else
-			enable ();
-	}
-	catch (...)
-	{
-		disable ();
-	}
-}
-
-void
-X3DMaterialPaletteEditor::addLibrary (const std::string & libraryPath)
-{
-	try
-	{
-		const auto folder = Gio::File::create_for_path (libraryPath);
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
-			{
-				folders .emplace_back (folder -> get_child (fileInfo -> get_name ()) -> get_uri ());
-				getPaletteComboBoxText () .append (fileInfo -> get_name ());
-			}
-		}
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DMaterialPaletteEditor::setCurrentFolder (const size_t paletteIndex)
-{
-	const bool customPalette = paletteIndex >= numDefaultPalettes;
-
-	getConfig () -> setItem ("palette", (int) paletteIndex);
-
-	selectionSwitch -> whichChoice () = false;
-
-	getPalettePreviousButton () .set_sensitive (paletteIndex > 0);
-	getPaletteNextButton ()     .set_sensitive (paletteIndex + 1 < folders .size ());
-
-	getRemovePaletteMenuItem () .set_sensitive (customPalette);
-	getEditPaletteMenuItem ()   .set_sensitive (customPalette);
-
-	try
-	{
-		files .clear ();
-
-		group -> children () .clear ();
-
-		const auto folder = Gio::File::create_for_uri (folders .at (paletteIndex));
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
-				addMaterial (Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
-
-			if (files .size () < PAGE_SIZE)
-				continue;
-
-			break;
-		}
-	}
-	catch (...)
-	{
-		disable ();
-	}
-
-	getAddMaterialMenuItem ()    .set_sensitive (customPalette and files .size () < PAGE_SIZE);
-	getRemoveMaterialMenuItem () .set_sensitive (false);
-}
-
-void
-X3DMaterialPaletteEditor::addMaterial (const std::string & uri)
-{
-	const auto i = files .size ();
-
-	const auto inlineNode  = preview -> getExecutionContext () -> createNode <X3D::Inline> ();
-	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
-	const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
-
-	touchSensor -> isOver ()    .addInterest (this, &X3DMaterialPaletteEditor::set_over, std::cref (touchSensor -> isOver ()), i);
-	touchSensor -> touchTime () .addInterest (this, &X3DMaterialPaletteEditor::set_touchTime, i);
-
-	inlineNode -> url ()        = { uri };
-	transform -> translation () = getPosition (i);
-	transform -> children ()    = { inlineNode, touchSensor };
-
-	group -> children () .emplace_back (transform);
-	preview -> getExecutionContext () -> realize ();
-
-	files .emplace_back (uri);
-
-	//
-
-	const size_t paletteIndex  = getPaletteComboBoxText () .get_active_row_number ();
-	const bool   customPalette = paletteIndex >= numDefaultPalettes;
-
-	getAddMaterialMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
-}
-
-X3D::Vector3f
-X3DMaterialPaletteEditor::getPosition (const size_t i) const
-{
-	const int column = i % COLUMNS;
-	const int row    = i / COLUMNS;
-
-	return X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
-}
-
-void
-X3DMaterialPaletteEditor::enable ()
-{
-	getPaletteBox () .set_sensitive (true);
-}
-
-void
-X3DMaterialPaletteEditor::disable ()
-{
-	getPaletteBox () .set_sensitive (false);
-}
-
-void
-X3DMaterialPaletteEditor::set_over (const bool value, const size_t i)
-{
-	over          = value;
-	materialIndex = i;
-}
-
-void
-X3DMaterialPaletteEditor::set_touchTime (const size_t i)
-{
-	try
-	{
-		// Display and place selection rectangle.
-
-		selectionSwitch -> whichChoice ()    = true;
-		selectionRectangle -> translation () = getPosition (i);
-
 		// Apply selected material to selection.
 
 		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
@@ -307,7 +98,7 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
-		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ files [i] });
+		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ url });
 
 		MagicImport magicImport (getBrowserWindow ());
 
@@ -321,135 +112,10 @@ X3DMaterialPaletteEditor::set_touchTime (const size_t i)
 }
 
 void
-X3DMaterialPaletteEditor::on_palette_face_changed ()
-{
-	frontMaterial = getPaletteFaceCombo () .get_active_row_number () == 0;
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_previous_clicked ()
-{
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () - 1);
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_next_clicked ()
-{
-	getPaletteComboBoxText () .set_active (getPaletteComboBoxText () .get_active_row_number () + 1);
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_changed ()
-{
-	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
-}
-
-bool
-X3DMaterialPaletteEditor::on_palette_button_press_event (GdkEventButton* event)
-{
-	if (event -> button not_eq 3)
-		return false;
-
-	const size_t paletteIndex  = getPaletteComboBoxText () .get_active_row_number ();
-	const bool   customPalette = paletteIndex >= numDefaultPalettes;
-
-	getRemoveMaterialMenuItem () .set_sensitive (customPalette and over);
-
-	getPaletteMenu () .popup (event -> button, event -> time);
-	return true;
-}
-
-void
-X3DMaterialPaletteEditor::on_add_palette_activate ()
-{
-	getPaletteNameEntry () .set_text ("");
-
-	getEditPaletteDialog () .set_title (_ ("Add New Palette"));
-	getEditPaletteDialog () .present ();
-}
-
-void
-X3DMaterialPaletteEditor::on_remove_palette_activate ()
+X3DMaterialPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
 	try
 	{
-		const auto paletteIndex = getPaletteComboBoxText () .get_active_row_number ();
-		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-
-		for (const auto & fileInfo : LibraryView::getChildren (folder))
-		{
-			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
-				folder -> get_child (fileInfo -> get_name ()) -> remove ();
-		}
-
-		folder -> remove ();
-
-		refreshPalette ();
-
-		getPaletteComboBoxText () .set_active (std::min <size_t> (folders .size () - 1, paletteIndex));
-	}
-	catch (...)
-	{ }
-}
-
-void
-X3DMaterialPaletteEditor::on_edit_palette_activate ()
-{
-	__LOG__ << std::endl;
-}
-
-void
-X3DMaterialPaletteEditor::on_edit_palette_ok_clicked ()
-{
-	getEditPaletteDialog () .hide ();
-
-	const std::string paletteName = getPaletteNameEntry () .get_text ();
-	const auto        folder      = Gio::File::create_for_path (config_dir ("Materials/" + paletteName));
-
-	folder -> make_directory_with_parents ();
-
-	refreshPalette ();
-
-	const auto iter = std::find (folders .begin () + numDefaultPalettes, folders .end (), folder -> get_uri ());
-
-	if (iter == folders .end ())
-		return; // Should never happen.
-
-	getPaletteComboBoxText () .set_active (iter - folders .begin ());
-}
-
-void
-X3DMaterialPaletteEditor::on_edit_palette_cancel_clicked ()
-{
-	getEditPaletteDialog () .hide ();
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_name_insert_text (const Glib::ustring & text, int* position)
-{
-	validateFolderOnInsert (getPaletteNameEntry (), text, *position);
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_name_delete_text (int start_pos, int end_pos)
-{
-	validateFolderOnDelete (getPaletteNameEntry (), start_pos, end_pos);
-}
-
-void
-X3DMaterialPaletteEditor::on_palette_name_changed ()
-{
-	const std::string paletteName = getPaletteNameEntry () .get_text ();
-
-	getEditPaletteOkButton () .set_sensitive (not paletteName .empty () /*and not exists paletteName*/);
-}
-
-void
-X3DMaterialPaletteEditor::on_add_material_activate ()
-{
-	try
-	{
-		const auto scene    = getCurrentBrowser () -> createScene ();
 		const auto material = getMaterial () -> copy (scene, X3D::FLAT_COPY);
 
 		scene -> removeNamedNode (material -> getName ());
@@ -529,49 +195,16 @@ X3DMaterialPaletteEditor::on_add_material_activate ()
 
 		// Setup scene.
 
-		scene -> setup ();
-		scene -> addStandardMetaData ();
 		scene -> setMetaData ("titania magic", "Material");
-
-		// Print scene.
-
-		std::ostringstream osstream;
-
-		osstream << X3D::NicestStyle << scene << std::endl;
-
-		// Create file.
-
-		const auto paletteIndex = getPaletteComboBoxText () .get_active_row_number ();
-		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-		const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
-		const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
-
-		std::string etag;
-
-		file -> replace_contents (osstream .str (), "", etag, false, Gio::FILE_CREATE_REPLACE_DESTINATION);
-
-		// Append material to palette preview.
-
-		addMaterial (Glib::uri_unescape_string (file -> get_uri ()));
 	}
 	catch (...)
 	{ }
 }
 
 void
-X3DMaterialPaletteEditor::on_remove_material_activate ()
+X3DMaterialPaletteEditor::on_palette_face_changed ()
 {
-	if (materialIndex < files .size ())
-		Gio::File::create_for_uri (files [materialIndex]) -> remove ();
-
-	for (size_t i = materialIndex + 1, size = files .size (); i < size; ++ i)
-	{
-		const auto file = Gio::File::create_for_uri (files [i]);
-		
-		file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
-	}
-
-	setCurrentFolder (getPaletteComboBoxText () .get_active_row_number ());
+	frontMaterial = getPaletteFaceCombo () .get_active_row_number () == 0;
 }
 
 void
