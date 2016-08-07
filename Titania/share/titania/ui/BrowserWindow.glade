@@ -4,6 +4,10 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="Backgrounds" filename="icons/Background.svg"/>
+      <source stock-id="Fogs" filename="icons/Fog.svg"/>
+      <source stock-id="NavigationInfos" filename="icons/Navigation.svg"/>
+      <source stock-id="Viewpoints" filename="icons/Viewpoint.svg"/>
       <source stock-id="SculpTool" filename="icons/SculpTool.svg"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Clone" filename="icons/Clone.svg"/>

@@ -11,7 +11,6 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel" id="Label">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="ypad">2</property>
             <property name="label" translatable="yes">Notebook</property>

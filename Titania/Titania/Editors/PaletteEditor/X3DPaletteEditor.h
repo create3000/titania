@@ -356,13 +356,13 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 
 	this -> getConfig () -> setItem ("palette", (int) paletteIndex);
 
-	setSelection (-1);
-
 	this -> getPalettePreviousButton () .set_sensitive (paletteIndex > 0);
 	this -> getPaletteNextButton ()     .set_sensitive (paletteIndex + 1 < folders .size ());
 
 	this -> getRemovePaletteMenuItem () .set_sensitive (customPalette);
 	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
+
+	setSelection (-1);
 
 	try
 	{
@@ -411,7 +411,7 @@ X3DPaletteEditor <Type>::addObject (const std::string & uri, const X3D::X3DPtr <
 
 	files .emplace_back (uri);
 
-	//
+	// Handle AddObjectToPaletteMenuItem
 
 	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
 	const bool   customPalette = paletteIndex >= numDefaultPalettes;
@@ -704,7 +704,7 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 		const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
 		const bool   customPalette = paletteIndex >= numDefaultPalettes;
 	
-		this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette);
+		this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 
 		// Handle selection
 

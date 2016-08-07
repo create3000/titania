@@ -73,10 +73,23 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_CobwebRenderer       = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CobwebRenderer"));
 
 	// Get widgets.
+	m_builder -> get_widget ("PaletteMenu", m_PaletteMenu);
+	m_builder -> get_widget ("AddPaletteMenuItem", m_AddPaletteMenuItem);
+	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
+	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
+	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
+	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
+	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
+	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
+	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
+	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
+	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_row_activated));
 
 	// Call construct handler of base class.

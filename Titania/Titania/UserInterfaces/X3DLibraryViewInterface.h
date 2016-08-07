@@ -139,6 +139,30 @@ public:
 	getCobwebRenderer () const
 	{ return m_CobwebRenderer; }
 
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem () const
+	{ return *m_AddObjectToPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem () const
+	{ return *m_RemoveObjectFromPaletteMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -147,6 +171,14 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
+	Gtk::Box &
+	getFilesBox () const
+	{ return *m_FilesBox; }
+
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -154,6 +186,26 @@ public:
 	Gtk::TreeView &
 	getTreeView () const
 	{ return *m_TreeView; }
+
+	Gtk::Box &
+	getPaletteBox () const
+	{ return *m_PaletteBox; }
+
+	Gtk::Box &
+	getPalettePreviewBox () const
+	{ return *m_PalettePreviewBox; }
+
+	Gtk::ComboBoxText &
+	getPaletteComboBoxText () const
+	{ return *m_PaletteComboBoxText; }
+
+	Gtk::Button &
+	getPalettePreviousButton () const
+	{ return *m_PalettePreviousButton; }
+
+	Gtk::Button &
+	getPaletteNextButton () const
+	{ return *m_PaletteNextButton; }
 
 	///  @name Signal handlers
 
@@ -197,10 +249,23 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_CobwebColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
+	Gtk::Menu*                             m_PaletteMenu;
+	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Notebook*                         m_Notebook;
+	Gtk::Box*                              m_FilesBox;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;
 	Gtk::TreeView*                         m_TreeView;
+	Gtk::Box*                              m_PaletteBox;
+	Gtk::Box*                              m_PalettePreviewBox;
+	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
+	Gtk::Button*                           m_PalettePreviousButton;
+	Gtk::Button*                           m_PaletteNextButton;
 
 };
 

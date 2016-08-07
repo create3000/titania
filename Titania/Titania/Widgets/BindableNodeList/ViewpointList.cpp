@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 template <>
-const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::name = "ViewpointList";
+const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::name = "Viewpoints";
 
 template <>
 const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::description = _ ("Default Viewpoint");

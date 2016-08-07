@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Sun, 07 Aug 2016 09:34:33 GMT'/>
+    <meta name='modified' content='Sun, 07 Aug 2016 11:46:47 GMT'/>
   </head>
   <Scene>
     <WorldInfo
@@ -50,7 +50,7 @@
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.998933850763831, 0.0357346881521023, 0.0292265950944631, 5.85913245752255'/>
+              value='-0.998933850763831, -0.0357346881521023, -0.0292265950944631, 0.424052849657036'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
@@ -82,31 +82,11 @@
           <MetadataSet DEF='children' containerField='value'
               name='children'
               reference='http://titania.create3000.de'>
-            <Transform DEF='Rectangle2D' containerField='value'
-                translation='3.98165 -6.89005e-17 -3.85162e-09'
-                rotation='0.0285856850419962 -0.999591345806215 2.13275921753343e-08 2.1073424255447e-07'
-                scale='1.19223 1.01914 1.19223'
-                scaleOrientation='4.978530928051e-09 1 -2.7050785299709e-09 2.38418579101563e-07'>
-              <Shape>
-                <Appearance>
-                  <ImageTexture
-                      url='"../../../../../../Schreibtisch/imageBasedLighting.jpg", "file:///home/holger/Schreibtisch/imageBasedLighting.jpg"'
-                      repeatS='false'
-                      repeatT='false'/>
-                </Appearance>
-                <IndexedFaceSet
-                    colorIndex='4, 2, 3, 5, -1, 5, 0, 1, 4, -1, 9, 6, 2, 8, -1, 10, 1, 6, 9, -1, 11, 3, 7, 12, -1, 12, 9, 8, 11, -1, 9, 13, 7, 0, 10, -1'
-                    texCoordIndex='18, 16, 17, 19, -1, 7, 0, 1, 6, -1, 11, 8, 4, 10, -1, 12, 3, 8, 11, -1, 13, 5, 9, 14, -1, 14, 11, 10, 13, -1, 11, 15, 9, 2, 12, -1'
-                    coordIndex='8, 2, 3, 9, -1, 9, 0, 1, 8, -1, 13, 10, 6, 12, -1, 14, 5, 10, 13, -1, 15, 7, 11, 16, -1, 16, 13, 12, 15, -1, 13, 16, 11, 4, 14, -1'>
-                  <Color
-                      color='1 0 0, 0.0162597 0 1, 0 1 0.551497, 0.798698 1 0, 0.00581407 0.642424 0.711871, 0.870895 0.641352 0, 0.0057934 0.643695 0.711301, 0.870639 0.642623 0, 0.365472 1 0.299141, 0.404672 0.643201 0.383239, 0.476413 0 0.532242, 0.582085 1 0.14957, 0.654021 0.642892 0.17816, 0.654021 0.642892 0.17816'/>
-                  <TextureCoordinate
-                      point='0 0, 1 0, 0 0, 1 0, 1 1, 0 1, 1 0.642424, 0 0.641352, 1 0.643695, 0 0.642623, 0.542416 1, 0.538786 0.643201, 0.532242 0, 0.271208 1, 0.25047 0.642892, 0.25047 0.642892, 0.99543 0.612437, 0.00451978 0.615819, 0.996545 0.00327936, 0.00918658 0.00389549'/>
-                  <Coordinate
-                      point='-1 -1 0, 1 -1 0, 1 1 0, -1 1 0, 1.37046 -1 0, 3.37046 -1 0, 3.37046 1 0, 1.37046 1 0, 1 0.284849 0, -1 0.282704 0, 3.37046 0.287391 0, 1.37046 0.285246 0, 2.45529 1 0, 2.44803 0.286402 0, 2.43494 -1 0, 1.91288 1 0, 1.8714 0.285783 0'/>
-                </IndexedFaceSet>
-              </Shape>
-            </Transform>
+            <Viewpoint DEF='_1' containerField='value'
+                description='Home'
+                position='-0.123856 4.92742 10.4334'
+                orientation='-0.998933850763831 -0.0357346881521023 -0.0292265950944631 0.424052849657037'
+                centerOfRotation='0.0118665 0.322708 0.223943'/>
           </MetadataSet>
         </MetadataSet>
       </MetadataSet>
@@ -201,7 +181,31 @@
         </IndexedFaceSet>
       </Shape>
     </Transform>
-    <Transform USE='Rectangle2D'/>
+    <Transform DEF='Rectangle2D'
+        translation='3.98165 -6.89005e-17 -3.85162e-09'
+        rotation='0.0285856850419962 -0.999591345806215 2.13275921753343e-08 2.1073424255447e-07'
+        scale='1.19223 1.01914 1.19223'
+        scaleOrientation='4.978530928051e-09 1 -2.7050785299709e-09 2.38418579101563e-07'>
+      <Shape>
+        <Appearance>
+          <ImageTexture
+              url='"../../../../../../Schreibtisch/imageBasedLighting.jpg", "file:///home/holger/Schreibtisch/imageBasedLighting.jpg"'
+              repeatS='false'
+              repeatT='false'/>
+        </Appearance>
+        <IndexedFaceSet
+            colorIndex='4, 2, 3, 5, -1, 5, 0, 1, 4, -1, 9, 6, 2, 8, -1, 10, 1, 6, 9, -1, 11, 3, 7, 12, -1, 12, 9, 8, 11, -1, 9, 13, 7, 0, 10, -1'
+            texCoordIndex='18, 16, 17, 19, -1, 7, 0, 1, 6, -1, 11, 8, 4, 10, -1, 12, 3, 8, 11, -1, 13, 5, 9, 14, -1, 14, 11, 10, 13, -1, 11, 15, 9, 2, 12, -1'
+            coordIndex='8, 2, 3, 9, -1, 9, 0, 1, 8, -1, 13, 10, 6, 12, -1, 14, 5, 10, 13, -1, 15, 7, 11, 16, -1, 16, 13, 12, 15, -1, 13, 16, 11, 4, 14, -1'>
+          <Color
+              color='1 0 0, 0.0162597 0 1, 0 1 0.551497, 0.798698 1 0, 0.00581407 0.642424 0.711871, 0.870895 0.641352 0, 0.0057934 0.643695 0.711301, 0.870639 0.642623 0, 0.365472 1 0.299141, 0.404672 0.643201 0.383239, 0.476413 0 0.532242, 0.582085 1 0.14957, 0.654021 0.642892 0.17816, 0.654021 0.642892 0.17816'/>
+          <TextureCoordinate
+              point='0 0, 1 0, 0 0, 1 0, 1 1, 0 1, 1 0.642424, 0 0.641352, 1 0.643695, 0 0.642623, 0.542416 1, 0.538786 0.643201, 0.532242 0, 0.271208 1, 0.25047 0.642892, 0.25047 0.642892, 0.99543 0.612437, 0.00451978 0.615819, 0.996545 0.00327936, 0.00918658 0.00389549'/>
+          <Coordinate
+              point='-1 -1 0, 1 -1 0, 1 1 0, -1 1 0, 1.37046 -1 0, 3.37046 -1 0, 3.37046 1 0, 1.37046 1 0, 1 0.284849 0, -1 0.282704 0, 3.37046 0.287391 0, 1.37046 0.285246 0, 2.45529 1 0, 2.44803 0.286402 0, 2.43494 -1 0, 1.91288 1 0, 1.8714 0.285783 0'/>
+        </IndexedFaceSet>
+      </Shape>
+    </Transform>
     <Transform DEF='Sphere'
         translation='-2 0 4'
         scale='2.01102 1 1'>
@@ -300,5 +304,6 @@ function initialize ()
 }
 ]]> 
     </Script>
+    <Viewpoint USE='_1'/>
   </Scene>
 </X3D>

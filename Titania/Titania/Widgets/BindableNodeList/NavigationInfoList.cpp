@@ -54,7 +54,7 @@ namespace titania {
 namespace puck {
 
 template <>
-const std::string X3DBindableNodeList <X3D::NavigationInfo>::name = "NavigationInfoList";
+const std::string X3DBindableNodeList <X3D::NavigationInfo>::name = "NavigationInfos";
 
 template <>
 const std::string X3DBindableNodeList <X3D::NavigationInfo>::description = _ ("Default Navigation Info");
