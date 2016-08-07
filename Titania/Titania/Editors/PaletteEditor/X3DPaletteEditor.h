@@ -130,7 +130,7 @@ private:
 	refreshPalette ();
 
 	void
-	addLibrary (const std::string &);
+	addLibrary (const std::string &, const bool);
 
 	void
 	setCurrentFolder (const size_t);
@@ -304,11 +304,11 @@ X3DPaletteEditor <Type>::refreshPalette ()
 		folders .clear ();
 		this -> getPaletteComboBoxText () .remove_all ();
 
-		addLibrary (find_data_file ("Library/" + libraryFolder));
+		addLibrary (find_data_file ("Library/" + libraryFolder), false);
 
 		numDefaultPalettes = folders .size ();
 
-		addLibrary (config_dir (libraryFolder));
+		addLibrary (config_dir (libraryFolder), true);
 	
 		if (folders .empty ())
 			disable ();
@@ -323,7 +323,7 @@ X3DPaletteEditor <Type>::refreshPalette ()
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath)
+X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath, const bool includeEmptyFolders)
 {
 	try
 	{
@@ -335,6 +335,9 @@ X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath)
 			{
 				const auto child = folder -> get_child (fileInfo -> get_name ());
 				const auto uri   = child -> get_uri ();
+
+				if (not includeEmptyFolders and not LibraryView::containsFiles (child))
+					continue;
 
 				folders .emplace_back (uri);
 				this -> getPaletteComboBoxText () .append (fileInfo -> get_name ());
