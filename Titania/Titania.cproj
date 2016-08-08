@@ -2529,6 +2529,7 @@
     <None Include="share\titania\Library\Primitives\Scripting\Debugger.x3dv" />
     <None Include="share\titania\Library\Primitives\Scripting\PhongShading.x3dv" />
     <None Include="share\titania\Library\Primitives\Text\Text.x3dv" />
+    <None Include="share\titania\ui\icons\Models.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
