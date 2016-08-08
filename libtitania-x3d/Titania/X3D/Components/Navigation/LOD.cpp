@@ -206,6 +206,8 @@ LOD::traverse (const TraverseType type)
 			level_changed () = level;
 
 			set_child (level);
+
+			const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 		}
 		else if (keepCurrentLevel)
 			set_child (level);

@@ -55,7 +55,6 @@
 #include <Titania/X3D/Components/Geometry3D/Box.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Components/Networking/LoadSensor.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
@@ -75,7 +74,6 @@ X3DModelsPaletteEditor::addObject (const std::string & URL)
 	{
 		const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Import"));
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
-		const auto loadSensor = getPreview () -> getExecutionContext () -> createNode <X3D::LoadSensor> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 		const auto shape      = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
@@ -83,10 +81,10 @@ X3DModelsPaletteEditor::addObject (const std::string & URL)
 		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
 		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 	
-		inlineNode -> checkLoadState () .addInterest (this, &X3DModelsPaletteEditor::set_loadState, inlineNode .getValue (), loadSensor .getValue (), group .getValue ());
+		inlineNode -> checkLoadState () .addInterest (this, &X3DModelsPaletteEditor::set_loadState, inlineNode .getValue (), group .getValue ());
 
 		inlineNode -> url () = { URL };
-		group -> children () = { inlineNode, loadSensor };
+		group -> children () = { inlineNode };
 
 		material -> transparency () = 0.9;
 		appearance -> material ()   = material;
@@ -101,40 +99,18 @@ X3DModelsPaletteEditor::addObject (const std::string & URL)
 }
 
 void
-X3DModelsPaletteEditor::set_loadState (const X3D::X3DPtr <X3D::Inline> & inlineNode,
-                                       const X3D::X3DPtr <X3D::LoadSensor> & loadSensor,
-                                       const X3D::X3DPtr <X3D::Transform> & transform)
+X3DModelsPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
+                                       X3D::Transform* const transform)
 {
 	switch (inlineNode -> checkLoadState ())
 	{
 		case X3D::COMPLETE_STATE:
 		{	
-			// Collect Inlines.
+			// Observe bbox changes of internal scene.
 
-			X3D::MFNode urlObjects;
+			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (this, &X3DModelsPaletteEditor::set_bbox, inlineNode, transform);
 
-			X3D::traverse (inlineNode -> getInternalScene (), [&urlObjects] (X3D::SFNode & node)
-			               {
-			                  if (node -> getType () .back () == X3D::X3DConstants::Inline)
-										urlObjects .emplace_back (node);
-
-			                  return true;
-								},
-	                     true,
-	                     X3D::TRAVERSE_ROOT_NODES |
-	                     X3D::TRAVERSE_PROTO_INSTANCES);
-
-			// Wait for bbox calculation until all Inlines are loaded
-
-			if (urlObjects .empty ())
-				set_loadTime (inlineNode, loadSensor, transform);
-
-			else
-			{
-				loadSensor -> loadTime () .addInterest (this, &X3DModelsPaletteEditor::set_loadTime, inlineNode .getValue (), loadSensor .getValue (), transform .getValue ());
-
-				loadSensor -> watchList () = std::move (urlObjects);
-			}
+			set_bbox (inlineNode, transform);
 
 			// Proceed with next case:
 		}
@@ -147,12 +123,9 @@ X3DModelsPaletteEditor::set_loadState (const X3D::X3DPtr <X3D::Inline> & inlineN
 }
 
 void
-X3DModelsPaletteEditor::set_loadTime (const X3D::X3DPtr <X3D::Inline> & inlineNode,
-                                      const X3D::X3DPtr <X3D::LoadSensor> & loadSensor,
-                                      const X3D::X3DPtr <X3D::Transform> & transform)
+X3DModelsPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
+                                  X3D::Transform* const transform)
 {
-	loadSensor -> loadTime () .removeInterest (this, &X3DModelsPaletteEditor::set_loadTime);
-
 	// Center and scale Inline depending on bbox in palette.
 
 	const auto bbox   = inlineNode -> getBBox ();

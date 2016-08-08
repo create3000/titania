@@ -90,6 +90,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	               routes (),
 	            rootNodes (new MFNode ()),
 	     sceneGraphOutput (),
+	           bboxOutput (),
 	   uninitializedNodes ()
 {
 	addType (X3DConstants::X3DExecutionContext);
@@ -101,6 +102,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	             externProtosLoadCount,
 	             externProtosOutput,
 	             sceneGraphOutput,
+	             bboxOutput,
 	             uninitializedNodes);
 
 	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.
@@ -137,6 +139,7 @@ void
 X3DExecutionContext::initialize ()
 {
 	sceneGraphOutput .addInterest (this, &X3DExecutionContext::set_sceneGraph);
+	bboxOutput       .addInterest (this, &X3DExecutionContext::set_bbox);
 
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
@@ -1070,7 +1073,16 @@ X3DExecutionContext::set_sceneGraph ()
 	if (getExecutionContext () == this)
 		return;
 
-	const_cast <SFTime &> (getExecutionContext () -> sceneGraph_changed ()) = chrono::now ();
+	const_cast <SFTime &> (getExecutionContext () -> sceneGraph_changed ()) = getCurrentTime ();
+}
+
+void
+X3DExecutionContext::set_bbox ()
+{
+	if (getExecutionContext () == this)
+		return;
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 //	Dynamic route handling

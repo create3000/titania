@@ -138,6 +138,8 @@ void
 Switch::set_whichChoice ()
 {
 	set_cameraObjects ();
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void

@@ -493,6 +493,12 @@ public:
 	       Error <DISPOSED>)
 	{ return sceneGraphOutput; }
 
+	const SFTime &
+	bbox_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return bboxOutput; }
+
 	///  @name Dynamic route node handling
 
 	const RoutePtr &
@@ -633,6 +639,9 @@ private:
 	void
 	set_sceneGraph ();
 
+	void
+	set_bbox ();
+
 	RouteId
 	getRouteId (const SFNode &, const std::string &,
 	            const SFNode &, const std::string &)
@@ -691,6 +700,7 @@ private:
 	RouteArray                               routes;
 	MFNode* const                            rootNodes;
 	SFTime                                   sceneGraphOutput;
+	SFTime                                   bboxOutput;
 
 	MFNode uninitializedNodes;
 

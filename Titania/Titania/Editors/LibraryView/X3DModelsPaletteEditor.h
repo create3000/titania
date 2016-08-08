@@ -92,14 +92,10 @@ private:
 	createScene (const X3D::X3DScenePtr &) final override;
 	
 	void
-	set_loadState (const X3D::X3DPtr <X3D::Inline> & ,
-	               const X3D::X3DPtr <X3D::LoadSensor> &,
-	               const X3D::X3DPtr <X3D::Transform> &);
-	
+	set_loadState (X3D::Inline* const, X3D::Transform* const);
+
 	void
-	set_loadTime (const X3D::X3DPtr <X3D::Inline> & ,
-	              const X3D::X3DPtr <X3D::LoadSensor> &,
-	              const X3D::X3DPtr <X3D::Transform> &);
+	set_bbox (X3D::Inline* const, X3D::Transform* const);
 
 };
 

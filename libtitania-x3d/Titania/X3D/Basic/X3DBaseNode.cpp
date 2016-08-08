@@ -887,7 +887,7 @@ X3DBaseNode::addClones (const size_t count)
 
 	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
 	if (executionContext not_eq this)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
+		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 }
 
 /***
@@ -903,7 +903,7 @@ X3DBaseNode::removeClones (const size_t count)
 
 	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
 	if (executionContext not_eq this)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = chrono::now ();
+		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 }
 
 /***

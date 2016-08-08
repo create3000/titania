@@ -69,8 +69,7 @@ public:
 
 	virtual
 	void
-	setMatrix (const Matrix4d & value)
-	{ matrix = value; }
+	setMatrix (const Matrix4d &);
 
 	virtual
 	const Matrix4d &
@@ -97,8 +96,7 @@ protected:
 	           const Rotation4d & r,
 	           const Vector3d & s,
 	           const Rotation4d & so,
-	           const Vector3d & c)
-	{ matrix .set (t, r, s, so, c); }
+	           const Vector3d & c);
 
 
 private:

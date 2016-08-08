@@ -738,6 +738,8 @@ X3DGeometryNode::update ()
 
 	bbox = createBBox ();
 
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+
 	if (not isLineGeometry ())
 	{
 		// Autogenerate texCoords if not specified.
