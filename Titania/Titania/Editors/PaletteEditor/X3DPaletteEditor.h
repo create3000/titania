@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -543,6 +543,13 @@ X3DPaletteEditor <Type>::on_remove_palette_activate ()
 	{
 		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
 		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
+
+		auto messageDialog = Gtk::MessageDialog (this -> getBrowserWindow () -> getWindow (), "", "", Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, true);
+
+		messageDialog .set_message ("<big><b>" + basic::sprintf (_ ("Do you really want to remove palette »%s«?"), folder -> get_basename () .c_str ()) + "</b></big>", true);
+		
+		if (messageDialog .run () not_eq Gtk::RESPONSE_OK)
+			return;
 
 		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
 		{
