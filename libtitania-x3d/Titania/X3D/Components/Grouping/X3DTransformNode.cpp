@@ -153,14 +153,16 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 {
 	try
 	{
-		Vector3f centerOffset = center () + translation () - Vector3f (matrix .origin ());
+		auto centerOffset = Vector3d (center () .getValue ()) + Vector3d (translation () .getValue ()) - matrix .origin ();
 
 		centerOffset = (~matrix) .mult_dir_matrix (centerOffset);
 
 		setMatrixWithCenter (matrix, centerOffset);
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::domain_error &)
+	{
+		// Catch matrix inverse.
+	}
 }
 
 } // X3D

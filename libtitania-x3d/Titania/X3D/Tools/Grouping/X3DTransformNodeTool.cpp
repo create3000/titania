@@ -166,7 +166,9 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 			setMatrix (matrix);
 	}
 	catch (const std::domain_error &)
-	{ }
+	{
+		// Catch matrix inverse.
+	}
 }
 
 void

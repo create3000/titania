@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Mon, 08 Aug 2016 15:27:31 GMT'/>
+    <meta name='modified' content='Mon, 08 Aug 2016 15:50:22 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Torus' url='"../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv#Torus"'>
@@ -43,7 +43,7 @@
           <MetadataBoolean DEF='enabled' containerField='value'
               name='enabled'
               reference='http://titania.create3000.de'
-              value='true'/>
+              value='false'/>
         </MetadataSet>
         <MetadataSet DEF='Grid' containerField='value'
             name='Grid'
@@ -51,7 +51,7 @@
           <MetadataBoolean DEF='enabled_1' containerField='value'
               name='enabled'
               reference='http://titania.create3000.de'
-              value='false'/>
+              value='true'/>
         </MetadataSet>
         <MetadataSet DEF='NavigationInfo' containerField='value'
             name='NavigationInfo'
@@ -67,15 +67,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='-2.55611753463745, 14.7728672027588, 0.0771964490413666'/>
+              value='3.30462029165354, 8.15684540366646, 11.9457186318666'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.995004145948832, 0.0771498194804488, -0.0633613044276167, 4.71371933922318'/>
+              value='0.88102232884961, -0.453281868076249, -0.135407548318829, 5.629378486377'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='-0.457060724496841, -0.0605653673410416, -0.00279924459755421'/>
+              value='-0.457060158015864, -0.0605652477809748, -0.00279932818921758'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
