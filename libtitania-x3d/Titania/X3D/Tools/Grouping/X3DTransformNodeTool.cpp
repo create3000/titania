@@ -182,9 +182,6 @@ X3DTransformNodeTool::eventsProcessed ()
 			return;
 		}
 
-		if (not isActive ())
-			return;
-
 		const auto differenceMatrix = ~(matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
 		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())

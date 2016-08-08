@@ -2272,35 +2272,23 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 	{
 		switch (type)
 		{
-			case X3DConstants::ScreenGroup :
-			case X3DConstants::Viewport    :
-				{
-					// Skip these nodes and their children.
-					return;
-				}
+			case X3DConstants::ScreenGroup:
+			case X3DConstants::Viewport:
+			{
+				// Skip these nodes and their children.
+				return;
+			}
 			case X3DConstants::X3DTransformNode:
 			{
-				using SFVec3f_setValue    = void (SFVec3f::*) (const SFVec3f::internal_type &);
-				using SFRotation_setValue = void (SFRotation::*) (const SFRotation::internal_type &);
-
 				X3DPtr <X3DTransformNode> transform (child);
 
 				const auto matrix = transform -> getCurrentMatrix ();
 
 				undoStep -> addObjects (transform);
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),         transform -> translation ());
-				undoStep -> addUndoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> rotation ()),         transform -> rotation ());
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),               transform -> scale ());
-				undoStep -> addUndoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> scaleOrientation ()), transform -> scaleOrientation ());
-				undoStep -> addUndoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),              transform -> center ());
+				undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transform, matrix, transform -> center () .getValue ());
+				undoStep -> addRedoFunction (&X3DTransformNode::setMatrix,           transform, Matrix4d ());
 
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> translation ()),         Vector3f ());
-				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> rotation ()),         Rotation4d ());
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> scale ()),               Vector3f (1, 1, 1));
-				undoStep -> addRedoFunction ((SFRotation_setValue) & SFRotation::setValue, std::ref (transform -> scaleOrientation ()), Rotation4d ());
-				undoStep -> addRedoFunction ((SFVec3f_setValue) & SFVec3f::setValue,    std::ref (transform -> center ()),              Vector3f ());
-
-				undoStep -> redo ();
+				transform -> setMatrix (Matrix4d ());
 
 				modelViewMatrix .push ();
 				modelViewMatrix .mult_left (matrix);
