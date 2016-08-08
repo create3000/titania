@@ -57,6 +57,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
+#include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/NURBS/CoordinateDouble.h"
@@ -2285,10 +2286,10 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 				const auto matrix = transform -> getCurrentMatrix ();
 
 				undoStep -> addObjects (transform);
-				undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transform, matrix, transform -> center () .getValue ());
-				undoStep -> addRedoFunction (&X3DTransformNode::setMatrix,           transform, Matrix4d ());
+				undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter, transform, matrix,      transform -> center () .getValue ());
+				undoStep -> addRedoFunction (&X3DTransformNode::setMatrixWithCenter, transform, Matrix4d (), Vector3d ());
 
-				transform -> setMatrix (Matrix4d ());
+				transform -> setMatrixWithCenter (Matrix4d (), Vector3d ());
 
 				modelViewMatrix .push ();
 				modelViewMatrix .mult_left (matrix);
@@ -2326,16 +2327,16 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Mat
 	{
 		switch (type)
 		{
-			case X3DConstants::IndexedFaceSet :
-				{
-					X3DPtr <IndexedFaceSet>    indexedFaceSet (geometry);
-					X3DPtr <X3DCoordinateNode> coord (indexedFaceSet -> coord ());
+			case X3DConstants::IndexedFaceSet:
+			{
+				X3DPtr <IndexedFaceSet>    indexedFaceSet (geometry);
+				X3DPtr <X3DCoordinateNode> coord (indexedFaceSet -> coord ());
 
-					if (coord)
-						transformToZero (coord, matrix, undoStep);
+				if (coord)
+					transformToZero (coord, matrix, undoStep);
 
-					return;
-				}
+				return;
+			}
 			default:
 				continue;
 		}
@@ -2363,19 +2364,29 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
 		case X3DConstants::CoordinateDouble:
 		{
 			X3DPtr <CoordinateDouble> coordinate (coord);
-			const Matrix4d            matrixd (matrix);
 
 			undoStep -> addObjects (coordinate);
 			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 
 			for (auto & point : coordinate -> point ())
-				point = matrixd .mult_vec_matrix (point);
+				point = matrix .mult_vec_matrix (point);
 
 			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
 			return;
 		}
 		case X3DConstants::GeoCoordinate:
-		// Not handled here.
+		{
+			X3DPtr <GeoCoordinate> coordinate (coord);
+
+			undoStep -> addObjects (coordinate);
+			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+
+			for (size_t i = 0, size = coordinate -> getSize (); i < size; ++ i)
+				coordinate -> set1Point (i, matrix .mult_vec_matrix (coordinate -> get1Point (i)));
+
+			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
+			return;
+		}
 		default:
 			return;
 	}
