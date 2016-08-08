@@ -8,7 +8,7 @@
     <meta name='creator' content='holger'/>
     <meta name='generator' content='Titania V1.4.8, http://titania.create3000.de'/>
     <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Vase.x3d'/>
-    <meta name='modified' content='Mon, 08 Aug 2016 15:50:22 GMT'/>
+    <meta name='modified' content='Mon, 08 Aug 2016 17:13:22 GMT'/>
   </head>
   <Scene>
     <ExternProtoDeclare name='Torus' url='"../../../Titania/share/titania/Prototypes/0.1/Geometry3D/Torus.x3dv#Torus"'>
@@ -67,15 +67,15 @@
           <MetadataDouble DEF='position' containerField='value'
               name='position'
               reference='http://titania.create3000.de'
-              value='3.30462029165354, 8.15684540366646, 11.9457186318666'/>
+              value='-0.6099332163986, 3.35985770147223, 14.5821413171524'/>
           <MetadataDouble DEF='orientation' containerField='value'
               name='orientation'
               reference='http://titania.create3000.de'
-              value='0.88102232884961, -0.453281868076249, -0.135407548318829, 5.629378486377'/>
+              value='0.998961766514402, 0.0452546322476247, 0.00523519842590501, 6.05260560807908'/>
           <MetadataDouble DEF='centerOfRotation' containerField='value'
               name='centerOfRotation'
               reference='http://titania.create3000.de'
-              value='-0.457060158015864, -0.0605652477809748, -0.00279932818921758'/>
+              value='-0.457060158252716, -0.060565248131752, -0.00279932818375528'/>
         </MetadataSet>
         <MetadataSet DEF='Selection' containerField='value'
             name='Selection'
@@ -234,7 +234,8 @@
       </Shape>
     </Transform>
     <Background DEF='Gray'
-        skyColor='0.2 0.2 0.2'/>
+        skyAngle='1.18902, 1.5708'
+        skyColor='0.2 0.2 0.2, 0.20785 0.20785 0.20785, 0.425153 0.425153 0.425153'/>
     <Transform DEF='Box'>
       <Shape>
         <Appearance>

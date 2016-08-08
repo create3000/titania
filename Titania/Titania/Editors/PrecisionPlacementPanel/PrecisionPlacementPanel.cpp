@@ -178,29 +178,37 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 {
 	using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
 
-	X3D::X3DPtr <X3D::X3DGroupingNode> group (boundedObject);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Fill Bounding Box Fields From Scratch"));
 
-	const X3D::Vector3f bboxSize1   = boundedObject -> bboxSize ();
-	const X3D::Vector3f bboxCenter1 = boundedObject -> bboxCenter ();
+	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
+	{
+		const X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject (node);
+		const X3D::X3DPtr <X3D::X3DGroupingNode>  group (node);
 
-	// Reset to get calculated bbox.
-	boundedObject -> bboxSize ()   = X3D::Vector3f (-1, -1, -1);
-	boundedObject -> bboxCenter () = X3D::Vector3f ();
-
-	const auto bbox2       = group ? group -> X3DGroupingNode::getBBox () : boundedObject -> getBBox ();
-	const auto bboxSize2   = bbox2 .size ();
-	const auto bboxCenter2 = bbox2 .center ();
-	const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Fill Bounding Box Fields"));
-
-	undoStep -> addObjects (boundedObject);
-	undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize1);
-	undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize2);
-	boundedObject -> bboxSize () = bboxSize2;
-
-	undoStep -> addObjects (boundedObject);
-	undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter1);
-	undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter2);
-	boundedObject -> bboxCenter () = bboxCenter2;
+		if (not boundedObject)
+			continue;
+	
+		const X3D::Vector3f bboxSize1   = boundedObject -> bboxSize ();
+		const X3D::Vector3f bboxCenter1 = boundedObject -> bboxCenter ();
+	
+		// Reset to get calculated bbox.
+		boundedObject -> bboxSize ()   = X3D::Vector3f (-1, -1, -1);
+		boundedObject -> bboxCenter () = X3D::Vector3f ();
+	
+		const auto bbox2       = group ? group -> X3DGroupingNode::getBBox () : boundedObject -> getBBox ();
+		const auto bboxSize2   = bbox2 .size ();
+		const auto bboxCenter2 = bbox2 .center ();
+	
+		undoStep -> addObjects (boundedObject);
+		undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize1);
+		undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxSize ()), bboxSize2);
+		boundedObject -> bboxSize () = bboxSize2;
+	
+		undoStep -> addObjects (boundedObject);
+		undoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter1);
+		undoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (boundedObject -> bboxCenter ()), bboxCenter2);
+		boundedObject -> bboxCenter () = bboxCenter2;
+	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
