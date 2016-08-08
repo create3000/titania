@@ -174,12 +174,11 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
 	{
-		const auto           name       = X3D::get_name_from_uri (worldURL);
-		const X3D::InlinePtr inlineNode = new X3D::Inline (getCurrentContext ());
-		const X3D::MFString  url        = { getCurrentContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () };
+		const auto name       = X3D::get_name_from_uri (worldURL);
+		const auto inlineNode = getCurrentContext () -> createNode <X3D::Inline> ();
+		const auto url        = X3D::MFString ({ getCurrentContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () });
 
 		inlineNode -> url () = url;
-		inlineNode -> setup ();
 
 		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, X3D::SFNode (inlineNode), undoStep);
 		getBrowserWindow () -> replaceNodes (getCurrentContext (), masterSelection, X3D::SFNode (inlineNode), undoStep);

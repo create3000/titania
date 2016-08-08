@@ -543,9 +543,14 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 bool
 X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const bool copy)
 {
-	const auto   suffix   = worldURL .suffix ();
-	const auto & scene    = getCurrentScene ();
-	const auto   undoStep = std::make_shared <X3D::UndoStep> ("");
+	return save (getCurrentScene (), worldURL, compress, copy);
+}
+
+bool
+X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const bool compress, const bool copy)
+{
+	const auto suffix   = worldURL .suffix ();
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
 
 	scene -> isCompressed (compress);
 	scene -> addStandardMetaData ();

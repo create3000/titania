@@ -163,6 +163,9 @@ public:
 	bool
 	save (const basic::uri &, const bool, const bool);
 
+	bool
+	save (const X3D::X3DScenePtr &, const basic::uri &, const bool, const bool);
+
 	static
 	bool
 	transform (const basic::uri &, const basic::uri &, const X3D::UndoStepPtr &, X3D::SFNode &);

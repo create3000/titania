@@ -88,7 +88,7 @@ traverse (const X3DScenePtr & scene, const TraverseCallback & callback, const bo
 inline
 bool
 traverse (const X3DExecutionContextPtr & executionContext, const TraverseCallback & callback, const bool distinct = true, const int flags = TRAVERSE_ROOT_NODES)
-{ return traverse (executionContext, callback, distinct, flags); }
+{ return traverse (executionContext .getValue (), callback, distinct, flags); }
 
 bool
 traverse (MFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);

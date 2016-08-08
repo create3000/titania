@@ -70,6 +70,8 @@ class X3DBrowserEditor :
 {
 public:
 
+	using X3DBrowserWidget::save;
+
 	/// @name Member access
 
 	virtual

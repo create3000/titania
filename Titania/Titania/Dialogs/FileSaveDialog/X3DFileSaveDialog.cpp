@@ -236,16 +236,19 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 	getWindow () .add_filter (getFileFilterX3D ());
 	getWindow () .set_filter (getFileFilterX3D ());
 
-	getCompressFileBox () .set_visible (true);
+	getCompressFileBox ()    .set_visible (true);
 	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
 
-	const auto responseId = getWindow () .run ();
+	auto responseId = getWindow () .run ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
 		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
-		exportNodes (nodes, getURL (), getCompressFileButton () .get_active (), undoStep);
+		if (not exportNodes (nodes, getURL (), getCompressFileButton () .get_active (), undoStep))
+			responseId = Gtk::RESPONSE_CANCEL;
+
+		worldURL = getURL ();
 	}
 
 	quit ();
@@ -253,21 +256,47 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 	return responseId == Gtk::RESPONSE_OK;
 }
 
-void
+bool
 X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const bool compressed, const X3D::UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 
+	// Temporarily change url's in protos
+
+	const auto protoUndoStep = std::make_shared <X3D::UndoStep> ("Traverse");
+
 	X3D::traverse (getCurrentContext (),
+	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, protoUndoStep, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS);
+
+	// Change url's in nodes
+
+	X3D::traverse (nodes,
 	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
 	               X3D::TRAVERSE_ROOT_NODES);
 
-	std::ofstream ofstream (worldURL .path ());
+	// Export nodes to stream
 
-	getBrowserWindow () -> exportNodes (getCurrentContext (), ofstream, nodes, false);
+	std::ostringstream osstream;
+
+	getBrowserWindow () -> exportNodes (getCurrentContext (), osstream, nodes, false);
+
+	// Undo url change in protos
+
+	protoUndoStep -> undo ();
+
+	// Save scene
+
+	basic::ifilestream stream (osstream .str ());
+
+	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
+
+	return getBrowserWindow () -> save (scene, worldURL, compressed, false);
 }
 
 X3DFileSaveDialog::~X3DFileSaveDialog ()

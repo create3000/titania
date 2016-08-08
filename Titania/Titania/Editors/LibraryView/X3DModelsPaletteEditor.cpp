@@ -59,6 +59,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 namespace titania {
 namespace puck {
@@ -108,6 +109,8 @@ X3DModelsPaletteEditor::set_loadState (const X3D::X3DPtr <X3D::Inline> & inlineN
 	{
 		case X3D::COMPLETE_STATE:
 		{	
+			// Collect Inlines.
+
 			X3D::MFNode urlObjects;
 
 			X3D::traverse (inlineNode -> getInternalScene (), [&urlObjects] (X3D::SFNode & node)
@@ -116,7 +119,12 @@ X3DModelsPaletteEditor::set_loadState (const X3D::X3DPtr <X3D::Inline> & inlineN
 										urlObjects .emplace_back (node);
 
 			                  return true;
-								});
+								},
+	                     true,
+	                     X3D::TRAVERSE_ROOT_NODES |
+	                     X3D::TRAVERSE_PROTO_INSTANCES);
+
+			// Wait for bbox calculation until all Inlines are loaded
 
 			if (urlObjects .empty ())
 				set_loadTime (inlineNode, loadSensor, transform);
@@ -144,6 +152,8 @@ X3DModelsPaletteEditor::set_loadTime (const X3D::X3DPtr <X3D::Inline> & inlineNo
                                       const X3D::X3DPtr <X3D::Transform> & transform)
 {
 	loadSensor -> loadTime () .removeInterest (this, &X3DModelsPaletteEditor::set_loadTime);
+
+	// Center and scale Inline depending on bbox in palette.
 
 	const auto bbox   = inlineNode -> getBBox ();
 	const auto size   = bbox .size ();
@@ -179,7 +189,17 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 	if (selection .empty ())
 		return false;
 
+	// Temporarily change url's in protos
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> ("Traverse");
+
+	X3D::traverse (getCurrentContext (),
+	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS);
+
+	// Change url's in nodes
 
 	X3D::traverse (selection,
 	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
@@ -188,11 +208,17 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
 	               X3D::TRAVERSE_ROOT_NODES);
 
+	// Export nodes to stream
+
 	std::stringstream sstream;
 
 	getBrowserWindow () -> exportNodes (getCurrentContext (), sstream, selection, false);
 
+	// Undo url change in protos and selection
+
 	undoStep -> undo ();
+
+	// Parse exported nodes into scene.
 
 	scene -> fromStream (sstream);
 

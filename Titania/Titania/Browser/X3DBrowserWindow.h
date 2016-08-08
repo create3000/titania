@@ -73,6 +73,7 @@ public:
 
 	using X3DBrowserEditor::getWorldInfo;
 	using X3DBrowserEditor::isEditor;
+	using X3DBrowserEditor::save;
 
 	virtual
 	void

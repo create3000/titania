@@ -102,7 +102,7 @@ private:
 
 	///  @name Export nodes
 
-	void
+	bool
 	exportNodes (X3D::MFNode &, const basic::uri &, const bool, const X3D::UndoStepPtr &);
 
 };

@@ -75,6 +75,9 @@ X3DBaseTool::initialize ()
 {
 	X3DBaseNode::initialize ();
 	X3DToolObject::initialize ();
+
+	if (not node -> isInitialized ())
+		node -> setup ();
 }
 
 void
