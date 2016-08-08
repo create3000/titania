@@ -1,3 +1,9 @@
+titania (1.4.9) xenial; urgency=medium
+
+  * Various fixed and user interface improvements.
+
+ -- Holger Seelig <holger@qualle>  Mon, 08 Aug 2016 22:57:51 +0200
+
 titania (1.4.8) xenial; urgency=medium
 
   * Fixed issue with geometry selection.
