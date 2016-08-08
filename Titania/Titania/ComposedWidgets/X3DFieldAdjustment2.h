@@ -137,15 +137,6 @@ private:
 	set_buffer ();
 
 	template <class ValueType>
-	int32_t
-	get_index (const X3D::X3DField <ValueType> & field) const
-	{ return 0; }
-	
-	template <class ValueType>
-	int32_t
-	get_index (X3D::X3DArrayField <ValueType> & field) const;
-
-	template <class ValueType>
 	X3D::Vector2d
 	get_value (const X3D::X3DField <ValueType> &) const;
 	
@@ -193,7 +184,7 @@ X3DFieldAdjustment2 <Type>::X3DFieldAdjustment2 (X3DBaseInterface* const editor,
 	            scene (),
 	            nodes (),
 	             name (name),
-	            index (-1),
+	            index (0),
 	         undoStep (),
 	            input (-1),
 	         changing (false),
@@ -357,8 +348,7 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 			auto &     field = node -> getField <Type> (name);
 			const auto value = get_value (field);
 
-			unit  = field .getUnit ();
-			index = get_index (field);
+			unit = field .getUnit ();
 
 			if (index >= 0)
 			{
@@ -392,17 +382,6 @@ X3DFieldAdjustment2 <Type>::set_buffer ()
 
 template <class Type>
 template <class ValueType>
-int32_t
-X3DFieldAdjustment2 <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
-{
-	if (field .empty ())
-		return -1;
-
-	return std::min <int32_t> (index, field .size () - 1);
-}
-
-template <class Type>
-template <class ValueType>
 X3D::Vector2d
 X3DFieldAdjustment2 <Type>::get_value (const X3D::X3DField <ValueType> & field) const
 {
@@ -414,9 +393,6 @@ template <class ValueType>
 X3D::Vector2d
 X3DFieldAdjustment2 <Type>::get_value (X3D::X3DArrayField <ValueType> & field)
 {
-	if (index >= (int32_t) field .size ())
-		index = field .size () - 1;
-
 	return X3D::Vector2d (field .get1Value (index));
 }
 

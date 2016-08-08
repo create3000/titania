@@ -718,6 +718,8 @@ X3DBrowserEditor::quit ()
 
 	if (not browsers .empty ())
 	{
+		const auto & worldURL = getCurrentBrowser () -> getWorldURL ();
+
 		for (const auto & browser : browsers)
 		{
 			if (isSaved (browser))
@@ -730,8 +732,8 @@ X3DBrowserEditor::quit ()
 			return true;
 		}
 
-		if (not browsers .back () -> getWorldURL () .empty ())
-			open (browsers .back () -> getWorldURL ());
+		if (not worldURL .empty ())
+			open (worldURL);
 	}
 
 	return X3DBrowserWidget::quit ();
