@@ -731,7 +731,7 @@ GeometryEditor::on_hammer_clicked ()
 						if (geometry)
 						{
 							X3D::MFNode        exports ({ geometry });
-							basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports));
+							basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports, true));
 
 							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
 							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);

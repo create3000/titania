@@ -89,11 +89,11 @@ public:
 
 	virtual
 	std::string
-	exportNodes (const X3DExecutionContextPtr &, MFNode &) const;
+	exportNodes (const X3DExecutionContextPtr &, MFNode &, const bool) const;
 
 	virtual
 	void
-	exportNodes (const X3DExecutionContextPtr &, std::ostream &, MFNode &) const;
+	exportNodes (const X3DExecutionContextPtr &, std::ostream &, MFNode &, const bool) const;
 
 	///  @name Prototype handling
 

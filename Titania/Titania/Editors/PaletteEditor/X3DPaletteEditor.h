@@ -104,7 +104,7 @@ protected:
 	setTouchTime (const std::string &) = 0;
 
 	virtual
-	void
+	bool
 	createScene (const X3D::X3DScenePtr &) = 0;
 
 	///  @name Operations
@@ -127,6 +127,9 @@ private:
 	set_browser ();
 
 	///  @name Operations
+
+	bool
+	checkSelection () const;
 
 	void
 	refreshPalette ();
@@ -296,6 +299,13 @@ X3DPaletteEditor <Type>::set_browser ()
 }
 
 template <class Type>
+bool
+X3DPaletteEditor <Type>::checkSelection () const
+{
+	return not this -> getBrowserWindow () -> getSelection () -> getChildren () .empty ();
+}
+
+template <class Type>
 void
 X3DPaletteEditor <Type>::refreshPalette ()
 {
@@ -354,15 +364,10 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 {
-	const bool customPalette = paletteIndex >= numDefaultPalettes;
-
 	this -> getConfig () -> setItem ("palette", (int) paletteIndex);
 
 	this -> getPalettePreviousButton () .set_sensitive (paletteIndex > 0);
 	this -> getPaletteNextButton ()     .set_sensitive (paletteIndex + 1 < folders .size ());
-
-	this -> getRemovePaletteMenuItem () .set_sensitive (customPalette);
-	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
 	setSelection (-1);
 
@@ -389,8 +394,6 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 	{
 		disable ();
 	}
-
-	this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
 template <class Type>
@@ -412,13 +415,6 @@ X3DPaletteEditor <Type>::addObject (const std::string & uri, const X3D::X3DPtr <
 	preview -> getExecutionContext () -> realize ();
 
 	files .emplace_back (uri);
-
-	// Handle AddObjectToPaletteMenuItem
-
-	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
-	const bool   customPalette = paletteIndex >= numDefaultPalettes;
-
-	this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 }
 
 template <class Type>
@@ -439,20 +435,11 @@ X3DPaletteEditor <Type>::setSelection (const size_t i)
 
 	if (i < PAGE_SIZE)
 	{
-		const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
-		const bool   customPalette = paletteIndex >= numDefaultPalettes;
-
 		selectionSwitch -> whichChoice ()    = true;
 		selectionRectangle -> translation () = getPosition (i);
-
-		this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette);
 	}
 	else
-	{
 		selectionSwitch -> whichChoice () = false;
-
-		this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (false);
-	}
 }
 
 template <class Type>
@@ -524,6 +511,15 @@ X3DPaletteEditor <Type>::on_palette_button_press_event (GdkEventButton* event)
 		setSelection (overIndex);
 
 	// Display menu.
+
+	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
+	const bool   customPalette = paletteIndex >= numDefaultPalettes;
+
+	this -> getRemovePaletteMenuItem () .set_sensitive (customPalette);
+	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
+
+	this -> getAddObjectToPaletteMenuItem ()      .set_sensitive (customPalette and files .size () < PAGE_SIZE and checkSelection ());
+	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE);
 
 	this -> getPaletteMenu () .popup (event -> button, event -> time);
 	return true;
@@ -637,8 +633,9 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 	
 		scene -> setWorldURL (file -> get_uri ());
 
-		createScene (scene);
-	
+		if (not createScene (scene))
+			return;
+
 		scene -> setup ();
 		scene -> addStandardMetaData ();
 	
@@ -700,13 +697,6 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 			touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (this, &X3DPaletteEditor::set_over, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), i);
 			touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
 		}
-
-		// Handle AddObjectToPaletteMenuItem
-
-		const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
-		const bool   customPalette = paletteIndex >= numDefaultPalettes;
-	
-		this -> getAddObjectToPaletteMenuItem () .set_sensitive (customPalette and files .size () < PAGE_SIZE);
 
 		// Handle selection
 

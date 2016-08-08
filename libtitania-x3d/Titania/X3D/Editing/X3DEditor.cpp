@@ -138,7 +138,7 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 
 	// Set clipboard text
 
-	const auto string = exportNodes (executionContext, nodes);
+	const auto string = exportNodes (executionContext, nodes, true);
 
 	// Remove nodes
 
@@ -160,7 +160,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 
 	// Set clipboard text
 
-	const auto string = exportNodes (executionContext, nodes);
+	const auto string = exportNodes (executionContext, nodes, true);
 
 	// Undo detach from group
 
@@ -170,17 +170,17 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 }
 
 std::string
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode & nodes, const bool identifier) const
 {
 	std::ostringstream osstream;
 
-	exportNodes (executionContext, osstream, nodes);
+	exportNodes (executionContext, osstream, nodes, identifier);
 
 	return osstream .str ();
 }
 
 void
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, MFNode & nodes) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, MFNode & nodes, const bool identifier) const
 {
 	// Find proto declarations
 
@@ -194,10 +194,15 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 	ostream
 		<< "#" << LATEST_VERSION << " utf8 " << executionContext -> getBrowser () -> getName ()
 		<< std::endl
-		<< std::endl
-		<< "META \"titania-identifier\" " << SFString (executionContext -> getWorldURL () .str ())
-		<< std::endl
 		<< std::endl;
+
+	if (identifier)
+	{
+		ostream
+			<< "META \"titania-identifier\" " << SFString (executionContext -> getWorldURL () .str ())
+			<< std::endl
+			<< std::endl;
+	}
 
 	Generator::CompactStyle ();
 	Generator::EnterScope ();

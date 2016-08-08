@@ -68,7 +68,7 @@ X3DModelsPaletteEditor::X3DModelsPaletteEditor () :
 { }
 
 void
-X3DModelsPaletteEditor::addObject (const std::string & uri)
+X3DModelsPaletteEditor::addObject (const std::string & URL)
 {
 	try
 	{
@@ -84,7 +84,7 @@ X3DModelsPaletteEditor::addObject (const std::string & uri)
 	
 		inlineNode -> checkLoadState () .addInterest (this, &X3DModelsPaletteEditor::set_loadState, inlineNode .getValue (), loadSensor .getValue (), group .getValue ());
 
-		inlineNode -> url () = { uri };
+		inlineNode -> url () = { URL };
 		group -> children () = { inlineNode, loadSensor };
 
 		material -> transparency () = 0.9;
@@ -93,7 +93,7 @@ X3DModelsPaletteEditor::addObject (const std::string & uri)
 		shape -> geometry ()        = box;
 		transform -> children ()    = { group, shape };
 	
-		X3DPaletteEditor <X3DLibraryViewInterface>::addObject (uri, transform);
+		X3DPaletteEditor <X3DLibraryViewInterface>::addObject (URL, transform);
 	}
 	catch (...)
 	{ }
@@ -155,53 +155,48 @@ X3DModelsPaletteEditor::set_loadTime (const X3D::X3DPtr <X3D::Inline> & inlineNo
 }
 
 void
-X3DModelsPaletteEditor::setTouchTime (const std::string & url)
+X3DModelsPaletteEditor::setTouchTime (const std::string & URL)
 {
-//	try
-//	{
-//		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
-//
-//		if (selection .empty ())
-//			return;
-//
-//		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Palette"));
-//		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ url });
-//
-//		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
-//			getBrowserWindow () -> addUndoStep (undoStep);
-//	}
-//	catch (const X3D::X3DError &)
-//	{ }
+	try
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import Model From Library"));
+		const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
+
+		getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
-void
+bool
 X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
-//	try
-//	{
-//		const auto texture = getTexture () -> copy (scene, X3D::FLAT_COPY);
-//
-//		scene -> removeNamedNode (texture -> getName ());
-//
-//		// Create scene.
-//
-//		const auto transform  = scene -> createNode <X3D::Transform> ();
-//		const auto shape      = scene -> createNode <X3D::Shape> ();
-//		const auto appearance = scene -> createNode <X3D::Appearance> ();
-//		const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
-//	
-//		scene -> getRootNodes () = { transform };
-//		transform -> children () = { shape };
-//		shape -> appearance ()   = appearance;
-//		shape -> geometry ()     = rectangle;
-//		appearance -> texture () = texture;
-//
-//		// Setup scene.
-//
-//		scene -> setMetaData ("titania magic", "Texture");
-//	}
-//	catch (...)
-//	{ }
+	using namespace std::placeholders;
+
+	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+
+	if (selection .empty ())
+		return false;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> ("Traverse");
+
+	X3D::traverse (selection,
+	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
+	               true,
+	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_ROOT_NODES);
+
+	std::stringstream sstream;
+
+	getBrowserWindow () -> exportNodes (getCurrentContext (), sstream, selection, false);
+
+	undoStep -> undo ();
+
+	scene -> fromStream (sstream);
+
+	return true;
 }
 
 X3DModelsPaletteEditor::~X3DModelsPaletteEditor ()

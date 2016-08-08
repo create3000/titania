@@ -94,7 +94,7 @@ private:
 	setTouchTime (const std::string &) final override;
 
 	virtual
-	void
+	bool
 	createScene (const X3D::X3DScenePtr &) final override;
 
 };

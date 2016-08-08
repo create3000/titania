@@ -109,7 +109,7 @@ X3DTexturePaletteEditor::setTouchTime (const std::string & url)
 	{ }
 }
 
-void
+bool
 X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
 	try
@@ -134,9 +134,13 @@ X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 		// Setup scene.
 
 		scene -> setMetaData ("titania magic", "Texture");
+
+		return true;
 	}
 	catch (...)
-	{ }
+	{
+		return false;
+	}
 }
 
 X3DTexturePaletteEditor::~X3DTexturePaletteEditor ()
