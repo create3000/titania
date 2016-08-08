@@ -163,32 +163,5 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 	{ }
 }
 
-std::string
-X3DTransformNode::getDescription () const
-{
-	const auto scene       = getScene ();
-	const auto description = basic::sprintf ("%s\ntranslation %.03f %.03f %.03f\nrotation %.03f %.03f %.03f %.03f\nscale %.03f %.03f %.03f\nscaleOrientation %.03f %.03f %.03f %.03f\ncenter %.03f %.03f %.03f",
-                                            getTypeName () .c_str (),
-                                            scene -> toUnit (translation () .getUnit (), translation () .getX ()),
-                                            scene -> toUnit (translation () .getUnit (), translation () .getY ()),
-                                            scene -> toUnit (translation () .getUnit (), translation () .getZ ()),
-                                            rotation () .getX (),
-                                            rotation () .getY (),
-                                            rotation () .getZ (),
-                                            scene -> toUnit (UnitCategory::ANGLE, rotation () .getAngle ()),
-                                            scene -> toUnit (scale () .getUnit (), scale () .getX ()),
-                                            scene -> toUnit (scale () .getUnit (), scale () .getY ()),
-                                            scene -> toUnit (scale () .getUnit (), scale () .getZ ()),
-                                            scaleOrientation () .getX (),
-                                            scaleOrientation () .getY (),
-                                            scaleOrientation () .getZ (),
-                                            scene -> toUnit (UnitCategory::ANGLE, scaleOrientation () .getAngle ()),
-                                            scene -> toUnit (center () .getUnit (), center () .getX ()),
-                                            scene -> toUnit (center () .getUnit (), center () .getY ()), 
-                                            scene -> toUnit (center () .getUnit (), center () .getZ ()));
-
-	return description;
-}
-
 } // X3D
 } // titania

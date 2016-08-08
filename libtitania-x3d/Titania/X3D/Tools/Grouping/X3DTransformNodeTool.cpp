@@ -155,11 +155,10 @@ X3DTransformNodeTool::setMatrixKeepCenter (const Matrix4d & matrix)
 
 void
 X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		const auto matrix = Matrix4d (getMatrix ()) * transformationMatrix * absoluteMatrix * ~transformationMatrix;
+		const auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * ~transformationMatrix;
 
 		if (keepCenter)
 			setMatrixKeepCenter (matrix);
@@ -176,33 +175,31 @@ X3DTransformNodeTool::eventsProcessed ()
 	try
 	{
 		if (changing)
-			changing = false;
-
-		else
 		{
-			//getBrowser () -> setDescription (getDescription ());
+			changing = false;
+			return;
+		}
 
-			const auto differenceMatrix = ~(matrix * transformationMatrix) * Matrix4d (getMatrix ()) * transformationMatrix;
+		if (not isActive ())
+			return;
 
-			for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
-			{
-				try
-				{
-					if (node == this)
-						continue;
+		const auto differenceMatrix = ~(matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
-					const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
+		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
+		{
+			if (node == this)
+				continue;
 
-					if (transform)
-						transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-				}
-				catch (const Error <NOT_SUPPORTED> &)
-				{ }
-			}
+			const auto transform = dynamic_cast <X3DTransformNodeTool*> (node .getValue ());
+
+			if (transform)
+				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 		}
 	}
 	catch (const std::domain_error &)
-	{ }
+	{
+		// Catch matrix inverse.
+	}
 }
 
 // Traverse

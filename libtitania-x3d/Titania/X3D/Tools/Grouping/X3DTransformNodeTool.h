@@ -158,6 +158,11 @@ public:
 	///  @name Member access
 
 	virtual
+	const SFBool &
+	isCameraObject () const final override
+	{ return X3DChildNode::isCameraObject (); }
+
+	virtual
 	bool
 	getKeepCenter () const final override;
 
@@ -180,8 +185,7 @@ public:
 
 	virtual
 	void
-	addAbsoluteMatrix (const Matrix4d &, const bool)
-	throw (Error <NOT_SUPPORTED>) final override;
+	addAbsoluteMatrix (const Matrix4d &, const bool);
 
 	virtual
 	const Matrix4d &

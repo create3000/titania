@@ -200,7 +200,6 @@
     <None Include="xxx\X3DImportedNodesEditor.cpp" />
     <None Include="xxx\X3DImportedNodesEditor.h" />
     <None Include="xxx\X3DNodePropertiesEditorBase.h" />
-    <None Include="xxx\TransformTool.h" />
     <None Include="newell.c" />
     <None Include="OBJ.spec" />
     <None Include="Wavefront.txt" />
@@ -262,7 +261,6 @@
     <Compile Include="xxx\Box3.cpp" />
     <Compile Include="xxx\PointingDevice.cpp" />
     <Compile Include="xxx\TextEditor.cpp" />
-    <Compile Include="xxx\TransformTool.cpp" />
     <Compile Include="JavaScript\V8.cpp" />
   </ItemGroup>
   <ItemGroup>

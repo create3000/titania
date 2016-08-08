@@ -70,6 +70,7 @@
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Parser/Filter.h>
+#include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
 #include <Titania/OS.h>
@@ -851,8 +852,6 @@ X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & exec
 void
 X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool alongFrontPlane, const ToolType currentTool)
 {
-	using setValue = void (X3D::SFVec3f::*) (const X3D::Vector3f &);
-
 	static const std::vector <const char*> undoText = {
 		"Nudge Left",
 		"Nudge Right",
@@ -864,9 +863,9 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 	for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 	{
-		X3D::X3DTransformNodePtr transform (node);
+		X3D::X3DPtr <X3D::X3DTransformNodeTool> first (node);
 
-		if (transform)
+		if (first)
 		{
 			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
 				nudgeUndoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
@@ -876,48 +875,33 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 			getSelection () -> redoRestoreSelection (nudgeUndoStep);
 
-			if (transform -> getKeepCenter ())
+			// Translate first Transform
+
+			X3D::Matrix4d matrix;
+			matrix .set (offset);
+
+			nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
+			first -> addAbsoluteMatrix (matrix, first -> getKeepCenter ());
+			nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
+
+			// Translate other Transforms
+
+			for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 			{
-				X3D::Matrix4d matrix;
-				matrix .set (offset);
-				matrix = transform -> getCurrentMatrix () * matrix;
+				X3D::X3DPtr <X3D::X3DTransformNodeTool> transform (node);
 
-				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
-				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixKeepCenter, transform, matrix);
-				transform -> setMatrixKeepCenter (matrix);
+				if (not transform)
+					continue;
 
-				// If we use setMatrixKeepCenter we must do the group translation by ourself.
+				if (transform == first)
+					continue;
 
-				matrix .set (offset);
-				matrix *= transform -> getTransformationMatrix ();
-
-				bool first = true;
-
-				for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
-				{
-					X3D::X3DTransformNodePtr transform (node);
-
-					if (not transform)
-						continue;
-
-					if (first)
-					{
-						first = false;
-						continue;
-					}
-
-					nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
-					transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
-					nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getCurrentMatrix (), transform -> center () .getValue ());
-				}
+				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
+				transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
+				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 			}
-			else
-			{
-				nudgeUndoStep -> addObjects (node);
-				nudgeUndoStep -> addUndoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation ());
-				nudgeUndoStep -> addRedoFunction ((setValue) & X3D::SFVec3f::setValue, std::ref (transform -> translation ()), transform -> translation () + offset);
-				transform -> translation () += offset;
-			}
+
+			// 
 
 			getSelection () -> undoRestoreSelection (nudgeUndoStep);
 

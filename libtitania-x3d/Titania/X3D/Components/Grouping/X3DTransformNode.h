@@ -138,18 +138,6 @@ public:
 	setMatrixKeepCenter (const Matrix4d &);
 
 	virtual
-	void
-	addAbsoluteMatrix (const Matrix4d &, const bool)
-	throw (Error <NOT_SUPPORTED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
-
-	virtual
-	void
-	addAbsoluteMatrixKeepCenter (const Matrix4d &)
-	throw (Error <NOT_SUPPORTED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
-
-	virtual
 	const Matrix4d &
 	getTransformationMatrix () const
 	throw (Error <NOT_SUPPORTED>)
@@ -159,9 +147,6 @@ public:
 	Selection::ToolType
 	getActiveTool () const
 	{ return Selection::ToolType::NO_TOOL; }
-
-	std::string
-	getDescription () const;
 
 
 protected:
