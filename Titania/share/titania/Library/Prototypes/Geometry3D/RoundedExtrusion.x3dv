@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.4.0
+#X3D V3.3 utf8 Titania V1.4.8
 
 META "comment" "World of Titania"
 META "created" "Mon, 04 Apr 2016 00:09:27 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.0, http://titania.create3000.de"
+META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Prototypes/Geometry3D/RoundedExtrusion.x3dv"
-META "modified" "Mon, 04 Apr 2016 00:09:27 GMT"
+META "modified" "Mon, 08 Aug 2016 19:53:56 GMT"
 
 EXTERNPROTO RoundedExtrusion [
   initializeOnly SFBool     beginCap
@@ -28,11 +28,110 @@ EXTERNPROTO RoundedExtrusion [
   "http://rawgit.com/create3000/Library/master/Prototypes/1/1.0/Geometry3D/RoundedExtrusion.x3d"
 ]
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.99226574967021,
+              5.68920126876976,
+              11.5253757287323
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.993459902296345,
+              -0.112194971423537,
+              -0.021206388580055,
+              5.90716337176219
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              1.5,
+              1.16675102710724,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "RoundedExtrusion"
+}
+
 DEF RoundedExtrusion Transform {
   children Shape {
     appearance Appearance {
       material Material { }
     }
-    geometry RoundedExtrusion { }
+    geometry RoundedExtrusion {
+      beginCap FALSE
+      endCap FALSE
+      solid FALSE
+      crossSection [
+        -0.1 0,
+        0.1 0
+      ]
+      spine [
+        0 0 0,
+        1 3 0,
+        2 0 0,
+        3 2 0
+      ]
+    }
   }
 }

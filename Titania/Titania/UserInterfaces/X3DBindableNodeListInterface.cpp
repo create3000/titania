@@ -75,9 +75,11 @@ X3DBindableNodeListInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderNotebook", m_HeaderNotebook);
 	m_builder -> get_widget ("HeaderBox", m_HeaderBox);
 	m_builder -> get_widget ("Image", m_Image);
-	m_builder -> get_widget ("Label", m_Label);
+	m_builder -> get_widget ("Label0", m_Label0);
+	m_builder -> get_widget ("Label1", m_Label1);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 

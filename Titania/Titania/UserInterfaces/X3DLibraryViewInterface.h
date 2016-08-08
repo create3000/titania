@@ -139,22 +139,6 @@ public:
 	getCobwebRenderer () const
 	{ return m_CobwebRenderer; }
 
-	Gtk::Dialog &
-	getEditPaletteDialog () const
-	{ return *m_EditPaletteDialog; }
-
-	Gtk::Button &
-	getEditPaletteCancelButton () const
-	{ return *m_EditPaletteCancelButton; }
-
-	Gtk::Button &
-	getEditPaletteOkButton () const
-	{ return *m_EditPaletteOkButton; }
-
-	Gtk::Entry &
-	getPaletteNameEntry () const
-	{ return *m_PaletteNameEntry; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -199,6 +183,22 @@ public:
 	getPaletteNextButton () const
 	{ return *m_PaletteNextButton; }
 
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
+
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
+
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
+
 	Gtk::Menu &
 	getPaletteMenu () const
 	{ return *m_PaletteMenu; }
@@ -227,26 +227,6 @@ public:
 
 	virtual
 	void
-	on_edit_palette_cancel_clicked () = 0;
-
-	virtual
-	void
-	on_edit_palette_ok_clicked () = 0;
-
-	virtual
-	void
-	on_palette_name_changed () = 0;
-
-	virtual
-	void
-	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
-
-	virtual
-	void
-	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
-
-	virtual
-	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
 	virtual
@@ -264,6 +244,26 @@ public:
 	virtual
 	void
 	on_palette_next_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
 
 	virtual
 	void
@@ -321,10 +321,6 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_TitaniaRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_CobwebColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
-	Gtk::Dialog*                           m_EditPaletteDialog;
-	Gtk::Button*                           m_EditPaletteCancelButton;
-	Gtk::Button*                           m_EditPaletteOkButton;
-	Gtk::Entry*                            m_PaletteNameEntry;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_Notebook;
@@ -336,6 +332,10 @@ private:
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
 	Gtk::Button*                           m_PalettePreviousButton;
 	Gtk::Button*                           m_PaletteNextButton;
+	Gtk::Dialog*                           m_EditPaletteDialog;
+	Gtk::Button*                           m_EditPaletteCancelButton;
+	Gtk::Button*                           m_EditPaletteOkButton;
+	Gtk::Entry*                            m_PaletteNameEntry;
 	Gtk::Menu*                             m_PaletteMenu;
 	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;

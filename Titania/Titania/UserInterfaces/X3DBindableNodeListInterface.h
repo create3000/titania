@@ -147,6 +147,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Notebook &
+	getHeaderNotebook () const
+	{ return *m_HeaderNotebook; }
+
 	Gtk::Box &
 	getHeaderBox () const
 	{ return *m_HeaderBox; }
@@ -156,8 +160,12 @@ public:
 	{ return *m_Image; }
 
 	Gtk::Label &
-	getLabel () const
-	{ return *m_Label; }
+	getLabel0 () const
+	{ return *m_Label0; }
+
+	Gtk::Label &
+	getLabel1 () const
+	{ return *m_Label1; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
@@ -223,9 +231,11 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BindCellRenderer;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::Notebook*                         m_HeaderNotebook;
 	Gtk::Box*                              m_HeaderBox;
 	Gtk::Image*                            m_Image;
-	Gtk::Label*                            m_Label;
+	Gtk::Label*                            m_Label0;
+	Gtk::Label*                            m_Label1;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;
 	Gtk::TreeView*                         m_TreeView;
 

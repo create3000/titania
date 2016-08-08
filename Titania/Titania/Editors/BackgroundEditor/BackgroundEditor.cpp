@@ -119,7 +119,8 @@ BackgroundEditor::initialize ()
 	backgroundList -> getSelection () .addInterest (this, &BackgroundEditor::set_background);
 
 	backgroundList -> isEditor (true);
-	backgroundList -> getLabel ()    .set_visible (true);
+	backgroundList -> getHeaderNotebook () .set_current_page (1);
+	backgroundList -> getHeaderBox () .set_visible (false);
 	backgroundList -> getTreeView () .set_headers_visible (true);
 	backgroundList -> reparent (getBackgroundListBox (), getWindow ());
 

@@ -1,12 +1,17 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/share/titania/Library/Prototypes/Geometry3D/RoundedExtrusion.x3dv">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp" Line="430" Column="19" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="373" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="859" Column="13" />
+      <File FileName="Titania/Titania/Editors/PaletteEditor/X3DPaletteEditor.h" Line="546" Column="1" />
+      <File FileName="Titania/Titania/Editors/LibraryView/X3DModelsPaletteEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/LibraryView/X3DModelsPaletteEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DTransformEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp" Line="1" Column="1" />
+      <File FileName="Titania/share/titania/Library/Prototypes/Geometry3D/RoundedExtrusion.x3dv" Line="28" Column="71" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
