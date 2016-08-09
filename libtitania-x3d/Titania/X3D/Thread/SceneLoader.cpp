@@ -90,17 +90,22 @@ private:
 // how to handle the profile and component arguments/statements of inline nodes.
 
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
-	X3DInterruptibleThread (),
-	              X3DInput (),
-	               browser (executionContext -> getBrowser ()),
-	              callback (callback),
-	                loader (nullptr, executionContext -> getWorldURL ()),
-	                 scene (),
-	              urlError (),
-	                future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
+	X3DFuture (),
+	  browser (executionContext -> getBrowser ()),
+	 callback (callback),
+	   loader (nullptr, executionContext -> getWorldURL ()),
+	    scene (),
+	 urlError (),
+	   future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
 	getBrowser () -> addEvent ();
+}
+
+std::future <X3DScenePtr> 
+SceneLoader::getFuture (const MFString & url)
+{
+	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
 }
 
 void
@@ -117,6 +122,17 @@ SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
 	this -> browser = browser;
 
 	getBrowser () -> addEvent ();
+}
+
+bool
+SceneLoader::ready ()
+{
+	if (not future .valid ())
+		return true;
+
+	const auto status = future .wait_for (std::chrono::milliseconds (0));
+
+	return status == std::future_status::ready;
 }
 
 void
@@ -152,18 +168,14 @@ SceneLoader::wait ()
 	dispose ();
 }
 
-std::future <X3DScenePtr> 
-SceneLoader::getFuture (const MFString & url)
-{
-	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
-}
-
 X3DScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
 	checkForInterrupt ();
 
 	const auto mutex = getBrowser () -> getDownloadMutex ();
+
+	checkForInterrupt ();
 
 	std::lock_guard <std::mutex> lock (*mutex);
 
@@ -211,7 +223,7 @@ SceneLoader::set_scene (const bool addEvent)
 		return;
 
 	// Remove set_scene connection.
-	X3DInput::dispose ();
+	X3DFuture::dispose ();
 
 	try
 	{
@@ -258,7 +270,7 @@ SceneLoader::dispose ()
 
 	scene .dispose ();
 
-	X3DInput::dispose ();
+	X3DFuture::dispose ();
 
 	// This is very important, otherwise not all nodes do dispose as they could be bound in the callback!
 	callback = [ ] (X3DScenePtr &&) { };

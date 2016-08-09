@@ -601,6 +601,8 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (); // XXX: See Inline
 
 	X3D::X3DJavaScriptContext::dispose ();

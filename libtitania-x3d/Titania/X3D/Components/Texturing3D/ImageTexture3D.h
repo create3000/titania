@@ -158,7 +158,7 @@ private:
 	
 	size_t                            imageWidth;
 	size_t                            imageHeight;
-	std::unique_ptr <Texture3DLoader> future;
+	std::shared_ptr <Texture3DLoader> future;
 
 
 };

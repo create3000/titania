@@ -54,7 +54,7 @@
 #include "../Fields.h"
 #include "../Types/Pointer.h"
 #include "../InputOutput/Loader.h"
-#include "X3DInterruptibleThread.h"
+#include "X3DFuture.h"
 
 #include <Titania/Basic/URI.h>
 #include <atomic>
@@ -68,8 +68,7 @@ class X3DExecutionContext;
 class X3DScene;
 
 class SceneLoader :
-	public X3DInterruptibleThread,
-	public X3DInput
+	public X3DFuture
 {
 public:
 
@@ -90,6 +89,10 @@ public:
 
 	///  @name Destruction
 
+	virtual
+	bool
+	ready () final override;
+
 	void
 	wait ();
 
@@ -103,12 +106,12 @@ public:
 
 private:
 
+	std::future <X3DScenePtr>
+	getFuture (const MFString &);
+
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
-
-	std::future <X3DScenePtr>
-	getFuture (const MFString &);
 
 	X3DScenePtr
 	loadAsync (const MFString &);
@@ -118,6 +121,8 @@ private:
 
 	void
 	set_loadCount (const int32_t);
+
+	///  @name Members
 
 	std::atomic <X3DBrowser*> browser;
 	Callback                  callback;

@@ -59,23 +59,12 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	X3DInterruptibleThread (),
-	              X3DInput (),
-	               browser (executionContext -> getBrowser ()),
-	              callback (callback),
-	                loader (nullptr, executionContext -> getWorldURL ()),
-	                future (getFuture (url, minTextureSize, maxTextureSize))
+	X3DFuture (),
+	  browser (executionContext -> getBrowser ()),
+	 callback (callback),
+	   loader (nullptr, executionContext -> getWorldURL ()),
+	   future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
-	getBrowser () -> addEvent ();
-}
-
-void
-TextureLoader::setExecutionContext (X3DExecutionContext* const executionContext)
-{
-	getBrowser () -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
-
-	browser = executionContext -> getBrowser ();
 	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	getBrowser () -> addEvent ();
 }
@@ -92,6 +81,27 @@ TextureLoader::getFuture (const MFString & url,
 	                   minTextureSize, maxTextureSize);
 }
 
+void
+TextureLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+
+	browser = executionContext -> getBrowser ();
+	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+	getBrowser () -> addEvent ();
+}
+
+bool
+TextureLoader::ready ()
+{
+	if (not future .valid ())
+		return true;
+
+	const auto status = future .wait_for (std::chrono::milliseconds (0));
+
+	return status == std::future_status::ready;
+}
+
 TexturePtr
 TextureLoader::loadAsync (const MFString & url,
                           const size_t minTextureSize, const size_t maxTextureSize)
@@ -103,6 +113,8 @@ TextureLoader::loadAsync (const MFString & url,
 			checkForInterrupt ();
 
 			const auto mutex = getBrowser () -> getDownloadMutex ();
+
+			checkForInterrupt ();
 
 			std::lock_guard <std::mutex> lock (*mutex);
 
@@ -177,7 +189,7 @@ TextureLoader::dispose ()
 	stop ();
 	loader .stop ();
 
-	X3DInput::dispose ();
+	X3DFuture::dispose ();
 
 	callback = [ ] (const TexturePtr &) { };
 }

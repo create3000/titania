@@ -805,6 +805,7 @@
     <None Include="Titania\X3D\Browser\Tools\LightSaber.h" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectionType.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetLightSaberObject.h" />
+    <None Include="Titania\X3D\Thread\X3DFuture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

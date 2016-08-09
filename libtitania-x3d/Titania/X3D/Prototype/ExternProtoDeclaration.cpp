@@ -289,6 +289,8 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	getScene () -> addExternProtoLoadCount (this);
 
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
@@ -578,6 +580,8 @@ void
 ExternProtoDeclaration::dispose ()
 {
 	getScene () -> removeExternProtoLoadCount (this);
+
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
 
 	future .reset ();
 

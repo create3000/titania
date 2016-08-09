@@ -60,6 +60,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DFuture;
+
 class X3DNetworkingContext :
 	virtual public X3DBaseNode
 {
@@ -81,6 +83,9 @@ public:
 
 	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
+
+	void
+	addFuture (const std::shared_ptr <X3DFuture> &);
 
 	void
 	setNotifyOnLoad (const bool value)
@@ -107,8 +112,7 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{ }
+	dispose () override;
 	
 	virtual
 	~X3DNetworkingContext ();
@@ -130,6 +134,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_future ();
+
+	void
 	set_loadCount ();
 
 	///  @name Static Members
@@ -145,9 +152,11 @@ private:
 	size_t                                    downloadMutexIndex;
 	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;
 	std::mutex                                downloadMutex;
+	std::vector <std::shared_ptr <X3DFuture>> futures;
 	std::set <const void*>                    loadingObjects;
 	SFInt32                                   loadCount;
 	bool                                      notifyOnLoad;
+	bool                                      contextDisposed; // We must use an own disposed!
 
 };
 

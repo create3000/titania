@@ -215,7 +215,7 @@ private:
 	X3DScenePtr         scene;
 	ProtoDeclarationPtr proto;
 
-	std::unique_ptr <SceneLoader> future;
+	std::shared_ptr <SceneLoader> future;
 
 };
 

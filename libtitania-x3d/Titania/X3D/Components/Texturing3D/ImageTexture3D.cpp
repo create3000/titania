@@ -145,6 +145,8 @@ ImageTexture3D::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (new Texture3DLoader (getExecutionContext (),
 	                                    url (),
 	                                    getBrowser () -> getMinTextureSize (),
@@ -163,8 +165,9 @@ ImageTexture3D::update ()
 void
 ImageTexture3D::dispose ()
 {
-	if (future)
-		future -> dispose ();
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
+	future .reset ();
 
 	X3DUrlObject::dispose ();
 	X3DTexture3DNode::dispose ();

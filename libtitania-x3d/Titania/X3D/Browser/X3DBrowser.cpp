@@ -399,6 +399,8 @@ throw (Error <INVALID_URL>,
 
    setLoadState (IN_PROGRESS_STATE);
 
+	addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (new SceneLoader (this,
 	                                url,
 	                                std::bind (&X3DBrowser::set_scene_async, this, _1)));

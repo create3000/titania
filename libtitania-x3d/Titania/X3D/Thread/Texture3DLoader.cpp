@@ -59,23 +59,12 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
                                   const MFString & url,
                                   const size_t minTextureSize, const size_t maxTextureSize,
                                   const Callback & callback) :
-	X3DInterruptibleThread (),
-	              X3DInput (),
-	               browser (executionContext -> getBrowser ()),
-	              callback (callback),
-	                loader (nullptr, executionContext -> getWorldURL ()),
-	                future (getFuture (url, minTextureSize, maxTextureSize))
+	X3DFuture (),
+	  browser (executionContext -> getBrowser ()),
+	 callback (callback),
+	   loader (nullptr, executionContext -> getWorldURL ()),
+	   future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
-	getBrowser () -> addEvent ();
-}
-
-void
-Texture3DLoader::setExecutionContext (X3DExecutionContext* const executionContext)
-{
-	getBrowser () -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
-
-	browser = executionContext -> getBrowser ();
 	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
 	getBrowser () -> addEvent ();
 }
@@ -92,6 +81,27 @@ Texture3DLoader::getFuture (const MFString & url,
 	                   minTextureSize, maxTextureSize);
 }
 
+void
+Texture3DLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+{
+	getBrowser () -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
+
+	browser = executionContext -> getBrowser ();
+	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> addEvent ();
+}
+
+bool
+Texture3DLoader::ready ()
+{
+	if (not future .valid ())
+		return true;
+
+	const auto status = future .wait_for (std::chrono::milliseconds (0));
+
+	return status == std::future_status::ready;
+}
+
 Texture3DPtr
 Texture3DLoader::loadAsync (const MFString & url,
                             const size_t minTextureSize, const size_t maxTextureSize)
@@ -103,6 +113,8 @@ Texture3DLoader::loadAsync (const MFString & url,
 			checkForInterrupt ();
 
 			const auto mutex = getBrowser () -> getDownloadMutex ();
+
+			checkForInterrupt ();
 
 			std::lock_guard <std::mutex> lock (*mutex);
 
@@ -177,7 +189,7 @@ Texture3DLoader::dispose ()
 	stop ();
 	loader .stop ();
 
-	X3DInput::dispose ();
+	X3DFuture::dispose ();
 
 	callback = [ ] (const Texture3DPtr &) { };
 }

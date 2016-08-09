@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_FUTURE_H__
-#define __TITANIA_X3D_THREAD_FUTURE_H__
+#ifndef __TITANIA_X3D_THREAD_X3DINTERRUPTIBLE_THREAD_H__
+#define __TITANIA_X3D_THREAD_X3DINTERRUPTIBLE_THREAD_H__
 
 #include "../Base/X3DInput.h"
 #include <atomic>
@@ -60,7 +60,7 @@ namespace X3D {
 
 // http://stackoverflow.com/questions/13893060/i-want-to-kill-a-stdthread-using-its-thread-object
 
-class InterruptThreadException:
+class InterruptThreadException :
 	virtual public std::exception
 {
 public:
@@ -111,7 +111,6 @@ protected:
 
 		throw InterruptThreadException ();
 	}
-
 
 private:
 

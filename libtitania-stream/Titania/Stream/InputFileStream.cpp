@@ -106,6 +106,9 @@ ifilestream::ifilestream (ifilestream && other) :
 ifilestream &
 ifilestream::operator = (ifilestream && other)
 {
+	if (&other == this)
+		return *this;
+
 	close ();
 
 	gzfilter              = std::move (other .gzfilter);

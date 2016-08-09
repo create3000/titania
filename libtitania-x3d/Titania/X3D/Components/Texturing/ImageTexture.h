@@ -169,7 +169,7 @@ private:
 	size_t                          imageWidth;
 	size_t                          imageHeight;
 	bool                            resize;
-	std::unique_ptr <TextureLoader> future;
+	std::shared_ptr <TextureLoader> future;
 
 
 };

@@ -649,6 +649,8 @@ Context::set_shutdown ()
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
 
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (); // XXX: See Inline
 
 	for (auto & field : fields)

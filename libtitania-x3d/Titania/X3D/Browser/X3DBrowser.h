@@ -378,7 +378,7 @@ private:
 	MFString               urlError;
 	size_t                 inShutdown;
 
-	std::unique_ptr <SceneLoader> future;
+	std::shared_ptr <SceneLoader> future;
 
 };
 

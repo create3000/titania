@@ -55,6 +55,7 @@
 #include "../InputOutput/Loader.h"
 #include "../Browser/Texturing/Texture.h"
 #include "X3DInterruptibleThread.h"
+#include "X3DFuture.h"
 
 #include <atomic>
 #include <future>
@@ -63,12 +64,13 @@ namespace titania {
 namespace X3D {
 
 class TextureLoader :
-	public X3DInterruptibleThread,
-	public X3DInput
+	public X3DFuture
 {
 public:
 
 	typedef std::function <void (const TexturePtr &)> Callback;
+
+	///  @name Construction
 
 	TextureLoader (X3DExecutionContext* const executionContext,
 	               const MFString &, const size_t, const size_t,
@@ -76,6 +78,12 @@ public:
 
 	void
 	setExecutionContext (X3DExecutionContext* const);
+
+	///  @name Destruction
+
+	virtual
+	bool
+	ready () final override;
 
 	virtual
 	void
@@ -87,18 +95,20 @@ public:
 
 private:
 
+	std::future <TexturePtr>
+	getFuture (const MFString &, const size_t, const size_t);
+
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
-
-	std::future <TexturePtr>
-	getFuture (const MFString &, const size_t, const size_t);
 
 	TexturePtr
 	loadAsync (const MFString &, const size_t, const size_t);
 
 	void
 	prepareEvents ();
+
+	///  @name Members
 
 	std::atomic <X3DBrowser*> browser;
 	Callback                  callback;

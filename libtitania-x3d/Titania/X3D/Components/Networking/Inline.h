@@ -260,7 +260,7 @@ private:
 	SFTime      buffer;
 	bool        preventLoad;
 
-	std::unique_ptr <SceneLoader> future;
+	std::shared_ptr <SceneLoader> future;
 
 };
 

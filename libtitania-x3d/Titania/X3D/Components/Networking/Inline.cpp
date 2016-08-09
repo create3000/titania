@@ -331,6 +331,8 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset (new SceneLoader (getExecutionContext (),
 	                                url (),
 	                                std::bind (&Inline::setSceneAsync, this, _1)));
@@ -341,6 +343,8 @@ Inline::requestUnload ()
 {
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
+
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
 
 	future .reset ();
 
@@ -413,6 +417,8 @@ Inline::addTool ()
 void
 Inline::dispose ()
 {
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
 	future .reset ();
 
 	X3DUrlObject::dispose ();
