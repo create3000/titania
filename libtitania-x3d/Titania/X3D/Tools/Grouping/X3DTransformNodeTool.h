@@ -185,7 +185,8 @@ public:
 
 	virtual
 	void
-	addAbsoluteMatrix (const Matrix4d &, const bool);
+	addAbsoluteMatrix (const Matrix4d &, const bool)
+	throw (Error <NOT_SUPPORTED>) final override;
 
 	virtual
 	const Matrix4d &

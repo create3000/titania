@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DTransformNodeTool;
+class X3DTransformNode;
 
 class X3DGridTool :
 	public X3DActiveLayerTool
@@ -226,31 +226,31 @@ private:
 	set_children (const MFNode &);
 
 	void
-	set_translation (const X3DPtr <X3DTransformNodeTool> &);
+	set_translation (const X3DPtr <X3DTransformNode> &);
 
 	void
-	set_rotation (const X3DPtr <X3DTransformNodeTool> &);
+	set_rotation (const X3DPtr <X3DTransformNode> &);
 
 	void
-	set_scale (const X3DPtr <X3DTransformNodeTool> &);
+	set_scale (const X3DPtr <X3DTransformNode> &);
 
 	Matrix4d
-	getScaleMatrix (const X3DPtr <X3DTransformNodeTool> &, const size_t);
+	getScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
 
 	Matrix4d
-	getUniformScaleMatrix (const X3DPtr <X3DTransformNodeTool> &, const size_t);
+	getUniformScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
 
 	Matrix4d
 	getOffset (const Box3d &, const Matrix4d, const Vector3d &) const;
 
 	void
-	connectTranslation (const X3DPtr <X3DTransformNodeTool> &);
+	connectTranslation (const X3DPtr <X3DTransformNode> &);
 
 	void
-	connectRotation (const X3DPtr <X3DTransformNodeTool> &);
+	connectRotation (const X3DPtr <X3DTransformNode> &);
 
 	void
-	connectScale (const X3DPtr <X3DTransformNodeTool> &);
+	connectScale (const X3DPtr <X3DTransformNode> &);
 
 	///  @name Members
 

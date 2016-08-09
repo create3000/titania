@@ -153,8 +153,10 @@ X3DTransformNodeTool::setMatrixKeepCenter (const Matrix4d & matrix)
 	getNode <X3DTransformNode> () -> setMatrixKeepCenter (matrix);
 }
 
+// This function must be virtual, as it is not guarenteed that a X3DPtr has a X3DTransformNodeTool inside.
 void
 X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
+throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -186,13 +188,18 @@ X3DTransformNodeTool::eventsProcessed ()
 
 		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 		{
-			if (node == this)
-				continue;
-
-			const auto transform = dynamic_cast <X3DTransformNodeTool*> (node .getValue ());
-
-			if (transform)
-				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+			try
+			{
+				if (node == this)
+					continue;
+	
+				const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
+	
+				if (transform)
+					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
 	}
 	catch (const std::domain_error &)

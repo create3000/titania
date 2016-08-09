@@ -70,7 +70,6 @@
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Parser/Filter.h>
-#include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
 #include <Titania/OS.h>
@@ -865,7 +864,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 	for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 	{
-		X3D::X3DPtr <X3D::X3DTransformNodeTool> first (node);
+		X3D::X3DPtr <X3D::X3DTransformNode> first (node);
 
 		if (first)
 		{
@@ -882,15 +881,15 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 			X3D::Matrix4d matrix;
 			matrix .set (offset);
 
-			nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
+			nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
 			first -> addAbsoluteMatrix (matrix, first -> getKeepCenter ());
-			nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
+			nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, first, first -> getMatrix (), first -> center () .getValue ());
 
 			// Translate other Transforms
 
 			for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
 			{
-				X3D::X3DPtr <X3D::X3DTransformNodeTool> transform (node);
+				X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
 
 				if (not transform)
 					continue;
@@ -898,9 +897,9 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 				if (transform == first)
 					continue;
 
-				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
+				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 				transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
-				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNodeTool::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
+				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 			}
 
 			// 

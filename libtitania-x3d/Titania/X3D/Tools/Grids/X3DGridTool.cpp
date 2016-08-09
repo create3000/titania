@@ -52,7 +52,7 @@
 
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Tools/Grouping/X3DTransformNodeTool.h"
+#include "../../Components/Grouping/X3DTransformNode.h"
 
 namespace titania {
 namespace X3D {
@@ -210,7 +210,7 @@ X3DGridTool::set_children (const MFNode & value)
 {
 	for (const auto & node : children)
 	{
-		const X3DPtr <X3DTransformNodeTool> transform (node);
+		const X3DPtr <X3DTransformNode> transform (node);
 
 		if (transform)
 		{
@@ -224,7 +224,7 @@ X3DGridTool::set_children (const MFNode & value)
 
 	for (const auto & node : children)
 	{
-		const X3DPtr <X3DTransformNodeTool> transform (node);
+		const X3DPtr <X3DTransformNode> transform (node);
 
 		if (transform)
 		{
@@ -236,7 +236,7 @@ X3DGridTool::set_children (const MFNode & value)
 }
 
 void
-X3DGridTool::set_translation (const X3DPtr <X3DTransformNodeTool> & master)
+X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -300,7 +300,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNodeTool> & master)
 	
 			try
 			{
-				const X3DPtr <X3DTransformNodeTool> transform (node);
+				const X3DPtr <X3DTransformNode> transform (node);
 	
 				if (transform)
 				{
@@ -321,7 +321,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNodeTool> & master)
 	{ }
 }
 void
-X3DGridTool::set_rotation (const X3DPtr <X3DTransformNodeTool> & master)
+X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -423,7 +423,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNodeTool> & master)
 	
 			try
 			{
-				const X3DPtr <X3DTransformNodeTool> transform (node);
+				const X3DPtr <X3DTransformNode> transform (node);
 	
 				if (transform)
 				{
@@ -445,7 +445,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNodeTool> & master)
 }
 
 void
-X3DGridTool::set_scale (const X3DPtr <X3DTransformNodeTool> & master)
+X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -486,7 +486,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNodeTool> & master)
 	
 			try
 			{
-				const X3DPtr <X3DTransformNodeTool> transform (node);
+				const X3DPtr <X3DTransformNode> transform (node);
 	
 				if (transform)
 				{
@@ -508,7 +508,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNodeTool> & master)
 }
 
 Matrix4d
-X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNodeTool> & master, const size_t tool)
+X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -571,7 +571,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNodeTool> & master, const
 }
 
 Matrix4d
-X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNodeTool> & master, const size_t tool)
+X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -667,21 +667,21 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 }
 
 void
-X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNodeTool> & transform)
+X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
 {
 	transform -> translation () .removeInterest (this, &X3DGridTool::connectTranslation);
 	transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
 }
 
 void
-X3DGridTool::connectRotation (const X3DPtr <X3DTransformNodeTool> & transform)
+X3DGridTool::connectRotation (const X3DPtr <X3DTransformNode> & transform)
 {
 	transform -> rotation () .removeInterest (this, &X3DGridTool::connectRotation);
 	transform -> rotation () .addInterest (this, &X3DGridTool::set_rotation, transform);
 }
 
 void
-X3DGridTool::connectScale (const X3DPtr <X3DTransformNodeTool> & transform)
+X3DGridTool::connectScale (const X3DPtr <X3DTransformNode> & transform)
 {
 	transform -> scale () .removeInterest (this, &X3DGridTool::connectScale);
 	transform -> scale () .addInterest (this, &X3DGridTool::set_scale, transform);

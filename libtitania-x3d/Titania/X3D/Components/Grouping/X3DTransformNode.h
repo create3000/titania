@@ -138,6 +138,12 @@ public:
 	setMatrixKeepCenter (const Matrix4d &);
 
 	virtual
+	void
+	addAbsoluteMatrix (const Matrix4d &, const bool)
+	throw (Error <NOT_SUPPORTED>)
+	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
+
+	virtual
 	const Matrix4d &
 	getTransformationMatrix () const
 	throw (Error <NOT_SUPPORTED>)
