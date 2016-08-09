@@ -304,6 +304,13 @@ ifilestream::close ()
 }
 
 void
+ifilestream::stop ()
+{
+	if (url_istream)
+		url_istream  -> stop ();
+}
+
+void
 ifilestream::request_header (const std::string & header, const std::string & value)
 {
 	if (url_istream)

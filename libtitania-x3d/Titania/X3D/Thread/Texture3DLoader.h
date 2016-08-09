@@ -101,8 +101,8 @@ private:
 	prepareEvents ();
 
 	std::atomic <X3DBrowser*>  browser;
-	const basic::uri           referer;
 	Callback                   callback;
+	Loader                     loader;
 	std::future <Texture3DPtr> future;
 
 };

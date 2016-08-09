@@ -93,11 +93,11 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	X3DInterruptibleThread (),
 	              X3DInput (),
 	               browser (executionContext -> getBrowser ()),
-	               referer (executionContext -> getWorldURL ()),
 	              callback (callback),
-	                future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */)),
+	                loader (nullptr, executionContext -> getWorldURL ()),
+	                 scene (),
 	              urlError (),
-	                 scene ()
+	                future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
 	getBrowser () -> addEvent ();
@@ -170,10 +170,6 @@ SceneLoader::loadAsync (const MFString & url)
 	checkForInterrupt ();
 
 	auto scene = getBrowser () -> createScene ();
-
-	checkForInterrupt ();
-
-	Loader loader (nullptr, referer);
 
 	checkForInterrupt ();
 
@@ -258,6 +254,7 @@ SceneLoader::dispose ()
 		return;
 
 	stop ();
+	loader .stop ();
 
 	scene .dispose ();
 

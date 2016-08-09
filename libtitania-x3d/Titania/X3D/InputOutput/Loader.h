@@ -69,6 +69,10 @@ public:
 	///  @name Member access
 
 	const basic::uri &
+	getReferer () const
+	{ return referer; }
+
+	const basic::uri &
 	getWorldURL () const
 	{ return worldURL; }
 
@@ -114,6 +118,9 @@ public:
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
+	void
+	stop ();
+
 	//  Stream Handling
 
 	std::string
@@ -144,6 +151,7 @@ private:
 	const basic::uri           referer;
 	basic::uri                 worldURL;
 	MFString                   urlError;
+	basic::ifilestream         istream;
 
 };
 

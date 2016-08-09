@@ -89,6 +89,9 @@ public:
 	void
 	close ();
 
+	void
+	stop ();
+
 	/// @name Header handling
 
 	void

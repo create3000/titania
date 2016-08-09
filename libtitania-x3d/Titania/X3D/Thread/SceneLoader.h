@@ -120,11 +120,11 @@ private:
 	set_loadCount (const int32_t);
 
 	std::atomic <X3DBrowser*> browser;
-	const basic::uri          referer;
 	Callback                  callback;
-	std::future <X3DScenePtr> future;
-	MFString                  urlError;
+	Loader                    loader;
 	X3DScenePtr               scene;
+	MFString                  urlError;
+	std::future <X3DScenePtr> future;
 
 };
 

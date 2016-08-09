@@ -50,6 +50,7 @@ urlstreambuf::urlstreambuf () :
 	   easy_handle (nullptr),
 	       running (false),
 	        opened (false),
+	      stopping (false),
 	         m_url (),
 	     m_timeout (0),
 	     m_headers (),
@@ -80,7 +81,7 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	easy_handle = curl_easy_init ();
 
-	if (not easy_handle)
+	if (not easy_handle or stopping .load ())
 		return nullptr;
 
 	const std::string curlURL = url () .filename (url () .is_network ());
@@ -129,6 +130,9 @@ urlstreambuf::send (const headers_type & headers)
 {
 	limit_connections ();
 
+	if (stopping .load ())
+		return nullptr;
+
 	// Add headers
 
 	struct curl_slist* headerlist = nullptr;
@@ -143,7 +147,7 @@ urlstreambuf::send (const headers_type & headers)
 
 	// Read first arriving bytes
 
-	while (running and not bytesRead)
+	while (running and not bytesRead and not stopping .load ())
 	{
 		if (wait () >= 0)
 			curl_multi_perform (multi_handle, &running);
@@ -155,7 +159,7 @@ urlstreambuf::send (const headers_type & headers)
 	curl_slist_free_all (headerlist);
 
 	// Did we succeed?
-	if (retcode == CURLM_OK and (running or bytesRead))
+	if (retcode == CURLM_OK and (running or bytesRead) and not stopping .load ())
 		return this;
 
 	//std::clog << "CURL Error: " << url () << std::endl;
@@ -174,7 +178,7 @@ urlstreambuf::limit_connections () const
 {
 	static constexpr size_t DELAY = 1000 / CONNECTIONS_PER_SECOND; // Miliseconds
 
-	while (chrono::now () - lastAccess .load () < DELAY / 1000.0)
+	while (chrono::now () - lastAccess .load () < DELAY / 1000.0 and not stopping .load ())
 		std::this_thread::sleep_for (std::chrono::milliseconds (DELAY));
 
 	lastAccess .store (chrono::now ());
@@ -278,7 +282,7 @@ urlstreambuf::underflow ()
 
 	bytesRead = 0;
 
-	while (running and not bytesRead)
+	while (running and not bytesRead and not stopping .load ())
 	{
 		if (wait () >= 0)
 			curl_multi_perform (multi_handle, &running);
@@ -287,7 +291,7 @@ urlstreambuf::underflow ()
 			running = false;
 	}
 
-	if (bytesRead == 0)
+	if (bytesRead == 0 or stopping .load ())
 		return traits_type::eof ();
 
 	// return next character
@@ -340,6 +344,13 @@ urlstreambuf::close ()
 
 	return this;
 }
+
+void
+urlstreambuf::stop ()
+{
+	stopping .store (true);
+}
+
 
 } // basic
 } // titania

@@ -184,6 +184,13 @@ iurlstream::close ()
 }
 
 void
+iurlstream::stop ()
+{
+	if (rdbuf ())
+		buf -> stop ();
+}
+
+void
 iurlstream::request_header (const std::string & header, const std::string & value)
 {
 	request_headers_map .emplace (header, value);

@@ -69,7 +69,8 @@ Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & 
 	       userAgent (X3D::getBrowser () -> getUserAgent ()),
 	         referer (referer),
 	        worldURL (),
-	        urlError ()
+	        urlError (),
+	         istream ()
 { }
 
 //  X3D Creation Handling
@@ -194,7 +195,7 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			basic::ifilestream istream = loadStream (URL .str ());
+			istream = loadStream (URL .str ());
 
 			golden_gate (scene, worldURL, istream);
 
@@ -213,6 +214,17 @@ throw (Error <INVALID_URL>,
 		error << string .str ();
 
 	throw Error <URL_UNAVAILABLE> (error .str () + "\nCouldn't load any URL of " + url .toString () + "\n");
+}
+
+/***
+ *
+ *  thread save if calling parseIntoScene
+ *
+ */
+void
+Loader::stop ()
+{
+	istream .stop ();
 }
 
 //  Stream Handling
@@ -280,7 +292,7 @@ throw (Error <INVALID_URL>,
 	//if (not data)
 	//	std::clog << "Trying to load URI '" << uri << "': " << std::flush;
 
-	basic::ifilestream istream (data ? uri : referer .transform (uri), 30000);
+	istream = basic::ifilestream (data ? uri : referer .transform (uri), 30000);
 
 	//if (not data)
 	//	std::clog << "\tTransformed URL is '" << istream .url () << "'" << std::endl;
@@ -303,7 +315,7 @@ throw (Error <INVALID_URL>,
 			else
 				worldURL = referer;
 
-			return istream;
+			return std::move (istream);
 		}
 	}
 

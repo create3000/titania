@@ -123,6 +123,9 @@ public:
 	void
 	close ();
 
+	void
+	stop ();
+
 	/// @name Destructor
 
 	virtual

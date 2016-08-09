@@ -59,6 +59,8 @@ extern "C"
 #include <curl/curl.h>
 }
 
+#include <atomic>
+
 namespace titania {
 namespace basic {
 
@@ -83,6 +85,9 @@ public:
 
 	urlstreambuf*
 	close ();
+
+	void
+	stop ();
 
 	const basic::uri &
 	url () const
@@ -136,10 +141,11 @@ private:
 	pos_type
 	seekoff (off_type, std::ios_base::seekdir, std::ios_base::openmode);
 
-	CURLM* multi_handle;            // CURL multi handle
-	CURL*  easy_handle;             // CURL handle
-	int    running;
-	bool   opened;                  // Open/close state of stream
+	CURLM*             multi_handle; // CURL multi handle
+	CURL*              easy_handle;  // CURL handle
+	int                running;
+	bool               opened;       // Open/close state of stream
+	std::atomic <bool> stopping;     // Open/close state of stream
 
 	basic::uri        m_url;        // The URL
 	size_t            m_timeout;    // in ms
