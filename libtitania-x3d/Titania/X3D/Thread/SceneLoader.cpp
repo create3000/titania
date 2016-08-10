@@ -191,6 +191,8 @@ SceneLoader::loadAsync (const MFString & url)
 	}
 	catch (const X3DError & error)
 	{
+		checkForInterrupt ();
+
 		getBrowser () -> println (error .what ());
 
 		throw FutureUrlErrorException ({ error .what () });

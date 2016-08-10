@@ -195,7 +195,7 @@ throw (Error <INVALID_URL>,
 	{
 		try
 		{
-			istream = loadStream (URL .str ());
+			loadStream (URL .str (), istream);
 
 			golden_gate (scene, worldURL, istream);
 
@@ -252,7 +252,7 @@ Loader::loadDocument (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	basic::ifilestream istream = loadStream (uri);
+	loadStream (uri, istream);
 
 	std::ostringstream ostringstream;
 
@@ -267,11 +267,13 @@ throw (Error <INVALID_URL>,
  *
  */
 basic::ifilestream
-Loader::loadStream (const SFString & URL)
+Loader::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	return loadStream (URL .str ());
+	loadStream (uri, istream);
+
+	return std::move (istream);
 }
 
 /***
@@ -279,8 +281,8 @@ throw (Error <INVALID_URL>,
  *  thread save
  *
  */
-basic::ifilestream
-Loader::loadStream (const basic::uri & uri)
+void
+Loader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -288,11 +290,11 @@ throw (Error <INVALID_URL>,
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
 
 	if (istream .stopping ())
-		return std::move (istream);
+		return;
 
 	const bool data = uri .scheme () == "data";
 
-	istream = basic::ifilestream (data ? uri : referer .transform (uri), 30000);
+	istream .open (data ? uri : referer .transform (uri), 30000);
 
 	if (istream)
 	{
@@ -312,7 +314,7 @@ throw (Error <INVALID_URL>,
 			else
 				worldURL = referer;
 
-			return std::move (istream);
+			return;
 		}
 	}
 

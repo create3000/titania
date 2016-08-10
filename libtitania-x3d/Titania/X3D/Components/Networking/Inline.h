@@ -238,6 +238,9 @@ private:
 	void
 	set_buffer ();
 
+	void
+	set_shutdown ();
+
 	///  @name Static members
 
 	static const ComponentType component;

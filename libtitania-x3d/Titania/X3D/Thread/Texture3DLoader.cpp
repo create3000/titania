@@ -135,16 +135,20 @@ Texture3DLoader::loadAsync (const MFString & url,
 
 			return texture;
 		}
-		catch (const X3DError & error)
-		{
-			getBrowser () -> println (error .what ());
-		}
 		catch (const InterruptThreadException &)
 		{
 			throw;
 		}
+		catch (const X3DError & error)
+		{
+			checkForInterrupt ();
+
+			getBrowser () -> println (error .what ());
+		}
 		catch (const std::exception & error)
 		{
+			checkForInterrupt ();
+
 			getBrowser () -> println ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .str ()), "'");
 		}
 	}

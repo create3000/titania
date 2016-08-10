@@ -76,7 +76,8 @@ ifilestream::ifilestream () :
 	 file_request_headers (),
 	file_response_headers (),
 	                m_url (),
-	             m_status (0)
+	             m_status (0),
+	           m_stopping (false)
 { }
 
 ifilestream::ifilestream (const basic::uri & url, size_t timeout) :
@@ -311,6 +312,9 @@ ifilestream::stop ()
 {
 	if (url_istream)
 		url_istream  -> stop ();
+
+	else
+		m_stopping .store (true);
 }
 
 bool
@@ -319,7 +323,7 @@ ifilestream::stopping () const
 	if (url_istream)
 		return url_istream -> stopping ();
 
-	return false;
+	return m_stopping .load ();
 }
 
 void

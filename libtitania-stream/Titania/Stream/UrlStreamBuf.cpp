@@ -358,6 +358,5 @@ urlstreambuf::stopping () const
 	return m_stopping .load ();
 }
 
-
 } // basic
 } // titania

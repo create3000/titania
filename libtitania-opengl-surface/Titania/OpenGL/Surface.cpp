@@ -69,10 +69,14 @@ namespace titania {
 namespace opengl {
 
 Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
-	Gtk::DrawingArea (),
-	         context (),
-	  sharingContext (sharingContext),
-	      background (new Background ())
+	   Gtk::DrawingArea (),
+	            treadId (std::this_thread::get_id ()),
+	            context (),
+	     sharingContext (sharingContext),
+	         background (new Background ()),
+	      mapConnection (),
+	constructConnection (),
+	     drawConnection ()
 {
 	get_style_context () -> add_class ("background");
 	get_style_context () -> add_class ("titania-surface");
@@ -83,7 +87,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	map_connection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
+	mapConnection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
 	signal_unrealize () .connect (sigc::mem_fun (*this, &Surface::dispose));
 }
 
@@ -160,7 +164,7 @@ Surface::glew ()
 bool
 Surface::makeCurrent () const
 {
-	return context and context -> makeCurrent ();
+	return std::this_thread::get_id () == treadId and context and context -> makeCurrent ();
 }
 
 void
@@ -178,7 +182,7 @@ Surface::swapBuffers () const
 bool
 Surface::set_map_event (GdkEventAny* const event)
 {
-	map_connection .disconnect ();
+	mapConnection .disconnect ();
 
 	if (sharingContext)
 	{
@@ -196,7 +200,7 @@ Surface::set_map_event (GdkEventAny* const event)
 	{
 		signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
 
-		construct_connection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
+		constructConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
 
 		glewInit ();
 	}
@@ -236,14 +240,14 @@ Surface::set_configure_event (GdkEventConfigure* const event)
 bool
 Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	construct_connection .disconnect ();
+	constructConnection .disconnect ();
 	
-	if (draw_connection .connected ())
+	if (drawConnection .connected ())
 		return false;
 
 	if (makeCurrent ())
 	{
-		draw_connection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
+		drawConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
 		background -> setup ();
 
@@ -278,7 +282,7 @@ Surface::on_unrealize ()
 void
 Surface::dispose ()
 {
-	draw_connection .disconnect ();
+	drawConnection .disconnect ();
 
 	notify_callbacks ();
 

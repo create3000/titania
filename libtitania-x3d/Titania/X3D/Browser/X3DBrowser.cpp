@@ -636,6 +636,8 @@ X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
 
+	addFuture (future);
+
 	future .reset ();
 
 	X3DBrowserContext::dispose ();

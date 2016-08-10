@@ -159,6 +159,8 @@ ExternProtoDeclaration::initialize ()
 	X3DProtoDeclarationNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	shutdown () .addInterest (this, &ExternProtoDeclaration::set_shutdown);
+
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
@@ -577,13 +579,17 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 }
 
 void
-ExternProtoDeclaration::dispose ()
+ExternProtoDeclaration::set_shutdown ()
 {
-	getScene () -> removeExternProtoLoadCount (this);
-
 	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
 
 	future .reset ();
+}
+
+void
+ExternProtoDeclaration::dispose ()
+{
+	getScene () -> removeExternProtoLoadCount (this);
 
 	removeChildren (url ());
 

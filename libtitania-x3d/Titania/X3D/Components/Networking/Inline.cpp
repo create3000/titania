@@ -104,6 +104,8 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
+	shutdown () .addInterest (this, &Inline::set_shutdown);
+
 	getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
 	isLive () .addInterest (this, &Inline::set_live);
 
@@ -415,12 +417,16 @@ Inline::addTool ()
 }
 
 void
-Inline::dispose ()
+Inline::set_shutdown ()
 {
 	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
 
-	future .reset ();
+	future .reset (); // XXX: See Inline
+}
 
+void
+Inline::dispose ()
+{
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();

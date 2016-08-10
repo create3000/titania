@@ -199,6 +199,9 @@ private:
 	void
 	set_url ();
 
+	void
+	set_shutdown ();
+
 	///  @name Input/Output
 
 	void

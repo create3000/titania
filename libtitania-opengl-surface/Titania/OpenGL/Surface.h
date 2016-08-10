@@ -57,6 +57,7 @@
 #include "Context/WindowContext.h"
 
 #include <memory>
+#include <thread>
 
 namespace titania {
 namespace opengl {
@@ -136,14 +137,15 @@ private:
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);
 
-	sigc::connection map_connection;
-	sigc::connection construct_connection;
-	sigc::connection draw_connection;
-
+	std::thread::id                 treadId;
 	std::shared_ptr <WindowContext> context;
 	std::shared_ptr <WindowContext> sharingContext;
 
 	std::unique_ptr <Background> background;
+
+	sigc::connection mapConnection;
+	sigc::connection constructConnection;
+	sigc::connection drawConnection;
 
 };
 

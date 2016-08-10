@@ -384,6 +384,8 @@ Context::initialize ()
 
 	X3DJavaScriptContext::initialize ();
 
+	shutdown () .addInterest (this, &Context::set_shutdown);
+
 	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
 	getScriptNode () -> isLive () .addInterest (this, &Context::set_live);
 
@@ -399,8 +401,6 @@ Context::initialize ()
 	}
 	catch (const std::exception & error)
 	{ }
-
-	shutdown () .addInterest (this, &Context::set_shutdown);
 
 	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
 }
@@ -566,6 +566,10 @@ Context::set_shutdown ()
 	//__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
+
+	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
+
+	future .reset (); // XXX: See Inline
 }
 
 void
@@ -601,10 +605,6 @@ Context::setError (const pb::pbError & error) const
 void
 Context::dispose ()
 {
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (); // XXX: See Inline
-
 	X3D::X3DJavaScriptContext::dispose ();
 }
 

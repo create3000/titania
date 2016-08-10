@@ -134,17 +134,17 @@ public:
 	       Error <URL_UNAVAILABLE>);
 
 	basic::ifilestream
-	loadStream (const SFString & URL)
-	throw (Error <INVALID_URL>,
-	       Error <URL_UNAVAILABLE>);
-
-	basic::ifilestream
 	loadStream (const basic::uri & uri)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>);
 
 
 private:
+
+	void
+	loadStream (const basic::uri & uri, basic::ifilestream &)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
 
 	X3DExecutionContext* const executionContext;
 	const std::string          userAgent;

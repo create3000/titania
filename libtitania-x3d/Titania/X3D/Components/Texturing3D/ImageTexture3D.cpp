@@ -90,6 +90,8 @@ ImageTexture3D::initialize ()
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	shutdown () .addInterest (this, &ImageTexture3D::set_shutdown);
+
 	url () .addInterest (this, &ImageTexture3D::update);
 
 	requestAsyncLoad ();
@@ -163,12 +165,16 @@ ImageTexture3D::update ()
 }
 
 void
-ImageTexture3D::dispose ()
+ImageTexture3D::set_shutdown ()
 {
 	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
 
 	future .reset ();
+}
 
+void
+ImageTexture3D::dispose ()
+{
 	X3DUrlObject::dispose ();
 	X3DTexture3DNode::dispose ();
 }

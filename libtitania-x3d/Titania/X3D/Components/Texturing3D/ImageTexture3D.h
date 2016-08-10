@@ -148,6 +148,9 @@ private:
 	void
 	update () final override;
 
+	void
+	set_shutdown ();
+
 	///  @name Static members
 
 	static const ComponentType component;

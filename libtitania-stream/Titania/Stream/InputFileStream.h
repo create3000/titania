@@ -164,8 +164,9 @@ private:
 	headers_type file_request_headers;
 	headers_type file_response_headers;
 
-	basic::uri              m_url;
-	size_t m_status;
+	basic::uri         m_url;
+	size_t             m_status;
+	std::atomic <bool> m_stopping;   // Open/close state of stream
 
 };
 
