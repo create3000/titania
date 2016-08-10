@@ -287,15 +287,12 @@ throw (Error <INVALID_URL>,
 	if (uri .empty ())
 		throw Error <INVALID_URL> ("Couldn't load URL '" + uri + "'.");
 
+	if (istream .stopping ())
+		return std::move (istream);
+
 	const bool data = uri .scheme () == "data";
 
-	//if (not data)
-	//	std::clog << "Trying to load URI '" << uri << "': " << std::flush;
-
-	istream = basic::ifilestream (data ? uri : referer .transform (uri), 60000);
-
-	//if (not data)
-	//	std::clog << "\tTransformed URL is '" << istream .url () << "'" << std::endl;
+	istream = basic::ifilestream (data ? uri : referer .transform (uri), 30000);
 
 	if (istream)
 	{

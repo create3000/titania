@@ -92,6 +92,9 @@ public:
 	void
 	stop ();
 
+	bool
+	stopping () const;
+
 	/// @name Header handling
 
 	void

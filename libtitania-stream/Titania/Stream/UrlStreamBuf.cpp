@@ -50,7 +50,7 @@ urlstreambuf::urlstreambuf () :
 	   easy_handle (nullptr),
 	       running (false),
 	        opened (false),
-	      stopping (false),
+	    m_stopping (false),
 	         m_url (),
 	     m_timeout (0),
 	     m_headers (),
@@ -81,7 +81,7 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	easy_handle = curl_easy_init ();
 
-	if (not easy_handle or stopping .load ())
+	if (not easy_handle or stopping ())
 		return nullptr;
 
 	const std::string curlURL = url () .filename (url () .is_network ());
@@ -95,8 +95,8 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 	curl_easy_setopt (easy_handle, CURLOPT_USE_SSL,               CURLUSESSL_TRY);
 	curl_easy_setopt (easy_handle, CURLOPT_HEADER,                false);
 	curl_easy_setopt (easy_handle, CURLOPT_FOLLOWLOCATION,        true);
-	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,            0); // Timeout for the ENTIRE request
-	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS,     timeout ());
+	curl_easy_setopt (easy_handle, CURLOPT_TIMEOUT_MS,            0);    // Timeout for the ENTIRE request
+	curl_easy_setopt (easy_handle, CURLOPT_CONNECTTIMEOUT_MS,     1000); // Timeout for wait
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPTTIMEOUT_MS,      timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_EXPECT_100_TIMEOUT_MS, timeout ());
 	curl_easy_setopt (easy_handle, CURLOPT_ACCEPT_ENCODING,       "");
@@ -130,7 +130,7 @@ urlstreambuf::send (const headers_type & headers)
 {
 	limit_connections ();
 
-	if (stopping .load ())
+	if (stopping ())
 		return nullptr;
 
 	// Add headers
@@ -147,7 +147,7 @@ urlstreambuf::send (const headers_type & headers)
 
 	// Read first arriving bytes
 
-	while (running and not bytesRead and not stopping .load ())
+	while (running and not bytesRead and not stopping ())
 	{
 		if (wait () >= 0)
 			curl_multi_perform (multi_handle, &running);
@@ -159,7 +159,7 @@ urlstreambuf::send (const headers_type & headers)
 	curl_slist_free_all (headerlist);
 
 	// Did we succeed?
-	if (retcode == CURLM_OK and (running or bytesRead) and not stopping .load ())
+	if (retcode == CURLM_OK and (running or bytesRead) and not stopping ())
 		return this;
 
 	//std::clog << "CURL Error: " << url () << std::endl;
@@ -178,7 +178,7 @@ urlstreambuf::limit_connections () const
 {
 	static constexpr size_t DELAY = 1000 / CONNECTIONS_PER_SECOND; // Miliseconds
 
-	while (chrono::now () - lastAccess .load () < DELAY / 1000.0 and not stopping .load ())
+	while (chrono::now () - lastAccess .load () < DELAY / 1000.0 and not stopping ())
 		std::this_thread::sleep_for (std::chrono::milliseconds (DELAY));
 
 	lastAccess .store (chrono::now ());
@@ -203,15 +203,16 @@ urlstreambuf::wait ()
 	long curl_timeout = -1;
 	curl_multi_timeout (multi_handle, &curl_timeout);
 
-	struct timeval timeout = { 0, 0 };
-
-	if (curl_timeout >= 0)
+	if (curl_timeout < 0)
 	{
-		timeout .tv_sec  = curl_timeout / 1000;
-		timeout .tv_usec = (curl_timeout % 1000) * 1000;
+		// XXX: Stalled, use default timeout.
+		curl_timeout = 1000;
 	}
-	else
-		return -1; // XXX: Stalled, dont't know what to do in this case.
+
+	struct timeval timeout;
+
+	timeout .tv_sec  = curl_timeout / 1000;
+	timeout .tv_usec = (curl_timeout % 1000) * 1000;
 
 	// get file descriptors from the transfers
 	const CURLMcode retcode = curl_multi_fdset (multi_handle, &fdread, &fdwrite, &fdexcep, &maxfd);
@@ -282,7 +283,7 @@ urlstreambuf::underflow ()
 
 	bytesRead = 0;
 
-	while (running and not bytesRead and not stopping .load ())
+	while (running and not bytesRead and not stopping ())
 	{
 		if (wait () >= 0)
 			curl_multi_perform (multi_handle, &running);
@@ -291,7 +292,7 @@ urlstreambuf::underflow ()
 			running = false;
 	}
 
-	if (bytesRead == 0 or stopping .load ())
+	if (bytesRead == 0 or stopping ())
 		return traits_type::eof ();
 
 	// return next character
@@ -348,7 +349,13 @@ urlstreambuf::close ()
 void
 urlstreambuf::stop ()
 {
-	stopping .store (true);
+	m_stopping .store (true);
+}
+
+bool
+urlstreambuf::stopping () const
+{
+	return m_stopping .load ();
 }
 
 

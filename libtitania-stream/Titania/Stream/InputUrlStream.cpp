@@ -190,6 +190,15 @@ iurlstream::stop ()
 		buf -> stop ();
 }
 
+bool
+iurlstream::stopping () const
+{
+	if (rdbuf ())
+		return buf -> stopping ();
+
+	return false;
+}
+
 void
 iurlstream::request_header (const std::string & header, const std::string & value)
 {

@@ -126,6 +126,9 @@ public:
 	void
 	stop ();
 
+	bool
+	stopping () const;
+
 	/// @name Destructor
 
 	virtual

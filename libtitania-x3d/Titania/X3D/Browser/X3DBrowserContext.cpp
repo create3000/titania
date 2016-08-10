@@ -312,6 +312,8 @@ noexcept (true)
 		   << getName () << " "
 			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
+
+		addEvent ();
 	}
 	catch (const std::exception & exception)
 	{

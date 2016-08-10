@@ -89,6 +89,9 @@ public:
 	void
 	stop ();
 
+	bool
+	stopping () const;
+
 	const basic::uri &
 	url () const
 	{ return m_url; }
@@ -145,7 +148,7 @@ private:
 	CURL*              easy_handle;  // CURL handle
 	int                running;
 	bool               opened;       // Open/close state of stream
-	std::atomic <bool> stopping;     // Open/close state of stream
+	std::atomic <bool> m_stopping;   // Open/close state of stream
 
 	basic::uri        m_url;        // The URL
 	size_t            m_timeout;    // in ms

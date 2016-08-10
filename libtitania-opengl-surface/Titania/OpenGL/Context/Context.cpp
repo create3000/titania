@@ -52,6 +52,7 @@
 
 #include <Titania/LOG.h>
 #include <stdexcept>
+#include <thread>
 
 namespace titania {
 namespace opengl {
@@ -91,7 +92,7 @@ Context::dispose ()
 	if (xContext)
 	{
 		if (glXGetCurrentContext () == xContext)
-			glXMakeCurrent (xDisplay, None, None);
+			glXMakeCurrent (xDisplay, None, nullptr);
 	}
 }
 
@@ -100,7 +101,7 @@ Context::~Context ()
 	if (xContext)
 	{
 		if (glXGetCurrentContext () == xContext)
-			glXMakeCurrent (xDisplay, None, None);
+			glXMakeCurrent (xDisplay, None, nullptr);
 
 		glXDestroyContext (xDisplay, xContext);
 	}
