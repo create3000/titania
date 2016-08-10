@@ -70,6 +70,9 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 {
 	limit_connections ();
 
+	if (stopping ())
+		return nullptr;
+
 	//
 
 	url (URL .add_file_scheme ());
@@ -81,7 +84,7 @@ urlstreambuf::open (const basic::uri & URL, size_t Timeout)
 
 	easy_handle = curl_easy_init ();
 
-	if (not easy_handle or stopping ())
+	if (not easy_handle)
 		return nullptr;
 
 	const std::string curlURL = url () .filename (url () .is_network ());
@@ -346,12 +349,14 @@ urlstreambuf::close ()
 	return this;
 }
 
+///  Cancel download. This function is thread save.
 void
 urlstreambuf::stop ()
 {
 	m_stopping .store (true);
 }
 
+///  Returns true if stream was stopped otherwise false.
 bool
 urlstreambuf::stopping () const
 {

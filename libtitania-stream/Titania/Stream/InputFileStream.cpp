@@ -139,6 +139,9 @@ ifilestream::open (const basic::uri & URL, size_t timeout)
 
 	close ();
 
+	if (stopping ())
+		return;
+
 	if (url () .scheme () == "data")
 	{
 		// data:[<MIME-TYPE>][;charset=<CHAR-SET>][;base64],<DATA>
@@ -307,16 +310,17 @@ ifilestream::close ()
 	url_istream  .reset ();
 }
 
+///  Cancel download. This function is thread save.
 void
 ifilestream::stop ()
 {
+	m_stopping .store (true);
+
 	if (url_istream)
 		url_istream  -> stop ();
-
-	else
-		m_stopping .store (true);
 }
 
+///  Returns true if stream was stopped otherwise false.
 bool
 ifilestream::stopping () const
 {
