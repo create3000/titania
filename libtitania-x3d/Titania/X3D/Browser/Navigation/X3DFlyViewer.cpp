@@ -140,7 +140,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 					fromVector = toVector = Vector3d (event -> x, 0, event -> y);
 
 					if (getBrowser () -> getBrowserOptions () -> RubberBand ())
-						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display);
+						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display, MoveType::MOVE);
 				}
 
 				isActive () = true;
@@ -149,6 +149,8 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 
 			case 2:
 			{
+				// Pan
+
 				button = event -> button;
 
 				disconnect ();
@@ -159,6 +161,9 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				addCollision ();
 
 				fromVector = toVector = Vector3d (event -> x, -event -> y, 0);
+
+				if (getBrowser () -> getBrowserOptions () -> RubberBand ())
+					getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display, MoveType::PAN);
 
 				isActive () = true;
 				return false;
@@ -435,7 +440,7 @@ X3DFlyViewer::disconnect ()
 }
 
 void
-X3DFlyViewer::display ()
+X3DFlyViewer::display (const MoveType type)
 {
 	PolygonMode polygonMode (GL_FILL);
 
@@ -447,9 +452,24 @@ X3DFlyViewer::display ()
 
 	const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
 
-	const std::vector <Vector2d> points ({ Vector2d (fromVector .x (), height - fromVector .z ()),
-	                                       Vector2d (toVector   .x (), height - toVector   .z ()) });
+	std::vector <Vector2d> points;
 
+	switch (type)
+	{
+		case MoveType::MOVE:
+		{
+			points .emplace_back (fromVector .x (), height - fromVector .z ());
+			points .emplace_back (toVector   .x (), height - toVector   .z ());
+			break;
+		}
+		case MoveType::PAN:
+		{
+			points .emplace_back (fromVector .x (), height + fromVector .y ());
+			points .emplace_back (toVector   .x (), height + toVector   .y ());
+			break;
+		}
+	}
+	
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .data ());
 	glMatrixMode (GL_MODELVIEW);

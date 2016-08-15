@@ -107,6 +107,15 @@ protected:
 
 private:
 
+	///  @name Member types
+
+	enum class MoveType :
+		uint8_t
+	{
+		MOVE,
+		PAN
+	};
+
 	///  @name Event handlers
 
 	void
@@ -146,7 +155,7 @@ private:
 	disconnect ();
 
 	void
-	display ();
+	display (const MoveType);
 
 	///  @name Members
 
