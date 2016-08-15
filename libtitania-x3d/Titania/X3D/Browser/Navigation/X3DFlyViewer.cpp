@@ -447,36 +447,30 @@ X3DFlyViewer::display ()
 
 	const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
 
+	const std::vector <Vector2d> points ({ Vector2d (fromVector .x (), height - fromVector .z ()),
+	                                       Vector2d (toVector   .x (), height - toVector   .z ()) });
+
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .data ());
 	glMatrixMode (GL_MODELVIEW);
 
-	// Display Rubberband.
+	// Draw a black and a white line.
 
 	glDisable (GL_DEPTH_TEST);
-
 	glLoadIdentity ();
 
-	const Vector3d fromPoint (fromVector .x (), height - fromVector .z (), 0);
-	const Vector3d toPoint   (toVector   .x (), height - toVector   .z (), 0);
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (2, GL_DOUBLE, 0, points .data ());
 
-	// Draw a black and a white line.
 	glLineWidth (2);
 	glColor3f (0, 0, 0);
-
-	glBegin (GL_LINES);
-	glVertex3dv (fromPoint .data ());
-	glVertex3dv (toPoint   .data ());
-	glEnd ();
+	glDrawArrays (GL_LINES, 0, points .size ());
 
 	glLineWidth (1);
 	glColor3f (1, 1, 1);
+	glDrawArrays (GL_LINES, 0, points .size ());
 
-	glBegin (GL_LINES);
-	glVertex3dv (fromPoint .data ());
-	glVertex3dv (toPoint   .data ());
-	glEnd ();
-
+	glDisableClientState (GL_VERTEX_ARRAY);
 	glEnable (GL_DEPTH_TEST);
 }
 
