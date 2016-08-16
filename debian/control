@@ -24,11 +24,13 @@ Build-Depends: debhelper (>= 5),
                gettext,
                libtool,
                libtool-bin,
-               libgtop2-dev
+               libgtop2-dev.
+               libgmp-dev
 
 Homepage: http://titania.create3000.de/
 Package: titania
 Architecture: any
+
 Depends: ${misc:Depends},
          libgtkmm-3.0-1v5,
          libgtksourceviewmm-3.0-0v5,
@@ -49,14 +51,18 @@ Depends: ${misc:Depends},
          perl,
          libxml-libxml-perl,
          libglib-perl,
-         libswitch-perl
+         libswitch-perl,
+         libgmp10
+
 Recommends: gstreamer1.0-plugins-base,
             gstreamer1.0-plugins-good,
             gstreamer1.0-plugins-bad,
             gstreamer1.0-plugins-ugly
+
 Conflicts:
 Replaces:
 Provides: titania
+
 Description: Titania X3D Browser
  Titania is a X3D/VRML editor and browser for Ubuntu. The goal is a full standard compliant X3D browser
  for future releases of Ubuntu. For now, Titania fully supports the Moving Worlds specification for

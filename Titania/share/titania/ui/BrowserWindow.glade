@@ -4,12 +4,6 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="Models" filename="icons/Models.svg"/>
-      <source stock-id="Backgrounds" filename="icons/Background.svg"/>
-      <source stock-id="Fogs" filename="icons/Fog.svg"/>
-      <source stock-id="NavigationInfos" filename="icons/Navigation.svg"/>
-      <source stock-id="Viewpoints" filename="icons/Viewpoint.svg"/>
-      <source stock-id="SculpTool" filename="icons/SculpTool.svg"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Clone" filename="icons/Clone.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
@@ -24,6 +18,7 @@
       <source stock-id="RectangleSelection" filename="icons/RectangleSelection.svg"/>
       <source stock-id="Grid" filename="icons/Grid.svg"/>
       <source stock-id="Light" filename="icons/Light.svg"/>
+      <source stock-id="NavigationInfos" filename="icons/Navigation.svg"/>
       <source stock-id="gtk-new" filename="icons/Faenza/16/gtk-new.png"/>
       <source stock-id="gtk-media-pause" filename="icons/Faenza/16/gtk-media-pause.png"/>
       <source stock-id="Recent" filename="icons/Recent.svg"/>
@@ -59,9 +54,10 @@
       <source stock-id="MustEvaluate" filename="icons/MustEvaluate.svg"/>
       <source stock-id="audio-volume-medium" filename="icons/Faenza/16/audio-volume-medium.png"/>
       <source stock-id="gtk-preferences" filename="icons/Faenza/16/gtk-preferences.png"/>
-      <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
+      <source stock-id="Viewpoints" filename="icons/Viewpoint.svg"/>
       <source stock-id="gtk-paste" filename="icons/Faenza/16/gtk-paste.png"/>
       <source stock-id="RemoveFace" filename="icons/RemoveFace.svg"/>
+      <source stock-id="ColorAdjacentVertices" filename="icons/ColorAdjacentVertices.svg"/>
       <source stock-id="Hand" filename="icons/Hand.svg"/>
       <source stock-id="gtk-refresh" filename="icons/Faenza/16/gtk-refresh.png"/>
       <source stock-id="gtk-zoom-out" filename="icons/Faenza/16/gtk-zoom-out.png"/>
@@ -74,6 +70,7 @@
       <source stock-id="gtk-goto-bottom" filename="icons/Faenza/16/gtk-goto-bottom.png"/>
       <source stock-id="WalkViewer" filename="icons/WalkViewer.svg"/>
       <source stock-id="gtk-media-record" filename="icons/Faenza/16/gtk-media-record.png"/>
+      <source stock-id="Models" filename="icons/Models.svg"/>
       <source stock-id="gtk-save" filename="icons/Faenza/16/gtk-save.png"/>
       <source stock-id="ColorWholeObject" filename="icons/ColorWholeObject.svg"/>
       <source stock-id="gtk-revert-to-saved" filename="icons/Faenza/16/gtk-revert-to-saved-ltr.png"/>
@@ -81,6 +78,7 @@
       <source stock-id="gtk-go-forward" filename="icons/Faenza/16/gtk-go-forward-ltr.png"/>
       <source stock-id="gtk-goto-first" filename="icons/Faenza/16/gtk-goto-first-ltr.png"/>
       <source stock-id="FormNewFace" filename="icons/FormNewFace.svg"/>
+      <source stock-id="Backgrounds" filename="icons/Background.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="gtk-zoom-in" filename="icons/Faenza/16/gtk-zoom-in.png"/>
       <source stock-id="gtk-cut" filename="icons/Faenza/16/gtk-cut.png"/>
@@ -89,51 +87,53 @@
       <source stock-id="gtk-file" filename="icons/Faenza/16/gtk-file.png"/>
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
-      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="gtk-media-resume" filename="icons/Resume.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
+      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
       <source stock-id="gtk-open" filename="icons/Faenza/16/gtk-open.png"/>
       <source stock-id="gtk-properties" filename="icons/Faenza/16/gtk-properties.png"/>
-      <source stock-id="edit-find-symbolic" filename="icons/Faenza/scalable/edit-find-symbolic.svg"/>
+      <source stock-id="SculpTool" filename="icons/SculpTool.svg"/>
       <source stock-id="gtk-remove" filename="icons/Faenza/16/gtk-remove.png"/>
+      <source stock-id="edit-find-symbolic" filename="icons/Faenza/scalable/edit-find-symbolic.svg"/>
       <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
       <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
       <source stock-id="FragmentShader" filename="icons/FragmentShader.svg"/>
-      <source stock-id="Green" filename="icons/Green.svg"/>
       <source stock-id="audio-volume-high" filename="icons/Faenza/16/audio-volume-high.png"/>
-      <source stock-id="document-import-scalable" filename="icons/Faenza/scalable/document-import.svg"/>
-      <source stock-id="LOD" filename="icons/LOD.svg"/>
+      <source stock-id="Green" filename="icons/Green.svg"/>
       <source stock-id="EyeOpen" filename="icons/EyeOpen.svg"/>
+      <source stock-id="LOD" filename="icons/LOD.svg"/>
       <source stock-id="ChipOfFace" filename="icons/ChipOfFace.svg"/>
       <source stock-id="Scissor" filename="icons/Scissor.svg"/>
-      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
+      <source stock-id="Texture" filename="icons/Texture.svg"/>
       <source stock-id="Straighten" filename="icons/Straighten.svg"/>
       <source stock-id="gtk-zoom-fit" filename="icons/Faenza/16/gtk-zoom-fit.png"/>
-      <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
+      <source stock-id="Fogs" filename="icons/Fog.svg"/>
       <source stock-id="gtk-go-down" filename="icons/Faenza/16/gtk-go-down.png"/>
+      <source stock-id="document-import-scalable" filename="icons/Faenza/scalable/document-import.svg"/>
       <source stock-id="stock_script" filename="icons/Faenza/16/stock_script.png"/>
       <source stock-id="Shading" filename="icons/Shading.svg"/>
       <source stock-id="Flop" filename="icons/Flop.svg"/>
       <source stock-id="Red" filename="icons/Red.svg"/>
-      <source stock-id="DirectOutput" filename="icons/DirectOutput.svg"/>
       <source stock-id="Library" filename="icons/Library.svg"/>
-      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
+      <source stock-id="DirectOutput" filename="icons/DirectOutput.svg"/>
+      <source stock-id="TransformToZero" filename="icons/TransformToZero.svg"/>
       <source stock-id="gtk-execute" filename="icons/Faenza/16/gtk-execute.png"/>
       <source stock-id="gtk-no" filename="icons/Faenza/16/gtk-no.png"/>
+      <source stock-id="gtk-leave-fullscreen" filename="icons/Faenza/16/gtk-leave-fullscreen.png"/>
       <source stock-id="gtk-edit-scalable" filename="icons/Faenza/scalable/gtk-edit.svg"/>
       <source stock-id="Blue" filename="icons/Blue.svg"/>
       <source stock-id="Triangulate" filename="icons/Triangulate.svg"/>
       <source stock-id="Checkerboard" filename="icons/Checkerboard.svg"/>
+      <source stock-id="Arrow" filename="icons/Arrow.svg"/>
       <source stock-id="gtk-find" filename="icons/Faenza/16/gtk-find.png"/>
-      <source stock-id="Texture" filename="icons/Texture.svg"/>
       <source stock-id="Bound" filename="icons/Bound.svg"/>
       <source stock-id="Experimental" filename="icons/Experimental.svg"/>
       <source stock-id="History" filename="icons/History.svg"/>
@@ -459,6 +459,11 @@
     <property name="stock">Environment</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
   <object class="GtkImage" id="image10">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -470,6 +475,11 @@
     <property name="can_focus">False</property>
     <property name="stock">Droplet</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image12">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="image13">
     <property name="visible">True</property>
@@ -512,6 +522,16 @@
     <property name="can_focus">False</property>
     <property name="stock">TextureQuality</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
+  <object class="GtkImage" id="image20">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="image21">
     <property name="visible">True</property>
@@ -567,6 +587,11 @@
     <property name="stock">TextureQuality</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
   <object class="GtkImage" id="image30">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -596,6 +621,16 @@
     <property name="can_focus">False</property>
     <property name="stock">Grid</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image35">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
+  <object class="GtkImage" id="image36">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
@@ -979,8 +1014,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1786,6 +1821,54 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+              <object class="GtkImageMenuItem" id="BrowserUnionMenuItem">
+                <property name="label" translatable="yes">_Union</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image12</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_union_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="BrowserDifferenceMenuItem">
+                <property name="label" translatable="yes">_Difference</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image20</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_difference_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="BrowserIntersectionMenuItem">
+                <property name="label" translatable="yes">_Intersection</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image35</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_intersection_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImageMenuItem" id="BrowserExclusionMenuItem">
+                <property name="label" translatable="yes">_Exclusion</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_underline">True</property>
+                <property name="image">image36</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
+                <signal name="activate" handler="on_exclusion_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserCombineMenuItem">
                 <property name="label" translatable="yes">_Combine</property>
                 <property name="visible">True</property>
@@ -1795,6 +1878,12 @@
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_combine_activated" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSeparatorMenuItem" id="separatormenuitem42">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
               </object>
             </child>
             <child>
@@ -1940,6 +2029,11 @@
     <property name="can_focus">False</property>
     <property name="stock">document-export</property>
     <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
   </object>
   <object class="GtkImage" id="image6">
     <property name="visible">True</property>
@@ -2378,8 +2472,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -3204,6 +3298,54 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
+                              <object class="GtkImageMenuItem" id="UnionMenuItem">
+                                <property name="label" translatable="yes">_Union</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image1</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_union_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="DifferenceMenuItem">
+                                <property name="label" translatable="yes">_Difference</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image2</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_difference_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="ItersectionMenuItem">
+                                <property name="label" translatable="yes">_Itersection</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image3</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_intersection_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkImageMenuItem" id="ExclusionMenuItem">
+                                <property name="label" translatable="yes">_Exclusion</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image5</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_exclusion_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
                               <object class="GtkImageMenuItem" id="CombineMenuItem">
                                 <property name="label" translatable="yes">_Combine</property>
                                 <property name="visible">True</property>
@@ -3213,6 +3355,12 @@
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_combine_activated" swapped="no"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkSeparatorMenuItem" id="separatormenuitem41">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                               </object>
                             </child>
                             <child>

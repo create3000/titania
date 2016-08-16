@@ -56,20 +56,187 @@
 #include "../Components/Rendering/Coordinate.h"
 #include "../Components/Rendering/Color.h"
 #include "../Components/Rendering/X3DNormalNode.h"
+#include "../Rendering/Tessellator.h"
+#include "../Editing/Editor.h"
 
 #include <Titania/Utility/Map.h>
 
 namespace titania {
 namespace X3D {
 
-Combine::Combine () :
-	X3DEditor ()
+Combine::Combine ()
 { }
 
 void
-Combine::combine (const X3DExecutionContextPtr & executionContext,
-                  const X3DPtrArray <X3DShapeNode> & shapes,
-                  const UndoStepPtr & undoStep) const
+Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
+                        const X3DPtrArray <X3DShapeNode> & shapes,
+                        const UndoStepPtr & undoStep)
+throw (Error <DISPOSED>,
+       std::domain_error)
+{
+	geometryBoolean (mesh_union, executionContext, shapes, undoStep);
+}
+
+void
+Combine::geometryDifference (const X3DExecutionContextPtr & executionContext,
+                             const X3DPtrArray <X3DShapeNode> & shapes,
+                             const UndoStepPtr & undoStep)
+throw (Error <DISPOSED>,     
+       std::domain_error)
+{
+	geometryBoolean (mesh_difference, executionContext, shapes, undoStep);
+}
+
+void
+Combine::geometryIntersection (const X3DExecutionContextPtr & executionContext,
+                               const X3DPtrArray <X3DShapeNode> & shapes,
+                               const UndoStepPtr & undoStep)
+throw (Error <DISPOSED>,     
+       std::domain_error)
+{
+	geometryBoolean (mesh_intersection, executionContext, shapes, undoStep);
+}
+
+void
+Combine::geometrySymmetricDifference (const X3DExecutionContextPtr & executionContext,
+                                      const X3DPtrArray <X3DShapeNode> & shapes,
+                                      const UndoStepPtr & undoStep)
+throw (Error <DISPOSED>,     
+       std::domain_error)
+{
+	geometryBoolean (mesh_symmetric_difference, executionContext, shapes, undoStep);
+}
+
+void
+Combine::geometryBoolean (const BooleanOperation & booleanOperation,
+                          const X3DExecutionContextPtr & executionContext,
+                          const X3DPtrArray <X3DShapeNode> & shapes,
+                          const UndoStepPtr & undoStep)
+throw (Error <DISPOSED>,
+       std::domain_error)
+{
+	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
+		executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
+
+	// Choose target
+
+	const auto & masterShape    = shapes .back ();
+	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
+	const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
+	const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
+
+	targetGeometry -> coord () = targetCoord;
+
+	// Filter geometries.
+
+	X3DPtrArray <IndexedFaceSet> geometries;
+
+	for (const auto & shape : shapes)
+	{
+		const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
+
+		if (not geometry)
+			continue;
+
+		geometries .emplace_back (geometry);
+	}
+
+	if (not geometries .empty ())
+		targetGeometry -> creaseAngle () = geometries .front () -> creaseAngle ();
+
+	// Combine Coordinates
+
+	std::vector <mesh <double>> meshes;
+
+	for (const auto & geometryNode : geometries)
+	{
+		const auto coordNode = geometryNode -> getCoord ();
+
+		if (not coordNode)
+			continue;
+
+		const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
+
+		auto indices = std::vector <uint32_t> ();
+		auto points  = std::vector <Vector3d> ();
+
+		std::vector <size_t> vertices;
+	
+		for (const auto & index : geometryNode -> coordIndex ())
+		{
+			if (index < 0)
+			{
+				if (vertices .size () < 3)
+				{
+					vertices .clear ();
+					continue;
+				}
+
+				opengl::tessellator <size_t> tessellator;
+
+				tessellator .begin_polygon ();
+				tessellator .begin_contour ();
+			
+				for (const auto & index : vertices)
+				{
+					const auto point = coordNode -> get1Point (index) * matrix;
+		
+					tessellator .add_vertex (point, index);
+				}
+			
+				tessellator .end_contour ();
+				tessellator .end_polygon ();
+			
+				const auto triangles = tessellator .triangles ();
+		
+				for (size_t v = 0, size = triangles .size (); v < size; )
+				{
+					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+				}
+
+				vertices .clear ();
+			}
+			else
+			{
+				vertices .emplace_back (index);
+			}
+		}
+
+		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+			points .emplace_back (coordNode -> get1Point (i) * matrix);
+
+		meshes .emplace_back (std::move (indices), std::move (points));
+	}
+
+	if (meshes .size () >= 2)
+	{
+		auto result = std::move (meshes .front ());
+
+		for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
+			result = booleanOperation (result, mesh);
+	
+		for (size_t i = 0, size = result .first .size (); i < size;)
+		{
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (-1);
+		}
+
+		targetCoord -> point () .assign (result .second .begin (), result .second .end ());
+
+		// Replace node
+	
+		Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+	}
+}
+
+void
+Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
+                          const X3DPtrArray <X3DShapeNode> & shapes,
+                          const UndoStepPtr & undoStep)
 throw (Error <DISPOSED>,
        std::domain_error)
 {
@@ -81,7 +248,7 @@ throw (Error <DISPOSED>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = ~getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
+	const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
 
 	targetGeometry -> coord () = targetCoord;
 
@@ -128,7 +295,7 @@ throw (Error <DISPOSED>,
 
 	// Replace node
 
-	replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+	Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 }
 
 std::vector <int32_t>
@@ -136,7 +303,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
                   const X3DPtrArray <IndexedFaceSet> & geometries,
                   const X3DPtr <IndexedFaceSet> & targetGeometry,
                   const X3DPtr <X3DCoordinateNode> & targetCoord,
-                  const Matrix4d & targetMatrix) const
+                  const Matrix4d & targetMatrix)
 {
 	std::vector <int32_t> points;
 
@@ -324,7 +491,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto matrix = getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
+		const auto matrix = Editor () .getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
 
 		face              = 0;
 		size_t first      = 0;
@@ -497,7 +664,7 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
                        const X3DPtrArray <X3DGroupingNode> & groups,
                        const X3DPtrArray <X3DShapeNode> & shapes,
                        const X3DPtr <X3DShapeNode> & masterShape,
-                       const UndoStepPtr & undoStep) const
+                       const UndoStepPtr & undoStep)
 {
 	// Remove Shape nodes that are direct selected.
 
@@ -513,17 +680,17 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 		nodes .emplace_back (node);
 	}
 
-	removeNodesFromScene (executionContext, nodes, true, undoStep);
+	Editor () .removeNodesFromScene (executionContext, nodes, true, undoStep);
 
 	// Remove Shape nodes from selection.
 
 	nodes .assign (shapes .begin (), shapes .end ());
 	nodes .remove (SFNode (masterShape));
 
-	removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
+	Editor () .removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
 
 	for (const auto & node : nodes)
-		removeNodesFromSceneIfNotExists (executionContext, { node }, undoStep);
+		Editor () .removeNodesFromSceneIfNotExists (executionContext, { node }, undoStep);
 
 	// Find empty groups in selection and remove from scene.
 
@@ -535,7 +702,7 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 			nodes .emplace_back (group);
 	}
 
-	removeNodesFromScene (executionContext, nodes, true, undoStep);
+	Editor () .removeNodesFromScene (executionContext, nodes, true, undoStep);
 }
 
 Combine::~Combine ()

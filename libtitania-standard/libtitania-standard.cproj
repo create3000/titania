@@ -558,6 +558,36 @@
     <None Include="Titania\External\unsupported\Eigen\src\Splines\SplineFwd.h" />
     <None Include="Titania\Math\Geometry\MinimumBoundingBox.h" />
     <None Include="Titania\Math\Geometry\LineSegment2.h" />
+    <None Include="Titania\External\Cork\cork.h" />
+    <None Include="Titania\External\Cork\aabvh.h" />
+    <None Include="Titania\External\Cork\files.h" />
+    <None Include="Titania\External\Cork\absext4.h" />
+    <None Include="Titania\External\Cork\empty3d.h" />
+    <None Include="Titania\External\Cork\ext4.h" />
+    <None Include="Titania\External\Cork\fixext4.h" />
+    <None Include="Titania\External\Cork\fixint.h" />
+    <None Include="Titania\External\Cork\gmpext4.h" />
+    <None Include="Titania\External\Cork\quantization.h" />
+    <None Include="Titania\External\Cork\triangle.h" />
+    <None Include="Titania\External\Cork\unsafeRayTriIsct.h" />
+    <None Include="Titania\External\Cork\bbox.h" />
+    <None Include="Titania\External\Cork\ray.h" />
+    <None Include="Titania\External\Cork\vec.h" />
+    <None Include="Titania\External\Cork\mesh.h" />
+    <None Include="Titania\External\Cork\mesh.tpp" />
+    <None Include="Titania\External\Cork\mesh.bool.tpp" />
+    <None Include="Titania\External\Cork\mesh.decl.h" />
+    <None Include="Titania\External\Cork\mesh.isct.tpp" />
+    <None Include="Titania\External\Cork\mesh.remesh.tpp" />
+    <None Include="Titania\External\Cork\mesh.topoCache.tpp" />
+    <None Include="Titania\External\Cork\rawMesh.h" />
+    <None Include="Titania\External\Cork\rawMesh.tpp" />
+    <None Include="Titania\External\Cork\iterPool.h" />
+    <None Include="Titania\External\Cork\memPool.h" />
+    <None Include="Titania\External\Cork\prelude.h" />
+    <None Include="Titania\External\Cork\shortVec.h" />
+    <None Include="Titania\External\Cork\unionFind.h" />
+    <None Include="Titania\Math\Geometry\Combine.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -638,6 +668,16 @@
     <Compile Include="Titania\External\ApproxMVBB\pugixml\pugixml.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
     <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
+    <Compile Include="Titania\External\Cork\cork.cpp" />
+    <Compile Include="Titania\External\Cork\files.cpp" />
+    <Compile Include="Titania\External\Cork\ifs.cpp" />
+    <Compile Include="Titania\External\Cork\off.cpp" />
+    <Compile Include="Titania\External\Cork\empty3d.cpp" />
+    <Compile Include="Titania\External\Cork\quantization.cpp" />
+    <Compile Include="Titania\External\Cork\triangle.c" />
+    <Compile Include="Titania\External\Cork\log.cpp" />
+    <Compile Include="Titania\External\Cork\timer.cpp" />
+    <Compile Include="Titania\Math\Geometry\Combine.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

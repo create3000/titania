@@ -2,13 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/ComposedWidgets/X3DGradientTool.cpp" Line="314" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/BackgroundTool.cpp" Line="112" Column="43" />
-      <File FileName="Titania/share/titania/ui/Editors/GradientTool.x3dv" Line="482" Column="42" />
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.h" Line="142" Column="34" />
-      <File FileName="Titania/Titania/Editors/BackgroundEditor/BackgroundEditor.cpp" Line="217" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/RangeTool.cpp" Line="86" Column="7" />
-      <File FileName="Titania/Titania/ComposedWidgets/RangeTool.h" Line="89" Column="8" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DGradientTool.cpp" Line="132" Column="4" />
+      <File FileName="../Cobweb/cobweb.js/tests/Components/Lighting/MadFlat.x3d" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

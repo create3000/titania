@@ -57,13 +57,16 @@
 #include "../Execution/X3DExecutionContext.h"
 #include "../Editing/X3DEditor.h"
 
+#include <Titania/Math/Geometry/Combine.h>
+
 namespace titania {
 namespace X3D {
 
-class Combine :
-	protected X3DEditor
+class Combine
 {
 public:
+
+	using BooleanOperation = std::function <mesh <double> (const mesh <double> &, const mesh <double> &)>;
 
 	///  @name Construction
 
@@ -71,27 +74,62 @@ public:
 
 	///  @name Operations
 
+	static
 	void
-	combine (const X3DExecutionContextPtr &,
-	         const X3DPtrArray <X3DShapeNode> &,
-	         const UndoStepPtr &) const
+	geometryUnion (const X3DExecutionContextPtr &,
+	               const X3DPtrArray <X3DShapeNode> &,
+	               const UndoStepPtr &)
 	throw (Error <DISPOSED>,
 	       std::domain_error);
 
+	static
+	void
+	geometryDifference (const X3DExecutionContextPtr &,
+	                    const X3DPtrArray <X3DShapeNode> &,
+	                    const UndoStepPtr &)
+	throw (Error <DISPOSED>,
+	       std::domain_error);
+
+	static
+	void
+	geometryIntersection (const X3DExecutionContextPtr &,
+	                      const X3DPtrArray <X3DShapeNode> &,
+	                      const UndoStepPtr &)
+	throw (Error <DISPOSED>,
+	       std::domain_error);
+
+	static
+	void
+	geometrySymmetricDifference (const X3DExecutionContextPtr &,
+	                             const X3DPtrArray <X3DShapeNode> &,
+	                             const UndoStepPtr &)
+	throw (Error <DISPOSED>,
+	       std::domain_error);
+
+	static
+	void
+	combineGeometry (const X3DExecutionContextPtr &,
+	                 const X3DPtrArray <X3DShapeNode> &,
+	                 const UndoStepPtr &)
+	throw (Error <DISPOSED>,
+	       std::domain_error);
+
+	static
 	std::vector <int32_t>
 	combine (const X3DExecutionContextPtr &,
 	         const X3DPtrArray <IndexedFaceSet> &,
 	         const X3DPtr <IndexedFaceSet> &,
 	         const X3DPtr <X3DCoordinateNode> &,
-	         const Matrix4d &) const;
+	         const Matrix4d &);
 
+	static
 	void
 	removeShapes (const X3DExecutionContextPtr &,
 	              const MFNode &,
 	              const X3DPtrArray <X3DGroupingNode> &,
 	              const X3DPtrArray <X3DShapeNode> &,
 	              const X3DPtr <X3DShapeNode> &,
-	              const UndoStepPtr & undoStep) const;
+	              const UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
@@ -99,6 +137,15 @@ public:
 
 
 private:
+
+	static
+	void
+	geometryBoolean (const BooleanOperation &,
+	                 const X3DExecutionContextPtr &,
+	                 const X3DPtrArray <X3DShapeNode> &,
+	                 const UndoStepPtr &)
+	throw (Error <DISPOSED>,
+	       std::domain_error);
 
 };
 

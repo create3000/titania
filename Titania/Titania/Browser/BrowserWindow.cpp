@@ -2012,16 +2012,54 @@ BrowserWindow::on_transform_tool_mode_toggled ()
 	getCurrentBrowser () -> getTransformToolOptions () -> toolMode () = getTransformToolModeAction () -> get_active ();
 }
 
-// Layout
+// Geometry
+
+void
+BrowserWindow::on_union_activated ()
+{
+	__LOG__ << std::endl;
+
+	on_boolean_activated (_ ("Boolean Operation »Union«"), X3D::Combine::geometryUnion);
+}
+
+void
+BrowserWindow::on_difference_activated ()
+{
+	__LOG__ << std::endl;
+
+	on_boolean_activated (_ ("Boolean Operation »Difference«"), X3D::Combine::geometryDifference);
+}
+
+void
+BrowserWindow::on_intersection_activated ()
+{
+	__LOG__ << std::endl;
+
+	on_boolean_activated (_ ("Boolean Operation »Intersection«"), X3D::Combine::geometryIntersection);
+}
+
+void
+BrowserWindow::on_exclusion_activated ()
+{
+	__LOG__ << std::endl;
+
+	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometrySymmetricDifference);
+}
 
 void
 BrowserWindow::on_combine_activated ()
 {
-	__LOG__ << "on_combine_activated" << std::endl;
+	__LOG__ << std::endl;
 
+	on_boolean_activated (_ ("Combine Geometries"), X3D::Combine::combineGeometry);
+}
+
+void
+BrowserWindow::on_boolean_activated (const std::string & description, const BooleanOperation & booleanOperation)
+{
 	try
 	{
-		const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Combine Objects"));
+		const auto undoStep  = std::make_shared <X3D::UndoStep> (description);
 		const auto selection = getSelection () -> getChildren ();
 		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 		const auto groups    = X3DEditorObject::getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
@@ -2029,8 +2067,8 @@ BrowserWindow::on_combine_activated ()
 		if (shapes .empty ())
 			return;
 
-		X3D::Combine () .combine      (getCurrentContext (), shapes, undoStep);
-		X3D::Combine () .removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
+		booleanOperation (getCurrentContext (), shapes, undoStep);
+		X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
 
 		// Select target
 

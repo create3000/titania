@@ -63,6 +63,10 @@ public:
 
 	using X3DBrowserWindow::isEditor;
 
+	/// @name Member types
+
+	using BooleanOperation = std::function <void (const X3D::X3DExecutionContextPtr &, const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &)>;
+
 	/// @name Construction
 
 	BrowserWindow (const X3D::BrowserPtr &);
@@ -575,7 +579,26 @@ private:
 
 	virtual
 	void
+	on_union_activated () final override;
+
+	virtual
+	void
+	on_difference_activated () final override;
+
+	virtual
+	void
+	on_intersection_activated () final override;
+
+	virtual
+	void
+	on_exclusion_activated () final override;
+
+	virtual
+	void
 	on_combine_activated () final override;
+
+	void
+	on_boolean_activated (const std::string &, const BooleanOperation &);
 
 	virtual
 	void
