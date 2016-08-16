@@ -62,6 +62,9 @@ namespace math {
 template <class Type>
 using mesh = std::pair <std::vector <uint32_t>, std::vector <vector3 <Type>>>;
 
+bool
+mesh_is_solid (const mesh <double> & mesh1);
+
 mesh <double>
 mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2);
 

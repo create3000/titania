@@ -103,6 +103,19 @@ mesh_boolean (const mesh <double> & mesh1, const mesh <double> & mesh2, const Bo
 	return std::make_pair (std::move (indices), std::move (points));
 }
 
+bool
+mesh_is_solid (const mesh <double> & mesh)
+{
+	CorkTriMesh corkMesh;
+
+	corkMesh .n_triangles = mesh .first .size () / 3;
+	corkMesh .n_vertices  = mesh .second .size ();
+	corkMesh .triangles   = const_cast <uint32_t*> (mesh .first .data ());
+	corkMesh .vertices    = const_cast <double*> (mesh .second [0] .data ());
+
+	return isSolid (corkMesh);
+}
+
 mesh <double>
 mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
 {

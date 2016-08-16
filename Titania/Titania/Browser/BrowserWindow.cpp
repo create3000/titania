@@ -2075,6 +2075,16 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 		getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
+	catch (const X3D::Error <X3D::INVALID_NODE> & error)
+	{
+	   __LOG__ << error .what () << std::endl;
+
+		getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
+		getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't apply Boolean operation to geometry!") + "</b></big>", true);
+		getMessageDialog () .set_secondary_text (_ ("The input geometries to Boolean operations must be »solid«, ie. closed (watertight) and non-self-intersecting."), false);
+		getMessageDialog () .run ();
+		getMessageDialog () .hide ();
+	}
 	catch (const std::exception & error)
 	{
 	   __LOG__ << error .what () << std::endl;

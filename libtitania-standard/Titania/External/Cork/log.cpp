@@ -49,7 +49,7 @@ void on_exit()
 
 void logInit()
 {
-    error_log_stream.open("error_log.txt", std::ios_base::app | std::ios_base::out );
+    error_log_stream.open("/dev/null", std::ios_base::app | std::ios_base::out );
     error_log_stream << "Begining error logging at " << endl;
     std::time_t time_var = std::time(NULL);
     error_log_stream << std::ctime(&time_var);// << endl;

@@ -79,7 +79,8 @@ public:
 	geometryUnion (const X3DExecutionContextPtr &,
 	               const X3DPtrArray <X3DShapeNode> &,
 	               const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 	static
@@ -87,7 +88,8 @@ public:
 	geometryDifference (const X3DExecutionContextPtr &,
 	                    const X3DPtrArray <X3DShapeNode> &,
 	                    const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 	static
@@ -95,7 +97,8 @@ public:
 	geometryIntersection (const X3DExecutionContextPtr &,
 	                      const X3DPtrArray <X3DShapeNode> &,
 	                      const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 	static
@@ -103,7 +106,8 @@ public:
 	geometrySymmetricDifference (const X3DExecutionContextPtr &,
 	                             const X3DPtrArray <X3DShapeNode> &,
 	                             const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 	static
@@ -111,7 +115,8 @@ public:
 	combineGeometry (const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
 	                 const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 	static
@@ -144,7 +149,8 @@ private:
 	                 const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
 	                 const UndoStepPtr &)
-	throw (Error <DISPOSED>,
+	throw (Error <INVALID_NODE>,
+          Error <DISPOSED>,
 	       std::domain_error);
 
 };

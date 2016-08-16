@@ -71,7 +71,8 @@ void
 Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
                         const X3DPtrArray <X3DShapeNode> & shapes,
                         const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,
        std::domain_error)
 {
 	geometryBoolean (mesh_union, executionContext, shapes, undoStep);
@@ -81,7 +82,8 @@ void
 Combine::geometryDifference (const X3DExecutionContextPtr & executionContext,
                              const X3DPtrArray <X3DShapeNode> & shapes,
                              const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,     
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,     
        std::domain_error)
 {
 	geometryBoolean (mesh_difference, executionContext, shapes, undoStep);
@@ -91,7 +93,8 @@ void
 Combine::geometryIntersection (const X3DExecutionContextPtr & executionContext,
                                const X3DPtrArray <X3DShapeNode> & shapes,
                                const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,     
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,     
        std::domain_error)
 {
 	geometryBoolean (mesh_intersection, executionContext, shapes, undoStep);
@@ -101,7 +104,8 @@ void
 Combine::geometrySymmetricDifference (const X3DExecutionContextPtr & executionContext,
                                       const X3DPtrArray <X3DShapeNode> & shapes,
                                       const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,     
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,     
        std::domain_error)
 {
 	geometryBoolean (mesh_symmetric_difference, executionContext, shapes, undoStep);
@@ -112,7 +116,8 @@ Combine::geometryBoolean (const BooleanOperation & booleanOperation,
                           const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,
        std::domain_error)
 {
 	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
@@ -208,6 +213,9 @@ throw (Error <DISPOSED>,
 			points .emplace_back (coordNode -> get1Point (i) * matrix);
 
 		meshes .emplace_back (std::move (indices), std::move (points));
+
+		if (not mesh_is_solid (meshes .back ()))
+			throw Error <INVALID_NODE> ("geometry is not solid");
 	}
 
 	if (meshes .size () >= 2)
@@ -237,7 +245,8 @@ void
 Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const UndoStepPtr & undoStep)
-throw (Error <DISPOSED>,
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,
        std::domain_error)
 {
 	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))

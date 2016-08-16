@@ -151,7 +151,6 @@
     <None Include="Titania\Math\Geometry\ConvexHull3.h" />
     <None Include="Titania\Math\Geometry\ConvexHull2.h" />
     <None Include="Titania\Math\Geometry\Line2.h" />
-    <None Include="signature_of_eigen3_matrix_library" />
     <None Include="Titania\External\ApproxMVBB\AABB.hpp" />
     <None Include="Titania\External\ApproxMVBB\AngleFunctions.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\AssertionDebug.hpp" />
