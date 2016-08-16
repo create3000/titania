@@ -236,7 +236,7 @@ function eventsProcessed ()
 		p .push (0);
 		p .push (1);
 	}
-	
+
 	// color
 
 	for (var i = 0, length = p .length; i < length; ++ i)
@@ -477,8 +477,8 @@ LayerSet {
           inputOnly      SFBool  set_active
           inputOnly      SFVec3f set_translation
           inputOutput    SFBool  enableFirst TRUE
-          inputOutput    SFTime  addTime nan
-          inputOutput    SFTime  removeTime nan
+          inputOutput    SFTime  addTime 0
+          inputOutput    SFTime  removeTime 0
           inputOutput    MFFloat position [
             0.147972,
             0.850492
@@ -541,10 +541,10 @@ function set_values (p, c)
 		whichChoice = length - 1;
 
 	set_enableFirst (enableFirst);
-	inputWhichChoice (whichChoice);
+	set_inputWhichChoice (whichChoice);
 }
 
-function inputWhichChoice (value)
+function set_inputWhichChoice (value)
 {
 	whichChoice = value;
 
@@ -665,7 +665,10 @@ function add_color (index, value, color)
 	arrow .offset .x = value;
 	
 	if (! enableFirst && arrows .children .length == 0)
+	{
+		arrow .offset .x = 0;
 		arrow .offset .z = -1;
+	}
 
 	arrows .children [arrows .children .length] = arrow;
 
@@ -697,8 +700,14 @@ function set_removeTime (value, time)
 
 	-- arrows .children .length;
 
+	if (whichChoice >= arrows .children .length)
+	{
+		whichChoice       = arrows .children .length - 1;
+		outputWhichChoice = arrows .children .length - 1;
+	}
+
 	updateFields ();
-	inputWhichChoice (whichChoice);
+	set_inputWhichChoice (whichChoice);
 
 	outputRemoveTime = time;
 }

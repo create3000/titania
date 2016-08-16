@@ -54,12 +54,12 @@ namespace titania {
 namespace puck {
 
 BackgroundTool::BackgroundTool (X3DBaseInterface* const editor,
-                                const std::string & name,
+                                const std::string & description,
                                 Gtk::Box & box,
                                 const std::string & positionName,
                                 const std::string & colorName) :
 	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	  X3DGradientTool (editor, name, box, positionName, colorName)
+	  X3DGradientTool (editor, description, box, positionName, colorName)
 {
 	setup ();
 }
@@ -121,23 +121,15 @@ BackgroundTool::get_position (const X3D::MFFloat & position)
 std::pair <X3D::MFFloat, X3D::MFColor>
 BackgroundTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
 {
-	try
-	{
-		X3D::MFFloat position;
+	X3D::MFFloat position;
 
-		for (const auto & value : positionValue)
-			position .emplace_back (math::clamp <float> (value / (M_PI / 2), 0, 1));
+	for (const auto & value : positionValue)
+		position .emplace_back (math::clamp <float> (value / (M_PI / 2), 0, 1));
 
-		if (not colorValue .empty ())
-			position .emplace_front (0);
+	if (not colorValue .empty ())
+		position .emplace_front (0);
 
-		return std::make_pair (position, colorValue);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-		return std::make_pair (positionValue, colorValue);
-	}
+	return std::make_pair (position, colorValue);
 }
 
 BackgroundTool::~BackgroundTool ()

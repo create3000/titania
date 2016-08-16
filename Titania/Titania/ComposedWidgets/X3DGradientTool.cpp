@@ -56,7 +56,7 @@ namespace titania {
 namespace puck {
 
 X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
-                                  const std::string & name,
+                                  const std::string & description,
                                   Gtk::Box & box,
                                   const std::string & positionName,
                                   const std::string & colorName) :
@@ -66,7 +66,7 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 	                box (box),
 	            browser (X3D::createBrowser ({ get_ui ("Editors/GradientTool.x3dv") })),
 	              nodes (),
-	               name (name),
+	        description (description),
 	       positionName (positionName),
 	          colorName (colorName),
 	           undoStep (),
@@ -200,10 +200,10 @@ X3DGradientTool::set_value (const X3D::time_type &)
 
 	//__LOG__ << undoStep .get () << std::endl;
 
-	beginUndoGroup (name, undoStep);
+	beginUndoGroup (description, undoStep);
 	addUndoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
 	addUndoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
-	endUndoGroup (name, undoStep);
+	endUndoGroup (description, undoStep);
 
 	try
 	{
@@ -261,17 +261,17 @@ X3DGradientTool::set_value (const X3D::time_type &)
 		__LOG__ << error .what () << std::endl;
 	}
 
-	beginRedoGroup (name, undoStep);
+	beginRedoGroup (description, undoStep);
 	addRedoFunction <X3D::MFFloat> (nodes, positionName, undoStep);
 	addRedoFunction <X3D::MFColor> (nodes, colorName,    undoStep);
-	endRedoGroup (name, undoStep);
+	endRedoGroup (description, undoStep);
 }
 
 void
 X3DGradientTool::set_active (const bool value)
 {
 	if (value)
-		resetUndoGroup (name, undoStep);
+		resetUndoGroup (description, undoStep);
 }
 
 void
@@ -308,6 +308,7 @@ X3DGradientTool::set_editTime (const X3D::UndoStepPtr & undoStep)
 				X3D::MFFloat & nodePosition = node -> getField <X3D::MFFloat> (positionName);
 				X3D::MFColor & nodeColor    = node -> getField <X3D::MFColor> (colorName);
 
+				undoStep -> addObjects (node);
 				undoStep -> addUndoFunction (&X3D::MFFloat::setValue, std::ref (nodePosition), nodePosition);
 				undoStep -> addUndoFunction (&X3D::MFColor::setValue, std::ref (nodeColor),    nodeColor);
 
@@ -348,7 +349,7 @@ X3DGradientTool::set_buffer ()
 {
 	//__LOG__ << std::endl;
 
-	resetUndoGroup (name, undoStep);
+	resetUndoGroup (description, undoStep);
 
 	// Position field
 

@@ -73,6 +73,10 @@ public:
 
 	///  @name Member access
 
+	const std::string &
+	getDescription () const
+	{ return description; }
+
 	void
 	setWhichChoice (const int32_t);
 
@@ -192,7 +196,7 @@ private:
 	Gtk::Box &          box;
 	X3D::BrowserPtr     browser;
 	X3D::MFNode         nodes;
-	const std::string   name;
+	const std::string   description;
 	const std::string   positionName;
 	const std::string   colorName;
 	X3D::UndoStepPtr    undoStep;

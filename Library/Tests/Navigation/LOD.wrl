@@ -1,6 +1,110 @@
-#VRML V2.0 utf8 Titania V0.7.5
+#VRML V2.0 utf8 Titania V1.4.9
 
-META "title" "LOD"
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF LOD LOD {
+              range [
+                10,
+                20,
+                30
+              ]
+              level [
+                DEF red Transform {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 1 0 0
+                      }
+                    }
+                    geometry Box { }
+                  }
+                }
+                DEF green Transform {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 1 0
+                      }
+                    }
+                    geometry Sphere { }
+                  }
+                }
+                DEF blue Transform {
+                  children Shape {
+                    appearance Appearance {
+                      material Material {
+                        diffuseColor 0 0 1
+                      }
+                    }
+                    geometry Box { }
+                  }
+                }
+              ]
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "LOD"
+}
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -8,51 +112,13 @@ Background {
 
 Transform {
   translation 12 -32 4
-  rotation 0.250816 0.370772 0.894214 3.86726
+  rotation 0.250816097863946 0.370772144668645 0.894214348906411 3.86726
   scale 12 45 9
   children [
     Viewpoint {
       description "Home"
     }
-    DEF LOD LOD {
-      range [
-        10,
-        20,
-        30
-      ]
-      level [
-        DEF red Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 1 0 0
-              }
-            }
-            geometry Box { }
-          }
-        }
-        DEF green Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 1 0
-              }
-            }
-            geometry Sphere { }
-          }
-        }
-        DEF blue Transform {
-          children Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0 0 1
-              }
-            }
-            geometry Box { }
-          }
-        }
-      ]
-    }
+    USE LOD
     DEF Proxy ProximitySensor {
       size 1000 1000 1000
     }

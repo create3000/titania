@@ -54,10 +54,10 @@ namespace titania {
 namespace puck {
 
 RangeTool::RangeTool (X3DBaseInterface* const editor,
-                      const std::string & name,
+                      const std::string & description,
                       Gtk::Box & box) :
 	X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	 X3DGradientTool (editor, name, box, "range", "color"),
+	 X3DGradientTool (editor, description, box, "range", "color"),
 	         auxNode (),
 	  positionFactor (1)
 {
@@ -118,31 +118,25 @@ RangeTool::get_position (const X3D::MFFloat & position)
 std::pair <X3D::MFFloat, X3D::MFColor>
 RangeTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D::MFColor & colorValue)
 {
-	try
-	{
-		X3D::MFFloat position;
-		X3D::MFColor color;
+	X3D::MFFloat position;
+	X3D::MFColor color;
 
-		if (not positionValue .empty ())
+	if (not positionValue .empty ())
+	{
+		const auto iter = std::max_element (positionValue .begin (), positionValue .end ());
+
+		positionFactor = *iter ? *iter : 1.0;
+
+		for (const auto & value : positionValue)
 		{
-			positionFactor = positionValue .back ();
-	
-			for (const auto & value : positionValue)
-			{
-				const auto p = value / positionFactor;
+			const auto p = value / positionFactor;
 
-				position .emplace_back (p);
-				color    .emplace_back (1 - p, 1 -p, 1 - p);
-			}	
-		}
+			position .emplace_back (p);
+			color    .emplace_back (1 - p, 1 - p, 1 - p);
+		}	
+	}
 
-		return std::make_pair (position, color);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-		return std::make_pair (positionValue, colorValue);
-	}
+	return std::make_pair (position, color);
 }
 
 RangeTool::~RangeTool ()
