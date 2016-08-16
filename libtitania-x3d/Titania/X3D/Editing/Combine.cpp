@@ -171,34 +171,47 @@ throw (Error <INVALID_NODE>,
 		{
 			if (index < 0)
 			{
-				if (vertices .size () < 3)
+				switch (vertices .size ())
 				{
-					vertices .clear ();
-					continue;
-				}
+					case 0:
+					case 1:
+					case 2:
+						break;
+					case 3:
+					{
+						for (const auto & index : vertices)
+							indices .emplace_back (index);
 
-				opengl::tessellator <size_t> tessellator;
-
-				tessellator .begin_polygon ();
-				tessellator .begin_contour ();
-			
-				for (const auto & index : vertices)
-				{
-					const auto point = coordNode -> get1Point (index) * matrix;
+						break;
+					}
+					default:
+					{
+						opengl::tessellator <size_t> tessellator;
 		
-					tessellator .add_vertex (point, index);
-				}
-			
-				tessellator .end_contour ();
-				tessellator .end_polygon ();
-			
-				const auto triangles = tessellator .triangles ();
-		
-				for (size_t v = 0, size = triangles .size (); v < size; )
-				{
-					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-					indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+						tessellator .begin_polygon ();
+						tessellator .begin_contour ();
+					
+						for (const auto & index : vertices)
+						{
+							const auto point = coordNode -> get1Point (index) * matrix;
+				
+							tessellator .add_vertex (point, index);
+						}
+					
+						tessellator .end_contour ();
+						tessellator .end_polygon ();
+					
+						const auto triangles = tessellator .triangles ();
+				
+						for (size_t v = 0, size = triangles .size (); v < size; )
+						{
+							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+						}
+						
+						break;
+					}
 				}
 
 				vertices .clear ();
