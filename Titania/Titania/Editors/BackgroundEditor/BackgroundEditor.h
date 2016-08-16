@@ -104,13 +104,13 @@ private:
 	set_texture (const std::shared_ptr <TexturePreview> &, const X3D::X3DPtr <X3D::X3DTextureNode> &);
 
 	void
-	on_sky_whichChoice_changed ();
+	on_sky_index_changed ();
 	
 	void
 	on_sky_color_index_changed ();
 
 	void
-	on_ground_whichChoice_changed ();
+	on_ground_index_changed ();
 	
 	void
 	on_ground_color_index_changed ();

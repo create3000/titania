@@ -82,7 +82,7 @@ X3DLODEditor::X3DLODEditor () :
 void
 X3DLODEditor::initialize ()
 {
-	range .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_whichChoice_changed)); 
+	range .signal_index_changed () .connect (sigc::mem_fun (this, &X3DLODEditor::on_range_index_changed)); 
 }
 
 void
@@ -104,7 +104,7 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 
 	if (lod)
 	{
-		range .setWhichChoice (lod -> range () .empty () ? -1 : 0);
+		range       .setIndex (lod -> range () .empty () ? -1 : 0);
 		singleRange .setIndex (lod -> range () .empty () ? -1 : 0);
 	}
 }
@@ -132,9 +132,9 @@ X3DLODEditor::on_lod_move_center_button_clicked ()
 }
 
 void
-X3DLODEditor::on_range_whichChoice_changed ()
+X3DLODEditor::on_range_index_changed ()
 {
-	singleRange .setIndex (range .getWhichChoice ());
+	singleRange .setIndex (range .getIndex ());
 }
 
 void

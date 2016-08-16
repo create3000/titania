@@ -91,7 +91,7 @@ BackgroundTool::set_addTime (const X3D::time_type value)
 			if (position [0] > 0)
 			{
 				color .emplace_back (color [0]);
-				setWhichChoice (1);
+				setIndex (1);
 			}
 		}
 

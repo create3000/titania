@@ -68,7 +68,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                    skyColor (this,
 	                              getSkyColorButton (),
 	                              getSkyColorAdjustment (),
-	                              getSkyColorGrid (),
+	                              getSkyColorBox (),
 	                              getAddSkyColorButton (),
 	                              getRemoveSkyColorButton (),
 	                              getSkyColorsScrolledWindow (),
@@ -78,7 +78,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                 groundColor (this,
 	                              getGroundColorButton (),
 	                              getGroundColorAdjustment (),
-	                              getGroundColorGrid (),
+	                              getGroundColorBox (),
 	                              getAddGroundColorButton (),
 	                              getRemoveGroundColorButton (),
 	                              getGroundColorsScrolledWindow (),
@@ -95,9 +95,6 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	                    changing (false)
 {
 	addChildren (backgroundNode);
-
-	skyAngle    .setIndex (-1);
-	groundAngle .setIndex (-1);
 
 	setup ();
 }
@@ -129,11 +126,11 @@ BackgroundEditor::initialize ()
 
 	// Field Widgets
 
-	sky      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_whichChoice_changed)); 
-	skyColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
+	sky      .signal_index_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_index_changed)); 
+	skyColor .signal_index_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_sky_color_index_changed)); 
 
-	ground      .signal_whichChoice_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_whichChoice_changed)); 
-	groundColor .signal_index_changed ()       .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_color_index_changed)); 
+	ground      .signal_index_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_index_changed)); 
+	groundColor .signal_index_changed () .connect (sigc::mem_fun (this, &BackgroundEditor::on_ground_color_index_changed)); 
 
 	sky    .addClass ("notebook");
 	ground .addClass ("notebook");
@@ -174,6 +171,9 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 	groundAngle  .setNodes (nodes);
 	transparency .setNodes (nodes);
 
+	sky    .setIndex (-1);
+	ground .setIndex (-1);
+
 	if (backgroundNode)
 	{
 		backgroundNode -> getFrontTexture ()  .addInterest (this, &BackgroundEditor::set_texture, frontPreview,  std::cref (backgroundNode -> getFrontTexture ()));
@@ -208,15 +208,15 @@ BackgroundEditor::set_texture (const std::shared_ptr <TexturePreview> & preview,
 }
 
 void
-BackgroundEditor::on_sky_whichChoice_changed ()
+BackgroundEditor::on_sky_index_changed ()
 {
 	if (changing)
 		return;
 
 	changing = true;
 
-	skyColor .setIndex (sky .getWhichChoice ());
-	skyAngle .setIndex (sky .getWhichChoice () - 1);
+	skyColor .setIndex (sky .getIndex ());
+	skyAngle .setIndex (sky .getIndex () - 1);
 
 	changing = false;
 }
@@ -229,22 +229,22 @@ BackgroundEditor::on_sky_color_index_changed ()
 
 	changing = true;
 
-	sky      .setWhichChoice (skyColor .getIndex ());
-	skyAngle .setIndex       (skyColor .getIndex () - 1);
+	sky      .setIndex (skyColor .getIndex ());
+	skyAngle .setIndex (skyColor .getIndex () - 1);
 
 	changing = false;
 }
 
 void
-BackgroundEditor::on_ground_whichChoice_changed ()
+BackgroundEditor::on_ground_index_changed ()
 {
 	if (changing)
 		return;
 
 	changing = true;
 
-	groundColor .setIndex (ground .getWhichChoice ());
-	groundAngle .setIndex (ground .getWhichChoice () - 1);
+	groundColor .setIndex (ground .getIndex ());
+	groundAngle .setIndex (ground .getIndex () - 1);
 
 	changing = false;
 }
@@ -257,8 +257,8 @@ BackgroundEditor::on_ground_color_index_changed ()
 
 	changing = true;
 
-	ground      .setWhichChoice (groundColor .getIndex ());
-	groundAngle .setIndex       (groundColor .getIndex () - 1);
+	ground      .setIndex (groundColor .getIndex ());
+	groundAngle .setIndex (groundColor .getIndex () - 1);
 
 	changing = false;
 }

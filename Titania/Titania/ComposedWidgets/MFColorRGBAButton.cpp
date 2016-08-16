@@ -166,7 +166,7 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 }
 
 void
-MFColorRGBAButton::setIndex (const size_t value)
+MFColorRGBAButton::setIndex (const int32_t value)
 {
 	index = value;
 
@@ -304,16 +304,16 @@ MFColorRGBAButton::set_buffer ()
 		{
 			auto & field = node -> getField <X3D::MFColorRGBA> (name);
 	
-			if (field .empty ())
+			if (field .empty () or index < 0)
 			{
-				index        = 0;
+				index        = -1;
 				hasField     = true;
-				isEmpty      = true;
+				isEmpty      = field .empty ();
 				this -> node = node;
 				break;
 			}
 
-			if (index >= field .size ())
+			if (index >= int32_t (field .size ()))
 				index = field .size () - 1;
 
 			const auto & value = field .get1Value (index);
@@ -340,8 +340,8 @@ MFColorRGBAButton::set_buffer ()
 		valueAdjustment -> set_value (0);
 	}
 
-	widget               .set_sensitive (hasField and not isEmpty);
-	colorsScrolledWindow .set_sensitive (hasField and not isEmpty);
+	widget               .set_sensitive (hasField and not isEmpty and index >= 0);
+	colorsScrolledWindow .set_sensitive (hasField);
 	on_colors_configure_event (nullptr);
 
 	changing = false;
@@ -416,7 +416,7 @@ MFColorRGBAButton::on_add_color_clicked ()
 		{
 			auto & field = node -> getField <X3D::MFColorRGBA> (name);
 
-			if (index < field .size ())
+			if (index >= 0 and index < int32_t (field .size ()))
 				field .emplace_back (field .get1Value (index));
 			else
 				field .emplace_back (1, 1, 1, 1);
@@ -438,6 +438,8 @@ MFColorRGBAButton::on_remove_color_clicked ()
 bool
 MFColorRGBAButton::on_colors_configure_event (GdkEventConfigure* const)
 {
+	colorsDrawingArea .queue_draw ();
+
 	if (not node)
 	{
 		colorsDrawingArea .set_size_request (-1, -1);
@@ -467,13 +469,19 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 
 	try
 	{
-		const auto & field   = node -> getField <X3D::MFColorRGBA> (name);
-		const auto   width   = colorsDrawingArea .get_width ();
-		const size_t columns = getColumns (width, colorsSize, colorsGap, colorsBorder);
+		const auto &  field   = node -> getField <X3D::MFColorRGBA> (name);
+		const auto    width   = colorsDrawingArea .get_width ();
+		const int32_t columns = getColumns (width, colorsSize, colorsGap, colorsBorder);
 
 		if (field .empty ())
 		{
-			setIndex (0);
+			setIndex (-1);
+			return true;
+		}
+
+		if (index < 0)
+		{
+			setIndex (field .empty () ? -1 : 0);
 			return true;
 		}
 
@@ -484,8 +492,8 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 				if (index < columns)
 				{
 					// First row.
-					const auto column = index % columns;
-					const auto rest   = field .size () % columns;
+					const int32_t column = index % columns;
+					const int32_t rest   = field .size () % columns;
 
 					if (column)
 					{
@@ -497,7 +505,7 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 					else
 					{
 						// First column.
-						if (rest < field .size ())
+						if (rest < (int32_t) field .size ())
 							setIndex (field .size () - rest - 1);
 						else
 							setIndex (field .size () - 1);
@@ -512,11 +520,11 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 			{
 				const auto column = index % columns;
 
-				if (index + columns < field .size ())
+				if (index + columns < (int32_t) field .size ())
 					setIndex (index + columns);
 				else
 				{
-					if (column + 1 < std::min (columns, field .size ()))
+					if (column + 1 < std::min <int32_t> (columns, field .size ()))
 						setIndex (column + 1);
 					else
 						setIndex (0);
@@ -536,7 +544,7 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 			}
 			case GDK_KEY_Right:
 			{
-				if (index + 1 < field .size ())
+				if (index + 1 < (int32_t) field .size ())
 					setIndex (index + 1);
 
 				else
@@ -592,13 +600,13 @@ MFColorRGBAButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & contex
 		const auto   width   = colorsDrawingArea .get_width ();
 		const auto   columns = getColumns (width, colorsSize, colorsGap, colorsBorder);
 
-		for (size_t i = 0, size = field .size (); i < size; ++ i)
+		for (int32_t i = 0, size = field .size (); i < size; ++ i)
 		{
-			const auto & color  = field [i];
-			const int    column = i % columns;
-			const int    row    = i / columns;
-			const double x      = colorsBorder [0] + column * colorsSize + column * colorsGap;
-			const double y      = colorsBorder [3] + row * colorsSize + row * colorsGap;
+			const auto &  color  = field [i];
+			const int32_t column = i % columns;
+			const int32_t row    = i / columns;
+			const double  x      = colorsBorder [0] + column * colorsSize + column * colorsGap;
+			const double  y      = colorsBorder [3] + row * colorsSize + row * colorsGap;
 
 			context -> set_source_rgba (color .getRed (), color .getGreen (), color .getBlue (), color .getAlpha ());
 			context -> rectangle (x, y, colorsSize, colorsSize);
@@ -606,23 +614,14 @@ MFColorRGBAButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & contex
 
 			if (i == getIndex ())
 			{
+				const auto color = widget .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+
 				context -> set_line_width (2);
-				context -> set_source_rgba (0, 0, 0, 1);
+				context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
 				context -> rectangle (x - 1, y - 1, colorsSize + 2, colorsSize + 2);
 				context -> stroke ();
 			}		
 		}
-
-		const auto   color  = colorsDrawingArea .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
-		const int    column = index % columns;
-		const int    row    = index / columns;
-		const double x      = colorsBorder [0] + column * colorsSize + column * colorsGap - colorsGap / 2.0;
-		const double y      = colorsBorder [3] + row * colorsSize + row * colorsGap - colorsGap / 2.0;
-
-		context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
-		context -> rectangle (x, y, colorsSize + colorsGap, colorsSize + colorsGap);
-		context -> set_line_width (colorsGap);
-		context -> stroke ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -643,7 +642,9 @@ MFColorRGBAButton::on_button_press_event (GdkEventButton* event)
 	{
 		case 3:
 		{
-			menu .popup (event -> button, event -> time);
+			if (index >= 0)
+				menu .popup (event -> button, event -> time);
+
 			return true;
 		}
 		default:

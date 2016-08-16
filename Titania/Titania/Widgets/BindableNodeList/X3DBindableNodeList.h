@@ -332,7 +332,7 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 	else
 	{
 		getListStore () -> clear ();
-		selection = nullptr;
+		setSelection (nullptr);
 	}
 }
 

@@ -1,12 +1,13 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V1.4.9
 
 UNIT angle degree 0.0174532925199433
 
 META "comment" "World of Titania"
 META "created" "Sat, 16 Jan 2016 04:11:57 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
-META "modified" "Fri, 12 Feb 2016 03:47:25 GMT"
+META "generator" "Titania V1.4.9, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/GradientTool.x3dv"
+META "modified" "Tue, 16 Aug 2016 14:01:05 GMT"
 
 PROTO DoubleClick [
   inputOnly   SFTime set_time
@@ -80,38 +81,51 @@ PROTO Arrow [
                 }
                 DEF _2 Switch {
                   #file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/BackgroundEditor.x3dv
-                  children Shape {
-                    appearance Appearance {
-                      fillProperties FillProperties {
-                        filled FALSE
-                        hatched FALSE
+                  children [
+                    DEF _3 Shape {
+                      appearance Appearance {
+                        fillProperties DEF _4 FillProperties {
+                          filled FALSE
+                          hatched FALSE
+                        }
+                        lineProperties DEF _5 LineProperties {
+                          linewidthScaleFactor 2
+                        }
+                        material DEF _6 Material {
+                          diffuseColor 0 0 0
+                          emissiveColor 0.702 0.702 0.702
+                        }
                       }
-                      lineProperties LineProperties {
-                        linewidthScaleFactor 2
-                      }
-                      material Material {
-                        diffuseColor 0 0 0
+                      geometry DEF _7 TriangleSet2D {
+                        vertices [
+                          0 1,
+                          -0.866025 -0.5,
+                          0.866025 -0.5
+                        ]
                       }
                     }
-                    geometry TriangleSet2D {
-                      vertices [
-                        0 1,
-                        -0.866025 -0.5,
-                        0.866025 -0.5
-                      ]
+                    Shape {
+                      appearance Appearance {
+                        fillProperties USE _4
+                        lineProperties USE _5
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry USE _7
                     }
-                  }
+                  ]
                 }
               ]
             }
           }
         }
       }
-      DEF _3 TouchSensor {
+      DEF _8 TouchSensor {
         isActive IS isActive
         touchTime IS touchTime
       }
-      DEF _4 PlaneSensor {
+      DEF _9 PlaneSensor {
         enabled IS enabled
         offset IS offset
         maxPosition 1 0
@@ -120,30 +134,30 @@ PROTO Arrow [
     ]
   }
 
-  DEF _5 DoubleClick {
+  DEF _10 DoubleClick {
     doubleClickTime IS doubleClickTime
   }
 
-  DEF _6 BooleanToggle {
+  DEF _11 BooleanToggle {
     toggle IS active
   }
 
-  DEF _7 BooleanFilter { }
+  DEF _12 BooleanFilter { }
 
-  DEF _8 IntegerTrigger {
-    integerKey -1
+  DEF _13 IntegerTrigger { }
+
+  DEF _14 IntegerTrigger {
+    integerKey 1
   }
 
-  DEF _9 IntegerTrigger { }
-
-  ROUTE _4.translation_changed TO _1.set_translation
-  ROUTE _3.touchTime TO _5.set_time
-  ROUTE _6.toggle_changed TO _7.set_boolean
-  ROUTE _7.inputFalse TO _8.set_boolean
-  ROUTE _8.triggerValue TO _2.set_whichChoice
-  ROUTE _7.inputTrue TO _9.set_boolean
-  ROUTE _9.triggerValue TO _2.set_whichChoice
-  ROUTE _4.translation_changed TO _4.set_offset
+  ROUTE _9.translation_changed TO _1.set_translation
+  ROUTE _8.touchTime TO _10.set_time
+  ROUTE _11.toggle_changed TO _12.set_boolean
+  ROUTE _12.inputFalse TO _13.set_boolean
+  ROUTE _13.triggerValue TO _2.set_whichChoice
+  ROUTE _12.inputTrue TO _14.set_boolean
+  ROUTE _14.triggerValue TO _2.set_whichChoice
+  ROUTE _9.translation_changed TO _9.set_offset
 }
 
 PROTO Gradient [
@@ -161,7 +175,7 @@ PROTO Gradient [
     appearance Appearance {
       material Material { }
     }
-    geometry DEF _10 IndexedQuadSet {
+    geometry DEF _15 IndexedQuadSet {
       index [
         0,
         2,
@@ -194,7 +208,7 @@ PROTO Gradient [
   DEF GradientScript Script {
     inputOutput    MFFloat position IS position
     inputOutput    MFColor color IS color
-    initializeOnly SFNode  geometry USE _10
+    initializeOnly SFNode  geometry USE _15
 
     url "ecmascript:
 
@@ -327,14 +341,20 @@ WorldInfo {
           }
         ]
       }
-      DEF LayerSet MetadataSet {
-        name "LayerSet"
+      DEF Selection MetadataSet {
+        name "Selection"
         reference "http://titania.create3000.de"
-        value DEF activeLayer MetadataInteger {
-          name "activeLayer"
-          reference "http://titania.create3000.de"
-          value -1
-        }
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value NULL
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
     ]
   }
@@ -456,7 +476,7 @@ LayerSet {
           translation -0.5 0 0
           scale 1 0.5 1
           children [
-            DEF _11 Gradient {
+            DEF _16 Gradient {
               position [
                 0.147972,
                 0.850492
@@ -466,8 +486,8 @@ LayerSet {
                 0.844259 0.651834 0.281599
               ]
             }
-            DEF _12 TouchSensor { }
-            DEF _13 DoubleClick { }
+            DEF _17 TouchSensor { }
+            DEF _18 DoubleClick { }
           ]
         }
         DEF GradientEditorScript Script {
@@ -496,15 +516,15 @@ LayerSet {
           initializeOnly SFInt32 whichChoice 0
           initializeOnly SFNode  arrows DEF Colors Group {
             children [
-              DEF _14 Arrow {
+              DEF _19 Arrow {
                 color 0.844259 0.651834 0.281599
               }
-              DEF _15 Arrow {
+              DEF _20 Arrow {
                 color 0.643032 0.378889 0.422449
               }
             ]
           }
-          initializeOnly SFNode  gradientTouch USE _12
+          initializeOnly SFNode  gradientTouch USE _17
 
           url "ecmascript:
 
@@ -541,10 +561,10 @@ function set_values (p, c)
 		whichChoice = length - 1;
 
 	set_enableFirst (enableFirst);
-	set_inputWhichChoice (whichChoice);
+	inputWhichChoice (whichChoice);
 }
 
-function set_inputWhichChoice (value)
+function inputWhichChoice (value)
 {
 	whichChoice = value;
 
@@ -707,7 +727,7 @@ function set_removeTime (value, time)
 	}
 
 	updateFields ();
-	set_inputWhichChoice (whichChoice);
+	inputWhichChoice (whichChoice);
 
 	outputRemoveTime = time;
 }
@@ -844,13 +864,13 @@ function lowerBound (array, first, last, value, comp)
   ]
 }
 
-ROUTE _12.touchTime TO _13.set_time
-ROUTE GradientEditorScript.position_changed TO _11.set_position
-ROUTE GradientEditorScript.color_changed TO _11.set_color
-ROUTE _14.isActive TO GradientEditorScript.set_active
-ROUTE _15.isActive TO GradientEditorScript.set_active
-ROUTE _13.doubleClickTime TO GradientEditorScript.set_addTime
-ROUTE _15.doubleClickTime TO GradientEditorScript.set_removeTime
-ROUTE _14.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _17.touchTime TO _18.set_time
+ROUTE GradientEditorScript.position_changed TO _16.set_position
+ROUTE GradientEditorScript.color_changed TO _16.set_color
+ROUTE _19.isActive TO GradientEditorScript.set_active
+ROUTE _20.isActive TO GradientEditorScript.set_active
+ROUTE _18.doubleClickTime TO GradientEditorScript.set_addTime
+ROUTE _20.doubleClickTime TO GradientEditorScript.set_removeTime
+ROUTE _19.doubleClickTime TO GradientEditorScript.set_removeTime
 
 EXPORT GradientEditorScript AS Tool

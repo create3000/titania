@@ -138,6 +138,15 @@ private:
 	set_buffer ();
 
 	template <class ValueType>
+	int32_t
+	get_index (const X3D::X3DField <ValueType> & field) const
+	{ return 0; }
+	
+	template <class ValueType>
+	int32_t
+	get_index (X3D::X3DArrayField <ValueType> & field) const;
+
+	template <class ValueType>
 	X3D::Vector3d
 	get_value (const X3D::X3DField <ValueType> &) const;
 	
@@ -186,7 +195,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	            scene (),
 	            nodes (),
 	             name (name),
-	            index (0),
+	            index (-1),
 	         undoStep (),
 	            input (-1),
 	         changing (false),
@@ -350,7 +359,7 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 	changing = true;
 
-	// Find last »creaseAngle« field.
+	// Find last ?creaseAngle? field.
 
 	bool hasField = false;
 
@@ -362,7 +371,8 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 			const auto geo   = field .isGeospatial ();
 			const auto value = get_value (field);
 
-			unit = field .getUnit ();
+			unit  = field .getUnit ();
+			index = get_index (field);
 
 			if (index >= 0)
 			{
@@ -398,6 +408,17 @@ X3DFieldAdjustment3 <Type>::set_buffer ()
 
 template <class Type>
 template <class ValueType>
+int32_t
+X3DFieldAdjustment3 <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
+{
+	if (field .empty ())
+		return -1;
+
+	return std::min <int32_t> (index, field .size () - 1);
+}
+
+template <class Type>
+template <class ValueType>
 X3D::Vector3d
 X3DFieldAdjustment3 <Type>::get_value (const X3D::X3DField <ValueType> & field) const
 {
@@ -409,6 +430,9 @@ template <class ValueType>
 X3D::Vector3d
 X3DFieldAdjustment3 <Type>::get_value (X3D::X3DArrayField <ValueType> & field)
 {
+	if (index >= (int32_t) field .size ())
+		index = field .size () - 1;
+
 	return X3D::Vector3d (field .get1Value (index));
 }
 

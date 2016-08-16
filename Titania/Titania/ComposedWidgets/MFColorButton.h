@@ -110,9 +110,9 @@ public:
 	{ return colorsBorder; }
 
 	void
-	setIndex (const size_t);
+	setIndex (const int32_t);
 
-	size_t
+	int32_t
 	getIndex () const
 	{ return index; }
 
@@ -206,7 +206,7 @@ private:
 	X3D::MFNode                          nodes;
 	X3D::SFNode                          node;
 	const std::string                    name;
-	size_t                               index;
+	int32_t                              index;
 	X3D::UndoStepPtr                     undoStep;
 	int                                  input;
 	bool                                 changing;

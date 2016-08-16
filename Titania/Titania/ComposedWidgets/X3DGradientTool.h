@@ -64,12 +64,12 @@ public:
 	///  @name Signals
 
 	sigc::signal <void> &
-	signal_whichChoice_changed ()
-	{ return whichChoice_changed; }
+	signal_index_changed ()
+	{ return index_changed; }
 
 	const sigc::signal <void> &
-	signal_whichChoice_changed () const
-	{ return whichChoice_changed; }
+	signal_index_changed () const
+	{ return index_changed; }
 
 	///  @name Member access
 
@@ -78,11 +78,11 @@ public:
 	{ return description; }
 
 	void
-	setWhichChoice (const int32_t);
+	setIndex (const int32_t);
 
 	int32_t
-	getWhichChoice () const
-	{ return whichChoice; }
+	getIndex () const
+	{ return index; }
 
 	virtual
 	void
@@ -192,7 +192,7 @@ private:
 
 	///  @name Members
 
-	sigc::signal <void> whichChoice_changed;
+	sigc::signal <void> index_changed;
 	Gtk::Box &          box;
 	X3D::BrowserPtr     browser;
 	X3D::MFNode         nodes;
@@ -202,7 +202,7 @@ private:
 	X3D::UndoStepPtr    undoStep;
 	X3D::SFTime         value;
 	X3D::MFColor        buffer;
-	int32_t             whichChoice;
+	int32_t             index;
 
 };
 

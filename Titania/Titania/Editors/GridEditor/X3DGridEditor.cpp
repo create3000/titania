@@ -260,7 +260,14 @@ X3DGridEditor::on_grid_uniform_scale_clicked ()
 void
 X3DGridEditor::on_major_line_grid_value_changed ()
 {
-	const int index = getGridMajorGridAdjustment () -> get_value () - 1;
+	const auto & grid  = getBrowserWindow () -> getGridTool () -> getTool ();
+	const size_t index = getGridMajorGridAdjustment () -> get_value () - 1;
+
+	if (grid -> majorLineEvery () .size () < INDICES * index + 3)
+		grid -> majorLineEvery () .resize (INDICES * index + 3);
+
+	if (grid -> majorLineOffset () .size () < INDICES * index + 3)
+		grid -> majorLineOffset () .resize (INDICES * index + 3);
 
 	majorLineEvery0  .setIndex (INDICES * index + 0);
 	majorLineEvery1  .setIndex (INDICES * index + 1);

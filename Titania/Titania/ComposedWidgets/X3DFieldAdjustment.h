@@ -127,6 +127,20 @@ private:
 	set_buffer ();
 
 	template <class ValueType>
+	int32_t
+	get_index (const X3D::X3DField <ValueType> & field) const
+	{ return 0; }
+	
+	template <class ValueType>
+	int32_t
+	get_index (const X3D::SFMatrix4 <ValueType> & field) const
+	{ return index; }
+	
+	template <class ValueType>
+	int32_t
+	get_index (X3D::X3DArrayField <ValueType> & field) const;
+
+	template <class ValueType>
 	double
 	get_value (const X3D::SFMatrix4 <ValueType> & field) const
 	{ return field .get1Value (index); }
@@ -183,7 +197,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	            lower (0),
 	            upper (0),
                empty (0),
-               index (0)
+               index (-1)
 {
 	addChildren (scene, nodes, buffer);
 
@@ -290,7 +304,8 @@ X3DFieldAdjustment <Type>::set_buffer ()
 		{
 		   auto & field = node -> getField <Type> (name);
 
-			unit = field .getUnit ();
+			unit  = field .getUnit ();
+			index = get_index (field);
 
 			if (index >= 0)
 			{
@@ -318,6 +333,17 @@ X3DFieldAdjustment <Type>::set_buffer ()
 	widget .set_sensitive (hasField);
 
 	changing = false;
+}
+
+template <class Type>
+template <class ValueType>
+int32_t
+X3DFieldAdjustment <Type>::get_index (X3D::X3DArrayField <ValueType> & field) const
+{
+	if (field .empty ())
+		return -1;
+
+	return std::min <int32_t> (index, field .size () - 1);
 }
 
 template <class Type>

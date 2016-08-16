@@ -98,7 +98,7 @@ private:
 	on_lod_move_center_button_clicked () final override;
 
 	void
-	on_range_whichChoice_changed ();
+	on_range_index_changed ();
 
 	virtual
 	void

@@ -60,19 +60,19 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
                                   Gtk::Box & box,
                                   const std::string & positionName,
                                   const std::string & colorName) :
-	   X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
-	  X3DComposedWidget (editor),
-	whichChoice_changed (),
-	                box (box),
-	            browser (X3D::createBrowser ({ get_ui ("Editors/GradientTool.x3dv") })),
-	              nodes (),
-	        description (description),
-	       positionName (positionName),
-	          colorName (colorName),
-	           undoStep (),
-	              value (),
-	             buffer (),
-	        whichChoice (-1)
+	 X3DBaseInterface (editor -> getBrowserWindow (), editor -> getCurrentBrowser ()),
+	X3DComposedWidget (editor),
+	    index_changed (),
+	              box (box),
+	          browser (X3D::createBrowser ({ get_ui ("Editors/GradientTool.x3dv") })),
+	            nodes (),
+	      description (description),
+	     positionName (positionName),
+	        colorName (colorName),
+	         undoStep (),
+	            value (),
+	           buffer (),
+	            index (-1)
 {
 	// Buffer
 
@@ -116,17 +116,17 @@ X3DGradientTool::set_initialized ()
 }
 
 void
-X3DGradientTool::setWhichChoice (const int32_t value)
+X3DGradientTool::setIndex (const int32_t value)
 {
 	//__LOG__ << value << std::endl;
 
 	try
 	{
-		whichChoice = value;
+		index = value;
 
 		getTool () -> getField <X3D::SFInt32> ("inputWhichChoice") = value;
 
-		whichChoice_changed .emit ();
+		index_changed .emit ();
 	}
 	catch (const X3D::X3DError & error)
 	{ }
@@ -333,9 +333,9 @@ X3DGradientTool::set_editTime (const X3D::UndoStepPtr & undoStep)
 void
 X3DGradientTool::set_whichChoice (const X3D::SFInt32 & value)
 {
-	whichChoice = value;
+	index = value;
 
-	whichChoice_changed .emit ();
+	index_changed .emit ();
 }
 
 void
@@ -347,8 +347,6 @@ X3DGradientTool::set_field ()
 void
 X3DGradientTool::set_buffer ()
 {
-	//__LOG__ << std::endl;
-
 	resetUndoGroup (description, undoStep);
 
 	// Position field
