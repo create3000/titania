@@ -595,10 +595,6 @@ private:
 
 	virtual
 	void
-	on_fusion_activated () final override;
-
-	virtual
-	void
 	on_combine_activated () final override;
 
 	void

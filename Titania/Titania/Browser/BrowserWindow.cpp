@@ -2039,12 +2039,6 @@ BrowserWindow::on_exclusion_activated ()
 }
 
 void
-BrowserWindow::on_fusion_activated ()
-{
-	on_boolean_activated (_ ("Boolean Operation »Fusion«"), X3D::Combine::geometryFusion);
-}
-
-void
 BrowserWindow::on_combine_activated ()
 {
 	on_boolean_activated (_ ("Combine Geometries"), X3D::Combine::combineGeometry);
@@ -2076,7 +2070,7 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 	   __LOG__ << error .what () << std::endl;
 
 		getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-		getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't apply Boolean operation to geometry!") + "</b></big>", true);
+		getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't apply Boolean operation to geometries!") + "</b></big>", true);
 		getMessageDialog () .set_secondary_text (_ ("The input geometries to Boolean operations must be »solid«, ie. closed (watertight) and non-self-intersecting."), false);
 		getMessageDialog () .run ();
 		getMessageDialog () .hide ();

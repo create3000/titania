@@ -4,7 +4,6 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="Fusion" filename="icons/Fusion.svg"/>
       <source stock-id="Appearance" filename="icons/Appearance.svg"/>
       <source stock-id="Clone" filename="icons/Clone.svg"/>
       <source stock-id="Text" filename="icons/Text.svg"/>
@@ -29,6 +28,7 @@
       <source stock-id="Cobweb" filename="icons/Cobweb.svg"/>
       <source stock-id="audio-volume-muted" filename="icons/Faenza/16/audio-volume-muted.png"/>
       <source stock-id="gtk-go-up" filename="icons/Faenza/16/gtk-go-up.png"/>
+      <source stock-id="Fusion" filename="icons/Fusion.svg"/>
       <source stock-id="gtk-delete" filename="icons/Faenza/16/gtk-delete.png"/>
       <source stock-id="SplitPoint" filename="icons/SplitPoint.svg"/>
       <source stock-id="Select" filename="icons/Select.svg"/>
@@ -90,13 +90,13 @@
       <source stock-id="gtk-file" filename="icons/Faenza/16/gtk-file.png"/>
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
       <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
+      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
-      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="gtk-media-resume" filename="icons/Resume.svg"/>
       <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
+      <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
-      <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
       <source stock-id="gtk-open" filename="icons/Faenza/16/gtk-open.png"/>
       <source stock-id="gtk-properties" filename="icons/Faenza/16/gtk-properties.png"/>
@@ -642,18 +642,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">Exclusion</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image37">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Fusion</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkImage" id="image38">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">Fusion</property>
     <property name="icon_size">1</property>
   </object>
   <object class="GtkMenu" id="BrowserMenu">
@@ -1883,25 +1871,12 @@
             <child>
               <object class="GtkImageMenuItem" id="BrowserExclusionMenuItem">
                 <property name="label" translatable="yes">_Exclusion</property>
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_underline">True</property>
                 <property name="image">image36</property>
                 <property name="use_stock">False</property>
                 <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_exclusion_activated" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImageMenuItem" id="BrowserFusionMenuItem">
-                <property name="label" translatable="yes">_Fusion</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_underline">True</property>
-                <property name="image">image38</property>
-                <property name="use_stock">False</property>
-                <property name="always_show_image">True</property>
-                <signal name="activate" handler="on_fusion_activated" swapped="no"/>
               </object>
             </child>
             <child>
@@ -1942,14 +1917,12 @@
             </child>
             <child>
               <object class="GtkSeparatorMenuItem" id="separatormenuitem38">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
             </child>
             <child>
               <object class="GtkImageMenuItem" id="BrowserColorPerVertexMenuItem">
                 <property name="label" translatable="yes">_Paint Polygons...</property>
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_underline">True</property>
                 <property name="image">image33</property>
@@ -1960,7 +1933,6 @@
             <child>
               <object class="GtkImageMenuItem" id="BrowserTextureCoordinateEditorMenuItem">
                 <property name="label" translatable="yes">Edit _Texture Mapping...</property>
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_underline">True</property>
                 <property name="image">image32</property>
@@ -3379,25 +3351,12 @@
                             <child>
                               <object class="GtkImageMenuItem" id="ExclusionMenuItem">
                                 <property name="label" translatable="yes">_Exclusion</property>
-                                <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_underline">True</property>
                                 <property name="image">image5</property>
                                 <property name="use_stock">False</property>
                                 <property name="always_show_image">True</property>
                                 <signal name="activate" handler="on_exclusion_activated" swapped="no"/>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkImageMenuItem" id="FusionMenuItem">
-                                <property name="label" translatable="yes">_Fusion</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="image">image37</property>
-                                <property name="use_stock">False</property>
-                                <property name="always_show_image">True</property>
-                                <signal name="activate" handler="on_fusion_activated" swapped="no"/>
                               </object>
                             </child>
                             <child>

@@ -112,15 +112,6 @@ public:
 
 	static
 	void
-	geometryFusion (const X3DExecutionContextPtr &,
-	                const X3DPtrArray <X3DShapeNode> &,
-	                const UndoStepPtr &)
-	throw (Error <INVALID_NODE>,
-          Error <DISPOSED>,
-	       std::domain_error);
-
-	static
-	void
 	combineGeometry (const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
 	                 const UndoStepPtr &)

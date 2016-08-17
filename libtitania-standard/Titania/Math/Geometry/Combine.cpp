@@ -50,16 +50,12 @@
 
 #include "Combine.h"
 
-#include "../../External/Cork/cork.h"
-
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
 #include <CGAL/Exact_integer.h>
 #include <CGAL/Polyhedron_incremental_builder_3.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Nef_polyhedron_3.h>
 #include <CGAL/Simple_cartesian.h>
-
-#include <functional>
 
 #include <Titania/LOG.h>
 
@@ -199,97 +195,6 @@ mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
 	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
 
 	return cgal_to_mesh (nefPolyhedron1 ^ nefPolyhedron2);
-}
-
-
-
-
-
-
-
-
-
-using BooleanOperation = std::function <void (CorkTriMesh, CorkTriMesh, CorkTriMesh*)>;
-
-mesh <double>
-mesh_boolean (const mesh <double> & mesh1, const mesh <double> & mesh2, const BooleanOperation & booleanOperation)
-{
-	auto indices = std::vector <uint32_t> ();
-	auto points  = std::vector <vector3 <double>>  ();
-
-	CorkTriMesh corkMesh1;
-	CorkTriMesh corkMesh2;
-	CorkTriMesh result;
-
-	corkMesh1 .n_triangles = mesh1 .first .size () / 3;
-	corkMesh1 .n_vertices  = mesh1 .second .size ();
-	corkMesh1 .triangles   = const_cast <uint32_t*> (mesh1 .first .data ());
-	corkMesh1 .vertices    = const_cast <double*> (mesh1 .second [0] .data ());
-
-	corkMesh2 .n_triangles = mesh2 .first .size () / 3;
-	corkMesh2 .n_vertices  = mesh2 .second .size ();
-	corkMesh2 .triangles   = const_cast <uint32_t*> (mesh2 .first .data ());
-	corkMesh2 .vertices    = const_cast <double*> (mesh2 .second [0] .data ());
-
-	booleanOperation (corkMesh1, corkMesh2, &result);
-
-	indices .assign (result .triangles, result .triangles + result .n_triangles * 3);
-
-	for (size_t i = 0, size = result .n_vertices * 3; i < size; i += 3)
-	{
-		points .emplace_back (result .vertices [i + 0],
-		                      result .vertices [i + 1],
-		                      result .vertices [i + 2]);
-	}
-
-	freeCorkTriMesh (&result);
-
-	return std::make_pair (std::move (indices), std::move (points));
-}
-
-bool
-mesh_is_solid (const mesh <double> & mesh)
-{
-	CorkTriMesh corkMesh;
-
-	corkMesh .n_triangles = mesh .first .size () / 3;
-	corkMesh .n_vertices  = mesh .second .size ();
-	corkMesh .triangles   = const_cast <uint32_t*> (mesh .first .data ());
-	corkMesh .vertices    = const_cast <double*> (mesh .second [0] .data ());
-
-	return isSolid (corkMesh);
-}
-
-//mesh <double>
-//mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
-//{
-//	mesh_cgal_union (mesh1, mesh2);
-//
-//	return mesh_boolean (mesh1, mesh2, computeUnion);
-//}
-
-//mesh <double>
-//mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
-//{
-//	return mesh_boolean (mesh1, mesh2, computeDifference);
-//}
-
-//mesh <double>
-//mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
-//{
-//	return mesh_boolean (mesh1, mesh2, computeIntersection);
-//}
-
-//mesh <double>
-//mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
-//{
-//	return mesh_boolean (mesh1, mesh2, computeSymmetricDifference);
-//}
-
-mesh <double>
-mesh_fusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
-{
-	return mesh_boolean (mesh1, mesh2, resolveIntersections);
 }
 
 } // math

@@ -26,15 +26,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/External/ApproxMVBB/OOBB.cpp \
 	Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
 	Titania/External/ApproxMVBB/RandomGenerators.cpp \
-	Titania/External/Cork/cork.cpp \
-	Titania/External/Cork/empty3d.cpp \
-	Titania/External/Cork/files.cpp \
-	Titania/External/Cork/ifs.cpp \
-	Titania/External/Cork/log.cpp \
-	Titania/External/Cork/off.cpp \
-	Titania/External/Cork/quantization.cpp \
-	Titania/External/Cork/timer.cpp \
-	Titania/External/Cork/triangle.c \
 	Titania/Geospatial/BasicConverter.cpp \
 	Titania/Geospatial/Geodetic.cpp \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \

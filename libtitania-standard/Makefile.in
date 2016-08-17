@@ -148,12 +148,6 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/External/ApproxMVBB/OOBB.lo \
 	Titania/External/ApproxMVBB/pugixml/pugixml.lo \
 	Titania/External/ApproxMVBB/RandomGenerators.lo \
-	Titania/External/Cork/cork.lo Titania/External/Cork/empty3d.lo \
-	Titania/External/Cork/files.lo Titania/External/Cork/ifs.lo \
-	Titania/External/Cork/log.lo Titania/External/Cork/off.lo \
-	Titania/External/Cork/quantization.lo \
-	Titania/External/Cork/timer.lo \
-	Titania/External/Cork/triangle.lo \
 	Titania/Geospatial/BasicConverter.lo \
 	Titania/Geospatial/Geodetic.lo \
 	Titania/Geospatial/UniversalTransverseMercator.lo \
@@ -219,24 +213,6 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_CFLAGS) $(CFLAGS)
-AM_V_CC = $(am__v_CC_@AM_V@)
-am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
-am__v_CC_0 = @echo "  CC      " $@;
-am__v_CC_1 = 
-CCLD = $(CC)
-LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-AM_V_CCLD = $(am__v_CCLD_@AM_V@)
-am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
-am__v_CCLD_0 = @echo "  CCLD    " $@;
-am__v_CCLD_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -480,15 +456,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/External/ApproxMVBB/OOBB.cpp \
 	Titania/External/ApproxMVBB/pugixml/pugixml.cpp \
 	Titania/External/ApproxMVBB/RandomGenerators.cpp \
-	Titania/External/Cork/cork.cpp \
-	Titania/External/Cork/empty3d.cpp \
-	Titania/External/Cork/files.cpp \
-	Titania/External/Cork/ifs.cpp \
-	Titania/External/Cork/log.cpp \
-	Titania/External/Cork/off.cpp \
-	Titania/External/Cork/quantization.cpp \
-	Titania/External/Cork/timer.cpp \
-	Titania/External/Cork/triangle.c \
 	Titania/Geospatial/BasicConverter.cpp \
 	Titania/Geospatial/Geodetic.cpp \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \
@@ -550,11 +517,11 @@ libtitania_standard_la_SOURCES = \
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
 AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) 
-AM_LDFLAGS = -lgmp -lCGAL -lmpfr
+AM_LDFLAGS = -lCGAL -lgmp -lmpfr
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .cpp .lo .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -720,33 +687,6 @@ Titania/External/ApproxMVBB/pugixml/pugixml.lo:  \
 Titania/External/ApproxMVBB/RandomGenerators.lo:  \
 	Titania/External/ApproxMVBB/$(am__dirstamp) \
 	Titania/External/ApproxMVBB/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/Cork
-	@: > Titania/External/Cork/$(am__dirstamp)
-Titania/External/Cork/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) Titania/External/Cork/$(DEPDIR)
-	@: > Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/cork.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/empty3d.lo:  \
-	Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/files.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/ifs.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/log.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/off.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/quantization.lo:  \
-	Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/timer.lo: Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-Titania/External/Cork/triangle.lo:  \
-	Titania/External/Cork/$(am__dirstamp) \
-	Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
 Titania/Geospatial/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Geospatial
 	@: > Titania/Geospatial/$(am__dirstamp)
@@ -960,8 +900,6 @@ mostlyclean-compile:
 	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/*.lo
 	-rm -f Titania/External/ApproxMVBB/pugixml/*.$(OBJEXT)
 	-rm -f Titania/External/ApproxMVBB/pugixml/*.lo
-	-rm -f Titania/External/Cork/*.$(OBJEXT)
-	-rm -f Titania/External/Cork/*.lo
 	-rm -f Titania/Geospatial/*.$(OBJEXT)
 	-rm -f Titania/Geospatial/*.lo
 	-rm -f Titania/InputOutput/*.$(OBJEXT)
@@ -1005,15 +943,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/Predicates.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR)/PredicatesInit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/pugixml.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/cork.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/empty3d.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/files.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/ifs.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/log.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/off.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/quantization.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/timer.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/External/Cork/$(DEPDIR)/triangle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/BasicConverter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/Geodetic.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo@am__quote@
@@ -1073,30 +1002,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/strfsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/trim.Plo@am__quote@
 
-.c.o:
-@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
-
-.c.obj:
-@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
-@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-.c.lo:
-@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
-@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
-@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
@@ -1134,7 +1039,6 @@ clean-libtool:
 	-rm -rf Titania/External/ApproxMVBB/Diameter/.libs Titania/External/ApproxMVBB/Diameter/_libs
 	-rm -rf Titania/External/ApproxMVBB/GeometryPredicates/.libs Titania/External/ApproxMVBB/GeometryPredicates/_libs
 	-rm -rf Titania/External/ApproxMVBB/pugixml/.libs Titania/External/ApproxMVBB/pugixml/_libs
-	-rm -rf Titania/External/Cork/.libs Titania/External/Cork/_libs
 	-rm -rf Titania/Geospatial/.libs Titania/Geospatial/_libs
 	-rm -rf Titania/InputOutput/.libs Titania/InputOutput/_libs
 	-rm -rf Titania/Math/.libs Titania/Math/_libs
@@ -1276,8 +1180,6 @@ distclean-generic:
 	-rm -f Titania/External/ApproxMVBB/GeometryPredicates/$(am__dirstamp)
 	-rm -f Titania/External/ApproxMVBB/pugixml/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/External/ApproxMVBB/pugixml/$(am__dirstamp)
-	-rm -f Titania/External/Cork/$(DEPDIR)/$(am__dirstamp)
-	-rm -f Titania/External/Cork/$(am__dirstamp)
 	-rm -f Titania/Geospatial/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/Geospatial/$(am__dirstamp)
 	-rm -f Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
@@ -1306,7 +1208,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/External/Cork/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1352,7 +1254,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/External/Cork/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/Basic/$(DEPDIR) Titania/Chrono/$(DEPDIR) Titania/External/ApproxMVBB/$(DEPDIR) Titania/External/ApproxMVBB/Common/$(DEPDIR) Titania/External/ApproxMVBB/Diameter/$(DEPDIR) Titania/External/ApproxMVBB/GeometryPredicates/$(DEPDIR) Titania/External/ApproxMVBB/pugixml/$(DEPDIR) Titania/Geospatial/$(DEPDIR) Titania/InputOutput/$(DEPDIR) Titania/Math/$(DEPDIR) Titania/Math/Algorithms/$(DEPDIR) Titania/Math/Geometry/$(DEPDIR) Titania/Math/Numbers/$(DEPDIR) Titania/Math/Utility/$(DEPDIR) Titania/OS/$(DEPDIR) Titania/String/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
