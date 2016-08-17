@@ -221,6 +221,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserDifferenceMenuItem", m_BrowserDifferenceMenuItem);
 	m_builder -> get_widget ("BrowserIntersectionMenuItem", m_BrowserIntersectionMenuItem);
 	m_builder -> get_widget ("BrowserExclusionMenuItem", m_BrowserExclusionMenuItem);
+	m_builder -> get_widget ("BrowserFusionMenuItem", m_BrowserFusionMenuItem);
 	m_builder -> get_widget ("BrowserCombineMenuItem", m_BrowserCombineMenuItem);
 	m_builder -> get_widget ("BrowserTransformToZeroMenuItem", m_BrowserTransformToZeroMenuItem);
 	m_builder -> get_widget ("BrowserColorPerVertexMenuItem", m_BrowserColorPerVertexMenuItem);
@@ -341,8 +342,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeometryMenuItem", m_GeometryMenuItem);
 	m_builder -> get_widget ("UnionMenuItem", m_UnionMenuItem);
 	m_builder -> get_widget ("DifferenceMenuItem", m_DifferenceMenuItem);
-	m_builder -> get_widget ("ItersectionMenuItem", m_ItersectionMenuItem);
+	m_builder -> get_widget ("IntersectionMenuItem", m_IntersectionMenuItem);
 	m_builder -> get_widget ("ExclusionMenuItem", m_ExclusionMenuItem);
+	m_builder -> get_widget ("FusionMenuItem", m_FusionMenuItem);
 	m_builder -> get_widget ("CombineMenuItem", m_CombineMenuItem);
 	m_builder -> get_widget ("TransformToZeroMenuItem", m_TransformToZeroMenuItem);
 	m_builder -> get_widget ("ColorPerVertexEditorMenuItem", m_ColorPerVertexEditorMenuItem);
@@ -544,6 +546,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserDifferenceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_difference_activated));
 	m_BrowserIntersectionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_intersection_activated));
 	m_BrowserExclusionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_exclusion_activated));
+	m_BrowserFusionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fusion_activated));
 	m_BrowserCombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_BrowserTransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_BrowserColorPerVertexMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));
@@ -646,8 +649,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ImageMenuItem with id 'UnionMenuItem'.
 	m_UnionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_union_activated));
 	m_DifferenceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_difference_activated));
-	m_ItersectionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_intersection_activated));
+	m_IntersectionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_intersection_activated));
 	m_ExclusionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_exclusion_activated));
+	m_FusionMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fusion_activated));
 	m_CombineMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_combine_activated));
 	m_TransformToZeroMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_transform_to_zero_activated));
 	m_ColorPerVertexEditorMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_color_editor_clicked));

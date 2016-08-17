@@ -112,6 +112,17 @@ throw (Error <INVALID_NODE>,
 }
 
 void
+Combine::geometryFusion (const X3DExecutionContextPtr & executionContext,
+                         const X3DPtrArray <X3DShapeNode> & shapes,
+                         const UndoStepPtr & undoStep)
+throw (Error <INVALID_NODE>,
+       Error <DISPOSED>,     
+       std::domain_error)
+{
+	geometryBoolean (mesh_fusion, executionContext, shapes, undoStep);
+}
+
+void
 Combine::geometryBoolean (const BooleanOperation & booleanOperation,
                           const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,

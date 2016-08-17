@@ -732,6 +732,10 @@ public:
 	{ return *m_BrowserExclusionMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getBrowserFusionMenuItem () const
+	{ return *m_BrowserFusionMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getBrowserCombineMenuItem () const
 	{ return *m_BrowserCombineMenuItem; }
 
@@ -1212,12 +1216,16 @@ public:
 	{ return *m_DifferenceMenuItem; }
 
 	Gtk::ImageMenuItem &
-	getItersectionMenuItem () const
-	{ return *m_ItersectionMenuItem; }
+	getIntersectionMenuItem () const
+	{ return *m_IntersectionMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getExclusionMenuItem () const
 	{ return *m_ExclusionMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getFusionMenuItem () const
+	{ return *m_FusionMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getCombineMenuItem () const
@@ -1915,6 +1923,10 @@ public:
 
 	virtual
 	void
+	on_fusion_activated () = 0;
+
+	virtual
+	void
 	on_combine_activated () = 0;
 
 	virtual
@@ -2309,6 +2321,7 @@ private:
 	Gtk::ImageMenuItem*              m_BrowserDifferenceMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserIntersectionMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserExclusionMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserFusionMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCombineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserTransformToZeroMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserColorPerVertexMenuItem;
@@ -2429,8 +2442,9 @@ private:
 	Gtk::MenuItem*                   m_GeometryMenuItem;
 	Gtk::ImageMenuItem*              m_UnionMenuItem;
 	Gtk::ImageMenuItem*              m_DifferenceMenuItem;
-	Gtk::ImageMenuItem*              m_ItersectionMenuItem;
+	Gtk::ImageMenuItem*              m_IntersectionMenuItem;
 	Gtk::ImageMenuItem*              m_ExclusionMenuItem;
+	Gtk::ImageMenuItem*              m_FusionMenuItem;
 	Gtk::ImageMenuItem*              m_CombineMenuItem;
 	Gtk::ImageMenuItem*              m_TransformToZeroMenuItem;
 	Gtk::ImageMenuItem*              m_ColorPerVertexEditorMenuItem;

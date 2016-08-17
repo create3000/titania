@@ -77,6 +77,9 @@ mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2);
 mesh <double>
 mesh_symmetric_difference (const mesh <double> & mesh1, const mesh <double> & mesh2);
 
+mesh <double>
+mesh_fusion (const mesh <double> & mesh1, const mesh <double> & mesh2);
+
 } // math
 } // titania
 

@@ -2530,6 +2530,11 @@
     <None Include="share\titania\Library\Primitives\Scripting\PhongShading.x3dv" />
     <None Include="share\titania\Library\Primitives\Text\Text.x3dv" />
     <None Include="share\titania\ui\icons\Models.svg" />
+    <None Include="share\titania\ui\icons\Union.svg" />
+    <None Include="share\titania\ui\icons\Difference.svg" />
+    <None Include="share\titania\ui\icons\Intersection.svg" />
+    <None Include="share\titania\ui\icons\Exclusion.svg" />
+    <None Include="share\titania\ui\icons\Fusion.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

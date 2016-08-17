@@ -2017,40 +2017,36 @@ BrowserWindow::on_transform_tool_mode_toggled ()
 void
 BrowserWindow::on_union_activated ()
 {
-	__LOG__ << std::endl;
-
 	on_boolean_activated (_ ("Boolean Operation »Union«"), X3D::Combine::geometryUnion);
 }
 
 void
 BrowserWindow::on_difference_activated ()
 {
-	__LOG__ << std::endl;
-
 	on_boolean_activated (_ ("Boolean Operation »Difference«"), X3D::Combine::geometryDifference);
 }
 
 void
 BrowserWindow::on_intersection_activated ()
 {
-	__LOG__ << std::endl;
-
 	on_boolean_activated (_ ("Boolean Operation »Intersection«"), X3D::Combine::geometryIntersection);
 }
 
 void
 BrowserWindow::on_exclusion_activated ()
 {
-	__LOG__ << std::endl;
-
 	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometrySymmetricDifference);
+}
+
+void
+BrowserWindow::on_fusion_activated ()
+{
+	on_boolean_activated (_ ("Boolean Operation »Fusion«"), X3D::Combine::geometryFusion);
 }
 
 void
 BrowserWindow::on_combine_activated ()
 {
-	__LOG__ << std::endl;
-
 	on_boolean_activated (_ ("Combine Geometries"), X3D::Combine::combineGeometry);
 }
 

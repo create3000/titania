@@ -140,5 +140,11 @@ mesh_symmetric_difference (const mesh <double> & mesh1, const mesh <double> & me
 	return mesh_boolean (mesh1, mesh2, computeSymmetricDifference);
 }
 
+mesh <double>
+mesh_fusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
+{
+	return mesh_boolean (mesh1, mesh2, resolveIntersections);
+}
+
 } // math
 } // titania
