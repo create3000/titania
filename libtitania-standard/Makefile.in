@@ -550,7 +550,7 @@ libtitania_standard_la_SOURCES = \
 
 libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS) 
 AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) 
-AM_LDFLAGS = -lgmp
+AM_LDFLAGS = -lgmp -lCGAL -lmpfr
 all: all-am
 
 .SUFFIXES:

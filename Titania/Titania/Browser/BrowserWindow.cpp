@@ -2035,7 +2035,7 @@ BrowserWindow::on_intersection_activated ()
 void
 BrowserWindow::on_exclusion_activated ()
 {
-	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometrySymmetricDifference);
+	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometryExclusion);
 }
 
 void

@@ -101,14 +101,14 @@ throw (Error <INVALID_NODE>,
 }
 
 void
-Combine::geometrySymmetricDifference (const X3DExecutionContextPtr & executionContext,
-                                      const X3DPtrArray <X3DShapeNode> & shapes,
-                                      const UndoStepPtr & undoStep)
+Combine::geometryExclusion (const X3DExecutionContextPtr & executionContext,
+                            const X3DPtrArray <X3DShapeNode> & shapes,
+                            const UndoStepPtr & undoStep)
 throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	geometryBoolean (mesh_symmetric_difference, executionContext, shapes, undoStep);
+	geometryBoolean (mesh_exclusion, executionContext, shapes, undoStep);
 }
 
 void
@@ -131,137 +131,147 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,
        std::domain_error)
 {
-	if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
-		executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
-
-	// Choose target
-
-	const auto & masterShape    = shapes .back ();
-	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
-	const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
-	const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
-
-	targetGeometry -> coord () = targetCoord;
-
-	// Filter geometries.
-
-	X3DPtrArray <IndexedFaceSet> geometries;
-
-	for (const auto & shape : shapes)
+	try
 	{
-		const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
-
-		if (not geometry)
-			continue;
-
-		geometries .emplace_back (geometry);
-	}
-
-	if (not geometries .empty ())
-		targetGeometry -> creaseAngle () = geometries .front () -> creaseAngle ();
-
-	// Combine Coordinates
-
-	std::vector <mesh <double>> meshes;
-
-	for (const auto & geometryNode : geometries)
-	{
-		const auto coordNode = geometryNode -> getCoord ();
-
-		if (not coordNode)
-			continue;
-
-		const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
-
-		auto indices = std::vector <uint32_t> ();
-		auto points  = std::vector <Vector3d> ();
-
-		std::vector <size_t> vertices;
+		if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
+			executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
 	
-		for (const auto & index : geometryNode -> coordIndex ())
+		// Choose target
+	
+		const auto & masterShape    = shapes .back ();
+		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
+		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
+		const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
+	
+		targetGeometry -> coord () = targetCoord;
+	
+		// Filter geometries.
+	
+		X3DPtrArray <IndexedFaceSet> geometries;
+	
+		for (const auto & shape : shapes)
 		{
-			if (index < 0)
-			{
-				switch (vertices .size ())
-				{
-					case 0:
-					case 1:
-					case 2:
-						break;
-					case 3:
-					{
-						for (const auto & index : vertices)
-							indices .emplace_back (index);
-
-						break;
-					}
-					default:
-					{
-						opengl::tessellator <size_t> tessellator;
+			const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
+	
+			if (not geometry)
+				continue;
+	
+			geometries .emplace_back (geometry);
+		}
+	
+		if (not geometries .empty ())
+			targetGeometry -> creaseAngle () = geometries .front () -> creaseAngle ();
+	
+		// Combine Coordinates
+	
+		std::vector <mesh <double>> meshes;
+	
+		for (const auto & geometryNode : geometries)
+		{
+			const auto coordNode = geometryNode -> getCoord ();
+	
+			if (not coordNode)
+				continue;
+	
+			const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
+	
+			auto indices = std::vector <uint32_t> ();
+			auto points  = std::vector <Vector3d> ();
+	
+			std::vector <size_t> vertices;
 		
-						tessellator .begin_polygon ();
-						tessellator .begin_contour ();
-					
-						for (const auto & index : vertices)
-						{
-							const auto point = coordNode -> get1Point (index) * matrix;
-				
-							tessellator .add_vertex (point, index);
-						}
-					
-						tessellator .end_contour ();
-						tessellator .end_polygon ();
-					
-						const auto triangles = tessellator .triangles ();
-				
-						for (size_t v = 0, size = triangles .size (); v < size; )
-						{
-							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-							indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-						}
-						
-						break;
-					}
-				}
-
-				vertices .clear ();
-			}
-			else
+			for (const auto & index : geometryNode -> coordIndex ())
 			{
-				vertices .emplace_back (index);
+				if (index < 0)
+				{
+					switch (vertices .size ())
+					{
+						case 0:
+						case 1:
+						case 2:
+							break;
+						case 3:
+						{
+							for (const auto & index : vertices)
+								indices .emplace_back (index);
+	
+							break;
+						}
+						default:
+						{
+							opengl::tessellator <size_t> tessellator;
+			
+							tessellator .begin_polygon ();
+							tessellator .begin_contour ();
+						
+							for (const auto & index : vertices)
+							{
+								const auto point = coordNode -> get1Point (index) * matrix;
+					
+								tessellator .add_vertex (point, index);
+							}
+						
+							tessellator .end_contour ();
+							tessellator .end_polygon ();
+						
+							const auto triangles = tessellator .triangles ();
+					
+							for (size_t v = 0, size = triangles .size (); v < size; )
+							{
+								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+							}
+							
+							break;
+						}
+					}
+	
+					vertices .clear ();
+				}
+				else
+				{
+					vertices .emplace_back (index);
+				}
 			}
-		}
-
-		for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
-			points .emplace_back (coordNode -> get1Point (i) * matrix);
-
-		meshes .emplace_back (std::move (indices), std::move (points));
-
-		if (not mesh_is_solid (meshes .back ()))
-			throw Error <INVALID_NODE> ("geometry is not solid");
-	}
-
-	if (meshes .size () >= 2)
-	{
-		auto result = std::move (meshes .front ());
-
-		for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
-			result = booleanOperation (result, mesh);
 	
-		for (size_t i = 0, size = result .first .size (); i < size;)
+			for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+				points .emplace_back (coordNode -> get1Point (i) * matrix);
+	
+			meshes .emplace_back (std::move (indices), std::move (points));
+		}
+	
+		if (meshes .size () >= 2)
 		{
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-			targetGeometry -> coordIndex () .emplace_back (-1);
-		}
-
-		targetCoord -> point () .assign (result .second .begin (), result .second .end ());
-
-		// Replace node
+			auto result = std::move (meshes .front ());
 	
-		Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+			for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
+				result = booleanOperation (result, mesh);
+		
+			for (size_t i = 0, size = result .first .size (); i < size;)
+			{
+				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+				targetGeometry -> coordIndex () .emplace_back (-1);
+			}
+	
+			targetCoord -> point () .assign (result .second .begin (), result .second .end ());
+	
+			// Replace node
+		
+			Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+		}
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		throw Error <INVALID_NODE> ("Boolean operation not possible.");
+	}
+	catch (...)
+	{
+		throw Error <INVALID_NODE> ("Boolean operation not possible.");
 	}
 }
 

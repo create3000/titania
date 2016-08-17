@@ -673,10 +673,10 @@
     <Compile Include="Titania\External\Cork\off.cpp" />
     <Compile Include="Titania\External\Cork\empty3d.cpp" />
     <Compile Include="Titania\External\Cork\quantization.cpp" />
-    <Compile Include="Titania\External\Cork\triangle.c" />
     <Compile Include="Titania\External\Cork\log.cpp" />
     <Compile Include="Titania\External\Cork\timer.cpp" />
     <Compile Include="Titania\Math\Geometry\Combine.cpp" />
+    <Compile Include="Titania\External\Cork\triangle.c" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

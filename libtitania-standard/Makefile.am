@@ -98,4 +98,4 @@ libtitania_standard_la_LIBADD = $(TITANIA_STANDARD_LIBS)
 
 AM_CPPFLAGS = $(TITANIA_STANDARD_CFLAGS) 
 
-AM_LDFLAGS = -lgmp
+AM_LDFLAGS = -lCGAL -lgmp -lmpfr

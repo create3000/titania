@@ -450,27 +450,31 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 						for (const auto & face : faces)
 							normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
 
-						const auto point1 = getCoord () -> get1Point (edge .first .first);
-						const auto point2 = getCoord () -> get1Point (edge .first .second);
+						const auto point1 = getCoord () -> get1Point (edge .first .first) * getModelViewMatrix ();
+						const auto point2 = getCoord () -> get1Point (edge .first .second) * getModelViewMatrix ();
 						const auto yAxis  = (point2 - point1) / 2.0;
 						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-5;
 						const auto xAxis  = normalize (cross <double> (zAxis, yAxis)) * 1e-5;
 						const auto center = (point2 + point1) / 2.0;
 
 						if (abs (xAxis))
-							return Box3d (Matrix4d (xAxis .x (), xAxis .y (), xAxis .z (), 0,
+						{
+							bbox = Box3d (Matrix4d (xAxis .x (), xAxis .y (), xAxis .z (), 0,
 							                        yAxis .x (), yAxis .y (), yAxis .z (), 0,
 							                        zAxis .x (), zAxis .y (), zAxis .z (), 0,
 							                        center .x (), center .y (), center .z (), 1));
+
+							break;
+						}
 					}
 
-					break;
+					// Proceed with next case:
 				}
 				default:
+					bbox = getMinimumBBox (points);
 					break;
 			}
 
-			bbox = getMinimumBBox (points);
 			break;
 		}
 		default:

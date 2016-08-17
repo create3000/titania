@@ -25,7 +25,9 @@ Build-Depends: debhelper (>= 5),
                libtool,
                libtool-bin,
                libgtop2-dev.
-               libgmp-dev
+               libcgal-dev,
+               libgmp-dev,
+               libmpfr-dev
 
 Homepage: http://titania.create3000.de/
 Package: titania
@@ -52,7 +54,9 @@ Depends: ${misc:Depends},
          libxml-libxml-perl,
          libglib-perl,
          libswitch-perl,
-         libgmp10
+         libcgal11v5,
+         libgmp10,
+         libmpfr4
 
 Recommends: gstreamer1.0-plugins-base,
             gstreamer1.0-plugins-good,

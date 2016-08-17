@@ -31,13 +31,7 @@
  *
  * This file is part of the Titania Project.
  *
- * Titania is free so
-std::pair <std::vector <uint32_t>, std::vector <vector3 <double>>
-mesh_union (const std::vector <uint32_t> & indices1,
-            const std::vector <vector3 <double>> & points1,
-            const std::vector <uint32_t> & indices2,
-            const std::vector <vector3 <double>> & points2);
-ftware: you can redistribute it and/or modify it under the
+ * Titania is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License version 3 only, as published by the
  * Free Software Foundation.
  *
@@ -58,6 +52,13 @@ ftware: you can redistribute it and/or modify it under the
 
 #include "../../External/Cork/cork.h"
 
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Exact_integer.h>
+#include <CGAL/Polyhedron_incremental_builder_3.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Nef_polyhedron_3.h>
+#include <CGAL/Simple_cartesian.h>
+
 #include <functional>
 
 #include <Titania/LOG.h>
@@ -65,13 +66,156 @@ ftware: you can redistribute it and/or modify it under the
 namespace titania {
 namespace math {
 
-using BooleanOperation = std::function <void (CorkTriMesh, CorkTriMesh, CorkTriMesh *)>;
+using ExactKernel   = CGAL::Exact_predicates_exact_constructions_kernel;
+using Polyhedron    = CGAL::Polyhedron_3 <ExactKernel>;
+using NefPolyhedron = CGAL::Nef_polyhedron_3 <ExactKernel>;
+using HalfedgeDS    = Polyhedron::HalfedgeDS;
+
+// A modifier creating a triangle with the incremental builder.
+template <class HDS>
+class PolyhedronBuilder :
+	public CGAL::Modifier_base <HDS>
+{
+public:
+
+	PolyhedronBuilder (const mesh <double> & p_mesh) :
+		m_mesh (p_mesh)
+	{ }
+
+	void
+	operator () (HDS & hds)
+	{
+		using Vertex = typename HDS::Vertex;
+		using Point  = typename Vertex::Point;
+
+		// Postcondition: hds is a valid polyhedral surface.
+		CGAL::Polyhedron_incremental_builder_3 <HDS> builder (hds, false);
+
+		builder .begin_surface (m_mesh .second .size (), m_mesh .first .size () / 3);
+
+		for (const auto & p : m_mesh .second)
+			builder .add_vertex (Point (p .x (), p .y (), p .z ()));
+
+		for (size_t i = 0, size = m_mesh .first .size (); i < size; )
+		{
+			builder .begin_facet ();
+			builder .add_vertex_to_facet (m_mesh .first [i ++]);
+			builder .add_vertex_to_facet (m_mesh .first [i ++]);
+			builder .add_vertex_to_facet (m_mesh .first [i ++]);
+			builder .end_facet ();
+		}
+
+		builder .end_surface ();
+
+		if (builder .error ())
+			builder .rollback ();
+	}
+
+private:
+
+	const mesh <double> & m_mesh;
+
+};
+
+static
+NefPolyhedron
+mesh_to_cgal (const mesh <double> & mesh)
+{
+	Polyhedron polyhedron;
+
+	PolyhedronBuilder <HalfedgeDS> builder (mesh);
+
+	polyhedron .delegate (builder);
+
+	if (polyhedron .empty ())
+		throw std::domain_error ("Couldn't create polyhedron.");
+
+	return NefPolyhedron (polyhedron);
+}
+
+static
+mesh <double>
+cgal_to_mesh (const NefPolyhedron & nefPolyhedron)
+{
+	auto indices    = std::vector <uint32_t> ();
+	auto points     = std::vector <vector3 <double>> ();
+	auto polyhedron = Polyhedron ();
+
+	nefPolyhedron .convert_to_polyhedron (polyhedron);
+
+	for (auto vertex = polyhedron .vertices_begin (), last = polyhedron .vertices_end (); vertex not_eq last; ++ vertex)
+	{
+		const auto & p = vertex -> point ();
+
+		points .emplace_back (CGAL::to_double (p .x ()), CGAL::to_double (p .y ()), CGAL::to_double (p .z ()));
+	}
+
+	for (auto facet = polyhedron .facets_begin (), last = polyhedron .facets_end (); facet not_eq last; ++ facet)
+	{
+		auto halfEdge = facet -> halfedge ();
+
+		for (size_t i = 0; i < 3; ++ i)
+		{
+			indices .emplace_back (std::distance (polyhedron .vertices_begin (), halfEdge -> vertex ()));
+
+			halfEdge = halfEdge -> next ();
+		}
+	}
+
+	return std::make_pair (std::move (indices), std::move (points));
+}
+
+mesh <double>
+mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
+{
+	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
+	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+
+	return cgal_to_mesh (nefPolyhedron1 + nefPolyhedron2);
+}
+
+mesh <double>
+mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
+{
+	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
+	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+
+	return cgal_to_mesh (nefPolyhedron1 - nefPolyhedron2);
+}
+
+mesh <double>
+mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
+{
+	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
+	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+
+	return cgal_to_mesh (nefPolyhedron1 * nefPolyhedron2);
+}
+
+mesh <double>
+mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
+{
+	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
+	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+
+	return cgal_to_mesh (nefPolyhedron1 ^ nefPolyhedron2);
+}
+
+
+
+
+
+
+
+
+
+using BooleanOperation = std::function <void (CorkTriMesh, CorkTriMesh, CorkTriMesh*)>;
 
 mesh <double>
 mesh_boolean (const mesh <double> & mesh1, const mesh <double> & mesh2, const BooleanOperation & booleanOperation)
 {
 	auto indices = std::vector <uint32_t> ();
-	auto points  = std::vector <vector3 <double>> ();
+	auto points  = std::vector <vector3 <double>>  ();
 
 	CorkTriMesh corkMesh1;
 	CorkTriMesh corkMesh2;
@@ -116,29 +260,31 @@ mesh_is_solid (const mesh <double> & mesh)
 	return isSolid (corkMesh);
 }
 
-mesh <double>
-mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
-{
-	return mesh_boolean (mesh1, mesh2, computeUnion);
-}
+//mesh <double>
+//mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
+//{
+//	mesh_cgal_union (mesh1, mesh2);
+//
+//	return mesh_boolean (mesh1, mesh2, computeUnion);
+//}
 
-mesh <double>
-mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
-{
-	return mesh_boolean (mesh1, mesh2, computeDifference);
-}
+//mesh <double>
+//mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
+//{
+//	return mesh_boolean (mesh1, mesh2, computeDifference);
+//}
 
-mesh <double>
-mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
-{
-	return mesh_boolean (mesh1, mesh2, computeIntersection);
-}
+//mesh <double>
+//mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
+//{
+//	return mesh_boolean (mesh1, mesh2, computeIntersection);
+//}
 
-mesh <double>
-mesh_symmetric_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
-{
-	return mesh_boolean (mesh1, mesh2, computeSymmetricDifference);
-}
+//mesh <double>
+//mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
+//{
+//	return mesh_boolean (mesh1, mesh2, computeSymmetricDifference);
+//}
 
 mesh <double>
 mesh_fusion (const mesh <double> & mesh1, const mesh <double> & mesh2)

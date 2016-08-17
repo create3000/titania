@@ -75,7 +75,7 @@ mesh <double>
 mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2);
 
 mesh <double>
-mesh_symmetric_difference (const mesh <double> & mesh1, const mesh <double> & mesh2);
+mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2);
 
 mesh <double>
 mesh_fusion (const mesh <double> & mesh1, const mesh <double> & mesh2);
