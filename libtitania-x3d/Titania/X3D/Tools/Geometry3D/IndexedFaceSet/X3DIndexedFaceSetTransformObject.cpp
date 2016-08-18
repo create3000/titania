@@ -205,13 +205,6 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 		{
 			bbox .matrix () .get (center, orientation, size);
 
-			// Prepare size for TransformTool, if one component of size is probably zero.
-			for (size_t i = 0; i < 3; ++ i)
-			{
-				if (size [i] < 1e-5)
-					size [i] = 0;
-			}
-
 			center = center * ~orientation;
 			size  *= 2.0;
 			size   = max (size, -size); // max (v, -v): Componentwise abs.
@@ -448,11 +441,11 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 						for (const auto & face : faces)
 							normal += getPolygonNormal (getFaceSelection () -> getFaceVertices (face));
 
-						const auto point1 = getCoord () -> get1Point (edge .first .first) * getModelViewMatrix ();
-						const auto point2 = getCoord () -> get1Point (edge .first .second) * getModelViewMatrix ();
+						const auto point1 = getCoord () -> get1Point (edge .first .first);
+						const auto point2 = getCoord () -> get1Point (edge .first .second);
 						const auto yAxis  = (point2 - point1) / 2.0;
-						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-5;
-						const auto xAxis  = normalize (cross <double> (zAxis, yAxis)) * 1e-5;
+						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-7;
+						const auto xAxis  = normalize (cross <double> (zAxis, yAxis)) * 1e-7;
 						const auto center = (point2 + point1) / 2.0;
 
 						if (abs (xAxis))

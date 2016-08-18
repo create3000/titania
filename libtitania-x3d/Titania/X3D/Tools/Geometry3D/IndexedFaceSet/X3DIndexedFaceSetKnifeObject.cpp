@@ -623,6 +623,7 @@ X3DIndexedFaceSetKnifeObject::cut ()
 
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
+	touchTime ()    = getCurrentTime ();
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
