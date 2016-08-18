@@ -279,6 +279,8 @@
     <Compile Include="Titania\Editors\LibraryView\LibraryView.cpp" />
     <Compile Include="Titania\Editors\LibraryView\X3DLibraryView.cpp" />
     <Compile Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.cpp" />
+    <Compile Include="Titania\Dialogs\MessageDialog\MessageDialog.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DMessageDialogInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2535,6 +2537,13 @@
     <None Include="share\titania\ui\icons\Intersection.svg" />
     <None Include="share\titania\ui\icons\Exclusion.svg" />
     <None Include="share\titania\ui\icons\Fusion.svg" />
+    <None Include="share\titania\ui\Dialogs\MessageDialog.glade" />
+    <None Include="Titania\Dialogs\MessageDialog\MessageDialog.h" />
+    <None Include="Titania\UserInterfaces\X3DMessageDialogInterface.h" />
+    <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-error.png" />
+    <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-info.png" />
+    <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-question.png" />
+    <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-warning.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2634,6 +2643,8 @@
     <Folder Include="Titania\Editors\SculpToolEditor\" />
     <Folder Include="Titania\Editors\PaletteEditor\" />
     <Folder Include="Titania\Editors\LibraryView\" />
+    <Folder Include="Titania\Dialogs\MessageDialog\" />
+    <Folder Include="share\titania\ui\icons\Faenza\64\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

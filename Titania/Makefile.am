@@ -49,6 +49,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
+	Titania/Dialogs/MessageDialog/MessageDialog.cpp \
 	Titania/Dialogs/NodeIndex/NodeIndex.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
@@ -167,6 +168,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
 	Titania/UserInterfaces/X3DLightEditorInterface.cpp \
+	Titania/UserInterfaces/X3DMessageDialogInterface.cpp \
 	Titania/UserInterfaces/X3DMotionBlurEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNavigationInfoEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodeEditorInterface.cpp \

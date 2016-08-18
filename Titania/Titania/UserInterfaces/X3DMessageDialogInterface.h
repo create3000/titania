@@ -47,8 +47,8 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#ifndef __TMP_GLAD2CPP_FILE_SAVE_DIALOG_H__
-#define __TMP_GLAD2CPP_FILE_SAVE_DIALOG_H__
+#ifndef __TMP_GLAD2CPP_MESSAGE_DIALOG_H__
+#define __TMP_GLAD2CPP_MESSAGE_DIALOG_H__
 
 #include "../Base/X3DDialogInterface.h"
 #include <gtkmm.h>
@@ -58,21 +58,21 @@ namespace titania {
 namespace puck {
 
 /**
- *  Gtk Interface for FileSaveDialog.
+ *  Gtk Interface for MessageDialog.
  */
-class X3DFileSaveDialogInterface :
+class X3DMessageDialogInterface :
 	public X3DDialogInterface
 {
 public:
 
 	///  @name Construction
 
-	X3DFileSaveDialogInterface () :
+	X3DMessageDialogInterface () :
 		X3DDialogInterface ()
 	{ }
 
 	template <class ... Arguments>
-	X3DFileSaveDialogInterface (const std::string & filename, const Arguments & ... arguments) :
+	X3DMessageDialogInterface (const std::string & filename, const Arguments & ... arguments) :
 		X3DDialogInterface (m_widgetName, arguments ...),
 		          filename (filename)
 	{ create (filename); }
@@ -99,76 +99,44 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAll () const
-	{ return m_FileFilterAll; }
+	const Glib::RefPtr <Gtk::ListStore> &
+	getListStore () const
+	{ return m_ListStore; }
 
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterAudio () const
-	{ return m_FileFilterAudio; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterImage () const
-	{ return m_FileFilterImage; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterVideo () const
-	{ return m_FileFilterVideo; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const
-	{ return m_FileFilterX3D; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getImageAntialiasingAdjustment () const
-	{ return m_ImageAntialiasingAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getImageCompressionAdjustment () const
-	{ return m_ImageCompressionAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getImageHeightAdjustment () const
-	{ return m_ImageHeightAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getImageWidthAdjustment () const
-	{ return m_ImageWidthAdjustment; }
-
-	Gtk::FileChooserDialog &
+	Gtk::Dialog &
 	getWindow () const
 	{ return *m_Window; }
+
+	Gtk::Button &
+	getCancelButton () const
+	{ return *m_CancelButton; }
+
+	Gtk::Button &
+	getOkButton () const
+	{ return *m_OkButton; }
 
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Box &
-	getCompressFileBox () const
-	{ return *m_CompressFileBox; }
+	Gtk::Image &
+	getImage () const
+	{ return *m_Image; }
 
-	Gtk::Switch &
-	getCompressFileButton () const
-	{ return *m_CompressFileButton; }
+	Gtk::Label &
+	getMessageLabel () const
+	{ return *m_MessageLabel; }
 
-	Gtk::Dialog &
-	getImageOptionsDialog () const
-	{ return *m_ImageOptionsDialog; }
-
-	Gtk::Switch &
-	getImageAlphaChannelSwitch () const
-	{ return *m_ImageAlphaChannelSwitch; }
-
-	Gtk::Box &
-	getImageAntialiasingBox () const
-	{ return *m_ImageAntialiasingBox; }
+	Gtk::Label &
+	getTextLabel () const
+	{ return *m_TextLabel; }
 
 	///  @name Signal handlers
 
 	///  @name Destruction
 
 	virtual
-	~X3DFileSaveDialogInterface ();
+	~X3DMessageDialogInterface ();
 
 
 private:
@@ -189,24 +157,16 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
-	Glib::RefPtr <Gtk::Adjustment> m_ImageAntialiasingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
-	Gtk::FileChooserDialog*        m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_CompressFileBox;
-	Gtk::Switch*                   m_CompressFileButton;
-	Gtk::Dialog*                   m_ImageOptionsDialog;
-	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
-	Gtk::Box*                      m_ImageAntialiasingBox;
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Gtk::Dialog*                  m_Window;
+	Gtk::Button*                  m_CancelButton;
+	Gtk::Button*                  m_OkButton;
+	Gtk::Box*                     m_Widget;
+	Gtk::Image*                   m_Image;
+	Gtk::Label*                   m_MessageLabel;
+	Gtk::Label*                   m_TextLabel;
 
 };
 

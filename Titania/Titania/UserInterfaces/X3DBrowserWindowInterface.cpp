@@ -417,7 +417,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
 	m_builder -> get_widget ("SidebarBox", m_SidebarBox);
-	m_builder -> get_widget ("MessageDialog", m_MessageDialog);
 
 	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
 	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
@@ -749,7 +748,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()
 {
 	delete m_Window;
-	delete m_MessageDialog;
 }
 
 } // puck

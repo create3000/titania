@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,47 +47,72 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DFileSaveDialogInterface.h"
+
+#include "MessageDialog.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DFileSaveDialogInterface::m_widgetName = "FileSaveDialog";
-
-void
-X3DFileSaveDialogInterface::create (const std::string & filename)
+MessageDialog::MessageDialog (X3DBrowserWindow* const browserWindow) :
+	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DMessageDialogInterface (get_ui ("Dialogs/MessageDialog.glade"))
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
-
-	// Get objects.
-	m_FileFilterAll               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
-	m_FileFilterAudio             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_FileFilterImage             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
-	m_FileFilterVideo             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
-	m_FileFilterX3D               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
-	m_ImageAntialiasingAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageAntialiasingAdjustment"));
-	m_ImageCompressionAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageCompressionAdjustment"));
-	m_ImageHeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageHeightAdjustment"));
-	m_ImageWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
-
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
-	m_builder -> get_widget ("CompressFileButton", m_CompressFileButton);
-	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
-	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
-	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
-
-	// Call construct handler of base class.
-	construct ();
+	setup ();
 }
 
-X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()
+void
+MessageDialog::setType (const Gtk::MessageType type)
 {
-	delete m_Window;
-	delete m_ImageOptionsDialog;
+	getCancelButton () .set_visible (false);
+
+	switch (type)
+	{
+		case Gtk::MESSAGE_INFO:
+			getImage () .set (Gtk::StockID ("gtk-dialog-info"), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+			break;
+		case Gtk::MESSAGE_WARNING:
+			getImage () .set (Gtk::StockID ("gtk-dialog-warning"), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+			break;
+		case Gtk::MESSAGE_QUESTION:
+			getCancelButton () .set_visible (true);
+			getImage () .set (Gtk::StockID ("gtk-dialog-question"), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+			break;
+		case Gtk::MESSAGE_ERROR:
+			getImage () .set (Gtk::StockID ("gtk-dialog-error"), Gtk::IconSize (Gtk::ICON_SIZE_DIALOG));
+			break;
+		case Gtk::MESSAGE_OTHER:
+			break;
+	}
+}
+
+void
+MessageDialog::setMessage (const std::string & message)
+{
+	getMessageLabel () .set_text (message);
+}
+
+void
+MessageDialog::setText (const std::string & text)
+{
+	getTextLabel () .set_text (text);
+}
+
+int
+MessageDialog::run ()
+{
+	const auto responseId = getWindow () .run ();
+
+	quit ();
+
+	return responseId;
+}
+
+MessageDialog::~MessageDialog ()
+{
+	dispose ();
 }
 
 } // puck

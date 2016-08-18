@@ -53,6 +53,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 #include "../../Editors/LibraryView/X3DLibraryView.h"
 
 #include <Titania/X3D.h>
@@ -543,12 +544,13 @@ X3DPaletteEditor <Type>::on_remove_palette_activate ()
 	{
 		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
 		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
+		const auto dialog       = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_QUESTION);
+		dialog -> setMessage (basic::sprintf (_ ("Do you really want to remove palette »%s«?"), folder -> get_basename () .c_str ()));
+		dialog -> setText ("All item will be irrevocably deleted.");
 
-		auto messageDialog = Gtk::MessageDialog (this -> getBrowserWindow () -> getWindow (), "", "", Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, true);
-
-		messageDialog .set_message ("<big><b>" + basic::sprintf (_ ("Do you really want to remove palette »%s«?"), folder -> get_basename () .c_str ()) + "</b></big>", true);
-		
-		if (messageDialog .run () not_eq Gtk::RESPONSE_OK)
+		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
 
 		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))

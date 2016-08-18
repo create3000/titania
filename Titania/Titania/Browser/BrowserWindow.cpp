@@ -54,6 +54,7 @@
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
+#include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
@@ -2060,9 +2061,9 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 		if (booleanOperation (getCurrentContext (), shapes, undoStep))
 		{
 			X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
-	
+
 			// Select target
-	
+
 			getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -2071,11 +2072,14 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 	{
 	   __LOG__ << error .what () << std::endl;
 
-		getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-		getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't apply Boolean operation to geometries!") + "</b></big>", true);
-		getMessageDialog () .set_secondary_text (_ ("The input geometries to Boolean operations must be »solid«, ie. closed (watertight) and non-self-intersecting."), false);
-		getMessageDialog () .run ();
-		getMessageDialog () .hide ();
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Couldn't apply Boolean operation to geometries!"));
+		dialog -> setText (_ ("The input geometries to Boolean operations must be »solid«, "
+		                      "ie. closed (watertight) and non-self-intersecting. "
+		                      "Additionally, each edge must share only two faces."));
+		dialog -> run ();
 	}
 	catch (const std::exception & error)
 	{

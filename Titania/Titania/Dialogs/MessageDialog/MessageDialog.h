@@ -47,48 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-#include "X3DFileSaveDialogInterface.h"
+
+#ifndef __TITANIA_DIALOGS_MESSAGE_DIALOG_MESSAGE_DIALOG_H__
+#define __TITANIA_DIALOGS_MESSAGE_DIALOG_MESSAGE_DIALOG_H__
+
+#include "../../UserInterfaces/X3DMessageDialogInterface.h"
 
 namespace titania {
 namespace puck {
 
-const std::string X3DFileSaveDialogInterface::m_widgetName = "FileSaveDialog";
-
-void
-X3DFileSaveDialogInterface::create (const std::string & filename)
+class MessageDialog :
+	virtual public X3DMessageDialogInterface
 {
-	// Create Builder.
-	m_builder = Gtk::Builder::create_from_file (filename);
+public:
 
-	// Get objects.
-	m_FileFilterAll               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
-	m_FileFilterAudio             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
-	m_FileFilterImage             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
-	m_FileFilterVideo             = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
-	m_FileFilterX3D               = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3D"));
-	m_ImageAntialiasingAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageAntialiasingAdjustment"));
-	m_ImageCompressionAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageCompressionAdjustment"));
-	m_ImageHeightAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageHeightAdjustment"));
-	m_ImageWidthAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageWidthAdjustment"));
+	///  @name Construction
 
-	// Get widgets.
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("CompressFileBox", m_CompressFileBox);
-	m_builder -> get_widget ("CompressFileButton", m_CompressFileButton);
-	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
-	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
-	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
+	MessageDialog (X3DBrowserWindow* const);
 
-	// Call construct handler of base class.
-	construct ();
-}
+	void
+	setType (const Gtk::MessageType);
 
-X3DFileSaveDialogInterface::~X3DFileSaveDialogInterface ()
-{
-	delete m_Window;
-	delete m_ImageOptionsDialog;
-}
+	void
+	setMessage (const std::string &);
+
+	void
+	setText (const std::string &);
+
+	int
+	run ();
+
+	///  @name Destruction
+
+	virtual
+	~MessageDialog ();
+
+};
 
 } // puck
 } // titania
+
+#endif

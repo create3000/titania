@@ -56,6 +56,8 @@
       <source stock-id="gtk-goto-top" filename="icons/Faenza/16/gtk-goto-top.png"/>
       <source stock-id="MustEvaluate" filename="icons/MustEvaluate.svg"/>
       <source stock-id="audio-volume-medium" filename="icons/Faenza/16/audio-volume-medium.png"/>
+      <source stock-id="gtk-dialog-warning" filename="icons/Faenza/64/gtk-dialog-warning.png"/>
+      <source stock-id="gtk-dialog-warning" filename="icons/Faenza/64/gtk-dialog-warning.png"/>
       <source stock-id="gtk-preferences" filename="icons/Faenza/16/gtk-preferences.png"/>
       <source stock-id="Viewpoints" filename="icons/Viewpoint.svg"/>
       <source stock-id="gtk-paste" filename="icons/Faenza/16/gtk-paste.png"/>
@@ -81,20 +83,22 @@
       <source stock-id="gtk-go-forward" filename="icons/Faenza/16/gtk-go-forward-ltr.png"/>
       <source stock-id="gtk-goto-first" filename="icons/Faenza/16/gtk-goto-first-ltr.png"/>
       <source stock-id="FormNewFace" filename="icons/FormNewFace.svg"/>
+      <source stock-id="gtk-dialog-question" filename="icons/Faenza/64/gtk-dialog-question.png"/>
       <source stock-id="Backgrounds" filename="icons/Background.svg"/>
       <source stock-id="PlaneViewer" filename="icons/PlaneViewer.svg"/>
       <source stock-id="gtk-zoom-in" filename="icons/Faenza/16/gtk-zoom-in.png"/>
       <source stock-id="gtk-cut" filename="icons/Faenza/16/gtk-cut.png"/>
       <source stock-id="Clockwise" filename="icons/Clockwise.svg"/>
       <source stock-id="X3DBaseNode" filename="icons/X3DBaseNode.svg"/>
+      <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="gtk-file" filename="icons/Faenza/16/gtk-file.png"/>
       <source stock-id="gtk-add" filename="icons/Faenza/16/gtk-add.png"/>
-      <source stock-id="ColorSingleFace" filename="icons/ColorSingleFace.svg"/>
       <source stock-id="gtk-close" filename="icons/Faenza/16/gtk-close.png"/>
       <source stock-id="gtk-about" filename="icons/Faenza/16/gtk-about.png"/>
+      <source stock-id="gtk-dialog-info" filename="icons/Faenza/64/gtk-dialog-info.png"/>
       <source stock-id="gtk-media-resume" filename="icons/Resume.svg"/>
-      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="OutlineEditor" filename="icons/OutlineEditor.svg"/>
+      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.96.svg"/>
       <source stock-id="MergePoints" filename="icons/MergePoints.svg"/>
       <source stock-id="Viewpoint" filename="icons/Viewpoint.svg"/>
       <source stock-id="Environment" filename="icons/Environment.svg"/>
@@ -105,8 +109,8 @@
       <source stock-id="edit-find-symbolic" filename="icons/Faenza/scalable/edit-find-symbolic.svg"/>
       <source stock-id="Union" filename="icons/Union.svg"/>
       <source stock-id="Intersection" filename="icons/Intersection.svg"/>
-      <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="TextureQuality" filename="icons/TextureQuality.svg"/>
+      <source stock-id="Combine" filename="icons/Combine.svg"/>
       <source stock-id="gtk-copy" filename="icons/Faenza/16/gtk-copy.png"/>
       <source stock-id="VertexShader" filename="icons/VertexShader.svg"/>
       <source stock-id="TextureCoordinate" filename="icons/TextureCoordinate.svg"/>
@@ -1026,8 +1030,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2487,8 +2491,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -4494,58 +4498,5 @@
     <style>
       <class name="Titania"/>
     </style>
-  </object>
-  <object class="GtkMessageDialog" id="MessageDialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Message</property>
-    <property name="modal">True</property>
-    <property name="type_hint">normal</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-    <property name="text" translatable="yes">&lt;big&gt;&lt;b&gt;Message&lt;/b&gt;&lt;/big&gt;</property>
-    <property name="use_markup">True</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="messagedialog-vbox">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="messagedialog-action_area">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="button3">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="-5">button3</action-widget>
-    </action-widgets>
   </object>
 </interface>

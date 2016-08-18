@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/OS.h>
@@ -160,19 +161,21 @@ X3DFileSaveDialog::exportImage ()
 			}
 			catch (const Magick::Exception & error)
 			{
-				getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-				getMessageDialog () .set_message (_ ("<big><b>Could not save image!</b></big>"), true);
-				getMessageDialog () .set_secondary_text (_ ("Tip: check file and folder permissions."), false);
-				getMessageDialog () .run ();
-				getMessageDialog () .hide ();
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Could not save image!"));
+				dialog -> setText (_ ("Tip: check file and folder permissions."));
+				dialog -> run ();
 			}
 			catch (const std::exception & error)
 			{
-				getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-				getMessageDialog () .set_message (_ ("<big><b>Could not generate image!</b></big>"), true);
-				getMessageDialog () .set_secondary_text (_ ("Tip: try a smaller image size and/or less antialiasing."), false);
-				getMessageDialog () .run ();
-				getMessageDialog () .hide ();
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Could not generate image!"));
+				dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
+				dialog -> run ();
 			}
 		}
 	}

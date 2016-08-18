@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWidget.h"
 
+#include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Widgets/HistoryView/History.h"
 #include "../Browser/RecentView.h"
 #include "../Browser/BrowserUserData.h"
@@ -624,11 +625,13 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		}
 		else
 		{
-			getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-			getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't save file!") + "</b></big>", true);
-			getMessageDialog () .set_secondary_text (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."), false);
-			getMessageDialog () .run ();
-			getMessageDialog () .hide ();
+			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+		
+			dialog -> setType (Gtk::MESSAGE_ERROR);
+			dialog -> setMessage (_ ("Couldn't save file!"));
+			dialog -> setText (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."));
+			dialog -> run ();
+
 			return false;
 		}
 
@@ -672,11 +675,12 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		}
 	}
 
-	getMessageDialog () .property_message_type () = Gtk::MESSAGE_ERROR;
-	getMessageDialog () .set_message ("<big><b>" + _ ("Couldn't save file!") + "</b></big>", true);
-	getMessageDialog () .set_secondary_text (_ ("Tip: check file and folder permissions."), false);
-	getMessageDialog () .run ();
-	getMessageDialog () .hide ();
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+
+	dialog -> setType (Gtk::MESSAGE_ERROR);
+	dialog -> setMessage (_ ("Couldn't save file!"));
+	dialog -> setText (_ ("Tip: check file and folder permissions."));
+	dialog -> run ();
 
 	return false;
 }

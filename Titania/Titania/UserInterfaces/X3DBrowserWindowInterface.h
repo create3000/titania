@@ -1515,10 +1515,6 @@ public:
 	getSidebarBox () const
 	{ return *m_SidebarBox; }
 
-	Gtk::MessageDialog &
-	getMessageDialog () const
-	{ return *m_MessageDialog; }
-
 	///  @name Signal handlers
 
 	virtual
@@ -2505,7 +2501,6 @@ private:
 	Gtk::RadioToolButton*            m_LookAtButton;
 	Gtk::Box*                        m_FooterBox;
 	Gtk::Box*                        m_SidebarBox;
-	Gtk::MessageDialog*              m_MessageDialog;
 
 };
 
