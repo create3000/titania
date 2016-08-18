@@ -68,6 +68,7 @@ ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWin
 void
 ScenePropertiesEditor::configure ()
 {
+	X3DScenePropertiesEditorInterface::configure ();
 	X3DUnitEditor::configure ();
 	X3DWorldInfoEditor::configure ();
 
@@ -89,6 +90,7 @@ ScenePropertiesEditor::store ()
 
 	X3DWorldInfoEditor::store ();
 	X3DUnitEditor::store ();
+	X3DScenePropertiesEditorInterface::store ();
 }
 
 ScenePropertiesEditor::~ScenePropertiesEditor ()

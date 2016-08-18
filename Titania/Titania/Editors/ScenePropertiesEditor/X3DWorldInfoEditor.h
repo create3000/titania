@@ -82,8 +82,7 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 	void
 	set_current_scene ();
