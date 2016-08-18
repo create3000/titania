@@ -459,6 +459,8 @@ X3DIndexedFaceSetSelectionObject::set_selection (const MFVec3d & hitPoints)
 	set_selection (hitPoints, getSelectActionType ());
 
 	X3DIndexedFaceSetTool::set_selection (hitPoints);
+
+	touchTime () = getCurrentTime ();
 }
 
 void

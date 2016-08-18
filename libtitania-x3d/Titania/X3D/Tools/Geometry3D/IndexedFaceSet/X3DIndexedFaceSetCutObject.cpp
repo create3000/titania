@@ -132,6 +132,7 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	{
 		case 1:
 		{
+			startPoint   = startPoints [0];
 			startVertex1 = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (startPoints [0]), vertices);
 			endVertex2   = startVertex1;
 			break;
@@ -195,6 +196,7 @@ X3DIndexedFaceSetCutObject::cut (const size_t cutFace,
 	{
 		case 1:
 		{
+			endPoint     = endPoints [0];
 			endVertex1   = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (endPoints [0]), vertices);
 			startVertex2 = endVertex1;
 			break;
@@ -645,6 +647,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 		{
 			case 1:
 			{
+				startPoint   = startPoints [0];
 				startVertex1 = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (startPoints [0]), vertices);
 				endVertex2   = startVertex1;
 				break;
@@ -759,6 +762,7 @@ X3DIndexedFaceSetCutObject::cut (const std::vector <size_t> & cutFaceArray,
 		{
 			case 1:
 			{
+				endPoint     = endPoints [0];
 				endVertex1   = getFaceSelection () -> getClosestVertex (getCoord () -> get1Point (endPoints [0]), vertices);
 				startVertex2 = endVertex1;
 				break;
