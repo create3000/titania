@@ -60,7 +60,67 @@ namespace titania {
 namespace math {
 
 template <class Type>
-using mesh = std::pair <std::vector <uint32_t>, std::vector <vector3 <Type>>>;
+class mesh
+{
+public:
+
+	///  @name Member types
+
+	using indices_type = std::vector <int32_t>;
+	using points_type  = std::vector <vector3 <Type>>;
+
+	///  Default constructor. Constructs an empty mesh.
+	mesh () = default;
+
+	///  Copy constructor.
+	mesh (const mesh & other) = default;
+
+	///  Move constructor.
+	mesh (mesh && other) = default;
+
+	///  Copy constructor.  Constructs a mesh from @a indices and @a points.
+	mesh (const indices_type & indices, const points_type & points) :
+		m_indices (indices),
+		 m_points (points)
+	{ }
+
+	///  Move constructor.  Constructs a mesh from @a indices and @a points.
+	mesh (indices_type && indices, points_type && points) :
+		m_indices (std::move (indices)),
+		 m_points (std::move (points))
+	{ }
+
+	///  @name Assignment operator
+
+	///  Assigns mesh @a other to this mesh.
+	mesh &
+	operator = (const mesh & other) = default;
+
+	///  Assigns mesh @a other to this mesh with move semantics.
+	mesh &
+	operator = (mesh && other) = default;
+
+	///  @name Member access
+
+	///  Returns the indices of this mesh.
+	const indices_type &
+	indices () const
+	{ return m_indices; }
+
+	///  Returns the points of this mesh.
+	const points_type &
+	points () const
+	{ return m_points; }
+
+
+private:
+
+	///  @name Members
+
+	indices_type m_indices;
+	points_type  m_points;
+
+};
 
 mesh <double>
 mesh_stitch_borders (const mesh <double> & mesh);

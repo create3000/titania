@@ -406,6 +406,29 @@ unique ()
 	}
 }
 
+class mesh
+{
+public:
+
+	mesh (const mesh &) = default;
+
+	mesh (mesh &&) = default;
+
+	mesh (const std::vector <double> & a) : a (a), b (a) { }
+
+	///  Assigns mesh @a other to this mesh.
+	mesh &
+	operator = (const mesh & other) = default;
+
+	///  Assigns mesh @a other to this mesh with move semantics.
+	mesh &
+	operator = (mesh && other) = default;
+
+	std::vector <double> a;	
+	std::vector <double> b;	
+
+};
+
 int
 main (int argc, char** argv)
 {
@@ -423,11 +446,20 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	path a ("/a/b/c/d", "/");
-	path r ("../../a/b/c/d", "/");
+	std::vector <double> v ({ 1, 2 });
 
-	__LOG__ << r .remove_dot_segments () << std::endl;
-	__LOG__ << a .relative_path (r) << std::endl;
+	mesh a (v);
+
+	__LOG__ << a .a .size () << std::endl;
+	__LOG__ << a .b .size () << std::endl;
+
+	mesh b (std::move (a));
+
+	__LOG__ << a .a .size () << std::endl;
+	__LOG__ << a .b .size () << std::endl;
+	__LOG__ << b .a .size () << std::endl;
+	__LOG__ << b .b .size () << std::endl;
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

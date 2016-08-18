@@ -93,16 +93,15 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 {
 	// Create mesh.
 
-	auto indices = std::vector <uint32_t> ();
-	auto points  = std::vector <Vector3d> ();
-
-	std::vector <size_t> vertices;
+	auto indices      = mesh <double>::indices_type ();
+	auto points       = mesh <double>::points_type ();
+	auto coordIndices = std::vector <int32_t> ();
 
 	for (const auto & index : geometryNode -> coordIndex ())
 	{
 		if (index < 0)
 		{
-			switch (vertices .size ())
+			switch (coordIndices .size ())
 			{
 				case 0:
 				case 1:
@@ -110,7 +109,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 					break;
 				case 3:
 				{
-					for (const auto & index : vertices)
+					for (const auto & index : coordIndices)
 						indices .emplace_back (index);
 
 					break;
@@ -122,7 +121,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 					tessellator .begin_polygon ();
 					tessellator .begin_contour ();
 				
-					for (const auto & index : vertices)
+					for (const auto & index : coordIndices)
 					{
 						const auto point = coordNode -> get1Point (index) * matrix;
 			
@@ -145,11 +144,11 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 				}
 			}
 
-			vertices .clear ();
+			coordIndices .clear ();
 		}
 		else
 		{
-			vertices .emplace_back (index);
+			coordIndices .emplace_back (index);
 		}
 	}
 
@@ -263,15 +262,15 @@ throw (Error <INVALID_NODE>,
 	
 		// Store result in target geometry.
 
-		for (size_t i = 0, size = result .first .size (); i < size; )
+		for (size_t i = 0, size = result .indices () .size (); i < size; )
 		{
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .indices () [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .indices () [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .indices () [i++]);
 			targetGeometry -> coordIndex () .emplace_back (-1);
 		}
 
-		targetCoord -> point () .assign (result .second .begin (), result .second .end ());
+		targetCoord -> point () .assign (result .points () .begin (), result .points () .end ());
 
 		// Replace node.
 

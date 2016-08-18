@@ -86,17 +86,17 @@ public:
 		// Postcondition: hds is a valid polyhedral surface.
 		CGAL::Polyhedron_incremental_builder_3 <HDS> builder (hds, false);
 
-		builder .begin_surface (m_mesh .second .size (), m_mesh .first .size () / 3);
+		builder .begin_surface (m_mesh .points () .size (), m_mesh .indices () .size () / 3);
 
-		for (const auto & p : m_mesh .second)
+		for (const auto & p : m_mesh .points ())
 			builder .add_vertex (Point (p .x (), p .y (), p .z ()));
 
-		for (size_t i = 0, size = m_mesh .first .size (); i < size; )
+		for (size_t i = 0, size = m_mesh .indices () .size (); i < size; )
 		{
 			builder .begin_facet ();
-			builder .add_vertex_to_facet (m_mesh .first [i ++]);
-			builder .add_vertex_to_facet (m_mesh .first [i ++]);
-			builder .add_vertex_to_facet (m_mesh .first [i ++]);
+			builder .add_vertex_to_facet (m_mesh .indices () [i ++]);
+			builder .add_vertex_to_facet (m_mesh .indices () [i ++]);
+			builder .add_vertex_to_facet (m_mesh .indices () [i ++]);
 			builder .end_facet ();
 		}
 
@@ -143,8 +143,8 @@ static
 mesh <double>
 polyhedron_to_mesh (const Polyhedron & polyhedron)
 {
-	auto indices = std::vector <uint32_t> ();
-	auto points  = std::vector <vector3 <double>> ();
+	auto indices = mesh <double>::indices_type ();
+	auto points  = mesh <double>::points_type ();
 
 	for (auto vertex = polyhedron .vertices_begin (), last = polyhedron .vertices_end (); vertex not_eq last; ++ vertex)
 	{
@@ -166,7 +166,7 @@ polyhedron_to_mesh (const Polyhedron & polyhedron)
 		}
 	}
 
-	return std::make_pair (std::move (indices), std::move (points));
+	return mesh <double> (std::move (indices), std::move (points));
 }
 
 static
