@@ -302,13 +302,14 @@ private:
 	X3D::MFNode     previousSelection;
 	X3D::BrowserPtr browser;
 
-	X3D::NodeType privateViewer;
-	SelectorType  selector;
-	size_t        numSelectedPoints;
-	size_t        numSelectedEdges;
-	size_t        numSelectedHoles;
-	size_t        numSelectedFaces;
-	bool          changing;
+	X3D::NodeType  privateViewer;
+	SelectorType   selector;
+	size_t         numSelectedPoints;
+	size_t         numSelectedEdges;
+	size_t         numSelectedHoles;
+	size_t         numSelectedFaces;
+	X3D::time_type copyTime;
+	bool           changing;
 
 };
 

@@ -84,6 +84,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          numSelectedEdges (0),
 	          numSelectedHoles (0),
 	          numSelectedFaces (0),
+	                  copyTime (0),
 	                  changing (false)
 {
 	addChildren (normalEditor,
@@ -421,12 +422,15 @@ GeometryEditor::on_copy ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
-		try
+		for (const auto & geometryNode : geometryNodes)
 		{
-			geometryNodes .back () -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
+			try
+			{
+				geometryNode -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
 
 		return true;
 	}
@@ -439,12 +443,37 @@ GeometryEditor::on_paste ()
 {
 	if (getEditToggleButton () .get_active ())
 	{
-		try
+		const auto active = std::max_element (geometryNodes .begin (), geometryNodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
 		{
-			geometryNodes .back () -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
+			X3D::time_type timeL = -1;
+			X3D::time_type timeR = -1;
+
+			try
+			{
+				timeL = lhs -> getField <X3D::SFTime> ("touchTime");
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			try
+			{
+				timeR = rhs -> getField <X3D::SFTime> ("touchTime");
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			return timeL < timeR;
+		});
+
+		if (active not_eq geometryNodes .end ())
+		{
+			try
+			{
+				(*active) -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
+			}
+			catch (const X3D::X3DError &)
+			{ }
 		}
-		catch (const X3D::X3DError &)
-		{ }
 
 		return true;
 	}
@@ -556,7 +585,14 @@ GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 void
 GeometryEditor::set_clipboard (const X3D::SFString & string)
 {
-	getBrowserWindow () -> getClipboard () -> set_string () = string;
+	if (copyTime not_eq getCurrentBrowser () -> getCurrentTime ())
+	{
+		copyTime = getCurrentBrowser () -> getCurrentTime ();
+
+		getBrowserWindow () -> getClipboard () -> set_string () .clear ();
+	}
+
+	getBrowserWindow () -> getClipboard () -> set_string () .append (string);
 }
 
 void

@@ -142,7 +142,7 @@ public:
 
 	operator const std::string & () const;
 
-	///  @name Observers
+	///  @name Element access
 
 	const std::string &
 	str () const;
@@ -150,11 +150,21 @@ public:
 	const char_type*
 	c_str () const;
 
+	///  @name Capacity
+
 	bool
 	empty () const;
 
 	size_type
 	length () const;
+
+	///  @name Operations
+
+	void
+	clear ();
+
+	SFString &
+	append (const String &);
 
 	///  @name Input/Output
 

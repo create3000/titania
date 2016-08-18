@@ -147,6 +147,20 @@ SFString::length () const
 }
 
 void
+SFString::clear ()
+{
+	get () .clear ();
+	addEvent ();
+}
+
+SFString &
+SFString::append (const String & string)
+{
+	get () .append (string);
+	addEvent ();
+}
+
+void
 SFString::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,

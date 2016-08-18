@@ -50,10 +50,15 @@
 
 #include "X3DIndexedFaceSetTool.h"
 
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../Rendering/CoordinateTool.h"
+
 namespace titania {
 namespace X3D {
 
 X3DIndexedFaceSetTool::Fields::Fields () :
+	    isActive (new SFBool ()),
+	   touchTime (new SFTime ()),
 	undo_changed (new UndoStepContainerPtr ())
 { }
 
@@ -69,6 +74,25 @@ void
 X3DIndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool::initialize ();
+
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTool::set_loadState);
+}
+
+void
+X3DIndexedFaceSetTool::set_loadState ()
+{
+	try
+	{
+		const auto & inlineNode  = getCoordinateTool () -> getInlineNode ();
+		const auto   touchSensor = inlineNode -> getExportedNode <TouchSensor> ("TouchSensor");
+
+		touchSensor -> isActive ()  .addInterest (isActive ());
+		touchSensor -> touchTime () .addInterest (touchTime ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

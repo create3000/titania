@@ -128,6 +128,22 @@ public:
 
 	///  @name Hidden fields
 
+	SFBool &
+	isActive ()
+	{ return *fields .isActive; }
+
+	const SFBool &
+	isActive () const
+	{ return *fields .isActive; }
+
+	SFTime &
+	touchTime ()
+	{ return *fields .touchTime; }
+
+	const SFTime &
+	touchTime () const
+	{ return *fields .touchTime; }
+
 	UndoStepContainerPtr &
 	undo_changed ()
 	{ return *fields .undo_changed; }
@@ -192,6 +208,9 @@ protected:
 	void
 	initialize () override;
 
+	void
+	set_loadState ();
+
 	///  @name Operations
 
 	void
@@ -230,6 +249,8 @@ private:
 	{
 		Fields ();
 
+		SFBool* const isActive;
+		SFTime* const touchTime;
 		UndoStepContainerPtr* const undo_changed;
 	};
 
