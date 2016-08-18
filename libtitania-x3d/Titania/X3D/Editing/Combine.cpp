@@ -67,6 +67,98 @@ namespace X3D {
 Combine::Combine ()
 { }
 
+X3DPtrArray <IndexedFaceSet>
+Combine::getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes)
+{
+	// Filter geometries.
+
+	X3DPtrArray <IndexedFaceSet> geometryNodes;
+
+	for (const auto & shape : shapes)
+	{
+		const X3DPtr <IndexedFaceSet> geometryNode (shape -> geometry ());
+
+		if (not geometryNode)
+			continue;
+
+		geometryNodes .emplace_back (geometryNode);
+	}
+
+	return std::move (geometryNodes);
+}
+
+/// Creates a mesh from @a geometryNode and @a coordNode and applys matrix to points.
+mesh <double>
+Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3DCoordinateNode> & coordNode, const Matrix4d & matrix)
+{
+	// Create mesh.
+
+	auto indices = std::vector <uint32_t> ();
+	auto points  = std::vector <Vector3d> ();
+
+	std::vector <size_t> vertices;
+
+	for (const auto & index : geometryNode -> coordIndex ())
+	{
+		if (index < 0)
+		{
+			switch (vertices .size ())
+			{
+				case 0:
+				case 1:
+				case 2:
+					break;
+				case 3:
+				{
+					for (const auto & index : vertices)
+						indices .emplace_back (index);
+
+					break;
+				}
+				default:
+				{
+					opengl::tessellator <size_t> tessellator;
+	
+					tessellator .begin_polygon ();
+					tessellator .begin_contour ();
+				
+					for (const auto & index : vertices)
+					{
+						const auto point = coordNode -> get1Point (index) * matrix;
+			
+						tessellator .add_vertex (point, index);
+					}
+				
+					tessellator .end_contour ();
+					tessellator .end_polygon ();
+				
+					const auto triangles = tessellator .triangles ();
+			
+					for (size_t v = 0, size = triangles .size (); v < size; )
+					{
+						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+						indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
+					}
+					
+					break;
+				}
+			}
+
+			vertices .clear ();
+		}
+		else
+		{
+			vertices .emplace_back (index);
+		}
+	}
+
+	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+		points .emplace_back (coordNode -> get1Point (i) * matrix);
+
+	return mesh <double> (std::move (indices), std::move (points));
+}
+
 bool
 Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
                         const X3DPtrArray <X3DShapeNode> & shapes,
@@ -124,8 +216,8 @@ throw (Error <INVALID_NODE>,
 	{
 		if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
 			executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
-	
-		// Choose target
+
+		// Choose target.
 	
 		const auto & masterShape    = shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
@@ -134,111 +226,44 @@ throw (Error <INVALID_NODE>,
 	
 		targetGeometry -> coord () = targetCoord;
 	
-		// Filter geometries.
+		// Filter geometry nodes.
 	
-		X3DPtrArray <IndexedFaceSet> geometries;
+		const X3DPtrArray <IndexedFaceSet> geometryNodes = getIndexedFaceSets (shapes);
 	
-		for (const auto & shape : shapes)
-		{
-			const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
+		if (not geometryNodes .empty ())
+			targetGeometry -> creaseAngle () = geometryNodes .front () -> creaseAngle ();
 	
-			if (not geometry)
-				continue;
-	
-			geometries .emplace_back (geometry);
-		}
-	
-		if (not geometries .empty ())
-			targetGeometry -> creaseAngle () = geometries .front () -> creaseAngle ();
-	
-		// Combine Coordinates
+		// Combine Coordinates.
 	
 		std::vector <mesh <double>> meshes;
 	
-		for (const auto & geometryNode : geometries)
+		for (const auto & geometryNode : geometryNodes)
 		{
-			const auto coordNode = geometryNode -> getCoord ();
+			const auto & coordNode = geometryNode -> getCoord ();
 	
 			if (not coordNode)
 				continue;
 	
 			const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
-	
-			auto indices = std::vector <uint32_t> ();
-			auto points  = std::vector <Vector3d> ();
-	
-			std::vector <size_t> vertices;
 		
-			for (const auto & index : geometryNode -> coordIndex ())
-			{
-				if (index < 0)
-				{
-					switch (vertices .size ())
-					{
-						case 0:
-						case 1:
-						case 2:
-							break;
-						case 3:
-						{
-							for (const auto & index : vertices)
-								indices .emplace_back (index);
-	
-							break;
-						}
-						default:
-						{
-							opengl::tessellator <size_t> tessellator;
-			
-							tessellator .begin_polygon ();
-							tessellator .begin_contour ();
-						
-							for (const auto & index : vertices)
-							{
-								const auto point = coordNode -> get1Point (index) * matrix;
-					
-								tessellator .add_vertex (point, index);
-							}
-						
-							tessellator .end_contour ();
-							tessellator .end_polygon ();
-						
-							const auto triangles = tessellator .triangles ();
-					
-							for (size_t v = 0, size = triangles .size (); v < size; )
-							{
-								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-								indices .emplace_back (std::get <0> (triangles [v ++] .data ()));
-							}
-							
-							break;
-						}
-					}
-	
-					vertices .clear ();
-				}
-				else
-				{
-					vertices .emplace_back (index);
-				}
-			}
-	
-			for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
-				points .emplace_back (coordNode -> get1Point (i) * matrix);
-	
-			meshes .emplace_back (std::move (indices), std::move (points));
+			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
 		}
 	
+		// Test if there is something to do.
+
 		if (meshes .size () < 2)
 			return false;
+
+		// Apply Boolean operation.
 
 		auto result = std::move (meshes .front ());
 
 		for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
 			result = booleanOperation (result, mesh);
 	
-		for (size_t i = 0, size = result .first .size (); i < size;)
+		// Store result in target geometry.
+
+		for (size_t i = 0, size = result .first .size (); i < size; )
 		{
 			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
 			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
@@ -248,7 +273,7 @@ throw (Error <INVALID_NODE>,
 
 		targetCoord -> point () .assign (result .second .begin (), result .second .end ());
 
-		// Replace node
+		// Replace node.
 
 		Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 
@@ -286,48 +311,38 @@ throw (Error <INVALID_NODE>,
 
 	targetGeometry -> coord () = targetCoord;
 
-	// Filter geometries.
+	// Filter geometry nodes.
 
-	X3DPtrArray <IndexedFaceSet> geometries;
+	const X3DPtrArray <IndexedFaceSet> geometryNodes = getIndexedFaceSets (shapes);
 
-	for (const auto & shape : shapes)
-	{
-		const X3DPtr <IndexedFaceSet> geometry (shape -> geometry ());
-
-		if (not geometry)
-			continue;
-
-		geometries .emplace_back (geometry);
-	}
-
-	if (not geometries .empty ())
-		targetGeometry -> creaseAngle () = geometries .back () -> creaseAngle ();
+	if (not geometryNodes .empty ())
+		targetGeometry -> creaseAngle () = geometryNodes .back () -> creaseAngle ();
 
 	// Combine Coordinates
 
-	for (const auto & geometry : geometries)
+	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> colorIndex    ()), geometry -> colorIndex    ());
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
-		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometry -> normalIndex   ()), geometry -> normalIndex   ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> color         ()), geometry -> color         ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> texCoord      ()), geometry -> texCoord      ());
-		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> normal        ()), geometry -> normal        ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode -> colorIndex    ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex ()), geometryNode -> texCoordIndex ());
+		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode -> normalIndex   ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> color         ()), geometryNode -> color         ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord      ()), geometryNode -> texCoord      ());
+		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal        ()), geometryNode -> normal        ());
 	}
 
-	if (geometries .size () < 2)
+	if (geometryNodes .size () < 2)
 		return false;
 
-	combine (executionContext, geometries, targetGeometry, targetCoord, targetMatrix);
+	combine (executionContext, geometryNodes, targetGeometry, targetCoord, targetMatrix);
 
-	for (const auto & geometry : geometries)
+	for (const auto & geometryNode : geometryNodes)
 	{
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> colorIndex    ()), geometry -> colorIndex    ());
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> texCoordIndex ()), geometry -> texCoordIndex ());
-		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometry -> normalIndex   ()), geometry -> normalIndex   ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> color         ()), geometry -> color         ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> texCoord      ()), geometry -> texCoord      ());
-		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometry -> normal        ()), geometry -> normal        ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode-> colorIndex    ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> texCoordIndex ()), geometryNode-> texCoordIndex ());
+		undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> normalIndex   ()), geometryNode-> normalIndex   ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> color         ()), geometryNode-> color         ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord      ()), geometryNode-> texCoord      ());
+		undoStep -> addRedoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal        ()), geometryNode-> normal        ());
 	}
 
 	// Replace node
@@ -339,7 +354,7 @@ throw (Error <INVALID_NODE>,
 
 std::vector <int32_t>
 Combine::combine (const X3DExecutionContextPtr & executionContext,
-                  const X3DPtrArray <IndexedFaceSet> & geometries,
+                  const X3DPtrArray <IndexedFaceSet> & geometryNodes,
                   const X3DPtr <IndexedFaceSet> & targetGeometry,
                   const X3DPtr <X3DCoordinateNode> & targetCoord,
                   const Matrix4d & targetMatrix)
@@ -352,15 +367,15 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 	bool addTexCoords = targetGeometry -> getTexCoord ();
 	bool addNormals   = targetGeometry -> getNormal ();
 
-	for (const auto & geometry : geometries)
+	for (const auto & geometryNode : geometryNodes)
 	{
-		if (geometry -> getColor ())
+		if (geometryNode -> getColor ())
 			addColors = true;
 	
-		if (geometry -> getTexCoord ())
+		if (geometryNode -> getTexCoord ())
 			addTexCoords = true;
 
-		if (geometry -> getNormal ())
+		if (geometryNode -> getNormal ())
 			addNormals = true;
 	}
 
@@ -424,79 +439,81 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			targetGeometry -> addNormals ();
 	}
 
-	for (const auto & geometry : geometries)
+	for (const auto & geometryNode : geometryNodes)
 	{
-		const auto numVertices = geometry -> coordIndex () .size ();
-		const auto numFaces    = geometry -> colorPerVertex () or geometry -> normalPerVertex ()
-	                            ? std::count_if (geometry -> coordIndex () .begin (), geometry -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
+		const auto numVertices = geometryNode -> coordIndex () .size ();
+		const auto numFaces    = geometryNode -> colorPerVertex () or geometryNode -> normalPerVertex ()
+	                            ? std::count_if (geometryNode -> coordIndex () .begin (), geometryNode -> coordIndex () .end (), [ ] (const int32_t i) { return i < 0; })
 	                            : 0;
 
 		if (addColors)
 		{
-			if (geometry -> getColor ())
+			if (geometryNode -> getColor ())
 			{
-				if (geometry -> colorPerVertex ())
+				if (geometryNode -> colorPerVertex ())
 				{
-					for (size_t i = geometry -> colorIndex () .size (); i < numVertices; ++ i)
-						geometry -> colorIndex () .emplace_back (geometry -> coordIndex () [i]);
+					for (size_t i = geometryNode -> colorIndex () .size (); i < numVertices; ++ i)
+						geometryNode -> colorIndex () .emplace_back (geometryNode -> coordIndex () [i]);
 				}
 				else
 				{
-					for (size_t i = geometry -> colorIndex () .size (); i < numFaces; ++ i)
-						geometry -> colorIndex () .emplace_back (i);
+					for (size_t i = geometryNode -> colorIndex () .size (); i < numFaces; ++ i)
+						geometryNode -> colorIndex () .emplace_back (i);
 				}
 			}
 			else
-				geometry -> addColors ();
+				geometryNode -> addColors ();
 		}
 
 		if (addTexCoords)
 		{
-			if (geometry -> getTexCoord ())
+			if (geometryNode -> getTexCoord ())
 			{
-				for (size_t i = geometry -> texCoordIndex () .size (); i < numVertices; ++ i)
-					geometry -> texCoordIndex () .emplace_back (geometry -> coordIndex () [i]);
+				for (size_t i = geometryNode -> texCoordIndex () .size (); i < numVertices; ++ i)
+					geometryNode -> texCoordIndex () .emplace_back (geometryNode -> coordIndex () [i]);
 			}
 			else
-				geometry -> addTexCoords ();
+				geometryNode -> addTexCoords ();
 		}
 
 		if (addNormals)
 		{
-			if (geometry -> getNormal ())
+			if (geometryNode -> getNormal ())
 			{
-				if (geometry -> normalPerVertex ())
+				if (geometryNode -> normalPerVertex ())
 				{
-				   for (size_t i = geometry -> normalIndex () .size (); i < numVertices; ++ i)
-						geometry -> normalIndex () .emplace_back (geometry -> coordIndex () [i]);
+				   for (size_t i = geometryNode -> normalIndex () .size (); i < numVertices; ++ i)
+						geometryNode -> normalIndex () .emplace_back (geometryNode -> coordIndex () [i]);
 				}
 				else
 				{
-					for (size_t i = geometry -> normalIndex () .size (); i < numFaces; ++ i)
-						geometry -> normalIndex () .emplace_back (i);
+					for (size_t i = geometryNode -> normalIndex () .size (); i < numFaces; ++ i)
+						geometryNode -> normalIndex () .emplace_back (i);
 				}
 			}
 			else
-				geometry -> addNormals ();
+				geometryNode -> addNormals ();
 		}
 	}
 
 	// Combine
 
+	// We must get the nodes in this way because we have probably called addColor/TexCoord/Normal.
 	const auto targetColor    = X3DPtr <X3DColorNode> (targetGeometry -> color ());
 	const auto targetTexCoord = X3DPtr <TextureCoordinate> (targetGeometry -> texCoord ());
 	const auto targetNormal   = X3DPtr <X3DNormalNode> (targetGeometry -> normal ());
 
-	for (const auto & geometry : geometries)
+	for (const auto & geometryNode : geometryNodes)
 	{
-		const X3DPtr <X3DCoordinateNode> coord (geometry -> coord ());
+		const auto coordNode = X3DPtr <X3DCoordinateNode> (geometryNode -> coord ());
 
-		if (not coord)
+		if (not coordNode)
 			continue;
-	
-		const auto color    = X3DPtr <X3DColorNode> (geometry -> color ());
-		const auto texCoord = X3DPtr <TextureCoordinate> (geometry -> texCoord ());
-		const auto normal   = X3DPtr <X3DNormalNode> (geometry -> normal ());
+
+		// We must get the nodes in this way because we have probably called addColor/TexCoord/Normal.
+		const auto color    = X3DPtr <X3DColorNode> (geometryNode -> color ());
+		const auto texCoord = X3DPtr <TextureCoordinate> (geometryNode -> texCoord ());
+		const auto normal   = X3DPtr <X3DNormalNode> (geometryNode -> normal ());
 
 		std::map <int32_t, int32_t> colorArray;
 		std::map <int32_t, int32_t> texCoordArray;
@@ -505,9 +522,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 		size_t face = 0;
 
-		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
+		for (size_t i = 0, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 		{
-		   const int32_t index = geometry -> coordIndex () [i];
+		   const int32_t index = geometryNode -> coordIndex () [i];
 
 		   if (index < 0)
 		   {
@@ -515,34 +532,34 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		      continue;
 		   }
 
-			if (geometry -> colorPerVertex ())
-				colorArray .emplace (geometry -> getVertexColorIndex (i), colorArray .size ());
+			if (geometryNode -> colorPerVertex ())
+				colorArray .emplace (geometryNode -> getVertexColorIndex (i), colorArray .size ());
 			else
-				colorArray .emplace (geometry -> getFaceColorIndex (face), colorArray .size ());
+				colorArray .emplace (geometryNode -> getFaceColorIndex (face), colorArray .size ());
 
-			texCoordArray .emplace (geometry -> getVertexTexCoordIndex (i), texCoordArray .size ());
+			texCoordArray .emplace (geometryNode -> getVertexTexCoordIndex (i), texCoordArray .size ());
 
-			if (geometry -> normalPerVertex ())
-				normalArray .emplace (geometry -> getVertexNormalIndex (i), normalArray .size ());
+			if (geometryNode -> normalPerVertex ())
+				normalArray .emplace (geometryNode -> getVertexNormalIndex (i), normalArray .size ());
 			else
-				normalArray .emplace (geometry -> getFaceNormalIndex (face), normalArray .size ());
+				normalArray .emplace (geometryNode -> getFaceNormalIndex (face), normalArray .size ());
 
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto matrix = Editor () .getModelViewMatrix (geometry -> getMasterScene (), SFNode (geometry)) * targetMatrix;
+		const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
 
 		face              = 0;
 		size_t first      = 0;
 		size_t targetSize = targetGeometry -> coordIndex () .size ();
 
-		for (size_t i = 0, size = geometry -> coordIndex () .size (); i < size; ++ i)
+		for (size_t i = 0, size = geometryNode -> coordIndex () .size (); i < size; ++ i)
 		{
-			const int32_t index = geometry -> coordIndex () [i];
+			const int32_t index = geometryNode -> coordIndex () [i];
 
 			if (index < 0)
 			{
-				if (geometry -> ccw () not_eq targetGeometry -> ccw ())
+				if (geometryNode -> ccw () not_eq targetGeometry -> ccw ())
 				{
 					// Flip vertex ordering.
 
@@ -587,11 +604,11 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			if (targetColor)
 			{
-				if (geometry -> colorPerVertex ())
+				if (geometryNode -> colorPerVertex ())
 				{
 					try
 					{
-						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getVertexColorIndex (i)) + targetColor -> getSize ());
+						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometryNode -> getVertexColorIndex (i)) + targetColor -> getSize ());
 					}
 					catch (const std::out_of_range &)
 					{
@@ -602,7 +619,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				{
 					try
 					{
-						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometry -> getFaceColorIndex (face)) + targetColor -> getSize ());
+						targetGeometry -> colorIndex () .emplace_back (colorArray .at (geometryNode -> getFaceColorIndex (face)) + targetColor -> getSize ());
 					}
 					catch (const std::out_of_range &)
 					{
@@ -615,7 +632,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			{
 				try
 				{
-					targetGeometry -> texCoordIndex () .emplace_back (texCoordArray .at (geometry -> getVertexTexCoordIndex (i)) + targetTexCoord -> getSize ());
+					targetGeometry -> texCoordIndex () .emplace_back (texCoordArray .at (geometryNode -> getVertexTexCoordIndex (i)) + targetTexCoord -> getSize ());
 				}
 				catch (const std::out_of_range &)
 				{
@@ -625,11 +642,11 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			if (targetNormal)
 			{
-				if (geometry -> normalPerVertex ())
+				if (geometryNode -> normalPerVertex ())
 				{
 					try
 					{
-						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getVertexNormalIndex (i)) + targetNormal -> getSize ());
+						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometryNode -> getVertexNormalIndex (i)) + targetNormal -> getSize ());
 					}
 					catch (const std::out_of_range &)
 					{
@@ -640,7 +657,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 				{
 					try
 					{
-						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometry -> getFaceNormalIndex (face)) + targetNormal -> getSize ());
+						targetGeometry -> normalIndex () .emplace_back (normalArray .at (geometryNode -> getFaceNormalIndex (face)) + targetNormal -> getSize ());
 					}
 					catch (const std::out_of_range &)
 					{
@@ -672,7 +689,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 		}
 
 		for (const auto & index : basic::reverse (coordArray))
-			targetCoord -> set1Point (targetCoord -> getSize (), coord -> get1Point (index .second) * matrix);
+			targetCoord -> set1Point (targetCoord -> getSize (), coordNode -> get1Point (index .second) * matrix);
 	}
 
 	// Add Color instead of ColorRGBA if not transparent.

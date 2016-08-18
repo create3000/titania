@@ -51,11 +51,9 @@
 #include "Combine.h"
 
 #include <CGAL/Exact_predicates_exact_constructions_kernel.h>
-#include <CGAL/Exact_integer.h>
 #include <CGAL/Polyhedron_incremental_builder_3.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Nef_polyhedron_3.h>
-#include <CGAL/Simple_cartesian.h>
 #include <CGAL/Polygon_mesh_processing/stitch_borders.h>
 
 #include <Titania/LOG.h>
@@ -159,6 +157,7 @@ polyhedron_to_mesh (const Polyhedron & polyhedron)
 	{
 		auto halfEdge = facet -> halfedge ();
 
+		// Assume polyhedron is triangulated.
 		for (size_t i = 0; i < 3; ++ i)
 		{
 			indices .emplace_back (std::distance (polyhedron .vertices_begin (), halfEdge -> vertex ()));

@@ -75,6 +75,16 @@ public:
 	///  @name Operations
 
 	static
+	X3DPtrArray <IndexedFaceSet>
+	getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> &);
+
+	static
+	mesh <double>
+	toMesh (const X3DPtr <IndexedFaceSet> &,
+	         const X3DPtr <X3DCoordinateNode> &,
+	         const Matrix4d &);
+
+	static
 	bool
 	geometryUnion (const X3DExecutionContextPtr &,
 	               const X3DPtrArray <X3DShapeNode> &,
