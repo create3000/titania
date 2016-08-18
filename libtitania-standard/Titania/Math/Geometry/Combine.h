@@ -123,9 +123,6 @@ private:
 };
 
 mesh <double>
-mesh_stitch_borders (const mesh <double> & mesh);
-
-mesh <double>
 mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2);
 
 mesh <double>

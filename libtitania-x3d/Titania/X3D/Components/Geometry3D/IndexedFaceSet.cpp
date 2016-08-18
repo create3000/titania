@@ -781,6 +781,7 @@ IndexedFaceSet::rebuildIndices (const size_t faceIndex,
 	}
 }
 
+///  Removes unused points from color color.
 std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildColor ()
 {
@@ -806,20 +807,13 @@ IndexedFaceSet::rebuildColor ()
 
 	// Rebuild index
 	   
-	std::vector <int32_t> indices;
-
-	for (const auto & index : colorIndex () .empty () ? coordIndex () : colorIndex ())
+	for (auto & index : colorIndex ())
 	{
 		if (index < 0)
-		{
-		   indices .emplace_back (-1);
 			continue;
-		}
 
-		indices .emplace_back (map [index]);
+		index = map [index];
 	}
-
-	colorIndex () .assign (indices .begin (), indices .end ());
 
 	// Rebuild node
 	   
@@ -859,6 +853,7 @@ IndexedFaceSet::rebuildColor ()
 	return map;
 }
 
+///  Removes unused points from texCoord point.
 std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildTexCoord ()
 {
@@ -884,20 +879,13 @@ IndexedFaceSet::rebuildTexCoord ()
 
 	// Rebuild index
 	   
-	std::vector <int32_t> indices;
-
-	for (const auto & index : texCoordIndex () .empty () ? coordIndex () : texCoordIndex ())
+	for (auto & index : texCoordIndex ())
 	{
 		if (index < 0)
-		{
-		   indices .emplace_back (-1);
 			continue;
-		}
 
-		indices .emplace_back (map [index]);
+		index = map [index];
 	}
-
-	texCoordIndex () .assign (indices .begin (), indices .end ());
 
 	// Rebuild node
 	   
@@ -972,6 +960,7 @@ IndexedFaceSet::rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCo
 	}
 }
 
+///  Removes unused points from normal vector.
 std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildNormal ()
 {
@@ -997,20 +986,13 @@ IndexedFaceSet::rebuildNormal ()
 
 	// Rebuild index
 	   
-	std::vector <int32_t> indices;
-
-	for (const auto & index : normalIndex () .empty () ? coordIndex () : normalIndex ())
+	for (auto & index : normalIndex ())
 	{
 		if (index < 0)
-		{
-		   indices .emplace_back (-1);
 			continue;
-		}
 
-		indices .emplace_back (map [index]);
+		index = map [index];
 	}
-
-	normalIndex () .assign (indices .begin (), indices .end ());
 
 	// Rebuild node
 	   
@@ -1035,6 +1017,7 @@ IndexedFaceSet::rebuildNormal ()
 	return map;
 }
 
+///  Removes unused points from coord point.
 std::map <int32_t, int32_t>
 IndexedFaceSet::rebuildCoord ()
 {
@@ -1058,22 +1041,15 @@ IndexedFaceSet::rebuildCoord ()
 	for (auto & pair : map)
 	   pair .second = i ++;
 
-	// Rebuild index
+	// Rebuild coordIndex.
 	   
-	std::vector <int32_t> indices;
-
-	for (const auto & index : coordIndex ())
+	for (auto & index : coordIndex ())
 	{
 		if (index < 0)
-		{
-		   indices .emplace_back (-1);
 			continue;
-		}
 
-		indices .emplace_back (map [index]);
+		index = map [index];
 	}
-
-	coordIndex () .assign (indices .begin (), indices .end ());
 
 	// Rebuild node
 	   
@@ -1120,6 +1096,55 @@ IndexedFaceSet::rebuildCoord ()
 	}
 
 	return map;
+}
+
+/// Merges all points in coord where the distance is less than @a distance.
+/// Rewites color, texCoord, normal index, coord index.
+void
+IndexedFaceSet::mergePoints (const double distance)
+{
+	const auto Compare = [&distance] (const Vector3d & lhs, const Vector3d rhs)
+	{
+		return abs (lhs - rhs) < distance ? false : lhs < rhs;
+	};
+
+	if (not getCoord ())
+		return;
+
+	std::map <Vector3d, int32_t, std::function <bool (const Vector3d &, const Vector3d &)>> map (Compare);
+
+	// Create points map.
+
+	for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+	   map .emplace (getCoord () -> get1Point (i), map .size ());
+	
+	// Rewrite coordIndex.
+
+	for (auto & index : coordIndex ())
+	{
+		if (index < 0)
+			continue;
+		
+		try
+		{
+			index = map .at (getCoord () -> get1Point (index));
+		}
+		catch (const std::out_of_range &)
+		{
+			__LOG__ << std::endl;
+		}
+	}
+
+	// Rewrite coord point.
+
+	for (const auto & pair : map)
+		getCoord () -> set1Point (pair .second, pair .first);
+
+	getCoord () -> resize (map .size ());
+
+	// Remove degenerated faces.
+
+	rebuildIndices ();
 }
 
 SFNode

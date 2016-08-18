@@ -118,11 +118,8 @@ public:
 	///  disposed, further requests have no effect. Disposing an object does not remove the object itself.
 	virtual
 	void
-	dispose () final override
-	{
-		__LOG__ << std::endl;
-		pbExecutionContext::dispose ();
-	}
+	dispose () final override;
+
 
 protected:
 

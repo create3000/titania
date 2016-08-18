@@ -169,6 +169,13 @@ throw (pbError)
 	return result;
 }
 
+void
+Program::dispose ()
+{
+	//__LOG__ << std::endl;
+	pbExecutionContext::dispose ();
+}
+
 ptr <Program>
 createProgram ()
 {

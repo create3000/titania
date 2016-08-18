@@ -214,6 +214,9 @@ public:
 	std::map <int32_t, int32_t>
 	rebuildCoord ();
 
+	void
+	mergePoints (const double);
+
 	virtual
 	SFNode
 	toPrimitive () const

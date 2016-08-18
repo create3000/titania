@@ -291,6 +291,37 @@ public:
 	Matrix4d
 	getModelViewMatrix (const X3DExecutionContextPtr &, const SFNode &) const;
 
+	///  @name Polygon reducing
+
+	void
+	mergePoints (const X3DPtr <IndexedFaceSet> &, const double, const UndoStepPtr &) const;
+
+	void
+	undoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr &) const;
+
+	///  @name X3DComposedGeometryNode
+	
+	void
+	undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &) const;
+	
+	void
+	undoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr &) const;
+	
+	void
+	undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr &) const;
+	
+	void
+	redoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr &) const;
+	
+	void
+	redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &) const;
+	
+	void
+	redoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr &) const;
+	
+	void
+	redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr &) const;
+
 	///  @name Array handling
 
 	virtual
@@ -395,6 +426,14 @@ private:
 
 	void
 	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, const UndoStepPtr &) const;
+
+	///  @name X3DComposedGeometryNode
+	
+	void
+	undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &) const;
+	
+	void
+	redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &) const;
 
 };
 

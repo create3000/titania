@@ -55,6 +55,7 @@
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Nef_polyhedron_3.h>
 #include <CGAL/Polygon_mesh_processing/stitch_borders.h>
+#include <CGAL/Polygon_mesh_processing/triangulate_hole.h>
 
 #include <Titania/LOG.h>
 
@@ -84,7 +85,7 @@ public:
 		using Point  = typename Vertex::Point;
 
 		// Postcondition: hds is a valid polyhedral surface.
-		CGAL::Polyhedron_incremental_builder_3 <HDS> builder (hds, false);
+		CGAL::Polyhedron_incremental_builder_3 <HDS> builder (hds, true);
 
 		builder .begin_surface (m_mesh .points () .size (), m_mesh .indices () .size () / 3);
 
@@ -129,12 +130,11 @@ mesh_to_polyhedron (const mesh <double> & mesh)
 }
 
 static
+inline
 NefPolyhedron
 mesh_to_nef_polyhedron (const mesh <double> & mesh)
 {
 	auto polyhedron = mesh_to_polyhedron (mesh);
-
-	CGAL::Polygon_mesh_processing::stitch_borders (polyhedron);
 
 	return NefPolyhedron (polyhedron);
 }
@@ -181,16 +181,6 @@ nef_polyhedron_to_mesh (const NefPolyhedron & nefPolyhedron)
 }
 
 // Public functions
-
-mesh <double>
-mesh_stitch_borders (const mesh <double> & mesh)
-{
-	auto polyhedron = mesh_to_polyhedron (mesh);
-
-	CGAL::Polygon_mesh_processing::stitch_borders (polyhedron);
-
-	return polyhedron_to_mesh (polyhedron);
-}
 
 mesh <double>
 mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)

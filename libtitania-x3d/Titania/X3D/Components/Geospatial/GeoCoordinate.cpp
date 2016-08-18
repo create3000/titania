@@ -122,6 +122,11 @@ GeoCoordinate::getBBox () const
 void
 GeoCoordinate::set1Point (const size_t index, const Vector3d & value)
 {
+	if (index >= points .size ())
+		points .resize (index + 1);
+
+	points [index] = value;	
+
 	point () .set1Value (index, getGeoCoord (value));
 }
 

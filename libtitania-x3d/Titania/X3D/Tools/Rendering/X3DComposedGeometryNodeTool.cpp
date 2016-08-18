@@ -53,17 +53,8 @@
 #include "../Rendering/CoordinateTool.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Geospatial/GeoCoordinate.h"
-#include "../../Components/NURBS/CoordinateDouble.h"
-#include "../../Components/Rendering/Color.h"
-#include "../../Components/Rendering/ColorRGBA.h"
-#include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
-#include "../../Components/Rendering/Normal.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
-#include "../../Components/Texturing/MultiTextureCoordinate.h"
-#include "../../Components/Texturing3D/TextureCoordinate3D.h"
-#include "../../Components/Texturing3D/TextureCoordinate4D.h"
+#include "../../Editing/Editor.h"
 
 namespace titania {
 namespace X3D {
@@ -113,27 +104,7 @@ X3DComposedGeometryNodeTool::undoSetColorColor (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	undoStep -> addObjects (getColor ());
-
-	switch (getColor () -> getType () .back ())
-	{
-		case X3DConstants::Color:
-		{
-			const X3DPtr <Color> node (getColor ());
-
-			undoStep -> addUndoFunction (&MFColor::setValue, std::ref (node -> color ()), node -> color ());
-			break;
-		}
-		case X3DConstants::ColorRGBA:
-		{
-			const X3DPtr <ColorRGBA> node (getColor ());
-
-			undoStep -> addUndoFunction (&MFColorRGBA::setValue, std::ref (node -> color ()), node -> color ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .undoSetColorColor (getColor (), undoStep);
 }
 
 void
@@ -146,54 +117,7 @@ X3DComposedGeometryNodeTool::undoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	switch (getTexCoord () -> getType () .back ())
-	{
-		case X3DConstants::MultiTextureCoordinate:
-		{
-			const X3DPtr <MultiTextureCoordinate> texCoordNode (getTexCoord ());
-
-			for (const auto & node : texCoordNode -> getTexCoord ())
-				undoSetTexCoordPoint (node, undoStep);
-
-			break;
-		}
-		default:
-		   undoSetTexCoordPoint (getTexCoord (), undoStep);
-			break;
-	}
-}
-
-void
-X3DComposedGeometryNodeTool::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoord, const UndoStepPtr & undoStep)
-{
-	undoStep -> addObjects (texCoord);
-
-	switch (texCoord -> getType () .back ())
-	{
-		case X3DConstants::TextureCoordinate:
-		{
-			const X3DPtr <TextureCoordinate> coordinate (texCoord);
-
-			undoStep -> addUndoFunction (&MFVec2f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		case X3DConstants::TextureCoordinate3D:
-		{
-			const X3DPtr <TextureCoordinate3D> coordinate (texCoord);
-
-			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		case X3DConstants::TextureCoordinate4D:
-		{
-			const X3DPtr <TextureCoordinate4D> coordinate (texCoord);
-
-			undoStep -> addUndoFunction (&MFVec4f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .undoSetTexCoordPoint (getTexCoord (), undoStep);
 }
 
 void
@@ -206,20 +130,7 @@ X3DComposedGeometryNodeTool::undoSetNormalVector (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	undoStep -> addObjects (getNormal ());
-
-	switch (getNormal () -> getType () .back ())
-	{
-		case X3DConstants::Normal:
-		{
-			const X3DPtr <Normal> node (getNormal ());
-
-			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (node -> vector ()), node -> vector ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .undoSetNormalVector (getNormal (), undoStep);
 }
 
 void
@@ -232,34 +143,7 @@ X3DComposedGeometryNodeTool::undoSetCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	undoStep -> addObjects (getCoord ());
-
-	switch (getCoord () -> getType () .back ())
-	{
-		case X3DConstants::Coordinate:
-		{
-			const X3DPtr <Coordinate> coordinate (getCoord ());
-
-			undoStep -> addUndoFunction (&MFVec3f::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		case X3DConstants::CoordinateDouble:
-		{
-			const X3DPtr <CoordinateDouble> coordinate (getCoord ());
-
-			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		case X3DConstants::GeoCoordinate:
-		{
-			const X3DPtr <GeoCoordinate> coordinate (getCoord ());
-
-			undoStep -> addUndoFunction (&MFVec3d::setValue, std::ref (coordinate -> point ()), coordinate -> point ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .undoSetCoordPoint (getCoord (), undoStep);
 }
 
 void
@@ -272,25 +156,7 @@ X3DComposedGeometryNodeTool::redoSetColorColor (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	switch (getColor () -> getType () .back ())
-	{
-		case X3DConstants::Color:
-		{
-			const X3DPtr <Color> node (getColor ());
-
-			undoStep -> addRedoFunction (&MFColor::setValue, std::ref (node -> color ()), node -> color ());
-			break;
-		}
-		case X3DConstants::ColorRGBA:
-		{
-			const X3DPtr <ColorRGBA> node (getColor ());
-
-			undoStep -> addRedoFunction (&MFColorRGBA::setValue, std::ref (node -> color ()), node -> color ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .redoSetColorColor (getColor (), undoStep);
 }
 
 void
@@ -303,52 +169,7 @@ X3DComposedGeometryNodeTool::redoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	switch (getTexCoord () -> getType () .back ())
-	{
-		case X3DConstants::MultiTextureCoordinate:
-		{
-			const X3DPtr <MultiTextureCoordinate> texCoordNode (getTexCoord ());
-
-			for (const auto & node : texCoordNode -> getTexCoord ())
-				redoSetTexCoordPoint (node, undoStep);
-
-			break;
-		}
-		default:
-		   redoSetTexCoordPoint (getTexCoord (), undoStep);
-			break;
-	}
-}
-
-void
-X3DComposedGeometryNodeTool::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoord, const UndoStepPtr & undoStep)
-{
-	switch (texCoord -> getType () .back ())
-	{
-		case X3DConstants::TextureCoordinate:
-		{
-			const X3DPtr <TextureCoordinate> node (texCoord);
-
-			undoStep -> addRedoFunction (&MFVec2f::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		case X3DConstants::TextureCoordinate3D:
-		{
-			const X3DPtr <TextureCoordinate3D> node (texCoord);
-
-			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		case X3DConstants::TextureCoordinate4D:
-		{
-			const X3DPtr <TextureCoordinate4D> node (texCoord);
-
-			undoStep -> addRedoFunction (&MFVec4f::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .redoSetTexCoordPoint (getTexCoord (), undoStep);
 }
 
 void
@@ -361,18 +182,7 @@ X3DComposedGeometryNodeTool::redoSetNormalVector (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	switch (getNormal () -> getType () .back ())
-	{
-		case X3DConstants::Normal:
-		{
-			const X3DPtr <Normal> node (getNormal ());
-
-			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (node -> vector ()), node -> vector ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .redoSetNormalVector (getNormal (), undoStep);
 }
 
 void
@@ -385,32 +195,7 @@ X3DComposedGeometryNodeTool::redoSetCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	switch (getCoord () -> getType () .back ())
-	{
-		case X3DConstants::Coordinate:
-		{
-			const X3DPtr <Coordinate> node (getCoord ());
-
-			undoStep -> addRedoFunction (&MFVec3f::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		case X3DConstants::CoordinateDouble:
-		{
-			const X3DPtr <CoordinateDouble> node (getCoord ());
-
-			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		case X3DConstants::GeoCoordinate:
-		{
-			const X3DPtr <GeoCoordinate> node (getCoord ());
-
-			undoStep -> addRedoFunction (&MFVec3d::setValue, std::ref (node -> point ()), node -> point ());
-			break;
-		}
-		default:
-			break;
-	}
+	Editor () .redoSetCoordPoint (getCoord (), undoStep);
 }
 
 } // X3D

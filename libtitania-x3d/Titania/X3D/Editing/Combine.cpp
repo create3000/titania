@@ -242,7 +242,13 @@ throw (Error <INVALID_NODE>,
 	
 			if (not coordNode)
 				continue;
-	
+
+			// Merge coincident points as preparation for Boolean operation.
+
+			Editor () .mergePoints (geometryNode, 0, undoStep);
+
+			// Generate mesh.
+
 			const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
 		
 			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
@@ -271,6 +277,14 @@ throw (Error <INVALID_NODE>,
 		}
 
 		targetCoord -> point () .assign (result .points () .begin (), result .points () .end ());
+
+		// Sometimes CGAL does not return solid geometries, thus we merge this points.
+      executionContext -> realize ();
+MFInt32 c = targetGeometry -> coordIndex ();
+__LOG__ << targetCoord -> getSize () << std::endl;
+		targetGeometry -> mergePoints (1e-6);
+__LOG__ << (c == targetGeometry -> coordIndex ()) << std::endl;
+__LOG__ << targetCoord -> getSize () << std::endl;
 
 		// Replace node.
 
@@ -319,6 +333,9 @@ throw (Error <INVALID_NODE>,
 
 	// Combine Coordinates
 
+	if (geometryNodes .size () < 2)
+		return false;
+
 	for (const auto & geometryNode : geometryNodes)
 	{
 		undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode -> colorIndex    ());
@@ -328,9 +345,6 @@ throw (Error <INVALID_NODE>,
 		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> texCoord      ()), geometryNode -> texCoord      ());
 		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometryNode -> normal        ()), geometryNode -> normal        ());
 	}
-
-	if (geometryNodes .size () < 2)
-		return false;
 
 	combine (executionContext, geometryNodes, targetGeometry, targetCoord, targetMatrix);
 
