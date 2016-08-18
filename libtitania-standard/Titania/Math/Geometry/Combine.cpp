@@ -56,6 +56,7 @@
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Nef_polyhedron_3.h>
 #include <CGAL/Simple_cartesian.h>
+#include <CGAL/Polygon_mesh_processing/stitch_borders.h>
 
 #include <Titania/LOG.h>
 
@@ -114,8 +115,8 @@ private:
 };
 
 static
-NefPolyhedron
-mesh_to_cgal (const mesh <double> & mesh)
+Polyhedron
+mesh_to_polyhedron (const mesh <double> & mesh)
 {
 	Polyhedron polyhedron;
 
@@ -126,18 +127,26 @@ mesh_to_cgal (const mesh <double> & mesh)
 	if (polyhedron .empty ())
 		throw std::domain_error ("Couldn't create polyhedron.");
 
+	return std::move (polyhedron);
+}
+
+static
+NefPolyhedron
+mesh_to_nef_polyhedron (const mesh <double> & mesh)
+{
+	auto polyhedron = mesh_to_polyhedron (mesh);
+
+	CGAL::Polygon_mesh_processing::stitch_borders (polyhedron);
+
 	return NefPolyhedron (polyhedron);
 }
 
 static
 mesh <double>
-cgal_to_mesh (const NefPolyhedron & nefPolyhedron)
+polyhedron_to_mesh (const Polyhedron & polyhedron)
 {
-	auto indices    = std::vector <uint32_t> ();
-	auto points     = std::vector <vector3 <double>> ();
-	auto polyhedron = Polyhedron ();
-
-	nefPolyhedron .convert_to_polyhedron (polyhedron);
+	auto indices = std::vector <uint32_t> ();
+	auto points  = std::vector <vector3 <double>> ();
 
 	for (auto vertex = polyhedron .vertices_begin (), last = polyhedron .vertices_end (); vertex not_eq last; ++ vertex)
 	{
@@ -161,40 +170,63 @@ cgal_to_mesh (const NefPolyhedron & nefPolyhedron)
 	return std::make_pair (std::move (indices), std::move (points));
 }
 
+static
+mesh <double>
+nef_polyhedron_to_mesh (const NefPolyhedron & nefPolyhedron)
+{
+	auto polyhedron = Polyhedron ();
+
+	nefPolyhedron .convert_to_polyhedron (polyhedron);
+
+	return polyhedron_to_mesh (polyhedron);
+}
+
+// Public functions
+
+mesh <double>
+mesh_stitch_borders (const mesh <double> & mesh)
+{
+	auto polyhedron = mesh_to_polyhedron (mesh);
+
+	CGAL::Polygon_mesh_processing::stitch_borders (polyhedron);
+
+	return polyhedron_to_mesh (polyhedron);
+}
+
 mesh <double>
 mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
 {
-	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
-	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
+	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
 
-	return cgal_to_mesh (nefPolyhedron1 + nefPolyhedron2);
+	return nef_polyhedron_to_mesh (nefPolyhedron1 + nefPolyhedron2);
 }
 
 mesh <double>
 mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
 {
-	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
-	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
+	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
 
-	return cgal_to_mesh (nefPolyhedron1 - nefPolyhedron2);
+	return nef_polyhedron_to_mesh (nefPolyhedron1 - nefPolyhedron2);
 }
 
 mesh <double>
 mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
 {
-	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
-	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
+	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
 
-	return cgal_to_mesh (nefPolyhedron1 * nefPolyhedron2);
+	return nef_polyhedron_to_mesh (nefPolyhedron1 * nefPolyhedron2);
 }
 
 mesh <double>
 mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
 {
-	const auto nefPolyhedron1 = mesh_to_cgal (mesh1);
-	const auto nefPolyhedron2 = mesh_to_cgal (mesh2);
+	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
+	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
 
-	return cgal_to_mesh (nefPolyhedron1 ^ nefPolyhedron2);
+	return nef_polyhedron_to_mesh (nefPolyhedron1 ^ nefPolyhedron2);
 }
 
 } // math

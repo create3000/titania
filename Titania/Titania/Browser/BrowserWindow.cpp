@@ -2057,13 +2057,15 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 		if (shapes .empty ())
 			return;
 
-		booleanOperation (getCurrentContext (), shapes, undoStep);
-		X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
-
-		// Select target
-
-		getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
-		getBrowserWindow () -> addUndoStep (undoStep);
+		if (booleanOperation (getCurrentContext (), shapes, undoStep))
+		{
+			X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
+	
+			// Select target
+	
+			getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
 	}
 	catch (const X3D::Error <X3D::INVALID_NODE> & error)
 	{

@@ -67,7 +67,7 @@ namespace X3D {
 Combine::Combine ()
 { }
 
-void
+bool
 Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
                         const X3DPtrArray <X3DShapeNode> & shapes,
                         const UndoStepPtr & undoStep)
@@ -75,10 +75,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,
        std::domain_error)
 {
-	geometryBoolean (mesh_union, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_union, executionContext, shapes, undoStep);
 }
 
-void
+bool
 Combine::geometryDifference (const X3DExecutionContextPtr & executionContext,
                              const X3DPtrArray <X3DShapeNode> & shapes,
                              const UndoStepPtr & undoStep)
@@ -86,10 +86,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	geometryBoolean (mesh_difference, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_difference, executionContext, shapes, undoStep);
 }
 
-void
+bool
 Combine::geometryIntersection (const X3DExecutionContextPtr & executionContext,
                                const X3DPtrArray <X3DShapeNode> & shapes,
                                const UndoStepPtr & undoStep)
@@ -97,10 +97,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	geometryBoolean (mesh_intersection, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_intersection, executionContext, shapes, undoStep);
 }
 
-void
+bool
 Combine::geometryExclusion (const X3DExecutionContextPtr & executionContext,
                             const X3DPtrArray <X3DShapeNode> & shapes,
                             const UndoStepPtr & undoStep)
@@ -108,10 +108,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	geometryBoolean (mesh_exclusion, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_exclusion, executionContext, shapes, undoStep);
 }
 
-void
+bool
 Combine::geometryBoolean (const BooleanOperation & booleanOperation,
                           const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
@@ -230,27 +230,29 @@ throw (Error <INVALID_NODE>,
 			meshes .emplace_back (std::move (indices), std::move (points));
 		}
 	
-		if (meshes .size () >= 2)
+		if (meshes .size () < 2)
+			return false;
+
+		auto result = std::move (meshes .front ());
+
+		for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
+			result = booleanOperation (result, mesh);
+	
+		for (size_t i = 0, size = result .first .size (); i < size;)
 		{
-			auto result = std::move (meshes .front ());
-	
-			for (const auto & mesh : std::make_pair (meshes .begin () + 1, meshes .end ()))
-				result = booleanOperation (result, mesh);
-		
-			for (size_t i = 0, size = result .first .size (); i < size;)
-			{
-				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-				targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
-				targetGeometry -> coordIndex () .emplace_back (-1);
-			}
-	
-			targetCoord -> point () .assign (result .second .begin (), result .second .end ());
-
-			// Replace node
-
-			Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (result .first [i++]);
+			targetGeometry -> coordIndex () .emplace_back (-1);
 		}
+
+		targetCoord -> point () .assign (result .second .begin (), result .second .end ());
+
+		// Replace node
+
+		Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+
+		return true;
 	}
 	catch (const std::exception & error)
 	{
@@ -264,7 +266,7 @@ throw (Error <INVALID_NODE>,
 	}
 }
 
-void
+bool
 Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
                           const UndoStepPtr & undoStep)
@@ -313,6 +315,9 @@ throw (Error <INVALID_NODE>,
 		undoStep -> addUndoFunction (&SFNode::setValue,  std::ref (geometry -> normal        ()), geometry -> normal        ());
 	}
 
+	if (geometries .size () < 2)
+		return false;
+
 	combine (executionContext, geometries, targetGeometry, targetCoord, targetMatrix);
 
 	for (const auto & geometry : geometries)
@@ -328,6 +333,8 @@ throw (Error <INVALID_NODE>,
 	// Replace node
 
 	Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+
+	return true;
 }
 
 std::vector <int32_t>

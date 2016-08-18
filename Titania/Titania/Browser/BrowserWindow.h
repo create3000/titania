@@ -65,7 +65,7 @@ public:
 
 	/// @name Member types
 
-	using BooleanOperation = std::function <void (const X3D::X3DExecutionContextPtr &, const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &)>;
+	using BooleanOperation = std::function <bool (const X3D::X3DExecutionContextPtr &, const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &)>;
 
 	/// @name Construction
 

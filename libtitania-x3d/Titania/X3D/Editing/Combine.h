@@ -75,7 +75,7 @@ public:
 	///  @name Operations
 
 	static
-	void
+	bool
 	geometryUnion (const X3DExecutionContextPtr &,
 	               const X3DPtrArray <X3DShapeNode> &,
 	               const UndoStepPtr &)
@@ -84,7 +84,7 @@ public:
 	       std::domain_error);
 
 	static
-	void
+	bool
 	geometryDifference (const X3DExecutionContextPtr &,
 	                    const X3DPtrArray <X3DShapeNode> &,
 	                    const UndoStepPtr &)
@@ -93,7 +93,7 @@ public:
 	       std::domain_error);
 
 	static
-	void
+	bool
 	geometryIntersection (const X3DExecutionContextPtr &,
 	                      const X3DPtrArray <X3DShapeNode> &,
 	                      const UndoStepPtr &)
@@ -102,7 +102,7 @@ public:
 	       std::domain_error);
 
 	static
-	void
+	bool
 	geometryExclusion (const X3DExecutionContextPtr &,
 	                   const X3DPtrArray <X3DShapeNode> &,
 	                   const UndoStepPtr &)
@@ -111,7 +111,7 @@ public:
 	       std::domain_error);
 
 	static
-	void
+	bool
 	combineGeometry (const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
 	                 const UndoStepPtr &)
@@ -144,7 +144,7 @@ public:
 private:
 
 	static
-	void
+	bool
 	geometryBoolean (const BooleanOperation &,
 	                 const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
