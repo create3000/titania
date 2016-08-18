@@ -278,30 +278,40 @@ X3DIndexedFaceSetSelectionObject::set_selectAll_ ()
 	vertices .erase (std::unique (vertices .begin (), vertices .end ()), vertices .end ());
 
 	set_selection (MFVec3d (vertices .begin (), vertices .end ()), SelectActionType::REPLACE);
+
+	touchTime () = getCurrentTime ();
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_deselectAll_ ()
 {
 	select ({ }, SelectActionType::REPLACE);
+
+	touchTime () = getCurrentTime ();
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_replaceSelection_ ()
 {
 	select (std::vector <int32_t> (replaceSelection () .begin (), replaceSelection () .end ()), SelectActionType::REPLACE);
+
+	touchTime () = getCurrentTime ();
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_addSelection_ ()
 {
 	select (std::vector <int32_t> (addSelection () .begin (), addSelection () .end ()), SelectActionType::ADD);
+
+	touchTime () = getCurrentTime ();
 }
 
 void
 X3DIndexedFaceSetSelectionObject::set_removeSelection_ ()
 {
 	select (std::vector <int32_t> (removeSelection () .begin (), removeSelection () .end ()), SelectActionType::REMOVE);
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -309,6 +319,8 @@ X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_ ()
 {
 	selectEdges (std::vector <int32_t> (replaceSelectedEdges () .begin (), replaceSelectedEdges () .end ()), SelectActionType::REPLACE);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -316,6 +328,8 @@ X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_ ()
 {
 	selectEdges (std::vector <int32_t> (addSelectedEdges () .begin (), addSelectedEdges () .end ()), SelectActionType::ADD);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -323,6 +337,8 @@ X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_ ()
 {
 	selectEdges (std::vector <int32_t> (removeSelectedEdges () .begin (), removeSelectedEdges () .end ()), SelectActionType::REMOVE);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -330,6 +346,8 @@ X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_ ()
 {
 	selectFaces (std::vector <int32_t> (replaceSelectedFaces () .begin (), replaceSelectedFaces () .end ()), SelectActionType::REPLACE);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -337,6 +355,8 @@ X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_ ()
 {
 	selectFaces (std::vector <int32_t> (addSelectedFaces () .begin (), addSelectedFaces () .end ()), SelectActionType::ADD);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void
@@ -344,6 +364,8 @@ X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_ ()
 {
 	selectFaces (std::vector <int32_t> (removeSelectedFaces () .begin (), removeSelectedFaces () .end ()), SelectActionType::REMOVE);
 	updateGeometries ();
+
+	touchTime () = getCurrentTime ();
 }
 
 void

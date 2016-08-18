@@ -179,7 +179,6 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 
 		replaceSelectedEdges () .assign (selection .begin (), selection .end ());
 
-		touchTime ()    = getCurrentTime ();
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
 		return true;
