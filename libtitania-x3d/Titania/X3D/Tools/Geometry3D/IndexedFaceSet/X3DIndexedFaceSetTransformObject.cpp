@@ -68,6 +68,7 @@
 namespace titania {
 namespace X3D {
 
+static constexpr double SIZE_MIN            = 1e-7;
 static constexpr size_t TRANSLATIONS_EVENTS = 4;
 
 X3DIndexedFaceSetTransformObject::Fields::Fields () :
@@ -218,7 +219,7 @@ X3DIndexedFaceSetTransformObject::set_transform ()
 	}
 
 	// Use minimum size to prevent zero matrix.
-	size = max (size, Vector3d (1e-7, 1e-7, 1e-7));
+	size = max (size, Vector3d (SIZE_MIN, SIZE_MIN, SIZE_MIN));
 
 	transformToolSwitch -> whichChoice () = transform () and not getSelectedPoints () .empty ();
 	transformNode       -> rotation ()    = orientation;
@@ -444,8 +445,8 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox () const
 						const auto point1 = getCoord () -> get1Point (edge .first .first);
 						const auto point2 = getCoord () -> get1Point (edge .first .second);
 						const auto yAxis  = (point2 - point1) / 2.0;
-						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * 1e-7;
-						const auto xAxis  = normalize (cross <double> (zAxis, yAxis)) * 1e-7;
+						const auto zAxis  = normalize (cross <double> (yAxis, normal)) * SIZE_MIN;
+						const auto xAxis  = normalize (cross <double> (zAxis, yAxis))  * SIZE_MIN;
 						const auto center = (point2 + point1) / 2.0;
 
 						if (abs (xAxis))

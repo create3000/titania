@@ -213,6 +213,8 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
+		static constexpr double MERGE_DISTANCE = 1e-6;
+
 		if (not executionContext -> hasComponent (ComponentType::GEOMETRY_3D))
 			executionContext -> updateComponent (executionContext -> getBrowser () -> getComponent ("Geometry3D", 2));
 
@@ -245,7 +247,7 @@ throw (Error <INVALID_NODE>,
 
 			// Merge coincident points as preparation for Boolean operation.
 
-			Editor () .mergePoints (geometryNode, 0, undoStep);
+			Editor () .mergePoints (geometryNode, MERGE_DISTANCE, undoStep);
 
 			// Generate mesh.
 
@@ -280,11 +282,7 @@ throw (Error <INVALID_NODE>,
 
 		// Sometimes CGAL does not return solid geometries, thus we merge this points.
       executionContext -> realize ();
-MFInt32 c = targetGeometry -> coordIndex ();
-__LOG__ << targetCoord -> getSize () << std::endl;
-		targetGeometry -> mergePoints (1e-6);
-__LOG__ << (c == targetGeometry -> coordIndex ()) << std::endl;
-__LOG__ << targetCoord -> getSize () << std::endl;
+		targetGeometry -> mergePoints (MERGE_DISTANCE);
 
 		// Replace node.
 

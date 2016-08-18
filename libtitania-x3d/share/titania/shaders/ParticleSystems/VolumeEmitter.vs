@@ -32,6 +32,8 @@ getRandomPosition ()
 	// Debug
 	//return vec3 (float (bvhDebug) / float (textureSize (surfaceAreaMap) - 1), float (gl_VertexID) / 100000.0f, 0.0f);
 
+	intersections -= intersections % 2; // We need an even count of intersections.
+
 	if (intersections == 0)
 		return vec3 (INFINITY);
 
