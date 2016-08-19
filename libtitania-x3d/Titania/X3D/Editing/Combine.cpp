@@ -89,13 +89,13 @@ Combine::getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes)
 }
 
 ///  Creates a mesh from @a geometryNode and @a coordNode and applys matrix to points.
-mesh <double>
+mesh3 <double>
 Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3DCoordinateNode> & coordNode, const Matrix4d & matrix)
 {
 	// Create mesh.
 
-	auto indices      = mesh <double>::indices_type ();
-	auto points       = mesh <double>::points_type ();
+	auto indices      = mesh3 <double>::indices_type ();
+	auto points       = mesh3 <double>::points_type ();
 	auto coordIndices = std::vector <int32_t> ();
 
 	for (const auto & index : geometryNode -> coordIndex ())
@@ -156,7 +156,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
 		points .emplace_back (coordNode -> get1Point (i) * matrix);
 
-	return mesh <double> (std::move (indices), std::move (points));
+	return mesh3 <double> (std::move (indices), std::move (points));
 }
 
 ///  Performs Boolean operation union on IndexFaceSets in @a shapes.
@@ -244,7 +244,7 @@ throw (Error <INVALID_NODE>,
 	
 		// Combine Coordinates.
 	
-		std::vector <mesh <double>> meshes;
+		std::vector <mesh3 <double>> meshes;
 	
 		for (const auto & geometryNode : geometryNodes)
 		{

@@ -74,7 +74,7 @@ class PolyhedronBuilder :
 {
 public:
 
-	PolyhedronBuilder (const mesh <double> & p_mesh) :
+	PolyhedronBuilder (const mesh3 <double> & p_mesh) :
 		m_mesh (p_mesh)
 	{ }
 
@@ -109,13 +109,13 @@ public:
 
 private:
 
-	const mesh <double> & m_mesh;
+	const mesh3 <double> & m_mesh;
 
 };
 
 static
 Polyhedron
-mesh_to_polyhedron (const mesh <double> & mesh)
+mesh_to_polyhedron (const mesh3 <double> & mesh)
 {
 	Polyhedron polyhedron;
 
@@ -132,7 +132,7 @@ mesh_to_polyhedron (const mesh <double> & mesh)
 static
 inline
 NefPolyhedron
-mesh_to_nef_polyhedron (const mesh <double> & mesh)
+mesh_to_nef_polyhedron (const mesh3 <double> & mesh)
 {
 	auto polyhedron = mesh_to_polyhedron (mesh);
 
@@ -140,11 +140,11 @@ mesh_to_nef_polyhedron (const mesh <double> & mesh)
 }
 
 static
-mesh <double>
+mesh3 <double>
 polyhedron_to_mesh (const Polyhedron & polyhedron)
 {
-	auto indices = mesh <double>::indices_type ();
-	auto points  = mesh <double>::points_type ();
+	auto indices = mesh3 <double>::indices_type ();
+	auto points  = mesh3 <double>::points_type ();
 
 	for (auto vertex = polyhedron .vertices_begin (), last = polyhedron .vertices_end (); vertex not_eq last; ++ vertex)
 	{
@@ -166,11 +166,11 @@ polyhedron_to_mesh (const Polyhedron & polyhedron)
 		}
 	}
 
-	return mesh <double> (std::move (indices), std::move (points));
+	return mesh3 <double> (std::move (indices), std::move (points));
 }
 
 static
-mesh <double>
+mesh3 <double>
 nef_polyhedron_to_mesh (const NefPolyhedron & nefPolyhedron)
 {
 	auto polyhedron = Polyhedron ();
@@ -182,8 +182,8 @@ nef_polyhedron_to_mesh (const NefPolyhedron & nefPolyhedron)
 
 // Public functions
 
-mesh <double>
-mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
+mesh3 <double>
+mesh_union (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2)
 {
 	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
 	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
@@ -191,8 +191,8 @@ mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2)
 	return nef_polyhedron_to_mesh (nefPolyhedron1 + nefPolyhedron2);
 }
 
-mesh <double>
-mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
+mesh3 <double>
+mesh_difference (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2)
 {
 	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
 	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
@@ -200,8 +200,8 @@ mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2)
 	return nef_polyhedron_to_mesh (nefPolyhedron1 - nefPolyhedron2);
 }
 
-mesh <double>
-mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
+mesh3 <double>
+mesh_intersection (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2)
 {
 	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
 	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);
@@ -209,8 +209,8 @@ mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2)
 	return nef_polyhedron_to_mesh (nefPolyhedron1 * nefPolyhedron2);
 }
 
-mesh <double>
-mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2)
+mesh3 <double>
+mesh_exclusion (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2)
 {
 	const auto nefPolyhedron1 = mesh_to_nef_polyhedron (mesh1);
 	const auto nefPolyhedron2 = mesh_to_nef_polyhedron (mesh2);

@@ -66,7 +66,7 @@ class Combine
 {
 public:
 
-	using BooleanOperation = std::function <mesh <double> (const mesh <double> &, const mesh <double> &)>;
+	using BooleanOperation = std::function <mesh3 <double> (const mesh3 <double> &, const mesh3 <double> &)>;
 
 	///  @name Construction
 
@@ -79,7 +79,7 @@ public:
 	getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> &);
 
 	static
-	mesh <double>
+	mesh3 <double>
 	toMesh (const X3DPtr <IndexedFaceSet> &,
 	         const X3DPtr <X3DCoordinateNode> &,
 	         const Matrix4d &);

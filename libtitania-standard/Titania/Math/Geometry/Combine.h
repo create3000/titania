@@ -60,7 +60,7 @@ namespace titania {
 namespace math {
 
 template <class Type>
-class mesh
+class mesh3
 {
 public:
 
@@ -70,22 +70,22 @@ public:
 	using points_type  = std::vector <vector3 <Type>>;
 
 	///  Default constructor. Constructs an empty mesh.
-	mesh () = default;
+	mesh3 () = default;
 
 	///  Copy constructor.
-	mesh (const mesh & other) = default;
+	mesh3 (const mesh3 & other) = default;
 
 	///  Move constructor.
-	mesh (mesh && other) = default;
+	mesh3 (mesh3 && other) = default;
 
 	///  Copy constructor.  Constructs a mesh from @a indices and @a points.
-	mesh (const indices_type & indices, const points_type & points) :
+	mesh3 (const indices_type & indices, const points_type & points) :
 		m_indices (indices),
 		 m_points (points)
 	{ }
 
 	///  Move constructor.  Constructs a mesh from @a indices and @a points.
-	mesh (indices_type && indices, points_type && points) :
+	mesh3 (indices_type && indices, points_type && points) :
 		m_indices (std::move (indices)),
 		 m_points (std::move (points))
 	{ }
@@ -93,12 +93,12 @@ public:
 	///  @name Assignment operator
 
 	///  Assigns mesh @a other to this mesh.
-	mesh &
-	operator = (const mesh & other) = default;
+	mesh3 &
+	operator = (const mesh3 & other) = default;
 
 	///  Assigns mesh @a other to this mesh with move semantics.
-	mesh &
-	operator = (mesh && other) = default;
+	mesh3 &
+	operator = (mesh3 && other) = default;
 
 	///  @name Member access
 
@@ -122,17 +122,17 @@ private:
 
 };
 
-mesh <double>
-mesh_union (const mesh <double> & mesh1, const mesh <double> & mesh2);
+mesh3 <double>
+mesh_union (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2);
 
-mesh <double>
-mesh_difference (const mesh <double> & mesh1, const mesh <double> & mesh2);
+mesh3 <double>
+mesh_difference (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2);
 
-mesh <double>
-mesh_intersection (const mesh <double> & mesh1, const mesh <double> & mesh2);
+mesh3 <double>
+mesh_intersection (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2);
 
-mesh <double>
-mesh_exclusion (const mesh <double> & mesh1, const mesh <double> & mesh2);
+mesh3 <double>
+mesh_exclusion (const mesh3 <double> & mesh1, const mesh3 <double> & mesh2);
 
 } // math
 } // titania
