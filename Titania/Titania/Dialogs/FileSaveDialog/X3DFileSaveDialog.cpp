@@ -208,7 +208,7 @@ X3DFileSaveDialog::imageOptions ()
 	if (getConfig () -> hasItem ("imageCompression"))
 		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
 
-	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> hasExtension ("GL_EXT_framebuffer_multisample"));
+	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));
 
 	// Run image options dialog.
 

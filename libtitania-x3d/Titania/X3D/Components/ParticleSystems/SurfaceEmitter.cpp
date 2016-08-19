@@ -108,7 +108,7 @@ SurfaceEmitter::initialize ()
 	if (not glXGetCurrentContext ())
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_texture_buffer_object"))
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return;
 
 	// Surface map

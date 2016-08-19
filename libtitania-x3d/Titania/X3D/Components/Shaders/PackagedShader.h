@@ -122,6 +122,28 @@ public:
 	void
 	draw () final override;
 
+	///  @name Pipeline
+
+	virtual
+	void
+	setGlobalUniforms () final override
+	{ }
+
+	virtual
+	void
+	setLocalUniforms (const ShapeContainer* const context) final override
+	{ }
+
+	virtual
+	void
+	enableVertexAttrib (const GLuint buffer) final override
+	{ }
+	
+	virtual
+	void
+	disableVertexAttrib () final override
+	{ }
+
 	///  @name Destruction
 
 	virtual

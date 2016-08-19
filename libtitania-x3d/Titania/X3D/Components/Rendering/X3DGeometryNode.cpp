@@ -57,8 +57,7 @@
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../Layering/X3DLayerNode.h"
-
-#include <cassert>
+#include "../Shaders/X3DShaderNode.h"
 
 namespace titania {
 namespace X3D {
@@ -833,6 +832,10 @@ X3DGeometryNode::collision (const CollisionContainer* const context)
 void
 X3DGeometryNode::draw (const ShapeContainer* const context)
 {
+	const auto shaderNode = getBrowser () -> getShader ();
+
+	// Enable vertex attribute nodes
+
 	if (not attribNodes .empty ())
 	{
 		GLint program = 0;
@@ -846,35 +849,50 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 		}
 	}
 
-	if (not colors .empty ())
+	if (shaderNode)
 	{
-		if (glIsEnabled (GL_LIGHTING))
-			glEnable (GL_COLOR_MATERIAL);
+		// Enable shader
 
-		glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-		glEnableClientState (GL_COLOR_ARRAY);
-		glColorPointer (4, GL_FLOAT, 0, 0);
+		shaderNode -> setGlobalUniforms ();
+		shaderNode -> setLocalUniforms (context);
+		shaderNode -> enableVertexAttrib (vertexBufferId);
 	}
-
-	if (getBrowser () -> getTexture ())
+	//else
 	{
-		if (texCoordNode)
-			texCoordNode -> enable (texCoordBufferIds);
-	}
-
-	if (glIsEnabled (GL_LIGHTING) /* or shader */)
-	{
-		if (not normals .empty ())
+		// Enable colors, texture coords, normals and vertices.
+	
+		if (not colors .empty ())
 		{
-			glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-			glEnableClientState (GL_NORMAL_ARRAY);
-			glNormalPointer (GL_FLOAT, 0, 0);
+			if (glIsEnabled (GL_LIGHTING))
+				glEnable (GL_COLOR_MATERIAL);
+	
+			glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+			glEnableClientState (GL_COLOR_ARRAY);
+			glColorPointer (4, GL_FLOAT, 0, 0);
 		}
+	
+		if (getBrowser () -> getTexture ())
+		{
+			if (texCoordNode)
+				texCoordNode -> enable (texCoordBufferIds);
+		}
+	
+		if (glIsEnabled (GL_LIGHTING) /* or shader */)
+		{
+			if (not normals .empty ())
+			{
+				glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
+				glEnableClientState (GL_NORMAL_ARRAY);
+				glNormalPointer (GL_FLOAT, 0, 0);
+			}
+		}
+	
+		glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+		glEnableClientState (GL_VERTEX_ARRAY);
+		glVertexPointer (3, GL_DOUBLE, 0, 0);
 	}
 
-	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (3, GL_DOUBLE, 0, 0);
+	// Draw depending on ccw, transparency and solid.
 
 	const auto positiveScale = determinant3 (ModelViewMatrix4d ()) > 0;
 
@@ -943,19 +961,29 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 		}
 	}
 
-	// Texture
-
-	if (getBrowser () -> getTexture ())
+	if (shaderNode)
 	{
-		if (texCoordNode)
-			texCoordNode -> disable ();
+		// Disable shader
+
+		shaderNode -> disableVertexAttrib ();
+	}
+	//else
+	{
+		// Texture
+	
+		if (getBrowser () -> getTexture ())
+		{
+			if (texCoordNode)
+				texCoordNode -> disable ();
+		}
+
+		// Other arrays
+
+		glDisableClientState (GL_COLOR_ARRAY);
+		glDisableClientState (GL_NORMAL_ARRAY);
+		glDisableClientState (GL_VERTEX_ARRAY);
 	}
 
-	// Other arrays
-
-	glDisableClientState (GL_COLOR_ARRAY);
-	glDisableClientState (GL_NORMAL_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 

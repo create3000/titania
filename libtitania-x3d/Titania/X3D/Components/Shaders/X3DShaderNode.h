@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DShaderNode :
 	public X3DAppearanceChildNode
 {
@@ -114,6 +116,24 @@ public:
 	virtual
 	void
 	draw () override;
+
+	///  @name Pipeline
+
+	virtual
+	void
+	setGlobalUniforms () = 0;
+
+	virtual
+	void
+	setLocalUniforms (const ShapeContainer* const) = 0;
+
+	virtual
+	void
+	enableVertexAttrib (const GLuint) = 0;
+	
+	virtual
+	void
+	disableVertexAttrib () = 0;
 
 
 protected:

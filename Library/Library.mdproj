@@ -654,6 +654,7 @@
     <None Include="Tests\Geometry3D\Vase.x3d" />
     <None Include="Tests\Geometry3D\normal.distribution.x3d" />
     <None Include="Tests\Extrusion\Rotations.x3d" />
+    <None Include="Tests\Shaders\Pipeline.x3d" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

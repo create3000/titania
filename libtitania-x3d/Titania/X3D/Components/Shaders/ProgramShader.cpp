@@ -74,6 +74,7 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DShaderNode (),
 	       fields (),
+	 programNodes (),
 	   loadSensor (new LoadSensor (executionContext)),
 	   pipelineId (0)
 {
@@ -85,8 +86,8 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,     "isValid",    isValid ());
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "programs",   programs ());
-	
-	addChildren (loadSensor);
+
+	addChildren (programNodes, loadSensor);
 }
 
 X3DBaseNode*
@@ -101,12 +102,15 @@ ProgramShader::initialize ()
 	X3DShaderNode::initialize ();
 
 	activate () .addInterest (this, &ProgramShader::set_activate);
+	programs () .addInterest (this, &ProgramShader::set_programs);
 	programs () .addInterest (loadSensor -> watchList ());
 
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = programs ();
 	loadSensor -> isActive () .addInterest (this, &ProgramShader::requestExplicitRelink);
 	loadSensor -> setup ();
+
+	set_programs ();
 }
 
 void
@@ -155,7 +159,7 @@ ProgramShader::requestExplicitRelink ()
 	if (loadSensor -> isActive ())
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_separate_shader_objects"))
 	{
 		isValid () = false;
 		return;
@@ -173,9 +177,9 @@ ProgramShader::requestExplicitRelink ()
 
 		glBindProgramPipeline (pipelineId);
 
-		for (const auto & program : programs ())
+		for (const auto & node : programs ())
 		{
-			const auto programNode = x3d_cast <ShaderProgram*> (program);
+			const auto programNode = x3d_cast <ShaderProgram*> (node);
 
 			if (programNode)
 				glUseProgramStages (pipelineId, getProgramStageBit (programNode -> type ()), programNode -> getProgramId ());
@@ -201,6 +205,20 @@ ProgramShader::set_activate ()
 }
 
 void
+ProgramShader::set_programs ()
+{
+	programNodes .clear ();
+
+	for (const auto & node : programs ())
+	{
+		const auto programNode = x3d_cast <ShaderProgram*> (node);
+
+		if (programNode)
+			programNodes .emplace_back (programNode);
+	}
+}
+
+void
 ProgramShader::enable ()
 {
 	glBindProgramPipeline (pipelineId);
@@ -218,6 +236,34 @@ ProgramShader::draw ()
 	X3DShaderNode::draw ();
 
 	glBindProgramPipeline (pipelineId);
+}
+
+void
+ProgramShader::setGlobalUniforms ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> setGlobalUniforms ();
+}
+
+void
+ProgramShader::setLocalUniforms (const ShapeContainer* const context)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> setLocalUniforms (context);
+}
+
+void
+ProgramShader::enableVertexAttrib (const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableVertexAttrib (buffer);
+}
+
+void
+ProgramShader::disableVertexAttrib ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableVertexAttrib ();
 }
 
 void

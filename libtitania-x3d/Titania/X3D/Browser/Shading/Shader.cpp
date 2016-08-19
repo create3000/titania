@@ -51,23 +51,33 @@
 #include "Shader.h"
 
 #include "../../InputOutput/Loader.h"
-#include <pcrecpp.h>
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
 
+bool
+isOpenGLES (const std::string & source)
+{
+	static const std::regex version_es (R"(^(\s*|/\*.*?\*/|//.*?\n)*#version 300 es\s*?\n)");
+
+	return std::regex_search (source, version_es);
+}
+
+static
 std::string
-preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
+getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
+	static const std::regex include (R"(^#pragma\s+X3D\s+include\s+\"(.*?)\"\s*$)");
+
 	if (not files .insert (worldURL) .second)
 		return "";
 
 	if (level > 1024)
 		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
-
-	static const pcrecpp::RE include ("\\A#pragma\\s+X3D\\s+include\\s+\"(.*?)\"$");
 
 	std::istringstream input (string);
 	std::ostringstream output;
@@ -83,12 +93,12 @@ throw (Error <INVALID_URL>,
 
 	while (std::getline (input, line))
 	{
-		std::string filename;
+		std::smatch filename;
 
-		if (include .FullMatch (line, &filename))
+		if (std::regex_match (line, filename, include))
 		{
 			Loader loader (node -> getExecutionContext ());
-			output << preProcessShaderSource (node, loader .loadDocument (worldURL .transform (filename)), loader .getWorldURL (), level + 1, files) << std::endl;
+			output << getShaderSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), level + 1, files) << std::endl;
 			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
 		}
 		else
@@ -103,13 +113,20 @@ throw (Error <INVALID_URL>,
 }
 
 std::string
-preProcessShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
+getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
+	static const std::regex version (R"(^(\s*|/\*.*?\*/|//.*?\n)*#version)");
+
 	std::set <basic::uri> files;
-	
-	return preProcessShaderSource (node, string, worldURL, level, files);
+
+	const auto source = getShaderSource (node, string, worldURL, level, files);
+
+	if (std::regex_search (source, version))
+		return source;
+
+	return "#version 300 es\n" + source;
 }
 
 } // X3D

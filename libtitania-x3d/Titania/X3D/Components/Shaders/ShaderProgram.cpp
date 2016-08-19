@@ -98,12 +98,10 @@ ShaderProgram::initialize ()
 	X3DUrlObject::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	if (glXGetCurrentContext ())
-	{
-		url () .addInterest (this, &ShaderProgram::set_url);
+	url () .addInterest (this, &ShaderProgram::set_url);
 
+	if (glXGetCurrentContext ())
 		requestImmediateLoad ();
-	}
 }
 
 void
@@ -171,7 +169,7 @@ ShaderProgram::getShaderType () const
 void
 ShaderProgram::requestImmediateLoad ()
 {
-	if (not getBrowser () -> hasExtension ("GL_ARB_separate_shader_objects"))
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_separate_shader_objects"))
 	{
 		setLoadState (FAILED_STATE);
 		return;
@@ -186,19 +184,17 @@ ShaderProgram::requestImmediateLoad ()
 	{
 		try
 		{
-			if (programId)
-			{
-				glDeleteProgram (programId);
-
-				programId = 0;
-			}
-
 			// Create shader program
 
 			Loader            loader (getExecutionContext ());
 			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = preProcessShaderSource (this, document, loader .getWorldURL ());
+			const std::string shaderSource = X3D::getShaderSource (this, document, loader .getWorldURL ());
 			const char*       string       = shaderSource .c_str ();
+
+			setOpenGLES (X3D::isOpenGLES (shaderSource));
+
+			if (programId)
+				glDeleteProgram (programId);
 
 			programId = glCreateShaderProgramv (getShaderType (), 1, &string);
 
@@ -217,6 +213,7 @@ ShaderProgram::requestImmediateLoad ()
 			if (valid)
 			{
 				// Initialize uniform variables
+				getDefaultUniforms ();
 				addShaderFields ();
 				break;
 			}

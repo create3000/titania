@@ -77,7 +77,7 @@ public:
 	setProjectionMatrix (const Matrix4d & value)
 	{ projectionMatrix = value; }
 
-	Matrix4d
+	const Matrix4d &
 	getProjectionMatrix () const
 	{ return projectionMatrix; }
 

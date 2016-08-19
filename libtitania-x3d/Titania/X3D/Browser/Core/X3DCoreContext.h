@@ -78,7 +78,7 @@ public:
 
 	///  Returns true if OpenGL @a extensions is available, otherwise false.
 	bool
-	hasExtension (const std::string &) const;
+	isExtensionAvailable (const std::string &) const;
 
 	size_t
 	getMaxRenderBufferSize () const;

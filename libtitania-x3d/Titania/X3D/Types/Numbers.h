@@ -56,6 +56,7 @@
 #include <Titania/Math/Numbers/Color4.h>
 #include <Titania/Math/Numbers/Matrix3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
+#include <Titania/Math/Numbers/Quaternion.h>
 #include <Titania/Math/Numbers/Rotation4.h>
 #include <Titania/Math/Numbers/Vector2.h>
 #include <Titania/Math/Numbers/Vector3.h>
@@ -81,6 +82,9 @@ using Matrix3f = matrix3 <float>;
 
 using Matrix4d = matrix4 <double>;
 using Matrix4f = matrix4 <float>;
+
+using Quaternion4d = quaternion <double>;
+using Quaternion4f = quaternion <float>;
 
 using Rotation4d = rotation4 <double>;
 using Rotation4f = rotation4 <float>;

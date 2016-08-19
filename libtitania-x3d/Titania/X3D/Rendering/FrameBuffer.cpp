@@ -74,7 +74,7 @@ FrameBuffer::FrameBuffer (X3DBrowserContext* const browser, const size_t width, 
 void
 FrameBuffer::setup ()
 {
-	if (not browser -> hasExtension ("GL_EXT_framebuffer_multisample"))
+	if (not browser -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"))
 		samples = 0;
 
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object

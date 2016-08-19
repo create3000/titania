@@ -64,9 +64,9 @@ namespace titania {
 namespace X3D {
 
 X3DCoreContext::X3DCoreContext () :
-	        X3DBaseNode (),
-	             strict (true),
-	         extensions ()
+	           X3DBaseNode (),
+	                strict (true),
+	            extensions ()
 {
 	glibtop_init ();
 }
@@ -81,7 +81,7 @@ X3DCoreContext::initialize ()
 }
 
 bool
-X3DCoreContext::hasExtension (const std::string & name) const
+X3DCoreContext::isExtensionAvailable (const std::string & name) const
 {
 	return extensions .count (name);
 }

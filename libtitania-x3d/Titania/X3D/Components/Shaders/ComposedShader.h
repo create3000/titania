@@ -59,7 +59,8 @@ namespace titania {
 namespace X3D {
 
 class ComposedShader :
-	public X3DShaderNode, public X3DProgrammableShaderObject
+	public X3DShaderNode,
+	public X3DProgrammableShaderObject
 {
 public:
 
@@ -139,6 +140,28 @@ public:
 	virtual
 	void
 	draw () final override;
+
+	///  @name Pipeline
+
+	virtual
+	void
+	setGlobalUniforms () final override
+	{ X3DProgrammableShaderObject::setGlobalUniforms (); }
+
+	virtual
+	void
+	setLocalUniforms (const ShapeContainer* const context) final override
+	{ X3DProgrammableShaderObject::setLocalUniforms (context); }
+
+	virtual
+	void
+	enableVertexAttrib (const GLuint buffer) final override
+	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
+	
+	virtual
+	void
+	disableVertexAttrib () final override
+	{ X3DProgrammableShaderObject::disableVertexAttrib (); }
 
 	///  @name Destruction
 

@@ -285,6 +285,11 @@ Appearance::draw ()
 
 	if (shaderNode)
 		shaderNode -> draw ();
+
+	// Shader rendering version,
+	// still incomplete.
+
+	getBrowser () -> setShader (shaderNode /*? shaderNode : getBrowser () -> getDefaultShader ()*/);
 }
 
 } // X3D

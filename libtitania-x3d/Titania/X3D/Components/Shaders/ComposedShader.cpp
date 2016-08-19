@@ -159,7 +159,8 @@ ComposedShader::set_loaded ()
 
 		// Attach shader
 
-		size_t valid = 0;
+		size_t valid    = 0;
+		bool   openGLES = false;
 
 		for (const auto & part : parts ())
 		{
@@ -167,10 +168,14 @@ ComposedShader::set_loaded ()
 
 			if (partNode)
 			{
-				valid += partNode -> isValid ();
+				valid    += partNode -> isValid ();
+				openGLES |= partNode -> isOpenGLES ();
+
 				glAttachShader (programId, partNode -> getShaderId ());
 			}
 		}
+
+		setOpenGLES (openGLES);
 
 		if (valid)
 		{
@@ -197,7 +202,10 @@ ComposedShader::set_loaded ()
 		// Initialize uniform variables
 
 		if (valid)
+		{
+			getDefaultUniforms ();
 			addShaderFields ();
+		}
 
 		// Print info log
 

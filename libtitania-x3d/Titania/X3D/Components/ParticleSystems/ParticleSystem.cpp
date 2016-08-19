@@ -57,6 +57,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/ParticleSystems/Random.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../../Tools/ParticleSystems/ParticleSystemTool.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
@@ -361,10 +362,10 @@ ParticleSystem::initialize ()
 	if (not glXGetCurrentContext ())
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_texture_buffer_object"))
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_texture_buffer_object"))
 		return;
 
-	if (not getBrowser () -> hasExtension ("GL_ARB_transform_feedback3"))
+	if (not getBrowser () -> isExtensionAvailable ("GL_ARB_transform_feedback3"))
 		return;
 
 	// Generate transform buffers
@@ -1550,7 +1551,7 @@ ParticleSystem::draw (const ShapeContainer* const context)
 		}
 
 		if (getExecutionContext () -> isLive () and isLive ())
-			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", ModelViewMatrix4f ());
+			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", Matrix4f (context -> getModelViewMatrix ()));
 	}
 	catch (const X3DError & error)
 	{

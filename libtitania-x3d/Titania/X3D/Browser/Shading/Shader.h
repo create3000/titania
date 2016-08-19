@@ -56,8 +56,11 @@
 namespace titania {
 namespace X3D {
 
+bool
+isOpenGLES (const std::string &);
+
 std::string
-preProcessShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &, const size_t = 0)
+getShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &, const size_t = 0)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>);
 

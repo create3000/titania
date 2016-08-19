@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DShaderNode;
+
 class X3DShadingContext :
 	virtual public X3DBaseNode
 {
@@ -66,6 +68,14 @@ public:
 	float
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
+
+	void
+	setShader (X3DShaderNode* const value)
+	{ shaderNode = value; }
+
+	X3DShaderNode*
+	getShader () const
+	{ return shaderNode; }
 
 	///  @name Destruction
 
@@ -90,7 +100,8 @@ private:
 
 	///  @name Members
 
-	float shadingLanguageVersion;
+	float          shadingLanguageVersion;
+	X3DShaderNode* shaderNode;
 
 };
 

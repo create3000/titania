@@ -120,6 +120,24 @@ public:
 	void
 	draw () final override;
 
+	///  @name Pipeline
+
+	virtual
+	void
+	setGlobalUniforms () final override;
+
+	virtual
+	void
+	setLocalUniforms (const ShapeContainer* const context) final override;
+
+	virtual
+	void
+	enableVertexAttrib (const GLuint buffer) final override;
+	
+	virtual
+	void
+	disableVertexAttrib () final override;
+
 	///  @name Destruction
 
 	virtual
@@ -148,6 +166,9 @@ private:
 	void
 	set_activate ();
 
+	void
+	set_programs ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -165,8 +186,9 @@ private:
 
 	Fields fields;
 
-	X3DPtr <LoadSensor> loadSensor;
-	GLuint              pipelineId;
+	X3DPtrArray <ShaderProgram> programNodes;
+	X3DPtr <LoadSensor>         loadSensor;
+	GLuint                      pipelineId;
 
 };
 

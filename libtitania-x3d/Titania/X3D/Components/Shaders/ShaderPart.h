@@ -112,6 +112,10 @@ public:
 	isValid () const
 	{ return valid; }
 
+	bool
+	isOpenGLES () const
+	{ return openGLES; }
+
 	GLint
 	getShaderId () const
 	{ return shaderId; }
@@ -179,6 +183,7 @@ private:
 
 	GLuint shaderId;
 	GLint  valid;
+	bool   openGLES;
 
 };
 

@@ -60,12 +60,14 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DProgrammableShaderObject :
 	virtual public X3DBaseNode
 {
 public:
 
-	///  @name Member access
+	///  @name User defined fields handling
 
 	virtual
 	bool
@@ -84,16 +86,34 @@ public:
 	removeUserDefinedField (const std::string &)
 	throw (Error <DISPOSED>) override;
 
+	///  @name Member access
+
 	virtual
 	GLuint
 	getProgramId () const = 0;
 	
+	///  @name Special
+
 	void
 	setTransformFeedbackVaryings (const std::vector <std::string> & value)
 	{ transformFeedbackVaryings = value; }
 
 	void
 	setTextureBuffer (const std::string &, GLuint);
+
+	///  @name Pipeline
+
+	void
+	setGlobalUniforms ();
+
+	void
+	setLocalUniforms (const ShapeContainer* const);
+
+	void
+	enableVertexAttrib (const GLuint);
+	
+	void
+	disableVertexAttrib ();
 
 
 protected:
@@ -110,7 +130,13 @@ protected:
 	///  @name Operations
 	
 	void
+	setOpenGLES (const bool value);
+	
+	void
 	applyTransformFeedbackVaryings () const;
+
+	void
+	getDefaultUniforms ();
 
 	void
 	addShaderFields ();
@@ -131,6 +157,60 @@ private:
 
 	///  @name Members
 
+	GLint               x3d_GeometryType;
+	std::vector <GLint> x3d_ClipPlane;
+
+	GLint x3d_FogType;
+	GLint x3d_FogColor;
+	GLint x3d_FogVisibilityRange;
+
+	GLint x3d_LinewidthScaleFactor;
+
+	GLint x3d_Lighting;
+	GLint x3d_ColorMaterial;
+
+	std::vector <GLint> x3d_LightType;
+	std::vector <GLint> x3d_LightColor;
+	std::vector <GLint> x3d_LightAmbientIntensity;
+	std::vector <GLint> x3d_LightIntensity;
+	std::vector <GLint> x3d_LightAttenuation;
+	std::vector <GLint> x3d_LightLocation;
+	std::vector <GLint> x3d_LightDirection;
+	std::vector <GLint> x3d_LightBeamWidth;
+	std::vector <GLint> x3d_LightCutOffAngle;
+	std::vector <GLint> x3d_LightRadius;
+
+	GLint x3d_SeparateBackColor;
+
+	GLint x3d_AmbientIntensity;
+	GLint x3d_DiffuseColor;
+	GLint x3d_SpecularColor;
+	GLint x3d_EmissiveColor;
+	GLint x3d_Shininess;
+	GLint x3d_Transparency;
+
+	GLint x3d_BackAmbientIntensity;
+	GLint x3d_BackDiffuseColor;
+	GLint x3d_BackSpecularColor;
+	GLint x3d_BackEmissiveColor;
+	GLint x3d_BackShininess;
+	GLint x3d_BackTransparency;
+
+	GLint x3d_TextureType;
+	GLint x3d_Texture;
+	GLint x3d_CubeMapTexture;
+
+	GLint x3d_TextureMatrix;
+	GLint x3d_NormalMatrix;
+	GLint x3d_ProjectionMatrix;
+	GLint x3d_ModelViewMatrix;
+
+	GLint x3d_Color;
+	GLint x3d_TexCoord;
+	GLint x3d_Normal;
+	GLint x3d_Vertex;
+
+	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
 	std::vector <size_t>      textureUnits;
 

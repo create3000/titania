@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE X3D PUBLIC "ISO//Web3D//DTD X3D 3.3//EN" "http://www.web3d.org/specifications/x3d-3.3.dtd">
+<X3D profile='Full' version='3.3' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.3.xsd'>
+  <head>
+    <meta name='comment' content='World of Titania'/>
+    <meta name='created' content='Fri, 19 Aug 2016 06:18:58 GMT'/>
+    <meta name='creator' content='holger'/>
+    <meta name='generator' content='Titania V1.4.9, http://titania.create3000.de'/>
+    <meta name='identifier' content='file:///home/holger/Projekte/Titania/Library/Tests/Shaders/Pipeline.x3d'/>
+    <meta name='modified' content='Fri, 19 Aug 2016 11:53:39 GMT'/>
+  </head>
+  <Scene>
+    <WorldInfo>
+      <MetadataSet DEF='Titania'
+          name='Titania'
+          reference='http://titania.create3000.de'>
+        <MetadataSet DEF='NavigationInfo' containerField='value'
+            name='NavigationInfo'
+            reference='http://titania.create3000.de'>
+          <MetadataString DEF='type' containerField='value'
+              name='type'
+              reference='http://titania.create3000.de'
+              value='"EXAMINE"'/>
+        </MetadataSet>
+        <MetadataSet DEF='Viewpoint' containerField='value'
+            name='Viewpoint'
+            reference='http://titania.create3000.de'>
+          <MetadataDouble DEF='position' containerField='value'
+              name='position'
+              reference='http://titania.create3000.de'
+              value='4.20403099060059, 4.46120548248291, 7.90087127685547'/>
+          <MetadataDouble DEF='orientation' containerField='value'
+              name='orientation'
+              reference='http://titania.create3000.de'
+              value='-0.707378941739467, 0.702666348656382, 0.0766487785255548, 0.661866292789316'/>
+          <MetadataDouble DEF='centerOfRotation' containerField='value'
+              name='centerOfRotation'
+              reference='http://titania.create3000.de'
+              value='0, 0, 0'/>
+        </MetadataSet>
+        <MetadataSet DEF='Selection' containerField='value'
+            name='Selection'
+            reference='http://titania.create3000.de'>
+          <MetadataSet DEF='previous' containerField='value'
+              name='previous'
+              reference='http://titania.create3000.de'/>
+        </MetadataSet>
+        <MetadataSet DEF='AngleGrid' containerField='value'
+            name='AngleGrid'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='enabled' containerField='value'
+              name='enabled'
+              reference='http://titania.create3000.de'
+              value='false'/>
+        </MetadataSet>
+        <MetadataSet DEF='Grid' containerField='value'
+            name='Grid'
+            reference='http://titania.create3000.de'>
+          <MetadataBoolean DEF='enabled_1' containerField='value'
+              name='enabled'
+              reference='http://titania.create3000.de'
+              value='true'/>
+        </MetadataSet>
+      </MetadataSet>
+    </WorldInfo>
+    <Transform>
+      <Shape>
+        <Appearance>
+          <ComposedShader DEF='ComposedShader'
+              language='GLSL'>
+            <ShaderPart DEF='VertexShader'>
+<![CDATA[data:text/plain,
+#version 300 es
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+attribute vec4 x3d_Vertex;
+
+void
+main ()  
+{
+	vec4 position = x3d_ModelViewMatrix * x3d_Vertex;
+
+   gl_Position = x3d_ProjectionMatrix * position;
+}
+]]> 
+            </ShaderPart>
+            <ShaderPart DEF='FragmentShader'
+                type='FRAGMENT'>
+<![CDATA[data:text/plain,
+#version 300 es
+
+precision mediump float;
+
+void
+main ()  
+{     
+   gl_FragColor = vec4 (1.0, 0.0, 0.0, 1.0);  
+}
+]]> 
+            </ShaderPart>
+          </ComposedShader>
+        </Appearance>
+        <Sphere/>
+      </Shape>
+    </Transform>
+  </Scene>
+</X3D>

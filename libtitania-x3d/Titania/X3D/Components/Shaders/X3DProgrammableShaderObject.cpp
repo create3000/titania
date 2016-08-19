@@ -52,21 +52,82 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
 #include "../Texturing3D/X3DTexture3DNode.h"
 
 #include <Titania/String/to_string.h>
 
+#include "../../Debug.h"
+
 namespace titania {
 namespace X3D {
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
+	         x3d_GeometryType (-1),
+	            x3d_ClipPlane (),
+	              x3d_FogType (-1),
+	             x3d_FogColor (-1),
+	   x3d_FogVisibilityRange (-1),
+	 x3d_LinewidthScaleFactor (-1),
+	             x3d_Lighting (-1),
+	        x3d_ColorMaterial (-1),
+	            x3d_LightType (),
+	           x3d_LightColor (),
+	x3d_LightAmbientIntensity (),
+	       x3d_LightIntensity (),
+	     x3d_LightAttenuation (),
+	        x3d_LightLocation (),
+	       x3d_LightDirection (),
+	       x3d_LightBeamWidth (),
+	     x3d_LightCutOffAngle (),
+	          x3d_LightRadius (),
+	    x3d_SeparateBackColor (-1),
+	     x3d_AmbientIntensity (-1),
+	         x3d_DiffuseColor (-1),
+	        x3d_SpecularColor (-1),
+	        x3d_EmissiveColor (-1),
+	            x3d_Shininess (-1),
+	         x3d_Transparency (-1),
+	 x3d_BackAmbientIntensity (-1),
+	     x3d_BackDiffuseColor (-1),
+	    x3d_BackSpecularColor (-1),
+	    x3d_BackEmissiveColor (-1),
+	        x3d_BackShininess (-1),
+	     x3d_BackTransparency (-1),
+	          x3d_TextureType (-1),
+	              x3d_Texture (-1),
+	       x3d_CubeMapTexture (-1),
+	        x3d_TextureMatrix (-1),
+	         x3d_NormalMatrix (-1),
+	     x3d_ProjectionMatrix (-1),
+	      x3d_ModelViewMatrix (-1),
+	                x3d_Color (-1),
+	             x3d_TexCoord (-1),
+	               x3d_Normal (-1),
+	               x3d_Vertex (-1),
+	   extensionGPUShaderFP64 (false),
 	transformFeedbackVaryings (),
 	             textureUnits ()
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
+}
+
+/*
+ *
+ *  Construction
+ *
+ */
+
+void
+X3DProgrammableShaderObject::setOpenGLES (const bool openGLES)
+{
+	if (openGLES)
+		extensionGPUShaderFP64 = false;
+	else
+		extensionGPUShaderFP64 = getBrowser () -> isExtensionAvailable ("GL_ARB_gpu_shader_fp64");
 }
 
 void
@@ -84,6 +145,102 @@ X3DProgrammableShaderObject::applyTransformFeedbackVaryings () const
 		glTransformFeedbackVaryings (getProgramId (), size, varyings, GL_INTERLEAVED_ATTRIBS);
 	}
 }
+
+void
+X3DProgrammableShaderObject::getDefaultUniforms ()
+{
+	const auto program = getProgramId ();
+
+	glUseProgram (program);
+
+	x3d_ClipPlane             .clear ();
+	x3d_LightType             .clear ();
+	x3d_LightColor            .clear ();
+	x3d_LightAmbientIntensity .clear ();
+	x3d_LightIntensity        .clear ();
+	x3d_LightAttenuation      .clear ();
+	x3d_LightLocation         .clear ();
+	x3d_LightDirection        .clear ();
+	x3d_LightBeamWidth        .clear ();
+	x3d_LightCutOffAngle      .clear ();
+	x3d_LightRadius           .clear ();
+
+	// Get default uniforms.
+
+	x3d_GeometryType = glGetUniformLocation (program, "x3d_GeometryType");
+
+	for (size_t i = 0, size = getBrowser () -> getMaxClipPlanes (); i < size; ++ i)
+		x3d_ClipPlane .emplace_back (glGetUniformLocation (program, ("x3d_ClipPlane[" + basic::to_string (i, std::locale::classic ()) + "]") .c_str ()));
+
+	x3d_FogType            = glGetUniformLocation (program, "x3d_FogType");
+	x3d_FogColor           = glGetUniformLocation (program, "x3d_FogColor");
+	x3d_FogVisibilityRange = glGetUniformLocation (program, "x3d_FogVisibilityRange");
+
+	x3d_LinewidthScaleFactor = glGetUniformLocation (program, "x3d_LinewidthScaleFactor");
+
+	x3d_Lighting      = glGetUniformLocation (program, "x3d_Lighting");
+	x3d_ColorMaterial = glGetUniformLocation (program, "x3d_ColorMaterial");
+
+	for (size_t i = 0, size = getBrowser () -> getMaxLights (); i < size; ++ i)
+	{
+		const auto is = basic::to_string (i, std::locale::classic ());
+
+		x3d_LightType             .emplace_back (glGetUniformLocation (program, ("x3d_LightType[" + is + "]") .c_str ()));
+		x3d_LightColor            .emplace_back (glGetUniformLocation (program, ("x3d_LightColor[" + is + "]") .c_str ()));
+		x3d_LightAmbientIntensity .emplace_back (glGetUniformLocation (program, ("x3d_LightAmbientIntensity[" + is + "]") .c_str ()));
+		x3d_LightIntensity        .emplace_back (glGetUniformLocation (program, ("x3d_LightIntensity[" + is + "]") .c_str ()));
+		x3d_LightAttenuation      .emplace_back (glGetUniformLocation (program, ("x3d_LightAttenuation[" + is + "]") .c_str ()));
+		x3d_LightLocation         .emplace_back (glGetUniformLocation (program, ("x3d_LightLocation[" + is + "]") .c_str ()));
+		x3d_LightDirection        .emplace_back (glGetUniformLocation (program, ("x3d_LightDirection[" + is + "]") .c_str ()));
+		x3d_LightBeamWidth        .emplace_back (glGetUniformLocation (program, ("x3d_LightBeamWidth[" + is + "]") .c_str ()));
+		x3d_LightCutOffAngle      .emplace_back (glGetUniformLocation (program, ("x3d_LightCutOffAngle[" + is + "]") .c_str ()));
+		x3d_LightRadius           .emplace_back (glGetUniformLocation (program, ("x3d_LightRadius[" + is + "]") .c_str ()));
+	}
+
+	x3d_SeparateBackColor = glGetUniformLocation (program, "x3d_SeparateBackColor");
+
+	x3d_AmbientIntensity = glGetUniformLocation (program, "x3d_AmbientIntensity");
+	x3d_DiffuseColor     = glGetUniformLocation (program, "x3d_DiffuseColor");
+	x3d_SpecularColor    = glGetUniformLocation (program, "x3d_SpecularColor");
+	x3d_EmissiveColor    = glGetUniformLocation (program, "x3d_EmissiveColor");
+	x3d_Shininess        = glGetUniformLocation (program, "x3d_Shininess");
+	x3d_Transparency     = glGetUniformLocation (program, "x3d_Transparency");
+
+	x3d_BackAmbientIntensity = glGetUniformLocation (program, "x3d_BackAmbientIntensity");
+	x3d_BackDiffuseColor     = glGetUniformLocation (program, "x3d_BackDiffuseColor");
+	x3d_BackSpecularColor    = glGetUniformLocation (program, "x3d_BackSpecularColor");
+	x3d_BackEmissiveColor    = glGetUniformLocation (program, "x3d_BackEmissiveColor");
+	x3d_BackShininess        = glGetUniformLocation (program, "x3d_BackShininess");
+	x3d_BackTransparency     = glGetUniformLocation (program, "x3d_BackTransparency");
+
+	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
+	x3d_Texture        = glGetUniformLocation (program, "x3d_Texture");
+	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
+
+	x3d_TextureMatrix    = glGetUniformLocation (program, "x3d_TextureMatrix");
+	x3d_NormalMatrix     = glGetUniformLocation (program, "x3d_NormalMatrix");
+	x3d_ProjectionMatrix = glGetUniformLocation (program, "x3d_ProjectionMatrix");
+	x3d_ModelViewMatrix  = glGetUniformLocation (program, "x3d_ModelViewMatrix");
+
+	x3d_Color    = glGetAttribLocation (program, "x3d_Color");
+	x3d_TexCoord = glGetAttribLocation (program, "x3d_TexCoord");
+	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
+	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
+
+	//	gl .uniform1i  (x3d_GeometryType,         this .getGeometryType ());
+	//	gl .uniform1f  (x3d_LinewidthScaleFactor, 1);
+	//	gl .uniform1iv (x3d_TextureType,          new Int32Array ([0]));
+	//	gl .uniform1iv (x3d_Texture,              new Int32Array ([0])); // Set texture to active texture unit 0.
+	//	gl .uniform1iv (x3d_CubeMapTexture,       new Int32Array ([1])); // Set cube map texture to active texture unit 1.
+
+	glUseProgram (0);
+}
+
+/*
+ *
+ *  Fields
+ *
+ */
 
 void
 X3DProgrammableShaderObject::addShaderFields ()
@@ -105,7 +262,11 @@ throw (Error <INVALID_NAME>,
 	X3DBaseNode::addUserDefinedField (accessType, name, field);
 
 	if (isInitialized ())
+	{
 		field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
+
+		set_field (field);
+	}
 }
 
 void
@@ -161,7 +322,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFDouble:
 		{
-			glUniform1d (location, static_cast <SFDouble*> (field) -> getValue ());
+			if (extensionGPUShaderFP64)
+				glUniform1d (location, static_cast <SFDouble*> (field) -> getValue ());
+			else
+				glUniform1f (location, static_cast <SFDouble*> (field) -> getValue ());
+
 			break;
 		}
 		case X3DConstants::SFFloat:
@@ -180,7 +345,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFMatrix3d:
 		{
-			glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .data ());
+			if (extensionGPUShaderFP64)
+				glUniformMatrix3dv (location, 1, false, static_cast <SFMatrix3d*> (field) -> getValue () .data ());
+			else
+				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFMatrix3d*> (field) -> getValue ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFMatrix3f:
@@ -190,7 +359,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFMatrix4d:
 		{
-			glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .data ());
+			if (extensionGPUShaderFP64)
+				glUniformMatrix4dv (location, 1, false, static_cast <SFMatrix4d*> (field) -> getValue () .data ());
+			else
+				glUniformMatrix4fv (location, 1, false, Matrix4f (static_cast <SFMatrix4d*> (field) -> getValue ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFMatrix4f:
@@ -243,7 +416,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFRotation:
 		{
-			glUniform4dv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
+			if (extensionGPUShaderFP64)
+				glUniform4dv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
+			else
+				glUniform4fv (location, 1, Quaternion4f (static_cast <SFRotation*> (field) -> getValue () .quat ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFString:
@@ -252,12 +429,20 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFTime:
 		{
-			glUniform1d (location, static_cast <SFTime*> (field) -> getValue ());
+			if (extensionGPUShaderFP64)
+				glUniform1d (location, static_cast <SFTime*> (field) -> getValue ());
+			else
+				glUniform1f (location, static_cast <SFTime*> (field) -> getValue ());
+
 			break;
 		}
 		case X3DConstants::SFVec2d:
 		{
-			glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
+			if (extensionGPUShaderFP64)
+				glUniform2dv (location, 1, static_cast <SFVec2d*> (field) -> getValue () .data ());
+			else
+				glUniform2fv (location, 1, Vector2f (static_cast <SFVec2d*> (field) -> getValue ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFVec2f:
@@ -267,7 +452,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFVec3d:
 		{
-			glUniform3dv (location, 1, static_cast <SFVec3d*> (field) -> getValue () .data ());
+			if (extensionGPUShaderFP64)
+				glUniform3dv (location, 1, static_cast <SFVec3d*> (field) -> getValue () .data ());
+			else
+				glUniform3fv (location, 1, Vector3f (static_cast <SFVec3d*> (field) -> getValue ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFVec3f:
@@ -277,7 +466,11 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFVec4d:
 		{
-			glUniform4dv (location, 1, static_cast <SFVec4d*> (field) -> getValue () .data ());
+			if (extensionGPUShaderFP64)
+				glUniform4dv (location, 1, static_cast <SFVec4d*> (field) -> getValue () .data ());
+			else
+				glUniform4fv (location, 1, Vector4f (static_cast <SFVec4d*> (field) -> getValue ()) .data ());
+
 			break;
 		}
 		case X3DConstants::SFVec4f:
@@ -289,7 +482,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFBool*> (field);
 
-			std::vector <GLint> vector (array -> begin (), array -> end ());
+			std::vector <int32_t> vector (array -> begin (), array -> end ());
 			glUniform1iv (location, vector .size (), vector .data ());
 			break;
 		}
@@ -313,15 +506,24 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFDouble*> (field);
 
-			std::vector <GLdouble> vector (array -> begin (), array -> end ());
-			glUniform1dv (location, vector .size (), vector .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <double> vector (array -> begin (), array -> end ());
+				glUniform1dv (location, vector .size (), vector .data ());
+			}
+			else
+			{
+				std::vector <float> vector (array -> begin (), array -> end ());
+				glUniform1fv (location, vector .size (), vector .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFFloat:
 		{
 			const auto array = static_cast <MFFloat*> (field);
 
-			std::vector <GLfloat> vector (array -> begin (), array -> end ());
+			std::vector <float> vector (array -> begin (), array -> end ());
 			glUniform1fv (location, vector .size (), vector .data ());
 			break;
 		}
@@ -333,7 +535,7 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFInt32*> (field);
 
-			std::vector <GLint> vector (array -> begin (), array -> end ());
+			std::vector <int32_t> vector (array -> begin (), array -> end ());
 			glUniform1iv (location, vector .size (), vector .data ());
 			break;
 		}
@@ -341,8 +543,22 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFMatrix3d*> (field);
 
-			std::vector <Matrix3d> vector (array -> begin (), array -> end ());
-			glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <Matrix3d> vector (array -> begin (), array -> end ());
+				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Matrix3f> vector;
+				vector .reserve (array -> size ());
+
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue ());
+
+				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFMatrix3f:
@@ -357,8 +573,22 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFMatrix4d*> (field);
 
-			std::vector <Matrix4d> vector (array -> begin (), array -> end ());
-			glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <Matrix4d> vector (array -> begin (), array -> end ());
+				glUniformMatrix4dv (location, vector .size (), false, vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Matrix4f> vector;
+				vector .reserve (array -> size ());
+
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue ());
+
+				glUniformMatrix4fv (location, vector .size (), false, vector [0] .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFMatrix4f:
@@ -447,16 +677,27 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFRotation*> (field);
 
-			std::vector <Vector4d> vector;
-			vector .reserve (array -> size ());
-
-			for (const auto & value : *array)
+			if (extensionGPUShaderFP64)
 			{
-				const auto & quat = value .getValue () .quat ();
-				vector .emplace_back (quat .x (), quat .y (), quat .z (), quat .w ());
+				std::vector <Quaternion4d> vector;
+				vector .reserve (array -> size ());
+	
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue () .quat ());
+	
+				glUniform4dv (location, vector .size (), vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Quaternion4f> vector;
+				vector .reserve (array -> size ());
+	
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue () .quat ());
+	
+				glUniform4fv (location, vector .size (), vector [0] .data ());
 			}
 
-			glUniform4dv (location, vector .size (), vector [0] .data ());
 			break;
 		}
 		case X3DConstants::MFString:
@@ -467,16 +708,39 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFTime*> (field);
 
-			std::vector <GLdouble> vector (array -> begin (), array -> end ());
-			glUniform1dv (location, vector .size (), vector .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <double> vector (array -> begin (), array -> end ());
+				glUniform1dv (location, vector .size (), vector .data ());
+			}
+			else
+			{
+				std::vector <float> vector (array -> begin (), array -> end ());
+				glUniform1fv (location, vector .size (), vector .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFVec2d:
 		{
 			const auto array = static_cast <MFVec2d*> (field);
 
-			std::vector <Vector2d> vector (array -> begin (), array -> end ());
-			glUniform2dv (location, vector .size (), vector [0] .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <Vector2d> vector (array -> begin (), array -> end ());
+				glUniform2dv (location, vector .size (), vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Vector2f> vector;
+				vector .reserve (array -> size ());
+
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue ());
+
+				glUniform2fv (location, vector .size (), vector [0] .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFVec2f:
@@ -491,8 +755,22 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFVec3d*> (field);
 
-			std::vector <Vector3d> vector (array -> begin (), array -> end ());
-			glUniform3dv (location, vector .size (), vector [0] .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <Vector3d> vector (array -> begin (), array -> end ());
+				glUniform3dv (location, vector .size (), vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Vector3f> vector;
+				vector .reserve (array -> size ());
+
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue ());
+
+				glUniform3fv (location, vector .size (), vector [0] .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFVec3f:
@@ -507,8 +785,22 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		{
 			const auto array = static_cast <MFVec4d*> (field);
 
-			std::vector <Vector4d> vector (array -> begin (), array -> end ());
-			glUniform4dv (location, vector .size (), vector [0] .data ());
+			if (extensionGPUShaderFP64)
+			{
+				std::vector <Vector4d> vector (array -> begin (), array -> end ());
+				glUniform4dv (location, vector .size (), vector [0] .data ());
+			}
+			else
+			{
+				std::vector <Vector4f> vector;
+				vector .reserve (array -> size ());
+
+				for (const auto & value : *array)
+					vector .emplace_back (value .getValue ());
+
+				glUniform4fv (location, vector .size (), vector [0] .data ());
+			}
+
 			break;
 		}
 		case X3DConstants::MFVec4f:
@@ -567,6 +859,61 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
 
 	glUseProgram (0);
 }
+
+/*
+ *
+ *  Pipeline
+ *
+ */
+
+void
+X3DProgrammableShaderObject::setGlobalUniforms ()
+{
+	glUseProgram (getProgramId ());
+
+	if (extensionGPUShaderFP64)
+		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, getBrowser () -> getProjectionMatrix () .data ());
+	else
+		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (getBrowser () -> getProjectionMatrix ()) .data ());
+}
+
+void
+X3DProgrammableShaderObject::setLocalUniforms (const ShapeContainer* const context)
+{
+	glUseProgram (getProgramId ());
+
+	if (extensionGPUShaderFP64)
+		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, context -> getModelViewMatrix () .data ());
+	else
+		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (context -> getModelViewMatrix ()) .data ());
+}
+
+void
+X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
+{
+	if (x3d_Vertex == -1)
+		return;
+
+	glEnableVertexAttribArray (x3d_Vertex);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (x3d_Vertex, 3, GL_DOUBLE, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::disableVertexAttrib ()
+{
+	if (x3d_Vertex == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_Vertex);
+}
+
+/*
+ *
+ *  Destruction
+ *
+ */
 
 void
 X3DProgrammableShaderObject::dispose ()

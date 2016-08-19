@@ -87,7 +87,7 @@ X3DTexturingContext::initialize ()
 	{
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 
-		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
+		if (getBrowser () -> isExtensionAvailable ("GL_NVX_gpu_memory_info"))
 		{
 			int32_t kbytes = 0;
 
@@ -124,7 +124,7 @@ X3DTexturingContext::getAvailableTextureMemory () const
 	{
 		ContextLock lock (getBrowser ());
 
-		if (getBrowser () -> hasExtension ("GL_NVX_gpu_memory_info"))
+		if (getBrowser () -> isExtensionAvailable ("GL_NVX_gpu_memory_info"))
 		{
 			int32_t kbytes = 0;
 
@@ -133,7 +133,7 @@ X3DTexturingContext::getAvailableTextureMemory () const
 			return size_t (kbytes) * 1024;
 		}
 
-		if (getBrowser () -> hasExtension ("GL_ATI_meminfo"))
+		if (getBrowser () -> isExtensionAvailable ("GL_ATI_meminfo"))
 		{
 			static constexpr GLenum TEXTURE_FREE_MEMORY_ATI = 0x87FC;
 

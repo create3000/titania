@@ -73,7 +73,8 @@ ShaderPart::ShaderPart (X3DExecutionContext* const executionContext) :
 	X3DUrlObject (),
 	      fields (),
 	    shaderId (0),
-	       valid (false)
+	       valid (false),
+	    openGLES (false)
 {
 	addType (X3DConstants::ShaderPart);
 
@@ -94,14 +95,11 @@ ShaderPart::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
+	type () .addInterest (this, &ShaderPart::set_url);
+	url ()  .addInterest (this, &ShaderPart::set_url);
+
 	if (glXGetCurrentContext ())
-	{
-		shaderId = glCreateShader (getShaderType ());
-
-		url () .addInterest (this, &ShaderPart::set_url);
-
 		requestImmediateLoad ();
-	}
 }
 
 void
@@ -158,8 +156,15 @@ ShaderPart::requestImmediateLoad ()
 		{
 			Loader            loader (getExecutionContext ());
 			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = preProcessShaderSource (this, document, loader .getWorldURL ());
+			const std::string shaderSource = X3D::getShaderSource (this, document, loader .getWorldURL ());
 			const char*       string       = shaderSource .c_str ();
+
+			openGLES = X3D::isOpenGLES (shaderSource);
+
+			if (shaderId)
+				glDeleteShader (shaderId);
+
+			shaderId = glCreateShader (getShaderType ());
 
 			glShaderSource  (shaderId, 1, &string, nullptr);
 			glCompileShader (shaderId);
