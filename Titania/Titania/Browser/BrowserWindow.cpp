@@ -2018,35 +2018,35 @@ BrowserWindow::on_transform_tool_mode_toggled ()
 void
 BrowserWindow::on_union_activated ()
 {
-	on_boolean_activated (_ ("Boolean Operation »Union«"), X3D::Combine::geometryUnion);
+	on_boolean_activated (_ ("Boolean Operation »Union«"), X3D::Combine::geometryUnion, false);
 }
 
 void
 BrowserWindow::on_difference_activated ()
 {
-	on_boolean_activated (_ ("Boolean Operation »Difference«"), X3D::Combine::geometryDifference);
+	on_boolean_activated (_ ("Boolean Operation »Difference«"), X3D::Combine::geometryDifference, true);
 }
 
 void
 BrowserWindow::on_intersection_activated ()
 {
-	on_boolean_activated (_ ("Boolean Operation »Intersection«"), X3D::Combine::geometryIntersection);
+	on_boolean_activated (_ ("Boolean Operation »Intersection«"), X3D::Combine::geometryIntersection, false);
 }
 
 void
 BrowserWindow::on_exclusion_activated ()
 {
-	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometryExclusion);
+	on_boolean_activated (_ ("Boolean Operation »Exclusion«"), X3D::Combine::geometryExclusion, false);
 }
 
 void
 BrowserWindow::on_combine_activated ()
 {
-	on_boolean_activated (_ ("Combine Geometries"), X3D::Combine::combineGeometry);
+	on_boolean_activated (_ ("Combine Geometries"), X3D::Combine::combineGeometry, false);
 }
 
 void
-BrowserWindow::on_boolean_activated (const std::string & description, const BooleanOperation & booleanOperation)
+BrowserWindow::on_boolean_activated (const std::string & description, const BooleanOperation & booleanOperation, const bool front)
 {
 	try
 	{
@@ -2060,11 +2060,13 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 
 		if (booleanOperation (getCurrentContext (), shapes, undoStep))
 		{
-			X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, shapes .back (), undoStep);
+			const auto & masterShape = front ? shapes .front () : shapes .back ();
+
+			X3D::Combine::removeShapes (getCurrentContext (), selection, groups, shapes, masterShape, undoStep);
 
 			// Select target
 
-			getBrowserWindow () -> getSelection () -> setChildren ({ shapes .back () }, undoStep);
+			getBrowserWindow () -> getSelection () -> setChildren ({ masterShape }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
 	}

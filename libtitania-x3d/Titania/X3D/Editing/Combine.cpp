@@ -67,6 +67,7 @@ namespace X3D {
 Combine::Combine ()
 { }
 
+///  Returns all IndexFaceSets found in @a shapes.
 X3DPtrArray <IndexedFaceSet>
 Combine::getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes)
 {
@@ -87,7 +88,7 @@ Combine::getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes)
 	return std::move (geometryNodes);
 }
 
-/// Creates a mesh from @a geometryNode and @a coordNode and applys matrix to points.
+///  Creates a mesh from @a geometryNode and @a coordNode and applys matrix to points.
 mesh <double>
 Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3DCoordinateNode> & coordNode, const Matrix4d & matrix)
 {
@@ -158,6 +159,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 	return mesh <double> (std::move (indices), std::move (points));
 }
 
+///  Performs Boolean operation union on IndexFaceSets in @a shapes.
 bool
 Combine::geometryUnion (const X3DExecutionContextPtr & executionContext,
                         const X3DPtrArray <X3DShapeNode> & shapes,
@@ -166,9 +168,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,
        std::domain_error)
 {
-	return geometryBoolean (mesh_union, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_union, executionContext, shapes, false, undoStep);
 }
 
+///  Performs Boolean operation difference on IndexFaceSets in @a shapes.
 bool
 Combine::geometryDifference (const X3DExecutionContextPtr & executionContext,
                              const X3DPtrArray <X3DShapeNode> & shapes,
@@ -177,9 +180,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	return geometryBoolean (mesh_difference, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_difference, executionContext, shapes, true, undoStep);
 }
 
+///  Performs Boolean operation intersection on IndexFaceSets in @a shapes.
 bool
 Combine::geometryIntersection (const X3DExecutionContextPtr & executionContext,
                                const X3DPtrArray <X3DShapeNode> & shapes,
@@ -188,9 +192,10 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	return geometryBoolean (mesh_intersection, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_intersection, executionContext, shapes, false, undoStep);
 }
 
+///  Performs Boolean operation exclusion on IndexFaceSets in @a shapes.
 bool
 Combine::geometryExclusion (const X3DExecutionContextPtr & executionContext,
                             const X3DPtrArray <X3DShapeNode> & shapes,
@@ -199,13 +204,16 @@ throw (Error <INVALID_NODE>,
        Error <DISPOSED>,     
        std::domain_error)
 {
-	return geometryBoolean (mesh_exclusion, executionContext, shapes, undoStep);
+	return geometryBoolean (mesh_exclusion, executionContext, shapes, false, undoStep);
 }
 
+/// Performs Boolean operation @a booleanOperation on IndexFaceSets in @a shapes. If front is true the master shape is
+//  the first Shape node in @a shapes otherwise the last is selected as master shape.
 bool
 Combine::geometryBoolean (const BooleanOperation & booleanOperation,
                           const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
+                          const bool front,
                           const UndoStepPtr & undoStep)
 throw (Error <INVALID_NODE>,
        Error <DISPOSED>,
@@ -220,7 +228,7 @@ throw (Error <INVALID_NODE>,
 
 		// Choose target.
 	
-		const auto & masterShape    = shapes .back ();
+		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
 		const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
@@ -232,7 +240,7 @@ throw (Error <INVALID_NODE>,
 		const X3DPtrArray <IndexedFaceSet> geometryNodes = getIndexedFaceSets (shapes);
 	
 		if (not geometryNodes .empty ())
-			targetGeometry -> creaseAngle () = geometryNodes .front () -> creaseAngle ();
+			targetGeometry -> creaseAngle () = front ? geometryNodes .front () -> creaseAngle () : geometryNodes .back () -> creaseAngle ();
 	
 		// Combine Coordinates.
 	
@@ -302,6 +310,7 @@ throw (Error <INVALID_NODE>,
 	}
 }
 
+///  Performs geometry combination on IndexFaceSets in @a shapes.
 bool
 Combine::combineGeometry (const X3DExecutionContextPtr & executionContext,
                           const X3DPtrArray <X3DShapeNode> & shapes,
@@ -363,6 +372,7 @@ throw (Error <INVALID_NODE>,
 	return true;
 }
 
+///  Performs geometry combination in @a geometryNodes and stores the result in @a targetGeometry.
 std::vector <int32_t>
 Combine::combine (const X3DExecutionContextPtr & executionContext,
                   const X3DPtrArray <IndexedFaceSet> & geometryNodes,

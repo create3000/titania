@@ -598,7 +598,7 @@ private:
 	on_combine_activated () final override;
 
 	void
-	on_boolean_activated (const std::string &, const BooleanOperation &);
+	on_boolean_activated (const std::string &, const BooleanOperation &, const bool);
 
 	virtual
 	void

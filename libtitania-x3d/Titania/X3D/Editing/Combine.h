@@ -158,6 +158,7 @@ private:
 	geometryBoolean (const BooleanOperation &,
 	                 const X3DExecutionContextPtr &,
 	                 const X3DPtrArray <X3DShapeNode> &,
+	                 const bool,
 	                 const UndoStepPtr &)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,

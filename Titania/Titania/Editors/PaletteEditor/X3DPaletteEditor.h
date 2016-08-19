@@ -548,7 +548,7 @@ X3DPaletteEditor <Type>::on_remove_palette_activate ()
 	
 		dialog -> setType (Gtk::MESSAGE_QUESTION);
 		dialog -> setMessage (basic::sprintf (_ ("Do you really want to remove palette »%s«?"), folder -> get_basename () .c_str ()));
-		dialog -> setText ("All item will be irrevocably deleted.");
+		dialog -> setText ("All item will be irrevocably deleted!");
 
 		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 			return;
