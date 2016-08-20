@@ -58,25 +58,26 @@ namespace titania {
 namespace X3D {
 
 X3DShapeContext::X3DShapeContext () :
-	   X3DBaseNode (),
-	lineProperties (new LineProperties (getExecutionContext ())),
-	fillProperties (new FillProperties (getExecutionContext ())),
-	    appearance (new Appearance (getExecutionContext ()))
+	          X3DBaseNode (),
+	defaultLineProperties (new LineProperties (getExecutionContext ())),
+	defaultFillProperties (new FillProperties (getExecutionContext ())),
+	    defaultAppearance (new Appearance (getExecutionContext ())),
+	           appearance (defaultAppearance)
 {
-	addChildren (lineProperties,
-	             fillProperties,
-	             appearance);
+	addChildren (defaultLineProperties,
+	             defaultFillProperties,
+	             defaultAppearance);
 }
 
 void
 X3DShapeContext::initialize ()
 {
-	lineProperties -> applied () = false;
-	fillProperties -> hatched () = false;
+	defaultLineProperties -> applied () = false;
+	defaultFillProperties -> hatched () = false;
 
-	lineProperties -> setup ();
-	fillProperties -> setup ();
-	appearance     -> setup ();
+	defaultLineProperties -> setup ();
+	defaultFillProperties -> setup ();
+	defaultAppearance     -> setup ();
 }
 
 X3DShapeContext::~X3DShapeContext ()

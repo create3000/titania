@@ -99,7 +99,7 @@ Polyline2D::build ()
 }
 
 void
-Polyline2D::draw (const ShapeContainer* const context)
+Polyline2D::draw (ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw (context);

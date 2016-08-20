@@ -60,6 +60,7 @@
 namespace titania {
 namespace X3D {
 
+class X3DShaderNode;
 class MotionBlur;
 
 using ClipPlaneStack   = std::stack <GLenum>;
@@ -80,6 +81,14 @@ public:
 	const Matrix4d &
 	getProjectionMatrix () const
 	{ return projectionMatrix; }
+
+	void
+	setShader (X3DShaderNode* const value)
+	{ shaderNode = value; }
+
+	X3DShaderNode*
+	getShader () const
+	{ return shaderNode; }
 
 	size_t
 	getMaxClipPlanes () const
@@ -132,6 +141,7 @@ private:
 
 
 	Matrix4d            projectionMatrix;
+	X3DShaderNode*      shaderNode;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
 	DepthTestStack      depthTest;

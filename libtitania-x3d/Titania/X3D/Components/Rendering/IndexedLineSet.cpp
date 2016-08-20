@@ -322,7 +322,7 @@ IndexedLineSet::build ()
 }
 
 void
-IndexedLineSet::draw (const ShapeContainer* const context)
+IndexedLineSet::draw (ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw (context);

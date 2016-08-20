@@ -134,7 +134,7 @@ public:
 
 	virtual
 	void
-	display (const ShapeContainer* const);
+	display (ShapeContainer* const);
 
 	virtual
 	void
@@ -159,7 +159,7 @@ protected:
 
 	virtual
 	void
-	draw (const ShapeContainer* const) = 0;
+	draw (ShapeContainer* const) = 0;
 
 
 private:

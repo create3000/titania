@@ -191,7 +191,7 @@ public:
 
 	virtual
 	void
-	draw (const ShapeContainer* const container) final override;
+	draw (ShapeContainer* const) final override;
 
 	virtual
 	SFNode

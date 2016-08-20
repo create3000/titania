@@ -521,7 +521,7 @@ X3DTextGeometry::compile (Text* const text)
 }
 
 void
-X3DTextGeometry::display (const ShapeContainer* const context)
+X3DTextGeometry::display (ShapeContainer* const context)
 {
 	glFrontFace (context -> getModelViewMatrix () .determinant3 () > 0 ? GL_CCW : GL_CW);
 

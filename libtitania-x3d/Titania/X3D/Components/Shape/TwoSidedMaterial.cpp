@@ -50,6 +50,7 @@
 
 #include "TwoSidedMaterial.h"
 
+#include "../Shaders/X3DProgrammableShaderObject.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -207,6 +208,30 @@ TwoSidedMaterial::eventsProcessed ()
 		glBackEmissiveColor [3] = glEmissiveColor [3];
 
 		glBackShininess = glShininess;
+	}
+}
+
+void
+TwoSidedMaterial::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	glUniform1i  (shaderObject -> getLightingUniformLocation          (), true);
+	glUniform1i  (shaderObject -> getSeparateBackColorUniformLocation (), separateBackColor ());
+
+	glUniform1f  (shaderObject -> getAmbientIntensityUniformLocation (), ambientIntensity ());
+	glUniform3fv (shaderObject -> getDiffuseColorUniformLocation     (), 1, diffuseColor  () .getValue () .data ());
+	glUniform3fv (shaderObject -> getSpecularColorUniformLocation    (), 1, specularColor () .getValue () .data ());
+	glUniform3fv (shaderObject -> getEmissiveColorUniformLocation    (), 1, emissiveColor () .getValue () .data ());
+	glUniform1f  (shaderObject -> getShininessUniformLocation        (), shininess        ());
+	glUniform1f  (shaderObject -> getTransparencyUniformLocation     (), transparency     ());
+
+	if (separateBackColor ())
+	{
+		glUniform1f  (shaderObject -> getBackAmbientIntensityUniformLocation  (), backAmbientIntensity ());
+		glUniform3fv (shaderObject -> getBackDiffuseColorUniformLocation      (), 1, backDiffuseColor  () .getValue () .data ());
+		glUniform3fv (shaderObject -> getBackSpecularColorUniformLocation     (), 1, backSpecularColor () .getValue () .data ());
+		glUniform3fv (shaderObject -> getBackEmissiveColorUniformLocation     (), 1, backEmissiveColor () .getValue () .data ());
+		glUniform1f  (shaderObject -> getBackShininessUniformLocation         (), backShininess        ());
+		glUniform1f  (shaderObject -> getBackTransparencyUniformLocation      (), backTransparency     ());
 	}
 }
 

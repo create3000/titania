@@ -121,15 +121,23 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms () = 0;
+	setGlobalUniforms (ShapeContainer* const) = 0;
 
 	virtual
 	void
-	setLocalUniforms (const ShapeContainer* const) = 0;
+	setLocalUniforms (ShapeContainer* const) = 0;
+
+	virtual
+	void
+	enableNormalAttrib (const GLuint) = 0;
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint) = 0;
+
+	virtual
+	void
+	disableNormalAttrib () = 0;
 	
 	virtual
 	void

@@ -160,6 +160,12 @@ SpotLight::draw (GLenum lightId)
 }
 
 void
+SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+{
+
+}
+
+void
 SpotLight::addTool ()
 {
 	X3DLightNode::addTool (new SpotLightTool (this));

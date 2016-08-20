@@ -1421,7 +1421,7 @@ ParticleSystem::collision (const CollisionContainer* const)
 { }
 
 void
-ParticleSystem::draw (const ShapeContainer* const context)
+ParticleSystem::draw (ShapeContainer* const context)
 {
 	try
 	{
@@ -1551,7 +1551,7 @@ ParticleSystem::draw (const ShapeContainer* const context)
 		}
 
 		if (getExecutionContext () -> isLive () and isLive ())
-			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", Matrix4f (context -> getModelViewMatrix ()));
+			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", context -> getModelViewMatrix ());
 	}
 	catch (const X3DError & error)
 	{

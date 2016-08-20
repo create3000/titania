@@ -77,7 +77,10 @@ X3DRenderer::X3DRenderer () :
 	               X3DNode (),
 	       viewVolumeStack (),
 	         globalObjects (),
+	          globalLights (),
 	          localObjects (),
+	            clipPlanes (),
+	           localLights (),
 	            collisions (),
 	          opaqueShapes (),
 	     transparentShapes (),
@@ -127,7 +130,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 		if (shape -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
 		{
 		   if (numTransparentShapes == transparentShapes .size ())
-		      transparentShapes .emplace_back (new ShapeContainer (true));
+		      transparentShapes .emplace_back (new ShapeContainer (this, true));
 
 			context = transparentShapes [numTransparentShapes] .get ();
 
@@ -136,7 +139,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 		else
 		{
 		   if (numOpaqueShapes == opaqueShapes .size ())
-		      opaqueShapes .emplace_back (new ShapeContainer (false));
+		      opaqueShapes .emplace_back (new ShapeContainer (this, false));
 
 			context = opaqueShapes [numOpaqueShapes] .get ();
 
@@ -316,6 +319,7 @@ X3DRenderer::render (const TraverseType type)
 	}
 
 	getGlobalObjects () .clear ();
+	getGlobalLights  () .clear ();
 }
 
 void
@@ -497,6 +501,9 @@ X3DRenderer::display ()
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
+	for (const auto & object : getGlobalLights ())
+		object -> enable ();
+
 	// Sorted blend
 
 	// Render opaque objects first
@@ -524,6 +531,9 @@ X3DRenderer::display ()
 	// Disable global lights
 
 	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
+		object -> disable ();
+
+	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
 
 	// Reset to default OpenGL appearance

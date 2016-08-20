@@ -142,7 +142,7 @@ public:
 
 	virtual
 	void
-	display (const ShapeContainer* const context) final override
+	display (ShapeContainer* const context) final override
 	{ return getNode <X3DShapeNode> () -> display (context); }
 
 	/// @name Destruction

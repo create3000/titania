@@ -248,7 +248,7 @@ Disk2D::build ()
 }
 
 void
-Disk2D::draw (const ShapeContainer* const context)
+Disk2D::draw (ShapeContainer* const context)
 {
 	if (innerRadius () == outerRadius ())
 		glDisable (GL_LIGHTING);

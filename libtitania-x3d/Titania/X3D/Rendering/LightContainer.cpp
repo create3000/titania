@@ -57,9 +57,9 @@ namespace X3D {
 
 LightContainer::LightContainer (X3DLightNode* const node) :
 	X3DCollectableObject (),
-	                   node (node),
-	        modelViewMatrix (node -> getModelViewMatrix () .get ()),
-	                lightId (0)
+	                node (node),
+	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	             lightId (0)
 { }
 
 void
@@ -88,6 +88,12 @@ LightContainer::disable ()
 		glDisable (lightId);
 		node -> getBrowser () -> getLights () .push (lightId);
 	}
+}
+
+void
+LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
+{
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
 }
 
 } // X3D

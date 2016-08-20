@@ -428,7 +428,7 @@ ScreenText::traverse (const TraverseType type)
 }
 
 void
-ScreenText::display (const ShapeContainer* const context)
+ScreenText::display (ShapeContainer* const context)
 {
 	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
 

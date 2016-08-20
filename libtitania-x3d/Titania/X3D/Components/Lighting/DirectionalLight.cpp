@@ -53,6 +53,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Lighting/DirectionalLightTool.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -130,6 +131,19 @@ DirectionalLight::draw (GLenum lightId)
 	glLightf  (lightId, GL_SPOT_CUTOFF, 180);
 
 	glLightfv (lightId, GL_POSITION, glPosition);
+}
+
+void
+DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+{
+	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
+
+	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], 1);
+	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
+	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
+	glUniform3f  (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, 0, 0);
+	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
 }
 
 void

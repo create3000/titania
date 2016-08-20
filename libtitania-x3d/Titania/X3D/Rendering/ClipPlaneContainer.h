@@ -85,6 +85,8 @@ private:
 
 };
 
+using ClipPlaneContainerArray = std::vector <std::shared_ptr <ClipPlaneContainer>>;
+
 } // X3D
 } // titania
 

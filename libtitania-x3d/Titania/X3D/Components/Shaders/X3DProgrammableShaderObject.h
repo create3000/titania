@@ -91,7 +91,91 @@ public:
 	virtual
 	GLuint
 	getProgramId () const = 0;
-	
+
+	///  @name Uniform location access lighting
+
+	GLint
+	getLightingUniformLocation () const
+	{ return x3d_Lighting; }
+
+	const std::vector <GLint> &
+	getLightTypeUniformLocation () const
+	{ return x3d_LightType; }
+
+	const std::vector <GLint> &
+	getLightColorUniformLocation () const
+	{ return x3d_LightColor; }
+
+	const std::vector <GLint> &
+	getLightIntensityUniformLocation () const
+	{ return x3d_LightIntensity; }
+
+	const std::vector <GLint> &
+	getLightAmbientIntensityUniformLocation () const
+	{ return x3d_LightAmbientIntensity; }
+
+	const std::vector <GLint> &
+	getLightAttenuationUniformLocation () const
+	{ return x3d_LightAttenuation; }
+
+	const std::vector <GLint> &
+	getLightDirectionUniformLocation () const
+	{ return x3d_LightDirection; }
+
+	///  @name Uniform location access material
+
+	GLint
+	getSeparateBackColorUniformLocation () const
+	{ return x3d_SeparateBackColor; }
+
+	GLint
+	getAmbientIntensityUniformLocation () const
+	{ return x3d_AmbientIntensity; }
+
+	GLint
+	getDiffuseColorUniformLocation () const
+	{ return x3d_DiffuseColor; }
+
+	GLint
+	getSpecularColorUniformLocation () const
+	{ return x3d_SpecularColor; }
+
+	GLint
+	getEmissiveColorUniformLocation () const
+	{ return x3d_EmissiveColor; }
+
+	GLint
+	getShininessUniformLocation () const
+	{ return x3d_Shininess; }
+
+	GLint
+	getTransparencyUniformLocation () const
+	{ return x3d_Transparency; }
+
+	GLint
+	getBackAmbientIntensityUniformLocation () const
+	{ return x3d_BackAmbientIntensity; }
+
+	GLint
+	getBackDiffuseColorUniformLocation () const
+	{ return x3d_BackDiffuseColor; }
+
+	GLint
+	getBackSpecularColorUniformLocation () const
+	{ return x3d_BackSpecularColor; }
+
+	GLint
+	getBackEmissiveColorUniformLocation () const
+	{ return x3d_BackEmissiveColor; }
+
+	GLint
+	getBackShininessUniformLocation () const
+	{ return x3d_BackShininess; }
+
+	GLint
+	getBackTransparencyUniformLocation () const
+	{ return x3d_BackTransparency; }
+
 	///  @name Special
 
 	void
@@ -104,13 +188,19 @@ public:
 	///  @name Pipeline
 
 	void
-	setGlobalUniforms ();
+	setGlobalUniforms (ShapeContainer* const);
 
 	void
-	setLocalUniforms (const ShapeContainer* const);
+	setLocalUniforms (ShapeContainer* const);
+
+	void
+	enableNormalAttrib (const GLuint);
 
 	void
 	enableVertexAttrib (const GLuint);
+	
+	void
+	disableNormalAttrib ();
 	
 	void
 	disableVertexAttrib ();
@@ -213,6 +303,7 @@ private:
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
 	std::vector <size_t>      textureUnits;
+	size_t                    numGlobalLights;
 
 };
 

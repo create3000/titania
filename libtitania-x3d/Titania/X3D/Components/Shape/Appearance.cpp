@@ -53,6 +53,7 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
@@ -159,9 +160,6 @@ Appearance::isTransparent () const
 	if (textureNode and textureNode -> isTransparent ())
 		return true;
 
-	if (shaderNode)
-		return true;
-
 	return false;
 }
 
@@ -240,6 +238,8 @@ Appearance::set_shader ()
 
 	// Select shader
 
+	shaderNode .set (nullptr);
+
 	for (const auto & shader : shaderNodes)
 	{
 		if (shader -> isValid ())
@@ -247,12 +247,9 @@ Appearance::set_shader ()
 			shaderNode .set (shader);
 
 			shaderNode -> select ();
-
-			return;
+			break;
 		}
 	}
-
-	shaderNode .set (nullptr);
 }
 
 void
@@ -286,10 +283,23 @@ Appearance::draw ()
 	if (shaderNode)
 		shaderNode -> draw ();
 
-	// Shader rendering version,
-	// still incomplete.
+	getBrowser () -> setAppearance (this);
+	getBrowser () -> setShader (shaderNode);
+}
 
-	getBrowser () -> setShader (shaderNode /*? shaderNode : getBrowser () -> getDefaultShader ()*/);
+/*
+ *  Shader rendering version,
+ *  still incomplete,
+ *  used for Phong shading.
+ */
+
+void
+Appearance::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	if (materialNode)
+		materialNode -> setShaderUniforms (shaderObject);
+	else
+		glUniform1i (shaderObject -> getLightingUniformLocation (), false);
 }
 
 } // X3D

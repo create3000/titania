@@ -50,6 +50,7 @@
 
 #include "Material.h"
 
+#include "../Shaders/X3DProgrammableShaderObject.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -132,6 +133,20 @@ Material::eventsProcessed ()
 	glEmissiveColor [3] = alpha;
 
 	glShininess = math::clamp <float> (shininess (), 0, 1) * 128;
+}
+
+void
+Material::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	glUniform1i  (shaderObject -> getLightingUniformLocation          (), true);
+	glUniform1i  (shaderObject -> getSeparateBackColorUniformLocation (), false);
+
+	glUniform1f  (shaderObject -> getAmbientIntensityUniformLocation (), ambientIntensity ());
+	glUniform3fv (shaderObject -> getDiffuseColorUniformLocation     (), 1, diffuseColor  () .getValue () .data ());
+	glUniform3fv (shaderObject -> getSpecularColorUniformLocation    (), 1, specularColor () .getValue () .data ());
+	glUniform3fv (shaderObject -> getEmissiveColorUniformLocation    (), 1, emissiveColor () .getValue () .data ());
+	glUniform1f  (shaderObject -> getShininessUniformLocation        (), shininess        ());
+	glUniform1f  (shaderObject -> getTransparencyUniformLocation     (), transparency     ());
 }
 
 void

@@ -88,7 +88,7 @@ protected:
 
 };
 
-typedef std::vector <std::shared_ptr <X3DCollectableObject>>  CollectableObjectArray;
+using CollectableObjectArray = std::vector <std::shared_ptr <X3DCollectableObject>>;
 
 } // X3D
 } // titania

@@ -184,6 +184,10 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
+
 	///  @name Tests
 
 	virtual

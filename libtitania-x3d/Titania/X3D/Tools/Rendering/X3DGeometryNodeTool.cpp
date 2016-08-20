@@ -301,18 +301,18 @@ X3DGeometryNodeTool::traverse (const TraverseType type)
 }
 
 void
-X3DGeometryNodeTool::draw (const ShapeContainer* const container)
+X3DGeometryNodeTool::draw (ShapeContainer* const context)
 {
 	if (PolygonMode (GL_FILL) .front () == GL_FILL)
 	{
 		PolygonOffset polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 
-		getNode <X3DGeometryNode> () -> draw (container);
+		getNode <X3DGeometryNode> () -> draw (context);
 	}
 
 	viewport         = Viewport4i ();
 	projectionMatrix = getBrowser () -> getProjectionMatrix ();
-	modelViewMatrix  = container -> getModelViewMatrix ();
+	modelViewMatrix  = context -> getModelViewMatrix ();
 }
 
 void

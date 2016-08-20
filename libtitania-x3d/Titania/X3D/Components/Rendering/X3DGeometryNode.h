@@ -188,7 +188,7 @@ public:
 
 	virtual
 	void
-	draw (const ShapeContainer* const);
+	draw (ShapeContainer* const);
 
 	virtual
 	SFNode

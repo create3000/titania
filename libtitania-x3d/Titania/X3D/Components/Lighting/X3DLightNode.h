@@ -127,6 +127,10 @@ public:
 	void
 	draw (const GLenum) = 0;
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t, const Matrix4d &) = 0;
+
 
 protected:
 

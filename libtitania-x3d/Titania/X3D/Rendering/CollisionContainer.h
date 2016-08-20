@@ -121,6 +121,8 @@ private:
 
 };
 
+using CollisionContainerArray = std::vector <std::unique_ptr <CollisionContainer>> ;
+
 } // X3D
 } // titania
 

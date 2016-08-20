@@ -55,14 +55,16 @@
 namespace titania {
 namespace X3D {
 
-ShapeContainer::ShapeContainer (const bool transparent) :
+ShapeContainer::ShapeContainer (X3DRenderer* const renderer, const bool transparent) :
+	       renderer (renderer),
 	    transparent (transparent),
 	        scissor (),
 	modelViewMatrix (),
 	          shape (nullptr),
 	            fog (nullptr),
 	   localObjects (),
-	      distance (0)
+	  colorMaterial (false),
+	       distance (0)
 { }
 
 void

@@ -87,7 +87,7 @@ public:
 
 	virtual
 	void
-	display (const ShapeContainer* const);
+	display (ShapeContainer* const);
 
 	virtual
 	~X3DTextGeometry ();

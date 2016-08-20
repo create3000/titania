@@ -208,7 +208,7 @@ PointSet::build ()
 }
 
 void
-PointSet::draw (const ShapeContainer* const context)
+PointSet::draw (ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw (context);

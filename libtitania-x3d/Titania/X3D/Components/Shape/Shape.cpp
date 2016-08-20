@@ -254,7 +254,7 @@ Shape::collision (const CollisionContainer* const context)
 }
 
 void
-Shape::draw (const ShapeContainer* const context)
+Shape::draw (ShapeContainer* const context)
 {
 	getGeometry () -> draw (context);
 }

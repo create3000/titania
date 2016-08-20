@@ -53,7 +53,9 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../../Rendering/X3DRenderer.h"
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../Shape/X3DAppearanceNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
 #include "../Texturing3D/X3DTexture3DNode.h"
 
@@ -63,6 +65,8 @@
 
 namespace titania {
 namespace X3D {
+
+static constexpr size_t MAX_LIGHTS = 8;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
@@ -110,7 +114,8 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	               x3d_Vertex (-1),
 	   extensionGPUShaderFP64 (false),
 	transformFeedbackVaryings (),
-	             textureUnits ()
+	             textureUnits (),
+	          numGlobalLights (0)
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
 }
@@ -867,25 +872,74 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
  */
 
 void
-X3DProgrammableShaderObject::setGlobalUniforms ()
+X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
 {
+	const auto & browser      = getBrowser ();
+	const auto & globalLights = context -> getRenderer () -> getGlobalLights ();
+
 	glUseProgram (getProgramId ());
 
 	if (extensionGPUShaderFP64)
-		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, getBrowser () -> getProjectionMatrix () .data ());
+		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, browser -> getProjectionMatrix () .data ());
 	else
-		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (getBrowser () -> getProjectionMatrix ()) .data ());
+		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (browser -> getProjectionMatrix ()) .data ());
+
+	// Set global lights
+
+	numGlobalLights = std::min (MAX_LIGHTS, globalLights .size ());
+
+	for (size_t i = 0; i < numGlobalLights; ++ i)
+		globalLights [i] -> setShaderUniforms (this, i);
 }
 
 void
-X3DProgrammableShaderObject::setLocalUniforms (const ShapeContainer* const context)
+X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
+	const auto & browser      = getBrowser ();
+	const auto & appearance   = browser -> getAppearance ();
+	const auto   normalMatrix = inverse (transpose (Matrix3d (context -> getModelViewMatrix ())));
+
 	glUseProgram (getProgramId ());
 
+	// Lights
+
+	const auto & localLights = context -> getRenderer () -> getLocalLights ();
+	const auto   numLights   = std::min (MAX_LIGHTS, numGlobalLights + localLights .size ());
+
+	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
+		localLights [l] -> setShaderUniforms (this, i);
+
+	if (numLights < MAX_LIGHTS)
+		glUniform1i (x3d_LightType [numLights], 0);
+
+	// Material
+
+	appearance -> setShaderUniforms (this);
+
+	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
+
 	if (extensionGPUShaderFP64)
+	{
+		glUniformMatrix3dv (x3d_NormalMatrix,    1, false, normalMatrix .data ());
 		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, context -> getModelViewMatrix () .data ());
+	}
 	else
+	{
+		glUniformMatrix3fv (x3d_NormalMatrix,    1, false, Matrix3f (normalMatrix) .data ());
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (context -> getModelViewMatrix ()) .data ());
+	}
+}
+
+void
+X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
+{
+	if (x3d_Normal == -1)
+		return;
+
+	glEnableVertexAttribArray (x3d_Normal);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (x3d_Normal, 3, GL_DOUBLE, false, 0, nullptr);
 }
 
 void
@@ -898,6 +952,15 @@ X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer (x3d_Vertex, 3, GL_DOUBLE, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::disableNormalAttrib ()
+{
+	if (x3d_Normal == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_Normal);
 }
 
 void

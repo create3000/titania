@@ -137,7 +137,7 @@ Circle2D::build ()
 }
 
 void
-Circle2D::draw (const ShapeContainer* const context)
+Circle2D::draw (ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw (context);

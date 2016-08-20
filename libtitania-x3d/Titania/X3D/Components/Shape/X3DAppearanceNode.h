@@ -84,6 +84,10 @@ public:
 
 	virtual
 	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const = 0;
+
+	virtual
+	void
 	draw () = 0;
 
 

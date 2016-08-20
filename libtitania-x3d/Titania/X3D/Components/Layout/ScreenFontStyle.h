@@ -89,7 +89,7 @@ public:
 
 	virtual
 	void
-	display (const ShapeContainer* const) final override;
+	display (ShapeContainer* const) final override;
 
 	virtual
 	~ScreenText ();

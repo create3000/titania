@@ -57,8 +57,7 @@ namespace X3D {
 
 X3DShadingContext::X3DShadingContext () :
 	           X3DBaseNode (),
-	shadingLanguageVersion (),
-	            shaderNode (nullptr)
+	shadingLanguageVersion ()
 { }
 
 void

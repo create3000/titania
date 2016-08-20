@@ -145,18 +145,28 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms () final override
-	{ X3DProgrammableShaderObject::setGlobalUniforms (); }
+	setGlobalUniforms (ShapeContainer* const context) final override
+	{ X3DProgrammableShaderObject::setGlobalUniforms (context); }
 
 	virtual
 	void
-	setLocalUniforms (const ShapeContainer* const context) final override
+	setLocalUniforms (ShapeContainer* const context) final override
 	{ X3DProgrammableShaderObject::setLocalUniforms (context); }
+
+	virtual
+	void
+	enableNormalAttrib (const GLuint buffer) final override
+	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
+	
+	virtual
+	void
+	disableNormalAttrib () final override
+	{ X3DProgrammableShaderObject::disableNormalAttrib (); }
 	
 	virtual
 	void

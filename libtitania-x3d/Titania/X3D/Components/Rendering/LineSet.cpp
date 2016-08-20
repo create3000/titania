@@ -222,7 +222,7 @@ LineSet::build ()
 }
 
 void
-LineSet::draw (const ShapeContainer* const context)
+LineSet::draw (ShapeContainer* const context)
 {
 	glDisable (GL_LIGHTING);
 	X3DGeometryNode::draw (context);

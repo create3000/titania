@@ -124,16 +124,24 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms () final override;
+	setGlobalUniforms (ShapeContainer* const context) final override;
 
 	virtual
 	void
-	setLocalUniforms (const ShapeContainer* const context) final override;
+	setLocalUniforms (ShapeContainer* const context) final override;
+
+	virtual
+	void
+	enableNormalAttrib (const GLuint buffer) final override;
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer) final override;
 	
+	virtual
+	void
+	disableNormalAttrib () final override;
+
 	virtual
 	void
 	disableVertexAttrib () final override;

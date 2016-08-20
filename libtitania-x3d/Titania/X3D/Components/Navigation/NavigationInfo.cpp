@@ -238,14 +238,12 @@ void
 NavigationInfo::enable ()
 {
 	if (headlight ())
-		light -> enable ();
+		getCurrentLayer () -> getGlobalLights () .emplace_back (light);
 }
 
 void
 NavigationInfo::disable ()
 {
-	if (headlight ())
-		light -> disable ();
 }
 
 void

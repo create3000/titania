@@ -53,32 +53,28 @@
 
 #include "../Base/Output.h"
 #include "../Components/Core/X3DNode.h"
+#include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
+#include "../Rendering/CollisionContainer.h"
+#include "../Rendering/LightContainer.h"
+#include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolume.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 #include <memory>
-#include <stack>
 
 namespace titania {
 namespace X3D {
 
-using ViewVolumeStack = std::vector <ViewVolume>;
-
 class FrameBuffer;
-class CollisionContainer;
-class ShapeContainer;
 class X3DFogObject;
+
+using ViewVolumeStack = std::vector <ViewVolume>;
 
 class X3DRenderer :
 	virtual public X3DNode
 {
 public:
-
-	///  @name Member types
-
-	using ShapeContainerArray = std::vector <std::shared_ptr <ShapeContainer>> ;
-	using CollisionContainerArray = std::vector <std::unique_ptr <CollisionContainer>> ;
 
 	///  @name Common members
 
@@ -110,9 +106,21 @@ public:
 	getGlobalObjects ()
 	{ return globalObjects; }
 
+	LightContainerArray &
+	getGlobalLights ()
+	{ return globalLights; }
+
 	CollectableObjectArray &
 	getLocalObjects ()
 	{ return localObjects; }
+
+	ClipPlaneContainerArray &
+	getClipPlanes ()
+	{ return clipPlanes; }
+
+	LightContainerArray &
+	getLocalLights ()
+	{ return localLights; }
 
 	CollisionArray &
 	getCollisions ()
@@ -197,10 +205,13 @@ private:
 
 	///  @name Members
 
-	ViewVolumeStack        viewVolumeStack;
-	CollectableObjectArray globalObjects;
-	CollectableObjectArray localObjects;
-	CollisionArray         collisions;
+	ViewVolumeStack         viewVolumeStack;
+	CollectableObjectArray  globalObjects;
+	LightContainerArray     globalLights;
+	CollectableObjectArray  localObjects;
+	ClipPlaneContainerArray clipPlanes;
+	LightContainerArray     localLights;
+	CollisionArray          collisions;
 
 	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;

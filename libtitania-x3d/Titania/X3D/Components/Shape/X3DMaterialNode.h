@@ -67,6 +67,10 @@ public:
 	bool
 	isTransparent () const = 0;
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const = 0;
+
 
 protected:
 

@@ -274,7 +274,7 @@ private:
 	Fields fields;
 
 	X3DPtr <DirectionalLight>        directionalLight;
-	std::unique_ptr <LightContainer> light;
+	std::shared_ptr <LightContainer> light;
 
 };
 

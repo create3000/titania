@@ -830,9 +830,11 @@ X3DGeometryNode::collision (const CollisionContainer* const context)
 }
 
 void
-X3DGeometryNode::draw (const ShapeContainer* const context)
+X3DGeometryNode::draw (ShapeContainer* const context)
 {
 	const auto shaderNode = getBrowser () -> getShader ();
+
+	context -> setColorMaterial (not colors .empty ());
 
 	// Enable vertex attribute nodes
 
@@ -853,8 +855,9 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 	{
 		// Enable shader
 
-		shaderNode -> setGlobalUniforms ();
+		shaderNode -> setGlobalUniforms (context);
 		shaderNode -> setLocalUniforms (context);
+		shaderNode -> enableNormalAttrib (normalBufferId);
 		shaderNode -> enableVertexAttrib (vertexBufferId);
 	}
 	//else
@@ -965,6 +968,7 @@ X3DGeometryNode::draw (const ShapeContainer* const context)
 	{
 		// Disable shader
 
+		shaderNode -> disableNormalAttrib ();
 		shaderNode -> disableVertexAttrib ();
 	}
 	//else

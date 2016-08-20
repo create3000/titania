@@ -63,15 +63,21 @@
 namespace titania {
 namespace X3D {
 
+class X3DRenderer;
+
 class ShapeContainer
 {
 public:
 
 	///  @name Construction
 
-	ShapeContainer (const bool);
+	ShapeContainer (X3DRenderer* const, const bool);
 
 	///  @name Member access
+
+	X3DRenderer*
+	getRenderer () const
+	{ return renderer; }
 
 	bool
 	isTransparent () const
@@ -118,6 +124,14 @@ public:
 	{ return localObjects; }
 
 	void
+	setColorMaterial (const bool value)
+	{ colorMaterial = value; }
+
+	bool
+	getColorMaterial () const
+	{ return colorMaterial; }
+
+	void
 	setDistance (double value)
 	{ distance = value; }
 
@@ -135,12 +149,14 @@ private:
 
 	///  @name Members
 
+	X3DRenderer* const     renderer;
 	bool                   transparent;
 	Vector4i               scissor;
 	Matrix4d               modelViewMatrix;
 	X3DShapeNode*          shape;
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
+	bool                   colorMaterial;
 	double                 distance;
 
 };
@@ -156,6 +172,8 @@ public:
 	}
 
 };
+
+using ShapeContainerArray = std::vector <std::shared_ptr <ShapeContainer>>;
 
 } // X3D
 } // titania

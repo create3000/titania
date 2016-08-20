@@ -72,6 +72,8 @@ public:
 	void
 	disable () final override;
 
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
 
 private:
 
@@ -80,6 +82,8 @@ private:
 	GLenum              lightId;
 
 };
+
+using LightContainerArray = std::vector <std::shared_ptr <LightContainer>>;
 
 } // X3D
 } // titania

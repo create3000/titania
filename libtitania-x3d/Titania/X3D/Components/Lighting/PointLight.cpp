@@ -144,6 +144,12 @@ PointLight::draw (GLenum lightId)
 }
 
 void
+PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+{
+
+}
+
+void
 PointLight::addTool ()
 {
 	X3DLightNode::addTool (new PointLightTool (this));

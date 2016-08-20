@@ -239,17 +239,24 @@ ProgramShader::draw ()
 }
 
 void
-ProgramShader::setGlobalUniforms ()
+ProgramShader::setGlobalUniforms (ShapeContainer* const context)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> setGlobalUniforms ();
+		programNode -> setGlobalUniforms (context);
 }
 
 void
-ProgramShader::setLocalUniforms (const ShapeContainer* const context)
+ProgramShader::setLocalUniforms (ShapeContainer* const context)
 {
 	for (const auto & programNode : programNodes)
 		programNode -> setLocalUniforms (context);
+}
+
+void
+ProgramShader::enableNormalAttrib (const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableNormalAttrib (buffer);
 }
 
 void
@@ -257,6 +264,13 @@ ProgramShader::enableVertexAttrib (const GLuint buffer)
 {
 	for (const auto & programNode : programNodes)
 		programNode -> enableVertexAttrib (buffer);
+}
+
+void
+ProgramShader::disableNormalAttrib ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableNormalAttrib ();
 }
 
 void

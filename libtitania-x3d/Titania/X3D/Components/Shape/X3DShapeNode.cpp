@@ -149,7 +149,7 @@ X3DShapeNode::set_geometry ()
 }
 
 void
-X3DShapeNode::display (const ShapeContainer* const context)
+X3DShapeNode::display (ShapeContainer* const context)
 {
 	appearanceNode -> draw ();
 

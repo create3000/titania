@@ -70,14 +70,22 @@ public:
 
 	const X3DPtr <LineProperties> &
 	getDefaultLineProperties () const
-	{ return lineProperties; }
+	{ return defaultLineProperties; }
 
 	const X3DPtr <FillProperties> &
 	getDefaultFillProperties () const
-	{ return fillProperties; }
+	{ return defaultFillProperties; }
 
 	const X3DPtr <X3DAppearanceNode> &
 	getDefaultAppearance () const
+	{ return defaultAppearance; }
+
+	void
+	setAppearance (X3DAppearanceNode* const value) 
+	{ appearance = value; }
+
+	X3DAppearanceNode*
+	getAppearance () const
 	{ return appearance; }
 
 	///  @name Destruction
@@ -105,9 +113,10 @@ private:
 
 	///  @name Members
 
-	X3DPtr <LineProperties>    lineProperties;
-	X3DPtr <FillProperties>    fillProperties;
-	X3DPtr <X3DAppearanceNode> appearance;
+	X3DPtr <LineProperties>    defaultLineProperties;
+	X3DPtr <FillProperties>    defaultFillProperties;
+	X3DPtr <X3DAppearanceNode> defaultAppearance;
+	X3DAppearanceNode*         appearance;
 
 };
 

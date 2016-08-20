@@ -77,7 +77,7 @@ X3DLightNode::push ()
 	if (on ())
 	{
 		if (global ())
-			getCurrentLayer () -> getGlobalObjects () .emplace_back (new LightContainer (this));
+			getCurrentLayer () -> getGlobalLights () .emplace_back (new LightContainer (this));
 
 		else
 			getCurrentLayer () -> getLocalObjects () .emplace_back (new LightContainer (this));
