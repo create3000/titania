@@ -151,6 +151,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 		context -> setShape (shape);
 		context -> setFog (getFog ());
 		context -> setLocalObjects (getLocalObjects ());
+		context -> setLocalLights (getLocalLights ());
 		context -> setDistance (center);
 	}
 }
@@ -530,10 +531,10 @@ X3DRenderer::display ()
 
 	// Disable global lights
 
-	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
+	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
 
-	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
 		object -> disable ();
 
 	// Reset to default OpenGL appearance

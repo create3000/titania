@@ -119,8 +119,24 @@ public:
 	{ return x3d_LightAttenuation; }
 
 	const std::vector <GLint> &
+	getLightLocationUniformLocation () const
+	{ return x3d_LightLocation; }
+
+	const std::vector <GLint> &
 	getLightDirectionUniformLocation () const
 	{ return x3d_LightDirection; }
+
+	const std::vector <GLint> &
+	getLightBeamWidthUniformLocation () const
+	{ return x3d_LightBeamWidth; }
+
+	const std::vector <GLint> &
+	getLightCutOffAngleUniformLocation () const
+	{ return x3d_LightCutOffAngle; }
+
+	const std::vector <GLint> &
+	getLightRadiusUniformLocation () const
+	{ return x3d_LightRadius; }
 
 	///  @name Uniform location access material
 

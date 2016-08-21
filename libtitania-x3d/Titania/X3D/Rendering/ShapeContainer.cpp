@@ -63,6 +63,7 @@ ShapeContainer::ShapeContainer (X3DRenderer* const renderer, const bool transpar
 	          shape (nullptr),
 	            fog (nullptr),
 	   localObjects (),
+	    localLights (),
 	  colorMaterial (false),
 	       distance (0)
 { }
@@ -78,11 +79,17 @@ ShapeContainer::display ()
 	for (const auto & object : localObjects)
 		object -> enable ();
 
+	for (const auto & object : localLights)
+		object -> enable ();
+
 	glLoadMatrixd (modelViewMatrix .data ());
 
 	fog -> enable ();
 
 	shape -> display (this);
+
+	for (const auto & object : basic::make_reverse_range (localLights))
+		object -> disable ();
 
 	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();

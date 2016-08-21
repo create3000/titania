@@ -53,9 +53,12 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Lighting/PointLightTool.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
+
+static constexpr int32_t POINT_LIGHT = 2;
 
 const ComponentType PointLight::component      = ComponentType::LIGHTING;
 const std::string   PointLight::typeName       = "PointLight";
@@ -146,7 +149,15 @@ PointLight::draw (GLenum lightId)
 void
 PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
+	const auto worldLocation = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
 
+	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], POINT_LIGHT);
+	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
+	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
+	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
+	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
+	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
 }
 
 void

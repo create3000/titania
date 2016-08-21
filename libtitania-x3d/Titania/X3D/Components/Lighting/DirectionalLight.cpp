@@ -58,6 +58,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr int32_t DIRECTIONAL_LIGHT = 1;
+
 const ComponentType DirectionalLight::component      = ComponentType::LIGHTING;
 const std::string   DirectionalLight::typeName       = "DirectionalLight";
 const std::string   DirectionalLight::containerField = "children";
@@ -138,11 +140,10 @@ DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 {
 	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
 
-	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], 1);
+	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], DIRECTIONAL_LIGHT);
 	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
 	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
 	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
-	glUniform3f  (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, 0, 0);
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
 }
 

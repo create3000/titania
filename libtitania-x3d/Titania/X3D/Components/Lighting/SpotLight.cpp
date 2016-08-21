@@ -53,9 +53,12 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Lighting/SpotLightTool.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
+
+static constexpr int32_t SPOT_LIGHT = 3;
 
 const ComponentType SpotLight::component      = ComponentType::LIGHTING;
 const std::string   SpotLight::typeName       = "SpotLight";
@@ -162,7 +165,19 @@ SpotLight::draw (GLenum lightId)
 void
 SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
+	const auto worldLocation  = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
+	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
 
+	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], SPOT_LIGHT);
+	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
+	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
+	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
+	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
+	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
+	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], beamWidth ());   // clamp
+	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], cutOffAngle ()); // clamp
+	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
 }
 
 void

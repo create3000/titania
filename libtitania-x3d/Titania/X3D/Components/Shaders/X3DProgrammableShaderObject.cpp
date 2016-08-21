@@ -909,7 +909,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	// Lights
 
-	const auto & localLights = context -> getRenderer () -> getLocalLights ();
+	const auto & localLights = context -> getLocalLights ();
 	const auto   numLights   = std::min (MAX_LIGHTS, numGlobalLights + localLights .size ());
 
 	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)

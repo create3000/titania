@@ -68,7 +68,6 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
-	     texCoordNode (),
 	        texCoords (),
 	          normals (),
 	         vertices (),
@@ -84,8 +83,11 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
-	addChildren (cameraObject,
-	             texCoordNode);
+	#ifndef SHADER_PIPELINE
+	addChildren (texCoordNode);
+	#endif
+
+	addChildren (cameraObject);
 }
 
 void
@@ -93,7 +95,9 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
+	#ifndef SHADER_PIPELINE
 	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
+	#endif
 
 	if (glXGetCurrentContext ())
 	{
@@ -112,11 +116,13 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	#ifndef SHADER_PIPELINE
 	if (isInitialized ())
 	{
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
+	#endif
 
 	X3DNode::setExecutionContext (executionContext);
 }
@@ -156,6 +162,7 @@ X3DGeometryNode::setAttribs (const X3DPtrArray <X3DVertexAttributeNode> & nodes,
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
+#ifndef SHADER_PIPELINE
 void
 X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
@@ -165,6 +172,7 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 	else
 		texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 }
+#endif
 
 bool
 X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
@@ -865,7 +873,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		shaderNode -> enableNormalAttrib   (normalBufferId);
 		shaderNode -> enableVertexAttrib   (vertexBufferId);
 	}
-	//else
+
+	#ifndef SHADER_PIPELINE
 	{
 		// Enable colors, texture coords, normals and vertices.
 
@@ -880,10 +889,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		}
 
 		if (getBrowser () -> getTexture ())
-		{
-			if (texCoordNode)
-				texCoordNode -> enable (texCoordBufferIds);
-		}
+			texCoordNode -> enable (texCoordBufferIds);
 
 		if (glIsEnabled (GL_LIGHTING) or shaderNode)
 		{
@@ -899,6 +905,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		glEnableClientState (GL_VERTEX_ARRAY);
 		glVertexPointer (3, GL_DOUBLE, 0, 0);
 	}
+	#endif
 
 	// Draw depending on ccw, transparency and solid.
 
@@ -978,15 +985,13 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		shaderNode -> disableNormalAttrib ();
 		shaderNode -> disableVertexAttrib ();
 	}
-	//else
+
+	#ifndef SHADER_PIPELINE
 	{
 		// Texture
 	
 		if (getBrowser () -> getTexture ())
-		{
-			if (texCoordNode)
-				texCoordNode -> disable ();
-		}
+			texCoordNode -> disable ();
 
 		// Other arrays
 
@@ -994,6 +999,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		glDisableClientState (GL_NORMAL_ARRAY);
 		glDisableClientState (GL_VERTEX_ARRAY);
 	}
+	#endif
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }

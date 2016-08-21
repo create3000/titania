@@ -53,6 +53,7 @@
 
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/LightContainer.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 #include "../Types/Geometry.h"
@@ -124,6 +125,14 @@ public:
 	{ return localObjects; }
 
 	void
+	setLocalLights (const LightContainerArray & value)
+	{ localLights = value; }
+
+	const LightContainerArray &
+	getLocalLights () const
+	{ return localLights; }
+
+	void
 	setColorMaterial (const bool value)
 	{ colorMaterial = value; }
 
@@ -156,6 +165,7 @@ private:
 	X3DShapeNode*          shape;
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
+	LightContainerArray    localLights;
 	bool                   colorMaterial;
 	double                 distance;
 

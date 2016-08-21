@@ -80,7 +80,7 @@ X3DLightNode::push ()
 			getCurrentLayer () -> getGlobalLights () .emplace_back (new LightContainer (this));
 
 		else
-			getCurrentLayer () -> getLocalObjects () .emplace_back (new LightContainer (this));
+			getCurrentLayer () -> getLocalLights () .emplace_back (new LightContainer (this));
 	}
 }
 
@@ -88,7 +88,7 @@ void
 X3DLightNode::pop ()
 {
 	if (on () and not global ())
-		getCurrentLayer () -> getLocalObjects () .pop_back ();
+		getCurrentLayer () -> getLocalLights () .pop_back ();
 }
 
 } // X3D

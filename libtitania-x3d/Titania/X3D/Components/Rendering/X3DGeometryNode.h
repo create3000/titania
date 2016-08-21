@@ -234,8 +234,10 @@ protected:
 	getTexCoords () const
 	{ return texCoords; }
 
+	#ifndef SHADER_PIPELINE
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const);
+	#endif
 
 	std::vector <Vector3f> &
 	getNormals ()
@@ -336,11 +338,14 @@ private:
 
 	///  @name Members
 
+	#ifndef SHADER_PIPELINE
+	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
+	#endif
+
 	SFBool                                cameraObject;
 	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;
-	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
 	std::vector <Vector3d>                vertices;

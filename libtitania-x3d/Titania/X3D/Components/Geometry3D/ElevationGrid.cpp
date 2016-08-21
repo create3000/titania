@@ -208,7 +208,9 @@ ElevationGrid::set_texCoord ()
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
 
+	#ifndef SHADER_PIPELINE
 	setTextureCoordinate (texCoordNode);
+	#endif
 }
 
 void
