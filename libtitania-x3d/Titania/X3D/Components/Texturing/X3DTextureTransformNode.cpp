@@ -51,12 +51,14 @@
 #include "X3DTextureTransformNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
 
 X3DTextureTransformNode::X3DTextureTransformNode () :
-	X3DAppearanceChildNode ()
+	X3DAppearanceChildNode (),
+	                matrix ()
 {
 	addType (X3DConstants::X3DTextureTransformNode);
 }
@@ -87,6 +89,15 @@ X3DTextureTransformNode::draw (const int32_t unit)
 	glLoadMatrixd (matrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
+}
+
+void
+X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
+{
+	if (shaderObject -> isExtensionGPUShaderFP64Available ())
+		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, matrix .data ());
+	else
+		glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, Matrix4f (matrix) .data ());
 }
 
 } // X3D

@@ -266,17 +266,17 @@ Appearance::draw ()
 		glColor4f (1, 1, 1, 1);
 	}
 
-	// TextureTransform
-
-	textureTransformNode -> draw ();
-
 	// Texture
 
 	if (textureNode)
 	{
 		textureNode -> draw ();
-		getBrowser () -> setTexture (true);
+		//getBrowser () -> setTexture (true); // See below.
 	}
+
+	// TextureTransform
+
+	textureTransformNode -> draw ();
 
 	// Shader
 
@@ -284,6 +284,7 @@ Appearance::draw ()
 		shaderNode -> draw ();
 
 	getBrowser () -> setAppearance (this);
+	getBrowser () -> setTexture (textureNode);
 	getBrowser () -> setShader (shaderNode);
 }
 
@@ -296,10 +297,19 @@ Appearance::draw ()
 void
 Appearance::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
+	static const auto textureType = std::vector <int32_t> ({ 0 });
+
 	if (materialNode)
 		materialNode -> setShaderUniforms (shaderObject);
 	else
 		glUniform1i (shaderObject -> getLightingUniformLocation (), false);
+
+	if (textureNode)
+		textureNode -> setShaderUniforms (shaderObject);
+	else
+		glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
+
+	textureTransformNode -> setShaderUniforms (shaderObject);
 }
 
 } // X3D

@@ -60,7 +60,6 @@ namespace X3D {
 X3DRenderingContext::X3DRenderingContext () :
 	     X3DBaseNode (),
 	projectionMatrix (),
-	      shaderNode (nullptr),
 	   maxClipPlanes (0),
 	      clipPlanes (),
 	       depthTest (),

@@ -66,7 +66,8 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t MAX_LIGHTS = 8;
+static constexpr size_t MAX_LIGHTS    = 8;
+static constexpr size_t MAX_TEX_COORD = 4;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
@@ -115,6 +116,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	   extensionGPUShaderFP64 (false),
 	transformFeedbackVaryings (),
 	             textureUnits (),
+	             geometryType (3),
 	          numGlobalLights (0)
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
@@ -232,11 +234,15 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Normal   = glGetAttribLocation (program, "x3d_Normal");
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
 
-	//	gl .uniform1i  (x3d_GeometryType,         this .getGeometryType ());
-	//	gl .uniform1f  (x3d_LinewidthScaleFactor, 1);
-	//	gl .uniform1iv (x3d_TextureType,          new Int32Array ([0]));
-	//	gl .uniform1iv (x3d_Texture,              new Int32Array ([0])); // Set texture to active texture unit 0.
-	//	gl .uniform1iv (x3d_CubeMapTexture,       new Int32Array ([1])); // Set cube map texture to active texture unit 1.
+	static const auto textureType    = std::vector <int32_t> ({ 0 });
+	static const auto texture        = std::vector <int32_t> ({ 0 });
+	static const auto cubeMapTexture = std::vector <int32_t> ({ 1 });
+
+	glUniform1i  (x3d_GeometryType,         geometryType);
+	glUniform1f  (x3d_LinewidthScaleFactor, 1);
+	glUniform1iv (x3d_TextureType,          1, textureType    .data ());
+	glUniform1iv (x3d_Texture,              1, texture        .data ()); // Set texture to active texture unit 0.
+	glUniform1iv (x3d_CubeMapTexture,       1, cubeMapTexture .data ()); // Set cube map texture to active texture unit 1.
 
 	glUseProgram (0);
 }
@@ -897,7 +903,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
 	const auto & browser      = getBrowser ();
 	const auto & appearance   = browser -> getAppearance ();
-	const auto   normalMatrix = inverse (transpose (Matrix3d (context -> getModelViewMatrix ())));
+	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
 
 	glUseProgram (getProgramId ());
 
@@ -920,13 +926,42 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	if (extensionGPUShaderFP64)
 	{
-		glUniformMatrix3dv (x3d_NormalMatrix,    1, false, normalMatrix .data ());
+		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix .data ());
 		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, context -> getModelViewMatrix () .data ());
 	}
 	else
 	{
-		glUniformMatrix3fv (x3d_NormalMatrix,    1, false, Matrix3f (normalMatrix) .data ());
+		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix) .data ());
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (context -> getModelViewMatrix ()) .data ());
+	}
+}
+
+void
+X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)
+{
+	if (x3d_Color == -1)
+		return;
+
+	glEnableVertexAttribArray (x3d_Color);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (x3d_Color, 4, GL_FLOAT, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
+{
+	if (x3d_TexCoord == -1)
+		return;
+
+	for (size_t i = 0, size = std::min (MAX_TEX_COORD, buffers .size ()); i < size; ++ i)
+	{
+		glEnableVertexAttribArray (x3d_TexCoord + i);
+
+		glBindBuffer (GL_ARRAY_BUFFER, buffers [i]);
+		glVertexAttribPointer (x3d_TexCoord + i, 4, GL_FLOAT, false, 0, nullptr);
+
+		break; // TODO: Currently only one tex coord node is supported.
 	}
 }
 
@@ -939,7 +974,7 @@ X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
 	glEnableVertexAttribArray (x3d_Normal);
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer (x3d_Normal, 3, GL_DOUBLE, false, 0, nullptr);
+	glVertexAttribPointer (x3d_Normal, 3, GL_FLOAT, false, 0, nullptr);
 }
 
 void
@@ -952,6 +987,24 @@ X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer (x3d_Vertex, 3, GL_DOUBLE, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::disableColorAttrib ()
+{
+	if (x3d_Color == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_Color);
+}
+
+void
+X3DProgrammableShaderObject::disableTexCoordAttrib ()
+{
+	if (x3d_TexCoord == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_TexCoord);
 }
 
 void

@@ -177,5 +177,11 @@ X3DTexture3DNode::draw ()
 	X3DTextureNode::draw (GL_TEXTURE_3D, components);
 }
 
+void
+X3DTexture3DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
+{
+
+}
+
 } // X3D
 } // titania

@@ -155,13 +155,33 @@ public:
 
 	virtual
 	void
+	enableColorAttrib (const GLuint buffer) final override
+	{ X3DProgrammableShaderObject::enableColorAttrib (buffer); }
+
+	virtual
+	void
+	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
+	{ X3DProgrammableShaderObject::enableTexCoordAttrib (buffers); }
+
+	virtual
+	void
 	enableNormalAttrib (const GLuint buffer) final override
-	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
+	{ X3DProgrammableShaderObject::enableNormalAttrib (buffer); }
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
+	
+	virtual
+	void
+	disableColorAttrib () final override
+	{ X3DProgrammableShaderObject::disableColorAttrib (); }
+	
+	virtual
+	void
+	disableTexCoordAttrib () final override
+	{ X3DProgrammableShaderObject::disableTexCoordAttrib (); }
 	
 	virtual
 	void

@@ -81,7 +81,7 @@ public:
 
 	const X3DPtr <X3DViewportNode> &
 	getDefaultViewport () const
-	{ return viewport; }
+	{ return defaultViewport; }
 
 	///  @name Destruction
 
@@ -117,7 +117,7 @@ private:
 	LayerStack layers;
 	Vector4i   rectangle;
 
-	X3DPtr <X3DViewportNode> viewport;
+	X3DPtr <X3DViewportNode> defaultViewport;
 
 };
 

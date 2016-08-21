@@ -93,10 +93,7 @@ X3DShaderNode::deselect ()
 
 void
 X3DShaderNode::draw ()
-{
-	glEnable (GL_LIGHTING);
-	getBrowser () -> setTexture (true);
-}
+{ }
 
 } // X3D
 } // titania

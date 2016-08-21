@@ -253,6 +253,20 @@ ProgramShader::setLocalUniforms (ShapeContainer* const context)
 }
 
 void
+ProgramShader::enableColorAttrib (const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableColorAttrib (buffer);
+}
+
+void
+ProgramShader::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableTexCoordAttrib (buffers);
+}
+
+void
 ProgramShader::enableNormalAttrib (const GLuint buffer)
 {
 	for (const auto & programNode : programNodes)
@@ -264,6 +278,20 @@ ProgramShader::enableVertexAttrib (const GLuint buffer)
 {
 	for (const auto & programNode : programNodes)
 		programNode -> enableVertexAttrib (buffer);
+}
+
+void
+ProgramShader::disableColorAttrib ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableColorAttrib ();
+}
+
+void
+ProgramShader::disableTexCoordAttrib ()
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableTexCoordAttrib ();
 }
 
 void

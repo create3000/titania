@@ -59,6 +59,8 @@
 namespace titania {
 namespace X3D {
 
+static constexpr size_t MAX_TEXTURES = 8;
+
 const ComponentType MultiTexture::component      = ComponentType::TEXTURING;
 const std::string   MultiTexture::typeName       = "MultiTexture";
 const std::string   MultiTexture::containerField = "texture";
@@ -685,6 +687,12 @@ MultiTexture::draw ()
 
 		++ index;
 	}
+}
+
+void
+MultiTexture::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+
 }
 
 } // X3D

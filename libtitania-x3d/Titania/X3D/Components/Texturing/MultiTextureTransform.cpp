@@ -149,5 +149,11 @@ MultiTextureTransform::draw ()
 	}
 }
 
+void
+MultiTextureTransform::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+
+}
+
 } // X3D
 } // titania

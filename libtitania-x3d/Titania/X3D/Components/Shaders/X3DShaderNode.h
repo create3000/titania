@@ -129,11 +129,27 @@ public:
 
 	virtual
 	void
+	enableColorAttrib (const GLuint) = 0;
+
+	virtual
+	void
+	enableTexCoordAttrib (const std::vector <GLuint> &) = 0;
+
+	virtual
+	void
 	enableNormalAttrib (const GLuint) = 0;
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint) = 0;
+
+	virtual
+	void
+	disableColorAttrib () = 0;
+
+	virtual
+	void
+	disableTexCoordAttrib () = 0;
 
 	virtual
 	void

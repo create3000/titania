@@ -176,6 +176,24 @@ public:
 	getBackTransparencyUniformLocation () const
 	{ return x3d_BackTransparency; }
 
+	///  @name Uniform location access texture
+
+	bool
+	isExtensionGPUShaderFP64Available () const
+	{ return extensionGPUShaderFP64; }
+
+	GLint
+	getTextureTypeUniformLocation () const
+	{ return x3d_TextureType; }
+
+	GLint
+	getTextureUniformLocation () const
+	{ return x3d_Texture; }
+
+	GLint
+	getTextureMatrixUniformLocation () const
+	{ return x3d_TextureMatrix; }
+
 	///  @name Special
 
 	void
@@ -194,10 +212,22 @@ public:
 	setLocalUniforms (ShapeContainer* const);
 
 	void
+	enableColorAttrib (const GLuint);
+
+	void
+	enableTexCoordAttrib (const std::vector <GLuint> &);
+
+	void
 	enableNormalAttrib (const GLuint);
 
 	void
 	enableVertexAttrib (const GLuint);
+	
+	void
+	disableColorAttrib ();
+	
+	void
+	disableTexCoordAttrib ();
 	
 	void
 	disableNormalAttrib ();
@@ -303,6 +333,7 @@ private:
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
 	std::vector <size_t>      textureUnits;
+	size_t                    geometryType;
 	size_t                    numGlobalLights;
 
 };

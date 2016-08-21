@@ -68,7 +68,7 @@ public:
 
 	const X3DPtr <X3DParticleEmitterNode> &
 	getDefaultEmitter () const
-	{ return emitter; }
+	{ return defaultEmitter; }
 
 	///  @name Destruction
 
@@ -96,7 +96,7 @@ private:
 
 	// Members
 
-	X3DPtr <X3DParticleEmitterNode> emitter;
+	X3DPtr <X3DParticleEmitterNode> defaultEmitter;
 
 };
 

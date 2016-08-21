@@ -69,7 +69,7 @@ public:
 
 	const X3DPtr <TextureProperties> &
 	getDefaultCubeMapTextureProperties () const
-	{ return textureProperties; }
+	{ return defaultCubeMapTextureProperties; }
 
 	///  @name Destruction
 
@@ -97,7 +97,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <TextureProperties> textureProperties;
+	X3DPtr <TextureProperties> defaultCubeMapTextureProperties;
 
 };
 

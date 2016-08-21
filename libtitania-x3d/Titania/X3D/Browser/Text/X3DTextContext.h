@@ -68,7 +68,7 @@ public:
 
 	const X3DPtr <X3DFontStyleNode> &
 	getDefaultFontStyle () const
-	{ return fontStyle; }
+	{ return defaultFontStyle; }
 
 	///  @name Destruction
 
@@ -95,7 +95,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DFontStyleNode> fontStyle;
+	X3DPtr <X3DFontStyleNode> defaultFontStyle;
 
 };
 

@@ -61,23 +61,23 @@ namespace titania {
 namespace X3D {
 
 X3DTexturingContext::X3DTexturingContext () :
-	            X3DBaseNode (),
-	                texture (false),
-	          textureMemory (0),
-	         minTextureSize (16),
-	         maxTextureSize (0),
-	        maxTextureUnits (0),
-	maxCombinedTextureUnits (0),
-	           textureUnits (),
-	   combinedTextureUnits (),
-	          textureStages (),
-	               texCoord (new TextureCoordinate (getExecutionContext ())),
-	      textureProperties (new TextureProperties (getExecutionContext ())),
-	       textureTransform (new TextureTransform (getExecutionContext ()))
+	             X3DBaseNode (),
+	           textureMemory (0),
+	          minTextureSize (16),
+	          maxTextureSize (0),
+	         maxTextureUnits (0),
+	 maxCombinedTextureUnits (0),
+	            textureUnits (),
+	    combinedTextureUnits (),
+	           textureStages (),
+	         defaultTexCoord (new TextureCoordinate (getExecutionContext ())),
+	defaultTextureProperties (new TextureProperties (getExecutionContext ())),
+	 defaultTextureTransform (new TextureTransform (getExecutionContext ())),
+	                 texture (nullptr)
 {
-	addChildren (texCoord,
-	             textureProperties,
-	             textureTransform);
+	addChildren (defaultTexCoord,
+	             defaultTextureProperties,
+	             defaultTextureTransform);
 }
 
 void
@@ -112,9 +112,9 @@ X3DTexturingContext::initialize ()
 			combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
 	}
 
-	texCoord          -> setup ();
-	textureProperties -> setup ();
-	textureTransform  -> setup ();
+	defaultTexCoord          -> setup ();
+	defaultTextureProperties -> setup ();
+	defaultTextureTransform  -> setup ();
 }
 
 size_t

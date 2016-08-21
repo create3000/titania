@@ -136,12 +136,32 @@ public:
 
 	virtual
 	void
+	enableColorAttrib (const GLuint buffer) final override
+	{ }
+
+	virtual
+	void
+	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
+	{ }
+
+	virtual
+	void
 	enableNormalAttrib (const GLuint buffer) final override
 	{ }
 
 	virtual
 	void
 	enableVertexAttrib (const GLuint buffer) final override
+	{ }
+	
+	virtual
+	void
+	disableColorAttrib () final override
+	{ }
+	
+	virtual
+	void
+	disableTexCoordAttrib () final override
 	{ }
 	
 	virtual

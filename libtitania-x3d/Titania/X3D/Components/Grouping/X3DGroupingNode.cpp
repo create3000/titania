@@ -362,6 +362,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 			return;
 		}
 		case TraverseType::COLLISION:
+		case TraverseType::DEPTH:
 		{
 			for (const auto & childNode : clipPlanes)
 				childNode -> push ();
@@ -375,7 +376,6 @@ X3DGroupingNode::traverse (const TraverseType type)
 			return;
 		}
 		case TraverseType::DISPLAY:
-		case TraverseType::DEPTH:
 		{
 			for (const auto & childNode : clipPlanes)
 				childNode -> push ();

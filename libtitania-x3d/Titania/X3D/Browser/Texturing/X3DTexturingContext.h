@@ -62,6 +62,7 @@ namespace X3D {
 
 class TextureProperties;
 class X3DTextureCoordinateNode;
+class X3DTextureNode;
 class X3DTextureTransformNode;
 
 using TextureUnitStack = std::stack <int32_t>;
@@ -73,14 +74,6 @@ class X3DTexturingContext :
 public:
 
 	///  @name Member access
-
-	void
-	setTexture (const bool value)
-	{ texture = value; }
-
-	bool
-	getTexture () const
-	{ return texture; }
 
 	size_t
 	getTextureMemory () const
@@ -119,15 +112,23 @@ public:
 
 	const X3DPtr <X3DTextureCoordinateNode> &
 	getDefaultTexCoord () const
-	{ return texCoord; }
+	{ return defaultTexCoord; }
 
 	const X3DPtr <TextureProperties> &
 	getDefaultTextureProperties () const
-	{ return textureProperties; }
+	{ return defaultTextureProperties; }
 
 	const X3DPtr <X3DTextureTransformNode> &
 	getDefaultTextureTransform () const
-	{ return textureTransform; }
+	{ return defaultTextureTransform; }
+
+	void
+	setTexture (X3DTextureNode* const value)
+	{ texture = value; }
+
+	X3DTextureNode*
+	getTexture () const
+	{ return texture; }
 
 	///  @name Destruction
 
@@ -155,7 +156,6 @@ private:
 
 	///  @name Members
 
-	bool             texture;
 	size_t           textureMemory;
 	size_t           minTextureSize;
 	int32_t          maxTextureSize;
@@ -165,9 +165,10 @@ private:
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;
 
-	X3DPtr <X3DTextureCoordinateNode> texCoord;
-	X3DPtr <TextureProperties>        textureProperties;
-	X3DPtr <X3DTextureTransformNode>  textureTransform;
+	X3DPtr <X3DTextureCoordinateNode> defaultTexCoord;
+	X3DPtr <TextureProperties>        defaultTextureProperties;
+	X3DPtr <X3DTextureTransformNode>  defaultTextureTransform;
+	X3DTextureNode*                   texture;
 
 };
 

@@ -857,30 +857,35 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		shaderNode -> setGlobalUniforms (context);
 		shaderNode -> setLocalUniforms (context);
-		shaderNode -> enableNormalAttrib (normalBufferId);
-		shaderNode -> enableVertexAttrib (vertexBufferId);
+
+		if (not colors .empty ())
+			shaderNode -> enableColorAttrib (colorBufferId);
+
+		shaderNode -> enableTexCoordAttrib (texCoordBufferIds);
+		shaderNode -> enableNormalAttrib   (normalBufferId);
+		shaderNode -> enableVertexAttrib   (vertexBufferId);
 	}
 	//else
 	{
 		// Enable colors, texture coords, normals and vertices.
-	
+
 		if (not colors .empty ())
 		{
 			if (glIsEnabled (GL_LIGHTING))
 				glEnable (GL_COLOR_MATERIAL);
-	
+
 			glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
 			glEnableClientState (GL_COLOR_ARRAY);
 			glColorPointer (4, GL_FLOAT, 0, 0);
 		}
-	
+
 		if (getBrowser () -> getTexture ())
 		{
 			if (texCoordNode)
 				texCoordNode -> enable (texCoordBufferIds);
 		}
-	
-		if (glIsEnabled (GL_LIGHTING) /* or shader */)
+
+		if (glIsEnabled (GL_LIGHTING) or shaderNode)
 		{
 			if (not normals .empty ())
 			{
@@ -889,7 +894,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 				glNormalPointer (GL_FLOAT, 0, 0);
 			}
 		}
-	
+
 		glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 		glEnableClientState (GL_VERTEX_ARRAY);
 		glVertexPointer (3, GL_DOUBLE, 0, 0);
@@ -968,6 +973,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		// Disable shader
 
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
 		shaderNode -> disableNormalAttrib ();
 		shaderNode -> disableVertexAttrib ();
 	}

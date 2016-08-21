@@ -69,6 +69,14 @@ public:
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
 
+	void
+	setShader (X3DShaderNode* const value)
+	{ shaderNode = value; }
+
+	X3DShaderNode*
+	getShader () const
+	{ return shaderNode; }
+
 	///  @name Destruction
 
 	virtual
@@ -92,7 +100,8 @@ private:
 
 	///  @name Members
 
-	float shadingLanguageVersion;
+	float          shadingLanguageVersion;
+	X3DShaderNode* shaderNode;
 
 };
 

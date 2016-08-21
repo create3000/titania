@@ -103,6 +103,10 @@ public:
 	void
 	draw () final override;
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const final override;
+
 
 protected:
 

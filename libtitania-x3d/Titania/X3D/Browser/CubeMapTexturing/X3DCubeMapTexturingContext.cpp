@@ -56,21 +56,21 @@ namespace titania {
 namespace X3D {
 
 X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
-	            X3DBaseNode (),
-	      textureProperties (new TextureProperties (getExecutionContext ()))
+	                    X3DBaseNode (),
+   defaultCubeMapTextureProperties (new TextureProperties (getExecutionContext ()))
 {
-	addChildren (textureProperties);
+	addChildren (defaultCubeMapTextureProperties);
 }
 
 void
 X3DCubeMapTexturingContext::initialize ()
 {
-	textureProperties -> minificationFilter ()  = "NEAREST_PIXEL";
-	textureProperties -> magnificationFilter () = "NEAREST_PIXEL";
-	textureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
-	textureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
-	textureProperties -> setup ();
+	defaultCubeMapTextureProperties -> minificationFilter ()  = "NEAREST_PIXEL";
+	defaultCubeMapTextureProperties -> magnificationFilter () = "NEAREST_PIXEL";
+	defaultCubeMapTextureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
+	defaultCubeMapTextureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
+	defaultCubeMapTextureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
+	defaultCubeMapTextureProperties -> setup ();
 }
 
 X3DCubeMapTexturingContext::~X3DCubeMapTexturingContext ()

@@ -56,16 +56,16 @@ namespace titania {
 namespace X3D {
 
 X3DParticleSystemsContext::X3DParticleSystemsContext () :
-	X3DBaseNode (),
-	    emitter (new PointEmitter (getExecutionContext ()))
+	   X3DBaseNode (),
+	defaultEmitter (new PointEmitter (getExecutionContext ()))
 {
-	addChildren (emitter);
+	addChildren (defaultEmitter);
 }
 
 void
 X3DParticleSystemsContext::initialize ()
 {
-	emitter -> setup ();
+	defaultEmitter -> setup ();
 }
 
 X3DParticleSystemsContext::~X3DParticleSystemsContext ()

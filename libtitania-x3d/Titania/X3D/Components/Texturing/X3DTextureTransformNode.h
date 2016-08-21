@@ -77,6 +77,15 @@ public:
 	void
 	draw (const int32_t);
 
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+	{ setShaderUniforms (shaderObject, 0); }
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const;
+
 
 protected:
 

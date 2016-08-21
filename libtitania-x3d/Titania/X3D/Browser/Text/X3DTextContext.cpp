@@ -56,16 +56,16 @@ namespace titania {
 namespace X3D {
 
 X3DTextContext::X3DTextContext () :
-	X3DBaseNode (),
-	  fontStyle (new FontStyle (getExecutionContext ()))
+	     X3DBaseNode (),
+	defaultFontStyle (new FontStyle (getExecutionContext ()))
 {
-	addChildren (fontStyle);
+	addChildren (defaultFontStyle);
 }
 
 void
 X3DTextContext::initialize ()
 {
-	fontStyle -> setup ();
+	defaultFontStyle -> setup ();
 }
 
 X3DTextContext::~X3DTextContext ()
