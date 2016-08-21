@@ -338,14 +338,13 @@ private:
 
 	///  @name Members
 
-	#ifndef SHADER_PIPELINE
-	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
-	#endif
-
 	SFBool                                cameraObject;
 	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;
+	#ifndef SHADER_PIPELINE
+	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
+	#endif
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
 	std::vector <Vector3d>                vertices;

@@ -806,6 +806,8 @@
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\SelectionType.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetLightSaberObject.h" />
     <None Include="Titania\X3D\Thread\X3DFuture.h" />
+    <None Include="share\titania\shaders\Shaders\Phong.fs" />
+    <None Include="share\titania\shaders\Shaders\Phong.vs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1428,6 +1430,7 @@
     <Folder Include="Titania\X3D\Editing\Selection\" />
     <Folder Include="Titania\X3D\Tools\Sound\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\" />
+    <Folder Include="share\titania\shaders\Shaders\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

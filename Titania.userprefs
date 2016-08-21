@@ -1,14 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Material.cpp" Line="128" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="101" Column="22" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="889" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Appearance.cpp" Line="287" Column="44" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="61" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

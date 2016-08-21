@@ -1454,7 +1454,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		ostream
 			<< Generator::Indent
 			<< getRootNodes () .back ()
-			<< Generator::TidyBreak;
+			<< Generator::Break;
 	}
 
 	if (not getImportedNodes () .empty ())
@@ -1465,7 +1465,9 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		{
 			try
 			{
-				ostream << importedNode .second;
+				ostream
+					<< importedNode .second
+					<< Generator::Break;
 			}
 			catch (const X3DError &)
 			{ }

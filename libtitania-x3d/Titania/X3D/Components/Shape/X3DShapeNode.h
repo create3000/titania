@@ -174,8 +174,10 @@ private:
 
 	///  @name Operations
 	
+	#ifndef SHADER_PIPELINE
 	void
 	disableTextures ();
+	#endif
 
 	///  @name Members
 

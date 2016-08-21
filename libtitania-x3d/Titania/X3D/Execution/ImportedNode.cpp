@@ -189,8 +189,6 @@ ImportedNode::toStream (std::ostream & ostream) const
 					<< Generator::Space
 					<< importedName;
 			}
-
-			ostream << Generator::Break;
 		}
 	}
 	catch (const X3DError &)

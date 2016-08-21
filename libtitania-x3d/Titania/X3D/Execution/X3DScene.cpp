@@ -568,7 +568,9 @@ X3DScene::toStream (std::ostream & ostream) const
 			{
 				try
 				{
-					ostream << exportedNode .second;
+					ostream
+						<< exportedNode .second
+						<< Generator::Break;
 				}
 				catch (const X3DError &)
 				{ }

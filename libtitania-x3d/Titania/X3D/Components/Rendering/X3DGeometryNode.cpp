@@ -68,6 +68,9 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
+#ifndef SHADER_PIPELINE
+	     texCoordNode (),
+#endif
 	        texCoords (),
 	          normals (),
 	         vertices (),
@@ -83,11 +86,11 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
+	addChildren (cameraObject);
+
 	#ifndef SHADER_PIPELINE
 	addChildren (texCoordNode);
 	#endif
-
-	addChildren (cameraObject);
 }
 
 void

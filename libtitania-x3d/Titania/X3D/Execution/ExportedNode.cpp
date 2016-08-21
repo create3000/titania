@@ -170,8 +170,6 @@ ExportedNode::toStream (std::ostream & ostream) const
 			<< Generator::Space
 			<< exportedName;
 	}
-
-	ostream << Generator::Break;
 }
 
 void

@@ -57,6 +57,7 @@
 #include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/RenderingProperties.h"
+#include "../Components/Networking/LoadSensor.h"
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
@@ -124,8 +125,15 @@ X3DBrowser::initialize ()
 	// Add necessary routes.
 
 	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
-
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
+
+	getLoadSensor () -> loadTime () .addInterest (this, &X3DBrowser::set_loadTime);
+}
+
+void
+X3DBrowser::set_loadTime ()
+{
+	getLoadSensor () -> loadTime () .removeInterest (this, &X3DBrowser::set_loadTime);
 
 	replaceWorld (executionContext);
 

@@ -13,7 +13,7 @@
    width="96"
    height="96"
    id="svg2408"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="Checkerboard.svg"
    inkscape:export-filename="/home/holger/Projekte/Titania/Titania/share/titania/ui/icon14x14.png"
    inkscape:export-xdpi="13.125"
@@ -32,12 +32,12 @@
      id="namedview3312"
      showgrid="true"
      inkscape:zoom="5.12"
-     inkscape:cx="10.672592"
+     inkscape:cx="-22.628189"
      inkscape:cy="34.883227"
      inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
      showguides="true"
@@ -183,7 +183,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -205,9 +205,9 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Shadow"
-     style="display:inline">
+     style="display:none">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;display:inline;filter:url(#filter8810)"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter8810)"
        id="rect4903-78"
        width="72"
        height="72"
@@ -220,47 +220,47 @@
      inkscape:label="Stroke"
      style="display:inline">
     <g
-       id="g5091"
-       style="filter:url(#filter4926-8-3-1)">
+       id="g4176"
+       style="filter:url(#filter4926-8-3-1);fill:#323232;fill-opacity:1">
       <rect
          y="12"
          x="12"
          height="24"
          width="24"
          id="rect4903"
-         style="fill:#141414;fill-opacity:1;stroke:none" />
+         style="fill:#323232;fill-opacity:1;stroke:none" />
       <rect
          y="60"
          x="12"
          height="24"
          width="24"
          id="rect4903-7"
-         style="fill:#141414;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#323232;fill-opacity:1;stroke:none" />
       <rect
          y="36"
          x="36"
          height="24"
          width="24"
          id="rect4903-6"
-         style="fill:#141414;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#323232;fill-opacity:1;stroke:none" />
       <rect
          y="12"
          x="60"
          height="24"
          width="24"
          id="rect4903-0"
-         style="fill:#141414;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#323232;fill-opacity:1;stroke:none" />
       <rect
          y="60"
          x="60"
          height="24"
          width="24"
          id="rect4903-7-2"
-         style="fill:#141414;fill-opacity:1;stroke:none;display:inline" />
+         style="display:inline;fill:#323232;fill-opacity:1;stroke:none" />
     </g>
     <g
        id="g5098"
-       style="filter:url(#filter4926-8-3-1-1)">
+       style="">
       <rect
          y="36"
          x="12"

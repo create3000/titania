@@ -52,6 +52,7 @@
 
 #include "../X3DBrowser.h"
 #include "../Notification.h"
+#include "../../Components/Networking/LoadSensor.h"
 #include "../../Execution/Scene.h"
 #include "../../Thread/X3DFuture.h"
 
@@ -68,6 +69,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
 	         userAgent (),
 	      privateScene (new Scene (getBrowser ())),
+	        loadSensor (new LoadSensor (getExecutionContext ())),
 	downloadMutexIndex (0),
 	   downloadMutexes ({ std::make_shared <std::mutex> () }),
 	     downloadMutex (),
@@ -77,7 +79,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	      notifyOnLoad (false),
 	   contextDisposed (false)
 {
-	addChildren (privateScene, loadCount);
+	addChildren (privateScene, loadSensor, loadCount);
 }
 
 void
@@ -87,6 +89,7 @@ X3DNetworkingContext::initialize ()
 
 	privateScene -> isPrivate (true);
 	privateScene -> setup ();
+	loadSensor   -> setup ();
 
 	downloadMutexes .resize (DOWNLOAD_THREADS_MAX);
 

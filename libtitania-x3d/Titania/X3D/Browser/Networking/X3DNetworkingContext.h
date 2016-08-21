@@ -60,6 +60,7 @@
 namespace titania {
 namespace X3D {
 
+class LoadSensor;
 class X3DFuture;
 
 class X3DNetworkingContext :
@@ -80,6 +81,10 @@ public:
 	const X3DScenePtr &
 	getPrivateScene () const
 	{ return privateScene; }
+
+	const X3DPtr <LoadSensor> &
+	getLoadSensor () const
+	{ return loadSensor; }
 
 	const std::shared_ptr <std::mutex> &
 	getDownloadMutex ();
@@ -147,7 +152,8 @@ private:
 
 	std::string userAgent;
 
-	X3DScenePtr privateScene;
+	X3DScenePtr         privateScene;
+	X3DPtr <LoadSensor> loadSensor;
 
 	size_t                                    downloadMutexIndex;
 	std::deque <std::shared_ptr <std::mutex>> downloadMutexes;

@@ -339,6 +339,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_loadTime ();
+
+	void
 	set_prepareEvents ();
 
 	void

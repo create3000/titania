@@ -285,7 +285,7 @@ Appearance::draw ()
 
 	getBrowser () -> setAppearance (this);
 	getBrowser () -> setTexture (textureNode);
-	getBrowser () -> setShader (shaderNode);
+	getBrowser () -> setShader (shaderNode ? shaderNode : getBrowser () -> getDefaultShader ());
 }
 
 /*

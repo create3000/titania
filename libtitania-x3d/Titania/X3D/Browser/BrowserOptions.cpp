@@ -305,27 +305,27 @@ BrowserOptions::set_Shading ()
 {
 	getBrowser () -> getRenderingProperties () -> Shading () = Shading ();
 
-	if (Shading () == "PHONG")
+	if (Shading () == "POINTSET")
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
 		glShadeModel (GL_SMOOTH);
-
-		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
-	}
-	else if (Shading () == "FLAT")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_FLAT);
 	}
 	else if (Shading () == "WIREFRAME")
 	{
 		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 		glShadeModel (GL_SMOOTH);
 	}
-	else if (Shading () == "POINTSET")
+	else if (Shading () == "FLAT")
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+		glShadeModel (GL_FLAT);
+	}
+	else if (Shading () == "PHONG")
+	{
+		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 		glShadeModel (GL_SMOOTH);
+
+		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 	}
 	else  // GOURAUD
 	{

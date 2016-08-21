@@ -52,10 +52,12 @@
 #define __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtr.h"
 
 namespace titania {
 namespace X3D {
 
+class ComposedShader;
 class X3DShaderNode;
 
 class X3DShadingContext :
@@ -68,6 +70,14 @@ public:
 	float
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
+
+	const X3DPtr <ComposedShader> &
+	getPhongShader () const
+	{ return phongShader; }
+
+	const X3DPtr <X3DShaderNode> &
+	getDefaultShader () const
+	{ return defaultShader; }
 
 	void
 	setShader (X3DShaderNode* const value)
@@ -84,6 +94,9 @@ public:
 	dispose () override
 	{ }
 
+	virtual
+	~X3DShadingContext ();
+
 
 protected:
 
@@ -98,10 +111,17 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_Shading (const String &);
+
 	///  @name Members
 
-	float          shadingLanguageVersion;
-	X3DShaderNode* shaderNode;
+	float                   shadingLanguageVersion;
+	X3DPtr <ComposedShader> phongShader;
+	X3DPtr <X3DShaderNode>  defaultShader;
+	X3DShaderNode*          shaderNode;
 
 };
 

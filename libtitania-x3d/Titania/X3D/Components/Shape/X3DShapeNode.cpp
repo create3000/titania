@@ -156,17 +156,27 @@ X3DShapeNode::display (ShapeContainer* const context)
 	if (isLineGeometry ())
 	{
 		appearanceNode -> getLineProperties () -> enable ();
+
 		glDisable (GL_LIGHTING);
 		draw (context);
-		disableTextures ();
+
 		appearanceNode -> getLineProperties () -> disable ();
+
+		#ifndef SHADER_PIPELINE
+		disableTextures ();
+		#endif
 	}
 	else
 	{
+		// Draw geometry.
+
 		if (appearanceNode -> getFillProperties () -> filled ())
 		{
 			draw (context);
+
+			#ifndef SHADER_PIPELINE
 			disableTextures ();
+			#endif
 		}
 
 		// Draw hatch on top of whatever appearance is specified.
@@ -207,6 +217,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 	glBindProgramPipeline (0);
 }
 
+#ifndef SHADER_PIPELINE
 void
 X3DShapeNode::disableTextures ()
 {
@@ -235,9 +246,8 @@ X3DShapeNode::disableTextures ()
 		getBrowser () -> getTextureStages () .clear ();
 		glActiveTexture (GL_TEXTURE0);
 	}
-
-	getBrowser () -> setTexture (false);
 }
+#endif
 
 void
 X3DShapeNode::dispose ()
