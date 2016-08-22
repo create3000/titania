@@ -655,7 +655,7 @@
     <None Include="Tests\Geometry3D\normal.distribution.x3d" />
     <None Include="Tests\Extrusion\Rotations.x3d" />
     <None Include="Tests\Shaders\Pipeline.x3d" />
-    <None Include="Tests\Shaders\Matrix4VertexAttibute.wrl" />
+    <None Include="Tests\Shaders\Matrix4VertexAttibute.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
