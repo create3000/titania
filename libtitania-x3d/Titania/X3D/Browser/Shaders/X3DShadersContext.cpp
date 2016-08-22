@@ -54,6 +54,7 @@
 #include "../../Components/Shaders/ComposedShader.h"
 #include "../../Components/Shaders/ShaderPart.h"
 #include "../../Rendering/OpenGL.h"
+#include "../ContextLock.h"
 #include "../Networking/config.h"
 #include "../RenderingProperties.h"
 #include "../X3DBrowser.h"
@@ -120,6 +121,12 @@ X3DShadersContext::setShaderPipeline (const bool value)
 
 	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
 }
+
+bool
+X3DShadersContext::getShaderPipeline () const
+{
+	return shaderPipeline;
+}
 #endif
 
 X3DPtr <ComposedShader>
@@ -164,6 +171,26 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 
 		#endif
 	}
+
+	#ifndef SHADER_PIPELINE
+	try
+	{
+		ContextLock lock (getBrowser ());
+
+		if (defaultShader)
+		{
+			glEnable (GL_POINT_SPRITE);
+			glEnable (GL_PROGRAM_POINT_SIZE);
+		}
+		else
+		{
+			glDisable (GL_POINT_SPRITE);
+			glDisable (GL_PROGRAM_POINT_SIZE);
+		}
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
+	#endif
 }
 
 X3DShadersContext::~X3DShadersContext ()

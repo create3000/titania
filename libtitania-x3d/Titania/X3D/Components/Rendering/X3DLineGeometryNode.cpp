@@ -78,12 +78,11 @@ void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
 	const auto & browser      = getBrowser ();
-	const auto & shading      = browser -> getRenderingProperties () -> getShading ();
-	const bool   pointShading = shading == ShadingType::POINT;
+	const bool   pointShading = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
 	auto         shaderNode   = browser -> getShader ();
 
 	#ifndef SHADER_PIPELINE
-	if (not browser -> getShaderPipeline () and shading not_eq ShadingType::PHONG)
+	if (not shaderNode)
 	{
 		glDisable (GL_LIGHTING);
 		X3DGeometryNode::draw (context);

@@ -1,25 +1,121 @@
-#VRML V2.0 utf8
+#VRML V2.0 utf8 Titania V1.4.9
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              2.08562309276608,
+              3.12359145492636,
+              9.26786672258043
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.81823424359881,
+              0.567648191560462,
+              0.0909299357770617,
+              0.386653255595051
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 Transform {
+              children Shape {
+                appearance Appearance {
+                  lineProperties DEF _2 LineProperties {
+                    linewidthScaleFactor 20
+                  }
+                  material Material {
+                    emissiveColor 1 0 0
+                    transparency 0.5
+                  }
+                }
+                geometry PointSet {
+                  coord Coordinate {
+                    point [
+                      -1 1 1,
+                      -1 -1 1,
+                      1 -1 1,
+                      1 1 1,
+                      -1 1 -1,
+                      -1 -1 -1,
+                      1 -1 -1,
+                      1 1 -1
+                    ]
+                  }
+                }
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "PointSet"
+}
+
+USE _1
 
 Transform {
-  children Shape {
-    appearance Appearance {
-      lineProperties LineProperties {
-        linewidthScaleFactor 20
-      }
-      material Material {
-        emissiveColor 1 0 0
-		  transparency 0.5
-      }
-    }
-    geometry PointSet {
-      coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 -1 1, 1 1 1, -1 1 -1, -1 -1 -1, 1 -1 -1, 1 1 -1 ]
-      }
-    }
-  }
-}
-Transform {
-  rotation 0.267261 0.534522 0.801784 4
+  rotation 0.26726102762664 0.53452205525328 0.801784082880024 4
   children Shape {
     appearance Appearance {
       lineProperties LineProperties {
@@ -31,16 +127,35 @@ Transform {
     }
     geometry PointSet {
       color Color {
-        color [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0.5 0.5 0.5 ]
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1,
+          1 1 0,
+          1 0 1,
+          0 1 1,
+          1 1 1,
+          0.5 0.5 0.5
+        ]
       }
       coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 -1 1, 1 1 1, -1 1 -1, -1 -1 -1, 1 -1 -1, 1 1 -1 ]
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 -1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1
+        ]
       }
     }
   }
 }
+
 Transform {
-  rotation 4 3 2 1
+  rotation 0.742781352708207 0.557086014531156 0.371390676354104 1
   children Shape {
     appearance Appearance {
       lineProperties LineProperties {
@@ -52,7 +167,16 @@ Transform {
     }
     geometry PointSet {
       coord Coordinate {
-        point [ -1 1 1, -1 -1 1, 1 -1 1, 1 1 1, -1 1 -1, -1 -1 -1, 1 -1 -1, 1 1 -1 ]
+        point [
+          -1 1 1,
+          -1 -1 1,
+          1 -1 1,
+          1 1 1,
+          -1 1 -1,
+          -1 -1 -1,
+          1 -1 -1,
+          1 1 -1
+        ]
       }
     }
   }

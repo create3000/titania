@@ -159,40 +159,44 @@ public:
 	///  @name MemberAccess
 
 	virtual
-	FillProperties*
+	const X3DPtr <FillProperties> &
 	getFillProperties () const final override
 	{ return fillPropertiesNode; }
 
 	virtual
-	LineProperties*
+	const X3DPtr <LineProperties> &
 	getLineProperties () const final override
 	{ return linePropertiesNode; }
 
-	X3DMaterialNode*
+	const X3DPtr <X3DMaterialNode> &
 	getMaterial () const
 	{ return materialNode; }
 
-	X3DTextureNode*
+	const X3DPtr <X3DTextureNode> &
 	getTexture () const
 	{ return textureNode; }
 
-	X3DTextureTransformNode*
+	const X3DPtr <X3DTextureTransformNode> &
 	getTextureTransform () const
 	{ return textureTransformNode; }
 
-	X3DShaderNode*
+	const X3DPtrArray <X3DShaderNode> &
+	getShaders () const
+	{ return shaderNodes; }
+
+	const X3DPtr <X3DShaderNode> &
 	getShader () const
 	{ return shaderNode; }
-
-	virtual
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 
 	///  @name Tests
 
 	virtual
 	void
 	draw () final override;
+
+	virtual
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const) const final override;
 
 
 private:

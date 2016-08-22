@@ -166,26 +166,38 @@ main ()
 	{
 		vec3 N = normalize (x3d_NormalMatrix * x3d_Normal);
 
+		float ambientIntensity = x3d_AmbientIntensity;
+		vec3  diffuseColor     = x3d_DiffuseColor;
+		vec3  specularColor    = x3d_SpecularColor;
+		vec3  emissiveColor    = x3d_EmissiveColor;
+		float shininess        = x3d_Shininess;
+		float transparency     = x3d_Transparency;
+
 		frontColor = getMaterial (N, v,
-		                          x3d_AmbientIntensity,
-		                          x3d_DiffuseColor,
-		                          x3d_SpecularColor,
-		                          x3d_EmissiveColor,
-		                          x3d_Shininess,
-		                          x3d_Transparency);
+		                          ambientIntensity,
+		                          diffuseColor,
+		                          specularColor,
+		                          emissiveColor,
+		                          shininess,
+		                          transparency);
 
 		if (x3d_SeparateBackColor)
 		{
-			backColor = getMaterial (-N, v,
-			                         x3d_BackAmbientIntensity,
-			                         x3d_BackDiffuseColor,
-			                         x3d_BackSpecularColor,
-			                         x3d_BackEmissiveColor,
-			                         x3d_BackShininess,
-			                         x3d_BackTransparency);
+			ambientIntensity = x3d_BackAmbientIntensity;
+			diffuseColor     = x3d_BackDiffuseColor;
+			specularColor    = x3d_BackSpecularColor;
+			emissiveColor    = x3d_BackEmissiveColor;
+			shininess        = x3d_BackShininess;
+			transparency     = x3d_BackTransparency;
 		}
-		else
-			backColor = frontColor;
+			
+		backColor = getMaterial (-N, v,
+		                         ambientIntensity,
+		                         diffuseColor,
+		                         specularColor,
+		                         emissiveColor,
+		                         shininess,
+		                         transparency);
 	}
 	else
 	{

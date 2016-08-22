@@ -73,22 +73,22 @@ public:
 	///  @name Member access
 
 	virtual
-	FillProperties*
+	const X3DPtr <FillProperties> &
 	getFillProperties () const = 0;
 
 	virtual
-	LineProperties*
+	const X3DPtr <LineProperties> &
 	getLineProperties () const = 0;
 
 	///  @name Operations
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const) const = 0;
+	draw () = 0;
 
 	virtual
 	void
-	draw () = 0;
+	setShaderUniforms (X3DProgrammableShaderObject* const) const = 0;
 
 
 protected:

@@ -127,5 +127,11 @@ FillProperties::draw ()
 	}
 }
 
+void
+FillProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+
+}
+
 } // X3D
 } // titania

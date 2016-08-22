@@ -104,6 +104,23 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	setShader (getBrowser () -> getPointShader ());
 }
 
+bool
+Polypoint2D::isTransparent () const
+{
+	#ifndef SHADER_PIPELINE
+
+	if (getBrowser () -> getDefaultShader ())
+		return true;
+
+	return false;
+
+	#else
+
+	return true; // The antialiased border is transparent!
+
+	#endif
+}
+
 void
 Polypoint2D::build ()
 {

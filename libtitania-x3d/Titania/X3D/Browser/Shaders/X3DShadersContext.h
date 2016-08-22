@@ -105,8 +105,7 @@ public:
 	setShaderPipeline (const bool);
 
 	bool
-	getShaderPipeline () const
-	{ return shaderPipeline; }
+	getShaderPipeline () const;
 	#endif
 
 	///  @name Destruction

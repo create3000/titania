@@ -52,6 +52,7 @@
 
 #include "../../Browser/Shape/Linetypes.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -92,20 +93,19 @@ LineProperties::enable ()
 	{
 		glEnable (GL_LINE_STIPPLE);
 
+		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
+			glLineStipple (1, linetypes [linetype ()]);
+
+		else
+			glLineStipple (1, int (LineType::SOLID));
+
 		if (linewidthScaleFactor () > 0)
 		{
-			if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
-				glLineStipple (1, linetypes [linetype ()]);
-
-			else
-				glLineStipple (1, int (LineType::SOLID));
-
 			glLineWidth (linewidthScaleFactor ());
 			glPointSize (linewidthScaleFactor ());
 		}
 		else
 		{
-			glLineStipple (1, int (LineType::NONE));
 			glLineWidth (1);
 			glPointSize (1);
 		}
@@ -118,6 +118,33 @@ LineProperties::disable ()
 	glDisable (GL_LINE_STIPPLE);
 	glLineWidth (1);
 	glPointSize (1);
+}
+
+void
+LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
+{
+	if (applied ())
+	{
+		glEnable (GL_LINE_STIPPLE);
+
+		if (linetype () > 0 and linetype () < (int32_t) linetypes .size ())
+			glLineStipple (1, linetypes [linetype ()]);
+	
+		else
+			glLineStipple (1, int (LineType::SOLID));
+
+		if (linewidthScaleFactor () > 0)
+		{
+			glLineWidth (linewidthScaleFactor ());
+			glPointSize (linewidthScaleFactor ());
+			glUniform1f (shaderObject -> getLinewidthScaleFactorUniformLocation (), linewidthScaleFactor ());
+			return;
+		}
+	}
+
+	glLineWidth (1);
+	glPointSize (1);
+	glUniform1f (shaderObject -> getLinewidthScaleFactorUniformLocation (), 1);
 }
 
 } // X3D

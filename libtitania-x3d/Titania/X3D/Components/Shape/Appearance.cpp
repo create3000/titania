@@ -299,6 +299,8 @@ Appearance::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) 
 {
 	static const auto textureType = std::vector <int32_t> ({ 0 });
 
+	linePropertiesNode -> setShaderUniforms (shaderObject);
+
 	if (materialNode)
 		materialNode -> setShaderUniforms (shaderObject);
 	else

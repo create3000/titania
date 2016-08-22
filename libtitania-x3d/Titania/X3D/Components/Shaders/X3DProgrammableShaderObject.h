@@ -139,6 +139,12 @@ public:
 	getLightRadiusUniformLocation () const
 	{ return x3d_LightRadius; }
 
+	///  @name Uniform location access line properties
+
+	GLint
+	getLinewidthScaleFactorUniformLocation () const
+	{ return x3d_LinewidthScaleFactor; }
+
 	///  @name Uniform location access material
 
 	GLint

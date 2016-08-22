@@ -133,8 +133,7 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override
-	{ return transparent; }
+	isTransparent () const final override;
 
 	///  @name Operations
 

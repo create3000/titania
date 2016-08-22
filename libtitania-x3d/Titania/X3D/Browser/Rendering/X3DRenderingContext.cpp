@@ -78,6 +78,11 @@ X3DRenderingContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
+		#ifdef SHADER_PIPELINE
+		glEnable (GL_POINT_SPRITE);
+		glEnable (GL_PROGRAM_POINT_SIZE);
+		#endif
+
 		glEnable (GL_SCISSOR_TEST);
 
 		glCullFace (GL_BACK);
