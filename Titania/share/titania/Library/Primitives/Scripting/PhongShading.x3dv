@@ -7,7 +7,7 @@ META "generator" "Titania V1.4.8, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Scripting/PhongShading.x3dv"
 META "modified" "Thu, 04 Aug 2016 20:40:23 GMT"
 
-Script {
+DEF PhongShadingScript Script {
   url "ecmascript:
 
 function initialize ()

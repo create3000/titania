@@ -59,7 +59,9 @@ namespace titania {
 namespace X3D {
 
 class PackagedShader :
-	public X3DShaderNode, public X3DUrlObject, public X3DProgrammableShaderObject
+	public X3DShaderNode,
+	public X3DUrlObject,
+	public X3DProgrammableShaderObject
 {
 public:
 
@@ -123,6 +125,16 @@ public:
 	draw () final override;
 
 	///  @name Pipeline
+
+	virtual
+	void
+	setGeometryType (const size_t value) final override
+	{ }
+
+	virtual
+	size_t
+	getGeometryType () const final override
+	{ return 0; }
 
 	virtual
 	void

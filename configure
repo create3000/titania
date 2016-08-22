@@ -739,13 +739,6 @@ INTLTOOL_EXTRACT
 INTLTOOL_MERGE
 INTLTOOL_UPDATE
 USE_NLS
-CONFIGURATION
-ENABLE_PARALLEL_FALSE
-ENABLE_PARALLEL_TRUE
-ENABLE_RELEASE_FALSE
-ENABLE_RELEASE_TRUE
-ENABLE_DEBUG_FALSE
-ENABLE_DEBUG_TRUE
 am__fastdepCXX_FALSE
 am__fastdepCXX_TRUE
 CXXDEPMODE
@@ -839,8 +832,8 @@ enable_silent_rules
 enable_maintainer_mode
 enable_dependency_tracking
 enable_debug
-enable_release
 enable_parallel
+enable_shader_pipeline
 enable_nls
 enable_shared
 enable_static
@@ -1522,9 +1515,10 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking
                           speeds up one-time build
-  --enable-debug          Use 'DEBUG' Configuration [default=YES]
-  --enable-release        Use 'RELEASE' Configuration [default=NO]
+  --enable-debug          Use 'DEBUG' Configuration [default=NO]
   --enable-parallel       Use 'PARALLEL' Configuration [default=NO]
+  --enable-shader-pipeline
+                          Use 'SHADER PIPELINE' Configuration [default=NO]
   --disable-nls           do not use Native Language Support
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -3884,42 +3878,6 @@ else
 fi
 
 
- if test x$enable_debug = xyes; then
-  ENABLE_DEBUG_TRUE=
-  ENABLE_DEBUG_FALSE='#'
-else
-  ENABLE_DEBUG_TRUE='#'
-  ENABLE_DEBUG_FALSE=
-fi
-
-
-if test "x$enable_debug" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-
-
-# Check whether --enable-release was given.
-if test "${enable_release+set}" = set; then :
-  enableval=$enable_release; enable_release=yes
-else
-  enable_release=no
-fi
-
-
- if test x$enable_release = xyes; then
-  ENABLE_RELEASE_TRUE=
-  ENABLE_RELEASE_FALSE='#'
-else
-  ENABLE_RELEASE_TRUE='#'
-  ENABLE_RELEASE_FALSE=
-fi
-
-
-if test "x$enable_release" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-
-
 # Check whether --enable-parallel was given.
 if test "${enable_parallel+set}" = set; then :
   enableval=$enable_parallel; enable_parallel=yes
@@ -3928,55 +3886,30 @@ else
 fi
 
 
- if test x$enable_parallel = xyes; then
-  ENABLE_PARALLEL_TRUE=
-  ENABLE_PARALLEL_FALSE='#'
+# Check whether --enable-shader-pipeline was given.
+if test "${enable_shader_pipeline+set}" = set; then :
+  enableval=$enable_shader_pipeline; enable_shader_pipeline=yes
 else
-  ENABLE_PARALLEL_TRUE='#'
-  ENABLE_PARALLEL_FALSE=
+  enable_shader_pipeline=no
 fi
 
 
-if test "x$enable_parallel" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
 
 
-if test -z "$CONFIG_REQUESTED" ; then
-	 if true; then
-  ENABLE_DEBUG_TRUE=
-  ENABLE_DEBUG_FALSE='#'
-else
-  ENABLE_DEBUG_TRUE='#'
-  ENABLE_DEBUG_FALSE=
-fi
-
-	enable_debug=yes
-fi
 
 
-CONFIGURATION="Debug"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
-	CONFIGURATION="Release"
-fi
-
-if test "x$enable_parallel" = "xyes" ; then
-	CONFIGURATION="Parallel"
-fi
-
-
-
-
-
-CXXFLAGS="-Wall -std=c++11 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
-
-if test "x$enable_release" = "xyes" ; then
-		CXXFLAGS=$CXXFLAGS" "
+	CXXFLAGS=$CXXFLAGS" "
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -D_GLIBCXX_PARALLEL"
+fi
+
+if test "x$enable_shader_pipeline" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DSHADER_PIPELINE"
 fi
 
 if test "x$enable_debug" = "xyes" ; then
@@ -3984,6 +3917,9 @@ if test "x$enable_debug" = "xyes" ; then
 fi
 
 LDFLAGS="-rdynamic"
+
+
+
 
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether NLS is requested" >&5
@@ -6365,12 +6301,6 @@ $as_echo "$LINGUAS" >&6; }
    rm -f po/POTFILES
    sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$posrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 	< $srcdir/po/POTFILES.in > po/POTFILES
-
-
-
-
-
-
 
 
 case `pwd` in
@@ -17398,6 +17328,7 @@ fi
 
 
 
+
 USE_GLX="no"
 
 
@@ -17657,6 +17588,7 @@ fi
 if test "$USE_GLX" = "no"; then
 	as_fn_error $? "*** Please install X11 backend." "$LINENO" 5
 fi
+
 
 
 
@@ -18559,22 +18491,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCXX_TRUE}" && test -z "${am__fastdepCXX_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCXX\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_DEBUG_TRUE}" && test -z "${ENABLE_DEBUG_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_DEBUG\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_RELEASE_TRUE}" && test -z "${ENABLE_RELEASE_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_RELEASE\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_PARALLEL_TRUE}" && test -z "${ENABLE_PARALLEL_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_PARALLEL\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${ENABLE_DEBUG_TRUE}" && test -z "${ENABLE_DEBUG_FALSE}"; then
-  as_fn_error $? "conditional \"ENABLE_DEBUG\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

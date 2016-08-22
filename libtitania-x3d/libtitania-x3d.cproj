@@ -721,8 +721,6 @@
     <None Include="Makefile.in" />
     <None Include="libtitania-x3d.cproj" />
     <None Include="libtitania-x3d.pidb" />
-    <None Include="Titania\X3D\Browser\Shading\X3DShadingContext.h" />
-    <None Include="Titania\X3D\Browser\Shading\Shader.h" />
     <None Include="Titania\X3D\Thread\X3DInterruptibleThread.h" />
     <None Include="share\titania\tools\SnapTarget.x3dv" />
     <None Include="Titania\X3D\Browser\Sound\MediaStream.h" />
@@ -808,6 +806,15 @@
     <None Include="Titania\X3D\Thread\X3DFuture.h" />
     <None Include="share\titania\shaders\Shaders\Phong.fs" />
     <None Include="share\titania\shaders\Shaders\Phong.vs" />
+    <None Include="share\titania\shaders\Shaders\Gouraud.fs" />
+    <None Include="share\titania\shaders\Shaders\Gouraud.vs" />
+    <None Include="share\titania\shaders\Shaders\Wireframe.fs" />
+    <None Include="share\titania\shaders\Shaders\Wireframe.vs" />
+    <None Include="Titania\X3D\Browser\Shaders\Shader.h" />
+    <None Include="Titania\X3D\Browser\Shaders\ShadingType.h" />
+    <None Include="Titania\X3D\Browser\Shaders\X3DShadersContext.h" />
+    <None Include="share\titania\shaders\Shaders\Point.fs" />
+    <None Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1295,8 +1302,6 @@
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DProtoDeclaration.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DRoute.cpp" />
     <Compile Include="Titania\X3D\JavaScript\SpiderMonkey\X3DScene.cpp" />
-    <Compile Include="Titania\X3D\Browser\Shading\X3DShadingContext.cpp" />
-    <Compile Include="Titania\X3D\Browser\Shading\Shader.cpp" />
     <Compile Include="Titania\X3D\Browser\Sound\MediaStream.cpp" />
     <Compile Include="Titania\X3D\Configuration\X3DUnitContext.cpp" />
     <Compile Include="Titania\X3D\Rendering\ShapeContainer.cpp" />
@@ -1357,6 +1362,9 @@
     <Compile Include="Titania\X3D\Browser\Tools\X3DSelector.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\LightSaber.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetLightSaberObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\Shaders\Shader.cpp" />
+    <Compile Include="Titania\X3D\Browser\Shaders\X3DShadersContext.cpp" />
+    <Compile Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1419,7 +1427,6 @@
     <Folder Include="Titania\X3D\Tools\PointingDeviceSensor\" />
     <Folder Include="Titania\X3D\Parser\Wavefront\" />
     <Folder Include="Titania\X3D\JavaScript\PeaseBlossom\Fields\" />
-    <Folder Include="Titania\X3D\Browser\Shading\" />
     <Folder Include="Titania\X3D\Browser\Sound\" />
     <Folder Include="Titania\X3D\Browser\Texturing3D\" />
     <Folder Include="Titania\X3D\Browser\Geospatial\" />
@@ -1431,6 +1438,7 @@
     <Folder Include="Titania\X3D\Tools\Sound\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\" />
     <Folder Include="share\titania\shaders\Shaders\" />
+    <Folder Include="Titania\X3D\Browser\Shaders\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

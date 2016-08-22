@@ -51,8 +51,10 @@
 #include "IndexedLineSet.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/PointSet.h"
+#include "../Shaders/ComposedShader.h"
 
 namespace titania {
 namespace X3D {
@@ -72,13 +74,13 @@ IndexedLineSet::Fields::Fields () :
 { }
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields (),
-	    attribNodes (),
-	      colorNode (),
-	      coordNode (),
-	    transparent (false)
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields (),
+	        attribNodes (),
+	          colorNode (),
+	          coordNode (),
+	        transparent (false)
 {
 	addType (X3DConstants::IndexedLineSet);
 
@@ -105,7 +107,9 @@ IndexedLineSet::create (X3DExecutionContext* const executionContext) const
 void
 IndexedLineSet::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DLineGeometryNode::initialize ();
+
+	setShader (getBrowser () -> getWireframeShader ());
 
 	attrib () .addInterest (this, &IndexedLineSet::set_attrib);
 	color ()  .addInterest (this, &IndexedLineSet::set_color);
@@ -319,13 +323,6 @@ IndexedLineSet::build ()
 	addElements (GL_LINES, getVertices () .size ());
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
-}
-
-void
-IndexedLineSet::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 SFNode

@@ -54,6 +54,7 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Fields.h"
 #include "../Types/Pointer.h"
+#include "Shaders/ShadingType.h"
 
 #include <Titania/Chrono/StopWatch.h>
 #include <set>
@@ -69,16 +70,6 @@ namespace X3D {
 // AntiAliased       Boolean              True or false if the rendering is currently anti-aliased or not
 // ColorDepth        Integer              The number of bits of colour depth supported by the screen. Allows for optimized selection of textures, particularly for lower colour depth screen capabilities.
 // TextureMemory     Float                The amount of memory in megabytes available for textures to be placed on the video card.
-
-enum class ShadingType :
-	int32_t
-{
-	POINTSET,
-	WIREFRAME,
-	FLAT,
-	GOURAUD,
-	PHONG
-};
 
 class RenderingProperties :
 	public X3DBaseNode
@@ -213,7 +204,7 @@ public:
 
 	///  @name Member access
 
-	ShadingType
+	const SFEnum <ShadingType> &
 	getShading () const
 	{ return shading; }
 
@@ -291,7 +282,7 @@ private:
 
 	Fields fields;
 
-	ShadingType shading;
+	SFEnum <ShadingType> shading;
 
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;

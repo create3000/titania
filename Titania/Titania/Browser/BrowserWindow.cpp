@@ -144,6 +144,11 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
+	#ifdef SHADER_PIPELINE
+	getShaderPipelineMenuItem ()        .set_visible (false);
+	getBrowserShaderPipelineMenuItem () .set_visible (false);
+	#endif
+
 	setup ();
 }
 
@@ -153,12 +158,20 @@ BrowserWindow::configure ()
 	X3DBrowserWindow::configure ();
 
 	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
+
+	#ifndef SHADER_PIPELINE
+	getShaderPipelineAction () -> set_active (getConfig () -> getBoolean ("shaderPipeline"));
+	#endif
 }
 
 void
 BrowserWindow::store ()
 {
 	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
+
+	#ifndef SHADER_PIPELINE
+	getConfig () -> setItem ("shaderPipeline", getShaderPipelineAction () -> get_active ());
+	#endif
 
 	X3DBrowserWindow::store ();
 }
@@ -259,6 +272,10 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
+
+	#ifndef SHADER_PIPELINE
+	getCurrentBrowser () -> setShaderPipeline (getShaderPipelineAction () -> get_active ());
+	#endif
 
 	on_transform_tool_mode_toggled ();
 }
@@ -2201,6 +2218,14 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 }
 
 // Help menu
+
+void
+BrowserWindow::on_shader_pipeline_toggled ()
+{
+	#ifndef SHADER_PIPELINE
+	getCurrentBrowser () -> setShaderPipeline (getShaderPipelineAction () -> get_active ());
+	#endif
+}
 
 void
 BrowserWindow::on_info_activated ()

@@ -48,96 +48,26 @@
  *
  ******************************************************************************/
 
-#include "X3DShadingContext.h"
+#ifndef __TITANIA_X3D_BROWSER_SHADING_SHADING_TYPE_H__
+#define __TITANIA_X3D_BROWSER_SHADING_SHADING_TYPE_H__
 
-#include "../../Components/Networking/LoadSensor.h"
-#include "../../Components/Shaders/ComposedShader.h"
-#include "../../Components/Shaders/ShaderPart.h"
-#include "../../Rendering/OpenGL.h"
-#include "../Networking/config.h"
-#include "../BrowserOptions.h"
-#include "../X3DBrowser.h"
+#include <cstdint>
 
 namespace titania {
 namespace X3D {
 
-X3DShadingContext::X3DShadingContext () :
-	           X3DBaseNode (),
-	shadingLanguageVersion (),
-	           phongShader (new ComposedShader (getExecutionContext ())),
-	         defaultShader (),
-	            shaderNode (nullptr)
+enum class ShadingType :
+	uint8_t
 {
-	addChildren (phongShader, defaultShader);
-}
+	POINT,
+	WIREFRAME,
+	FLAT,
+	GOURAUD,
+	PHONG
 
-void
-X3DShadingContext::initialize ()
-{
-	if (glXGetCurrentContext ())
-	{
-		// shadingLanguageVersionStream
-
-		std::istringstream shadingLanguageVersionStream ((const char*) glGetString (GL_SHADING_LANGUAGE_VERSION));
-
-		shadingLanguageVersionStream .imbue (std::locale::classic ());
-
-		shadingLanguageVersionStream >> shadingLanguageVersion;
-
-		// Phong Shader
-
-		const auto phongVertex   = new ShaderPart (getExecutionContext ());
-		const auto phongFragment = new ShaderPart (getExecutionContext ());
-
-		phongFragment -> type () = "FRAGMENT";
-		phongVertex   -> url ()  = { get_shader ("Shaders/Phong.vs") .str () };
-		phongFragment -> url ()  = { get_shader ("Shaders/Phong.fs") .str () };
-
-		phongShader -> parts () .emplace_back (phongVertex);
-		phongShader -> parts () .emplace_back (phongFragment);
-
-		phongVertex   -> setup ();
-		phongFragment -> setup ();
-		phongShader   -> setup ();
-
-		getBrowser () -> getLoadSensor () -> watchList () .emplace_back (phongVertex);
-		getBrowser () -> getLoadSensor () -> watchList () .emplace_back (phongFragment);
-
-		// Shading
-
-		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &X3DShadingContext::set_Shading);
-
-		set_Shading (getBrowser () -> getBrowserOptions () -> Shading ());
-	}
-}
-
-void
-X3DShadingContext::set_Shading (const String & Shading)
-{
-	if (Shading == "POINTSET")
-	{
-		defaultShader = nullptr;
-	}
-	else if (Shading == "WIREFRAME")
-	{
-		defaultShader = nullptr;
-	}
-	else if (Shading == "FLAT")
-	{
-		defaultShader = nullptr;
-	}
-	else if (Shading == "PHONG")
-	{
-		defaultShader = getPhongShader ();
-	}
-	else  // GOURAUD
-	{
-		defaultShader = nullptr;
-	}
-}
-
-X3DShadingContext::~X3DShadingContext ()
-{ }
+};
 
 } // X3D
 } // titania
+
+#endif

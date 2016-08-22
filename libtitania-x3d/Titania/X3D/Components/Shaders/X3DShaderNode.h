@@ -121,6 +121,14 @@ public:
 
 	virtual
 	void
+	setGeometryType (const size_t) = 0;
+
+	virtual
+	size_t
+	getGeometryType () const = 0;
+
+	virtual
+	void
 	setGlobalUniforms (ShapeContainer* const) = 0;
 
 	virtual

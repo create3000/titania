@@ -2414,7 +2414,6 @@
     <None Include="Titania\Editors\SculpToolEditor\SculpToolEditor.h" />
     <None Include="share\titania\ui\icons\SculpTool.svg" />
     <None Include="share\titania\ui\Editors\SculpToolBrush.x3dv" />
-    <None Include="titania" />
     <None Include="Titania\Dialogs\FileSaveDialog\X3DFileSaveDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileSaveACopyDialog.h" />
     <None Include="Titania\Editors\PaletteEditor\X3DPaletteEditor.h" />
@@ -2544,6 +2543,7 @@
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-info.png" />
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-question.png" />
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-warning.png" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

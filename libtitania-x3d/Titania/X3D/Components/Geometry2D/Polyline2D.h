@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYLINE2D_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYLINE2D_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
 class Polyline2D :
-	public X3DGeometryNode
+	public X3DLineGeometryNode
 {
 public:
 
@@ -99,18 +99,7 @@ public:
 	lineSegments () const
 	{ return *fields .lineSegments; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return true; }
-
 	///  @name Operations
-
-	virtual
-	void
-	draw (ShapeContainer* const) final override;
 
 	virtual
 	SFNode
@@ -125,8 +114,11 @@ private:
 
 	virtual
 	void
-	build () final override;
+	initialize () final override;
 
+	virtual
+	void
+	build () final override;
 
 	///  @name Static members
 

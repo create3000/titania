@@ -50,9 +50,11 @@
 
 #include "Polyline2D.h"
 
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ComposedShader.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -70,9 +72,9 @@ Polyline2D::Fields::Fields () :
 { }
 
 Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields ()
 {
 	addType (X3DConstants::Polyline2D);
 
@@ -80,6 +82,14 @@ Polyline2D::Polyline2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "lineSegments", lineSegments ());
 
 	lineSegments () .setUnit (UnitCategory::LENGTH);
+}
+
+void
+Polyline2D::initialize ()
+{
+	X3DLineGeometryNode::initialize ();
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 X3DBaseNode*
@@ -96,13 +106,6 @@ Polyline2D::build ()
 
 	addElements (GL_LINE_STRIP, getVertices () .size ());
 	setSolid (false);
-}
-
-void
-Polyline2D::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 SFNode

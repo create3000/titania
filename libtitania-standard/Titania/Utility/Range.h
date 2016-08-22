@@ -93,21 +93,13 @@ end (const std::pair <T, T> & p)
 namespace titania {
 namespace basic {
 
-template <class Iterator>
-inline
-std::reverse_iterator <Iterator>
-make_reverse_iterator (const Iterator & iter)
-{
-	return std::reverse_iterator <Iterator> (iter);
-}
-
 template <class Range>
 inline
 std::pair <std::reverse_iterator <decltype (std::end (std::declval <Range> ()))>,
            std::reverse_iterator <decltype (std::begin (std::declval <Range> ()))>> 
 make_reverse_range (Range && range)
 {
-	return std::make_pair (make_reverse_iterator (std::end (range)), make_reverse_iterator (std::begin (range)));
+	return std::make_pair (std::make_reverse_iterator (std::end (range)), std::make_reverse_iterator (std::begin (range)));
 }
 
 template <class Iterator>

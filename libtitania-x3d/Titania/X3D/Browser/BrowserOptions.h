@@ -53,6 +53,7 @@
 
 #include "../Basic/X3DBaseNode.h"
 #include "../Fields.h"
+#include "Shaders/ShadingType.h"
 
 namespace titania {
 namespace X3D {
@@ -209,6 +210,12 @@ public:
 	Gravity () const
 	{ return *fields .Gravity; }
 
+	///  @name Member access
+
+	const SFEnum <ShadingType> &
+	getShading () const
+	{ return shading; }
+
 
 private:
 
@@ -258,6 +265,8 @@ private:
 	};
 
 	Fields fields;
+
+	SFEnum <ShadingType> shading;
 
 };
 

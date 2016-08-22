@@ -111,9 +111,11 @@ X3DTexturingContext::initialize ()
 
 		maxTextureUnits = std::min (maxCombinedTextureUnits / 2, std::min (maxTextureCoords, maxTextureUnits));
 
+		// For single and multi texturing
 		for (int32_t i = maxTextureUnits - 1; i >= 0; -- i)
 			textureUnits .push (i);                                              // Don't add GL_TEXTURE0
 
+		// For shaders
 		for (int32_t i = maxTextureUnits; i < maxCombinedTextureUnits; ++ i)
 			combinedTextureUnits .push (i);                                      // Don't add GL_TEXTURE0
 	}

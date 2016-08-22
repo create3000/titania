@@ -53,13 +53,13 @@
 
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
-#include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
 class IndexedLineSet :
-	public X3DGeometryNode
+	public X3DLineGeometryNode
 {
 public:
 
@@ -156,19 +156,10 @@ public:
 	isTransparent () const final override
 	{ return transparent; }
 
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return true; }
-
 	///  @name Operations
 
 	std::vector <Vector3d>
 	getPolylines () const;
-
-	virtual
-	void
-	draw (ShapeContainer* const) final override;
 
 	virtual
 	SFNode

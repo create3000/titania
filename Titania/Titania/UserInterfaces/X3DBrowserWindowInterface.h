@@ -188,6 +188,10 @@ public:
 	{ return m_SelectLowestAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getShaderPipelineAction () const
+	{ return m_ShaderPipelineAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getSidebarAction () const
 	{ return m_SidebarAction; }
 
@@ -775,6 +779,10 @@ public:
 	getBrowserHelpMenuItem () const
 	{ return *m_BrowserHelpMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getBrowserShaderPipelineMenuItem () const
+	{ return *m_BrowserShaderPipelineMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
 	{ return *m_BrowserInfoMenuItem; }
@@ -1263,6 +1271,10 @@ public:
 	getHelpMenuItem () const
 	{ return *m_HelpMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getShaderPipelineMenuItem () const
+	{ return *m_ShaderPipelineMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
 	{ return *m_InfoMenuItem; }
@@ -1600,6 +1612,10 @@ public:
 	virtual
 	void
 	on_select_lowest_toggled () = 0;
+
+	virtual
+	void
+	on_shader_pipeline_toggled () = 0;
 
 	virtual
 	void
@@ -2169,6 +2185,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_RenderingPropertiesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_ShaderPipelineAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SidebarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SoundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TabsAction;
@@ -2316,6 +2333,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserScenesMenuItem;
 	Gtk::Menu*                       m_BrowserScenesMenu;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserShaderPipelineMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow*          m_Window;
 	Gtk::Box*                        m_Widget;
@@ -2438,6 +2456,7 @@ private:
 	Gtk::MenuItem*                   m_ScenesMenuItem;
 	Gtk::Menu*                       m_ScenesMenu;
 	Gtk::MenuItem*                   m_HelpMenuItem;
+	Gtk::CheckMenuItem*              m_ShaderPipelineMenuItem;
 	Gtk::ImageMenuItem*              m_InfoMenuItem;
 	Gtk::Box*                        m_Toolbar;
 	Gtk::Box*                        m_LocationBar;

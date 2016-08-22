@@ -109,7 +109,8 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields (executionContext)
+	     fields (executionContext),
+	    shading (ShadingType::GOURAUD)
 {
 	addType (X3DConstants::BrowserOptions);
 
@@ -130,6 +131,8 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "Gravity",                Gravity ());
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
+
+	addChildren (shading);
 }
 
 BrowserOptions*
@@ -303,36 +306,59 @@ BrowserOptions::set_PrimitiveQuality ()
 void
 BrowserOptions::set_Shading ()
 {
+	static const std::map <std::string, ShadingType> shadings = {
+		std::make_pair ("POINT",     ShadingType::POINT),
+		std::make_pair ("POINTSET",  ShadingType::POINT),
+		std::make_pair ("WIREFRAME", ShadingType::WIREFRAME),
+		std::make_pair ("FLAT",      ShadingType::FLAT),
+		std::make_pair ("GOURAUD",   ShadingType::GOURAUD),
+		std::make_pair ("PHONG",     ShadingType::PHONG),
+	};
+
 	getBrowser () -> getRenderingProperties () -> Shading () = Shading ();
 
-	if (Shading () == "POINTSET")
+	try
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
-		glShadeModel (GL_SMOOTH);
+		shading = shadings .at (Shading ());
 	}
-	else if (Shading () == "WIREFRAME")
+	catch (const std::out_of_range &)
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-		glShadeModel (GL_SMOOTH);
+		shading = ShadingType::GOURAUD;
 	}
-	else if (Shading () == "FLAT")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_FLAT);
-	}
-	else if (Shading () == "PHONG")
-	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_SMOOTH);
 
-		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
-	}
-	else  // GOURAUD
+	switch (shading)
 	{
-		glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
-		glShadeModel (GL_SMOOTH);
-
-		getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
+		case ShadingType::POINT:
+		{
+			glPolygonMode (GL_FRONT_AND_BACK, GL_POINT);
+			glShadeModel (GL_SMOOTH);
+			break;
+		}
+		case ShadingType::WIREFRAME:
+		{
+			glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+			glShadeModel (GL_SMOOTH);
+			break;
+		}
+		case ShadingType::FLAT:
+		{
+			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+			glShadeModel (GL_FLAT);
+			break;
+		}
+		case ShadingType::GOURAUD:
+		{
+			glShadeModel (GL_SMOOTH);
+	
+			getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
+			break;
+		}
+		case ShadingType::PHONG:
+		{
+			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+			glShadeModel (GL_SMOOTH);
+			break;
+		}
 	}
 }
 

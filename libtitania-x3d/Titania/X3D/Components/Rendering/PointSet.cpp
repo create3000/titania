@@ -51,7 +51,9 @@
 #include "PointSet.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/ComposedShader.h"
 
 namespace titania {
 namespace X3D {
@@ -68,13 +70,13 @@ PointSet::Fields::Fields () :
 { }
 
 PointSet::PointSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields (),
-	    attribNodes (),
-	      colorNode (),
-	      coordNode (),
-	    transparent (false)
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields (),
+	        attribNodes (),
+	          colorNode (),
+	          coordNode (),
+	        transparent (false)
 {
 	addType (X3DConstants::PointSet);
 
@@ -98,7 +100,9 @@ PointSet::create (X3DExecutionContext* const executionContext) const
 void
 PointSet::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DLineGeometryNode::initialize ();
+
+	setShader (getBrowser () -> getPointShader ());
 
 	attrib () .addInterest (this, &PointSet::set_attrib);
 	color ()  .addInterest (this, &PointSet::set_color);
@@ -205,13 +209,6 @@ PointSet::build ()
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
-}
-
-void
-PointSet::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 } // X3D

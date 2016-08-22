@@ -80,8 +80,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/RenderingProperties.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
-	Titania/X3D/Browser/Shading/Shader.cpp \
-	Titania/X3D/Browser/Shading/X3DShadingContext.cpp \
+	Titania/X3D/Browser/Shaders/Shader.cpp \
+	Titania/X3D/Browser/Shaders/X3DShadersContext.cpp \
 	Titania/X3D/Browser/Shape/X3DShapeContext.cpp \
 	Titania/X3D/Browser/Sound/MediaStream.cpp \
 	Titania/X3D/Browser/Text/Font.cpp \
@@ -319,6 +319,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/X3DCoordinateNode.cpp \
 	Titania/X3D/Components/Rendering/X3DGeometricPropertyNode.cpp \
 	Titania/X3D/Components/Rendering/X3DGeometryNode.cpp \
+	Titania/X3D/Components/Rendering/X3DLineGeometryNode.cpp \
 	Titania/X3D/Components/Rendering/X3DNormalNode.cpp \
 	Titania/X3D/Components/RigidBodyPhysics/BallJoint.cpp \
 	Titania/X3D/Components/RigidBodyPhysics/CollidableOffset.cpp \

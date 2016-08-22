@@ -23,72 +23,39 @@ dnl ***************************************************************************
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
-		[Use 'DEBUG' Configuration [default=YES]]),
+		[Use 'DEBUG' Configuration [default=NO]]),
 		enable_debug=yes, enable_debug=no)
-
-AM_CONDITIONAL(ENABLE_DEBUG, test x$enable_debug = xyes)
-
-if test "x$enable_debug" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-
-
-AC_ARG_ENABLE(release,
-	AC_HELP_STRING([--enable-release],
-		[Use 'RELEASE' Configuration [default=NO]]),
-		enable_release=yes, enable_release=no)
-
-AM_CONDITIONAL(ENABLE_RELEASE, test x$enable_release = xyes)
-
-if test "x$enable_release" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-
 
 AC_ARG_ENABLE(parallel,
 	AC_HELP_STRING([--enable-parallel],
 		[Use 'PARALLEL' Configuration [default=NO]]),
 		enable_parallel=yes, enable_parallel=no)
 
-AM_CONDITIONAL(ENABLE_PARALLEL, test x$enable_parallel = xyes)
+AC_ARG_ENABLE(shader-pipeline,
+	AC_HELP_STRING([--enable-shader-pipeline],
+		[Use 'SHADER PIPELINE' Configuration [default=NO]]),
+		enable_shader_pipeline=yes, enable_shader_pipeline=no)
 
-if test "x$enable_parallel" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-
-
-if test -z "$CONFIG_REQUESTED" ; then
-	AM_CONDITIONAL(ENABLE_DEBUG, true)
-	enable_debug=yes
-fi
-
-
-CONFIGURATION="Debug"
-
-if test "x$enable_release" = "xyes" ; then
-	CONFIGURATION="Release"
-fi
-
-if test "x$enable_parallel" = "xyes" ; then
-	CONFIGURATION="Parallel"
-fi
-
-AC_SUBST(CONFIGURATION)
 
 
 dnl ***************************************************************************
 dnl Compile options
 dnl ***************************************************************************
 
-CXXFLAGS="-Wall -std=c++11 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
+dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
+
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
-	dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 	CXXFLAGS=$CXXFLAGS" "
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -D_GLIBCXX_PARALLEL"
+fi
+
+if test "x$enable_shader_pipeline" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DSHADER_PIPELINE"
 fi
 
 if test "x$enable_debug" = "xyes" ; then
@@ -97,21 +64,18 @@ fi
 
 LDFLAGS="-rdynamic"
 
+
+
 dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
+
 IT_PROG_INTLTOOL([0.35.0])
 
 GETTEXT_PACKAGE=titania
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 AM_GLIB_GNU_GETTEXT
-
-
-
-
-
-
 
 LT_INIT
 
@@ -128,6 +92,7 @@ if test x$ax_cxx_compile_cxx11_required = xtrue; then
 fi
 
 
+
 dnl ***************************************************************************
 dnl Check for GLX
 dnl ***************************************************************************
@@ -141,6 +106,7 @@ AM_CONDITIONAL(USE_GLX, test "$USE_GLX" = "yes")
 if test "$USE_GLX" = "no"; then
 	AC_MSG_ERROR([*** Please install X11 backend.])
 fi
+
 
 
 dnl ***************************************************************************

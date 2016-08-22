@@ -51,8 +51,10 @@
 #include "LineSet.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/IndexedLineSet.h"
+#include "../Shaders/ComposedShader.h"
 
 namespace titania {
 namespace X3D {
@@ -70,13 +72,13 @@ LineSet::Fields::Fields () :
 { }
 
 LineSet::LineSet (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields (),
-	    attribNodes (),
-	      colorNode (),
-	      coordNode (),
-	    transparent (false)
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields (),
+	        attribNodes (),
+	          colorNode (),
+	          coordNode (),
+	        transparent (false)
 {
 	addType (X3DConstants::LineSet);
 
@@ -101,7 +103,9 @@ LineSet::create (X3DExecutionContext* const executionContext) const
 void
 LineSet::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DLineGeometryNode::initialize ();
+
+	setShader (getBrowser () -> getWireframeShader ());
 
 	attrib () .addInterest (this, &LineSet::set_attrib);
 	color ()  .addInterest (this, &LineSet::set_color);
@@ -219,13 +223,6 @@ LineSet::build ()
 
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
-}
-
-void
-LineSet::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 SFNode

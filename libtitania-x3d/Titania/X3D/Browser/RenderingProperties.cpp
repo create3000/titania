@@ -115,7 +115,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (Enabled (), CycleInterval (), world);
+	addChildren (Enabled (), CycleInterval (), shading, world);
 }
 
 RenderingProperties*
@@ -203,7 +203,8 @@ void
 RenderingProperties::set_Shading ()
 {
 	static const std::map <std::string, ShadingType> shadings = {
-		std::make_pair ("POINTSET",  ShadingType::POINTSET),
+		std::make_pair ("POINT",     ShadingType::POINT),
+		std::make_pair ("POINTSET",  ShadingType::POINT),
 		std::make_pair ("WIREFRAME", ShadingType::WIREFRAME),
 		std::make_pair ("FLAT",      ShadingType::FLAT),
 		std::make_pair ("GOURAUD",   ShadingType::GOURAUD),

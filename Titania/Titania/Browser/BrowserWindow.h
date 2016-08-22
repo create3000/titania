@@ -635,6 +635,10 @@ private:
 
 	virtual
 	void
+	on_shader_pipeline_toggled () final override;
+
+	virtual
+	void
 	on_info_activated () final override;
 
 	/// Toolbar

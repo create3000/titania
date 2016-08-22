@@ -51,13 +51,13 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYPOINT2D_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
 class Polypoint2D :
-	public X3DGeometryNode
+	public X3DLineGeometryNode
 {
 public:
 
@@ -99,17 +99,6 @@ public:
 	point () const
 	{ return *fields .point; }
 
-	virtual
-	void
-	draw (ShapeContainer* const) final override;
-
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return true; }
-
 	///  @name Operations
 
 	virtual
@@ -122,6 +111,10 @@ public:
 private:
 
 	///  @name Operations
+
+	virtual
+	void
+	initialize () final override;
 
 	virtual
 	void

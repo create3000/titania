@@ -1187,12 +1187,9 @@ throw (Error <NOT_SUPPORTED>,
 				c     = first;
 			}
 
-			bool exists = false;
+			const bool exists = not lineIndex .emplace (std::minmax (previous, index)) .second;
 
-			exists |= not lineIndex .emplace (std::make_pair (previous, index)) .second;
-			exists |= not lineIndex .emplace (std::make_pair (index, previous)) .second;
-
-			if ((previous == -1 || exists) and line)
+			if ((previous == -1 or exists) and line)
 			{
 				if (not colorIndex () .empty ())
 				{
@@ -1211,6 +1208,7 @@ throw (Error <NOT_SUPPORTED>,
 			{
 				first = i;
 				face += 1;
+				last  = -1;
 				continue;
 			}
 

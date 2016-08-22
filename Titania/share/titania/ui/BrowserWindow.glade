@@ -339,6 +339,9 @@
     <property name="label" translatable="yes">Select Lowest</property>
     <signal name="toggled" handler="on_select_lowest_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="ShaderPipelineAction">
+    <signal name="toggled" handler="on_shader_pipeline_toggled" swapped="no"/>
+  </object>
   <object class="GtkToggleAction" id="SidebarAction">
     <property name="label" translatable="yes">Sidebar</property>
     <signal name="toggled" handler="on_sidebar_toggled" swapped="no"/>
@@ -2027,6 +2030,15 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
+              <object class="GtkCheckMenuItem" id="BrowserShaderPipelineMenuItem">
+                <property name="related_action">ShaderPipelineAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Cobweb Compatibility</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserInfoMenuItem">
                 <property name="label">gtk-about</property>
                 <property name="visible">True</property>
@@ -3507,6 +3519,15 @@
                           <object class="GtkMenu" id="menu3">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="ShaderPipelineMenuItem">
+                                <property name="related_action">ShaderPipelineAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Cobweb Compatibility</property>
+                                <property name="use_underline">True</property>
+                              </object>
+                            </child>
                             <child>
                               <object class="GtkImageMenuItem" id="InfoMenuItem">
                                 <property name="label">gtk-about</property>

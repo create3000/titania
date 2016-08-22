@@ -54,7 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Browser/Shading/Shader.h"
+#include "../../Browser/Shaders/Shader.h"
 
 namespace titania {
 namespace X3D {

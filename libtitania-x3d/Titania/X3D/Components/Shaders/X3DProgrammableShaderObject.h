@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Basic/X3DConstants.h"
+#include "../../Browser/Shaders/ShadingType.h"
 #include "../../Fields.h"
 
 #include "../../Rendering/OpenGL.h"
@@ -221,33 +222,52 @@ public:
 
 	///  @name Pipeline
 
+	virtual
+	void
+	setGeometryType (const size_t);
+
+	virtual
+	size_t
+	getGeometryType () const
+	{ return geometryType; }
+
+	virtual
 	void
 	setGlobalUniforms (ShapeContainer* const);
 
+	virtual
 	void
 	setLocalUniforms (ShapeContainer* const);
 
+	virtual
 	void
 	enableColorAttrib (const GLuint);
 
+	virtual
 	void
 	enableTexCoordAttrib (const std::vector <GLuint> &);
 
+	virtual
 	void
 	enableNormalAttrib (const GLuint);
 
+	virtual
 	void
 	enableVertexAttrib (const GLuint);
 	
+	virtual
 	void
 	disableColorAttrib ();
 	
+	virtual
 	void
 	disableTexCoordAttrib ();
 	
+	virtual
 	void
 	disableNormalAttrib ();
 	
+	virtual
 	void
 	disableVertexAttrib ();
 
@@ -287,6 +307,9 @@ protected:
 private:
 
 	///  @name Event handlers
+	
+	void
+	set_shading (const ShadingType &);
 
 	void
 	set_field (X3DFieldDefinition* const);

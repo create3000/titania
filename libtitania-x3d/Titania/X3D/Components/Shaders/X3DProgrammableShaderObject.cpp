@@ -51,6 +51,7 @@
 #include "X3DProgrammableShaderObject.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderer.h"
@@ -878,6 +879,122 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
  */
 
 void
+X3DProgrammableShaderObject::setGeometryType (const size_t value)
+{
+	geometryType = value;
+
+	if (getProgramId ())
+	{
+		glUseProgram (getProgramId ());
+	
+		glUniform1i (x3d_GeometryType, geometryType);
+	
+		glUseProgram (0);
+	}
+
+	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
+}
+
+void
+X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
+{
+//	switch (geometryType)
+//	{
+//		case 0:
+//		{
+//			switch (shading)
+//			{
+//				case ShadingType::POINT:
+//				{
+//					primitiveMode = GL_POINTS;
+//					wireframe     = true;
+//					break;
+//				}
+//				case ShadingType::WIREFRAME:
+//				{
+//					primitiveMode = GL_POINTS;
+//					wireframe     = true;
+//					break;
+//				}
+//				default:
+//				{
+//					// case FLAT:
+//					// case GOURAUD:
+//					// case PHONG:
+//
+//					this .primitiveMode = GL_POINTS;
+//					this .wireframe     = true;
+//					break;
+//				}
+//			}
+//
+//			break;
+//		}
+//		case 1:
+//		{
+//			switch (shading)
+//			{
+//				case ShadingType::POINT:
+//				{
+//					primitiveMode = GL_POINTS;
+//					wireframe     = true;
+//					break;
+//				}
+//				case ShadingType::WIREFRAME:
+//				{
+//					this .primitiveMode = GL_LINES;
+//					this .wireframe     = true;
+//					break;
+//				}
+//				default:
+//				{
+//					// case FLAT:
+//					// case GOURAUD:
+//					// case PHONG:
+//
+//					primitiveMode = gl_LINES;
+//					wireframe     = true;
+//					break;
+//				}
+//			}
+//
+//			break;
+//		}
+//		case 2:
+//		case 3:
+//		{
+//			switch (shading)
+//			{
+//				case ShadingType::POINT:
+//				{
+//					primitiveMode = GL_POINTS;
+//					wireframe     = true;
+//					break;
+//				}
+//				case ShadingType::WIREFRAME":
+//				{
+//					this .primitiveMode = GL_LINE_LOOP;
+//					this .wireframe     = true;
+//					break;
+//				}
+//				default:
+//				{
+//					// case FLAT:
+//					// case GOURAUD:
+//					// case PHONG:
+//
+//					primitiveMode = GL_TRIANGLES;
+//					wireframe     = false;
+//					break;
+//				}
+//			}	
+//
+//			break;
+//		}
+//	}
+}
+
+void
 X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
 {
 	const auto & browser      = getBrowser ();
@@ -935,6 +1052,31 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (context -> getModelViewMatrix ()) .data ());
 	}
 }
+
+//void
+//X3DProgrammableShaderObject::enableAttrib (const std::string & name, const GLuint buffer, const size_t components, const GLint type)
+//{
+//	const GLint location = glGetAttribLocation (getProgramId (), name .c_str ());
+//
+//	if (location == -1)
+//		return;
+//
+//	glEnableVertexAttribArray (location);
+//
+//	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+//	glVertexAttribPointer (location, components, type, false, 0, (void*) 0);
+//}
+//
+//void
+//FloatVertexAttribute::disableAttrib (const std::string & name)
+//{
+//	const GLint location = glGetAttribLocation (getProgramId (), name () .c_str ());
+//
+//	if (location == -1)
+//		return;
+//
+//	glDisableVertexAttribArray (location);
+//}
 
 void
 X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)

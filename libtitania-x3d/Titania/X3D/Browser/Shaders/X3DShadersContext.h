@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtr.h"
+#include "../Shaders/ShadingType.h"
 
 namespace titania {
 namespace X3D {
@@ -60,7 +61,7 @@ namespace X3D {
 class ComposedShader;
 class X3DShaderNode;
 
-class X3DShadingContext :
+class X3DShadersContext :
 	virtual public X3DBaseNode
 {
 public:
@@ -70,6 +71,18 @@ public:
 	float
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
+
+	const X3DPtr <ComposedShader> &
+	getPointShader () const
+	{ return pointShader; }
+
+	const X3DPtr <ComposedShader> &
+	getWireframeShader () const
+	{ return wireframeShader; }
+
+	const X3DPtr <ComposedShader> &
+	getGouraudShader () const
+	{ return gouraudShader; }
 
 	const X3DPtr <ComposedShader> &
 	getPhongShader () const
@@ -87,6 +100,15 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
+	#ifndef SHADER_PIPELINE
+	void
+	setShaderPipeline (const bool);
+
+	bool
+	getShaderPipeline () const
+	{ return shaderPipeline; }
+	#endif
+
 	///  @name Destruction
 
 	virtual
@@ -95,14 +117,14 @@ public:
 	{ }
 
 	virtual
-	~X3DShadingContext ();
+	~X3DShadersContext ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DShadingContext ();
+	X3DShadersContext ();
 
 	virtual
 	void
@@ -111,17 +133,29 @@ protected:
 
 private:
 
+	///  Operations
+
+	X3DPtr <ComposedShader>
+	createShader (const MFString &, const MFString &);
+
 	///  @name Event handlers
 
 	void
-	set_Shading (const String &);
+	set_shading (const ShadingType &);
 
 	///  @name Members
 
 	float                   shadingLanguageVersion;
+	#ifndef SHADER_PIPELINE
+	bool                    shaderPipeline;
+	#endif
+	X3DPtr <ComposedShader> pointShader;
+	X3DPtr <ComposedShader> wireframeShader;
+	X3DPtr <ComposedShader> gouraudShader;
 	X3DPtr <ComposedShader> phongShader;
 	X3DPtr <X3DShaderNode>  defaultShader;
 	X3DShaderNode*          shaderNode;
+
 
 };
 

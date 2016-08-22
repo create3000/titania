@@ -24,7 +24,7 @@ Build-Depends: debhelper (>= 5),
                gettext,
                libtool,
                libtool-bin,
-               libgtop2-dev.
+               libgtop2-dev,
                libcgal-dev,
                libgmp-dev,
                libmpfr-dev

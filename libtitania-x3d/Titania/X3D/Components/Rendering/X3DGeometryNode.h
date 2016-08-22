@@ -218,6 +218,10 @@ protected:
 	void
 	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);
 
+	const std::vector <X3DVertexAttributeNode*> &
+	getAttribs () const
+	{ return attribNodes; }
+
 	std::vector <Color4f> &
 	getColors ()
 	{ return colors; }
@@ -281,6 +285,26 @@ protected:
 	void
 	addElements (const GLenum count, const size_t vertexCount)
 	{ elements .emplace_back (count, vertexCount); }
+
+	const std::vector <GLuint> &
+	getAttribBufferIds () const
+	{ return attribBufferIds; }
+
+	GLuint
+	getColorBufferId () const
+	{ return colorBufferId; }
+
+	const std::vector <GLuint> &
+	getTexCoordBufferIds () const
+	{ return texCoordBufferIds; }
+
+	GLuint
+	getNormalBufferId () const
+	{ return normalBufferId; }
+
+	GLuint
+	getVertexBufferId () const
+	{ return vertexBufferId; }
 
 	///  @name Operations
 

@@ -48,81 +48,61 @@
  *
  ******************************************************************************/
 
-#include "Polypoint2D.h"
+#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DLINE_GEOMETRY_H__
+#define __TITANIA_X3D_COMPONENTS_RENDERING_X3DLINE_GEOMETRY_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Coordinate.h"
-#include "../Rendering/PointSet.h"
-#include "../Shaders/ComposedShader.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Polypoint2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Polypoint2D::typeName       = "Polypoint2D";
-const std::string   Polypoint2D::containerField = "geometry";
-
-Polypoint2D::Fields::Fields () :
-	point (new MFVec2f ())
-{ }
-
-Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLineGeometryNode (),
-	             fields ()
+class X3DLineGeometryNode :
+	public X3DGeometryNode
 {
-	addType (X3DConstants::Polypoint2D);
+public:
 
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "point",    point ());
+	///  @name Member access
 
-	point () .setUnit (UnitCategory::LENGTH);
-}
+	virtual
+	bool
+	isLineGeometry () const final override
+	{ return true; }
 
-X3DBaseNode*
-Polypoint2D::create (X3DExecutionContext* const executionContext) const
-{
-	return new Polypoint2D (executionContext);
-}
+	void
+	setShader (const X3DPtr <ComposedShader> &);
 
-void
-Polypoint2D::initialize ()
-{
-	X3DLineGeometryNode::initialize ();
+	const X3DPtr <ComposedShader> &
+	getShader () const
+	{ return shaderNode; }
 
-	setShader (getBrowser () -> getPointShader ());
-}
+	///  @name Operations
 
-void
-Polypoint2D::build ()
-{
-	for (const auto & vertex : point ())
-		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
+	virtual
+	void
+	draw (ShapeContainer* const) final override;
 
-	addElements (GL_POINTS, getVertices () .size ());
-	setSolid (false);
-}
+	///  @name Destruction
 
-SFNode
-Polypoint2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	if (getElements () .empty ())
-		throw Error <DISPOSED> ("Polypoint2D::toPrimitive");
+	virtual
+	~X3DLineGeometryNode ();
 
-	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
-	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
 
-	geometry -> metadata () = metadata ();
-	geometry -> coord ()    = coord;
+protected:
 
-	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+	///  @name Construction
 
-	getExecutionContext () -> realize ();
-	return SFNode (geometry);
-}
+	X3DLineGeometryNode ();
+
+
+private:
+
+	///  @name Members
+
+	X3DPtr <ComposedShader> shaderNode;
+
+};
 
 } // X3D
 } // titania
+
+#endif

@@ -843,7 +843,8 @@ X3DGeometryNode::collision (const CollisionContainer* const context)
 void
 X3DGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto shaderNode = getBrowser () -> getShader ();
+	const auto & browser    = getBrowser ();
+	const auto & shaderNode = browser -> getShader ();
 
 	context -> setColorMaterial (not colors .empty ());
 
@@ -891,7 +892,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			glColorPointer (4, GL_FLOAT, 0, 0);
 		}
 
-		if (getBrowser () -> getTexture ())
+		if (browser -> getTexture ())
 			texCoordNode -> enable (texCoordBufferIds);
 
 		if (glIsEnabled (GL_LIGHTING) or shaderNode)
@@ -993,7 +994,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		// Texture
 	
-		if (getBrowser () -> getTexture ())
+		if (browser -> getTexture ())
 			texCoordNode -> disable ();
 
 		// Other arrays

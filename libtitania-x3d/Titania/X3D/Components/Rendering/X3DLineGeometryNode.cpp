@@ -48,81 +48,98 @@
  *
  ******************************************************************************/
 
-#include "Polypoint2D.h"
+#include "X3DLineGeometryNode.h"
 
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../Rendering/Coordinate.h"
-#include "../Rendering/PointSet.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../Shaders/ComposedShader.h"
+#include "../Shaders/X3DShaderNode.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Polypoint2D::component      = ComponentType::GEOMETRY_2D;
-const std::string   Polypoint2D::typeName       = "Polypoint2D";
-const std::string   Polypoint2D::containerField = "geometry";
+X3DLineGeometryNode::X3DLineGeometryNode () :
+	X3DGeometryNode (),
+	     shaderNode ()
+{
+	//addType (X3DConstants::X3DLineGeometryNode);
 
-Polypoint2D::Fields::Fields () :
-	point (new MFVec2f ())
+	addChildren (shaderNode);
+}
+
+void
+X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
+{
+	shaderNode .set (value);
+}
+
+void
+X3DLineGeometryNode::draw (ShapeContainer* const context)
+{
+	const auto & browser      = getBrowser ();
+	const auto & shading      = browser -> getRenderingProperties () -> getShading ();
+	const bool   pointShading = shading == ShadingType::POINT;
+	auto         shaderNode   = browser -> getShader ();
+
+	#ifndef SHADER_PIPELINE
+	if (not browser -> getShaderPipeline () and shading not_eq ShadingType::PHONG)
+	{
+		glDisable (GL_LIGHTING);
+		X3DGeometryNode::draw (context);
+		return;
+	}
+	#endif
+
+	if (shaderNode == browser -> getDefaultShader ())
+		shaderNode = this -> shaderNode;
+
+	// Setup shader.
+
+	context -> setColorMaterial (not getColors () .empty ());
+
+	shaderNode -> setGlobalUniforms (context);
+	shaderNode -> setLocalUniforms (context);
+
+	// Setup vertex attributes.
+
+	if (not getAttribs () .empty ())
+	{
+		GLint program = 0;
+
+		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
+
+		if (program)
+		{
+			for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+				getAttribs () [i] -> enable (program, getAttribBufferIds () [i]);
+		}
+	}
+
+	if (not getColors () .empty ())
+		shaderNode -> enableColorAttrib (getColorBufferId ());
+
+	shaderNode -> enableVertexAttrib (getVertexBufferId ());
+
+	// Draw
+	// Wireframes are always solid so only one drawing call is needed.
+
+	size_t first = 0;
+
+	for (const auto & element : getElements ())
+	{
+		glDrawArrays (pointShading ? GL_POINTS : element .vertexMode, first, element .count);
+		first += element .count;
+	}
+
+	shaderNode -> disableColorAttrib ();
+	shaderNode -> disableVertexAttrib ();
+
+	glBindBuffer (GL_ARRAY_BUFFER, 0);
+}
+
+X3DLineGeometryNode::~X3DLineGeometryNode ()
 { }
-
-Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DLineGeometryNode (),
-	             fields ()
-{
-	addType (X3DConstants::Polypoint2D);
-
-	addField (inputOutput, "metadata", metadata ());
-	addField (inputOutput, "point",    point ());
-
-	point () .setUnit (UnitCategory::LENGTH);
-}
-
-X3DBaseNode*
-Polypoint2D::create (X3DExecutionContext* const executionContext) const
-{
-	return new Polypoint2D (executionContext);
-}
-
-void
-Polypoint2D::initialize ()
-{
-	X3DLineGeometryNode::initialize ();
-
-	setShader (getBrowser () -> getPointShader ());
-}
-
-void
-Polypoint2D::build ()
-{
-	for (const auto & vertex : point ())
-		getVertices () .emplace_back (vertex .getX (), vertex .getY (), 0);
-
-	addElements (GL_POINTS, getVertices () .size ());
-	setSolid (false);
-}
-
-SFNode
-Polypoint2D::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	if (getElements () .empty ())
-		throw Error <DISPOSED> ("Polypoint2D::toPrimitive");
-
-	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
-	const auto geometry = getExecutionContext () -> createNode <PointSet> ();
-
-	geometry -> metadata () = metadata ();
-	geometry -> coord ()    = coord;
-
-	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
-
-	getExecutionContext () -> realize ();
-	return SFNode (geometry);
-}
 
 } // X3D
 } // titania

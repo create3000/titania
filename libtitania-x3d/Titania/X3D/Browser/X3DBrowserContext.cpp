@@ -64,7 +64,7 @@ namespace X3D {
 X3DBrowserContext::X3DBrowserContext () :
 	                      X3DScene (),
 	                X3DCoreContext (),
-	             X3DShadingContext (),
+	             X3DShadersContext (),
 	          X3DGeometry2DContext (),
 	          X3DGeometry3DContext (),
 	     X3DKeyDeviceSensorContext (),
@@ -114,7 +114,7 @@ X3DBrowserContext::initialize ()
 {
 	X3DScene::initialize ();
 	X3DCoreContext::initialize ();
-	X3DShadingContext::initialize ();
+	X3DShadersContext::initialize ();
 	X3DGeometry2DContext::initialize ();
 	X3DGeometry3DContext::initialize ();
 	X3DKeyDeviceSensorContext::initialize ();
@@ -356,7 +356,7 @@ X3DBrowserContext::dispose ()
 	X3DKeyDeviceSensorContext::dispose ();
 	X3DGeometry3DContext::dispose ();
 	X3DGeometry2DContext::dispose ();
-	X3DShadingContext::dispose ();
+	X3DShadersContext::dispose ();
 	X3DCoreContext::dispose ();
 	X3DScene::dispose ();
 

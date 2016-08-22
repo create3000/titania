@@ -158,6 +158,7 @@ SFString::append (const String & string)
 {
 	get () .append (string);
 	addEvent ();
+	return *this;
 }
 
 void
