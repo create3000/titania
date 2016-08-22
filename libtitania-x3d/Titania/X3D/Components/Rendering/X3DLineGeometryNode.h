@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class X3DLineGeometryNode :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -65,21 +65,14 @@ public:
 
 	virtual
 	bool
-	isLineGeometry () const final override
+	isLineGeometry () const override
 	{ return true; }
-
-	void
-	setShader (const X3DPtr <ComposedShader> &);
-
-	const X3DPtr <ComposedShader> &
-	getShader () const
-	{ return shaderNode; }
 
 	///  @name Operations
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	draw (ShapeContainer* const) override;
 
 	///  @name Destruction
 
@@ -92,6 +85,15 @@ protected:
 	///  @name Construction
 
 	X3DLineGeometryNode ();
+
+	///  @name Member access
+
+	void
+	setShader (const X3DPtr <ComposedShader> &);
+
+	const X3DPtr <ComposedShader> &
+	getShader () const
+	{ return shaderNode; }
 
 
 private:

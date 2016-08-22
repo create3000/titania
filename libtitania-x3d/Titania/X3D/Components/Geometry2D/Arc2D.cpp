@@ -70,9 +70,9 @@ Arc2D::Fields::Fields () :
 { }
 
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields ()
 {
 	addType (X3DConstants::Arc2D);
 
@@ -95,9 +95,11 @@ Arc2D::create (X3DExecutionContext* const executionContext) const
 void
 Arc2D::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DLineGeometryNode::initialize ();
 
 	getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void
@@ -108,10 +110,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 		getBrowser () -> getArc2DOptions () .removeInterest (this, &Arc2D::update);
 
-	X3DGeometryNode::setExecutionContext (executionContext);
+	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 		getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 double
@@ -165,13 +169,6 @@ Arc2D::build ()
 
 	addElements (vertexMode, getVertices () .size ());
 	setSolid (false);
-}
-
-void
-Arc2D::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 SFNode

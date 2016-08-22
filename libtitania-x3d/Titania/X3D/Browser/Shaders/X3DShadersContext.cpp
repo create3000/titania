@@ -172,25 +172,25 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 		#endif
 	}
 
-	#ifndef SHADER_PIPELINE
-	try
-	{
-		ContextLock lock (getBrowser ());
-
-		if (defaultShader)
-		{
-			glEnable (GL_POINT_SPRITE);
-			glEnable (GL_PROGRAM_POINT_SIZE);
-		}
-		else
-		{
-			glDisable (GL_POINT_SPRITE);
-			glDisable (GL_PROGRAM_POINT_SIZE);
-		}
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
-	#endif
+//	#ifndef SHADER_PIPELINE
+//	try
+//	{
+//		ContextLock lock (getBrowser ());
+//
+//		if (defaultShader)
+//		{
+//			glEnable (GL_POINT_SPRITE);
+//			glEnable (GL_PROGRAM_POINT_SIZE);
+//		}
+//		else
+//		{
+//			glDisable (GL_POINT_SPRITE);
+//			glDisable (GL_PROGRAM_POINT_SIZE);
+//		}
+//	}
+//	catch (const Error <INVALID_OPERATION_TIMING> &)
+//	{ }
+//	#endif
 }
 
 X3DShadersContext::~X3DShadersContext ()

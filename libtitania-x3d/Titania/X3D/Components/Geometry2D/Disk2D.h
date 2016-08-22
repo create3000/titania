@@ -52,12 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_DISK2D_H__
 
 #include "../Rendering/X3DGeometryNode.h"
+#include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
 namespace X3D {
 
 class Disk2D :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode,
+	public X3DLineGeometryNode
 {
 public:
 

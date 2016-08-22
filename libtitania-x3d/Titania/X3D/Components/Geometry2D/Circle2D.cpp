@@ -68,9 +68,9 @@ Circle2D::Fields::Fields () :
 { }
 
 Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DLineGeometryNode (),
+	             fields ()
 {
 	addType (X3DConstants::Circle2D);
 
@@ -89,9 +89,11 @@ Circle2D::create (X3DExecutionContext* const executionContext) const
 void
 Circle2D::initialize ()
 {
-	X3DGeometryNode::initialize ();
+	X3DLineGeometryNode::initialize ();
 
 	getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void
@@ -102,10 +104,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 		getBrowser () -> getCircle2DOptions () .removeInterest (this, &Circle2D::update);
 
-	X3DGeometryNode::setExecutionContext (executionContext);
+	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 		getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 Box3d
@@ -134,13 +138,6 @@ Circle2D::build ()
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (false);
-}
-
-void
-Circle2D::draw (ShapeContainer* const context)
-{
-	glDisable (GL_LIGHTING);
-	X3DGeometryNode::draw (context);
 }
 
 SFNode

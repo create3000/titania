@@ -72,10 +72,11 @@ Disk2D::Fields::Fields () :
 { }
 
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometryNode (),
-	         fields (),
-	   lineGeometry (false)
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DGeometryNode (),
+	X3DLineGeometryNode (),
+	             fields (),
+	       lineGeometry (false)
 {
 	addType (X3DConstants::Disk2D);
 
@@ -100,6 +101,8 @@ Disk2D::initialize ()
 	X3DGeometryNode::initialize ();
 
 	getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void
@@ -114,6 +117,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 		getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 Box3d
@@ -251,9 +256,9 @@ void
 Disk2D::draw (ShapeContainer* const context)
 {
 	if (innerRadius () == outerRadius ())
-		glDisable (GL_LIGHTING);
-
-	X3DGeometryNode::draw (context);
+		X3DLineGeometryNode::draw (context);
+	else
+		X3DGeometryNode::draw (context);
 }
 
 SFNode
