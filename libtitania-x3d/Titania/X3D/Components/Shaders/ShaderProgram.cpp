@@ -220,11 +220,11 @@ ShaderProgram::requestImmediateLoad ()
 		
 					// Link program
 			
+					glProgramParameteri (programId, GL_PROGRAM_SEPARABLE, true);
 					glLinkProgram  (programId);
 					glDetachShader (programId, shaderId);
-					glUseShaderProgramEXT (getShaderType (), programId);
-					//glDeleteShader (shaderId);
-			
+					glDeleteShader (shaderId);
+	
 					// Check for link status
 			
 					glGetProgramiv (programId, GL_LINK_STATUS, &valid);

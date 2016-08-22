@@ -5,7 +5,7 @@ META "created" "Mon, 22 Aug 2016 21:30:50 GMT"
 META "creator" "holger"
 META "generator" "Titania V1.4.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Shaders/Matrix4VertexAttibute.x3dv"
-META "modified" "Mon, 22 Aug 2016 21:30:50 GMT"
+META "modified" "Mon, 22 Aug 2016 22:09:44 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -16,6 +16,10 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
@@ -29,16 +33,13 @@ uniform vec3 x3d_EmissiveColor;
 
 out vec4 x3d_FragColor;
 
-void main (void)
+void
+main ()
 {
 	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
 }
 "
             }
-          }
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
           }
         ]
       }
@@ -159,7 +160,7 @@ DEF ComposedShader Transform {
       material DEF _1 Material {
         emissiveColor 0.5 0 0
       }
-      shaders DEF Phong ComposedShader {
+      shaders DEF ComposedShader_1 ComposedShader {
         language "GLSL"
         parts [
           DEF ShaderPartVertexShader ShaderPart {
@@ -173,7 +174,8 @@ uniform mat4 x3d_ModelViewMatrix;
 in vec4 x3d_Vertex;
 in mat4 attrib4;
 
-void main(void)  
+void
+main ()  
 {
 	vec4 vertex = attrib4 * x3d_Vertex;
 
@@ -191,7 +193,8 @@ uniform vec3 x3d_EmissiveColor;
 
 out vec4 x3d_FragColor;
 
-void main (void)
+void
+main ()
 {
 	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
 }
@@ -235,7 +238,7 @@ DEF ProgramShader Transform {
   children Shape {
     appearance Appearance {
       material USE _1
-      shaders ProgramShader {
+      shaders DEF ProgramShader_1 ProgramShader {
         programs [
           DEF ShaderProgramVertexShader ShaderProgram {
             url "data:text/plain,
@@ -248,9 +251,10 @@ uniform mat4 x3d_ModelViewMatrix;
 in vec4 x3d_Vertex;
 in mat4 attrib4;
 
-void main(void)  
+void
+main ()  
 {
-	vec4 vertex = attrib4 * x3d_Vertex;
+	vec4 vertex = attrib4 * x3d_Vertex + vec4 (2.0, 0.0, 0.0, 0.0);
 
 	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
 }

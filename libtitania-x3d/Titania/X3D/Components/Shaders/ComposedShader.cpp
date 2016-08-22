@@ -285,6 +285,27 @@ ComposedShader::draw ()
 }
 
 void
+ComposedShader::setGeometryType (const size_t value)
+{
+	glUseProgram (programId);
+	return X3DProgrammableShaderObject::setGeometryType (value);
+}
+
+void
+ComposedShader::setGlobalUniforms (ShapeContainer* const context)
+{
+	glUseProgram (programId);
+	X3DProgrammableShaderObject::setGlobalUniforms (context);
+}
+
+void
+ComposedShader::setLocalUniforms (ShapeContainer* const context)
+{
+	glUseProgram (programId);
+	X3DProgrammableShaderObject::setLocalUniforms (context);
+}
+
+void
 ComposedShader::dispose ()
 {
 	try

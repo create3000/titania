@@ -145,8 +145,7 @@ public:
 
 	virtual
 	void
-	setGeometryType (const size_t value) final override
-	{ X3DProgrammableShaderObject::setGeometryType (value); }
+	setGeometryType (const size_t value) final override;
 
 	virtual
 	size_t
@@ -155,13 +154,11 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const context) final override
-	{ X3DProgrammableShaderObject::setGlobalUniforms (context); }
+	setGlobalUniforms (ShapeContainer* const context) final override;
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context) final override
-	{ X3DProgrammableShaderObject::setLocalUniforms (context); }
+	setLocalUniforms (ShapeContainer* const context) final override;
 
 	virtual
 	void

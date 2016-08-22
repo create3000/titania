@@ -884,13 +884,7 @@ X3DProgrammableShaderObject::setGeometryType (const size_t value)
 	geometryType = value;
 
 	if (getProgramId ())
-	{
-		glUseProgram (getProgramId ());
-	
 		glUniform1i (x3d_GeometryType, geometryType);
-	
-		glUseProgram (0);
-	}
 
 	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
 }
@@ -1000,8 +994,6 @@ X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
 	const auto & browser      = getBrowser ();
 	const auto & globalLights = context -> getRenderer () -> getGlobalLights ();
 
-	glUseProgram (getProgramId ());
-
 	if (extensionGPUShaderFP64)
 		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, browser -> getProjectionMatrix () .data ());
 	else
@@ -1021,8 +1013,6 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & browser      = getBrowser ();
 	const auto & appearance   = browser -> getAppearance ();
 	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
-
-	glUseProgram (getProgramId ());
 
 	// Lights
 

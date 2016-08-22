@@ -242,7 +242,12 @@ void
 ProgramShader::setGeometryType (const size_t value)
 {
 	for (const auto & programNode : programNodes)
+	{
+		if (pipelineId and programNode -> getProgramId ())
+			glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
+
 		programNode -> setGeometryType (value);
+	}
 }
 
 size_t
@@ -258,14 +263,20 @@ void
 ProgramShader::setGlobalUniforms (ShapeContainer* const context)
 {
 	for (const auto & programNode : programNodes)
+	{
+		glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
 		programNode -> setGlobalUniforms (context);
+	}
 }
 
 void
 ProgramShader::setLocalUniforms (ShapeContainer* const context)
 {
 	for (const auto & programNode : programNodes)
+	{
+		glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
 		programNode -> setLocalUniforms (context);
+	}
 }
 
 void
