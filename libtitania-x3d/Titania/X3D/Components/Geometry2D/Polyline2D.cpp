@@ -92,6 +92,16 @@ Polyline2D::initialize ()
 	setShader (getBrowser () -> getWireframeShader ());
 }
 
+void
+Polyline2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DLineGeometryNode::setExecutionContext (executionContext);
+
+	setShader (getBrowser () -> getWireframeShader ());
+}
+
 X3DBaseNode*
 Polyline2D::create (X3DExecutionContext* const executionContext) const
 {

@@ -58,8 +58,6 @@
 #include "../../Rendering/OpenGL.h"
 #include "../../Types/MatrixStack.h"
 
- #include <Titania/String/split.h>
-
 namespace titania {
 namespace X3D {
 
@@ -147,12 +145,13 @@ public:
 	getLayers () const;
 
 	Matrix4dStack &
-	getModelViewMatrix ()
-	{ return modelViewMatrix; }
+	getModelViewMatrix ();
 
 	const Matrix4dStack &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
+	getModelViewMatrix () const;
+
+	Matrix4d
+	getModelViewMatrix (const TraverseType) const;
 
 
 protected:
@@ -178,9 +177,6 @@ protected:
 	const Matrix4d &
 	getInverseCameraSpaceMatrix () const;
 
-	Matrix4d
-	getModelViewMatrix (const TraverseType) const;
-
 
 private:
 
@@ -195,10 +191,6 @@ private:
 	virtual
 	void
 	fieldToMetaData (const X3DPtr <MetadataSet> &, const X3DFieldDefinition* const) const;
-	
-	///  @name Static members
-
-	static Matrix4dStack modelViewMatrix;
 
 	///  @name Members
 

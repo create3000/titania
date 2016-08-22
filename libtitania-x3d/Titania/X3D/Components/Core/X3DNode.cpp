@@ -66,8 +66,6 @@ namespace X3D {
 
 static const  std::string SEPARATOR = "/";
 
-Matrix4dStack X3DNode::modelViewMatrix;
-
 X3DNode::Fields::Fields () :
 	metadata (new SFNode ())
 { }
@@ -79,11 +77,9 @@ X3DNode::X3DNode () :
 	addType (X3DConstants::X3DNode);
 }
 
-
 /*
  * createMetaData
  */
-
 
 template <>
 X3DPtr <MetadataBoolean>
@@ -1255,13 +1251,25 @@ X3DNode::getInverseCameraSpaceMatrix () const
 	return getCurrentViewpoint () -> getInverseCameraSpaceMatrix ();
 }
 
+Matrix4dStack &
+X3DNode::getModelViewMatrix ()
+{
+	return getBrowser () -> getModelViewMatrix ();
+}
+
+const Matrix4dStack &
+X3DNode::getModelViewMatrix () const
+{
+	return getBrowser () -> getModelViewMatrix ();
+}
+
 Matrix4d
 X3DNode::getModelViewMatrix (const TraverseType type) const
 {
 	if (type == TraverseType::CAMERA)
-		return getModelViewMatrix () .get () * getInverseCameraSpaceMatrix ();
+		return getBrowser () -> getModelViewMatrix () .get () * getInverseCameraSpaceMatrix ();
 
-	return getModelViewMatrix () .get ();
+	return getBrowser () ->  getModelViewMatrix () .get ();
 }
 
 } // X3D

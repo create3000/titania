@@ -128,14 +128,14 @@ X3DBrowser::initialize ()
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
 	getLoadSensor () -> loadTime () .addInterest (this, &X3DBrowser::set_loadTime);
+
+	replaceWorld (executionContext);
 }
 
 void
 X3DBrowser::set_loadTime ()
 {
 	getLoadSensor () -> loadTime () .removeInterest (this, &X3DBrowser::set_loadTime);
-
-	replaceWorld (executionContext);
 
 	if (url .empty ())
 	   initialized () = getCurrentTime ();
@@ -305,7 +305,6 @@ throw (Error <INVALID_SCENE>,
 
 	finished () .removeInterest (this, &X3DBrowser::set_scene);
 
-
 	// Process shutdown.
 
 	if (initialized ()) // Don't do this if browser is not initialized.
@@ -340,7 +339,6 @@ throw (Error <INVALID_SCENE>,
 
 		isLive () .removeInterest (executionContext -> isLive ());
 		executionContext -> isLive () = false;
-		processEvents ();
 
 		// Replace world.
 

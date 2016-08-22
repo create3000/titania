@@ -54,6 +54,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/PointSet.h"
+#include "../Rendering/X3DColorNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
 
 namespace titania {
@@ -118,6 +120,16 @@ IndexedLineSet::initialize ()
 	set_attrib ();
 	set_color ();
 	set_coord ();
+}
+
+void
+IndexedLineSet::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DLineGeometryNode::setExecutionContext (executionContext);
+
+	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void

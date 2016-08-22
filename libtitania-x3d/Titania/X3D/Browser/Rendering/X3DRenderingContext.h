@@ -54,6 +54,7 @@
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtr.h"
 #include "../../Rendering/OpenGL.h"
+#include "../../Types/MatrixStack.h"
 
 #include <stack>
 
@@ -80,6 +81,14 @@ public:
 	const Matrix4d &
 	getProjectionMatrix () const
 	{ return projectionMatrix; }
+
+	Matrix4dStack &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
+
+	const Matrix4dStack &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
 
 	size_t
 	getMaxClipPlanes () const
@@ -132,6 +141,7 @@ private:
 
 
 	Matrix4d            projectionMatrix;
+	Matrix4dStack       modelViewMatrix;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
 	DepthTestStack      depthTest;

@@ -95,6 +95,16 @@ Polypoint2D::initialize ()
 }
 
 void
+Polypoint2D::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DLineGeometryNode::setExecutionContext (executionContext);
+
+	setShader (getBrowser () -> getPointShader ());
+}
+
+void
 Polypoint2D::build ()
 {
 	for (const auto & vertex : point ())

@@ -51,8 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_INDEXED_LINE_SET_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_INDEXED_LINE_SET_H__
 
-#include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DLineGeometryNode.h"
 
 namespace titania {
@@ -70,6 +68,12 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
 
 	///  @name Common members
 

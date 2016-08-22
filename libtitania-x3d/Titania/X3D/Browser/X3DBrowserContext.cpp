@@ -93,7 +93,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                 changedOutput (),
 	                   changedTime (0),
 	                   freezedTime (0),
-	                         world (),
+	                         world (new World (getExecutionContext ())),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
 	                       console (new Console (this))

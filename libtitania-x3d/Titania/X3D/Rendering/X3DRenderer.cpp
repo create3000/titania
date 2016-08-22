@@ -493,9 +493,11 @@ X3DRenderer::display ()
 
 	// Setup projection matrix
 
+	#ifndef SHADER_PIPELINE
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
 	glMatrixMode (GL_MODELVIEW);
+	#endif
 
 	// Enable global lights
 
