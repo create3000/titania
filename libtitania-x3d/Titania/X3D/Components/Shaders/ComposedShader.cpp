@@ -159,26 +159,36 @@ ComposedShader::set_loaded ()
 
 		// Attach shader
 
-		size_t valid    = 0;
-		bool   openGLES = false;
+		size_t valid = 0;
 
-		for (const auto & part : parts ())
+		if (programId)
 		{
-			const auto partNode = x3d_cast <ShaderPart*> (part);
-
-			if (partNode)
+			bool openGLES = false;
+	
+			for (const auto & part : parts ())
 			{
-				valid    += partNode -> isValid ();
-				openGLES |= partNode -> isOpenGLES ();
-
-				glAttachShader (programId, partNode -> getShaderId ());
+				const auto partNode = x3d_cast <ShaderPart*> (part);
+	
+				if (partNode)
+				{
+					valid    += partNode -> isValid ();
+					openGLES |= partNode -> isOpenGLES ();
+	
+					glAttachShader (programId, partNode -> getShaderId ());
+				}
 			}
+	
+			setOpenGLES (openGLES);
 		}
-
-		setOpenGLES (openGLES);
+		else
+			valid = false;
 
 		if (valid)
 		{
+			// x3d_FragColor
+
+			glBindFragDataLocation (programId, 0, "x3d_FragColor");
+
 			// TransformFeedbackVaryings
 	
 			applyTransformFeedbackVaryings ();

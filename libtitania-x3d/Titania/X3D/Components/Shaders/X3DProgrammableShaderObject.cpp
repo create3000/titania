@@ -1053,31 +1053,6 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	}
 }
 
-//void
-//X3DProgrammableShaderObject::enableAttrib (const std::string & name, const GLuint buffer, const size_t components, const GLint type)
-//{
-//	const GLint location = glGetAttribLocation (getProgramId (), name .c_str ());
-//
-//	if (location == -1)
-//		return;
-//
-//	glEnableVertexAttribArray (location);
-//
-//	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-//	glVertexAttribPointer (location, components, type, false, 0, (void*) 0);
-//}
-//
-//void
-//FloatVertexAttribute::disableAttrib (const std::string & name)
-//{
-//	const GLint location = glGetAttribLocation (getProgramId (), name () .c_str ());
-//
-//	if (location == -1)
-//		return;
-//
-//	glDisableVertexAttribArray (location);
-//}
-
 void
 X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)
 {
@@ -1088,6 +1063,15 @@ X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer (x3d_Color, 4, GL_FLOAT, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::disableColorAttrib ()
+{
+	if (x3d_Color == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_Color);
 }
 
 void
@@ -1108,6 +1092,15 @@ X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & 
 }
 
 void
+X3DProgrammableShaderObject::disableTexCoordAttrib ()
+{
+	if (x3d_TexCoord == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_TexCoord);
+}
+
+void
 X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
 {
 	if (x3d_Normal == -1)
@@ -1117,6 +1110,15 @@ X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer (x3d_Normal, 3, GL_FLOAT, false, 0, nullptr);
+}
+
+void
+X3DProgrammableShaderObject::disableNormalAttrib ()
+{
+	if (x3d_Normal == -1)
+		return;
+
+	glDisableVertexAttribArray (x3d_Normal);
 }
 
 void
@@ -1132,39 +1134,104 @@ X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
 }
 
 void
-X3DProgrammableShaderObject::disableColorAttrib ()
-{
-	if (x3d_Color == -1)
-		return;
-
-	glDisableVertexAttribArray (x3d_Color);
-}
-
-void
-X3DProgrammableShaderObject::disableTexCoordAttrib ()
-{
-	if (x3d_TexCoord == -1)
-		return;
-
-	glDisableVertexAttribArray (x3d_TexCoord);
-}
-
-void
-X3DProgrammableShaderObject::disableNormalAttrib ()
-{
-	if (x3d_Normal == -1)
-		return;
-
-	glDisableVertexAttribArray (x3d_Normal);
-}
-
-void
 X3DProgrammableShaderObject::disableVertexAttrib ()
 {
 	if (x3d_Vertex == -1)
 		return;
 
 	glDisableVertexAttribArray (x3d_Vertex);
+}
+
+void
+X3DProgrammableShaderObject::enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+	glVertexAttribPointer (location, components, GL_FLOAT, false, 0, (void*) 0);
+}
+
+void
+X3DProgrammableShaderObject::disableFloatAttrib (const std::string & name)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location);
+}
+
+void
+X3DProgrammableShaderObject::enableMatrix3Attrib (const std::string & name, const GLuint buffer)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location + 0);
+	glEnableVertexAttribArray (location + 1);
+	glEnableVertexAttribArray (location + 2);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
+	glVertexAttribPointer (location + 0, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 0));
+	glVertexAttribPointer (location + 1, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 1));
+	glVertexAttribPointer (location + 2, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 2));
+}
+
+void
+X3DProgrammableShaderObject::disableMatrix3Attrib (const std::string & name)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location + 0);
+	glDisableVertexAttribArray (location + 1);
+	glDisableVertexAttribArray (location + 2);
+}
+
+void
+X3DProgrammableShaderObject::enableMatrix4Attrib (const std::string & name, const GLuint buffer)
+{
+	const GLint location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glEnableVertexAttribArray (location + 0);
+	glEnableVertexAttribArray (location + 1);
+	glEnableVertexAttribArray (location + 2);
+	glEnableVertexAttribArray (location + 3);
+
+	glBindBuffer (GL_ARRAY_BUFFER, buffer);
+
+	glVertexAttribPointer (location + 0, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 0));
+	glVertexAttribPointer (location + 1, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 1));
+	glVertexAttribPointer (location + 2, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 2));
+	glVertexAttribPointer (location + 3, 4, GL_FLOAT, false, sizeof (Matrix4f), (void*) (sizeof (Vector4f) * 3));
+}
+
+void
+X3DProgrammableShaderObject::disableMatrix4Attrib (const std::string & name)
+{
+	const auto location = glGetAttribLocation (getProgramId (), name .c_str ());
+
+	if (location == -1)
+		return;
+
+	glDisableVertexAttribArray (location + 0);
+	glDisableVertexAttribArray (location + 1);
+	glDisableVertexAttribArray (location + 2);
+	glDisableVertexAttribArray (location + 3);
 }
 
 /*

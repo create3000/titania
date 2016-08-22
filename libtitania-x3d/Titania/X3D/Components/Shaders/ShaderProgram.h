@@ -192,7 +192,7 @@ private:
 	Fields fields;
 	
 	GLuint programId;
-	bool   valid;
+	GLint  valid;
 
 };
 

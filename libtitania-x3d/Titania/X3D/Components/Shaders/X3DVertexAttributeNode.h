@@ -79,11 +79,11 @@ public:
 
 	virtual
 	void
-	enable (const GLint, const GLuint) const = 0;
-
+	enable (X3DShaderNode* const, const GLuint) const = 0;
+	
 	virtual
 	void
-	disable (const GLint) const = 0;
+	disable (X3DShaderNode* const) const = 0;
 
 
 protected:

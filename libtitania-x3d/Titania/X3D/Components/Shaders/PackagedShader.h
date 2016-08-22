@@ -150,15 +150,30 @@ public:
 	void
 	enableColorAttrib (const GLuint buffer) final override
 	{ }
+	
+	virtual
+	void
+	disableColorAttrib () final override
+	{ }
 
 	virtual
 	void
 	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
 	{ }
+	
+	virtual
+	void
+	disableTexCoordAttrib () final override
+	{ }
 
 	virtual
 	void
 	enableNormalAttrib (const GLuint buffer) final override
+	{ }
+	
+	virtual
+	void
+	disableNormalAttrib () final override
 	{ }
 
 	virtual
@@ -168,22 +183,37 @@ public:
 	
 	virtual
 	void
-	disableColorAttrib () final override
-	{ }
-	
-	virtual
-	void
-	disableTexCoordAttrib () final override
-	{ }
-	
-	virtual
-	void
-	disableNormalAttrib () final override
-	{ }
-	
-	virtual
-	void
 	disableVertexAttrib () final override
+	{ }
+
+	virtual
+	void
+	enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components) final override
+	{ }
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string & name) final override
+	{ }
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string & name, const GLuint buffer) final override
+	{ }
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string & name) final override
+	{ }
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string & name, const GLuint buffer) final override
+	{ }
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string & name) final override
 	{ }
 
 	///  @name Destruction

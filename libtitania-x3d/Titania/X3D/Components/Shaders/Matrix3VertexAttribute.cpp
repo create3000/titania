@@ -51,6 +51,7 @@
 #include "Matrix3VertexAttribute.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DShaderNode.h"
 
 namespace titania {
 namespace X3D {
@@ -99,35 +100,15 @@ Matrix3VertexAttribute::addValue (std::vector <float> & array, const size_t inde
 }
 
 void
-Matrix3VertexAttribute::enable (const GLint program, const GLuint buffer) const
+Matrix3VertexAttribute::enable (X3DShaderNode* const shaderNode, const GLuint buffer) const
 {
-	const GLint location = glGetAttribLocation (program, name () .c_str ());
-
-	if (location == -1)
-		return;
-
-	glEnableVertexAttribArray (location + 0);
-	glEnableVertexAttribArray (location + 1);
-	glEnableVertexAttribArray (location + 2);
-
-	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-
-	glVertexAttribPointer (location + 0, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 0));
-	glVertexAttribPointer (location + 1, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 1));
-	glVertexAttribPointer (location + 2, 3, GL_FLOAT, false, sizeof (Matrix3f), (void*) (sizeof (Vector3f) * 2));
+	shaderNode -> enableMatrix3Attrib (name (), buffer);
 }
 
 void
-Matrix3VertexAttribute::disable (const GLint program) const
+Matrix3VertexAttribute::disable (X3DShaderNode* const shaderNode) const
 {
-	const GLint location = glGetAttribLocation (program, name () .c_str ());
-
-	if (location == -1)
-		return;
-
-	glDisableVertexAttribArray (location + 0);
-	glDisableVertexAttribArray (location + 1);
-	glDisableVertexAttribArray (location + 2);
+	shaderNode -> disableMatrix3Attrib (name ());
 }
 
 } // X3D

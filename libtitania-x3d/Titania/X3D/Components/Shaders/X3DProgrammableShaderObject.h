@@ -248,14 +248,26 @@ public:
 	virtual
 	void
 	enableColorAttrib (const GLuint);
+	
+	virtual
+	void
+	disableColorAttrib ();
 
 	virtual
 	void
 	enableTexCoordAttrib (const std::vector <GLuint> &);
+	
+	virtual
+	void
+	disableTexCoordAttrib ();
 
 	virtual
 	void
 	enableNormalAttrib (const GLuint);
+	
+	virtual
+	void
+	disableNormalAttrib ();
 
 	virtual
 	void
@@ -263,19 +275,31 @@ public:
 	
 	virtual
 	void
-	disableColorAttrib ();
-	
-	virtual
-	void
-	disableTexCoordAttrib ();
-	
-	virtual
-	void
-	disableNormalAttrib ();
-	
-	virtual
-	void
 	disableVertexAttrib ();
+
+	virtual
+	void
+	enableFloatAttrib (const std::string &, const GLuint, const size_t);
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string &);
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string &, const GLuint);
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string &);
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string &, const GLuint);
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string &);
 
 
 protected:

@@ -1,0 +1,259 @@
+#VRML V2.0 utf8 Titania V1.4.9
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF ShaderProgramFragmenShader ShaderProgram {
+              type "FRAGMENT"
+              url "data:text/plain,
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void main (void)
+{
+	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
+}
+"
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "VertexAttibutes"
+}
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+DEF Axes Transform {
+  children Shape {
+    geometry IndexedLineSet {
+      colorPerVertex FALSE
+      colorIndex [
+        0,
+        1,
+        2
+      ]
+      coordIndex [
+        0,
+        1,
+        -1,
+        2,
+        3,
+        -1,
+        4,
+        5,
+        -1
+      ]
+      color Color {
+        color [
+          1 0 0,
+          0 1 0,
+          0 0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 0 0,
+          1 0 0,
+          0 -1 0,
+          0 1 0,
+          0 0 -1,
+          0 0 1
+        ]
+      }
+    }
+  }
+}
+
+DEF ComposedShader Transform {
+  translation -3 0 0
+  children Shape {
+    appearance Appearance {
+      material DEF _1 Material {
+        emissiveColor 0.5 0 0
+      }
+      shaders DEF Phong ComposedShader {
+        language "GLSL"
+        parts [
+          DEF ShaderPartVertexShader ShaderPart {
+            url "data:text/plain,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+in vec4 x3d_Vertex;
+in mat4 attrib4;
+
+void main(void)  
+{
+	vec4 vertex = attrib4 * x3d_Vertex;
+
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+}
+"
+          }
+          DEF ShaderPartFragmenShader ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void main (void)
+{
+	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
+}
+"
+          }
+        ]
+      }
+    }
+    geometry DEF _2 IndexedFaceSet {
+      creaseAngle 0.5
+      coordIndex [
+        0,
+        1,
+        2,
+        3,
+        -1
+      ]
+      attrib Matrix4VertexAttribute {
+        name "attrib4"
+        value [
+          1 0 0 0 0 1 0 0 0 0 1 0 -1 -1 0 1,
+          1 0 0 0 0 1 0 0 0 0 1 0 1 -1 0 1,
+          1 0 0 0 0 1 0 0 0 0 1 0 1 1 0 1,
+          1 0 0 0 0 1 0 0 0 0 1 0 -1 1 0 1
+        ]
+      }
+      coord Coordinate {
+        point [
+          -1 -1 0,
+          1 -1 0,
+          1 1 0,
+          -1 1 0
+        ]
+      }
+    }
+  }
+}
+
+DEF ProgramShader Transform {
+  translation 3 0 0
+  children Shape {
+    appearance Appearance {
+      material USE _1
+      shaders ProgramShader {
+        programs [
+          DEF ShaderProgramVertexShader ShaderProgram {
+            url "data:text/plain,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+in vec4 x3d_Vertex;
+in mat4 attrib4;
+
+void main(void)  
+{
+	vec4 vertex = attrib4 * x3d_Vertex;
+
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+}
+"
+          }
+          USE ShaderProgramFragmenShader
+        ]
+      }
+    }
+    geometry USE _2
+  }
+}

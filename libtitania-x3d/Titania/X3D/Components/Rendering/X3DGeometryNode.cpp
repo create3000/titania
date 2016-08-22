@@ -850,17 +850,10 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	// Enable vertex attribute nodes
 
-	if (not attribNodes .empty ())
+	if (shaderNode)
 	{
-		GLint program = 0;
-
-		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
-
-		if (program)
-		{
-			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-				attribNodes [i] -> enable (program, attribBufferIds [i]);
-		}
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
 	}
 
 	if (shaderNode)
@@ -879,6 +872,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	}
 
 	#ifndef SHADER_PIPELINE
+	//else
 	{
 		// Enable colors, texture coords, normals and vertices.
 
@@ -913,7 +907,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	// Draw depending on ccw, transparency and solid.
 
-	const auto positiveScale = determinant3 (ModelViewMatrix4d ()) > 0;
+	const auto positiveScale = determinant3 (context -> getModelViewMatrix ()) > 0;
 
 	if (context -> isTransparent () && not solid)
 	{
@@ -967,17 +961,10 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	// VertexAttribs
 
-	if (not attribNodes .empty ())
+	if (shaderNode)
 	{
-		GLint program = 0;
-
-		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
-
-		if (program)
-		{
-			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-				attribNodes [i] -> disable (program);
-		}
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> disable (shaderNode);
 	}
 
 	if (shaderNode)
@@ -991,6 +978,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	}
 
 	#ifndef SHADER_PIPELINE
+	//else
 	{
 		// Texture
 	

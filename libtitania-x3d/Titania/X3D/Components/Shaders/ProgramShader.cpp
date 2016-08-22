@@ -276,31 +276,17 @@ ProgramShader::enableColorAttrib (const GLuint buffer)
 }
 
 void
-ProgramShader::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
-{
-	for (const auto & programNode : programNodes)
-		programNode -> enableTexCoordAttrib (buffers);
-}
-
-void
-ProgramShader::enableNormalAttrib (const GLuint buffer)
-{
-	for (const auto & programNode : programNodes)
-		programNode -> enableNormalAttrib (buffer);
-}
-
-void
-ProgramShader::enableVertexAttrib (const GLuint buffer)
-{
-	for (const auto & programNode : programNodes)
-		programNode -> enableVertexAttrib (buffer);
-}
-
-void
 ProgramShader::disableColorAttrib ()
 {
 	for (const auto & programNode : programNodes)
 		programNode -> disableColorAttrib ();
+}
+
+void
+ProgramShader::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableTexCoordAttrib (buffers);
 }
 
 void
@@ -311,6 +297,13 @@ ProgramShader::disableTexCoordAttrib ()
 }
 
 void
+ProgramShader::enableNormalAttrib (const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableNormalAttrib (buffer);
+}
+
+void
 ProgramShader::disableNormalAttrib ()
 {
 	for (const auto & programNode : programNodes)
@@ -318,10 +311,59 @@ ProgramShader::disableNormalAttrib ()
 }
 
 void
+ProgramShader::enableVertexAttrib (const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableVertexAttrib (buffer);
+}
+
+void
 ProgramShader::disableVertexAttrib ()
 {
 	for (const auto & programNode : programNodes)
 		programNode -> disableVertexAttrib ();
+}
+
+void
+ProgramShader::enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableFloatAttrib (name, buffer, components);
+}
+
+void
+ProgramShader::disableFloatAttrib (const std::string & name)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableFloatAttrib (name);
+}
+
+void
+ProgramShader::enableMatrix3Attrib (const std::string & name, const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableMatrix3Attrib (name, buffer);
+}
+
+void
+ProgramShader::disableMatrix3Attrib (const std::string & name)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableMatrix3Attrib (name);
+}
+
+void
+ProgramShader::enableMatrix4Attrib (const std::string & name, const GLuint buffer)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> enableMatrix4Attrib (name, buffer);
+}
+
+void
+ProgramShader::disableMatrix4Attrib (const std::string & name)
+{
+	for (const auto & programNode : programNodes)
+		programNode -> disableMatrix4Attrib (name);
 }
 
 void

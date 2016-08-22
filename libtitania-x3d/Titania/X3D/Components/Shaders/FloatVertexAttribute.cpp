@@ -51,6 +51,7 @@
 #include "FloatVertexAttribute.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Shaders/X3DShaderNode.h"
 
 namespace titania {
 namespace X3D {
@@ -100,28 +101,15 @@ FloatVertexAttribute::addValue (std::vector <float> & array, const size_t index)
 }
 
 void
-FloatVertexAttribute::enable (const GLint program, const GLuint buffer) const
+FloatVertexAttribute::enable (X3DShaderNode* const shaderNode, const GLuint buffer) const
 {
-	const GLint location = glGetAttribLocation (program, name () .c_str ());
-
-	if (location == -1)
-		return;
-
-	glEnableVertexAttribArray (location);
-
-	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer (location, clamp <int32_t> (numComponents (), 1, 4), GL_FLOAT, false, 0, (void*) 0);
+	shaderNode -> enableFloatAttrib (name (), buffer, clamp <int32_t> (numComponents (), 1, 4));
 }
 
 void
-FloatVertexAttribute::disable (const GLint program) const
+FloatVertexAttribute::disable (X3DShaderNode* const shaderNode) const
 {
-	const GLint location = glGetAttribLocation (program, name () .c_str ());
-
-	if (location == -1)
-		return;
-
-	glDisableVertexAttribArray (location);
+	shaderNode -> disableFloatAttrib (name ());
 }
 
 } // X3D

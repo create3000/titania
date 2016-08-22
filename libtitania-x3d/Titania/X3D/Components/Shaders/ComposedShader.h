@@ -167,16 +167,31 @@ public:
 	void
 	enableColorAttrib (const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableColorAttrib (buffer); }
+	
+	virtual
+	void
+	disableColorAttrib () final override
+	{ X3DProgrammableShaderObject::disableColorAttrib (); }
 
 	virtual
 	void
 	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
 	{ X3DProgrammableShaderObject::enableTexCoordAttrib (buffers); }
+	
+	virtual
+	void
+	disableTexCoordAttrib () final override
+	{ X3DProgrammableShaderObject::disableTexCoordAttrib (); }
 
 	virtual
 	void
 	enableNormalAttrib (const GLuint buffer) final override
 	{ X3DProgrammableShaderObject::enableNormalAttrib (buffer); }
+	
+	virtual
+	void
+	disableNormalAttrib () final override
+	{ X3DProgrammableShaderObject::disableNormalAttrib (); }
 
 	virtual
 	void
@@ -185,23 +200,38 @@ public:
 	
 	virtual
 	void
-	disableColorAttrib () final override
-	{ X3DProgrammableShaderObject::disableColorAttrib (); }
-	
-	virtual
-	void
-	disableTexCoordAttrib () final override
-	{ X3DProgrammableShaderObject::disableTexCoordAttrib (); }
-	
-	virtual
-	void
-	disableNormalAttrib () final override
-	{ X3DProgrammableShaderObject::disableNormalAttrib (); }
-	
-	virtual
-	void
 	disableVertexAttrib () final override
 	{ X3DProgrammableShaderObject::disableVertexAttrib (); }
+
+	virtual
+	void
+	enableFloatAttrib (const std::string & name, const GLuint buffer, const size_t components) final override
+	{ X3DProgrammableShaderObject::enableFloatAttrib (name, buffer, components); }
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string & name) final override
+	{ X3DProgrammableShaderObject::disableFloatAttrib (name); }
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string & name, const GLuint buffer) final override
+	{ X3DProgrammableShaderObject::enableMatrix3Attrib (name, buffer); }
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string & name) final override
+	{ X3DProgrammableShaderObject::disableMatrix3Attrib (name); }
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string & name, const GLuint buffer) final override
+	{ X3DProgrammableShaderObject::enableMatrix4Attrib (name, buffer); }
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string & name) final override
+	{ X3DProgrammableShaderObject::disableMatrix4Attrib (name); }
 
 	///  @name Destruction
 

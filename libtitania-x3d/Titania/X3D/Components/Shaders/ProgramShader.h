@@ -124,7 +124,7 @@ public:
 
 	virtual
 	void
-	setGeometryType (const size_t value) final override;
+	setGeometryType (const size_t) final override;
 
 	virtual
 	size_t
@@ -132,35 +132,31 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const context) final override;
+	setGlobalUniforms (ShapeContainer* const) final override;
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const context) final override;
+	setLocalUniforms (ShapeContainer* const) final override;
 
 	virtual
 	void
-	enableColorAttrib (const GLuint buffer) final override;
-
-	virtual
-	void
-	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override;
-
-	virtual
-	void
-	enableNormalAttrib (const GLuint buffer) final override;
-
-	virtual
-	void
-	enableVertexAttrib (const GLuint buffer) final override;
+	enableColorAttrib (const GLuint) final override;
 	
 	virtual
 	void
 	disableColorAttrib () final override;
+
+	virtual
+	void
+	enableTexCoordAttrib (const std::vector <GLuint> &) final override;
 	
 	virtual
 	void
 	disableTexCoordAttrib () final override;
+
+	virtual
+	void
+	enableNormalAttrib (const GLuint) final override;
 	
 	virtual
 	void
@@ -168,7 +164,35 @@ public:
 
 	virtual
 	void
+	enableVertexAttrib (const GLuint) final override;
+
+	virtual
+	void
 	disableVertexAttrib () final override;
+
+	virtual
+	void
+	enableFloatAttrib (const std::string &, const GLuint, const size_t) final override;
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string &) final override;
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string &, const GLuint) final override;
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string &) final override;
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string &, const GLuint) final override;
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string &) final override;
 
 	///  @name Destruction
 

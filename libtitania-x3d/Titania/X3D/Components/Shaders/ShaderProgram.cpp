@@ -98,7 +98,8 @@ ShaderProgram::initialize ()
 	X3DUrlObject::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	url () .addInterest (this, &ShaderProgram::set_url);
+	type () .addInterest (this, &ShaderProgram::set_url);
+	url ()  .addInterest (this, &ShaderProgram::set_url);
 
 	if (glXGetCurrentContext ())
 		requestImmediateLoad ();
@@ -196,15 +197,41 @@ ShaderProgram::requestImmediateLoad ()
 			if (programId)
 				glDeleteProgram (programId);
 
-			programId = glCreateShaderProgramv (getShaderType (), 1, &string);
+			programId = glCreateProgram ();
 
-			// Check for link status
-
-			GLint linkStatus;
-
-			glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
-
-			valid = linkStatus;
+			if (programId)
+			{
+				// Attach shader
+	
+				const auto shaderId = glCreateShader (getShaderType ());
+	
+				glShaderSource  (shaderId, 1, &string, nullptr);
+				glCompileShader (shaderId);
+				glGetShaderiv   (shaderId, GL_COMPILE_STATUS, &valid);
+	
+				if (valid)
+				{
+					glAttachShader (programId, shaderId);
+		
+					// x3d_FragColor
+		
+					if (getShaderType () == GL_FRAGMENT_SHADER)
+						glBindFragDataLocation (programId, 0, "x3d_FragColor");
+		
+					// Link program
+			
+					glLinkProgram  (programId);
+					glDetachShader (programId, shaderId);
+					glUseShaderProgramEXT (getShaderType (), programId);
+					//glDeleteShader (shaderId);
+			
+					// Check for link status
+			
+					glGetProgramiv (programId, GL_LINK_STATUS, &valid);
+				}
+			}
+			else
+				valid = false;
 
 			// Print info log
 

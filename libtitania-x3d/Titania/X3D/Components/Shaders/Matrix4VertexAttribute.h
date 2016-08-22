@@ -105,11 +105,11 @@ public:
 
 	virtual
 	void
-	enable (const GLint, const GLuint) const final override;
-
+	enable (X3DShaderNode* const, const GLuint) const final override;
+	
 	virtual
 	void
-	disable (const GLint) const final override;
+	disable (X3DShaderNode* const) const final override;
 
 
 private:

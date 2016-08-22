@@ -102,17 +102,10 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 
 	// Setup vertex attributes.
 
-	if (not getAttribs () .empty ())
+	if (shaderNode)
 	{
-		GLint program = 0;
-
-		glGetIntegerv (GL_CURRENT_PROGRAM, &program);
-
-		if (program)
-		{
-			for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
-				getAttribs () [i] -> enable (program, getAttribBufferIds () [i]);
-		}
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
 	}
 
 	if (not getColors () .empty ())
@@ -129,6 +122,14 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	{
 		glDrawArrays (pointShading ? GL_POINTS : element .vertexMode, first, element .count);
 		first += element .count;
+	}
+
+	// VertexAttribs
+
+	if (shaderNode)
+	{
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> disable (shaderNode);
 	}
 
 	shaderNode -> disableColorAttrib ();
