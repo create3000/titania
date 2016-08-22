@@ -348,6 +348,7 @@ BrowserOptions::set_Shading ()
 		}
 		case ShadingType::GOURAUD:
 		{
+			glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 			glShadeModel (GL_SMOOTH);
 	
 			getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";

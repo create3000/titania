@@ -7,7 +7,7 @@ META "created" "Mon, 06 Oct 2014 01:06:09 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V1.4.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Geometry3D/Smash.x3dv"
-META "modified" "Mon, 22 Aug 2016 14:07:18 GMT"
+META "modified" "Mon, 22 Aug 2016 14:22:11 GMT"
 
 EXTERNPROTO Torus [
   inputOutput    SFFloat minorRadius
@@ -129,18 +129,66 @@ WorldInfo {
             name "children"
             reference "http://titania.create3000.de"
             value DEF _1 Transform {
-              translation 3 -6.00001 -2.20483e-05
+              translation -12 -0.999987 -0.530228
+              scale 0.543962 0.543962 0.543962
               children Shape {
                 appearance Appearance {
-                  lineProperties DEF _2 LineProperties {
-                    linewidthScaleFactor 4.55
-                  }
-                  material Material {
-                    emissiveColor 1 0 0
+                  material DEF _2 Material { }
+                  texture DEF _3 ImageTexture {
+                    url "../images/lena.jpg"
+                    repeatS FALSE
+                    repeatT FALSE
                   }
                 }
-                geometry Disk2D {
-                  innerRadius 1
+                geometry Extrusion {
+                  endCap FALSE
+                  solid FALSE
+                  convex FALSE
+                  creaseAngle 1
+                  crossSection [
+                    1 0,
+                    0.92 -0.38,
+                    0.71 -0.71,
+                    0.38 -0.92,
+                    0 -1,
+                    -0.38 -0.92,
+                    -0.71 -0.71,
+                    -0.92 -0.38,
+                    -1 -0,
+                    -0.92 0.38,
+                    -0.71 0.71,
+                    -0.38 0.92,
+                    0 1,
+                    0.38 0.92,
+                    0.71 0.71,
+                    0.92 0.38
+                  ]
+                  scale [
+                    1.8 1.8,
+                    1.95 1.95,
+                    2 2,
+                    1.95 1.95,
+                    1.8 1.8,
+                    1.5 1.5,
+                    1.2 1.2,
+                    1.05 1.05,
+                    1 1,
+                    1.05 1.05,
+                    1.15 1.15
+                  ]
+                  spine [
+                    0 0 0,
+                    0 0.4 0,
+                    0 0.8 0,
+                    0 1.2 0,
+                    0 1.6 0,
+                    0 2 0,
+                    0 2.4 0,
+                    0 2.8 0,
+                    0 3.2 0,
+                    0 3.6 0,
+                    0 4 0
+                  ]
                 }
               }
             }
@@ -164,28 +212,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              2.57357883453369,
-              -5.73156833648682,
-              -3.37684917449951
+              -9.87330324860939,
+              2.50586398060726,
+              -3.74363843559807
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.00247424539785197,
-              -0.999222712790996,
-              -0.0393427039273258,
-              3.01607634273501
+              -0.0829345725433757,
+              0.957692589932952,
+              0.275584396990399,
+              2.5803840355824
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              3,
-              -6.00001001358032,
-              -2.20482997974614e-05
+              -12,
+              0.0879369974136353,
+              -0.530228018760681
             ]
           }
         ]
@@ -211,11 +259,7 @@ DEF Box Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture DEF _3 ImageTexture {
-        url "../images/lena.jpg"
-        repeatS FALSE
-        repeatT FALSE
-      }
+      texture USE _3
     }
     geometry Box { }
   }
@@ -531,7 +575,7 @@ Transform {
   scale 0.543962 0.543962 0.543962
   children Shape {
     appearance Appearance {
-      material DEF _5 Material { }
+      material USE _2
       texture USE _3
     }
     geometry Extrusion {
@@ -592,7 +636,7 @@ DEF Edge Transform {
   scale 0.319951 0.319951 0.319951
   children Shape {
     appearance Appearance {
-      material USE _5
+      material USE _2
       texture USE _3
     }
     geometry Extrusion {
@@ -614,66 +658,7 @@ DEF Edge Transform {
   }
 }
 
-Transform {
-  translation -12 -0.999987 -0.530228
-  scale 0.543962 0.543962 0.543962
-  children Shape {
-    appearance Appearance {
-      material USE _5
-      texture USE _3
-    }
-    geometry Extrusion {
-      endCap FALSE
-      solid FALSE
-      convex FALSE
-      creaseAngle 1
-      crossSection [
-        1 0,
-        0.92 -0.38,
-        0.71 -0.71,
-        0.38 -0.92,
-        0 -1,
-        -0.38 -0.92,
-        -0.71 -0.71,
-        -0.92 -0.38,
-        -1 -0,
-        -0.92 0.38,
-        -0.71 0.71,
-        -0.38 0.92,
-        0 1,
-        0.38 0.92,
-        0.71 0.71,
-        0.92 0.38
-      ]
-      scale [
-        1.8 1.8,
-        1.95 1.95,
-        2 2,
-        1.95 1.95,
-        1.8 1.8,
-        1.5 1.5,
-        1.2 1.2,
-        1.05 1.05,
-        1 1,
-        1.05 1.05,
-        1.15 1.15
-      ]
-      spine [
-        0 0 0,
-        0 0.4 0,
-        0 0.8 0,
-        0 1.2 0,
-        0 1.6 0,
-        0 2 0,
-        0 2.4 0,
-        0 2.8 0,
-        0 3.2 0,
-        0 3.6 0,
-        0 4 0
-      ]
-    }
-  }
-}
+USE _1
 
 DEF Torus_1 Transform {
   translation -9 1.34501e-05 -5.16422e-11
@@ -837,7 +822,9 @@ Transform {
   translation 3 12 4.40964e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties DEF _5 LineProperties {
+        linewidthScaleFactor 4.55
+      }
       material Material {
         emissiveColor 1 0 0
       }
@@ -852,7 +839,7 @@ Transform {
   translation 3 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _5
       material Material {
         emissiveColor 1 0 0
       }
@@ -867,7 +854,7 @@ Transform {
   translation 6 9 3.30723e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _5
       material Material {
         emissiveColor 1 0 0
       }
@@ -883,7 +870,7 @@ Transform {
   translation 3 5.99999 2.20482e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _5
       material Material {
         emissiveColor 1 0 0
       }
@@ -905,7 +892,7 @@ Transform {
   scale 0.681115 0.681115 0.681115
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _5
       material Material {
         emissiveColor 1 0 0
       }
@@ -1020,7 +1007,20 @@ Transform {
   }
 }
 
-USE _1
+Transform {
+  translation 3 -6.00001 -2.20483e-05
+  children Shape {
+    appearance Appearance {
+      lineProperties USE _5
+      material Material {
+        emissiveColor 1 0 0
+      }
+    }
+    geometry Disk2D {
+      innerRadius 1
+    }
+  }
+}
 
 Transform {
   translation 6 -6.00001 0.999978
@@ -1351,7 +1351,7 @@ Transform {
   translation 25 12 4.40964e-05
   children Shape {
     appearance Appearance {
-      lineProperties USE _2
+      lineProperties USE _5
       material Material {
         emissiveColor 1 0 0
       }
