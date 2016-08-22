@@ -472,9 +472,6 @@
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
     <None Include="Titania\X3D\Thread\SceneLoader.h" />
-    <None Include="share\titania\mime\model\x3d+vrml.xml" />
-    <None Include="share\titania\mime\model\x3d+xml.xml" />
-    <None Include="share\titania\mime\model\vrml.xml" />
     <None Include="share\titania\mime\model\vrml.png" />
     <None Include="share\titania\mime\model\x3d+vrml.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
@@ -482,7 +479,6 @@
     <None Include="share\titania\mime\model\x3d+xml.png" />
     <None Include="Titania\X3D\Thread\TextureLoader.h" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
-    <None Include="share\titania\mime\model\x3d+binary.xml" />
     <None Include="share\titania\mime\model\x3d+binary.png" />
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
     <None Include="Titania\X3D\Rendering\TexCoordArray.h" />
@@ -815,6 +811,10 @@
     <None Include="Titania\X3D\Browser\Shaders\X3DShadersContext.h" />
     <None Include="share\titania\shaders\Shaders\Point.fs" />
     <None Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.h" />
+    <None Include="share\mime\packages\vrml.xml" />
+    <None Include="share\mime\packages\x3d+binary.xml" />
+    <None Include="share\mime\packages\x3d+vrml.xml" />
+    <None Include="share\mime\packages\x3d+xml.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1439,6 +1439,8 @@
     <Folder Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\" />
     <Folder Include="share\titania\shaders\Shaders\" />
     <Folder Include="Titania\X3D\Browser\Shaders\" />
+    <Folder Include="share\mime\" />
+    <Folder Include="share\mime\packages\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
