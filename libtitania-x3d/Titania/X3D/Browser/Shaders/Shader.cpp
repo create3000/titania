@@ -61,7 +61,11 @@ namespace Shader {
 bool
 isOpenGLES (const std::string & source)
 {
-	static const std::regex version_es (R"(^(\s*|/\*.*?\*/|//.*?\n)*(#version 100|#version 200|#version 300 es)\s*?\n)");
+	// OpenGL ES1 shaders use '#version 100' directive.
+	// OpenGL ES2 shaders use '#version 100' directive, there is no '#version 200'.
+	// OpenGL ES3 shaders use '#version 300 es' directive.
+
+	static const std::regex version_es (R"(^(\s*|/\*.*?\*/|//.*?\n)*(#version 100|#version 300 es)\s*?\n)");
 
 	return std::regex_search (source, version_es);
 }
