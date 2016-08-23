@@ -52,6 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -68,7 +69,8 @@ X3DFogObject::X3DFogObject () :
 	     fields (),
 	     hidden (false),
 	     glMode (GL_LINEAR),
-	    glColor ()
+	    glColor (),
+	       mode (1)
 {
 	addType (X3DConstants::X3DFogObject);
 
@@ -106,8 +108,10 @@ X3DFogObject::isHidden (const bool value)
 float
 X3DFogObject::getVisibilityRange ()
 {
-	if (visibilityRange ())
-		return visibilityRange ();
+	const auto visibilityRange = std::max <float> (0, this -> visibilityRange ());
+
+	if (visibilityRange)
+		return visibilityRange;
 
 	const auto viewpoint = getBrowser () -> getLayers () .top () -> getViewpoint ();
 
@@ -148,14 +152,17 @@ X3DFogObject::set_fogType ()
 	if (fogType () == "EXPONENTIAL2")
 	{
 		glMode = GL_EXP2;
+		mode   = 3;
 	}
 	else if (fogType () == "EXPONENTIAL")
 	{
 		glMode = GL_EXP;
+		mode   = 2;
 	}
 	else  // LINEAR
 	{
 		glMode = GL_LINEAR;
+		mode   = 1;
 	}
 }
 
@@ -174,6 +181,20 @@ X3DFogObject::enable ()
 		glFogf  (GL_FOG_START,   0);
 		glFogf  (GL_FOG_END,     glVisibilityRange);
 		glFogfv (GL_FOG_COLOR,   glColor);
+	}
+}
+
+void
+X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
+{
+	if (hidden)
+		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
+
+	else
+	{
+		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            mode);
+		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, color () .getValue () .data ());
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), getVisibilityRange ());
 	}
 }
 

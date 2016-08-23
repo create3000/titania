@@ -114,6 +114,9 @@ public:
 	void
 	enable ();
 
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const);
+
 	///  @name Destruction
 
 	virtual
@@ -170,6 +173,7 @@ private:
 	bool    hidden;
 	GLenum  glMode;
 	GLfloat glColor [4];
+	size_t  mode;
 
 };
 

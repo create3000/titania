@@ -1,33 +1,10 @@
-#VRML V2.0 utf8 Titania V1.2.2
+#VRML V2.0 utf8 Titania V1.4.9
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
     name "Titania"
     reference "http://titania.create3000.de"
     value [
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
-          reference "http://titania.create3000.de"
-          value DEF bonusSnd Sound {
-            intensity 0.6
-            spatialize FALSE
-            minBack 100
-            minFront 100
-            maxBack 1000
-            maxFront 1000
-            source DEF Sound1clip AudioClip {
-              url [
-                "bonus.wav",
-                "../../../../../Library/Examples/Vattenfall/stage/close.aiff"
-              ]
-              pitch 1.7
-            }
-          }
-        }
-      }
       DEF NavigationInfo MetadataSet {
         name "NavigationInfo"
         reference "http://titania.create3000.de"
@@ -56,7 +33,7 @@ WorldInfo {
             value [
               -0.981307166354639,
               -0.192448032624467,
-              1.55814026482642e-08,
+              1.5581402649265e-08,
               0.0541942999999958
             ]
           }
@@ -329,7 +306,7 @@ function translation_dragIN(value, time)
                 }
                 DEF xform Transform {
                   translation -9.36542e-08 1.00272e-05 1.66874e-05
-                  rotation -0.981307166354639 -0.192448032624467 1.55814026262085e-08 0.0541942999999876
+                  rotation -0.981307166354639 -0.192448032624467 1.558140262821e-08 0.0541942999999876
                   children [
                     DEF camDragger Transform {
                       rotation 0 0 1 3.14159
@@ -616,7 +593,21 @@ function translation_dragIN(value, time)
                     DEF SFX Transform {
                       children DEF sfx Group {
                         children [
-                          USE bonusSnd
+                          DEF bonusSnd Sound {
+                            intensity 0.6
+                            spatialize FALSE
+                            minBack 100
+                            minFront 100
+                            maxBack 1000
+                            maxFront 1000
+                            source DEF Sound1clip AudioClip {
+                              url [
+                                "bonus.wav",
+                                "../../../../../Library/Examples/Vattenfall/stage/close.aiff"
+                              ]
+                              pitch 1.7
+                            }
+                          }
                           DEF alertSnd Sound {
                             spatialize FALSE
                             minBack 100
@@ -3696,6 +3687,7 @@ DEF BONUS Transform {
                   range 200
                   level [
                     DEF objOn Transform {
+                      rotation 0 1 0 2.10106980590343
                       children DEF stern Transform {
                         scale 1 1 0.999999
                         scaleOrientation 0 1 0 0.018373999999989
@@ -4013,6 +4005,7 @@ DEF BONUS Transform {
                 level [
                   DEF objOn_1 Transform {
                     children DEF _16 Transform {
+                      rotation 0 1 0 2.10106980590343
                       children DEF stern_1 Transform {
                         scale 1 1 0.999999
                         scaleOrientation 0 1 0 0.018373999999989
@@ -4336,6 +4329,7 @@ DEF BONUS Transform {
                   level [
                     DEF objOn_2 Transform {
                       children DEF _18 Transform {
+                        rotation 0 1 0 2.10106980590343
                         children DEF bonusObj Transform {
                           scale 1.00004 1.00004 1.00007
                           scaleOrientation 0 1 0 0.018295999999996
@@ -4826,6 +4820,7 @@ DEF BONUS Transform {
                   level [
                     DEF objOn_3 Transform {
                       children DEF _20 Transform {
+                        rotation 0 1 0 2.10106980590343
                         children DEF bonusObj_1 Transform {
                           scale 1.00003 1.00004 1.00007
                           scaleOrientation 0 1 0 0.018373999999989
@@ -5316,6 +5311,7 @@ DEF BONUS Transform {
                   level [
                     DEF objOn_4 Transform {
                       children DEF _22 Transform {
+                        rotation 0 1 0 2.10106980590343
                         children DEF bonusObj_2 Transform {
                           scale 1.00004 1.00004 1.00007
                           scaleOrientation 0 1 0 0.018361000000012
@@ -5806,6 +5802,7 @@ DEF BONUS Transform {
                   level [
                     DEF objOn_5 Transform {
                       children DEF _24 Transform {
+                        rotation 0 1 0 2.10106980590343
                         children DEF bonusObj_3 Transform {
                           scale 1.00004 1.00004 1.00007
                           scaleOrientation 0 1 0 0.018361000000012
@@ -6296,6 +6293,7 @@ DEF BONUS Transform {
                   level [
                     DEF objOn_6 Transform {
                       children DEF _26 Transform {
+                        rotation 0 1 0 2.10106980590343
                         children DEF bonusObj_4 Transform {
                           translation -4.40357e-09 0 0
                           scale 1 1 0.999999
@@ -6790,6 +6788,7 @@ DEF BONUS Transform {
                 level [
                   DEF objOn_7 Transform {
                     children DEF _28 Transform {
+                      rotation 0 1 0 2.10106980590343
                       children DEF bonusObj_5 Transform {
                         translation -4.65661e-09 0 -2.32831e-08
                         scale 1 1 0.999999
@@ -7280,6 +7279,7 @@ DEF BONUS Transform {
                 level [
                   DEF objOn_8 Transform {
                     children DEF _30 Transform {
+                      rotation 0 1 0 2.10106980590343
                       children DEF bonusObj_6 Transform {
                         translation -4.65661e-09 0 -2.32831e-08
                         scale 1 1 0.999999
@@ -7770,6 +7770,7 @@ DEF BONUS Transform {
                 level [
                   DEF objOn_9 Transform {
                     children DEF _32 Transform {
+                      rotation 0 1 0 2.10106980590343
                       children DEF bnObj03 Transform {
                         translation -4.65661e-09 0 -2.32831e-08
                         scale 1 1 0.999999
@@ -8103,6 +8104,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_10 Transform {
                   children DEF _34 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bnObj03_1 Transform {
                       translation -4.65661e-09 0 -2.32831e-08
                       scale 1 1 0.999999
@@ -8429,6 +8431,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_11 Transform {
                   children DEF _36 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_7 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -8914,6 +8917,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_12 Transform {
                   children DEF _38 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF stern_2 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -9228,6 +9232,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_13 Transform {
                   children DEF _40 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_8 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -9713,6 +9718,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_14 Transform {
                   children DEF _42 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_9 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -10198,6 +10204,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_15 Transform {
                   children DEF bonusObj_10 Transform {
+                    rotation 0 1 0 2.10106980590343
                     scale 1 1 0.999999
                     scaleOrientation 0 1 0 0.018373999999989
                     center 0 0 0.0135851
@@ -10685,6 +10692,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_16 Transform {
                   children DEF _45 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_11 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -11170,6 +11178,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_17 Transform {
                   children DEF _47 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_12 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -11655,6 +11664,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_18 Transform {
                   children DEF _49 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_13 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -12140,6 +12150,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_19 Transform {
                   children DEF _51 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bonusObj_14 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -12625,6 +12636,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_20 Transform {
                   children DEF bonusObj_15 Transform {
+                    rotation 0 1 0 2.10106980590343
                     scale 1 1 0.999999
                     scaleOrientation 0 1 0 0.018373999999989
                     center 0 0 0.0135851
@@ -13108,6 +13120,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_21 Transform {
                   children DEF _54 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF stern_3 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -13422,6 +13435,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_22 Transform {
                   children DEF _56 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF stern_4 Transform {
                       scale 1 1 0.999999
                       scaleOrientation 0 1 0 0.018373999999989
@@ -13740,6 +13754,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_23 Transform {
                   children DEF _58 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bnObj03_2 Transform {
                       translation -4.65661e-09 0 -2.32831e-08
                       scale 1 1 0.999999
@@ -14392,6 +14407,7 @@ DEF BONUS Transform {
               level [
                 DEF objOn_25 Transform {
                   children DEF _61 Transform {
+                    rotation 0 1 0 2.10106980590343
                     children DEF bnObj03_4 Transform {
                       translation -4.65661e-09 0 -2.32831e-08
                       scale 1 1 0.999999
@@ -14713,6 +14729,7 @@ DEF BONUS Transform {
       ]
     }
     DEF bonusRotor Transform {
+      rotation 0 1 0 2.10106980590343
       children [
         Group {
           children [
@@ -23476,6 +23493,7 @@ function reset(value, time)
           range 200
           level [
             DEF objOn_26 Transform {
+              rotation 0 1 0 2.10106980590343
               children DEF a Transform {
                 translation -4.65661e-09 0 -2.32831e-08
                 scale 1 1 0.999999
@@ -23601,6 +23619,7 @@ function reset(value, time)
           range 200
           level [
             DEF objOn_27 Transform {
+              rotation 0 1 0 2.10106980590343
               children DEF r Transform {
                 translation -4.65661e-09 0 -2.32831e-08
                 scale 1 1 0.999999
@@ -23726,6 +23745,7 @@ function reset(value, time)
             DEF objOn_28 Transform {
               children DEF c Transform {
                 translation -4.65661e-09 0 -2.32831e-08
+                rotation 0 1 0 2.10106980590343
                 scale 1 1 0.999999
                 scaleOrientation 0 1 0 0.018373999999989
                 center 0 0 0.0135851
@@ -23849,6 +23869,7 @@ function reset(value, time)
             DEF objOn_29 Transform {
               children DEF _108 Transform {
                 translation -4.65661e-09 0 -2.32831e-08
+                rotation 0 1 0 2.10106980590343
                 scale 1 1 0.999999
                 scaleOrientation 0 1 0 0.018373999999989
                 center 0 0 0.0135851
@@ -23972,6 +23993,7 @@ function reset(value, time)
             DEF objOn_30 Transform {
               children DEF d Transform {
                 translation -4.65661e-09 0 -2.32831e-08
+                rotation 0 1 0 2.10106980590343
                 scale 1 1 0.999999
                 scaleOrientation 0 1 0 0.018373999999989
                 center 0 0 0.0135851
@@ -24096,6 +24118,7 @@ function reset(value, time)
             DEF objOn_31 Transform {
               children DEF i Transform {
                 translation -4.65661e-09 0 -2.32831e-08
+                rotation 0 1 0 2.10106980590343
                 scale 1 1 0.999999
                 scaleOrientation 0 1 0 0.018373999999989
                 center 0 0 0.0135851
@@ -24219,6 +24242,7 @@ function reset(value, time)
             DEF objOn_32 Transform {
               children DEF a_1 Transform {
                 translation -4.65661e-09 0 -2.32831e-08
+                rotation 0 1 0 2.10106980590343
                 scale 1 1 0.999999
                 scaleOrientation 0 1 0 0.018373999999989
                 center 0 0 0.0135851

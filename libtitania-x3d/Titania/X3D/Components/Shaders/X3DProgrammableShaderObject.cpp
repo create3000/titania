@@ -1014,6 +1014,10 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & appearance   = browser -> getAppearance ();
 	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
 
+	// Fog
+
+	context -> getFog () -> setShaderUniforms (this);
+
 	// Lights
 
 	const auto & localLights = context -> getLocalLights ();

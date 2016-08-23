@@ -93,6 +93,26 @@ public:
 	GLuint
 	getProgramId () const = 0;
 
+	///  @name Uniform location access fog
+
+	GLint
+	getFogTypeUniformLocation () const
+	{ return x3d_FogType; }
+
+	GLint
+	getFogColorUniformLocation () const
+	{ return x3d_FogColor; }
+
+	GLint
+	getFogVisibilityRangeUniformLocation () const
+	{ return x3d_FogVisibilityRange; }
+
+	///  @name Uniform location access line properties
+
+	GLint
+	getLinewidthScaleFactorUniformLocation () const
+	{ return x3d_LinewidthScaleFactor; }
+
 	///  @name Uniform location access lighting
 
 	GLint
@@ -138,12 +158,6 @@ public:
 	const std::vector <GLint> &
 	getLightRadiusUniformLocation () const
 	{ return x3d_LightRadius; }
-
-	///  @name Uniform location access line properties
-
-	GLint
-	getLinewidthScaleFactorUniformLocation () const
-	{ return x3d_LinewidthScaleFactor; }
 
 	///  @name Uniform location access material
 

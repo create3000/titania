@@ -889,6 +889,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		// Enable vertex attribute nodes
 	
+		shaderNode -> enable ();
+
 		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
 	
