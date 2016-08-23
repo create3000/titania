@@ -66,7 +66,7 @@ X3DShadersContext::X3DShadersContext () :
 	           X3DBaseNode (),
 	shadingLanguageVersion (),
 #ifdef FIXED_PIPELINE
-	         fixedPipeline (false),
+	         fixedPipeline (true),
 #endif
 	           pointShader (),
 	       wireframeShader (),
@@ -75,10 +75,6 @@ X3DShadersContext::X3DShadersContext () :
 	         defaultShader (),
 	            shaderNode (nullptr)
 {
-#ifdef FIXED_PIPELINE
-	addChildren (fixedPipeline);
-#endif
-
 	addChildren (pointShader,
 	             wireframeShader,
 	             gouraudShader,
@@ -125,14 +121,26 @@ X3DShadersContext::setFixedPipeline (const bool value)
 
 	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
 }
+
+bool
+X3DShadersContext::getFixedPipeline () const
+{
+	return fixedPipeline or not getBrowser () -> getLoaded ();
+}
 #endif
 
 X3DPtr <ComposedShader>
 X3DShadersContext::createShader (const MFString & vertexUrl, const MFString & fragmentUrl)
 {
+	const std::string name = "Internal";
+
 	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto shader       = getExecutionContext () -> createNode <ComposedShader> ();
+
+	fragmentPart -> setName (name + "FragmentShaderPart");
+	vertexPart   -> setName (name + "VertexShaderPart");
+	shader       -> setName (name + "ComposedShader");
 
 	fragmentPart -> type () = "FRAGMENT";
 	vertexPart   -> url ()  = vertexUrl;
@@ -152,7 +160,7 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 {
 	#ifdef FIXED_PIPELINE
 	
-	if (fixedPipeline)
+	if (getFixedPipeline ())
 	{
 		defaultShader = nullptr;
 	}
@@ -187,7 +195,7 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 	{
 		ContextLock lock (getBrowser ());
 
-		if (fixedPipeline)
+		if (getFixedPipeline () or not getBrowser () -> getLoaded ())
 		{
 			glDisable (GL_POINT_SPRITE);
 			glDisable (GL_PROGRAM_POINT_SIZE);

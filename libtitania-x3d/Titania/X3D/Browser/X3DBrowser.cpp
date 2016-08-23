@@ -127,15 +127,26 @@ X3DBrowser::initialize ()
 	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
 	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
 
-	getLoadSensor () -> loadTime () .addInterest (this, &X3DBrowser::set_loadTime);
+	getLoadSensor () -> isLoaded () .addInterest (this, &X3DBrowser::set_loaded);
 
 	replaceWorld (executionContext);
 }
 
 void
-X3DBrowser::set_loadTime ()
+X3DBrowser::set_loaded (const bool loaded)
 {
-	getLoadSensor () -> loadTime () .removeInterest (this, &X3DBrowser::set_loadTime);
+	// Set load state.
+
+	setLoaded (loaded);
+
+	if (not loaded)
+		print ("*** Warning: Cobweb compatibility mode not possible!");
+
+	getLoadSensor () -> isLoaded () .removeInterest (this, &X3DBrowser::set_loaded);
+
+	getLoadSensor () -> enabled () = false;
+
+	// Load initial url or start with empty scene.
 
 	if (url .empty ())
 	   initialized () = getCurrentTime ();
@@ -146,7 +157,7 @@ X3DBrowser::set_loadTime ()
 	   loadURL (url, parameter);
 	}
 
-	// Welcome
+	// Print welcome message.
 
 	print (std::boolalpha,
 	       '\n',

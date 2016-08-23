@@ -1,11 +1,11 @@
-#X3D V3.3 utf8 Titania V1.4.4
+#X3D V3.3 utf8 Titania V1.4.9
 
 META "comment" "World of Titania"
 META "created" "Thu, 12 May 2016 09:18:21 GMT"
 META "creator" "holger"
-META "generator" "Titania V1.4.4, http://titania.create3000.de"
+META "generator" "Titania V1.4.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/RenderingProperties.x3dv"
-META "modified" "Thu, 12 May 2016 10:07:44 GMT"
+META "modified" "Tue, 23 Aug 2016 20:56:17 GMT"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -48,19 +48,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              -0.000227464865474424,
+              0.0339569795337842,
+              9.99994234342382
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.984013727753132,
+              -0.00689369516820595,
+              -0.177959154190822,
+              0.00345086383705433
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -86,22 +86,20 @@ WorldInfo {
             name "children"
             reference "http://titania.create3000.de"
             value DEF _1 Transform {
-              children DEF Border Shape {
+              translation 0 0 -1
+              children DEF Surface Shape {
                 appearance Appearance {
-                  fillProperties DEF _2 FillProperties {
-                    filled FALSE
-                    hatched FALSE
+                  material DEF BackgroundMaterial Material {
+                    diffuseColor 1 1 1
+                    transparency 0.385057
                   }
-                  lineProperties DEF LineProperties LineProperties {
-                    linewidthScaleFactor 4
-                  }
-                  material DEF BorderMaterial Material {
-                    diffuseColor 0.461 0.461 0.461
+                  texture ImageTexture {
+                    url "library/gradient.png"
                   }
                 }
                 geometry DEF BackgroundGeometry RoundedRectangle2D {
                   cornerRadius 5
-                  size 27 27
+                  size 26 26
                 }
               }
             }
@@ -141,23 +139,24 @@ LayoutGroup {
     DEF Background Transform {
       translation 10 10 0
       children [
+        USE _1
         Transform {
-          translation 0 0 -1
-          children DEF Surface Shape {
+          children DEF Border Shape {
             appearance Appearance {
-              material DEF BackgroundMaterial Material {
-                diffuseColor 0 0 0
-                emissiveColor 1 1 1
-                transparency 0.385057
+              fillProperties FillProperties {
+                filled FALSE
+                hatched FALSE
               }
-              texture ImageTexture {
-                url "library/gradient.png"
+              lineProperties DEF LineProperties LineProperties {
+                linewidthScaleFactor 4
+              }
+              material DEF BorderMaterial Material {
+                diffuseColor 0.461 0.461 0.461
               }
             }
             geometry USE BackgroundGeometry
           }
         }
-        USE _1
       ]
     }
     DEF Statistics Transform {

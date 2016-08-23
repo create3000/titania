@@ -48,113 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_SHADING_X3DSHADING_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_RENDERING_GEOMETRY_TYPE_H__
+#define __TITANIA_X3D_BROWSER_RENDERING_GEOMETRY_TYPE_H__
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtr.h"
-#include "../Shaders/ShadingType.h"
+#include <cstdint>
 
 namespace titania {
 namespace X3D {
 
-class ComposedShader;
-class X3DShaderNode;
-
-class X3DShadersContext :
-	virtual public X3DBaseNode
+enum class GeometryType :
+	uint8_t
 {
-public:
-
-	///  @name Member access
-
-	float
-	getShadingLanguageVersion () const
-	{ return shadingLanguageVersion; }
-
-	const X3DPtr <ComposedShader> &
-	getPointShader () const
-	{ return pointShader; }
-
-	const X3DPtr <ComposedShader> &
-	getWireframeShader () const
-	{ return wireframeShader; }
-
-	const X3DPtr <ComposedShader> &
-	getGouraudShader () const
-	{ return gouraudShader; }
-
-	const X3DPtr <ComposedShader> &
-	getPhongShader () const
-	{ return phongShader; }
-
-	const X3DPtr <X3DShaderNode> &
-	getDefaultShader () const
-	{ return defaultShader; }
-
-	void
-	setShader (X3DShaderNode* const value)
-	{ shaderNode = value; }
-
-	X3DShaderNode*
-	getShader () const
-	{ return shaderNode; }
-
-	#ifdef FIXED_PIPELINE
-	void
-	setFixedPipeline (const bool);
-
-	bool
-	getFixedPipeline () const;
-	#endif
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DShadersContext ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DShadersContext ();
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  Operations
-
-	X3DPtr <ComposedShader>
-	createShader (const MFString &, const MFString &);
-
-	///  @name Event handlers
-
-	void
-	set_shading (const ShadingType &);
-
-	///  @name Members
-
-	float                   shadingLanguageVersion;
-	#ifdef FIXED_PIPELINE
-	bool                    fixedPipeline;
-	#endif
-	X3DPtr <ComposedShader> pointShader;
-	X3DPtr <ComposedShader> wireframeShader;
-	X3DPtr <ComposedShader> gouraudShader;
-	X3DPtr <ComposedShader> phongShader;
-	X3DPtr <X3DShaderNode>  defaultShader;
-	X3DShaderNode*          shaderNode;
-
+	GEOMETRY_POINTS,
+	GEOMETRY_LINES,
+	GEOMETRY_2D,
+	GEOMETRY_3D
 
 };
 

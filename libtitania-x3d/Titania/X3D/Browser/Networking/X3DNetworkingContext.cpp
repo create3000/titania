@@ -67,6 +67,7 @@ const std::string X3DNetworkingContext::providerUrl = "http://titania.create3000
 
 X3DNetworkingContext::X3DNetworkingContext () :
 	       X3DBaseNode (),
+	            loaded (),
 	         userAgent (),
 	      privateScene (new Scene (getBrowser ())),
 	        loadSensor (new LoadSensor (getExecutionContext ())),
@@ -79,7 +80,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	      notifyOnLoad (false),
 	   contextDisposed (false)
 {
-	addChildren (privateScene, loadSensor, loadCount);
+	addChildren (loaded, privateScene, loadSensor, loadCount);
 }
 
 void

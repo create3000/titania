@@ -34,7 +34,7 @@ uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwis
 #define POINT_LIGHT       2
 #define SPOT_LIGHT        3
 
-uniform int   x3d_LightType [MAX_LIGHTS]; // 0: DirectionalLight, 1: PointLight, 2: SpotLight
+uniform int   x3d_LightType [MAX_LIGHTS];
 uniform bool  x3d_LightOn [MAX_LIGHTS];
 uniform vec3  x3d_LightColor [MAX_LIGHTS];
 uniform float x3d_LightIntensity [MAX_LIGHTS];

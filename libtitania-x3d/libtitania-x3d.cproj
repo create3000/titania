@@ -815,6 +815,7 @@
     <None Include="share\mime\packages\x3d+binary.xml" />
     <None Include="share\mime\packages\x3d+vrml.xml" />
     <None Include="share\mime\packages\x3d+xml.xml" />
+    <None Include="Titania\X3D\Browser\Rendering\GeometryType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

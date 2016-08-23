@@ -339,7 +339,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_loadTime ();
+	set_loaded (const bool);
 
 	void
 	set_prepareEvents ();
