@@ -56,11 +56,12 @@
 
 namespace titania {
 namespace X3D {
+namespace Shader {
 
 bool
 isOpenGLES (const std::string & source)
 {
-	static const std::regex version_es (R"(^(\s*|/\*.*?\*/|//.*?\n)*#version 300 es\s*?\n)");
+	static const std::regex version_es (R"(^(\s*|/\*.*?\*/|//.*?\n)*(#version 100|#version 200|#version 300 es)\s*?\n)");
 
 	return std::regex_search (source, version_es);
 }
@@ -112,8 +113,69 @@ throw (Error <INVALID_URL>,
 	return output .str ();
 }
 
+GLenum
+getShaderType (const std::string & type)
+{
+	// http://www.opengl.org/wiki/Shader
+	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
+
+	static const std::map <std::string, GLenum> shaderTypes {
+		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),
+		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
+		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
+		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
+		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
+
+		#ifdef GL_COMPUTE_SHADER
+		// Requires GL 4.3 or ARB_compute_shader
+
+		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER)
+
+		#endif
+	};
+
+	try
+	{
+		return shaderTypes .at (type);
+	}
+	catch (const std::out_of_range &)
+	{
+		return GL_VERTEX_SHADER;
+	}
+}
+
+GLint
+getProgramStageBit (const std::string & type)
+{
+	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
+
+	static const std::map <std::string, GLenum> programStageBits = {
+		std::make_pair ("VERTEX",          GL_VERTEX_SHADER_BIT),
+		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER_BIT),
+		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER_BIT),
+		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER_BIT),
+		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER_BIT)
+
+		#ifdef GL_COMPUTE_SHADER_BIT
+		// Requires GL 4.3 or ARB_compute_shader
+
+		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER_BIT),
+
+		#endif
+	};
+
+	try
+	{
+		return programStageBits .at (type);
+	}
+	catch (const std::out_of_range &)
+	{
+		return GL_VERTEX_SHADER_BIT;
+	}
+}
+
 std::string
-getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level)
+getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -121,13 +183,60 @@ throw (Error <INVALID_URL>,
 
 	std::set <basic::uri> files;
 
-	const auto source = getShaderSource (node, string, worldURL, level, files);
+	const auto source = getShaderSource (node, string, worldURL, 0, files);
 
 	if (std::regex_search (source, version))
 		return source;
 
-	return "#version 300 es\n" + source;
+	return "#version 100\n" + source;
 }
 
+void
+printShaderInfoLog (X3DBrowser* const browser, const std::string & typeName, const std::string & name, const std::string & type, const GLint shaderId)
+{
+	if (not shaderId)
+		return;
+
+	GLint infoLogLength;
+
+	glGetShaderiv (shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	if (infoLogLength > 1)
+	{
+		char infoLog [infoLogLength];
+
+		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
+
+		browser -> print (std::string (80, '#'), '\n',
+		                  typeName, name .empty () ? "" : " '" + name + "'" ," InfoLog (", type, "):\n",
+		                  std::string (infoLog),
+		                  std::string (80, '#'), '\n');
+	}
+}
+
+void
+printProgramInfoLog (X3DBrowser* const browser, const std::string & typeName, const std::string & name, const GLint programId)
+{
+	if (not programId)
+		return;
+
+	GLint infoLogLength;
+
+	glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	if (infoLogLength > 1)
+	{
+		char infoLog [infoLogLength];
+
+		glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
+
+		browser -> print (std::string (80, '#'), '\n',
+		                  typeName, name .empty () ? "" : " '" + name + "'" , " Info Log:\n",
+		                  std::string (infoLog),
+		                  std::string (80, '#'), '\n');
+	}
+}
+
+} // Shader
 } // X3D
 } // titania

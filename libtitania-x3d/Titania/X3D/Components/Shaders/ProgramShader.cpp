@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/ContextLock.h"
+#include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderProgram.h"
@@ -123,36 +124,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DShaderNode::setExecutionContext (executionContext);
 }
 
-GLint
-ProgramShader::getProgramStageBit (const String & type)
-{
-	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
-
-	static const std::map <std::string, GLenum> programStageBits = {
-		std::make_pair ("VERTEX",          GL_VERTEX_SHADER_BIT),
-		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER_BIT),
-		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER_BIT),
-		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER_BIT),
-		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER_BIT)
-
-		#ifdef GL_COMPUTE_SHADER_BIT
-		// Requires GL 4.3 or ARB_compute_shader
-
-		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER_BIT),
-
-		#endif
-	};
-
-	try
-	{
-		return programStageBits .at (type);
-	}
-	catch (const std::out_of_range &)
-	{
-		return GL_VERTEX_SHADER_BIT;
-	}
-}
-
 void
 ProgramShader::requestExplicitRelink ()
 {
@@ -171,27 +142,43 @@ ProgramShader::requestExplicitRelink ()
 		pipelineId = 0;
 	}
 
+	bool valid = true;
+
 	if (loadSensor -> progress () == 1.0f and (language () == "" or language () == "GLSL"))
 	{
 		glGenProgramPipelines (1, &pipelineId);
 
-		glBindProgramPipeline (pipelineId);
-
-		for (const auto & node : programs ())
+		if (pipelineId)
 		{
-			const auto programNode = x3d_cast <ShaderProgram*> (node);
-
-			if (programNode)
-				glUseProgramStages (pipelineId, getProgramStageBit (programNode -> type ()), programNode -> getProgramId ());
+			glBindProgramPipeline (pipelineId);
+	
+			for (const auto & node : programs ())
+			{
+				const auto programNode = x3d_cast <ShaderProgram*> (node);
+	
+				if (programNode)
+				{
+					if (programNode -> isValid ())
+						glUseProgramStages (pipelineId, Shader::getProgramStageBit (programNode -> type ()), programNode -> getProgramId ());
+					else
+					{
+						valid = false;
+						break;
+					}
+				}
+			}
 		}
-
-		isValid () = true;
+		else
+			valid = false;
 
 		glBindProgramPipeline (0);
 	}
 	else
-		isValid () = false;
+		valid = false;
 	
+	if (valid != isValid ())
+		isValid () = valid;
+
 	// Propagate event further.
 
 	addEvent ();

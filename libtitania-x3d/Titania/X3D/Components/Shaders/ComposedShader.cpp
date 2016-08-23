@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/ContextLock.h"
+#include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Shaders/ShaderPart.h"
@@ -159,7 +160,7 @@ ComposedShader::set_loaded ()
 
 		// Attach shader
 
-		size_t valid = 0;
+		GLint valid = true;
 
 		if (programId)
 		{
@@ -171,10 +172,17 @@ ComposedShader::set_loaded ()
 	
 				if (partNode)
 				{
-					valid    += partNode -> isValid ();
-					openGLES |= partNode -> isOpenGLES ();
+					if (partNode -> isValid ())
+					{
+						openGLES |= partNode -> isOpenGLES ();
 	
-					glAttachShader (programId, partNode -> getShaderId ());
+						glAttachShader (programId, partNode -> getShaderId ());
+					}
+					else
+					{
+						valid = false;
+						break;
+					}
 				}
 			}
 	
@@ -199,68 +207,38 @@ ComposedShader::set_loaded ()
 	
 			// Check for link status
 	
-			GLint linkStatus;
+			glGetProgramiv (programId, GL_LINK_STATUS, &valid);
+
+			// Initialize uniform variables
 	
-			glGetProgramiv (programId, GL_LINK_STATUS, &linkStatus);
-	
-			valid = valid and linkStatus;
-		}
-
-		if (bool (valid) != isValid ())
-			isValid () = valid;
-
-		// Initialize uniform variables
-
-		if (valid)
-		{
 			getDefaultUniforms ();
 			addShaderFields ();
 		}
 
 		// Print info log
 
-		printProgramInfoLog ();
+		Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId);
 
-		// Detach shader
+		if (bool (valid) != isValid ())
+			isValid () = valid;
 
-		// Detaching and deleting is not necessary and could, if the program is setup manually, simply be left out.
-		// http://www.opengl.org/wiki/GLSL_Object#Program_separation
+		// Detach shaders
 
-		for (const auto & part : parts ())
+		if (programId)
 		{
-			const auto partNode = x3d_cast <ShaderPart*> (part);
-
-			if (partNode)
-				glDetachShader (programId, partNode -> getShaderId ());
+			for (const auto & part : parts ())
+			{
+				const auto partNode = x3d_cast <ShaderPart*> (part);
+	
+				if (partNode and partNode -> isValid ())
+					glDetachShader (programId, partNode -> getShaderId ());
+			}
 		}
 	}
 	else
 	{
 		if (isValid ())
 			isValid () = false;
-	}
-}
-
-void
-ComposedShader::printProgramInfoLog () const
-{
-	if (not isValid () or 1)
-	{
-		GLint infoLogLength;
-
-		glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-		if (infoLogLength > 1)
-		{
-			char infoLog [infoLogLength];
-
-			glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
-
-			getBrowser () -> print (std::string (80, '#'), '\n',
-			                        "ComposedShader InfoLog:\n",
-			                        std::string (infoLog),
-			                        std::string (80, '#'), '\n');
-		}
 	}
 }
 

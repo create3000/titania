@@ -51,10 +51,10 @@
 #include "ShaderProgram.h"
 
 #include "../../Browser/ContextLock.h"
+#include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Browser/Shaders/Shader.h"
 
 namespace titania {
 namespace X3D {
@@ -136,37 +136,6 @@ throw (Error <DISPOSED>)
 		url () .addEvent ();
 }
 
-GLenum
-ShaderProgram::getShaderType () const
-{
-	// http://www.opengl.org/wiki/Shader
-	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
-
-	static const std::map <std::string, GLenum> shaderTypes {
-		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),
-		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
-		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
-		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
-		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
-
-		#ifdef GL_COMPUTE_SHADER
-		// Requires GL 4.3 or ARB_compute_shader
-
-		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER)
-
-		#endif
-	};
-
-	try
-	{
-		return shaderTypes .at (type ());
-	}
-	catch (const std::out_of_range &)
-	{
-		return GL_VERTEX_SHADER;
-	}
-}
-
 void
 ShaderProgram::requestImmediateLoad ()
 {
@@ -181,6 +150,8 @@ ShaderProgram::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	valid = false;
+
 	for (const auto & URL : url ())
 	{
 		try
@@ -189,10 +160,10 @@ ShaderProgram::requestImmediateLoad ()
 
 			Loader            loader (getExecutionContext ());
 			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = X3D::getShaderSource (this, document, loader .getWorldURL ());
+			const std::string shaderSource = Shader::getShaderSource (this, document, loader .getWorldURL ());
 			const char*       string       = shaderSource .c_str ();
 
-			setOpenGLES (X3D::isOpenGLES (shaderSource));
+			setOpenGLES (Shader::isOpenGLES (shaderSource));
 
 			if (programId)
 				glDeleteProgram (programId);
@@ -203,46 +174,49 @@ ShaderProgram::requestImmediateLoad ()
 			{
 				// Attach shader
 	
-				const auto shaderId = glCreateShader (getShaderType ());
+				const auto shaderId = glCreateShader (Shader::getShaderType (type ()));
 	
-				glShaderSource  (shaderId, 1, &string, nullptr);
-				glCompileShader (shaderId);
-				glGetShaderiv   (shaderId, GL_COMPILE_STATUS, &valid);
-	
-				if (valid)
+				if (shaderId)
 				{
-					glAttachShader (programId, shaderId);
-		
-					// x3d_FragColor
-		
-					if (getShaderType () == GL_FRAGMENT_SHADER)
-						glBindFragDataLocation (programId, 0, "x3d_FragColor");
-		
-					// Link program
+					glShaderSource  (shaderId, 1, &string, nullptr);
+					glCompileShader (shaderId);
+					glGetShaderiv   (shaderId, GL_COMPILE_STATUS, &valid);
+
+					Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId);
+
+					if (valid)
+					{
+						glAttachShader (programId, shaderId);
 			
-					glProgramParameteri (programId, GL_PROGRAM_SEPARABLE, true);
-					glLinkProgram  (programId);
-					glDetachShader (programId, shaderId);
-					glDeleteShader (shaderId);
+						// x3d_FragColor
 	
-					// Check for link status
+						if (Shader::getShaderType (type ()) == GL_FRAGMENT_SHADER)
+							glBindFragDataLocation (programId, 0, "x3d_FragColor");
 			
-					glGetProgramiv (programId, GL_LINK_STATUS, &valid);
+						// Link program
+				
+						glProgramParameteri (programId, GL_PROGRAM_SEPARABLE, true);
+						glLinkProgram  (programId);
+						glDetachShader (programId, shaderId);
+		
+						// Check for link status
+				
+						glGetProgramiv (programId, GL_LINK_STATUS, &valid);
+					}
+		
+					// Print info log
+		
+					Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId);
+		
+					// Initialize uniform variables
+					getDefaultUniforms ();
+					addShaderFields ();
+	
+					glDeleteShader (shaderId);
+
+					if (valid)
+						break;
 				}
-			}
-			else
-				valid = false;
-
-			// Print info log
-
-			printProgramInfoLog ();
-
-			if (valid)
-			{
-				// Initialize uniform variables
-				getDefaultUniforms ();
-				addShaderFields ();
-				break;
 			}
 		}
 		catch (const X3DError & error)
@@ -254,29 +228,6 @@ ShaderProgram::requestImmediateLoad ()
 	}
 
 	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
-}
-
-void
-ShaderProgram::printProgramInfoLog () const
-{
-	if (not valid or 1)
-	{
-		GLint infoLogLength;
-
-		glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-		if (infoLogLength > 1)
-		{
-			char infoLog [infoLogLength];
-
-			glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
-
-			getBrowser () -> print (std::string (80, '#'), '\n',
-			                        "ShaderProgram InfoLog (", type (), "):\n",
-			                        std::string (infoLog),
-			                        std::string (80, '#'), '\n');
-		}
-	}
 }
 
 void

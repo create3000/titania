@@ -51,19 +51,35 @@
 #ifndef __TITANIA_X3D_BROWSER_SHADING_SHADER_H__
 #define __TITANIA_X3D_BROWSER_SHADING_SHADER_H__
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
+namespace Shader {
 
 bool
 isOpenGLES (const std::string &);
 
 std::string
-getShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &, const size_t = 0)
+getShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>);
 
+GLenum
+getShaderType (const std::string &);
+
+GLint
+getProgramStageBit (const std::string &);
+
+void
+printShaderInfoLog (X3DBrowser* const, const std::string &, const std::string &, const std::string &, const GLint);
+
+void
+printProgramInfoLog (X3DBrowser* const, const std::string &, const std::string &, const GLint);
+
+} // Shader
 } // X3D
 } // titania
 

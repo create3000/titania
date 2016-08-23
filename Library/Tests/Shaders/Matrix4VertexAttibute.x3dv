@@ -5,7 +5,7 @@ META "created" "Mon, 22 Aug 2016 21:30:50 GMT"
 META "creator" "holger"
 META "generator" "Titania V1.4.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Shaders/Matrix4VertexAttibute.x3dv"
-META "modified" "Mon, 22 Aug 2016 22:09:44 GMT"
+META "modified" "Tue, 23 Aug 2016 05:40:29 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -23,9 +23,11 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF ShaderProgramFragmenShader ShaderProgram {
+            value DEF ShaderPartFragmenShader ShaderPart {
               type "FRAGMENT"
-              url "data:text/plain,
+              url [
+                "data:text/plain,
+#version 300 es
 
 precision mediump float;
 
@@ -38,7 +40,22 @@ main ()
 {
 	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
 }
+",
+                "data:text/plain,
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void
+main ()
+{
+	x3d_FragColor = vec4 (0.0, 0.0, 1.0, 1.0);
+}
 "
+              ]
             }
           }
         ]
@@ -183,23 +200,7 @@ main ()
 }
 "
           }
-          DEF ShaderPartFragmenShader ShaderPart {
-            type "FRAGMENT"
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform vec3 x3d_EmissiveColor;
-
-out vec4 x3d_FragColor;
-
-void
-main ()
-{
-	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
-}
-"
-          }
+          USE ShaderPartFragmenShader
         ]
       }
     }
@@ -260,7 +261,40 @@ main ()
 }
 "
           }
-          USE ShaderProgramFragmenShader
+          DEF ShaderProgramFragmenShader ShaderProgram {
+            type "FRAGMENT"
+            url [
+              "data:text/plain,
+#version 300 es
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void
+main ()
+{
+	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
+}
+",
+              "data:text/plain,
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void
+main ()
+{
+	x3d_FragColor = vec4 (0.0, 0.0, 1.0, 1.0);
+}
+"
+            ]
+          }
         ]
       }
     }

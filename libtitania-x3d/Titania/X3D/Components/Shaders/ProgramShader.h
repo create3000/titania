@@ -211,9 +211,6 @@ private:
 
 	///  @name Operations
 
-	GLint
-	getProgramStageBit (const String &);
-
 	void
 	requestExplicitRelink ();
 

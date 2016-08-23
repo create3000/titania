@@ -51,10 +51,10 @@
 #include "ShaderPart.h"
 
 #include "../../Browser/ContextLock.h"
+#include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Browser/Shaders/Shader.h"
 
 namespace titania {
 namespace X3D {
@@ -111,37 +111,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DNode::setExecutionContext (executionContext);
 }
 
-GLenum
-ShaderPart::getShaderType () const
-{
-	// http://www.opengl.org/wiki/Shader
-	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
-
-	static const std::map <std::string, GLenum> shaderTypes {
-		std::make_pair ("VERTEX",          GL_VERTEX_SHADER),
-		std::make_pair ("TESS_CONTROL",    GL_TESS_CONTROL_SHADER),
-		std::make_pair ("TESS_EVALUATION", GL_TESS_EVALUATION_SHADER),
-		std::make_pair ("GEOMETRY",        GL_GEOMETRY_SHADER),
-		std::make_pair ("FRAGMENT",        GL_FRAGMENT_SHADER)
-
-		#ifdef GL_COMPUTE_SHADER
-		// Requires GL 4.3 or ARB_compute_shader
-
-		, std::make_pair ("COMPUTE", GL_COMPUTE_SHADER)
-
-		#endif
-	};
-
-	try
-	{
-		return shaderTypes .at (type ());
-	}
-	catch (const std::out_of_range &)
-	{
-		return GL_VERTEX_SHADER;
-	}
-}
-
 void
 ShaderPart::requestImmediateLoad ()
 {
@@ -150,31 +119,36 @@ ShaderPart::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
+	valid = false;
+
 	for (const auto & URL : url ())
 	{
 		try
 		{
 			Loader            loader (getExecutionContext ());
 			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = X3D::getShaderSource (this, document, loader .getWorldURL ());
+			const std::string shaderSource = Shader::getShaderSource (this, document, loader .getWorldURL ());
 			const char*       string       = shaderSource .c_str ();
 
-			openGLES = X3D::isOpenGLES (shaderSource);
+			openGLES = Shader::isOpenGLES (shaderSource);
 
 			if (shaderId)
 				glDeleteShader (shaderId);
 
-			shaderId = glCreateShader (getShaderType ());
+			shaderId = glCreateShader (Shader::getShaderType (type ()));
 
-			glShaderSource  (shaderId, 1, &string, nullptr);
-			glCompileShader (shaderId);
+			if (shaderId)
+			{
+				glShaderSource  (shaderId, 1, &string, nullptr);
+				glCompileShader (shaderId);
+	
+				glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
+	
+				Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId);
 
-			glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
-
-			printShaderInfoLog ();
-
-			if (not valid)
-				continue;
+				if (valid)
+					break;
+			}
 		}
 		catch (const X3DError & error)
 		{
@@ -183,26 +157,6 @@ ShaderPart::requestImmediateLoad ()
 	}
 
 	setLoadState (valid ? COMPLETE_STATE : FAILED_STATE);
-}
-
-void
-ShaderPart::printShaderInfoLog () const
-{
-	GLint infoLogLength;
-
-	glGetShaderiv (shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-	if (infoLogLength > 1)
-	{
-		char infoLog [infoLogLength];
-
-		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
-
-		getBrowser () -> print (std::string (80, '#'), '\n',
-		                        "ShaderPart InfoLog (", type (), "):\n",
-		                        std::string (infoLog),
-		                        std::string (80, '#'), '\n');
-	}
 }
 
 void

@@ -161,14 +161,6 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Operations
-
-	GLenum
-	getShaderType () const;
-
-	void
-	printProgramInfoLog () const;
-
 	///  @name Event handlers
 
 	void

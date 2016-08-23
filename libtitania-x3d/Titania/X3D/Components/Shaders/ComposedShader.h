@@ -253,11 +253,6 @@ private:
 	void
 	set_loaded ();
 
-	///  @name Operations
-
-	void
-	printProgramInfoLog () const;
-
 	///  @name Static members
 
 	static const ComponentType component;
