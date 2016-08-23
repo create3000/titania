@@ -7,13 +7,6 @@ META "generator" "Titania V1.2.0, http://titania.create3000.de"
 META "modified" "Wed, 28 Oct 2015 13:05:46 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFNode  metadata
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 [
   "../../../libtitania-x3d/share/titania/tools/library/ToolShader.x3dv#ToolShader",
@@ -75,8 +68,10 @@ WorldInfo {
 DEF Box_1 Transform {
   children Shape {
     appearance Appearance {
-      shaders ToolShader {
+      material Material {
         diffuseColor 1 0 0
+      }
+      shaders ToolShader {
       }
     }
     geometry Box { }

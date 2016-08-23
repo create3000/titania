@@ -162,7 +162,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 		appearanceNode -> getLineProperties () -> disable ();
 
-		#ifndef SHADER_PIPELINE
+		#ifdef FIXED_PIPELINE
 		disableTextures ();
 		#endif
 	}
@@ -174,7 +174,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 		{
 			draw (context);
 
-			#ifndef SHADER_PIPELINE
+			#ifdef FIXED_PIPELINE
 			disableTextures ();
 			#endif
 		}
@@ -217,7 +217,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 	glBindProgramPipeline (0);
 }
 
-#ifndef SHADER_PIPELINE
+#ifdef FIXED_PIPELINE
 void
 X3DShapeNode::disableTextures ()
 {

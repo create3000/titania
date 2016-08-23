@@ -116,6 +116,10 @@ public:
 	{ return m_BrowserAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getCobwebCompatibilityAction () const
+	{ return m_CobwebCompatibilityAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getEditorAction () const
 	{ return m_EditorAction; }
 
@@ -186,10 +190,6 @@ public:
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getSelectLowestAction () const
 	{ return m_SelectLowestAction; }
-
-	const Glib::RefPtr <Gtk::ToggleAction> &
-	getShaderPipelineAction () const
-	{ return m_ShaderPipelineAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getSidebarAction () const
@@ -780,8 +780,8 @@ public:
 	{ return *m_BrowserHelpMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getBrowserShaderPipelineMenuItem () const
-	{ return *m_BrowserShaderPipelineMenuItem; }
+	getBrowserCobwebCompatibilityMenuItem () const
+	{ return *m_BrowserCobwebCompatibilityMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getBrowserInfoMenuItem () const
@@ -1272,8 +1272,8 @@ public:
 	{ return *m_HelpMenuItem; }
 
 	Gtk::CheckMenuItem &
-	getShaderPipelineMenuItem () const
-	{ return *m_ShaderPipelineMenuItem; }
+	getCobwebCompatibilityMenuItem () const
+	{ return *m_CobwebCompatibilityMenuItem; }
 
 	Gtk::ImageMenuItem &
 	getInfoMenuItem () const
@@ -1543,6 +1543,10 @@ public:
 
 	virtual
 	void
+	on_cobweb_compatibility_toggled () = 0;
+
+	virtual
+	void
 	on_editor_toggled () = 0;
 
 	virtual
@@ -1612,10 +1616,6 @@ public:
 	virtual
 	void
 	on_select_lowest_toggled () = 0;
-
-	virtual
-	void
-	on_shader_pipeline_toggled () = 0;
 
 	virtual
 	void
@@ -2167,6 +2167,7 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_CobwebCompatibilityAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_EditorAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FlatAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_FogsAction;
@@ -2185,7 +2186,6 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_RenderingPropertiesAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_RubberbandAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SelectLowestAction;
-	Glib::RefPtr <Gtk::ToggleAction> m_ShaderPipelineAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SidebarAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_SoundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_TabsAction;
@@ -2333,7 +2333,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserScenesMenuItem;
 	Gtk::Menu*                       m_BrowserScenesMenu;
 	Gtk::MenuItem*                   m_BrowserHelpMenuItem;
-	Gtk::CheckMenuItem*              m_BrowserShaderPipelineMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserCobwebCompatibilityMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserInfoMenuItem;
 	Gtk::ApplicationWindow*          m_Window;
 	Gtk::Box*                        m_Widget;
@@ -2456,7 +2456,7 @@ private:
 	Gtk::MenuItem*                   m_ScenesMenuItem;
 	Gtk::Menu*                       m_ScenesMenu;
 	Gtk::MenuItem*                   m_HelpMenuItem;
-	Gtk::CheckMenuItem*              m_ShaderPipelineMenuItem;
+	Gtk::CheckMenuItem*              m_CobwebCompatibilityMenuItem;
 	Gtk::ImageMenuItem*              m_InfoMenuItem;
 	Gtk::Box*                        m_Toolbar;
 	Gtk::Box*                        m_LocationBar;

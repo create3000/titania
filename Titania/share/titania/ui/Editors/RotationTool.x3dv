@@ -7,12 +7,6 @@ META "generator" "Titania V1.2.0, http://titania.create3000.de"
 META "modified" "Tue, 27 Oct 2015 05:52:57 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 [
   "../../tools/library/ToolShader.x3dv",
@@ -99,8 +93,10 @@ DEF Objects Transform {
     DEF CenterPoint_1 ScreenGroup {
       children Shape {
         appearance Appearance {
-          shaders ToolShader {
+          material Material {
             diffuseColor 1 1 0
+          }
+          shaders ToolShader {
           }
         }
         geometry Sphere {
@@ -162,7 +158,6 @@ DEF Objects Transform {
                     diffuseColor 1 0 0
                   }
                   shaders ToolShader {
-                    diffuseColor 1 0 0
                   }
                 }
                 geometry DEF Arrow_1 Cone {
@@ -184,7 +179,6 @@ DEF Objects Transform {
                     diffuseColor 0 1 0
                   }
                   shaders ToolShader {
-                    diffuseColor 0 1 0
                   }
                 }
                 geometry USE Arrow_1
@@ -204,7 +198,6 @@ DEF Objects Transform {
                     diffuseColor 0 0 1
                   }
                   shaders ToolShader {
-                    diffuseColor 0 0 1
                   }
                 }
                 geometry USE Arrow_1
@@ -286,7 +279,6 @@ DEF Axis_1 Transform {
                 diffuseColor 1 1 1
               }
               shaders ToolShader {
-                diffuseColor 1 1 1
               }
             }
             geometry DEF Arrow Cone {

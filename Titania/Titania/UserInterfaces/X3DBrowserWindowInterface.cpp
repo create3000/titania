@@ -65,6 +65,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_AngleLayoutToolAction        = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
 	m_BackgroundsAction            = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BackgroundsAction"));
 	m_BrowserAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("BrowserAction"));
+	m_CobwebCompatibilityAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("CobwebCompatibilityAction"));
 	m_EditorAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("EditorAction"));
 	m_FlatAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FlatAction"));
 	m_FogsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("FogsAction"));
@@ -83,7 +84,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RenderingPropertiesAction    = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RenderingPropertiesAction"));
 	m_RubberbandAction             = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("RubberbandAction"));
 	m_SelectLowestAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SelectLowestAction"));
-	m_ShaderPipelineAction         = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("ShaderPipelineAction"));
 	m_SidebarAction                = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SidebarAction"));
 	m_SoundsAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("SoundsAction"));
 	m_TabsAction                   = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("TabsAction"));
@@ -233,7 +233,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserScenesMenuItem", m_BrowserScenesMenuItem);
 	m_builder -> get_widget ("BrowserScenesMenu", m_BrowserScenesMenu);
 	m_builder -> get_widget ("BrowserHelpMenuItem", m_BrowserHelpMenuItem);
-	m_builder -> get_widget ("BrowserShaderPipelineMenuItem", m_BrowserShaderPipelineMenuItem);
+	m_builder -> get_widget ("BrowserCobwebCompatibilityMenuItem", m_BrowserCobwebCompatibilityMenuItem);
 	m_builder -> get_widget ("BrowserInfoMenuItem", m_BrowserInfoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
@@ -356,7 +356,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ScenesMenuItem", m_ScenesMenuItem);
 	m_builder -> get_widget ("ScenesMenu", m_ScenesMenu);
 	m_builder -> get_widget ("HelpMenuItem", m_HelpMenuItem);
-	m_builder -> get_widget ("ShaderPipelineMenuItem", m_ShaderPipelineMenuItem);
+	m_builder -> get_widget ("CobwebCompatibilityMenuItem", m_CobwebCompatibilityMenuItem);
 	m_builder -> get_widget ("InfoMenuItem", m_InfoMenuItem);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
 	m_builder -> get_widget ("LocationBar", m_LocationBar);
@@ -425,6 +425,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
 	m_BackgroundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_backgrounds_toggled));
 	m_BrowserAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_browser_toggled));
+	m_CobwebCompatibilityAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cobweb_compatibility_toggled));
 	m_EditorAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_editor_toggled));
 	m_FlatAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_flat_toggled));
 	m_FogsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_fogs_toggled));
@@ -443,7 +444,6 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_RenderingPropertiesAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rendering_properties_toggled));
 	m_RubberbandAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_rubberband_toggled));
 	m_SelectLowestAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_lowest_toggled));
-	m_ShaderPipelineAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_shader_pipeline_toggled));
 	m_SidebarAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sidebar_toggled));
 	m_SoundsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_sounds_toggled));
 	m_TabsAction -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_tabs_toggled));

@@ -12,12 +12,6 @@ META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/tit
 META "modified" "Sun, 10 Apr 2016 02:38:42 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -500,8 +494,10 @@ DEF GridTool Collision {
               scale 4 4 4
               children Shape {
                 appearance DEF _4 Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 1 0.7 0
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry Sphere { }

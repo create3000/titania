@@ -635,7 +635,7 @@ private:
 
 	virtual
 	void
-	on_shader_pipeline_toggled () final override;
+	on_cobweb_compatibility_toggled () final override;
 
 	virtual
 	void

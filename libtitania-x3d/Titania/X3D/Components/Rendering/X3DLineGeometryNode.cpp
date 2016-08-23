@@ -77,12 +77,12 @@ X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
 void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto & browser      = getBrowser ();
-	const bool   pointShading = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
-	auto         shaderNode   = browser -> getShader ();
+	const auto & browser       = getBrowser ();
+	const bool   pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
+	auto         shaderNode    = browser -> getShader ();
 
-	#ifndef SHADER_PIPELINE
-	if (not shaderNode)
+	#ifdef FIXED_PIPELINE
+	if (browser -> getFixedPipeline ())
 	{
 		glDisable (GL_LIGHTING);
 		X3DGeometryNode::draw (context);
@@ -102,11 +102,8 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 
 	// Setup vertex attributes.
 
-	if (shaderNode)
-	{
-		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
-			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
-	}
+	for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+		getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
 
 	if (not getColors () .empty ())
 		shaderNode -> enableColorAttrib (getColorBufferId ());
@@ -126,11 +123,8 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 
 	// VertexAttribs
 
-	if (shaderNode)
-	{
-		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
-			getAttribs () [i] -> disable (shaderNode);
-	}
+	for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+		getAttribs () [i] -> disable (shaderNode);
 
 	shaderNode -> disableColorAttrib ();
 	shaderNode -> disableVertexAttrib ();

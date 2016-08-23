@@ -255,33 +255,38 @@ Appearance::set_shader ()
 void
 Appearance::draw ()
 {
-	// Material
-
-	if (materialNode)
-		materialNode -> draw ();
-
-	else
+	#ifdef FIXED_PIPELINE
+	if (getBrowser () -> getFixedPipeline ())
 	{
-		glDisable (GL_LIGHTING);
-		glColor4f (1, 1, 1, 1);
+		// Material
+
+		if (materialNode)
+			materialNode -> draw ();
+	
+		else
+		{
+			glDisable (GL_LIGHTING);
+			glColor4f (1, 1, 1, 1);
+		}
+	
+		// Texture
+	
+		if (textureNode)
+		{
+			textureNode -> draw ();
+			getBrowser () -> setTexture (textureNode);
+		}
+	
+		// TextureTransform
+	
+		textureTransformNode -> draw ();
+	
+		// Shader
+	
+		if (shaderNode)
+			shaderNode -> draw ();
 	}
-
-	// Texture
-
-	if (textureNode)
-	{
-		textureNode -> draw ();
-		//getBrowser () -> setTexture (true); // See below.
-	}
-
-	// TextureTransform
-
-	textureTransformNode -> draw ();
-
-	// Shader
-
-	if (shaderNode)
-		shaderNode -> draw ();
+	#endif
 
 	getBrowser () -> setAppearance (this);
 	getBrowser () -> setTexture (textureNode);

@@ -197,6 +197,9 @@
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_browser_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="CobwebCompatibilityAction">
+    <signal name="toggled" handler="on_cobweb_compatibility_toggled" swapped="no"/>
+  </object>
   <object class="GtkToggleAction" id="EditorAction">
     <property name="label" translatable="yes">_Editor</property>
     <property name="draw_as_radio">True</property>
@@ -338,9 +341,6 @@
   <object class="GtkToggleAction" id="SelectLowestAction">
     <property name="label" translatable="yes">Select Lowest</property>
     <signal name="toggled" handler="on_select_lowest_toggled" swapped="no"/>
-  </object>
-  <object class="GtkToggleAction" id="ShaderPipelineAction">
-    <signal name="toggled" handler="on_shader_pipeline_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="SidebarAction">
     <property name="label" translatable="yes">Sidebar</property>
@@ -2030,8 +2030,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkCheckMenuItem" id="BrowserShaderPipelineMenuItem">
-                <property name="related_action">ShaderPipelineAction</property>
+              <object class="GtkCheckMenuItem" id="BrowserCobwebCompatibilityMenuItem">
+                <property name="related_action">CobwebCompatibilityAction</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Cobweb Compatibility</property>
@@ -3520,8 +3520,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkCheckMenuItem" id="ShaderPipelineMenuItem">
-                                <property name="related_action">ShaderPipelineAction</property>
+                              <object class="GtkCheckMenuItem" id="CobwebCompatibilityMenuItem">
+                                <property name="related_action">CobwebCompatibilityAction</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Cobweb Compatibility</property>

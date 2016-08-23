@@ -7,12 +7,6 @@ META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "modified" "Sun, 14 Sep 2014 08:40:57 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -136,8 +130,10 @@ Collision {
               rotation 0 0 -1 1.5708
               children Shape {
                 appearance DEF Red Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 1 0 0
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry DEF Arrow Cone {
@@ -155,8 +151,10 @@ Collision {
               translation 0 6 0
               children Shape {
                 appearance DEF Green Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 0 1 0
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry USE Arrow
@@ -172,8 +170,10 @@ Collision {
               rotation 1 0 0 1.5708
               children Shape {
                 appearance DEF Blue Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 0 0 1
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry USE Arrow
@@ -223,8 +223,10 @@ Collision {
                 DEF CenterPoint ScreenGroup {
                   children Shape {
                     appearance Appearance {
-                      shaders ToolShader {
+                      material Material {
                         diffuseColor 1 1 0
+                      }
+                      shaders ToolShader {
                       }
                     }
                     geometry Sphere {

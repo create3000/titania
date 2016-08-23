@@ -65,8 +65,8 @@ namespace X3D {
 X3DShadersContext::X3DShadersContext () :
 	           X3DBaseNode (),
 	shadingLanguageVersion (),
-#ifndef SHADER_PIPELINE
-	        shaderPipeline (false),
+#ifdef FIXED_PIPELINE
+	         fixedPipeline (false),
 #endif
 	           pointShader (),
 	       wireframeShader (),
@@ -113,19 +113,19 @@ X3DShadersContext::initialize ()
 	}
 }
 
-#ifndef SHADER_PIPELINE
+#ifdef FIXED_PIPELINE
 void
-X3DShadersContext::setShaderPipeline (const bool value)
+X3DShadersContext::setFixedPipeline (const bool value)
 {
-	shaderPipeline = value;
+	fixedPipeline = value;
 
 	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
 }
 
 bool
-X3DShadersContext::getShaderPipeline () const
+X3DShadersContext::getFixedPipeline () const
 {
-	return shaderPipeline;
+	return fixedPipeline;
 }
 #endif
 
@@ -152,40 +152,52 @@ X3DShadersContext::createShader (const MFString & vertexUrl, const MFString & fr
 void
 X3DShadersContext::set_shading (const ShadingType & shading)
 {
+	#ifdef FIXED_PIPELINE
+	
+	if (fixedPipeline)
+	{
+		defaultShader = nullptr;
+	}
+	else
+	{
+		if (shading == ShadingType::PHONG)
+		{
+			defaultShader = getPhongShader ();
+		}
+		else // GOURAUD
+		{
+			defaultShader = getGouraudShader ();
+		}
+	}
+
+	#else
+
 	if (shading == ShadingType::PHONG)
 	{
 		defaultShader = getPhongShader ();
 	}
 	else // GOURAUD
 	{
-		#ifndef SHADER_PIPELINE
-
-		if (shaderPipeline)
-			defaultShader = getGouraudShader ();
-		else
-			defaultShader = nullptr;
-
-		#else
-
 		defaultShader = getGouraudShader ();
-
-		#endif
 	}
 
-	#ifndef SHADER_PIPELINE
+	#endif
+
+
+	#ifdef FIXED_PIPELINE
 	try
 	{
 		ContextLock lock (getBrowser ());
 
-		if (defaultShader)
-		{
-			glEnable (GL_POINT_SPRITE);
-			glEnable (GL_PROGRAM_POINT_SIZE);
-		}
-		else
+		if (fixedPipeline)
 		{
 			glDisable (GL_POINT_SPRITE);
 			glDisable (GL_PROGRAM_POINT_SIZE);
+		}
+		else
+		{
+			glEnable (GL_POINT_SPRITE);
+			glEnable (GL_PROGRAM_POINT_SIZE);
 		}
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)

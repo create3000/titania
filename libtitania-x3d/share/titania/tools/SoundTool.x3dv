@@ -18,12 +18,6 @@ EXTERNPROTO QuadSphere [
 "library/QuadSphere.x3dv"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -164,7 +158,6 @@ Collision {
                       diffuseColor 0.618 0.1854 0.1854
                     }
                     shaders DEF _6 ToolShader {
-                      diffuseColor 0.618 0.1854 0.1854
                     }
                   }
                   geometry DEF _7 QuadSphere {
@@ -181,7 +174,6 @@ Collision {
                       diffuseColor 1 0.3 0.3
                     }
                     shaders DEF _9 ToolShader {
-                      diffuseColor 1 0.3 0.3
                     }
                   }
                   geometry USE _7
@@ -204,7 +196,6 @@ Collision {
                       diffuseColor 0.1854 0.618 0.2575
                     }
                     shaders DEF _12 ToolShader {
-                      diffuseColor 0.1854 0.618 0.2575
                     }
                   }
                   geometry USE _7
@@ -217,7 +208,6 @@ Collision {
                       diffuseColor 0.3 1 0.416667
                     }
                     shaders DEF _14 ToolShader {
-                      diffuseColor 0.3 1 0.416667
                     }
                   }
                   geometry USE _7
@@ -317,9 +307,5 @@ ROUTE _15.direction_changed TO SoundScript.set_location
 ROUTE _15.location_changed TO SoundScript.set_location
 ROUTE SoundScript.whichChoice_changed TO _10.set_whichChoice
 ROUTE SoundScript.whichChoice_changed TO _2.set_whichChoice
-ROUTE _11.diffuseColor_changed TO _12.set_diffuseColor
-ROUTE _8.diffuseColor_changed TO _9.set_diffuseColor
-ROUTE _5.diffuseColor_changed TO _6.set_diffuseColor
-ROUTE _13.diffuseColor_changed TO _14.set_diffuseColor
 
 EXPORT SoundScript AS Tool

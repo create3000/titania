@@ -68,7 +68,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
-#ifndef SHADER_PIPELINE
+#ifdef FIXED_PIPELINE
 	     texCoordNode (),
 #endif
 	        texCoords (),
@@ -88,7 +88,7 @@ X3DGeometryNode::X3DGeometryNode () :
 
 	addChildren (cameraObject);
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	addChildren (texCoordNode);
 	#endif
 }
@@ -98,7 +98,7 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 	#endif
 
@@ -119,7 +119,7 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	if (isInitialized ())
 	{
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
@@ -165,7 +165,7 @@ X3DGeometryNode::setAttribs (const X3DPtrArray <X3DVertexAttributeNode> & nodes,
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
-#ifndef SHADER_PIPELINE
+#ifdef FIXED_PIPELINE
 void
 X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
@@ -848,31 +848,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	context -> setColorMaterial (not colors .empty ());
 
-	// Enable vertex attribute nodes
-
-	if (shaderNode)
-	{
-		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
-	}
-
-	if (shaderNode)
-	{
-		// Enable shader
-
-		shaderNode -> setGlobalUniforms (context);
-		shaderNode -> setLocalUniforms (context);
-
-		if (not colors .empty ())
-			shaderNode -> enableColorAttrib (colorBufferId);
-
-		shaderNode -> enableTexCoordAttrib (texCoordBufferIds);
-		shaderNode -> enableNormalAttrib   (normalBufferId);
-		shaderNode -> enableVertexAttrib   (vertexBufferId);
-	}
-
-	#ifndef SHADER_PIPELINE
-	//else
+	#ifdef FIXED_PIPELINE
+	if (browser -> getFixedPipeline ())
 	{
 		// Enable colors, texture coords, normals and vertices.
 
@@ -887,7 +864,10 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		}
 
 		if (browser -> getTexture ())
-			texCoordNode -> enable (texCoordBufferIds);
+		{
+			if (texCoordNode)
+				texCoordNode -> enable (texCoordBufferIds);
+		}
 
 		if (glIsEnabled (GL_LIGHTING) or shaderNode)
 		{
@@ -904,6 +884,30 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		glVertexPointer (3, GL_DOUBLE, 0, 0);
 	}
 	#endif
+
+	if (shaderNode)
+	{
+		// Enable vertex attribute nodes
+	
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+	
+		// Enable shader
+	
+		shaderNode -> setGlobalUniforms (context);
+		shaderNode -> setLocalUniforms (context);
+	
+		if (not colors .empty ())
+			shaderNode -> enableColorAttrib (colorBufferId);
+	
+		if (not texCoords .empty ())
+			shaderNode -> enableTexCoordAttrib (texCoordBufferIds);
+	
+		if (not normals .empty ())
+			shaderNode -> enableNormalAttrib (normalBufferId);
+	
+		shaderNode -> enableVertexAttrib (vertexBufferId);
+	}
 
 	// Draw depending on ccw, transparency and solid.
 
@@ -961,24 +965,8 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	// VertexAttribs
 
-	if (shaderNode)
-	{
-		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-			attribNodes [i] -> disable (shaderNode);
-	}
-
-	if (shaderNode)
-	{
-		// Disable shader
-
-		shaderNode -> disableColorAttrib ();
-		shaderNode -> disableTexCoordAttrib ();
-		shaderNode -> disableNormalAttrib ();
-		shaderNode -> disableVertexAttrib ();
-	}
-
-	#ifndef SHADER_PIPELINE
-	//else
+	#ifdef FIXED_PIPELINE
+	if (browser -> getFixedPipeline ())
 	{
 		// Texture
 	
@@ -992,6 +980,19 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		glDisableClientState (GL_VERTEX_ARRAY);
 	}
 	#endif
+
+	if (shaderNode)
+	{
+		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+			attribNodes [i] -> disable (shaderNode);
+	
+		// Disable shader
+	
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableTexCoordAttrib ();
+		shaderNode -> disableNormalAttrib ();
+		shaderNode -> disableVertexAttrib ();
+	}
 
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }

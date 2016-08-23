@@ -7,12 +7,6 @@ META "generator" "Titania V0.7.4, http://titania.create3000.de"
 META "modified" "Sat, 06 Sep 2014 17:50:42 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -526,8 +520,10 @@ DEF _1 Transform {
                   rotation 0 0 1 4.71239
                   children Shape {
                     appearance DEF Red Appearance {
-                      shaders ToolShader {
+                      material Material {
                         diffuseColor 1 0 0
+                      }
+                      shaders ToolShader {
                       }
                     }
                     geometry DEF Arrow Cone {
@@ -540,8 +536,10 @@ DEF _1 Transform {
                   translation 0 36.5 0
                   children Shape {
                     appearance DEF Green Appearance {
-                      shaders ToolShader {
+                      material Material {
                         diffuseColor 0 1 0
+                      }
+                      shaders ToolShader {
                       }
                     }
                     geometry USE Arrow
@@ -552,8 +550,10 @@ DEF _1 Transform {
                   rotation 1 0 0 1.5708
                   children Shape {
                     appearance DEF Blue Appearance {
-                      shaders ToolShader {
+                      material Material {
                         diffuseColor 0 0 1
+                      }
+                      shaders ToolShader {
                       }
                     }
                     geometry USE Arrow

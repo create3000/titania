@@ -5,7 +5,7 @@ META "created" "Mon, 22 Aug 2016 21:30:50 GMT"
 META "creator" "holger"
 META "generator" "Titania V1.4.9, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Shaders/Matrix4VertexAttibute.x3dv"
-META "modified" "Tue, 23 Aug 2016 05:40:29 GMT"
+META "modified" "Tue, 23 Aug 2016 06:24:12 GMT"
 
 WorldInfo {
   metadata DEF Titania MetadataSet {
@@ -23,10 +23,40 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF ShaderPartFragmenShader ShaderPart {
-              type "FRAGMENT"
-              url [
-                "data:text/plain,
+            value [
+              DEF _1 Shape {
+                bboxSize 4 4 0
+                appearance Appearance {
+                  material DEF _2 Material {
+                    emissiveColor 0.5 0 0
+                  }
+                  shaders DEF ComposedShader ComposedShader {
+                    language "GLSL"
+                    parts [
+                      DEF ShaderPartVertexShader ShaderPart {
+                        url "data:text/plain,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+in vec4 x3d_Vertex;
+in mat4 attrib4;
+
+void
+main ()  
+{
+	vec4 vertex = attrib4 * x3d_Vertex;
+
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+}
+"
+                      }
+                      DEF ShaderPartFragmenShader ShaderPart {
+                        type "FRAGMENT"
+                        url [
+                          "data:text/plain,
 #version 300 es
 
 precision mediump float;
@@ -41,7 +71,8 @@ main ()
 	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
 }
 ",
-                "data:text/plain,
+                          "data:text/plain,
+#version 300 es
 
 precision mediump float;
 
@@ -55,8 +86,107 @@ main ()
 	x3d_FragColor = vec4 (0.0, 0.0, 1.0, 1.0);
 }
 "
-              ]
-            }
+                        ]
+                      }
+                    ]
+                  }
+                }
+                geometry DEF _3 IndexedFaceSet {
+                  creaseAngle 0.5
+                  coordIndex [
+                    0,
+                    1,
+                    2,
+                    3,
+                    -1
+                  ]
+                  attrib Matrix4VertexAttribute {
+                    name "attrib4"
+                    value [
+                      1 0 0 0 0 1 0 0 0 0 1 0 -1 -1 0 1,
+                      1 0 0 0 0 1 0 0 0 0 1 0 1 -1 0 1,
+                      1 0 0 0 0 1 0 0 0 0 1 0 1 1 0 1,
+                      1 0 0 0 0 1 0 0 0 0 1 0 -1 1 0 1
+                    ]
+                  }
+                  coord Coordinate {
+                    point [
+                      -1 -1 0,
+                      1 -1 0,
+                      1 1 0,
+                      -1 1 0
+                    ]
+                  }
+                }
+              }
+              DEF _4 Shape {
+                bboxSize 4 4 0
+                bboxCenter 2 0 0
+                appearance Appearance {
+                  material USE _2
+                  shaders DEF ProgramShader ProgramShader {
+                    programs [
+                      DEF ShaderProgramVertexShader ShaderProgram {
+                        url "data:text/plain,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+in vec4 x3d_Vertex;
+in mat4 attrib4;
+
+void
+main ()  
+{
+	vec4 vertex = attrib4 * x3d_Vertex + vec4 (2.0, 0.0, 0.0, 0.0);
+
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+}
+"
+                      }
+                      DEF ShaderProgramFragmenShader ShaderProgram {
+                        type "FRAGMENT"
+                        url [
+                          "data:text/plain,
+#version 300 es
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void
+main ()
+{
+	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
+}
+",
+                          "data:text/plain,
+#version 300 es
+
+precision mediump float;
+
+uniform vec3 x3d_EmissiveColor;
+
+out vec4 x3d_FragColor;
+
+void
+main ()
+{
+	x3d_FragColor = vec4 (0.0, 0.0, 1.0, 1.0);
+}
+"
+                        ]
+                      }
+                    ]
+                  }
+                }
+                geometry USE _3
+              }
+            ]
           }
         ]
       }
@@ -170,134 +300,12 @@ DEF Axes Transform {
   }
 }
 
-DEF ComposedShader Transform {
+DEF ComposedShader_1 Transform {
   translation -3 0 0
-  children Shape {
-    appearance Appearance {
-      material DEF _1 Material {
-        emissiveColor 0.5 0 0
-      }
-      shaders DEF ComposedShader_1 ComposedShader {
-        language "GLSL"
-        parts [
-          DEF ShaderPartVertexShader ShaderPart {
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-
-in vec4 x3d_Vertex;
-in mat4 attrib4;
-
-void
-main ()  
-{
-	vec4 vertex = attrib4 * x3d_Vertex;
-
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
-}
-"
-          }
-          USE ShaderPartFragmenShader
-        ]
-      }
-    }
-    geometry DEF _2 IndexedFaceSet {
-      creaseAngle 0.5
-      coordIndex [
-        0,
-        1,
-        2,
-        3,
-        -1
-      ]
-      attrib Matrix4VertexAttribute {
-        name "attrib4"
-        value [
-          1 0 0 0 0 1 0 0 0 0 1 0 -1 -1 0 1,
-          1 0 0 0 0 1 0 0 0 0 1 0 1 -1 0 1,
-          1 0 0 0 0 1 0 0 0 0 1 0 1 1 0 1,
-          1 0 0 0 0 1 0 0 0 0 1 0 -1 1 0 1
-        ]
-      }
-      coord Coordinate {
-        point [
-          -1 -1 0,
-          1 -1 0,
-          1 1 0,
-          -1 1 0
-        ]
-      }
-    }
-  }
+  children USE _1
 }
 
-DEF ProgramShader Transform {
+DEF ProgramShader_1 Transform {
   translation 3 0 0
-  children Shape {
-    appearance Appearance {
-      material USE _1
-      shaders DEF ProgramShader_1 ProgramShader {
-        programs [
-          DEF ShaderProgramVertexShader ShaderProgram {
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-
-in vec4 x3d_Vertex;
-in mat4 attrib4;
-
-void
-main ()  
-{
-	vec4 vertex = attrib4 * x3d_Vertex + vec4 (2.0, 0.0, 0.0, 0.0);
-
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
-}
-"
-          }
-          DEF ShaderProgramFragmenShader ShaderProgram {
-            type "FRAGMENT"
-            url [
-              "data:text/plain,
-#version 300 es
-
-precision mediump float;
-
-uniform vec3 x3d_EmissiveColor;
-
-out vec4 x3d_FragColor;
-
-void
-main ()
-{
-	x3d_FragColor = vec4 (x3d_EmissiveColor, 1.0);
-}
-",
-              "data:text/plain,
-
-precision mediump float;
-
-uniform vec3 x3d_EmissiveColor;
-
-out vec4 x3d_FragColor;
-
-void
-main ()
-{
-	x3d_FragColor = vec4 (0.0, 0.0, 1.0, 1.0);
-}
-"
-            ]
-          }
-        ]
-      }
-    }
-    geometry USE _2
-  }
+  children USE _4
 }

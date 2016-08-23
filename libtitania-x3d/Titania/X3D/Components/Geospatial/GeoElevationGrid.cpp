@@ -178,7 +178,7 @@ GeoElevationGrid::set_texCoord ()
 	if (texCoordNode)
 		texCoordNode -> addInterest (this);
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	setTextureCoordinate (texCoordNode);
 	#endif
 }

@@ -110,7 +110,7 @@ public:
 	getTextureStages ()
 	{ return textureStages; }
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	const X3DPtr <X3DTextureCoordinateNode> &
 	getDefaultTexCoord () const
 	{ return defaultTexCoord; }
@@ -167,10 +167,9 @@ private:
 	TextureUnitStack combinedTextureUnits;
 	TextureArray     textureStages;
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	X3DPtr <X3DTextureCoordinateNode> defaultTexCoord;
 	#endif
-
 	X3DPtr <TextureProperties>        defaultTextureProperties;
 	X3DPtr <X3DTextureTransformNode>  defaultTextureTransform;
 	X3DTextureNode*                   texture;

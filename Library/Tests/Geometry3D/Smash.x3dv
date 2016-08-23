@@ -35,12 +35,6 @@ EXTERNPROTO IcoSphere [
 ]
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "../../../libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
 

@@ -10,12 +10,6 @@ META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/tit
 META "modified" "Mon, 25 Jul 2016 09:54:46 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -402,12 +396,11 @@ Collision {
                                     children DEF _6 Shape {
                                       appearance DEF Red Appearance {
                                         material Material {
-                                          diffuseColor 1 0 0
-                                        }
-                                        shaders ToolShader {
                                           ambientIntensity 0
                                           diffuseColor 1 0 0
                                           shininess 0
+                                        }
+                                        shaders ToolShader {
                                         }
                                       }
                                       geometry DEF Arrow Cone {
@@ -507,12 +500,11 @@ Collision {
                                     children DEF _13 Shape {
                                       appearance DEF Green Appearance {
                                         material Material {
-                                          diffuseColor 0 1 0
-                                        }
-                                        shaders ToolShader {
                                           ambientIntensity 0
                                           diffuseColor 0 1 0
                                           shininess 0
+                                        }
+                                        shaders ToolShader {
                                         }
                                       }
                                       geometry USE Arrow
@@ -602,12 +594,11 @@ Collision {
                                     children DEF _19 Shape {
                                       appearance DEF Blue Appearance {
                                         material Material {
-                                          diffuseColor 0 0 1
-                                        }
-                                        shaders ToolShader {
                                           ambientIntensity 0
                                           diffuseColor 0 0 1
                                           shininess 0
+                                        }
+                                        shaders ToolShader {
                                         }
                                       }
                                       geometry USE Arrow
@@ -870,12 +861,11 @@ Collision {
                               children Shape {
                                 appearance DEF White Appearance {
                                   material Material {
-                                    diffuseColor 1 1 1
-                                  }
-                                  shaders ToolShader {
                                     ambientIntensity 0
                                     diffuseColor 1 1 1
                                     shininess 0
+                                  }
+                                  shaders ToolShader {
                                   }
                                 }
                                 geometry USE Box
@@ -1002,12 +992,11 @@ Collision {
                   DEF _34 Shape {
                     appearance Appearance {
                       material Material {
-                        diffuseColor 1 1 0
-                      }
-                      shaders ToolShader {
                         ambientIntensity 0
                         diffuseColor 1 1 0
                         shininess 0
+                      }
+                      shaders ToolShader {
                       }
                     }
                     geometry DEF _35 Sphere {

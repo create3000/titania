@@ -174,7 +174,7 @@ private:
 
 	///  @name Operations
 	
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	void
 	disableTextures ();
 	#endif

@@ -238,7 +238,7 @@ protected:
 	getTexCoords () const
 	{ return texCoords; }
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const);
 	#endif
@@ -366,7 +366,7 @@ private:
 	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	#endif
 	TexCoordArray                         texCoords;

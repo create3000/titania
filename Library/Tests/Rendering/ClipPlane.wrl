@@ -1,4 +1,71 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V1.4.9
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              11.541122247629,
+              4.37683119177832,
+              8.23417880000924
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.609780951260312,
+              0.76879027615487,
+              0.192688097114966,
+              0.77995677565191
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              5.67652988349204,
+              -1.08219600790226,
+              -0.118776021037965
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "ClipPlane"
+}
 
 DEF Gray Background {
   skyColor 0.2 0.2 0.2
@@ -7,7 +74,7 @@ DEF Gray Background {
 Viewpoint {
   description "Home"
   position 14.8254 9.61127 14.7066
-  orientation -0.622537 0.765307 0.163563 0.775565
+  orientation -0.622537007598998 0.76530700934172 0.163563001996532 0.775565
   centerOfRotation 4.5 0 0
 }
 
@@ -73,7 +140,7 @@ DEF ClippedObjects Transform {
       }
     }
     DEF ClipPlane ClipPlane {
-      plane 0 0 -1 0.0532958
+      plane 0 0 -1 0.0417317
     }
     TouchSensor {
       description "Clipped objects"
@@ -85,11 +152,11 @@ DEF VisibleClipPlane Transform {
   children [
     DEF PlaneSensor PlaneSensor {
       axisRotation 0 1 0 1.5708
-      offset 4.50002 0 0.0532958
+      offset 4.50002 0 0.0417317
       maxPosition -1 0
     }
     DEF Rectangle2D Transform {
-      translation 4.50002 0 0.0532958
+      translation 4.50002 0 0.0417317
       scale 8 2.5 1
       children Shape {
         appearance Appearance {

@@ -100,12 +100,12 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 	void
-	setShaderPipeline (const bool);
+	setFixedPipeline (const bool);
 
 	bool
-	getShaderPipeline () const;
+	getFixedPipeline () const;
 	#endif
 
 	///  @name Destruction
@@ -145,8 +145,8 @@ private:
 	///  @name Members
 
 	float                   shadingLanguageVersion;
-	#ifndef SHADER_PIPELINE
-	bool                    shaderPipeline;
+	#ifdef FIXED_PIPELINE
+	bool                    fixedPipeline;
 	#endif
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;

@@ -144,7 +144,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
-	#ifdef SHADER_PIPELINE
+	#ifndef FIXED_PIPELINE
 	getShaderPipelineMenuItem ()        .set_visible (false);
 	getBrowserShaderPipelineMenuItem () .set_visible (false);
 	#endif
@@ -159,8 +159,8 @@ BrowserWindow::configure ()
 
 	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
 
-	#ifndef SHADER_PIPELINE
-	getShaderPipelineAction () -> set_active (getConfig () -> getBoolean ("shaderPipeline"));
+	#ifdef FIXED_PIPELINE
+	getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
 	#endif
 }
 
@@ -169,8 +169,8 @@ BrowserWindow::store ()
 {
 	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
 
-	#ifndef SHADER_PIPELINE
-	getConfig () -> setItem ("shaderPipeline", getShaderPipelineAction () -> get_active ());
+	#ifdef FIXED_PIPELINE
+	getConfig () -> setItem ("cobwebCompatibility", getCobwebCompatibilityAction () -> get_active ());
 	#endif
 
 	X3DBrowserWindow::store ();
@@ -273,8 +273,8 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 
-	#ifndef SHADER_PIPELINE
-	getCurrentBrowser () -> setShaderPipeline (getShaderPipelineAction () -> get_active ());
+	#ifdef FIXED_PIPELINE
+	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
 	#endif
 
 	on_transform_tool_mode_toggled ();
@@ -2220,10 +2220,10 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 // Help menu
 
 void
-BrowserWindow::on_shader_pipeline_toggled ()
+BrowserWindow::on_cobweb_compatibility_toggled ()
 {
-	#ifndef SHADER_PIPELINE
-	getCurrentBrowser () -> setShaderPipeline (getShaderPipelineAction () -> get_active ());
+	#ifdef FIXED_PIPELINE
+	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
 	#endif
 }
 

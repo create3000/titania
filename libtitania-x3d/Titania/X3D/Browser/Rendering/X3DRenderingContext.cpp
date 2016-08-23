@@ -78,7 +78,7 @@ X3DRenderingContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
-		#ifdef SHADER_PIPELINE
+		#ifndef FIXED_PIPELINE
 		glEnable (GL_POINT_SPRITE);
 		glEnable (GL_PROGRAM_POINT_SIZE);
 		#endif

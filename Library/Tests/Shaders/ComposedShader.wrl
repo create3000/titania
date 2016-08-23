@@ -1,6 +1,88 @@
-#VRML V2.0 utf8 Titania V0.7.3
+#VRML V2.0 utf8 Titania V1.4.9
 
-META "title" "ComposedShader"
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF ValidVS ShaderPart {
+              url "data:text/plain,
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+attribute vec4 x3d_Vertex;
+
+void
+main ()
+{
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+}
+"
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -3.77735177884056,
+              0.25088033334423,
+              9.25573728004602
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.0638096798441087,
+              -0.997883554541838,
+              -0.0125194382117722,
+              0.388278823572713
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "ComposedShader"
+}
 
 Transform {
   translation -2 0 0
@@ -18,13 +100,15 @@ Transform {
           parts DEF NotValidFS ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
-#version 120
 
 AN PARSER ERROR IS GENERATED HERE AND SECOND SHADER IS SELECTED
 
+precision mediump float;
+
 uniform vec4 color [2];
 
-void main (void)  
+void
+main ()  
 {     
    gl_FragColor = color [0];  
 }
@@ -38,19 +122,24 @@ void main (void)
           ]
 
           language "GLSL"
-          parts DEF ValidFS ShaderPart {
-            type "FRAGMENT"
-            url "data:text/plain,
-#version 120
+          parts [
+            USE ValidVS
+            DEF ValidFS ShaderPart {
+              type "FRAGMENT"
+              url "data:text/plain,
+
+precision mediump float;
 
 uniform vec4 color [2];
 
-void main (void)  
-{     
+void
+main ()  
+{
    gl_FragColor = color [1];  
 }
 "
-          }
+            }
+          ]
         }
       ]
     }
@@ -71,25 +160,41 @@ Transform {
         parts [
           DEF TextureVS ShaderPart {
             url "data:text/plain,
-#version 120
 
-void main (void)
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat4 x3d_TextureMatrix [1];
+
+attribute vec4 x3d_Vertex;
+attribute vec4 x3d_TexCoord;
+
+varying vec4 t;
+
+void
+main ()
 {
-	gl_Position     = ftransform ();
-	gl_TexCoord [0] = gl_TextureMatrix [0] * gl_MultiTexCoord0;
+	t = x3d_TextureMatrix [0] * x3d_TexCoord;
+	
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
 }
 "
           }
           DEF TextureFS ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
-#version 120
+
+precision mediump float;
 
 uniform sampler2D myTexture;
 
-void main (void)
+varying vec4 t;
+
+void
+main ()
 {
-	gl_FragColor = texture2D (myTexture, gl_TexCoord [0] .st);
+	gl_FragColor = texture2D (myTexture, t .st);
 }
 "
           }

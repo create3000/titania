@@ -31,10 +31,10 @@ AC_ARG_ENABLE(parallel,
 		[Use 'PARALLEL' Configuration [default=NO]]),
 		enable_parallel=yes, enable_parallel=no)
 
-AC_ARG_ENABLE(shader-pipeline,
-	AC_HELP_STRING([--enable-shader-pipeline],
+AC_ARG_ENABLE(fixed-pipeline,
+	AC_HELP_STRING([--enable-fixed-pipeline],
 		[Use 'SHADER PIPELINE' Configuration [default=NO]]),
-		enable_shader_pipeline=yes, enable_shader_pipeline=no)
+		enable_fixed_pipeline=yes, enable_fixed_pipeline=no)
 
 
 
@@ -54,8 +54,8 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -D_GLIBCXX_PARALLEL"
 fi
 
-if test "x$enable_shader_pipeline" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DSHADER_PIPELINE"
+if test "x$enable_fixed_pipeline" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
 fi
 
 if test "x$enable_debug" = "xyes" ; then

@@ -128,18 +128,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 bool
 PointSet::isTransparent () const
 {
-	#ifndef SHADER_PIPELINE
+	#ifdef FIXED_PIPELINE
 
-	if (getBrowser () -> getDefaultShader ())
-		return true;
-
-	return transparent;
-
-	#else
-
-	return true; // The antialiased border is transparent!
+	if (getBrowser () -> getFixedPipeline ())
+		return false;
 
 	#endif
+
+	return true; // The antialiased border is transparent!
 }
 
 void

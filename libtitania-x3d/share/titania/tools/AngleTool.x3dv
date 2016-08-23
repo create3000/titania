@@ -12,12 +12,6 @@ META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/tit
 META "modified" "Sun, 10 Apr 2016 02:38:36 GMT"
 
 EXTERNPROTO ToolShader [
-  inputOutput SFFloat ambientIntensity
-  inputOutput SFColor diffuseColor
-  inputOutput SFColor specularColor
-  inputOutput SFColor emissiveColor
-  inputOutput SFFloat shininess
-  inputOutput SFFloat transparency
 ]
 "library/ToolShader.x3dv"
 
@@ -564,8 +558,10 @@ DEF AngleTool Collision {
               scale 4 4 4
               children Shape {
                 appearance DEF _5 Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 1 0.7 0
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry Sphere { }
@@ -638,8 +634,10 @@ DEF AngleTool Collision {
               scale 3 3 3
               children Shape {
                 appearance Appearance {
-                  shaders ToolShader {
+                  material Material {
                     diffuseColor 1 0.7 0
+                  }
+                  shaders ToolShader {
                   }
                 }
                 geometry Box { }
