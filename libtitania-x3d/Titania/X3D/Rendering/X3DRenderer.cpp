@@ -494,9 +494,12 @@ X3DRenderer::display ()
 	// Setup projection matrix
 
 	#ifdef FIXED_PIPELINE
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
-	glMatrixMode (GL_MODELVIEW);
+	if (getBrowser () -> getFixedPipeline ())
+	{
+		glMatrixMode (GL_PROJECTION);
+		glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+		glMatrixMode (GL_MODELVIEW);
+	}
 	#endif
 
 	// Enable global lights
@@ -539,9 +542,11 @@ X3DRenderer::display ()
 	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
 		object -> disable ();
 
+	#ifdef FIXED_PIPELINE
 	// Reset to default OpenGL appearance
-
-	getBrowser () -> getDefaultAppearance () -> draw ();
+	if (getBrowser () -> getFixedPipeline ())
+		getBrowser () -> getDefaultAppearance () -> draw ();
+	#endif
 }
 
 void

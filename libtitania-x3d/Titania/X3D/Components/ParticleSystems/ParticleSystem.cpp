@@ -1434,7 +1434,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 		else
 			glDisable (GL_CULL_FACE);
 
-		glFrontFace (ModelViewMatrix4d () .determinant3 () > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+		glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
 		glNormal3f (0, 0, 1);
 
@@ -1467,7 +1467,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 			{
 				try
 				{
-					Matrix3f rotation = getScreenAlignedRotation ();
+					Matrix3f rotation = getScreenAlignedRotation (context -> getModelViewMatrix ());
 
 					glNormal3fv (rotation [2] .data ());
 
@@ -1560,10 +1560,10 @@ ParticleSystem::draw (ShapeContainer* const context)
 }
 
 Matrix3d
-ParticleSystem::getScreenAlignedRotation () const
+ParticleSystem::getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const
 throw (std::domain_error)
 {
-	const Matrix4d inverseModelViewMatrix = ~ModelViewMatrix4d ();
+	const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
 
 	const Vector3d billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
 	const Vector3d viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);

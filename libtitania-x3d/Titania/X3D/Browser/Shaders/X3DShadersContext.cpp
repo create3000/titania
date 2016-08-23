@@ -75,6 +75,10 @@ X3DShadersContext::X3DShadersContext () :
 	         defaultShader (),
 	            shaderNode (nullptr)
 {
+#ifdef FIXED_PIPELINE
+	addChildren (fixedPipeline);
+#endif
+
 	addChildren (pointShader,
 	             wireframeShader,
 	             gouraudShader,
@@ -120,12 +124,6 @@ X3DShadersContext::setFixedPipeline (const bool value)
 	fixedPipeline = value;
 
 	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
-}
-
-bool
-X3DShadersContext::getFixedPipeline () const
-{
-	return fixedPipeline;
 }
 #endif
 

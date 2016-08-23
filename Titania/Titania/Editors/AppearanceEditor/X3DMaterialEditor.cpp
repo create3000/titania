@@ -95,8 +95,6 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	             twoSidedMaterial,
                 clipboard);
 
-	preview -> setAntialiasing (4);
-
 	clipboard -> target () = "model/x3d+vrml+material";
 }
 
@@ -105,7 +103,12 @@ X3DMaterialEditor::initialize ()
 {
 	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
+	#ifdef FIXED_PIPELINE
+	preview -> setFixedPipeline (false);
+	#endif
+
 	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
+	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
 	preview -> show ();
 

@@ -396,7 +396,7 @@ private:
 	draw (ShapeContainer* const) final override;
 
 	Matrix3d
-	getScreenAlignedRotation () const
+	getScreenAlignedRotation (const Matrix4d &) const
 	throw (std::domain_error);
 
 	void

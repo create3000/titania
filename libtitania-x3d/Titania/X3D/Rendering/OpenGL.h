@@ -87,26 +87,6 @@ Scissor4i ()
 	return scissor;
 }
 
-inline
-Matrix4d
-ModelViewMatrix4d ()
-{
-	Matrix4d matrix;
-
-	glGetDoublev (GL_MODELVIEW_MATRIX, matrix .data ());
-	return matrix;
-}
-
-inline
-Matrix4f
-ModelViewMatrix4f ()
-{
-	Matrix4f matrix;
-
-	glGetFloatv (GL_MODELVIEW_MATRIX, matrix .data ());
-	return matrix;
-}
-
 class PolygonMode
 {
 public:
