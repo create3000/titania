@@ -55,7 +55,7 @@
 #include "../Grouping/X3DBoundedObjectTool.h"
 
 #include "../../Components/Shape/X3DShapeNode.h"
-#include "../../Rendering/X3DCollectableObject.h"
+#include "../../Rendering/ClipPlaneContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -124,7 +124,7 @@ public:
 
 	virtual
 	bool
-	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) override
+	intersects (const CollisionSphere3d & sphere, const ClipPlaneContainerArray & clipPlanes) override
 	{ return getNode <X3DShapeNode> () -> intersects (sphere, clipPlanes); }
 
 	virtual

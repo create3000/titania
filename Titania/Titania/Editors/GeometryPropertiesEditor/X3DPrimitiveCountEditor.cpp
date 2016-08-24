@@ -50,8 +50,9 @@
 
 #include "X3DPrimitiveCountEditor.h"
 
-#include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Rendering/ShapeContainer.h>
 
 namespace titania {

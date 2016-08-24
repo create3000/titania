@@ -53,6 +53,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ClipPlaneContainer.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -105,14 +106,28 @@ void
 ClipPlane::push ()
 {
 	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .emplace_back (new ClipPlaneContainer (this));
+		getCurrentLayer () -> getClipPlanes () .emplace_back (new ClipPlaneContainer (this));
 }
 
 void
 ClipPlane::pop ()
 {
 	if (enabled ())
-		getCurrentLayer () -> getLocalObjects () .pop_back ();
+		getCurrentLayer () -> getClipPlanes () .pop_back ();
+}
+
+void
+ClipPlane::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+{
+	auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
+
+	clipPlane .mult_plane_matrix (modelViewMatrix);
+
+	glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i],
+	             clipPlane .normal () .x (),
+	             clipPlane .normal () .y (),
+	             clipPlane .normal () .z (),
+	             clipPlane .distance_from_origin ());
 }
 
 } // X3D

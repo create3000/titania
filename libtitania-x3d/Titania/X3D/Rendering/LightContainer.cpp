@@ -51,6 +51,7 @@
 #include "LightContainer.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Lighting/X3DLightNode.h"
 
 namespace titania {
 namespace X3D {

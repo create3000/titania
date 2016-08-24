@@ -51,8 +51,8 @@
 #ifndef __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_DEPTH_TEST_CONTAINER_H__
 
-#include "../Rendering/X3DCollectableObject.h"
 #include "../Rendering/OpenGL.h"
+#include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {

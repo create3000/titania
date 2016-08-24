@@ -51,11 +51,14 @@
 #ifndef __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
 
-#include "../Components/Lighting/X3DLightNode.h"
+#include "../Rendering/OpenGL.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
+
+class X3DLightNode;
+class X3DProgrammableShaderObject;
 
 class LightContainer :
 	public X3DCollectableObject

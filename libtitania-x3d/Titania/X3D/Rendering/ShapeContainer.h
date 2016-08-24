@@ -52,8 +52,7 @@
 #define __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
 
 #include "../Browser/Rendering/GeometryType.h"
-#include "../Components/EnvironmentalEffects/X3DFogObject.h"
-#include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/X3DCollectableObject.h"
 
@@ -65,7 +64,9 @@
 namespace titania {
 namespace X3D {
 
+class X3DFogObject;
 class X3DRenderer;
+class X3DShapeNode;
 
 class ShapeContainer
 {
@@ -126,6 +127,14 @@ public:
 	{ return localObjects; }
 
 	void
+	setClipPlanes (const ClipPlaneContainerArray & value)
+	{ clipPlanes = value; }
+
+	const ClipPlaneContainerArray &
+	getClipPlanes () const
+	{ return clipPlanes; }
+
+	void
 	setLocalLights (const LightContainerArray & value)
 	{ localLights = value; }
 
@@ -167,17 +176,18 @@ private:
 
 	///  @name Members
 
-	X3DRenderer* const     renderer;
-	bool                   transparent;
-	Vector4i               scissor;
-	Matrix4d               modelViewMatrix;
-	X3DShapeNode*          shape;
-	X3DFogObject*          fog;
-	CollectableObjectArray localObjects;
-	LightContainerArray    localLights;
-	GeometryType           geometryType;
-	bool                   colorMaterial;
-	double                 distance;
+	X3DRenderer* const      renderer;
+	bool                    transparent;
+	Vector4i                scissor;
+	Matrix4d                modelViewMatrix;
+	X3DShapeNode*           shape;
+	X3DFogObject*           fog;
+	CollectableObjectArray  localObjects;
+	ClipPlaneContainerArray clipPlanes;
+	LightContainerArray     localLights;
+	GeometryType            geometryType;
+	bool                    colorMaterial;
+	double                  distance;
 
 };
 

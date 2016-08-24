@@ -55,7 +55,7 @@
 #include "../../Browser/Rendering/GeometryType.h"
 #include "../../Browser/Shaders/ShadingType.h"
 #include "../../Rendering/TexCoordArray.h"
-#include "../../Rendering/X3DCollectableObject.h"
+#include "../../Rendering/ClipPlaneContainer.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
@@ -175,7 +175,7 @@ public:
 
 	virtual
 	bool
-	intersects (CollisionSphere3d, const CollectableObjectArray &) const;
+	intersects (CollisionSphere3d, const ClipPlaneContainerArray &) const;
 
 	virtual
 	bool
@@ -353,10 +353,7 @@ private:
 	intersects (const Line3d &, const size_t, const size_t, const size_t, const Matrix4d &, std::vector <IntersectionPtr>&) const;
 
 	bool
-	isClipped (const Vector3d &, const Matrix4d &) const;
-
-	bool
-	isClipped (const Vector3d &, const Matrix4d &, const CollectableObjectArray &) const;
+	isClipped (const Vector3d &, const Matrix4d &, const ClipPlaneContainerArray &) const;
 
 	void
 	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3d>&) const;

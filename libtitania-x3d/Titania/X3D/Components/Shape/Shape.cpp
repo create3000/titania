@@ -121,9 +121,9 @@ Shape::getBBox () const
 }
 
 bool
-Shape::intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & localObjects)
+Shape::intersects (const CollisionSphere3d & sphere, const ClipPlaneContainerArray & clipPlanes)
 {
-	return getGeometry () -> intersects (sphere, localObjects);
+	return getGeometry () -> intersects (sphere, clipPlanes);
 }
 
 void

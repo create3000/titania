@@ -51,6 +51,7 @@
 #include "ClipPlaneContainer.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Rendering/ClipPlane.h"
 
 namespace titania {
 namespace X3D {
@@ -93,6 +94,12 @@ ClipPlaneContainer::disable ()
 		node -> getBrowser () -> getClipPlanes () .push (planeId);
 		glDisable (planeId);
 	}
+}
+
+void
+ClipPlaneContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
+{
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
 }
 
 } // X3D

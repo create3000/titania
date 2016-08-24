@@ -50,6 +50,9 @@
 
 #include "ShapeContainer.h"
 
+#include "../Components/EnvironmentalEffects/X3DFogObject.h"
+#include "../Components/Shape/X3DShapeNode.h"
+
 #include <Titania/Utility/Range.h>
 
 namespace titania {
@@ -63,6 +66,7 @@ ShapeContainer::ShapeContainer (X3DRenderer* const renderer, const bool transpar
 	          shape (nullptr),
 	            fog (nullptr),
 	   localObjects (),
+	     clipPlanes (),
 	    localLights (),
 	   geometryType (GeometryType::GEOMETRY_3D),
 	  colorMaterial (false),
@@ -80,6 +84,9 @@ ShapeContainer::display ()
 	for (const auto & object : localObjects)
 		object -> enable ();
 
+	for (const auto & clipPlane : clipPlanes)
+		clipPlane -> enable ();
+
 	for (const auto & object : localLights)
 		object -> enable ();
 
@@ -91,6 +98,9 @@ ShapeContainer::display ()
 
 	for (const auto & object : basic::make_reverse_range (localLights))
 		object -> disable ();
+
+	for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
+		clipPlane -> disable ();
 
 	for (const auto & object : basic::make_reverse_range (localObjects))
 		object -> disable ();

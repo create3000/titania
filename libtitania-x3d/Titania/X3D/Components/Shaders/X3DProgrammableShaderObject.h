@@ -93,6 +93,12 @@ public:
 	GLuint
 	getProgramId () const = 0;
 
+	///  @name Uniform location access clip planes
+
+	const std::vector <GLint> &
+	getClipPlaneUniformLocation () const
+	{ return x3d_ClipPlane; }
+
 	///  @name Uniform location access fog
 
 	GLint

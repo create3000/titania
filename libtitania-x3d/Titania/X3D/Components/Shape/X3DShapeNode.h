@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_SHAPE_X3DSHAPE_NODE_H__
 
 #include "../../Browser/Rendering/GeometryType.h"
-#include "../../Rendering/X3DCollectableObject.h"
+#include "../../Rendering/ClipPlaneContainer.h"
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
 
@@ -131,7 +131,7 @@ public:
 	
 	virtual
 	bool
-	intersects (const CollisionSphere3d &, const CollectableObjectArray &) = 0;
+	intersects (const CollisionSphere3d &, const ClipPlaneContainerArray &) = 0;
 
 	virtual
 	void

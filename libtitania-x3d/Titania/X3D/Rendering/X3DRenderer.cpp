@@ -57,6 +57,7 @@
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/Appearance.h"
+#include "../Components/Shape/X3DShapeNode.h"
 #include "../Rendering/FrameBuffer.h"
 #include "../Rendering/CollisionContainer.h"
 #include "../Rendering/ShapeContainer.h"
@@ -151,6 +152,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 		context -> setShape (shape);
 		context -> setFog (getFog ());
 		context -> setLocalObjects (getLocalObjects ());
+		context -> setClipPlanes (getClipPlanes ());
 		context -> setLocalLights (getLocalLights ());
 		context -> setDistance (center);
 	}
@@ -173,6 +175,7 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 	context -> setShape (shape);
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
 }
 
 Vector3d
@@ -320,6 +323,7 @@ X3DRenderer::render (const TraverseType type)
 	}
 
 	getGlobalObjects () .clear ();
+	getClipPlanes    () .clear ();
 	getGlobalLights  () .clear ();
 }
 

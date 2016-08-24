@@ -51,8 +51,7 @@
 #ifndef __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
 #define __TITANIA_X3D_RENDERING_COLLISION_SHAPE_H__
 
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/X3DCollectableObject.h"
 
@@ -61,6 +60,9 @@
 
 namespace titania {
 namespace X3D {
+
+class Collision;
+class X3DShapeNode;
 
 class CollisionContainer
 {
@@ -100,6 +102,14 @@ public:
 	setLocalObjects (const CollectableObjectArray & value)
 	{ localObjects = value; }
 
+	void
+	setClipPlanes (const ClipPlaneContainerArray & value)
+	{ clipPlanes = value; }
+
+	const ClipPlaneContainerArray &
+	getClipPlanes () const
+	{ return clipPlanes; }
+
    ///  @name Operations
 
 	bool
@@ -113,11 +123,12 @@ private:
 
    ///  @name Members
 
-	Vector4i               scissor;
-	Matrix4d               modelViewMatrix;
-	X3DShapeNode*          shape;
-	CollisionArray         collisions;
-	CollectableObjectArray localObjects;
+	Vector4i                scissor;
+	Matrix4d                modelViewMatrix;
+	X3DShapeNode*           shape;
+	CollisionArray          collisions;
+	CollectableObjectArray  localObjects;
+	ClipPlaneContainerArray clipPlanes;
 
 };
 

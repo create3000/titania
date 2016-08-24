@@ -51,11 +51,14 @@
 #ifndef __TITANIA_X3D_RENDERING_CLIP_PLANE_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_CLIP_PLANE_CONTAINER_H__
 
-#include "../Components/Rendering/ClipPlane.h"
+#include "../Rendering/OpenGL.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
+
+class ClipPlane;
+class X3DProgrammableShaderObject;
 
 class ClipPlaneContainer :
 	public X3DCollectableObject
@@ -64,9 +67,8 @@ public:
 
 	ClipPlaneContainer (ClipPlane* const);
 
-	virtual
 	bool
-	isClipped (const Vector3d &, const Matrix4d &) const final override;
+	isClipped (const Vector3d &, const Matrix4d &) const;
 
 	virtual
 	void
@@ -75,6 +77,9 @@ public:
 	virtual
 	void
 	disable () final override;
+
+	void
+	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
 
 
 private:

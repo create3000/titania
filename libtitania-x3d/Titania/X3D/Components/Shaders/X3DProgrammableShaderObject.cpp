@@ -67,8 +67,9 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t MAX_LIGHTS    = 8;
-static constexpr size_t MAX_TEX_COORD = 4;
+static constexpr size_t MAX_CLIP_PLANES = 6;
+static constexpr size_t MAX_LIGHTS      = 8;
+static constexpr size_t MAX_TEX_COORD   = 4;
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
@@ -998,10 +999,28 @@ void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
 	const auto & browser      = getBrowser ();
+	const auto & clipPlanes   = context -> getClipPlanes ();
 	const auto & appearance   = browser -> getAppearance ();
 	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
 
 	glUniform1i (x3d_GeometryType, GLint (context -> getGeometryType ()));
+
+	// Clip planes
+
+	if (clipPlanes .empty ())
+	{
+		glUniform4f (x3d_ClipPlane [0], 0, 0, 0, 0);
+	}
+	else
+	{
+		const auto numClipPlanes = std::min (MAX_CLIP_PLANES, clipPlanes .size ());
+
+		for (size_t i = 0; i < numClipPlanes; ++ i)
+			clipPlanes [i] -> setShaderUniforms (this, i);
+
+		if (numClipPlanes < MAX_CLIP_PLANES)
+			glUniform4f (x3d_ClipPlane [numClipPlanes], 0, 0, 0, 0);
+	}
 
 	// Fog
 

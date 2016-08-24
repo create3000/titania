@@ -1217,7 +1217,7 @@ ParticleSystem::set_geometry_shader_texture_buffers ()
 }
 
 bool
-ParticleSystem::intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & localObjects)
+ParticleSystem::intersects (const CollisionSphere3d & sphere, const ClipPlaneContainerArray & clipPlanes)
 {
 	return false;
 }

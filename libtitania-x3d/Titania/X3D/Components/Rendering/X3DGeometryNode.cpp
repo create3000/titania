@@ -279,30 +279,13 @@ X3DGeometryNode::intersects (const Line3d & line,
 	const Vector3f normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
 	const Vector3d point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
-	if (isClipped (point, modelViewMatrix))
+	if (isClipped (point, modelViewMatrix, getCurrentLayer () -> getClipPlanes ()))
 		return false;
 
 	intersections .emplace_back (new Intersection { texCoord, normal, point * getMatrix (), std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
 	return true;
 }
 
-bool
-X3DGeometryNode::isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix) const
-{
-	return isClipped (point, modelViewMatrix, getCurrentLayer () -> getLocalObjects ());
-}
-
-bool
-X3DGeometryNode::isClipped (const Vector3d & point,
-	                         const Matrix4d & modelViewMatrix,
-	                         const CollectableObjectArray & localObjects) const
-{
-	return std::any_of (localObjects .begin (),
-	                    localObjects .end (),
-	                    [&point, &modelViewMatrix] (const std::shared_ptr <X3DCollectableObject> & node)
-	                    { return node -> isClipped (point, modelViewMatrix); });
-}
-	                    	                   
 std::vector <Vector3d>
 X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
                        	     const std::shared_ptr <FrameBuffer> & depthBuffer,
@@ -368,7 +351,7 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 }
 
 bool
-X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectArray & localObjects) const
+X3DGeometryNode::intersects (CollisionSphere3d sphere, const ClipPlaneContainerArray & clipPlanes) const
 {
 	if (not sphere .intersects (getBBox ()))
 		return false;
@@ -385,7 +368,7 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 3)
 				{
-					if (isClipped (vertices [i], sphere .matrix (), localObjects))
+					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
 						continue;
 
 					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
@@ -398,7 +381,7 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 			{
 				for (size_t i = first, size = first + element .count; i < size; i += 4)
 				{
-					if (isClipped (vertices [i], sphere .matrix (), localObjects))
+					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
 						continue;
 
 					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
@@ -414,7 +397,7 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 			{
 				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
 				{
-					if (isClipped (vertices [i], sphere .matrix (), localObjects))
+					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
 						continue;
 
 					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
@@ -430,7 +413,7 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 			{
 				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
 				{
-					if (isClipped (vertices [first], sphere .matrix (), localObjects))
+					if (isClipped (vertices [first], sphere .matrix (), clipPlanes))
 						continue;
 
 					if (sphere .intersects (vertices [first], vertices [i], vertices [i + 1]))
@@ -449,6 +432,17 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const CollectableObjectAr
 	return false;
 }
 
+bool
+X3DGeometryNode::isClipped (const Vector3d & point,
+	                         const Matrix4d & modelViewMatrix,
+	                         const ClipPlaneContainerArray & clipPlanes) const
+{
+	return std::any_of (clipPlanes .begin (),
+	                    clipPlanes .end (),
+	                    [&point, &modelViewMatrix] (const std::shared_ptr <ClipPlaneContainer> & clipPlane)
+	                    { return clipPlane -> isClipped (point, modelViewMatrix); });
+}
+	                    	                   
 bool
 X3DGeometryNode::cut (const Line2d & cutLine)
 {

@@ -50,7 +50,8 @@
 
 #include "CollisionContainer.h"
 
-#include "../Components/Rendering/X3DGeometryNode.h"
+#include "../Components/Navigation/Collision.h"
+#include "../Components/Shape/X3DShapeNode.h"
 
 namespace titania {
 namespace X3D {
@@ -60,7 +61,8 @@ CollisionContainer::CollisionContainer () :
 	modelViewMatrix (),
 	          shape (nullptr),
 	     collisions (),
-	   localObjects ()
+	   localObjects (),
+	     clipPlanes ()
 { }
 
 bool
@@ -71,7 +73,7 @@ CollisionContainer::intersects (CollisionSphere3d sphere) const
 	
 	sphere .mult_left (modelViewMatrix);
 
-	return shape -> intersects (sphere, localObjects);
+	return shape -> intersects (sphere, clipPlanes);
 }
 
 void
@@ -85,9 +87,15 @@ CollisionContainer::draw ()
 	for (const auto & localObject : localObjects)
 		localObject -> enable ();
 
+	for (const auto & clipPlane : clipPlanes)
+		clipPlane -> enable ();
+
 	glLoadMatrixd (modelViewMatrix .data ());
 
 	shape -> collision (this);
+
+	for (const auto & clipPlane :  basic::make_reverse_range (clipPlanes))
+		clipPlane -> disable ();
 
 	for (const auto & localObject : basic::make_reverse_range (localObjects))
 		localObject -> disable ();

@@ -103,7 +103,7 @@ public:
 
 	virtual
 	bool
-	intersects (const CollisionSphere3d &, const CollectableObjectArray &) override;
+	intersects (const CollisionSphere3d &, const ClipPlaneContainerArray &) override;
 
 	virtual
 	void

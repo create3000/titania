@@ -64,11 +64,6 @@ class X3DCollectableObject
 public:
 
 	virtual
-	bool
-	isClipped (const Vector3d &, const Matrix4d &) const
-	{ return false; }
-
-	virtual
 	void
 	enable () = 0;
 

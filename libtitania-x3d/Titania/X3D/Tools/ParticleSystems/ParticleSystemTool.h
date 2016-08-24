@@ -243,7 +243,7 @@ public:
 
 	virtual
 	bool
-	intersects (const CollisionSphere3d & sphere, const CollectableObjectArray & clipPlanes) final override
+	intersects (const CollisionSphere3d & sphere, const ClipPlaneContainerArray & clipPlanes) final override
 	{ return X3DShapeNodeTool::intersects (sphere, clipPlanes); }
 
 	virtual
