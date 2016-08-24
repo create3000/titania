@@ -136,9 +136,11 @@ Disk2D::build ()
 
 	if (innerRadius () == outerRadius ())
 	{
+		const double radius = std::abs (outerRadius ());
+
 		// Point
 
-		if (innerRadius () == 0.0f)
+		if (radius == 0)
 		{
 			getVertices () .emplace_back (0, 0, 0);
 			addElements (GL_POINTS, getVertices () .size ());
@@ -148,8 +150,6 @@ Disk2D::build ()
 		}
 
 		// Circle
-
-		const double radius = std::abs (outerRadius ());
 
 		if (radius == 1)
 			getVertices () = options -> getVertices ();
@@ -197,9 +197,9 @@ Disk2D::build ()
 
 		addElements (options -> getVertexMode (), getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_2D);
-		setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
+		setSolid (solid ());
 
-		if (not solid () and getBrowser () -> getFixedPipelineRequired ())
+		if (not solid ())
 			addMirrorVertices (options -> getVertexMode (), true);
 
 		return;
@@ -253,9 +253,9 @@ Disk2D::build ()
 
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
 	setGeometryType (GeometryType::GEOMETRY_2D);
-	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
+	setSolid (solid ());
 
-	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
+	if (not solid ())
 		addMirrorVertices (GL_QUAD_STRIP, true);
 }
 

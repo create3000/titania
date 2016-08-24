@@ -189,9 +189,9 @@ ArcClose2D::build ()
 	}
 
 	addElements (GL_POLYGON, getVertices () .size ());
-	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
+	setSolid (solid ());
 
-	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
+	if (not solid ())
 		addMirrorVertices (GL_POLYGON, false);
 }
 

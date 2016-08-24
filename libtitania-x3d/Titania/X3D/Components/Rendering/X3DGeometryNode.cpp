@@ -694,49 +694,53 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
 void
 X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 {
-	auto & texCoords = this -> texCoords [0];
-
-	addElements (vertexMode, getVertices () .size ());
-
-	switch (vertexMode)
+	if (getBrowser () -> getFixedPipelineRequired ())
 	{
-		case GL_QUAD_STRIP:
+		auto & texCoords = this -> texCoords [0];
+	
+		addElements (vertexMode, getVertices () .size ());
+		setSolid (true);
+	
+		switch (vertexMode)
 		{
-			for (int32_t i = texCoords .size () - 2; i >= 0; i -= 2)
+			case GL_QUAD_STRIP:
 			{
-				const auto & texCoord1 = texCoords [i];
-				const auto & texCoord0 = texCoords [i + 1];
-				texCoords .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z (), 1);
-				texCoords .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z (), 1);
+				for (int32_t i = texCoords .size () - 2; i >= 0; i -= 2)
+				{
+					const auto & texCoord1 = texCoords [i];
+					const auto & texCoord0 = texCoords [i + 1];
+					texCoords .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z (), 1);
+					texCoords .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z (), 1);
+				}
+	
+				for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
+				{
+					getNormals  () .emplace_back (0, 0, -1);
+					getNormals  () .emplace_back (0, 0, -1);
+					getVertices () .emplace_back (getVertices () [i]);
+					getVertices () .emplace_back (getVertices () [i + 1]);
+				}
+	
+				break;
 			}
-
-			for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
+	
+			default:
 			{
-				getNormals  () .emplace_back (0, 0, -1);
-				getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (getVertices () [i]);
-				getVertices () .emplace_back (getVertices () [i + 1]);
-			}
-
-			break;
-		}
-
-		default:
-		{
-			if (not convex)
-			{
-				texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
-				getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (getVertices () .front ());
-			}
-
-			const int32_t offset = convex ? 0 : 1;
-
-			for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
-			{
-				texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
-				getNormals  () .emplace_back (0, 0, -1);
-				getVertices () .emplace_back (getVertices () [i]);
+				if (not convex)
+				{
+					texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
+					getNormals  () .emplace_back (0, 0, -1);
+					getVertices () .emplace_back (getVertices () .front ());
+				}
+	
+				const int32_t offset = convex ? 0 : 1;
+	
+				for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
+				{
+					texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
+					getNormals  () .emplace_back (0, 0, -1);
+					getVertices () .emplace_back (getVertices () [i]);
+				}
 			}
 		}
 	}

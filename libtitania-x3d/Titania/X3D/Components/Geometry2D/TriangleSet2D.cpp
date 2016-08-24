@@ -111,7 +111,7 @@ TriangleSet2D::build ()
 	getVertices () .resize (resize);
 
 	addElements (GL_TRIANGLES, getVertices () .size ());
-	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
+	setSolid (solid ());
 }
 
 void
@@ -136,7 +136,7 @@ TriangleSet2D::buildTexCoords ()
 
 	// This function is always called and we can now savely add the back vertices.
 
-	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
+	if (not solid ())
 		addMirrorVertices (GL_TRIANGLES, true);
 }
 
