@@ -94,6 +94,8 @@ LineSet::LineSet (X3DExecutionContext* const executionContext) :
 	addChildren (attribNodes,
 	             colorNode,
 	             coordNode);
+
+	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
 
 X3DBaseNode*

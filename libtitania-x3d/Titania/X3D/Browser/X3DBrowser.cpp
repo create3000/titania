@@ -146,6 +146,8 @@ X3DBrowser::set_loaded (const bool loaded)
 
 	getLoadSensor () -> enabled () = false;
 
+	getBrowserOptions () -> Shading () .addEvent ();
+
 	// Load initial url or start with empty scene.
 
 	if (url .empty ())

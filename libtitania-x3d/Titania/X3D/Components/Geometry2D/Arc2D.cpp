@@ -84,6 +84,8 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	startAngle () .setUnit (UnitCategory::ANGLE);
 	endAngle ()   .setUnit (UnitCategory::ANGLE);
 	radius ()     .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
 
 X3DBaseNode*

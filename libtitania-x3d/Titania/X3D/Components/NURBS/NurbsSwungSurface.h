@@ -121,13 +121,6 @@ public:
 	ccw () const
 	{ return *fields .ccw; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 
 private:
 

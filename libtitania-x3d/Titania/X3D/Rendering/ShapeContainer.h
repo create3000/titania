@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_SHAPE_CONTAINER_H__
 
+#include "../Browser/Rendering/GeometryType.h"
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shape/X3DShapeNode.h"
 #include "../Rendering/LightContainer.h"
@@ -133,6 +134,14 @@ public:
 	{ return localLights; }
 
 	void
+	setGeometryType (const GeometryType value)
+	{ geometryType = value; }
+
+	GeometryType
+	getGeometryType () const
+	{ return geometryType; }
+
+	void
 	setColorMaterial (const bool value)
 	{ colorMaterial = value; }
 
@@ -166,6 +175,7 @@ private:
 	X3DFogObject*          fog;
 	CollectableObjectArray localObjects;
 	LightContainerArray    localLights;
+	GeometryType           geometryType;
 	bool                   colorMaterial;
 	double                 distance;
 

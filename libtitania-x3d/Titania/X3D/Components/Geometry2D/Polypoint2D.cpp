@@ -78,6 +78,8 @@ Polypoint2D::Polypoint2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "point",    point ());
 
 	point () .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_POINTS);
 }
 
 X3DBaseNode*

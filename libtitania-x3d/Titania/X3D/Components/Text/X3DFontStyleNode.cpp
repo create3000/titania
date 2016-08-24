@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../Shaders/X3DShaderNode.h"
 #include "../Text/Text.h"
 
 #include <Titania/OS/file_exists.h>
@@ -523,7 +524,9 @@ X3DTextGeometry::compile (Text* const text)
 void
 X3DTextGeometry::display (ShapeContainer* const context)
 {
-	glFrontFace (context -> getModelViewMatrix () .determinant3 () > 0 ? GL_CCW : GL_CW);
+	// Call display list.
+
+	glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? GL_CCW : GL_CW);
 
 	glCallList (listId);
 }

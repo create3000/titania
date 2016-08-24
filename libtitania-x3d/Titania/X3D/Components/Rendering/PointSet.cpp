@@ -91,6 +91,8 @@ PointSet::PointSet (X3DExecutionContext* const executionContext) :
 	addChildren (attribNodes,
 	             colorNode,
 	             coordNode);
+
+	setGeometryType (GeometryType::GEOMETRY_POINTS);
 }
 
 X3DBaseNode*

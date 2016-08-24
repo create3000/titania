@@ -312,8 +312,8 @@ private:
 	///  @name Tests
 
 	virtual
-	bool
-	isLineGeometry () const final override;
+	X3D::GeometryType
+	getGeometryType () const final override;
 
 	///  @name Event handlers
 

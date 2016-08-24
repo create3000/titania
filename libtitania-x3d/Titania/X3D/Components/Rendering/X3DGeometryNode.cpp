@@ -68,12 +68,11 @@ X3DGeometryNode::X3DGeometryNode () :
 	             bbox (),
 	      attribNodes (),
 	           colors (),
-#ifdef FIXED_PIPELINE
 	     texCoordNode (),
-#endif
 	        texCoords (),
 	          normals (),
 	         vertices (),
+	     geometryType (GeometryType::GEOMETRY_3D),
 	            solid (true),
 	        frontFace (GL_CCW),
 	         elements (),
@@ -86,11 +85,7 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
-	addChildren (cameraObject);
-
-	#ifdef FIXED_PIPELINE
-	addChildren (texCoordNode);
-	#endif
+	addChildren (cameraObject, texCoordNode);
 }
 
 void
@@ -98,9 +93,7 @@ X3DGeometryNode::setup ()
 {
 	X3DNode::setup ();
 
-	#ifdef FIXED_PIPELINE
 	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
-	#endif
 
 	if (glXGetCurrentContext ())
 	{
@@ -119,13 +112,11 @@ X3DGeometryNode::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	#ifdef FIXED_PIPELINE
 	if (isInitialized ())
 	{
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
-	#endif
 
 	X3DNode::setExecutionContext (executionContext);
 }
@@ -165,7 +156,6 @@ X3DGeometryNode::setAttribs (const X3DPtrArray <X3DVertexAttributeNode> & nodes,
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 }
 
-#ifdef FIXED_PIPELINE
 void
 X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 {
@@ -175,14 +165,13 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 	else
 		texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 }
-#endif
 
 bool
 X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
 {
 	try
 	{
-		if (isLineGeometry ())
+		if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
 			return false;
 
 		const Matrix4d matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
@@ -750,7 +739,7 @@ X3DGeometryNode::update ()
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 
-	if (not isLineGeometry ())
+	if (geometryType == GeometryType::GEOMETRY_2D or geometryType == GeometryType::GEOMETRY_3D)
 	{
 		// Autogenerate texCoords if not specified.
 
@@ -846,6 +835,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	const auto & browser    = getBrowser ();
 	const auto & shaderNode = browser -> getShader ();
 
+	context -> setGeometryType  (geometryType);
 	context -> setColorMaterial (not colors .empty ());
 
 	#ifdef FIXED_PIPELINE
@@ -887,17 +877,16 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 	if (shaderNode)
 	{
-		// Enable vertex attribute nodes
+		// Enable shader
 	
 		shaderNode -> enable ();
+		shaderNode -> setGlobalUniforms (context);
+		shaderNode -> setLocalUniforms (context);
+
+		// Enable vertex attribute nodes
 
 		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
-	
-		// Enable shader
-	
-		shaderNode -> setGlobalUniforms (context);
-		shaderNode -> setLocalUniforms (context);
 	
 		if (not colors .empty ())
 			shaderNode -> enableColorAttrib (colorBufferId);

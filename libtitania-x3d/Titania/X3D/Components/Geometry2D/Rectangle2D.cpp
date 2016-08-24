@@ -79,6 +79,8 @@ Rectangle2D::Rectangle2D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "solid",    solid ());
 
 	size () .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_2D);
 }
 
 X3DBaseNode*

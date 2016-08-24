@@ -169,11 +169,6 @@ public:
 	isTransparent () const
 	{ return textGeometry -> isTransparent (); }
 
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 	///  @name Member access
 
 	virtual

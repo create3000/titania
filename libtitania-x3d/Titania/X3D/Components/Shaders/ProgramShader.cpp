@@ -226,27 +226,6 @@ ProgramShader::draw ()
 }
 
 void
-ProgramShader::setGeometryType (const size_t value)
-{
-	for (const auto & programNode : programNodes)
-	{
-		if (pipelineId and programNode -> getProgramId ())
-			glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
-
-		programNode -> setGeometryType (value);
-	}
-}
-
-size_t
-ProgramShader::getGeometryType () const
-{
-	for (const auto & programNode : programNodes)
-		return programNode -> getGeometryType ();
-
-	return 3;
-}
-
-void
 ProgramShader::setGlobalUniforms (ShapeContainer* const context)
 {
 	for (const auto & programNode : programNodes)

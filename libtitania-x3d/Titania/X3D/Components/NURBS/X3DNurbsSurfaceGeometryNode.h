@@ -177,13 +177,6 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 
 protected:
 

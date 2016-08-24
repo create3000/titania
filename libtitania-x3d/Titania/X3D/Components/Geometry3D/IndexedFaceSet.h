@@ -163,13 +163,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	bool
-	isLineGeometry () const override
-	{ return false; }
-
-	///  @name Member access
-
 	size_t
 	getVertexTexCoordIndex (const size_t) const;
 

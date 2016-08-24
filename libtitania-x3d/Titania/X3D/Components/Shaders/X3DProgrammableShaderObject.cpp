@@ -117,7 +117,6 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	   extensionGPUShaderFP64 (false),
 	transformFeedbackVaryings (),
 	             textureUnits (),
-	             geometryType (3),
 	          numGlobalLights (0)
 {
 	addType (X3DConstants::X3DProgrammableShaderObject);
@@ -239,7 +238,6 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	static const auto texture        = std::vector <int32_t> ({ 0 });
 	static const auto cubeMapTexture = std::vector <int32_t> ({ 1 });
 
-	glUniform1i  (x3d_GeometryType,         geometryType);
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
 	glUniform1iv (x3d_TextureType,          1, textureType    .data ());
 	glUniform1iv (x3d_Texture,              1, texture        .data ()); // Set texture to active texture unit 0.
@@ -879,17 +877,6 @@ X3DProgrammableShaderObject::setTextureBuffer (const std::string & name, GLuint 
  */
 
 void
-X3DProgrammableShaderObject::setGeometryType (const size_t value)
-{
-	geometryType = value;
-
-	if (getProgramId ())
-		glUniform1i (x3d_GeometryType, geometryType);
-
-	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
-}
-
-void
 X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 {
 //	switch (geometryType)
@@ -1013,6 +1000,8 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & browser      = getBrowser ();
 	const auto & appearance   = browser -> getAppearance ();
 	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
+
+	glUniform1i (x3d_GeometryType, GLint (context -> getGeometryType ()));
 
 	// Fog
 

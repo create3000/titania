@@ -51,9 +51,10 @@
 #ifndef __TITANIA_X3D_COMPONENTS_SHAPE_X3DSHAPE_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_SHAPE_X3DSHAPE_NODE_H__
 
+#include "../../Browser/Rendering/GeometryType.h"
+#include "../../Rendering/X3DCollectableObject.h"
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
-#include "../../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
@@ -110,8 +111,8 @@ public:
 	{ return geometryNode; }
 
 	virtual
-	bool
-	isLineGeometry () const = 0;
+	GeometryType
+	getGeometryType () const = 0;
 
 	///  @name Operations
 

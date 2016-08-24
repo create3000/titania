@@ -191,7 +191,6 @@ X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glActiveTexture (GL_TEXTURE0);
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
-
 }
 
 } // X3D

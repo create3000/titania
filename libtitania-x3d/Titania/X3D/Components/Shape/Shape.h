@@ -123,8 +123,8 @@ private:
 	///  @name Operations
 
 	virtual
-	bool
-	isLineGeometry () const final override;
+	GeometryType
+	getGeometryType () const final override;
 
 	void
 	pointer ();

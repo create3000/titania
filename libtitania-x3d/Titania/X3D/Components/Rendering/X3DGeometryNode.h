@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DGEOMETRY_NODE_H__
 
 #include "../../Browser/PointingDeviceSensor/Intersection.h"
+#include "../../Browser/Rendering/GeometryType.h"
 #include "../../Rendering/TexCoordArray.h"
 #include "../../Rendering/X3DCollectableObject.h"
 #include "../../Types/Geometry.h"
@@ -107,8 +108,9 @@ public:
 	{ return false; }
 
 	virtual
-	bool
-	isLineGeometry () const = 0;
+	GeometryType
+	getGeometryType () const
+	{ return geometryType; }
 
 	///  @name Member access
 
@@ -238,10 +240,8 @@ protected:
 	getTexCoords () const
 	{ return texCoords; }
 
-	#ifdef FIXED_PIPELINE
 	void
 	setTextureCoordinate (X3DTextureCoordinateNode* const);
-	#endif
 
 	std::vector <Vector3f> &
 	getNormals ()
@@ -260,11 +260,15 @@ protected:
 	{ return vertices; }
 
 	void
-	setSolid (const bool & value)
+	setGeometryType (const GeometryType value)
+	{ geometryType = value; }
+
+	void
+	setSolid (const bool value)
 	{ solid = value; }
 
 	void
-	setCCW (const bool & value)
+	setCCW (const bool value)
 	{ frontFace = value ? GL_CCW : GL_CW; }
 
 	static
@@ -366,12 +370,11 @@ private:
 	Box3d                                 bbox;
 	std::vector <X3DVertexAttributeNode*> attribNodes;
 	std::vector <Color4f>                 colors;
-	#ifdef FIXED_PIPELINE
 	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
-	#endif
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
 	std::vector <Vector3d>                vertices;
+	GeometryType                          geometryType;
 	bool                                  solid;
 	GLenum                                frontFace;
 	std::vector <Element>                 elements;

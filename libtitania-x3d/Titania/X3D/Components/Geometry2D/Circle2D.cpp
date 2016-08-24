@@ -78,6 +78,8 @@ Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "radius",   radius ());
 
 	radius () .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
 
 X3DBaseNode*

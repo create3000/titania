@@ -91,6 +91,8 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	startAngle () .setUnit (UnitCategory::ANGLE);
 	endAngle ()   .setUnit (UnitCategory::ANGLE);
 	radius ()     .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_2D);
 }
 
 X3DBaseNode*

@@ -151,9 +151,11 @@ X3DShapeNode::set_geometry ()
 void
 X3DShapeNode::display (ShapeContainer* const context)
 {
+	const auto geometryType = getGeometryType ();
+
 	appearanceNode -> draw ();
 
-	if (isLineGeometry ())
+	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
 	{
 		appearanceNode -> getLineProperties () -> enable ();
 

@@ -97,13 +97,6 @@ public:
 	stripCount () const
 	{ return *fields .stripCount; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 	///  @name Operations
 
 	virtual

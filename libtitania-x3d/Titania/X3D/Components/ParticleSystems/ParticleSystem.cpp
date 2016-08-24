@@ -484,28 +484,29 @@ ParticleSystem::isTransparent () const
 	return false;
 }
 
-bool
-ParticleSystem::isLineGeometry () const
+GeometryType
+ParticleSystem::getGeometryType () const
 {
 	switch (geometryTypeId)
 	{
 		case GeometryType::POINT:
+			return X3D::GeometryType::GEOMETRY_POINTS;
 		case GeometryType::LINE:
-			return true;
+			return X3D::GeometryType::GEOMETRY_LINES;
 		case GeometryType::TRIANGLE:
 		case GeometryType::QUAD:
 		case GeometryType::SPRITE:
-			return false;
+			return X3D::GeometryType::GEOMETRY_3D;
 		case GeometryType::GEOMETRY:
 		{
 			if (getGeometry ())
-				return getGeometry () -> isLineGeometry ();
+				return getGeometry () -> getGeometryType ();
 
-			return false;
+			return X3D::GeometryType::GEOMETRY_3D;
 		}
 	}
 
-	return false;
+	return X3D::GeometryType::GEOMETRY_3D;
 }
 
 Box3d

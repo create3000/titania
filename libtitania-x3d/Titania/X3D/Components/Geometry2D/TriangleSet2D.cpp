@@ -79,6 +79,8 @@ TriangleSet2D::TriangleSet2D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "solid",    solid ());
 
 	vertices () .setUnit (UnitCategory::LENGTH);
+
+	setGeometryType (GeometryType::GEOMETRY_2D);
 }
 
 X3DBaseNode*

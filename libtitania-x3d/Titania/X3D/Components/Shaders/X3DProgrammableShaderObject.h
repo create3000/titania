@@ -244,15 +244,6 @@ public:
 
 	virtual
 	void
-	setGeometryType (const size_t);
-
-	virtual
-	size_t
-	getGeometryType () const
-	{ return geometryType; }
-
-	virtual
-	void
 	setGlobalUniforms (ShapeContainer* const);
 
 	virtual
@@ -416,7 +407,6 @@ private:
 	bool                      extensionGPUShaderFP64;
 	std::vector <std::string> transformFeedbackVaryings;
 	std::vector <size_t>      textureUnits;
-	size_t                    geometryType;
 	size_t                    numGlobalLights;
 
 };

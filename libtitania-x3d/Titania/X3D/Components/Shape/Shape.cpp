@@ -99,10 +99,10 @@ Shape::isTransparent () const
 	return false;
 }
 
-bool
-Shape::isLineGeometry () const
+GeometryType
+Shape::getGeometryType () const
 {
-	return getGeometry () -> isLineGeometry ();
+	return getGeometry () -> getGeometryType ();
 }
 
 Box3d

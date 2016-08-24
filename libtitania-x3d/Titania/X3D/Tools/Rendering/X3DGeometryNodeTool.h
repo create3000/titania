@@ -106,9 +106,9 @@ public:
 	{ return getNode <X3DGeometryNode> () -> isTransparent (); }
 
 	virtual
-	bool
-	isLineGeometry () const override
-	{ return getNode <X3DGeometryNode> () -> isLineGeometry (); }
+	GeometryType
+	getGeometryType () const override
+	{ return getNode <X3DGeometryNode> () -> getGeometryType (); }
 
 	///  @name Member access
 

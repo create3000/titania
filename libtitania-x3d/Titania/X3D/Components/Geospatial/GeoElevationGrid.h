@@ -223,11 +223,6 @@ public:
 	isTransparent () const final override
 	{ return transparent; }
 
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 	///  @name Operations
 
 	void

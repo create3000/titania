@@ -124,14 +124,6 @@ public:
 
 	virtual
 	void
-	setGeometryType (const size_t) final override;
-
-	virtual
-	size_t
-	getGeometryType () const final override;
-
-	virtual
-	void
 	setGlobalUniforms (ShapeContainer* const) final override;
 
 	virtual

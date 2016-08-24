@@ -263,13 +263,6 @@ ComposedShader::draw ()
 }
 
 void
-ComposedShader::setGeometryType (const size_t value)
-{
-	glUseProgram (programId);
-	return X3DProgrammableShaderObject::setGeometryType (value);
-}
-
-void
 ComposedShader::setGlobalUniforms (ShapeContainer* const context)
 {
 	glUseProgram (programId);

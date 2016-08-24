@@ -75,8 +75,7 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DGeometryNode (),
 	X3DLineGeometryNode (),
-	             fields (),
-	       lineGeometry (false)
+	             fields ()
 {
 	addType (X3DConstants::Disk2D);
 
@@ -152,9 +151,8 @@ Disk2D::build ()
 		}
 
 		addElements (GL_LINE_LOOP, getVertices () .size ());
+		setGeometryType (GeometryType::GEOMETRY_LINES);
 		setSolid (false);
-
-		lineGeometry = true;
 
 		return;
 	}
@@ -187,12 +185,11 @@ Disk2D::build ()
 		}
 
 		addElements (options -> getVertexMode (), getVertices () .size ());
+		setGeometryType (GeometryType::GEOMETRY_2D);
 		setSolid (true);
 
 		if (not solid ())
 			addMirrorVertices (options -> getVertexMode (), true);
-
-		lineGeometry = false;
 
 		return;
 	}
@@ -244,12 +241,12 @@ Disk2D::build ()
 	getVertices () .emplace_back (getVertices () [1]);
 
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
+	setGeometryType (GeometryType::GEOMETRY_2D);
 	setSolid (true);
 
 	if (not solid ())
 		addMirrorVertices (GL_QUAD_STRIP, true);
 
-	lineGeometry = false;
 }
 
 void

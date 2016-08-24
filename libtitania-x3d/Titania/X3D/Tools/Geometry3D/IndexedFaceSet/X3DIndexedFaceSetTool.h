@@ -155,9 +155,9 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isLineGeometry () const final override
-	{ return getNode <IndexedFaceSet> () -> isLineGeometry (); }
+	GeometryType
+	getGeometryType () const final override
+	{ return getNode <IndexedFaceSet> () -> getGeometryType (); }
 
 	///  @name Operations
 

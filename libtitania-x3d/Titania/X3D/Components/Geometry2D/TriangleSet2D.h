@@ -107,13 +107,6 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 	///  @name Operations
 
 	virtual

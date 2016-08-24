@@ -61,13 +61,6 @@ class X3DLineGeometryNode :
 {
 public:
 
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const override
-	{ return true; }
-
 	///  @name Operations
 
 	virtual

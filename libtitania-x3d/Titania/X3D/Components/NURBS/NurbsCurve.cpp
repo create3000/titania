@@ -82,6 +82,8 @@ NurbsCurve::NurbsCurve (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "closed",       closed ());
 	addField (initializeOnly, "knot",         knot ());
 	addField (initializeOnly, "order",        order ());
+
+	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
 
 X3DBaseNode*

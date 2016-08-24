@@ -180,13 +180,6 @@ public:
 	spine () const
 	{ return *fields .spine; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isLineGeometry () const final override
-	{ return false; }
-
 	///  @name Operations
 
 	virtual
