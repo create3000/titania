@@ -22,9 +22,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              11.541122247629,
-              4.37683119177832,
-              8.23417880000924
+              11.5411224365234,
+              4.3768310546875,
+              8.23417854309082
             ]
           }
           DEF orientation MetadataDouble {
@@ -41,9 +41,9 @@ WorldInfo {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              5.67652988349204,
-              -1.08219600790226,
-              -0.118776021037965
+              5.67652988433838,
+              -1.08219599723816,
+              -0.118776023387909
             ]
           }
         ]
@@ -59,6 +59,21 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
+            value DEF ClipPlaneScript Script {
+              eventIn  SFVec3f set_translation
+              eventOut SFVec4f plane_changed
+
+              url "vrmlscript:
+function set_translation (value)
+{
+	var distanceFromOrigin = new SFVec3f (0, 0, 1) .dot (value);
+
+	plane_changed = new SFVec4f (0, 0, -1, distanceFromOrigin);
+
+	print (plane_changed);
+}
+"
+            }
           }
         ]
       }
@@ -140,7 +155,7 @@ DEF ClippedObjects Transform {
       }
     }
     DEF ClipPlane ClipPlane {
-      plane 0 0 -1 0.0417317
+      plane 0 0 -1 0.322413
     }
     TouchSensor {
       description "Clipped objects"
@@ -152,11 +167,11 @@ DEF VisibleClipPlane Transform {
   children [
     DEF PlaneSensor PlaneSensor {
       axisRotation 0 1 0 1.5708
-      offset 4.50002 0 0.0417317
+      offset 4.50002 0 0.322413
       maxPosition -1 0
     }
     DEF Rectangle2D Transform {
-      translation 4.50002 0 0.0417317
+      translation 4.50002 0 0.322413
       scale 8 2.5 1
       children Shape {
         appearance Appearance {
@@ -173,21 +188,7 @@ DEF VisibleClipPlane Transform {
   ]
 }
 
-DEF ClipPlaneScript Script {
-  eventIn  SFVec3f set_translation
-  eventOut SFVec4f plane_changed
-
-  url "vrmlscript:
-function set_translation (value)
-{
-	var distanceFromOrigin = new SFVec3f (0, 0, -1) .dot (value);
-
-	plane_changed = new SFVec4f (0, 0, -1, -distanceFromOrigin);
-
-	print (plane_changed);
-}
-"
-}
+USE ClipPlaneScript
 
 ROUTE PlaneSensor.translation_changed TO Rectangle2D.set_translation
 ROUTE PlaneSensor.translation_changed TO ClipPlaneScript.set_translation

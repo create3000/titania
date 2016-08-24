@@ -518,9 +518,9 @@ X3DRenderer::display ()
 
 	// Render opaque objects first
 
+	glEnable (GL_BLEND);
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
 
 	for (const auto & context : basic::make_range (opaqueShapes .cbegin (), numOpaqueShapes))
 		context -> display ();
@@ -528,7 +528,6 @@ X3DRenderer::display ()
 	// Render transparent objects
 
 	glDepthMask (GL_FALSE);
-	glEnable (GL_BLEND);
 
 	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
