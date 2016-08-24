@@ -198,10 +198,7 @@ Disk2D::build ()
 		addElements (options -> getVertexMode (), getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_2D);
 		setSolid (solid ());
-
-		if (not solid ())
-			addMirrorVertices (options -> getVertexMode (), true);
-
+		addMirrorVertices (options -> getVertexMode (), true);
 		return;
 	}
 
@@ -254,9 +251,7 @@ Disk2D::build ()
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
 	setGeometryType (GeometryType::GEOMETRY_2D);
 	setSolid (solid ());
-
-	if (not solid ())
-		addMirrorVertices (GL_QUAD_STRIP, true);
+	addMirrorVertices (GL_QUAD_STRIP, true);
 }
 
 void

@@ -694,6 +694,9 @@ X3DGeometryNode::refineNormals (const NormalIndex & normalIndex,
 void
 X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 {
+	if (getSolid ())
+		return;
+
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
 		auto & texCoords = this -> texCoords [0];

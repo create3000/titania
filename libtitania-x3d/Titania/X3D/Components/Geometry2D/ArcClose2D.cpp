@@ -190,9 +190,7 @@ ArcClose2D::build ()
 
 	addElements (GL_POLYGON, getVertices () .size ());
 	setSolid (solid ());
-
-	if (not solid ())
-		addMirrorVertices (GL_POLYGON, false);
+	addMirrorVertices (GL_POLYGON, false);
 }
 
 SFNode

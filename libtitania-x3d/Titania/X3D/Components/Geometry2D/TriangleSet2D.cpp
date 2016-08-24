@@ -135,9 +135,7 @@ TriangleSet2D::buildTexCoords ()
 	}
 
 	// This function is always called and we can now savely add the back vertices.
-
-	if (not solid ())
-		addMirrorVertices (GL_TRIANGLES, true);
+	addMirrorVertices (GL_TRIANGLES, true);
 }
 
 SFNode

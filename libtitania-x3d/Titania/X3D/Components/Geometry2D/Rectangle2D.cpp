@@ -148,9 +148,7 @@ Rectangle2D::build ()
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
-
-	if (not solid ())
-		addMirrorVertices (options -> getVertexMode (), true);
+	addMirrorVertices (options -> getVertexMode (), true);
 }
 
 SFNode
