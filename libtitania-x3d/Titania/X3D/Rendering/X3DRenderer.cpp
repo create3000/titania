@@ -494,7 +494,7 @@ X3DRenderer::display ()
 	// Setup projection matrix
 
 	#ifdef FIXED_PIPELINE
-	if (getBrowser () -> getFixedPipeline ())
+	if (getBrowser () -> getFixedPipelineRequired ())
 	{
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
@@ -544,7 +544,7 @@ X3DRenderer::display ()
 
 	#ifdef FIXED_PIPELINE
 	// Reset to default OpenGL appearance
-	if (getBrowser () -> getFixedPipeline ())
+	if (getBrowser () -> getFixedPipelineRequired ())
 		getBrowser () -> getDefaultAppearance () -> draw ();
 	#endif
 }

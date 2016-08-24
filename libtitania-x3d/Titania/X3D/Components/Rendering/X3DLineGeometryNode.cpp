@@ -82,7 +82,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	auto         shaderNode    = browser -> getShader ();
 
 	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipeline ())
+	if (browser -> getFixedPipelineRequired ())
 	{
 		glDisable (GL_LIGHTING);
 		X3DGeometryNode::draw (context);

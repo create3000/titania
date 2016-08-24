@@ -147,9 +147,9 @@ Rectangle2D::build ()
 	}
 
 	addElements (options -> getVertexMode (), getVertices () .size ());
-	setSolid (true);
+	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
 
-	if (not solid ())
+	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
 		addMirrorVertices (options -> getVertexMode (), true);
 }
 

@@ -256,7 +256,7 @@ void
 Appearance::draw ()
 {
 	#ifdef FIXED_PIPELINE
-	if (getBrowser () -> getFixedPipeline ())
+	if (getBrowser () -> getFixedPipelineRequired ())
 	{
 		// Material
 

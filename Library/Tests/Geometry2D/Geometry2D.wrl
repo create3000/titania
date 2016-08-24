@@ -1,4 +1,85 @@
-#VRML V2.0 utf8 CosmoWorlds V1.0
+#VRML V2.0 utf8 Titania V1.4.9
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 Transform {
+              translation 3 3 0
+              children Shape {
+                appearance DEF Image Appearance {
+                  material Material { }
+                  texture ImageTexture {
+                    url "../images/image.png"
+                  }
+                }
+                geometry DEF Disk2D Disk2D {
+                  solid FALSE
+                }
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.99305045886327,
+              2.70626920190006,
+              -2.2469096139139
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.062569528613013,
+              -0.996709308939205,
+              0.051532587389714,
+              2.82318243959642
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              2.53644606783754,
+              2.84378770188783,
+              -0.634449799868674
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Geometry2D"
+}
 
 Background {
   skyColor 0.2 0.2 0.2
@@ -25,9 +106,7 @@ Transform {
   translation 3 0 0
   children Shape {
     appearance USE Grey
-    geometry DEF Disk2D Disk2D {
-      solid FALSE
-    }
+    geometry USE Disk2D
   }
 }
 
@@ -46,7 +125,11 @@ Transform {
   children Shape {
     appearance USE Grey
     geometry DEF TriangleSet2D TriangleSet2D {
-      vertices [ -1 -1, 1 -1, 0 1 ]
+      vertices [
+        -1 -1,
+        1 -1,
+        0 1
+      ]
       solid FALSE
     }
   }
@@ -55,23 +138,12 @@ Transform {
 Transform {
   translation 0 3 0
   children Shape {
-    appearance DEF Image Appearance {
-      material Material { }
-      texture ImageTexture {
-        url "../images/image.png"
-      }
-    }
+    appearance USE Image
     geometry USE ArcClose2D
   }
 }
 
-Transform {
-  translation 3 3 0
-  children Shape {
-    appearance USE Image
-    geometry USE Disk2D
-  }
-}
+USE _1
 
 Transform {
   translation 6 3 0

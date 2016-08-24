@@ -75,7 +75,8 @@ X3DShadersContext::X3DShadersContext () :
 	         defaultShader (),
 	            shaderNode (nullptr)
 {
-	addChildren (pointShader,
+	addChildren (fixedPipeline,
+                pointShader,
 	             wireframeShader,
 	             gouraudShader,
 	             phongShader,
@@ -120,7 +121,7 @@ X3DShadersContext::setFixedPipeline (const bool value)
 }
 
 bool
-X3DShadersContext::getFixedPipeline () const
+X3DShadersContext::getFixedPipelineRequired () const
 {
 	return fixedPipeline or not getBrowser () -> getLoaded ();
 }
@@ -157,7 +158,7 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 {
 	#ifdef FIXED_PIPELINE
 	
-	if (getFixedPipeline ())
+	if (getFixedPipelineRequired ())
 	{
 		defaultShader = nullptr;
 	}
@@ -192,7 +193,7 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 	{
 		ContextLock lock (getBrowser ());
 
-		if (getFixedPipeline () or not getBrowser () -> getLoaded ())
+		if (getFixedPipelineRequired ())
 		{
 			glDisable (GL_POINT_SPRITE);
 			glDisable (GL_PROGRAM_POINT_SIZE);

@@ -71,6 +71,7 @@ X3DGeometryNode::X3DGeometryNode () :
 	     texCoordNode (),
 	        texCoords (),
 	          normals (),
+	      faceNormals (),
 	         vertices (),
 	     geometryType (GeometryType::GEOMETRY_3D),
 	            solid (true),
@@ -101,6 +102,9 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &vertexBufferId);
 
+		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (this, &X3DGeometryNode::set_shading);
+		getBrowser () -> getFixedPipeline () .addInterest (this, &X3DGeometryNode::set_fixedPipeline);
+
 		addInterest (this, &X3DGeometryNode::update);
 
 		update ();
@@ -114,11 +118,20 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
+		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (this, &X3DGeometryNode::set_shading);
+		getBrowser () -> getFixedPipeline () .removeInterest (this, &X3DGeometryNode::set_fixedPipeline);
+
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
 	}
 
 	X3DNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (this, &X3DGeometryNode::set_shading);
+		getBrowser () -> getFixedPipeline () .addInterest (this, &X3DGeometryNode::set_fixedPipeline);
+	}
 }
 
 void
@@ -730,6 +743,21 @@ X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 }
 
 void
+X3DGeometryNode::set_shading (const ShadingType & shading)
+{
+}
+
+void
+X3DGeometryNode::set_fixedPipeline ()
+{
+	// If there is a default shader then shader pipeline is enabled and we must rebuild Geometry2D nodes,
+	// to build double face geometry or not.
+
+	if (geometryType == GeometryType::GEOMETRY_2D)
+		update ();
+}
+
+void
 X3DGeometryNode::update ()
 {
 	clear ();
@@ -764,11 +792,12 @@ X3DGeometryNode::clear ()
 	if (not texCoordBufferIds .empty ())
 		glDeleteBuffers (texCoordBufferIds .size (), texCoordBufferIds .data ());
 
-	colors    .clear ();
-	texCoords .clear ();
-	normals   .clear ();
-	vertices  .clear ();
-	elements  .clear ();
+	colors      .clear ();
+	texCoords   .clear ();
+	normals     .clear ();
+	faceNormals .clear ();
+	vertices    .clear ();
+	elements    .clear ();
 }
 
 void
@@ -839,7 +868,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	context -> setColorMaterial (not colors .empty ());
 
 	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipeline ())
+	if (browser -> getFixedPipelineRequired ())
 	{
 		// Enable colors, texture coords, normals and vertices.
 
@@ -957,7 +986,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	// VertexAttribs
 
 	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipeline ())
+	if (browser -> getFixedPipelineRequired ())
 	{
 		// Texture
 	

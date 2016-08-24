@@ -186,9 +186,9 @@ Disk2D::build ()
 
 		addElements (options -> getVertexMode (), getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_2D);
-		setSolid (true);
+		setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
 
-		if (not solid ())
+		if (not solid () and getBrowser () -> getFixedPipelineRequired ())
 			addMirrorVertices (options -> getVertexMode (), true);
 
 		return;
@@ -242,9 +242,9 @@ Disk2D::build ()
 
 	addElements (GL_QUAD_STRIP, getVertices () .size ());
 	setGeometryType (GeometryType::GEOMETRY_2D);
-	setSolid (true);
+	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
 
-	if (not solid ())
+	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
 		addMirrorVertices (GL_QUAD_STRIP, true);
 
 }
@@ -314,21 +314,18 @@ throw (Error <NOT_SUPPORTED>,
 		
 		if (not solid ())
 		{
-			for (int32_t i = getElements () [0] .count, size = 2 * getElements () [0] .count; i < size; ++ i)
+			for (int32_t i = 1, size = getElements () [0] .count; i < size; ++ i)
 			{
-				texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
-				geometry -> texCoordIndex () .emplace_back (i);
+				texCoord -> point () .emplace_back (1 - texCoord -> point () [size - i] .getX (), texCoord -> point () [size - i] .getY ());
+				geometry -> texCoordIndex () .emplace_back (i - 1 + getElements () [0] .count);
+				geometry -> coordIndex ()    .emplace_back (size - i);
 			}
 
+			texCoord -> point () .emplace_back (1 - texCoord -> point () [0] .getX (), texCoord -> point () [0] .getY ());
+			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count);
+			geometry -> coordIndex ()    .emplace_back (0);
 			geometry -> texCoordIndex () .emplace_back (-1);
-
-			// coordIndex
-		
-			for (int32_t i = 1, size = getElements () [0] .count; i < size; ++ i)
-				geometry -> coordIndex () .emplace_back (size - i);
-
-			geometry -> coordIndex () .emplace_back (0);
-			geometry -> coordIndex () .emplace_back (-1);
+			geometry -> coordIndex ()    .emplace_back (-1);
 		}
 	}
 	else
@@ -372,7 +369,7 @@ throw (Error <NOT_SUPPORTED>,
 
 		if (not solid ())
 		{
-			const int32_t tb = texCoord -> point () .size ();
+			const int32_t ts = texCoord -> point () .size ();
 
 			for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count))
 				texCoord -> point () .emplace_back (1 - point .x (), point .y ());
@@ -381,10 +378,10 @@ throw (Error <NOT_SUPPORTED>,
 
 			for (; i < size; i += 2)
 			{
-				geometry -> texCoordIndex () .emplace_back (tb + i);
-				geometry -> texCoordIndex () .emplace_back (tb + i + 2);
-				geometry -> texCoordIndex () .emplace_back (tb + i + 3);
-				geometry -> texCoordIndex () .emplace_back (tb + i + 1);
+				geometry -> texCoordIndex () .emplace_back (ts + i);
+				geometry -> texCoordIndex () .emplace_back (ts + i + 2);
+				geometry -> texCoordIndex () .emplace_back (ts + i + 3);
+				geometry -> texCoordIndex () .emplace_back (ts + i + 1);
 				geometry -> texCoordIndex () .emplace_back (-1);
 
 				geometry -> coordIndex () .emplace_back (i);
@@ -394,10 +391,10 @@ throw (Error <NOT_SUPPORTED>,
 				geometry -> coordIndex () .emplace_back (-1);
 			}
 
-			geometry -> texCoordIndex () .emplace_back (tb + i);
-			geometry -> texCoordIndex () .emplace_back (tb + i + 2);
-			geometry -> texCoordIndex () .emplace_back (tb + i + 3);
-			geometry -> texCoordIndex () .emplace_back (tb + i + 1);
+			geometry -> texCoordIndex () .emplace_back (ts + i);
+			geometry -> texCoordIndex () .emplace_back (ts + i + 2);
+			geometry -> texCoordIndex () .emplace_back (ts + i + 3);
+			geometry -> texCoordIndex () .emplace_back (ts + i + 1);
 			geometry -> texCoordIndex () .emplace_back (-1);
 
 			geometry -> coordIndex () .emplace_back (i);

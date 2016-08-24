@@ -132,7 +132,7 @@ PointSet::isTransparent () const
 {
 	#ifdef FIXED_PIPELINE
 
-	if (getBrowser () -> getFixedPipeline ())
+	if (getBrowser () -> getFixedPipelineRequired ())
 		return false;
 
 	#endif

@@ -360,7 +360,7 @@ BrowserOptions::set_Shading ()
 			glShadeModel (GL_SMOOTH);
 
 			#ifdef FIXED_PIPELINE
-			if (getBrowser () -> getFixedPipeline ())
+			if (getBrowser () -> getFixedPipelineRequired ())
 				getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
 			#endif
 			break;

@@ -53,6 +53,7 @@
 
 #include "../../Browser/PointingDeviceSensor/Intersection.h"
 #include "../../Browser/Rendering/GeometryType.h"
+#include "../../Browser/Shaders/ShadingType.h"
 #include "../../Rendering/TexCoordArray.h"
 #include "../../Rendering/X3DCollectableObject.h"
 #include "../../Types/Geometry.h"
@@ -78,10 +79,10 @@ public:
 
 	struct Element
 	{
-		Element (GLenum vertexMode, size_t count) :
+		Element (const GLenum vertexMode, const size_t count) :
 			vertexMode (vertexMode),
 			     count (count)
-	          	{ }
+		{ }
 
 		const GLenum vertexMode;
 		const size_t count;
@@ -331,6 +332,12 @@ protected:
 	addMirrorVertices (const GLenum, const bool);
 
 	void
+	set_shading (const ShadingType &);
+
+	void
+	set_fixedPipeline ();
+
+	void
 	update ();
 
 	virtual
@@ -373,6 +380,7 @@ private:
 	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
 	TexCoordArray                         texCoords;
 	std::vector <Vector3f>                normals;
+	std::vector <Vector3f>                faceNormals;
 	std::vector <Vector3d>                vertices;
 	GeometryType                          geometryType;
 	bool                                  solid;

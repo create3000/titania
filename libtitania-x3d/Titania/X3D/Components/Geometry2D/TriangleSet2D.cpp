@@ -50,10 +50,11 @@
 
 #include "TriangleSet2D.h"
 
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -110,7 +111,7 @@ TriangleSet2D::build ()
 	getVertices () .resize (resize);
 
 	addElements (GL_TRIANGLES, getVertices () .size ());
-	setSolid (true);
+	setSolid (getBrowser () -> getFixedPipelineRequired () ? true : solid ());
 }
 
 void
@@ -135,7 +136,7 @@ TriangleSet2D::buildTexCoords ()
 
 	// This function is always called and we can now savely add the back vertices.
 
-	if (not solid ())
+	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
 		addMirrorVertices (GL_TRIANGLES, true);
 }
 

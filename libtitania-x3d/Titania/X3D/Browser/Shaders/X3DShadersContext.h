@@ -104,8 +104,12 @@ public:
 	void
 	setFixedPipeline (const bool);
 
+	const SFBool &
+	getFixedPipeline () const
+	{ return fixedPipeline; }
+
 	bool
-	getFixedPipeline () const;
+	getFixedPipelineRequired () const;
 	#endif
 
 	///  @name Destruction
@@ -146,7 +150,7 @@ private:
 
 	float                   shadingLanguageVersion;
 	#ifdef FIXED_PIPELINE
-	bool                    fixedPipeline;
+	SFBool                  fixedPipeline;
 	#endif
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;
