@@ -55,6 +55,7 @@
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
+#include "../../Components/Rendering/PointSet.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -135,6 +136,17 @@ Disk2D::build ()
 
 	if (innerRadius () == outerRadius ())
 	{
+		// Point
+
+		if (innerRadius () == 0.0f)
+		{
+			getVertices () .emplace_back (0, 0, 0);
+			addElements (GL_POINTS, getVertices () .size ());
+			setGeometryType (GeometryType::GEOMETRY_POINTS);
+			setSolid (false);
+			return;
+		}
+
 		// Circle
 
 		const double radius = std::abs (outerRadius ());
@@ -153,7 +165,6 @@ Disk2D::build ()
 		addElements (GL_LINE_LOOP, getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_LINES);
 		setSolid (false);
-
 		return;
 	}
 
@@ -246,7 +257,6 @@ Disk2D::build ()
 
 	if (not solid () and getBrowser () -> getFixedPipelineRequired ())
 		addMirrorVertices (GL_QUAD_STRIP, true);
-
 }
 
 void
@@ -265,6 +275,22 @@ throw (Error <NOT_SUPPORTED>,
 {
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Disk2D::toPrimitive");
+
+	if (getElements () [0] .vertexMode == GL_POINTS)
+	{
+		// Point
+	
+		const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+		const auto geometry = getExecutionContext () -> createNode <PointSet> ();
+
+		geometry -> metadata () = metadata ();
+		geometry -> coord ()    = coord;
+
+		coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+
+		getExecutionContext () -> realize ();
+		return SFNode (geometry);
+	}
 
 	if (getElements () [0] .vertexMode == GL_LINE_LOOP)
 	{
