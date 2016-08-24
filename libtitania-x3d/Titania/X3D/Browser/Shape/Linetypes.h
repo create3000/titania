@@ -53,8 +53,6 @@
 
 #include "../../Rendering/OpenGL.h"
 
-#include <Titania/Math/Utility/strtol.h>
-
 namespace titania {
 namespace X3D {
 
@@ -84,26 +82,26 @@ enum class LineType :
 };
 
 static const std::vector <GLushort> linetypes = {
-	math::strtol ("0000000000000000", 2), // 0 None
-	math::strtol ("1111111111111111", 2), // 1 Solid
-	math::strtol ("1111111110000000", 2), // 2 Dashed
-	math::strtol ("1100110011001100", 2), // 3 Dotted
-	math::strtol ("1111111110001000", 2), // 4 Dashed-dotted
-	math::strtol ("1111100010001000", 2), // 5 Dash-dot-dot
+	0b0000000000000000, // 0 None
+	0b1111111111111111, // 1 Solid
+	0b1111111110000000, // 2 Dashed
+	0b1100110011001100, // 3 Dotted
+	0b1111111110001000, // 4 Dashed-dotted
+	0b1111100010001000, // 5 Dash-dot-dot
 
-	math::strtol ("1111111111111111", 2), // 6 (single arrow)
-	math::strtol ("1111111111111111", 2), // 7 (single dot)
-	math::strtol ("1111111111111111", 2), // 8 (double arrow)
+	0b1111111111111111, // 6 (single arrow)
+	0b1111111111111111, // 7 (single dot)
+	0b1111111111111111, // 8 (double arrow)
 
-	math::strtol ("1111111100000000", 2), // 9 (stitch line)
-	math::strtol ("1111111000111000", 2), // 10 (chain line)
-	math::strtol ("1111111110011100", 2), // 11 (center line)
-	math::strtol ("1111111111100000", 2), // 12 (hidden line)
-	math::strtol ("1111111011101110", 2), // 13 (phantom line)
+	0b1111111100000000, // 9 (stitch line)
+	0b1111111000111000, // 10 (chain line)
+	0b1111111110011100, // 11 (center line)
+	0b1111111111100000, // 12 (hidden line)
+	0b1111111011101110, // 13 (phantom line)
 
-	math::strtol ("1111111111111111", 2), // 14 (break line - style 1)
-	math::strtol ("1111111111111111", 2), // 15 (break line - style 2)
-	math::strtol ("1111111111111111", 2)  // 16 User - specified dash pattern
+	0b1111111111111111, // 14 (break line - style 1)
+	0b1111111111111111, // 15 (break line - style 2)
+	0b1111111111111111  // 16 User - specified dash pattern
 
 };
 
