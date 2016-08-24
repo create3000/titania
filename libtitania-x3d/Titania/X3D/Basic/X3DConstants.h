@@ -106,10 +106,10 @@ enum LoadState : uint8_t
 
 enum AccessType : uint8_t
 {
-	initializeOnly = 1, // 0b0001
-	inputOnly      = 2, // 0b0010
-	outputOnly     = 4, // 0b0100
-	inputOutput    = 7  // 0b0111
+	initializeOnly = 0b0001,
+	inputOnly      = 0b0010,
+	outputOnly     = 0b0100,
+	inputOutput    = 0b0111
 
 };
 
