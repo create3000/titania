@@ -1335,6 +1335,8 @@ eval {
 	}
 	else
 	{
+		binmode (STDIN);
+
 		$options -> {string} = join '', <STDIN>;
 	}
 	

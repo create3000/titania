@@ -275,14 +275,14 @@ X3DScriptEditorSearch::on_enable_search ()
 
 	std::string selection = getTextBuffer () -> get_text (selectionBegin, selectionEnd);
 
+	if (getRegularExpressionMenuItem () .get_active ())
+		selection = basic::regex_escape (selection);
+
 	if (selection .empty ())
 		selection = getSearchEntry () .get_text ();
 
 	if (selection .size ())
 	{
-		if (getRegularExpressionMenuItem () .get_active ())
-			selection = basic::regex_escape (selection);
-
 		on_add_search (selection);
 		getSearchEntry () .set_text (selection);
 		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
