@@ -132,8 +132,7 @@ libcurl
 giomm-2.4)
 
 PKG_CHECK_MODULES(TITANIA_SQLITE,
-sqlite3
-libpcrecpp)
+sqlite3)
 
 PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,
 gtkmm-3.0
