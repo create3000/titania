@@ -591,7 +591,6 @@
     <Compile Include="Titania\Math\Algorithms\CatmullRomSplineInterpolator.cpp" />
     <Compile Include="Titania\Backtrace.cpp" />
     <Compile Include="Titania\String\sprintf.cpp" />
-    <Compile Include="Titania\String\split.cpp" />
     <Compile Include="Titania\String\trim.cpp" />
     <Compile Include="Titania\String\naturally_compare.cpp" />
     <Compile Include="Titania\Math\Numbers\Matrix2.cpp" />

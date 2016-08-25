@@ -183,7 +183,7 @@ private:
 	///  @name Metadata handling
 
 	MetadataSet*
-	getMetadataSet (const std::deque <std::string> &, const bool) const
+	getMetadataSet (const std::vector <std::string> &, const bool) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);

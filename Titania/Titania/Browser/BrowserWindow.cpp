@@ -755,7 +755,9 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 
 		if (selection_data .get_data_type () == "STRING")
 		{
-			const auto strings = basic::split (basic::trim (selection_data .get_data_as_string ()), "\r\n");
+			auto strings = std::vector <std::string> ();
+
+			basic::split (std::back_inserter (strings), basic::trim (selection_data .get_data_as_string ()), "\r\n");
 
 			for (const auto & string : strings)
 			{

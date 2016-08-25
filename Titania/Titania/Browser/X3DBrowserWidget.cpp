@@ -126,8 +126,11 @@ X3DBrowserWidget::set_initialized ()
 		urlIndex .emplace (getWorldURL (browser));
 
 	const auto empty     = browsers .empty ();
-	auto       worldURLs = basic::split (getConfig () -> getString ("worldURL"), "\n");
-	auto       histories = basic::split (getConfig () -> getString ("history"), "\n");
+	auto       worldURLs = std::vector <std::string> ();
+	auto       histories = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (worldURLs), getConfig () -> getString ("worldURL"), "\n");
+	basic::split (std::back_inserter (histories), getConfig () -> getString ("history"),  "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));

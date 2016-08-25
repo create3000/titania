@@ -189,9 +189,8 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/OS/load_file.lo Titania/OS/mkdir.lo \
 	Titania/OS/popen2.lo Titania/OS/realpath.lo \
 	Titania/OS/system.lo Titania/String/dtoa.lo \
-	Titania/String/naturally_compare.lo Titania/String/split.lo \
-	Titania/String/sprintf.lo Titania/String/strfsize.lo \
-	Titania/String/trim.lo
+	Titania/String/naturally_compare.lo Titania/String/sprintf.lo \
+	Titania/String/strfsize.lo Titania/String/trim.lo
 libtitania_standard_la_OBJECTS = $(am_libtitania_standard_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -509,7 +508,6 @@ libtitania_standard_la_SOURCES = \
 	Titania/OS/system.cpp \
 	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \
-	Titania/String/split.cpp \
 	Titania/String/sprintf.cpp \
 	Titania/String/strfsize.cpp \
 	Titania/String/trim.cpp
@@ -869,8 +867,6 @@ Titania/String/dtoa.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
 Titania/String/naturally_compare.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
-Titania/String/split.lo: Titania/String/$(am__dirstamp) \
-	Titania/String/$(DEPDIR)/$(am__dirstamp)
 Titania/String/sprintf.lo: Titania/String/$(am__dirstamp) \
 	Titania/String/$(DEPDIR)/$(am__dirstamp)
 Titania/String/strfsize.lo: Titania/String/$(am__dirstamp) \
@@ -996,7 +992,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/system.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/dtoa.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/naturally_compare.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/split.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/sprintf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/strfsize.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/String/$(DEPDIR)/trim.Plo@am__quote@

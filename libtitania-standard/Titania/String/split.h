@@ -51,108 +51,46 @@
 #ifndef __TITANIA_STRING_SPLIT_H__
 #define __TITANIA_STRING_SPLIT_H__
 
-#include <deque>
-#include <set>
 #include <string>
 
 namespace titania {
 namespace basic {
 
-template <class StringT, template <class, class Allocator = std::allocator <StringT>> class ContainerType = std::deque>
-ContainerType <StringT>
-basic_split (const StringT & string, const StringT & delimiter)
+template <class StringT, class OutputIterator>
+void
+basic_split (OutputIterator iter, const StringT & string, const StringT & delimiter)
 {
-	ContainerType <StringT> container;
-	
 	if (string .empty ())
-		return container;
+		return;
 
 	typename StringT::size_type first = 0;
 	typename StringT::size_type last  = string .find (delimiter, first);
 
 	while (last not_eq StringT::npos)
 	{
-		container .emplace_back (string .substr (first, last - first));
-
-		first = last + delimiter .length ();
-		last  = string .find (delimiter, first);
+		*iter++ = string .substr (first, last - first);
+		first   = last + delimiter .length ();
+		last    = string .find (delimiter, first);
 	}
 
-	container .emplace_back (string .substr (first, string .length () - first));
-
-	return container;
+	*iter = string .substr (first, string .length () - first);
 }
 
+template <class OutputIterator>
 inline
-std::deque <std::string>
-split (const std::string & string, const std::string & delimiter)
+void
+split (OutputIterator iter, const std::string & string, const std::string & delimiter)
 {
-	return basic_split <std::string> (string, delimiter);
+	basic_split <std::string, OutputIterator> (iter, string, delimiter);
 }
 
+template <class OutputIterator>
 inline
-std::deque <std::wstring>
-wsplit (const std::wstring & string, const std::wstring & delimiter)
+void
+wsplit (OutputIterator iter, const std::wstring & string, const std::wstring & delimiter)
 {
-	return basic_split <std::wstring> (string, delimiter);
+	basic_split <std::string, OutputIterator> (iter, string, delimiter);
 }
-
-extern template
-std::deque <std::string>
-basic_split (const std::string &, const std::string  &);
-
-extern template
-std::deque <std::wstring>
-basic_split (const std::wstring &, const std::wstring  &);
-
-// Set version
-
-template <class StringT, template <class, class Compare = std::less <StringT>, class Allocator = std::allocator <StringT>> class ContainerType = std::set>
-ContainerType <StringT>
-basic_set_split (const StringT & string, const StringT & delimiter)
-{
-	ContainerType <StringT> container;
-	
-	if (string .empty ())
-		return container;
-
-	typename StringT::size_type first = 0;
-	typename StringT::size_type last  = string .find (delimiter, first);
-
-	while (last not_eq StringT::npos)
-	{
-		container .insert (string .substr (first, last - first));
-
-		first = last + delimiter .length ();
-		last  = string .find (delimiter, first);
-	}
-
-	container .insert (string .substr (first, string .length () - first));
-
-	return container;
-}
-
-inline
-std::set <std::string>
-set_split (const std::string & string, const std::string & delimiter)
-{
-	return basic_set_split <std::string> (string, delimiter);
-}
-
-inline
-std::set <std::wstring>
-wset_split (const std::wstring & string, const std::wstring & delimiter)
-{
-	return basic_set_split <std::wstring> (string, delimiter);
-}
-
-extern template
-std::set <std::string>
-basic_set_split (const std::string &, const std::string  &);
-
-extern template
-std::set <std::wstring>
-basic_set_split (const std::wstring &, const std::wstring  &);
 
 } // basic
 } // titania

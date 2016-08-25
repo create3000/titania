@@ -88,7 +88,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataBoolean> (names .back ());
@@ -101,7 +104,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataDouble> (names .back ());
@@ -114,7 +120,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataFloat> (names .back ());
@@ -127,7 +136,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataInteger> (names .back ());
@@ -140,7 +152,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataString> (names .back ());
@@ -153,7 +168,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	return metadataSet -> createValue <MetadataSet> (names .back ());
@@ -172,7 +190,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataBoolean> (names .back ());
@@ -185,7 +206,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataDouble> (names .back ());
@@ -198,7 +222,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataFloat> (names .back ());
@@ -211,7 +238,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataInteger> (names .back ());
@@ -224,7 +254,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataString> (names .back ());
@@ -237,7 +270,10 @@ throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, true);
 
 	return metadataSet -> getValue <MetadataSet> (names .back ());
@@ -405,7 +441,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataBoolean> (names .back ()) -> value () = value;
@@ -418,7 +457,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataDouble> (names .back ()) -> value () = value;
@@ -431,7 +473,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataFloat> (names .back ()) -> value () = value;
@@ -444,7 +489,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataInteger> (names .back ()) -> value () = value;
@@ -457,7 +505,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, false);
 
 	metadataSet -> createValue <MetadataString> (names .back ()) -> value () = value;
@@ -470,7 +521,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
@@ -486,7 +540,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
@@ -502,7 +559,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
@@ -518,7 +578,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
@@ -534,7 +597,10 @@ throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
 {
-	const auto names       = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
 	const auto metadataSet = getMetadataSet (names, not create);
 
 	if (create)
@@ -554,7 +620,7 @@ throw (Error <INVALID_NODE>,
  */
 
 MetadataSet*
-X3DNode::getMetadataSet (const std::deque <std::string> & names, const bool throw_) const
+X3DNode::getMetadataSet (const std::vector <std::string> & names, const bool throw_) const
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
@@ -600,7 +666,9 @@ void
 X3DNode::removeMetaData (const std::string & key)
 throw (Error <DISPOSED>)
 {
-	auto names = basic::split (key, SEPARATOR);
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
 
 	switch (names .size ())
 	{

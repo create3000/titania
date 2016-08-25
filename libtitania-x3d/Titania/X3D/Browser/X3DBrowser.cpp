@@ -403,7 +403,9 @@ throw (Error <INVALID_URL>,
 {
 	for (const auto & value : parameter)
 	{
-		const auto pair = basic::split (value .str (), "=");
+		auto pair = std::vector <std::string> ();
+
+		basic::split (std::back_inserter (pair), value .str (), "=");
 
 		if (pair .size () == 2)
 		{

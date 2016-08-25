@@ -446,19 +446,17 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::vector <double> v ({ 1, 2 });
+	std::vector <std::string> r;
+	std::set <std::string> s;
 
-	mesh a (v);
+	split (std::back_inserter (r), "e d c b a", " ");
+	split (std::inserter (s, s .end ()), "e d c b a", " ");
 
-	__LOG__ << a .a .size () << std::endl;
-	__LOG__ << a .b .size () << std::endl;
+	for (const auto & v : r)
+		__LOG__ << v << std::endl;
 
-	mesh b (std::move (a));
-
-	__LOG__ << a .a .size () << std::endl;
-	__LOG__ << a .b .size () << std::endl;
-	__LOG__ << b .a .size () << std::endl;
-	__LOG__ << b .b .size () << std::endl;
+	for (const auto & v : s)
+		__LOG__ << v << std::endl;
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

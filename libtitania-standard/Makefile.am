@@ -80,7 +80,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/system.cpp \
 	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \
-	Titania/String/split.cpp \
 	Titania/String/sprintf.cpp \
 	Titania/String/strfsize.cpp \
 	Titania/String/trim.cpp

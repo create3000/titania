@@ -195,7 +195,11 @@ X3DUserInterface::configure ()
 {
 	// Restore dialogs
 
-	for (const auto & dialogName : basic::split (getConfig () -> getString ("dialogs"), ";"))
+	auto dialogNames = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (dialogNames), getConfig () -> getString ("dialogs"), ";");
+
+	for (const auto & dialogName : dialogNames)
 	{
 		if (restorableDialogs .count (dialogName))
 			addDialog (dialogName, true);

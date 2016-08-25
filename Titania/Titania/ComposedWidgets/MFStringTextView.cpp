@@ -110,7 +110,9 @@ MFStringTextView::on_changed ()
 	if (changing)
 		return;
 
-	const auto string = basic::split (textView .get_buffer () -> get_text (), "\n");
+	auto string = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (string), textView .get_buffer () -> get_text (), "\n");
 
 	addUndoFunction <X3D::MFString> (nodes, name, undoStep);
 

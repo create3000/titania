@@ -201,9 +201,11 @@ const StringT basic_path <StringT>::dots = "..";
 
 template <class StringT>
 basic_path <StringT>::basic_path (const StringT & path, const StringT & separator) :
-	std::deque <string_type> (basic_split <StringT, std::deque> (path, separator)),
+	std::deque <string_type> (),
 	                   value ({ separator, false, false })
 {
+	basic_split <StringT> (std::back_inserter (*this), path, separator);
+
 	if (size ())
 	{
 		if (front () == string_type ())

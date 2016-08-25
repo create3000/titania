@@ -313,7 +313,9 @@ void
 X3DLibraryView::restoreExpanded ()
 {
 	const auto expanded = getConfig () -> getString ("expanded");
-	const auto paths    = basic::split (expanded, ";");
+	auto       paths    = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (paths), expanded, ";");
 
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);

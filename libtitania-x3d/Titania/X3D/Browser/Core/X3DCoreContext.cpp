@@ -77,7 +77,7 @@ X3DCoreContext::initialize ()
 	XInitThreads ();
 
 	if (glXGetCurrentContext ())
-		extensions = basic::set_split ((const char*) glGetString (GL_EXTENSIONS), " ");
+		basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
 }
 
 bool

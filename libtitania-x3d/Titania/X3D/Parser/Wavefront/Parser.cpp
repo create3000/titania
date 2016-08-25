@@ -583,7 +583,9 @@ MaterialParser::map_Kd ()
 		{
 			if (not string .empty () and not name .empty ())
 			{
-				const auto url = basic::split (basic::trim (string), " ");
+				auto url = std::vector <std::string> ();
+
+				basic::split (std::back_inserter (url), basic::trim (string), " ");
 				
 				if (not url .empty ())
 				{
@@ -820,7 +822,9 @@ Parser::mtllib ()
 
 		if (Grammar::string (istream, string))
 		{
-			const auto mtllibs = basic::split (string, " ");
+			auto mtllibs = std::vector <std::string> ();
+
+			basic::split (std::back_inserter (mtllibs), string, " ");
 
 			for (const auto & mtllib : mtllibs)
 			{

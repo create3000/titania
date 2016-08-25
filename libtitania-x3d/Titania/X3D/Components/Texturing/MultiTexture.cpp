@@ -195,7 +195,9 @@ MultiTexture::set_mode ()
 
 	for (const auto & string : mode ())
 	{
-		auto mode = basic::split (string, ",");
+		auto mode = std::vector <std::string> ();
+
+		basic::split (std::back_inserter (mode), string, ",");
 
 		for (auto & s : mode)
 			s = basic::trim (s);

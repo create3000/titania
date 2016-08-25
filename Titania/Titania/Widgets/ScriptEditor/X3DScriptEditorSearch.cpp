@@ -108,7 +108,7 @@ X3DScriptEditorSearch::initialize ()
 	getWithinSelectionMenuItem ()    .set_active (getConfig () -> getBoolean ("searchWithinSelection"));
 	getWrapAroundMenuItemMenuItem () .set_active (getConfig () -> getBoolean ("searchWrapAround"));
 
-	recentSearches = basic::basic_split <Glib::ustring, std::deque> (getConfig () -> getString ("recentSearches"), ";");
+	basic::basic_split <Glib::ustring> (std::back_inserter (recentSearches), getConfig () -> getString ("recentSearches"), ";");
 
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
