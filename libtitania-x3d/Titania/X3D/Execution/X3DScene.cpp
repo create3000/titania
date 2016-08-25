@@ -335,7 +335,7 @@ throw (Error <INVALID_NAME>,
 std::string
 X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
 {
- 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+ 	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	exportedName = std::regex_replace (exportedName, _TrailingNumbers, "");
  	

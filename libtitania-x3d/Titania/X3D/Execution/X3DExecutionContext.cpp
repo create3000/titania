@@ -359,7 +359,7 @@ X3DExecutionContext::getUniqueName (std::string name) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
- 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+ 	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	name = std::regex_replace (name, _TrailingNumbers, "");
  	
@@ -390,7 +390,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 std::string
 X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
- 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+ 	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	name = std::regex_replace (name, _TrailingNumbers, "");
 
@@ -540,7 +540,7 @@ throw (Error <INVALID_NODE>,
 std::string
 X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const
 {
- 	static const std::regex _TrailingNumbers (R"(_\d+$)");
+ 	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	importedName = std::regex_replace (importedName, _TrailingNumbers, "");
 
@@ -741,7 +741,7 @@ std::string
 X3DExecutionContext::getUniqueProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	static const std::regex TrailingNumbers (R"(\d+$)");
+	static const std::regex TrailingNumbers (R"/(\d+$)/");
 
 	if (not getProtoDeclarations () .count (name))
 		return name;
@@ -887,7 +887,7 @@ std::string
 X3DExecutionContext::getUniqueExternProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	static const std::regex TrailingNumbers (R"(\d+$)");
+	static const std::regex TrailingNumbers (R"/(\d+$)/");
 
 	if (not getExternProtoDeclarations () .count (name))
 		return name;

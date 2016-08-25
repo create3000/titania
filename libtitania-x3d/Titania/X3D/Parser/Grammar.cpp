@@ -52,6 +52,8 @@
 
 #include "../../X3D.h"
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 
@@ -59,9 +61,6 @@ namespace X3D {
 // General
 const io::sequence            Grammar::WhiteSpaces ("\r\n \t,");
 const io::single_line_comment Grammar::Comment ("#");
-
-// Header
-const pcrecpp::RE Grammar::Header ("(VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?");
 
 // Keywords
 const io::string Grammar::AS ("AS");
@@ -117,6 +116,26 @@ const io::string Grammar::HEX ("0X");
 // Locale
 
 const io::sequence Grammar::WhiteSpacesNoCommaSequence ("\r\n \t");
+
+bool
+Grammar::Header (const std::string & header, std::string & encoding, std::string & specificationVersion, std::string & characterEncoding, std::string & comment)
+{
+	static const std::regex Header (R"/((VRML|X3D) V(.*?) (utf8)(?: (.*?)[\r\n]*)?)/");
+
+	std::smatch match;
+
+	if (std::regex_match (header, match, Header))
+	{
+		encoding             = match .str (1);
+		specificationVersion = match .str (2);
+		characterEncoding    = match .str (3);
+		comment              = match .str (4);
+
+		return true;
+	}
+	
+	return false;
+}
 
 bool
 Grammar::LongDouble (std::istream & istream, long double & value)

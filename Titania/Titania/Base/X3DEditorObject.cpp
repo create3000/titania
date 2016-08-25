@@ -135,7 +135,7 @@ X3DEditorObject::validateFolderOnDelete (Gtk::Entry & entry, int start_pos, int 
 bool
 X3DEditorObject::validateFolder (const std::string & text) const
 {
-	static const std::regex folderCharacters (R"([^/]*)");
+	static const std::regex folderCharacters (R"/([^/]*)/");
 
 	return std::regex_match (text, folderCharacters);
 }

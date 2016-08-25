@@ -1,4 +1,4 @@
-#X3D V3.3 utf8 Titania V1.4.1
+#X3D V3.3 utf8 Titania V1.4.9
 
 PROFILE Full
 
@@ -11,8 +11,7 @@ META "generator" "Titania V1.4.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AngleTool.x3dv"
 META "modified" "Sun, 10 Apr 2016 02:38:36 GMT"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
 
 PROTO AngleGrid [
@@ -561,8 +560,7 @@ DEF AngleTool Collision {
                   material Material {
                     diffuseColor 1 0.7 0
                   }
-                  shaders ToolShader {
-                  }
+                  shaders ToolShader { }
                 }
                 geometry Sphere { }
               }
@@ -637,8 +635,7 @@ DEF AngleTool Collision {
                   material Material {
                     diffuseColor 1 0.7 0
                   }
-                  shaders ToolShader {
-                  }
+                  shaders ToolShader { }
                 }
                 geometry Box { }
               }

@@ -58,6 +58,8 @@
 #include <gtksourceview/gtksourcesearchcontext.h>
 #include <gtksourceview/gtksourcesearchsettings.h>
 
+#include <pcrecpp.h>
+
 #include <regex>
 #include <sstream>
 
@@ -572,7 +574,7 @@ X3DScriptEditorSearch::on_enable_go_to_line ()
 void
 X3DScriptEditorSearch::on_go_to_line_insert_text (const Glib::ustring & text, int* position)
 {
-	static const std::regex integers (R"([\d]+)");
+	static const std::regex integers (R"/([\d]+)/");
 
 	const bool valid = std::regex_match (std::string (text), integers);
 

@@ -312,7 +312,7 @@ Generator::Name (const X3DBaseNode* const baseNode)
 
 	// The node has a name
  	
-	static const std::regex _TrailingNumbers (R"(_\d+$)");
+	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	std::string name      = baseNode -> getName ();
 	const bool  hasNumber = std::regex_match (name, _TrailingNumbers);

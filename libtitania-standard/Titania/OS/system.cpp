@@ -61,7 +61,7 @@ namespace system_utility {
 std::string
 escape_argument (const std::string & argument)
 {
-	static const std::regex escapeCharacters (R"(\s|'|")");
+	static const std::regex escapeCharacters (R"/(\s|'|")/");
 
 	return std::regex_replace (argument, escapeCharacters, "\\$&");
 }

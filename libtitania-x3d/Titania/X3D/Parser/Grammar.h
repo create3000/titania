@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_PARSER_GRAMMAR_H__
 
 #include <Titania/InputOutput.h>
-#include <pcrecpp.h>
 #include <set>
 
 namespace titania {
@@ -94,7 +93,9 @@ public:
 	static const io::single_line_comment Comment;
 
 	///  @name Header
-	static const pcrecpp::RE Header;
+	static
+	bool
+	Header (const std::string &, std::string &, std::string &, std::string &, std::string &);
 
 	///  @name Keywords
 	static const io::string AS;

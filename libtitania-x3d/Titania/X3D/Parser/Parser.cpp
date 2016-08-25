@@ -386,7 +386,7 @@ Parser::headerStatement (std::string & _encoding, std::string & _specificationVe
 
 	if (Grammar::Comment (istream, _header))
 	{
-		if (Grammar::Header .FullMatch (_header, &_encoding, &_specificationVersion, &_characterEncoding, &_comment))
+		if (Grammar::Header (_header, _encoding, _specificationVersion, _characterEncoding, _comment))
 			return true;
 	}
 
