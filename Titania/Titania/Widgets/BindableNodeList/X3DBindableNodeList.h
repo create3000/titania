@@ -60,7 +60,8 @@
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 #include <Titania/X3D/Execution/BindableNodeList.h>
-#include <Titania/X3D/Parser/RegEx.h>
+
+#include <regex>
 
 namespace titania {
 namespace puck {
@@ -394,6 +395,8 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::set_stack ()
 {
+	static const std::regex LastNumber_ (R"/(_\d+$)/");
+
 	// Update list store
 
 	if (not activeLayer)
@@ -409,9 +412,7 @@ X3DBindableNodeList <Type>::set_stack ()
 		if (not editor and getDescription (node) .empty ())
 		   continue;
 
-		auto name = node -> getName ();
-
-		X3D::RegEx::LastNumber_ .Replace ("", &name);
+		const auto name = std::regex_replace (node -> getName (), LastNumber_, "");
 
 		row -> set_value (Columns::TYPE_NAME,   node -> getTypeName ());
 		row -> set_value (Columns::NAME,        name);

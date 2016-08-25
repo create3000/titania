@@ -55,7 +55,6 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/X3DScene.h"
 #include "../InputOutput/Loader.h"
-#include "../Parser/RegEx.h"
 #include "../Thread/SceneLoader.h"
 
 #include <iomanip>

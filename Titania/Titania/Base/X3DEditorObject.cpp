@@ -50,8 +50,6 @@
 
 #include "X3DEditorObject.h"
 
-#include <Titania/X3D/Parser/RegEx.h>
-
 #include <regex>
 
 namespace titania {
@@ -111,7 +109,9 @@ X3DEditorObject::validateIdOnDelete (Gtk::Entry & entry, int start_pos, int end_
 bool
 X3DEditorObject::validateId (const std::string & text) const
 {
-	return X3D::RegEx::Id .FullMatch (text) and text not_eq "NULL";
+	static const std::regex Id (R"/([^\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]{1}[^\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*)/");
+
+	return std::regex_match (text, Id) and text not_eq "NULL";
 }
 
 void

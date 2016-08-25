@@ -114,7 +114,8 @@ dnl Check required libraries
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(TITANIA,
-gtksourceviewmm-3.0)
+gtksourceviewmm-3.0
+libpcrecpp)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
 glibmm-2.4
@@ -123,7 +124,6 @@ fontconfig
 ftgl
 glu
 mozjs185
-libpcrecpp
 ImageMagick++
 libgtop-2.0)
 

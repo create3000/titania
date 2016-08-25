@@ -469,18 +469,20 @@ main (int argc, char** argv)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	std::ifstream ifs ("/usr/bin/titania");
-
-	static const std::regex r (R"/(a(\w)a)/");
+	static const std::regex ECMAScript (R"/(\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:([\s\S]*))/");
 	
-	std::string string;
+	std::string string = "javascript:bah\nbah";
 
-	ifs >> string;
+	std::smatch match;
 
-	filter_bad_utf8_characters (string);
-	filter_control_characters (string);
-
-	__LOG__ << string << std::endl;
+	if (std::regex_match (string, match, ECMAScript))
+	{
+		__LOG__ << true << std::endl;
+		__LOG__ << match .str (1) << std::endl;
+		__LOG__ << match .str (2) << std::endl;
+	}
+	else
+		__LOG__ << false << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

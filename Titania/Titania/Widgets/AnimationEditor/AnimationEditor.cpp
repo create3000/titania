@@ -62,10 +62,11 @@
 #include <Titania/X3D/Components/Interpolation/PositionInterpolator2D.h>
 #include <Titania/X3D/Components/Interpolation/PositionInterpolator.h>
 #include <Titania/X3D/Parser/Filter.h>
-#include <Titania/X3D/Parser/RegEx.h>
 
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 #include <Titania/Math/Algorithms/SquadInterpolator.h>
+
+#include <regex>
 
 namespace titania {
 namespace puck {
@@ -796,9 +797,9 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 std::string
 AnimationEditor::getNodeName (const X3D::SFNode & node) const
 {
-	auto name = node -> getName ();
+	static const std::regex LastNumber_ (R"/(_\d+$)/");
 
-	X3D::RegEx::LastNumber_ .Replace ("", &name);
+	const auto name = std::regex_replace (node -> getName (), LastNumber_, "");
 
 	return "<b>" + Glib::Markup::escape_text (node -> getTypeName ()) + "</b> " + Glib::Markup::escape_text (name);
 }

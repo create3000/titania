@@ -58,7 +58,6 @@
 #include "../Components/Core/WorldInfo.h"
 #include "../Execution/ExportedNode.h"
 #include "../Parser/Parser.h"
-#include "../Parser/RegEx.h"
 
 #include <Titania/OS.h>
 #include <Titania/String/to_string.h>

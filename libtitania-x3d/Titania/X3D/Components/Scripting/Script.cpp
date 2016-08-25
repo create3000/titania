@@ -54,7 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
 #include "../../JavaScript/X3DJavaScriptEngine.h"
-#include "../../Parser/RegEx.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -139,8 +140,15 @@ throw (Error <DISPOSED>)
 bool
 Script::loadDocument (const SFString & URL, std::string & scheme, std::string & ecmascript)
 {
-	if (RegEx::ECMAScript .FullMatch (URL .str (), &scheme, &ecmascript))
+	static const std::regex ECMAScript (R"/(\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:([\s\S]*))/");
+
+	std::smatch match;
+
+	if (std::regex_match (URL .str (), match, ECMAScript))
 	{
+		scheme     = match .str (1);
+		ecmascript = match .str (2);
+
 		setWorldURL (getExecutionContext () -> getWorldURL ());
 		return true;
 	}

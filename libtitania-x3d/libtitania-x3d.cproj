@@ -420,7 +420,6 @@
     <None Include="Titania\X3D\Routing\RouteArray.h" />
     <None Include="Titania\X3D\Routing\RouteSet.h" />
     <None Include="Titania\X3D\Parser\Parser.h" />
-    <None Include="Titania\X3D\Parser\RegEx.h" />
     <None Include="Titania\X3D\Parser\X3DParser.h" />
     <None Include="Titania\X3D\Configuration\ComponentInfoArray.h" />
     <None Include="Titania\X3D\Configuration\ProfileInfoArray.h" />
@@ -850,7 +849,6 @@
     <Compile Include="Titania\X3D\Fields\X3DScalar.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
-    <Compile Include="Titania\X3D\Parser\RegEx.cpp" />
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
