@@ -656,6 +656,7 @@
     <None Include="Tests\Extrusion\Rotations.x3d" />
     <None Include="Tests\Shaders\Pipeline.x3d" />
     <None Include="Tests\Shaders\Matrix4VertexAttibute.x3dv" />
+    <None Include="Tests\images\farbmanagement_test.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

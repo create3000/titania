@@ -75,5 +75,11 @@ get_tool (const std::string & filename)
 	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "tools/" + filename);
 }
 
+basic::uri
+get_data (const std::string & filename)
+{
+	return "file://" + os::find_data_file (TITANIA_DATA_DIR + filename);
+}
+
 } // X3D
 } // titania

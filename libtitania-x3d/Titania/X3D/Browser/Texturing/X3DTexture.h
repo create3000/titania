@@ -163,6 +163,10 @@ private:
 	void
 	setTransparency ();
 
+	static
+	Magick::Blob
+	getProfile (const std::string &);
+
 	///  @name Members
 
 	MagickImageArrayPtr images;

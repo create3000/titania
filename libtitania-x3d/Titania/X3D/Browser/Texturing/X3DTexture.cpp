@@ -50,8 +50,12 @@
 
 #include "X3DTexture.h"
 
+#include "../../Browser/Networking/config.h"
+
 #include <Titania/LOG.h>
 #include <Titania/Utility/Range.h>
+
+#include <fstream>
 
 namespace titania {
 namespace X3D {
@@ -161,9 +165,14 @@ X3DTexture::refineImageFormats ()
 	}
 
 	for (auto & image : std::make_pair (++ images -> begin (), images -> end ()))
-	{
 		image .magick (first .magick ());
-	}
+
+	// Convert to sRGB profile
+
+	static const Magick::Blob sRGBProfile = getProfile ("/icc/sRGB_IEC61966-2-1_black_scaled.icc");
+
+	for (auto & image : *images)
+		image .iccColorProfile (sRGBProfile);
 }
 
 void
@@ -256,6 +265,16 @@ X3DTexture::setTransparency ()
 			break;
 		}
 	}
+}
+
+Magick::Blob
+X3DTexture::getProfile (const std::string & profile)
+{
+	std::ifstream stream (get_data ("/icc/sRGB_IEC61966-2-1_black_scaled.icc") .path (), std::ios::binary);
+	
+	const auto data = std::vector <char> (std::istreambuf_iterator <char> (stream), std::istreambuf_iterator <char> ());
+
+	return Magick::Blob (data .data (), data .size ());
 }
 
 } // X3D

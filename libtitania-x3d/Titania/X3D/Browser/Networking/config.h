@@ -65,6 +65,9 @@ get_shader (const std::string &);
 basic::uri
 get_tool (const std::string &);
 
+basic::uri
+get_data (const std::string &);
+
 } // X3D
 } // titania
 

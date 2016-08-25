@@ -815,6 +815,8 @@
     <None Include="share\mime\packages\x3d+vrml.xml" />
     <None Include="share\mime\packages\x3d+xml.xml" />
     <None Include="Titania\X3D\Browser\Rendering\GeometryType.h" />
+    <None Include="share\titania\icc\sRGB_IEC61966-2-1_black_scaled.icc" />
+    <None Include="share\titania\icc\sRGB_v4_ICC_preference.icc" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1440,6 +1442,7 @@
     <Folder Include="Titania\X3D\Browser\Shaders\" />
     <Folder Include="share\mime\" />
     <Folder Include="share\mime\packages\" />
+    <Folder Include="share\titania\icc\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
