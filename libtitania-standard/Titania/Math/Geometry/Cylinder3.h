@@ -143,44 +143,51 @@ template <class Type>
 bool
 cylinder3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & enter, vector3 <Type> & exit) const
 {
-	// The intersection will actually be done on a radius 1 cylinder
-	// aligned with the y axis, so we transform the line into that
-	// space, then intersect, then transform the results back.
-
-	// rotation to y axis
-	const rotation4 <Type> rotToYAxis (axis () .direction (), vector3 <Type> (0, 1, 0));
-	const matrix4 <Type>   mtxToYAxis (rotToYAxis);
-
-	// scale to unit space
-	const Type     scaleFactor = 1 / radius ();
-	matrix4 <Type> toUnitCylSpace;
-	toUnitCylSpace .scale (vector3 <Type> (scaleFactor, scaleFactor, scaleFactor));
-	toUnitCylSpace .mult_left (mtxToYAxis);
-
-	// find the given line un-translated
-	const vector3 <Type> point = line .point () - axis () .point ();
-	const line3 <Type> noTranslationLine (point, line .direction ());
-
-	// find the un-translated line in unit cylinder's space
-	const line3 <Type> cylLine = noTranslationLine * toUnitCylSpace;
-
-	// find the intersection on the unit cylinder
-	vector3 <Type> cylEnter, cylExit;
-	const bool     intersected = unit_cylinder_intersects (cylLine, cylEnter, cylExit);
-
-	if (intersected)
+	try
 	{
-		// transform back to original space
-		matrix4 <Type> fromUnitCylSpace = inverse (toUnitCylSpace);
-
-		enter  = fromUnitCylSpace .mult_vec_matrix (cylEnter);
-		enter += axis () .point ();
-
-		exit  = fromUnitCylSpace .mult_vec_matrix (cylExit);
-		exit += axis () .point ();
+		// The intersection will actually be done on a radius 1 cylinder
+		// aligned with the y axis, so we transform the line into that
+		// space, then intersect, then transform the results back.
+	
+		// rotation to y axis
+		const rotation4 <Type> rotToYAxis (axis () .direction (), vector3 <Type> (0, 1, 0));
+		const matrix4 <Type>   mtxToYAxis (rotToYAxis);
+	
+		// scale to unit space
+		const Type     scaleFactor = 1 / radius ();
+		matrix4 <Type> toUnitCylSpace;
+		toUnitCylSpace .scale (vector3 <Type> (scaleFactor, scaleFactor, scaleFactor));
+		toUnitCylSpace .mult_left (mtxToYAxis);
+	
+		// find the given line un-translated
+		const vector3 <Type> point = line .point () - axis () .point ();
+		const line3 <Type> noTranslationLine (point, line .direction ());
+	
+		// find the un-translated line in unit cylinder's space
+		const line3 <Type> cylLine = noTranslationLine * toUnitCylSpace;
+	
+		// find the intersection on the unit cylinder
+		vector3 <Type> cylEnter, cylExit;
+		const bool     intersected = unit_cylinder_intersects (cylLine, cylEnter, cylExit);
+	
+		if (intersected)
+		{
+			// transform back to original space
+			matrix4 <Type> fromUnitCylSpace = inverse (toUnitCylSpace);
+	
+			enter  = fromUnitCylSpace .mult_vec_matrix (cylEnter);
+			enter += axis () .point ();
+	
+			exit  = fromUnitCylSpace .mult_vec_matrix (cylExit);
+			exit += axis () .point ();
+		}
+	
+		return intersected;
 	}
-
-	return intersected;
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

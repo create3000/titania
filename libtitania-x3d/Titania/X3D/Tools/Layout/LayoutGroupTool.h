@@ -178,7 +178,7 @@ LayoutGroupTool::reshape ()
 	
 	try
 	{
-		bbox *= ~getMatrix ();
+		bbox *= inverse (getMatrix ());
 	}
 	catch (const std::domain_error &)
 	{

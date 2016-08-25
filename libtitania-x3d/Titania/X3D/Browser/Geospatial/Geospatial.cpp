@@ -54,7 +54,7 @@
 #include <Titania/Geospatial/ReferenceEllipsoids.h>
 #include <Titania/Geospatial/UniversalTransverseMercator.h>
 
-#include <pcrecpp.h>
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -225,14 +225,14 @@ Geospatial::getNorthingFirst (const MFString & geoSystem)
 int
 Geospatial::getZone (const MFString & geoSystem)
 {
-	static const pcrecpp::RE Zone ("\\AZ(\\d+)$");
+	static const std::regex Zone (R"/(Z(\d+))/");
 
 	for (const auto & string : geoSystem)
 	{
-		std::string zone;
+		std::smatch zone;
 
-		if (Zone .FullMatch (string .str (), &zone))
-			return std::atoi (zone .c_str ());
+		if (std::regex_match (string .str (), zone, Zone))
+			return std::atoi (zone .str (1) .c_str ());
 	}
 
 	return 1;

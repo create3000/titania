@@ -103,7 +103,7 @@ public:
 
 	VrmlMatrix*
 	inverse () const
-	{ return new VrmlMatrix (~getValue ()); }
+	{ return new VrmlMatrix (math::inverse (getValue ())); }
 
 	VrmlMatrix*
 	multLeft (const VrmlMatrix & value) const

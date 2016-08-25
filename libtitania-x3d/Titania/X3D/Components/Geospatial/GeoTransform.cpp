@@ -130,7 +130,7 @@ GeoTransform::eventsProcessed ()
 		                     scale () .getValue (),
 		                     scaleOrientation () .getValue ());
 
-		setMatrix (~locationMatrix * transformation * locationMatrix);
+		setMatrix (inverse (locationMatrix) * transformation * locationMatrix);
 	}
 	catch (const std::domain_error &)
 	{

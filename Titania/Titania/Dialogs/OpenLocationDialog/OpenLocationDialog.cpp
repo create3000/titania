@@ -55,6 +55,8 @@
 
 #include <Titania/OS.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -66,11 +68,11 @@ OpenLocationDialog::OpenLocationDialog (X3DBrowserWindow* const browserWindow) :
 
 	if (clipboard -> wait_is_text_available ())
 	{
-		static const pcrecpp::RE scheme ("\\A(file|http|https|ftp|smb)$");
+		static const std::regex scheme (R"/(file|http|https|ftp|smb)/");
 
 		const basic::uri uri (clipboard -> wait_for_text ());
 
-		if (scheme .FullMatch (uri .scheme ()))
+		if (std::regex_match (uri .scheme (), scheme))
 			getLocationEntry () .set_text (uri .str ());
 	}
 

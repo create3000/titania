@@ -105,7 +105,7 @@ Billboard::rotate (const TraverseType type)
 throw (std::domain_error)
 {
 	const Matrix4d modelViewMatrix        = getModelViewMatrix (type);
-	const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
+	const Matrix4d inverseModelViewMatrix = inverse (modelViewMatrix);
 	const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 	if (axisOfRotation () == Vector3f ())

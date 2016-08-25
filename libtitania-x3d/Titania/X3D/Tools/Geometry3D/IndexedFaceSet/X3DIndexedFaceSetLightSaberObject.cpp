@@ -104,7 +104,7 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 		if (intersectingFaces .empty ())
 			return false;
 
-		const auto invModelViewProjection = ~modelViewProjection;
+		const auto invModelViewProjection = inverse (modelViewProjection);
 		auto       intersectingEdges      = std::vector <std::vector <std::vector <int32_t>>> ();
 		auto       cutPoints              = std::vector <std::vector <Vector3d>> ();
 

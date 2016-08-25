@@ -155,7 +155,7 @@ X3DTransformNode::setMatrixKeepCenter (const Matrix4d & matrix)
 	{
 		auto centerOffset = Vector3d (center () .getValue ()) + Vector3d (translation () .getValue ()) - matrix .origin ();
 
-		centerOffset = (~matrix) .mult_dir_matrix (centerOffset);
+		centerOffset = inverse (matrix) .mult_dir_matrix (centerOffset);
 
 		setMatrixWithCenter (matrix, centerOffset);
 	}

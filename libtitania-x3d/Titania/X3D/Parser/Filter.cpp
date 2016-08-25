@@ -51,7 +51,6 @@
 #include "Filter.h"
 
 #include <regex>
-#include <pcrecpp.h>
 
 namespace titania {
 namespace X3D {
@@ -59,7 +58,7 @@ namespace X3D {
 std::string
 get_display_name (const SFNode & node)
 {
-	static const std::regex _TrailingNumbers (R"(_\d+$)");
+	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
 
 	if (not node)
 		return "NULL";
@@ -76,11 +75,9 @@ get_name_from_uri (const basic::uri & uri)
 std::string
 get_name_from_string (const std::string & name_)
 {
-	static const pcrecpp::RE Spaces (R"(\s+)");
+	static const std::regex Spaces (R"/(\s+)/");
 
-	auto name = name_;
-
-	Spaces .GlobalReplace ("_", &name);
+	auto name = std::regex_replace (name_, Spaces, "_");
 
 	filter_non_id_characters (name);
 
@@ -93,47 +90,50 @@ get_name_from_string (const std::string & name_)
 void
 filter_non_id_characters (std::string & string)
 {
-	static const pcrecpp::RE NonIdFirstChar (R"/(^[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
-	static const pcrecpp::RE NonIdChars (R"/([\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
-
-	NonIdChars .GlobalReplace ("", &string);
-
-	while (NonIdFirstChar .Replace ("", &string))
-		;
+	static const std::regex NonIdFirstChar (R"/(^[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*)/");
+	static const std::regex NonIdChars (R"/([\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
+	
+	string = std::regex_replace (string, NonIdFirstChar, "");
+	string = std::regex_replace (string, NonIdChars,     "");
 }
 
 void
 filter_control_characters (std::string & string)
 {
-	static const pcrecpp::RE ControlCharacters (R"/([\x00-\x08\x0B\x0C\x0E-\x1F])/", pcrecpp::RE_Options () .set_multiline (true));
+	static const std::regex ControlCharacters (R"/([\x00-\x08\x0b\x0c\x0e-\x1f])/");
 
-	ControlCharacters .GlobalReplace ("", &string);
+	string = std::regex_replace (string, ControlCharacters, "");
 }
 
 void
 filter_bad_utf8_characters (std::string & string)
 {
-	static const pcrecpp::RE UTF8Characters (R"/(([\000-\177])/"
-	                                         R"/(|[\300-\337][\200-\277])/"
-	                                         R"/(|[\340-\357][\200-\277]{2})/"
-	                                         R"/(|[\360-\367][\200-\277]{3})/"
-	                                         R"/(|[\370-\373][\200-\277]{4})/"
-	                                         R"/(|[\374-\375][\200-\277]{5})/"
-	                                         R"/()|.)/",
-	                                         pcrecpp::RE_Options () .set_multiline (true));
+//	static const std::regex UTF8Characters (R"/(([\000-\177])/"
+//	                                        R"/(|[\300-\337][\200-\277])/"
+//	                                        R"/(|[\340-\357][\200-\277]{2})/"
+//	                                        R"/(|[\360-\367][\200-\277]{3})/"
+//	                                        R"/(|[\370-\373][\200-\277]{4})/"
+//	                                        R"/(|[\374-\375][\200-\277]{5})/"
+//	                                        R"/()|.)/");
 
-	UTF8Characters .GlobalReplace ("\\1", &string);
+	static const std::regex UTF8Characters (R"/(([\x00-\x7f])/"
+	                                        R"/(|[\xc0-\xdf][\x80-\xbf])/"
+	                                        R"/(|[\xe0-\xef][\x80-\xbf]{2})/"
+	                                        R"/(|[\xf0-\xf7][\x80-\xbf]{3})/"
+	                                        R"/(|[\xf8-\xfb][\x80-\xbf]{4})/"
+	                                        R"/(|[\xfc-\xfd][\x80-\xbf]{5})/"
+	                                        R"/()|.)/");
+
+	string = std::regex_replace (string, UTF8Characters, "$1");
 }
 
 std::string
-escape_cdata (std::string string)
+escape_cdata (const std::string & string)
 {
-	static const pcrecpp::RE cdata_end_pattern (R"/((\]\]\>))/");
+	static const std::regex  cdata_end_pattern (R"/((\]\]\>))/");
 	static const std::string cdata_end_subs (R"/(\\]\\]\\>)/");
 
-	cdata_end_pattern .GlobalReplace (cdata_end_subs, &string);
-
-	return string;
+	return std::regex_replace (string, cdata_end_pattern, cdata_end_subs);
 }
 
 } // X3D

@@ -219,7 +219,7 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
                                              Vector3d & relativeScale,
                                              Rotation4d & relativeScaleOrientation) const
 {
-	const Matrix4d differenceMatrix = ~(getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
+	const Matrix4d differenceMatrix = inverse (getTransformationMatrix () * fromViewpoint -> getInverseCameraSpaceMatrix ());
 
 	differenceMatrix .get (relativePosition, relativeOrientation, relativeScale, relativeScaleOrientation);
 
@@ -234,8 +234,8 @@ X3DViewpointNode::setCameraSpaceMatrix (const Matrix4d & value)
 	{
 		if (value != cameraSpaceMatrix)
 		{
+			inverseCameraSpaceMatrix = inverse (value);
 			cameraSpaceMatrix        = value;
-			inverseCameraSpaceMatrix = ~value;
 
 			getBrowser () -> addEvent ();
 		}
@@ -377,7 +377,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 
 	try
 	{
-		point = point * ~getTransformationMatrix ();
+		point = point * inverse (getTransformationMatrix ());
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 
@@ -398,7 +398,7 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 
 	try
 	{
-		bbox *= ~getTransformationMatrix ();
+		bbox *= inverse (getTransformationMatrix ());
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
 

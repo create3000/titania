@@ -78,6 +78,8 @@
 
 #include <Titania/X3D/Execution/BindableNodeStack.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -940,8 +942,9 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 			<< std::endl;
 	}
 
-	std::string name = node -> getName ();
-	pcrecpp::RE (R"/((\*/))/") .GlobalReplace ("", &name);
+	static const std::regex CommentEnd (R"/((\*/))/");
+
+	const auto name = std::regex_replace (node -> getName (), CommentEnd, "");
 
 	ostream
 		<< "/**" << std::endl

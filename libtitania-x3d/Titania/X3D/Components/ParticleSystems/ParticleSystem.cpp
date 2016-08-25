@@ -1564,7 +1564,7 @@ Matrix3d
 ParticleSystem::getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const
 throw (std::domain_error)
 {
-	const Matrix4d inverseModelViewMatrix = ~modelViewMatrix;
+	const Matrix4d inverseModelViewMatrix = inverse (modelViewMatrix);
 
 	const Vector3d billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
 	const Vector3d viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);

@@ -164,7 +164,7 @@ X3DGeospatialObject::set_originMatrix ()
 		                         z [0], z [1], z [2], 0,
 		                         t [0], t [1], t [2], 1);
 	
-		invOriginMatrix = ~originMatrix;
+		invOriginMatrix = inverse (originMatrix);
 	}
 	catch (std::domain_error &)
 	{

@@ -190,7 +190,7 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 		const Matrix4d matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
 		const Matrix4d modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
 
-		line *= ~matrix;
+		line *= inverse (matrix);
 
 		if (not bbox .intersects (line))
 			return false;

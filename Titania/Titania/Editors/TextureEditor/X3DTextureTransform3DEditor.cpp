@@ -146,18 +146,24 @@ X3DTextureTransform3DEditor::getTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 		}
 		case X3D::X3DConstants::TextureTransformMatrix3D:
 		{
-			const X3D::X3DPtr <X3D::TextureTransformMatrix3D> last (value);
+			try
+			{
+				const X3D::X3DPtr <X3D::TextureTransformMatrix3D> last (value);
+	
+				X3D::Vector3f   translation;
+				X3D::Rotation4d rotation;
+				X3D::Vector3f   scale;
+				X3D::Rotation4d scaleOrientation;
+	
+				math::inverse (last -> matrix () .getValue ()) .get (translation, rotation, scale, scaleOrientation);
+	
+				textureTransform -> translation () = -translation;
+				textureTransform -> rotation ()    = ~rotation;
+				textureTransform -> scale ()       = 1.0f / scale;
+			}
+			catch (const std::domain_error &)
+			{ }
 
-			X3D::Vector3f   translation;
-			X3D::Rotation4d rotation;
-			X3D::Vector3f   scale;
-			X3D::Rotation4d scaleOrientation;
-
-			math::inverse (last -> matrix () .getValue ()) .get (translation, rotation, scale, scaleOrientation);
-
-			textureTransform -> translation () = -translation;
-			textureTransform -> rotation ()    = ~rotation;
-			textureTransform -> scale ()       = 1.0f / scale;
 			break;
 		}
 		default:

@@ -120,7 +120,7 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
+			inverseModelViewMatrix = inverse (getMatrices () .at (hit -> layer) .modelViewMatrix);
 
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
 			const auto center   = Vector3d ();

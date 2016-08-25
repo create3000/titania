@@ -136,7 +136,7 @@ PlaneSensor::set_active (const HitPtr & hit, const bool active)
 			modelViewMatrix        = matrices .modelViewMatrix;
 			projectionMatrix       = matrices .projectionMatrix;
 			viewport               = matrices .viewport;
-			inverseModelViewMatrix = ~modelViewMatrix;
+			inverseModelViewMatrix = inverse (modelViewMatrix);
 
 			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;

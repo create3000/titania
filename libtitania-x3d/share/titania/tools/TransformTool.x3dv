@@ -2056,10 +2056,15 @@ function translate (scaledMatrix, distanceFromCenter)
 
 function translateKeepCenter (scaledMatrix, distanceFromCenter)
 {
-	var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
-
-	transform .translation = translation .subtract (centerOffset);
-	transform .center      = center .add (centerOffset);
+	try
+	{
+		var centerOffset = scaledMatrix .inverse () .multDirMatrix (scaledMatrix .multDirMatrix (distanceFromCenter) .subtract (matrix .multDirMatrix (distanceFromCenter)));
+	
+		transform .translation = translation .subtract (centerOffset);
+		transform .center      = center .add (centerOffset);
+	}
+	catch (error)
+	{ }
 }
 
 function sgn (value)

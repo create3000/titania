@@ -262,17 +262,25 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 			}
 			case 1:
 			{
-				// Translate over screen plane
+				try
+				{
+					// Translate over screen plane
+	
+					const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
+					const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
+	
+					planeSensorNormal -> enabled () = false;
+	
+					planeSensor -> enabled ()      = select () and not paintSelection ();
+					planeSensor -> axisRotation () = axisRotation;
+					planeSensor -> offset ()       = Vector3d ();
+					planeSensor -> maxPosition ()  = Vector2d (-1, -1);
+				}
+				catch (const std::domain_error &)
+				{
+					planeSensorNormal -> enabled () = false;
+				}
 
-				const auto vector       = inverse (getModelViewMatrix ()) .mult_dir_matrix (Vector3d (0, 0, 1));
-				const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), vector);
-
-				planeSensorNormal -> enabled () = false;
-
-				planeSensor -> enabled ()      = select () and not paintSelection ();
-				planeSensor -> axisRotation () = axisRotation;
-				planeSensor -> offset ()       = Vector3d ();
-				planeSensor -> maxPosition ()  = Vector2d (-1, -1);
 				break;
 			}
 			case 2:

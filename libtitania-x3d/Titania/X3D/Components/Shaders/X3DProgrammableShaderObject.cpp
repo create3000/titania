@@ -1001,7 +1001,18 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & browser      = getBrowser ();
 	const auto & clipPlanes   = context -> getClipPlanes ();
 	const auto & appearance   = browser -> getAppearance ();
-	const auto   normalMatrix = inverse (Matrix3d (context -> getModelViewMatrix ())); // Transposed when uniform is set.
+	auto         normalMatrix = Matrix3d (context -> getModelViewMatrix ()); // Transposed when uniform is set.
+
+	try
+	{
+		normalMatrix .inverse ();
+	}
+	catch (const std::domain_error &)
+	{
+		normalMatrix .set ();
+	}
+
+	// Geometry type
 
 	glUniform1i (x3d_GeometryType, GLint (context -> getGeometryType ()));
 

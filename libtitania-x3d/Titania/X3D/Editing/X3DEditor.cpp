@@ -1912,7 +1912,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 					Matrix4d childModelViewMatrix = getModelViewMatrix (executionContext, child);
 
 					childModelViewMatrix .mult_left (childTransform -> getMatrix ());
-					childModelViewMatrix .mult_right (~groupModelViewMatrix);
+					childModelViewMatrix .mult_right (inverse (groupModelViewMatrix));
 
 					setMatrix (childTransform, childModelViewMatrix, undoStep);
 				}

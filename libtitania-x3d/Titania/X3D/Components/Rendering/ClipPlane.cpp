@@ -119,15 +119,22 @@ ClipPlane::pop ()
 void
 ClipPlane::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
-	auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
-
-	clipPlane .mult_plane_matrix (modelViewMatrix);
-
-	glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i],
-	             clipPlane .normal () .x (),
-	             clipPlane .normal () .y (),
-	             clipPlane .normal () .z (),
-	             clipPlane .distance_from_origin ());
+	try
+	{
+		auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
+	
+		clipPlane .mult_plane_matrix (modelViewMatrix);
+	
+		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i],
+		             clipPlane .normal () .x (),
+		             clipPlane .normal () .y (),
+		             clipPlane .normal () .z (),
+		             clipPlane .distance_from_origin ());
+	}
+	catch (const std::domain_error &)
+	{	
+		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i], 0, 1, 0, 0);
+	}
 }
 
 } // X3D

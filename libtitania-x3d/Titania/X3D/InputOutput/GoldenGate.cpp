@@ -61,7 +61,7 @@
 
 #include <Magick++.h>
 #include <giomm.h>
-#include <pcrecpp.h>
+#include <regex>
 #include <sys/wait.h>
 
 //
@@ -69,11 +69,11 @@
 namespace titania {
 namespace X3D {
 
-static const pcrecpp::RE Name        ("__NAME__");
-static const pcrecpp::RE Description ("__DESCRIPTION__");
-static const pcrecpp::RE Width       ("__WIDTH__");
-static const pcrecpp::RE Height      ("__HEIGHT__");
-static const pcrecpp::RE URL         ("__URL__");
+static const std::regex Name        ("__NAME__");
+static const std::regex Description ("__DESCRIPTION__");
+static const std::regex Width       ("__WIDTH__");
+static const std::regex Height      ("__HEIGHT__");
+static const std::regex URL         ("__URL__");
 
 static
 void
@@ -193,10 +193,10 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.x3dv"));
 
-	Name   .GlobalReplace (get_name_from_uri (uri),                            &file);
-	Width  .GlobalReplace (basic::to_string (width,  std::locale::classic ()), &file);
-	Height .GlobalReplace (basic::to_string (height, std::locale::classic ()), &file);
-	URL    .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
+	file = std::regex_replace (file, Name,   get_name_from_uri (uri));
+	file = std::regex_replace (file, Width,  basic::to_string (width,  std::locale::classic ()));
+	file = std::regex_replace (file, Height, basic::to_string (height, std::locale::classic ()));
+	file = std::regex_replace (file, URL,    "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
 
 	// Parse into scene.
 
@@ -211,9 +211,9 @@ golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
-	Name        .GlobalReplace (get_name_from_uri (uri), &file);
-	Description .GlobalReplace (SFString (uri .basename (false)) .toString (), &file);
-	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
+	file = std::regex_replace (file, Name,        get_name_from_uri (uri));
+	file = std::regex_replace (file, Description, SFString (uri .basename (false)) .toString ());
+	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
 
 	// Parse into scene.
 
@@ -234,14 +234,14 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/video.x3dv"));
 
-	float width  = mediaStream .getWidth  () / 72.0 * M_INCH;
-	float height = mediaStream .getHeight () / 72.0 * M_INCH;
+	const float width  = mediaStream .getWidth  () / 72.0 * M_INCH;
+	const float height = mediaStream .getHeight () / 72.0 * M_INCH;
 
-	Name        .GlobalReplace (get_name_from_uri (uri), &file);
-	Description .GlobalReplace (SFString (uri .basename (false)) .toString (),      &file);
-	Width       .GlobalReplace (basic::to_string (width,  std::locale::classic ()), &file);
-	Height      .GlobalReplace (basic::to_string (height, std::locale::classic ()), &file);
-	URL         .GlobalReplace ("[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]", &file);
+	file = std::regex_replace (file, Name,        get_name_from_uri (uri));
+	file = std::regex_replace (file, Description, SFString (uri .basename (false)) .toString ());
+	file = std::regex_replace (file, Width,       basic::to_string (width,  std::locale::classic ()));
+	file = std::regex_replace (file, Height,      basic::to_string (height, std::locale::classic ()));
+	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
 
 	// Parse into scene.
 

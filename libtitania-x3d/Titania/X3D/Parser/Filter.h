@@ -78,7 +78,7 @@ void
 filter_bad_utf8_characters (std::string &);
 
 std::string
-escape_cdata (std::string);
+escape_cdata (const std::string &);
 
 } // X3D
 } // titania

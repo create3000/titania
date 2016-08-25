@@ -116,9 +116,9 @@ TouchSensor::set_over (const HitPtr & hit, const bool over)
 			intersection .reset (new Intersection (*hit -> intersection));
 
 			const Matrix4d & modelViewMatrix    = getMatrices () .at (hit -> layer) .modelViewMatrix;
-			const Matrix4d   invModelViewMatrix = ~modelViewMatrix;
+			const Matrix4d   invModelViewMatrix = inverse (modelViewMatrix);
 
-			hitPoint = intersection -> point * ~hit -> modelViewMatrix;
+			hitPoint = intersection -> point * inverse (hit -> modelViewMatrix);
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));

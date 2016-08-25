@@ -231,7 +231,7 @@ throw (Error <INVALID_NODE>,
 		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
-		const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
+		const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape)));
 	
 		targetGeometry -> coord () = targetCoord;
 	
@@ -327,7 +327,7 @@ throw (Error <INVALID_NODE>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = ~Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape));
+	const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape)));
 
 	targetGeometry -> coord () = targetCoord;
 

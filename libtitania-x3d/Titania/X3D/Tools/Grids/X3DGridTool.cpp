@@ -274,10 +274,10 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 		grid *= getTool () -> getTransformationMatrix ();
 
 		Matrix4d snap;
-		snap .set (getSnapPosition (position * ~grid) * grid - position);
+		snap .set (getSnapPosition (position * inverse (grid)) * grid - position);
 	
 		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
-		const Matrix4d currentMatrix = absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+		const Matrix4d currentMatrix = absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
 	
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
@@ -291,7 +291,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = ~matrix * (absoluteMatrix * snap);
+		const Matrix4d differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
 	
 		for (const auto & node : children)
 		{
@@ -317,9 +317,10 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 			{ }
 		}
 	}
-	catch (const X3DError &)
+	catch (const std::exception &)
 	{ }
 }
+
 void
 X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 {
@@ -381,9 +382,9 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 //__LOG__ << Z << std::endl;
 
 		Vector3d vectorToSnap  = z [index0];
-		Vector3d vectorOnGrid  = normalize (vectorToSnap * ~rotationPlane * gridRotation * ~gridPlane); // Vector inside grid space.
+		Vector3d vectorOnGrid  = normalize (vectorToSnap * inverse (rotationPlane) * gridRotation * inverse (gridPlane)); // Vector inside grid space.
 
-		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * ~gridRotation * rotationPlane;
+		const auto snapVector   = getSnapPosition (vectorOnGrid, false) * gridPlane * inverse (gridRotation) * rotationPlane;
 		const auto snapRotation = Rotation4d (inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (vectorToSnap),
                                             inverse (master -> getTransformationMatrix ()) .mult_dir_matrix (snapVector));
 
@@ -397,7 +398,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 //__LOG__ << std::endl;
 //__LOG__ << gridPlane << std::endl;
 //__LOG__ << vectorToSnap << std::endl;
-//__LOG__ << normalize (vectorToSnap * ~rotationPlane) << std::endl;
+//__LOG__ << normalize (vectorToSnap * inverse (rotationPlane)) << std::endl;
 //__LOG__ << vectorOnGrid << std::endl;
 //__LOG__ << getSnapPosition (vectorOnGrid) << std::endl;
 //__LOG__ << snapVector << std::endl;
@@ -414,7 +415,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = ~matrixBefore * currentMatrix * master -> getTransformationMatrix ();
+		const Matrix4d differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
 	
 		for (const auto & node : children)
 		{
@@ -440,7 +441,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 			{ }
 		}
 	}
-	catch (const X3DError &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -477,7 +478,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = ~matrix * currentMatrix * master -> getTransformationMatrix ();
+		const Matrix4d differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
 	
 		for (const auto & node : children)
 		{
@@ -503,7 +504,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 			{ }
 		}
 	}
-	catch (const X3DError &)
+	catch (const std::exception &)
 	{ }
 }
 
@@ -534,8 +535,8 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 	const double sgn          = tool < 3 ? 1 : -1;
 	const auto   direction    = bbox .axes () [axis] * sgn;
 	const auto   point        = direction + position;
-	const auto   snapPosition = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (direction))) * grid;
-	auto         after        = (snapPosition * ~absoluteMatrix - shape .center ()) [axis];
+	const auto   snapPosition = getSnapPosition (point * inverse (grid), normalize (inverse (grid) .mult_dir_matrix (direction))) * grid;
+	auto         after        = (snapPosition * inverse (absoluteMatrix) - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis] * sgn;
 
 	if (getBrowser () -> getControlKey ()) // Scale from corner.
@@ -600,7 +601,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 		const auto point  = points [tool];
 		auto before = point - position;
-		auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
+		auto after  = getSnapPosition (point * inverse (grid), normalize (inverse (grid) .mult_dir_matrix (before))) * grid - position;
 		
 		after  += before;
 		before *= 2;
@@ -623,7 +624,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 		for (const auto & point : points)
 		{
 			const auto before = point - position;
-			const auto after  = getSnapPosition (point * ~grid, normalize ((~grid) .mult_dir_matrix (before))) * grid - position;
+			const auto after  = getSnapPosition (point * inverse (grid), normalize (inverse (grid) .mult_dir_matrix (before))) * grid - position;
 			const auto delta  = after - before;
 			const auto ratio  = after / before;
 
@@ -647,7 +648,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, co
 
 	snap *= getOffset (bbox, snap, points [tool] - bbox .center ());
 
-	return absoluteMatrix * snap * ~master -> getTransformationMatrix ();
+	return absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
 }
 
 Matrix4d

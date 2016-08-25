@@ -87,7 +87,7 @@ ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & scissor) :
 		const int y1 = scissor [1];
 		const int y2 = scissor [1] + scissor [3];
 
-		const Matrix4d matrix   = ~projection;
+		const Matrix4d matrix   = inverse (projection);
 		const Vector4i viewport = Viewport4i ();
 
 		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
@@ -136,7 +136,7 @@ throw (std::domain_error)
 {
 	// Calculation for inverting a matrix, compute projection x modelview
 	// and store in A
-	const Matrix4d matrix = ~(modelview * projection);
+	const Matrix4d matrix = inverse (modelview * projection);
 
 	return unProjectPoint (winx, winy, winz, matrix, viewport);
 }
@@ -166,7 +166,7 @@ Line3d
 ViewVolume::unProjectRay (double winx, double winy, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	return unProjectRay (winx, winy, ~(modelView * projection), viewport);
+	return unProjectRay (winx, winy, inverse (modelView * projection), viewport);
 }
 
 Line3d

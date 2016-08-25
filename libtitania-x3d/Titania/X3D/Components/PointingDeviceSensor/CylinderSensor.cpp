@@ -164,7 +164,7 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = ~getMatrices () .at (hit -> layer) .modelViewMatrix;
+			inverseModelViewMatrix = inverse (getMatrices () .at (hit -> layer) .modelViewMatrix);
 
 			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
@@ -238,7 +238,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 			// as the viewing volume is not a cube where the picking ray goes straight up.
 			// This phenomenon is very clear on the viewport corners.
 
-			const auto trackPoint_ = trackPoint * ~inverseModelViewMatrix;
+			const auto trackPoint_ = trackPoint * inverse (inverseModelViewMatrix);
 
 			if (trackPoint_ .z () > 0)
 				rotation *= Rotation4d (yPlane .normal (), M_PI);

@@ -160,7 +160,7 @@ throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
-		const auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * ~transformationMatrix;
+		const auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
 
 		if (keepCenter)
 			setMatrixKeepCenter (matrix);
@@ -184,7 +184,7 @@ X3DTransformNodeTool::eventsProcessed ()
 			return;
 		}
 
-		const auto differenceMatrix = ~(matrix * transformationMatrix) * getMatrix () * transformationMatrix;
+		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
 		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
 		{

@@ -413,7 +413,7 @@ inline
 SFMatrix3 <ValueType>*
 SFMatrix3 <ValueType>::inverse () const
 {
-	return new SFMatrix3 (~getValue ());
+	return new SFMatrix3 (math::inverse (getValue ()));
 }
 
 template <class ValueType>

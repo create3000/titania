@@ -429,6 +429,28 @@ public:
 
 };
 
+void
+filter_bad_utf8_characters (std::string & string)
+{
+	static const std::regex UTF8Characters (R"/(([\x00-\x7f])/"
+	                                        R"/(|[\xc0-\xdf][\x80-\xbf])/"
+	                                        R"/(|[\xe0-\xef][\x80-\xbf]{2})/"
+	                                        R"/(|[\xf0-\xf7][\x80-\xbf]{3})/"
+	                                        R"/(|[\xf8-\xfb][\x80-\xbf]{4})/"
+	                                        R"/(|[\xfc-\xfd][\x80-\xbf]{5})/"
+	                                        R"/()|.)/");
+
+	string = std::regex_replace (string, UTF8Characters, "$1");
+}
+
+void
+filter_control_characters (std::string & string)
+{
+	static const std::regex ControlCharacters (R"/([\x00-\x08\x0b\x0c\x0e-\x1f])/");
+
+	string = std::regex_replace (string, ControlCharacters, "");
+}
+
 int
 main (int argc, char** argv)
 {
@@ -446,18 +468,19 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	std::vector <std::string> r;
-	std::set <std::string> s;
 
-	split (std::back_inserter (r), "e d c b a", " ");
-	split (std::inserter (s, s .end ()), "e d c b a", " ");
+	std::ifstream ifs ("/usr/bin/titania");
 
-	for (const auto & v : r)
-		__LOG__ << v << std::endl;
+	static const std::regex r (R"/(a(\w)a)/");
+	
+	std::string string;
 
-	for (const auto & v : s)
-		__LOG__ << v << std::endl;
+	ifs >> string;
 
+	filter_bad_utf8_characters (string);
+	filter_control_characters (string);
+
+	__LOG__ << string << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
