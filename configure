@@ -17600,15 +17600,12 @@ if test -n "$TITANIA_CFLAGS"; then
     pkg_cv_TITANIA_CFLAGS="$TITANIA_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtksourceviewmm-3.0
-libpcrecpp\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gtksourceviewmm-3.0
-libpcrecpp") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtksourceviewmm-3.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gtksourceviewmm-3.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_TITANIA_CFLAGS=`$PKG_CONFIG --cflags "gtksourceviewmm-3.0
-libpcrecpp" 2>/dev/null`
+  pkg_cv_TITANIA_CFLAGS=`$PKG_CONFIG --cflags "gtksourceviewmm-3.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17620,15 +17617,12 @@ if test -n "$TITANIA_LIBS"; then
     pkg_cv_TITANIA_LIBS="$TITANIA_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtksourceviewmm-3.0
-libpcrecpp\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gtksourceviewmm-3.0
-libpcrecpp") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtksourceviewmm-3.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gtksourceviewmm-3.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_TITANIA_LIBS=`$PKG_CONFIG --libs "gtksourceviewmm-3.0
-libpcrecpp" 2>/dev/null`
+  pkg_cv_TITANIA_LIBS=`$PKG_CONFIG --libs "gtksourceviewmm-3.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17649,17 +17643,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        TITANIA_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gtksourceviewmm-3.0
-libpcrecpp" 2>&1`
+	        TITANIA_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gtksourceviewmm-3.0" 2>&1`
         else
-	        TITANIA_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtksourceviewmm-3.0
-libpcrecpp" 2>&1`
+	        TITANIA_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtksourceviewmm-3.0" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_PKG_ERRORS" >&5
 
-	as_fn_error $? "Package requirements (gtksourceviewmm-3.0
-libpcrecpp) were not met:
+	as_fn_error $? "Package requirements (gtksourceviewmm-3.0) were not met:
 
 $TITANIA_PKG_ERRORS
 

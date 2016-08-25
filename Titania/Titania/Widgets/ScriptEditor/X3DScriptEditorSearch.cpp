@@ -54,11 +54,10 @@
 
 #include <Titania/Stream/Base64.h>
 #include <Titania/String.h>
+#include <Titania/RegEx/regex_escape.h>
 
 #include <gtksourceview/gtksourcesearchcontext.h>
 #include <gtksourceview/gtksourcesearchsettings.h>
-
-#include <pcrecpp.h>
 
 #include <regex>
 #include <sstream>
@@ -282,7 +281,7 @@ X3DScriptEditorSearch::on_enable_search ()
 	if (selection .size ())
 	{
 		if (getRegularExpressionMenuItem () .get_active ())
-			selection = pcrecpp::RE::QuoteMeta (selection);
+			selection = basic::regex_escape (selection);
 
 		on_add_search (selection);
 		getSearchEntry () .set_text (selection);

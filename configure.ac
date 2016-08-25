@@ -114,8 +114,7 @@ dnl Check required libraries
 dnl ***************************************************************************
 
 PKG_CHECK_MODULES(TITANIA,
-gtksourceviewmm-3.0
-libpcrecpp)
+gtksourceviewmm-3.0)
 
 PKG_CHECK_MODULES(TITANIA_X3D,
 glibmm-2.4

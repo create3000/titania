@@ -558,6 +558,7 @@
     <None Include="Titania\Math\Geometry\MinimumBoundingBox.h" />
     <None Include="Titania\Math\Geometry\LineSegment2.h" />
     <None Include="Titania\Math\Geometry\Combine.h" />
+    <None Include="Titania\RegEx\regex_escape.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -638,6 +639,7 @@
     <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
     <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
     <Compile Include="Titania\Math\Geometry\Combine.cpp" />
+    <Compile Include="Titania\RegEx\regex_escape.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -665,5 +667,6 @@
     <Folder Include="Titania\External\ApproxMVBB\" />
     <Folder Include="Titania\External\Eigen\" />
     <Folder Include="Titania\External\unsupported\" />
+    <Folder Include="Titania\RegEx\" />
   </ItemGroup>
 </Project>
