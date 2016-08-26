@@ -102,7 +102,8 @@ public:
 
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL) const
-	throw (std::out_of_range)
+	throw (std::out_of_range,
+	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
@@ -116,7 +117,8 @@ public:
 
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL, const std::string & nodeName) const
-	throw (std::out_of_range)
+	throw (std::out_of_range,
+	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
@@ -155,7 +157,8 @@ private:
 
 	const std::string &
 	getId (const std::string & worldURL, const std::string & nodeName) const
-	throw (std::out_of_range)
+	throw (std::out_of_range,
+	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT id FROM Scripts WHERE "
 		                                             "worldURL = " + database .quote (worldURL) + " AND "

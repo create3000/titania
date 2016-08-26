@@ -495,9 +495,6 @@ Context::initialize ()
 
 	setEventHandler ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
-	getScriptNode () -> isLive () .addInterest (this, &Context::set_live);
-
 	set_live ();
 
 	if (not JSVAL_IS_VOID (initializeFn))
@@ -509,19 +506,10 @@ Context::setExecutionContext (X3D::X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getExecutionContext () -> isLive () .removeInterest (this, &Context::set_live);
-
 	if (future)
 		future -> setExecutionContext (executionContext);
 
 	X3DJavaScriptContext::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-	{
-		getExecutionContext () -> isLive () .addInterest (this, &Context::set_live);
-
-		set_live ();
-	}
 }
 
 void
@@ -556,58 +544,28 @@ Context::setEventHandler ()
 void
 Context::set_live ()
 {
-	if (getExecutionContext () -> isLive () and getScriptNode () -> isLive ())
+	if (not JSVAL_IS_VOID (prepareEventsFn))
+		getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
+
+	if (not JSVAL_IS_VOID (eventsProcessedFn))
+		getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+
+	getScriptNode () -> addInterest (this, &Context::finish);
+
+	for (const auto & field: getScriptNode () -> getUserDefinedFields ())
 	{
-		if (not JSVAL_IS_VOID (prepareEventsFn))
-			getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
-
-		if (not JSVAL_IS_VOID (eventsProcessedFn))
-			getScriptNode () -> addInterest (this, &Context::eventsProcessed);
-
-		getScriptNode () -> addInterest (this, &Context::finish);
-
-		for (const auto & field: getScriptNode () -> getUserDefinedFields ())
+		switch (field -> getAccessType ())
 		{
-			switch (field -> getAccessType ())
+			case inputOnly:
+			case inputOutput:
 			{
-				case inputOnly:
-				case inputOutput:
-				{
-					if (functions .count (field))
-						field -> addInterest (this, &Context::set_field, field, std::ref (functions [field]));
+				if (functions .count (field))
+					field -> addInterest (this, &Context::set_field, field, std::ref (functions [field]));
 
-					break;
-				}
-				default:
-					break;
+				break;
 			}
-		}
-	}
-	else
-	{
-		if (not JSVAL_IS_VOID (prepareEventsFn))
-			getBrowser () -> prepareEvents () .removeInterest (this, &Context::prepareEvents);
-
-		if (not JSVAL_IS_VOID (eventsProcessedFn))
-			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
-
-		getScriptNode () -> removeInterest (this, &Context::finish);
-
-		for (const auto & field : getScriptNode () -> getUserDefinedFields ())
-		{
-			switch (field -> getAccessType ())
-			{
-				case inputOnly   :
-				case inputOutput :
-					{
-						if (functions .count (field))
-							field -> removeInterest (this, &Context::set_field);
-
-						break;
-					}
-				default:
-					break;
-			}
+			default:
+				break;
 		}
 	}
 }

@@ -3,7 +3,6 @@
 META "titania magic" "Texture"
 
 DEF __NAME__ Transform {
-  scale __WIDTH__ __HEIGHT__ 1
   children Shape {
     appearance Appearance {
       texture ImageTexture {
@@ -13,6 +12,7 @@ DEF __NAME__ Transform {
       }
     }
     geometry Rectangle2D {
+      size __WIDTH__ __HEIGHT__
       solid FALSE
     }
   }

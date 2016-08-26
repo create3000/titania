@@ -98,7 +98,8 @@ public:
 
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL) const
-	throw (std::out_of_range)
+	throw (std::out_of_range,
+	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
 		                                             "WHERE worldURL = " + database .quote (worldURL));
@@ -136,7 +137,8 @@ private:
 
 	const std::string &
 	getId (const std::string & worldURL) const
-	throw (std::out_of_range)
+	throw (std::out_of_range,
+	       std::invalid_argument)
 	{
 		const auto & result = database .query_array ("SELECT id FROM Paths WHERE "
 		                                             "worldURL = " + database .quote (worldURL));

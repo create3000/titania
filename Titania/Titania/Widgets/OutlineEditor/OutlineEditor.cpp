@@ -1463,29 +1463,38 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 
 		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
 	}
-	catch (...)
-	{ }
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	if (executionContext -> getWorldURL () .empty ())
-		return;
-
-	if (not executionContext -> isScene ())
-		return;
-
-	std::deque <std::string> paths;
-
-	getExpanded (treeView -> get_model () -> children (), paths);
-
-	OutlineEditorDatabase database;
-
-	database .setItem (executionContext -> getWorldURL () .filename (),
-	                   basic::join (paths, ";"),
-	                   getScrolledWindow () .get_hadjustment () -> get_value (),
-	                   getScrolledWindow () .get_vadjustment () -> get_value ());
+	try
+	{
+		if (executionContext -> getWorldURL () .empty ())
+			return;
+	
+		if (not executionContext -> isScene ())
+			return;
+	
+		std::deque <std::string> paths;
+	
+		getExpanded (treeView -> get_model () -> children (), paths);
+	
+		OutlineEditorDatabase database;
+	
+		database .setItem (executionContext -> getWorldURL () .filename (),
+		                   basic::join (paths, ";"),
+		                   getScrolledWindow () .get_hadjustment () -> get_value (),
+		                   getScrolledWindow () .get_vadjustment () -> get_value ());
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

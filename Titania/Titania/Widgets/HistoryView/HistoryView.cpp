@@ -156,11 +156,16 @@ HistoryView::set_history ()
 void
 HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
-	// Open worldURL.
-
-	const std::string URL = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string ()) .at ("worldURL");
-
-	getBrowserWindow () -> open (URL);
+	try
+	{
+		// Open worldURL.
+	
+		const std::string URL = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string ()) .at ("worldURL");
+	
+		getBrowserWindow () -> open (URL);
+	}
+	catch (const std::exception & error)
+	{ }
 }
 
 bool

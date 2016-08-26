@@ -83,15 +83,15 @@ public:
 
 	const std::string &
 	getIndex (const std::string &) const
-	throw (std::out_of_range);
+	throw (std::out_of_range,
+	       std::invalid_argument);
 
 	std::string
 	getIcon (const std::string &) const
 	throw (std::invalid_argument);
 
 	void
-	setPreview (const std::string &, const std::string &)
-	throw (std::invalid_argument);
+	setPreview (const std::string &, const std::string &);
 
 	std::string
 	getPreview (const std::string &) const
@@ -104,12 +104,10 @@ public:
 	removeItem (const std::string &);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &) const
-	throw (std::out_of_range);
+	getItemFromIndex (const std::string &) const;
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string &) const
-	throw (std::out_of_range);
+	getItemFromURL (const std::string &) const;
 
 	const sql::sqlite3::assoc_type &
 	getItems (const size_t offset, const size_t limit, const Columns = LAST_ACCESS, const SortOrder = DESC) const;
@@ -138,7 +136,8 @@ private:
 
 	const std::string &
 	getId (const std::string &) const
-	throw (std::out_of_range);
+	throw (std::out_of_range,
+	       std::invalid_argument);
 
 	void
 	insert (const std::string &, const std::string &);

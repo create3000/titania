@@ -158,6 +158,9 @@ Browser::on_map ()
 {
 	opengl::Surface::on_map ();
 
+	if (isLive ())
+		getExecutionContext () -> beginUpdate ();
+
 	grab_focus ();
 	queue_draw ();
 }
@@ -165,6 +168,22 @@ Browser::on_map ()
 void
 Browser::on_unmap ()
 {
+	if (isLive ())
+	{
+		getClock () -> advance ();
+
+		getExecutionContext () -> endUpdate ();
+
+		try
+		{
+			ContextLock lock (this);
+		
+			processEvents ();
+		}
+		catch (const Error <INVALID_OPERATION_TIMING> &)
+		{ }
+	}
+
 	opengl::Surface::on_unmap ();
 }
 

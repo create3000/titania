@@ -65,69 +65,76 @@ History::History () :
 	   database (),
 	fileMonitor ()
 {
-	const bool have_history = os::file_exists (filename);
-
-	os::system ("mkdir", "-p", config_dir ());
-
-	database .open (filename);
-
-	database .query ("CREATE TABLE IF NOT EXISTS History ("
-	                 "id           INTEGER,"
-	                 "icon         BLOB,"
-	                 "title        TEXT,"
-	                 "worldURL     TEXT,"
-	                 "visited      INTEGER DEFAULT 1,"
-	                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
-	                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
-	                 "PRIMARY KEY (id ASC))");
-
-	database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-
-	if (not have_history)
+	try
 	{
-		setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/master/Examples/Gears/gears.wrl",  "");
-		setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Schacht/index.wrl",  "");
-		setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/master/Examples/Appartment/index.wrl",  "");
-		setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/master/Examples/LogoPieces/index.x3d",  "");
-
-		setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/anatomy/anatomy.wrl",  "");
-		setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/master/Examples/MovieTruck/stage/index.wrl",  "");
-		setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/index.wrl",  "");
-		setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Dolphin/index.wrl",  "");
-		setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/info.wrl",  "");
-		setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/buero.wrl",  "");
-		setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/building.wrl",  "");
-		setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/index.wrl",  "");
-		setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/jungle/jungle.wrl",  "");
-		setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/ripple.wrl",  "");
-		setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/master/Examples/VRMLBanner/vrmlbanner.wrl",  "");
-		setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/master/Examples/NIST-Logo/index.wrl",  "");
-
-		setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/master/Examples/Mushrooms/index.wrl",  "");
-		setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/master/Examples/Rathaus/stage/index.x3d",  "");
-		setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Terrain/index.wrl",  "");
-		setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/master/Examples/Approach/stage/index.wrl",  "");
-		setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/huey.wrl",  "");
-		setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Cathedral/stage/index.wrl",  "");
-		setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/master/Examples/LustForLife/stage/index.wrl",  "");
-		setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/index.wrl",  "");
-		setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/foldup.wrl",  "");
-		setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Pong/index.wrl",  "");
-		setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Arcadia/stage/index.wrl",  "");
-		setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Astronomy/stage/astrnmy.wrl",  "");
-		setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/soccer.wrl",  "");
-		setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/labyrinth.wrl",  "");
-		setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Boxes/boxes.x3d",  "");
-		setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Chomp/chomp.x3d",  "");
-
-		setItem ("about:date",  get_page ("about/date.x3dv"),  "");
-		setItem ("about:gears", get_page ("about/gears.x3dv"), "");
-		setItem ("about:home",  get_page ("about/home.x3dv"),  "");
+		const bool have_history = os::file_exists (filename);
+	
+		os::system ("mkdir", "-p", config_dir ());
+	
+		database .open (filename);
+	
+		database .query ("CREATE TABLE IF NOT EXISTS History ("
+		                 "id           INTEGER,"
+		                 "icon         BLOB,"
+		                 "title        TEXT,"
+		                 "worldURL     TEXT,"
+		                 "visited      INTEGER DEFAULT 1,"
+		                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+		                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+		                 "PRIMARY KEY (id ASC))");
+	
+		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
+	
+		if (not have_history)
+		{
+			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/master/Examples/Gears/gears.wrl",  "");
+			setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Schacht/index.wrl",  "");
+			setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/master/Examples/Appartment/index.wrl",  "");
+			setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/master/Examples/LogoPieces/index.x3d",  "");
+	
+			setItem ("Anatomy",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/anatomy/anatomy.wrl",  "");
+			setItem ("MovieTruck",            "https://cdn.rawgit.com/create3000/Library/master/Examples/MovieTruck/stage/index.wrl",  "");
+			setItem ("ICTS",                  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/index.wrl",  "");
+			setItem ("Dolphin",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Dolphin/index.wrl",  "");
+			setItem ("BIC Info",              "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/info.wrl",  "");
+			setItem ("BIC Buero",             "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/buero.wrl",  "");
+			setItem ("BIC Building",          "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/building.wrl",  "");
+			setItem ("BIC Man",               "https://cdn.rawgit.com/create3000/Library/master/Examples/BIC/index.wrl",  "");
+			setItem ("Jungle",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/jungle/jungle.wrl",  "");
+			setItem ("Ripple",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/ripple.wrl",  "");
+			setItem ("VRML Banner",           "https://cdn.rawgit.com/create3000/Library/master/Examples/VRMLBanner/vrmlbanner.wrl",  "");
+			setItem ("NIST-Logo",             "https://cdn.rawgit.com/create3000/Library/master/Examples/NIST-Logo/index.wrl",  "");
+	
+			setItem ("Magic Mushrooms",       "https://cdn.rawgit.com/create3000/Library/master/Examples/Mushrooms/index.wrl",  "");
+			setItem ("Old Leipzig Rathaus",   "https://cdn.rawgit.com/create3000/Library/master/Examples/Rathaus/stage/index.x3d",  "");
+			setItem ("Terrain",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Terrain/index.wrl",  "");
+			setItem ("Approach",              "https://cdn.rawgit.com/create3000/Library/master/Examples/Approach/stage/index.wrl",  "");
+			setItem ("Huey Huey",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/huey.wrl",  "");
+			setItem ("Lost Cathedral",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Cathedral/stage/index.wrl",  "");
+			setItem ("Lust For Life",         "https://cdn.rawgit.com/create3000/Library/master/Examples/LustForLife/stage/index.wrl",  "");
+			setItem ("Mediafacade Berlin",    "https://cdn.rawgit.com/create3000/Library/master/Examples/Vattenfall/index.wrl",  "");
+			setItem ("Foldup",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Compel/foldup.wrl",  "");
+			setItem ("4 Pong",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Pong/index.wrl",  "");
+			setItem ("Arcadia",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Arcadia/stage/index.wrl",  "");
+			setItem ("Astronomy",             "https://cdn.rawgit.com/create3000/Library/master/Examples/Astronomy/stage/astrnmy.wrl",  "");
+			setItem ("Backyard Soccer",       "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/soccer.wrl",  "");
+			setItem ("The Secret Labyrinth",  "https://cdn.rawgit.com/create3000/Library/master/Examples/ICTS/labyrinth.wrl",  "");
+			setItem ("Smashing Boxes",        "https://cdn.rawgit.com/create3000/Library/master/Examples/Boxes/boxes.x3d",  "");
+			setItem ("Chomp!",                "https://cdn.rawgit.com/create3000/Library/master/Examples/Chomp/chomp.x3d",  "");
+	
+			setItem ("about:date",  get_page ("about/date.x3dv"),  "");
+			setItem ("about:gears", get_page ("about/gears.x3dv"), "");
+			setItem ("about:home",  get_page ("about/home.x3dv"),  "");
+		}
+	
+		// Watch for changes
+	
+		connect ();
 	}
-
-	// Watch for changes
-
-	connect ();
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -162,13 +169,21 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 void
 History::constrainSize (const int32_t months)
 {
-	if (months > 0)
-		database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months, std::locale::classic ()) + " month')");
+	try
+	{
+		if (months > 0)
+			database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months, std::locale::classic ()) + " month')");
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 const std::string &
 History::getIndex (const std::string & worldURL) const
-throw (std::out_of_range)
+throw (std::out_of_range,
+	    std::invalid_argument)
 {
 	const auto & result = database .query_array ("SELECT "
 	                                             "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
@@ -197,14 +212,15 @@ throw (std::invalid_argument)
 
 void
 History::setPreview (const std::string & worldURL, const std::string & image)
-throw (std::invalid_argument)
 {
 	try
 	{
 		database .write_blob ("UPDATE History SET preview = ? WHERE id = " + getId (worldURL), image);
 	}
-	catch (const std::out_of_range &)
-	{ }
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 std::string
@@ -223,88 +239,135 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 {
 	try
 	{
-		update (getId (worldURL), title);
+		try
+		{
+			update (getId (worldURL), title);
+		}
+		catch (const std::out_of_range &)
+		{
+			insert (title, worldURL);
+		}
+	
+		database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
 	}
-	catch (const std::out_of_range &)
+	catch (const std::exception & error)
 	{
-		insert (title, worldURL);
+		__LOG__ << error .what () << std::endl;
 	}
-
-	database .write_blob ("UPDATE History SET icon = ? WHERE id = " + getId (worldURL), image);
 }
 
 void
 History::removeItem (const std::string & id)
 {
-	database .query ("DELETE FROM History WHERE id = " + id);
+	try
+	{
+		database .query ("DELETE FROM History WHERE id = " + id);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 const sql::sqlite3::assoc_row_type &
 History::getItemFromIndex (const std::string & index) const
-throw (std::out_of_range)
 {
-	return database .query_assoc ("SELECT title, worldURL FROM History "
-	                              "ORDER BY lastAccess DESC "
-	                              "LIMIT " + index + ", 1") .at (0);
+	try
+	{
+		return database .query_assoc ("SELECT title, worldURL FROM History "
+		                              "ORDER BY lastAccess DESC "
+		                              "LIMIT " + index + ", 1") .at (0);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		static const sql::sqlite3::assoc_row_type empty;
+
+		return empty;
+	}
 }
 
 const sql::sqlite3::assoc_row_type &
 History::getItemFromURL (const std::string & worldURL) const
-throw (std::out_of_range)
 {
-	return database .query_assoc ("SELECT title, worldURL FROM History "
-	                              "WHERE worldURL = " + database .quote (worldURL) + " " +
-	                              "ORDER BY lastAccess DESC") .at (0);
+	try
+	{
+		return database .query_assoc ("SELECT title, worldURL FROM History "
+		                              "WHERE worldURL = " + database .quote (worldURL) + " " +
+		                              "ORDER BY lastAccess DESC") .at (0);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		static const sql::sqlite3::assoc_row_type empty;
+
+		return empty;
+	}
 }
 
 const sql::sqlite3::assoc_type &
 History::getItems (const size_t offset, const size_t size, const Columns column, const SortOrder sortOrder) const
 {
-	std::string order;
+	try
+	{
+		std::string order;
+		
+		switch (column)
+		{
+			case TITLE:
+				order = "ORDER BY title";
+				break;
+			case LAST_ACCESS:
+				order = "ORDER BY lastAccess";
+				break;
+		}
 	
-	switch (column)
-	{
-		case TITLE:
-			order = "ORDER BY title";
-			break;
-		case LAST_ACCESS:
-			order = "ORDER BY lastAccess";
-			break;
+		switch (sortOrder)
+		{
+			case ASC:
+				order += " ASC";
+				break;
+			case DESC:
+				order += " DESC";
+				break;
+		}
+	
+		std::string limit;
+	
+		if (size)
+			limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
+	
+		return database .query_assoc ("SELECT id, title, worldURL FROM History " + order + " " + limit);
 	}
-
-	switch (sortOrder)
+	catch (const std::exception & error)
 	{
-		case ASC:
-			order += " ASC";
-			break;
-		case DESC:
-			order += " DESC";
-			break;
+		__LOG__ << error .what () << std::endl;
+
+		static const sql::sqlite3::assoc_type empty;
+
+		return empty;
 	}
-
-	std::string limit;
-
-	if (size)
-		limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
-
-	return database .query_assoc ("SELECT id, title, worldURL FROM History " + order + " " + limit);
 }
 
 size_t
 History::getSize () const
 {
-	size_t size = 0;
-
 	try
 	{
+		size_t size = 0;
+
 		std::istringstream isstream (database .query_array ("SELECT COUNT (*) FROM History") .at (0) .at (0));
 		
 		isstream >> size;
+
+		return size;
 	}
 	catch (...)
-	{ }
-
-	return size;
+	{
+		return 0;
+	}
 }
 
 void
@@ -331,7 +394,8 @@ History::update (const std::string & id, const std::string & title)
 
 const std::string &
 History::getId (const std::string & worldURL) const
-throw (std::out_of_range)
+throw (std::out_of_range,
+	    std::invalid_argument)
 {
 	const auto & result = database .query_array ("SELECT id FROM History WHERE "
 	                                             "worldURL = " + database .quote (worldURL));

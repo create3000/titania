@@ -114,8 +114,10 @@ ScriptEditor::configure ()
 			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
 		}
 	}
-	catch (...)
-	{ }
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -503,8 +505,10 @@ ScriptEditor::set_executionContext ()
 		if (nodeTypes .count (node -> getType () .back ()))
 			return set_node (node);
 	}
-	catch (...)
-	{ }
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
    
    // Fallback if the node has no name or was not found.
 	set_node (X3D::SFNode ());
@@ -513,14 +517,21 @@ ScriptEditor::set_executionContext ()
 void
 ScriptEditor::store ()
 {
-	if (node)
+	try
 	{
-		ScriptEditorDatabase database;
-
-		database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
-		                   node -> getName (),
-		                   getScrolledWindow () .get_hadjustment () -> get_value (),
-		                   getScrolledWindow () .get_vadjustment () -> get_value ());
+		if (node)
+		{
+			ScriptEditorDatabase database;
+	
+			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
+			                   node -> getName (),
+			                   getScrolledWindow () .get_hadjustment () -> get_value (),
+			                   getScrolledWindow () .get_vadjustment () -> get_value ());
+		}
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 
 	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());

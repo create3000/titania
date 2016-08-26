@@ -227,13 +227,13 @@ MediaStream::sync () const
 void
 MediaStream::start (const double speed, const double position)
 {
-	const auto format = Gst::FORMAT_TIME;
-
 	player -> set_state (Gst::STATE_NULL);
 
-	player -> seek (format,
-	                Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
-	                position * double (Gst::SECOND));
+	player -> seek (speed,
+			          Gst::FORMAT_TIME,
+			          Gst::SEEK_FLAG_FLUSH | Gst::SEEK_FLAG_ACCURATE,
+			          Gst::SEEK_TYPE_SET, position * double (Gst::SECOND),
+			          Gst::SEEK_TYPE_SET, 0);
 
 	player -> set_state (Gst::STATE_PLAYING);
 }
@@ -291,9 +291,6 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
 		{
-			// XXX: Force set volume, as the volume is interally reseted to maximum sometimes.
-			player -> property_volume () = volume;
-
 			__LOG__
 				<< "MESSAGE_DURATION_CHANGED: "
 				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()

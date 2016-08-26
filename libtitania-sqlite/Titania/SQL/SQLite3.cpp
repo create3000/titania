@@ -75,6 +75,8 @@ throw (std::invalid_argument)
 {
 	if (::sqlite3_open (filename .c_str (), &database))
 		error ("Can't open database: ", ::sqlite3_errmsg (database), "");
+
+	query ("PRAGMA database_list");
 }
 
 void
