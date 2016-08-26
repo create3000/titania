@@ -178,7 +178,14 @@ const std::string &
 sqlite3::last_insert_rowid () const
 throw (std::out_of_range)
 {
-	return query_array ("SELECT LAST_INSERT_ROWID ()")  .at (0) .at (0);
+	try
+	{
+		return query_array ("SELECT LAST_INSERT_ROWID ()")  .at (0) .at (0);
+	}
+	catch (const std::invalid_argument &)
+	{
+		throw std::out_of_range ("sqlite3::last_insert_rowid");
+	}
 }
 
 std::string
@@ -277,7 +284,8 @@ throw (std::invalid_argument)
 
 sqlite3::~sqlite3 ()
 {
-	::sqlite3_close (database);
+	if (database)
+		::sqlite3_close (database);
 }
 
 } // sql
