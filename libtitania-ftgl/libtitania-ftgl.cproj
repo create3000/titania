@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2FF7D6FD-C910-4916-9538-B1ADA2448FF1}</ProjectGuid>
+    <Target>SharedLibrary</Target>
+    <Language>CPP</Language>
+    <Compiler>
+      <Compiler ctype="GppCompiler" />
+    </Compiler>
+    <ReleaseVersion>0.3</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputName>libtitania-ftgl</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <OutputName>libtitania-ftgl</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="libtitania-ftgl.cproj" />
+    <None Include="Makefile.am" />
+    <None Include="Makefile.in" />
+    <None Include="Titania\FTCharToGlyphIndexMap.h" />
+    <None Include="Titania\FTCharmap.h" />
+    <None Include="Titania\FTContour.h" />
+    <None Include="Titania\FTFace.h" />
+    <None Include="Titania\FTGlyphContainer.h" />
+    <None Include="Titania\FTInternals.h" />
+    <None Include="Titania\FTLibrary.h" />
+    <None Include="Titania\FTList.h" />
+    <None Include="Titania\FTSize.h" />
+    <None Include="Titania\FTUnicode.h" />
+    <None Include="Titania\FTVector.h" />
+    <None Include="Titania\FTVectoriser.h" />
+    <None Include="Titania\FTFont\FTBitmapFontImpl.h" />
+    <None Include="Titania\FTFont\FTBufferFontImpl.h" />
+    <None Include="Titania\FTFont\FTExtrudeFontImpl.h" />
+    <None Include="Titania\FTFont\FTFontImpl.h" />
+    <None Include="Titania\FTFont\FTOutlineFontImpl.h" />
+    <None Include="Titania\FTFont\FTPixmapFontImpl.h" />
+    <None Include="Titania\FTFont\FTPolygonFontImpl.h" />
+    <None Include="Titania\FTFont\FTTextureFontImpl.h" />
+    <None Include="Titania\FTGL\FTBBox.h" />
+    <None Include="Titania\FTGL\FTBitmapGlyph.h" />
+    <None Include="Titania\FTGL\FTBuffer.h" />
+    <None Include="Titania\FTGL\FTBufferFont.h" />
+    <None Include="Titania\FTGL\FTBufferGlyph.h" />
+    <None Include="Titania\FTGL\FTExtrdGlyph.h" />
+    <None Include="Titania\FTGL\FTFont.h" />
+    <None Include="Titania\FTGL\FTGLBitmapFont.h" />
+    <None Include="Titania\FTGL\FTGLExtrdFont.h" />
+    <None Include="Titania\FTGL\FTGLOutlineFont.h" />
+    <None Include="Titania\FTGL\FTGLPixmapFont.h" />
+    <None Include="Titania\FTGL\FTGLPolygonFont.h" />
+    <None Include="Titania\FTGL\FTGLTextureFont.h" />
+    <None Include="Titania\FTGL\FTGlyph.h" />
+    <None Include="Titania\FTGL\FTLayout.h" />
+    <None Include="Titania\FTGL\FTOutlineGlyph.h" />
+    <None Include="Titania\FTGL\FTPixmapGlyph.h" />
+    <None Include="Titania\FTGL\FTPoint.h" />
+    <None Include="Titania\FTGL\FTPolyGlyph.h" />
+    <None Include="Titania\FTGL\FTSimpleLayout.h" />
+    <None Include="Titania\FTGL\FTTextureGlyph.h" />
+    <None Include="Titania\FTGL\ftgl.h" />
+    <None Include="Titania\FTGlyph\FTBitmapGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTBufferGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTExtrudeGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTOutlineGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTPixmapGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTPolygonGlyphImpl.h" />
+    <None Include="Titania\FTGlyph\FTTextureGlyphImpl.h" />
+    <None Include="Titania\FTLayout\FTLayoutImpl.h" />
+    <None Include="Titania\FTLayout\FTSimpleLayoutImpl.h" />
+    <None Include="COPYING" />
+    <None Include="README" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Titania\" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" ParallelProcesses="4" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="True" Name="libtitania_ftgl_la_SOURCES" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error)\s*:\s*(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error|warning|note)\s*:\s*(?&lt;message&gt;.*)" Name="Custom" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Compile Include="Titania\FTBuffer.cpp" />
+    <Compile Include="Titania\FTCharmap.cpp" />
+    <Compile Include="Titania\FTContour.cpp" />
+    <Compile Include="Titania\FTFace.cpp" />
+    <Compile Include="Titania\FTGlyphContainer.cpp" />
+    <Compile Include="Titania\FTLibrary.cpp" />
+    <Compile Include="Titania\FTPoint.cpp" />
+    <Compile Include="Titania\FTSize.cpp" />
+    <Compile Include="Titania\FTVectoriser.cpp" />
+    <Compile Include="Titania\FTFont\FTBitmapFont.cpp" />
+    <Compile Include="Titania\FTFont\FTBufferFont.cpp" />
+    <Compile Include="Titania\FTFont\FTExtrudeFont.cpp" />
+    <Compile Include="Titania\FTFont\FTFont.cpp" />
+    <Compile Include="Titania\FTFont\FTFontGlue.cpp" />
+    <Compile Include="Titania\FTFont\FTOutlineFont.cpp" />
+    <Compile Include="Titania\FTFont\FTPixmapFont.cpp" />
+    <Compile Include="Titania\FTFont\FTPolygonFont.cpp" />
+    <Compile Include="Titania\FTFont\FTTextureFont.cpp" />
+    <Compile Include="Titania\FTGlyph\FTBitmapGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTBufferGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTExtrudeGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTGlyphGlue.cpp" />
+    <Compile Include="Titania\FTGlyph\FTOutlineGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTPixmapGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTPolygonGlyph.cpp" />
+    <Compile Include="Titania\FTGlyph\FTTextureGlyph.cpp" />
+    <Compile Include="Titania\FTLayout\FTLayout.cpp" />
+    <Compile Include="Titania\FTLayout\FTLayoutGlue.cpp" />
+    <Compile Include="Titania\FTLayout\FTSimpleLayout.cpp" />
+  </ItemGroup>
+</Project>

@@ -300,6 +300,8 @@ SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 TITANIA_CFLAGS = @TITANIA_CFLAGS@
+TITANIA_FTGL_CFLAGS = @TITANIA_FTGL_CFLAGS@
+TITANIA_FTGL_LIBS = @TITANIA_FTGL_LIBS@
 TITANIA_GZSTREAM_CFLAGS = @TITANIA_GZSTREAM_CFLAGS@
 TITANIA_GZSTREAM_LIBS = @TITANIA_GZSTREAM_LIBS@
 TITANIA_LIBS = @TITANIA_LIBS@
@@ -380,6 +382,7 @@ SUBDIRS = \
 	libtitania-gzstream \
 	libtitania-opengl-surface \
 	libtitania-peaseblossom \
+	libtitania-ftgl \
 	libtitania-x3d \
 	Titania \
 	titania-info \

@@ -126,6 +126,12 @@ mozjs185
 ImageMagick++
 libgtop-2.0)
 
+PKG_CHECK_MODULES(TITANIA_FTGL,
+freetype2
+fontconfig
+glu
+gl)
+
 PKG_CHECK_MODULES(TITANIA_STREAM,
 libcurl
 giomm-2.4)
@@ -154,6 +160,7 @@ libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-peaseblossom/Makefile
+libtitania-ftgl/Makefile
 libtitania-x3d/Makefile
 Titania/Makefile
 titania-info/Makefile
