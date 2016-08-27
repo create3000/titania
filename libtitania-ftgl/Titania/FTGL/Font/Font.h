@@ -30,7 +30,7 @@
 
 #include "../BBox.h"
 #include "../Glyph/Glyph.h"
-#include "../Point.h"
+#include "../Vector.h"
 #include "../Types.h"
 
 #include <ft2build.h>
@@ -375,4 +375,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTFont__
+#endif

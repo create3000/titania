@@ -175,4 +175,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTSize__
+#endif

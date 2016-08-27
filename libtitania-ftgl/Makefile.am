@@ -16,8 +16,8 @@ libtitania_ftgl_la_SOURCES =  \
 	Titania/FTGL/Glyph/PolygonGlyph.cpp \
 	Titania/FTGL/GlyphContainer.cpp \
 	Titania/FTGL/Library.cpp \
-	Titania/FTGL/Point.cpp \
 	Titania/FTGL/Size.cpp \
-	Titania/FTGL/Vectoriser.cpp
+	Titania/FTGL/Vector.cpp \
+	Titania/FTGL/Vectorizer.cpp
 
 AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) 

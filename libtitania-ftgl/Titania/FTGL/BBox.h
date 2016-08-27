@@ -28,7 +28,7 @@
 #ifndef __TITANIA_FTGL_BBOX_H__
 #define __TITANIA_FTGL_BBOX_H__
 
-#include "Point.h"
+#include "Vector.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -179,6 +179,7 @@ public:
 	getLower () const
 	{ return lower; }
 
+
 private:
 
 	/**
@@ -191,4 +192,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTBBox__
+#endif

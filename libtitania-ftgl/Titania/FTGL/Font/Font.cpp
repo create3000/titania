@@ -435,7 +435,7 @@ FontImpl::checkGlyph (const uint32_t characterCode)
 		return true;
 	}
 
-	uint32_t glyphIndex = glyphList -> getFontIndex (characterCode);
+	uint32_t     glyphIndex = glyphList -> getFontIndex (characterCode);
 	FT_GlyphSlot ftSlot     = face .getGlyph (glyphIndex, load_flags);
 
 	if (! ftSlot)

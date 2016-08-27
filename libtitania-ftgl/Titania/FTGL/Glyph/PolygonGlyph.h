@@ -76,4 +76,4 @@ public:
 } // FTGL
 } // titania
 
-#endif  //  __FTPolygonGlyph__
+#endif

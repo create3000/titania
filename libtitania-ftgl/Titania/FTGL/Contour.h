@@ -28,7 +28,7 @@
 #ifndef __TITANIA_FTGL_CONTOUR_H__
 #define __TITANIA_FTGL_CONTOUR_H__
 
-#include "Point.h"
+#include "Vector.h"
 
 #include <vector>
 
@@ -42,7 +42,7 @@ namespace FTGL {
 /**
  * Contour class is a container of points that describe a vector font
  * outline. It is used as a container for the output of the bezier curve
- * evaluator in Vectoriser.
+ * evaluator in Vectorizer.
  *
  * @see FTOutlineGlyph
  * @see PolygonGlyph
@@ -255,4 +255,4 @@ private:
 } // FTGL
 } // titania
 
-#endif // __FTContour__
+#endif

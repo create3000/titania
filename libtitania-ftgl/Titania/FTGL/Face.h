@@ -26,7 +26,7 @@
 #ifndef __TITANIA_FTGL_FACE_H__
 #define __TITANIA_FTGL_FACE_H__
 
-#include "Point.h"
+#include "Vector.h"
 #include "Size.h"
 
 #include <ft2build.h>
@@ -200,4 +200,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTFace__
+#endif

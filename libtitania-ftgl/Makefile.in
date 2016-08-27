@@ -135,8 +135,8 @@ am_libtitania_ftgl_la_OBJECTS = Titania/FTGL/Charmap.lo \
 	Titania/FTGL/Font/Font.lo Titania/FTGL/Font/PolygonFont.lo \
 	Titania/FTGL/Glyph/Glyph.lo Titania/FTGL/Glyph/PolygonGlyph.lo \
 	Titania/FTGL/GlyphContainer.lo Titania/FTGL/Library.lo \
-	Titania/FTGL/Point.lo Titania/FTGL/Size.lo \
-	Titania/FTGL/Vectoriser.lo
+	Titania/FTGL/Size.lo Titania/FTGL/Vector.lo \
+	Titania/FTGL/Vectorizer.lo
 libtitania_ftgl_la_OBJECTS = $(am_libtitania_ftgl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -391,9 +391,9 @@ libtitania_ftgl_la_SOURCES = \
 	Titania/FTGL/Glyph/PolygonGlyph.cpp \
 	Titania/FTGL/GlyphContainer.cpp \
 	Titania/FTGL/Library.cpp \
-	Titania/FTGL/Point.cpp \
 	Titania/FTGL/Size.cpp \
-	Titania/FTGL/Vectoriser.cpp
+	Titania/FTGL/Vector.cpp \
+	Titania/FTGL/Vectorizer.cpp
 
 AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) 
 all: all-am
@@ -501,11 +501,11 @@ Titania/FTGL/GlyphContainer.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 Titania/FTGL/Library.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Point.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 Titania/FTGL/Size.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Vectoriser.lo: Titania/FTGL/$(am__dirstamp) \
+Titania/FTGL/Vector.lo: Titania/FTGL/$(am__dirstamp) \
+	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
+Titania/FTGL/Vectorizer.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 
 libtitania-ftgl.la: $(libtitania_ftgl_la_OBJECTS) $(libtitania_ftgl_la_DEPENDENCIES) $(EXTRA_libtitania_ftgl_la_DEPENDENCIES) 
@@ -528,9 +528,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Face.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Library.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Point.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Size.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vectoriser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vectorizer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/Font.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Glyph/$(DEPDIR)/Glyph.Plo@am__quote@

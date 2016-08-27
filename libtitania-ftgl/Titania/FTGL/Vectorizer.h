@@ -108,9 +108,9 @@ private:
 };
 
 /**
- * FTMesh is a container of Tesselation's that make up a polygon glyph
+ * Mesh is a container of Tesselation's that make up a polygon glyph
  */
-class FTMesh
+class Mesh
 {
 	using TesselationVector = std::vector <Tesselation*>;
 	using PointList         = std::list <Vector3d>;
@@ -121,12 +121,12 @@ public:
 	/**
 	 * Default constructor
 	 */
-	FTMesh ();
+	Mesh ();
 
 	/**
 	 *  Destructor
 	 */
-	~FTMesh ();
+	~Mesh ();
 
 	/**
 	 * Add a point to the mesh
@@ -216,7 +216,7 @@ static constexpr double FTGL_FRONT_FACING = 1;
 static constexpr double FTGL_BACK_FACING  = -1;
 
 /**
- * Vectoriser class is a helper class that converts font outlines into
+ * Vectorizer class is a helper class that converts font outlines into
  * point data.
  *
  * @see FTExtrudeGlyph
@@ -226,7 +226,7 @@ static constexpr double FTGL_BACK_FACING  = -1;
  * @see Vector3d
  *
  */
-class Vectoriser
+class Vectorizer
 {
 public:
 
@@ -235,16 +235,16 @@ public:
 	 *
 	 * @param glyph The freetype glyph to be processed
 	 */
-	Vectoriser (const FT_GlyphSlot glyph);
+	Vectorizer (const FT_GlyphSlot glyph);
 
 	/**
 	 *  Destructor
 	 */
 	virtual
-	~Vectoriser ();
+	~Vectorizer ();
 
 	/**
-	 * Build an FTMesh from the vector outline data.
+	 * Build an Mesh from the vector outline data.
 	 *
 	 * @param zNormal   The direction of the z axis of the normal
 	 *                  for this mesh
@@ -261,7 +261,7 @@ public:
 	/**
 	 * Get the current mesh.
 	 */
-	const FTMesh* const
+	const Mesh* const
 	getMesh () const
 	{ return mesh; }
 
@@ -329,7 +329,7 @@ private:
 	/**
 	 * A Mesh for tesselations
 	 */
-	FTMesh* mesh;
+	Mesh* mesh;
 
 	/**
 	 * The number of contours reported by Freetype
@@ -351,4 +351,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTVectoriser__
+#endif

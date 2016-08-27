@@ -27,7 +27,7 @@
 
 #include "PolygonGlyph.h"
 
-#include "../Vectoriser.h"
+#include "../Vectorizer.h"
 #include "PolygonGlyphImpl.h"
 
 namespace titania {
@@ -66,7 +66,7 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool use
 		return;
 	}
 
-	vectoriser = new Vectoriser (glyph);
+	vectoriser = new Vectorizer (glyph);
 
 	if ((vectoriser -> getContourCount () < 1) or (vectoriser -> getPointCount () < 3))
 	{
@@ -129,12 +129,12 @@ PolygonGlyphImpl::doRender ()
 {
 	vectoriser -> makeMesh (1, 1, outset);
 
-	const FTMesh* mesh = vectoriser -> getMesh ();
+	const Mesh* mesh = vectoriser -> getMesh ();
 
 	for (uint32_t t = 0; t < mesh -> getTesselationCount (); ++ t)
 	{
 		const Tesselation* subMesh     = mesh -> getTesselation (t);
-		uint32_t       polygonType = subMesh -> PolygonType ();
+		uint32_t           polygonType = subMesh -> PolygonType ();
 
 		glBegin (polygonType);
 

@@ -71,4 +71,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTPolygonFontImpl__
+#endif

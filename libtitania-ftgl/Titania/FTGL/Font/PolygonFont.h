@@ -87,4 +87,4 @@ protected:
 } // FTGL
 } // titania
 
-#endif  //  __FTPolygonFont__
+#endif

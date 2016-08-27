@@ -132,4 +132,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTLibrary__
+#endif

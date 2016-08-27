@@ -164,4 +164,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTCharToGlyphIndexMap__
+#endif

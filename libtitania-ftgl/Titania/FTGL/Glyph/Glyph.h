@@ -29,7 +29,7 @@
 #define __TITANIA_FTGL_GLYPH_GLYPH_H__
 
 #include "../BBox.h"
-#include "../Point.h"
+#include "../Vector.h"
 #include "../Types.h"
 
 #include <ft2build.h>
@@ -142,4 +142,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTGlyph__
+#endif

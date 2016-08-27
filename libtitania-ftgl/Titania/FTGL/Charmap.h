@@ -180,4 +180,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTCharmap__
+#endif

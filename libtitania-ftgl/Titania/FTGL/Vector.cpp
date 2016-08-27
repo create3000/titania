@@ -24,7 +24,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Point.h"
+#include "Vector.h"
 
 #include <cmath>
 
@@ -34,25 +34,31 @@ namespace FTGL {
 bool
 operator == (const Vector3d & a, const Vector3d & b)
 {
-	return ((a.values [0] == b .values [0]) && (a.values [1] == b .values [1]) && (a.values [2] == b .values [2]));
+	return
+		((a.values [0] == b .values [0]) &&
+		 (a.values [1] == b .values [1]) &&
+		 (a.values [2] == b .values [2]));
 }
 
 bool
 operator not_eq (const Vector3d & a, const Vector3d & b)
 {
-	return ((a.values [0] not_eq b .values [0]) or (a.values [1] not_eq b .values [1]) or (a.values [2] not_eq b .values [2]));
+	return
+		((a.values [0] not_eq b .values [0]) or
+		 (a.values [1] not_eq b .values [1]) or
+		 (a.values [2] not_eq b .values [2]));
 }
 
 Vector3d
 normalize (const Vector3d & value)
 {
-	double norm = sqrt (value .x () * value .x ()
-	                    + value .y () * value .y ()
-	                    + value .z () * value .z ());
+	double norm = std::sqrt (value .x () * value .x ()
+	                         + value .y () * value .y ()
+	                         + value .z () * value .z ());
 
-	if (norm == 0.0)
+	if (norm == 0)
 	{
-		return value;
+		return Vector3d ();
 	}
 
 	Vector3d temp (value .x () / norm, value .y () / norm, value .z () / norm);

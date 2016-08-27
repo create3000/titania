@@ -71,4 +71,4 @@ protected:
 } // FTGL
 } // titania
 
-#endif  //  __FTGlyphImpl__
+#endif

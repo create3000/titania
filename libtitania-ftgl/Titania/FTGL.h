@@ -28,19 +28,13 @@
 #ifndef __TITANIA_FTGL_FTGL_H__
 #define __TITANIA_FTGL_FTGL_H__
 
-#include "BBox.h"
-#include "Point.h"
+#include "FTGL/BBox.h"
+#include "FTGL/Vector.h"
 
-#include "Glyph/Glyph.h"
-#include "Glyph/PolygonGlyph.h"
+#include "FTGL/Glyph/Glyph.h"
+#include "FTGL/Glyph/PolygonGlyph.h"
 
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
+#include "FTGL/Font/Font.h"
+#include "FTGL/Font/PolygonFont.h"
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
-
-#endif  //  __ftgl__
+#endif

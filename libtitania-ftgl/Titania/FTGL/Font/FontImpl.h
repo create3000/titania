@@ -28,7 +28,6 @@
 #define __TITANIA_FTGL_FONT_FONT_IMPL_H__
 
 #include "../Face.h"
-#include "../ftgl.h"
 
 namespace titania {
 namespace FTGL {
@@ -183,4 +182,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTFontImpl__
+#endif

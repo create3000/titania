@@ -25,7 +25,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Vectoriser.h"
+#include "Vectorizer.h"
 
 #include <GL/glu.h>
 
@@ -36,14 +36,14 @@ using GLUTesselatorFunction = GLvoid (*)();
 
 static
 void
-ftglError (GLenum errCode, FTMesh* mesh)
+ftglError (GLenum errCode, Mesh* mesh)
 {
 	mesh -> setError (errCode);
 }
 
 static
 void
-ftglVertex (void* data, FTMesh* mesh)
+ftglVertex (void* data, Mesh* mesh)
 {
 	double* vertex = static_cast <double*> (data);
 
@@ -52,7 +52,7 @@ ftglVertex (void* data, FTMesh* mesh)
 
 static
 void
-ftglCombine (double coords [3], void* vertex_data [4], GLfloat weight [4], void** outData, FTMesh* mesh)
+ftglCombine (double coords [3], void* vertex_data [4], GLfloat weight [4], void** outData, Mesh* mesh)
 {
 	const double* vertex = static_cast <const double*> (coords);
 
@@ -61,26 +61,26 @@ ftglCombine (double coords [3], void* vertex_data [4], GLfloat weight [4], void*
 
 static
 void
-ftglBegin (GLenum type, FTMesh* mesh)
+ftglBegin (GLenum type, Mesh* mesh)
 {
 	mesh -> begin (type);
 }
 
 static
 void
-ftglEnd (FTMesh* mesh)
+ftglEnd (Mesh* mesh)
 {
 	mesh -> end ();
 }
 
-FTMesh::FTMesh () :
+Mesh::Mesh () :
 	currentTesselation (0),
 	               err (0)
 {
 	tesselationList .reserve (16);
 }
 
-FTMesh::~FTMesh ()
+Mesh::~Mesh ()
 {
 	for (size_t t = 0; t < tesselationList .size (); ++ t)
 	{
@@ -91,37 +91,37 @@ FTMesh::~FTMesh ()
 }
 
 void
-FTMesh::addPoint (const double x, const double y, const double z)
+Mesh::addPoint (const double x, const double y, const double z)
 {
 	currentTesselation -> AddPoint (x, y, z);
 }
 
 const double*
-FTMesh::combine (const double x, const double y, const double z)
+Mesh::combine (const double x, const double y, const double z)
 {
 	tempPointList .emplace_back (x, y, z);
 	return tempPointList .back () .data ();
 }
 
 void
-FTMesh::begin (GLenum meshType)
+Mesh::begin (GLenum meshType)
 {
 	currentTesselation = new Tesselation (meshType);
 }
 
 void
-FTMesh::end ()
+Mesh::end ()
 {
 	tesselationList .emplace_back (currentTesselation);
 }
 
 const Tesselation* const
-FTMesh::getTesselation (size_t index) const
+Mesh::getTesselation (size_t index) const
 {
 	return (index < tesselationList .size ()) ? tesselationList [index] : nullptr;
 }
 
-Vectoriser::Vectoriser (const FT_GlyphSlot glyph) :
+Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
 	   contourList (0),
 	          mesh (0),
 	ftContourCount (0),
@@ -139,7 +139,7 @@ Vectoriser::Vectoriser (const FT_GlyphSlot glyph) :
 	}
 }
 
-Vectoriser::~Vectoriser ()
+Vectorizer::~Vectorizer ()
 {
 	for (size_t c = 0; c < getContourCount (); ++ c)
 	{
@@ -151,7 +151,7 @@ Vectoriser::~Vectoriser ()
 }
 
 void
-Vectoriser::processContours ()
+Vectorizer::processContours ()
 {
 	short contourLength = 0;
 	short startIndex    = 0;
@@ -241,7 +241,7 @@ Vectoriser::processContours ()
 }
 
 size_t
-Vectoriser::getPointCount ()
+Vectorizer::getPointCount ()
 {
 	size_t s = 0;
 
@@ -254,20 +254,20 @@ Vectoriser::getPointCount ()
 }
 
 const Contour* const
-Vectoriser::getContour (size_t index) const
+Vectorizer::getContour (size_t index) const
 {
 	return (index < getContourCount ()) ? contourList [index] : nullptr;
 }
 
 void
-Vectoriser::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
+Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 {
 	if (mesh)
 	{
 		delete mesh;
 	}
 
-	mesh = new FTMesh;
+	mesh = new Mesh;
 
 	GLUtesselator* tobj = gluNewTess ();
 

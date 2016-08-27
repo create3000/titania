@@ -52,4 +52,4 @@ enum class TextAlignment
 } // FTGL
 } // titania
 
-#endif  //  __ftgl__
+#endif

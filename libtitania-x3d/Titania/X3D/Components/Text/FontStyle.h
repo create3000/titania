@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 
 #include "../Text/X3DFontStyleNode.h"
-#include <Titania/FTGL/ftgl.h>
+#include <Titania/FTGL.h>
 
 namespace titania {
 namespace X3D {

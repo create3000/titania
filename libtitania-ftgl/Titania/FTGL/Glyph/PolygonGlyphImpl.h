@@ -34,7 +34,7 @@
 namespace titania {
 namespace FTGL {
 
-class Vectoriser;
+class Vectorizer;
 
 class PolygonGlyphImpl :
 	public GlyphImpl
@@ -64,9 +64,9 @@ private:
 	/**
 	 * Private rendering variables.
 	 */
-	uint32_t hscale, vscale;
-	Vectoriser*  vectoriser;
-	double       outset;
+	uint32_t    hscale, vscale;
+	Vectorizer* vectoriser;
+	double      outset;
 
 	/**
 	 * OpenGL display list
@@ -78,4 +78,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTPolygonGlyphImpl__
+#endif

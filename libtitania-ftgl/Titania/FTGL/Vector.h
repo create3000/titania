@@ -240,4 +240,4 @@ normalize (const Vector3d &);
 } // FTGL
 } // titania
 
-#endif  //  __FTPoint__
+#endif

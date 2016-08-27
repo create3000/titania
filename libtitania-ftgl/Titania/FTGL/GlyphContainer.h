@@ -172,4 +172,4 @@ private:
 } // FTGL
 } // titania
 
-#endif  //  __FTGlyphContainer__
+#endif
