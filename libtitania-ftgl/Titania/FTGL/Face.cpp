@@ -159,14 +159,14 @@ Face::getCharMapList ()
 	return fontEncodingList;
 }
 
-Point
+Vector3d
 Face::getKernAdvance (unsigned int index1, unsigned int index2)
 {
 	double x, y;
 
 	if (! hasKerningTable or ! index1 or ! index2)
 	{
-		return Point (0, 0);
+		return Vector3d (0, 0);
 	}
 
 	if (kerningCache && index1 < Face::MAX_PRECOMPUTED
@@ -174,7 +174,7 @@ Face::getKernAdvance (unsigned int index1, unsigned int index2)
 	{
 		x = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1)];
 		y = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1) + 1];
-		return Point (x, y);
+		return Vector3d (x, y);
 	}
 
 	FT_Vector kernAdvance;
@@ -185,13 +185,13 @@ Face::getKernAdvance (unsigned int index1, unsigned int index2)
 
 	if (err)
 	{
-		return Point (0, 0);
+		return Vector3d (0, 0);
 	}
 
 	x = static_cast <double> (kernAdvance.x) / 64.0;
 	y = static_cast <double> (kernAdvance.y) / 64.0;
 
-	return Point (x, y);
+	return Vector3d (x, y);
 }
 
 FT_GlyphSlot

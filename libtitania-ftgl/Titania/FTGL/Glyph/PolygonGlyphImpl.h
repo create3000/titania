@@ -49,8 +49,8 @@ public:
 	virtual
 	~PolygonGlyphImpl ();
 
-	virtual const Point &
-	renderImpl (const Point & pen, FTGL::RenderMode renderMode);
+	virtual const Vector3d &
+	renderImpl (const Vector3d & pen, FTGL::RenderMode renderMode);
 
 
 private:

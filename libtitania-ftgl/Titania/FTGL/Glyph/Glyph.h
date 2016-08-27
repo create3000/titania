@@ -99,8 +99,8 @@ public:
 	 * @return  The advance distance for this glyph.
 	 */
 	virtual
-	const Point &
-	render (const Point & pen, FTGL::RenderMode renderMode) = 0;
+	const Vector3d &
+	render (const Vector3d & pen, FTGL::RenderMode renderMode) = 0;
 
 	/**
 	 * Return the advance width for this glyph.

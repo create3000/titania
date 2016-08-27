@@ -147,40 +147,40 @@ Font::getLineHeight () const
 	return impl -> getLineHeight ();
 }
 
-Point
-Font::render (const char* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
+Vector3d
+Font::render (const char* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	return impl -> render (string, len, position, spacing, renderMode);
 }
 
-Point
-Font::render (const wchar_t* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
+Vector3d
+Font::render (const wchar_t* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	return impl -> render (string, len, position, spacing, renderMode);
 }
 
 double
-Font::advance (const char* string, const int len, Point spacing)
+Font::advance (const char* string, const int len, Vector3d spacing)
 {
 	return impl -> advance (string, len, spacing);
 }
 
 double
-Font::advance (const wchar_t* string, const int len, Point spacing)
+Font::advance (const wchar_t* string, const int len, Vector3d spacing)
 {
 	return impl -> advance (string, len, spacing);
 }
 
 BBox
 Font::getBBox (const char* string, const int len,
-               Point position, Point spacing)
+               Vector3d position, Vector3d spacing)
 {
 	return impl -> getBBox (string, len, position, spacing);
 }
 
 BBox
 Font::getBBox (const wchar_t* string, const int len,
-               Point position, Point spacing)
+               Vector3d position, Vector3d spacing)
 {
 	return impl -> getBBox (string, len, position, spacing);
 }
@@ -354,7 +354,7 @@ FontImpl::getLineHeight () const
 template <typename T>
 inline
 BBox
-FontImpl::getBBoxI (const T* string, const int len, Point position, Point spacing)
+FontImpl::getBBoxI (const T* string, const int len, Vector3d position, Vector3d spacing)
 {
 	BBox totalBBox;
 
@@ -371,7 +371,7 @@ FontImpl::getBBoxI (const T* string, const int len, Point position, Point spacin
 			totalBBox  = glyphList -> getBBox (thisChar);
 			totalBBox += position;
 
-			position += Point (glyphList -> advance (thisChar, nextChar), 0);
+			position += Vector3d (glyphList -> advance (thisChar, nextChar), 0);
 		}
 
 		/* Expand totalBox by each glyph in string */
@@ -388,7 +388,7 @@ FontImpl::getBBoxI (const T* string, const int len, Point position, Point spacin
 				tempBBox  += position;
 				totalBBox |= tempBBox;
 
-				position += Point (glyphList -> advance (thisChar, nextChar), 0);
+				position += Vector3d (glyphList -> advance (thisChar, nextChar), 0);
 			}
 		}
 	}
@@ -397,14 +397,14 @@ FontImpl::getBBoxI (const T* string, const int len, Point position, Point spacin
 }
 
 BBox
-FontImpl::getBBox (const char* string, const int len, Point position, Point spacing)
+FontImpl::getBBox (const char* string, const int len, Vector3d position, Vector3d spacing)
 {
 	/* The chars need to be unsigned because they are cast to int later */
 	return getBBoxI ((const unsigned char*) string, len, position, spacing);
 }
 
 BBox
-FontImpl::getBBox (const wchar_t* string, const int len, Point position, Point spacing)
+FontImpl::getBBox (const wchar_t* string, const int len, Vector3d position, Vector3d spacing)
 {
 	return getBBoxI (string, len, position, spacing);
 }
@@ -412,7 +412,7 @@ FontImpl::getBBox (const wchar_t* string, const int len, Point position, Point s
 template <typename T>
 inline
 double
-FontImpl::advanceI (const T* string, const int len, Point spacing)
+FontImpl::advanceI (const T* string, const int len, Vector3d spacing)
 {
 	double advance = 0;
 
@@ -430,7 +430,7 @@ FontImpl::advanceI (const T* string, const int len, Point spacing)
 
 		if (nextChar)
 		{
-			advance += spacing .X ();
+			advance += spacing .x ();
 		}
 	}
 
@@ -438,22 +438,23 @@ FontImpl::advanceI (const T* string, const int len, Point spacing)
 }
 
 double
-FontImpl::advance (const char* string, const int len, Point spacing)
+FontImpl::advance (const char* string, const int len, Vector3d spacing)
 {
 	/* The chars need to be unsigned because they are cast to int later */
 	return advanceI ((const unsigned char*) string, len, spacing);
 }
 
 double
-FontImpl::advance (const wchar_t* string, const int len, Point spacing)
+FontImpl::advance (const wchar_t* string, const int len, Vector3d spacing)
 {
 	return advanceI (string, len, spacing);
 }
 
 template <typename T>
-inline Point
+inline
+Vector3d
 FontImpl::renderI (const T* string, const int len,
-                   Point position, Point spacing,
+                   Vector3d position, Vector3d spacing,
                    FTGL::RenderMode renderMode)
 {
 	// for multibyte - we can't rely on sizeof(T) == character
@@ -478,15 +479,15 @@ FontImpl::renderI (const T* string, const int len,
 	return position;
 }
 
-Point
-FontImpl::render (const char* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
+Vector3d
+FontImpl::render (const char* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	return renderI ((const unsigned char*) string,
 	                len, position, spacing, renderMode);
 }
 
-Point
-FontImpl::render (const wchar_t* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
+Vector3d
+FontImpl::render (const wchar_t* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	return renderI (string, len, position, spacing, renderMode);
 }

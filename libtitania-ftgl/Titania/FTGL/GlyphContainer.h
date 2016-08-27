@@ -131,10 +131,10 @@ public:
 	 * @param renderMode         Render mode to display
 	 * @return                   The distance to advance the pen position after Rendering
 	 */
-	Point
+	Vector3d
 	render (const unsigned int characterCode,
 	        const unsigned int nextCharacterCode,
-	        Point penPosition, FTGL::RenderMode renderMode);
+	        Vector3d penPosition, FTGL::RenderMode renderMode);
 
 	/**
 	 * Queries the Font for errors.

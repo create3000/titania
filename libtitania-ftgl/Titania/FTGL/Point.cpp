@@ -32,30 +32,30 @@ namespace titania {
 namespace FTGL {
 
 bool
-operator == (const Point & a, const Point & b)
+operator == (const Vector3d & a, const Vector3d & b)
 {
 	return ((a.values [0] == b .values [0]) && (a.values [1] == b .values [1]) && (a.values [2] == b .values [2]));
 }
 
 bool
-operator not_eq (const Point & a, const Point & b)
+operator not_eq (const Vector3d & a, const Vector3d & b)
 {
 	return ((a.values [0] not_eq b .values [0]) or (a.values [1] not_eq b .values [1]) or (a.values [2] not_eq b .values [2]));
 }
 
-Point
-Point::Normalise ()
+Vector3d
+normalize (const Vector3d & value)
 {
-	double norm = sqrt (values [0] * values [0]
-	                    + values [1] * values [1]
-	                    + values [2] * values [2]);
+	double norm = sqrt (value .x () * value .x ()
+	                    + value .y () * value .y ()
+	                    + value .z () * value .z ());
 
 	if (norm == 0.0)
 	{
-		return *this;
+		return value;
 	}
 
-	Point temp (values [0] / norm, values [1] / norm, values [2] / norm);
+	Vector3d temp (value .x () / norm, value .y () / norm, value .z () / norm);
 	return temp;
 }
 

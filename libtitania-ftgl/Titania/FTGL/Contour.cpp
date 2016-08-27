@@ -35,7 +35,7 @@ namespace FTGL {
 static const unsigned int BEZIER_STEPS = 5;
 
 void
-Contour::addPoint (Point point)
+Contour::addPoint (Vector3d point)
 {
 	if (pointList.empty () or (point not_eq pointList [pointList.size () - 1]
 	                           && point not_eq pointList [0]))
@@ -45,50 +45,50 @@ Contour::addPoint (Point point)
 }
 
 void
-Contour::addOutsetPoint (Point point)
+Contour::addOutsetPoint (Vector3d point)
 {
 	outsetPointList .push_back (point);
 }
 
 void
-Contour::addFrontPoint (Point point)
+Contour::addFrontPoint (Vector3d point)
 {
 	frontPointList .push_back (point);
 }
 
 void
-Contour::addBackPoint (Point point)
+Contour::addBackPoint (Vector3d point)
 {
 	backPointList .push_back (point);
 }
 
 void
-Contour::evaluateQuadraticCurve (Point A, Point B, Point C)
+Contour::evaluateQuadraticCurve (Vector3d A, Vector3d B, Vector3d C)
 {
 	for (unsigned int i = 1; i < BEZIER_STEPS; i ++)
 	{
 		double t = static_cast <double> (i) / BEZIER_STEPS;
 
-		Point U = (1 - t) * A + t * B;
-		Point V = (1 - t) * B + t * C;
+		Vector3d U = (1 - t) * A + t * B;
+		Vector3d V = (1 - t) * B + t * C;
 
 		addPoint ((1 - t) * U + t * V);
 	}
 }
 
 void
-Contour::evaluateCubicCurve (Point A, Point B, Point C, Point D)
+Contour::evaluateCubicCurve (Vector3d A, Vector3d B, Vector3d C, Vector3d D)
 {
 	for (unsigned int i = 0; i < BEZIER_STEPS; i ++)
 	{
 		double t = static_cast <double> (i) / BEZIER_STEPS;
 
-		Point U = (1 - t) * A + t * B;
-		Point V = (1 - t) * B + t * C;
-		Point W = (1 - t) * C + t * D;
+		Vector3d U = (1 - t) * A + t * B;
+		Vector3d V = (1 - t) * B + t * C;
+		Vector3d W = (1 - t) * C + t * D;
 
-		Point M = (1 - t) * U + t * V;
-		Point N = (1 - t) * V + t * W;
+		Vector3d M = (1 - t) * U + t * V;
+		Vector3d N = (1 - t) * V + t * W;
 
 		addPoint ((1 - t) * M + t * N);
 	}
@@ -108,34 +108,34 @@ Contour::evaluateCubicCurve (Point A, Point B, Point C, Point D)
 //                 \                       \                 .
 //                C X                     C X
 //
-Point
-Contour::computeOutsetPoint (Point A, Point B, Point C)
+Vector3d
+Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
 {
 	/* Build the rotation matrix from 'ba' vector */
-	Point ba = (A - B) .Normalise ();
-	Point bc = C - B;
+	Vector3d ba = normalize (A - B);
+	Vector3d bc = C - B;
 
 	/* Rotate bc to the left */
-	Point tmp (bc.X () * -ba.X () + bc .Y () * -ba.Y (),
-	           bc .X () * ba .Y () + bc .Y () * -ba.X ());
+	Vector3d tmp (bc.x () * -ba.x () + bc .y () * -ba.y (),
+	              bc .x () * ba .y () + bc .y () * -ba.x ());
 
 	/* Compute the vector bisecting 'abc' */
-	double norm = sqrt (tmp.X () * tmp .X () + tmp .Y () * tmp .Y ());
-	double dist = 64.0 * sqrt ((norm - tmp .X ()) / (norm + tmp .X ()));
+	double norm = sqrt (tmp.x () * tmp .x () + tmp .y () * tmp .y ());
+	double dist = 64.0 * sqrt ((norm - tmp .x ()) / (norm + tmp .x ()));
 
-	tmp .X (tmp.Y () < 0.0 ? dist : -dist);
-	tmp .Y (64.0);
+	tmp .x (tmp.y () < 0.0 ? dist : -dist);
+	tmp .y (64.0);
 
 	/* Rotate the new bc to the right */
-	return Point (tmp.X () * -ba.X () + tmp .Y () * ba .Y (),
-	              tmp .X () * -ba.Y () + tmp .Y () * -ba.X ());
+	return Vector3d (tmp.x () * -ba.x () + tmp .y () * ba .y (),
+	                 tmp .x () * -ba.y () + tmp .y () * -ba.x ());
 }
 
 void
 Contour::setParity (int parity)
 {
-	size_t size = getPointCount ();
-	Point  vOutset;
+	size_t   size = getPointCount ();
+	Vector3d vOutset;
 
 	if (((parity & 1) && clockwise) or (! (parity & 1) && ! clockwise))
 	{
@@ -143,7 +143,7 @@ Contour::setParity (int parity)
 		// FIXME: could it be worth writing Vector::reverse() for this?
 		for (size_t i = 0; i < size / 2; i ++)
 		{
-			Point tmp = pointList [i];
+			Vector3d tmp = pointList [i];
 			pointList [i]            = pointList [size - 1 - i];
 			pointList [size - 1 - i] = tmp;
 		}
@@ -166,20 +166,27 @@ Contour::setParity (int parity)
 
 Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 {
-	Point  prev, cur (contour [(n - 1) % n]), next (contour [0]);
-	Point  a, b = next - cur;
-	double olddir, dir = atan2 ((next - cur) .Y (), (next - cur) .X ());
-	double angle = 0.0;
+	unsigned int c = (n - 1) % n;
+
+	Vector3d prev;
+	Vector3d cur (contour [c] .x, contour [c] .y);
+	Vector3d next (contour [0] .x, contour [0] .y);
+	Vector3d a;
+	double   olddir;
+	double   dir   = atan2 ((next - cur) .y (), (next - cur) .x ());
+	double   angle = 0.0;
 
 	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-6.html
 	// for a full description of FreeType tags.
 	for (unsigned int i = 0; i < n; i ++)
 	{
+		unsigned int i1 = (i + 1) % n;
+
 		prev   = cur;
 		cur    = next;
-		next   = Point (contour [(i + 1) % n]);
+		next   = Vector3d (contour [i1] .x, contour [i1] .y);
 		olddir = dir;
-		dir    = atan2 ((next - cur) .Y (), (next - cur) .X ());
+		dir    = atan2 ((next - cur) .y (), (next - cur) .x ());
 
 		// Compute our path's new direction.
 		double t = dir - olddir;
@@ -199,7 +206,7 @@ Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 		}
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Conic)
 		{
-			Point prev2 = prev, next2 = next;
+			Vector3d prev2 = prev, next2 = next;
 
 			// Previous point is either the real previous point (an "on"
 			// point), or the midpoint between the current one and the
@@ -221,8 +228,10 @@ Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
 		         && FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
 		{
+			unsigned int i2 = (i + 2) % n;
+
 			evaluateCubicCurve (prev, cur, next,
-			                    Point (contour [(i + 2) % n]));
+			                    Vector3d (contour [i2] .x, contour [i2] .y));
 		}
 	}
 

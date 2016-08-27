@@ -132,7 +132,7 @@ public:
 	/**
 	 * Gets the kerning vector between two glyphs
 	 */
-	Point
+	Vector3d
 	getKernAdvance (unsigned int index1, unsigned int index2);
 
 	/**

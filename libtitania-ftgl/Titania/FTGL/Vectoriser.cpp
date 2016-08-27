@@ -99,8 +99,8 @@ FTMesh::addPoint (const double x, const double y, const double z)
 const double*
 FTMesh::combine (const double x, const double y, const double z)
 {
-	tempPointList .push_back (Point (x, y, z));
-	return static_cast <const double*> (tempPointList.back ());
+	tempPointList .push_back (Vector3d (x, y, z));
+	return tempPointList .back () .data ();
 }
 
 void
@@ -181,13 +181,13 @@ Vectoriser::processContours ()
 		Contour* c1 = contourList [i];
 
 		// 1. Find the leftmost point.
-		Point leftmost (65536.0, 0.0);
+		Vector3d leftmost (65536.0, 0.0);
 
 		for (size_t n = 0; n < c1 -> getPointCount (); n ++)
 		{
-			Point p = c1 -> getPoint (n);
+			Vector3d p = c1 -> getPoint (n);
 
-			if (p.X () < leftmost .X ())
+			if (p.x () < leftmost .x ())
 			{
 				leftmost = p;
 			}
@@ -208,26 +208,26 @@ Vectoriser::processContours ()
 
 			for (size_t n = 0; n < c2 -> getPointCount (); n ++)
 			{
-				Point p1 = c2 -> getPoint (n);
-				Point p2 = c2 -> getPoint ((n + 1) % c2 -> getPointCount ());
+				Vector3d p1 = c2 -> getPoint (n);
+				Vector3d p2 = c2 -> getPoint ((n + 1) % c2 -> getPointCount ());
 
 				/* FIXME: combinations of >= > <= and < do not seem stable */
-				if ((p1.Y () < leftmost .Y () && p2 .Y () < leftmost .Y ())
-				    or (p1.Y () >= leftmost .Y () && p2 .Y () >= leftmost .Y ())
-				    or (p1.X () > leftmost .X () && p2 .X () > leftmost .X ()))
+				if ((p1.y () < leftmost .y () && p2 .y () < leftmost .y ())
+				    or (p1.y () >= leftmost .y () && p2 .y () >= leftmost .y ())
+				    or (p1.x () > leftmost .x () && p2 .x () > leftmost .x ()))
 				{
 					continue;
 				}
-				else if (p1.X () < leftmost .X () && p2 .X () < leftmost .X ())
+				else if (p1.x () < leftmost .x () && p2 .x () < leftmost .x ())
 				{
 					parity ++;
 				}
 				else
 				{
-					Point a = p1 - leftmost;
-					Point b = p2 - leftmost;
+					Vector3d a = p1 - leftmost;
+					Vector3d b = p2 - leftmost;
 
-					if (b.X () * a .Y () > b .Y () * a .X ())
+					if (b.x () * a .y () > b .y () * a .x ())
 					{
 						parity ++;
 					}
@@ -309,9 +309,9 @@ Vectoriser::makeMesh (double zNormal, int outsetType, double outsetSize)
 
 			switch (outsetType)
 			{
-				case 1: d          = contour -> getFrontPoint (p); break;
-				case 2: d          = contour -> getBackPoint (p); break;
-				case 0: default: d = contour -> getPoint (p); break;
+				case 1: d          = contour -> getFrontPoint (p) .data (); break;
+				case 2: d          = contour -> getBackPoint (p) .data (); break;
+				case 0: default: d = contour -> getPoint (p) .data (); break;
 			}
 
 			// XXX: gluTessVertex doesn't modify the data but does not

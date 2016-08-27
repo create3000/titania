@@ -64,7 +64,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	BBox (Point l, Point u) :
+	BBox (Vector3d l, Vector3d u) :
 		lower (l),
 		upper (u)
 	{ }
@@ -83,12 +83,12 @@ public:
 
 		FT_Outline_Get_CBox (&(glyph -> outline), &bbox);
 
-		lower .X (static_cast <double> (bbox.xMin) / 64.0);
-		lower .Y (static_cast <double> (bbox.yMin) / 64.0);
-		lower .Z (0);
-		upper .X (static_cast <double> (bbox.xMax) / 64.0);
-		upper .Y (static_cast <double> (bbox.yMax) / 64.0);
-		upper .Z (0);
+		lower .x (static_cast <double> (bbox.xMin) / 64.0);
+		lower .y (static_cast <double> (bbox.yMin) / 64.0);
+		lower .z (0);
+		upper .x (static_cast <double> (bbox.xMax) / 64.0);
+		upper .y (static_cast <double> (bbox.yMax) / 64.0);
+		upper .z (0);
 	}
 
 	/**
@@ -104,8 +104,8 @@ public:
 	void
 	Invalidate ()
 	{
-		lower = Point (1, 1, 1);
-		upper = Point (-1, -1, -1);
+		lower = Vector3d (1, 1, 1);
+		upper = Vector3d (-1, -1, -1);
 	}
 
 	/**
@@ -117,9 +117,9 @@ public:
 	bool
 	IsValid ()
 	{
-		return lower .X () <= upper .X ()
-		       && lower .Y () <= upper .Y ()
-		       && lower .Z () <= upper .Z ();
+		return lower .x () <= upper .x ()
+		       && lower .y () <= upper .y ()
+		       && lower .z () <= upper .z ();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public:
 	 * @param vector  The vector to move the bbox in 3D space.
 	 */
 	BBox &
-	operator += (const Point vector)
+	operator += (const Vector3d vector)
 	{
 		lower += vector;
 		upper += vector;
@@ -145,17 +145,17 @@ public:
 	BBox &
 	operator |= (const BBox & bbox)
 	{
-		if (bbox.lower.X () < lower .X ()) lower .X (bbox.lower.X ());
+		if (bbox .lower .x () < lower .x ()) lower .x (bbox .lower.x ());
 
-		if (bbox.lower.Y () < lower .Y ()) lower .Y (bbox.lower.Y ());
+		if (bbox .lower .y () < lower .y ()) lower .y (bbox .lower.y ());
 
-		if (bbox.lower.Z () < lower .Z ()) lower .Z (bbox.lower.Z ());
+		if (bbox .lower .z () < lower .z ()) lower .z (bbox .lower.z ());
 
-		if (bbox.upper.X () > upper .X ()) upper .X (bbox.upper.X ());
+		if (bbox .upper .x () > upper .x ()) upper .x (bbox .upper.x ());
 
-		if (bbox.upper.Y () > upper .Y ()) upper .Y (bbox.upper.Y ());
+		if (bbox .upper .y () > upper .y ()) upper .y (bbox .upper.y ());
 
-		if (bbox.upper.Z () > upper .Z ()) upper .Z (bbox.upper.Z ());
+		if (bbox .upper .z () > upper .z ()) upper .z (bbox .upper.z ());
 
 		return *this;
 	}
@@ -164,18 +164,18 @@ public:
 	SetDepth (double depth)
 	{
 		if (depth > 0)
-			upper .Z (lower.Z () + depth);
+			upper .z (lower.z () + depth);
 		else
-			lower .Z (upper.Z () + depth);
+			lower .z (upper.z () + depth);
 	}
 
-	inline Point const
+	inline Vector3d const
 	Upper () const
 	{
 		return upper;
 	}
 
-	inline Point const
+	inline Vector3d const
 	Lower () const
 	{
 		return lower;
@@ -186,7 +186,7 @@ private:
 	/**
 	 * The bounds of the box
 	 */
-	Point lower, upper;
+	Vector3d lower, upper;
 
 };
 

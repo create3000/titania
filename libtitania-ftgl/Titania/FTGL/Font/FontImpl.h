@@ -114,27 +114,27 @@ protected:
 
 	virtual
 	BBox
-	getBBox (const char* s, const int len, Point, Point);
+	getBBox (const char* s, const int len, Vector3d, Vector3d);
 
 	virtual
 	BBox
-	getBBox (const wchar_t* s, const int len, Point, Point);
+	getBBox (const wchar_t* s, const int len, Vector3d, Vector3d);
 
 	virtual
 	double
-	advance (const char* s, const int len, Point);
+	advance (const char* s, const int len, Vector3d);
 
 	virtual
 	double
-	advance (const wchar_t* s, const int len, Point);
+	advance (const wchar_t* s, const int len, Vector3d);
 
 	virtual
-	Point
-	render (const char* s, const int len, Point, Point, FTGL::RenderMode);
+	Vector3d
+	render (const char* s, const int len, Vector3d, Vector3d, FTGL::RenderMode);
 
 	virtual
-	Point
-	render (const wchar_t* s, const int len, Point, Point, FTGL::RenderMode);
+	Vector3d
+	render (const wchar_t* s, const int len, Vector3d, Vector3d, FTGL::RenderMode);
 
 	/**
 	 * Current face object
@@ -188,26 +188,26 @@ private:
 	/**
 	 * Current pen or cursor position;
 	 */
-	Point pen;
+	Vector3d pen;
 
 	/* Internal generic BBox() implementation */
 	template <typename T>
 	inline
 	BBox
 	getBBoxI (const T* s, const int len,
-	          Point position, Point spacing);
+	          Vector3d position, Vector3d spacing);
 
 	/* Internal generic Advance() implementation */
 	template <typename T>
 	inline
 	double
-	advanceI (const T* s, const int len, Point spacing);
+	advanceI (const T* s, const int len, Vector3d spacing);
 
 	/* Internal generic Render() implementation */
 	template <typename T>
 	inline
-	Point
-	renderI (const T* s, const int len, Point position, Point spacing, FTGL::RenderMode mode);
+	Vector3d
+	renderI (const T* s, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode mode);
 
 };
 

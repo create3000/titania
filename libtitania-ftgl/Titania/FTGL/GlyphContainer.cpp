@@ -97,18 +97,18 @@ GlyphContainer::advance (const unsigned int charCode,
 	unsigned int left  = charMap -> getFontIndex (charCode);
 	unsigned int right = charMap -> getFontIndex (nextCharCode);
 
-	return face -> getKernAdvance (left, right) .X () + getGlyph (charCode) -> getAdvance ();
+	return face -> getKernAdvance (left, right) .x () + getGlyph (charCode) -> getAdvance ();
 }
 
-Point
+Vector3d
 GlyphContainer::render (const unsigned int charCode,
                         const unsigned int nextCharCode,
-                        Point penPosition, FTGL::RenderMode renderMode)
+                        Vector3d penPosition, FTGL::RenderMode renderMode)
 {
 	unsigned int left  = charMap -> getFontIndex (charCode);
 	unsigned int right = charMap -> getFontIndex (nextCharCode);
 
-	Point kernAdvance = face -> getKernAdvance (left, right);
+	Vector3d kernAdvance = face -> getKernAdvance (left, right);
 
 	if (! face -> getError ())
 	{

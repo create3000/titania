@@ -78,7 +78,7 @@ public:
 	 * @param index of the point in the curve.
 	 * @return const point reference
 	 */
-	const Point &
+	const Vector3d &
 	getPoint (size_t index) const
 	{ return pointList [index]; }
 
@@ -88,7 +88,7 @@ public:
 	 * @param index of the point in the outset curve.
 	 * @return const point reference
 	 */
-	const Point &
+	const Vector3d &
 	getOutset (size_t index) const
 	{ return outsetPointList [index]; }
 
@@ -98,7 +98,7 @@ public:
 	 * @param index of the point in the curve.
 	 * @return const point reference
 	 */
-	const Point &
+	const Vector3d &
 	getFrontPoint (size_t index) const
 	{
 		if (frontPointList.size () == 0)
@@ -113,7 +113,7 @@ public:
 	 * @param index of the point in the curve.
 	 * @return const point reference
 	 */
-	const Point &
+	const Vector3d &
 	getBackPoint (size_t index) const
 	{
 		if (backPointList.size () == 0)
@@ -158,7 +158,7 @@ private:
 	 */
 	inline
 	void
-	addPoint (Point point);
+	addPoint (Vector3d point);
 
 	/**
 	 * Add a point to this contour. This function tests for duplicate
@@ -168,7 +168,7 @@ private:
 	 */
 	inline
 	void
-	addOutsetPoint (Point point);
+	addOutsetPoint (Vector3d point);
 
 	/*
 	 * Add a point to this outset contour. This function tests for duplicate
@@ -178,11 +178,11 @@ private:
 	 */
 	inline
 	void
-	addFrontPoint (Point point);
+	addFrontPoint (Vector3d point);
 
 	inline
 	void
-	addBackPoint (Point point);
+	addBackPoint (Vector3d point);
 
 	/**
 	 * De Casteljau (bezier) algorithm contributed by Jed Soane
@@ -190,7 +190,7 @@ private:
 	 */
 	inline
 	void
-	evaluateQuadraticCurve (Point, Point, Point);
+	evaluateQuadraticCurve (Vector3d, Vector3d, Vector3d);
 
 	/**
 	 * De Casteljau (bezier) algorithm contributed by Jed Soane
@@ -198,47 +198,47 @@ private:
 	 */
 	inline
 	void
-	evaluateCubicCurve (Point, Point, Point, Point);
+	evaluateCubicCurve (Vector3d, Vector3d, Vector3d, Vector3d);
 
 	/**
 	 * Compute the vector norm
 	 */
 	inline
 	double
-	setNormVector (const Point & v);
+	setNormVector (const Vector3d & v);
 
 	/**
 	 * Compute a rotation matrix from a vector
 	 */
 	inline
 	void
-	sotationMatrix (const Point & a, const Point & b, double* matRot, double* invRot);
+	sotationMatrix (const Vector3d & a, const Vector3d & b, double* matRot, double* invRot);
 
 	/**
 	 * Matrix and vector multiplication
 	 */
 	inline
 	void
-	setMultMatrixVect (double* mat, Point & v);
+	setMultMatrixVect (double* mat, Vector3d & v);
 
 	/**
 	 * Compute the vector bisecting from a vector 'v' and a distance 'd'
 	 */
 	inline
 	void
-	computeBisec (Point & v);
+	computeBisec (Vector3d & v);
 
 	/**
 	 * Compute the outset point coordinates
 	 */
 	inline
-	Point
-	computeOutsetPoint (Point a, Point b, Point c);
+	Vector3d
+	computeOutsetPoint (Vector3d a, Vector3d b, Vector3d c);
 
 	/**
 	 *  The list of points in this contour
 	 */
-	using PointVector = std::vector <Point>;
+	using PointVector = std::vector <Vector3d>;
 
 	PointVector pointList;
 	PointVector outsetPointList;

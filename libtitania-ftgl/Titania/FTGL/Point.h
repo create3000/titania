@@ -28,25 +28,21 @@
 #ifndef __TITANIA_FTGL_POINT_H__
 #define __TITANIA_FTGL_POINT_H__
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-
 namespace titania {
 namespace FTGL {
 
 /**
- * Point class is a basic 3-dimensional point or vector.
+ * Vector3d class is a basic 3-dimensional point or vector.
  */
-class Point
+class Vector3d
 {
 public:
 
 	/**
-	 * Default constructor. Point is set to zero.
+	 * Default constructor. Vector3d is set to zero.
 	 */
 	inline
-	Point ()
+	Vector3d ()
 	{
 		values [0] = 0;
 		values [1] = 0;
@@ -61,8 +57,8 @@ public:
 	 * @param z Third component
 	 */
 	inline
-	Point (const double x, const double y,
-	       const double z = 0)
+	Vector3d (const double x, const double y,
+	          const double z = 0)
 	{
 		values [0] = x;
 		values [1] = y;
@@ -70,35 +66,13 @@ public:
 	}
 
 	/**
-	 * Constructor. This converts an FT_Vector to an Point
-	 *
-	 * @param ft_vector A freetype vector
-	 */
-	inline
-	Point (const FT_Vector & ft_vector)
-	{
-		values [0] = ft_vector .x;
-		values [1] = ft_vector .y;
-		values [2] = 0;
-	}
-
-	/**
-	 * Normalise a point's coordinates. If the coordinates are zero,
-	 * the point is left untouched.
-	 *
-	 * @return A vector of norm one.
-	 */
-	Point
-	Normalise ();
-
-	/**
 	 * Operator += In Place Addition.
 	 *
 	 * @param point
 	 * @return this plus point.
 	 */
-	inline Point &
-	operator += (const Point & point)
+	inline Vector3d &
+	operator += (const Vector3d & point)
 	{
 		values [0] += point .values [0];
 		values [1] += point .values [1];
@@ -113,10 +87,10 @@ public:
 	 * @param point
 	 * @return this plus point.
 	 */
-	inline Point
-	operator + (const Point & point) const
+	inline Vector3d
+	operator + (const Vector3d & point) const
 	{
-		Point temp;
+		Vector3d temp;
 
 		temp .values [0] = values [0] + point .values [0];
 		temp .values [1] = values [1] + point .values [1];
@@ -131,8 +105,8 @@ public:
 	 * @param point
 	 * @return this minus point.
 	 */
-	inline Point &
-	operator -= (const Point & point)
+	inline Vector3d &
+	operator -= (const Vector3d & point)
 	{
 		values [0] -= point .values [0];
 		values [1] -= point .values [1];
@@ -147,10 +121,10 @@ public:
 	 * @param point
 	 * @return this minus point.
 	 */
-	inline Point
-	operator - (const Point & point) const
+	inline Vector3d
+	operator - (const Vector3d & point) const
 	{
-		Point temp;
+		Vector3d temp;
 
 		temp .values [0] = values [0] - point .values [0];
 		temp .values [1] = values [1] - point .values [1];
@@ -165,10 +139,10 @@ public:
 	 * @param multiplier
 	 * @return <code>this</code> multiplied by <code>multiplier</code>.
 	 */
-	inline Point
+	inline Vector3d
 	operator * (double multiplier) const
 	{
-		Point temp;
+		Vector3d temp;
 
 		temp .values [0] = values [0] * multiplier;
 		temp .values [1] = values [1] * multiplier;
@@ -184,45 +158,10 @@ public:
 	 * @param multiplier
 	 * @return <code>multiplier</code> multiplied by <code>point</code>.
 	 */
-	inline friend Point
-	operator * (double multiplier, Point & point)
+	inline friend Vector3d
+	operator * (double multiplier, Vector3d & point)
 	{
 		return point * multiplier;
-	}
-
-	/**
-	 * Operator *  Scalar product
-	 *
-	 * @param a  First vector.
-	 * @param b  Second vector.
-	 * @return  <code>a.b</code> scalar product.
-	 */
-	inline friend double
-	operator * (Point & a, Point & b)
-	{
-		return a .values [0] * b .values [0]
-		       + a .values [1] * b .values [1]
-		       + a .values [2] * b .values [2];
-	}
-
-	/**
-	 * Operator ^  Vector product
-	 *
-	 * @param point Second point
-	 * @return this vector point.
-	 */
-	inline Point
-	operator ^ (const Point & point)
-	{
-		Point temp;
-
-		temp .values [0] = values [1] * point .values [2]
-		                   - values [2] * point .values [1];
-		temp .values [1] = values [2] * point .values [0]
-		                   - values [0] * point .values [2];
-		temp .values [2] = values [0] * point .values [1]
-		                   - values [1] * point .values [0];
-		return temp;
 	}
 
 	/**
@@ -233,7 +172,7 @@ public:
 	 * @return true if a & b are equal
 	 */
 	friend bool
-	operator == (const Point & a, const Point & b);
+	operator == (const Vector3d & a, const Vector3d & b);
 
 	/**
 	 * Operator not_eq Tests for non equality
@@ -243,13 +182,14 @@ public:
 	 * @return true if a & b are not equal
 	 */
 	friend bool
-	operator not_eq (const Point & a, const Point & b);
+	operator not_eq (const Vector3d & a, const Vector3d & b);
 
 	/**
 	 * Cast to double*
 	 */
 	inline
-	operator const double* () const
+	const double*
+	data () const
 	{
 		return values;
 	}
@@ -258,25 +198,25 @@ public:
 	 * Setters
 	 */
 	inline void
-	X (double x) { values [0] = x; }
+	x (double x) { values [0] = x; }
 
 	inline void
-	Y (double y) { values [1] = y; }
+	y (double y) { values [1] = y; }
 
 	inline void
-	Z (double z) { values [2] = z; }
+	z (double z) { values [2] = z; }
 
 	/**
 	 * Getters
 	 */
 	inline double
-	X () const { return values [0]; }
+	x () const { return values [0]; }
 
 	inline double
-	Y () const { return values [1]; }
+	y () const { return values [1]; }
 
 	inline double
-	Z () const { return values [2]; }
+	z () const { return values [2]; }
 
 
 private:
@@ -287,6 +227,15 @@ private:
 	double values [3];
 
 };
+
+/**
+ * Normalise a point's coordinates. If the coordinates are zero,
+ * the point is left untouched.
+ *
+ * @return A vector of norm one.
+ */
+Vector3d
+normalize (const Vector3d &);
 
 } // FTGL
 } // titania

@@ -273,8 +273,8 @@ public:
 	virtual
 	BBox
 	getBBox (const char* string, const int len = -1,
-	         Point position = Point (),
-	         Point spacing = Point ());
+	         Vector3d position = Vector3d (),
+	         Vector3d spacing = Vector3d ());
 
 	/**
 	 * Get the bounding box for a string (deprecated).
@@ -293,8 +293,8 @@ public:
 	{
 		BBox b = getBBox (string);
 
-		llx = b .Lower ().X (); lly = b .Lower ().Y (); llz = b .Lower ().Z ();
-		urx = b .Upper ().X (); ury = b .Upper ().Y (); urz = b .Upper ().Z ();
+		llx = b .Lower ().x (); lly = b .Lower ().y (); llz = b .Lower ().z ();
+		urx = b .Upper ().x (); ury = b .Upper ().y (); urz = b .Upper ().z ();
 	}
 
 	/**
@@ -312,8 +312,8 @@ public:
 	virtual
 	BBox
 	getBBox (const wchar_t* string, const int len = -1,
-	         Point position = Point (),
-	         Point spacing = Point ());
+	         Vector3d position = Vector3d (),
+	         Vector3d spacing = Vector3d ());
 
 	/**
 	 * Get the bounding box for a string (deprecated).
@@ -332,8 +332,8 @@ public:
 	{
 		BBox b = getBBox (string);
 
-		llx = b .Lower ().X (); lly = b .Lower ().Y (); llz = b .Lower ().Z ();
-		urx = b .Upper ().X (); ury = b .Upper ().Y (); urz = b .Upper ().Z ();
+		llx = b .Lower ().x (); lly = b .Lower ().y (); llz = b .Lower ().z ();
+		urx = b .Upper ().x (); ury = b .Upper ().y (); urz = b .Upper ().z ();
 	}
 
 	/**
@@ -350,7 +350,7 @@ public:
 	virtual
 	double
 	advance (const char* string, const int len = -1,
-	         Point spacing = Point ());
+	         Vector3d spacing = Vector3d ());
 
 	/**
 	 * Get the advance for a string.
@@ -366,7 +366,7 @@ public:
 	virtual
 	double
 	advance (const wchar_t* string, const int len = -1,
-	         Point spacing = Point ());
+	         Vector3d spacing = Vector3d ());
 
 	/**
 	 * Render a string of characters.
@@ -382,10 +382,10 @@ public:
 	 * @return  The new pen position after the last character was output.
 	 */
 	virtual
-	Point
+	Vector3d
 	render (const char* string, const int len = -1,
-	        Point position = Point (),
-	        Point spacing = Point (),
+	        Vector3d position = Vector3d (),
+	        Vector3d spacing = Vector3d (),
 	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
 
 	/**
@@ -402,10 +402,10 @@ public:
 	 * @return  The new pen position after the last character was output.
 	 */
 	virtual
-	Point
+	Vector3d
 	render (const wchar_t* string, const int len = -1,
-	        Point position = Point (),
-	        Point spacing = Point (),
+	        Vector3d position = Vector3d (),
+	        Vector3d spacing = Vector3d (),
 	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
 
 	/**

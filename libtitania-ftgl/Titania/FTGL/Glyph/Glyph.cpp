@@ -78,8 +78,8 @@ GlyphImpl::GlyphImpl (FT_GlyphSlot glyph, bool useList) :
 	if (glyph)
 	{
 		bBox    = BBox (glyph);
-		advance = Point (glyph -> advance .x / 64.0,
-		                 glyph -> advance .y / 64.0);
+		advance = Vector3d (glyph -> advance .x / 64.0,
+		                    glyph -> advance .y / 64.0);
 	}
 }
 
@@ -89,7 +89,7 @@ GlyphImpl::~GlyphImpl ()
 double
 GlyphImpl::getAdvance () const
 {
-	return advance .X ();
+	return advance .x ();
 }
 
 const BBox &

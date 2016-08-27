@@ -44,8 +44,8 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayLi
 PolygonGlyph::~PolygonGlyph ()
 { }
 
-const Point &
-PolygonGlyph::render (const Point & pen, FTGL::RenderMode renderMode)
+const Vector3d &
+PolygonGlyph::render (const Vector3d & pen, FTGL::RenderMode renderMode)
 {
 	PolygonGlyphImpl* myimpl = dynamic_cast <PolygonGlyphImpl*> (impl);
 
@@ -105,10 +105,10 @@ PolygonGlyphImpl::~PolygonGlyphImpl ()
 	}
 }
 
-const Point &
-PolygonGlyphImpl::renderImpl (const Point & pen, FTGL::RenderMode renderMode)
+const Vector3d &
+PolygonGlyphImpl::renderImpl (const Vector3d & pen, FTGL::RenderMode renderMode)
 {
-	glTranslatef (pen.X (), pen .Y (), pen .Z ());
+	glTranslatef (pen.x (), pen .y (), pen .z ());
 
 	if (glList)
 	{
@@ -119,7 +119,7 @@ PolygonGlyphImpl::renderImpl (const Point & pen, FTGL::RenderMode renderMode)
 		doRender ();
 	}
 
-	glTranslatef (-pen.X (), -pen.Y (), -pen.Z ());
+	glTranslatef (-pen.x (), -pen.y (), -pen.z ());
 
 	return advance;
 }
@@ -140,9 +140,9 @@ PolygonGlyphImpl::doRender ()
 
 		for (unsigned int i = 0; i < subMesh -> PointCount (); ++ i)
 		{
-			Point point = subMesh -> getPoint (i);
-			glTexCoord2f (point.X () / hscale, point .Y () / vscale);
-			glVertex3f (point.X () / 64.0, point .Y () / 64.0, 0);
+			Vector3d point = subMesh -> getPoint (i);
+			glTexCoord2f (point.x () / hscale, point .y () / vscale);
+			glVertex3f (point.x () / 64.0, point .y () / 64.0, 0);
 		}
 
 		glEnd ();

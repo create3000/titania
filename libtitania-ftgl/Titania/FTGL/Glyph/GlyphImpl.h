@@ -54,7 +54,7 @@ protected:
 	/**
 	 * The advance distance for this glyph
 	 */
-	Point advance;
+	Vector3d advance;
 
 	/**
 	 * The bounding box of this glyph.

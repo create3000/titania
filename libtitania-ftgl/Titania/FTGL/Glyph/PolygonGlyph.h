@@ -68,8 +68,8 @@ public:
 	 * @param renderMode  Render mode to display
 	 * @return  The advance distance for this glyph.
 	 */
-	virtual const Point &
-	render (const Point & pen, FTGL::RenderMode renderMode);
+	virtual const Vector3d &
+	render (const Vector3d & pen, FTGL::RenderMode renderMode);
 
 };
 
