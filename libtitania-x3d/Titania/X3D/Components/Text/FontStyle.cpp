@@ -80,13 +80,12 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 void
 PolygonText::getLineExtents (const String & line, Vector2d & min, Vector2d & max) const
 {
-	const FTGL::BBox ftbbox = fontStyle -> getPolygonFont () -> getBBox (line .c_str ());
+	const auto ftbbox = fontStyle -> getPolygonFont () -> getBBox (line .c_str ());
+	const auto ftmin  = ftbbox .getLower ();
+	const auto ftmax  = ftbbox .getUpper ();
 
-	const FTGL::Point ftmin = ftbbox .Lower ();
-	const FTGL::Point ftmax = ftbbox .Upper ();
-
-	min = Vector2d (ftmin .X (), ftmin .Y ());
-	max = Vector2d (ftmax .X (), ftmax .Y ());
+	min = Vector2d (ftmin .x (), ftmin .y ());
+	max = Vector2d (ftmax .x (), ftmax .y ());
 }
 
 void
@@ -118,8 +117,8 @@ PolygonText::draw ()
 	                                                ? line .c_str ()
 	                                                : String (line .rbegin (), line .rend ()) .c_str (),
 			                                          -1,
-			                                          FTGL::Point (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
-			                                          FTGL::Point (getCharSpacing () [i], 0, 0),
+			                                          FTGL::Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
+			                                          FTGL::Vector3d (getCharSpacing () [i], 0, 0),
 			                                          FTGL::RenderMode::RENDER_ALL);
 
 		}
@@ -148,8 +147,8 @@ PolygonText::draw ()
 			{
 				fontStyle -> getPolygonFont () -> render (String (1, glyph) .c_str (),
 				                                          -1,
-				                                          FTGL::Point (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
-				                                          FTGL::Point (),
+				                                          FTGL::Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
+				                                          FTGL::Vector3d (),
 				                                          FTGL::RenderMode::RENDER_ALL);
 				++ g;
 			}

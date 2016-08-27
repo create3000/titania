@@ -59,7 +59,7 @@ public:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	Face (const unsigned char* pBufferBytes, size_t bufferSizeInBytes,
+	Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
 	      bool precomputeKerning = true);
 
 	/**
@@ -89,7 +89,7 @@ public:
 	 *                  successfully.
 	 */
 	bool
-	attach (const unsigned char* pBufferBytes,
+	attach (const uint8_t* pBufferBytes,
 	        size_t bufferSizeInBytes);
 
 	/**
@@ -111,14 +111,14 @@ public:
 	 * @return          <code>Size</code> object
 	 */
 	const Size &
-	getSize (const unsigned int size, const unsigned int res);
+	getSize (const uint32_t size, const uint32_t res);
 
 	/**
 	 * Get the number of character maps in this face.
 	 *
 	 * @return character map count.
 	 */
-	unsigned int
+	uint32_t
 	getCharMapCount () const;
 
 	/**
@@ -133,18 +133,18 @@ public:
 	 * Gets the kerning vector between two glyphs
 	 */
 	Vector3d
-	getKernAdvance (unsigned int index1, unsigned int index2);
+	getKernAdvance (uint32_t index1, uint32_t index2);
 
 	/**
 	 * Loads and creates a Freetype glyph.
 	 */
 	FT_GlyphSlot
-	getGlyph (unsigned int index, FT_Int load_flags);
+	getGlyph (uint32_t index, FT_Int load_flags);
 
 	/**
 	 * Gets the number of glyphs in the current face.
 	 */
-	unsigned int
+	uint32_t
 	getGlyphCount () const { return numGlyphs; }
 
 	/**
@@ -171,7 +171,7 @@ private:
 	/**
 	 * The number of glyphs in this face
 	 */
-	int numGlyphs;
+	int32_t numGlyphs;
 
 	FT_Encoding* fontEncodingList;
 
@@ -186,8 +186,9 @@ private:
 	void
 	buildKerningCache ();
 
-	static const unsigned int MAX_PRECOMPUTED = 128;
-	double*                   kerningCache;
+	static constexpr uint32_t MAX_PRECOMPUTED = 128;
+
+	double* kerningCache;
 
 	/**
 	 * Current error code. Zero means no error.

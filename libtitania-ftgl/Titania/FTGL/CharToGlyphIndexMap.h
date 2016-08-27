@@ -88,7 +88,7 @@ public:
 	{
 		if (indices)
 		{
-			for (int i = 0; i < CharToGlyphIndexMap::NumberOfBuckets; i ++)
+			for (int32_t i = 0; i < CharToGlyphIndexMap::NumberOfBuckets; i ++)
 			{
 				if (indices [i])
 				{
@@ -132,7 +132,7 @@ public:
 		{
 			indices = new GlyphIndex* [CharToGlyphIndexMap::NumberOfBuckets];
 
-			for (int i = 0; i < CharToGlyphIndexMap::NumberOfBuckets; i ++)
+			for (int32_t i = 0; i < CharToGlyphIndexMap::NumberOfBuckets; i ++)
 			{
 				indices [i] = 0;
 			}
@@ -146,7 +146,7 @@ public:
 		{
 			indices [pos.quot] = new GlyphIndex [CharToGlyphIndexMap::BucketSize];
 
-			for (int i = 0; i < CharToGlyphIndexMap::BucketSize; i ++)
+			for (int32_t i = 0; i < CharToGlyphIndexMap::BucketSize; i ++)
 			{
 				indices [pos.quot] [i] = CharToGlyphIndexMap::IndexNotFound;
 			}

@@ -37,7 +37,7 @@ GlyphContainer::GlyphContainer (Face* f) :
 	face (f),
 	 err (0)
 {
-	glyphs .push_back (NULL);
+	glyphs .emplace_back (nullptr);
 	charMap = new Charmap (face);
 }
 
@@ -63,56 +63,56 @@ GlyphContainer::setCharMap (FT_Encoding encoding)
 	return result;
 }
 
-unsigned int
-GlyphContainer::getFontIndex (const unsigned int charCode) const
+uint32_t
+GlyphContainer::getFontIndex (const uint32_t charCode) const
 {
 	return charMap -> getFontIndex (charCode);
 }
 
 void
-GlyphContainer::add (Glyph* tempGlyph, const unsigned int charCode)
+GlyphContainer::add (Glyph* tempGlyph, const uint32_t charCode)
 {
 	charMap -> setInsertIndex (charCode, glyphs .size ());
-	glyphs .push_back (tempGlyph);
+	glyphs .emplace_back (tempGlyph);
 }
 
 const Glyph* const
-GlyphContainer::getGlyph (const unsigned int charCode) const
+GlyphContainer::getGlyph (const uint32_t charCode) const
 {
-	unsigned int index = charMap -> getGlyphListIndex (charCode);
+	uint32_t index = charMap -> getGlyphListIndex (charCode);
 
 	return glyphs [index];
 }
 
 BBox
-GlyphContainer::getBBox (const unsigned int charCode) const
+GlyphContainer::getBBox (const uint32_t charCode) const
 {
 	return getGlyph (charCode) -> getBBox ();
 }
 
 double
-GlyphContainer::advance (const unsigned int charCode,
-                         const unsigned int nextCharCode)
+GlyphContainer::advance (const uint32_t charCode,
+                         const uint32_t nextCharCode)
 {
-	unsigned int left  = charMap -> getFontIndex (charCode);
-	unsigned int right = charMap -> getFontIndex (nextCharCode);
+	uint32_t left  = charMap -> getFontIndex (charCode);
+	uint32_t right = charMap -> getFontIndex (nextCharCode);
 
 	return face -> getKernAdvance (left, right) .x () + getGlyph (charCode) -> getAdvance ();
 }
 
 Vector3d
-GlyphContainer::render (const unsigned int charCode,
-                        const unsigned int nextCharCode,
+GlyphContainer::render (const uint32_t charCode,
+                        const uint32_t nextCharCode,
                         Vector3d penPosition, FTGL::RenderMode renderMode)
 {
-	unsigned int left  = charMap -> getFontIndex (charCode);
-	unsigned int right = charMap -> getFontIndex (nextCharCode);
+	uint32_t left  = charMap -> getFontIndex (charCode);
+	uint32_t right = charMap -> getFontIndex (nextCharCode);
 
 	Vector3d kernAdvance = face -> getKernAdvance (left, right);
 
 	if (! face -> getError ())
 	{
-		unsigned int index = charMap -> getGlyphListIndex (charCode);
+		uint32_t index = charMap -> getGlyphListIndex (charCode);
 		kernAdvance += glyphs [index] -> render (penPosition, renderMode);
 	}
 

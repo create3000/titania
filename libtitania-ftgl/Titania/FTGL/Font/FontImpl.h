@@ -45,7 +45,7 @@ protected:
 
 	FontImpl (Font* ftFont, char const* fontFilePath);
 
-	FontImpl (Font* ftFont, const unsigned char* pBufferBytes,
+	FontImpl (Font* ftFont, const uint8_t* pBufferBytes,
 	          size_t bufferSizeInBytes);
 
 	virtual
@@ -57,7 +57,7 @@ protected:
 
 	virtual
 	bool
-	attach (const unsigned char* pBufferBytes,
+	attach (const uint8_t* pBufferBytes,
 	        size_t bufferSizeInBytes);
 
 	virtual
@@ -69,7 +69,7 @@ protected:
 	setCharMap (FT_Encoding encoding);
 
 	virtual
-	unsigned int
+	uint32_t
 	CharMapCount () const;
 
 	virtual
@@ -94,10 +94,10 @@ protected:
 
 	virtual
 	bool
-	setFaceSize (const unsigned int size, const unsigned int res);
+	setFaceSize (const uint32_t size, const uint32_t res);
 
 	virtual
-	unsigned int
+	uint32_t
 	getFaceSize () const;
 
 	virtual
@@ -114,27 +114,15 @@ protected:
 
 	virtual
 	BBox
-	getBBox (const char* s, const int len, Vector3d, Vector3d);
-
-	virtual
-	BBox
-	getBBox (const wchar_t* s, const int len, Vector3d, Vector3d);
+	getBBox (const char* s, const int32_t len, Vector3d, Vector3d);
 
 	virtual
 	double
-	advance (const char* s, const int len, Vector3d);
-
-	virtual
-	double
-	advance (const wchar_t* s, const int len, Vector3d);
+	advance (const char* s, const int32_t len, Vector3d);
 
 	virtual
 	Vector3d
-	render (const char* s, const int len, Vector3d, Vector3d, FTGL::RenderMode);
-
-	virtual
-	Vector3d
-	render (const wchar_t* s, const int len, Vector3d, Vector3d, FTGL::RenderMode);
+	render (const char* s, const int32_t len, Vector3d, Vector3d, FTGL::RenderMode);
 
 	/**
 	 * Current face object
@@ -178,7 +166,7 @@ private:
 	 * @return <code>true</code> if the glyph can be created.
 	 */
 	bool
-	checkGlyph (const unsigned int chr);
+	checkGlyph (const uint32_t chr);
 
 	/**
 	 * An object that holds a list of glyphs
@@ -189,25 +177,6 @@ private:
 	 * Current pen or cursor position;
 	 */
 	Vector3d pen;
-
-	/* Internal generic BBox() implementation */
-	template <typename T>
-	inline
-	BBox
-	getBBoxI (const T* s, const int len,
-	          Vector3d position, Vector3d spacing);
-
-	/* Internal generic Advance() implementation */
-	template <typename T>
-	inline
-	double
-	advanceI (const T* s, const int len, Vector3d spacing);
-
-	/* Internal generic Render() implementation */
-	template <typename T>
-	inline
-	Vector3d
-	renderI (const T* s, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode mode);
 
 };
 

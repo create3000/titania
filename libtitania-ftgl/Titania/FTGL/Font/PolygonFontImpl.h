@@ -44,7 +44,7 @@ protected:
 
 	PolygonFontImpl (Font* ftFont, const char* fontFilePath);
 
-	PolygonFontImpl (Font* ftFont, const unsigned char* pBufferBytes,
+	PolygonFontImpl (Font* ftFont, const uint8_t* pBufferBytes,
 	                 size_t bufferSizeInBytes);
 
 	/**

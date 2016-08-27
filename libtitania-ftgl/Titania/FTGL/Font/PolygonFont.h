@@ -59,7 +59,7 @@ public:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	PolygonFont (const unsigned char* pBufferBytes, size_t bufferSizeInBytes);
+	PolygonFont (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
 
 	/**
 	 * Destructor

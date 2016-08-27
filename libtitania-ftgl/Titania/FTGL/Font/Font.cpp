@@ -42,7 +42,7 @@ Font::Font (char const* fontFilePath)
 	impl = new FontImpl (this, fontFilePath);
 }
 
-Font::Font (const unsigned char* pBufferBytes, size_t bufferSizeInBytes)
+Font::Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 {
 	impl = new FontImpl (this, pBufferBytes, bufferSizeInBytes);
 }
@@ -64,18 +64,18 @@ Font::attach (const char* fontFilePath)
 }
 
 bool
-Font::attach (const unsigned char* pBufferBytes, size_t bufferSizeInBytes)
+Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 {
 	return impl -> attach (pBufferBytes, bufferSizeInBytes);
 }
 
 bool
-Font::setFaceSize (const unsigned int size, const unsigned int res)
+Font::setFaceSize (const uint32_t size, const uint32_t res)
 {
 	return impl -> setFaceSize (size, res);
 }
 
-unsigned int
+uint32_t
 Font::getFaceSize () const
 {
 	return impl -> getFaceSize ();
@@ -111,7 +111,7 @@ Font::setCharMap (FT_Encoding encoding)
 	return impl -> setCharMap (encoding);
 }
 
-unsigned int
+uint32_t
 Font::getCharMapCount () const
 {
 	return impl -> CharMapCount ();
@@ -148,38 +148,19 @@ Font::getLineHeight () const
 }
 
 Vector3d
-Font::render (const char* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
-{
-	return impl -> render (string, len, position, spacing, renderMode);
-}
-
-Vector3d
-Font::render (const wchar_t* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
+Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	return impl -> render (string, len, position, spacing, renderMode);
 }
 
 double
-Font::advance (const char* string, const int len, Vector3d spacing)
-{
-	return impl -> advance (string, len, spacing);
-}
-
-double
-Font::advance (const wchar_t* string, const int len, Vector3d spacing)
+Font::advance (const char* string, const int32_t len, Vector3d spacing)
 {
 	return impl -> advance (string, len, spacing);
 }
 
 BBox
-Font::getBBox (const char* string, const int len,
-               Vector3d position, Vector3d spacing)
-{
-	return impl -> getBBox (string, len, position, spacing);
-}
-
-BBox
-Font::getBBox (const wchar_t* string, const int len,
+Font::getBBox (const char* string, const int32_t len,
                Vector3d position, Vector3d spacing)
 {
 	return impl -> getBBox (string, len, position, spacing);
@@ -210,7 +191,7 @@ FontImpl::FontImpl (Font* ftFont, char const* fontFilePath) :
 	}
 }
 
-FontImpl::FontImpl (Font* ftFont, const unsigned char* pBufferBytes,
+FontImpl::FontImpl (Font* ftFont, const uint8_t* pBufferBytes,
                     size_t bufferSizeInBytes) :
 	           face (pBufferBytes, bufferSizeInBytes),
 	useDisplayLists (true),
@@ -237,7 +218,7 @@ FontImpl::~FontImpl ()
 bool
 FontImpl::attach (const char* fontFilePath)
 {
-	if (! face .attach (fontFilePath))
+	if (not face .attach (fontFilePath))
 	{
 		err = face .getError ();
 		return false;
@@ -248,10 +229,10 @@ FontImpl::attach (const char* fontFilePath)
 }
 
 bool
-FontImpl::attach (const unsigned char* pBufferBytes,
+FontImpl::attach (const uint8_t* pBufferBytes,
                   size_t bufferSizeInBytes)
 {
-	if (! face .attach (pBufferBytes, bufferSizeInBytes))
+	if (not face .attach (pBufferBytes, bufferSizeInBytes))
 	{
 		err = face .getError ();
 		return false;
@@ -262,12 +243,12 @@ FontImpl::attach (const unsigned char* pBufferBytes,
 }
 
 bool
-FontImpl::setFaceSize (const unsigned int size, const unsigned int res)
+FontImpl::setFaceSize (const uint32_t size, const uint32_t res)
 {
-	if (glyphList not_eq NULL)
+	if (glyphList not_eq nullptr)
 	{
 		delete glyphList;
-		glyphList = NULL;
+		glyphList = nullptr;
 	}
 
 	charSize = face .getSize (size, res);
@@ -282,7 +263,7 @@ FontImpl::setFaceSize (const unsigned int size, const unsigned int res)
 	return true;
 }
 
-unsigned int
+uint32_t
 FontImpl::getFaceSize () const
 {
 	return charSize .getCharSize ();
@@ -315,7 +296,7 @@ FontImpl::setCharMap (FT_Encoding encoding)
 	return result;
 }
 
-unsigned int
+uint32_t
 FontImpl::CharMapCount () const
 {
 	return face .getCharMapCount ();
@@ -351,10 +332,8 @@ FontImpl::getLineHeight () const
 	return charSize .getHeight ();
 }
 
-template <typename T>
-inline
 BBox
-FontImpl::getBBoxI (const T* string, const int len, Vector3d position, Vector3d spacing)
+FontImpl::getBBox (const char* string, const int32_t len, Vector3d position, Vector3d spacing)
 {
 	BBox totalBBox;
 
@@ -362,9 +341,10 @@ FontImpl::getBBoxI (const T* string, const int len, Vector3d position, Vector3d 
 	if (string && ('\0' not_eq string [0]))
 	{
 		// for multibyte - we can't rely on sizeof(T) == character
-		UnicodeStringItr <T> ustr (string);
-		unsigned int         thisChar = *ustr ++;
-		unsigned int         nextChar = *ustr;
+		UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
+
+		uint32_t thisChar = *ustr ++;
+		uint32_t nextChar = *ustr;
 
 		if (checkGlyph (thisChar))
 		{
@@ -375,7 +355,7 @@ FontImpl::getBBoxI (const T* string, const int len, Vector3d position, Vector3d 
 		}
 
 		/* Expand totalBox by each glyph in string */
-		for (int i = 1; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+		for (int32_t i = 1; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
 		{
 			thisChar = *ustr ++;
 			nextChar = *ustr;
@@ -396,32 +376,17 @@ FontImpl::getBBoxI (const T* string, const int len, Vector3d position, Vector3d 
 	return totalBBox;
 }
 
-BBox
-FontImpl::getBBox (const char* string, const int len, Vector3d position, Vector3d spacing)
-{
-	/* The chars need to be unsigned because they are cast to int later */
-	return getBBoxI ((const unsigned char*) string, len, position, spacing);
-}
-
-BBox
-FontImpl::getBBox (const wchar_t* string, const int len, Vector3d position, Vector3d spacing)
-{
-	return getBBoxI (string, len, position, spacing);
-}
-
-template <typename T>
-inline
 double
-FontImpl::advanceI (const T* string, const int len, Vector3d spacing)
+FontImpl::advance (const char* string, const int32_t len, Vector3d spacing)
 {
 	double advance = 0;
 
-	UnicodeStringItr <T> ustr (string);
+	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
 
-	for (int i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
 	{
-		unsigned int thisChar = *ustr ++;
-		unsigned int nextChar = *ustr;
+		uint32_t thisChar = *ustr ++;
+		uint32_t nextChar = *ustr;
 
 		if (checkGlyph (thisChar))
 		{
@@ -437,33 +402,16 @@ FontImpl::advanceI (const T* string, const int len, Vector3d spacing)
 	return advance;
 }
 
-double
-FontImpl::advance (const char* string, const int len, Vector3d spacing)
-{
-	/* The chars need to be unsigned because they are cast to int later */
-	return advanceI ((const unsigned char*) string, len, spacing);
-}
-
-double
-FontImpl::advance (const wchar_t* string, const int len, Vector3d spacing)
-{
-	return advanceI (string, len, spacing);
-}
-
-template <typename T>
-inline
 Vector3d
-FontImpl::renderI (const T* string, const int len,
-                   Vector3d position, Vector3d spacing,
-                   FTGL::RenderMode renderMode)
+FontImpl::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
 {
 	// for multibyte - we can't rely on sizeof(T) == character
-	UnicodeStringItr <T> ustr (string);
+	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
 
-	for (int i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
 	{
-		unsigned int thisChar = *ustr ++;
-		unsigned int nextChar = *ustr;
+		uint32_t thisChar = *ustr ++;
+		uint32_t nextChar = *ustr;
 
 		if (checkGlyph (thisChar))
 		{
@@ -479,28 +427,15 @@ FontImpl::renderI (const T* string, const int len,
 	return position;
 }
 
-Vector3d
-FontImpl::render (const char* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
-{
-	return renderI ((const unsigned char*) string,
-	                len, position, spacing, renderMode);
-}
-
-Vector3d
-FontImpl::render (const wchar_t* string, const int len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
-{
-	return renderI (string, len, position, spacing, renderMode);
-}
-
 bool
-FontImpl::checkGlyph (const unsigned int characterCode)
+FontImpl::checkGlyph (const uint32_t characterCode)
 {
 	if (glyphList -> getGlyph (characterCode))
 	{
 		return true;
 	}
 
-	unsigned int glyphIndex = glyphList -> getFontIndex (characterCode);
+	uint32_t glyphIndex = glyphList -> getFontIndex (characterCode);
 	FT_GlyphSlot ftSlot     = face .getGlyph (glyphIndex, load_flags);
 
 	if (! ftSlot)

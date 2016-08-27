@@ -102,7 +102,7 @@ public:
 	 * than the upper dimensions.
 	 */
 	void
-	Invalidate ()
+	invalidate ()
 	{
 		lower = Vector3d (1, 1, 1);
 		upper = Vector3d (-1, -1, -1);
@@ -115,7 +115,7 @@ public:
 	 *         upper values.
 	 */
 	bool
-	IsValid ()
+	isValid ()
 	{
 		return lower .x () <= upper .x ()
 		       && lower .y () <= upper .y ()
@@ -161,7 +161,7 @@ public:
 	}
 
 	void
-	SetDepth (double depth)
+	setDepth (double depth)
 	{
 		if (depth > 0)
 			upper .z (lower.z () + depth);
@@ -169,17 +169,15 @@ public:
 			lower .z (upper.z () + depth);
 	}
 
-	inline Vector3d const
-	Upper () const
-	{
-		return upper;
-	}
+	inline
+	Vector3d const
+	getUpper () const
+	{ return upper; }
 
-	inline Vector3d const
-	Lower () const
-	{
-		return lower;
-	}
+	inline
+	Vector3d const
+	getLower () const
+	{ return lower; }
 
 private:
 

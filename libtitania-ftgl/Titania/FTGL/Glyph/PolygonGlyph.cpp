@@ -71,7 +71,7 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool use
 	if ((vectoriser -> getContourCount () < 1) or (vectoriser -> getPointCount () < 3))
 	{
 		delete vectoriser;
-		vectoriser = NULL;
+		vectoriser = nullptr;
 		return;
 	}
 
@@ -89,7 +89,7 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool use
 		glEndList ();
 
 		delete vectoriser;
-		vectoriser = NULL;
+		vectoriser = nullptr;
 	}
 }
 
@@ -131,14 +131,14 @@ PolygonGlyphImpl::doRender ()
 
 	const FTMesh* mesh = vectoriser -> getMesh ();
 
-	for (unsigned int t = 0; t < mesh -> getTesselationCount (); ++ t)
+	for (uint32_t t = 0; t < mesh -> getTesselationCount (); ++ t)
 	{
 		const Tesselation* subMesh     = mesh -> getTesselation (t);
-		unsigned int       polygonType = subMesh -> PolygonType ();
+		uint32_t       polygonType = subMesh -> PolygonType ();
 
 		glBegin (polygonType);
 
-		for (unsigned int i = 0; i < subMesh -> PointCount (); ++ i)
+		for (uint32_t i = 0; i < subMesh -> PointCount (); ++ i)
 		{
 			Vector3d point = subMesh -> getPoint (i);
 			glTexCoord2f (point.x () / hscale, point .y () / vscale);

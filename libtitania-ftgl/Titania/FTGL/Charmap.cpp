@@ -48,7 +48,7 @@ Charmap::Charmap (Face* face) :
 
 	ftEncoding = ftFace -> charmap -> encoding;
 
-	for (unsigned int i = 0; i < Charmap::MAX_PRECOMPUTED; i ++)
+	for (uint32_t i = 0; i < Charmap::MAX_PRECOMPUTED; i ++)
 	{
 		charIndexCache [i] = FT_Get_Char_Index (ftFace, i);
 	}
@@ -79,14 +79,14 @@ Charmap::setCharMap (FT_Encoding encoding)
 	return ! err;
 }
 
-unsigned int
-Charmap::getGlyphListIndex (const unsigned int characterCode) const
+uint32_t
+Charmap::getGlyphListIndex (const uint32_t characterCode) const
 {
 	return charMap .find (characterCode);
 }
 
-unsigned int
-Charmap::getFontIndex (const unsigned int characterCode)
+uint32_t
+Charmap::getFontIndex (const uint32_t characterCode)
 {
 	if (characterCode < Charmap::MAX_PRECOMPUTED)
 	{
@@ -97,7 +97,7 @@ Charmap::getFontIndex (const unsigned int characterCode)
 }
 
 void
-Charmap::setInsertIndex (const unsigned int characterCode,
+Charmap::setInsertIndex (const uint32_t characterCode,
                          const size_t containerIndex)
 {
 	charMap .insert (characterCode, static_cast <CharToGlyphIndexMap::GlyphIndex> (containerIndex));

@@ -62,7 +62,7 @@ Face::Face (const char* fontFilePath, bool precomputeKerning) :
 	}
 }
 
-Face::Face (const unsigned char* pBufferBytes, size_t bufferSizeInBytes,
+Face::Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
             bool precomputeKerning) :
 	       numGlyphs (0),
 	fontEncodingList (0),
@@ -116,7 +116,7 @@ Face::attach (const char* fontFilePath)
 }
 
 bool
-Face::attach (const unsigned char* pBufferBytes, size_t bufferSizeInBytes)
+Face::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 {
 	FT_Open_Args open;
 
@@ -129,7 +129,7 @@ Face::attach (const unsigned char* pBufferBytes, size_t bufferSizeInBytes)
 }
 
 const Size &
-Face::getSize (const unsigned int size, const unsigned int res)
+Face::getSize (const uint32_t size, const uint32_t res)
 {
 	charSize .setCharSize (ftFace, size, res, res);
 	err = charSize .getError ();
@@ -137,7 +137,7 @@ Face::getSize (const unsigned int size, const unsigned int res)
 	return charSize;
 }
 
-unsigned int
+uint32_t
 Face::getCharMapCount () const
 {
 	return (*ftFace) -> num_charmaps;
@@ -160,7 +160,7 @@ Face::getCharMapList ()
 }
 
 Vector3d
-Face::getKernAdvance (unsigned int index1, unsigned int index2)
+Face::getKernAdvance (uint32_t index1, uint32_t index2)
 {
 	double x, y;
 
@@ -195,13 +195,13 @@ Face::getKernAdvance (unsigned int index1, unsigned int index2)
 }
 
 FT_GlyphSlot
-Face::getGlyph (unsigned int index, FT_Int load_flags)
+Face::getGlyph (uint32_t index, FT_Int load_flags)
 {
 	err = FT_Load_Glyph (*ftFace, index, load_flags);
 
 	if (err)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	return (*ftFace) -> glyph;
@@ -217,9 +217,9 @@ Face::buildKerningCache ()
 	kerningCache   = new double [Face::MAX_PRECOMPUTED
 	                             * Face::MAX_PRECOMPUTED * 2];
 
-	for (unsigned int j = 0; j < Face::MAX_PRECOMPUTED; j ++)
+	for (uint32_t j = 0; j < Face::MAX_PRECOMPUTED; j ++)
 	{
-		for (unsigned int i = 0; i < Face::MAX_PRECOMPUTED; i ++)
+		for (uint32_t i = 0; i < Face::MAX_PRECOMPUTED; i ++)
 		{
 			err = FT_Get_Kerning (*ftFace, i, j, ft_kerning_unfitted,
 			                      &kernAdvance);
@@ -227,7 +227,7 @@ Face::buildKerningCache ()
 			if (err)
 			{
 				delete [ ] kerningCache;
-				kerningCache = NULL;
+				kerningCache = nullptr;
 				return;
 			}
 

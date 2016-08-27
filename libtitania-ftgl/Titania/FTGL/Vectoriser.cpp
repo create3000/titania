@@ -99,7 +99,7 @@ FTMesh::addPoint (const double x, const double y, const double z)
 const double*
 FTMesh::combine (const double x, const double y, const double z)
 {
-	tempPointList .push_back (Vector3d (x, y, z));
+	tempPointList .emplace_back (x, y, z);
 	return tempPointList .back () .data ();
 }
 
@@ -112,13 +112,13 @@ FTMesh::begin (GLenum meshType)
 void
 FTMesh::end ()
 {
-	tesselationList .push_back (currentTesselation);
+	tesselationList .emplace_back (currentTesselation);
 }
 
 const Tesselation* const
 FTMesh::getTesselation (size_t index) const
 {
-	return (index < tesselationList .size ()) ? tesselationList [index] : NULL;
+	return (index < tesselationList .size ()) ? tesselationList [index] : nullptr;
 }
 
 Vectoriser::Vectoriser (const FT_GlyphSlot glyph) :
@@ -159,7 +159,7 @@ Vectoriser::processContours ()
 
 	contourList = new Contour* [ftContourCount];
 
-	for (int i = 0; i < ftContourCount; ++ i)
+	for (int32_t i = 0; i < ftContourCount; ++ i)
 	{
 		FT_Vector* pointList = &outline.points [startIndex];
 		char*      tagList   = &outline.tags [startIndex];
@@ -176,7 +176,7 @@ Vectoriser::processContours ()
 
 	// Compute each contour's parity. FIXME: see if FT_Outline_Get_Orientation
 	// can do it for us.
-	for (int i = 0; i < ftContourCount; i ++)
+	for (int32_t i = 0; i < ftContourCount; i ++)
 	{
 		Contour* c1 = contourList [i];
 
@@ -195,9 +195,9 @@ Vectoriser::processContours ()
 
 		// 2. Count how many other contours we cross when going further to
 		// the left.
-		int parity = 0;
+		int32_t parity = 0;
 
-		for (int j = 0; j < ftContourCount; j ++)
+		for (int32_t j = 0; j < ftContourCount; j ++)
 		{
 			if (j == i)
 			{
@@ -256,11 +256,11 @@ Vectoriser::getPointCount ()
 const Contour* const
 Vectoriser::getContour (size_t index) const
 {
-	return (index < getContourCount ()) ? contourList [index] : NULL;
+	return (index < getContourCount ()) ? contourList [index] : nullptr;
 }
 
 void
-Vectoriser::makeMesh (double zNormal, int outsetType, double outsetSize)
+Vectoriser::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 {
 	if (mesh)
 	{

@@ -41,7 +41,7 @@ Size::~Size ()
 { }
 
 bool
-Size::setCharSize (FT_Face* face, unsigned int pointSize, unsigned int xRes, unsigned int yRes)
+Size::setCharSize (FT_Face* face, uint32_t pointSize, uint32_t xRes, uint32_t yRes)
 {
 	if (size not_eq pointSize or xResolution not_eq xRes or yResolution not_eq yRes)
 	{
@@ -60,7 +60,7 @@ Size::setCharSize (FT_Face* face, unsigned int pointSize, unsigned int xRes, uns
 	return ! err;
 }
 
-unsigned int
+uint32_t
 Size::getCharSize () const
 {
 	return size;

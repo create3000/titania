@@ -32,6 +32,8 @@
 
 #include "CharToGlyphIndexMap.h"
 
+#include <cstdint>
+
 namespace titania {
 namespace FTGL {
 
@@ -106,8 +108,8 @@ public:
 	 * @return      The GlyphContainer index for the character or zero
 	 *              if it wasn't found
 	 */
-	unsigned int
-	getGlyphListIndex (const unsigned int characterCode) const;
+	uint32_t
+	getGlyphListIndex (const uint32_t characterCode) const;
 
 	/**
 	 * Get the font glyph index of the input character.
@@ -116,8 +118,8 @@ public:
 	 *                      the current encoding eg apple roman.
 	 * @return      The glyph index for the character.
 	 */
-	unsigned int
-	getFontIndex (const unsigned int characterCode);
+	uint32_t
+	getFontIndex (const uint32_t characterCode);
 
 	/**
 	 * Set the GlyphContainer index of the character code.
@@ -128,7 +130,7 @@ public:
 	 *                       character code.
 	 */
 	void
-	setInsertIndex (const unsigned int characterCode, const size_t containerIndex);
+	setInsertIndex (const uint32_t characterCode, const size_t containerIndex);
 
 	/**
 	 * Queries for errors.
@@ -164,8 +166,9 @@ private:
 	/**
 	 * Precomputed font indices.
 	 */
-	static const unsigned int MAX_PRECOMPUTED = 128;
-	unsigned int              charIndexCache [MAX_PRECOMPUTED];
+	static constexpr uint32_t MAX_PRECOMPUTED = 128;
+
+	uint32_t charIndexCache [MAX_PRECOMPUTED];
 
 	/**
 	 * Current error code.

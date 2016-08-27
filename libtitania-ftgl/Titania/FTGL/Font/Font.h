@@ -38,6 +38,7 @@
 #include FT_GLYPH_H
 
 #include <cstddef>
+#include <cstdint>
 
 namespace titania {
 namespace FTGL {
@@ -79,7 +80,7 @@ protected:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	Font (const unsigned char* pBufferBytes, size_t bufferSizeInBytes);
+	Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
 
 
 private:
@@ -126,7 +127,7 @@ public:
 	 */
 	virtual
 	bool
-	attach (const unsigned char* pBufferBytes,
+	attach (const uint8_t* pBufferBytes,
 	        size_t bufferSizeInBytes);
 
 	/**
@@ -157,7 +158,7 @@ public:
 	 * @return character map count.
 	 */
 	virtual
-	unsigned int
+	uint32_t
 	getCharMapCount () const;
 
 	/**
@@ -178,8 +179,8 @@ public:
 	 */
 	virtual
 	bool
-	setFaceSize (const unsigned int size,
-	             const unsigned int res = 72);
+	setFaceSize (const uint32_t size,
+	             const uint32_t res = 72);
 
 	/**
 	 * Get the current face size in points (1/72 inch).
@@ -187,7 +188,7 @@ public:
 	 * @return face size
 	 */
 	virtual
-	unsigned int
+	uint32_t
 	getFaceSize () const;
 
 	/**
@@ -272,7 +273,7 @@ public:
 	 */
 	virtual
 	BBox
-	getBBox (const char* string, const int len = -1,
+	getBBox (const char* string, const int32_t len = -1,
 	         Vector3d position = Vector3d (),
 	         Vector3d spacing = Vector3d ());
 
@@ -293,47 +294,8 @@ public:
 	{
 		BBox b = getBBox (string);
 
-		llx = b .Lower ().x (); lly = b .Lower ().y (); llz = b .Lower ().z ();
-		urx = b .Upper ().x (); ury = b .Upper ().y (); urz = b .Upper ().z ();
-	}
-
-	/**
-	 * Get the bounding box for a string.
-	 *
-	 * @param string  A wchar_t buffer.
-	 * @param len  The length of the string. If < 0 then all characters
-	 *             will be checked until a null character is encountered
-	 *             (optional).
-	 * @param position  The pen position of the first character (optional).
-	 * @param spacing  A displacement vector to add after each character
-	 *                 has been checked (optional).
-	 * @return  The corresponding bounding box.
-	 */
-	virtual
-	BBox
-	getBBox (const wchar_t* string, const int len = -1,
-	         Vector3d position = Vector3d (),
-	         Vector3d spacing = Vector3d ());
-
-	/**
-	 * Get the bounding box for a string (deprecated).
-	 *
-	 * @param string  A wchar_t buffer.
-	 * @param llx  Lower left near x coordinate.
-	 * @param lly  Lower left near y coordinate.
-	 * @param llz  Lower left near z coordinate.
-	 * @param urx  Upper right far x coordinate.
-	 * @param ury  Upper right far y coordinate.
-	 * @param urz  Upper right far z coordinate.
-	 */
-	void
-	getBBox (const wchar_t* string, double & llx, double & lly, double & llz,
-	         double & urx, double & ury, double & urz)
-	{
-		BBox b = getBBox (string);
-
-		llx = b .Lower ().x (); lly = b .Lower ().y (); llz = b .Lower ().z ();
-		urx = b .Upper ().x (); ury = b .Upper ().y (); urz = b .Upper ().z ();
+		llx = b .getLower ().x (); lly = b .getLower ().y (); llz = b .getLower ().z ();
+		urx = b .getUpper ().x (); ury = b .getUpper ().y (); urz = b .getUpper ().z ();
 	}
 
 	/**
@@ -349,23 +311,7 @@ public:
 	 */
 	virtual
 	double
-	advance (const char* string, const int len = -1,
-	         Vector3d spacing = Vector3d ());
-
-	/**
-	 * Get the advance for a string.
-	 *
-	 * @param string  A wchar_t string
-	 * @param len  The length of the string. If < 0 then all characters
-	 *             will be checked until a null character is encountered
-	 *             (optional).
-	 * @param spacing  A displacement vector to add after each character
-	 *                 has been checked (optional).
-	 * @return  The string's advance width.
-	 */
-	virtual
-	double
-	advance (const wchar_t* string, const int len = -1,
+	advance (const char* string, const int32_t len = -1,
 	         Vector3d spacing = Vector3d ());
 
 	/**
@@ -383,27 +329,7 @@ public:
 	 */
 	virtual
 	Vector3d
-	render (const char* string, const int len = -1,
-	        Vector3d position = Vector3d (),
-	        Vector3d spacing = Vector3d (),
-	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
-
-	/**
-	 * Render a string of characters
-	 *
-	 * @param string    wchar_t string to be output.
-	 * @param len  The length of the string. If < 0 then all characters
-	 *             will be displayed until a null character is encountered
-	 *             (optional).
-	 * @param position  The pen position of the first character (optional).
-	 * @param spacing  A displacement vector to add after each character
-	 *                 has been displayed (optional).
-	 * @param renderMode  Render mode to use for display (optional).
-	 * @return  The new pen position after the last character was output.
-	 */
-	virtual
-	Vector3d
-	render (const wchar_t* string, const int len = -1,
+	render (const char* string, const int32_t len = -1,
 	        Vector3d position = Vector3d (),
 	        Vector3d spacing = Vector3d (),
 	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);

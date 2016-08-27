@@ -68,7 +68,7 @@ public:
 	AddPoint (const double x, const double y,
 	          const double z)
 	{
-		pointList .push_back (Vector3d (x, y, z));
+		pointList .emplace_back (x, y, z);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public:
 	 *
 	 */
 	const Vector3d &
-	getPoint (unsigned int index) const
+	getPoint (uint32_t index) const
 	{ return pointList [index]; }
 
 	/**
@@ -256,7 +256,7 @@ public:
 	 * @param outsetSize Specify the outset size contour
 	 */
 	void
-	makeMesh (double zNormal = FTGL_FRONT_FACING, int outsetType = 0, double outsetSize = 0);
+	makeMesh (double zNormal = FTGL_FRONT_FACING, int32_t outsetType = 0, double outsetSize = 0);
 
 	/**
 	 * Get the current mesh.
@@ -297,7 +297,7 @@ public:
 	 * @return      the number of points in contour[c]
 	 */
 	size_t
-	getContourSize (int c) const
+	getContourSize (int32_t c) const
 	{ return contourList [c] -> getPointCount (); }
 
 	/**
@@ -305,7 +305,7 @@ public:
 	 *
 	 * @return The contour flag
 	 */
-	int
+	int32_t
 	getContourFlag () const
 	{ return contourFlag; }
 
@@ -339,7 +339,7 @@ private:
 	/**
 	 * A flag indicating the tesselation rule for the glyph
 	 */
-	int contourFlag;
+	int32_t contourFlag;
 
 	/**
 	 * A Freetype outline

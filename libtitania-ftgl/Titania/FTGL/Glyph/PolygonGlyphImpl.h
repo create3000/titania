@@ -64,7 +64,7 @@ private:
 	/**
 	 * Private rendering variables.
 	 */
-	unsigned int hscale, vscale;
+	uint32_t hscale, vscale;
 	Vectoriser*  vectoriser;
 	double       outset;
 

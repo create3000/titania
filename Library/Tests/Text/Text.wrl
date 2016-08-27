@@ -1,6 +1,4 @@
-#VRML V2.0 utf8 Titania V1.2.2
-
-META "title" "Text"
+#VRML V2.0 utf8 Titania V1.4.9
 
 PROTO LineRectangle2D [ ]
 {
@@ -71,7 +69,7 @@ WorldInfo {
             value [
               0.860130786895752,
               -2.00347495079041,
-              11.2260465621948
+              25.278217116926
             ]
           }
           DEF orientation MetadataDouble {
@@ -95,6 +93,58 @@ WorldInfo {
           }
         ]
       }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF Text Transform {
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 1 0 0
+                  }
+                }
+                geometry DEF Text_1 Text {
+                  metadata DEF Text_2 MetadataSet {
+                    name "Text"
+                    reference "http://titania.create3000.de"
+                    value DEF string MetadataString {
+                      name "string"
+                      reference "http://titania.create3000.de"
+                      value "Read a lot more good Text today! Read a lot more good Text today! Read a lot more good Text today!"
+                    }
+                  }
+                  string [
+                    "Read a lot more good Text today!",
+                    "Read a lot more good Text today!",
+                    "Read a lot more good Text today!",
+                    "Über Häuser, außer Büsche."
+                  ]
+                  fontStyle DEF _1 FontStyle {
+                    family [
+                      "SANS",
+                      "Ubuntu Mono"
+                    ]
+                    style "BOLDITALIC"
+                    spacing 2
+                    justify [
+                      "BEGIN",
+                      "FIRST"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
     ]
   }
   title "Text"
@@ -110,39 +160,7 @@ Viewpoint {
   centerOfRotation 0.860131 -2.00347 -9.53674e-07
 }
 
-DEF Text Transform {
-  children Shape {
-    appearance Appearance {
-      material Material {
-        diffuseColor 1 0 0
-      }
-    }
-    geometry DEF Text_1 Text {
-      metadata DEF Text_2 MetadataSet {
-        name "Text"
-        reference "http://titania.create3000.de"
-        value DEF string MetadataString {
-          name "string"
-          reference "http://titania.create3000.de"
-          value "Read a lot more good Text today! Read a lot more good Text today! Read a lot more good Text today!"
-        }
-      }
-      string "Read a lot more good Text today! Read a lot more good Text today! Read a lot more good Text today!"
-      fontStyle DEF _1 FontStyle {
-        family [
-          "SANS",
-          "Ubuntu Mono"
-        ]
-        style "BOLDITALIC"
-        spacing 2
-        justify [
-          "BEGIN",
-          "FIRST"
-        ]
-      }
-    }
-  }
-}
+USE Text
 
 DEF RedBox Transform {
   translation -0.5 0.5 0
@@ -207,15 +225,32 @@ DEF YellowBox Transform {
 
 DEF LineBounds Transform {
   translation 0 0.759844 0
-  children BBox2 {
-    scale 57.5177 0.995684 1
-    color 1 0 0
-  }
+  children [
+    BBox2 {
+      scale 18.8945 0.995684 1
+      color 1 0 0
+    }
+    BBox2 {
+      translation 0 -0.995684 0
+      scale 18.8945 2 1
+      color 0 1 0
+    }
+    BBox2 {
+      translation 0 -2.99568 0
+      scale 18.8945 2 1
+      color 0 0 1
+    }
+    BBox2 {
+      translation 0 -4.99568 0
+      scale 15.7019 2 1
+      color 1 1 0
+    }
+  ]
 }
 
 DEF TextBounds Transform {
   translation 0 0.759844 0
-  scale 57.5177 0.975625 1
+  scale 18.8945 6.90188 1
   children BBox2 { }
 }
 

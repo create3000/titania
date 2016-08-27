@@ -83,8 +83,8 @@ public:
 	 *                      current encoding eg apple roman.
 	 * @return      The font index for the character.
 	 */
-	unsigned int
-	getFontIndex (const unsigned int characterCode) const;
+	uint32_t
+	getFontIndex (const uint32_t characterCode) const;
 
 	/**
 	 * Adds a glyph to this glyph list.
@@ -93,7 +93,7 @@ public:
 	 * @param characterCode The char code of the glyph NOT the glyph index.
 	 */
 	void
-	add (Glyph* glyph, const unsigned int characterCode);
+	add (Glyph* glyph, const uint32_t characterCode);
 
 	/**
 	 * Get a glyph from the glyph list
@@ -103,14 +103,14 @@ public:
 	 * loaded.
 	 */
 	const Glyph* const
-	getGlyph (const unsigned int characterCode) const;
+	getGlyph (const uint32_t characterCode) const;
 
 	/**
 	 * Get the bounding box for a character.
 	 * @param characterCode The char code of the glyph NOT the glyph index
 	 */
 	BBox
-	getBBox (const unsigned int characterCode) const;
+	getBBox (const uint32_t characterCode) const;
 
 	/**
 	 * Returns the kerned advance width for a glyph.
@@ -120,8 +120,8 @@ public:
 	 * @return                  advance width
 	 */
 	double
-	advance (const unsigned int characterCode,
-	         const unsigned int nextCharacterCode);
+	advance (const uint32_t characterCode,
+	         const uint32_t nextCharacterCode);
 
 	/**
 	 * Renders a character
@@ -132,8 +132,8 @@ public:
 	 * @return                   The distance to advance the pen position after Rendering
 	 */
 	Vector3d
-	render (const unsigned int characterCode,
-	        const unsigned int nextCharacterCode,
+	render (const uint32_t characterCode,
+	        const uint32_t nextCharacterCode,
 	        Vector3d penPosition, FTGL::RenderMode renderMode);
 
 	/**

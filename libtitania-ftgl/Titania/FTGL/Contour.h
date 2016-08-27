@@ -59,7 +59,7 @@ public:
 	 * @param pointTags
 	 * @param numberOfPoints
 	 */
-	Contour (FT_Vector* contour, char* pointTags, unsigned int numberOfPoints);
+	Contour (FT_Vector* contour, char* pointTags, uint32_t numberOfPoints);
 
 	/**
 	 * Destructor
@@ -138,7 +138,7 @@ public:
 	 * @param parity  The contour's parity within the glyph.
 	 */
 	void
-	setParity (int parity);
+	setParity (int32_t parity);
 
 	// FIXME: this should probably go away.
 	void

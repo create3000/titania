@@ -91,7 +91,7 @@ public:
 	 * Note - not protected against overruns.
 	 */
 	UnicodeStringItr
-	operator ++ (int)
+	operator ++ (int32_t)
 	{
 		UnicodeStringItr temp = *this;
 
@@ -118,7 +118,7 @@ public:
 	 * @return  The unicode codepoint of the character currently pointed
 	 * to by the UnicodeStringItr.
 	 */
-	unsigned int
+	uint32_t
 	operator * () const
 	{
 		return curChar;
@@ -158,7 +158,7 @@ private:
 	 * The character stored at the current buffer position (prefetched on
 	 * increment, so there's no penalty for dereferencing more than once).
 	 */
-	unsigned int curChar;
+	uint32_t curChar;
 
 	/**
 	 * The buffer position of the first element in the next character.
@@ -206,8 +206,8 @@ template <typename T>
 inline void
 UnicodeStringItr <T>::readUTF8 ()
 {
-	unsigned int ch               = 0;
-	unsigned int extraBytesToRead = utf8bytes [(unsigned char) (*nextPos)];
+	uint32_t ch               = 0;
+	uint32_t extraBytesToRead = utf8bytes [(uint8_t) (*nextPos)];
 
 	// falls through
 	switch (extraBytesToRead)
@@ -242,12 +242,12 @@ template <typename T>
 inline void
 UnicodeStringItr <T>::readUTF16 ()
 {
-	unsigned int ch = *nextPos ++;
+	uint32_t ch = *nextPos ++;
 
 	// if we have the first half of the surrogate pair
 	if (ch >= highSurrogateStart && ch <= highSurrogateEnd)
 	{
-		unsigned int ch2 = *curPos;
+		uint32_t ch2 = *curPos;
 
 		// complete the surrogate pair
 		if (ch2 >= lowSurrogateStart && ch2 <= lowSurrogateEnd)

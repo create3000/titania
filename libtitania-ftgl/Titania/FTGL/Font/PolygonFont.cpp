@@ -40,7 +40,7 @@ PolygonFont::PolygonFont (char const* fontFilePath) :
 	Font (new PolygonFontImpl (this, fontFilePath))
 { }
 
-PolygonFont::PolygonFont (const unsigned char* pBufferBytes,
+PolygonFont::PolygonFont (const uint8_t* pBufferBytes,
                           size_t bufferSizeInBytes) :
 	Font (new PolygonFontImpl (this, pBufferBytes, bufferSizeInBytes))
 { }
@@ -73,7 +73,7 @@ PolygonFontImpl::PolygonFontImpl (Font* ftFont, const char* fontFilePath) :
 }
 
 PolygonFontImpl::PolygonFontImpl (Font* ftFont,
-                                  const unsigned char* pBufferBytes,
+                                  const uint8_t* pBufferBytes,
                                   size_t bufferSizeInBytes) :
 	FontImpl (ftFont, pBufferBytes, bufferSizeInBytes),
 	  outset (0)

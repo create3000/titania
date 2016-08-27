@@ -29,6 +29,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <cstdint>
+
 namespace titania {
 namespace FTGL {
 
@@ -66,15 +68,15 @@ public:
 	 * @return          <code>true</code> if the size has been set. Clients should check Error() for more information if this function returns false()
 	 */
 	bool
-	setCharSize (FT_Face* face, unsigned int point_size,
-	             unsigned int x_resolution, unsigned int y_resolution);
+	setCharSize (FT_Face* face, uint32_t point_size,
+	             uint32_t x_resolution, uint32_t y_resolution);
 
 	/**
 	 * get the char size for the current face.
 	 *
 	 * @return The char size in points
 	 */
-	unsigned int
+	uint32_t
 	getCharSize () const;
 
 	/**
@@ -151,17 +153,17 @@ private:
 	/**
 	 *  The size in points.
 	 */
-	unsigned int size;
+	uint32_t size;
 
 	/**
 	 *  The horizontal resolution.
 	 */
-	unsigned int xResolution;
+	uint32_t xResolution;
 
 	/**
 	 *  The vertical resolution.
 	 */
-	unsigned int yResolution;
+	uint32_t yResolution;
 
 	/**
 	 * Current error code. Zero means no error.

@@ -32,7 +32,7 @@
 namespace titania {
 namespace FTGL {
 
-static const unsigned int BEZIER_STEPS = 5;
+static constexpr uint32_t BEZIER_STEPS = 5;
 
 void
 Contour::addPoint (Vector3d point)
@@ -40,32 +40,32 @@ Contour::addPoint (Vector3d point)
 	if (pointList.empty () or (point not_eq pointList [pointList.size () - 1]
 	                           && point not_eq pointList [0]))
 	{
-		pointList .push_back (point);
+		pointList .emplace_back (point);
 	}
 }
 
 void
 Contour::addOutsetPoint (Vector3d point)
 {
-	outsetPointList .push_back (point);
+	outsetPointList .emplace_back (point);
 }
 
 void
 Contour::addFrontPoint (Vector3d point)
 {
-	frontPointList .push_back (point);
+	frontPointList .emplace_back (point);
 }
 
 void
 Contour::addBackPoint (Vector3d point)
 {
-	backPointList .push_back (point);
+	backPointList .emplace_back (point);
 }
 
 void
 Contour::evaluateQuadraticCurve (Vector3d A, Vector3d B, Vector3d C)
 {
-	for (unsigned int i = 1; i < BEZIER_STEPS; i ++)
+	for (uint32_t i = 1; i < BEZIER_STEPS; i ++)
 	{
 		double t = static_cast <double> (i) / BEZIER_STEPS;
 
@@ -79,7 +79,7 @@ Contour::evaluateQuadraticCurve (Vector3d A, Vector3d B, Vector3d C)
 void
 Contour::evaluateCubicCurve (Vector3d A, Vector3d B, Vector3d C, Vector3d D)
 {
-	for (unsigned int i = 0; i < BEZIER_STEPS; i ++)
+	for (uint32_t i = 0; i < BEZIER_STEPS; i ++)
 	{
 		double t = static_cast <double> (i) / BEZIER_STEPS;
 
@@ -132,7 +132,7 @@ Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
 }
 
 void
-Contour::setParity (int parity)
+Contour::setParity (int32_t parity)
 {
 	size_t   size = getPointCount ();
 	Vector3d vOutset;
@@ -164,9 +164,9 @@ Contour::setParity (int parity)
 	}
 }
 
-Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
+Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
 {
-	unsigned int c = (n - 1) % n;
+	uint32_t c = (n - 1) % n;
 
 	Vector3d prev;
 	Vector3d cur (contour [c] .x, contour [c] .y);
@@ -178,9 +178,9 @@ Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 
 	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-6.html
 	// for a full description of FreeType tags.
-	for (unsigned int i = 0; i < n; i ++)
+	for (uint32_t i = 0; i < n; i ++)
 	{
-		unsigned int i1 = (i + 1) % n;
+		uint32_t i1 = (i + 1) % n;
 
 		prev   = cur;
 		cur    = next;
@@ -228,7 +228,7 @@ Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
 		         && FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
 		{
-			unsigned int i2 = (i + 2) % n;
+			uint32_t i2 = (i + 2) % n;
 
 			evaluateCubicCurve (prev, cur, next,
 			                    Vector3d (contour [i2] .x, contour [i2] .y));
