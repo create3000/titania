@@ -42,7 +42,6 @@
     <None Include="Titania\FTGL\Font\PolygonFontImpl.h" />
     <None Include="Titania\FTGL\Glyph\Glyph.h" />
     <None Include="Titania\FTGL\Glyph\GlyphImpl.h" />
-    <None Include="Titania\FTGL\Glyph\PolyGlyph.h" />
     <None Include="Titania\FTGL\Glyph\PolygonGlyphImpl.h" />
     <None Include="Titania\FTGL\BBox.h" />
     <None Include="Titania\FTGL\Charmap.h" />
@@ -50,14 +49,13 @@
     <None Include="Titania\FTGL\Contour.h" />
     <None Include="Titania\FTGL\Face.h" />
     <None Include="Titania\FTGL\GlyphContainer.h" />
-    <None Include="Titania\FTGL\Internals.h" />
     <None Include="Titania\FTGL\Library.h" />
-    <None Include="Titania\FTGL\List.h" />
     <None Include="Titania\FTGL\Point.h" />
     <None Include="Titania\FTGL\Size.h" />
     <None Include="Titania\FTGL\Unicode.h" />
-    <None Include="Titania\FTGL\Vector.h" />
     <None Include="Titania\FTGL\Vectoriser.h" />
+    <None Include="Titania\FTGL\Glyph\PolygonGlyph.h" />
+    <None Include="Titania\FTGL\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

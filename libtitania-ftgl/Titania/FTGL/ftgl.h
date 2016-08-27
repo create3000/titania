@@ -28,45 +28,19 @@
 #ifndef __TITANIA_FTGL_FTGL_H__
 #define __TITANIA_FTGL_FTGL_H__
 
+#include "BBox.h"
+#include "Point.h"
+
+#include "Glyph/Glyph.h"
+#include "Glyph/PolygonGlyph.h"
+
+#include "Font/Font.h"
+#include "Font/PolygonFont.h"
+
 /* We need the Freetype headers */
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #include FT_OUTLINE_H
-
-namespace titania {
-namespace FTGL {
-
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
-{
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
-
-typedef enum
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
-
-} // FTGL
-} // titania
-
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
 
 #endif  //  __ftgl__

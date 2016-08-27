@@ -23,12 +23,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTCHAR_TO_GLYPH_INDEX_MAP_H__
-#define __TITANIA_FTCHAR_TO_GLYPH_INDEX_MAP_H__
+#ifndef __TITANIA_FTGL_CHAR_TO_GLYPH_INDEX_MAP_H__
+#define __TITANIA_FTGL_CHAR_TO_GLYPH_INDEX_MAP_H__
 
-#include <stdlib.h>
-
-#include "ftgl.h"
+//#include <stdlib.h>
 
 namespace titania {
 namespace FTGL {
@@ -56,8 +54,8 @@ class CharToGlyphIndexMap
 {
 public:
 
-	typedef unsigned long CharacterCode;
-	typedef signed long   GlyphIndex;
+	using CharacterCode = unsigned long;
+	using GlyphIndex    = signed long;
 
 	enum
 	{

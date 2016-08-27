@@ -25,12 +25,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTCONTOUR_H__
-#define __TITANIA_FTCONTOUR_H__
+#ifndef __TITANIA_FTGL_CONTOUR_H__
+#define __TITANIA_FTGL_CONTOUR_H__
 
-#include "ftgl.h"
+#include "Point.h"
 
-#include "Vector.h"
+#include <vector>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 namespace titania {
 namespace FTGL {
@@ -138,10 +142,10 @@ public:
 
 	// FIXME: this should probably go away.
 	void
-	buildFrontOutset (float outset);
+	buildFrontOutset (double outset);
 
 	void
-	buildBackOutset (float outset);
+	buildBackOutset (double outset);
 
 
 private:
@@ -200,7 +204,7 @@ private:
 	 * Compute the vector norm
 	 */
 	inline
-	FTGL_DOUBLE
+	double
 	setNormVector (const Point & v);
 
 	/**
@@ -208,14 +212,14 @@ private:
 	 */
 	inline
 	void
-	sotationMatrix (const Point & a, const Point & b, FTGL_DOUBLE* matRot, FTGL_DOUBLE* invRot);
+	sotationMatrix (const Point & a, const Point & b, double* matRot, double* invRot);
 
 	/**
 	 * Matrix and vector multiplication
 	 */
 	inline
 	void
-	setMultMatrixVect (FTGL_DOUBLE* mat, Point & v);
+	setMultMatrixVect (double* mat, Point & v);
 
 	/**
 	 * Compute the vector bisecting from a vector 'v' and a distance 'd'
@@ -234,7 +238,7 @@ private:
 	/**
 	 *  The list of points in this contour
 	 */
-	typedef Vector <Point> PointVector;
+	using PointVector = std::vector <Point>;
 
 	PointVector pointList;
 	PointVector outsetPointList;

@@ -24,8 +24,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTFONT_FTPOLYGON_FONT_IMPL_H__
-#define __TITANIA_FTFONT_FTPOLYGON_FONT_IMPL_H__
+#ifndef __TITANIA_FTGL_FONT_POLYGON_FONT_IMPL_H__
+#define __TITANIA_FTGL_FONT_POLYGON_FONT_IMPL_H__
 
 #include "FontImpl.h"
 
@@ -45,7 +45,7 @@ protected:
 	PolygonFontImpl (Font* ftFont, const char* fontFilePath);
 
 	PolygonFontImpl (Font* ftFont, const unsigned char* pBufferBytes,
-	                   size_t bufferSizeInBytes);
+	                 size_t bufferSizeInBytes);
 
 	/**
 	 * Set the outset distance for the font. Only implemented by
@@ -55,7 +55,7 @@ protected:
 	 */
 	virtual
 	void
-	setOutset (float o) final override
+	setOutset (double o) final override
 	{ outset = o; }
 
 
@@ -64,7 +64,7 @@ private:
 	/**
 	 * The outset distance (front and back) for the font.
 	 */
-	float outset;
+	double outset;
 
 };
 

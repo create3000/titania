@@ -24,13 +24,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
-
-#include "ftgl.h"
+#include "GlyphContainer.h"
 
 #include "Charmap.h"
 #include "Face.h"
-#include "GlyphContainer.h"
+#include "Glyph/Glyph.h"
 
 namespace titania {
 namespace FTGL {
@@ -92,20 +90,20 @@ GlyphContainer::getBBox (const unsigned int charCode) const
 	return getGlyph (charCode) -> getBBox ();
 }
 
-float
+double
 GlyphContainer::advance (const unsigned int charCode,
-                           const unsigned int nextCharCode)
+                         const unsigned int nextCharCode)
 {
 	unsigned int left  = charMap -> getFontIndex (charCode);
 	unsigned int right = charMap -> getFontIndex (nextCharCode);
 
-	return face -> getKernAdvance (left, right) .Xf () + getGlyph (charCode) -> Advance ();
+	return face -> getKernAdvance (left, right) .X () + getGlyph (charCode) -> getAdvance ();
 }
 
 Point
 GlyphContainer::render (const unsigned int charCode,
                         const unsigned int nextCharCode,
-                        Point penPosition, int renderMode)
+                        Point penPosition, FTGL::RenderMode renderMode)
 {
 	unsigned int left  = charMap -> getFontIndex (charCode);
 	unsigned int right = charMap -> getFontIndex (nextCharCode);
@@ -115,7 +113,7 @@ GlyphContainer::render (const unsigned int charCode,
 	if (! face -> getError ())
 	{
 		unsigned int index = charMap -> getGlyphListIndex (charCode);
-		kernAdvance += glyphs [index] -> Render (penPosition, renderMode);
+		kernAdvance += glyphs [index] -> render (penPosition, renderMode);
 	}
 
 	return kernAdvance;

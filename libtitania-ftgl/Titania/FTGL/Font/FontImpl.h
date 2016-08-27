@@ -24,12 +24,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTFONT_FTFONT_IMPL_H__
-#define __TITANIA_FTFONT_FTFONT_IMPL_H__
-
-#include "../ftgl.h"
+#ifndef __TITANIA_FTGL_FONT_FONT_IMPL_H__
+#define __TITANIA_FTGL_FONT_FONT_IMPL_H__
 
 #include "../Face.h"
+#include "../ftgl.h"
 
 namespace titania {
 namespace FTGL {
@@ -47,7 +46,7 @@ protected:
 	FontImpl (Font* ftFont, char const* fontFilePath);
 
 	FontImpl (Font* ftFont, const unsigned char* pBufferBytes,
-	            size_t bufferSizeInBytes);
+	          size_t bufferSizeInBytes);
 
 	virtual
 	~FontImpl ();
@@ -82,15 +81,15 @@ protected:
 	setUseDisplayList (bool useList);
 
 	virtual
-	float
+	double
 	getAscender () const;
 
 	virtual
-	float
+	double
 	getDescender () const;
 
 	virtual
-	float
+	double
 	getLineHeight () const;
 
 	virtual
@@ -103,15 +102,15 @@ protected:
 
 	virtual
 	void
-	setDepth (float depth);
+	setDepth (double depth);
 
 	virtual
 	void
-	setOutset (float outset);
+	setOutset (double outset);
 
 	virtual
 	void
-	setOutset (float front, float back);
+	setOutset (double front, double back);
 
 	virtual
 	BBox
@@ -122,20 +121,20 @@ protected:
 	getBBox (const wchar_t* s, const int len, Point, Point);
 
 	virtual
-	float
+	double
 	advance (const char* s, const int len, Point);
 
 	virtual
-	float
+	double
 	advance (const wchar_t* s, const int len, Point);
 
 	virtual
 	Point
-	render (const char* s, const int len, Point, Point, int);
+	render (const char* s, const int len, Point, Point, FTGL::RenderMode);
 
 	virtual
 	Point
-	render (const wchar_t* s, const int len, Point, Point, int);
+	render (const wchar_t* s, const int len, Point, Point, FTGL::RenderMode);
 
 	/**
 	 * Current face object
@@ -196,19 +195,19 @@ private:
 	inline
 	BBox
 	getBBoxI (const T* s, const int len,
-	       Point position, Point spacing);
+	          Point position, Point spacing);
 
 	/* Internal generic Advance() implementation */
 	template <typename T>
 	inline
-	float
+	double
 	advanceI (const T* s, const int len, Point spacing);
 
 	/* Internal generic Render() implementation */
 	template <typename T>
 	inline
 	Point
-	renderI (const T* s, const int len, Point position, Point spacing, int mode);
+	renderI (const T* s, const int len, Point position, Point spacing, FTGL::RenderMode mode);
 
 };
 

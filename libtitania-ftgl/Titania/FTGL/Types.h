@@ -3,6 +3,7 @@
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
  * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
+ * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,85 +25,31 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "Glyph.h"
-
-#include "GlyphImpl.h"
+#ifndef __TITANIA_FTGL_TYPES_H__
+#define __TITANIA_FTGL_TYPES_H__
 
 namespace titania {
 namespace FTGL {
 
-//
-//  Glyph
-//
-
-Glyph::Glyph (FT_GlyphSlot glyph)
+enum class RenderMode
 {
-	impl = new GlyphImpl (glyph);
-}
+	RENDER_FRONT = 0x0001,
+	RENDER_BACK  = 0x0002,
+	RENDER_SIDE  = 0x0004,
+	RENDER_ALL   = 0xffff
 
-Glyph::Glyph (GlyphImpl* pImpl)
+};
+
+enum class TextAlignment
 {
-	impl = pImpl;
-}
+	ALIGN_LEFT    = 0,
+	ALIGN_CENTER  = 1,
+	ALIGN_RIGHT   = 2,
+	ALIGN_JUSTIFY = 3
 
-Glyph::~Glyph ()
-{
-	delete impl;
-}
-
-double
-Glyph::getAdvance () const
-{
-	return impl -> getAdvance ();
-}
-
-const BBox &
-Glyph::getBBox () const
-{
-	return impl -> getBBox ();
-}
-
-FT_Error
-Glyph::getError () const
-{
-	return impl -> getError ();
-}
-
-//
-//  GlyphImpl
-//
-
-GlyphImpl::GlyphImpl (FT_GlyphSlot glyph, bool useList) :
-	err (0)
-{
-	if (glyph)
-	{
-		bBox    = BBox (glyph);
-		advance = Point (glyph -> advance .x / 64.0,
-		                 glyph -> advance .y / 64.0);
-	}
-}
-
-GlyphImpl::~GlyphImpl ()
-{ }
-
-double
-GlyphImpl::getAdvance () const
-{
-	return advance .X ();
-}
-
-const BBox &
-GlyphImpl::getBBox () const
-{
-	return bBox;
-}
-
-FT_Error
-GlyphImpl::getError () const
-{
-	return err;
-}
+};
 
 } // FTGL
 } // titania
+
+#endif  //  __ftgl__

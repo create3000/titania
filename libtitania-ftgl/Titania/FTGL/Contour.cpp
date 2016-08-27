@@ -25,11 +25,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
-
 #include "Contour.h"
 
-#include <math.h>
+#include <cmath>
 
 namespace titania {
 namespace FTGL {
@@ -69,7 +67,7 @@ Contour::evaluateQuadraticCurve (Point A, Point B, Point C)
 {
 	for (unsigned int i = 1; i < BEZIER_STEPS; i ++)
 	{
-		float t = static_cast <float> (i) / BEZIER_STEPS;
+		double t = static_cast <double> (i) / BEZIER_STEPS;
 
 		Point U = (1 - t) * A + t * B;
 		Point V = (1 - t) * B + t * C;
@@ -83,7 +81,7 @@ Contour::evaluateCubicCurve (Point A, Point B, Point C, Point D)
 {
 	for (unsigned int i = 0; i < BEZIER_STEPS; i ++)
 	{
-		float t = static_cast <float> (i) / BEZIER_STEPS;
+		double t = static_cast <double> (i) / BEZIER_STEPS;
 
 		Point U = (1 - t) * A + t * B;
 		Point V = (1 - t) * B + t * C;
@@ -119,25 +117,25 @@ Contour::computeOutsetPoint (Point A, Point B, Point C)
 
 	/* Rotate bc to the left */
 	Point tmp (bc.X () * -ba.X () + bc .Y () * -ba.Y (),
-	             bc .X () * ba .Y () + bc .Y () * -ba.X ());
+	           bc .X () * ba .Y () + bc .Y () * -ba.X ());
 
 	/* Compute the vector bisecting 'abc' */
-	FTGL_DOUBLE norm = sqrt (tmp.X () * tmp .X () + tmp .Y () * tmp .Y ());
-	FTGL_DOUBLE dist = 64.0 * sqrt ((norm - tmp .X ()) / (norm + tmp .X ()));
+	double norm = sqrt (tmp.X () * tmp .X () + tmp .Y () * tmp .Y ());
+	double dist = 64.0 * sqrt ((norm - tmp .X ()) / (norm + tmp .X ()));
 
 	tmp .X (tmp.Y () < 0.0 ? dist : -dist);
 	tmp .Y (64.0);
 
 	/* Rotate the new bc to the right */
 	return Point (tmp.X () * -ba.X () + tmp .Y () * ba .Y (),
-	                tmp .X () * -ba.Y () + tmp .Y () * -ba.X ());
+	              tmp .X () * -ba.Y () + tmp .Y () * -ba.X ());
 }
 
 void
 Contour::setParity (int parity)
 {
-	size_t  size = getPointCount ();
-	Point vOutset;
+	size_t size = getPointCount ();
+	Point  vOutset;
 
 	if (((parity & 1) && clockwise) or (! (parity & 1) && ! clockwise))
 	{
@@ -168,10 +166,10 @@ Contour::setParity (int parity)
 
 Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 {
-	Point prev, cur (contour [(n - 1) % n]), next (contour [0]);
-	Point a, b = next - cur;
-	double  olddir, dir = atan2 ((next - cur) .Y (), (next - cur) .X ());
-	double  angle = 0.0;
+	Point  prev, cur (contour [(n - 1) % n]), next (contour [0]);
+	Point  a, b = next - cur;
+	double olddir, dir = atan2 ((next - cur) .Y (), (next - cur) .X ());
+	double angle = 0.0;
 
 	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-6.html
 	// for a full description of FreeType tags.
@@ -234,7 +232,7 @@ Contour::Contour (FT_Vector* contour, char* tags, unsigned int n)
 }
 
 void
-Contour::buildFrontOutset (float outset)
+Contour::buildFrontOutset (double outset)
 {
 	for (size_t i = 0; i < getPointCount (); ++ i)
 	{
@@ -243,7 +241,7 @@ Contour::buildFrontOutset (float outset)
 }
 
 void
-Contour::buildBackOutset (float outset)
+Contour::buildBackOutset (double outset)
 {
 	for (size_t i = 0; i < getPointCount (); ++ i)
 	{

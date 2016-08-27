@@ -23,13 +23,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTSIZE_H__
-#define __TITANIA_FTSIZE_H__
+#ifndef __TITANIA_FTGL_SIZE_H__
+#define __TITANIA_FTGL_SIZE_H__
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
-#include "ftgl.h"
 
 namespace titania {
 namespace FTGL {
@@ -84,7 +82,7 @@ public:
 	 *
 	 * @return  Ascender height
 	 */
-	float
+	double
 	getAscender () const;
 
 	/**
@@ -92,7 +90,7 @@ public:
 	 *
 	 * @return  Ascender height
 	 */
-	float
+	double
 	getDescender () const;
 
 	/**
@@ -105,7 +103,7 @@ public:
 	 *
 	 * @return  height in pixels.
 	 */
-	float
+	double
 	getHeight () const;
 
 	/**
@@ -118,7 +116,7 @@ public:
 	 *
 	 * @return  width in pixels.
 	 */
-	float
+	double
 	getWidth () const;
 
 	/**
@@ -126,7 +124,7 @@ public:
 	 *
 	 * @return  underline position in pixels
 	 */
-	float
+	double
 	getUnderline () const;
 
 	/**

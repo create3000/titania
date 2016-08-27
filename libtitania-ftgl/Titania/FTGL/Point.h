@@ -25,8 +25,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTPOINT_H__
-#define __TITANIA_FTGL_FTPOINT_H__
+#ifndef __TITANIA_FTGL_POINT_H__
+#define __TITANIA_FTGL_POINT_H__
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 namespace titania {
 namespace FTGL {
@@ -57,8 +61,8 @@ public:
 	 * @param z Third component
 	 */
 	inline
-	Point (const FTGL_DOUBLE x, const FTGL_DOUBLE y,
-	         const FTGL_DOUBLE z = 0)
+	Point (const double x, const double y,
+	       const double z = 0)
 	{
 		values [0] = x;
 		values [1] = y;
@@ -242,10 +246,10 @@ public:
 	operator not_eq (const Point & a, const Point & b);
 
 	/**
-	 * Cast to FTGL_DOUBLE*
+	 * Cast to double*
 	 */
 	inline
-	operator const FTGL_DOUBLE* () const
+	operator const double* () const
 	{
 		return values;
 	}
@@ -254,34 +258,25 @@ public:
 	 * Setters
 	 */
 	inline void
-	X (FTGL_DOUBLE x) { values [0] = x; }
+	X (double x) { values [0] = x; }
 
 	inline void
-	Y (FTGL_DOUBLE y) { values [1] = y; }
+	Y (double y) { values [1] = y; }
 
 	inline void
-	Z (FTGL_DOUBLE z) { values [2] = z; }
+	Z (double z) { values [2] = z; }
 
 	/**
 	 * Getters
 	 */
-	inline FTGL_DOUBLE
+	inline double
 	X () const { return values [0]; }
 
-	inline FTGL_DOUBLE
+	inline double
 	Y () const { return values [1]; }
 
-	inline FTGL_DOUBLE
+	inline double
 	Z () const { return values [2]; }
-
-	inline FTGL_FLOAT
-	Xf () const { return static_cast <FTGL_FLOAT> (values [0]); }
-
-	inline FTGL_FLOAT
-	Yf () const { return static_cast <FTGL_FLOAT> (values [1]); }
-
-	inline FTGL_FLOAT
-	Zf () const { return static_cast <FTGL_FLOAT> (values [2]); }
 
 
 private:
@@ -289,7 +284,7 @@ private:
 	/**
 	 * The point data
 	 */
-	FTGL_DOUBLE values [3];
+	double values [3];
 
 };
 

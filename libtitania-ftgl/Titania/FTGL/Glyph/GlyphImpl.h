@@ -24,10 +24,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGLYPH_FTGLYPH_IMPL_H__
-#define __TITANIA_FTGLYPH_FTGLYPH_IMPL_H__
-
-#include "../FTGL/ftgl.h"
+#ifndef __TITANIA_FTGL_GLYPH_GLYPH_IMPL_H__
+#define __TITANIA_FTGL_GLYPH_GLYPH_IMPL_H__
 
 namespace titania {
 namespace FTGL {
@@ -44,14 +42,14 @@ protected:
 	virtual
 	~GlyphImpl ();
 
-	float
-	Advance () const;
+	double
+	getAdvance () const;
 
 	const BBox &
 	getBBox () const;
 
 	FT_Error
-	Error () const;
+	getError () const;
 
 	/**
 	 * The advance distance for this glyph

@@ -30,8 +30,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTUNICODE_H__
-#define __TITANIA_FTUNICODE_H__
+#ifndef __TITANIA_FTGL_UNICODE_H__
+#define __TITANIA_FTGL_UNICODE_H__
 
 namespace titania {
 namespace FTGL {
@@ -197,7 +197,7 @@ const char UnicodeStringItr <T>::utf8bytes [256] = {
  * in a UTF-8 sequence. */
 template <typename T>
 const unsigned long UnicodeStringItr <T>::offsetsFromUTF8 [6] = { 0x00000000UL, 0x00003080UL, 0x000E2080UL,
-	                                                                 0x03C82080UL, 0xFA082080UL, 0x82082080UL };
+	                                                               0x03C82080UL, 0xFA082080UL, 0x82082080UL };
 
 // get a UTF8 character; leave the tracking pointer at the start of the
 // next character

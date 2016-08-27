@@ -120,7 +120,7 @@ PolygonText::draw ()
 			                                          -1,
 			                                          FTGL::Point (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
 			                                          FTGL::Point (getCharSpacing () [i], 0, 0),
-			                                          FTGL::RENDER_ALL);
+			                                          FTGL::RenderMode::RENDER_ALL);
 
 		}
 	}
@@ -150,7 +150,7 @@ PolygonText::draw ()
 				                                          -1,
 				                                          FTGL::Point (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
 				                                          FTGL::Point (),
-				                                          FTGL::RENDER_ALL);
+				                                          FTGL::RenderMode::RENDER_ALL);
 				++ g;
 			}
 		}

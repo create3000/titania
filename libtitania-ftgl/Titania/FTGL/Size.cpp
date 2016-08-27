@@ -23,8 +23,6 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
-
 #include "Size.h"
 
 namespace titania {
@@ -68,19 +66,19 @@ Size::getCharSize () const
 	return size;
 }
 
-float
+double
 Size::getAscender () const
 {
-	return ftSize == 0 ? 0 : static_cast <float> (ftSize -> metrics .ascender) / 64.0f;
+	return ftSize == 0 ? 0 : static_cast <double> (ftSize -> metrics .ascender) / 64.0;
 }
 
-float
+double
 Size::getDescender () const
 {
-	return ftSize == 0 ? 0 : static_cast <float> (ftSize -> metrics .descender) / 64.0f;
+	return ftSize == 0 ? 0 : static_cast <double> (ftSize -> metrics .descender) / 64.0;
 }
 
-float
+double
 Size::getHeight () const
 {
 	if (0 == ftSize)
@@ -90,15 +88,15 @@ Size::getHeight () const
 
 	if (FT_IS_SCALABLE ((*ftFace)))
 	{
-		return ((*ftFace) -> bbox .yMax - (*ftFace) -> bbox .yMin) * ((float) ftSize -> metrics .y_ppem / (float) (*ftFace) -> units_per_EM);
+		return ((*ftFace) -> bbox .yMax - (*ftFace) -> bbox .yMin) * ((double) ftSize -> metrics .y_ppem / (double) (*ftFace) -> units_per_EM);
 	}
 	else
 	{
-		return static_cast <float> (ftSize -> metrics .height) / 64.0f;
+		return static_cast <double> (ftSize -> metrics .height) / 64.0;
 	}
 }
 
-float
+double
 Size::getWidth () const
 {
 	if (0 == ftSize)
@@ -108,15 +106,15 @@ Size::getWidth () const
 
 	if (FT_IS_SCALABLE ((*ftFace)))
 	{
-		return ((*ftFace) -> bbox .xMax - (*ftFace) -> bbox .xMin) * (static_cast <float> (ftSize -> metrics .x_ppem) / static_cast <float> ((*ftFace) -> units_per_EM));
+		return ((*ftFace) -> bbox .xMax - (*ftFace) -> bbox .xMin) * (static_cast <double> (ftSize -> metrics .x_ppem) / static_cast <double> ((*ftFace) -> units_per_EM));
 	}
 	else
 	{
-		return static_cast <float> (ftSize -> metrics .max_advance) / 64.0f;
+		return static_cast <double> (ftSize -> metrics .max_advance) / 64.0;
 	}
 }
 
-float
+double
 Size::getUnderline () const
 {
 	return 0;

@@ -23,16 +23,15 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTFACE_H__
-#define __TITANIA_FTFACE_H__
+#ifndef __TITANIA_FTGL_FACE_H__
+#define __TITANIA_FTGL_FACE_H__
+
+#include "Point.h"
+#include "Size.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
-
-#include "ftgl.h"
-
-#include "Size.h"
 
 namespace titania {
 namespace FTGL {
@@ -61,7 +60,7 @@ public:
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
 	Face (const unsigned char* pBufferBytes, size_t bufferSizeInBytes,
-	        bool precomputeKerning = true);
+	      bool precomputeKerning = true);
 
 	/**
 	 * Destructor
@@ -188,7 +187,7 @@ private:
 	buildKerningCache ();
 
 	static const unsigned int MAX_PRECOMPUTED = 128;
-	float*                    kerningCache;
+	double*                   kerningCache;
 
 	/**
 	 * Current error code. Zero means no error.

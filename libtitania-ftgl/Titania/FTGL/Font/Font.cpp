@@ -24,17 +24,11 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
+#include "Font.h"
 
-#include "../Internals.h"
-#include "../Unicode.h"
-
-#include "FontImpl.h"
-
-#include "PolygonFontImpl.h"
-
-#include "../Face.h"
 #include "../GlyphContainer.h"
+#include "../Unicode.h"
+#include "FontImpl.h"
 
 namespace titania {
 namespace FTGL {
@@ -88,19 +82,19 @@ Font::getFaceSize () const
 }
 
 void
-Font::setDepth (float depth)
+Font::setDepth (double depth)
 {
 	return impl -> setDepth (depth);
 }
 
 void
-Font::setOutset (float outset)
+Font::setOutset (double outset)
 {
 	return impl -> setOutset (outset);
 }
 
 void
-Font::setOutset (float front, float back)
+Font::setOutset (double front, double back)
 {
 	return impl -> setOutset (front, back);
 }
@@ -135,45 +129,43 @@ Font::setUseDisplayList (bool useList)
 	return impl -> setUseDisplayList (useList);
 }
 
-float
+double
 Font::getAscender () const
 {
 	return impl -> getAscender ();
 }
 
-float
+double
 Font::getDescender () const
 {
 	return impl -> getDescender ();
 }
 
-float
+double
 Font::getLineHeight () const
 {
 	return impl -> getLineHeight ();
 }
 
 Point
-Font::render (const char* string, const int len,
-                Point position, Point spacing, int renderMode)
+Font::render (const char* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
 {
 	return impl -> render (string, len, position, spacing, renderMode);
 }
 
 Point
-Font::render (const wchar_t* string, const int len,
-                Point position, Point spacing, int renderMode)
+Font::render (const wchar_t* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
 {
 	return impl -> render (string, len, position, spacing, renderMode);
 }
 
-float
+double
 Font::advance (const char* string, const int len, Point spacing)
 {
 	return impl -> advance (string, len, spacing);
 }
 
-float
+double
 Font::advance (const wchar_t* string, const int len, Point spacing)
 {
 	return impl -> advance (string, len, spacing);
@@ -181,14 +173,14 @@ Font::advance (const wchar_t* string, const int len, Point spacing)
 
 BBox
 Font::getBBox (const char* string, const int len,
-              Point position, Point spacing)
+               Point position, Point spacing)
 {
 	return impl -> getBBox (string, len, position, spacing);
 }
 
 BBox
 Font::getBBox (const wchar_t* string, const int len,
-              Point position, Point spacing)
+               Point position, Point spacing)
 {
 	return impl -> getBBox (string, len, position, spacing);
 }
@@ -219,7 +211,7 @@ FontImpl::FontImpl (Font* ftFont, char const* fontFilePath) :
 }
 
 FontImpl::FontImpl (Font* ftFont, const unsigned char* pBufferBytes,
-                        size_t bufferSizeInBytes) :
+                    size_t bufferSizeInBytes) :
 	           face (pBufferBytes, bufferSizeInBytes),
 	useDisplayLists (true),
 	     load_flags (FT_LOAD_DEFAULT),
@@ -257,7 +249,7 @@ FontImpl::attach (const char* fontFilePath)
 
 bool
 FontImpl::attach (const unsigned char* pBufferBytes,
-                    size_t bufferSizeInBytes)
+                  size_t bufferSizeInBytes)
 {
 	if (! face .attach (pBufferBytes, bufferSizeInBytes))
 	{
@@ -297,15 +289,15 @@ FontImpl::getFaceSize () const
 }
 
 void
-FontImpl::setDepth (float depth)
+FontImpl::setDepth (double depth)
 { }
 
 void
-FontImpl::setOutset (float outset)
+FontImpl::setOutset (double outset)
 { }
 
 void
-FontImpl::setOutset (float front, float back)
+FontImpl::setOutset (double front, double back)
 { }
 
 void
@@ -341,19 +333,19 @@ FontImpl::setUseDisplayList (bool useList)
 	useDisplayLists = useList;
 }
 
-float
+double
 FontImpl::getAscender () const
 {
 	return charSize .getAscender ();
 }
 
-float
+double
 FontImpl::getDescender () const
 {
 	return charSize .getDescender ();
 }
 
-float
+double
 FontImpl::getLineHeight () const
 {
 	return charSize .getHeight ();
@@ -371,8 +363,8 @@ FontImpl::getBBoxI (const T* string, const int len, Point position, Point spacin
 	{
 		// for multibyte - we can't rely on sizeof(T) == character
 		UnicodeStringItr <T> ustr (string);
-		unsigned int           thisChar = *ustr ++;
-		unsigned int           nextChar = *ustr;
+		unsigned int         thisChar = *ustr ++;
+		unsigned int         nextChar = *ustr;
 
 		if (checkGlyph (thisChar))
 		{
@@ -418,10 +410,11 @@ FontImpl::getBBox (const wchar_t* string, const int len, Point position, Point s
 }
 
 template <typename T>
-inline float
+inline
+double
 FontImpl::advanceI (const T* string, const int len, Point spacing)
 {
-	float advance = 0;
+	double advance = 0;
 
 	UnicodeStringItr <T> ustr (string);
 
@@ -437,21 +430,21 @@ FontImpl::advanceI (const T* string, const int len, Point spacing)
 
 		if (nextChar)
 		{
-			advance += spacing .Xf ();
+			advance += spacing .X ();
 		}
 	}
 
 	return advance;
 }
 
-float
+double
 FontImpl::advance (const char* string, const int len, Point spacing)
 {
 	/* The chars need to be unsigned because they are cast to int later */
 	return advanceI ((const unsigned char*) string, len, spacing);
 }
 
-float
+double
 FontImpl::advance (const wchar_t* string, const int len, Point spacing)
 {
 	return advanceI (string, len, spacing);
@@ -461,7 +454,7 @@ template <typename T>
 inline Point
 FontImpl::renderI (const T* string, const int len,
                    Point position, Point spacing,
-                   int renderMode)
+                   FTGL::RenderMode renderMode)
 {
 	// for multibyte - we can't rely on sizeof(T) == character
 	UnicodeStringItr <T> ustr (string);
@@ -486,14 +479,14 @@ FontImpl::renderI (const T* string, const int len,
 }
 
 Point
-FontImpl::render (const char* string, const int len, Point position, Point spacing, int renderMode)
+FontImpl::render (const char* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
 {
 	return renderI ((const unsigned char*) string,
 	                len, position, spacing, renderMode);
 }
 
 Point
-FontImpl::render (const wchar_t* string, const int len, Point position, Point spacing, int renderMode)
+FontImpl::render (const wchar_t* string, const int len, Point position, Point spacing, FTGL::RenderMode renderMode)
 {
 	return renderI (string, len, position, spacing, renderMode);
 }

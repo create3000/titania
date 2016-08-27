@@ -25,8 +25,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTPOLY_GLYPH_H__
-#define __TITANIA_FTGL_FTPOLY_GLYPH_H__
+#ifndef __TITANIA_FTGL_GLYPH_POLYGON_GLYPH_H__
+#define __TITANIA_FTGL_GLYPH_POLYGON_GLYPH_H__
+
+#include "Glyph.h"
 
 namespace titania {
 namespace FTGL {
@@ -51,7 +53,7 @@ public:
 	 *                       <code>true</code> turns ON display lists.
 	 *                       <code>false</code> turns OFF display lists.
 	 */
-	PolygonGlyph (FT_GlyphSlot glyph, float outset, bool useDisplayList);
+	PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList);
 
 	/**
 	 * Destructor
@@ -67,7 +69,7 @@ public:
 	 * @return  The advance distance for this glyph.
 	 */
 	virtual const Point &
-	Render (const Point & pen, int renderMode);
+	render (const Point & pen, FTGL::RenderMode renderMode);
 
 };
 

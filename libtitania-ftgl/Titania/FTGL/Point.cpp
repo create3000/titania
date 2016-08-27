@@ -24,11 +24,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
+#include "Point.h"
 
-#include <math.h>
-
-#include "ftgl.h"
+#include <cmath>
 
 namespace titania {
 namespace FTGL {

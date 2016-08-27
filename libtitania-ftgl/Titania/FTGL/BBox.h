@@ -25,10 +25,15 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTBBOX_H__
-#define __TITANIA_FTGL_FTBBOX_H__
+#ifndef __TITANIA_FTGL_BBOX_H__
+#define __TITANIA_FTGL_BBOX_H__
 
 #include "Point.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
+#include FT_OUTLINE_H
 
 namespace titania {
 namespace FTGL {
@@ -51,7 +56,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	BBox (float lx, float ly, float lz, float ux, float uy, float uz) :
+	BBox (double lx, double ly, double lz, double ux, double uy, double uz) :
 		lower (lx, ly, lz),
 		upper (ux, uy, uz)
 	{ }
@@ -78,11 +83,11 @@ public:
 
 		FT_Outline_Get_CBox (&(glyph -> outline), &bbox);
 
-		lower .X (static_cast <float> (bbox.xMin) / 64.0f);
-		lower .Y (static_cast <float> (bbox.yMin) / 64.0f);
+		lower .X (static_cast <double> (bbox.xMin) / 64.0);
+		lower .Y (static_cast <double> (bbox.yMin) / 64.0);
 		lower .Z (0);
-		upper .X (static_cast <float> (bbox.xMax) / 64.0f);
-		upper .Y (static_cast <float> (bbox.yMax) / 64.0f);
+		upper .X (static_cast <double> (bbox.xMax) / 64.0);
+		upper .Y (static_cast <double> (bbox.yMax) / 64.0);
 		upper .Z (0);
 	}
 
@@ -156,7 +161,7 @@ public:
 	}
 
 	void
-	SetDepth (float depth)
+	SetDepth (double depth)
 	{
 		if (depth > 0)
 			upper .Z (lower.Z () + depth);

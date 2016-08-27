@@ -24,10 +24,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGLYPH_FTPOLYGON_GLYPH_IMPL_H__
-#define __TITANIA_FTGLYPH_FTPOLYGON_GLYPH_IMPL_H__
+#ifndef __TITANIA_FTGL_GLYPH_POLYGON_GLYPH_IMPL_H__
+#define __TITANIA_FTGL_GLYPH_POLYGON_GLYPH_IMPL_H__
 
 #include "GlyphImpl.h"
+
+#include <GL/gl.h>
 
 namespace titania {
 namespace FTGL {
@@ -42,14 +44,13 @@ class PolygonGlyphImpl :
 
 public:
 
-	PolygonGlyphImpl (FT_GlyphSlot glyph, float outset,
-	                    bool useDisplayList);
+	PolygonGlyphImpl (FT_GlyphSlot glyph, double outset, bool useDisplayList);
 
 	virtual
 	~PolygonGlyphImpl ();
 
 	virtual const Point &
-	RenderImpl (const Point & pen, int renderMode);
+	renderImpl (const Point & pen, FTGL::RenderMode renderMode);
 
 
 private:
@@ -58,14 +59,14 @@ private:
 	 * Private rendering method.
 	 */
 	void
-	DoRender ();
+	doRender ();
 
 	/**
 	 * Private rendering variables.
 	 */
-	unsigned int  hscale, vscale;
-	Vectoriser* vectoriser;
-	float         outset;
+	unsigned int hscale, vscale;
+	Vectoriser*  vectoriser;
+	double       outset;
 
 	/**
 	 * OpenGL display list

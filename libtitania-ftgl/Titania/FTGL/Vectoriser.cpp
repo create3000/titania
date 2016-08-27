@@ -25,58 +25,52 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
-
-#include "Internals.h"
 #include "Vectoriser.h"
+
+#include <GL/glu.h>
 
 namespace titania {
 namespace FTGL {
 
-#ifndef CALLBACK
-#define CALLBACK
-#endif
+using GLUTesselatorFunction = GLvoid (*)();
 
-#if defined __APPLE_CC__ && __APPLE_CC__ < 5465
-typedef GLvoid (*GLUTesselatorFunction)(...);
-#elif defined WIN32 && ! defined __CYGWIN__
-typedef GLvoid (CALLBACK * GLUTesselatorFunction)();
-#else
-typedef GLvoid (*GLUTesselatorFunction)();
-#endif
-
-void CALLBACK
+static
+void
 ftglError (GLenum errCode, FTMesh* mesh)
 {
-	mesh -> Error (errCode);
+	mesh -> setError (errCode);
 }
 
-void CALLBACK
+static
+void
 ftglVertex (void* data, FTMesh* mesh)
 {
-	FTGL_DOUBLE* vertex = static_cast <FTGL_DOUBLE*> (data);
+	double* vertex = static_cast <double*> (data);
 
-	mesh -> AddPoint (vertex [0], vertex [1], vertex [2]);
+	mesh -> addPoint (vertex [0], vertex [1], vertex [2]);
 }
 
-void CALLBACK
-ftglCombine (FTGL_DOUBLE coords [3], void* vertex_data [4], GLfloat weight [4], void** outData, FTMesh* mesh)
+static
+void
+ftglCombine (double coords [3], void* vertex_data [4], GLfloat weight [4], void** outData, FTMesh* mesh)
 {
-	const FTGL_DOUBLE* vertex = static_cast <const FTGL_DOUBLE*> (coords);
+	const double* vertex = static_cast <const double*> (coords);
 
-	*outData = const_cast <FTGL_DOUBLE*> (mesh -> Combine (vertex [0], vertex [1], vertex [2]));
+	*outData = const_cast <double*> (mesh -> combine (vertex [0], vertex [1], vertex [2]));
 }
 
-void CALLBACK
+static
+void
 ftglBegin (GLenum type, FTMesh* mesh)
 {
-	mesh -> Begin (type);
+	mesh -> begin (type);
 }
 
-void CALLBACK
+static
+void
 ftglEnd (FTMesh* mesh)
 {
-	mesh -> End ();
+	mesh -> end ();
 }
 
 FTMesh::FTMesh () :
@@ -97,32 +91,32 @@ FTMesh::~FTMesh ()
 }
 
 void
-FTMesh::AddPoint (const FTGL_DOUBLE x, const FTGL_DOUBLE y, const FTGL_DOUBLE z)
+FTMesh::addPoint (const double x, const double y, const double z)
 {
 	currentTesselation -> AddPoint (x, y, z);
 }
 
-const FTGL_DOUBLE*
-FTMesh::Combine (const FTGL_DOUBLE x, const FTGL_DOUBLE y, const FTGL_DOUBLE z)
+const double*
+FTMesh::combine (const double x, const double y, const double z)
 {
 	tempPointList .push_back (Point (x, y, z));
-	return static_cast <const FTGL_DOUBLE*> (tempPointList.back ());
+	return static_cast <const double*> (tempPointList.back ());
 }
 
 void
-FTMesh::Begin (GLenum meshType)
+FTMesh::begin (GLenum meshType)
 {
-	currentTesselation = new FTTesselation (meshType);
+	currentTesselation = new Tesselation (meshType);
 }
 
 void
-FTMesh::End ()
+FTMesh::end ()
 {
 	tesselationList .push_back (currentTesselation);
 }
 
-const FTTesselation* const
-FTMesh::Tesselation (size_t index) const
+const Tesselation* const
+FTMesh::getTesselation (size_t index) const
 {
 	return (index < tesselationList .size ()) ? tesselationList [index] : NULL;
 }
@@ -266,7 +260,7 @@ Vectoriser::getContour (size_t index) const
 }
 
 void
-Vectoriser::makeMesh (FTGL_DOUBLE zNormal, int outsetType, float outsetSize)
+Vectoriser::makeMesh (double zNormal, int outsetType, double outsetSize)
 {
 	if (mesh)
 	{
@@ -311,7 +305,7 @@ Vectoriser::makeMesh (FTGL_DOUBLE zNormal, int outsetType, float outsetSize)
 
 		for (size_t p = 0; p < contour -> getPointCount (); ++ p)
 		{
-			const FTGL_DOUBLE* d;
+			const double* d;
 
 			switch (outsetType)
 			{

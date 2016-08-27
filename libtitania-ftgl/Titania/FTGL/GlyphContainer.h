@@ -23,16 +23,17 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGLYPH_CONTAINER_H__
-#define __TITANIA_FTGLYPH_CONTAINER_H__
+#ifndef __TITANIA_FTGL_GLYPH_CONTAINER_H__
+#define __TITANIA_FTGL_GLYPH_CONTAINER_H__
+
+#include "BBox.h"
+#include "Types.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-#include "ftgl.h"
-
-#include "Vector.h"
+#include <vector>
 
 namespace titania {
 namespace FTGL {
@@ -48,7 +49,7 @@ class Charmap;
  */
 class GlyphContainer
 {
-	typedef Vector <Glyph*> GlyphVector;
+	using GlyphVector = std::vector <Glyph*>;
 
 
 public:
@@ -118,7 +119,7 @@ public:
 	 * @param nextCharacterCode the next glyph in a string
 	 * @return                  advance width
 	 */
-	float
+	double
 	advance (const unsigned int characterCode,
 	         const unsigned int nextCharacterCode);
 
@@ -133,7 +134,7 @@ public:
 	Point
 	render (const unsigned int characterCode,
 	        const unsigned int nextCharacterCode,
-	        Point penPosition, int renderMode);
+	        Point penPosition, FTGL::RenderMode renderMode);
 
 	/**
 	 * Queries the Font for errors.

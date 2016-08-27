@@ -25,8 +25,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGLPOLYGON_FONT_H__
-#define __TITANIA_FTGL_FTGLPOLYGON_FONT_H__
+#ifndef __TITANIA_FTGL_FONT_POLYGON_FONT_H__
+#define __TITANIA_FTGL_FONT_POLYGON_FONT_H__
+
+#include "Font.h"
 
 namespace titania {
 namespace FTGL {
@@ -57,8 +59,7 @@ public:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	PolygonFont (const unsigned char* pBufferBytes,
-	             size_t bufferSizeInBytes);
+	PolygonFont (const unsigned char* pBufferBytes, size_t bufferSizeInBytes);
 
 	/**
 	 * Destructor

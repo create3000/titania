@@ -24,11 +24,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
+#include "PolygonFont.h"
 
-#include "../ftgl.h"
-
-#include "../Internals.h"
+#include "../Glyph/PolygonGlyph.h"
 #include "PolygonFontImpl.h"
 
 namespace titania {
@@ -43,7 +41,7 @@ PolygonFont::PolygonFont (char const* fontFilePath) :
 { }
 
 PolygonFont::PolygonFont (const unsigned char* pBufferBytes,
-                              size_t bufferSizeInBytes) :
+                          size_t bufferSizeInBytes) :
 	Font (new PolygonFontImpl (this, pBufferBytes, bufferSizeInBytes))
 { }
 
@@ -60,8 +58,7 @@ PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph)
 		return nullptr;
 	}
 
-	return new PolygonGlyph (ftGlyph, myimpl -> outset,
-	                           myimpl -> useDisplayLists);
+	return new PolygonGlyph (ftGlyph, myimpl -> outset, myimpl -> useDisplayLists);
 }
 
 //
@@ -70,16 +67,16 @@ PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph)
 
 PolygonFontImpl::PolygonFontImpl (Font* ftFont, const char* fontFilePath) :
 	FontImpl (ftFont, fontFilePath),
-	    outset (0)
+	  outset (0)
 {
 	load_flags = FT_LOAD_NO_HINTING;
 }
 
 PolygonFontImpl::PolygonFontImpl (Font* ftFont,
-                                      const unsigned char* pBufferBytes,
-                                      size_t bufferSizeInBytes) :
+                                  const unsigned char* pBufferBytes,
+                                  size_t bufferSizeInBytes) :
 	FontImpl (ftFont, pBufferBytes, bufferSizeInBytes),
-	    outset (0)
+	  outset (0)
 {
 	load_flags = FT_LOAD_NO_HINTING;
 }

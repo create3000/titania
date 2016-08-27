@@ -25,8 +25,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGLYPH_H__
-#define __TITANIA_FTGL_FTGLYPH_H__
+#ifndef __TITANIA_FTGL_GLYPH_GLYPH_H__
+#define __TITANIA_FTGL_GLYPH_GLYPH_H__
+
+#include "../BBox.h"
+#include "../Point.h"
+#include "../Types.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 namespace titania {
 namespace FTGL {
@@ -90,23 +98,26 @@ public:
 	 * @param renderMode  Render mode to display
 	 * @return  The advance distance for this glyph.
 	 */
-	virtual const Point &
-	Render (const Point & pen, int renderMode) = 0;
+	virtual
+	const Point &
+	render (const Point & pen, FTGL::RenderMode renderMode) = 0;
 
 	/**
 	 * Return the advance width for this glyph.
 	 *
 	 * @return  advance width.
 	 */
-	virtual float
-	Advance () const;
+	virtual
+	double
+	getAdvance () const;
 
 	/**
 	 * Return the bounding box for this glyph.
 	 *
 	 * @return  bounding box.
 	 */
-	virtual const BBox &
+	virtual
+	const BBox &
 	getBBox () const;
 
 	/**
@@ -114,8 +125,9 @@ public:
 	 *
 	 * @return  The current error code.
 	 */
-	virtual FT_Error
-	Error () const;
+	virtual
+	FT_Error
+	getError () const;
 
 
 private:

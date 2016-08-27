@@ -23,15 +23,14 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTCHARMAP_H__
-#define __TITANIA_FTCHARMAP_H__
+#ifndef __TITANIA_FTGL_CHARMAP_H__
+#define __TITANIA_FTGL_CHARMAP_H__
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
 #include "CharToGlyphIndexMap.h"
-#include "ftgl.h"
 
 namespace titania {
 namespace FTGL {
@@ -158,7 +157,8 @@ private:
 	 *
 	 * < character code, face glyph index>
 	 */
-	typedef CharToGlyphIndexMap CharacterMap;
+	using CharacterMap = CharToGlyphIndexMap;
+
 	CharacterMap charMap;
 
 	/**

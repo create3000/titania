@@ -25,8 +25,19 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTFONT_H__
-#define __TITANIA_FTGL_FTFONT_H__
+#ifndef __TITANIA_FTGL_FONT_FONT_H__
+#define __TITANIA_FTGL_FONT_FONT_H__
+
+#include "../BBox.h"
+#include "../Glyph/Glyph.h"
+#include "../Point.h"
+#include "../Types.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
+
+#include <cstddef>
 
 namespace titania {
 namespace FTGL {
@@ -187,7 +198,7 @@ public:
 	 */
 	virtual
 	void
-	setDepth (float depth);
+	setDepth (double depth);
 
 	/**
 	 * Set the outset distance for the font. Only implemented by
@@ -197,7 +208,7 @@ public:
 	 */
 	virtual
 	void
-	setOutset (float outset);
+	setOutset (double outset);
 
 	/**
 	 * Set the front and back outset distances for the font. Only
@@ -208,7 +219,7 @@ public:
 	 */
 	virtual
 	void
-	setOutset (float front, float back);
+	setOutset (double front, double back);
 
 	/**
 	 * Enable or disable the use of Display Lists inside FTGL
@@ -226,7 +237,7 @@ public:
 	 * @return  Ascender height
 	 */
 	virtual
-	float
+	double
 	getAscender () const;
 
 	/**
@@ -235,7 +246,7 @@ public:
 	 * @return  Descender height
 	 */
 	virtual
-	float
+	double
 	getDescender () const;
 
 	/**
@@ -244,7 +255,7 @@ public:
 	 * @return  Line height
 	 */
 	virtual
-	float
+	double
 	getLineHeight () const;
 
 	/**
@@ -277,13 +288,13 @@ public:
 	 * @param urz  Upper right far z coordinate.
 	 */
 	void
-	getBBox (const char* string, float & llx, float & lly, float & llz,
-	         float & urx, float & ury, float & urz)
+	getBBox (const char* string, double & llx, double & lly, double & llz,
+	         double & urx, double & ury, double & urz)
 	{
 		BBox b = getBBox (string);
 
-		llx = b .Lower ().Xf (); lly = b .Lower ().Yf (); llz = b .Lower ().Zf ();
-		urx = b .Upper ().Xf (); ury = b .Upper ().Yf (); urz = b .Upper ().Zf ();
+		llx = b .Lower ().X (); lly = b .Lower ().Y (); llz = b .Lower ().Z ();
+		urx = b .Upper ().X (); ury = b .Upper ().Y (); urz = b .Upper ().Z ();
 	}
 
 	/**
@@ -316,13 +327,13 @@ public:
 	 * @param urz  Upper right far z coordinate.
 	 */
 	void
-	getBBox (const wchar_t* string, float & llx, float & lly, float & llz,
-	         float & urx, float & ury, float & urz)
+	getBBox (const wchar_t* string, double & llx, double & lly, double & llz,
+	         double & urx, double & ury, double & urz)
 	{
 		BBox b = getBBox (string);
 
-		llx = b .Lower ().Xf (); lly = b .Lower ().Yf (); llz = b .Lower ().Zf ();
-		urx = b .Upper ().Xf (); ury = b .Upper ().Yf (); urz = b .Upper ().Zf ();
+		llx = b .Lower ().X (); lly = b .Lower ().Y (); llz = b .Lower ().Z ();
+		urx = b .Upper ().X (); ury = b .Upper ().Y (); urz = b .Upper ().Z ();
 	}
 
 	/**
@@ -337,7 +348,7 @@ public:
 	 * @return  The string's advance width.
 	 */
 	virtual
-	float
+	double
 	advance (const char* string, const int len = -1,
 	         Point spacing = Point ());
 
@@ -353,7 +364,7 @@ public:
 	 * @return  The string's advance width.
 	 */
 	virtual
-	float
+	double
 	advance (const wchar_t* string, const int len = -1,
 	         Point spacing = Point ());
 
@@ -375,7 +386,7 @@ public:
 	render (const char* string, const int len = -1,
 	        Point position = Point (),
 	        Point spacing = Point (),
-	        int renderMode = FTGL::RENDER_ALL);
+	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
 
 	/**
 	 * Render a string of characters
@@ -395,7 +406,7 @@ public:
 	render (const wchar_t* string, const int len = -1,
 	        Point position = Point (),
 	        Point spacing = Point (),
-	        int renderMode = FTGL::RENDER_ALL);
+	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
 
 	/**
 	 * Queries the Font for errors.

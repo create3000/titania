@@ -25,11 +25,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
+#include "PolygonGlyph.h"
 
-#include "../ftgl.h"
-
-#include "../Internals.h"
 #include "../Vectoriser.h"
 #include "PolygonGlyphImpl.h"
 
@@ -40,8 +37,7 @@ namespace FTGL {
 //  FTGLPolyGlyph
 //
 
-PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, float outset,
-                                bool useDisplayList) :
+PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList) :
 	Glyph (new PolygonGlyphImpl (glyph, outset, useDisplayList))
 { }
 
@@ -49,21 +45,20 @@ PolygonGlyph::~PolygonGlyph ()
 { }
 
 const Point &
-PolygonGlyph::Render (const Point & pen, int renderMode)
+PolygonGlyph::render (const Point & pen, FTGL::RenderMode renderMode)
 {
 	PolygonGlyphImpl* myimpl = dynamic_cast <PolygonGlyphImpl*> (impl);
 
-	return myimpl -> RenderImpl (pen, renderMode);
+	return myimpl -> renderImpl (pen, renderMode);
 }
 
 //
 //  FTGLPolyGlyphImpl
 //
 
-PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, float _outset,
-                                        bool useDisplayList) :
+PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool useDisplayList) :
 	GlyphImpl (glyph),
-	     glList (0)
+	   glList (0)
 {
 	if (ft_glyph_format_outline not_eq glyph -> format)
 	{
@@ -89,7 +84,7 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, float _outset,
 		glList = glGenLists (1);
 		glNewList (glList, GL_COMPILE);
 
-		DoRender ();
+		doRender ();
 
 		glEndList ();
 
@@ -111,10 +106,9 @@ PolygonGlyphImpl::~PolygonGlyphImpl ()
 }
 
 const Point &
-PolygonGlyphImpl::RenderImpl (const Point & pen,
-                                int renderMode)
+PolygonGlyphImpl::renderImpl (const Point & pen, FTGL::RenderMode renderMode)
 {
-	glTranslatef (pen.Xf (), pen .Yf (), pen .Zf ());
+	glTranslatef (pen.X (), pen .Y (), pen .Z ());
 
 	if (glList)
 	{
@@ -122,33 +116,33 @@ PolygonGlyphImpl::RenderImpl (const Point & pen,
 	}
 	else if (vectoriser)
 	{
-		DoRender ();
+		doRender ();
 	}
 
-	glTranslatef (-pen.Xf (), -pen.Yf (), -pen.Zf ());
+	glTranslatef (-pen.X (), -pen.Y (), -pen.Z ());
 
 	return advance;
 }
 
 void
-PolygonGlyphImpl::DoRender ()
+PolygonGlyphImpl::doRender ()
 {
 	vectoriser -> makeMesh (1, 1, outset);
 
 	const FTMesh* mesh = vectoriser -> getMesh ();
 
-	for (unsigned int t = 0; t < mesh -> TesselationCount (); ++ t)
+	for (unsigned int t = 0; t < mesh -> getTesselationCount (); ++ t)
 	{
-		const FTTesselation* subMesh     = mesh -> Tesselation (t);
-		unsigned int         polygonType = subMesh -> PolygonType ();
+		const Tesselation* subMesh     = mesh -> getTesselation (t);
+		unsigned int       polygonType = subMesh -> PolygonType ();
 
 		glBegin (polygonType);
 
 		for (unsigned int i = 0; i < subMesh -> PointCount (); ++ i)
 		{
 			Point point = subMesh -> getPoint (i);
-			glTexCoord2f (point.Xf () / hscale, point .Yf () / vscale);
-			glVertex3f (point.Xf () / 64.0f, point .Yf () / 64.0f, 0);
+			glTexCoord2f (point.X () / hscale, point .Y () / vscale);
+			glVertex3f (point.X () / 64.0, point .Y () / 64.0, 0);
 		}
 
 		glEnd ();

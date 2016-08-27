@@ -23,14 +23,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTLIBRARY_H__
-#define __TITANIA_FTLIBRARY_H__
+#ifndef __TITANIA_FTGL_LIBRARY_H__
+#define __TITANIA_FTGL_LIBRARY_H__
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
 //#include FT_CACHE_H
-
-#include "ftgl.h"
 
 namespace titania {
 namespace FTGL {

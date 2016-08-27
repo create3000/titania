@@ -24,9 +24,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "config.h"
-
 #include "Face.h"
+
 #include "Library.h"
 
 #include FT_TRUETYPE_TABLES_H
@@ -64,7 +63,7 @@ Face::Face (const char* fontFilePath, bool precomputeKerning) :
 }
 
 Face::Face (const unsigned char* pBufferBytes, size_t bufferSizeInBytes,
-                bool precomputeKerning) :
+            bool precomputeKerning) :
 	       numGlyphs (0),
 	fontEncodingList (0),
 	    kerningCache (0),
@@ -163,7 +162,7 @@ Face::getCharMapList ()
 Point
 Face::getKernAdvance (unsigned int index1, unsigned int index2)
 {
-	float x, y;
+	double x, y;
 
 	if (! hasKerningTable or ! index1 or ! index2)
 	{
@@ -189,8 +188,8 @@ Face::getKernAdvance (unsigned int index1, unsigned int index2)
 		return Point (0, 0);
 	}
 
-	x = static_cast <float> (kernAdvance.x) / 64.0f;
-	y = static_cast <float> (kernAdvance.y) / 64.0f;
+	x = static_cast <double> (kernAdvance.x) / 64.0;
+	y = static_cast <double> (kernAdvance.y) / 64.0;
 
 	return Point (x, y);
 }
@@ -215,8 +214,8 @@ Face::buildKerningCache ()
 
 	kernAdvance .x = 0;
 	kernAdvance .y = 0;
-	kerningCache  = new float [Face::MAX_PRECOMPUTED
-	                           * Face::MAX_PRECOMPUTED * 2];
+	kerningCache   = new double [Face::MAX_PRECOMPUTED
+	                             * Face::MAX_PRECOMPUTED * 2];
 
 	for (unsigned int j = 0; j < Face::MAX_PRECOMPUTED; j ++)
 	{
@@ -233,9 +232,9 @@ Face::buildKerningCache ()
 			}
 
 			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i)]
-			   = static_cast <float> (kernAdvance.x) / 64.0f;
+			   = static_cast <double> (kernAdvance.x) / 64.0;
 			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i) + 1]
-			   = static_cast <float> (kernAdvance.y) / 64.0f;
+			   = static_cast <double> (kernAdvance.y) / 64.0;
 		}
 	}
 }
