@@ -2,8 +2,6 @@
  * FTGL - OpenGL font library
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
- * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
- * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,48 +23,75 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#include "config.h"
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include "Library.h"
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
+const Library &
+Library::getInstance ()
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+	static Library ftlib;
 
-typedef enum
+	return ftlib;
+}
+
+Library::~Library ()
 {
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+	if (library not_eq 0)
+	{
+		FT_Done_FreeType (*library);
+
+		delete library;
+		library = 0;
+	}
+
+	//  if(manager not_eq 0)
+	//  {
+	//      FTC_Manager_Done(manager);
+	//
+	//      delete manager;
+	//      manager= 0;
+	//  }
+}
+
+Library::Library () :
+	library (0),
+	    err (0)
+{
+	initialise ();
+}
+
+bool
+Library::initialise ()
+{
+	if (library not_eq 0)
+		return true;
+
+	library = new FT_Library;
+
+	err = FT_Init_FreeType (library);
+
+	if (err)
+	{
+		delete library;
+		library = 0;
+		return false;
+	}
+
+	//  FTC_Manager* manager;
+	//
+	//  if(FTC_Manager_New(lib, 0, 0, 0, my_face_requester, 0, manager)
+	//  {
+	//      delete manager;
+	//      manager= 0;
+	//      return false;
+	//  }
+
+	return true;
+}
 
 } // FTGL
 } // titania
-
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__

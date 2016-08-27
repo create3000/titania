@@ -25,48 +25,53 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
-
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#ifndef __TITANIA_FTGL_FTPOLY_GLYPH_H__
+#define __TITANIA_FTGL_FTPOLY_GLYPH_H__
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
+/**
+ * PolygonGlyph is a specialisation of Glyph for creating tessellated
+ * polygon glyphs.
+ */
+class PolygonGlyph :
+	public Glyph
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+public:
 
-typedef enum
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+	/**
+	 * Constructor. Sets the Error to Invalid_Outline if the glyphs
+	 * isn't an outline.
+	 *
+	 * @param glyph The Freetype glyph to be processed
+	 * @param outset  The outset distance
+	 * @param useDisplayList Enable or disable the use of Display Lists
+	 *                       for this glyph
+	 *                       <code>true</code> turns ON display lists.
+	 *                       <code>false</code> turns OFF display lists.
+	 */
+	PolygonGlyph (FT_GlyphSlot glyph, float outset, bool useDisplayList);
+
+	/**
+	 * Destructor
+	 */
+	virtual
+	~PolygonGlyph ();
+
+	/**
+	 * Render this glyph at the current pen position.
+	 *
+	 * @param pen  The current pen position.
+	 * @param renderMode  Render mode to display
+	 * @return  The advance distance for this glyph.
+	 */
+	virtual const Point &
+	Render (const Point & pen, int renderMode);
+
+};
 
 } // FTGL
 } // titania
 
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__
+#endif  //  __FTPolygonGlyph__

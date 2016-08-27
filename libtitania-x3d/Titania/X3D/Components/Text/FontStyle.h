@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_FONT_STYLE_H__
 
 #include "../Text/X3DFontStyleNode.h"
-#include <FTGL/ftgl.h>
+#include <Titania/FTGL/ftgl.h>
 
 namespace titania {
 namespace X3D {
@@ -87,7 +87,7 @@ private:
 
 };
 
-typedef std::unique_ptr <FTPolygonFont> PolygonFontPtr;
+typedef std::unique_ptr <FTGL::PolygonFont> PolygonFontPtr;
 
 class FontStyle :
 	public X3DFontStyleNode

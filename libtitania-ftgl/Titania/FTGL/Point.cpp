@@ -3,7 +3,6 @@
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
  * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
- * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,48 +24,42 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#include "config.h"
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include <math.h>
+
+#include "ftgl.h"
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
+bool
+operator == (const Point & a, const Point & b)
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+	return ((a.values [0] == b .values [0]) && (a.values [1] == b .values [1]) && (a.values [2] == b .values [2]));
+}
 
-typedef enum
+bool
+operator not_eq (const Point & a, const Point & b)
 {
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+	return ((a.values [0] not_eq b .values [0]) or (a.values [1] not_eq b .values [1]) or (a.values [2] not_eq b .values [2]));
+}
+
+Point
+Point::Normalise ()
+{
+	double norm = sqrt (values [0] * values [0]
+	                    + values [1] * values [1]
+	                    + values [2] * values [2]);
+
+	if (norm == 0.0)
+	{
+		return *this;
+	}
+
+	Point temp (values [0] / norm, values [1] / norm, values [2] / norm);
+	return temp;
+}
 
 } // FTGL
 } // titania
-
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__

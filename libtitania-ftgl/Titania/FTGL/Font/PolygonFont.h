@@ -25,48 +25,65 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
-
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#ifndef __TITANIA_FTGL_FTGLPOLYGON_FONT_H__
+#define __TITANIA_FTGL_FTGLPOLYGON_FONT_H__
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
+/**
+ * PolygonFont is a specialisation of the Font class for handling
+ * tesselated Polygon Mesh fonts
+ *
+ * @see     Font
+ */
+class PolygonFont :
+	public Font
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+public:
 
-typedef enum
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+	/**
+	 * Open and read a font file. Sets Error flag.
+	 *
+	 * @param fontFilePath  font file path.
+	 */
+	PolygonFont (const char* fontFilePath);
+
+	/**
+	 * Open and read a font from a buffer in memory. Sets Error flag.
+	 * The buffer is owned by the client and is NOT copied by FTGL. The
+	 * pointer must be valid while using FTGL.
+	 *
+	 * @param pBufferBytes  the in-memory buffer
+	 * @param bufferSizeInBytes  the length of the buffer in bytes
+	 */
+	PolygonFont (const unsigned char* pBufferBytes,
+	             size_t bufferSizeInBytes);
+
+	/**
+	 * Destructor
+	 */
+	~PolygonFont ();
+
+
+protected:
+
+	/**
+	 * Construct a glyph of the correct type.
+	 *
+	 * Clients must override the function and return their specialised
+	 * Glyph.
+	 *
+	 * @param slot  A FreeType glyph slot.
+	 * @return  An FT****Glyph or <code>null</code> on failure.
+	 */
+	virtual
+	Glyph*
+	makeGlyph (FT_GlyphSlot slot) final override;
+
+};
 
 } // FTGL
 } // titania
 
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__
+#endif  //  __FTPolygonFont__

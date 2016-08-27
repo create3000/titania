@@ -80,10 +80,10 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 void
 PolygonText::getLineExtents (const String & line, Vector2d & min, Vector2d & max) const
 {
-	const FTBBox ftbbox = fontStyle -> getPolygonFont () -> BBox (line .c_str ());
+	const FTGL::BBox ftbbox = fontStyle -> getPolygonFont () -> getBBox (line .c_str ());
 
-	const FTPoint ftmin = ftbbox .Lower ();
-	const FTPoint ftmax = ftbbox .Upper ();
+	const FTGL::Point ftmin = ftbbox .Lower ();
+	const FTGL::Point ftmax = ftbbox .Upper ();
 
 	min = Vector2d (ftmin .X (), ftmin .Y ());
 	max = Vector2d (ftmax .X (), ftmax .Y ());
@@ -114,12 +114,12 @@ PolygonText::draw ()
 		{
 			const auto & line = text -> string () [i] .getValue ();
 
-			fontStyle -> getPolygonFont () -> Render (leftToRight
+			fontStyle -> getPolygonFont () -> render (leftToRight
 	                                                ? line .c_str ()
 	                                                : String (line .rbegin (), line .rend ()) .c_str (),
 			                                          -1,
-			                                          FTPoint (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
-			                                          FTPoint (getCharSpacing () [i], 0, 0),
+			                                          FTGL::Point (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
+			                                          FTGL::Point (getCharSpacing () [i], 0, 0),
 			                                          FTGL::RENDER_ALL);
 
 		}
@@ -146,10 +146,10 @@ PolygonText::draw ()
 
 			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{
-				fontStyle -> getPolygonFont () -> Render (String (1, glyph) .c_str (),
+				fontStyle -> getPolygonFont () -> render (String (1, glyph) .c_str (),
 				                                          -1,
-				                                          FTPoint (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
-				                                          FTPoint (),
+				                                          FTGL::Point (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
+				                                          FTGL::Point (),
 				                                          FTGL::RENDER_ALL);
 				++ g;
 			}
@@ -226,11 +226,11 @@ FontStyle::set_font ()
 
 	polygonFont = getPolygonFont (family ());
 
-	if (not polygonFont -> Error ())
+	if (not polygonFont -> getError ())
 	{
-		polygonFont -> UseDisplayList (false);
+		polygonFont -> setUseDisplayList (false);
 
-		polygonFont -> FaceSize (FONT_SIZE);
+		polygonFont -> setFaceSize (FONT_SIZE);
 
 		// Calculate lineHeight.
 		lineHeight = FONT_SIZE * spacing ();
@@ -253,9 +253,9 @@ FontStyle::getPolygonFont (const MFString & family) const
 
 		if (isExactMatch)
 		{
-			PolygonFontPtr polygonFont (new FTPolygonFont (font .getFilename () .c_str ()));
+			PolygonFontPtr polygonFont (new FTGL::PolygonFont (font .getFilename () .c_str ()));
 
-			if (not polygonFont -> Error ())
+			if (not polygonFont -> getError ())
 			{
 				const_cast <FontFace &> (fontFace) = font .getFace ();
 
@@ -267,7 +267,7 @@ FontStyle::getPolygonFont (const MFString & family) const
 	const_cast <Font &> (font)         = createFont ("SERIF", isExactMatch);
 	const_cast <FontFace &> (fontFace) = font .getFace ();
 
-	return PolygonFontPtr (new FTPolygonFont (font .getFilename () .c_str ()));
+	return PolygonFontPtr (new FTGL::PolygonFont (font .getFilename () .c_str ()));
 }
 
 void

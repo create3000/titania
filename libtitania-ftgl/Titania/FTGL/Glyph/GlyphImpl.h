@@ -3,7 +3,6 @@
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
  * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
- * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,48 +24,53 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#ifndef __TITANIA_FTGLYPH_FTGLYPH_IMPL_H__
+#define __TITANIA_FTGLYPH_FTGLYPH_IMPL_H__
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include "../FTGL/ftgl.h"
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
-
-typedef enum
+class GlyphImpl
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+	friend class Glyph;
 
-typedef enum
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+
+protected:
+
+	GlyphImpl (FT_GlyphSlot glyph, bool useDisplayList = true);
+
+	virtual
+	~GlyphImpl ();
+
+	float
+	Advance () const;
+
+	const BBox &
+	getBBox () const;
+
+	FT_Error
+	Error () const;
+
+	/**
+	 * The advance distance for this glyph
+	 */
+	Point advance;
+
+	/**
+	 * The bounding box of this glyph.
+	 */
+	BBox bBox;
+
+	/**
+	 * Current error code. Zero means no error.
+	 */
+	FT_Error err;
+
+};
 
 } // FTGL
 } // titania
 
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__
+#endif  //  __FTGlyphImpl__

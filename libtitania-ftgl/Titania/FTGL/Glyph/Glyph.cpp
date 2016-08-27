@@ -3,7 +3,6 @@
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
  * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
- * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,48 +24,88 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#include "config.h"
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include "../ftgl.h"
+
+#include "../Internals.h"
+#include "GlyphImpl.h"
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
+//
+//  Glyph
+//
 
-typedef enum
+Glyph::Glyph (FT_GlyphSlot glyph)
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+	impl = new GlyphImpl (glyph);
+}
 
-typedef enum
+Glyph::Glyph (GlyphImpl* pImpl)
 {
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+	impl = pImpl;
+}
+
+Glyph::~Glyph ()
+{
+	delete impl;
+}
+
+float
+Glyph::Advance () const
+{
+	return impl -> Advance ();
+}
+
+const BBox &
+Glyph::getBBox () const
+{
+	return impl -> getBBox ();
+}
+
+FT_Error
+Glyph::Error () const
+{
+	return impl -> Error ();
+}
+
+//
+//  GlyphImpl
+//
+
+GlyphImpl::GlyphImpl (FT_GlyphSlot glyph, bool useList) :
+	err (0)
+{
+	if (glyph)
+	{
+		bBox    = BBox (glyph);
+		advance = Point (glyph -> advance .x / 64.0f,
+		                   glyph -> advance .y / 64.0f);
+	}
+}
+
+GlyphImpl::~GlyphImpl ()
+{ }
+
+float
+GlyphImpl::Advance () const
+{
+	return advance .Xf ();
+}
+
+const BBox &
+GlyphImpl::getBBox () const
+{
+	return bBox;
+}
+
+FT_Error
+GlyphImpl::Error () const
+{
+	return err;
+}
 
 } // FTGL
 } // titania
-
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__

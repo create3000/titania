@@ -166,7 +166,6 @@ Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile
 x3d2vrml/Makefile
-test/Makefile
 experimental/Makefile
 po/Makefile.in
 Makefile

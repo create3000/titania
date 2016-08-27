@@ -3,7 +3,6 @@
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
  * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
- * Copyright (c) 2008 Sean Morrison <learner@brlcad.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,48 +24,51 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#ifndef __TITANIA_FTFONT_FTPOLYGON_FONT_IMPL_H__
+#define __TITANIA_FTFONT_FTPOLYGON_FONT_IMPL_H__
 
-/* We need the Freetype headers */
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
+#include "FontImpl.h"
 
 namespace titania {
 namespace FTGL {
 
-/* Floating point types used by the library */
-typedef double FTGL_DOUBLE;
-typedef float  FTGL_FLOAT;
+class Glyph;
 
-typedef enum
+class PolygonFontImpl :
+	public FontImpl
 {
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-} RenderMode;
+	friend class PolygonFont;
 
-typedef enum
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-} TextAlignment;
+
+protected:
+
+	PolygonFontImpl (Font* ftFont, const char* fontFilePath);
+
+	PolygonFontImpl (Font* ftFont, const unsigned char* pBufferBytes,
+	                   size_t bufferSizeInBytes);
+
+	/**
+	 * Set the outset distance for the font. Only implemented by
+	 * FTOutlineFont, PolygonFont and FTExtrudeFont
+	 *
+	 * @param depth  The outset distance.
+	 */
+	virtual
+	void
+	setOutset (float o) final override
+	{ outset = o; }
+
+
+private:
+
+	/**
+	 * The outset distance (front and back) for the font.
+	 */
+	float outset;
+
+};
 
 } // FTGL
 } // titania
 
-#include "BBox.h"
-#include "Point.h"
-
-#include "Glyph/Glyph.h"
-#include "Glyph/PolyGlyph.h"
-
-#include "Font/Font.h"
-#include "Font/PolygonFont.h"
-
-#endif  //  __ftgl__
+#endif  //  __FTPolygonFontImpl__
