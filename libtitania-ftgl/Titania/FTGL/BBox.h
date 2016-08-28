@@ -28,7 +28,7 @@
 #ifndef __TITANIA_FTGL_BBOX_H__
 #define __TITANIA_FTGL_BBOX_H__
 
-#include "Vector.h"
+#include "Types.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H

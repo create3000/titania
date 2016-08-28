@@ -29,7 +29,7 @@
 #define __TITANIA_FTGL_FTGL_H__
 
 #include "FTGL/BBox.h"
-#include "FTGL/Vector.h"
+#include "FTGL/Types.h"
 
 #include "FTGL/Glyph/Glyph.h"
 #include "FTGL/Glyph/PolygonGlyph.h"

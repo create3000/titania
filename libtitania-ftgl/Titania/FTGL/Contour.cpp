@@ -116,19 +116,21 @@ Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
 	Vector3d bc = C - B;
 
 	/* Rotate bc to the left */
-	Vector3d tmp (bc.x () * -ba.x () + bc .y () * -ba.y (),
-	              bc .x () * ba .y () + bc .y () * -ba.x ());
+	Vector3d tmp (bc .x () * -ba .x () + bc .y () * -ba.y (),
+	              bc .x () *  ba .y () + bc .y () * -ba.x (),
+	              0);
 
 	/* Compute the vector bisecting 'abc' */
-	double norm = sqrt (tmp.x () * tmp .x () + tmp .y () * tmp .y ());
-	double dist = 64.0 * sqrt ((norm - tmp .x ()) / (norm + tmp .x ()));
+	double norm = std::sqrt (tmp.x () * tmp .x () + tmp .y () * tmp .y ());
+	double dist = 64.0 * std::sqrt ((norm - tmp .x ()) / (norm + tmp .x ()));
 
-	tmp .x (tmp.y () < 0.0 ? dist : -dist);
+	tmp .x (tmp .y () < 0 ? dist : -dist);
 	tmp .y (64.0);
 
 	/* Rotate the new bc to the right */
-	return Vector3d (tmp.x () * -ba.x () + tmp .y () * ba .y (),
-	                 tmp .x () * -ba.y () + tmp .y () * -ba.x ());
+	return Vector3d (tmp .x () * -ba.x () + tmp .y () *  ba .y (),
+	                 tmp .x () * -ba.y () + tmp .y () * -ba .x (),
+	                 0);
 }
 
 void
@@ -169,8 +171,8 @@ Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
 	uint32_t c = (n - 1) % n;
 
 	Vector3d prev;
-	Vector3d cur (contour [c] .x, contour [c] .y);
-	Vector3d next (contour [0] .x, contour [0] .y);
+	Vector3d cur (contour [c] .x, contour [c] .y, 0);
+	Vector3d next (contour [0] .x, contour [0] .y, 0);
 	Vector3d a;
 	double   olddir;
 	double   dir   = atan2 ((next - cur) .y (), (next - cur) .x ());
@@ -184,7 +186,7 @@ Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
 
 		prev   = cur;
 		cur    = next;
-		next   = Vector3d (contour [i1] .x, contour [i1] .y);
+		next   = Vector3d (contour [i1] .x, contour [i1] .y, 0);
 		olddir = dir;
 		dir    = atan2 ((next - cur) .y (), (next - cur) .x ());
 
@@ -231,7 +233,7 @@ Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
 			uint32_t i2 = (i + 2) % n;
 
 			evaluateCubicCurve (prev, cur, next,
-			                    Vector3d (contour [i2] .x, contour [i2] .y));
+			                    Vector3d (contour [i2] .x, contour [i2] .y, 0));
 		}
 	}
 

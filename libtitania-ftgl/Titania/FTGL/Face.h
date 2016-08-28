@@ -26,7 +26,7 @@
 #ifndef __TITANIA_FTGL_FACE_H__
 #define __TITANIA_FTGL_FACE_H__
 
-#include "Vector.h"
+#include "Types.h"
 #include "Size.h"
 
 #include <ft2build.h>

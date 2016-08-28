@@ -28,6 +28,8 @@
 #ifndef __TITANIA_FTGL_TYPES_H__
 #define __TITANIA_FTGL_TYPES_H__
 
+#include <Titania/Math/Numbers/Vector3.h>
+
 namespace titania {
 namespace FTGL {
 
@@ -48,6 +50,8 @@ enum class TextAlignment
 	ALIGN_JUSTIFY = 3
 
 };
+
+using Vector3d = math::vector3 <double>;
 
 } // FTGL
 } // titania

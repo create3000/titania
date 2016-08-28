@@ -30,7 +30,6 @@
 
 #include "../BBox.h"
 #include "../Glyph/Glyph.h"
-#include "../Vector.h"
 #include "../Types.h"
 
 #include <ft2build.h>

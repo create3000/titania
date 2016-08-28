@@ -79,7 +79,8 @@ GlyphImpl::GlyphImpl (FT_GlyphSlot glyph, bool useList) :
 	{
 		bBox    = BBox (glyph);
 		advance = Vector3d (glyph -> advance .x / 64.0,
-		                    glyph -> advance .y / 64.0);
+		                    glyph -> advance .y / 64.0,
+	                       0);
 	}
 }
 

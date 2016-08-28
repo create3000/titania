@@ -351,7 +351,7 @@ FontImpl::getBBox (const char* string, const int32_t len, Vector3d position, Vec
 			totalBBox  = glyphList -> getBBox (thisChar);
 			totalBBox += position;
 
-			position += Vector3d (glyphList -> advance (thisChar, nextChar), 0);
+			position += Vector3d (glyphList -> advance (thisChar, nextChar), 0, 0);
 		}
 
 		/* Expand totalBox by each glyph in string */
@@ -368,7 +368,7 @@ FontImpl::getBBox (const char* string, const int32_t len, Vector3d position, Vec
 				tempBBox  += position;
 				totalBBox |= tempBBox;
 
-				position += Vector3d (glyphList -> advance (thisChar, nextChar), 0);
+				position += Vector3d (glyphList -> advance (thisChar, nextChar), 0, 0);
 			}
 		}
 	}

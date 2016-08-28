@@ -29,7 +29,6 @@
 #define __TITANIA_FTGL_GLYPH_GLYPH_H__
 
 #include "../BBox.h"
-#include "../Vector.h"
 #include "../Types.h"
 
 #include <ft2build.h>

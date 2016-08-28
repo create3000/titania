@@ -4,7 +4,9 @@
 lib_LTLIBRARIES =  \
 	libtitania-ftgl.la
 
-libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) 
+libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) \
+	$(TITANIA_STANDARD_LIBS) \
+	$(top_builddir)/libtitania-standard/libtitania-standard.la
 
 libtitania_ftgl_la_SOURCES =  \
 	Titania/FTGL/Charmap.cpp \
@@ -17,7 +19,8 @@ libtitania_ftgl_la_SOURCES =  \
 	Titania/FTGL/GlyphContainer.cpp \
 	Titania/FTGL/Library.cpp \
 	Titania/FTGL/Size.cpp \
-	Titania/FTGL/Vector.cpp \
 	Titania/FTGL/Vectorizer.cpp
 
-AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) 
+AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) \
+	$(TITANIA_STANDARD_CFLAGS) \
+	-I$(top_builddir)/libtitania-standard

@@ -181,7 +181,7 @@ Vectorizer::processContours ()
 		Contour* c1 = contourList [i];
 
 		// 1. Find the leftmost point.
-		Vector3d leftmost (65536.0, 0.0);
+		Vector3d leftmost (65536, 0, 0);
 
 		for (size_t n = 0; n < c1 -> getPointCount (); n ++)
 		{

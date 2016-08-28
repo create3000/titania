@@ -128,15 +128,16 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtitania_ftgl_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+libtitania_ftgl_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) \
+	$(top_builddir)/libtitania-standard/libtitania-standard.la
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_ftgl_la_OBJECTS = Titania/FTGL/Charmap.lo \
 	Titania/FTGL/Contour.lo Titania/FTGL/Face.lo \
 	Titania/FTGL/Font/Font.lo Titania/FTGL/Font/PolygonFont.lo \
 	Titania/FTGL/Glyph/Glyph.lo Titania/FTGL/Glyph/PolygonGlyph.lo \
 	Titania/FTGL/GlyphContainer.lo Titania/FTGL/Library.lo \
-	Titania/FTGL/Size.lo Titania/FTGL/Vector.lo \
-	Titania/FTGL/Vectorizer.lo
+	Titania/FTGL/Size.lo Titania/FTGL/Vectorizer.lo
 libtitania_ftgl_la_OBJECTS = $(am_libtitania_ftgl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -380,7 +381,10 @@ top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = \
 	libtitania-ftgl.la
 
-libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) 
+libtitania_ftgl_la_LIBADD = $(TITANIA_FTGL_LIBS) \
+	$(TITANIA_STANDARD_LIBS) \
+	$(top_builddir)/libtitania-standard/libtitania-standard.la
+
 libtitania_ftgl_la_SOURCES = \
 	Titania/FTGL/Charmap.cpp \
 	Titania/FTGL/Contour.cpp \
@@ -392,10 +396,12 @@ libtitania_ftgl_la_SOURCES = \
 	Titania/FTGL/GlyphContainer.cpp \
 	Titania/FTGL/Library.cpp \
 	Titania/FTGL/Size.cpp \
-	Titania/FTGL/Vector.cpp \
 	Titania/FTGL/Vectorizer.cpp
 
-AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) 
+AM_CPPFLAGS = $(TITANIA_FTGL_CFLAGS) \
+	$(TITANIA_STANDARD_CFLAGS) \
+	-I$(top_builddir)/libtitania-standard
+
 all: all-am
 
 .SUFFIXES:
@@ -503,8 +509,6 @@ Titania/FTGL/Library.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 Titania/FTGL/Size.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
-Titania/FTGL/Vector.lo: Titania/FTGL/$(am__dirstamp) \
-	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 Titania/FTGL/Vectorizer.lo: Titania/FTGL/$(am__dirstamp) \
 	Titania/FTGL/$(DEPDIR)/$(am__dirstamp)
 
@@ -529,7 +533,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/GlyphContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Library.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Size.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vector.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/$(DEPDIR)/Vectorizer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/Font.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/FTGL/Font/$(DEPDIR)/PolygonFont.Plo@am__quote@

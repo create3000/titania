@@ -28,7 +28,7 @@
 #ifndef __TITANIA_FTGL_CONTOUR_H__
 #define __TITANIA_FTGL_CONTOUR_H__
 
-#include "Vector.h"
+#include "Types.h"
 
 #include <vector>
 

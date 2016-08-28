@@ -49,7 +49,6 @@
     <None Include="Titania\FTGL\Face.h" />
     <None Include="Titania\FTGL\GlyphContainer.h" />
     <None Include="Titania\FTGL\Library.h" />
-    <None Include="Titania\FTGL\Vector.h" />
     <None Include="Titania\FTGL\Size.h" />
     <None Include="Titania\FTGL\Unicode.h" />
     <None Include="Titania\FTGL\Glyph\PolygonGlyph.h" />
@@ -91,6 +90,5 @@
     <Compile Include="Titania\FTGL\Library.cpp" />
     <Compile Include="Titania\FTGL\Size.cpp" />
     <Compile Include="Titania\FTGL\Vectorizer.cpp" />
-    <Compile Include="Titania\FTGL\Vector.cpp" />
   </ItemGroup>
 </Project>

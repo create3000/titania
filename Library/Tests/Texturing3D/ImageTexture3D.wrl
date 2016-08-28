@@ -1,4 +1,4 @@
-#VRML V2.0 utf8 Comment
+#VRML V2.0 utf8 Titania V1.4.9
 
 PROTO Volume [
   exposedField SFInt32 dimension 10
@@ -11,9 +11,21 @@ PROTO Volume [
     exposedField SFInt32 dimension IS dimension
     exposedField SFNode  voxels IS voxels
     field        SFNode  shapes USE Shapes
-    field        MFInt32 coordIndex [ 0, 1, 2, 3, 0, -1 ]
+    field        MFInt32 coordIndex [
+      0,
+      1,
+      2,
+      3,
+      0,
+      -1
+    ]
     field        SFNode  coord Coordinate {
-      point [ 0.5 0.5 0, -0.5 0.5 0, -0.5 -0.5 0, 0.5 -0.5 0 ]
+      point [
+        0.5 0.5 0,
+        -0.5 0.5 0,
+        -0.5 -0.5 0,
+        0.5 -0.5 0
+      ]
     }
 
     url "vrmlscript:
@@ -60,6 +72,87 @@ function set_dimension ()
 }
 "
   }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF Texture ImageTexture3D {
+              url [
+                "head.xcf",
+                "head.psd"
+              ]
+              textureProperties TextureProperties {
+                generateMipMaps TRUE
+                minificationFilter "AVG_PIXEL"
+                magnificationFilter "NICEST"
+                boundaryModeS "CLAMP_TO_EDGE"
+                boundaryModeT "CLAMP_TO_EDGE"
+                boundaryModeR "CLAMP_TO_EDGE"
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              1.42421263201743,
+              0.881680896453894,
+              2.10438732034659
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.477325032084067,
+              0.866803647757095,
+              0.144264513935123,
+              0.67967263772815
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "ImageTexture3D"
 }
 
 Background {
@@ -118,17 +211,7 @@ Transform {
       scale 1.3 1.52613 1
       children Volume {
         dimension 200
-        voxels DEF Texture ImageTexture3D {
-          url "head.psd"
-          textureProperties TextureProperties {
-            generateMipMaps TRUE
-            minificationFilter "AVG_PIXEL"
-            magnificationFilter "NICEST"
-            boundaryModeS "CLAMP_TO_EDGE"
-            boundaryModeT "CLAMP_TO_EDGE"
-            boundaryModeR "CLAMP_TO_EDGE"
-          }
-        }
+        voxels USE Texture
       }
     }
     DEF _1 ClipPlane {

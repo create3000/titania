@@ -166,7 +166,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2)
 
 	if (! hasKerningTable or ! index1 or ! index2)
 	{
-		return Vector3d (0, 0);
+		return Vector3d (0, 0, 0);
 	}
 
 	if (kerningCache && index1 < Face::MAX_PRECOMPUTED
@@ -174,7 +174,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2)
 	{
 		x = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1)];
 		y = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1) + 1];
-		return Vector3d (x, y);
+		return Vector3d (x, y, 0);
 	}
 
 	FT_Vector kernAdvance;
@@ -185,13 +185,13 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2)
 
 	if (err)
 	{
-		return Vector3d (0, 0);
+		return Vector3d (0, 0, 0);
 	}
 
 	x = static_cast <double> (kernAdvance.x) / 64.0;
 	y = static_cast <double> (kernAdvance.y) / 64.0;
 
-	return Vector3d (x, y);
+	return Vector3d (x, y, 0);
 }
 
 FT_GlyphSlot
