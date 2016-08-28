@@ -296,7 +296,7 @@ Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 		switch (outsetType)
 		{
 			case 1: contourList [c] -> buildFrontOutset (outsetSize); break;
-			case 2: contourList [c] -> buildBackOutset (outsetSize); break;
+			case 2: contourList [c] -> buildBackOutset  (outsetSize); break;
 		}
 
 		const Contour* contour = contourList [c];
@@ -310,8 +310,8 @@ Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 			switch (outsetType)
 			{
 				case 1: d          = contour -> getFrontPoint (p) .data (); break;
-				case 2: d          = contour -> getBackPoint (p) .data (); break;
-				case 0: default: d = contour -> getPoint (p) .data (); break;
+				case 2: d          = contour -> getBackPoint  (p) .data (); break;
+				case 0: default: d = contour -> getPoint      (p) .data (); break;
 			}
 
 			// XXX: gluTessVertex doesn't modify the data but does not

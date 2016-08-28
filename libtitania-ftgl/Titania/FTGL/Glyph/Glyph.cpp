@@ -26,8 +26,6 @@
 
 #include "Glyph.h"
 
-#include "GlyphImpl.h"
-
 namespace titania {
 namespace FTGL {
 
@@ -35,75 +33,46 @@ namespace FTGL {
 //  Glyph
 //
 
-Glyph::Glyph (FT_GlyphSlot glyph)
-{
-	impl = new GlyphImpl (glyph);
-}
-
-Glyph::Glyph (GlyphImpl* pImpl)
-{
-	impl = pImpl;
-}
-
-Glyph::~Glyph ()
-{
-	delete impl;
-}
-
-double
-Glyph::getAdvance () const
-{
-	return impl -> getAdvance ();
-}
-
-const BBox &
-Glyph::getBBox () const
-{
-	return impl -> getBBox ();
-}
-
-FT_Error
-Glyph::getError () const
-{
-	return impl -> getError ();
-}
-
-//
-//  GlyphImpl
-//
-
-GlyphImpl::GlyphImpl (FT_GlyphSlot glyph, bool useList) :
-	err (0)
+Glyph::Glyph (FT_GlyphSlot glyph) :
+	advance (),
+	   bbox (),
+	  error (0)
 {
 	if (glyph)
 	{
-		bBox    = BBox (glyph);
+		bbox    = BBox (glyph);
 		advance = Vector3d (glyph -> advance .x / 64.0,
 		                    glyph -> advance .y / 64.0,
 	                       0);
 	}
 }
 
-GlyphImpl::~GlyphImpl ()
-{ }
-
-double
-GlyphImpl::getAdvance () const
+const Vector3d &
+Glyph::getAdvance () const
 {
-	return advance .x ();
+	return advance;
 }
 
 const BBox &
-GlyphImpl::getBBox () const
+Glyph::getBBox () const
 {
-	return bBox;
+	return bbox;
+}
+
+void
+Glyph::setError (FT_Error value)
+{
+	error = value;
 }
 
 FT_Error
-GlyphImpl::getError () const
+Glyph::getError () const
 {
-	return err;
+	return error;
 }
+
+Glyph::~Glyph ()
+{ }
 
 } // FTGL
 } // titania

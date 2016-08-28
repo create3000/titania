@@ -40,8 +40,6 @@
     <None Include="Titania\FTGL\Font\PolygonFont.h" />
     <None Include="Titania\FTGL\Font\PolygonFontImpl.h" />
     <None Include="Titania\FTGL\Glyph\Glyph.h" />
-    <None Include="Titania\FTGL\Glyph\GlyphImpl.h" />
-    <None Include="Titania\FTGL\Glyph\PolygonGlyphImpl.h" />
     <None Include="Titania\FTGL\BBox.h" />
     <None Include="Titania\FTGL\Charmap.h" />
     <None Include="Titania\FTGL\CharToGlyphIndexMap.h" />

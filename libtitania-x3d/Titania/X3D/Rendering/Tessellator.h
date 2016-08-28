@@ -248,7 +248,7 @@ template <class ... Args>
 void
 tessellator <Args ...>::begin_polygon ()
 {
-	m_polygon .clear ();
+	m_polygon  .clear ();
 	m_vertices .clear ();
 
 	gluTessBeginPolygon (m_tess, this);

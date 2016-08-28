@@ -97,7 +97,7 @@ GlyphContainer::advance (const uint32_t charCode,
 	uint32_t left  = charMap -> getFontIndex (charCode);
 	uint32_t right = charMap -> getFontIndex (nextCharCode);
 
-	return face -> getKernAdvance (left, right) .x () + getGlyph (charCode) -> getAdvance ();
+	return face -> getKernAdvance (left, right) .x () + getGlyph (charCode) -> getAdvance () .x ();
 }
 
 Vector3d

@@ -38,8 +38,6 @@
 namespace titania {
 namespace FTGL {
 
-class GlyphImpl;
-
 /**
  * Glyph is the base class for FTGL glyphs.
  *
@@ -52,43 +50,35 @@ class GlyphImpl;
  */
 class Glyph
 {
-protected:
-
-	/**
-	 * Create a glyph.
-	 *
-	 * @param glyph  The Freetype glyph to be processed
-	 */
-	Glyph (FT_GlyphSlot glyph);
-
-
-private:
-
-	/**
-	 * Internal FTGL Glyph constructor. For private use only.
-	 *
-	 * @param pImpl  Internal implementation object. Will be destroyed
-	 *               upon Glyph deletion.
-	 */
-	Glyph (GlyphImpl* pImpl);
-
-	/* Allow our internal subclasses to access the private constructor */
-	friend class FTBitmapGlyph;
-	friend class FTBufferGlyph;
-	friend class FTExtrudeGlyph;
-	friend class FTOutlineGlyph;
-	friend class FTPixmapGlyph;
-	friend class PolygonGlyph;
-	friend class FTTextureGlyph;
-
-
 public:
 
+	///  @name Member access
+
 	/**
-	 * Destructor
+	 * Return the advance width for this glyph.
+	 *
+	 * @return  advance width.
 	 */
-	virtual
-	~Glyph ();
+	const Vector3d &
+	getAdvance () const;
+
+	/**
+	 * Return the bounding box for this glyph.
+	 *
+	 * @return  bounding box.
+	 */
+	const BBox &
+	getBBox () const;
+
+	/**
+	 * Queries for errors.
+	 *
+	 * @return  The current error code.
+	 */
+	FT_Error
+	getError () const;
+
+	///  @name Operations
 
 	/**
 	 * Renders this glyph at the current pen position.
@@ -101,40 +91,53 @@ public:
 	const Vector3d &
 	render (const Vector3d & pen, FTGL::RenderMode renderMode) = 0;
 
-	/**
-	 * Return the advance width for this glyph.
-	 *
-	 * @return  advance width.
-	 */
-	virtual
-	double
-	getAdvance () const;
+	///  @name Destruction
 
 	/**
-	 * Return the bounding box for this glyph.
-	 *
-	 * @return  bounding box.
+	 * Destructor
 	 */
 	virtual
-	const BBox &
-	getBBox () const;
+	~Glyph ();
+
+
+protected:
+
+	///  @name Construction
 
 	/**
-	 * Queries for errors.
+	 * Create a glyph.
 	 *
-	 * @return  The current error code.
+	 * @param glyph  The Freetype glyph to be processed
 	 */
-	virtual
-	FT_Error
-	getError () const;
+	Glyph (FT_GlyphSlot glyph);
+
+	///  @name Member access
+
+	/**
+	 * Set the error state.
+	 */
+	void
+	setError (FT_Error);
 
 
 private:
 
+	///  @name Members
+
 	/**
-	 * Internal FTGL Glyph implementation object. For private use only.
+	 * The advance distance for this glyph
 	 */
-	GlyphImpl* impl;
+	Vector3d advance;
+
+	/**
+	 * The bounding box of this glyph.
+	 */
+	BBox bbox;
+
+	/**
+	 * Current error code. Zero means no error.
+	 */
+	FT_Error error;
 
 };
 

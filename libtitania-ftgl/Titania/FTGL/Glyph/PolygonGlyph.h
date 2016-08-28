@@ -30,8 +30,12 @@
 
 #include "Glyph.h"
 
+#include <GL/gl.h>
+
 namespace titania {
 namespace FTGL {
+
+class Vectorizer;
 
 /**
  * PolygonGlyph is a specialisation of Glyph for creating tessellated
@@ -41,6 +45,8 @@ class PolygonGlyph :
 	public Glyph
 {
 public:
+
+	///  @name Construction
 
 	/**
 	 * Constructor. Sets the Error to Invalid_Outline if the glyphs
@@ -55,11 +61,7 @@ public:
 	 */
 	PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList);
 
-	/**
-	 * Destructor
-	 */
-	virtual
-	~PolygonGlyph ();
+	///  @name Operations
 
 	/**
 	 * Render this glyph at the current pen position.
@@ -68,8 +70,42 @@ public:
 	 * @param renderMode  Render mode to display
 	 * @return  The advance distance for this glyph.
 	 */
-	virtual const Vector3d &
-	render (const Vector3d & pen, FTGL::RenderMode renderMode);
+	virtual
+	const Vector3d &
+	render (const Vector3d & pen, FTGL::RenderMode renderMode) final override;
+
+	///  @name Destruction
+
+	/**
+	 * Destructor
+	 */
+	virtual
+	~PolygonGlyph ();
+
+private:
+
+	///  @name Operations
+
+	/**
+	 * Private rendering method.
+	 */
+	void
+	doRender ();
+
+	///  @name Members
+
+	/**
+	 * Private rendering variables.
+	 */
+	uint32_t    hscale;
+	uint32_t    vscale;
+	Vectorizer* vectoriser;
+	double      outset;
+
+	/**
+	 * OpenGL display list
+	 */
+	GLuint glList;
 
 };
 

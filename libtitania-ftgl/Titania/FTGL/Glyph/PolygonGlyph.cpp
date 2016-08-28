@@ -28,41 +28,25 @@
 #include "PolygonGlyph.h"
 
 #include "../Vectorizer.h"
-#include "PolygonGlyphImpl.h"
 
 namespace titania {
 namespace FTGL {
 
 //
-//  FTGLPolyGlyph
+//  PolygonGlyph
 //
 
 PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList) :
-	Glyph (new PolygonGlyphImpl (glyph, outset, useDisplayList))
-{ }
-
-PolygonGlyph::~PolygonGlyph ()
-{ }
-
-const Vector3d &
-PolygonGlyph::render (const Vector3d & pen, FTGL::RenderMode renderMode)
-{
-	PolygonGlyphImpl* myimpl = dynamic_cast <PolygonGlyphImpl*> (impl);
-
-	return myimpl -> renderImpl (pen, renderMode);
-}
-
-//
-//  FTGLPolyGlyphImpl
-//
-
-PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool useDisplayList) :
-	GlyphImpl (glyph),
-	   glList (0)
+	     Glyph (glyph),
+	    hscale (0),
+	    vscale (0),
+	vectoriser (nullptr),
+	    outset (outset),
+	    glList (0)
 {
 	if (ft_glyph_format_outline not_eq glyph -> format)
 	{
-		err = 0x14; // Invalid_Outline
+		setError (0x14); // Invalid_Outline
 		return;
 	}
 
@@ -77,7 +61,6 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool use
 
 	hscale = glyph -> face -> size -> metrics .x_ppem * 64;
 	vscale = glyph -> face -> size -> metrics .y_ppem * 64;
-	outset = _outset;
 
 	if (useDisplayList)
 	{
@@ -93,20 +76,8 @@ PolygonGlyphImpl::PolygonGlyphImpl (FT_GlyphSlot glyph, double _outset, bool use
 	}
 }
 
-PolygonGlyphImpl::~PolygonGlyphImpl ()
-{
-	if (glList)
-	{
-		glDeleteLists (glList, 1);
-	}
-	else if (vectoriser)
-	{
-		delete vectoriser;
-	}
-}
-
 const Vector3d &
-PolygonGlyphImpl::renderImpl (const Vector3d & pen, FTGL::RenderMode renderMode)
+PolygonGlyph::render (const Vector3d & pen, FTGL::RenderMode renderMode)
 {
 	glTranslatef (pen.x (), pen .y (), pen .z ());
 
@@ -121,11 +92,11 @@ PolygonGlyphImpl::renderImpl (const Vector3d & pen, FTGL::RenderMode renderMode)
 
 	glTranslatef (-pen.x (), -pen.y (), -pen.z ());
 
-	return advance;
+	return getAdvance ();
 }
 
 void
-PolygonGlyphImpl::doRender ()
+PolygonGlyph::doRender ()
 {
 	vectoriser -> makeMesh (1, 1, outset);
 
@@ -146,6 +117,18 @@ PolygonGlyphImpl::doRender ()
 		}
 
 		glEnd ();
+	}
+}
+
+PolygonGlyph::~PolygonGlyph ()
+{
+	if (glList)
+	{
+		glDeleteLists (glList, 1);
+	}
+	else if (vectoriser)
+	{
+		delete vectoriser;
 	}
 }
 
