@@ -17857,19 +17857,19 @@ if test -n "$TITANIA_FTGL_CFLAGS"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"freetype2
 fontconfig
-glu
-gl\""; } >&5
+gl
+glu\""; } >&5
   ($PKG_CONFIG --exists --print-errors "freetype2
 fontconfig
-glu
-gl") 2>&5
+gl
+glu") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_FTGL_CFLAGS=`$PKG_CONFIG --cflags "freetype2
 fontconfig
-glu
-gl" 2>/dev/null`
+gl
+glu" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17883,19 +17883,19 @@ if test -n "$TITANIA_FTGL_LIBS"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"freetype2
 fontconfig
-glu
-gl\""; } >&5
+gl
+glu\""; } >&5
   ($PKG_CONFIG --exists --print-errors "freetype2
 fontconfig
-glu
-gl") 2>&5
+gl
+glu") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_FTGL_LIBS=`$PKG_CONFIG --libs "freetype2
 fontconfig
-glu
-gl" 2>/dev/null`
+gl
+glu" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -17918,21 +17918,21 @@ fi
         if test $_pkg_short_errors_supported = yes; then
 	        TITANIA_FTGL_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "freetype2
 fontconfig
-glu
-gl" 2>&1`
+gl
+glu" 2>&1`
         else
 	        TITANIA_FTGL_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "freetype2
 fontconfig
-glu
-gl" 2>&1`
+gl
+glu" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_FTGL_PKG_ERRORS" >&5
 
 	as_fn_error $? "Package requirements (freetype2
 fontconfig
-glu
-gl) were not met:
+gl
+glu) were not met:
 
 $TITANIA_FTGL_PKG_ERRORS
 
@@ -18370,14 +18370,20 @@ if test -n "$TITANIA_STANDARD_CFLAGS"; then
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"giomm-2.4
-glibmm-2.4\""; } >&5
+glibmm-2.4
+gl
+glu\""; } >&5
   ($PKG_CONFIG --exists --print-errors "giomm-2.4
-glibmm-2.4") 2>&5
+glibmm-2.4
+gl
+glu") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_STANDARD_CFLAGS=`$PKG_CONFIG --cflags "giomm-2.4
-glibmm-2.4" 2>/dev/null`
+glibmm-2.4
+gl
+glu" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -18390,14 +18396,20 @@ if test -n "$TITANIA_STANDARD_LIBS"; then
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"giomm-2.4
-glibmm-2.4\""; } >&5
+glibmm-2.4
+gl
+glu\""; } >&5
   ($PKG_CONFIG --exists --print-errors "giomm-2.4
-glibmm-2.4") 2>&5
+glibmm-2.4
+gl
+glu") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_STANDARD_LIBS=`$PKG_CONFIG --libs "giomm-2.4
-glibmm-2.4" 2>/dev/null`
+glibmm-2.4
+gl
+glu" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -18419,16 +18431,22 @@ else
 fi
         if test $_pkg_short_errors_supported = yes; then
 	        TITANIA_STANDARD_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "giomm-2.4
-glibmm-2.4" 2>&1`
+glibmm-2.4
+gl
+glu" 2>&1`
         else
 	        TITANIA_STANDARD_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "giomm-2.4
-glibmm-2.4" 2>&1`
+glibmm-2.4
+gl
+glu" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_STANDARD_PKG_ERRORS" >&5
 
 	as_fn_error $? "Package requirements (giomm-2.4
-glibmm-2.4) were not met:
+glibmm-2.4
+gl
+glu) were not met:
 
 $TITANIA_STANDARD_PKG_ERRORS
 

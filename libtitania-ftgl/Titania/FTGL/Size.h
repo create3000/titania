@@ -135,7 +135,7 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return err; }
+	getError () const { return error; }
 
 
 private:
@@ -168,7 +168,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	FT_Error err;
+	FT_Error error;
 
 };
 

@@ -41,7 +41,6 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/CollisionSphere3.cpp \
-	Titania/Math/Geometry/Combine.cpp \
 	Titania/Math/Geometry/ConvexHull2.cpp \
 	Titania/Math/Geometry/ConvexHull3.cpp \
 	Titania/Math/Geometry/Cylinder3.cpp \
@@ -53,6 +52,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/Math/Geometry/Sphere3.cpp \
 	Titania/Math/Geometry/Spheroid3.cpp \
 	Titania/Math/Image.cpp \
+	Titania/Math/Mesh/Combine.cpp \
 	Titania/Math/Numbers/Color3.cpp \
 	Titania/Math/Numbers/Color4.cpp \
 	Titania/Math/Numbers/Matrix2.cpp \

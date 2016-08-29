@@ -154,7 +154,7 @@ public:
 	 */
 	FT_Error
 	getError () const
-	{ return err; }
+	{ return error; }
 
 
 private:
@@ -194,7 +194,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	mutable FT_Error err;
+	mutable FT_Error error;
 
 };
 

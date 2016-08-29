@@ -42,11 +42,11 @@ Font::Font (char const* fontFilePath) :
 	load_flags (FT_LOAD_DEFAULT),
 	 glyphList (nullptr),
 	       pen (),
-	       err (0)
+	     error (0)
 {
-	err = face .getError ();
+	error = face .getError ();
 
-	if (err == 0)
+	if (error == 0)
 	{
 		glyphList = new GlyphContainer (&face);
 	}
@@ -58,11 +58,11 @@ Font::Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes) :
 	load_flags (FT_LOAD_DEFAULT),
 	 glyphList (0),
 	       pen (),
-	       err (0)
+	     error (0)
 {
-	err = face .getError ();
+	error = face .getError ();
 
-	if (err == 0)
+	if (error == 0)
 	{
 		glyphList = new GlyphContainer (&face);
 	}
@@ -78,9 +78,9 @@ Font::setFaceSize (const uint32_t size, const uint32_t res)
 	}
 
 	charSize = face .getSize (size, res);
-	err      = face .getError ();
+	error    = face .getError ();
 
-	if (err not_eq 0)
+	if (error not_eq 0)
 	{
 		return false;
 	}
@@ -106,7 +106,7 @@ Font::setCharMap (FT_Encoding encoding)
 {
 	bool result = glyphList -> setCharMap (encoding);
 
-	err = glyphList -> getError ();
+	error = glyphList -> getError ();
 	return result;
 }
 
@@ -187,7 +187,7 @@ Font::getBBox (const char* string, const int32_t len, Vector3d position, Vector3
 FT_Error
 Font::getError () const
 {
-	return err;
+	return error;
 }
 
 bool
@@ -195,11 +195,11 @@ Font::attach (const char* fontFilePath)
 {
 	if (not face .attach (fontFilePath))
 	{
-		err = face .getError ();
+		error = face .getError ();
 		return false;
 	}
 
-	err = 0;
+	error = 0;
 	return true;
 }
 
@@ -208,16 +208,16 @@ Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 {
 	if (not face .attach (pBufferBytes, bufferSizeInBytes))
 	{
-		err = face .getError ();
+		error = face .getError ();
 		return false;
 	}
 
-	err = 0;
+	error = 0;
 	return true;
 }
 
 Vector3d
-Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
+Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing)
 {
 	// for multibyte - we can't rely on sizeof(T) == character
 	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
@@ -229,7 +229,36 @@ Font::render (const char* string, const int32_t len, Vector3d position, Vector3d
 
 		if (checkGlyph (thisChar))
 		{
-			position += glyphList -> render (thisChar, nextChar, position, renderMode);
+			position += glyphList -> render (thisChar, nextChar, position);
+		}
+
+		if (nextChar)
+		{
+			position += spacing;
+		}
+	}
+
+	return position;
+}
+
+Vector3d
+Font::triangulate (const std::string & string,
+                   Vector3d position,
+                   Vector3d spacing,
+                   std::vector <size_t> & indices,
+                   std::vector <Vector3d> & points) const
+{
+	// for multibyte - we can't rely on sizeof(T) == character
+	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string .c_str ());
+
+	for (int32_t i = 0; *ustr; ++ i)
+	{
+		uint32_t thisChar = *ustr ++;
+		uint32_t nextChar = *ustr;
+
+		if (checkGlyph (thisChar))
+		{
+			position += glyphList -> triangulate (thisChar, nextChar, position, indices, points);
 		}
 
 		if (nextChar)
@@ -268,7 +297,7 @@ Font::advance (const char* string, const int32_t len, Vector3d spacing)
 }
 
 bool
-Font::checkGlyph (const uint32_t characterCode)
+Font::checkGlyph (const uint32_t characterCode) const
 {
 	if (glyphList -> getGlyph (characterCode))
 	{
@@ -278,19 +307,19 @@ Font::checkGlyph (const uint32_t characterCode)
 	uint32_t     glyphIndex = glyphList -> getFontIndex (characterCode);
 	FT_GlyphSlot ftSlot     = face .getGlyph (glyphIndex, load_flags);
 
-	if (! ftSlot)
+	if (not ftSlot)
 	{
-		err = face .getError ();
+		error = face .getError ();
 		return false;
 	}
 
-	Glyph* tempGlyph = makeGlyph (ftSlot);
+	Glyph* tempGlyph = const_cast <Font*> (this) -> makeGlyph (ftSlot);
 
-	if (! tempGlyph)
+	if (not tempGlyph)
 	{
-		if (0 == err)
+		if (error == 0)
 		{
-			err = 0x13;
+			error = 0x13;
 		}
 
 		return false;

@@ -34,8 +34,8 @@ namespace titania {
 namespace FTGL {
 
 GlyphContainer::GlyphContainer (Face* f) :
-	face (f),
-	 err (0)
+	 face (f),
+	error (0)
 {
 	glyphs .emplace_back (nullptr);
 	charMap = new Charmap (face);
@@ -59,7 +59,7 @@ GlyphContainer::setCharMap (FT_Encoding encoding)
 {
 	bool result = charMap -> setCharMap (encoding);
 
-	err = charMap -> getError ();
+	error = charMap -> getError ();
 	return result;
 }
 
@@ -103,17 +103,37 @@ GlyphContainer::advance (const uint32_t charCode,
 Vector3d
 GlyphContainer::render (const uint32_t charCode,
                         const uint32_t nextCharCode,
-                        Vector3d penPosition, FTGL::RenderMode renderMode)
+                        Vector3d penPosition)
 {
 	uint32_t left  = charMap -> getFontIndex (charCode);
 	uint32_t right = charMap -> getFontIndex (nextCharCode);
 
 	Vector3d kernAdvance = face -> getKernAdvance (left, right);
 
-	if (! face -> getError ())
+	if (not face -> getError ())
 	{
 		uint32_t index = charMap -> getGlyphListIndex (charCode);
-		kernAdvance += glyphs [index] -> render (penPosition, renderMode);
+		kernAdvance += glyphs [index] -> render (penPosition);
+	}
+
+	return kernAdvance;
+}
+
+Vector3d
+GlyphContainer::triangulate (const uint32_t charCode,
+                             const uint32_t nextCharCode,
+                             Vector3d penPosition,
+                             std::vector <size_t> & indices,
+                             std::vector <Vector3d> & points) const
+{
+	const uint32_t left        = charMap -> getFontIndex (charCode);
+	const uint32_t right       = charMap -> getFontIndex (nextCharCode);
+	Vector3d       kernAdvance = face -> getKernAdvance (left, right);
+
+	if (not face -> getError ())
+	{
+		const uint32_t index = charMap -> getGlyphListIndex (charCode);
+		kernAdvance += glyphs [index] -> triangulate (penPosition, indices, points);
 	}
 
 	return kernAdvance;

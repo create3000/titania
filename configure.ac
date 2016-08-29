@@ -129,8 +129,8 @@ libgtop-2.0)
 PKG_CHECK_MODULES(TITANIA_FTGL,
 freetype2
 fontconfig
-glu
-gl)
+gl
+glu)
 
 PKG_CHECK_MODULES(TITANIA_STREAM,
 libcurl
@@ -149,7 +149,9 @@ zlib)
 
 PKG_CHECK_MODULES(TITANIA_STANDARD,
 giomm-2.4
-glibmm-2.4)
+glibmm-2.4
+gl
+glu)
 
 
 AC_OUTPUT([

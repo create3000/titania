@@ -149,7 +149,7 @@ public:
 	 */
 	void
 	setError (GLenum e)
-	{ err = e; }
+	{ error = e; }
 
 	/**
 	 * The number of tesselations in the mesh
@@ -175,7 +175,7 @@ public:
 	 * Get the GL ERROR returned by the glu tesselator
 	 */
 	GLenum
-	getError () const { return err; }
+	getError () const { return error; }
 
 	/**
 	 *  Destructor
@@ -203,7 +203,7 @@ private:
 	/**
 	 * GL ERROR returned by the glu tesselator
 	 */
-	GLenum err;
+	GLenum error;
 
 };
 
@@ -225,6 +225,8 @@ class Vectorizer
 {
 public:
 
+	///  @name Construction
+
 	/**
 	 * Constructor
 	 *
@@ -232,26 +234,7 @@ public:
 	 */
 	Vectorizer (const FT_GlyphSlot glyph);
 
-	/**
-	 *  Destructor
-	 */
-	virtual
-	~Vectorizer ();
-
-	/**
-	 * Build an Mesh from the vector outline data.
-	 *
-	 * @param zNormal   The direction of the z axis of the normal
-	 *                  for this mesh
-	 * FIXME: change the following for a constant
-	 * @param outsetType Specify the outset type contour
-	 *  0 : Original
-	 *  1 : Front
-	 *  2 : Back
-	 * @param outsetSize Specify the outset size contour
-	 */
-	void
-	makeMesh (double zNormal = FTGL_FRONT_FACING, int32_t outsetType = 0, double outsetSize = 0);
+	///  @name Member access
 
 	/**
 	 * Get the current mesh.
@@ -304,8 +287,57 @@ public:
 	getContourFlag () const
 	{ return contourFlag; }
 
+	///  @name Operations
+
+	/**
+	 * Build an Mesh from the vector outline data.
+	 *
+	 * @param zNormal   The direction of the z axis of the normal
+	 *                  for this mesh
+	 * FIXME: change the following for a constant
+	 * @param outsetType Specify the outset type contour
+	 *  0 : Original
+	 *  1 : Front
+	 *  2 : Back
+	 * @param outsetSize Specify the outset size contour
+	 */
+	void
+	makeMesh (double zNormal = FTGL_FRONT_FACING, int32_t outsetType = 0, double outsetSize = 0);
+
+	/**
+	 * Build an Mesh from the vector outline data.
+	 *
+	 * @param zNormal  The direction of the z axis of the normal
+	 *                 for this mesh
+	 * FIXME: change the following for a constant
+	 * @param outsetType  Specify the outset type contour
+	 *  0 : Original
+	 *  1 : Front
+	 *  2 : Back
+	 * @param outsetSize  Specify the outset size contour
+	 * @param indices     Specify the output array of indices of the mesh
+	 * @param points      Specify the output array of points of the mesh
+	 */
+	void
+	triangulate (const double zNormal,
+	             const int32_t outsetType,
+	             const double outsetSize,
+	             const Vector3d & offset,
+	             std::vector <size_t> & indices,
+	             std::vector <Vector3d> & points);
+
+	///  @name Destruction
+
+	/**
+	 *  Destructor
+	 */
+	virtual
+	~Vectorizer ();
+
 
 private:
+
+	///  @name Operations
 
 	/**
 	 * Process the freetype outline data into contours of points
@@ -315,6 +347,8 @@ private:
 	 */
 	void
 	processContours ();
+
+	///  @name Members
 
 	/**
 	 * The list of contours in the glyph

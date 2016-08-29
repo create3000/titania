@@ -557,8 +557,9 @@
     <None Include="Titania\External\unsupported\Eigen\src\Splines\SplineFwd.h" />
     <None Include="Titania\Math\Geometry\MinimumBoundingBox.h" />
     <None Include="Titania\Math\Geometry\LineSegment2.h" />
-    <None Include="Titania\Math\Geometry\Combine.h" />
     <None Include="Titania\RegEx\regex_escape.h" />
+    <None Include="Titania\Math\Mesh\Tessellator.h" />
+    <None Include="Titania\Math\Mesh\Combine.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -638,8 +639,8 @@
     <Compile Include="Titania\External\ApproxMVBB\pugixml\pugixml.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
     <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
-    <Compile Include="Titania\Math\Geometry\Combine.cpp" />
     <Compile Include="Titania\RegEx\regex_escape.cpp" />
+    <Compile Include="Titania\Math\Mesh\Combine.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -668,5 +669,6 @@
     <Folder Include="Titania\External\Eigen\" />
     <Folder Include="Titania\External\unsupported\" />
     <Folder Include="Titania\RegEx\" />
+    <Folder Include="Titania\Math\Mesh\" />
   </ItemGroup>
 </Project>

@@ -488,7 +488,6 @@
     <None Include="Titania\X3D\Components\Followers\ColorChaser.h" />
     <None Include="Titania\X3D\Components\Followers\CoordinateChaser.h" />
     <None Include="Titania\X3D\Components\Followers\TexCoordChaser2D.h" />
-    <None Include="Titania\X3D\Rendering\Tessellator.h" />
     <None Include="Titania\X3D\Rendering\PolygonModeContainer.h" />
     <None Include="Titania\X3D\Rendering\X3DCollectableObject.h" />
     <None Include="Titania\X3D\Thread\Texture3DLoader.h" />

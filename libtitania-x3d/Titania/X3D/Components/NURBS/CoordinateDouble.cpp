@@ -52,7 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/Geometry.h"
-#include "../../Rendering/Tessellator.h"
+
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace X3D {
@@ -131,7 +132,7 @@ CoordinateDouble::getNormal (const size_t index1, const size_t index2, const siz
 }
 
 void
-CoordinateDouble::addVertex (opengl::tessellator <size_t> & tessellator, const size_t index, const size_t i) const
+CoordinateDouble::addVertex (math::tessellator <double, size_t> & tessellator, const size_t index, const size_t i) const
 {
 	if (index < point () .size ())
 		tessellator .add_vertex (point () [index] .getValue (), i);

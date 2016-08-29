@@ -57,7 +57,7 @@ Library::~Library ()
 
 Library::Library () :
 	library (0),
-	    err (0)
+	  error (0)
 {
 	initialise ();
 }
@@ -70,9 +70,9 @@ Library::initialise ()
 
 	library = new FT_Library;
 
-	err = FT_Init_FreeType (library);
+	error = FT_Init_FreeType (library);
 
-	if (err)
+	if (error)
 	{
 		delete library;
 		library = 0;

@@ -139,7 +139,7 @@ Contour::setParity (int32_t parity)
 	size_t   size = getPointCount ();
 	Vector3d vOutset;
 
-	if (((parity & 1) and clockwise) or (! (parity & 1) and ! clockwise))
+	if (((parity & 1) and clockwise) or (not (parity & 1) and not clockwise))
 	{
 		// Contour orientation is wrong! We must reverse all points.
 		// FIXME: could it be worth writing Vector::reverse() for this?
@@ -150,7 +150,7 @@ Contour::setParity (int32_t parity)
 			pointList [size - 1 - i] = tmp;
 		}
 
-		clockwise = ! clockwise;
+		clockwise = not clockwise;
 	}
 
 	for (size_t i = 0; i < size; i ++)

@@ -55,8 +55,9 @@
 #include "../../Components/Geospatial/GeoCoordinate.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/Coordinate.h"
-#include "../../Rendering/Tessellator.h"
 #include "../../Rendering/ViewVolume.h"
+
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace X3D {
@@ -349,7 +350,7 @@ FaceSelection::getFaceDistance (const Vector3d & hitPoint, const std::vector <si
 	}
 	else
 	{
-		opengl::tessellator <size_t> tessellator;
+		math::tessellator <double, size_t> tessellator;
 	
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();
@@ -527,7 +528,7 @@ FaceSelection::getClosestEdge (const Vector3d & hitPoint, const std::vector <siz
 	
 	else
 	{
-		opengl::tessellator <size_t> tessellator;
+		math::tessellator <double, size_t> tessellator;
 	
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();

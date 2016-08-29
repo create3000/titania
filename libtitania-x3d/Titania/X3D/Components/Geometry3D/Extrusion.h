@@ -54,12 +54,12 @@
 #include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
-namespace opengl {
+namespace math {
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator;
 
-} // opengl
+} // math
 } // titania
 
 namespace titania {
@@ -191,7 +191,7 @@ public:
 
 private:
 
-	typedef opengl::tessellator <size_t, size_t> Tessellator;
+	using Tessellator = math::tessellator <double, size_t, size_t>;
 
 	///  @name Construction
 

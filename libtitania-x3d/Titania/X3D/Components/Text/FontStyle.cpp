@@ -118,8 +118,7 @@ PolygonText::draw ()
 	                                                : String (line .rbegin (), line .rend ()) .c_str (),
 			                                          -1,
 			                                          FTGL::Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
-			                                          FTGL::Vector3d (getCharSpacing () [i], 0, 0),
-			                                          FTGL::RenderMode::RENDER_ALL);
+			                                          FTGL::Vector3d (getCharSpacing () [i], 0, 0));
 
 		}
 	}
@@ -148,8 +147,7 @@ PolygonText::draw ()
 				fontStyle -> getPolygonFont () -> render (String (1, glyph) .c_str (),
 				                                          -1,
 				                                          FTGL::Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
-				                                          FTGL::Vector3d (),
-				                                          FTGL::RenderMode::RENDER_ALL);
+				                                          FTGL::Vector3d ());
 				++ g;
 			}
 		}

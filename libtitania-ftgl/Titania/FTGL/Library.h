@@ -46,7 +46,7 @@ namespace FTGL {
  * doesn't mean that the Freetype Library has been successfully initialised.
  * Clients should check for errors. You can initialse the library AND check
  * for errors using the following code...
- * <code>err = Library::Instance().Error();</code>
+ * <code>error = Library::Instance().Error();</code>
  *
  * @see "Freetype 2 Documentation"
  *
@@ -78,7 +78,7 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return err; }
+	getError () const { return error; }
 
 	/**
 	 * Destructor
@@ -125,7 +125,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	FT_Error err;
+	FT_Error error;
 
 };
 

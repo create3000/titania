@@ -60,8 +60,9 @@
 #include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../../Components/Rendering/IndexedLineSet.h"
 #include "../../../Editing/Selection/FaceSelection.h"
-#include "../../../Rendering/Tessellator.h"
 #include "../../../Rendering/ViewVolume.h"
+
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace X3D {
@@ -1671,7 +1672,7 @@ X3DIndexedFaceSetSelectionObject::getArea (const std::vector <size_t> & vertices
 		}
 		else
 		{
-			opengl::tessellator <size_t> tessellator;
+			math::tessellator <double, size_t> tessellator;
 
 			tessellator .begin_polygon ();
 			tessellator .begin_contour ();

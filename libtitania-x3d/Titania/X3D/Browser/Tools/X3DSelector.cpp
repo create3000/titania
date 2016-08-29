@@ -54,11 +54,11 @@
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Rendering/FrameBuffer.h"
-#include "../../Rendering/Tessellator.h"
 #include "../../Rendering/OpenGL.h"
 #include "../ContextLock.h"
 
 #include <Titania/Math/Geometry/Camera.h>
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace X3D {
@@ -245,7 +245,7 @@ X3DSelector::draw ()
 void
 X3DSelector::polygon ()
 {
-	opengl::tessellator <int> tessellator;
+	math::tessellator <double, int> tessellator;
 
 	tessellator .begin_polygon ();
 	tessellator .begin_contour ();

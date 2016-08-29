@@ -33,24 +33,6 @@
 namespace titania {
 namespace FTGL {
 
-enum class RenderMode
-{
-	RENDER_FRONT = 0x0001,
-	RENDER_BACK  = 0x0002,
-	RENDER_SIDE  = 0x0004,
-	RENDER_ALL   = 0xffff
-
-};
-
-enum class TextAlignment
-{
-	ALIGN_LEFT    = 0,
-	ALIGN_CENTER  = 1,
-	ALIGN_RIGHT   = 2,
-	ALIGN_JUSTIFY = 3
-
-};
-
 using Vector3d = math::vector3 <double>;
 
 } // FTGL

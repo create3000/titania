@@ -52,7 +52,6 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/Tessellator.h"
 #include "../Geospatial/GeoCoordinate.h"
 #include "../NURBS/CoordinateDouble.h"
 #include "../Rendering/IndexedLineSet.h"
@@ -67,6 +66,8 @@
 #include "../Texturing3D/TextureCoordinate4D.h"
 
 #include "../../Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h"
+
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace X3D {
@@ -233,6 +234,7 @@ IndexedFaceSet::build ()
 
 			for (const auto & v : element)
 			{
+__LOG__ << v << " : " << vertices .size () << std::endl;
 				const auto   i     = vertices [v];
 				const size_t index = coordIndex () [i];
 
@@ -386,7 +388,7 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 	tessellator -> begin_polygon ();
 	tessellator -> begin_contour ();
 
-	for (size_t i = 0, length = vertices .size (); i < length; ++ i)
+	for (size_t i = 0, size = vertices .size (); i < size; ++ i)
 		getCoord () -> addVertex (*tessellator, coordIndex () [vertices [i]], i);
 
 	tessellator -> end_contour ();
@@ -428,7 +430,7 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 				{
 					// Add triangle to polygon.
 					elements .emplace_back ();
-					elements .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygonElement [i + 0] .data ()));
 					elements .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
 					elements .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
 				}
@@ -653,7 +655,7 @@ IndexedFaceSet::getPolygonArea (const Vertices & vertices) const
 	}
 	else
 	{
-		opengl::tessellator <size_t> tessellator;
+		math::tessellator <double, size_t> tessellator;
 	
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();

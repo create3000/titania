@@ -32,18 +32,18 @@ namespace FTGL {
 
 Charmap::Charmap (Face* face) :
 	ftFace (*(face -> getFace ())),
-	   err (0)
+	 error (0)
 {
-	if (! ftFace -> charmap)
+	if (not ftFace -> charmap)
 	{
-		if (! ftFace -> num_charmaps)
+		if (not ftFace -> num_charmaps)
 		{
 			// This face doesn't even have one charmap!
-			err = 0x96; // Invalid_CharMap_Format
+			error = 0x96; // Invalid_CharMap_Format
 			return;
 		}
 
-		err = FT_Set_Charmap (ftFace, ftFace -> charmaps [0]);
+		error = FT_Set_Charmap (ftFace, ftFace -> charmaps [0]);
 	}
 
 	ftEncoding = ftFace -> charmap -> encoding;
@@ -64,19 +64,19 @@ Charmap::setCharMap (FT_Encoding encoding)
 {
 	if (ftEncoding == encoding)
 	{
-		err = 0;
+		error = 0;
 		return true;
 	}
 
-	err = FT_Select_Charmap (ftFace, encoding);
+	error = FT_Select_Charmap (ftFace, encoding);
 
-	if (! err)
+	if (not error)
 	{
 		ftEncoding = encoding;
 		charMap .clear ();
 	}
 
-	return ! err;
+	return not error;
 }
 
 uint32_t

@@ -37,16 +37,16 @@ Face::Face (const char* fontFilePath, bool precomputeKerning) :
 	       numGlyphs (0),
 	fontEncodingList (0),
 	    kerningCache (0),
-	             err (0)
+	           error (0)
 {
 	const FT_Long DEFAULT_FACE_INDEX = 0;
 
 	ftFace = new FT_Face;
 
-	err = FT_New_Face (*Library::getInstance () .getLibrary (), fontFilePath,
-	                   DEFAULT_FACE_INDEX, ftFace);
+	error = FT_New_Face (*Library::getInstance () .getLibrary (), fontFilePath,
+	                     DEFAULT_FACE_INDEX, ftFace);
 
-	if (err)
+	if (error)
 	{
 		delete ftFace;
 		ftFace = 0;
@@ -67,17 +67,17 @@ Face::Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
 	       numGlyphs (0),
 	fontEncodingList (0),
 	    kerningCache (0),
-	             err (0)
+	           error (0)
 {
 	const FT_Long DEFAULT_FACE_INDEX = 0;
 
 	ftFace = new FT_Face;
 
-	err = FT_New_Memory_Face (*Library::getInstance () .getLibrary (),
-	                          (FT_Byte const*) pBufferBytes, (FT_Long) bufferSizeInBytes,
-	                          DEFAULT_FACE_INDEX, ftFace);
+	error = FT_New_Memory_Face (*Library::getInstance () .getLibrary (),
+	                            (FT_Byte const*) pBufferBytes, (FT_Long) bufferSizeInBytes,
+	                            DEFAULT_FACE_INDEX, ftFace);
 
-	if (err)
+	if (error)
 	{
 		delete ftFace;
 		ftFace = 0;
@@ -111,8 +111,8 @@ Face::~Face ()
 bool
 Face::attach (const char* fontFilePath)
 {
-	err = FT_Attach_File (*ftFace, fontFilePath);
-	return ! err;
+	error = FT_Attach_File (*ftFace, fontFilePath);
+	return not error;
 }
 
 bool
@@ -124,15 +124,15 @@ Face::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 	open .memory_base = (FT_Byte const*) pBufferBytes;
 	open .memory_size = (FT_Long) bufferSizeInBytes;
 
-	err = FT_Attach_Stream (*ftFace, &open);
-	return ! err;
+	error = FT_Attach_Stream (*ftFace, &open);
+	return not error;
 }
 
 const Size &
 Face::getSize (const uint32_t size, const uint32_t res)
 {
 	charSize .setCharSize (ftFace, size, res, res);
-	err = charSize .getError ();
+	error = charSize .getError ();
 
 	return charSize;
 }
@@ -164,7 +164,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 {
 	double x, y;
 
-	if (! hasKerningTable or ! index1 or ! index2)
+	if (not hasKerningTable or not index1 or not index2)
 	{
 		return Vector3d (0, 0, 0);
 	}
@@ -180,10 +180,10 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 	FT_Vector kernAdvance;
 	kernAdvance .x = kernAdvance .y = 0;
 
-	err = FT_Get_Kerning (*ftFace, index1, index2, ft_kerning_unfitted,
-	                      &kernAdvance);
+	error = FT_Get_Kerning (*ftFace, index1, index2, ft_kerning_unfitted,
+	                        &kernAdvance);
 
-	if (err)
+	if (error)
 	{
 		return Vector3d (0, 0, 0);
 	}
@@ -197,9 +197,9 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 FT_GlyphSlot
 Face::getGlyph (uint32_t index, FT_Int load_flags) const
 {
-	err = FT_Load_Glyph (*ftFace, index, load_flags);
+	error = FT_Load_Glyph (*ftFace, index, load_flags);
 
-	if (err)
+	if (error)
 	{
 		return nullptr;
 	}
@@ -221,10 +221,10 @@ Face::buildKerningCache ()
 	{
 		for (uint32_t i = 0; i < Face::MAX_PRECOMPUTED; i ++)
 		{
-			err = FT_Get_Kerning (*ftFace, i, j, ft_kerning_unfitted,
-			                      &kernAdvance);
+			error = FT_Get_Kerning (*ftFace, i, j, ft_kerning_unfitted,
+			                        &kernAdvance);
 
-			if (err)
+			if (error)
 			{
 				delete [ ] kerningCache;
 				kerningCache = nullptr;

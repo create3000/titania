@@ -34,7 +34,7 @@ Size::Size () :
 	       size (0),
 	xResolution (0),
 	yResolution (0),
-	        err (0)
+	      error (0)
 { }
 
 Size::~Size ()
@@ -45,9 +45,9 @@ Size::setCharSize (FT_Face* face, uint32_t pointSize, uint32_t xRes, uint32_t yR
 {
 	if (size not_eq pointSize or xResolution not_eq xRes or yResolution not_eq yRes)
 	{
-		err = FT_Set_Char_Size (*face, 0L, pointSize * 64, xResolution, yResolution);
+		error = FT_Set_Char_Size (*face, 0L, pointSize * 64, xResolution, yResolution);
 
-		if (! err)
+		if (not error)
 		{
 			ftFace      = face;
 			size        = pointSize;
@@ -57,7 +57,7 @@ Size::setCharSize (FT_Face* face, uint32_t pointSize, uint32_t xRes, uint32_t yR
 		}
 	}
 
-	return ! err;
+	return not error;
 }
 
 uint32_t

@@ -121,7 +121,7 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const final override;
+	addVertex (math::tessellator <double, size_t> &, const size_t, const size_t) const final override;
 
 	virtual
 	void

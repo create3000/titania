@@ -57,7 +57,7 @@
 namespace titania {
 namespace opengl {
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator;
 
 } // opengl
@@ -250,7 +250,7 @@ private:
 	};
 
 	using PolygonArray = std::vector <Polygon>;
-	using Tessellator  = opengl::tessellator <size_t>;
+	using Tessellator  = math::tessellator <double, size_t>;
 
 	///  @name Operations
 

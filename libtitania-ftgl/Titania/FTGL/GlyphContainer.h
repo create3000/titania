@@ -128,13 +128,28 @@ public:
 	 * @param characterCode      the glyph to be Rendered
 	 * @param nextCharacterCode  the next glyph in the string. Used for kerning.
 	 * @param penPosition        the position to Render the glyph
-	 * @param renderMode         Render mode to display
 	 * @return                   The distance to advance the pen position after Rendering
 	 */
 	Vector3d
 	render (const uint32_t characterCode,
 	        const uint32_t nextCharacterCode,
-	        Vector3d penPosition, FTGL::RenderMode renderMode);
+	        Vector3d penPosition);
+
+	/**
+	 * Renders a character
+	 * @param characterCode      the glyph to be Rendered
+	 * @param nextCharacterCode  the next glyph in the string. Used for kerning.
+	 * @param penPosition        the position to Render the glyph
+	 * @param indices            Specify the output array of indices of the mesh
+	 * @param points             Specify the output array of points of the mesh
+	 * @return                   The distance to advance the pen position after Rendering
+	 */
+	Vector3d
+	triangulate (const uint32_t charCode,
+	             const uint32_t nextCharCode,
+	             Vector3d penPosition,
+	             std::vector <size_t> & indices,
+	             std::vector <Vector3d> & points) const;
 
 	/**
 	 * Queries the Font for errors.
@@ -142,7 +157,7 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return err; }
+	getError () const { return error; }
 
 
 private:
@@ -165,7 +180,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	FT_Error err;
+	FT_Error error;
 
 };
 

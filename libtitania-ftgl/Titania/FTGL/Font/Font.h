@@ -253,22 +253,40 @@ public:
 	/**
 	 * Render a string of characters.
 	 *
-	 * @param string  'C' style string to be output.
-	 * @param len  The length of the string. If < 0 then all characters
-	 *             will be displayed until a null character is encountered
-	 *             (optional).
+	 * @param string    'C' style string to be output.
+	 * @param len       The length of the string. If < 0 then all characters
+	 *                  will be displayed until a null character is encountered
+	 *                  (optional).
 	 * @param position  The pen position of the first character (optional).
-	 * @param spacing  A displacement vector to add after each character
-	 *                 has been displayed (optional).
-	 * @param renderMode  Render mode to use for display (optional).
-	 * @return  The new pen position after the last character was output.
+	 * @param spacing   A displacement vector to add after each character
+	 *                  has been displayed (optional).
+	 * @return          The new pen position after the last character was output.
 	 */
 	virtual
 	Vector3d
 	render (const char* string, const int32_t len = -1,
 	        Vector3d position = Vector3d (),
-	        Vector3d spacing = Vector3d (),
-	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
+	        Vector3d spacing = Vector3d ());
+
+	/**
+	 * Triangulates a string of characters.
+	 *
+	 * @param string    'C' style string to be output.
+	 * @param len       The length of the string. If < 0 then all characters
+	 *                  will be displayed until a null character is encountered
+	 *                  (optional).
+	 * @param position  The pen position of the first character (optional).
+	 * @param spacing   A displacement vector to add after each character
+	 *                  has been displayed (optional).
+	 * @return          The new pen position after the last character was output.
+	 */
+	virtual
+	Vector3d
+	triangulate (const std::string & string,
+	             Vector3d position,
+	             Vector3d spacing,
+	             std::vector <size_t> & indices,
+	             std::vector <Vector3d> & points) const;
 
 	///  @name Destruction
 
@@ -324,7 +342,7 @@ private:
 	 * @return <code>true</code> if the glyph can be created.
 	 */
 	bool
-	checkGlyph (const uint32_t chr);
+	checkGlyph (const uint32_t chr) const;
 
 	///  @name Operations
 
@@ -356,7 +374,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	FT_Error err;
+	mutable FT_Error error;
 
 };
 

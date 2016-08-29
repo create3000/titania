@@ -27,6 +27,8 @@
 
 #include "Vectorizer.h"
 
+#include <Titania/Math/Mesh/Tessellator.h>
+
 #include <GL/glu.h>
 
 namespace titania {
@@ -75,7 +77,7 @@ ftglEnd (Mesh* mesh)
 
 Mesh::Mesh () :
 	currentTesselation (0),
-	               err (0)
+	             error (0)
 {
 	tesselationList .reserve (16);
 }
@@ -315,6 +317,65 @@ Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 	gluTessEndPolygon (tobj);
 
 	gluDeleteTess (tobj);
+}
+
+void
+Vectorizer::triangulate (const double zNormal,
+                         const int32_t outsetType,
+                         const double outsetSize,
+                         const Vector3d & offset,
+                         std::vector <size_t> & indices,
+                         std::vector <Vector3d> & points)
+{
+	math::tessellator <double, size_t> tessellator;
+
+	if (contourFlag & ft_outline_even_odd_fill) // ft_outline_reverse_fill
+	{
+		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+	}
+	else
+	{
+		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_NONZERO);
+	}
+
+	tessellator .property (GLU_TESS_TOLERANCE, 0);
+	tessellator .normal (math::vector3 <double> (0, 0, zNormal));
+	tessellator .begin_polygon ();
+
+	for (size_t c = 0; c < getContourCount (); ++ c)
+	{
+		/* Build the */
+		switch (outsetType)
+		{
+			case 1: contourList [c] -> buildFrontOutset (outsetSize); break;
+			case 2: contourList [c] -> buildBackOutset  (outsetSize); break;
+		}
+
+		const Contour* contour = contourList [c];
+
+		tessellator .begin_contour ();
+
+		for (size_t p = 0; p < contour -> getPointCount (); ++ p)
+		{
+			const auto index = points .size ();
+
+			switch (outsetType)
+			{
+				case 1:          points .emplace_back (contour -> getFrontPoint (p) / 64.0 + offset); break;
+				case 2:          points .emplace_back (contour -> getBackPoint  (p) / 64.0 + offset); break;
+				case 0: default: points .emplace_back (contour -> getPoint      (p) / 64.0 + offset); break;
+			}
+
+			tessellator .add_vertex (points .back (), index);
+		}
+
+		tessellator .end_contour ();
+	}
+
+	tessellator .end_polygon ();
+
+	for (const auto & vertex : tessellator .triangles ())
+		indices .emplace_back (std::get <0> (vertex .data ()));
 }
 
 Vectorizer::~Vectorizer ()

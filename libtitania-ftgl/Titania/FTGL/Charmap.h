@@ -139,7 +139,7 @@ public:
 	 */
 	FT_Error
 	getError () const
-	{ return err; }
+	{ return error; }
 
 
 private:
@@ -173,7 +173,7 @@ private:
 	/**
 	 * Current error code.
 	 */
-	FT_Error err;
+	FT_Error error;
 
 };
 

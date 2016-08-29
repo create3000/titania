@@ -55,12 +55,12 @@
 #include "../../Types/Geometry.h"
 
 namespace titania {
-namespace opengl {
+namespace math {
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator;
 
-} // opengl
+} // math
 } // titania
 
 namespace titania {
@@ -95,7 +95,7 @@ public:
 
 	virtual
 	void
-	addVertex (opengl::tessellator <size_t> &, const size_t, const size_t) const = 0;
+	addVertex (math::tessellator <double, size_t> &, const size_t, const size_t) const = 0;
 
 	virtual
 	void

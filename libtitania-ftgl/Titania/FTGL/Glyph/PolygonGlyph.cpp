@@ -43,7 +43,7 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
 	vectoriser (nullptr),
 	    outset (outset)
 {
-	if (ft_glyph_format_outline not_eq glyph -> format)
+	if (glyph -> format not_eq ft_glyph_format_outline)
 	{
 		setError (0x14); // Invalid_Outline
 		return;
@@ -63,16 +63,16 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
 }
 
 const Vector3d &
-PolygonGlyph::render (const Vector3d & pen, FTGL::RenderMode renderMode)
+PolygonGlyph::render (const Vector3d & pen)
 {
-	glTranslatef (pen.x (), pen .y (), pen .z ());
+	glTranslatef (pen .x (), pen .y (), pen .z ());
 
 	if (vectoriser)
 	{
 		doRender ();
 	}
 
-	glTranslatef (-pen.x (), -pen.y (), -pen.z ());
+	glTranslatef (-pen .x (), -pen .y (), -pen .z ());
 
 	return getAdvance ();
 }
@@ -100,6 +100,19 @@ PolygonGlyph::doRender ()
 
 		glEnd ();
 	}
+}
+
+const Vector3d &
+PolygonGlyph::triangulate (const Vector3d & pen,
+                           std::vector <size_t> & indices,
+                           std::vector <Vector3d> & points) const
+{
+	if (vectoriser)
+	{
+		vectoriser -> triangulate (1, 1, outset, pen, indices, points);
+	}
+
+	return getAdvance ();
 }
 
 PolygonGlyph::~PolygonGlyph ()

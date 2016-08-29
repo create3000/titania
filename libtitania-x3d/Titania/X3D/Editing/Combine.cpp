@@ -56,9 +56,9 @@
 #include "../Components/Rendering/Coordinate.h"
 #include "../Components/Rendering/Color.h"
 #include "../Components/Rendering/X3DNormalNode.h"
-#include "../Rendering/Tessellator.h"
 #include "../Editing/Editor.h"
 
+#include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/Utility/Map.h>
 
 namespace titania {
@@ -117,7 +117,7 @@ Combine::toMesh (const X3DPtr <IndexedFaceSet> & geometryNode, const X3DPtr <X3D
 				}
 				default:
 				{
-					opengl::tessellator <size_t> tessellator;
+					math::tessellator <double, size_t> tessellator;
 	
 					tessellator .begin_polygon ();
 					tessellator .begin_contour ();

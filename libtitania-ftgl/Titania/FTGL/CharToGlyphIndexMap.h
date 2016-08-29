@@ -102,7 +102,7 @@ public:
 	const GlyphIndex
 	find (CharacterCode c) const
 	{
-		if (! indices)
+		if (not indices)
 		{
 			return 0;
 		}
@@ -110,7 +110,7 @@ public:
 		// Find position of char code in buckets
 		div_t pos = div (c, CharToGlyphIndexMap::BucketSize);
 
-		if (! indices [pos.quot])
+		if (not indices [pos.quot])
 		{
 			return 0;
 		}
@@ -128,7 +128,7 @@ public:
 	void
 	insert (CharacterCode c, GlyphIndex g)
 	{
-		if (! indices)
+		if (not indices)
 		{
 			indices = new GlyphIndex* [CharToGlyphIndexMap::NumberOfBuckets];
 
@@ -142,7 +142,7 @@ public:
 		div_t pos = div (c, CharToGlyphIndexMap::BucketSize);
 
 		// Allocate bucket if does not exist yet
-		if (! indices [pos.quot])
+		if (not indices [pos.quot])
 		{
 			indices [pos.quot] = new GlyphIndex [CharToGlyphIndexMap::BucketSize];
 

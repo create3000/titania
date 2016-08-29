@@ -48,44 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_TESSELLATOR_H__
-#define __TITANIA_X3D_RENDERING_TESSELLATOR_H__
+#ifndef __TITANIA_MATH_MESH_TESSELLATOR_H__
+#define __TITANIA_MATH_MESH_TESSELLATOR_H__
 
 #include <Titania/Basic/ReferenceIterator.h>
 #include <Titania/Math/Numbers/Vector3.h>
+#include <Titania/Math/Functional.h>
+
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include <iostream>
 #include <tuple>
+#include <deque>
 #include <vector>
 
-#include "../Rendering/OpenGL.h"
+#include <Titania/LOG.h>
 
 namespace titania {
-namespace opengl {
+namespace math {
 
 // https://www.opengl.org/sdk/docs/man2/xhtml/gluTessCallback.xml
 // http://www.glprogramming.com/red/chapter11.html
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator;
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator_vertex
 {
 public:
 
+	///  @name Member types
+
 	using Data = std::tuple <Args ...>;
 
+	///  @name Construction
+
 	template <class ... A>
-	tessellator_vertex (const math::vector3 <double> & point, A && ... data) :
+	tessellator_vertex (const math::vector3 <Type> & point, A && ... data) :
 		m_point (point),
 		m_data  (std::forward <A> (data) ...)
 	{ }
 
-	math::vector3 <double> &
+	///  @name Member access
+
+	math::vector3 <Type> &
 	point ()
 	{ return m_point; }
 
-	const math::vector3 <double> &
+	const math::vector3 <Type> &
 	point () const
 	{ return m_point; }
 
@@ -96,31 +108,39 @@ public:
 
 private:
 
-	math::vector3 <double> m_point;
-	Data                   m_data;
+	///  @name Members
+
+	math::vector3 <Type> m_point;
+	Data                 m_data;
 
 };
 
-template <class ... Args>
-class polygon_element
+template <class Type, class ... Args>
+class tessellator_polygon_element
 {
 public:
 
-	using Vertex         = tessellator_vertex <Args ...>;
-	using VertexArray    = std::vector <Vertex*>;
-	using const_iterator = basic::reference_iterator <typename VertexArray::const_iterator, Vertex>;
-	using size_type      = typename VertexArray::size_type;
+	///  @name Member types
 
-	polygon_element (GLenum type) :
+	using vertex         = tessellator_vertex <Type, Args ...>;
+	using vertex_array   = std::vector <vertex*>;
+	using const_iterator = basic::reference_iterator <typename vertex_array::const_iterator, vertex>;
+	using size_type      = typename vertex_array::size_type;
+
+	///  @name Construction
+
+	tessellator_polygon_element (GLenum type) :
 		    m_type (type),
 		m_vertices ()
 	{ }
+
+	///  @name Member access
 
 	const GLenum &
 	type () const
 	{ return m_type; }
 
-	const Vertex &
+	const vertex &
 	operator [ ] (size_t i) const
 	{ return *m_vertices [i]; }
 
@@ -139,26 +159,39 @@ public:
 
 private:
 
-	friend class tessellator <Args ...>;
+	///  @name Friends
 
-	GLenum      m_type;
-	VertexArray m_vertices;
+	friend class tessellator <Type, Args ...>;
+
+	///  @name Members
+
+	GLenum       m_type;
+	vertex_array m_vertices;
 
 };
 
-template <class ... Args>
+template <class Type, class ... Args>
 class tessellator
 {
 public:
 
-	using PolygonElement = polygon_element <Args ...>;
-	using Polygon        = std::vector <PolygonElement>;
-	using Vertex         = tessellator_vertex <Args ...>;
+	///  @name Member types
+
+	using polygon_element       = tessellator_polygon_element <Type, Args ...>;
+	using polygon_element_array = std::vector <polygon_element>;
+	using vertex                = tessellator_vertex <Type, Args ...>;
+
+	///  @name Construction
 
 	tessellator (const bool = false);
 
+	///  @name Operations
+
 	void
 	property (const GLenum, const GLdouble);
+
+	void
+	normal (const math::vector3 <Type> &);
 
 	void
 	begin_polygon ();
@@ -174,23 +207,25 @@ public:
 
 	template <class ... A>
 	void
-	add_vertex (const math::vector3 <double> &, A && ... args);
+	add_vertex (const math::vector3 <Type> &, A && ... args);
 
-	template <class ... A>
-	void
-	add_vertex (const math::vector3 <float> &, A && ... args);
+	///  @name Members access
 
-	const Polygon &
+	const polygon_element_array &
 	polygon () const
 	{ return m_polygon; }
 
-	PolygonElement
+	polygon_element
 	triangles () const;
+
+	///  @name Destruction
 
 	~tessellator ();
 
 
 private:
+
+	///  @name Operations
 
 	static
 	void
@@ -198,11 +233,11 @@ private:
 
 	static
 	void
-	tessVertexData (Vertex* const, tessellator* const);
+	tessVertexData (vertex* const, tessellator* const);
 
 	static
 	void
-	tessCombineData (const GLdouble [3], Vertex* const [4], const GLfloat [4], void**, tessellator* const);
+	tessCombineData (const GLdouble [3], vertex* const [4], const GLfloat [4], void**, tessellator* const);
 
 	static
 	void
@@ -211,14 +246,16 @@ private:
 	static
 	void tessError (GLenum);
 
-	GLUtesselator*      m_tess;
-	std::deque <Vertex> m_vertices;
-	Polygon             m_polygon;
+	///  @name Members
+
+	GLUtesselator*        m_tess;
+	std::deque <vertex>   m_vertices;
+	polygon_element_array m_polygon;
 
 };
 
-template <class ... Args>
-tessellator <Args ...>::tessellator (const bool debug) :
+template <class Type, class ... Args>
+tessellator <Type, Args ...>::tessellator (const bool debug) :
 	    m_tess (gluNewTess ()),
 	m_vertices (),
 	 m_polygon ()
@@ -236,17 +273,25 @@ tessellator <Args ...>::tessellator (const bool debug) :
 	}
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
 inline
 void
-tessellator <Args ...>::property (const GLenum property, const GLdouble value)
+tessellator <Type, Args ...>::property (const GLenum property, const GLdouble value)
 {
 	gluTessProperty (m_tess, property, value);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
+inline
 void
-tessellator <Args ...>::begin_polygon ()
+tessellator <Type, Args ...>::normal (const math::vector3 <Type> & normal)
+{
+	gluTessNormal (m_tess, normal .x (), normal .y (), normal .z ());
+}
+
+template <class Type, class ... Args>
+void
+tessellator <Type, Args ...>::begin_polygon ()
 {
 	m_polygon  .clear ();
 	m_vertices .clear ();
@@ -254,91 +299,85 @@ tessellator <Args ...>::begin_polygon ()
 	gluTessBeginPolygon (m_tess, this);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
+inline
 void
-tessellator <Args ...>::end_polygon ()
+tessellator <Type, Args ...>::end_polygon ()
 {
 	gluEndPolygon (m_tess);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
+inline
 void
-tessellator <Args ...>::begin_contour ()
+tessellator <Type, Args ...>::begin_contour ()
 {
 	gluTessBeginContour (m_tess);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
+inline
 void
-tessellator <Args ...>::end_contour ()
+tessellator <Type, Args ...>::end_contour ()
 {
 	gluTessEndContour (m_tess);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
 template <class ... A>
 inline
 void
-tessellator <Args ...>::add_vertex (const math::vector3 <double> & point, A && ... args)
+tessellator <Type, Args ...>::add_vertex (const math::vector3 <Type> & point, A && ... args)
 {
 	m_vertices .emplace_back (point, std::forward <A> (args) ...);
 
 	gluTessVertex (m_tess, m_vertices .back () .point () .data (), &m_vertices .back ());
 }
 
-template <class ... Args>
-template <class ... A>
-inline
+template <class Type, class ... Args>
 void
-tessellator <Args ...>::add_vertex (const math::vector3 <float> & point, A && ... args)
-{
-	add_vertex (math::vector3 <double> (point), std::forward <A> (args) ...);
-}
-
-template <class ... Args>
-void
-tessellator <Args ...>::tessBeginData (const GLenum type, tessellator* const self)
+tessellator <Type, Args ...>::tessBeginData (const GLenum type, tessellator* const self)
 {
 	self -> m_polygon .emplace_back (type);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
 void
-tessellator <Args ...>::tessVertexData (Vertex* const vertex, tessellator* const self)
+tessellator <Type, Args ...>::tessVertexData (vertex* const vertex, tessellator* const self)
 {
 	self -> m_polygon .back () .m_vertices .emplace_back (vertex);
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
 void
-tessellator <Args ...>::tessCombineData (const GLdouble coords [3], Vertex* const vertex [4],
-                                         const GLfloat weight [4], void** outData,
-                                         tessellator* const self)
+tessellator <Type, Args ...>::tessCombineData (const GLdouble coords [3], vertex* const vertex [4],
+                                               const GLfloat weight [4], void** outData,
+                                               tessellator* const self)
 {
-	self -> m_vertices .emplace_back (math::vector3 <double> (coords [0], coords [1], coords [2]), vertex [0] -> data ());
+	self -> m_vertices .emplace_back (math::vector3 <Type> (coords [0], coords [1], coords [2]), vertex [0] -> data ());
 
 	*outData = &self -> m_vertices .back ();
 }
 
-template <class ... Args>
+template <class Type, class ... Args>
 void
-tessellator <Args ...>::tessEndData (tessellator* const self)
+tessellator <Type, Args ...>::tessEndData (tessellator* const self)
 { }
 
-template <class ... Args>
+template <class Type, class ... Args>
 void
-tessellator <Args ...>::tessError (const GLenum err_no)
+tessellator <Type, Args ...>::tessError (const GLenum err_no)
 {
 	#ifdef TITANIA_DEBUG
 	std::clog << "Warning: tessellation error: '" << (char*) gluErrorString (err_no) << "'." << std::endl;
 	#endif
 }
 
-template <class ... Args>
-typename tessellator <Args ...>::PolygonElement
-tessellator <Args ...>::triangles () const
+template <class Type, class ... Args>
+typename tessellator <Type, Args ...>::polygon_element
+tessellator <Type, Args ...>::triangles () const
 {
-	PolygonElement element (GL_TRIANGLES);
+	polygon_element element (GL_TRIANGLES);
 
 	auto & vertices = element .m_vertices;
 
@@ -346,26 +385,26 @@ tessellator <Args ...>::triangles () const
 	{
 		switch (polygonElement .type ())
 		{
-			case GL_TRIANGLE_FAN:
-			{
-				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+			case GL_TRIANGLE_FAN :
 				{
-					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [0]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 1]));
-				}
+					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+					{
+						// Add triangle to polygon.
+						vertices .emplace_back (const_cast <vertex*> (&polygonElement [0]));
+						vertices .emplace_back (const_cast <vertex*> (&polygonElement [i]));
+						vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 1]));
+					}
 
-				break;
-			}
+					break;
+				}
 			case GL_TRIANGLE_STRIP:
 			{
 				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [math::is_odd (i) ? i + 1 : i]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [math::is_odd (i) ? i : i + 1]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 2]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [math::is_odd (i) ? i + 1 : i]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [math::is_odd (i) ? i : i + 1]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 2]));
 				}
 
 				break;
@@ -375,9 +414,9 @@ tessellator <Args ...>::triangles () const
 				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 1]));
-					vertices .emplace_back (const_cast <Vertex*> (&polygonElement [i + 2]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 1]));
+					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 2]));
 				}
 
 				break;
@@ -390,14 +429,15 @@ tessellator <Args ...>::triangles () const
 	return element;
 }
 
-template <class ... Args>
-tessellator <Args ...>::~tessellator ()
+template <class Type, class ... Args>
+inline
+tessellator <Type, Args ...>::~tessellator ()
 {
 	if (m_tess)
 		gluDeleteTess (m_tess);
 }
 
-} // opengl
+} // math
 } // titania
 
 #endif

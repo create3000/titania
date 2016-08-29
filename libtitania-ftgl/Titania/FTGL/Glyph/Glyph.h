@@ -35,6 +35,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#include <vector>
+
 namespace titania {
 namespace FTGL {
 
@@ -84,12 +86,25 @@ public:
 	 * Renders this glyph at the current pen position.
 	 *
 	 * @param pen  The current pen position.
-	 * @param renderMode  Render mode to display
-	 * @return  The advance distance for this glyph.
+	 * @return     The advance distance for this glyph.
 	 */
 	virtual
 	const Vector3d &
-	render (const Vector3d & pen, FTGL::RenderMode renderMode) = 0;
+	render (const Vector3d & pen) = 0;
+
+	/**
+	 * Render this glyph at the current pen position.
+	 *
+	 * @param pen         The current pen position.
+	 * @param indices     Specify the output array of indices of the mesh
+	 * @param points      Specify the output array of points of the mesh
+	 * @return            The advance distance for this glyph.
+	 */
+	virtual
+	const Vector3d &
+	triangulate (const Vector3d & pen,
+	             std::vector <size_t> & indices,
+	             std::vector <Vector3d> & points) const = 0;
 
 	///  @name Destruction
 

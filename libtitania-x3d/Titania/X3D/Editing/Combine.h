@@ -57,7 +57,7 @@
 #include "../Execution/X3DExecutionContext.h"
 #include "../Editing/X3DEditor.h"
 
-#include <Titania/Math/Geometry/Combine.h>
+#include <Titania/Math/Mesh/Combine.h>
 
 namespace titania {
 namespace X3D {

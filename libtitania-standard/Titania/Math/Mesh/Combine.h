@@ -48,13 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_GEOMETRY_COMBINE_H__
-#define __TITANIA_MATH_GEOMETRY_COMBINE_H__
+#ifndef __TITANIA_MATH_MESH_COMBINE_H__
+#define __TITANIA_MATH_MESH_COMBINE_H__
 
 #include "../Numbers/Vector3.h"
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 namespace titania {
 namespace math {
