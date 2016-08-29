@@ -144,7 +144,7 @@ Face::getCharMapCount () const
 }
 
 FT_Encoding*
-Face::getCharMapList ()
+Face::getCharMapList () const
 {
 	if (0 == fontEncodingList)
 	{
@@ -160,7 +160,7 @@ Face::getCharMapList ()
 }
 
 Vector3d
-Face::getKernAdvance (uint32_t index1, uint32_t index2)
+Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 {
 	double x, y;
 
@@ -195,7 +195,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2)
 }
 
 FT_GlyphSlot
-Face::getGlyph (uint32_t index, FT_Int load_flags)
+Face::getGlyph (uint32_t index, FT_Int load_flags) const
 {
 	err = FT_Load_Glyph (*ftFace, index, load_flags);
 

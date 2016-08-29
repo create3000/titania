@@ -36,13 +36,12 @@ namespace FTGL {
 //  PolygonGlyph
 //
 
-PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList) :
+PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
 	     Glyph (glyph),
 	    hscale (0),
 	    vscale (0),
 	vectoriser (nullptr),
-	    outset (outset),
-	    glList (0)
+	    outset (outset)
 {
 	if (ft_glyph_format_outline not_eq glyph -> format)
 	{
@@ -61,19 +60,6 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayLi
 
 	hscale = glyph -> face -> size -> metrics .x_ppem * 64;
 	vscale = glyph -> face -> size -> metrics .y_ppem * 64;
-
-	if (useDisplayList)
-	{
-		glList = glGenLists (1);
-		glNewList (glList, GL_COMPILE);
-
-		doRender ();
-
-		glEndList ();
-
-		delete vectoriser;
-		vectoriser = nullptr;
-	}
 }
 
 const Vector3d &
@@ -81,11 +67,7 @@ PolygonGlyph::render (const Vector3d & pen, FTGL::RenderMode renderMode)
 {
 	glTranslatef (pen.x (), pen .y (), pen .z ());
 
-	if (glList)
-	{
-		glCallList (glList);
-	}
-	else if (vectoriser)
+	if (vectoriser)
 	{
 		doRender ();
 	}
@@ -122,11 +104,7 @@ PolygonGlyph::doRender ()
 
 PolygonGlyph::~PolygonGlyph ()
 {
-	if (glList)
-	{
-		glDeleteLists (glList, 1);
-	}
-	else if (vectoriser)
+	if (vectoriser)
 	{
 		delete vectoriser;
 	}

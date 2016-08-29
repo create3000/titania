@@ -29,7 +29,9 @@
 #define __TITANIA_FTGL_FONT_FONT_H__
 
 #include "../BBox.h"
+#include "../Face.h"
 #include "../Glyph/Glyph.h"
+#include "../Size.h"
 #include "../Types.h"
 
 #include <ft2build.h>
@@ -42,7 +44,7 @@
 namespace titania {
 namespace FTGL {
 
-class FontImpl;
+class GlyphContainer;
 
 /**
  * Font is the public interface for the FTGL library.
@@ -62,72 +64,9 @@ class FontImpl;
  */
 class Font
 {
-protected:
-
-	/**
-	 * Open and read a font file. Sets Error flag.
-	 *
-	 * @param fontFilePath  font file path.
-	 */
-	Font (char const* fontFilePath);
-
-	/**
-	 * Open and read a font from a buffer in memory. Sets Error flag.
-	 * The buffer is owned by the client and is NOT copied by FTGL. The
-	 * pointer must be valid while using FTGL.
-	 *
-	 * @param pBufferBytes  the in-memory buffer
-	 * @param bufferSizeInBytes  the length of the buffer in bytes
-	 */
-	Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
-
-
-private:
-
-	/* Allow our internal subclasses to access the private constructor */
-	friend class PolygonFont;
-
-	/**
-	 * Internal FTGL Font constructor. For private use only.
-	 *
-	 * @param pImpl  Internal implementation object. Will be destroyed
-	 *               upon Font deletion.
-	 */
-	Font (FontImpl* pImpl);
-
-
 public:
 
-	virtual
-	~Font ();
-
-	/**
-	 * Attach auxilliary file to font e.g font metrics.
-	 *
-	 * Note: not all font formats implement this function.
-	 *
-	 * @param fontFilePath  auxilliary font file path.
-	 * @return          <code>true</code> if file has been attached
-	 *                  successfully.
-	 */
-	virtual
-	bool
-	attach (const char* fontFilePath);
-
-	/**
-	 * Attach auxilliary data to font e.g font metrics, from memory.
-	 *
-	 * Note: not all font formats implement this function.
-	 *
-	 * @param pBufferBytes  the in-memory buffer.
-	 * @param bufferSizeInBytes  the length of the buffer in bytes.
-	 * @return          <code>true</code> if file has been attached
-	 *                  successfully.
-	 */
-	virtual
-	bool
-	attach (const uint8_t* pBufferBytes,
-	        size_t bufferSizeInBytes);
+	///  @name Member access
 
 	/**
 	 * Set the glyph loading flags. By default, fonts use the most
@@ -167,7 +106,7 @@ public:
 	 */
 	virtual
 	FT_Encoding*
-	getCharMapList ();
+	getCharMapList () const;
 
 	/**
 	 * Set the char size for the current face.
@@ -189,47 +128,6 @@ public:
 	virtual
 	uint32_t
 	getFaceSize () const;
-
-	/**
-	 * Set the extrusion distance for the font. Only implemented by
-	 * FTExtrudeFont
-	 *
-	 * @param depth  The extrusion distance.
-	 */
-	virtual
-	void
-	setDepth (double depth);
-
-	/**
-	 * Set the outset distance for the font. Only implemented by
-	 * FTOutlineFont, PolygonFont and FTExtrudeFont
-	 *
-	 * @param outset  The outset distance.
-	 */
-	virtual
-	void
-	setOutset (double outset);
-
-	/**
-	 * Set the front and back outset distances for the font. Only
-	 * implemented by FTExtrudeFont
-	 *
-	 * @param front  The front outset distance.
-	 * @param back   The back outset distance.
-	 */
-	virtual
-	void
-	setOutset (double front, double back);
-
-	/**
-	 * Enable or disable the use of Display Lists inside FTGL
-	 *
-	 * @param  useList <code>true</code> turns ON display lists.
-	 *                 <code>false</code> turns OFF display lists.
-	 */
-	virtual
-	void
-	setUseDisplayList (bool useList);
 
 	/**
 	 * Get the global ascender height for the face.
@@ -297,6 +195,45 @@ public:
 		urx = b .getUpper ().x (); ury = b .getUpper ().y (); urz = b .getUpper ().z ();
 	}
 
+	///  @name Operations
+
+	/**
+	 * Queries the Font for errors.
+	 *
+	 * @return  The current error code.
+	 */
+	virtual
+	FT_Error
+	getError () const;
+
+	/**
+	 * Attach auxilliary file to font e.g font metrics.
+	 *
+	 * Note: not all font formats implement this function.
+	 *
+	 * @param fontFilePath  auxilliary font file path.
+	 * @return          <code>true</code> if file has been attached
+	 *                  successfully.
+	 */
+	virtual
+	bool
+	attach (const char* fontFilePath);
+
+	/**
+	 * Attach auxilliary data to font e.g font metrics, from memory.
+	 *
+	 * Note: not all font formats implement this function.
+	 *
+	 * @param pBufferBytes  the in-memory buffer.
+	 * @param bufferSizeInBytes  the length of the buffer in bytes.
+	 * @return          <code>true</code> if file has been attached
+	 *                  successfully.
+	 */
+	virtual
+	bool
+	attach (const uint8_t* pBufferBytes,
+	        size_t bufferSizeInBytes);
+
 	/**
 	 * Get the advance for a string.
 	 *
@@ -333,20 +270,34 @@ public:
 	        Vector3d spacing = Vector3d (),
 	        FTGL::RenderMode renderMode = FTGL::RenderMode::RENDER_ALL);
 
-	/**
-	 * Queries the Font for errors.
-	 *
-	 * @return  The current error code.
-	 */
+	///  @name Destruction
+
 	virtual
-	FT_Error
-	getError () const;
+	~Font ();
 
 
 protected:
 
-	/* Allow impl to access MakeGlyph */
-	friend class FontImpl;
+	///  @name construction
+
+	/**
+	 * Open and read a font file. Sets Error flag.
+	 *
+	 * @param fontFilePath  font file path.
+	 */
+	Font (char const* fontFilePath);
+
+	/**
+	 * Open and read a font from a buffer in memory. Sets Error flag.
+	 * The buffer is owned by the client and is NOT copied by FTGL. The
+	 * pointer must be valid while using FTGL.
+	 *
+	 * @param pBufferBytes  the in-memory buffer
+	 * @param bufferSizeInBytes  the length of the buffer in bytes
+	 */
+	Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
+
+	///  @name Operations
 
 	/**
 	 * Construct a glyph of the correct type.
@@ -364,10 +315,48 @@ protected:
 
 private:
 
+	///  @name Member access
+
 	/**
-	 * Internal FTGL Font implementation object. For private use only.
+	 * Check that the glyph at <code>chr</code> exist. If not load it.
+	 *
+	 * @param chr  character index
+	 * @return <code>true</code> if the glyph can be created.
 	 */
-	FontImpl* impl;
+	bool
+	checkGlyph (const uint32_t chr);
+
+	///  @name Operations
+
+	/**
+	 * Current face object
+	 */
+	Face face;
+
+	/**
+	 * Current size object
+	 */
+	Size charSize;
+
+	/**
+	 * The default glyph loading flags.
+	 */
+	FT_Int load_flags;
+
+	/**
+	 * An object that holds a list of glyphs
+	 */
+	GlyphContainer* glyphList;
+
+	/**
+	 * Current pen or cursor position;
+	 */
+	Vector3d pen;
+
+	/**
+	 * Current error code. Zero means no error.
+	 */
+	FT_Error err;
 
 };
 

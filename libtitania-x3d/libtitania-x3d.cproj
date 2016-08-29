@@ -29,6 +29,7 @@
         <Package file="/usr/lib/x86_64-linux-gnu/pkgconfig/fontconfig.pc" name="Fontconfig" IsProject="False" />
         <Package file="/usr/lib/pkgconfig/gstreamermm-0.10.pc" name="gstreamermm" IsProject="False" />
         <Package file="/home/holger/Projekte/Titania/libtitania-peaseblossom/libtitania-peaseblossom.md.pc" name="libtitania-peaseblossom" IsProject="True" />
+        <Package file="/home/holger/Projekte/Titania/libtitania-ftgl/libtitania-ftgl.md.pc" name="libtitania-ftgl" IsProject="True" />
       </Packages>
     </Packages>
     <ReleaseVersion>0.3</ReleaseVersion>

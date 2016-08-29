@@ -227,8 +227,6 @@ FontStyle::set_font ()
 
 	if (not polygonFont -> getError ())
 	{
-		polygonFont -> setUseDisplayList (false);
-
 		polygonFont -> setFaceSize (FONT_SIZE);
 
 		// Calculate lineHeight.

@@ -27,7 +27,6 @@
 #include "PolygonFont.h"
 
 #include "../Glyph/PolygonGlyph.h"
-#include "PolygonFontImpl.h"
 
 namespace titania {
 namespace FTGL {
@@ -37,49 +36,28 @@ namespace FTGL {
 //
 
 PolygonFont::PolygonFont (char const* fontFilePath) :
-	Font (new PolygonFontImpl (this, fontFilePath))
-{ }
+	  Font (fontFilePath),
+	outset (0)
+{
+	setGlyphLoadFlags (FT_LOAD_NO_HINTING);
+}
 
 PolygonFont::PolygonFont (const uint8_t* pBufferBytes,
                           size_t bufferSizeInBytes) :
-	Font (new PolygonFontImpl (this, pBufferBytes, bufferSizeInBytes))
-{ }
-
-PolygonFont::~PolygonFont ()
-{ }
+	  Font (pBufferBytes, bufferSizeInBytes),
+	outset (0)
+{
+	setGlyphLoadFlags (FT_LOAD_NO_HINTING);
+}
 
 Glyph*
 PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph)
 {
-	PolygonFontImpl* myimpl = dynamic_cast <PolygonFontImpl*> (impl);
-
-	if (! myimpl)
-	{
-		return nullptr;
-	}
-
-	return new PolygonGlyph (ftGlyph, myimpl -> outset, myimpl -> useDisplayLists);
+	return new PolygonGlyph (ftGlyph, outset);
 }
 
-//
-//  PolygonFontImpl
-//
-
-PolygonFontImpl::PolygonFontImpl (Font* ftFont, const char* fontFilePath) :
-	FontImpl (ftFont, fontFilePath),
-	  outset (0)
-{
-	load_flags = FT_LOAD_NO_HINTING;
-}
-
-PolygonFontImpl::PolygonFontImpl (Font* ftFont,
-                                  const uint8_t* pBufferBytes,
-                                  size_t bufferSizeInBytes) :
-	FontImpl (ftFont, pBufferBytes, bufferSizeInBytes),
-	  outset (0)
-{
-	load_flags = FT_LOAD_NO_HINTING;
-}
+PolygonFont::~PolygonFont ()
+{ }
 
 } // FTGL
 } // titania

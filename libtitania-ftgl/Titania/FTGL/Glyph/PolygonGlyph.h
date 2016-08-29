@@ -30,8 +30,6 @@
 
 #include "Glyph.h"
 
-#include <GL/gl.h>
-
 namespace titania {
 namespace FTGL {
 
@@ -59,7 +57,7 @@ public:
 	 *                       <code>true</code> turns ON display lists.
 	 *                       <code>false</code> turns OFF display lists.
 	 */
-	PolygonGlyph (FT_GlyphSlot glyph, double outset, bool useDisplayList);
+	PolygonGlyph (FT_GlyphSlot glyph, double outset);
 
 	///  @name Operations
 
@@ -82,6 +80,7 @@ public:
 	virtual
 	~PolygonGlyph ();
 
+
 private:
 
 	///  @name Operations
@@ -101,11 +100,6 @@ private:
 	uint32_t    vscale;
 	Vectorizer* vectoriser;
 	double      outset;
-
-	/**
-	 * OpenGL display list
-	 */
-	GLuint glList;
 
 };
 

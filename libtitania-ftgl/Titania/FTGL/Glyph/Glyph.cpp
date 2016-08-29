@@ -43,7 +43,7 @@ Glyph::Glyph (FT_GlyphSlot glyph) :
 		bbox    = BBox (glyph);
 		advance = Vector3d (glyph -> advance .x / 64.0,
 		                    glyph -> advance .y / 64.0,
-	                       0);
+		                    0);
 	}
 }
 

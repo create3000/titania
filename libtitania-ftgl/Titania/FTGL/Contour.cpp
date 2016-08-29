@@ -117,7 +117,7 @@ Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
 
 	/* Rotate bc to the left */
 	Vector3d tmp (bc .x () * -ba .x () + bc .y () * -ba.y (),
-	              bc .x () *  ba .y () + bc .y () * -ba.x (),
+	              bc .x () * ba .y () + bc .y () * -ba.x (),
 	              0);
 
 	/* Compute the vector bisecting 'abc' */
@@ -128,7 +128,7 @@ Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
 	tmp .y (64.0);
 
 	/* Rotate the new bc to the right */
-	return Vector3d (tmp .x () * -ba.x () + tmp .y () *  ba .y (),
+	return Vector3d (tmp .x () * -ba.x () + tmp .y () * ba .y (),
 	                 tmp .x () * -ba.y () + tmp .y () * -ba .x (),
 	                 0);
 }

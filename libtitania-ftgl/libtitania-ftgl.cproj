@@ -36,9 +36,7 @@
     <None Include="COPYING" />
     <None Include="README" />
     <None Include="Titania\FTGL\Font\Font.h" />
-    <None Include="Titania\FTGL\Font\FontImpl.h" />
     <None Include="Titania\FTGL\Font\PolygonFont.h" />
-    <None Include="Titania\FTGL\Font\PolygonFontImpl.h" />
     <None Include="Titania\FTGL\Glyph\Glyph.h" />
     <None Include="Titania\FTGL\BBox.h" />
     <None Include="Titania\FTGL\Charmap.h" />

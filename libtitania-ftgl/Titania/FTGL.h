@@ -25,8 +25,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef __TITANIA_FTGL_FTGL_H__
-#define __TITANIA_FTGL_FTGL_H__
+#ifndef __TITANIA_FTGL_H__
+#define __TITANIA_FTGL_H__
 
 #include "FTGL/BBox.h"
 #include "FTGL/Types.h"

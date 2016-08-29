@@ -26,8 +26,8 @@
 #ifndef __TITANIA_FTGL_FACE_H__
 #define __TITANIA_FTGL_FACE_H__
 
-#include "Types.h"
 #include "Size.h"
+#include "Types.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -59,8 +59,7 @@ public:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
-	      bool precomputeKerning = true);
+	Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes, bool precomputeKerning = true);
 
 	/**
 	 * Destructor
@@ -89,8 +88,7 @@ public:
 	 *                  successfully.
 	 */
 	bool
-	attach (const uint8_t* pBufferBytes,
-	        size_t bufferSizeInBytes);
+	attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
 
 	/**
 	 * Get the freetype face object..
@@ -98,7 +96,8 @@ public:
 	 * @return pointer to an FT_Face.
 	 */
 	FT_Face*
-	getFace () const { return ftFace; }
+	getFace () const
+	{ return ftFace; }
 
 	/**
 	 * Sets the char size for the current face.
@@ -127,25 +126,26 @@ public:
 	 * @return pointer to the first encoding.
 	 */
 	FT_Encoding*
-	getCharMapList ();
+	getCharMapList () const;
 
 	/**
 	 * Gets the kerning vector between two glyphs
 	 */
 	Vector3d
-	getKernAdvance (uint32_t index1, uint32_t index2);
+	getKernAdvance (uint32_t index1, uint32_t index2) const;
 
 	/**
 	 * Loads and creates a Freetype glyph.
 	 */
 	FT_GlyphSlot
-	getGlyph (uint32_t index, FT_Int load_flags);
+	getGlyph (uint32_t index, FT_Int load_flags) const;
 
 	/**
 	 * Gets the number of glyphs in the current face.
 	 */
 	uint32_t
-	getGlyphCount () const { return numGlyphs; }
+	getGlyphCount () const
+	{ return numGlyphs; }
 
 	/**
 	 * Queries for errors.
@@ -153,7 +153,8 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return err; }
+	getError () const
+	{ return err; }
 
 
 private:
@@ -173,7 +174,7 @@ private:
 	 */
 	int32_t numGlyphs;
 
-	FT_Encoding* fontEncodingList;
+	mutable FT_Encoding* fontEncodingList;
 
 	/**
 	 * This face has kerning tables
@@ -193,7 +194,7 @@ private:
 	/**
 	 * Current error code. Zero means no error.
 	 */
-	FT_Error err;
+	mutable FT_Error err;
 
 };
 

@@ -28,7 +28,6 @@
 
 #include "../GlyphContainer.h"
 #include "../Unicode.h"
-#include "FontImpl.h"
 
 namespace titania {
 namespace FTGL {
@@ -37,213 +36,40 @@ namespace FTGL {
 //  Font
 //
 
-Font::Font (char const* fontFilePath)
+Font::Font (char const* fontFilePath) :
+	      face (fontFilePath),
+	  charSize (),
+	load_flags (FT_LOAD_DEFAULT),
+	 glyphList (nullptr),
+	       pen (),
+	       err (0)
 {
-	impl = new FontImpl (this, fontFilePath);
+	err = face .getError ();
+
+	if (err == 0)
+	{
+		glyphList = new GlyphContainer (&face);
+	}
 }
 
-Font::Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
+Font::Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes) :
+	      face (pBufferBytes, bufferSizeInBytes),
+	  charSize (),
+	load_flags (FT_LOAD_DEFAULT),
+	 glyphList (0),
+	       pen (),
+	       err (0)
 {
-	impl = new FontImpl (this, pBufferBytes, bufferSizeInBytes);
-}
+	err = face .getError ();
 
-Font::Font (FontImpl* pImpl)
-{
-	impl = pImpl;
-}
-
-Font::~Font ()
-{
-	delete impl;
-}
-
-bool
-Font::attach (const char* fontFilePath)
-{
-	return impl -> attach (fontFilePath);
-}
-
-bool
-Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
-{
-	return impl -> attach (pBufferBytes, bufferSizeInBytes);
+	if (err == 0)
+	{
+		glyphList = new GlyphContainer (&face);
+	}
 }
 
 bool
 Font::setFaceSize (const uint32_t size, const uint32_t res)
-{
-	return impl -> setFaceSize (size, res);
-}
-
-uint32_t
-Font::getFaceSize () const
-{
-	return impl -> getFaceSize ();
-}
-
-void
-Font::setDepth (double depth)
-{
-	return impl -> setDepth (depth);
-}
-
-void
-Font::setOutset (double outset)
-{
-	return impl -> setOutset (outset);
-}
-
-void
-Font::setOutset (double front, double back)
-{
-	return impl -> setOutset (front, back);
-}
-
-void
-Font::setGlyphLoadFlags (FT_Int flags)
-{
-	return impl -> setGlyphLoadFlags (flags);
-}
-
-bool
-Font::setCharMap (FT_Encoding encoding)
-{
-	return impl -> setCharMap (encoding);
-}
-
-uint32_t
-Font::getCharMapCount () const
-{
-	return impl -> CharMapCount ();
-}
-
-FT_Encoding*
-Font::getCharMapList ()
-{
-	return impl -> getCharMapList ();
-}
-
-void
-Font::setUseDisplayList (bool useList)
-{
-	return impl -> setUseDisplayList (useList);
-}
-
-double
-Font::getAscender () const
-{
-	return impl -> getAscender ();
-}
-
-double
-Font::getDescender () const
-{
-	return impl -> getDescender ();
-}
-
-double
-Font::getLineHeight () const
-{
-	return impl -> getLineHeight ();
-}
-
-Vector3d
-Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
-{
-	return impl -> render (string, len, position, spacing, renderMode);
-}
-
-double
-Font::advance (const char* string, const int32_t len, Vector3d spacing)
-{
-	return impl -> advance (string, len, spacing);
-}
-
-BBox
-Font::getBBox (const char* string, const int32_t len,
-               Vector3d position, Vector3d spacing)
-{
-	return impl -> getBBox (string, len, position, spacing);
-}
-
-FT_Error
-Font::getError () const
-{
-	return impl -> err;
-}
-
-//
-//  FontImpl
-//
-
-FontImpl::FontImpl (Font* ftFont, char const* fontFilePath) :
-	           face (fontFilePath),
-	useDisplayLists (true),
-	     load_flags (FT_LOAD_DEFAULT),
-	           intf (ftFont),
-	      glyphList (0)
-{
-	err = face .getError ();
-
-	if (err == 0)
-	{
-		glyphList = new GlyphContainer (&face);
-	}
-}
-
-FontImpl::FontImpl (Font* ftFont, const uint8_t* pBufferBytes,
-                    size_t bufferSizeInBytes) :
-	           face (pBufferBytes, bufferSizeInBytes),
-	useDisplayLists (true),
-	     load_flags (FT_LOAD_DEFAULT),
-	           intf (ftFont),
-	      glyphList (0)
-{
-	err = face .getError ();
-
-	if (err == 0)
-	{
-		glyphList = new GlyphContainer (&face);
-	}
-}
-
-FontImpl::~FontImpl ()
-{
-	if (glyphList)
-	{
-		delete glyphList;
-	}
-}
-
-bool
-FontImpl::attach (const char* fontFilePath)
-{
-	if (not face .attach (fontFilePath))
-	{
-		err = face .getError ();
-		return false;
-	}
-
-	err = 0;
-	return true;
-}
-
-bool
-FontImpl::attach (const uint8_t* pBufferBytes,
-                  size_t bufferSizeInBytes)
-{
-	if (not face .attach (pBufferBytes, bufferSizeInBytes))
-	{
-		err = face .getError ();
-		return false;
-	}
-
-	err = 0;
-	return true;
-}
-
-bool
-FontImpl::setFaceSize (const uint32_t size, const uint32_t res)
 {
 	if (glyphList not_eq nullptr)
 	{
@@ -264,31 +90,19 @@ FontImpl::setFaceSize (const uint32_t size, const uint32_t res)
 }
 
 uint32_t
-FontImpl::getFaceSize () const
+Font::getFaceSize () const
 {
 	return charSize .getCharSize ();
 }
 
 void
-FontImpl::setDepth (double depth)
-{ }
-
-void
-FontImpl::setOutset (double outset)
-{ }
-
-void
-FontImpl::setOutset (double front, double back)
-{ }
-
-void
-FontImpl::setGlyphLoadFlags (FT_Int flags)
+Font::setGlyphLoadFlags (FT_Int flags)
 {
 	load_flags = flags;
 }
 
 bool
-FontImpl::setCharMap (FT_Encoding encoding)
+Font::setCharMap (FT_Encoding encoding)
 {
 	bool result = glyphList -> setCharMap (encoding);
 
@@ -297,43 +111,37 @@ FontImpl::setCharMap (FT_Encoding encoding)
 }
 
 uint32_t
-FontImpl::CharMapCount () const
+Font::getCharMapCount () const
 {
 	return face .getCharMapCount ();
 }
 
 FT_Encoding*
-FontImpl::getCharMapList ()
+Font::getCharMapList () const
 {
 	return face .getCharMapList ();
 }
 
-void
-FontImpl::setUseDisplayList (bool useList)
-{
-	useDisplayLists = useList;
-}
-
 double
-FontImpl::getAscender () const
+Font::getAscender () const
 {
 	return charSize .getAscender ();
 }
 
 double
-FontImpl::getDescender () const
+Font::getDescender () const
 {
 	return charSize .getDescender ();
 }
 
 double
-FontImpl::getLineHeight () const
+Font::getLineHeight () const
 {
 	return charSize .getHeight ();
 }
 
 BBox
-FontImpl::getBBox (const char* string, const int32_t len, Vector3d position, Vector3d spacing)
+Font::getBBox (const char* string, const int32_t len, Vector3d position, Vector3d spacing)
 {
 	BBox totalBBox;
 
@@ -376,8 +184,65 @@ FontImpl::getBBox (const char* string, const int32_t len, Vector3d position, Vec
 	return totalBBox;
 }
 
+FT_Error
+Font::getError () const
+{
+	return err;
+}
+
+bool
+Font::attach (const char* fontFilePath)
+{
+	if (not face .attach (fontFilePath))
+	{
+		err = face .getError ();
+		return false;
+	}
+
+	err = 0;
+	return true;
+}
+
+bool
+Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
+{
+	if (not face .attach (pBufferBytes, bufferSizeInBytes))
+	{
+		err = face .getError ();
+		return false;
+	}
+
+	err = 0;
+	return true;
+}
+
+Vector3d
+Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
+{
+	// for multibyte - we can't rely on sizeof(T) == character
+	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
+
+	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+	{
+		uint32_t thisChar = *ustr ++;
+		uint32_t nextChar = *ustr;
+
+		if (checkGlyph (thisChar))
+		{
+			position += glyphList -> render (thisChar, nextChar, position, renderMode);
+		}
+
+		if (nextChar)
+		{
+			position += spacing;
+		}
+	}
+
+	return position;
+}
+
 double
-FontImpl::advance (const char* string, const int32_t len, Vector3d spacing)
+Font::advance (const char* string, const int32_t len, Vector3d spacing)
 {
 	double advance = 0;
 
@@ -402,33 +267,8 @@ FontImpl::advance (const char* string, const int32_t len, Vector3d spacing)
 	return advance;
 }
 
-Vector3d
-FontImpl::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing, FTGL::RenderMode renderMode)
-{
-	// for multibyte - we can't rely on sizeof(T) == character
-	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
-
-	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
-	{
-		uint32_t thisChar = *ustr ++;
-		uint32_t nextChar = *ustr;
-
-		if (checkGlyph (thisChar))
-		{
-			position += glyphList -> render (thisChar, nextChar, position, renderMode);
-		}
-
-		if (nextChar)
-		{
-			position += spacing;
-		}
-	}
-
-	return position;
-}
-
 bool
-FontImpl::checkGlyph (const uint32_t characterCode)
+Font::checkGlyph (const uint32_t characterCode)
 {
 	if (glyphList -> getGlyph (characterCode))
 	{
@@ -444,7 +284,7 @@ FontImpl::checkGlyph (const uint32_t characterCode)
 		return false;
 	}
 
-	Glyph* tempGlyph = intf -> makeGlyph (ftSlot);
+	Glyph* tempGlyph = makeGlyph (ftSlot);
 
 	if (! tempGlyph)
 	{
@@ -460,6 +300,18 @@ FontImpl::checkGlyph (const uint32_t characterCode)
 
 	return true;
 }
+
+Font::~Font ()
+{
+	if (glyphList)
+	{
+		delete glyphList;
+	}
+}
+
+//
+//  FontImpl
+//
 
 } // FTGL
 } // titania

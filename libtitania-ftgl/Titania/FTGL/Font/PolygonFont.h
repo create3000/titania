@@ -44,6 +44,8 @@ class PolygonFont :
 {
 public:
 
+	///  @name Construction
+
 	/**
 	 * Open and read a font file. Sets Error flag.
 	 *
@@ -61,13 +63,30 @@ public:
 	 */
 	PolygonFont (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
 
+	///  @name Member access
+
+	/**
+	 * Set the outset distance for the font. Only implemented by
+	 * FTOutlineFont, PolygonFont and FTExtrudeFont
+	 *
+	 * @param depth  The outset distance.
+	 */
+	void
+	setOutset (double value)
+	{ outset = value; }
+
+	///  @name Destruction
+
 	/**
 	 * Destructor
 	 */
+	virtual
 	~PolygonFont ();
 
 
 protected:
+
+	///  @name Operations
 
 	/**
 	 * Construct a glyph of the correct type.
@@ -81,6 +100,16 @@ protected:
 	virtual
 	Glyph*
 	makeGlyph (FT_GlyphSlot slot) final override;
+
+
+private:
+
+	///  @name Members
+
+	/**
+	 * The outset distance (front and back) for the font.
+	 */
+	double outset;
 
 };
 
