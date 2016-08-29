@@ -59,18 +59,7 @@ public:
 	 * @param pointTags
 	 * @param numberOfPoints
 	 */
-	Contour (FT_Vector* contour, char* pointTags, uint32_t numberOfPoints);
-
-	/**
-	 * Destructor
-	 */
-	~Contour ()
-	{
-		pointList .clear ();
-		outsetPointList .clear ();
-		frontPointList .clear ();
-		backPointList .clear ();
-	}
+	Contour (FT_Vector* const contour, char* const pointTags, const size_t numberOfPoints, const size_t bezierSteps);
 
 	/**
 	 * Return a point at index.
@@ -147,6 +136,17 @@ public:
 	void
 	buildBackOutset (double outset);
 
+	/**
+	 * Destructor
+	 */
+	~Contour ()
+	{
+		pointList .clear ();
+		outsetPointList .clear ();
+		frontPointList .clear ();
+		backPointList .clear ();
+	}
+
 
 private:
 
@@ -158,7 +158,7 @@ private:
 	 */
 	inline
 	void
-	addPoint (Vector3d point);
+	addPoint (const Vector3d & point);
 
 	/**
 	 * Add a point to this contour. This function tests for duplicate
@@ -168,7 +168,7 @@ private:
 	 */
 	inline
 	void
-	addOutsetPoint (Vector3d point);
+	addOutsetPoint (const Vector3d & point);
 
 	/*
 	 * Add a point to this outset contour. This function tests for duplicate
@@ -178,11 +178,11 @@ private:
 	 */
 	inline
 	void
-	addFrontPoint (Vector3d point);
+	addFrontPoint (const Vector3d & point);
 
 	inline
 	void
-	addBackPoint (Vector3d point);
+	addBackPoint (const Vector3d & point);
 
 	/**
 	 * De Casteljau (bezier) algorithm contributed by Jed Soane
@@ -190,7 +190,7 @@ private:
 	 */
 	inline
 	void
-	evaluateQuadraticCurve (Vector3d, Vector3d, Vector3d);
+	evaluateQuadraticCurve (const Vector3d &, const Vector3d &, const Vector3d &, const size_t bezierSteps);
 
 	/**
 	 * De Casteljau (bezier) algorithm contributed by Jed Soane
@@ -198,7 +198,7 @@ private:
 	 */
 	inline
 	void
-	evaluateCubicCurve (Vector3d, Vector3d, Vector3d, Vector3d);
+	evaluateCubicCurve (const Vector3d &, const Vector3d &, const Vector3d &, const Vector3d &, const size_t bezierSteps);
 
 	/**
 	 * Compute the vector norm
@@ -233,7 +233,7 @@ private:
 	 */
 	inline
 	Vector3d
-	computeOutsetPoint (Vector3d a, Vector3d b, Vector3d c);
+	computeOutsetPoint (const Vector3d & a, const Vector3d & b, const Vector3d & c);
 
 	/**
 	 *  The list of points in this contour

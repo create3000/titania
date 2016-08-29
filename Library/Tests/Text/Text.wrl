@@ -67,9 +67,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0.860130786895752,
-              -2.00347495079041,
-              25.278217116926
+              8.94726538658142,
+              -2.11791995167732,
+              26.0192880630493
             ]
           }
           DEF orientation MetadataDouble {
@@ -86,9 +86,9 @@ WorldInfo {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              0.860130786895752,
-              -2.00347495079041,
-              -9.5367431640625e-07
+              8.947265625,
+              -2.11791995167732,
+              0
             ]
           }
         ]
@@ -123,7 +123,7 @@ WorldInfo {
                     "Read a lot more good Text today!",
                     "Über Häuser, außer Büsche."
                   ]
-                  fontStyle DEF _1 FontStyle {
+                  fontStyle FontStyle {
                     family [
                       "SANS",
                       "Ubuntu Mono"

@@ -60,6 +60,7 @@ namespace X3D {
 class LineProperties;
 class FillProperties;
 class X3DAppearanceNode;
+class X3DMaterialNode;
 
 class X3DShapeContext :
 	virtual public X3DBaseNode
@@ -81,12 +82,20 @@ public:
 	{ return defaultAppearance; }
 
 	void
-	setAppearance (X3DAppearanceNode* const value) 
-	{ appearance = value; }
+	setLineProperties (LineProperties* const value) 
+	{ lineProperties = value; }
 
-	X3DAppearanceNode*
-	getAppearance () const
-	{ return appearance; }
+	LineProperties*
+	getLineProperties () const
+	{ return lineProperties; }
+
+	void
+	setMaterial (X3DMaterialNode* const value) 
+	{ material = value; }
+
+	X3DMaterialNode*
+	getMaterial () const
+	{ return material; }
 
 	///  @name Destruction
 
@@ -116,7 +125,8 @@ private:
 	X3DPtr <LineProperties>    defaultLineProperties;
 	X3DPtr <FillProperties>    defaultFillProperties;
 	X3DPtr <X3DAppearanceNode> defaultAppearance;
-	X3DAppearanceNode*         appearance;
+	LineProperties*            lineProperties;
+	X3DMaterialNode*           material;
 
 };
 

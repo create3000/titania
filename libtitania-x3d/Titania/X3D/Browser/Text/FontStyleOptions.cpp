@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,54 +48,34 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_X3DAPPEARANCE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_SHAPE_X3DAPPEARANCE_NODE_H__
+#include "FontStyleOptions.h"
 
-#include "../Core/X3DNode.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class FillProperties;
-class LineProperties;
+const ComponentType FontStyleOptions::component      = ComponentType::TITANIA;
+const std::string   FontStyleOptions::typeName       = "FontStyleOptions";
+const std::string   FontStyleOptions::containerField = "fontStyleOptions";
 
-class X3DAppearanceNode :
-	virtual public X3DNode
+FontStyleOptions::Fields::Fields () :
+	bezierDimension (new SFInt32 (5))
+{ }
+
+FontStyleOptions::FontStyleOptions (X3DExecutionContext* const executionContext) :
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DOptionNode (),
+	       fields ()
 {
-public:
+	addField (inputOutput, "bezierDimension", bezierDimension ());
+}
 
-	///  @name Tests
-
-	virtual
-	bool
-	isTransparent () const = 0;
-
-	///  @name Member access
-
-	virtual
-	const X3DPtr <FillProperties> &
-	getFillProperties () const = 0;
-
-	virtual
-	const X3DPtr <LineProperties> &
-	getLineProperties () const = 0;
-
-	///  @name Operations
-
-	virtual
-	void
-	draw () = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DAppearanceNode ();
-
-};
+FontStyleOptions*
+FontStyleOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new FontStyleOptions (executionContext);
+}
 
 } // X3D
 } // titania
-
-#endif

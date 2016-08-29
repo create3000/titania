@@ -141,6 +141,12 @@ X3DGeometryNode::setCameraObject (const bool value)
 	   cameraObject = value;
 }
 
+void
+X3DGeometryNode::setExtents (const Vector3d & min, const Vector3d & max)
+{
+	bbox = Box3d (min, max, extents_type ());
+}
+
 Box3d
 X3DGeometryNode::createBBox ()
 {
@@ -764,7 +770,8 @@ X3DGeometryNode::update ()
 	clear ();
 	build ();
 
-	bbox = createBBox ();
+	if (bbox .empty ())
+		bbox = createBBox ();
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 
@@ -782,6 +789,8 @@ X3DGeometryNode::update ()
 void
 X3DGeometryNode::clear ()
 {
+	bbox = Box3d ();
+
 	if (not attribBufferIds .empty ())
 	{
 		glDeleteBuffers (attribBufferIds .size (), attribBufferIds .data ());

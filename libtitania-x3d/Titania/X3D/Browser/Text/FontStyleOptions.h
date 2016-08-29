@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,50 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_SHAPE_X3DAPPEARANCE_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_SHAPE_X3DAPPEARANCE_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_TEXT_TEXT_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_TEXT_TEXT_OPTIONS_H__
 
-#include "../Core/X3DNode.h"
+#include "../Core/X3DOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class FillProperties;
-class LineProperties;
-
-class X3DAppearanceNode :
-	virtual public X3DNode
+class FontStyleOptions :
+	public X3DOptionNode
 {
 public:
 
-	///  @name Tests
+	///  @name Construction
+
+	FontStyleOptions (X3DExecutionContext* const);
+
+	///  @name Common members
 
 	virtual
-	bool
-	isTransparent () const = 0;
-
-	///  @name Member access
-
-	virtual
-	const X3DPtr <FillProperties> &
-	getFillProperties () const = 0;
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
 
 	virtual
-	const X3DPtr <LineProperties> &
-	getLineProperties () const = 0;
-
-	///  @name Operations
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
 
 	virtual
-	void
-	draw () = 0;
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	bezierDimension ()
+	{ return *fields .bezierDimension; }
+
+	const SFInt32 &
+	bezierDimension () const
+	{ return *fields .bezierDimension; }
 
 
-protected:
+private:
 
 	///  @name Construction
 
-	X3DAppearanceNode ();
+	virtual
+	FontStyleOptions*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const bezierDimension;
+	};
+
+	Fields fields;
 
 };
 

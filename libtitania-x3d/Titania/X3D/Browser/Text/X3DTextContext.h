@@ -57,6 +57,7 @@
 namespace titania {
 namespace X3D {
 
+class FontStyleOptions;
 class X3DFontStyleNode;
 
 class X3DTextContext :
@@ -65,6 +66,10 @@ class X3DTextContext :
 public:
 
 	///  @name Member access
+
+	const X3DPtr <FontStyleOptions> &
+	getFontStyleOptions () const
+	{ return fontStyleOptions; }
 
 	const X3DPtr <X3DFontStyleNode> &
 	getDefaultFontStyle () const
@@ -95,6 +100,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <FontStyleOptions> fontStyleOptions;
 	X3DPtr <X3DFontStyleNode> defaultFontStyle;
 
 };

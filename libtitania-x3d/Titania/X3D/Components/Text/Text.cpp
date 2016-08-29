@@ -53,6 +53,7 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Text/X3DFontStyleNode.h"
 
 namespace titania {
 namespace X3D {
@@ -97,7 +98,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	textBounds () .setUnit (UnitCategory::LENGTH);
 	lineBounds () .setUnit (UnitCategory::LENGTH);
 
-	addChildren (fontStyleNode);
+	addChildren (fontStyleNode, textGeometry);
 }
 
 X3DBaseNode*
@@ -124,7 +125,17 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
+	{
 		set_fontStyle ();
+
+		addEvent ();
+	}
+}
+
+bool
+Text::isTransparent () const
+{
+	return textGeometry -> isTransparent ();
 }
 
 void
@@ -169,34 +180,16 @@ Text::build ()
 	{
 		// Let the fontStyle build the text geometry.
 
-		textGeometry = fontStyleNode -> getTextGeometry (this);
-	
-		// We cannot access the geometry thus we add a simple rectangle to the geometry to enable picking.
-	
+		textGeometry .set (fontStyleNode -> getTextGeometry (this));
+
+		// Set bbox.
+
 		const Box3d bbox = textGeometry -> X3DTextGeometry::getBBox ();
 
 		/* const */ Vector3d min, max;
 		bbox .extents (min, max);
-	
-		getTexCoords () .emplace_back ();
-	
-		getTexCoords () [0] .emplace_back (0, 0, 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (min);
-	
-		getTexCoords () [0] .emplace_back (1, 0, 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (max .x (), min .y (), min .z ());
-	
-		getTexCoords () [0] .emplace_back (1, 1, 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (max);
-	
-		getTexCoords () [0] .emplace_back (0, 1, 0, 1);
-		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (min .x (), max .y (), min .z ());
-	
-		addElements (GL_QUADS, getVertices () .size ());
+
+		setExtents (min, max);
 	}
 	catch (const std::exception &)
 	{
@@ -213,7 +206,7 @@ Text::traverse (const TraverseType type)
 void
 Text::draw (ShapeContainer* const context)
 {
-	textGeometry -> display (context);
+	textGeometry -> draw (context);
 }
 
 SFNode
@@ -227,8 +220,6 @@ throw (Error <NOT_SUPPORTED>,
 void
 Text::dispose ()
 {
-	textGeometry .reset ();
-
 	X3DGeometryNode::dispose ();
 }
 

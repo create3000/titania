@@ -38,6 +38,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#include <string>
 #include <cstddef>
 #include <cstdint>
 
@@ -253,20 +254,22 @@ public:
 	/**
 	 * Triangulates a string of characters.
 	 *
-	 * @param string    'C' style string to be output.
-	 * @param len       The length of the string. If < 0 then all characters
-	 *                  will be displayed until a null character is encountered
-	 *                  (optional).
-	 * @param position  The pen position of the first character (optional).
-	 * @param spacing   A displacement vector to add after each character
-	 *                  has been displayed (optional).
-	 * @return          The new pen position after the last character was output.
+	 * @param string        String to be triangulated.
+	 * @param len           The length of the string. If < 0 then all characters
+	 *                      will be displayed until a null character is encountered
+	 *                      (optional).
+	 * @param position      The pen position of the first character (optional).
+	 * @param spacing       A displacement vector to add after each character
+	 *                      has been displayed (optional).
+	 * @param indices       Specify the output array of indices of the mesh.
+	 * @param points        Specify the output array of points of the mesh.
+	 * @return              The new pen position after the last character was output.
 	 */
 	virtual
 	Vector3d
 	triangulate (const std::string & string,
 	             Vector3d position,
-	             Vector3d spacing,
+	             const Vector3d & spacing,
 	             std::vector <size_t> & indices,
 	             std::vector <Vector3d> & points) const;
 
@@ -285,17 +288,17 @@ protected:
 	 *
 	 * @param fontFilePath  font file path.
 	 */
-	Font (char const* fontFilePath);
+	Font (const std::string & fontFilePath);
 
 	/**
 	 * Open and read a font from a buffer in memory. Sets Error flag.
 	 * The buffer is owned by the client and is NOT copied by FTGL. The
 	 * pointer must be valid while using FTGL.
 	 *
-	 * @param pBufferBytes  the in-memory buffer
-	 * @param bufferSizeInBytes  the length of the buffer in bytes
+	 * @param pBufferBytes        The in-memory buffer
+	 * @param bufferSizeInBytes   The length of the buffer in bytes
 	 */
-	Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
+	Font (const uint8_t* pBufferBytes, const size_t bufferSizeInBytes);
 
 	///  @name Operations
 

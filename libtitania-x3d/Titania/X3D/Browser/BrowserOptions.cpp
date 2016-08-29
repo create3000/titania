@@ -61,6 +61,7 @@
 #include "../Browser/Geometry3D/CylinderOptions.h"
 #include "../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../Browser/Rendering/MotionBlur.h"
+#include "../Browser/Text/FontStyleOptions.h"
 #include "../Browser/RenderingProperties.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Texturing/TextureProperties.h"
@@ -262,6 +263,7 @@ BrowserOptions::set_PrimitiveQuality ()
 			quadSphere -> yDimension () = 31;
 		}
 
+		getBrowser () -> getFontStyleOptions () -> bezierDimension () = 7;
 		return;
 	}
 
@@ -282,6 +284,7 @@ BrowserOptions::set_PrimitiveQuality ()
 			quadSphere -> yDimension () = 9;
 		}
 
+		getBrowser () -> getFontStyleOptions () -> bezierDimension () = 3;
 		return;
 	}
 
@@ -301,6 +304,8 @@ BrowserOptions::set_PrimitiveQuality ()
 		quadSphere -> xDimension () = 31;
 		quadSphere -> yDimension () = 15;
 	}
+
+	getBrowser () -> getFontStyleOptions () -> bezierDimension () = 5;
 }
 
 void

@@ -51,7 +51,7 @@ public:
 	 *
 	 * @param fontFilePath  font file path.
 	 */
-	PolygonFont (const char* fontFilePath);
+	PolygonFont (const std::string & fontFilePath, const size_t bezierSteps = 5);
 
 	/**
 	 * Open and read a font from a buffer in memory. Sets Error flag.
@@ -61,7 +61,7 @@ public:
 	 * @param pBufferBytes  the in-memory buffer
 	 * @param bufferSizeInBytes  the length of the buffer in bytes
 	 */
-	PolygonFont (const uint8_t* pBufferBytes, size_t bufferSizeInBytes);
+	PolygonFont (const uint8_t* pBufferBytes, const size_t bufferSizeInBytes, const size_t bezierSteps);
 
 	///  @name Member access
 
@@ -105,6 +105,11 @@ protected:
 private:
 
 	///  @name Members
+
+	/**
+	 * The number of bezier steps.
+	 */
+	const size_t bezierSteps;
 
 	/**
 	 * The outset distance (front and back) for the font.

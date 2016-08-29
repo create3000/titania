@@ -219,6 +219,9 @@ protected:
 	///  @name Member access
 
 	void
+	setExtents (const Vector3d &, const Vector3d &);
+
+	void
 	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);
 
 	const std::vector <X3DVertexAttributeNode*> &

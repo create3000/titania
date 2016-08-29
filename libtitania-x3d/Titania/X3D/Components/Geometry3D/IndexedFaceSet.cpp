@@ -234,7 +234,6 @@ IndexedFaceSet::build ()
 
 			for (const auto & v : element)
 			{
-__LOG__ << v << " : " << vertices .size () << std::endl;
 				const auto   i     = vertices [v];
 				const size_t index = coordIndex () [i];
 

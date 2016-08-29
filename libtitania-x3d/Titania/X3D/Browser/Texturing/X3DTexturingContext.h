@@ -132,6 +132,14 @@ public:
 	getTexture () const
 	{ return texture; }
 
+	void
+	setTextureTransform (X3DTextureTransformNode* const value)
+	{ textureTransform = value; }
+
+	X3DTextureTransformNode*
+	getTextureTransform () const
+	{ return textureTransform; }
+
 	///  @name Destruction
 
 	virtual
@@ -173,6 +181,7 @@ private:
 	X3DPtr <TextureProperties>        defaultTextureProperties;
 	X3DPtr <X3DTextureTransformNode>  defaultTextureTransform;
 	X3DTextureNode*                   texture;
+	X3DTextureTransformNode*          textureTransform;
 
 };
 

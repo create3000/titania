@@ -50,15 +50,21 @@
 
 #include "FontStyle.h"
 
+#include "../../Browser/Text/FontStyleOptions.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Text/Text.h"
 
 namespace titania {
 namespace X3D {
 
+const ComponentType PolygonText::component      = ComponentType::TITANIA;
+const std::string   PolygonText::typeName       = "PolygonText";
+const std::string   PolygonText::containerField = "textGeometry";
+
 PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
-	X3DTextGeometry (fontStyle),
-	           text (text),
+	    X3DBaseNode (text -> getBrowser (), text -> getExecutionContext ()),
+	X3DTextGeometry (text, fontStyle),
 	      fontStyle (fontStyle)
 {
 	if (not fontStyle -> getPolygonFont ())
@@ -72,9 +78,14 @@ PolygonText::PolygonText (Text* const text, const FontStyle* const fontStyle) :
 		return;
 	}
 
-	initialize (text, fontStyle);
+	initialize ();
+	build ();
+}
 
-	compile (text);
+X3DBaseNode*
+PolygonText::create (X3DExecutionContext* const executionContext) const
+{
+	return new PolygonText (getText (), fontStyle);
 }
 
 void
@@ -89,15 +100,10 @@ PolygonText::getLineExtents (const String & line, Vector2d & min, Vector2d & max
 }
 
 void
-PolygonText::draw ()
+PolygonText::build ()
 {
 	if (not fontStyle -> getPolygonFont ())
 		return;
-
-	const double size = fontStyle -> getScale ();
-
-	glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
-	glScalef (size, size, size);
 
 	// Triangulate lines.
 
@@ -108,19 +114,19 @@ PolygonText::draw ()
 	{
 		const bool    topToBottom = fontStyle -> topToBottom ();
 		const bool    leftToRight = fontStyle -> leftToRight ();
-		const int32_t first       = topToBottom ? 0 : text -> string () .size () - 1;
-		const int32_t last        = topToBottom ? text -> string () .size () : -1;
+		const int32_t first       = topToBottom ? 0 : getText () -> string () .size () - 1;
+		const int32_t last        = topToBottom ? getText () -> string () .size () : -1;
 		const int32_t step        = topToBottom ? 1 : -1;
 
 		for (int32_t i = first; i not_eq last; i += step)
 		{
-			const auto & line = text -> string () [i] .getValue ();
+			const auto & line = getText () -> string () [i] .getValue ();
 
 			fontStyle -> getPolygonFont () -> triangulate (leftToRight
 	                                                     ? line
 	                                                     : String (line .rbegin (), line .rend ()),
-			                                               FTGL::Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
-			                                               FTGL::Vector3d (getCharSpacing () [i], 0, 0),
+			                                               Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
+			                                               Vector3d (getCharSpacing () [i], 0, 0),
 			                                               indices,
 			                                               points);
 		}
@@ -129,19 +135,19 @@ PolygonText::draw ()
 	{
 		const bool    leftToRight = fontStyle -> leftToRight ();
 		const bool    topToBottom = fontStyle -> topToBottom ();
-		const int32_t first       = leftToRight ? 0 : text -> string () .size () - 1;
-		const int32_t last        = leftToRight ? text -> string () .size () : -1;
+		const int32_t first       = leftToRight ? 0 : getText () -> string () .size () - 1;
+		const int32_t last        = leftToRight ? getText () -> string () .size () : -1;
 		const int32_t step        = leftToRight ? 1 : -1;
 
 		for (int32_t i = first, g = 0; i not_eq last; i += step)
 		{
-			const auto & line = text -> string () [i] .getValue ();
+			const auto & line = getText () -> string () [i] .getValue ();
 
 			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{
 				fontStyle -> getPolygonFont () -> triangulate (String (1, glyph),
-				                                               FTGL::Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
-				                                               FTGL::Vector3d (),
+				                                               Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
+				                                               Vector3d (),
 			                                                  indices,
 			                                                  points);
 				++ g;
@@ -149,15 +155,31 @@ PolygonText::draw ()
 		}
 	}
 
-	// Render lines.
+	// Create geometry
 
-	glNormal3f (0, 0, 1);
-	glBegin (GL_TRIANGLES);
+	const auto size        = fontStyle -> getScale ();
+	const auto translation = Vector3d (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+	const auto scale       = Vector3d (size, size, size);
+
+	getText () -> getTexCoords () .emplace_back ();
+
+	auto & texCoords = getText () -> getTexCoords () .back ();
+	auto & normals   = getText () -> getNormals ();
+	auto & vertices  = getText () -> getVertices ();
+
+	texCoords .reserve (indices .size ());
+	normals   .reserve (indices .size ());
+	vertices  .reserve (indices .size ());
 
 	for (const auto index : indices)
-		glVertex3dv (points [index] .data ());
+	{
+		texCoords .emplace_back (0, 0, 0, 1);
+		normals   .emplace_back (0, 0, 1);
+		vertices  .emplace_back (points [index] * scale + translation);
+	}
 
-	glEnd ();
+	getText () -> addElements (GL_TRIANGLES, vertices .size ());
+	getText () -> setSolid (getText () -> solid ());
 }
 
 const ComponentType FontStyle::component      = ComponentType::TEXT;
@@ -205,6 +227,8 @@ FontStyle::initialize ()
 {
 	X3DFontStyleNode::initialize ();
 
+	getBrowser () -> getFontStyleOptions () .addInterest (this, &FontStyle::set_font);
+
 	family  () .addInterest (this, &FontStyle::set_font);
 	style   () .addInterest (this, &FontStyle::set_font);
 	size    () .addInterest (this, &FontStyle::set_font);
@@ -213,10 +237,24 @@ FontStyle::initialize ()
 	set_font ();
 }
 
-std::unique_ptr <X3DTextGeometry>
+void
+FontStyle::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (isInitialized ())
+		getBrowser () -> getFontStyleOptions () .removeInterest (this, &FontStyle::set_font);
+
+	X3DFontStyleNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		getBrowser () -> getFontStyleOptions () .addInterest (this, &FontStyle::set_font);
+}
+
+X3DPtr <X3DTextGeometry>
 FontStyle::getTextGeometry (Text* const text) const
 {
-	return std::unique_ptr <X3DTextGeometry> (new PolygonText (text, this));
+	return X3DPtr <X3DTextGeometry> (new PolygonText (text, this));
 }
 
 void
@@ -241,12 +279,15 @@ FontStyle::set_font ()
 	}
 	else
 		polygonFont .reset ();
+
+	addEvent ();
 }
 
 PolygonFontPtr
 FontStyle::getPolygonFont (const MFString & family) const
 {
-	bool isExactMatch = false;
+	const size_t bezierDimension = getBrowser () -> getFontStyleOptions () -> bezierDimension ();
+	bool         isExactMatch    = false;
 
 	for (const auto & familyName : family)
 	{
@@ -254,21 +295,21 @@ FontStyle::getPolygonFont (const MFString & family) const
 
 		if (isExactMatch)
 		{
-			PolygonFontPtr polygonFont (new FTGL::PolygonFont (font .getFilename () .c_str ()));
+			PolygonFontPtr polygonFont (new FTGL::PolygonFont (font .getFilename (), bezierDimension));
 
-			if (not polygonFont -> getError ())
-			{
-				const_cast <FontFace &> (fontFace) = font .getFace ();
+			if (polygonFont -> getError ())
+			  continue;
 
-				return polygonFont;
-			}
+			const_cast <FontFace &> (fontFace) = font .getFace ();
+
+			return polygonFont;
 		}
 	}
 
 	const_cast <Font &> (font)         = createFont ("SERIF", isExactMatch);
 	const_cast <FontFace &> (fontFace) = font .getFace ();
 
-	return PolygonFontPtr (new FTGL::PolygonFont (font .getFilename () .c_str ()));
+	return PolygonFontPtr (new FTGL::PolygonFont (font .getFilename (), bezierDimension));
 }
 
 void

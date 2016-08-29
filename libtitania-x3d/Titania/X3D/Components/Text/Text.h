@@ -52,10 +52,12 @@
 #define __TITANIA_X3D_COMPONENTS_TEXT_TEXT_H__
 
 #include "../Rendering/X3DGeometryNode.h"
-#include "../Text/X3DFontStyleNode.h"
 
 namespace titania {
 namespace X3D {
+
+class X3DFontStyleNode;
+class X3DTextGeometry;
 
 class Text :
 	public X3DGeometryNode
@@ -166,8 +168,7 @@ public:
 
 	virtual
 	bool
-	isTransparent () const
-	{ return textGeometry -> isTransparent (); }
+	isTransparent () const;
 
 	///  @name Member access
 
@@ -182,7 +183,7 @@ public:
 	getFontStyle () const
 	{ return fontStyleNode; }
 
-	const std::unique_ptr <X3DTextGeometry> &
+	const X3DPtr <X3DTextGeometry> &
 	getTextGeometry () const
 	{ return textGeometry; }
 
@@ -207,6 +208,14 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class PolygonText;
+	friend class ScreenText;
 
 
 private:
@@ -256,8 +265,8 @@ private:
 
 	Fields fields;
 
-	X3DPtr <X3DFontStyleNode>         fontStyleNode;
-	std::unique_ptr <X3DTextGeometry> textGeometry;
+	X3DPtr <X3DFontStyleNode> fontStyleNode;
+	X3DPtr <X3DTextGeometry>  textGeometry;
 
 };
 

@@ -56,8 +56,11 @@
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderer.h"
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../Shape/LineProperties.h"
 #include "../Shape/X3DAppearanceNode.h"
+#include "../Shape/X3DMaterialNode.h"
 #include "../Texturing/X3DTexture2DNode.h"
+#include "../Texturing/X3DTextureTransformNode.h"
 #include "../Texturing3D/X3DTexture3DNode.h"
 
 #include <Titania/String/to_string.h>
@@ -998,10 +1001,15 @@ X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
 void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
-	const auto & browser      = getBrowser ();
-	const auto & clipPlanes   = context -> getClipPlanes ();
-	const auto & appearance   = browser -> getAppearance ();
-	auto         normalMatrix = Matrix3d (context -> getModelViewMatrix ()); // Transposed when uniform is set.
+	static const auto textureType = std::vector <int32_t> ({ 0 });
+
+	const auto & browser              = getBrowser ();
+	const auto & clipPlanes           = context -> getClipPlanes ();
+	const auto & linePropertiesNode   = browser -> getLineProperties ();
+	const auto & materialNode         = browser -> getMaterial ();
+	const auto & textureNode          = browser -> getTexture ();
+	const auto & textureTransformNode = browser -> getTextureTransform ();
+	auto         normalMatrix         = Matrix3d (context -> getModelViewMatrix ()); // Transposed when uniform is set.
 
 	try
 	{
@@ -1048,11 +1056,25 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	if (numLights < MAX_LIGHTS)
 		glUniform1i (x3d_LightType [numLights], 0);
 
-	// Material
-
-	appearance -> setShaderUniforms (this);
+	// Appearance
 
 	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
+
+	linePropertiesNode -> setShaderUniforms (this);
+
+	if (materialNode)
+		materialNode -> setShaderUniforms (this);
+	else
+		glUniform1i (x3d_Lighting, false);
+
+	if (textureNode)
+		textureNode -> setShaderUniforms (this);
+	else
+		glUniform1iv (x3d_TextureType, 1, textureType .data ());
+
+	// Matrices
+
+	textureTransformNode -> setShaderUniforms (this);
 
 	if (extensionGPUShaderFP64)
 	{

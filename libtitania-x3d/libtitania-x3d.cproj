@@ -817,6 +817,7 @@
     <None Include="Titania\X3D\Browser\Rendering\GeometryType.h" />
     <None Include="share\titania\icc\sRGB_IEC61966-2-1_black_scaled.icc" />
     <None Include="share\titania\icc\sRGB_v4_ICC_preference.icc" />
+    <None Include="Titania\X3D\Browser\Text\FontStyleOptions.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1366,6 +1367,7 @@
     <Compile Include="Titania\X3D\Browser\Shaders\Shader.cpp" />
     <Compile Include="Titania\X3D\Browser\Shaders\X3DShadersContext.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Text\FontStyleOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

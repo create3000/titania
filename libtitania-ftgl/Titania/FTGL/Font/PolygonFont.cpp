@@ -35,17 +35,20 @@ namespace FTGL {
 //  PolygonFont
 //
 
-PolygonFont::PolygonFont (char const* fontFilePath) :
-	  Font (fontFilePath),
-	outset (0)
+PolygonFont::PolygonFont (const std::string & fontFilePath, const size_t bezierSteps) :
+	       Font (fontFilePath),
+	bezierSteps (bezierSteps),
+	     outset (0)
 {
 	setGlyphLoadFlags (FT_LOAD_NO_HINTING);
 }
 
 PolygonFont::PolygonFont (const uint8_t* pBufferBytes,
-                          size_t bufferSizeInBytes) :
-	  Font (pBufferBytes, bufferSizeInBytes),
-	outset (0)
+                          const size_t bufferSizeInBytes,
+                          const size_t bezierSteps) :
+	       Font (pBufferBytes, bufferSizeInBytes),
+	bezierSteps (bezierSteps),
+	     outset (0)
 {
 	setGlyphLoadFlags (FT_LOAD_NO_HINTING);
 }
@@ -53,7 +56,7 @@ PolygonFont::PolygonFont (const uint8_t* pBufferBytes,
 Glyph*
 PolygonFont::makeGlyph (FT_GlyphSlot ftGlyph)
 {
-	return new PolygonGlyph (ftGlyph, outset);
+	return new PolygonGlyph (ftGlyph, outset, bezierSteps);
 }
 
 PolygonFont::~PolygonFont ()

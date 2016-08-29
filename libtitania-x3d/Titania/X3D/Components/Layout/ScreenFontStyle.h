@@ -58,6 +58,7 @@
 namespace titania {
 namespace X3D {
 
+class PixelTexture;
 class ScreenFontStyle;
 class ShapeContainer;
 
@@ -66,7 +67,35 @@ class ScreenText :
 {
 public:
 
+	///  @name Construction
+
 	ScreenText (Text* const, const ScreenFontStyle* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Member access
 
 	virtual
 	bool
@@ -83,18 +112,24 @@ public:
 	getMatrix () const final override
 	{ return matrix; }
 
+	///  @name Operations
+
 	virtual
 	void
 	traverse (const TraverseType) final override;
 
 	virtual
 	void
-	display (ShapeContainer* const) final override;
+	draw (ShapeContainer* const) final override;
+
+	///  @name Destruction
 
 	virtual
 	~ScreenText ();
 
 private:
+
+	///  @name Operations
 
 	void
 	configure (const Cairo::RefPtr <Cairo::Context> &);
@@ -106,27 +141,28 @@ private:
 	void
 	setTextBounds ();
 
-	void
-	build ();
-
 	virtual
 	void
-	draw () final override;
+	build () final override;
 
 	void
 	transform (const TraverseType type);
 
-	Text* const                  text;
-	const ScreenFontStyle* const fontStyle;
+	///  @name Static members
 
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	const ScreenFontStyle* const   fontStyle;
 	Cairo::RefPtr <Cairo::Context> context;
-	GLuint                         textureId;
-	
-	Vector3d min;
-	Vector3d max;
-	Box3d    bbox;
-	
-	Matrix4d matrix;
+	Vector3d                       min;
+	Vector3d                       max;
+	Box3d                          bbox;
+	Matrix4d                       matrix;
+	X3DPtr <PixelTexture>          textureNode;
 
 };
 
@@ -188,7 +224,7 @@ public:
 	{ return 1; }
 
 	virtual
-	std::unique_ptr <X3DTextGeometry>
+	X3DPtr <X3DTextGeometry>
 	getTextGeometry (Text* const) const;
 
 	virtual
@@ -242,7 +278,7 @@ private:
 	};
 
 	Fields fields;
-	
+
 	Font     font;
 	FontFace fontFace;
 

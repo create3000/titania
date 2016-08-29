@@ -59,6 +59,7 @@
 #include <GL/glu.h>
 
 #include <iostream>
+#include <functional>
 #include <tuple>
 #include <deque>
 #include <vector>
@@ -100,6 +101,10 @@ public:
 	const math::vector3 <Type> &
 	point () const
 	{ return m_point; }
+
+	void
+	data (const Data & value)
+	{ m_data = value; }
 
 	const Data &
 	data () const
@@ -180,6 +185,7 @@ public:
 	using polygon_element       = tessellator_polygon_element <Type, Args ...>;
 	using polygon_element_array = std::vector <polygon_element>;
 	using vertex                = tessellator_vertex <Type, Args ...>;
+	using combine_function      = std::function <void (vertex &, const vertex* const [4], const float [4])>;
 
 	///  @name Construction
 
@@ -188,10 +194,14 @@ public:
 	///  @name Operations
 
 	void
-	property (const GLenum, const GLdouble);
+	property (const GLenum, const double);
 
 	void
 	normal (const math::vector3 <Type> &);
+
+	void
+	combine (const combine_function & value)
+	{ m_combine = value; }
 
 	void
 	begin_polygon ();
@@ -237,7 +247,7 @@ private:
 
 	static
 	void
-	tessCombineData (const GLdouble [3], vertex* const [4], const GLfloat [4], void**, tessellator* const);
+	tessCombineData (const double [3], const vertex* const [4], const float [4], void**, tessellator* const);
 
 	static
 	void
@@ -251,6 +261,7 @@ private:
 	GLUtesselator*        m_tess;
 	std::deque <vertex>   m_vertices;
 	polygon_element_array m_polygon;
+	combine_function      m_combine;
 
 };
 
@@ -258,7 +269,8 @@ template <class Type, class ... Args>
 tessellator <Type, Args ...>::tessellator (const bool debug) :
 	    m_tess (gluNewTess ()),
 	m_vertices (),
-	 m_polygon ()
+	 m_polygon (),
+	 m_combine ()
 {
 	if (m_tess)
 	{
@@ -350,13 +362,16 @@ tessellator <Type, Args ...>::tessVertexData (vertex* const vertex, tessellator*
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessCombineData (const GLdouble coords [3], vertex* const vertex [4],
-                                               const GLfloat weight [4], void** outData,
+tessellator <Type, Args ...>::tessCombineData (const double coords [3], const vertex* const vertices [4],
+                                               const float weight [4], void** outData,
                                                tessellator* const self)
 {
-	self -> m_vertices .emplace_back (math::vector3 <Type> (coords [0], coords [1], coords [2]), vertex [0] -> data ());
+	self -> m_vertices .emplace_back (math::vector3 <Type> (coords [0], coords [1], coords [2]), vertices [0] -> data ());
 
 	*outData = &self -> m_vertices .back ();
+
+	if (self -> m_combine)
+		self -> m_combine (self -> m_vertices .back (), vertices, weight);
 }
 
 template <class Type, class ... Args>

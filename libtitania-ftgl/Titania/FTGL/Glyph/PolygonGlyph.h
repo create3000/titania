@@ -30,6 +30,8 @@
 
 #include "Glyph.h"
 
+#include <memory>
+
 namespace titania {
 namespace FTGL {
 
@@ -50,24 +52,21 @@ public:
 	 * Constructor. Sets the Error to Invalid_Outline if the glyphs
 	 * isn't an outline.
 	 *
-	 * @param glyph The Freetype glyph to be processed
-	 * @param outset  The outset distance
-	 * @param useDisplayList Enable or disable the use of Display Lists
-	 *                       for this glyph
-	 *                       <code>true</code> turns ON display lists.
-	 *                       <code>false</code> turns OFF display lists.
+	 * @param glyph         The Freetype glyph to be processed
+	 * @param outset        The outset distance
+	 * @param bezierSteps   Number of bezier steps
 	 */
-	PolygonGlyph (FT_GlyphSlot glyph, double outset);
+	PolygonGlyph (FT_GlyphSlot glyph, const double outset, const size_t bezierSteps);
 
 	///  @name Operations
 
 	/**
 	 * Render this glyph at the current pen position.
 	 *
-	 * @param pen         The current pen position.
-	 * @param indices     Specify the output array of indices of the mesh
-	 * @param points      Specify the output array of points of the mesh
-	 * @return            The advance distance for this glyph.
+	 * @param pen       The current pen position
+	 * @param indices   Specify the output array of indices of the mesh
+	 * @param points    Specify the output array of points of the mesh
+	 * @return          The advance distance for this glyph.
 	 */
 	virtual
 	const Vector3d &
@@ -91,10 +90,8 @@ private:
 	/**
 	 * Private rendering variables.
 	 */
-	uint32_t    hscale;
-	uint32_t    vscale;
-	Vectorizer* vectoriser;
-	double      outset;
+	std::unique_ptr <Vectorizer> vectoriser;
+	double                       outset;
 
 };
 

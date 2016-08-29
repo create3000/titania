@@ -49,22 +49,14 @@ class Charmap;
  */
 class GlyphContainer
 {
-	using GlyphVector = std::vector <Glyph*>;
-
-
 public:
 
 	/**
 	 * Constructor
 	 *
-	 * @param face      The Freetype face
+	 * @param face   The Freetype face
 	 */
-	GlyphContainer (Face* face);
-
-	/**
-	 * Destructor
-	 */
-	~GlyphContainer ();
+	GlyphContainer (Face* const face);
 
 	/**
 	 * Sets the character map for the face.
@@ -125,9 +117,9 @@ public:
 
 	/**
 	 * Renders a character
-	 * @param characterCode      the glyph to be Rendered
-	 * @param nextCharacterCode  the next glyph in the string. Used for kerning.
-	 * @param penPosition        the position to Render the glyph
+	 * @param characterCode      The glyph to be Rendered
+	 * @param nextCharacterCode  The next glyph in the string. Used for kerning.
+	 * @param penPosition        The position to Render the glyph
 	 * @param indices            Specify the output array of indices of the mesh
 	 * @param points             Specify the output array of points of the mesh
 	 * @return                   The distance to advance the pen position after Rendering
@@ -135,7 +127,7 @@ public:
 	Vector3d
 	triangulate (const uint32_t charCode,
 	             const uint32_t nextCharCode,
-	             Vector3d penPosition,
+	             const Vector3d & penPosition,
 	             std::vector <size_t> & indices,
 	             std::vector <Vector3d> & points) const;
 
@@ -145,15 +137,23 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return error; }
+	getError () const
+	{ return error; }
+
+	/**
+	 * Destructor
+	 */
+	~GlyphContainer ();
 
 
 private:
 
+	using GlyphVector = std::vector <Glyph*>;
+
 	/**
 	 * The FTGL face
 	 */
-	Face* face;
+	Face* const face;
 
 	/**
 	 * The Character Map object associated with the current face

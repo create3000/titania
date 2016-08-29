@@ -29,6 +29,8 @@
 
 #include "Contour.h"
 
+#include <Titania/Math/Mesh/Tessellator.h>
+
 #include <list>
 #include <vector>
 
@@ -55,9 +57,47 @@ public:
 	/**
 	 * Constructor
 	 *
-	 * @param glyph The freetype glyph to be processed
+	 * @param glyph         The freetype glyph to be processed.
+	 * @param bezierSteps   Number of bezier steps. A good value is 5.
 	 */
-	Vectorizer (const FT_GlyphSlot glyph);
+	Vectorizer (const FT_GlyphSlot glyph, const size_t bezierSteps);
+
+	///  @name Operations
+
+	/**
+	 * Build an Mesh from the vector outline data.
+	 *
+	 * @param zNormal  The direction of the z axis of the normal
+	 *                 for this mesh
+	 * FIXME: change the following for a constant
+	 * @param outsetType  Specify the outset type contour
+	 *  0 : Original
+	 *  1 : Front
+	 *  2 : Back
+	 * @param outsetSize  Specify the outset size contour
+	 * @param indices     Specify the output array of indices of the mesh
+	 * @param points      Specify the output array of points of the mesh
+	 */
+	void
+	triangulate (const double zNormal,
+	             const int32_t outsetType,
+	             const double outsetSize,
+	             const Vector3d & offset,
+	             std::vector <size_t> & indices,
+	             std::vector <Vector3d> & points);
+
+	///  @name Destruction
+
+	/**
+	 *  Destructor
+	 */
+	virtual
+	~Vectorizer ();
+
+
+private:
+
+	using Tesselator = math::tessellator <double, size_t>;
 
 	///  @name Member access
 
@@ -67,7 +107,7 @@ public:
 	 * @return the number of points
 	 */
 	size_t
-	getPointCount ();
+	getPointCount () const;
 
 	/**
 	 * Get the count of contours in this outline
@@ -108,48 +148,16 @@ public:
 	///  @name Operations
 
 	/**
-	 * Build an Mesh from the vector outline data.
-	 *
-	 * @param zNormal  The direction of the z axis of the normal
-	 *                 for this mesh
-	 * FIXME: change the following for a constant
-	 * @param outsetType  Specify the outset type contour
-	 *  0 : Original
-	 *  1 : Front
-	 *  2 : Back
-	 * @param outsetSize  Specify the outset size contour
-	 * @param indices     Specify the output array of indices of the mesh
-	 * @param points      Specify the output array of points of the mesh
-	 */
-	void
-	triangulate (const double zNormal,
-	             const int32_t outsetType,
-	             const double outsetSize,
-	             const Vector3d & offset,
-	             std::vector <size_t> & indices,
-	             std::vector <Vector3d> & points);
-
-	///  @name Destruction
-
-	/**
-	 *  Destructor
-	 */
-	virtual
-	~Vectorizer ();
-
-
-private:
-
-	///  @name Operations
-
-	/**
 	 * Process the freetype outline data into contours of points
 	 *
-	 * @param front front outset distance
-	 * @param back back outset distance
+	 * @param bezierSteps   number of bezier steps
 	 */
 	void
-	processContours ();
+	processContours (const size_t bezierSteps);
+
+	// Combine function for tesselator
+	void
+	combine (std::vector <Vector3d> & points, Tesselator::vertex & vertex, const Tesselator::vertex* const vertices [4], const float weight [4]) const;
 
 	///  @name Members
 

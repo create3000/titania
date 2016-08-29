@@ -288,35 +288,11 @@ Appearance::draw ()
 	}
 	#endif
 
-	getBrowser () -> setAppearance (this);
+	getBrowser () -> setLineProperties (linePropertiesNode);
+	getBrowser () -> setMaterial (materialNode);
 	getBrowser () -> setTexture (textureNode);
+	getBrowser () -> setTextureTransform (textureTransformNode);
 	getBrowser () -> setShader (shaderNode ? shaderNode : getBrowser () -> getDefaultShader ());
-}
-
-/*
- *  Shader rendering version,
- *  still incomplete,
- *  used for Phong shading.
- */
-
-void
-Appearance::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
-{
-	static const auto textureType = std::vector <int32_t> ({ 0 });
-
-	linePropertiesNode -> setShaderUniforms (shaderObject);
-
-	if (materialNode)
-		materialNode -> setShaderUniforms (shaderObject);
-	else
-		glUniform1i (shaderObject -> getLightingUniformLocation (), false);
-
-	if (textureNode)
-		textureNode -> setShaderUniforms (shaderObject);
-	else
-		glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
-
-	textureTransformNode -> setShaderUniforms (shaderObject);
 }
 
 } // X3D

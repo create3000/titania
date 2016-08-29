@@ -144,6 +144,7 @@ private:
 	X3DFieldToggleButton <X3D::SFBool>     topToBottom;
 	MFStringComboBoxText                   majorAlignment;          
 	MFStringComboBoxText                   minorAlignment;          
+	X3DFieldAdjustment <X3D::SFInt32>      bezierDimension;
 
 	X3D::X3DPtrArray <X3D::Text>        texts;
 	X3D::SFTime                         fontStyleNodeBuffer;

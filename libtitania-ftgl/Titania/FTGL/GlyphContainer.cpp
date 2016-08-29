@@ -33,33 +33,22 @@
 namespace titania {
 namespace FTGL {
 
-GlyphContainer::GlyphContainer (Face* f) :
-	 face (f),
-	error (0)
+GlyphContainer::GlyphContainer (Face* const face) :
+	       face (face),
+	    charMap (new Charmap (face)),
+	     glyphs (),
+	      error (0)
 {
 	glyphs .emplace_back (nullptr);
-	charMap = new Charmap (face);
-}
-
-GlyphContainer::~GlyphContainer ()
-{
-	GlyphVector::iterator it;
-
-	for (it = glyphs .begin (); it not_eq glyphs .end (); ++ it)
-	{
-		delete *it;
-	}
-
-	glyphs .clear ();
-	delete charMap;
 }
 
 bool
 GlyphContainer::setCharMap (FT_Encoding encoding)
 {
-	bool result = charMap -> setCharMap (encoding);
+	const bool result = charMap -> setCharMap (encoding);
 
 	error = charMap -> getError ();
+
 	return result;
 }
 
@@ -73,13 +62,14 @@ void
 GlyphContainer::add (Glyph* tempGlyph, const uint32_t charCode)
 {
 	charMap -> setInsertIndex (charCode, glyphs .size ());
+
 	glyphs .emplace_back (tempGlyph);
 }
 
 const Glyph* const
 GlyphContainer::getGlyph (const uint32_t charCode) const
 {
-	uint32_t index = charMap -> getGlyphListIndex (charCode);
+	const uint32_t index = charMap -> getGlyphListIndex (charCode);
 
 	return glyphs [index];
 }
@@ -103,7 +93,7 @@ GlyphContainer::advance (const uint32_t charCode,
 Vector3d
 GlyphContainer::triangulate (const uint32_t charCode,
                              const uint32_t nextCharCode,
-                             Vector3d penPosition,
+                             const Vector3d & penPosition,
                              std::vector <size_t> & indices,
                              std::vector <Vector3d> & points) const
 {
@@ -112,12 +102,21 @@ GlyphContainer::triangulate (const uint32_t charCode,
 	Vector3d       kernAdvance = face -> getKernAdvance (left, right);
 
 	if (not face -> getError ())
-	{
-		const uint32_t index = charMap -> getGlyphListIndex (charCode);
-		kernAdvance += glyphs [index] -> triangulate (penPosition, indices, points);
-	}
+		kernAdvance += getGlyph (charCode) -> triangulate (penPosition, indices, points);
 
 	return kernAdvance;
+}
+
+GlyphContainer::~GlyphContainer ()
+{
+	GlyphVector::iterator it;
+
+	for (const auto glyph : glyphs)
+		delete glyph;
+
+	glyphs .clear ();
+
+	delete charMap;
 }
 
 } // FTGL

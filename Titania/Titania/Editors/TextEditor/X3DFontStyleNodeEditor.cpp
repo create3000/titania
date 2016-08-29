@@ -51,6 +51,8 @@
 #include "X3DFontStyleNodeEditor.h"
 
 #include "MFStringFamilyWidget.h"
+
+#include <Titania/X3D/Browser/Text/FontStyleOptions.h>
 #include <Titania/String.h>
 
 namespace titania {
@@ -80,6 +82,10 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	           topToBottom (this, getFontStyleTopToBottomCheckButton (), "topToBottom"),
 	        majorAlignment (this, getFontStyleMajorAlignmentComboBoxText (), "justify", 0, "BEGIN"),
 	        minorAlignment (this, getFontStyleMinorAlignmentComboBoxText (), "justify", 1, "FIRST"),
+	       bezierDimension (this,
+	                        getFontStyleBezierDimensionAdjustment (),
+	                        getFontStyleBezierDimensionSpinButton (),
+	                        "bezierDimension"),
 	                 texts (),
 	   fontStyleNodeBuffer (),
 	         fontStyleNode (),
@@ -290,17 +296,19 @@ X3DFontStyleNodeEditor::set_node ()
 void
 X3DFontStyleNodeEditor::set_widgets ()
 {
-	const X3D::MFNode nodes = { fontStyleNode };
+	const X3D::MFNode nodes  = { fontStyleNode };
+	const X3D::MFNode global = { getCurrentBrowser () -> getFontStyleOptions () };
 
 	family -> setNodes (nodes);
-	size           .setNodes (nodes);
-	pointSize      .setNodes (nodes);
-	spacing        .setNodes (nodes);
-	horizontal     .setNodes (nodes);
-	leftToRight    .setNodes (nodes);
-	topToBottom    .setNodes (nodes);
-	majorAlignment .setNodes (nodes);
-	minorAlignment .setNodes (nodes);
+	size            .setNodes (nodes);
+	pointSize       .setNodes (nodes);
+	spacing         .setNodes (nodes);
+	horizontal      .setNodes (nodes);
+	leftToRight     .setNodes (nodes);
+	topToBottom     .setNodes (nodes);
+	majorAlignment  .setNodes (nodes);
+	minorAlignment  .setNodes (nodes);
+	bezierDimension .setNodes (global);
 }
 
 /***********************************************************************************************************************
@@ -377,8 +385,9 @@ X3DFontStyleNodeEditor::connectStyle (const X3D::SFString & field)
 void
 X3DFontStyleNodeEditor::on_size_sensitive_changed ()
 {
-	getFontStyleSizeLabel ()      .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
-	getFontStyleSizeSpinButton () .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
+	getFontStyleSizeLabel ()        .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
+	getFontStyleSizeSpinButton ()   .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
+	getFontStyleGlobalOptionsBox () .set_visible (getFontStyleSizeSpinButton () .get_sensitive ());
 }
 
 void

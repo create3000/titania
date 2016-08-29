@@ -51,20 +51,23 @@
 #include "X3DTextContext.h"
 
 #include "../../Components/Text/FontStyle.h"
+#include "FontStyleOptions.h"
 
 namespace titania {
 namespace X3D {
 
 X3DTextContext::X3DTextContext () :
 	     X3DBaseNode (),
+	fontStyleOptions (new FontStyleOptions (getExecutionContext ())),
 	defaultFontStyle (new FontStyle (getExecutionContext ()))
 {
-	addChildren (defaultFontStyle);
+	addChildren (fontStyleOptions, defaultFontStyle);
 }
 
 void
 X3DTextContext::initialize ()
 {
+	fontStyleOptions -> setup ();
 	defaultFontStyle -> setup ();
 }
 

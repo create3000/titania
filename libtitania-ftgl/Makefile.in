@@ -121,7 +121,7 @@ am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
 am__uninstall_files_from_dir = { \
   test -z "$$files" \
-    || { test not -d "$$dir" && test not -f "$$dir" && test not -r "$$dir"; } \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
@@ -641,11 +641,11 @@ distdir: $(DISTFILES)
 	  if test -d $$d/$$file; then \
 	    dir=`echo "/$$file" | sed -e 's,/[^/]*$$,,'`; \
 	    if test -d "$(distdir)/$$file"; then \
-	      find "$(distdir)/$$file" -type d not -perm -700 -exec chmod u+rwx {} \;; \
+	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
 	    fi; \
-	    if test -d $(srcdir)/$$file && test $$d not= $(srcdir); then \
+	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
 	      cp -fpR $(srcdir)/$$file "$(distdir)$$dir" || exit 1; \
-	      find "$(distdir)/$$file" -type d not -perm -700 -exec chmod u+rwx {} \;; \
+	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
 	    fi; \
 	    cp -fpR $$d/$$file "$(distdir)$$dir" || exit 1; \
 	  else \

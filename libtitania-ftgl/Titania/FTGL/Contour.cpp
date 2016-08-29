@@ -32,10 +32,85 @@
 namespace titania {
 namespace FTGL {
 
-static constexpr uint32_t BEZIER_STEPS = 5;
+Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, const size_t bezierSteps)
+{
+	const size_t c = (n - 1) % n;
+
+	Vector3d prev;
+	Vector3d cur (contour [c] .x, contour [c] .y, 0);
+	Vector3d next (contour [0] .x, contour [0] .y, 0);
+	Vector3d a;
+	double   olddir;
+	double   dir   = atan2 ((next - cur) .y (), (next - cur) .x ());
+	double   angle = 0.0;
+
+	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-6.html
+	// for a full description of FreeType tags.
+	for (size_t i = 0; i < n; i ++)
+	{
+		const size_t i1 = (i + 1) % n;
+
+		prev   = cur;
+		cur    = next;
+		next   = Vector3d (contour [i1] .x, contour [i1] .y, 0);
+		olddir = dir;
+		dir    = atan2 ((next - cur) .y (), (next - cur) .x ());
+
+		// Compute our path's new direction.
+		double t = dir - olddir;
+
+		if (t < -M_PI)
+			t += 2 * M_PI;
+
+		if (t > M_PI)
+			t -= 2 * M_PI;
+
+		angle += t;
+
+		// Only process point tags we know.
+		if (n < 2 or FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_On)
+		{
+			addPoint (cur);
+		}
+		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Conic)
+		{
+			Vector3d prev2 = prev, next2 = next;
+
+			// Previous point is either the real previous point (an "on"
+			// point), or the midpoint between the current one and the
+			// previous "conic off" point.
+			if (FT_CURVE_TAG (tags [(i - 1 + n) % n]) == FT_Curve_Tag_Conic)
+			{
+				prev2 = (cur + prev) * 0.5;
+				addPoint (prev2);
+			}
+
+			// Next point is either the real next point or the midpoint.
+			if (FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Conic)
+			{
+				next2 = (cur + next) * 0.5;
+			}
+
+			evaluateQuadraticCurve (prev2, cur, next2, bezierSteps);
+		}
+		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
+		         and FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
+		{
+			const size_t i2 = (i + 2) % n;
+
+			evaluateCubicCurve (prev, cur, next,
+			                    Vector3d (contour [i2] .x, contour [i2] .y, 0),
+			                    bezierSteps);
+		}
+	}
+
+	// If final angle is positive (+2PI), it's an anti-clockwise contour,
+	// otherwise (-2PI) it's clockwise.
+	clockwise = (angle < 0.0);
+}
 
 void
-Contour::addPoint (Vector3d point)
+Contour::addPoint (const Vector3d & point)
 {
 	if (pointList.empty () or (point not_eq pointList [pointList.size () - 1]
 	                           and point not_eq pointList [0]))
@@ -45,50 +120,50 @@ Contour::addPoint (Vector3d point)
 }
 
 void
-Contour::addOutsetPoint (Vector3d point)
+Contour::addOutsetPoint (const Vector3d & point)
 {
 	outsetPointList .emplace_back (point);
 }
 
 void
-Contour::addFrontPoint (Vector3d point)
+Contour::addFrontPoint (const Vector3d & point)
 {
 	frontPointList .emplace_back (point);
 }
 
 void
-Contour::addBackPoint (Vector3d point)
+Contour::addBackPoint (const Vector3d & point)
 {
 	backPointList .emplace_back (point);
 }
 
 void
-Contour::evaluateQuadraticCurve (Vector3d A, Vector3d B, Vector3d C)
+Contour::evaluateQuadraticCurve (const Vector3d & A, const Vector3d & B, const Vector3d & C, const size_t bezierSteps)
 {
-	for (uint32_t i = 1; i < BEZIER_STEPS; i ++)
+	for (size_t i = 1; i < bezierSteps; i ++)
 	{
-		double t = static_cast <double> (i) / BEZIER_STEPS;
+		const auto t = static_cast <double> (i) / bezierSteps;
 
-		Vector3d U = (1 - t) * A + t * B;
-		Vector3d V = (1 - t) * B + t * C;
+		const auto U = (1 - t) * A + t * B;
+		const auto V = (1 - t) * B + t * C;
 
 		addPoint ((1 - t) * U + t * V);
 	}
 }
 
 void
-Contour::evaluateCubicCurve (Vector3d A, Vector3d B, Vector3d C, Vector3d D)
+Contour::evaluateCubicCurve (const Vector3d & A, const Vector3d & B, const Vector3d & C, const Vector3d & D, const size_t bezierSteps)
 {
-	for (uint32_t i = 0; i < BEZIER_STEPS; i ++)
+	for (size_t i = 0; i < bezierSteps; i ++)
 	{
-		double t = static_cast <double> (i) / BEZIER_STEPS;
+		const double t = static_cast <double> (i) / bezierSteps;
 
-		Vector3d U = (1 - t) * A + t * B;
-		Vector3d V = (1 - t) * B + t * C;
-		Vector3d W = (1 - t) * C + t * D;
+		const auto U = (1 - t) * A + t * B;
+		const auto V = (1 - t) * B + t * C;
+		const auto W = (1 - t) * C + t * D;
 
-		Vector3d M = (1 - t) * U + t * V;
-		Vector3d N = (1 - t) * V + t * W;
+		const auto M = (1 - t) * U + t * V;
+		const auto N = (1 - t) * V + t * W;
 
 		addPoint ((1 - t) * M + t * N);
 	}
@@ -109,7 +184,7 @@ Contour::evaluateCubicCurve (Vector3d A, Vector3d B, Vector3d C, Vector3d D)
 //                C X                     C X
 //
 Vector3d
-Contour::computeOutsetPoint (Vector3d A, Vector3d B, Vector3d C)
+Contour::computeOutsetPoint (const Vector3d & A, const Vector3d & B, const Vector3d & C)
 {
 	/* Build the rotation matrix from 'ba' vector */
 	Vector3d ba = normalize (A - B);
@@ -166,84 +241,8 @@ Contour::setParity (int32_t parity)
 	}
 }
 
-Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
-{
-	uint32_t c = (n - 1) % n;
-
-	Vector3d prev;
-	Vector3d cur (contour [c] .x, contour [c] .y, 0);
-	Vector3d next (contour [0] .x, contour [0] .y, 0);
-	Vector3d a;
-	double   olddir;
-	double   dir   = atan2 ((next - cur) .y (), (next - cur) .x ());
-	double   angle = 0.0;
-
-	// See http://freetype.sourceforge.net/freetype2/docs/glyphs/glyphs-6.html
-	// for a full description of FreeType tags.
-	for (uint32_t i = 0; i < n; i ++)
-	{
-		uint32_t i1 = (i + 1) % n;
-
-		prev   = cur;
-		cur    = next;
-		next   = Vector3d (contour [i1] .x, contour [i1] .y, 0);
-		olddir = dir;
-		dir    = atan2 ((next - cur) .y (), (next - cur) .x ());
-
-		// Compute our path's new direction.
-		double t = dir - olddir;
-
-		if (t < -M_PI)
-			t += 2 * M_PI;
-
-		if (t > M_PI)
-			t -= 2 * M_PI;
-
-		angle += t;
-
-		// Only process point tags we know.
-		if (n < 2 or FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_On)
-		{
-			addPoint (cur);
-		}
-		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Conic)
-		{
-			Vector3d prev2 = prev, next2 = next;
-
-			// Previous point is either the real previous point (an "on"
-			// point), or the midpoint between the current one and the
-			// previous "conic off" point.
-			if (FT_CURVE_TAG (tags [(i - 1 + n) % n]) == FT_Curve_Tag_Conic)
-			{
-				prev2 = (cur + prev) * 0.5;
-				addPoint (prev2);
-			}
-
-			// Next point is either the real next point or the midpoint.
-			if (FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Conic)
-			{
-				next2 = (cur + next) * 0.5;
-			}
-
-			evaluateQuadraticCurve (prev2, cur, next2);
-		}
-		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
-		         and FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
-		{
-			uint32_t i2 = (i + 2) % n;
-
-			evaluateCubicCurve (prev, cur, next,
-			                    Vector3d (contour [i2] .x, contour [i2] .y, 0));
-		}
-	}
-
-	// If final angle is positive (+2PI), it's an anti-clockwise contour,
-	// otherwise (-2PI) it's clockwise.
-	clockwise = (angle < 0.0);
-}
-
 void
-Contour::buildFrontOutset (double outset)
+Contour::buildFrontOutset (const double outset)
 {
 	for (size_t i = 0; i < getPointCount (); ++ i)
 	{
@@ -252,7 +251,7 @@ Contour::buildFrontOutset (double outset)
 }
 
 void
-Contour::buildBackOutset (double outset)
+Contour::buildBackOutset (const double outset)
 {
 	for (size_t i = 0; i < getPointCount (); ++ i)
 	{

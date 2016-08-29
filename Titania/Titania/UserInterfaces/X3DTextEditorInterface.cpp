@@ -61,18 +61,19 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_FontStyleFamilyListStore        = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
-	m_FontStylePointSizeAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStylePointSizeAdjustment"));
-	m_FontStyleSizeAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
-	m_FontStyleSpacingAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
-	m_TextCharSpacingAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextCharSpacingAdjustment"));
-	m_TextMaxExtentAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
-	m_TextStringTextBuffer            = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
-	m_FontStyleFamilySelection        = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
-	m_FontStyleFamilyColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyColumn"));
-	m_FontStyleFamilyCellrendererText = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyCellrendererText"));
-	m_FontStyleFamilyChooserColumn    = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyChooserColumn"));
-	m_FontStyleFileChooserColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFileChooserColumn"));
+	m_FontStyleBezierDimensionAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleBezierDimensionAdjustment"));
+	m_FontStyleFamilyListStore           = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyListStore"));
+	m_FontStylePointSizeAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStylePointSizeAdjustment"));
+	m_FontStyleSizeAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSizeAdjustment"));
+	m_FontStyleSpacingAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("FontStyleSpacingAdjustment"));
+	m_TextCharSpacingAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextCharSpacingAdjustment"));
+	m_TextMaxExtentAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TextMaxExtentAdjustment"));
+	m_TextStringTextBuffer               = Glib::RefPtr <Gtk::TextBuffer>::cast_dynamic (m_builder -> get_object ("TextStringTextBuffer"));
+	m_FontStyleFamilySelection           = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("FontStyleFamilySelection"));
+	m_FontStyleFamilyColumn              = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyColumn"));
+	m_FontStyleFamilyCellrendererText    = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyCellrendererText"));
+	m_FontStyleFamilyChooserColumn       = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFamilyChooserColumn"));
+	m_FontStyleFileChooserColumn         = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FontStyleFileChooserColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -109,6 +110,8 @@ X3DTextEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FontStyleFamilyAddButton", m_FontStyleFamilyAddButton);
 	m_builder -> get_widget ("FontStyleFamilyRemoveButton", m_FontStyleFamilyRemoveButton);
 	m_builder -> get_widget ("FontStylePointSizeSpinButton", m_FontStylePointSizeSpinButton);
+	m_builder -> get_widget ("FontStyleGlobalOptionsBox", m_FontStyleGlobalOptionsBox);
+	m_builder -> get_widget ("FontStyleBezierDimensionSpinButton", m_FontStyleBezierDimensionSpinButton);
 	m_builder -> get_widget ("FamilyChooserDialog", m_FamilyChooserDialog);
 
 	// Connect object Gtk::Adjustment with id 'TextCharSpacingAdjustment'.

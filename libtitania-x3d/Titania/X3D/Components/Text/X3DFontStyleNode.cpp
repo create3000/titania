@@ -63,7 +63,8 @@
 namespace titania {
 namespace X3D {
 
-X3DTextGeometry::X3DTextGeometry (const X3DFontStyleNode* const fontStyle) :
+X3DTextGeometry::X3DTextGeometry (Text* const text, const X3DFontStyleNode* const fontStyle) :
+	          text (text),
 	     fontStyle (fontStyle),
 	          bbox (),
 	  charSpacings (),
@@ -74,7 +75,7 @@ X3DTextGeometry::X3DTextGeometry (const X3DFontStyleNode* const fontStyle) :
 { }
 
 void
-X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fontStyle)
+X3DTextGeometry::initialize ()
 {
 	const size_t numLines = text -> string () .size ();
 
@@ -93,9 +94,9 @@ X3DTextGeometry::initialize (Text* const text, const X3DFontStyleNode* const fon
 	}
 
 	if (fontStyle -> horizontal ())
-		horizontal (text, fontStyle);
+		horizontal ();
 	else
-		vertical (text, fontStyle);
+		vertical ();
 }
 
 X3DBrowser*
@@ -105,7 +106,7 @@ X3DTextGeometry::getBrowser () const
 }
 
 void
-X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fontStyle)
+X3DTextGeometry::horizontal ()
 {
 	Box2d bbox;
 
@@ -131,7 +132,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 		// Get line extents.
 
 		Vector2d min, max;
-		getLineExtents (fontStyle, line .getValue (), min, max);
+		getHorizontalLineExtents (line .getValue (), min, max);
 
 		Vector2d size = max - min;
 
@@ -230,7 +231,7 @@ X3DTextGeometry::horizontal (Text* const text, const X3DFontStyleNode* const fon
 }
 
 void
-X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontStyle)
+X3DTextGeometry::vertical ()
 {
 	size_t numChars = 0;
 
@@ -480,7 +481,7 @@ X3DTextGeometry::vertical (Text* const text, const X3DFontStyleNode* const fontS
 }
 
 void
-X3DTextGeometry::getLineExtents (const X3DFontStyleNode* const fontStyle, const String & line, Vector2d & min, Vector2d & max) const
+X3DTextGeometry::getHorizontalLineExtents (const String & line, Vector2d & min, Vector2d & max) const
 {
 	const bool normal = fontStyle -> horizontal () ? fontStyle -> leftToRight () : fontStyle -> topToBottom ();
 
@@ -505,30 +506,26 @@ X3DTextGeometry::getGlyphExtents (const String::value_type & glyph, Vector2d & m
 	getLineExtents (String (1, glyph), min, max);
 }
 
+//void
+//X3DTextGeometry::compile (Text* const text)
+//{
+//	glNewList (listId, GL_COMPILE);
+//
+//	if (text -> solid ())
+//		glEnable (GL_CULL_FACE);
+//
+//	else
+//		glDisable (GL_CULL_FACE);
+//
+//	draw ();
+//
+//	glEndList ();
+//}
+
 void
-X3DTextGeometry::compile (Text* const text)
+X3DTextGeometry::draw (ShapeContainer* const context)
 {
-	glNewList (listId, GL_COMPILE);
-
-	if (text -> solid ())
-		glEnable (GL_CULL_FACE);
-
-	else
-		glDisable (GL_CULL_FACE);
-
-	draw ();
-
-	glEndList ();
-}
-
-void
-X3DTextGeometry::display (ShapeContainer* const context)
-{
-	// Call display list.
-
-	glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? GL_CCW : GL_CW);
-
-	glCallList (listId);
+	getText () -> X3DGeometryNode::draw (context);
 }
 
 X3DTextGeometry::~X3DTextGeometry ()

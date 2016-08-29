@@ -62,7 +62,8 @@ class Text;
 class X3DFontStyleNode;
 class ShapeContainer;
 
-class X3DTextGeometry
+class X3DTextGeometry :
+	virtual public X3DBaseNode
 {
 public:
 
@@ -87,7 +88,7 @@ public:
 
 	virtual
 	void
-	display (ShapeContainer* const);
+	draw (ShapeContainer* const);
 
 	virtual
 	~X3DTextGeometry ();
@@ -95,13 +96,17 @@ public:
 
 protected:
 
-	X3DTextGeometry (const X3DFontStyleNode* const);
+	X3DTextGeometry (Text* const, const X3DFontStyleNode* const);
 
 	void
-	initialize (Text* const, const X3DFontStyleNode* const);
+	initialize ();
 
 	X3DBrowser*
 	getBrowser () const;
+
+	Text*
+	getText () const
+	{ return text; }
 
 	void
 	setBBox (const Box3d & value)
@@ -127,28 +132,26 @@ protected:
 	void
 	getLineExtents (const String &, Vector2d &, Vector2d &) const = 0;
 
-	void
-	compile (Text* const);
-
 	virtual
 	void
-	draw () = 0;
+	build () = 0;
 
 
 private:
 
 	void
-	horizontal (Text* const, const X3DFontStyleNode* const);
+	horizontal ();
 
 	void
-	vertical (Text* const, const X3DFontStyleNode* const);
+	vertical ();
 
 	void
-	getLineExtents (const X3DFontStyleNode* const, const String &, Vector2d &, Vector2d &) const;
+	getHorizontalLineExtents (const String &, Vector2d &, Vector2d &) const;
 
 	void
 	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
 
+	Text* const                   text;
 	const X3DFontStyleNode* const fontStyle;
 	Box3d                         bbox;
 	std::vector <double>          charSpacings;
@@ -273,7 +276,7 @@ public:
 	getFontFace () const = 0;
 
 	virtual
-	std::unique_ptr <X3DTextGeometry>
+	X3DPtr <X3DTextGeometry>
 	getTextGeometry (Text* const) const = 0;
 
 

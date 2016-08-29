@@ -27,12 +27,10 @@
 
 #include "Vectorizer.h"
 
-#include <Titania/Math/Mesh/Tessellator.h>
-
 namespace titania {
 namespace FTGL {
 
-Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
+Vectorizer::Vectorizer (const FT_GlyphSlot glyph, const size_t bezierSteps) :
 	   contourList (nullptr),
 	ftContourCount (0),
 	   contourFlag (0),
@@ -43,15 +41,33 @@ Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
 		outline = glyph -> outline;
 
 		ftContourCount = outline .n_contours;
-		contourList    = 0;
 		contourFlag    = outline .flags;
 
-		processContours ();
+		processContours (bezierSteps);
 	}
 }
 
+size_t
+Vectorizer::getPointCount () const
+{
+	size_t s = 0;
+
+	for (size_t c = 0; c < getContourCount (); ++ c)
+	{
+		s += contourList [c] -> getPointCount ();
+	}
+
+	return s;
+}
+
+const Contour* const
+Vectorizer::getContour (size_t index) const
+{
+	return (index < getContourCount ()) ? contourList [index] : nullptr;
+}
+
 void
-Vectorizer::processContours ()
+Vectorizer::processContours (const size_t bezierSteps)
 {
 	short contourLength = 0;
 	short startIndex    = 0;
@@ -61,13 +77,13 @@ Vectorizer::processContours ()
 
 	for (int32_t i = 0; i < ftContourCount; ++ i)
 	{
-		FT_Vector* pointList = &outline.points [startIndex];
-		char*      tagList   = &outline.tags [startIndex];
+		FT_Vector* pointList = &outline .points [startIndex];
+		char*      tagList   = &outline .tags [startIndex];
 
 		endIndex      = outline .contours [i];
-		contourLength =  (endIndex - startIndex) + 1;
+		contourLength = (endIndex - startIndex) + 1;
 
-		Contour* contour = new Contour (pointList, tagList, contourLength);
+		Contour* contour = new Contour (pointList, tagList, contourLength, bezierSteps);
 
 		contourList [i] = contour;
 
@@ -140,25 +156,6 @@ Vectorizer::processContours ()
 	}
 }
 
-size_t
-Vectorizer::getPointCount ()
-{
-	size_t s = 0;
-
-	for (size_t c = 0; c < getContourCount (); ++ c)
-	{
-		s += contourList [c] -> getPointCount ();
-	}
-
-	return s;
-}
-
-const Contour* const
-Vectorizer::getContour (size_t index) const
-{
-	return (index < getContourCount ()) ? contourList [index] : nullptr;
-}
-
 void
 Vectorizer::triangulate (const double zNormal,
                          const int32_t outsetType,
@@ -167,7 +164,17 @@ Vectorizer::triangulate (const double zNormal,
                          std::vector <size_t> & indices,
                          std::vector <Vector3d> & points)
 {
-	math::tessellator <double, size_t> tessellator;
+	using namespace std::placeholders;
+
+	if (getContourCount () < 1)
+		return;
+
+	if (getPointCount () < 3)
+		return;
+
+	Tesselator tessellator;
+
+	tessellator .combine (std::bind (&Vectorizer::combine, this, std::ref (points), _1, _2, _3));
 
 	if (contourFlag & ft_outline_even_odd_fill) // ft_outline_reverse_fill
 	{
@@ -184,7 +191,7 @@ Vectorizer::triangulate (const double zNormal,
 
 	for (size_t c = 0; c < getContourCount (); ++ c)
 	{
-		/* Build the */
+		// Build the outsetType
 		switch (outsetType)
 		{
 			case 1: contourList [c] -> buildFrontOutset (outsetSize); break;
@@ -216,6 +223,14 @@ Vectorizer::triangulate (const double zNormal,
 
 	for (const auto & vertex : tessellator .triangles ())
 		indices .emplace_back (std::get <0> (vertex .data ()));
+}
+
+void
+Vectorizer::combine (std::vector <Vector3d> & points, Tesselator::vertex & vertex, const Tesselator::vertex* const vertices [4], const float weight [4]) const
+{
+	vertex .data (std::make_tuple (points .size ()));
+
+	points .emplace_back (vertex .point ());
 }
 
 Vectorizer::~Vectorizer ()

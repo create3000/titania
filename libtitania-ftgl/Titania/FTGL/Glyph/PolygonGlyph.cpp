@@ -36,11 +36,9 @@ namespace FTGL {
 //  PolygonGlyph
 //
 
-PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
+PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, const double outset, const size_t bezierSteps) :
 	     Glyph (glyph),
-	    hscale (0),
-	    vscale (0),
-	vectoriser (nullptr),
+	vectoriser (new Vectorizer (glyph, bezierSteps)),
 	    outset (outset)
 {
 	if (glyph -> format not_eq ft_glyph_format_outline)
@@ -48,18 +46,6 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
 		setError (0x14); // Invalid_Outline
 		return;
 	}
-
-	vectoriser = new Vectorizer (glyph);
-
-	if ((vectoriser -> getContourCount () < 1) or (vectoriser -> getPointCount () < 3))
-	{
-		delete vectoriser;
-		vectoriser = nullptr;
-		return;
-	}
-
-	hscale = glyph -> face -> size -> metrics .x_ppem * 64;
-	vscale = glyph -> face -> size -> metrics .y_ppem * 64;
 }
 
 const Vector3d &
@@ -67,21 +53,13 @@ PolygonGlyph::triangulate (const Vector3d & pen,
                            std::vector <size_t> & indices,
                            std::vector <Vector3d> & points) const
 {
-	if (vectoriser)
-	{
-		vectoriser -> triangulate (1, 1, outset, pen, indices, points);
-	}
+	vectoriser -> triangulate (1, 1, outset, pen, indices, points);
 
 	return getAdvance ();
 }
 
 PolygonGlyph::~PolygonGlyph ()
-{
-	if (vectoriser)
-	{
-		delete vectoriser;
-	}
-}
+{ }
 
 } // FTGL
 } // titania

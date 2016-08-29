@@ -99,6 +99,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getFontStyleBezierDimensionAdjustment () const
+	{ return m_FontStyleBezierDimensionAdjustment; }
+
 	const Glib::RefPtr <Gtk::ListStore> &
 	getFontStyleFamilyListStore () const
 	{ return m_FontStyleFamilyListStore; }
@@ -283,6 +287,14 @@ public:
 	getFontStylePointSizeSpinButton () const
 	{ return *m_FontStylePointSizeSpinButton; }
 
+	Gtk::Grid &
+	getFontStyleGlobalOptionsBox () const
+	{ return *m_FontStyleGlobalOptionsBox; }
+
+	Gtk::SpinButton &
+	getFontStyleBezierDimensionSpinButton () const
+	{ return *m_FontStyleBezierDimensionSpinButton; }
+
 	Gtk::FontChooserDialog &
 	getFamilyChooserDialog () const
 	{ return *m_FamilyChooserDialog; }
@@ -339,6 +351,7 @@ private:
 
 	std::string                          filename;
 	Glib::RefPtr <Gtk::Builder>          m_builder;
+	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleBezierDimensionAdjustment;
 	Glib::RefPtr <Gtk::ListStore>        m_FontStyleFamilyListStore;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStylePointSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>       m_FontStyleSizeAdjustment;
@@ -385,6 +398,8 @@ private:
 	Gtk::Button*                         m_FontStyleFamilyAddButton;
 	Gtk::Button*                         m_FontStyleFamilyRemoveButton;
 	Gtk::SpinButton*                     m_FontStylePointSizeSpinButton;
+	Gtk::Grid*                           m_FontStyleGlobalOptionsBox;
+	Gtk::SpinButton*                     m_FontStyleBezierDimensionSpinButton;
 	Gtk::FontChooserDialog*              m_FamilyChooserDialog;
 
 };

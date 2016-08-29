@@ -64,7 +64,35 @@ class PolygonText :
 {
 public:
 
+	///  @name Construction
+
 	PolygonText (Text* const, const FontStyle* const);
+
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Member access
 
 	virtual
 	bool
@@ -74,15 +102,24 @@ public:
 
 private:
 
+	///  @name Operations
+
 	virtual
 	void
 	getLineExtents (const String &, Vector2d &, Vector2d &) const final override;
 
 	virtual
 	void
-	draw () final override;
+	build () final override;
 
-	Text* const            text;
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
 	const FontStyle* const fontStyle;
 
 };
@@ -122,6 +159,12 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	SFFloat &
@@ -159,7 +202,7 @@ public:
 	{ return polygonFont; }
 
 	virtual
-	std::unique_ptr <X3DTextGeometry>
+	X3DPtr <X3DTextGeometry>
 	getTextGeometry (Text* const) const;
 
 	///  @name Destruction

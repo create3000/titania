@@ -36,13 +36,13 @@ namespace FTGL {
 //  Font
 //
 
-Font::Font (char const* fontFilePath) :
-	      face (fontFilePath),
-	  charSize (),
-	load_flags (FT_LOAD_DEFAULT),
-	 glyphList (nullptr),
-	       pen (),
-	     error (0)
+Font::Font (const std::string & fontFilePath) :
+	       face (fontFilePath .c_str ()),
+	   charSize (),
+	 load_flags (FT_LOAD_DEFAULT),
+	  glyphList (nullptr),
+	        pen (),
+	      error (0)
 {
 	error = face .getError ();
 
@@ -52,13 +52,13 @@ Font::Font (char const* fontFilePath) :
 	}
 }
 
-Font::Font (const uint8_t* pBufferBytes, size_t bufferSizeInBytes) :
-	      face (pBufferBytes, bufferSizeInBytes),
-	  charSize (),
-	load_flags (FT_LOAD_DEFAULT),
-	 glyphList (0),
-	       pen (),
-	     error (0)
+Font::Font (const uint8_t* pBufferBytes, const size_t bufferSizeInBytes) :
+	       face (pBufferBytes, bufferSizeInBytes),
+	   charSize (),
+	 load_flags (FT_LOAD_DEFAULT),
+	  glyphList (0),
+	        pen (),
+	      error (0)
 {
 	error = face .getError ();
 
@@ -219,7 +219,7 @@ Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 Vector3d
 Font::triangulate (const std::string & string,
                    Vector3d position,
-                   Vector3d spacing,
+                   const Vector3d & spacing,
                    std::vector <size_t> & indices,
                    std::vector <Vector3d> & points) const
 {

@@ -52,11 +52,11 @@
 
 #include "ScreenFontStyle.h"
 
-#include "../../Browser/ContextLock.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../Navigation/X3DViewpointNode.h"
+#include "../Texturing/PixelTexture.h"
 #include "../Text/Text.h"
 
 #include <Titania/Physics/Constants.h>
@@ -66,30 +66,41 @@ namespace X3D {
 
 static constexpr double M_POINT = M_INCH / 72;
 
+const ComponentType ScreenText::component      = ComponentType::TITANIA;
+const std::string   ScreenText::typeName       = "ScreenText";
+const std::string   ScreenText::containerField = "textGeometry";
+
 ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle) :
-	X3DTextGeometry (fontStyle),
-	           text (text),
+	    X3DBaseNode (text -> getBrowser (), text -> getExecutionContext ()),
+	X3DTextGeometry (text, fontStyle),
 	      fontStyle (fontStyle),
 	        context (Cairo::Context::create (Cairo::ImageSurface::create (Cairo::FORMAT_RGB24, 0, 0))),
-	      textureId (0),
 	            min (),
 	            max (),
 	           bbox (),
-	         matrix ()
+	         matrix (),
+	    textureNode (new PixelTexture (text -> getExecutionContext ()))
 {
-	const auto screenText = dynamic_cast <ScreenText*> (text -> getTextGeometry () .get ());
+	addChildren (textureNode);
+
+	textureNode -> setup ();
+
+	const auto screenText = dynamic_cast <ScreenText*> (text -> getTextGeometry () .getValue ());
 
 	if (screenText)
 		matrix = screenText -> matrix;
 
-	glGenTextures (1, &textureId);
-
 	configure (context);
-	initialize (text, fontStyle);
+	initialize ();
 	setTextBounds ();
 
 	build ();
-	compile (text);
+}
+
+X3DBaseNode*
+ScreenText::create (X3DExecutionContext* const executionContext) const
+{
+	return new ScreenText (getText (), fontStyle);
 }
 
 void
@@ -121,7 +132,7 @@ ScreenText::getLineExtents (const String & line, Vector2d & min, Vector2d & max)
 void
 ScreenText::setTextBounds ()
 {
-	text -> textBounds () = math::ceil (text -> textBounds () .getValue ());
+	getText () -> textBounds () = math::ceil (getText () -> textBounds () .getValue ());
 
 	X3DTextGeometry::getBBox () .extents (min, max);
 
@@ -130,15 +141,15 @@ ScreenText::setTextBounds ()
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
 			min .x (std::floor (min .x ()));
-			max .x (min .x () + text -> textBounds () .getX ());
+			max .x (min .x () + getText () -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
 			min .x (std::round (min .x ()));
-			max .x (min .x () + text -> textBounds () .getX ());
+			max .x (min .x () + getText () -> textBounds () .getX ());
 			break;
 		case X3DFontStyleNode::Alignment::END:
 			max .x (std::ceil (max .x ()));
-			min .x (max .x () - text -> textBounds () .getX ());
+			min .x (max .x () - getText () -> textBounds () .getX ());
 			break;
 	}
 
@@ -147,19 +158,19 @@ ScreenText::setTextBounds ()
 		case X3DFontStyleNode::Alignment::BEGIN:
 		case X3DFontStyleNode::Alignment::FIRST:
 			max .y (std::ceil (max .y ()));
-			min .y (max .y () - text -> textBounds () .getY ());
+			min .y (max .y () - getText () -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::MIDDLE:
 			max .y (std::round (max .y ()));
-			min .y (max .y () - text -> textBounds () .getY ());
+			min .y (max .y () - getText () -> textBounds () .getY ());
 			break;
 		case X3DFontStyleNode::Alignment::END:
 			min .y (std::floor (min .y ()));
-			max .y (min .y () + text -> textBounds () .getY ());
+			max .y (min .y () + getText () -> textBounds () .getY ());
 			break;
 	}
 
-	text -> origin () = Vector3f (min .x (), max .y (), 0);
+	getText () -> origin () = Vector3f (min .x (), max .y (), 0);
 
 	setBBox (Box3d (min, max, extents_type ()));
 }
@@ -173,8 +184,8 @@ ScreenText::build ()
 	// Create context
 
 	auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
-	                                            text -> textBounds () .getX (),
-	                                            text -> textBounds () .getY ());
+	                                            getText () -> textBounds () .getX (),
+	                                            getText () -> textBounds () .getY ());
 
 	auto context = Cairo::Context::create (surface);
 
@@ -200,20 +211,20 @@ ScreenText::build ()
 			case X3DFontStyleNode::Alignment::FIRST:
 				break;
 			case X3DFontStyleNode::Alignment::MIDDLE:
-				alignment += Vector2d (text -> textBounds () .getX () / 2, 0);
+				alignment += Vector2d (getText () -> textBounds () .getX () / 2, 0);
 				break;
 			case X3DFontStyleNode::Alignment::END:
-				alignment += Vector2d (text -> textBounds () .getX (), 0);
+				alignment += Vector2d (getText () -> textBounds () .getX (), 0);
 				break;
 		}
 
-		const int first = topToBottom ? 0 : text -> string () .size () - 1;
-		const int last  = topToBottom ? text -> string () .size () : -1;
+		const int first = topToBottom ? 0 : getText () -> string () .size () - 1;
+		const int last  = topToBottom ? getText () -> string () .size () : -1;
 		const int step  = topToBottom ? 1 : -1;
 
 		for (int i = first; i not_eq last; i += step)
 		{
-			const auto & line = text -> string () [i] .getValue ();
+			const auto & line = getText () -> string () [i] .getValue ();
 
 			try
 			{
@@ -270,22 +281,22 @@ ScreenText::build ()
 			case X3DFontStyleNode::Alignment::FIRST:
 				break;
 			case X3DFontStyleNode::Alignment::MIDDLE:
-				alignment += Vector2d (0, text -> textBounds () .getY () / 2);
+				alignment += Vector2d (0, getText () -> textBounds () .getY () / 2);
 				break;
 			case X3DFontStyleNode::Alignment::END:
-				alignment += Vector2d (0, text -> textBounds () .getY ());
+				alignment += Vector2d (0, getText () -> textBounds () .getY ());
 				break;
 		}
 
 		const bool leftToRight = fontStyle -> leftToRight ();
 		const bool topToBottom = fontStyle -> topToBottom ();
-		const int  first       = leftToRight ? 0 : text -> string () .size () - 1;
-		const int  last        = leftToRight ? text -> string () .size () : -1;
+		const int  first       = leftToRight ? 0 : getText () -> string () .size () - 1;
+		const int  last        = leftToRight ? getText () -> string () .size () : -1;
 		const int  step        = leftToRight ? 1 : -1;
 
 		for (int i = first, g = 0; i not_eq last; i += step)
 		{
-			const auto & line = text -> string () [i] .getValue ();
+			const auto & line = getText () -> string () [i] .getValue ();
 
 			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{
@@ -321,7 +332,7 @@ ScreenText::build ()
 
 	// Upload texture
 
-	glBindTexture (GL_TEXTURE_2D, textureId);
+	glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
 
 	glTexParameteri (GL_TEXTURE_2D, GL_GENERATE_MIPMAP,    false);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -343,38 +354,37 @@ ScreenText::build ()
 	                        std::numeric_limits <double>::infinity (),
 	                        std::numeric_limits <double>::infinity ()),
 	              Vector3d ());
-}
 
-void
-ScreenText::draw ()
-{
-	// See GL_ARB_texture_env_combine for blending textures
+	// Create geometry
 
-	glEnable (GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, textureId);
-	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	getText () -> getTexCoords () .emplace_back ();
 
-	glMatrixMode (GL_TEXTURE);
-	glLoadIdentity ();
-	glMatrixMode (GL_MODELVIEW);
+	auto & texCoords = getText () -> getTexCoords () .back ();
+	auto & normals   = getText () -> getNormals ();
+	auto & vertices  = getText () -> getVertices ();
 
-	//
+	texCoords .reserve (4);
+	normals   .reserve (4);
+	vertices  .reserve (4);
 
-	glBegin (GL_QUADS);
-	glNormal3d (0, 0, 1);
-	glTexCoord2d (0, 1);
-	glVertex3d (min .x (), min .y (), min .z ());
-	glTexCoord2d (1, 1);
-	glVertex3d (max .x (), min .y (), min .z ());
-	glTexCoord2d (1, 0);
-	glVertex3d (max .x (), max .y (), max .z ());
-	glTexCoord2d (0, 0);
-	glVertex3d (min .x (), max .y (), min .z ());
-	glEnd ();
+	texCoords .emplace_back (0, 1, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (min .x (), min .y (), min .z ());
 
-	//
+	texCoords .emplace_back (1, 1, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (max .x (), min .y (), min .z ());
 
-	glDisable (GL_TEXTURE_2D);
+	texCoords .emplace_back (1, 0, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (max .x (), max .y (), max .z ());
+
+	texCoords .emplace_back (0, 0, 0, 1);
+	normals   .emplace_back (0, 0, 1);
+	vertices  .emplace_back (min .x (), max .y (), min .z ());
+
+	getText () -> addElements (GL_QUADS, vertices .size ());
+	getText () -> setSolid (getText () -> solid ());
 }
 
 // Same as in ScreenGroup
@@ -401,7 +411,7 @@ ScreenText::transform (const TraverseType type)
 		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
 		// Snap to whole pixel
-		
+
 		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
 
 		screenPoint .x (std::round (screenPoint .x ()));
@@ -428,27 +438,27 @@ ScreenText::traverse (const TraverseType type)
 }
 
 void
-ScreenText::display (ShapeContainer* const context)
+ScreenText::draw (ShapeContainer* const context)
 {
-	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
+	#ifdef FIXED_PIPELINE
+	if (getBrowser () -> getFixedPipelineRequired ())
+	{
+		textureNode -> draw ();
+	
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	}
+	#endif
 
-	glLoadMatrixd (modelViewMatrix .data ());
+	getBrowser () -> setTexture (textureNode);
+	getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());
 
-	X3DTextGeometry::display (context);
+	context -> setModelViewMatrix (matrix * context -> getModelViewMatrix ());
+
+	X3DTextGeometry::draw (context);
 }
 
 ScreenText::~ScreenText ()
-{
-	try
-	{
-		ContextLock lock (text -> getBrowser ());
-
-		if (textureId)
-			glDeleteTextures (1, &textureId);
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
-}
+{ }
 
 const ComponentType ScreenFontStyle::component      = ComponentType::LAYOUT;
 const std::string   ScreenFontStyle::typeName       = "ScreenFontStyle";
@@ -496,10 +506,10 @@ ScreenFontStyle::initialize ()
 	set_font ();
 }
 
-std::unique_ptr <X3DTextGeometry>
+X3DPtr <X3DTextGeometry>
 ScreenFontStyle::getTextGeometry (Text* const text) const
 {
-	return std::unique_ptr <X3DTextGeometry> (new ScreenText (text, this));
+	return X3DPtr <X3DTextGeometry> (new ScreenText (text, this));
 }
 
 double
