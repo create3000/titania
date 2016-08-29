@@ -56,7 +56,7 @@ Face::Face (const char* fontFilePath, bool precomputeKerning) :
 	numGlyphs       = (*ftFace) -> num_glyphs;
 	hasKerningTable = (FT_HAS_KERNING ((*ftFace)) not_eq 0);
 
-	if (hasKerningTable && precomputeKerning)
+	if (hasKerningTable and precomputeKerning)
 	{
 		buildKerningCache ();
 	}
@@ -87,7 +87,7 @@ Face::Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
 	numGlyphs       = (*ftFace) -> num_glyphs;
 	hasKerningTable = (FT_HAS_KERNING ((*ftFace)) not_eq 0);
 
-	if (hasKerningTable && precomputeKerning)
+	if (hasKerningTable and precomputeKerning)
 	{
 		buildKerningCache ();
 	}
@@ -169,8 +169,8 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 		return Vector3d (0, 0, 0);
 	}
 
-	if (kerningCache && index1 < Face::MAX_PRECOMPUTED
-	    && index2 < Face::MAX_PRECOMPUTED)
+	if (kerningCache and index1 < Face::MAX_PRECOMPUTED
+	    and index2 < Face::MAX_PRECOMPUTED)
 	{
 		x = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1)];
 		y = kerningCache [2 * (index2 * Face::MAX_PRECOMPUTED + index1) + 1];

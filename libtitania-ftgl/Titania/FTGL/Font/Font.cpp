@@ -146,7 +146,7 @@ Font::getBBox (const char* string, const int32_t len, Vector3d position, Vector3
 	BBox totalBBox;
 
 	/* Only compute the bounds if string is non-empty. */
-	if (string && ('\0' not_eq string [0]))
+	if (string and ('\0' not_eq string [0]))
 	{
 		// for multibyte - we can't rely on sizeof(T) == character
 		UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
@@ -163,7 +163,7 @@ Font::getBBox (const char* string, const int32_t len, Vector3d position, Vector3
 		}
 
 		/* Expand totalBox by each glyph in string */
-		for (int32_t i = 1; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+		for (int32_t i = 1; (len < 0 and *ustr) or (len >= 0 and i < len); i ++)
 		{
 			thisChar = *ustr ++;
 			nextChar = *ustr;
@@ -222,7 +222,7 @@ Font::render (const char* string, const int32_t len, Vector3d position, Vector3d
 	// for multibyte - we can't rely on sizeof(T) == character
 	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
 
-	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+	for (int32_t i = 0; (len < 0 and *ustr) or (len >= 0 and i < len); i ++)
 	{
 		uint32_t thisChar = *ustr ++;
 		uint32_t nextChar = *ustr;
@@ -248,7 +248,7 @@ Font::advance (const char* string, const int32_t len, Vector3d spacing)
 
 	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
 
-	for (int32_t i = 0; (len < 0 && *ustr) or (len >= 0 && i < len); i ++)
+	for (int32_t i = 0; (len < 0 and *ustr) or (len >= 0 and i < len); i ++)
 	{
 		uint32_t thisChar = *ustr ++;
 		uint32_t nextChar = *ustr;

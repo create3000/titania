@@ -80,20 +80,10 @@ Mesh::Mesh () :
 	tesselationList .reserve (16);
 }
 
-Mesh::~Mesh ()
-{
-	for (size_t t = 0; t < tesselationList .size (); ++ t)
-	{
-		delete tesselationList [t];
-	}
-
-	tesselationList .clear ();
-}
-
 void
 Mesh::addPoint (const double x, const double y, const double z)
 {
-	currentTesselation -> AddPoint (x, y, z);
+	currentTesselation -> addPoint (x, y, z);
 }
 
 const double*
@@ -121,6 +111,16 @@ Mesh::getTesselation (size_t index) const
 	return (index < tesselationList .size ()) ? tesselationList [index] : nullptr;
 }
 
+Mesh::~Mesh ()
+{
+	for (size_t t = 0; t < tesselationList .size (); ++ t)
+	{
+		delete tesselationList [t];
+	}
+
+	tesselationList .clear ();
+}
+
 Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
 	   contourList (0),
 	          mesh (0),
@@ -137,17 +137,6 @@ Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
 
 		processContours ();
 	}
-}
-
-Vectorizer::~Vectorizer ()
-{
-	for (size_t c = 0; c < getContourCount (); ++ c)
-	{
-		delete contourList [c];
-	}
-
-	delete [ ] contourList;
-	delete mesh;
 }
 
 void
@@ -212,13 +201,13 @@ Vectorizer::processContours ()
 				Vector3d p2 = c2 -> getPoint ((n + 1) % c2 -> getPointCount ());
 
 				/* FIXME: combinations of >= > <= and < do not seem stable */
-				if ((p1.y () < leftmost .y () && p2 .y () < leftmost .y ())
-				    or (p1.y () >= leftmost .y () && p2 .y () >= leftmost .y ())
-				    or (p1.x () > leftmost .x () && p2 .x () > leftmost .x ()))
+				if ((p1.y () < leftmost .y () and p2 .y () < leftmost .y ())
+				    or (p1.y () >= leftmost .y () and p2 .y () >= leftmost .y ())
+				    or (p1.x () > leftmost .x () and p2 .x () > leftmost .x ()))
 				{
 					continue;
 				}
-				else if (p1.x () < leftmost .x () && p2 .x () < leftmost .x ())
+				else if (p1.x () < leftmost .x () and p2 .x () < leftmost .x ())
 				{
 					parity ++;
 				}
@@ -326,6 +315,17 @@ Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
 	gluTessEndPolygon (tobj);
 
 	gluDeleteTess (tobj);
+}
+
+Vectorizer::~Vectorizer ()
+{
+	for (size_t c = 0; c < getContourCount (); ++ c)
+	{
+		delete contourList [c];
+	}
+
+	delete [ ] contourList;
+	delete mesh;
 }
 
 } // FTGL

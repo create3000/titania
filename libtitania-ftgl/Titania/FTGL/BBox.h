@@ -118,8 +118,8 @@ public:
 	isValid ()
 	{
 		return lower .x () <= upper .x ()
-		       && lower .y () <= upper .y ()
-		       && lower .z () <= upper .z ();
+		       and lower .y () <= upper .y ()
+		       and lower .z () <= upper .z ();
 	}
 
 	/**

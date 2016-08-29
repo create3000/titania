@@ -38,7 +38,7 @@ void
 Contour::addPoint (Vector3d point)
 {
 	if (pointList.empty () or (point not_eq pointList [pointList.size () - 1]
-	                           && point not_eq pointList [0]))
+	                           and point not_eq pointList [0]))
 	{
 		pointList .emplace_back (point);
 	}
@@ -139,7 +139,7 @@ Contour::setParity (int32_t parity)
 	size_t   size = getPointCount ();
 	Vector3d vOutset;
 
-	if (((parity & 1) && clockwise) or (! (parity & 1) && ! clockwise))
+	if (((parity & 1) and clockwise) or (! (parity & 1) and ! clockwise))
 	{
 		// Contour orientation is wrong! We must reverse all points.
 		// FIXME: could it be worth writing Vector::reverse() for this?
@@ -228,7 +228,7 @@ Contour::Contour (FT_Vector* contour, char* tags, uint32_t n)
 			evaluateQuadraticCurve (prev2, cur, next2);
 		}
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
-		         && FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
+		         and FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
 		{
 			uint32_t i2 = (i + 2) % n;
 

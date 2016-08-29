@@ -87,11 +87,11 @@ PolygonGlyph::doRender ()
 	for (uint32_t t = 0; t < mesh -> getTesselationCount (); ++ t)
 	{
 		const Tesselation* subMesh     = mesh -> getTesselation (t);
-		uint32_t           polygonType = subMesh -> PolygonType ();
+		uint32_t           polygonType = subMesh -> getPolygonType ();
 
 		glBegin (polygonType);
 
-		for (uint32_t i = 0; i < subMesh -> PointCount (); ++ i)
+		for (uint32_t i = 0; i < subMesh -> getPointCount (); ++ i)
 		{
 			Vector3d point = subMesh -> getPoint (i);
 			glTexCoord2f (point.x () / hscale, point .y () / vscale);

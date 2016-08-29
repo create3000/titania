@@ -49,33 +49,21 @@ public:
 	 */
 	Tesselation (GLenum m) :
 		meshType (m)
-	{
-		pointList .reserve (128);
-	}
-
-	/**
-	 *  Destructor
-	 */
-	~Tesselation ()
-	{
-		pointList .clear ();
-	}
+	{ pointList .reserve (128); }
 
 	/**
 	 * Add a point to the mesh.
 	 */
 	void
-	AddPoint (const double x, const double y,
-	          const double z)
-	{
-		pointList .emplace_back (x, y, z);
-	}
+	addPoint (const double x, const double y, const double z)
+	{ pointList .emplace_back (x, y, z); }
 
 	/**
 	 * The number of points in this mesh
 	 */
 	size_t
-	PointCount () const { return pointList .size (); }
+	getPointCount () const
+	{ return pointList .size (); }
 
 	/**
 	 *
@@ -88,7 +76,14 @@ public:
 	 * Return the OpenGL polygon type.
 	 */
 	GLenum
-	PolygonType () const { return meshType; }
+	getPolygonType () const
+	{ return meshType; }
+
+	/**
+	 *  Destructor
+	 */
+	~Tesselation ()
+	{ pointList .clear (); }
 
 
 private:
@@ -122,11 +117,6 @@ public:
 	 * Default constructor
 	 */
 	Mesh ();
-
-	/**
-	 *  Destructor
-	 */
-	~Mesh ();
 
 	/**
 	 * Add a point to the mesh
@@ -186,6 +176,11 @@ public:
 	 */
 	GLenum
 	getError () const { return err; }
+
+	/**
+	 *  Destructor
+	 */
+	~Mesh ();
 
 
 private:

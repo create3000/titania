@@ -245,12 +245,12 @@ UnicodeStringItr <T>::readUTF16 ()
 	uint32_t ch = *nextPos ++;
 
 	// if we have the first half of the surrogate pair
-	if (ch >= highSurrogateStart && ch <= highSurrogateEnd)
+	if (ch >= highSurrogateStart and ch <= highSurrogateEnd)
 	{
 		uint32_t ch2 = *curPos;
 
 		// complete the surrogate pair
-		if (ch2 >= lowSurrogateStart && ch2 <= lowSurrogateEnd)
+		if (ch2 >= lowSurrogateStart and ch2 <= lowSurrogateEnd)
 		{
 			ch = ((ch - highSurrogateStart) << highSurrogateShift)
 			     + (ch2 - lowSurrogateStart) + lowSurrogateBase;
