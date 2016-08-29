@@ -101,25 +101,6 @@ GlyphContainer::advance (const uint32_t charCode,
 }
 
 Vector3d
-GlyphContainer::render (const uint32_t charCode,
-                        const uint32_t nextCharCode,
-                        Vector3d penPosition)
-{
-	uint32_t left  = charMap -> getFontIndex (charCode);
-	uint32_t right = charMap -> getFontIndex (nextCharCode);
-
-	Vector3d kernAdvance = face -> getKernAdvance (left, right);
-
-	if (not face -> getError ())
-	{
-		uint32_t index = charMap -> getGlyphListIndex (charCode);
-		kernAdvance += glyphs [index] -> render (penPosition);
-	}
-
-	return kernAdvance;
-}
-
-Vector3d
 GlyphContainer::triangulate (const uint32_t charCode,
                              const uint32_t nextCharCode,
                              Vector3d penPosition,

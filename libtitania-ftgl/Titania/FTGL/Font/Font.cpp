@@ -217,31 +217,6 @@ Font::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 }
 
 Vector3d
-Font::render (const char* string, const int32_t len, Vector3d position, Vector3d spacing)
-{
-	// for multibyte - we can't rely on sizeof(T) == character
-	UnicodeStringItr <uint8_t> ustr ((const uint8_t*) string);
-
-	for (int32_t i = 0; (len < 0 and *ustr) or (len >= 0 and i < len); i ++)
-	{
-		uint32_t thisChar = *ustr ++;
-		uint32_t nextChar = *ustr;
-
-		if (checkGlyph (thisChar))
-		{
-			position += glyphList -> render (thisChar, nextChar, position);
-		}
-
-		if (nextChar)
-		{
-			position += spacing;
-		}
-	}
-
-	return position;
-}
-
-Vector3d
 Font::triangulate (const std::string & string,
                    Vector3d position,
                    Vector3d spacing,

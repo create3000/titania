@@ -29,105 +29,14 @@
 
 #include <Titania/Math/Mesh/Tessellator.h>
 
-#include <GL/glu.h>
-
 namespace titania {
 namespace FTGL {
 
-using GLUTesselatorFunction = GLvoid (*)();
-
-static
-void
-ftglError (GLenum errCode, Mesh* mesh)
-{
-	mesh -> setError (errCode);
-}
-
-static
-void
-ftglVertex (void* data, Mesh* mesh)
-{
-	double* vertex = static_cast <double*> (data);
-
-	mesh -> addPoint (vertex [0], vertex [1], vertex [2]);
-}
-
-static
-void
-ftglCombine (double coords [3], void* vertex_data [4], GLfloat weight [4], void** outData, Mesh* mesh)
-{
-	const double* vertex = static_cast <const double*> (coords);
-
-	*outData = const_cast <double*> (mesh -> combine (vertex [0], vertex [1], vertex [2]));
-}
-
-static
-void
-ftglBegin (GLenum type, Mesh* mesh)
-{
-	mesh -> begin (type);
-}
-
-static
-void
-ftglEnd (Mesh* mesh)
-{
-	mesh -> end ();
-}
-
-Mesh::Mesh () :
-	currentTesselation (0),
-	             error (0)
-{
-	tesselationList .reserve (16);
-}
-
-void
-Mesh::addPoint (const double x, const double y, const double z)
-{
-	currentTesselation -> addPoint (x, y, z);
-}
-
-const double*
-Mesh::combine (const double x, const double y, const double z)
-{
-	tempPointList .emplace_back (x, y, z);
-	return tempPointList .back () .data ();
-}
-
-void
-Mesh::begin (GLenum meshType)
-{
-	currentTesselation = new Tesselation (meshType);
-}
-
-void
-Mesh::end ()
-{
-	tesselationList .emplace_back (currentTesselation);
-}
-
-const Tesselation* const
-Mesh::getTesselation (size_t index) const
-{
-	return (index < tesselationList .size ()) ? tesselationList [index] : nullptr;
-}
-
-Mesh::~Mesh ()
-{
-	for (size_t t = 0; t < tesselationList .size (); ++ t)
-	{
-		delete tesselationList [t];
-	}
-
-	tesselationList .clear ();
-}
-
 Vectorizer::Vectorizer (const FT_GlyphSlot glyph) :
-	   contourList (0),
-	          mesh (0),
+	   contourList (nullptr),
 	ftContourCount (0),
-	   contourFlag (0)
+	   contourFlag (0),
+	       outline ()
 {
 	if (glyph)
 	{
@@ -251,75 +160,6 @@ Vectorizer::getContour (size_t index) const
 }
 
 void
-Vectorizer::makeMesh (double zNormal, int32_t outsetType, double outsetSize)
-{
-	if (mesh)
-	{
-		delete mesh;
-	}
-
-	mesh = new Mesh;
-
-	GLUtesselator* tobj = gluNewTess ();
-
-	gluTessCallback (tobj, GLU_TESS_BEGIN_DATA,     (GLUTesselatorFunction) ftglBegin);
-	gluTessCallback (tobj, GLU_TESS_VERTEX_DATA,    (GLUTesselatorFunction) ftglVertex);
-	gluTessCallback (tobj, GLU_TESS_COMBINE_DATA,   (GLUTesselatorFunction) ftglCombine);
-	gluTessCallback (tobj, GLU_TESS_END_DATA,       (GLUTesselatorFunction) ftglEnd);
-	gluTessCallback (tobj, GLU_TESS_ERROR_DATA,     (GLUTesselatorFunction) ftglError);
-
-	if (contourFlag & ft_outline_even_odd_fill) // ft_outline_reverse_fill
-	{
-		gluTessProperty (tobj, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-	}
-	else
-	{
-		gluTessProperty (tobj, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_NONZERO);
-	}
-
-	gluTessProperty (tobj, GLU_TESS_TOLERANCE, 0);
-	gluTessNormal (tobj, 0, 0, zNormal);
-	gluTessBeginPolygon (tobj, mesh);
-
-	for (size_t c = 0; c < getContourCount (); ++ c)
-	{
-		/* Build the */
-		switch (outsetType)
-		{
-			case 1: contourList [c] -> buildFrontOutset (outsetSize); break;
-			case 2: contourList [c] -> buildBackOutset  (outsetSize); break;
-		}
-
-		const Contour* contour = contourList [c];
-
-		gluTessBeginContour (tobj);
-
-		for (size_t p = 0; p < contour -> getPointCount (); ++ p)
-		{
-			const double* d;
-
-			switch (outsetType)
-			{
-				case 1: d          = contour -> getFrontPoint (p) .data (); break;
-				case 2: d          = contour -> getBackPoint  (p) .data (); break;
-				case 0: default: d = contour -> getPoint      (p) .data (); break;
-			}
-
-			// XXX: gluTessVertex doesn't modify the data but does not
-			// specify "const" in its prototype, so we cannot cast to
-			// a const type.
-			gluTessVertex (tobj, (GLdouble*) d, (GLvoid*) d);
-		}
-
-		gluTessEndContour (tobj);
-	}
-
-	gluTessEndPolygon (tobj);
-
-	gluDeleteTess (tobj);
-}
-
-void
 Vectorizer::triangulate (const double zNormal,
                          const int32_t outsetType,
                          const double outsetSize,
@@ -386,7 +226,6 @@ Vectorizer::~Vectorizer ()
 	}
 
 	delete [ ] contourList;
-	delete mesh;
 }
 
 } // FTGL

@@ -94,64 +94,70 @@ PolygonText::draw ()
 	if (not fontStyle -> getPolygonFont ())
 		return;
 
+	const double size = fontStyle -> getScale ();
+
+	glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+	glScalef (size, size, size);
+
+	// Triangulate lines.
+
+	auto indices = std::vector <size_t> ();
+	auto points  = std::vector <Vector3d> ();
+
 	if (fontStyle -> horizontal ())
 	{
-		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+		const bool    topToBottom = fontStyle -> topToBottom ();
+		const bool    leftToRight = fontStyle -> leftToRight ();
+		const int32_t first       = topToBottom ? 0 : text -> string () .size () - 1;
+		const int32_t last        = topToBottom ? text -> string () .size () : -1;
+		const int32_t step        = topToBottom ? 1 : -1;
 
-		const double size = fontStyle -> getScale ();
-
-		glScalef (size, size, size);
-
-		// Render lines.
-		const bool topToBottom = fontStyle -> topToBottom ();
-		const bool leftToRight = fontStyle -> leftToRight ();
-		const int  first       = topToBottom ? 0 : text -> string () .size () - 1;
-		const int  last        = topToBottom ? text -> string () .size () : -1;
-		const int  step        = topToBottom ? 1 : -1;
-
-		for (int i = first; i not_eq last; i += step)
+		for (int32_t i = first; i not_eq last; i += step)
 		{
 			const auto & line = text -> string () [i] .getValue ();
 
-			fontStyle -> getPolygonFont () -> render (leftToRight
-	                                                ? line .c_str ()
-	                                                : String (line .rbegin (), line .rend ()) .c_str (),
-			                                          -1,
-			                                          FTGL::Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
-			                                          FTGL::Vector3d (getCharSpacing () [i], 0, 0));
-
+			fontStyle -> getPolygonFont () -> triangulate (leftToRight
+	                                                     ? line
+	                                                     : String (line .rbegin (), line .rend ()),
+			                                               FTGL::Vector3d (getTranslations () [i] .x (), getTranslations () [i] .y (), 0),
+			                                               FTGL::Vector3d (getCharSpacing () [i], 0, 0),
+			                                               indices,
+			                                               points);
 		}
 	}
 	else
 	{
-		glTranslatef (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+		const bool    leftToRight = fontStyle -> leftToRight ();
+		const bool    topToBottom = fontStyle -> topToBottom ();
+		const int32_t first       = leftToRight ? 0 : text -> string () .size () - 1;
+		const int32_t last        = leftToRight ? text -> string () .size () : -1;
+		const int32_t step        = leftToRight ? 1 : -1;
 
-		const double size = fontStyle -> getScale ();
-
-		glScalef (size, size, size);
-
-		// Render lines.
-
-		const bool leftToRight = fontStyle -> leftToRight ();
-		const bool topToBottom = fontStyle -> topToBottom ();
-		const int  first       = leftToRight ? 0 : text -> string () .size () - 1;
-		const int  last        = leftToRight ? text -> string () .size () : -1;
-		const int  step        = leftToRight ? 1 : -1;
-
-		for (int i = first, g = 0; i not_eq last; i += step)
+		for (int32_t i = first, g = 0; i not_eq last; i += step)
 		{
 			const auto & line = text -> string () [i] .getValue ();
 
 			for (const auto & glyph : topToBottom ? line : String (line .rbegin (), line .rend ()))
 			{
-				fontStyle -> getPolygonFont () -> render (String (1, glyph) .c_str (),
-				                                          -1,
-				                                          FTGL::Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
-				                                          FTGL::Vector3d ());
+				fontStyle -> getPolygonFont () -> triangulate (String (1, glyph),
+				                                               FTGL::Vector3d (getTranslations () [g] .x (), getTranslations () [g] .y (), 0),
+				                                               FTGL::Vector3d (),
+			                                                  indices,
+			                                                  points);
 				++ g;
 			}
 		}
 	}
+
+	// Render lines.
+
+	glNormal3f (0, 0, 1);
+	glBegin (GL_TRIANGLES);
+
+	for (const auto index : indices)
+		glVertex3dv (points [index] .data ());
+
+	glEnd ();
 }
 
 const ComponentType FontStyle::component      = ComponentType::TEXT;

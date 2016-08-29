@@ -63,46 +63,6 @@ PolygonGlyph::PolygonGlyph (FT_GlyphSlot glyph, double outset) :
 }
 
 const Vector3d &
-PolygonGlyph::render (const Vector3d & pen)
-{
-	glTranslatef (pen .x (), pen .y (), pen .z ());
-
-	if (vectoriser)
-	{
-		doRender ();
-	}
-
-	glTranslatef (-pen .x (), -pen .y (), -pen .z ());
-
-	return getAdvance ();
-}
-
-void
-PolygonGlyph::doRender ()
-{
-	vectoriser -> makeMesh (1, 1, outset);
-
-	const Mesh* mesh = vectoriser -> getMesh ();
-
-	for (uint32_t t = 0; t < mesh -> getTesselationCount (); ++ t)
-	{
-		const Tesselation* subMesh     = mesh -> getTesselation (t);
-		uint32_t           polygonType = subMesh -> getPolygonType ();
-
-		glBegin (polygonType);
-
-		for (uint32_t i = 0; i < subMesh -> getPointCount (); ++ i)
-		{
-			Vector3d point = subMesh -> getPoint (i);
-			glTexCoord2f (point.x () / hscale, point .y () / vscale);
-			glVertex3f (point.x () / 64.0, point .y () / 64.0, 0);
-		}
-
-		glEnd ();
-	}
-}
-
-const Vector3d &
 PolygonGlyph::triangulate (const Vector3d & pen,
                            std::vector <size_t> & indices,
                            std::vector <Vector3d> & points) const

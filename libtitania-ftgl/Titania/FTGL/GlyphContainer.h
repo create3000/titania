@@ -128,18 +128,6 @@ public:
 	 * @param characterCode      the glyph to be Rendered
 	 * @param nextCharacterCode  the next glyph in the string. Used for kerning.
 	 * @param penPosition        the position to Render the glyph
-	 * @return                   The distance to advance the pen position after Rendering
-	 */
-	Vector3d
-	render (const uint32_t characterCode,
-	        const uint32_t nextCharacterCode,
-	        Vector3d penPosition);
-
-	/**
-	 * Renders a character
-	 * @param characterCode      the glyph to be Rendered
-	 * @param nextCharacterCode  the next glyph in the string. Used for kerning.
-	 * @param penPosition        the position to Render the glyph
 	 * @param indices            Specify the output array of indices of the mesh
 	 * @param points             Specify the output array of points of the mesh
 	 * @return                   The distance to advance the pen position after Rendering

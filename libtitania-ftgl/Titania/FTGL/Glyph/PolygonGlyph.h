@@ -64,16 +64,6 @@ public:
 	/**
 	 * Render this glyph at the current pen position.
 	 *
-	 * @param pen  The current pen position.
-	 * @return     The advance distance for this glyph.
-	 */
-	virtual
-	const Vector3d &
-	render (const Vector3d & pen) final override;
-
-	/**
-	 * Render this glyph at the current pen position.
-	 *
 	 * @param pen         The current pen position.
 	 * @param indices     Specify the output array of indices of the mesh
 	 * @param points      Specify the output array of points of the mesh
@@ -95,14 +85,6 @@ public:
 
 
 private:
-
-	///  @name Operations
-
-	/**
-	 * Private rendering method.
-	 */
-	void
-	doRender ();
 
 	///  @name Members
 

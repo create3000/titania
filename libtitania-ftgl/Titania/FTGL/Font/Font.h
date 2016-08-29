@@ -251,24 +251,6 @@ public:
 	         Vector3d spacing = Vector3d ());
 
 	/**
-	 * Render a string of characters.
-	 *
-	 * @param string    'C' style string to be output.
-	 * @param len       The length of the string. If < 0 then all characters
-	 *                  will be displayed until a null character is encountered
-	 *                  (optional).
-	 * @param position  The pen position of the first character (optional).
-	 * @param spacing   A displacement vector to add after each character
-	 *                  has been displayed (optional).
-	 * @return          The new pen position after the last character was output.
-	 */
-	virtual
-	Vector3d
-	render (const char* string, const int32_t len = -1,
-	        Vector3d position = Vector3d (),
-	        Vector3d spacing = Vector3d ());
-
-	/**
 	 * Triangulates a string of characters.
 	 *
 	 * @param string    'C' style string to be output.

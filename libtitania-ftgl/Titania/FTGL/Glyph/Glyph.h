@@ -83,16 +83,6 @@ public:
 	///  @name Operations
 
 	/**
-	 * Renders this glyph at the current pen position.
-	 *
-	 * @param pen  The current pen position.
-	 * @return     The advance distance for this glyph.
-	 */
-	virtual
-	const Vector3d &
-	render (const Vector3d & pen) = 0;
-
-	/**
 	 * Render this glyph at the current pen position.
 	 *
 	 * @param pen         The current pen position.
