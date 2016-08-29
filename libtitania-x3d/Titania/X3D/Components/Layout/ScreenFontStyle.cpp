@@ -440,21 +440,27 @@ ScreenText::traverse (const TraverseType type)
 void
 ScreenText::draw (ShapeContainer* const context)
 {
+	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
+
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
-		textureNode -> draw ();
-	
+		glEnable (GL_TEXTURE_2D);
+		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
 		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+		glMatrixMode (GL_TEXTURE);
+		glLoadIdentity ();
+		glMatrixMode (GL_MODELVIEW);
+
+		glLoadMatrixd (modelViewMatrix .data ());
 	}
 	#endif
 
 	getBrowser () -> setTexture (textureNode);
 	getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());
 
-	context -> setModelViewMatrix (matrix * context -> getModelViewMatrix ());
-
-	X3DTextGeometry::draw (context);
+	context -> setModelViewMatrix (modelViewMatrix);
 }
 
 ScreenText::~ScreenText ()

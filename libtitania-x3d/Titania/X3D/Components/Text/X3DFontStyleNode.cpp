@@ -506,27 +506,9 @@ X3DTextGeometry::getGlyphExtents (const String::value_type & glyph, Vector2d & m
 	getLineExtents (String (1, glyph), min, max);
 }
 
-//void
-//X3DTextGeometry::compile (Text* const text)
-//{
-//	glNewList (listId, GL_COMPILE);
-//
-//	if (text -> solid ())
-//		glEnable (GL_CULL_FACE);
-//
-//	else
-//		glDisable (GL_CULL_FACE);
-//
-//	draw ();
-//
-//	glEndList ();
-//}
-
 void
 X3DTextGeometry::draw (ShapeContainer* const context)
-{
-	getText () -> X3DGeometryNode::draw (context);
-}
+{ }
 
 X3DTextGeometry::~X3DTextGeometry ()
 {

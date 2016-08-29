@@ -207,6 +207,8 @@ void
 Text::draw (ShapeContainer* const context)
 {
 	textGeometry -> draw (context);
+
+	X3DGeometryNode::draw (context);
 }
 
 SFNode
