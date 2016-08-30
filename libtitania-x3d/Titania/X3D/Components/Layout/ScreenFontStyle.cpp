@@ -64,8 +64,6 @@
 namespace titania {
 namespace X3D {
 
-static constexpr double M_POINT = M_INCH / 72;
-
 const ComponentType ScreenText::component      = ComponentType::TITANIA;
 const std::string   ScreenText::typeName       = "ScreenText";
 const std::string   ScreenText::containerField = "textGeometry";
@@ -543,7 +541,7 @@ ScreenFontStyle::getSize () const
 		const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
 		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
 
-		return M_POINT * pointSize () * height / height_m;
+		return POINT <double> * pointSize () * height / height_m;
 	}
 
 	return 0;

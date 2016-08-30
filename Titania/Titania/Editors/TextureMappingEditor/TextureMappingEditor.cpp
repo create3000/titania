@@ -71,7 +71,8 @@
 namespace titania {
 namespace puck {
 
-using math::M_PI2;
+using math::PI;
+using math::PI2;
 
 // Cylinder and Sphere Mapping Constants
 constexpr double POLE_TRHESHOLD       = 0.001;
@@ -545,7 +546,7 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 	{
 		const auto point    = coord -> get1Point (pair .first);
 		const auto complex  = std::complex <float> (point [z] - center [z], point [x] - center [x]);
-		auto       texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - extents .first [y]) / size [y]);
+		auto       texPoint = X3D::Vector2f (std::arg (complex) / PI2 <double> + 0.5, (point [y] - extents .first [y]) / size [y]);
 
 		if (flip)
 			texPoint [f] = 1 - texPoint [f];
@@ -614,7 +615,7 @@ TextureMappingEditor::on_sphere_activate (const size_t x, const size_t y, const 
 	for (const auto & pair : indices)
 	{
 		const auto point    = math::normalize (coord -> get1Point (pair .first) - center);
-		auto       texPoint = X3D::Vector2f (std::atan2 (point [x], point [z]) / M_PI2 + 0.5, std::asin (point [y]) / M_PI + 0.5);
+		auto       texPoint = X3D::Vector2f (std::atan2 (point [x], point [z]) / PI2 <double> + 0.5, std::asin (point [y]) / PI <double> + 0.5);
 
 		if (flip)
 			texPoint [f] = 1 - texPoint [f];
@@ -839,13 +840,13 @@ TextureMappingEditor::on_deselect_all_activate ()
 void
 TextureMappingEditor::on_rotate_counterclockwise ()
 {
-	on_rotate (_ ("Rotate 90° Counterclockwise"), M_PI / 2);
+	on_rotate (_ ("Rotate 90° Counterclockwise"), PI <double> / 2);
 }
 
 void
 TextureMappingEditor::on_rotate_clockwise ()
 {
-	on_rotate (_ ("Rotate 90° Clockwise"), -M_PI / 2);
+	on_rotate (_ ("Rotate 90° Clockwise"), -PI <double> / 2);
 }
 
 void
@@ -1976,7 +1977,7 @@ TextureMappingEditor::rotate (const X3D::Vector3f & hitPoint)
 
 		if (keys .control ())
 		{
-			constexpr double snapAngle = 11.25 / 180 * M_PI;
+			constexpr double snapAngle = 11.25 / 180 * PI <double>;
 
 			rotation = std::round (rotation / snapAngle) * snapAngle;
 		}

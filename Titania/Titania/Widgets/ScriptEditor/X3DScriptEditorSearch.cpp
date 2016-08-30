@@ -148,7 +148,7 @@ X3DScriptEditorSearch::on_search_size_allocate (Gtk::Allocation &)
 void
 X3DScriptEditorSearch::on_size_allocate (const Gtk::Allocation & allocation)
 {
-	const auto    width  = allocation .get_width () * (2 - math::M_PHI);
+	const auto    width  = allocation .get_width () * (2 - math::PHI <double>);
 	const auto    box    = getSearchBox ()   .get_allocation () .get_width ();
 	const auto    entry  = getSearchEntry () .get_allocation () .get_width ();
 	const int32_t width_ = width * entry / box;
@@ -457,7 +457,7 @@ X3DScriptEditorSearch::on_search_backward (GAsyncResult* const result)
 
 	const auto match = getTextBuffer () -> get_text (matchBegin, matchEnd);
 
-	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
+	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::PHI <double>);
 	getTextBuffer () -> select_range (matchBegin, matchEnd);
 }
 
@@ -498,7 +498,7 @@ X3DScriptEditorSearch::on_search_forward (GAsyncResult* const result)
 	if (not gtk_source_search_context_forward_finish (searchContext, result, matchBegin .gobj (), matchEnd .gobj (), &error))
 		return;
 
-	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::M_PHI);
+	getTextView () .scroll_to (matchBegin, 0, 0.5, 2 - math::PHI <double>);
 	getTextBuffer () -> select_range (matchBegin, matchEnd);
 
 	replace = true;
@@ -601,7 +601,7 @@ X3DScriptEditorSearch::on_go_to_line_button_clicked ()
 	iter .set_line_offset (0);
 
 	getTextBuffer () -> place_cursor (iter);
-	getTextView () .scroll_to (iter, 0, 0, 2 - math::M_PHI);
+	getTextView () .scroll_to (iter, 0, 0, 2 - math::PHI <double>);
 }
 
 bool

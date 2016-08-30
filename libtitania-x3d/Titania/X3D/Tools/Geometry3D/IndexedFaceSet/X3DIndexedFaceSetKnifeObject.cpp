@@ -354,7 +354,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const p
 				knifeArcSwitch   -> whichChoice () = true;
 				knifeArc         -> translation () = orthoPoint;
 				knifeArcGeometry -> startAngle ()  = 0;
-				knifeArcGeometry -> endAngle ()    = M_PI / 2;
+				knifeArcGeometry -> endAngle ()    = PI <double> / 2;
 			}
 			else if (snapToCenter (endEdge, closestPoint))
 				;
@@ -523,8 +523,8 @@ X3DIndexedFaceSetKnifeObject::snapToCenter (const std::pair <size_t, size_t> & e
 
 	knifeArcSwitch   -> whichChoice () = true;
 	knifeArc         -> translation () = center;
-	knifeArcGeometry -> startAngle ()  = M_PI;
-	knifeArcGeometry -> endAngle ()    = M_PI * 2;
+	knifeArcGeometry -> startAngle ()  = PI <double>;
+	knifeArcGeometry -> endAngle ()    = PI <double> * 2;
 	return true;
 }
 

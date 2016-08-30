@@ -54,9 +54,8 @@
 namespace titania {
 namespace math {
 
-constexpr double P_GN = 9.80665;
-
-constexpr double M_INCH = 0.0254;
+template <class T>
+static constexpr T GN = T (9.80665);
 
 } // math
 } // titania

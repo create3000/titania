@@ -785,7 +785,7 @@ log (const quaternion <Type> & quat)
 			return quaternion <Type> (0, 0, 0, std::log (quat .w ()));
 
 		else
-			return quaternion <Type> (M_PI, 0, 0, std::log (-quat .w ()));
+			return quaternion <Type> (PI <Type>, 0, 0, std::log (-quat .w ()));
 	}
 
 	const Type l = abs (quat);

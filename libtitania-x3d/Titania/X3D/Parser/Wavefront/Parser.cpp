@@ -1156,7 +1156,7 @@ Parser::fs ()
 
 			appearance -> material ()  = material;
 			appearance -> texture ()   = texture;
-			geometry -> creaseAngle () = smoothingGroup ? M_PI : 0;
+			geometry -> creaseAngle () = smoothingGroup ? PI <float> : 0.0f;
 			shape -> appearance ()     = appearance;
 			shape -> geometry ()       = geometry;
 

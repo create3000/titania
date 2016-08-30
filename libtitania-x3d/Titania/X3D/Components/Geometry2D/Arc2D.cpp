@@ -123,16 +123,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
 double
 Arc2D::getAngle ()
 {
-	const double start = math::interval <double> (startAngle (), 0, M_PI2);
-	const double end   = math::interval <double> (endAngle (),   0, M_PI2);
+	const double start = math::interval <double> (startAngle (), 0, PI2 <double>);
+	const double end   = math::interval <double> (endAngle (),   0, PI2 <double>);
 
 	if (start == end)
-		return M_PI2;
+		return PI2 <double>;
 
 	const double difference = std::abs (end - start);
 
 	if (start > end)
-		return M_PI2 - difference;
+		return PI2 <double> - difference;
 
 	if (not std::isnan (difference))
 		return difference;
@@ -153,7 +153,7 @@ Arc2D::build ()
 
 	getVertices () .reserve (segments + 1);
 
-	if (difference < M_PI2)
+	if (difference < PI2 <double>)
 	{
 		++ segments;
 		vertexMode = GL_LINE_STRIP;

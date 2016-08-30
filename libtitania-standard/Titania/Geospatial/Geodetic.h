@@ -194,7 +194,7 @@ geodetic <Type>::apply_radians (const vector3 <Type> & geocentric) const
 	const Type P = std::sqrt (x * x + y * y);
 
 	if (P == 0)
-		return vector3 <Type> (M_PI, 0, z - c);
+		return vector3 <Type> (PI <Type>, 0, z - c);
 
 	Type latitude  = 0;
 	Type longitude = std::atan2 (y, x);

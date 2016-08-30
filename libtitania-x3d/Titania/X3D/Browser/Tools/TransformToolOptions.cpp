@@ -61,7 +61,7 @@ const std::string   TransformToolOptions::containerField = "transformToolOptions
 
 TransformToolOptions::Fields::Fields () :
 	 toolMode (new SFInt32 (0)),
-	snapAngle (new SFDouble (11.25 / 180 * M_PI))
+	snapAngle (new SFDouble (radians (11.25)))
 { }
 
 TransformToolOptions::TransformToolOptions (X3DExecutionContext* const executionContext) :

@@ -56,11 +56,26 @@
 namespace titania {
 namespace math {
 
-constexpr double M_PI1_2 = M_PI / 2;
-constexpr double M_PI2   = 2 * M_PI;
-constexpr double M_PI3_2 = 1.5 * M_PI;
+template <class T>
+static constexpr T PI = T (M_PI);
 
-constexpr double M_PHI = 1.6180339887498948482045868343656381177203091798057628;
+template <class T>
+static constexpr T PI1_2 = PI <T> / 2;
+
+template <class T>
+static constexpr T PI2 = 2 * PI <T>;
+
+template <class T>
+static constexpr T PI3_2 = 1.5 * PI <T>;
+
+template <class T>
+static constexpr T PHI = T (1.6180339887498948482045868343656381177203091798057628);
+
+template <class T>
+static constexpr T INCH = T (0.0254);
+
+template <class T>
+static constexpr T POINT = INCH <T> / 72;
 
 } // math
 } // titania

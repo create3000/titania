@@ -116,7 +116,7 @@ inline
 constexpr Type
 radians (const Type & value)
 {
-	return value * Type (M_PI / 180);
+	return value * Type (PI <Type> / 180);
 }
 
 ///  Convert @a value from radians to degrees.
@@ -125,7 +125,7 @@ inline
 constexpr Type
 degrees (const Type & value)
 {
-	return value * Type (180 / M_PI);
+	return value * Type (180 / PI <Type>);
 }
 
 ///  Clamp @a value in the range @a low and @a high.

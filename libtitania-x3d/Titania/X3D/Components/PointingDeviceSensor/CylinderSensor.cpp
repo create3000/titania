@@ -61,7 +61,7 @@ const std::string   CylinderSensor::containerField = "children";
 
 CylinderSensor::Fields::Fields () :
 	    axisRotation (new SFRotation (0, 1, 0, 0)),
-	       diskAngle (new SFFloat (0.261799)),      // M_PI / 12
+	       diskAngle (new SFFloat (0.261799)),      // PI <float> / 12
 	        minAngle (new SFFloat ()),
 	        maxAngle (new SFFloat (-1)),
 	          offset (new SFFloat ()),
@@ -132,8 +132,8 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 
 	// Use asin on the cylinder and outside linear angle.
 	const auto sinp  = interval (distance, -1.0, 1.0);
-	const auto phi   = section == 0 ? std::asin (sinp) : sinp * M_PI1_2;
-	const auto angle = phi + section * M_PI;
+	const auto phi   = section == 0 ? std::asin (sinp) : sinp * PI1_2 <double>;
+	const auto angle = phi + section * PI <double>;
 
 	const Rotation4d rotation (cylinder .axis () .direction (), angle);
 
@@ -241,7 +241,7 @@ CylinderSensor::set_motion (const HitPtr & hit)
 			const auto trackPoint_ = trackPoint * inverse (inverseModelViewMatrix);
 
 			if (trackPoint_ .z () > 0)
-				rotation *= Rotation4d (yPlane .normal (), M_PI);
+				rotation *= Rotation4d (yPlane .normal (), PI <double>);
 		}
 		else
 		{
@@ -256,9 +256,9 @@ CylinderSensor::set_motion (const HitPtr & hit)
 
 		else
 		{
-			const auto angle = interval <double> (getAngle (rotation), -M_PI, M_PI);
-			const auto min   = interval <double> (minAngle (), -M_PI, M_PI);
-			const auto max   = interval <double> (maxAngle (), -M_PI, M_PI);
+			const auto angle = interval <double> (getAngle (rotation), -PI <double>, PI <double>);
+			const auto min   = interval <double> (minAngle (), -PI <double>, PI <double>);
+			const auto max   = interval <double> (maxAngle (), -PI <double>, PI <double>);
 
 			if (angle < min)
 				rotation = Rotation4d (cylinder .axis () .direction (), min);

@@ -64,6 +64,8 @@
 namespace titania {
 namespace puck {
 
+using math::PI;
+
 AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	     X3DGridTool (),
@@ -151,7 +153,7 @@ AngleTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
 
 	try
 	{
-		getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+		getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * PI <double> / getTool () -> dimension () .at (1);
 	}
 	catch (...)
 	{ }
@@ -217,7 +219,7 @@ AngleTool::set_dimension ()
 {
 	X3DGridTool::set_dimension ();
 
-	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * M_PI / getTool () -> dimension () .at (1);
+	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * PI <double> / getTool () -> dimension () .at (1);
 }
 
 AngleTool::~AngleTool ()

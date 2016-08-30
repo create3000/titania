@@ -105,7 +105,7 @@ Viewpoint::getFieldOfView () const
 {
 	const double fov = fieldOfView () * fieldOfViewScale ();
 
-	return fov > 0 and fov < M_PI ? fov : M_PI / 4;
+	return fov > 0 and fov < PI <double> ? fov : PI <double> / 4;
 }
 
 Vector3d

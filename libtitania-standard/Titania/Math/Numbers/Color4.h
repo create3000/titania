@@ -220,7 +220,7 @@ color4 <Type>::set_hsv (const Type & h, Type s, Type v)
 
 	s = clamp (s, Type (), Type (1));
 
-	const Type w = degrees (interval (h, Type (), Type (M_PI2))) / 60; // sector 0 to 5
+	const Type w = degrees (interval (h, Type (), PI2 <Type>)) / 60; // sector 0 to 5
 
 	const Type i = std::floor (w);
 	const Type f = w - i;                                              // factorial part of h
@@ -296,10 +296,10 @@ color4 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 	else
 		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
 
-	h *= Type (Type (M_PI)) / 3;       // radians
+	h *= PI <Type> / 3;       // radians
 
 	if (h < 0)
-		h += 2 * Type (Type (M_PI));
+		h += 2 * PI <Type>;
 }
 
 ///  @relates color3
@@ -410,7 +410,7 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 
 	const Type range = std::abs (b_h - a_h);
 
-	if (range <= Type (Type (M_PI)))
+	if (range <= Type (PI <Type>))
 	{
 		return make_hsva <Type> (lerp (a_h, b_h, t),
 		                         lerp (a_s, b_s, t),
@@ -419,14 +419,14 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 	}
 	else
 	{
-		const Type step = (Type (M_PI2) - range) * t;
+		const Type step = (PI2 <Type> - range) * t;
 		Type       h    = a_h < b_h ? a_h - step : a_h + step;
 
 		if (h < 0)
-			h += Type (M_PI2);
+			h += PI2 <Type>;
 
-		else if (h > Type (M_PI2))
-			h -= Type (M_PI2);
+		else if (h > PI2 <Type>)
+			h -= PI2 <Type>;
 
 		return make_hsva <Type> (h,
 		                         lerp (a_s, b_s, t),

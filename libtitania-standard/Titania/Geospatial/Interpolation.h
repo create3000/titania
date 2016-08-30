@@ -83,7 +83,7 @@ template <class Type>
 vector3 <Type>
 gd_lerp (vector3 <Type> source, vector3 <Type> destination, const Type & t, const bool latitude_first = true, const bool radians = true)
 {
-	const Type RANGE    = radians ? M_PI : 180;
+	const Type RANGE    = radians ? PI <Type> : Type (180);
 	const Type RANGE1_2 = RANGE / 2;
 	const Type RANGE2   = RANGE * 2;
 

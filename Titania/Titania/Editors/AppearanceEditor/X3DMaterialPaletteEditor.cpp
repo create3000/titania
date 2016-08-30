@@ -62,6 +62,8 @@
 namespace titania {
 namespace puck {
 
+using math::PI;
+
 X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	X3DPaletteEditor <X3DAppearanceEditorInterface> ("Materials"),
 	                                  frontMaterial (true)
@@ -139,7 +141,7 @@ X3DMaterialPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 
 			halfSphere1 -> beginCap ()    = false;
 			halfSphere1 -> endCap ()      = false;
-			halfSphere1 -> creaseAngle () = M_PI;
+			halfSphere1 -> creaseAngle () = PI <double>;
 
 			halfSphere1 -> crossSection () .clear ();
 			halfSphere1 -> crossSection () .clear ();
@@ -147,12 +149,12 @@ X3DMaterialPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 			halfSphere1 -> spine ()        .clear ();
 
 			for (size_t i = 0; i < Y_DIMENSION - 1; ++ i)
-				halfSphere1 -> crossSection () .emplace_back (std::sin (M_PI * i / (Y_DIMENSION - 1)), std::cos (M_PI * i / (Y_DIMENSION - 1)));
+				halfSphere1 -> crossSection () .emplace_back (std::sin (PI <double> * i / (Y_DIMENSION - 1)), std::cos (PI <double> * i / (Y_DIMENSION - 1)));
 
 			halfSphere1 -> crossSection () .emplace_back (0, -1);
 
 			for (size_t i = 0; i < X_DIMENSION ; ++ i)
-				halfSphere1 -> orientation () .emplace_back (0, 0, 1, M_PI * i / (X_DIMENSION - 1));
+				halfSphere1 -> orientation () .emplace_back (0, 0, 1, PI <double> * i / (X_DIMENSION - 1));
 
 			for (size_t i = 0; i < X_DIMENSION; ++ i)
 				halfSphere1 -> spine () .emplace_back (0, 0, 0);
@@ -162,8 +164,8 @@ X3DMaterialPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 			halfSphere2 -> ccw ()   = false;
 			halfSphere2 -> solid () = false;
 
-			transform1 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0, -1, 0, M_PI / 2);
-			transform2 -> rotation () = X3D::Rotation4d (1, 0, 0, M_PI / 2) * X3D::Rotation4d (0,  1, 0, M_PI / 2);
+			transform1 -> rotation () = X3D::Rotation4d (1, 0, 0, PI <double> / 2) * X3D::Rotation4d (0, -1, 0, PI <double> / 2);
+			transform2 -> rotation () = X3D::Rotation4d (1, 0, 0, PI <double> / 2) * X3D::Rotation4d (0,  1, 0, PI <double> / 2);
 
 			material1 -> separateBackColor () = true;
 			material2 -> separateBackColor () = true;

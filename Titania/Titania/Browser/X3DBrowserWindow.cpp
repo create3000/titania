@@ -249,7 +249,7 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 	}
 
 	if  (not paths .empty ())
-		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::M_PHI);
+		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::PHI <double>);
 }
 
 void

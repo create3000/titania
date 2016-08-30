@@ -27,10 +27,14 @@
 
 #include "Contour.h"
 
+#include <Titania/Math/Constants.h>
+
 #include <cmath>
 
 namespace titania {
 namespace FTGL {
+
+using math::PI;
 
 Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, const size_t bezierSteps)
 {
@@ -59,11 +63,11 @@ Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, co
 		// Compute our path's new direction.
 		double t = dir - olddir;
 
-		if (t < -M_PI)
-			t += 2 * M_PI;
+		if (t < -PI <double>)
+			t += 2 * PI <double>;
 
-		if (t > M_PI)
-			t -= 2 * M_PI;
+		if (t > PI <double>)
+			t -= 2 * PI <double>;
 
 		angle += t;
 

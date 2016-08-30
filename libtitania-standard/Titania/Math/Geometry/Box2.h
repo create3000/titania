@@ -576,7 +576,7 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & points)
 	Type min_area = std::numeric_limits <Type>::infinity ();
 	Type rotation = 0;
 
-	while (rotation < M_PI)
+	while (rotation < PI <Type>)
 	{
 		Type max_cos_theta = -std::numeric_limits <Type>::infinity ();
 		int  maxIndex      = -1;

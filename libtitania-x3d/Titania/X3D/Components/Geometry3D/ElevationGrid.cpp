@@ -456,7 +456,7 @@ ElevationGrid::addNormals ()
 {
 	const auto coordIndex   = createCoordIndex ();
 	const auto points       = createPoints ();
-	const auto normals      = createNormals (points, coordIndex, M_PI);
+	const auto normals      = createNormals (points, coordIndex, PI <float>);
 	const auto normalNode   = getExecutionContext () -> createNode <Normal> ();
 	const auto xDimension_1 = xDimension () - 1;
 	const auto zDimension_1 = zDimension () - 1;

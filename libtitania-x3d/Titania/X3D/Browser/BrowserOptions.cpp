@@ -105,7 +105,7 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	     QualityWhenMoving (new SFString ("MEDIUM")),
 	               Shading (new SFString ("GOURAUD")),
 	     AnimateStairWalks (new SFBool ()),
-	               Gravity (new SFFloat (P_GN))
+	               Gravity (new SFFloat (GN <float>))
 { }
 
 BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
@@ -248,8 +248,8 @@ BrowserOptions::set_PrimitiveQuality ()
 {
 	if (PrimitiveQuality () == "HIGH")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 40;
-		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 40;
+		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = PI <float> / 40;
+		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = PI <float> / 40;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 81;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 81;
 		getBrowser () -> getConeOptions ()       -> xDimension () = 33;
@@ -269,8 +269,8 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	if (PrimitiveQuality () == "LOW")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 10;
-		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 10;
+		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = PI <float> / 10;
+		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = PI <float> / 10;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 21;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 21;
 		getBrowser () -> getConeOptions ()       -> xDimension () = 17;
@@ -290,8 +290,8 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	// MEDIUM
 
-	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = M_PI / 20;
-	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = M_PI / 20;
+	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = PI <float> / 20;
+	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = PI <float> / 20;
 	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 41;
 	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 41;
 	getBrowser () -> getConeOptions ()       -> xDimension () = 21;

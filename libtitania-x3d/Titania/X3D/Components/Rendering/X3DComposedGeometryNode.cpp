@@ -310,7 +310,7 @@ X3DComposedGeometryNode::createNormals (const size_t vertexCount, const size_t s
 		for (size_t i = 0; i < size; ++ i)
 			normalIndex [getIndex (i)] .emplace_back (i);
 
-		refineNormals (normalIndex, normals, M_PI, true);
+		refineNormals (normalIndex, normals, PI <double>, true);
 	}
 
 	return normals;

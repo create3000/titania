@@ -60,6 +60,8 @@
 namespace titania {
 namespace puck {
 
+using math::PI;
+
 GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow) :
 	                     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	 X3DGeometryPropertiesEditorInterface (get_ui ("Editors/GeometryPropertiesEditor.glade")),
@@ -93,7 +95,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	nodesBuffer .addInterest (this, &GeometryPropertiesEditor::set_buffer);
 
-	getCreaseAngleAdjustment () -> set_upper (M_PI);
+	getCreaseAngleAdjustment () -> set_upper (PI <double>);
 
 	setup ();
 }
