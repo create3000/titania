@@ -164,7 +164,6 @@ private:
 	Vector2d                      bearing;
 	Vector2d                      minorAlignment;
 	std::vector <Vector2d>        translations;
-	GLuint                        listId;
 
 };
 

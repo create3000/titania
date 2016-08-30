@@ -70,8 +70,7 @@ X3DTextGeometry::X3DTextGeometry (Text* const text, const X3DFontStyleNode* cons
 	  charSpacings (),
 	       bearing (),
 	minorAlignment (),
-	  translations (),
-	        listId (glGenLists (1))
+	  translations ()
 { }
 
 void
@@ -89,7 +88,6 @@ X3DTextGeometry::initialize ()
 		text -> textBounds () = Vector2d ();
 
 		setBBox (Box3d ());
-
 		return;
 	}
 
@@ -511,17 +509,7 @@ X3DTextGeometry::draw (ShapeContainer* const context)
 { }
 
 X3DTextGeometry::~X3DTextGeometry ()
-{
-	try
-	{
-		ContextLock lock (fontStyle -> getBrowser ());
-
-		if (listId)
-			glDeleteLists (listId, 1);
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
-}
+{ }
 
 X3DFontStyleNode::Fields::Fields () :
 	   language (new SFString ()),
