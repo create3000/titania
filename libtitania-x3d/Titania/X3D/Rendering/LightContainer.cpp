@@ -56,15 +56,12 @@
 namespace titania {
 namespace X3D {
 
-LightContainer::LightContainer (X3DLightNode* const node, const Matrix4d & modelViewMatrix, X3DGroupingNode* const group)
-throw (std::domain_error) :
-	   X3DCollectableObject (),
-	                   node (node),
-	       lightSpaceMatrix (node -> getModelViewMatrix () .get ()),
-	inverseLightSpaceMatrix (inverse (lightSpaceMatrix)),
-	        modelViewMatrix (modelViewMatrix),
-	                  group (group),
-	                lightId (0)
+LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const group) :
+	X3DCollectableObject (),
+	                node (node),
+	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	               group (group),
+	             lightId (0)
 { }
 
 void
@@ -84,7 +81,7 @@ LightContainer::enable ()
 	
 			glEnable (lightId);
 	
-			glLoadMatrixd (lightSpaceMatrix .data ());
+			glLoadMatrixd (modelViewMatrix .data ());
 	
 			node -> draw (lightId);
 		}
@@ -118,7 +115,7 @@ LightContainer::renderShadowMap ()
 void
 LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, lightSpaceMatrix);
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
 }
 
 } // X3D

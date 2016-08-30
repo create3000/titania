@@ -74,29 +74,22 @@ X3DLightNode::X3DLightNode () :
 void
 X3DLightNode::push (X3DGroupingNode* const group)
 {
-	try
+	if (on ())
 	{
-		if (on ())
+		if (global ())
 		{
-			if (global ())
-			{
-				const auto lightContainer = std::make_shared <LightContainer> (this, getInverseCameraSpaceMatrix (), getCurrentLayer () -> getGroup ());
+			const auto lightContainer = std::make_shared <LightContainer> (this, getCurrentLayer () -> getGroup ());
 
-				getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
-				getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
-			}
-			else
-			{
-				const auto lightContainer = std::make_shared <LightContainer> (this, getModelViewMatrix () .get (), group);
-
-				getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
-				getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
-			}
+			getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
+			getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
 		}
-	}
-	catch (const std::domain_error &)
-	{
-		// Catch exception from LightContainer constructor if there is no inverse of the light space matrix.
+		else
+		{
+			const auto lightContainer = std::make_shared <LightContainer> (this, group);
+
+			getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
+			getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
+		}
 	}
 }
 

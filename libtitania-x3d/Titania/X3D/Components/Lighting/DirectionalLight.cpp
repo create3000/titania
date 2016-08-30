@@ -151,13 +151,12 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 
 	getBrowser () -> setRenderTools (false);
 
-	const auto lightSpaceMatrix = lightContainer -> getLightSpaceMatrix () * getCameraSpaceMatrix ();
-	const auto modelViewMatrix  = lightContainer -> getModelViewMatrix  () * getCameraSpaceMatrix ();
-	const auto group            = lightContainer -> getGroup ();
-	const auto bbox             = group -> getBBox ();
-	const auto sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ()));
-	const auto lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));
-	const auto lightBBox        = bbox * modelViewMatrix * lightRotation; // Group bbox from the perspective of the light.
+	const auto lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+	const auto group            = lightContainer -> getGroup ();                                          // Group to be shadowd
+	const auto groupBBox        = group -> getBBox ();                                                    // Group bbox.
+	const auto sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Direction in scene coordinate system.
+	const auto lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));             // Rotation from light direction to normal zero.
+	const auto lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
 	const auto projectionMatrix = ortho (lightBBox);
 
 	FrameBuffer textureBuffer (getBrowser (), 100, 100, 4);
@@ -166,7 +165,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	textureBuffer .bind ();
 
 	getProjectionMatrix () .push (projectionMatrix);
-	getModelViewMatrix  () .push (modelViewMatrix * lightRotation);
+	getModelViewMatrix  () .push (lightRotation);
 
 	getCurrentLayer () -> renderDepth (group);
 
@@ -188,9 +187,9 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 }
 
 void
-DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & lightSpaceMatrix)
+DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
-	const auto worldDirection = Vector3f (normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ())));
+	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], DIRECTIONAL_LIGHT);
 	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());

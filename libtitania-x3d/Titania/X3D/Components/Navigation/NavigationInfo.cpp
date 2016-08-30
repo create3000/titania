@@ -140,7 +140,7 @@ NavigationInfo::set_headlight ()
 	getModelViewMatrix () .identity ();
 
 	if (headlight ())
-		light .reset (new LightContainer (directionalLight, Matrix4d (), nullptr)); // There should always be the indentity matrix
+		light .reset (new LightContainer (directionalLight, nullptr)); // There should always be the indentity matrix
 
 	else
 		light .reset ();

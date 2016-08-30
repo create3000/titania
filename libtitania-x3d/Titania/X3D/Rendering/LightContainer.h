@@ -68,18 +68,9 @@ public:
 
 	///  @name Construction
 
-	LightContainer (X3DLightNode* const, const Matrix4d &, X3DGroupingNode* const)
-	throw (std::domain_error);
+	LightContainer (X3DLightNode* const, X3DGroupingNode* const);
 
 	///  @name Member access
-
-	const Matrix4d &
-	getLightSpaceMatrix () const
-	{ return lightSpaceMatrix; }
-
-	const Matrix4d &
-	getInverseLightSpaceMatrix () const
-	{ return inverseLightSpaceMatrix; }
 
 	const Matrix4d &
 	getModelViewMatrix () const
@@ -110,8 +101,6 @@ private:
 	///  @name Members
 
 	X3DLightNode* const    node;
-	const Matrix4d         lightSpaceMatrix;
-	const Matrix4d         inverseLightSpaceMatrix;
 	const Matrix4d         modelViewMatrix;
 	X3DGroupingNode* const group;
 	GLenum                 lightId;
