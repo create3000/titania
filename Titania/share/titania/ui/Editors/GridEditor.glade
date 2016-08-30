@@ -681,6 +681,7 @@
                     <property name="name">GridMajorLinesExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="resize_toplevel">True</property>
                     <child>
@@ -949,6 +950,7 @@
                     <property name="name">GridColorsExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="resize_toplevel">True</property>
                     <child>
@@ -1520,6 +1522,7 @@
                     <property name="name">AngleMajorLinesExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="resize_toplevel">True</property>
                     <child>
@@ -1790,6 +1793,7 @@
                     <property name="name">AngleColorsExpander</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="expanded">True</property>
                     <property name="spacing">8</property>
                     <property name="resize_toplevel">True</property>
                     <child>

@@ -257,6 +257,8 @@ X3DGridTool::set_rotation ()
 	          getTool () -> rotation () .getAngle () };
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+
+	__LOG__ << metadataSet << std::endl;
 }
 
 void
@@ -412,6 +414,8 @@ X3DGridTool::connectTranslation (const X3D::SFVec3f & field)
 void
 X3DGridTool::connectRotation (const X3D::SFRotation & field)
 {
+	__LOG__ << std::endl;
+
 	field .removeInterest (this, &X3DGridTool::connectRotation);
 	field .addInterest (this, &X3DGridTool::set_rotation);
 }

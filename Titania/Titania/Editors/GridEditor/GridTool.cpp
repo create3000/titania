@@ -79,6 +79,8 @@ void
 GridTool::realize ()
 {
 	tool = getMasterBrowser () -> getPrivateScene () -> createNode <X3D::GridTool> ();
+
+	getMasterBrowser () -> getPrivateScene () -> realize ();
 }
 
 const X3D::X3DPtr <X3D::X3DGridTool> &
