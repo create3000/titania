@@ -986,9 +986,9 @@ X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
 	const auto & globalLights = context -> getRenderer () -> getGlobalLights ();
 
 	if (extensionGPUShaderFP64)
-		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, browser -> getProjectionMatrix () .data ());
+		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, browser -> getProjectionMatrix () .get () .data ());
 	else
-		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (browser -> getProjectionMatrix ()) .data ());
+		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (browser -> getProjectionMatrix () .get ()) .data ());
 
 	// Set global lights
 

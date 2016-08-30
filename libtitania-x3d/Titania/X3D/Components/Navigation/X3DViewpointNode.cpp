@@ -592,7 +592,7 @@ X3DViewpointNode::traverse (const TraverseType type)
 ///  Reshape viewpoint that it suits for X3DBackground.
 ///  Overloaded in GeoViewpoint.
 void
-X3DViewpointNode::background (const double zNear, const double zFar)
+X3DViewpointNode::setBackgroundProjection (const double zNear, const double zFar)
 {
 	reshape (zNear, zFar);
 }
@@ -608,7 +608,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::reshape (const double zNear, const double zFar)
 {
-	getBrowser () -> setProjectionMatrix (getProjectionMatrix (zNear, zFar, Viewport4i ()));
+	X3DNode::getProjectionMatrix () .set (getProjectionMatrix (zNear, zFar, Viewport4i ()));
 }
 
 void

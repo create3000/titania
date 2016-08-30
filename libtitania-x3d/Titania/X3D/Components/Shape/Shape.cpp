@@ -191,7 +191,7 @@ Shape::touch ()
 {
 	std::vector <IntersectionPtr> itersections;
 
-	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), getBrowser () -> getProjectionMatrix (), Viewport4i ());
+	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), getProjectionMatrix () .get (), Viewport4i ());
 
 	if (not getGeometry () -> intersects (hitRay, itersections))
 		return;

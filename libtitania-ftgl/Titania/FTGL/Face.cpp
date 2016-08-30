@@ -113,7 +113,8 @@ Face::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 const Size &
 Face::getSize (const uint32_t size, const uint32_t res)
 {
-	charSize .setCharSize (ftFace .get (), size, res, res);
+	charSize .setCharSize (ftFace .get (), size, res, res); // TODO: ftFace .get () to ftFace only, because of unique_ptr
+
 	error = charSize .getError ();
 
 	return charSize;
@@ -125,10 +126,10 @@ Face::getCharMapCount () const
 	return (*ftFace) -> num_charmaps;
 }
 
-FT_Encoding*
+FT_Encoding* // TODO: std::shared_ptr
 Face::getCharMapList () const
 {
-	if (0 == fontEncodingList)
+	if (not fontEncodingList)
 	{
 		fontEncodingList = new FT_Encoding [getCharMapCount ()];
 

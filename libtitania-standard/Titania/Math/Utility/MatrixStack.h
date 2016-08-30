@@ -123,7 +123,11 @@ public:
 	void
 	push ()
 	{ stack .emplace_back (stack .back ()); }
-	
+
+	void
+	push (const value_type & value)
+	{ stack .emplace_back (value); }
+
 	void
 	pop ()
 	{ stack .pop_back (); }

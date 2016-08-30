@@ -191,7 +191,7 @@ public:
 
 	virtual
 	void
-	background (const double, const double) final override;
+	setBackgroundProjection (const double, const double) final override;
 
 	virtual
 	void

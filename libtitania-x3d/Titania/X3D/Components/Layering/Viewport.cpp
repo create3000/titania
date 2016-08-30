@@ -157,7 +157,7 @@ Viewport::traverse (const TraverseType type)
 void
 Viewport::push ()
 {
-	getCurrentLayer () -> getViewVolumeStack () .emplace_back (getBrowser () -> getProjectionMatrix (), getScissor ());
+	getCurrentLayer () -> getViewVolumeStack () .emplace_back (getProjectionMatrix () .get (), getScissor ());
 }
 
 void

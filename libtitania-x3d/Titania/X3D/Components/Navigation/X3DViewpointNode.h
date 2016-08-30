@@ -260,7 +260,7 @@ public:
 	///  Setup projection matrix for X3DBackgroundNode.
 	virtual
 	void
-	background (const double, const double);
+	setBackgroundProjection (const double, const double);
 
 	///  Setup projection matrix.
 	void

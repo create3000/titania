@@ -74,11 +74,11 @@ public:
 
 	///  @name Member access
 
-	void
-	setProjectionMatrix (const Matrix4d & value)
-	{ projectionMatrix = value; }
+	Matrix4dStack &
+	getProjectionMatrix ()
+	{ return projectionMatrix; }
 
-	const Matrix4d &
+	const Matrix4dStack &
 	getProjectionMatrix () const
 	{ return projectionMatrix; }
 
@@ -140,7 +140,7 @@ private:
 	///  @name Members
 
 
-	Matrix4d            projectionMatrix;
+	Matrix4dStack       projectionMatrix;
 	Matrix4dStack       modelViewMatrix;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;

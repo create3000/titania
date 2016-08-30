@@ -105,7 +105,8 @@ StaticGroup::initialize ()
 	group -> setup ();
 
 	// Connect after Group setup.
-	group -> children () .addInterest (this, &StaticGroup::set_children);
+	group -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	group -> children ()       .addInterest (this, &StaticGroup::set_children);
 
 	set_children ();
 }

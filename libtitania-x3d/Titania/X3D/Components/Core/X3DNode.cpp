@@ -1320,6 +1320,18 @@ X3DNode::getInverseCameraSpaceMatrix () const
 }
 
 Matrix4dStack &
+X3DNode::getProjectionMatrix ()
+{
+	return getBrowser () -> getProjectionMatrix ();
+}
+
+const Matrix4dStack &
+X3DNode::getProjectionMatrix () const
+{
+	return getBrowser () -> getProjectionMatrix ();
+}
+
+Matrix4dStack &
 X3DNode::getModelViewMatrix ()
 {
 	return getBrowser () -> getModelViewMatrix ();

@@ -100,7 +100,7 @@ Billboard::getBBox () const
 	return X3DGroupingNode::getBBox () * matrix;
 }
 
-void
+Matrix4d
 Billboard::rotate (const TraverseType type)
 throw (std::domain_error)
 {
@@ -134,7 +134,7 @@ throw (std::domain_error)
 		matrix = Matrix4d (Rotation4d (N2, N1));                                       // Rotate zAxis in plane
 	}
 
-	getModelViewMatrix () .mult_left (matrix);
+	return matrix;
 }
 
 void
@@ -144,7 +144,7 @@ Billboard::traverse (const TraverseType type)
 
 	try
 	{
-		rotate (type);
+		getModelViewMatrix () .mult_left (rotate (type));
 	
 		X3DGroupingNode::traverse (type);
 	}

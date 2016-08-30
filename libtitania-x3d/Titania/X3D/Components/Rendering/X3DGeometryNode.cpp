@@ -297,8 +297,8 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 
 		const auto & depth               = depthBuffer -> getDepth ();
 		const auto & viewport            = getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ();
-		const auto   modelViewProjection = getModelViewMatrix () .get () * getBrowser () -> getProjectionMatrix ();
-		const auto   invProjection       = inverse (getBrowser () -> getProjectionMatrix ());
+		const auto   modelViewProjection = getModelViewMatrix () .get () * getProjectionMatrix () .get ();
+		const auto   invProjection       = inverse (getProjectionMatrix () .get ());
 
 		for (const Vector3d & vertex : vertices)
 		{

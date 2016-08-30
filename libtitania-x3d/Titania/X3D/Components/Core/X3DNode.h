@@ -169,6 +169,12 @@ protected:
 	getInverseCameraSpaceMatrix () const;
 
 	Matrix4dStack &
+	getProjectionMatrix ();
+
+	const Matrix4dStack &
+	getProjectionMatrix () const;
+
+	Matrix4dStack &
 	getModelViewMatrix ();
 
 	const Matrix4dStack &

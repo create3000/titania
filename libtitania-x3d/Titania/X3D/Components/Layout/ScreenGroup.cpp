@@ -104,7 +104,7 @@ ScreenGroup::getMatrix () const
 }
 
 // Same as in Text
-void
+Matrix4d
 ScreenGroup::scale (const TraverseType type)
 throw (std::domain_error)
 {
@@ -115,7 +115,7 @@ throw (std::domain_error)
 
 	modelViewMatrix .get (translation, rotation, scale);
 
-	const auto & projectionMatrix = getBrowser () -> getProjectionMatrix ();
+	const auto & projectionMatrix = getProjectionMatrix () .get ();
 	const auto   viewport         = Viewport4i ();
 	const auto   screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
@@ -138,24 +138,22 @@ throw (std::domain_error)
 
 	// Assign modelViewMatrix and relative matrix
 
-	getModelViewMatrix () .set (screenMatrix);
+	return screenMatrix;
 }
 
 void
 ScreenGroup::traverse (const TraverseType type)
 {
-		getModelViewMatrix () .push ();
+	try
+	{
+		getModelViewMatrix () .push (scale (type));
 	
-		try
-		{
-			scale (type);
-		
-			X3DGroupingNode::traverse (type);
-		}
-		catch (const std::domain_error &)
-		{ }
+		X3DGroupingNode::traverse (type);
 	
 		getModelViewMatrix () .pop ();
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

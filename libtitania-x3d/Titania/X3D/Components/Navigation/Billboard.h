@@ -124,7 +124,7 @@ private:
 
 	///  @name Operations
 
-	void
+	Matrix4d
 	rotate (const TraverseType)
 	throw (std::domain_error);
 

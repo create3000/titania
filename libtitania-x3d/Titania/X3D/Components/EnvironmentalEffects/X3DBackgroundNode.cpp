@@ -346,12 +346,13 @@ X3DBackgroundNode::draw ()
 
 	scale *= std::max (viewport [2], viewport [3]);
 
-	getCurrentViewpoint () -> background (1, std::max (2.0, 3 * SIZE * scale .z ()));
-
 	// Setup projection matrix
 
+	getProjectionMatrix () .push ();
+	getCurrentViewpoint () -> setBackgroundProjection (1, std::max (2.0, 3 * SIZE * scale .z ()));
+
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Rotate and scale background
@@ -371,6 +372,8 @@ X3DBackgroundNode::draw ()
 
 	drawSphere ();
 	drawCube ();
+
+	getProjectionMatrix () .pop ();
 }
 
 void

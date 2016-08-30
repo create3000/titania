@@ -113,7 +113,7 @@ private:
 
 	///  @name Operations
 
-	void
+	Matrix4d
 	scale (const TraverseType)
 	throw (std::domain_error);
 

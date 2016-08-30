@@ -169,10 +169,10 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 }
 
 void
-SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & lightSpaceMatrix)
 {
-	const auto worldLocation  = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
-	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
+	const auto worldLocation  = Vector3f (lightSpaceMatrix .mult_vec_matrix (location () .getValue ()));
+	const auto worldDirection = Vector3f (normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ())));
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], SPOT_LIGHT);
 	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());

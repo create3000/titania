@@ -64,6 +64,7 @@
 
 #include <Titania/Math/Geometry/Camera.h>
 #include <Titania/Utility/Range.h>
+
 #include <algorithm>
 
 namespace titania {
@@ -179,6 +180,7 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 	context -> setClipPlanes (getClipPlanes ());
 }
 
+///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
 X3DRenderer::constrainTranslation (const Vector3d & translation) const
 {
@@ -216,8 +218,9 @@ X3DRenderer::constrainTranslation (const Vector3d & translation) const
 	return translation;
 }
 
+///  Returns the distance to the nearest object in @a direction.
 double
-X3DRenderer::getDistance (const Vector3d & translation) const
+X3DRenderer::getDistance (const Vector3d & direction) const
 {
 	try
 	{
@@ -236,10 +239,10 @@ X3DRenderer::getDistance (const Vector3d & translation) const
 
 		const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
 
-		// Translate camera to user position and to look in the direction of the translation.
+		// Translate camera to user position and to look in the direction of the @a direction.
 
 		const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
-		auto       rotation         = Rotation4d (zAxis, -translation) * localOrientation;
+		auto       rotation         = Rotation4d (zAxis, -direction) * localOrientation;
 	
 		// The viewer is alway a straight box depending on the upVector.
 		// rotation *= viewpoint -> straightenHorizon (rotation);
@@ -251,9 +254,15 @@ X3DRenderer::getDistance (const Vector3d & translation) const
 
 		modelViewMatrix .mult_right (projectionMatrix);
 	
-		getBrowser () -> setProjectionMatrix (modelViewMatrix);
+		// Render depth.
 
-		return getDepth ();
+		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .push (modelViewMatrix);
+
+		const auto depth = getDepth ();
+
+		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .pop ();
+
+		return depth;
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }
@@ -423,9 +432,13 @@ X3DRenderer::gravite ()
 
 		modelViewMatrix .mult_right (projectionMatrix);
 
-		getBrowser () -> setProjectionMatrix (modelViewMatrix);
+		// Render depth.
+
+		getProjectionMatrix () .push (modelViewMatrix);
 
 		auto distance = getDepth ();
+
+		getProjectionMatrix () .pop ();
 
 		// Gravite or step up
 
@@ -505,7 +518,7 @@ X3DRenderer::display ()
 		// Setup projection matrix
 
 		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+		glLoadMatrixd (getProjectionMatrix () .get () .data ());
 		glMatrixMode (GL_MODELVIEW);
 	
 		// Enable global lights
@@ -572,7 +585,7 @@ X3DRenderer::depth ()
 	// Setup projection matrix
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer

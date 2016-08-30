@@ -52,8 +52,11 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/LightContainer.h"
 #include "../../Tools/Lighting/DirectionalLightTool.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -138,13 +141,31 @@ DirectionalLight::draw (GLenum lightId)
 void
 DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
+	const auto & lightSpaceMatrix = lightContainer -> getLightSpaceMatrix ();
+	const auto & modelViewMatrix  = lightContainer -> getModelViewMatrix ();
+	const auto & group            = lightContainer -> getGroup ();
+	const auto   bbox             = group -> getBBox () * modelViewMatrix;
+	const auto   worldDirection   = normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ()));
+	const auto   lightRotation    = Matrix4d (Rotation4d (worldDirection, Vector3d (0, 0, 1)));
+	const auto   lightBBox        = bbox * lightRotation; // Group bbox from the perspective of the light.
+	const auto   lightBBoxExtents = lightBBox .extents ();
+	const auto   projectionMatrix = ortho (lightBBoxExtents .first, lightBBoxExtents .second);
 
+//	textureBuffer -> bind ();
+//
+//	getBrowser () -> getShadowRenderer () -> renderShadowMap (projectionMatrix, modelViewMatrix, group);
+//
+//	textureBuffer -> unbind ();
+
+	__LOG__ << getName () << std::endl;
+	__LOG__ << getName () << " : " << bbox << std::endl;
+	__LOG__ << getName () << " : " << lightBBox << std::endl;
 }
 
 void
-DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
+DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & lightSpaceMatrix)
 {
-	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
+	const auto worldDirection = Vector3f (normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ())));
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], DIRECTIONAL_LIGHT);
 	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());

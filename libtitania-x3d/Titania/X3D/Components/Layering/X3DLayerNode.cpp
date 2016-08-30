@@ -346,10 +346,12 @@ X3DLayerNode::pointer ()
 				return;
 		}
 
-		getModelViewMatrix () .identity ();
+		getProjectionMatrix () .push ();
+		getModelViewMatrix  () .push (Matrix4d ());
+
 		getViewpoint () -> reshape ();
-		getBrowser ()   -> setHitRay (getModelViewMatrix () .get (), getBrowser () -> getProjectionMatrix (), currentViewport -> getRectangle ());
 		getViewpoint () -> transform ();
+		getBrowser   () -> setHitRay (Matrix4d (), getProjectionMatrix () .get (), currentViewport -> getRectangle ());
 
 		currentViewport -> push ();
 
@@ -357,14 +359,18 @@ X3DLayerNode::pointer ()
 
 		currentViewport -> pop ();
 
-		getGlobalObjects () .clear ();
+		getGlobalObjects    () .clear ();
+		getModelViewMatrix  () .pop ();
+		getProjectionMatrix () .pop ();
 	}
 }
 
 void
 X3DLayerNode::camera ()
 {
-	getModelViewMatrix () .identity ();
+	getProjectionMatrix () .push ();
+	getModelViewMatrix  () .push (Matrix4d ());
+
 	getViewpoint () -> reshape ();
 
 	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
@@ -380,18 +386,26 @@ X3DLayerNode::camera ()
 	viewpoints      -> update ();
 	backgrounds     -> update ();
 	fogs            -> update ();
+
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
 }
 
 void
 X3DLayerNode::collision ()
 {
+	getProjectionMatrix () .push ();
+	getModelViewMatrix  () .push (Matrix4d ());
+
 	getViewpoint () -> reshape ();
-	getModelViewMatrix () .identity ();
 
 	// Render
 	currentViewport -> push ();
 	render (TraverseType::COLLISION);
 	currentViewport -> pop ();
+
+	getModelViewMatrix () .pop ();
+	getProjectionMatrix () .pop ();
 }
 
 void
@@ -399,7 +413,9 @@ X3DLayerNode::display (const TraverseType type)
 {
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	getModelViewMatrix () .identity ();
+	getProjectionMatrix () .push ();
+	getModelViewMatrix  () .push (Matrix4d ());
+
 	getBackground () -> draw ();
 
 	getNavigationInfo () -> enable ();
@@ -411,6 +427,9 @@ X3DLayerNode::display (const TraverseType type)
 	currentViewport -> pop ();
 
 	getNavigationInfo () -> disable ();
+
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
 }
 
 void
