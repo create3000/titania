@@ -40,7 +40,7 @@ Font::Font (const std::string & fontFilePath) :
 	       face (fontFilePath .c_str ()),
 	   charSize (),
 	 load_flags (FT_LOAD_DEFAULT),
-	  glyphList (nullptr),
+	  glyphList (),
 	        pen (),
 	      error (0)
 {
@@ -48,7 +48,7 @@ Font::Font (const std::string & fontFilePath) :
 
 	if (error == 0)
 	{
-		glyphList = new GlyphContainer (&face);
+		glyphList .reset (new GlyphContainer (&face));
 	}
 }
 
@@ -56,7 +56,7 @@ Font::Font (const uint8_t* pBufferBytes, const size_t bufferSizeInBytes) :
 	       face (pBufferBytes, bufferSizeInBytes),
 	   charSize (),
 	 load_flags (FT_LOAD_DEFAULT),
-	  glyphList (0),
+	  glyphList (),
 	        pen (),
 	      error (0)
 {
@@ -64,18 +64,15 @@ Font::Font (const uint8_t* pBufferBytes, const size_t bufferSizeInBytes) :
 
 	if (error == 0)
 	{
-		glyphList = new GlyphContainer (&face);
+		glyphList .reset (new GlyphContainer (&face));
 	}
 }
 
 bool
 Font::setFaceSize (const uint32_t size, const uint32_t res)
 {
-	if (glyphList not_eq nullptr)
-	{
-		delete glyphList;
-		glyphList = nullptr;
-	}
+	if (glyphList)
+		glyphList .reset ();
 
 	charSize = face .getSize (size, res);
 	error    = face .getError ();
@@ -85,7 +82,7 @@ Font::setFaceSize (const uint32_t size, const uint32_t res)
 		return false;
 	}
 
-	glyphList = new GlyphContainer (&face);
+	glyphList .reset (new GlyphContainer (&face));
 	return true;
 }
 
@@ -306,12 +303,7 @@ Font::checkGlyph (const uint32_t characterCode) const
 }
 
 Font::~Font ()
-{
-	if (glyphList)
-	{
-		delete glyphList;
-	}
-}
+{ }
 
 //
 //  FontImpl

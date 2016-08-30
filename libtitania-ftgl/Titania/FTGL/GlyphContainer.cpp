@@ -115,8 +115,6 @@ GlyphContainer::~GlyphContainer ()
 		delete glyph;
 
 	glyphs .clear ();
-
-	delete charMap;
 }
 
 } // FTGL

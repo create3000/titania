@@ -147,6 +147,12 @@ PointLight::draw (GLenum lightId)
 }
 
 void
+PointLight::renderShadowMap (LightContainer* const lightContainer)
+{
+
+}
+
+void
 PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
 	const auto worldLocation = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));

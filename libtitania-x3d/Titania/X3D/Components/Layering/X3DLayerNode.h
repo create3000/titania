@@ -137,6 +137,10 @@ public:
 	Box3d
 	getBBox () const;
 
+	const X3DPtr <X3DGroupingNode>
+	getGroup () const
+	{ return group; }
+
 	///  @name Bindable node stack handling
 
 	X3DViewportNode*
@@ -252,10 +256,6 @@ protected:
 	initialize () override;
 
 	///  @name Member access
-
-	const X3DPtr <X3DGroupingNode>
-	getGroup () const
-	{ return group; }
 
 	virtual
 	X3DFogObject*

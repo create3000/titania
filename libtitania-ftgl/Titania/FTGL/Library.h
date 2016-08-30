@@ -30,6 +30,8 @@
 #include FT_FREETYPE_H
 //#include FT_CACHE_H
 
+#include <memory>
+
 namespace titania {
 namespace FTGL {
 
@@ -69,8 +71,9 @@ public:
 	 *
 	 * @return A handle to a FreeType library instance.
 	 */
-	const FT_Library* const
-	getLibrary () const { return library; }
+	const std::unique_ptr <FT_Library> &
+	getLibrary () const
+	{ return library; }
 
 	/**
 	 * Queries the library for errors.
@@ -78,7 +81,8 @@ public:
 	 * @return  The current error code.
 	 */
 	FT_Error
-	getError () const { return error; }
+	getError () const
+	{ return error; }
 
 	/**
 	 * Destructor
@@ -97,10 +101,13 @@ private:
 	 * objects.
 	 */
 	Library ();
-	Library (const FT_Library &){ }
+
+	Library (const FT_Library &)
+	{ }
 
 	Library &
-	operator = (const FT_Library &) { return *this; }
+	operator = (const FT_Library &)
+	{ return *this; }
 
 	/**
 	 * Initialises the Freetype library
@@ -119,8 +126,9 @@ private:
 	/**
 	 * Freetype library handle.
 	 */
-	FT_Library* library;
-	//      FTC_Manager* manager;
+	std::unique_ptr <FT_Library> library;
+
+	// FTC_Manager* manager;
 
 	/**
 	 * Current error code. Zero means no error.

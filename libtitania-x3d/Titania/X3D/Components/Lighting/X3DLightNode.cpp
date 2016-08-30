@@ -65,22 +65,38 @@ X3DLightNode::Fields::Fields () :
 { }
 
 X3DLightNode::X3DLightNode () :
-	X3DChildNode (),
-	      fields ()
+	           X3DChildNode (),
+	                 fields ()
 {
 	addType (X3DConstants::X3DLightNode);
 }
 
 void
-X3DLightNode::push ()
+X3DLightNode::push (X3DGroupingNode* const group)
 {
-	if (on ())
+	try
 	{
-		if (global ())
-			getCurrentLayer () -> getGlobalLights () .emplace_back (new LightContainer (this));
+		if (on ())
+		{
+			if (global ())
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (this, getModelViewMatrix () .get (), group);
 
-		else
-			getCurrentLayer () -> getLocalLights () .emplace_back (new LightContainer (this));
+				getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
+				getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
+			}
+			else
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (this, Matrix4d (), getCurrentLayer () -> getGroup ());
+
+				getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
+				getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
+			}
+		}
+	}
+	catch (const std::domain_error &)
+	{
+		// Catch exception from LightContainer constructor if there is no inverse of the light space matrix.
 	}
 }
 

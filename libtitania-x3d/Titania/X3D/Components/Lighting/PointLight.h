@@ -152,6 +152,12 @@ private:
 	void
 	eventsProcessed ();
 
+	///  @name Operations
+
+	virtual
+	void
+	renderShadowMap (LightContainer* const) final override;
+
 	///  @name Static members
 
 	static const ComponentType component;

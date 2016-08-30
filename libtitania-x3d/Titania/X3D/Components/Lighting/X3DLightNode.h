@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class LightContainer;
+
 class X3DLightNode :
 	virtual public X3DChildNode
 {
@@ -117,7 +119,7 @@ public:
 
 	virtual
 	void
-	push ();
+	push (X3DGroupingNode* const);
 
 	virtual
 	void
@@ -134,9 +136,19 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class LightContainer;
+
 	///  @name Construction
 
 	X3DLightNode ();
+
+	///  @name Operations
+
+	virtual
+	void
+	renderShadowMap (LightContainer* const) = 0;
 
 
 private:

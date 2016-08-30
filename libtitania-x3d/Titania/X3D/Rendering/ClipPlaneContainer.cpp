@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -58,9 +58,9 @@ namespace X3D {
 
 ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 	X3DCollectableObject (),
-	                   node (node),
-	        modelViewMatrix (node -> getModelViewMatrix () .get ()),
-	                planeId (0)
+	                node (node),
+	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	             planeId (0)
 { }
 
 bool
@@ -72,28 +72,44 @@ ClipPlaneContainer::isClipped (const Vector3d & point, const Matrix4d & matrix) 
 void
 ClipPlaneContainer::enable ()
 {
-	auto & clipPlanes = node -> getBrowser () -> getClipPlanes ();
+	#ifdef FIXED_PIPELINE
+	const auto & browser = node -> getBrowser ();
 
-	if (not clipPlanes .empty ())
+	if (browser -> getFixedPipelineRequired ())
 	{
-		planeId = clipPlanes .top ();
-		clipPlanes .pop ();
+		auto & clipPlanes = browser -> getClipPlanes ();
 
-		glLoadMatrixd (modelViewMatrix .data ());
+		if (not clipPlanes .empty ())
+		{
+			planeId = clipPlanes .top ();
+			clipPlanes .pop ();
 
-		glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
-		glEnable (planeId);
+			glLoadMatrixd (modelViewMatrix .data ());
+
+			glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
+			glEnable (planeId);
+		}
 	}
+
+	#endif
 }
 
 void
 ClipPlaneContainer::disable ()
 {
-	if (planeId)
+	#ifdef FIXED_PIPELINE
+	const auto & browser = node -> getBrowser ();
+
+	if (browser -> getFixedPipelineRequired ())
 	{
-		node -> getBrowser () -> getClipPlanes () .push (planeId);
-		glDisable (planeId);
+		if (planeId)
+		{
+			browser -> getClipPlanes () .push (planeId);
+			glDisable (planeId);
+		}
 	}
+
+	#endif
 }
 
 void

@@ -41,6 +41,7 @@
 #include <string>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 
 namespace titania {
 namespace FTGL {
@@ -349,7 +350,7 @@ private:
 	/**
 	 * An object that holds a list of glyphs
 	 */
-	GlyphContainer* glyphList;
+	std::unique_ptr <GlyphContainer> glyphList;
 
 	/**
 	 * Current pen or cursor position;

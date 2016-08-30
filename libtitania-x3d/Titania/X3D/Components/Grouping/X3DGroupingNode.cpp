@@ -384,7 +384,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 				childNode -> push ();
 
 			for (const auto & childNode : lights)
-				childNode -> push ();
+				childNode -> push (this);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type);

@@ -33,6 +33,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+#include <memory>
+
 namespace titania {
 namespace FTGL {
 
@@ -62,14 +64,6 @@ public:
 	Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes, bool precomputeKerning = true);
 
 	/**
-	 * Destructor
-	 *
-	 * Disposes of the current Freetype Face.
-	 */
-	virtual
-	~Face ();
-
-	/**
 	 * Attach auxilliary file to font (e.g., font metrics).
 	 *
 	 * @param fontFilePath  auxilliary font file path.
@@ -95,7 +89,7 @@ public:
 	 *
 	 * @return pointer to an FT_Face.
 	 */
-	FT_Face*
+	const std::unique_ptr <FT_Face> &
 	getFace () const
 	{ return ftFace; }
 
@@ -156,13 +150,21 @@ public:
 	getError () const
 	{ return error; }
 
+	/**
+	 * Destructor
+	 *
+	 * Disposes of the current Freetype Face.
+	 */
+	virtual
+	~Face ();
+
 
 private:
 
 	/**
 	 * The Freetype face
 	 */
-	FT_Face* ftFace;
+	std::unique_ptr <FT_Face> ftFace;
 
 	/**
 	 * The size object associated with this face

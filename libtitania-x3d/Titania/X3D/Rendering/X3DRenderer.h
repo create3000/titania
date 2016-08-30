@@ -122,6 +122,10 @@ public:
 	getLocalLights ()
 	{ return localLights; }
 
+	LightContainerArray &
+	getLights ()
+	{ return lights; }
+
 	CollisionArray &
 	getCollisions ()
 	{ return collisions; }
@@ -211,6 +215,7 @@ private:
 	CollectableObjectArray  localObjects;
 	ClipPlaneContainerArray clipPlanes;
 	LightContainerArray     localLights;
+	LightContainerArray     lights;
 	CollisionArray          collisions;
 
 	ShapeContainerArray      opaqueShapes;

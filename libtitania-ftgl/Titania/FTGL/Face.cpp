@@ -41,15 +41,13 @@ Face::Face (const char* fontFilePath, bool precomputeKerning) :
 {
 	const FT_Long DEFAULT_FACE_INDEX = 0;
 
-	ftFace = new FT_Face;
+	ftFace .reset (new FT_Face ());
 
-	error = FT_New_Face (*Library::getInstance () .getLibrary (), fontFilePath,
-	                     DEFAULT_FACE_INDEX, ftFace);
+	error = FT_New_Face (*Library::getInstance () .getLibrary (), fontFilePath, DEFAULT_FACE_INDEX, ftFace .get ());
 
 	if (error)
 	{
-		delete ftFace;
-		ftFace = 0;
+		ftFace .reset ();
 		return;
 	}
 
@@ -71,16 +69,15 @@ Face::Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
 {
 	const FT_Long DEFAULT_FACE_INDEX = 0;
 
-	ftFace = new FT_Face;
+	ftFace .reset (new FT_Face ());
 
 	error = FT_New_Memory_Face (*Library::getInstance () .getLibrary (),
 	                            (FT_Byte const*) pBufferBytes, (FT_Long) bufferSizeInBytes,
-	                            DEFAULT_FACE_INDEX, ftFace);
+	                            DEFAULT_FACE_INDEX, ftFace .get ());
 
 	if (error)
 	{
-		delete ftFace;
-		ftFace = 0;
+		ftFace .reset ();
 		return;
 	}
 
@@ -90,21 +87,6 @@ Face::Face (const uint8_t* pBufferBytes, size_t bufferSizeInBytes,
 	if (hasKerningTable and precomputeKerning)
 	{
 		buildKerningCache ();
-	}
-}
-
-Face::~Face ()
-{
-	if (kerningCache)
-	{
-		delete [ ] kerningCache;
-	}
-
-	if (ftFace)
-	{
-		FT_Done_Face (*ftFace);
-		delete ftFace;
-		ftFace = 0;
 	}
 }
 
@@ -131,7 +113,7 @@ Face::attach (const uint8_t* pBufferBytes, size_t bufferSizeInBytes)
 const Size &
 Face::getSize (const uint32_t size, const uint32_t res)
 {
-	charSize .setCharSize (ftFace, size, res, res);
+	charSize .setCharSize (ftFace .get (), size, res, res);
 	error = charSize .getError ();
 
 	return charSize;
@@ -180,8 +162,7 @@ Face::getKernAdvance (uint32_t index1, uint32_t index2) const
 	FT_Vector kernAdvance;
 	kernAdvance .x = kernAdvance .y = 0;
 
-	error = FT_Get_Kerning (*ftFace, index1, index2, ft_kerning_unfitted,
-	                        &kernAdvance);
+	error = FT_Get_Kerning (*ftFace, index1, index2, ft_kerning_unfitted, &kernAdvance);
 
 	if (error)
 	{
@@ -221,8 +202,7 @@ Face::buildKerningCache ()
 	{
 		for (uint32_t i = 0; i < Face::MAX_PRECOMPUTED; i ++)
 		{
-			error = FT_Get_Kerning (*ftFace, i, j, ft_kerning_unfitted,
-			                        &kernAdvance);
+			error = FT_Get_Kerning (*ftFace, i, j, ft_kerning_unfitted, &kernAdvance);
 
 			if (error)
 			{
@@ -231,11 +211,22 @@ Face::buildKerningCache ()
 				return;
 			}
 
-			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i)]
-			   = static_cast <double> (kernAdvance.x) / 64.0;
-			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i) + 1]
-			   = static_cast <double> (kernAdvance.y) / 64.0;
+			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i)]     = static_cast <double> (kernAdvance.x) / 64.0;
+			kerningCache [2 * (j * Face::MAX_PRECOMPUTED + i) + 1] = static_cast <double> (kernAdvance.y) / 64.0;
 		}
+	}
+}
+
+Face::~Face ()
+{
+	if (kerningCache)
+	{
+		delete [ ] kerningCache;
+	}
+
+	if (ftFace)
+	{
+		FT_Done_Face (*ftFace);
 	}
 }
 

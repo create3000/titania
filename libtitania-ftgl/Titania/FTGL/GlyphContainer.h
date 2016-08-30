@@ -34,6 +34,7 @@
 #include FT_GLYPH_H
 
 #include <vector>
+#include <memory>
 
 namespace titania {
 namespace FTGL {
@@ -158,7 +159,7 @@ private:
 	/**
 	 * The Character Map object associated with the current face
 	 */
-	Charmap* charMap;
+	std::unique_ptr <Charmap> charMap;
 
 	/**
 	 * A structure to hold the glyphs

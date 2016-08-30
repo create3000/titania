@@ -28,6 +28,13 @@
 namespace titania {
 namespace FTGL {
 
+Library::Library () :
+	library (),
+	  error (0)
+{
+	initialise ();
+}
+
 const Library &
 Library::getInstance ()
 {
@@ -36,59 +43,31 @@ Library::getInstance ()
 	return ftlib;
 }
 
-Library::~Library ()
-{
-	if (library not_eq 0)
-	{
-		FT_Done_FreeType (*library);
-
-		delete library;
-		library = 0;
-	}
-
-	//  if(manager not_eq 0)
-	//  {
-	//      FTC_Manager_Done(manager);
-	//
-	//      delete manager;
-	//      manager= 0;
-	//  }
-}
-
-Library::Library () :
-	library (0),
-	  error (0)
-{
-	initialise ();
-}
-
 bool
 Library::initialise ()
 {
-	if (library not_eq 0)
+	if (library)
 		return true;
 
-	library = new FT_Library;
+	library .reset (new FT_Library ());
 
-	error = FT_Init_FreeType (library);
+	error = FT_Init_FreeType (library .get ());
 
 	if (error)
 	{
-		delete library;
-		library = 0;
+		library .reset ();
 		return false;
 	}
 
-	//  FTC_Manager* manager;
-	//
-	//  if(FTC_Manager_New(lib, 0, 0, 0, my_face_requester, 0, manager)
-	//  {
-	//      delete manager;
-	//      manager= 0;
-	//      return false;
-	//  }
-
 	return true;
+}
+
+Library::~Library ()
+{
+	if (library)
+	{
+		FT_Done_FreeType (*library);
+	}
 }
 
 } // FTGL

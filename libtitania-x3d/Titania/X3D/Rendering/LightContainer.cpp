@@ -56,45 +56,69 @@
 namespace titania {
 namespace X3D {
 
-LightContainer::LightContainer (X3DLightNode* const node) :
-	X3DCollectableObject (),
-	                node (node),
-	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
-	             lightId (0)
+LightContainer::LightContainer (X3DLightNode* const node, const Matrix4d & modelViewMatrix, X3DGroupingNode* const group)
+throw (std::domain_error) :
+	   X3DCollectableObject (),
+	                   node (node),
+	       lightSpaceMatrix (node -> getModelViewMatrix () .get ()),
+	inverseLightSpaceMatrix (inverse (lightSpaceMatrix)),
+	        modelViewMatrix (modelViewMatrix),
+	                  group (group),
+	                lightId (0)
 { }
 
 void
 LightContainer::enable ()
 {
-	auto & lights = node -> getBrowser () -> getLights ();
+	const auto & browser = node -> getBrowser ();
 
-	if (not lights .empty ())
+	#ifdef FIXED_PIPELINE
+	if (browser -> getFixedPipelineRequired ())
 	{
-		lightId = lights .top ();
-		lights .pop ();
-
-		glEnable (lightId);
-
-		glLoadMatrixd (modelViewMatrix .data ());
-
-		node -> draw (lightId);
+		auto & lights = browser -> getLights ();
+	
+		if (not lights .empty ())
+		{
+			lightId = lights .top ();
+			lights .pop ();
+	
+			glEnable (lightId);
+	
+			glLoadMatrixd (lightSpaceMatrix .data ());
+	
+			node -> draw (lightId);
+		}
 	}
+	#endif
 }
 
 void
 LightContainer::disable ()
 {
-	if (lightId)
+	const auto & browser = node -> getBrowser ();
+
+	#ifdef FIXED_PIPELINE
+	if (browser -> getFixedPipelineRequired ())
 	{
-		glDisable (lightId);
-		node -> getBrowser () -> getLights () .push (lightId);
+		if (lightId)
+		{
+			glDisable (lightId);
+			browser -> getLights () .push (lightId);
+		}
 	}
+	#endif
+}
+
+void
+LightContainer::renderShadowMap ()
+{
+	node -> renderShadowMap (this);
 }
 
 void
 LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+	node -> setShaderUniforms (shaderObject, i, lightSpaceMatrix);
 }
 
 } // X3D

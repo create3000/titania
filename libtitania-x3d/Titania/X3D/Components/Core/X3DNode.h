@@ -144,15 +144,6 @@ public:
 	std::vector <X3DLayerNode*>
 	getLayers () const;
 
-	Matrix4dStack &
-	getModelViewMatrix ();
-
-	const Matrix4dStack &
-	getModelViewMatrix () const;
-
-	Matrix4d
-	getModelViewMatrix (const TraverseType) const;
-
 
 protected:
 
@@ -176,6 +167,15 @@ protected:
 
 	const Matrix4d &
 	getInverseCameraSpaceMatrix () const;
+
+	Matrix4dStack &
+	getModelViewMatrix ();
+
+	const Matrix4dStack &
+	getModelViewMatrix () const;
+
+	Matrix4d
+	getModelViewMatrix (const TraverseType) const;
 
 
 private:

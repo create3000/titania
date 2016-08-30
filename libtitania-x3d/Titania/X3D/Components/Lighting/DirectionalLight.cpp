@@ -136,6 +136,12 @@ DirectionalLight::draw (GLenum lightId)
 }
 
 void
+DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
+{
+
+}
+
+void
 DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
 	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));

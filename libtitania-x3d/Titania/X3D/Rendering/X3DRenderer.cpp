@@ -82,6 +82,7 @@ X3DRenderer::X3DRenderer () :
 	          localObjects (),
 	            clipPlanes (),
 	           localLights (),
+	                lights (),
 	            collisions (),
 	          opaqueShapes (),
 	     transparentShapes (),
@@ -325,6 +326,7 @@ X3DRenderer::render (const TraverseType type)
 	getGlobalObjects () .clear ();
 	getClipPlanes    () .clear ();
 	getGlobalLights  () .clear ();
+	getLights        () .clear ();
 }
 
 void
@@ -495,24 +497,31 @@ X3DRenderer::display ()
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
-	// Setup projection matrix
+	// Enable global objects
 
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
+		// Setup projection matrix
+
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (getBrowser () -> getProjectionMatrix () .data ());
 		glMatrixMode (GL_MODELVIEW);
+	
+		// Enable global lights
+
+		for (const auto & object : getGlobalLights ())
+			object -> enable ();
 	}
 	#endif
-
-	// Enable global lights
 
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
-	for (const auto & object : getGlobalLights ())
-		object -> enable ();
+	// Render shadow maps
+
+	for (const auto & object : getLights ())
+		object -> renderShadowMap ();
 
 	// Sorted blend
 
@@ -537,18 +546,23 @@ X3DRenderer::display ()
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	// Disable global lights
-
-	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
-		object -> disable ();
+	// Disable global objects
 
 	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
 		object -> disable ();
 
 	#ifdef FIXED_PIPELINE
-	// Reset to default OpenGL appearance
 	if (getBrowser () -> getFixedPipelineRequired ())
+	{
+		// Disable global lights
+	
+		for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+			object -> disable ();
+
+		// Reset to default OpenGL appearance
+
 		getBrowser () -> getDefaultAppearance () -> draw ();
+	}
 	#endif
 }
 

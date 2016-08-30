@@ -57,6 +57,7 @@
 namespace titania {
 namespace X3D {
 
+class X3DGroupingNode;
 class X3DLightNode;
 class X3DProgrammableShaderObject;
 
@@ -65,7 +66,30 @@ class LightContainer :
 {
 public:
 
-	LightContainer (X3DLightNode* const);
+	///  @name Construction
+
+	LightContainer (X3DLightNode* const, const Matrix4d &, X3DGroupingNode* const)
+	throw (std::domain_error);
+
+	///  @name Member access
+
+	const Matrix4d &
+	getLightSpaceMatrix () const
+	{ return lightSpaceMatrix; }
+
+	const Matrix4d &
+	getInverseLightSpaceMatrix () const
+	{ return inverseLightSpaceMatrix; }
+
+	const Matrix4d &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	X3DGroupingNode*
+	getGroup () const
+	{ return group; }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -76,13 +100,21 @@ public:
 	disable () final override;
 
 	void
+	renderShadowMap ();
+
+	void
 	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
 
 private:
 
-	X3DLightNode* const node;
-	const Matrix4d      modelViewMatrix;
-	GLenum              lightId;
+	///  @name Members
+
+	X3DLightNode* const    node;
+	const Matrix4d         lightSpaceMatrix;
+	const Matrix4d         inverseLightSpaceMatrix;
+	const Matrix4d         modelViewMatrix;
+	X3DGroupingNode* const group;
+	GLenum                 lightId;
 
 };
 

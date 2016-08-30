@@ -122,6 +122,13 @@ public:
 
 private:
 
+	///  @name Friends
+
+	friend class ClipPlaneContainer;
+
+
+private:
+
 
 	///  @name Static members
 
