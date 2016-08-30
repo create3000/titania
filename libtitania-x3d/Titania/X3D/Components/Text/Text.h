@@ -164,17 +164,15 @@ public:
 	fontStyle () const
 	{ return *fields .fontStyle; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isTransparent () const;
-
 	///  @name Member access
 
 	virtual
 	const Box3d &
 	getBBox () const final override;
+
+	virtual
+	bool
+	isTransparent () const;
 
 	float
 	getLength (const size_t);
@@ -226,16 +224,21 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Member access
+	virtual
+	Box3d
+	createBBox () const final override;
+
+	virtual
+	Matrix4d
+	getMatrix () const final override;
+
 	///  @name Event handlers
 
 	void
 	set_fontStyle ();
 
 	///  @name Operations
-
-	virtual
-	Matrix4d
-	getMatrix () const final override;
 
 	virtual
 	void

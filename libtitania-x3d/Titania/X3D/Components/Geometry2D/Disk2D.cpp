@@ -122,7 +122,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Disk2D::createBBox ()
+Disk2D::createBBox () const
 {
 	const auto diameter = std::abs (std::max (innerRadius (), outerRadius ())) * 2;
 

@@ -224,7 +224,7 @@ ElevationGrid::set_normal ()
 }
 
 Box3d
-ElevationGrid::createBBox ()
+ElevationGrid::createBBox () const
 {
 	if (xDimension () < 2 or zDimension () < 2)
 		return Box3d ();

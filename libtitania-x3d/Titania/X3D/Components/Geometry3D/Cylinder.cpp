@@ -123,7 +123,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Cylinder::createBBox ()
+Cylinder::createBBox () const
 {
 	const double diameter = radius () * 2;
 

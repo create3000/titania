@@ -108,7 +108,7 @@ Box::initialize ()
 //}
 
 Box3d
-Box::createBBox ()
+Box::createBBox () const
 {
 	return Box3d (size () .getValue (), Vector3d ());
 }

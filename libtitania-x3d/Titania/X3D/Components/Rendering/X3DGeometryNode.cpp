@@ -141,14 +141,8 @@ X3DGeometryNode::setCameraObject (const bool value)
 	   cameraObject = value;
 }
 
-void
-X3DGeometryNode::setExtents (const Vector3d & min, const Vector3d & max)
-{
-	bbox = Box3d (min, max, extents_type ());
-}
-
 Box3d
-X3DGeometryNode::createBBox ()
+X3DGeometryNode::createBBox () const
 {
 	return Box3d (vertices .begin (), vertices .end (), math::iterator_type ());
 }
@@ -770,8 +764,7 @@ X3DGeometryNode::update ()
 	clear ();
 	build ();
 
-	if (bbox .empty ())
-		bbox = createBBox ();
+	bbox = createBBox ();
 
 	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 

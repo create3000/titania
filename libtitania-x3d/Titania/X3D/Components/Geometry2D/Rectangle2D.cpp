@@ -112,7 +112,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Rectangle2D::createBBox ()
+Rectangle2D::createBBox () const
 {
 	return Box3d (Vector3d (size () .getX (), size () .getY (), 0), Vector3d ());
 }

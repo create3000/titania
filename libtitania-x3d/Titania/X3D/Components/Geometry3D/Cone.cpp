@@ -120,7 +120,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Cone::createBBox ()
+Cone::createBBox () const
 {
 	const double diameter = bottomRadius () * 2;
 

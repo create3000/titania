@@ -115,7 +115,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Circle2D::createBBox ()
+Circle2D::createBBox () const
 {
 	const double diameter = std::abs (radius ()) * 2;
 

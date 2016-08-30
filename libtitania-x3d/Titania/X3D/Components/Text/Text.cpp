@@ -132,10 +132,37 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+Box3d
+Text::createBBox () const
+{
+	return textGeometry -> X3DTextGeometry::getBBox ();
+}
+
+const Box3d &
+Text::getBBox () const
+{
+	return textGeometry -> getBBox ();
+}
+
 bool
 Text::isTransparent () const
 {
 	return textGeometry -> isTransparent ();
+}
+
+float
+Text::getLength (const size_t index)
+{
+	if (index < length () .size ())
+		return std::max <float> (0, length () [index]);
+
+	return 0;
+}
+
+Matrix4d
+Text::getMatrix () const
+{
+	return textGeometry -> getMatrix ();
 }
 
 void
@@ -152,27 +179,6 @@ Text::set_fontStyle ()
 	fontStyleNode -> addInterest (this);
 }
 
-float
-Text::getLength (const size_t index)
-{
-	if (index < length () .size ())
-		return std::max <float> (0, length () [index]);
-
-	return 0;
-}
-
-const Box3d &
-Text::getBBox () const
-{
-	return textGeometry -> getBBox ();
-}
-
-Matrix4d
-Text::getMatrix () const
-{
-	return textGeometry -> getMatrix ();
-}
-
 void
 Text::build ()
 {
@@ -181,13 +187,6 @@ Text::build ()
 		// Let the fontStyle build the text geometry.
 
 		textGeometry .set (fontStyleNode -> getTextGeometry (this));
-
-		// Set bbox.
-
-		const auto bbox    = textGeometry -> X3DTextGeometry::getBBox ();
-		const auto extents = bbox .extents ();
-
-		setExtents (extents .first, extents .second);
 	}
 	catch (const std::exception &)
 	{

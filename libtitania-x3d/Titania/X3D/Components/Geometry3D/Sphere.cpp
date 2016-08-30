@@ -109,7 +109,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 Box3d
-Sphere::createBBox ()
+Sphere::createBBox () const
 {
 	const double diameter = 2 * radius ();
 

@@ -166,7 +166,7 @@ private:
 
 	virtual
 	Box3d
-	createBBox () final override;
+	createBBox () const final override;
 
 	virtual
 	void
