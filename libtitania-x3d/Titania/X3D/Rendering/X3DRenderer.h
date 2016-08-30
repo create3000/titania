@@ -68,6 +68,7 @@ namespace X3D {
 
 class FrameBuffer;
 class X3DFogObject;
+class X3DGroupingNode;
 
 using ViewVolumeStack = std::vector <ViewVolume>;
 
@@ -154,6 +155,9 @@ public:
 
 	Vector3d
 	constrainTranslation (const Vector3d &) const;
+
+	void
+	renderDepth (X3DGroupingNode* const);
 
 	///  @name Destruction
 

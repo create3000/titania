@@ -1368,6 +1368,7 @@
     <Compile Include="Titania\X3D\Browser\Shaders\X3DShadersContext.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\X3DLineGeometryNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Text\FontStyleOptions.cpp" />
+    <Compile Include="Titania\X3D\Tools\Lighting\X3DLightNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

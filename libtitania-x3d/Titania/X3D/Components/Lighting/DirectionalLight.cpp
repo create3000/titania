@@ -54,7 +54,10 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/LightContainer.h"
 #include "../../Tools/Lighting/DirectionalLightTool.h"
+#include "../Layering/X3DLayerNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
+
+#include "../../Rendering/FrameBuffer.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -141,25 +144,47 @@ DirectionalLight::draw (GLenum lightId)
 void
 DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
-	const auto & lightSpaceMatrix = lightContainer -> getLightSpaceMatrix ();
-	const auto & modelViewMatrix  = lightContainer -> getModelViewMatrix ();
-	const auto & group            = lightContainer -> getGroup ();
-	const auto   bbox             = group -> getBBox () * modelViewMatrix;
-	const auto   worldDirection   = normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ()));
-	const auto   lightRotation    = Matrix4d (Rotation4d (worldDirection, Vector3d (0, 0, 1)));
-	const auto   lightBBox        = bbox * lightRotation; // Group bbox from the perspective of the light.
-	const auto   lightBBoxExtents = lightBBox .extents ();
-	const auto   projectionMatrix = ortho (lightBBoxExtents .first, lightBBoxExtents .second);
+	#ifdef TITANIA_DEBUG
 
-//	textureBuffer -> bind ();
-//
-//	getBrowser () -> getShadowRenderer () -> renderShadowMap (projectionMatrix, modelViewMatrix, group);
-//
-//	textureBuffer -> unbind ();
+	if (getBrowser () -> getFixedPipelineRequired ())
+		return;
+
+	getBrowser () -> setRenderTools (false);
+
+	const auto lightSpaceMatrix = lightContainer -> getLightSpaceMatrix () * getCameraSpaceMatrix ();
+	const auto modelViewMatrix  = lightContainer -> getModelViewMatrix  () * getCameraSpaceMatrix ();
+	const auto group            = lightContainer -> getGroup ();
+	const auto bbox             = group -> getBBox ();
+	const auto sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ()));
+	const auto lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));
+	const auto lightBBox        = bbox * modelViewMatrix * lightRotation; // Group bbox from the perspective of the light.
+	const auto projectionMatrix = ortho (lightBBox);
+
+	FrameBuffer textureBuffer (getBrowser (), 100, 100, 4);
+
+	textureBuffer .setup ();
+	textureBuffer .bind ();
+
+	getProjectionMatrix () .push (projectionMatrix);
+	getModelViewMatrix  () .push (modelViewMatrix * lightRotation);
+
+	getCurrentLayer () -> renderDepth (group);
+
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
+
+	textureBuffer .readDepth ();
+	textureBuffer .unbind ();
+
+	glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, textureBuffer .getDepth () .data ());
+
+	getBrowser () -> setRenderTools (true);
 
 	__LOG__ << getName () << std::endl;
-	__LOG__ << getName () << " : " << bbox << std::endl;
+	__LOG__ << getName () << " : " << group -> getBBox () << std::endl;
 	__LOG__ << getName () << " : " << lightBBox << std::endl;
+
+	#endif
 }
 
 void

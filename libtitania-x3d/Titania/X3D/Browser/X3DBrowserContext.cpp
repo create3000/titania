@@ -159,33 +159,35 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>,
        std::runtime_error)
 {
-	ContextLock lock (const_cast <X3DBrowserContext*> (this));
+	ContextLock lock (getBrowser ());
 
 	if (getWorld ())
 	{
 		const bool backgroundHidden = getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden ();
 	
-		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (alphaChannel);
-
 		// Render to frame buffer.
 
-		FrameBuffer frameBuffer (const_cast <X3DBrowserContext*> (this), width, height, antialiasing);
+		FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
 
 		frameBuffer .setup ();
 		frameBuffer .bind ();
-		const_cast <X3DBrowserContext*> (this) -> reshape ();
+
+		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (alphaChannel);
+		getBrowser () -> setRenderTools (false);
+		getBrowser () -> reshape ();
 
 		if (alphaChannel)
-			const_cast <X3DBrowserContext*> (this) -> X3DRenderingContext::renderBackground ();
+			getBrowser () -> X3DRenderingContext::renderBackground ();
 		else
-		   const_cast <X3DBrowserContext*> (this) -> renderBackground ();
+		   getBrowser () -> renderBackground ();
 
 		getWorld () -> traverse (TraverseType::DISPLAY);
 
 		frameBuffer .readPixels ();
 		frameBuffer .unbind ();
-		const_cast <X3DBrowserContext*> (this) -> reshape ();
 
+		getBrowser () -> reshape ();
+		getBrowser () -> setRenderTools (true);
 		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (backgroundHidden);
 
 		// Process image.

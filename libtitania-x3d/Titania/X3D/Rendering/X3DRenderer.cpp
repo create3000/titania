@@ -339,6 +339,21 @@ X3DRenderer::render (const TraverseType type)
 }
 
 void
+X3DRenderer::renderDepth (X3DGroupingNode* const group)
+{
+	numCollisionContainers = 0;
+
+	glClear (GL_DEPTH_BUFFER_BIT);
+
+	group -> traverse (TraverseType::DEPTH);
+
+	depth ();
+
+	getGlobalObjects () .clear ();
+	getClipPlanes    () .clear ();
+}
+
+void
 X3DRenderer::collide ()
 {
 	// Collision

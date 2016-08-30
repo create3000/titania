@@ -51,7 +51,7 @@
 #ifndef __TITANIA_MATH_GEOMETRY_CAMERA_H__
 #define __TITANIA_MATH_GEOMETRY_CAMERA_H__
 
-#include "../Numbers/Vector3.h"
+#include "../Geometry/Box3.h"
 #include "../Numbers/Matrix4.h"
 
 namespace titania {
@@ -124,12 +124,15 @@ ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Typ
 }
 
 template <class Type>
-inline
 static
 matrix4 <Type>
-ortho (const vector3 <Type> & min, const vector3 <Type> & max)
+ortho (const box3 <Type> & bbox)
 {
-	return ortho (min .x (), max .x (), min .y (), max .y (), min .z (), max .z ());
+	const auto   extents = bbox .extents ();
+	const auto & min     = extents .first;
+	const auto & max     = extents .second;
+
+	return ortho (min .x (), max .x (), min .y (), max .y (), -max .z (), -min .z ());
 }
 
 } // math

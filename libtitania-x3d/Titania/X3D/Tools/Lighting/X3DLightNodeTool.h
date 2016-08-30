@@ -53,11 +53,7 @@
 
 #include "../Core/X3DChildNodeTool.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
-
 #include "../../Components/Lighting/X3DLightNode.h"
 
 namespace titania {
@@ -126,8 +122,7 @@ public:
 	
 	virtual
 	Box3d
-	getBBox () const final override
-	{ return getInlineNode () -> getBBox (); }
+	getBBox () const final override;
 
 	virtual
 	void
@@ -160,28 +155,14 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObject::dispose ();
-		X3DChildNodeTool::dispose ();
-		
-		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
-	}
+	dispose () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DLightNodeTool () :
-		    X3DLightNode (),
-		X3DChildNodeTool (),
-		X3DBoundedObject ()
-	{
-		addType (X3DConstants::X3DLightNodeTool);
-	
-		X3DParentObject::addChildren (bboxSize (), bboxCenter ());
-	}
+	X3DLightNodeTool ();
 
 	virtual
 	void
@@ -192,69 +173,6 @@ protected:
 	realize () final override;
 
 };
-
-inline
-void
-X3DLightNodeTool::initialize ()
-{
-	X3DChildNodeTool::initialize ();
-	X3DBoundedObject::initialize ();
-
-	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
-}
-
-inline
-void
-X3DLightNodeTool::realize ()
-{
-	try
-	{
-		getToolNode () -> setField <SFNode> ("light", getNode <X3DLightNode> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-inline
-void
-X3DLightNodeTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-inline
-void
-X3DLightNodeTool::removeTool (const bool really)
-{
-	if (really)
-		X3DChildNodeTool::removeTool ();
-
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("set_selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
-
-inline
-void
-X3DLightNodeTool::traverse (const TraverseType type)
-{
-	getNode <X3DLightNode> () -> traverse (type);
-
-	// Tool
-
-	X3DToolObject::traverse (type);
-}
 
 } // X3D
 } // titania

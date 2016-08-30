@@ -67,6 +67,14 @@ public:
 
 	///  @name Member access
 
+	void
+	setRenderTools (const bool value)
+	{ renderTools = value; }
+
+	bool
+	getRenderTools () const
+	{ return renderTools; }
+
 	const X3DPtr <TransformToolOptions> &
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
@@ -102,6 +110,7 @@ protected:
 
 private:
 
+	bool                          renderTools;
 	X3DPtr <TransformToolOptions> transformToolOptions;
 	Line2d                        cutLine;
 

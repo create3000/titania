@@ -48,34 +48,100 @@
  *
  ******************************************************************************/
 
-#include "X3DToolContext.h"
+#include "X3DLightNodeTool.h"
 
-#include "TransformToolOptions.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/Selection.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DToolContext::X3DToolContext () :
-	         X3DBaseNode (),
-	         renderTools (true),
-	transformToolOptions (new TransformToolOptions (getExecutionContext ())),
-	             cutLine ()
+X3DLightNodeTool::X3DLightNodeTool () :
+	    X3DLightNode (),
+	X3DChildNodeTool (),
+	X3DBoundedObject ()
 {
-	addChildren (transformToolOptions);
+	addType (X3DConstants::X3DLightNodeTool);
+
+	X3DParentObject::addChildren (bboxSize (), bboxCenter ());
 }
 
 void
-X3DToolContext::initialize ()
+X3DLightNodeTool::initialize ()
 {
-	transformToolOptions -> setup ();
+	X3DChildNodeTool::initialize ();
+	X3DBoundedObject::initialize ();
+
+	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
 }
 
 void
-X3DToolContext::dispose ()
-{ }
+X3DLightNodeTool::realize ()
+{
+	try
+	{
+		getToolNode () -> setField <SFNode> ("light", getNode <X3DLightNode> ());
+	}
+	catch (const X3DError & error)
+	{ }
+}
 
-X3DToolContext::~X3DToolContext ()
-{ }
+Box3d
+X3DLightNodeTool::getBBox () const
+{
+	if (getBrowser () -> getRenderTools ())
+		return getInlineNode () -> getBBox ();
+
+	return Box3d ();
+}
+
+void
+X3DLightNodeTool::addTool ()
+{
+	try
+	{
+		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
+	}
+	catch (const X3DError &)
+	{ }
+}
+
+void
+X3DLightNodeTool::removeTool (const bool really)
+{
+	if (really)
+		X3DChildNodeTool::removeTool ();
+
+	else
+	{
+		try
+		{
+			getToolNode () -> setField <SFBool> ("set_selected", false);
+		}
+		catch (const X3DError &)
+		{ }
+	}
+}
+
+void
+X3DLightNodeTool::traverse (const TraverseType type)
+{
+	getNode <X3DLightNode> () -> traverse (type);
+
+	// Tool
+
+	X3DToolObject::traverse (type);
+}
+
+void
+X3DLightNodeTool::dispose ()
+{
+	X3DBoundedObject::dispose ();
+	X3DChildNodeTool::dispose ();
+	
+	X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
+}
 
 } // X3D
 } // titania

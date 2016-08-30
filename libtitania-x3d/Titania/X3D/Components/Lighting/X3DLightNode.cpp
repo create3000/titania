@@ -80,14 +80,14 @@ X3DLightNode::push (X3DGroupingNode* const group)
 		{
 			if (global ())
 			{
-				const auto lightContainer = std::make_shared <LightContainer> (this, getModelViewMatrix () .get (), group);
+				const auto lightContainer = std::make_shared <LightContainer> (this, getInverseCameraSpaceMatrix (), getCurrentLayer () -> getGroup ());
 
 				getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
 				getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
 			}
 			else
 			{
-				const auto lightContainer = std::make_shared <LightContainer> (this, Matrix4d (), getCurrentLayer () -> getGroup ());
+				const auto lightContainer = std::make_shared <LightContainer> (this, getModelViewMatrix () .get (), group);
 
 				getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
 				getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
