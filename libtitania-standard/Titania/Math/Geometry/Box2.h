@@ -160,8 +160,8 @@ public:
 	{ return m_matrix; }
 
 	///  Returns the min and max extents of this box.
-	void
-	extents (vector2 <Type> &, vector2 <Type> &) const;
+	std::pair <vector2 <Type>, vector2 <Type>>
+	extents () const;
 
 	///  Returns whether this box is an empty box.
 	bool
@@ -254,8 +254,8 @@ public:
 private:
 
 	///  Returns the absolute min and max extents of this box.
-	void
-	absolute_extents (vector2 <Type> &, vector2 <Type> &) const;
+	std::pair <vector2 <Type>, vector2 <Type>>
+	absolute_extents () const;
 
 	matrix3 <Type> m_matrix;
 
@@ -263,13 +263,15 @@ private:
 
 template <class Type>
 inline
-void
-box2 <Type>::extents (vector2 <Type> & min, vector2 <Type> & max) const
+std::pair <vector2 <Type>, vector2 <Type>>
+box2 <Type>::extents () const
 {
-	absolute_extents (min, max);
+	auto extents = absolute_extents ();
 
-	min += center ();
-	max += center ();
+	extents .first  += center ();
+	extents .second += center ();
+
+	return extents;
 }
 
 template <class Type>
@@ -277,11 +279,27 @@ inline
 vector2 <Type>
 box2 <Type>::size () const
 {
-	vector2 <Type> min, max;
+	const auto extents = absolute_extents ();
 
-	absolute_extents (min, max);
+	return extents .second - extents .first;
+}
 
-	return max - min;
+template <class Type>
+std::pair <vector2 <Type>, vector2 <Type>>
+box2 <Type>::absolute_extents () const
+{
+	const vector2 <Type> x (m_matrix .x ());
+	const vector2 <Type> y (m_matrix .y ());
+
+	const auto p1 = x + y;
+	const auto p2 = y - x;
+	const auto p3 = -p1;
+	const auto p4 = -p2;
+
+	const auto min = math::min ({ p1, p2, p3, p4 });
+	const auto max = math::max ({ p1, p2, p3, p4 });
+
+	return std::make_pair (min, max);
 }
 
 template <class Type>
@@ -329,22 +347,6 @@ box2 <Type>::axes () const
 }
 
 template <class Type>
-void
-box2 <Type>::absolute_extents (vector2 <Type> & min, vector2 <Type> & max) const
-{
-	const vector2 <Type> x (m_matrix .x ());
-	const vector2 <Type> y (m_matrix .y ());
-
-	const auto p1 = x + y;
-	const auto p2 = y - x;
-	const auto p3 = -p1;
-	const auto p4 = -p2;
-
-	min = math::min ({ p1, p2, p3, p4 });
-	max = math::max ({ p1, p2, p3, p4 });
-}
-
-template <class Type>
 template <class Up>
 box2 <Type> &
 box2 <Type>::operator += (const box2 <Up> & box)
@@ -355,21 +357,23 @@ box2 <Type>::operator += (const box2 <Up> & box)
 	if (box .empty ())
 		return *this;
 
-	vector2 <Type> lhs_min, lhs_max, rhs_min, rhs_max;
-	
-	extents (lhs_min, lhs_max);
-	box .extents (rhs_min, rhs_max);
+	const auto   extents1 = this -> extents ();
+	const auto   extents2 = box .extents ();
+	const auto & min1     = extents1 .first;
+	const auto & max1     = extents1 .second;
+	const auto & min2     = extents2 .first;
+	const auto & max2     = extents2 .second;
 
-	return *this = box2 (math::min (lhs_min, rhs_min), math::max (lhs_max, rhs_max), extents_type ());
+	return *this = box2 (math::min (min1, min2), math::max (max1, max2), extents_type ());
 }
 
 template <class Type>
 bool
 box2 <Type>::intersects (const vector2 <Type> & point) const
 {
-	vector2 <Type> min, max;
-
-	extents (min, max);
+	const auto   extents = this -> extents ();
+	const auto & min     = extents .first;
+	const auto & max     = extents .second;
 
 	return min .x () <= point .x () and
 	       max .x () >= point .x () and
@@ -384,10 +388,12 @@ box2 <Type>::contains (const box2 <Type> & box) const
 	if (empty () or box .empty ())
 		return false;
 
-	vector2 <Type> min1, max1, min2, max2;
-
-	extents (min1, max1);
-	box .extents (min2, max2);
+	const auto  extents1 = this -> extents ();
+	const auto  extents2 = box .extents ();
+	const auto & min1    = extents1 .first;
+	const auto & max1    = extents1 .second;
+	const auto & min2    = extents2 .first;
+	const auto & max2    = extents2 .second;
 
 	if (min2 .x () < min1 .x () or min2 .y () < min1 .y ())
 		return false;

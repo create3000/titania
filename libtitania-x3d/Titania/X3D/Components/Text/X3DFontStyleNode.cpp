@@ -190,10 +190,10 @@ X3DTextGeometry::horizontal ()
 
 	// Get text extents.
 
-	Vector2d min, max;
-	bbox .extents (min, max);
-
-	const Vector2d size = max - min;
+	auto       extents = bbox .extents ();
+	auto &     min     = extents .first;
+	auto &     max     = extents .second;
+	const auto size    = max - min;
 
 	// Calculate text position
 
@@ -309,10 +309,10 @@ X3DTextGeometry::vertical ()
 	
 		// Get line extents.
 
-		Vector2d min, max;
-		lineBBox .extents (min, max);
-
-		auto size = max - min;
+		auto   extents = lineBBox .extents ();
+		auto & min     = extents .first;
+		auto & max     = extents .second;
+		auto   size    = max - min;
 
 		// Calculate charSpacing and lineBounds.
 
@@ -402,11 +402,11 @@ X3DTextGeometry::vertical ()
 
 	// Get text extents.
 
-	Vector2d min, max;
-	bbox .extents (min, max);
+	auto       extents = bbox .extents ();
+	auto &     min     = extents .first;
+	auto &     max     = extents .second;
+	const auto size    = max - min;
 
-	const Vector2d size = max - min;
-	
 	// Extend lineBounds.
 	
 	switch (fontStyle -> getMajorAlignment ())

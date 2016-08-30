@@ -184,12 +184,10 @@ Text::build ()
 
 		// Set bbox.
 
-		const Box3d bbox = textGeometry -> X3DTextGeometry::getBBox ();
+		const auto bbox    = textGeometry -> X3DTextGeometry::getBBox ();
+		const auto extents = bbox .extents ();
 
-		/* const */ Vector3d min, max;
-		bbox .extents (min, max);
-
-		setExtents (min, max);
+		setExtents (extents .first, extents .second);
 	}
 	catch (const std::exception &)
 	{

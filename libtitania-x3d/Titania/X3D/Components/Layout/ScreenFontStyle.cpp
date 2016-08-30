@@ -134,7 +134,10 @@ ScreenText::setTextBounds ()
 {
 	getText () -> textBounds () = math::ceil (getText () -> textBounds () .getValue ());
 
-	X3DTextGeometry::getBBox () .extents (min, max);
+	const auto extents = X3DTextGeometry::getBBox () .extents ();
+	
+	min = extents .first;
+	max = extents .second;
 
 	switch (fontStyle -> getMajorAlignment ())
 	{

@@ -396,13 +396,10 @@ TextureMappingEditor::on_plane_activate (const size_t x, const size_t y, const b
 
 	// Determine bbox extents.
 
-	const auto bbox = getBBox (x, y);
-
-	X3D::Vector2f min, max;
-	bbox .extents (min, max);
-
-	const auto size = bbox .size ();
-	const auto m    = size .x () >= size .y () ? 0 : 1;
+	const auto bbox    = getBBox (x, y);
+	const auto extents = bbox .extents ();
+	const auto size    = bbox .size ();
+	const auto m       = size .x () >= size .y () ? 0 : 1;
 
 	// Apply mapping.
 	
@@ -417,7 +414,7 @@ TextureMappingEditor::on_plane_activate (const size_t x, const size_t y, const b
 	for (const auto & pair : indices)
 	{
 		const auto point    = coord -> get1Point (pair .first);
-		auto       texPoint = (X3D::Vector2f (point [x], point [y]) - min) / size [m];
+		auto       texPoint = (X3D::Vector2f (point [x], point [y]) - extents .first) / size [m];
 
 		if (flop)
 			texPoint [1] = 1 - texPoint [1];
@@ -529,13 +526,10 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 
 	// Determine bbox extents.
 
-	const auto bbox   = previewGeometry -> getBBox ();
-	const auto center = bbox .center ();
-
-	X3D::Vector3d min, max;
-	bbox .extents (min, max);
-
-	const auto size = bbox .size ();
+	const auto bbox    = previewGeometry -> getBBox ();
+	const auto extents = bbox .extents ();
+	const auto center  = bbox .center ();
+	const auto size    = bbox .size ();
 
 	// Apply mapping.
 	
@@ -551,7 +545,7 @@ TextureMappingEditor::on_cylinder_activate (const size_t x, const size_t y, cons
 	{
 		const auto point    = coord -> get1Point (pair .first);
 		const auto complex  = std::complex <float> (point [z] - center [z], point [x] - center [x]);
-		auto       texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - min [y]) / size [y]);
+		auto       texPoint = X3D::Vector2f (std::arg (complex) / M_PI2 + 0.5, (point [y] - extents .first [y]) / size [y]);
 
 		if (flip)
 			texPoint [f] = 1 - texPoint [f];
@@ -1705,8 +1699,9 @@ TextureMappingEditor::set_left_image ()
 		if (bbox .empty ())
 			bbox = X3D::Box3d (X3D::Vector3d (1, 1, 0), X3D::Vector3d (0.5, 0.5, 0));
 
-		X3D::Vector3d min, max;
-		bbox .extents (min, max);
+		auto   extents = bbox .extents ();
+		auto & min     = extents .first;
+		auto & max     = extents .second;
 
 		min .x (std::floor (min .x () - 0.5));
 		min .y (std::floor (min .y () - 0.5));

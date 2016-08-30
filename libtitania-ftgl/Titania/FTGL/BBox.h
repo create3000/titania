@@ -56,7 +56,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	BBox (double lx, double ly, double lz, double ux, double uy, double uz) :
+	BBox (const double lx, const double ly, const double lz, const double ux, const double uy, const double uz) :
 		lower (lx, ly, lz),
 		upper (ux, uy, uz)
 	{ }
@@ -64,7 +64,7 @@ public:
 	/**
 	 * Constructor.
 	 */
-	BBox (Vector3d l, Vector3d u) :
+	BBox (const Vector3d & l, const Vector3d & u) :
 		lower (l),
 		upper (u)
 	{ }
@@ -92,12 +92,6 @@ public:
 	}
 
 	/**
-	 * Destructor
-	 */
-	~BBox ()
-	{ }
-
-	/**
 	 * Mark the bounds invalid by setting all lower dimensions greater
 	 * than the upper dimensions.
 	 */
@@ -115,7 +109,7 @@ public:
 	 *         upper values.
 	 */
 	bool
-	isValid ()
+	isValid () const
 	{
 		return lower .x () <= upper .x ()
 		       and lower .y () <= upper .y ()
@@ -128,7 +122,7 @@ public:
 	 * @param vector  The vector to move the bbox in 3D space.
 	 */
 	BBox &
-	operator += (const Vector3d vector)
+	operator += (const Vector3d & vector)
 	{
 		lower += vector;
 		upper += vector;
@@ -161,7 +155,7 @@ public:
 	}
 
 	void
-	setDepth (double depth)
+	setDepth (const double depth)
 	{
 		if (depth > 0)
 			upper .z (lower.z () + depth);
@@ -169,15 +163,19 @@ public:
 			lower .z (upper.z () + depth);
 	}
 
-	inline
-	Vector3d const
+	const Vector3d &
 	getUpper () const
 	{ return upper; }
 
-	inline
-	Vector3d const
+	const Vector3d &
 	getLower () const
 	{ return lower; }
+
+	/**
+	 * Destructor
+	 */
+	~BBox ()
+	{ }
 
 
 private:
@@ -185,7 +183,8 @@ private:
 	/**
 	 * The bounds of the box
 	 */
-	Vector3d lower, upper;
+	Vector3d lower;
+	Vector3d upper;
 
 };
 
