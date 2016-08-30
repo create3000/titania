@@ -216,7 +216,7 @@ Text::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("Text::toPrimitive");
+	return textGeometry -> toPrimitive ();
 }
 
 void

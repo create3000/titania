@@ -53,6 +53,9 @@
 #include "../../Browser/Text/FontStyleOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Texturing/TextureCoordinate.h"
 #include "../Text/Text.h"
 
 namespace titania {
@@ -100,15 +103,10 @@ PolygonText::getLineExtents (const String & line, Vector2d & min, Vector2d & max
 }
 
 void
-PolygonText::build ()
+PolygonText::triangulate (std::vector <size_t> & indices, std::vector <Vector3d> & points) const
 {
 	if (not fontStyle -> getPolygonFont ())
 		return;
-
-	// Triangulate lines.
-
-	auto indices = std::vector <size_t> ();
-	auto points  = std::vector <Vector3d> ();
 
 	if (fontStyle -> horizontal ())
 	{
@@ -154,12 +152,25 @@ PolygonText::build ()
 			}
 		}
 	}
+}
+
+void
+PolygonText::build ()
+{
+	// Triangulate lines.
+
+	auto indices = std::vector <size_t> ();
+	auto points  = std::vector <Vector3d> ();
+
+	triangulate (indices, points);
 
 	// Create geometry
 
-	const auto size        = fontStyle -> getScale ();
-	const auto translation = Vector3d (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
-	const auto scale       = Vector3d (size, size, size);
+	const auto   size        = fontStyle -> getScale ();
+	const auto   spacing     = fontStyle -> spacing () .getValue ();
+	const auto & origin      = getText () -> origin () .getValue ();
+	const auto   translation = Vector3d (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+	const auto   scale       = Vector3d (size, size, size);
 
 	getText () -> getTexCoords () .emplace_back ();
 
@@ -173,13 +184,66 @@ PolygonText::build ()
 
 	for (const auto index : indices)
 	{
-		texCoords .emplace_back (0, 0, 0, 1);
+		const auto & point = points [index] * scale + translation;
+
+		texCoords .emplace_back ((point .x () - origin .x ()) / spacing, (point .y () - origin .y ()) / spacing, 0, 1);
 		normals   .emplace_back (0, 0, 1);
-		vertices  .emplace_back (points [index] * scale + translation);
+		vertices  .emplace_back (point);
 	}
 
 	getText () -> addElements (GL_TRIANGLES, vertices .size ());
 	getText () -> setSolid (getText () -> solid ());
+}
+
+SFNode
+PolygonText::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	// Triangulate lines.
+
+	auto indices = std::vector <size_t> ();
+	auto points  = std::vector <Vector3d> ();
+
+	triangulate (indices, points);
+
+	// Create geometry
+
+	const auto   size        = fontStyle -> getScale ();
+	const auto   spacing     = fontStyle -> spacing () .getValue ();
+	const auto & origin      = getText () -> origin () .getValue ();
+	const auto   translation = Vector3d (getMinorAlignment () .x (), getMinorAlignment () .y (), 0);
+	const auto   scale       = Vector3d (size, size, size);
+
+	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
+	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
+
+	geometry -> metadata () = getText () -> metadata ();
+	geometry -> solid ()    = getText () -> solid ();
+	geometry -> texCoord () = texCoord;
+	geometry -> coord ()    = coord;
+
+	for (const auto & p : points)
+	{
+		const auto point = p * scale + translation;
+
+		texCoord -> point () .emplace_back ((point .x () - origin .x ()) / spacing, (point .y () - origin .y ()) / spacing);
+		coord    -> point () .emplace_back (point);
+	}
+
+	for (size_t i = 0, size = indices .size (); i < size; i += 3)
+	{
+		geometry -> coordIndex () .emplace_back (indices [i + 0]);
+		geometry -> coordIndex () .emplace_back (indices [i + 1]);
+		geometry -> coordIndex () .emplace_back (indices [i + 2]);
+		geometry -> coordIndex () .emplace_back (-1);
+	}
+
+	geometry -> texCoordIndex () = geometry -> coordIndex ();
+
+	getExecutionContext () -> realize ();
+	return SFNode (geometry);
 }
 
 const ComponentType FontStyle::component      = ComponentType::TEXT;

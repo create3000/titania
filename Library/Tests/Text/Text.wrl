@@ -67,9 +67,9 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              8.94726538658142,
-              -2.11791995167732,
-              26.0192880630493
+              0.177462155033162,
+              -0.0250021200095893,
+              6.93979866061725
             ]
           }
           DEF orientation MetadataDouble {
@@ -86,8 +86,8 @@ WorldInfo {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              8.947265625,
-              -2.11791995167732,
+              0.177462393451741,
+              -0.025002080670524,
               0
             ]
           }
@@ -105,6 +105,15 @@ WorldInfo {
                 appearance Appearance {
                   material Material {
                     diffuseColor 1 0 0
+                    emissiveColor 1 1 1
+                  }
+                  texture ImageTexture {
+                    url [
+                      "http://cdn.rawgit.com/create3000/Library/master/Textures/Miscellaneous/lena.jpg",
+                      "https://cdn.rawgit.com/create3000/Library/master/Textures/Miscellaneous/lena.jpg",
+                      "http://rawgit.com/create3000/Library/master/Textures/Miscellaneous/lena.jpg",
+                      "https://rawgit.com/create3000/Library/master/Textures/Miscellaneous/lena.jpg"
+                    ]
                   }
                 }
                 geometry DEF Text_1 Text {
@@ -123,13 +132,12 @@ WorldInfo {
                     "Read a lot more good Text today!",
                     "Über Häuser, außer Büsche."
                   ]
-                  fontStyle FontStyle {
+                  fontStyle DEF _1 FontStyle {
                     family [
                       "SANS",
                       "Ubuntu Mono"
                     ]
                     style "BOLDITALIC"
-                    spacing 2
                     justify [
                       "BEGIN",
                       "FIRST"
@@ -144,6 +152,24 @@ WorldInfo {
             reference "http://titania.create3000.de"
           }
         ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
       }
     ]
   }
@@ -232,17 +258,17 @@ DEF LineBounds Transform {
     }
     BBox2 {
       translation 0 -0.995684 0
-      scale 18.8945 2 1
+      scale 18.8945 1 1
       color 0 1 0
     }
     BBox2 {
-      translation 0 -2.99568 0
-      scale 18.8945 2 1
+      translation 0 -1.99568 0
+      scale 18.8945 1 1
       color 0 0 1
     }
     BBox2 {
-      translation 0 -4.99568 0
-      scale 15.7019 2 1
+      translation 0 -2.99568 0
+      scale 15.7019 1 1
       color 1 1 0
     }
   ]
@@ -250,7 +276,7 @@ DEF LineBounds Transform {
 
 DEF TextBounds Transform {
   translation 0 0.759844 0
-  scale 18.8945 6.90188 1
+  scale 18.8945 3.90188 1
   children BBox2 { }
 }
 

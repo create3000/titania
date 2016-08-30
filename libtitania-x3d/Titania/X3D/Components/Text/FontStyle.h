@@ -99,6 +99,14 @@ public:
 	isTransparent () const final override
 	{ return false; }
 
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
 
 private:
 
@@ -107,6 +115,9 @@ private:
 	virtual
 	void
 	getLineExtents (const String &, Vector2d &, Vector2d &) const final override;
+
+	void
+	triangulate (std::vector <size_t> &, std::vector <Vector3d> &) const;
 
 	virtual
 	void

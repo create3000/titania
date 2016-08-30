@@ -286,7 +286,7 @@ X3DTextGeometry::vertical ()
 			Vector2d min, max;
 			getGlyphExtents (glyph, min, max);
 
-			const Vector2d size = max - min;
+			const auto size = max - min;
 			
 			// Calculate glyph translation
 			
@@ -296,7 +296,7 @@ X3DTextGeometry::vertical ()
 			
 			// Calculate center.
 
-			const Vector2d center = min + size / 2.0 + translations [t];
+			const auto center = min + size / 2.0 + translations [t];
 
 			// Add bbox.
 
@@ -312,16 +312,16 @@ X3DTextGeometry::vertical ()
 		Vector2d min, max;
 		lineBBox .extents (min, max);
 
-		Vector2d size = max - min;
+		auto size = max - min;
 
 		// Calculate charSpacing and lineBounds.
 
 		const size_t lineNumber = leftToRight ? l : numLines - l - 1;
 		const double padding    = (spacing - size .x ()) / 2;
 
-		double   charSpacing = 0;
-		Vector2d lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, size .y ()) * scale;
-		double   length      = text -> getLength (l);
+		double charSpacing = 0;
+		auto   lineBound   = Vector2d (l == 0 ? spacing - padding : spacing, size .y ()) * scale;
+		double length      = text -> getLength (l);
 
 		if (maxExtent)
 		{

@@ -91,6 +91,12 @@ public:
 	draw (ShapeContainer* const);
 
 	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
 	~X3DTextGeometry ();
 
 

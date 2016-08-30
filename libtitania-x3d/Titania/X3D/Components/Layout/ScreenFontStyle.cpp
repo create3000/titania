@@ -463,6 +463,14 @@ ScreenText::draw (ShapeContainer* const context)
 	context -> setModelViewMatrix (modelViewMatrix);
 }
 
+SFNode
+ScreenText::toPrimitive () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	throw Error <NOT_SUPPORTED> ("ScreenText::toPrimitive");
+}
+
 ScreenText::~ScreenText ()
 { }
 
