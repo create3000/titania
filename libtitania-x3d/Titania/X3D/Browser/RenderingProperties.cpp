@@ -313,7 +313,7 @@ RenderingProperties::build ()
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
 		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3]));
-		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getMaxTextureUnits (), getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits ()));
+		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getTextureUnits () .size (), getBrowser () -> getCombinedTextureUnits () .size ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));
 		string .emplace_back (basic::sprintf (_ ("Max lights:                %d"), MaxLights () .getValue ()));

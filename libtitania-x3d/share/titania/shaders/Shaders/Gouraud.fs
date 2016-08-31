@@ -126,25 +126,20 @@ float
 getShadowIntensity (sampler2D shadowMap, vec4 shadowCoord, float shadowDiffusion)
 {
 	float bias = 0.005;
-//
-//	if (texture2D (shadowMap, shadowCoord .xy). z < shadowCoord.z - bias)
-//		return 1.0;
-//
-//	return 0.0;
 
-	#define POISSON_SAMPLES 32
+	#define SAMPLES 16
 
-	float value = 0.0;
+	int value = 0;
 
-	for (int i = 0; i < POISSON_SAMPLES; ++ i)
+	for (int i = 0; i < SAMPLES; ++ i)
 	{
-		if (texture2D (shadowMap, shadowCoord .xy + vec2 (random1 (), random1 ()) * shadowDiffusion / 100.0). z < shadowCoord.z - bias)
+		if (texture2D (shadowMap, shadowCoord .xy + vec2 (random1 (), random1 ()) * shadowDiffusion). z < shadowCoord.z - bias)
 		{
-			value += 1.0 / float (POISSON_SAMPLES);
+			++ value;
 		}
 	}
 
-	return value;
+	return float (value) / float (SAMPLES);
 }
 
 vec3
@@ -157,8 +152,10 @@ getShadowColor (vec3 color)
 	{
 		if (x3d_ShadowIntensity [i] > 0.0)
 		{
+			//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
+
 			vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
-			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i]);
+			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i] / 100.0);
 
 			colorIntensity *= 1.0 - shadowIntensity;
 			shadowColor    += shadowIntensity * x3d_ShadowColor [i];
@@ -166,24 +163,6 @@ getShadowColor (vec3 color)
 	}
 
 	return mix (shadowColor, color, colorIntensity);
-}
-
-float
-getColorIntensity ()
-{
-	float colorIntensity = 1.0;
-
-	for (int i = 0; i < MAX_LIGHTS; ++ i)
-	{
-		if (x3d_ShadowIntensity [i] > 0.0)
-		{
-			vec4 shadowCoord = x3d_ShadowMatrix [i] * v;
-
-			colorIntensity *= 1.0 - x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i]);
-		}
-	}
-
-	return colorIntensity;
 }
 
 void
@@ -208,6 +187,6 @@ main ()
 		}
 	}
 
-	gl_FragColor .rgb = getShadowColor (mix (x3d_FogColor, finalColor .rgb, f0));
+	gl_FragColor .rgb = mix (x3d_FogColor, getShadowColor (finalColor .rgb), f0);
 	gl_FragColor .a   = finalColor .a;
 }

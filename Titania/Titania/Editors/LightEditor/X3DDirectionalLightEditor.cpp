@@ -76,6 +76,7 @@ X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLight
 	const X3D::X3DPtr <X3D::DirectionalLight> directionalLight (lightNode);
 
 	getDirectionalLightExpander () .set_visible (directionalLight);
+	getShadowExpander ()           .set_visible (directionalLight);
 
 	const auto directionalLights = directionalLight ? X3D::MFNode ({ directionalLight }) : X3D::MFNode ();
 
