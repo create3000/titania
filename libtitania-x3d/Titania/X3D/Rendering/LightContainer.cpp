@@ -52,23 +52,31 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Lighting/X3DLightNode.h"
+#include "../Components/Shaders/X3DProgrammableShaderObject.h"
+
+#include "TextureBuffer.h"
 
 namespace titania {
 namespace X3D {
 
 LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const group) :
 	X3DCollectableObject (),
+	             browser (node -> getBrowser ()),
 	                node (node),
 	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	        shadowMatrix (),
 	               group (group),
+	       textureBuffer (),
+	         textureUnit (0),
 	             lightId (0)
-{ }
+{
+	textureBuffer .reset (new TextureBuffer (browser, 256, 256, false));
+	textureBuffer -> setup ();
+}
 
 void
 LightContainer::enable ()
 {
-	const auto & browser = node -> getBrowser ();
-
 	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
@@ -87,13 +95,21 @@ LightContainer::enable ()
 		}
 	}
 	#endif
+
+	if (not browser -> getCombinedTextureUnits () .empty ())
+	{
+		textureUnit = browser -> getCombinedTextureUnits () .top ();
+		browser -> getCombinedTextureUnits () .pop ();
+
+		glActiveTexture (GL_TEXTURE0 + textureUnit);
+		glBindTexture (GL_TEXTURE_2D, textureBuffer -> getDepthTextureId ());
+		glActiveTexture (GL_TEXTURE0);
+	}
 }
 
 void
 LightContainer::disable ()
 {
-	const auto & browser = node -> getBrowser ();
-
 	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
@@ -104,6 +120,9 @@ LightContainer::disable ()
 		}
 	}
 	#endif
+
+	if (textureUnit)
+		browser -> getCombinedTextureUnits () .push (textureUnit);
 }
 
 void
@@ -115,8 +134,23 @@ LightContainer::renderShadowMap ()
 void
 LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+	if (textureUnit)
+	{
+		node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+
+		if (shaderObject -> isExtensionGPUShaderFP64Available ())
+			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, shadowMatrix .data ());
+		else
+			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (shadowMatrix) .data ());
+	
+		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
+	}
+	else
+		glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
 }
+
+LightContainer::~LightContainer ()
+{ }
 
 } // X3D
 } // titania

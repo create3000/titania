@@ -184,6 +184,8 @@ SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], beamWidth ());   // clamp
 	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], cutOffAngle ()); // clamp
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
+
+	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
 }
 
 void

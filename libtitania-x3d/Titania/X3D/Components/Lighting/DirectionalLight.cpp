@@ -58,6 +58,7 @@
 #include "../Shaders/X3DProgrammableShaderObject.h"
 
 #include "../../Rendering/FrameBuffer.h"
+#include "../../Rendering/TextureBuffer.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -141,28 +142,31 @@ DirectionalLight::draw (GLenum lightId)
 	glLightfv (lightId, GL_POSITION, glPosition);
 }
 
+static constexpr auto biasMatrix = Matrix4d (0.5, 0.0, 0.0, 0.0,
+                                             0.0, 0.5, 0.0, 0.0,
+                                             0.0, 0.0, 0.5, 0.0,
+                                             0.5, 0.5, 0.5, 1.0);
+
 void
 DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
-	#ifdef TITANIA_DEBUG
-
 	if (getBrowser () -> getFixedPipelineRequired ())
 		return;
 
 	getBrowser () -> setRenderTools (false);
 
-	const auto lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
-	const auto group            = lightContainer -> getGroup ();                                          // Group to be shadowd
-	const auto groupBBox        = group -> getBBox ();                                                    // Group bbox.
-	const auto sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Direction in scene coordinate system.
-	const auto lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));             // Rotation from light direction to normal zero.
-	const auto lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
-	const auto projectionMatrix = ortho (lightBBox);
+	const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
+	const auto   lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+	const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
+	const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
+	const auto   sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Direction in scene coordinate system.
+	const auto   lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));             // Rotation from light direction to normal zero.
+	const auto   lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
+	const auto   projectionMatrix = ortho (lightBBox);
 
-	FrameBuffer textureBuffer (getBrowser (), 100, 100, 4);
+	lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * lightRotation * projectionMatrix * biasMatrix);
 
-	textureBuffer .setup ();
-	textureBuffer .bind ();
+	textureBuffer -> bind ();
 
 	getProjectionMatrix () .push (projectionMatrix);
 	getModelViewMatrix  () .push (lightRotation);
@@ -172,18 +176,34 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	getModelViewMatrix  () .pop ();
 	getProjectionMatrix () .pop ();
 
-	textureBuffer .readDepth ();
-	textureBuffer .unbind ();
+	textureBuffer -> unbind ();
 
-	glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, textureBuffer .getDepth () .data ());
+	#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+	#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+	#ifdef  TITANIA_DEBUG
+	FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+
+	frameBuffer .setup ();
+	frameBuffer .bind ();
+
+	getProjectionMatrix () .push (projectionMatrix);
+	getModelViewMatrix  () .push (lightRotation);
+
+	getCurrentLayer () -> renderDepth (group);
+
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
+
+	frameBuffer .readDepth ();
+	frameBuffer .unbind ();
+
+	glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+	#endif
+	#endif
 
 	getBrowser () -> setRenderTools (true);
 
 	__LOG__ << getName () << std::endl;
-	__LOG__ << getName () << " : " << group -> getBBox () << std::endl;
-	__LOG__ << getName () << " : " << lightBBox << std::endl;
-
-	#endif
 }
 
 void
@@ -196,6 +216,14 @@ DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
 	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
+
+	#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+	#ifdef  TITANIA_DEBUG
+	glUniform1i (shaderObject -> getShadowUniformLocation () [i], true);
+	#endif
+	#else
+	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
+	#endif
 }
 
 void

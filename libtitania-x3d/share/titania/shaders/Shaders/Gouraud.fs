@@ -28,6 +28,13 @@ uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, other
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 // 3
 
+#define MAX_LIGHTS 8
+
+uniform bool      x3d_Shadow [MAX_LIGHTS]; // true if shadow is enabled, otherwise false
+uniform mat4      x3d_ShadowMatrix [MAX_LIGHTS];
+uniform sampler2D x3d_ShadowMap [MAX_LIGHTS];
+// 16 + 8 * 16 = 144
+
 #define MAX_TEXTURES 1
 #define NO_TEXTURE   0
 #define TEXTURE_2D   2
@@ -125,4 +132,19 @@ main ()
 
 	gl_FragColor .rgb = mix (x3d_FogColor, finalColor .rgb, f0);
 	gl_FragColor .a   = finalColor .a;
+
+	//
+
+	for (int i = 0; i < MAX_LIGHTS; ++ i)
+	{
+		if (x3d_Shadow [i])
+		{
+			vec4 shadowCoord = x3d_ShadowMatrix [i] * vec4 (v, 1);
+
+			if (texture2D (x3d_ShadowMap [i], shadowCoord .xy) .z  < shadowCoord .z)
+			{
+			    gl_FragColor .rgb = vec3 (0.0, 0.0, 0.0);
+			}
+		}
+	}
 }

@@ -165,6 +165,20 @@ public:
 	getLightRadiusUniformLocation () const
 	{ return x3d_LightRadius; }
 
+	///  @name Uniform location access shadow
+
+	const std::vector <GLint> &
+	getShadowUniformLocation () const
+	{ return x3d_Shadow; }
+
+	const std::vector <GLint> &
+	getShadowMatrixUniformLocation () const
+	{ return x3d_ShadowMatrix; }
+
+	const std::vector <GLint> &
+	getShadowMapUniformLocation () const
+	{ return x3d_ShadowMap; }
+
 	///  @name Uniform location access material
 
 	GLint
@@ -379,6 +393,10 @@ private:
 	std::vector <GLint> x3d_LightBeamWidth;
 	std::vector <GLint> x3d_LightCutOffAngle;
 	std::vector <GLint> x3d_LightRadius;
+
+	std::vector <GLint> x3d_Shadow;
+	std::vector <GLint> x3d_ShadowMatrix;
+	std::vector <GLint> x3d_ShadowMap;
 
 	GLint x3d_SeparateBackColor;
 

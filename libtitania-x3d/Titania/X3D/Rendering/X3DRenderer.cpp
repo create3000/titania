@@ -525,7 +525,24 @@ X3DRenderer::display ()
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
+	// Render shadow maps
+
+	for (const auto & object : getLights ())
+		object -> renderShadowMap ();
+
+	// Enable global lights
+
+	for (const auto & object : getGlobalLights ())
+		object -> enable ();
+
 	// Enable global objects
+
+	for (const auto & object : getGlobalObjects ())
+		object -> enable ();
+
+	// Set global uniforms
+
+	// Sorted blend
 
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
@@ -535,23 +552,8 @@ X3DRenderer::display ()
 		glMatrixMode (GL_PROJECTION);
 		glLoadMatrixd (getProjectionMatrix () .get () .data ());
 		glMatrixMode (GL_MODELVIEW);
-	
-		// Enable global lights
-
-		for (const auto & object : getGlobalLights ())
-			object -> enable ();
 	}
 	#endif
-
-	for (const auto & object : getGlobalObjects ())
-		object -> enable ();
-
-	// Render shadow maps
-
-	for (const auto & object : getLights ())
-		object -> renderShadowMap ();
-
-	// Sorted blend
 
 	// Render opaque objects first
 
@@ -579,14 +581,14 @@ X3DRenderer::display ()
 	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
 		object -> disable ();
 
+	// Disable global lights
+	
+	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+		object -> disable ();
+
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
-		// Disable global lights
-	
-		for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
-			object -> disable ();
-
 		// Reset to default OpenGL appearance
 
 		getBrowser () -> getDefaultAppearance () -> draw ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,91 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
-#define __TITANIA_X3D_RENDERING_LIGHT_CONTAINER_H__
+#ifndef __TITANIA_X3D_RENDERING_TEXTURE_BUFFER_H__
+#define __TITANIA_X3D_RENDERING_TEXTURE_BUFFER_H__
 
+#include "../Browser/X3DBrowserContext.h"
 #include "../Rendering/OpenGL.h"
-#include "../Rendering/X3DCollectableObject.h"
-
-#include <memory>
 
 namespace titania {
 namespace X3D {
 
-class TextureBuffer;
-class X3DBrowser;
-class X3DGroupingNode;
-class X3DLightNode;
-class X3DProgrammableShaderObject;
-
-class LightContainer :
-	public X3DCollectableObject
+class TextureBuffer
 {
 public:
 
 	///  @name Construction
 
-	LightContainer (X3DLightNode* const, X3DGroupingNode* const);
+	TextureBuffer (X3DBrowserContext* const, const size_t, const size_t, const bool = true);
+
+	void
+	setup ();
 
 	///  @name Member access
 
-	const Matrix4d &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
-
 	void
-	setShadowMatrix (const Matrix4d & value)
-	{ shadowMatrix = value; }
+	setBrowser (X3DBrowserContext* const value)
+	{ browser = value; }
 
-	const Matrix4d &
-	getShadowMatrix () const
-	{ return shadowMatrix; }
+	size_t
+	getWidth () const
+	{ return width; }
 
-	X3DGroupingNode*
-	getGroup () const
-	{ return group; }
+	size_t
+	getHeight () const
+	{ return height; }
 
-	const std::unique_ptr <TextureBuffer> &
-	getTextureBuffer () const
-	{ return textureBuffer; }
+	GLuint
+	getId () const
+	{ return id; }
+
+	GLuint
+	getColorTextureId () const
+	{ return colorTextureId; }
+
+	GLuint
+	getDepthTextureId () const
+	{ return depthTextureId; }
 
 	///  @name Operations
 
-	virtual
 	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
+	bind ();
 
 	void
-	renderShadowMap ();
-
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
+	unbind ();
 
 	///  @name Destruction
 
-	~LightContainer ();
+	~TextureBuffer ();
 
 
 private:
 
 	///  @name Members
 
-	X3DBrowser* const               browser;
-	X3DLightNode* const             node;
-	const Matrix4d                  modelViewMatrix;
-	Matrix4d                        shadowMatrix;
-	X3DGroupingNode* const          group;
-	std::unique_ptr <TextureBuffer> textureBuffer;
-	size_t                          textureUnit;
-	GLenum                          lightId;
+	X3DBrowserContext* browser;
+	size_t             width;
+	size_t             height;
+	bool               withColorBuffer;
+	GLuint             id;
+	GLuint             colorTextureId;
+	GLuint             depthTextureId;
+	GLint              viewport [4];
 
 };
-
-using LightContainerArray = std::vector <std::shared_ptr <LightContainer>>;
 
 } // X3D
 } // titania

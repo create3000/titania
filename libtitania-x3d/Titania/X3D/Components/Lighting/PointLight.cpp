@@ -164,6 +164,8 @@ PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, 
 	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
+
+	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
 }
 
 void
