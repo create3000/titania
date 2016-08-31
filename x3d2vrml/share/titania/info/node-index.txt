@@ -541,7 +541,9 @@
 	intensity = intensity;inputOutput;SFFloat;1
 	ambientIntensity = ambientIntensity;inputOutput;SFFloat;0
 	direction = direction;inputOutput;SFVec3f;0 0 -1
+	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
 	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
@@ -1810,7 +1812,9 @@
 	attenuation = attenuation;inputOutput;SFVec3f;1 0 0
 	location = location;inputOutput;SFVec3f;0 0 0
 	radius = radius;inputOutput;SFFloat;100
+	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
 	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
@@ -2304,7 +2308,9 @@
 	radius = radius;inputOutput;SFFloat;100
 	beamWidth = beamWidth;inputOutput;SFFloat;0.785398
 	cutOffAngle = cutOffAngle;inputOutput;SFFloat;1.5708
+	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
 	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
