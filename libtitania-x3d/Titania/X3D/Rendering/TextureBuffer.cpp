@@ -121,8 +121,6 @@ TextureBuffer::bind ()
 	glBindFramebuffer (GL_FRAMEBUFFER, id);
 	glViewport (0, 0, width, height);
 	glScissor  (0, 0, width, height);
-
-	__LOG__ << width << " : " << height << std::endl;
 }
 
 void
