@@ -45,6 +45,14 @@ uniform vec3  x3d_LightDirection [MAX_LIGHTS];
 uniform float x3d_LightRadius [MAX_LIGHTS];
 uniform float x3d_LightBeamWidth [MAX_LIGHTS];
 uniform float x3d_LightCutOffAngle [MAX_LIGHTS];
+// 19 * MAX_LIGHTS
+
+uniform vec3      x3d_ShadowColor [MAX_LIGHTS];
+uniform float     x3d_ShadowIntensity [MAX_LIGHTS];
+uniform float     x3d_ShadowDiffusion [MAX_LIGHTS];
+uniform mat4      x3d_ShadowMatrix [MAX_LIGHTS];
+uniform sampler2D x3d_ShadowMap [MAX_LIGHTS];
+// 22 * MAX_LIGHTS = 176
 
 uniform bool x3d_SeparateBackColor;
 
@@ -89,26 +97,6 @@ clip ()
 	}
 }
 
-float
-getFogInterpolant ()
-{
-	if (x3d_FogType == NO_FOG)
-		return 1.0;
-
-	float dV = length (v);
-
-	if (dV >= x3d_FogVisibilityRange)
-		return 0.0;
-
-	if (x3d_FogType == LINEAR_FOG)
-		return (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange;
-
-	if (x3d_FogType == EXPONENTIAL_FOG)
-		return exp (-dV / (x3d_FogVisibilityRange - dV));
-
-	return 1.0;
-}
-
 vec4
 getTextureColor ()
 {
@@ -133,12 +121,85 @@ getTextureColor ()
 	return vec4 (1.0, 1.0, 1.0, 1.0);
 }
 
+const int RAND_MAX = int (0x7fffffff);
+const int RAND_MIN = int (0x80000000);
+
+int seed = int (fract (v .x * v .y) * float (RAND_MAX));
+
+// Return a uniform distributed random floating point number in the interval [-1, 1].
+float
+random1 ()
+{
+	return float (seed = seed * 1103515245 + 12345) / float (RAND_MAX);
+}
+
+float
+getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion)
+{
+	float bias = 0.005;
+
+	#define SAMPLES 16
+
+	int value = 0;
+
+	for (int i = 0; i < SAMPLES; ++ i)
+	{
+		if (texture2D (shadowMap, shadowCoord .xy + vec2 (random1 (), random1 ()) * shadowDiffusion). z < shadowCoord.z - bias)
+		{
+			++ value;
+		}
+	}
+
+	return float (value) / float (SAMPLES);
+}
+
+vec3
+getShadowColor (vec3 color)
+{
+	float colorIntensity = 1.0;
+	vec3  shadowColor    = vec3 (0.0, 0.0, 0.0);
+
+	for (int i = 0; i < MAX_LIGHTS; ++ i)
+	{
+		if (x3d_ShadowIntensity [i] > 0.0)
+		{
+			//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
+
+			vec4  shadowCoord     = x3d_ShadowMatrix [i] * vec4 (v, 1.0);
+			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord .xyz, x3d_ShadowDiffusion [i] / 100.0);
+
+			colorIntensity *= 1.0 - shadowIntensity;
+			shadowColor    += shadowIntensity * x3d_ShadowColor [i];
+		}
+	}
+
+	return mix (shadowColor, color, colorIntensity);
+}
+
+vec3
+getFogColor (vec3 color)
+{
+	if (x3d_FogType == NO_FOG)
+		return color;
+
+	float dV = length (v);
+
+	if (dV >= x3d_FogVisibilityRange)
+		return x3d_FogColor;
+
+	if (x3d_FogType == LINEAR_FOG)
+		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
+
+	if (x3d_FogType == EXPONENTIAL_FOG)
+		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
+
+	return color;
+}
+
 void
 main ()
 {
 	clip ();
-
-	float f0 = getFogInterpolant ();
 
 	if (x3d_Lighting)
 	{
@@ -268,5 +329,5 @@ main ()
 		gl_FragColor = finalColor;
 	}
 
-	gl_FragColor .rgb = mix (x3d_FogColor, gl_FragColor .rgb, f0);
+	gl_FragColor .rgb = getFogColor (getShadowColor (gl_FragColor .rgb));
 }

@@ -35,7 +35,7 @@ uniform float     x3d_ShadowIntensity [MAX_LIGHTS];
 uniform float     x3d_ShadowDiffusion [MAX_LIGHTS];
 uniform mat4      x3d_ShadowMatrix [MAX_LIGHTS];
 uniform sampler2D x3d_ShadowMap [MAX_LIGHTS];
-// 16 + 8 * 16 = 144
+// 176
 
 #define MAX_TEXTURES 1
 #define NO_TEXTURE   0
@@ -64,26 +64,6 @@ clip ()
 		if (dot (v .xyz, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
-}
-
-float
-getFogInterpolant ()
-{
-	if (x3d_FogType == NO_FOG)
-		return 1.0;
-
-	float dV = length (v .xyz);
-
-	if (dV >= x3d_FogVisibilityRange)
-		return 0.0;
-
-	if (x3d_FogType == LINEAR_FOG)
-		return (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange;
-
-	if (x3d_FogType == EXPONENTIAL_FOG)
-		return exp (-dV / (x3d_FogVisibilityRange - dV));
-
-	return 1.0;
 }
 
 vec4
@@ -123,7 +103,7 @@ random1 ()
 }
 
 float
-getShadowIntensity (sampler2D shadowMap, vec4 shadowCoord, float shadowDiffusion)
+getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion)
 {
 	float bias = 0.005;
 
@@ -155,7 +135,7 @@ getShadowColor (vec3 color)
 			//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
 
 			vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
-			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i] / 100.0);
+			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord .xyz, x3d_ShadowDiffusion [i] / 100.0);
 
 			colorIntensity *= 1.0 - shadowIntensity;
 			shadowColor    += shadowIntensity * x3d_ShadowColor [i];
@@ -165,12 +145,30 @@ getShadowColor (vec3 color)
 	return mix (shadowColor, color, colorIntensity);
 }
 
+vec3
+getFogColor (vec3 color)
+{
+	if (x3d_FogType == NO_FOG)
+		return color;
+
+	float dV = length (v);
+
+	if (dV >= x3d_FogVisibilityRange)
+		return x3d_FogColor;
+
+	if (x3d_FogType == LINEAR_FOG)
+		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
+
+	if (x3d_FogType == EXPONENTIAL_FOG)
+		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
+
+	return color;
+}
+
 void
 main ()
 {
  	clip ();
-
-	float f0 = getFogInterpolant ();
 
 	vec4 finalColor = gl_FrontFacing ? frontColor : backColor;
 
@@ -187,6 +185,6 @@ main ()
 		}
 	}
 
-	gl_FragColor .rgb = mix (x3d_FogColor, getShadowColor (finalColor .rgb), f0);
+	gl_FragColor .rgb = getFogColor (getShadowColor (finalColor .rgb));
 	gl_FragColor .a   = finalColor .a;
 }
