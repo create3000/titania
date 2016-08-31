@@ -55,7 +55,9 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderer.h"
+
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
+#include "../EnvironmentalEffects/X3DFogObject.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DAppearanceNode.h"
 #include "../Shape/X3DMaterialNode.h"
@@ -94,7 +96,9 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	       x3d_LightBeamWidth (),
 	     x3d_LightCutOffAngle (),
 	          x3d_LightRadius (),
+	          x3d_ShadowColor (),
 	      x3d_ShadowIntensity (),
+	      x3d_ShadowDiffusion (),
 	         x3d_ShadowMatrix (),
 	            x3d_ShadowMap (),
 	    x3d_SeparateBackColor (-1),
@@ -210,7 +214,9 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 		x3d_LightCutOffAngle      .emplace_back (glGetUniformLocation (program, ("x3d_LightCutOffAngle["      + is + "]") .c_str ()));
 		x3d_LightRadius           .emplace_back (glGetUniformLocation (program, ("x3d_LightRadius["           + is + "]") .c_str ()));
 
+		x3d_ShadowColor           .emplace_back (glGetUniformLocation (program, ("x3d_ShadowColor["           + is + "]") .c_str ()));
 		x3d_ShadowIntensity       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowIntensity["       + is + "]") .c_str ()));
+		x3d_ShadowDiffusion       .emplace_back (glGetUniformLocation (program, ("x3d_ShadowDiffusion["       + is + "]") .c_str ()));
 		x3d_ShadowMatrix          .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMatrix["          + is + "]") .c_str ()));
 		x3d_ShadowMap             .emplace_back (glGetUniformLocation (program, ("x3d_ShadowMap["             + is + "]") .c_str ()));
 	}

@@ -121,6 +121,16 @@ public:
 	///  @name Experimental
 
 	virtual
+	SFColor &
+	shadowColor () final override
+	{ return getNode <X3DLightNode> () -> shadowColor (); }
+
+	virtual
+	const SFColor &
+	shadowColor () const final override
+	{ return getNode <X3DLightNode> () -> shadowColor (); }
+
+	virtual
 	SFFloat &
 	shadowIntensity () final override
 	{ return getNode <X3DLightNode> () -> shadowIntensity (); }
@@ -129,6 +139,16 @@ public:
 	const SFFloat &
 	shadowIntensity () const final override
 	{ return getNode <X3DLightNode> () -> shadowIntensity (); }
+
+	virtual
+	SFFloat &
+	shadowDiffusion () final override
+	{ return getNode <X3DLightNode> () -> shadowDiffusion (); }
+
+	virtual
+	const SFFloat &
+	shadowDiffusion () const final override
+	{ return getNode <X3DLightNode> () -> shadowDiffusion (); }
 
 	virtual
 	SFInt32 &

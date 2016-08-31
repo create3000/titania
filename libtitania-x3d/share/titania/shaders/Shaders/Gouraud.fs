@@ -30,7 +30,9 @@ uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwis
 
 #define MAX_LIGHTS 8
 
+uniform vec3      x3d_ShadowColor [MAX_LIGHTS];
 uniform float     x3d_ShadowIntensity [MAX_LIGHTS];
+uniform float     x3d_ShadowDiffusion [MAX_LIGHTS];
 uniform mat4      x3d_ShadowMatrix [MAX_LIGHTS];
 uniform sampler2D x3d_ShadowMap [MAX_LIGHTS];
 // 16 + 8 * 16 = 144
@@ -108,6 +110,82 @@ getTextureColor ()
 	return vec4 (1.0, 1.0, 1.0, 1.0);
 }
 
+const int RAND_MAX = int (0x7fffffff);
+const int RAND_MIN = int (0x80000000);
+
+int seed = int (fract (v .x * v .y) * float (RAND_MAX));
+
+// Return a uniform distributed random floating point number in the interval [-1, 1].
+float
+random1 ()
+{
+	return float (seed = seed * 1103515245 + 12345) / float (RAND_MAX);
+}
+
+float
+getShadowIntensity (sampler2D shadowMap, vec4 shadowCoord, float shadowDiffusion)
+{
+	float bias = 0.005;
+//
+//	if (texture2D (shadowMap, shadowCoord .xy). z < shadowCoord.z - bias)
+//		return 1.0;
+//
+//	return 0.0;
+
+	#define POISSON_SAMPLES 32
+
+	float value = 0.0;
+
+	for (int i = 0; i < POISSON_SAMPLES; ++ i)
+	{
+		if (texture2D (shadowMap, shadowCoord .xy + vec2 (random1 (), random1 ()) * shadowDiffusion / 100.0). z < shadowCoord.z - bias)
+		{
+			value += 1.0 / float (POISSON_SAMPLES);
+		}
+	}
+
+	return value;
+}
+
+vec3
+getShadowColor (vec3 color)
+{
+	float colorIntensity = 1.0;
+	vec3  shadowColor    = vec3 (0.0, 0.0, 0.0);
+
+	for (int i = 0; i < MAX_LIGHTS; ++ i)
+	{
+		if (x3d_ShadowIntensity [i] > 0.0)
+		{
+			vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
+			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i]);
+
+			colorIntensity *= 1.0 - shadowIntensity;
+			shadowColor    += shadowIntensity * x3d_ShadowColor [i];
+		}
+	}
+
+	return mix (shadowColor, color, colorIntensity);
+}
+
+float
+getColorIntensity ()
+{
+	float colorIntensity = 1.0;
+
+	for (int i = 0; i < MAX_LIGHTS; ++ i)
+	{
+		if (x3d_ShadowIntensity [i] > 0.0)
+		{
+			vec4 shadowCoord = x3d_ShadowMatrix [i] * v;
+
+			colorIntensity *= 1.0 - x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i]);
+		}
+	}
+
+	return colorIntensity;
+}
+
 void
 main ()
 {
@@ -130,21 +208,6 @@ main ()
 		}
 	}
 
-	gl_FragColor .rgb = mix (x3d_FogColor, finalColor .rgb, f0);
+	gl_FragColor .rgb = getShadowColor (mix (x3d_FogColor, finalColor .rgb, f0));
 	gl_FragColor .a   = finalColor .a;
-
-	//
-
-	for (int i = 0; i < MAX_LIGHTS; ++ i)
-	{
-		if (x3d_ShadowIntensity [i] > 0.0)
-		{
-			vec4 shadowCoord = x3d_ShadowMatrix [i] * v;
-
-			if (texture2D (x3d_ShadowMap [i], shadowCoord .xy) .z  < shadowCoord .z - 0.005)
-			{
-			    gl_FragColor .rgb *= 1.0 - x3d_ShadowIntensity [i];
-			}
-		}
-	}
 }

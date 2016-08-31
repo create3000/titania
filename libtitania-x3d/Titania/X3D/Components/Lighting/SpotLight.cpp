@@ -93,7 +93,9 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "beamWidth",        beamWidth ());
 	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
 
+	addField (inputOutput, "shadowColor",      shadowColor ());
 	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput, "shadowDiffusion",  shadowDiffusion ());
 	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
 
 	location ()    .setUnit (UnitCategory::LENGTH);

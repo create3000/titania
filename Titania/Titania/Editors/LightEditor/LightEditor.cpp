@@ -69,7 +69,9 @@ LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 	                    color (this, getColorButton (), getColorAdjustment (), getColorBox (), "color"),
 	                intensity (this, getIntensityAdjustment (), getIntensityBox (), "intensity"),
 	         ambientIntensity (this, getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
+	              shadowColor (this, getShadowColorButton (), getShadowColorAdjustment (), getShadowColorBox (), "shadowColor"),
 	          shadowIntensity (this, getShadowIntensityAdjustment (), getShadowIntensityBox (), "shadowIntensity"),
+	          shadowDiffusion (this, getShadowDiffusionAdjustment (), getShadowDiffusionBox (), "shadowDiffusion"),
 	            shadowMapSize (this, getShadowMapSizeAdjustment (), getShadowMapSizeSpinButton (), "shadowMapSize")
 {
 	setup ();
@@ -103,7 +105,9 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 	color            .setNodes (lightNodes);
 	intensity        .setNodes (lightNodes);
 	ambientIntensity .setNodes (lightNodes);
+	shadowColor      .setNodes (lightNodes);
 	shadowIntensity  .setNodes (lightNodes);
+	shadowDiffusion  .setNodes (lightNodes);
 	shadowMapSize    .setNodes (lightNodes);
 
 	getLightBox () .set_sensitive (lightNode);

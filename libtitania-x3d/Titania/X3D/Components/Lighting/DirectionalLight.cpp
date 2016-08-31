@@ -90,7 +90,9 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "direction",        direction ());
 
+	addField (inputOutput, "shadowColor",      shadowColor ());
 	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput, "shadowDiffusion",  shadowDiffusion ());
 	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
 }
 
@@ -185,7 +187,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 
 	textureBuffer -> unbind ();
 
-	#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+	//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 	#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 	#ifdef  TITANIA_DEBUG
 	FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
@@ -209,8 +211,6 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	#endif
 
 	getBrowser () -> setRenderTools (true);
-
-	__LOG__ << getName () << std::endl;
 }
 
 void

@@ -80,6 +80,7 @@
 #include <Titania/X3D/Components/EnvironmentalSensor/VisibilitySensor.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Lighting/X3DLightNode.h>
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Editing/Combine.h>
@@ -91,7 +92,6 @@
 
 namespace titania {
 namespace puck {
-
 
 const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
 	X3D::X3DConstants::ProximitySensor,

@@ -54,13 +54,13 @@
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
 
-#include "../EnvironmentalEffects/LocalFog.h"
-#include "../Lighting/X3DLightNode.h"
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
-#include "../Rendering/ClipPlane.h"
-
 namespace titania {
 namespace X3D {
+
+class ClipPlane;
+class LocalFog;
+class X3DLightNode;
+class X3DPointingDeviceSensorNode;
 
 class X3DGroupingNode :
 	virtual public X3DChildNode,
@@ -117,6 +117,11 @@ public:
 	virtual
 	void
 	dispose () override;
+
+	///  @name Construction
+
+	virtual
+	~X3DGroupingNode ();
 
 
 protected:

@@ -74,6 +74,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_PointLightLocationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationYAdjustment"));
 	m_PointLightLocationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationZAdjustment"));
 	m_PointLightRadiusAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightRadiusAdjustment"));
+	m_ShadowColorAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowColorAdjustment"));
+	m_ShadowDiffusionAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowDiffusionAdjustment"));
 	m_ShadowIntensityAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowIntensityAdjustment"));
 	m_ShadowMapSizeAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowMapSizeAdjustment"));
 	m_SpotLightAttenuationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightAttenuationXAdjustment"));
@@ -105,9 +107,7 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorButton", m_ColorButton);
 	m_builder -> get_widget ("IntensityBox", m_IntensityBox);
-	m_builder -> get_widget ("IntensityScale", m_IntensityScale);
 	m_builder -> get_widget ("AmbientIntensityBox", m_AmbientIntensityBox);
-	m_builder -> get_widget ("AmbientIntensityScale", m_AmbientIntensityScale);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
@@ -147,8 +147,10 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShadowExpander", m_ShadowExpander);
 	m_builder -> get_widget ("LightBox1", m_LightBox1);
 	m_builder -> get_widget ("ShadowIntensityBox", m_ShadowIntensityBox);
-	m_builder -> get_widget ("ShadowIntensityScale", m_ShadowIntensityScale);
 	m_builder -> get_widget ("ShadowMapSizeSpinButton", m_ShadowMapSizeSpinButton);
+	m_builder -> get_widget ("ShadowDiffusionBox", m_ShadowDiffusionBox);
+	m_builder -> get_widget ("ShadowColorBox", m_ShadowColorBox);
+	m_builder -> get_widget ("ShadowColorButton", m_ShadowColorButton);
 
 	// Connect object Gtk::MenuItem with id 'NewDirectionalLightMenuItem'.
 	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_directional_light_activated));

@@ -109,7 +109,9 @@ private:
 	SFColorButton                      color;
 	X3DFieldAdjustment <X3D::SFFloat>  intensity;
 	X3DFieldAdjustment <X3D::SFFloat>  ambientIntensity;
+	SFColorButton                      shadowColor;
 	X3DFieldAdjustment <X3D::SFFloat>  shadowIntensity;
+	X3DFieldAdjustment <X3D::SFFloat>  shadowDiffusion;
 	X3DFieldAdjustment <X3D::SFInt32>  shadowMapSize;
 
 };

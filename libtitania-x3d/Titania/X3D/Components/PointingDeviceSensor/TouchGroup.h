@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_TOUCH_GROUP_H__
 
 #include "../Grouping/X3DGroupingNode.h"
-#include "../Picking/X3DPickableObject.h"
+#include "../Core/X3DSensorNode.h"
 
 namespace titania {
 namespace X3D {

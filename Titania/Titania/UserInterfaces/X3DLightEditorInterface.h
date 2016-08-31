@@ -152,6 +152,14 @@ public:
 	{ return m_PointLightRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getShadowColorAdjustment () const
+	{ return m_ShadowColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getShadowDiffusionAdjustment () const
+	{ return m_ShadowDiffusionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getShadowIntensityAdjustment () const
 	{ return m_ShadowIntensityAdjustment; }
 
@@ -267,17 +275,9 @@ public:
 	getIntensityBox () const
 	{ return *m_IntensityBox; }
 
-	Gtk::Scale &
-	getIntensityScale () const
-	{ return *m_IntensityScale; }
-
 	Gtk::Box &
 	getAmbientIntensityBox () const
 	{ return *m_AmbientIntensityBox; }
-
-	Gtk::Scale &
-	getAmbientIntensityScale () const
-	{ return *m_AmbientIntensityScale; }
 
 	Gtk::Box &
 	getNameBox () const
@@ -435,13 +435,21 @@ public:
 	getShadowIntensityBox () const
 	{ return *m_ShadowIntensityBox; }
 
-	Gtk::Scale &
-	getShadowIntensityScale () const
-	{ return *m_ShadowIntensityScale; }
-
 	Gtk::SpinButton &
 	getShadowMapSizeSpinButton () const
 	{ return *m_ShadowMapSizeSpinButton; }
+
+	Gtk::Box &
+	getShadowDiffusionBox () const
+	{ return *m_ShadowDiffusionBox; }
+
+	Gtk::Box &
+	getShadowColorBox () const
+	{ return *m_ShadowColorBox; }
+
+	Gtk::Button &
+	getShadowColorButton () const
+	{ return *m_ShadowColorButton; }
 
 	///  @name Signal handlers
 
@@ -504,6 +512,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ShadowColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ShadowDiffusionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShadowIntensityAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ShadowMapSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightAttenuationXAdjustment;
@@ -533,9 +543,7 @@ private:
 	Gtk::Box*                      m_ColorBox;
 	Gtk::Button*                   m_ColorButton;
 	Gtk::Box*                      m_IntensityBox;
-	Gtk::Scale*                    m_IntensityScale;
 	Gtk::Box*                      m_AmbientIntensityBox;
-	Gtk::Scale*                    m_AmbientIntensityScale;
 	Gtk::Box*                      m_NameBox;
 	Gtk::Entry*                    m_NameEntry;
 	Gtk::Button*                   m_RenameButton;
@@ -575,8 +583,10 @@ private:
 	Gtk::Expander*                 m_ShadowExpander;
 	Gtk::Grid*                     m_LightBox1;
 	Gtk::Box*                      m_ShadowIntensityBox;
-	Gtk::Scale*                    m_ShadowIntensityScale;
 	Gtk::SpinButton*               m_ShadowMapSizeSpinButton;
+	Gtk::Box*                      m_ShadowDiffusionBox;
+	Gtk::Box*                      m_ShadowColorBox;
+	Gtk::Button*                   m_ShadowColorButton;
 
 };
 

@@ -118,6 +118,16 @@ public:
 	///  @name Experimental
 
 	virtual
+	SFColor &
+	shadowColor ()
+	{ return *fields .shadowColor; }
+
+	virtual
+	const SFColor &
+	shadowColor () const
+	{ return *fields .shadowColor; }
+
+	virtual
 	SFFloat &
 	shadowIntensity ()
 	{ return *fields .shadowIntensity; }
@@ -126,6 +136,16 @@ public:
 	const SFFloat &
 	shadowIntensity () const
 	{ return *fields .shadowIntensity; }
+
+	virtual
+	SFFloat &
+	shadowDiffusion ()
+	{ return *fields .shadowDiffusion; }
+
+	virtual
+	const SFFloat &
+	shadowDiffusion () const
+	{ return *fields .shadowDiffusion; }
 
 	virtual
 	SFInt32 &
@@ -188,7 +208,9 @@ private:
 		SFFloat* const ambientIntensity;
 
 		// Experimental
+		SFColor* const shadowColor;
 		SFFloat* const shadowIntensity;
+		SFFloat* const shadowDiffusion;
 		SFInt32* const shadowMapSize;
 	};
 

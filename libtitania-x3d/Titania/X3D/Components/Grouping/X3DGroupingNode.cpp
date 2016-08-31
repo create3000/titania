@@ -53,6 +53,11 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 
+#include "../EnvironmentalEffects/LocalFog.h"
+#include "../Lighting/X3DLightNode.h"
+#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../Rendering/ClipPlane.h"
+
 #include <Titania/Utility/Range.h>
 
 namespace titania {
@@ -409,6 +414,9 @@ X3DGroupingNode::dispose ()
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }
+
+X3DGroupingNode::~X3DGroupingNode ()
+{ }
 
 } // X3D
 } // titania
