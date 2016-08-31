@@ -74,6 +74,8 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_PointLightLocationYAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationYAdjustment"));
 	m_PointLightLocationZAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightLocationZAdjustment"));
 	m_PointLightRadiusAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PointLightRadiusAdjustment"));
+	m_ShadowIntensityAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowIntensityAdjustment"));
+	m_ShadowMapSizeAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ShadowMapSizeAdjustment"));
 	m_SpotLightAttenuationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightAttenuationXAdjustment"));
 	m_SpotLightAttenuationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightAttenuationYAdjustment"));
 	m_SpotLightAttenuationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightAttenuationZAdjustment"));
@@ -142,6 +144,11 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SpotLightDirectionXSpinButton", m_SpotLightDirectionXSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionYSpinButton", m_SpotLightDirectionYSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
+	m_builder -> get_widget ("ShadowExpander", m_ShadowExpander);
+	m_builder -> get_widget ("LightBox1", m_LightBox1);
+	m_builder -> get_widget ("ShadowIntensityBox", m_ShadowIntensityBox);
+	m_builder -> get_widget ("ShadowIntensityScale", m_ShadowIntensityScale);
+	m_builder -> get_widget ("ShadowMapSizeSpinButton", m_ShadowMapSizeSpinButton);
 
 	// Connect object Gtk::MenuItem with id 'NewDirectionalLightMenuItem'.
 	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_directional_light_activated));

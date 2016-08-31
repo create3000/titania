@@ -118,6 +118,7 @@ private:
 	GLuint             id;
 	GLuint             colorTextureId;
 	GLuint             depthTextureId;
+	GLint              frameBuffer;
 	GLint              viewport [4];
 
 };

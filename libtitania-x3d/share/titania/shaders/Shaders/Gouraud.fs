@@ -30,7 +30,7 @@ uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwis
 
 #define MAX_LIGHTS 8
 
-uniform bool      x3d_Shadow [MAX_LIGHTS]; // true if shadow is enabled, otherwise false
+uniform float     x3d_ShadowIntensity [MAX_LIGHTS];
 uniform mat4      x3d_ShadowMatrix [MAX_LIGHTS];
 uniform sampler2D x3d_ShadowMap [MAX_LIGHTS];
 // 16 + 8 * 16 = 144
@@ -48,8 +48,8 @@ uniform samplerCube x3d_CubeMapTexture [MAX_TEXTURES];
 varying vec4 frontColor; // color
 varying vec4 backColor;  // color
 varying vec4 t;          // texCoord
-varying vec3 v;          // point on geometry
-// 15, max 16
+varying vec4 v;          // point on geometry
+// 16, max 16
 
 void
 clip ()
@@ -59,7 +59,7 @@ clip ()
 		if (x3d_ClipPlane [i] == vec4 (0.0, 0.0, 0.0, 0.0))
 			break;
 
-		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
+		if (dot (v .xyz, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
 			discard;
 	}
 }
@@ -70,7 +70,7 @@ getFogInterpolant ()
 	if (x3d_FogType == NO_FOG)
 		return 1.0;
 
-	float dV = length (v);
+	float dV = length (v .xyz);
 
 	if (dV >= x3d_FogVisibilityRange)
 		return 0.0;
@@ -137,13 +137,13 @@ main ()
 
 	for (int i = 0; i < MAX_LIGHTS; ++ i)
 	{
-		if (x3d_Shadow [i])
+		if (x3d_ShadowIntensity [i] > 0.0)
 		{
-			vec4 shadowCoord = x3d_ShadowMatrix [i] * vec4 (v, 1);
+			vec4 shadowCoord = x3d_ShadowMatrix [i] * v;
 
-			if (texture2D (x3d_ShadowMap [i], shadowCoord .xy) .z  < shadowCoord .z)
+			if (texture2D (x3d_ShadowMap [i], shadowCoord .xy) .z  < shadowCoord .z - 0.005)
 			{
-			    gl_FragColor .rgb = vec3 (0.0, 0.0, 0.0);
+			    gl_FragColor .rgb *= 1.0 - x3d_ShadowIntensity [i];
 			}
 		}
 	}

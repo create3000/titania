@@ -1,23 +1,24 @@
-#VRML V2.0 utf8
-
-META "title" "PROTO test"
+#VRML V2.0 utf8 Titania V1.4.9
 
 PROTO LoadVrmlFromURL [
-  exposedField MFInt32 ints 1
+  exposedField MFInt32  ints 1
   exposedField MFString url ""
   exposedField SFString string ""
 ]
 {
   PROTO Data [
-    exposedField MFInt32 ints []
-    exposedField MFString url ["", ""]
+    exposedField MFInt32  ints [ ]
+    exposedField MFString url [
+      "",
+      ""
+    ]
     exposedField SFString string ""
   ]
   {
     Group { }
   }
 
-  DEF _loadUrl_0 Script {
+  DEF _loadUrl Script {
     field SFNode data DEF Data Data {
       ints IS ints
       url IS url
@@ -38,8 +39,79 @@ function initialize()
   }
 }
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "test"
+}
+
 LoadVrmlFromURL {
-  ints [1,2,3]
+  ints [
+    1,
+    2,
+    3
+  ]
   url "level1.wrl"
   string "string"
 }

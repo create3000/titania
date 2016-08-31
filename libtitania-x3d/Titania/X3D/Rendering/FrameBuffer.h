@@ -126,9 +126,10 @@ private:
 	GLuint                id;
 	GLuint                colorBufferId;
 	GLuint                depthBufferId;
-	std::vector <float>   depth;
-	GLint                 viewport [4];
 	std::vector <uint8_t> pixels;
+	std::vector <float>   depth;
+	GLint                 frameBuffer;
+	GLint                 viewport [4];
 
 };
 

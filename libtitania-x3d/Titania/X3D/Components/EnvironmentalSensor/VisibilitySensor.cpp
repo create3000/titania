@@ -51,7 +51,6 @@
 #include "VisibilitySensor.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/ViewVolume.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
 
@@ -142,7 +141,7 @@ VisibilitySensor::traverse (const TraverseType type)
 	
 				else
 				{
-					visible = getCurrentLayer () -> getViewVolumeStack () .back () .intersects (Box3d (size () .getValue (), center () .getValue ()) * getModelViewMatrix (type));
+					visible = getViewVolumes () .back () .intersects (Box3d (size () .getValue (), center () .getValue ()) * getModelViewMatrix (type));
 				}
 	
 				return;

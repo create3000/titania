@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraï¿½e 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,153 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_LIGHTING_X3DLIGHT_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_LIGHTING_X3DLIGHT_NODE_H__
+#ifndef __TITANIA_X3D_RENDERING_VIEW_VOLUME_STACK_H__
+#define __TITANIA_X3D_RENDERING_VIEW_VOLUME_STACK_H__
 
-#include "../Core/X3DChildNode.h"
+#include "../Rendering/ViewVolume.h"
+
+#include <vector>
 
 namespace titania {
 namespace X3D {
 
-class LightContainer;
-
-class X3DLightNode :
-	virtual public X3DChildNode
-{
-public:
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	global ()
-	{ return *fields .global; }
-
-	virtual
-	const SFBool &
-	global () const
-	{ return *fields .global; }
-
-	virtual
-	SFBool &
-	on ()
-	{ return *fields .on; }
-
-	virtual
-	const SFBool &
-	on () const
-	{ return *fields .on; }
-
-	virtual
-	SFColor &
-	color ()
-	{ return *fields .color; }
-
-	virtual
-	const SFColor &
-	color () const
-	{ return *fields .color; }
-
-	virtual
-	SFFloat &
-	intensity ()
-	{ return *fields .intensity; }
-
-	virtual
-	const SFFloat &
-	intensity () const
-	{ return *fields .intensity; }
-
-	virtual
-	SFFloat &
-	ambientIntensity ()
-	{ return *fields .ambientIntensity; }
-
-	virtual
-	const SFFloat &
-	ambientIntensity () const
-	{ return *fields .ambientIntensity; }
-
-	///  @name Experimental
-
-	virtual
-	SFFloat &
-	shadowIntensity ()
-	{ return *fields .shadowIntensity; }
-
-	virtual
-	const SFFloat &
-	shadowIntensity () const
-	{ return *fields .shadowIntensity; }
-
-	virtual
-	SFInt32 &
-	shadowMapSize ()
-	{ return *fields .shadowMapSize; }
-
-	virtual
-	const SFInt32 &
-	shadowMapSize () const
-	{ return *fields .shadowMapSize; }
-
-	///  @name Operations
-
-	virtual
-	void
-	push (X3DGroupingNode* const);
-
-	virtual
-	void
-	pop ();
-
-	virtual
-	void
-	draw (const GLenum) = 0;
-
-	virtual
-	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t, const Matrix4d &) = 0;
-
-
-protected:
-
-	///  @name Friends
-
-	friend class LightContainer;
-
-	///  @name Construction
-
-	X3DLightNode ();
-
-	///  @name Operations
-
-	virtual
-	void
-	renderShadowMap (LightContainer* const) = 0;
-
-
-private:
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const global;
-		SFBool* const on;
-		SFColor* const color;
-		SFFloat* const intensity;
-		SFFloat* const ambientIntensity;
-
-		// Experimental
-		SFFloat* const shadowIntensity;
-		SFInt32* const shadowMapSize;
-	};
-
-	Fields fields;
-
-};
+using ViewVolumeStack = std::vector <ViewVolume>;
 
 } // X3D
 } // titania

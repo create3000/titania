@@ -61,7 +61,10 @@ X3DLightNode::Fields::Fields () :
 	              on (new SFBool (true)),
 	           color (new SFColor (1, 1, 1)),
 	       intensity (new SFFloat (1)),
-	ambientIntensity (new SFFloat ())
+	ambientIntensity (new SFFloat ()),
+
+	 shadowIntensity (new SFFloat (0)),
+	   shadowMapSize (new SFInt32 (1024))
 { }
 
 X3DLightNode::X3DLightNode () :

@@ -1064,7 +1064,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 				for (const auto & field : userDefinedFields)
 				{
 					fieldTypeLength  = std::max (fieldTypeLength, field -> getTypeName () .length ());
-					accessTypeLength = std::max (accessTypeLength, to_string (ostream, field -> getAccessType ()) .length ());
+					accessTypeLength = std::max (accessTypeLength, to_string (field -> getAccessType ()) .length ());
 				}
 
 				break;

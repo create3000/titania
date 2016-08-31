@@ -53,6 +53,7 @@
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
+
 #include <vector>
 
 namespace titania {

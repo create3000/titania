@@ -105,10 +105,10 @@ Viewport::getRectangle (const int width, const int height) const
 Vector4i
 Viewport::getScissor (const int width, const int height) const
 {
-	if (getCurrentLayer () -> getViewVolumeStack () .empty ())
+	if (getViewVolumes () .empty ())
 		return getRectangle (width, height);
 
-	const auto parent = getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ();
+	const auto parent = getViewVolumes () .back () .getScissor ();
 	const int  left   = std::max (int (width  * getLeft ()),   parent [0]);
 	const int  right  = std::min (int (width  * getRight ()),  parent [0] + parent [2]);
 	const int  bottom = std::max (int (height * getBottom ()), parent [1]);
@@ -157,13 +157,13 @@ Viewport::traverse (const TraverseType type)
 void
 Viewport::push ()
 {
-	getCurrentLayer () -> getViewVolumeStack () .emplace_back (getProjectionMatrix () .get (), getScissor ());
+	getViewVolumes () .emplace_back (getProjectionMatrix () .get (), getScissor ());
 }
 
 void
 Viewport::pop ()
 {
-	getCurrentLayer () -> getViewVolumeStack () .pop_back ();
+	getViewVolumes () .pop_back ();
 }
 
 void

@@ -87,6 +87,9 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "radius",           radius ());
 
+	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
+
 	location () .setUnit (UnitCategory::LENGTH);
 	radius ()   .setUnit (UnitCategory::LENGTH);
 }
@@ -165,7 +168,8 @@ PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, 
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
 
-	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
+	// TODO: remove me
+	glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
 }
 
 void

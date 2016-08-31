@@ -57,8 +57,8 @@
 	pitch = pitch;inputOutput;SFFloat;1
 	loop = loop;inputOutput;SFBool;FALSE
 	startTime = startTime;inputOutput;SFTime;0
-	pauseTime = pauseTime;inputOutput;SFTime;0
 	resumeTime = resumeTime;inputOutput;SFTime;0
+	pauseTime = pauseTime;inputOutput;SFTime;0
 	stopTime = stopTime;inputOutput;SFTime;0
 	isPaused = isPaused;outputOnly;SFBool;
 	isActive = isActive;outputOnly;SFBool;
@@ -112,8 +112,8 @@
 [BooleanFilter]
 	metadata = metadata;inputOutput;SFNode;NULL
 	set_boolean = set_boolean;inputOnly;SFBool;
-	inputTrue = inputTrue;outputOnly;SFBool;
 	inputFalse = inputFalse;outputOnly;SFBool;
+	inputTrue = inputTrue;outputOnly;SFBool;
 	inputNegate = inputNegate;outputOnly;SFBool;
 	containerField = children
 	componentName = EventUtilities
@@ -342,8 +342,8 @@
 	back = back;inputOutput;SFNode;NULL
 	left = left;inputOutput;SFNode;NULL
 	right = right;inputOutput;SFNode;NULL
-	bottom = bottom;inputOutput;SFNode;NULL
 	top = top;inputOutput;SFNode;NULL
+	bottom = bottom;inputOutput;SFNode;NULL
 	containerField = texture
 	componentName = CubeMapTexturing
 
@@ -483,8 +483,8 @@
 [Cylinder]
 	metadata = metadata;inputOutput;SFNode;NULL
 	top = top;initializeOnly;SFBool;TRUE
-	bottom = bottom;initializeOnly;SFBool;TRUE
 	side = side;initializeOnly;SFBool;TRUE
+	bottom = bottom;initializeOnly;SFBool;TRUE
 	height = height;initializeOnly;SFFloat;2
 	radius = radius;initializeOnly;SFFloat;1
 	solid = solid;initializeOnly;SFBool;TRUE
@@ -541,6 +541,8 @@
 	intensity = intensity;inputOutput;SFFloat;1
 	ambientIntensity = ambientIntensity;inputOutput;SFFloat;0
 	direction = direction;inputOutput;SFVec3f;0 0 -1
+	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 
@@ -594,8 +596,8 @@
 [ElevationGrid]
 	metadata = metadata;inputOutput;SFNode;NULL
 	xDimension = xDimension;initializeOnly;SFInt32;0
-	xSpacing = xSpacing;initializeOnly;SFFloat;1
 	zDimension = zDimension;initializeOnly;SFInt32;0
+	xSpacing = xSpacing;initializeOnly;SFFloat;1
 	zSpacing = zSpacing;initializeOnly;SFFloat;1
 	solid = solid;initializeOnly;SFBool;TRUE
 	ccw = ccw;initializeOnly;SFBool;TRUE
@@ -787,21 +789,22 @@
 
 [GeoCoordinate]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	point = point;inputOutput;MFVec3d;[ ]
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = coord
 	componentName = Geospatial
 
 [GeoElevationGrid]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	geoGridOrigin = geoGridOrigin;initializeOnly;SFVec3d;0 0 0
-	yScale = yScale;inputOutput;SFFloat;1
 	xDimension = xDimension;initializeOnly;SFInt32;0
-	xSpacing = xSpacing;initializeOnly;SFDouble;1
 	zDimension = zDimension;initializeOnly;SFInt32;0
+	xSpacing = xSpacing;initializeOnly;SFDouble;1
 	zSpacing = zSpacing;initializeOnly;SFDouble;1
+	yScale = yScale;inputOutput;SFFloat;1
 	solid = solid;initializeOnly;SFBool;TRUE
 	ccw = ccw;initializeOnly;SFBool;TRUE
 	creaseAngle = creaseAngle;initializeOnly;SFDouble;0
@@ -811,12 +814,12 @@
 	texCoord = texCoord;inputOutput;SFNode;NULL
 	normal = normal;inputOutput;SFNode;NULL
 	height = height;inputOutput;MFDouble;[ ]
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = geometry
 	componentName = Geospatial
 
 [GeoLOD]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	rootUrl = rootUrl;initializeOnly;MFString;[ ]
 	child1Url = child1Url;initializeOnly;MFString;[ ]
@@ -826,7 +829,6 @@
 	center = center;initializeOnly;SFVec3d;0 0 0
 	range = range;initializeOnly;SFFloat;10
 	level_changed = level_changed;outputOnly;SFInt32;
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	rootNode = rootNode;initializeOnly;MFNode;[ ]
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
@@ -836,9 +838,9 @@
 
 [GeoLocation]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	geoCoords = geoCoords;inputOutput;SFVec3d;0 0 0
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
 	addChildren = addChildren;inputOnly;MFNode;
@@ -857,28 +859,29 @@
 
 [GeoOrigin]
 	metadata = metadata;inputOutput;SFNode;NULL
-	rotateYUp = rotateYUp;initializeOnly;SFBool;FALSE
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	geoCoords = geoCoords;inputOutput;SFVec3d;0 0 0
+	rotateYUp = rotateYUp;initializeOnly;SFBool;FALSE
 	containerField = geoOrigin
 	componentName = Geospatial
 
 [GeoPositionInterpolator]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	set_fraction = set_fraction;inputOnly;SFFloat;
 	key = key;inputOutput;MFFloat;[ ]
 	keyValue = keyValue;inputOutput;MFVec3d;[ ]
 	value_changed = value_changed;outputOnly;SFVec3d;
 	geovalue_changed = geovalue_changed;outputOnly;SFVec3d;
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = Geospatial
 
 [GeoProximitySensor]
 	metadata = metadata;inputOutput;SFNode;NULL
-	enabled = enabled;inputOutput;SFBool;TRUE
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
+	enabled = enabled;inputOutput;SFBool;TRUE
 	size = size;inputOutput;SFVec3f;0 0 0
 	center = center;inputOutput;SFVec3f;0 0 0
 	isActive = isActive;outputOnly;SFBool;
@@ -888,15 +891,15 @@
 	position_changed = position_changed;outputOnly;SFVec3f;
 	orientation_changed = orientation_changed;outputOnly;SFRotation;
 	centerOfRotation_changed = centerOfRotation_changed;outputOnly;SFVec3f;
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = Geospatial
 
 [GeoTouchSensor]
 	metadata = metadata;inputOutput;SFNode;NULL
-	enabled = enabled;inputOutput;SFBool;TRUE
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	description = description;inputOutput;SFString;""
+	enabled = enabled;inputOutput;SFBool;TRUE
 	hitTexCoord_changed = hitTexCoord_changed;outputOnly;SFVec2f;
 	hitNormal_changed = hitNormal_changed;outputOnly;SFVec3f;
 	hitPoint_changed = hitPoint_changed;outputOnly;SFVec3f;
@@ -904,19 +907,18 @@
 	isOver = isOver;outputOnly;SFBool;
 	isActive = isActive;outputOnly;SFBool;
 	touchTime = touchTime;outputOnly;SFTime;
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = Geospatial
 
 [GeoTransform]
 	metadata = metadata;inputOutput;SFNode;NULL
-	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
 	translation = translation;inputOutput;SFVec3f;0 0 0
 	rotation = rotation;inputOutput;SFRotation;0 0 1 0
 	scale = scale;inputOutput;SFVec3f;1 1 1
 	scaleOrientation = scaleOrientation;inputOutput;SFRotation;0 0 1 0
-	geoCenter = geoCenter;inputOutput;SFVec3d;0 0 0
 	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
+	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
+	geoCenter = geoCenter;inputOutput;SFVec3d;0 0 0
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
 	addChildren = addChildren;inputOnly;MFNode;
@@ -927,19 +929,19 @@
 
 [GeoViewpoint]
 	metadata = metadata;inputOutput;SFNode;NULL
+	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	geoSystem = geoSystem;initializeOnly;MFString;[ "GD", "WE" ]
-	description = description;inputOutput;SFString;""
 	set_bind = set_bind;inputOnly;SFBool;
+	description = description;inputOutput;SFString;""
 	position = position;inputOutput;SFVec3d;0 0 100000
 	orientation = orientation;inputOutput;SFRotation;0 0 1 0
-	centerOfRotation = centerOfRotation;inputOutput;SFVec3f;0 0 0
+	centerOfRotation = centerOfRotation;inputOutput;SFVec3d;0 0 0
 	fieldOfView = fieldOfView;inputOutput;SFFloat;0.785398
 	jump = jump;inputOutput;SFBool;TRUE
 	retainUserOffsets = retainUserOffsets;inputOutput;SFBool;FALSE
 	speedFactor = speedFactor;initializeOnly;SFFloat;1
 	isBound = isBound;outputOnly;SFBool;
 	bindTime = bindTime;outputOnly;SFTime;
-	geoOrigin = geoOrigin;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = Geospatial
 
@@ -1081,8 +1083,8 @@
 	creaseAngle = creaseAngle;initializeOnly;SFFloat;0
 	colorPerVertex = colorPerVertex;initializeOnly;SFBool;TRUE
 	normalPerVertex = normalPerVertex;initializeOnly;SFBool;TRUE
-	texCoordIndex = texCoordIndex;inputOutput;MFInt32;[ ]
 	colorIndex = colorIndex;inputOutput;MFInt32;[ ]
+	texCoordIndex = texCoordIndex;inputOutput;MFInt32;[ ]
 	normalIndex = normalIndex;inputOutput;MFInt32;[ ]
 	coordIndex = coordIndex;inputOutput;MFInt32;[ ]
 	attrib = attrib;inputOutput;MFNode;[ ]
@@ -1201,8 +1203,8 @@
 [KeySensor]
 	metadata = metadata;inputOutput;SFNode;NULL
 	enabled = enabled;inputOutput;SFBool;TRUE
-	shiftKey = shiftKey;outputOnly;SFBool;
 	controlKey = controlKey;outputOnly;SFBool;
+	shiftKey = shiftKey;outputOnly;SFBool;
 	altKey = altKey;outputOnly;SFBool;
 	actionKeyPress = actionKeyPress;outputOnly;SFInt32;
 	actionKeyRelease = actionKeyRelease;outputOnly;SFInt32;
@@ -1257,8 +1259,8 @@
 
 [LayoutGroup]
 	metadata = metadata;inputOutput;SFNode;NULL
-	viewport = viewport;inputOutput;SFNode;NULL
 	layout = layout;inputOutput;SFNode;NULL
+	viewport = viewport;inputOutput;SFNode;NULL
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
 	addChildren = addChildren;inputOnly;MFNode;
@@ -1270,8 +1272,8 @@
 [LayoutLayer]
 	metadata = metadata;inputOutput;SFNode;NULL
 	isPickable = isPickable;inputOutput;SFBool;TRUE
-	viewport = viewport;inputOutput;SFNode;NULL
 	layout = layout;inputOutput;SFNode;NULL
+	viewport = viewport;inputOutput;SFNode;NULL
 	addChildren = addChildren;inputOnly;MFNode;
 	removeChildren = removeChildren;inputOnly;MFNode;
 	children = children;inputOutput;MFNode;[ ]
@@ -1446,8 +1448,8 @@
 	pitch = pitch;inputOutput;SFFloat;1
 	loop = loop;inputOutput;SFBool;FALSE
 	startTime = startTime;inputOutput;SFTime;0
-	pauseTime = pauseTime;inputOutput;SFTime;0
 	resumeTime = resumeTime;inputOutput;SFTime;0
+	pauseTime = pauseTime;inputOutput;SFTime;0
 	stopTime = stopTime;inputOutput;SFTime;0
 	isPaused = isPaused;outputOnly;SFBool;
 	isActive = isActive;outputOnly;SFBool;
@@ -1694,8 +1696,8 @@
 
 [OrthoViewpoint]
 	metadata = metadata;inputOutput;SFNode;NULL
-	description = description;inputOutput;SFString;""
 	set_bind = set_bind;inputOnly;SFBool;
+	description = description;inputOutput;SFString;""
 	position = position;inputOutput;SFVec3f;0 0 10
 	orientation = orientation;inputOutput;SFRotation;0 0 1 0
 	centerOfRotation = centerOfRotation;inputOutput;SFVec3f;0 0 0
@@ -1721,29 +1723,29 @@
 	metadata = metadata;inputOutput;SFNode;NULL
 	enabled = enabled;inputOutput;SFBool;TRUE
 	geometryType = geometryType;initializeOnly;SFString;"QUAD"
-	createParticles = createParticles;inputOutput;SFBool;TRUE
 	maxParticles = maxParticles;inputOutput;SFInt32;200
+	createParticles = createParticles;inputOutput;SFBool;TRUE
 	particleLifetime = particleLifetime;inputOutput;SFFloat;5
 	lifetimeVariation = lifetimeVariation;inputOutput;SFFloat;0.25
 	particleSize = particleSize;inputOutput;SFVec2f;0.02 0.02
+	emitter = emitter;initializeOnly;SFNode;NULL
+	physics = physics;initializeOnly;MFNode;[ ]
 	colorKey = colorKey;initializeOnly;MFFloat;[ ]
+	colorRamp = colorRamp;initializeOnly;SFNode;NULL
 	texCoordKey = texCoordKey;initializeOnly;MFFloat;[ ]
+	texCoordRamp = texCoordRamp;initializeOnly;SFNode;NULL
 	isActive = isActive;outputOnly;SFBool;
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
-	emitter = emitter;initializeOnly;SFNode;NULL
-	colorRamp = colorRamp;initializeOnly;SFNode;NULL
-	texCoordRamp = texCoordRamp;initializeOnly;SFNode;NULL
 	appearance = appearance;inputOutput;SFNode;NULL
 	geometry = geometry;inputOutput;SFNode;NULL
-	physics = physics;initializeOnly;MFNode;[ ]
 	containerField = children
 	componentName = ParticleSystems
 
 [PickableGroup]
 	metadata = metadata;inputOutput;SFNode;NULL
-	objectType = objectType;inputOutput;MFString;"ALL"
 	pickable = pickable;inputOutput;SFBool;TRUE
+	objectType = objectType;inputOutput;MFString;"ALL"
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
 	addChildren = addChildren;inputOnly;MFNode;
@@ -1803,11 +1805,13 @@
 	global = global;inputOutput;SFBool;TRUE
 	on = on;inputOutput;SFBool;TRUE
 	color = color;inputOutput;SFColor;1 1 1
-	location = location;inputOutput;SFVec3f;0 0 0
-	radius = radius;inputOutput;SFFloat;100
 	intensity = intensity;inputOutput;SFFloat;1
 	ambientIntensity = ambientIntensity;inputOutput;SFFloat;0
 	attenuation = attenuation;inputOutput;SFVec3f;1 0 0
+	location = location;inputOutput;SFVec3f;0 0 0
+	radius = radius;inputOutput;SFFloat;100
+	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 
@@ -2292,14 +2296,16 @@
 	global = global;inputOutput;SFBool;TRUE
 	on = on;inputOutput;SFBool;TRUE
 	color = color;inputOutput;SFColor;1 1 1
+	intensity = intensity;inputOutput;SFFloat;1
+	ambientIntensity = ambientIntensity;inputOutput;SFFloat;0
+	attenuation = attenuation;inputOutput;SFVec3f;1 0 0
 	location = location;inputOutput;SFVec3f;0 0 0
 	direction = direction;inputOutput;SFVec3f;0 0 -1
 	radius = radius;inputOutput;SFFloat;100
-	intensity = intensity;inputOutput;SFFloat;1
-	ambientIntensity = ambientIntensity;inputOutput;SFFloat;0
-	beamWidth = beamWidth;inputOutput;SFFloat;0
-	cutOffAngle = cutOffAngle;inputOutput;SFFloat;0.785398
-	attenuation = attenuation;inputOutput;SFVec3f;1 0 0
+	beamWidth = beamWidth;inputOutput;SFFloat;0.785398
+	cutOffAngle = cutOffAngle;inputOutput;SFFloat;1.5708
+	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
+	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 
@@ -2481,8 +2487,8 @@
 	cycleInterval = cycleInterval;inputOutput;SFTime;1
 	loop = loop;inputOutput;SFBool;FALSE
 	startTime = startTime;inputOutput;SFTime;0
-	pauseTime = pauseTime;inputOutput;SFTime;0
 	resumeTime = resumeTime;inputOutput;SFTime;0
+	pauseTime = pauseTime;inputOutput;SFTime;0
 	stopTime = stopTime;inputOutput;SFTime;0
 	isPaused = isPaused;outputOnly;SFBool;
 	isActive = isActive;outputOnly;SFBool;
@@ -2536,9 +2542,9 @@
 	enterTime = enterTime;outputOnly;SFTime;
 	exitTime = exitTime;outputOnly;SFTime;
 	isActive = isActive;outputOnly;SFBool;
-	targetObject = targetObject;inputOutput;SFNode;NULL
-	orientation_changed = orientation_changed;outputOnly;SFRotation;
 	position_changed = position_changed;outputOnly;SFVec3f;
+	orientation_changed = orientation_changed;outputOnly;SFRotation;
+	targetObject = targetObject;inputOutput;SFNode;NULL
 	containerField = children
 	componentName = EnvironmentalSensor
 
@@ -2684,8 +2690,8 @@
 
 [Viewpoint]
 	metadata = metadata;inputOutput;SFNode;NULL
-	description = description;inputOutput;SFString;""
 	set_bind = set_bind;inputOnly;SFBool;
+	description = description;inputOutput;SFString;""
 	position = position;inputOutput;SFVec3f;0 0 10
 	orientation = orientation;inputOutput;SFRotation;0 0 1 0
 	centerOfRotation = centerOfRotation;inputOutput;SFVec3f;0 0 0
@@ -2772,4 +2778,52 @@
 	info = info;initializeOnly;MFString;[ ]
 	containerField = children
 	componentName = Core
+
+[TransformMatrix3D]
+	metadata = metadata;inputOutput;SFNode;NULL
+	matrix = matrix;inputOutput;SFMatrix4d;1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
+	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
+	addChildren = addChildren;inputOnly;MFNode;
+	removeChildren = removeChildren;inputOnly;MFNode;
+	children = children;inputOutput;MFNode;[ ]
+	containerField = children
+	componentName = Titania
+
+[TouchGroup]
+	metadata = metadata;inputOutput;SFNode;NULL
+	enabled = enabled;inputOutput;SFBool;TRUE
+	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
+	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
+	addChildren = addChildren;inputOnly;MFNode;
+	removeChildren = removeChildren;inputOnly;MFNode;
+	children = children;inputOutput;MFNode;[ ]
+	containerField = children
+	componentName = Titania
+
+[PolygonOffsetGroup]
+	metadata = metadata;inputOutput;SFNode;NULL
+	type = type;inputOutput;SFString;"POLYGON_OFFSET_FILL"
+	factor = factor;inputOutput;SFFloat;0
+	units = units;inputOutput;SFFloat;0
+	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
+	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
+	addChildren = addChildren;inputOnly;MFNode;
+	removeChildren = removeChildren;inputOnly;MFNode;
+	children = children;inputOutput;MFNode;[ ]
+	containerField = children
+	componentName = Titania
+
+[DepthBuffer]
+	metadata = metadata;inputOutput;SFNode;NULL
+	enabled = enabled;inputOutput;SFBool;TRUE
+	depthFunction = depthFunction;inputOutput;SFString;"LEQUAL"
+	depthOffset = depthOffset;inputOutput;SFDouble;0
+	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
+	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
+	addChildren = addChildren;inputOnly;MFNode;
+	removeChildren = removeChildren;inputOnly;MFNode;
+	children = children;inputOutput;MFNode;[ ]
+	containerField = children
+	componentName = Titania
 

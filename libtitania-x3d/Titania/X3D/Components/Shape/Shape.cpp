@@ -54,7 +54,6 @@
 #include "../../Browser/PointingDeviceSensor/Hit.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Rendering/ViewVolume.h"
 #include "../../Tools/Shape/ShapeTool.h"
 #include "../../Types/Geometry.h"
 #include "../Layering/X3DLayerNode.h"
@@ -164,12 +163,12 @@ Shape::pointer ()
 {
 	// All geometries must be picked
 
-	if (not getBrowser () -> isPointerInRectangle (getCurrentLayer () -> getViewVolumeStack () .back () .getScissor ()))
+	if (not getBrowser () -> isPointerInRectangle (getViewVolumes () .back () .getScissor ()))
 		return;
 
 	const Box3d bbox = getBBox () * getModelViewMatrix () .get ();
 
-	if (not getCurrentLayer () -> getViewVolumeStack () .back () .intersects (bbox))
+	if (not getViewVolumes () .back () .intersects (bbox))
 		return;
 
 	switch (getBrowser () -> getSelectionType ())

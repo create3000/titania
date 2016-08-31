@@ -77,5 +77,6 @@
     <None Include="Makefile.in" />
     <None Include="titania-info.cproj" />
     <None Include="titania-info.pidb" />
+    <None Include="run.pl" />
   </ItemGroup>
 </Project>

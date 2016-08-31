@@ -51,14 +51,16 @@
 #ifndef __TITANIA_X3D_COMPONENTS_NAVIGATION_NAVIGATION_INFO_H__
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_NAVIGATION_INFO_H__
 
-#include "../../Rendering/LightContainer.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DBindableNode.h"
-#include "../Lighting/DirectionalLight.h"
+
 #include <memory>
 
 namespace titania {
 namespace X3D {
+
+class LightContainer;
+class DirectionalLight;
 
 enum class TransitionType :
 	uint8_t
@@ -233,6 +235,11 @@ public:
 	virtual
 	void
 	traverse (const TraverseType) final override;
+
+	///  @name Destruction
+
+	virtual
+	~NavigationInfo ();
 
 
 private:

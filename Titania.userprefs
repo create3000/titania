@@ -1,15 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.h" Line="139" Column="40" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="148" Column="108" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/X3DLightNode.h" Line="59" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/X3DLightNode.cpp" Line="82" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="87" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="67" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="218" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="318" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.h" Line="154" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="165" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="98" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="73" Column="102" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="175" Column="25" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="146" Column="4" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="10" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

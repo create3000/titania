@@ -152,6 +152,14 @@ public:
 	{ return m_PointLightRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getShadowIntensityAdjustment () const
+	{ return m_ShadowIntensityAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getShadowMapSizeAdjustment () const
+	{ return m_ShadowMapSizeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getSpotLightAttenuationXAdjustment () const
 	{ return m_SpotLightAttenuationXAdjustment; }
 
@@ -415,6 +423,26 @@ public:
 	getSpotLightDirectionZSpinButton () const
 	{ return *m_SpotLightDirectionZSpinButton; }
 
+	Gtk::Expander &
+	getShadowExpander () const
+	{ return *m_ShadowExpander; }
+
+	Gtk::Grid &
+	getLightBox1 () const
+	{ return *m_LightBox1; }
+
+	Gtk::Box &
+	getShadowIntensityBox () const
+	{ return *m_ShadowIntensityBox; }
+
+	Gtk::Scale &
+	getShadowIntensityScale () const
+	{ return *m_ShadowIntensityScale; }
+
+	Gtk::SpinButton &
+	getShadowMapSizeSpinButton () const
+	{ return *m_ShadowMapSizeSpinButton; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -476,6 +504,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PointLightRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ShadowIntensityAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ShadowMapSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightAttenuationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightAttenuationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightAttenuationZAdjustment;
@@ -542,6 +572,11 @@ private:
 	Gtk::SpinButton*               m_SpotLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionZSpinButton;
+	Gtk::Expander*                 m_ShadowExpander;
+	Gtk::Grid*                     m_LightBox1;
+	Gtk::Box*                      m_ShadowIntensityBox;
+	Gtk::Scale*                    m_ShadowIntensityScale;
+	Gtk::SpinButton*               m_ShadowMapSizeSpinButton;
 
 };
 

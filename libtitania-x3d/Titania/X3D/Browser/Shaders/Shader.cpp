@@ -192,7 +192,7 @@ throw (Error <INVALID_URL>,
 	if (std::regex_search (source, version))
 		return source;
 
-	return "#version 100\n" + source;
+	return "#version 100\n#line 0\n" + source;
 }
 
 void

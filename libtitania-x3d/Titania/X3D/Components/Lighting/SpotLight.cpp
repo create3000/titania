@@ -93,6 +93,9 @@ SpotLight::SpotLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "beamWidth",        beamWidth ());
 	addField (inputOutput, "cutOffAngle",      cutOffAngle ());
 
+	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
+
 	location ()    .setUnit (UnitCategory::LENGTH);
 	radius ()      .setUnit (UnitCategory::LENGTH);
 	beamWidth ()   .setUnit (UnitCategory::ANGLE);
@@ -185,7 +188,8 @@ SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], cutOffAngle ()); // clamp
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
 
-	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
+	// TODO: remove me
+	glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
 }
 
 void

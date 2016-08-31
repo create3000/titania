@@ -93,15 +93,15 @@ using Rotation4f = rotation4 <float>;
 
 using Vector2d = vector2 <double>;
 using Vector2f = vector2 <float>;
-using Vector2i = vector2 <int>;
+using Vector2i = vector2 <int32_t>;
 
 using Vector3d = vector3 <double>;
 using Vector3f = vector3 <float>;
-using Vector3i = vector3 <int>;
+using Vector3i = vector3 <int32_t>;
 
 using Vector4d = vector4 <double>;
 using Vector4f = vector4 <float>;
-using Vector4i = vector4 <int>;
+using Vector4i = vector4 <int32_t>;
 
 } // X3D
 } // titania

@@ -21,7 +21,7 @@ uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwis
 #define POINT_LIGHT       2
 #define SPOT_LIGHT        3
 
-uniform int   x3d_LightType [MAX_LIGHTS]; // 0: DirectionalLight, 1: PointLight, 2: SpotLight
+uniform int   x3d_LightType [MAX_LIGHTS]; // 0: No, 1: DirectionalLight, 2: PointLight, 3: SpotLight
 uniform bool  x3d_LightOn [MAX_LIGHTS];
 uniform vec3  x3d_LightColor [MAX_LIGHTS];
 uniform float x3d_LightIntensity [MAX_LIGHTS];
@@ -62,7 +62,7 @@ attribute vec4 x3d_Vertex;
 varying vec4  frontColor; // color
 varying vec4  backColor;  // color
 varying vec4  t;          // texCoord
-varying vec3  v;          // point on geometry
+varying vec4  v;          // point on geometry
 // 15, max 16
 
 vec4
@@ -155,12 +155,10 @@ main ()
 {
 	gl_PointSize = x3d_LinewidthScaleFactor;
 
-	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
-
 	t = x3d_TextureMatrix [0] * x3d_TexCoord;
-	v = p .xyz;
+	v = x3d_ModelViewMatrix * x3d_Vertex;
 
-	gl_Position = x3d_ProjectionMatrix * p;
+	gl_Position = x3d_ProjectionMatrix * v;
 
 	if (x3d_Lighting)
 	{
@@ -173,7 +171,7 @@ main ()
 		float shininess        = x3d_Shininess;
 		float transparency     = x3d_Transparency;
 
-		frontColor = getMaterial (N, v,
+		frontColor = getMaterial (N, v .xyz,
 		                          ambientIntensity,
 		                          diffuseColor,
 		                          specularColor,
@@ -191,7 +189,7 @@ main ()
 			transparency     = x3d_BackTransparency;
 		}
 			
-		backColor = getMaterial (-N, v,
+		backColor = getMaterial (-N, v .xyz,
 		                         ambientIntensity,
 		                         diffuseColor,
 		                         specularColor,

@@ -83,9 +83,9 @@ public:
 		NICEST
 	};
 
-	struct X3DAccessTypeType { const AccessType accessType; };
+	struct X3DAccessType { const AccessType accessType; };
 	
-	struct VrmlAccessTypeType { const AccessType accessType; };
+	struct VrmlAccessType { const AccessType accessType; };
 
 	///  @name Member access
 
@@ -193,16 +193,6 @@ public:
 	{ return containerFieldStack .back (); }
 
 	static
-	X3DAccessTypeType
-	X3DAccessType (const AccessType accessType)
-	{ return X3DAccessTypeType { accessType }; }
-	
-	static
-	VrmlAccessTypeType
-	VrmlAccessType (const AccessType accessType)
-	{ return VrmlAccessTypeType { accessType }; }
-
-	static
 	void
 	XMLEncode (std::ostream &, const std::string &);
 
@@ -281,7 +271,7 @@ NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
 
 inline
 std::ostream &
-operator << (std::ostream & ostream, const Generator::X3DAccessTypeType & object)
+operator << (std::ostream & ostream, const Generator::X3DAccessType & object)
 {
 	static const std::string initializeOnlyCharacters = "initializeOnly";
 	static const std::string inputOnlyCharacters      = "inputOnly";
@@ -300,30 +290,8 @@ operator << (std::ostream & ostream, const Generator::X3DAccessTypeType & object
 }
 
 inline
-std::string
-to_string (const Generator::X3DAccessTypeType & accessType)
-{
-	std::ostringstream osstream;
-
-	osstream << accessType;
-
-	return osstream .str ();
-}
-
-inline
-std::string
-to_string (const AccessType accessType)
-{
-	std::ostringstream osstream;
-
-	osstream << Generator::X3DAccessType (accessType);
-
-	return osstream .str ();
-}
-
-inline
 std::ostream &
-operator << (std::ostream & ostream, const Generator::VrmlAccessTypeType & object)
+operator << (std::ostream & ostream, const Generator::VrmlAccessType & object)
 {
 	static const std::string fieldCharacters        = "field";
 	static const std::string eventInCharacters      = "eventIn";
@@ -342,29 +310,18 @@ operator << (std::ostream & ostream, const Generator::VrmlAccessTypeType & objec
 }
 
 inline
-std::string
-to_string (const Generator::VrmlAccessTypeType & accessType)
-{
-	std::ostringstream osstream;
-
-	osstream << accessType;
-
-	return osstream .str ();
-}
-
-inline
 std::ostream &
 operator << (std::ostream & ostream, const AccessType accessType)
 {
 	if (Generator::SpecificationVersion () == VRML_V2_0)
-		return ostream << Generator::VrmlAccessType (accessType);
+		return ostream << Generator::VrmlAccessType { accessType };
 
-	return ostream << Generator::X3DAccessType (accessType);
+	return ostream << Generator::X3DAccessType { accessType };
 }
 
 inline
 std::string
-to_string (std::ostream & ostream, const AccessType accessType)
+to_string (const AccessType accessType)
 {
 	std::ostringstream osstream;
 

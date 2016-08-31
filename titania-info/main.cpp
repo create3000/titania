@@ -26,11 +26,11 @@
 //  *
 //  ************************************************************************/
 
-#include <iostream>
-
 #include <Titania/X3D.h>
 
 #include "anyoption.h"
+
+#include <iostream>
 
 using namespace titania;
 
@@ -72,7 +72,7 @@ nodeIndex ()
 				<< '\t'
 				<< field -> getName () << " = "
 				<< field -> getName () << ";"
-				<< field -> getAccessType () << ";"
+				<< X3D::to_string (field -> getAccessType ()) << ";"
 				<< field -> getTypeName () << ";";
 
 			if (field -> isInitializable ())

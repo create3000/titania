@@ -67,8 +67,10 @@ FrameBuffer::FrameBuffer (X3DBrowserContext* const browser, const size_t width, 
 	             id (0),
 	  colorBufferId (0),
 	  depthBufferId (0),
+	         pixels (),
 	          depth (width * height),
-	         pixels ()
+	    frameBuffer (0),
+	       viewport ()
 { }
 
 void
@@ -79,14 +81,14 @@ FrameBuffer::setup ()
 
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
 	{
+		// Generate and bind frame buffer.
 		glGenFramebuffers (1, &id);
-
-		// Bind frame buffer.
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
-		// The color buffer
 		if (withColorBuffer)
 		{
+			// The color buffer
+
 			glGenRenderbuffers (1, &colorBufferId);
 			glBindRenderbuffer (GL_RENDERBUFFER, colorBufferId);
 
@@ -97,8 +99,11 @@ FrameBuffer::setup ()
 
 			glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBufferId);
 		}
+		else
+			glDrawBuffer (GL_NONE); // No color buffer is drawn to.
 
 		// The depth buffer
+
 		glGenRenderbuffers (1, &depthBufferId);
 		glBindRenderbuffer (GL_RENDERBUFFER, depthBufferId);
 
@@ -110,6 +115,7 @@ FrameBuffer::setup ()
 		glFramebufferRenderbuffer (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
 
 		// Always check that our framebuffer is ok
+
 		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
 			throw std::runtime_error ("Couldn't create frame buffer.");
 
@@ -146,23 +152,19 @@ FrameBuffer::getDistance (const double radius, const double zNear, const double 
 void
 FrameBuffer::bind ()
 {
-	// Bind frame buffer.
-	glBindFramebuffer (GL_FRAMEBUFFER, id);
-
 	glGetIntegerv (GL_VIEWPORT, viewport);
+	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
+
+	glBindFramebuffer (GL_FRAMEBUFFER, id);
 	glViewport (0, 0, width, height);
 	glScissor  (0, 0, width, height);
-	glClear (GL_DEPTH_BUFFER_BIT);
-	// glClear (GL_COLOR_BUFFER_BIT); // DEBUG
 }
 
 void
 FrameBuffer::unbind ()
 {
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-	// Bind frame buffer.
-	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
 void

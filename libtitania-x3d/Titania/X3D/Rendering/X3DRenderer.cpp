@@ -172,7 +172,7 @@ X3DRenderer::addCollision (X3DShapeNode* const shape)
 
 	++ numCollisionContainers;
 
-	context -> setScissor (getViewVolumeStack () .back () .getScissor ());
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setCollisions (getCollisions ());
@@ -606,6 +606,7 @@ X3DRenderer::depth ()
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer
+	glClear (GL_DEPTH_BUFFER_BIT);
 
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);

@@ -256,7 +256,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 				{
 					typeLength = std::max (typeLength, field -> getTypeName () .length ());
 
-					accessTypeLength = std::max (accessTypeLength, to_string (ostream, field -> getAccessType ()) .length ());
+					accessTypeLength = std::max (accessTypeLength, to_string (field -> getAccessType ()) .length ());
 				}
 
 				break;

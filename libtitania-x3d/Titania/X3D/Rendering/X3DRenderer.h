@@ -58,7 +58,7 @@
 #include "../Rendering/CollisionContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/ShapeContainer.h"
-#include "../Rendering/ViewVolume.h"
+#include "../Rendering/ViewVolumeStack.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 #include <memory>
@@ -69,8 +69,6 @@ namespace X3D {
 class FrameBuffer;
 class X3DFogObject;
 class X3DGroupingNode;
-
-using ViewVolumeStack = std::vector <ViewVolume>;
 
 class X3DRenderer :
 	virtual public X3DNode
@@ -100,7 +98,7 @@ public:
 	getFog () const = 0;
 
 	ViewVolumeStack &
-	getViewVolumeStack ()
+	getViewVolumes ()
 	{ return viewVolumeStack; }
 
 	CollectableObjectArray &

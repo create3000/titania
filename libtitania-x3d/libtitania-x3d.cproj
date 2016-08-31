@@ -821,6 +821,7 @@
     <None Include="share\titania\shaders\Shaders\Depth.fs" />
     <None Include="share\titania\shaders\Shaders\Depth.vs" />
     <None Include="Titania\X3D\Rendering\TextureBuffer.h" />
+    <None Include="Titania\X3D\Rendering\ViewVolumeStack.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

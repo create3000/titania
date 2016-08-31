@@ -54,7 +54,9 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/LightContainer.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../Lighting/DirectionalLight.h"
 
 #include <limits>
 
@@ -243,8 +245,7 @@ NavigationInfo::enable ()
 
 void
 NavigationInfo::disable ()
-{
-}
+{ }
 
 void
 NavigationInfo::traverse (const TraverseType type)
@@ -260,6 +261,9 @@ NavigationInfo::traverse (const TraverseType type)
 			break;
 	}
 }
+
+NavigationInfo::~NavigationInfo ()
+{ }
 
 } // X3D
 } // titania

@@ -72,7 +72,7 @@ const std::string   DirectionalLight::typeName       = "DirectionalLight";
 const std::string   DirectionalLight::containerField = "children";
 
 DirectionalLight::Fields::Fields () :
-	direction (new SFVec3f (0, 0, -1))
+   direction (new SFVec3f (0, 0, -1))
 { }
 
 DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext) :
@@ -89,6 +89,9 @@ DirectionalLight::DirectionalLight (X3DExecutionContext* const executionContext)
 	addField (inputOutput, "intensity",        intensity ());
 	addField (inputOutput, "ambientIntensity", ambientIntensity ());
 	addField (inputOutput, "direction",        direction ());
+
+	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
 }
 
 X3DBaseNode*
@@ -142,6 +145,8 @@ DirectionalLight::draw (GLenum lightId)
 	glLightfv (lightId, GL_POSITION, glPosition);
 }
 
+// http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
+
 static constexpr auto biasMatrix = Matrix4d (0.5, 0.0, 0.0, 0.0,
                                              0.0, 0.5, 0.0, 0.0,
                                              0.0, 0.0, 0.5, 0.0,
@@ -168,6 +173,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 
 	textureBuffer -> bind ();
 
+	getViewVolumes      () .emplace_back (projectionMatrix, Vector4i (0, 0, shadowMapSize (), shadowMapSize ()));
 	getProjectionMatrix () .push (projectionMatrix);
 	getModelViewMatrix  () .push (lightRotation);
 
@@ -175,6 +181,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 
 	getModelViewMatrix  () .pop ();
 	getProjectionMatrix () .pop ();
+	getViewVolumes      () .pop_back ();
 
 	textureBuffer -> unbind ();
 
@@ -216,14 +223,6 @@ DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
 	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
-
-	#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
-	#ifdef  TITANIA_DEBUG
-	glUniform1i (shaderObject -> getShadowUniformLocation () [i], true);
-	#endif
-	#else
-	glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
-	#endif
 }
 
 void

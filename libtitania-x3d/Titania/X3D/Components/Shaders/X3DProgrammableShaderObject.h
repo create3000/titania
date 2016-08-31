@@ -168,8 +168,8 @@ public:
 	///  @name Uniform location access shadow
 
 	const std::vector <GLint> &
-	getShadowUniformLocation () const
-	{ return x3d_Shadow; }
+	getShadowIntensityUniformLocation () const
+	{ return x3d_ShadowIntensity; }
 
 	const std::vector <GLint> &
 	getShadowMatrixUniformLocation () const
@@ -394,7 +394,7 @@ private:
 	std::vector <GLint> x3d_LightCutOffAngle;
 	std::vector <GLint> x3d_LightRadius;
 
-	std::vector <GLint> x3d_Shadow;
+	std::vector <GLint> x3d_ShadowIntensity;
 	std::vector <GLint> x3d_ShadowMatrix;
 	std::vector <GLint> x3d_ShadowMap;
 

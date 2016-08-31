@@ -65,7 +65,9 @@ TextureBuffer::TextureBuffer (X3DBrowserContext* const browser, const size_t wid
 	withColorBuffer (withColorBuffer),
 	             id (0),
 	 colorTextureId (0),
-	 depthTextureId (0)
+	 depthTextureId (0),
+	    frameBuffer (0),
+	       viewport ()
 { }
 
 void
@@ -76,31 +78,32 @@ TextureBuffer::setup ()
 	if (not glXGetCurrentContext ())
 		return;
 
+	// Generate and bind frame buffer.
 	glGenFramebuffers (1, &id);
-
-	// Bind frame buffer.
 	glBindFramebuffer (GL_FRAMEBUFFER, id);
 
 	if (withColorBuffer)
 	{
 		// The color buffer
 	}
+	else
+		glDrawBuffer (GL_NONE); // No color buffer is drawn to.
 
 	// The depth buffer
 
 	glGenTextures   (1, &depthTextureId);
 	glBindTexture   (GL_TEXTURE_2D, depthTextureId);
-	glTexImage2D    (GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D    (GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE);
 
 	glFramebufferTexture (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTextureId, 0);
 
 	glBindTexture (GL_TEXTURE_2D, 0);
-
-	glDrawBuffer (GL_NONE); // No color buffer is drawn to.
 
 	// Always check that our framebuffer is ok
 	if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
@@ -112,19 +115,21 @@ TextureBuffer::setup ()
 void
 TextureBuffer::bind ()
 {
-	glBindFramebuffer (GL_FRAMEBUFFER, id);
-
 	glGetIntegerv (GL_VIEWPORT, viewport);
+	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
+
+	glBindFramebuffer (GL_FRAMEBUFFER, id);
 	glViewport (0, 0, width, height);
 	glScissor  (0, 0, width, height);
+
+	__LOG__ << width << " : " << height << std::endl;
 }
 
 void
 TextureBuffer::unbind ()
 {
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-	glBindFramebuffer (GL_FRAMEBUFFER, 0);
 }
 
 TextureBuffer::~TextureBuffer ()

@@ -118,6 +118,28 @@ public:
 	ambientIntensity () const final override
 	{ return getNode <X3DLightNode> () -> ambientIntensity (); }
 
+	///  @name Experimental
+
+	virtual
+	SFFloat &
+	shadowIntensity () final override
+	{ return getNode <X3DLightNode> () -> shadowIntensity (); }
+
+	virtual
+	const SFFloat &
+	shadowIntensity () const final override
+	{ return getNode <X3DLightNode> () -> shadowIntensity (); }
+
+	virtual
+	SFInt32 &
+	shadowMapSize () final override
+	{ return getNode <X3DLightNode> () -> shadowMapSize (); }
+
+	virtual
+	const SFInt32 &
+	shadowMapSize () const final override
+	{ return getNode <X3DLightNode> () -> shadowMapSize (); }
+
 	///  @name Operations
 	
 	virtual

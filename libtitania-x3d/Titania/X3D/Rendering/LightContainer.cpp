@@ -70,8 +70,28 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 	         textureUnit (0),
 	             lightId (0)
 {
-	textureBuffer .reset (new TextureBuffer (browser, 256, 256, false));
-	textureBuffer -> setup ();
+	try
+	{
+		if (node -> shadowIntensity () > 0)
+		{
+			textureBuffer .reset (new TextureBuffer (browser,
+			                                         std::max <int32_t> (node -> shadowMapSize (), 1),
+			                                         std::max <int32_t> (node -> shadowMapSize (), 1),
+			                                         false));
+			textureBuffer -> setup ();
+		}
+	}
+	catch (const std::runtime_error &)
+	{
+		// Couldn't create texture buffer.
+	}
+}
+
+void
+LightContainer::renderShadowMap ()
+{
+	if (textureBuffer)
+		node -> renderShadowMap (this);
 }
 
 void
@@ -96,7 +116,7 @@ LightContainer::enable ()
 	}
 	#endif
 
-	if (not browser -> getCombinedTextureUnits () .empty ())
+	if (textureBuffer and not browser -> getCombinedTextureUnits () .empty ())
 	{
 		textureUnit = browser -> getCombinedTextureUnits () .top ();
 		browser -> getCombinedTextureUnits () .pop ();
@@ -126,17 +146,13 @@ LightContainer::disable ()
 }
 
 void
-LightContainer::renderShadowMap ()
-{
-	node -> renderShadowMap (this);
-}
-
-void
 LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+
 	if (textureUnit)
 	{
-		node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+		glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], clamp <float> (node -> shadowIntensity (), 0, 1));
 
 		if (shaderObject -> isExtensionGPUShaderFP64Available ())
 			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, shadowMatrix .data ());
@@ -146,7 +162,7 @@ LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}
 	else
-		glUniform1i (shaderObject -> getShadowUniformLocation () [i], false);
+		glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
 }
 
 LightContainer::~LightContainer ()

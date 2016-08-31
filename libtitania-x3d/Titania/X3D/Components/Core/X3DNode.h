@@ -56,6 +56,7 @@
 #include "../../Fields.h"
 
 #include "../../Rendering/OpenGL.h"
+#include "../../Rendering/ViewVolumeStack.h"
 #include "../../Types/MatrixStack.h"
 
 namespace titania {
@@ -155,6 +156,12 @@ protected:
 
 	X3DLayerNode*
 	getCurrentLayer () const;
+
+	ViewVolumeStack &
+	getViewVolumes ();
+
+	const ViewVolumeStack &
+	getViewVolumes () const;
 
 	NavigationInfo*
 	getCurrentNavigationInfo () const;
