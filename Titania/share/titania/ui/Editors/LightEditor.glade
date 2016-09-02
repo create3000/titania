@@ -110,7 +110,7 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ShadowDiffusionAdjustment">
-    <property name="upper">1</property>
+    <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.01</property>
   </object>
@@ -1448,50 +1448,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="ShadowDiffusionBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="hexpand">True</property>
-                    <property name="spacing">8</property>
-                    <child>
-                      <object class="GtkSpinButton" id="spinbutton4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">0,000</property>
-                        <property name="adjustment">ShadowDiffusionAdjustment</property>
-                        <property name="climb_rate">0.01</property>
-                        <property name="digits">3</property>
-                        <property name="numeric">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkScale" id="scale1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="adjustment">ShadowDiffusionAdjustment</property>
-                        <property name="upper_stepper_sensitivity">off</property>
-                        <property name="digits">3</property>
-                        <property name="draw_value">False</property>
-                        <property name="value_pos">right</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkLabel" id="label23">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -1539,6 +1495,22 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinButton" id="ShadowDiffusionSpinButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="halign">start</property>
+                    <property name="text" translatable="yes">0,000</property>
+                    <property name="adjustment">ShadowDiffusionAdjustment</property>
+                    <property name="climb_rate">0.01</property>
+                    <property name="digits">3</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
               </object>

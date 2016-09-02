@@ -71,7 +71,7 @@ LightEditor::LightEditor (X3DBrowserWindow* const browserWindow) :
 	         ambientIntensity (this, getAmbientIntensityAdjustment (), getAmbientIntensityBox (), "ambientIntensity"),
 	              shadowColor (this, getShadowColorButton (), getShadowColorAdjustment (), getShadowColorBox (), "shadowColor"),
 	          shadowIntensity (this, getShadowIntensityAdjustment (), getShadowIntensityBox (), "shadowIntensity"),
-	          shadowDiffusion (this, getShadowDiffusionAdjustment (), getShadowDiffusionBox (), "shadowDiffusion"),
+	          shadowDiffusion (this, getShadowDiffusionAdjustment (), getShadowDiffusionSpinButton (), "shadowDiffusion"),
 	            shadowMapSize (this, getShadowMapSizeAdjustment (), getShadowMapSizeSpinButton (), "shadowMapSize")
 {
 	setup ();

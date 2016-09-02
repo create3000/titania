@@ -823,6 +823,8 @@
     <None Include="Titania\X3D\Rendering\TextureBuffer.h" />
     <None Include="Titania\X3D\Rendering\ViewVolumeStack.h" />
     <None Include="share\titania\shaders\Shaders\Bits\Random.h" />
+    <None Include="share\titania\shaders\Shaders\Bits\Line3.h" />
+    <None Include="share\titania\shaders\Shaders\Bits\Plane3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

@@ -63,10 +63,10 @@ X3DLightNode::Fields::Fields () :
 	       intensity (new SFFloat (1)),
 	ambientIntensity (new SFFloat ()),
 
-	     shadowColor (new SFColor (0, 0, 0)),
-	 shadowIntensity (new SFFloat (0)),
-	 shadowDiffusion (new SFFloat (0)),
-	   shadowMapSize (new SFInt32 (1024))
+	     shadowColor (new SFColor (0, 0, 0)), // Color of shadow.
+	 shadowIntensity (new SFFloat (0)),       // Intensity of shadow color in the range (0, 1).
+	 shadowDiffusion (new SFFloat (0)),       // Diffusion of the shadow in length units in the range (0, inf).
+	   shadowMapSize (new SFInt32 (1024))     // Size of the shadow map in pixels in the range (0, inf).
 { }
 
 X3DLightNode::X3DLightNode () :
@@ -74,6 +74,8 @@ X3DLightNode::X3DLightNode () :
 	                 fields ()
 {
 	addType (X3DConstants::X3DLightNode);
+
+	shadowDiffusion () .setUnit (UnitCategory::LENGTH);
 }
 
 const Color3f &

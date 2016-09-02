@@ -440,16 +440,16 @@ public:
 	{ return *m_ShadowMapSizeSpinButton; }
 
 	Gtk::Box &
-	getShadowDiffusionBox () const
-	{ return *m_ShadowDiffusionBox; }
-
-	Gtk::Box &
 	getShadowColorBox () const
 	{ return *m_ShadowColorBox; }
 
 	Gtk::Button &
 	getShadowColorButton () const
 	{ return *m_ShadowColorButton; }
+
+	Gtk::SpinButton &
+	getShadowDiffusionSpinButton () const
+	{ return *m_ShadowDiffusionSpinButton; }
 
 	///  @name Signal handlers
 
@@ -584,9 +584,9 @@ private:
 	Gtk::Grid*                     m_LightBox1;
 	Gtk::Box*                      m_ShadowIntensityBox;
 	Gtk::SpinButton*               m_ShadowMapSizeSpinButton;
-	Gtk::Box*                      m_ShadowDiffusionBox;
 	Gtk::Box*                      m_ShadowColorBox;
 	Gtk::Button*                   m_ShadowColorButton;
+	Gtk::SpinButton*               m_ShadowDiffusionSpinButton;
 
 };
 

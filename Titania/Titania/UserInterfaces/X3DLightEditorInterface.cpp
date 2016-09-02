@@ -148,9 +148,9 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LightBox1", m_LightBox1);
 	m_builder -> get_widget ("ShadowIntensityBox", m_ShadowIntensityBox);
 	m_builder -> get_widget ("ShadowMapSizeSpinButton", m_ShadowMapSizeSpinButton);
-	m_builder -> get_widget ("ShadowDiffusionBox", m_ShadowDiffusionBox);
 	m_builder -> get_widget ("ShadowColorBox", m_ShadowColorBox);
 	m_builder -> get_widget ("ShadowColorButton", m_ShadowColorButton);
+	m_builder -> get_widget ("ShadowDiffusionSpinButton", m_ShadowDiffusionSpinButton);
 
 	// Connect object Gtk::MenuItem with id 'NewDirectionalLightMenuItem'.
 	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_directional_light_activated));

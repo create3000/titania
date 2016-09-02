@@ -17,3 +17,9 @@ random2 ()
 {
 	return vec2 (random1 (), random1 ());
 }
+
+vec3
+random3 ()
+{
+	return vec3 (random1 (), random1 (), random1 ());
+}
