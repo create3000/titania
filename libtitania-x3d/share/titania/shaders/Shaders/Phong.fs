@@ -140,11 +140,26 @@ getSpotFactor (int lightType, float cutOffAngle, float beamWidth, vec3 L, vec3 d
 }
 
 float
-getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion, float bias)
+getShadowIntensity (float shadowIntensity, float shadowDiffusion, mat4 shadowMatrix, sampler2D shadowMap, int lightType)
 {
 	#define SHADOW_SAMPLES 16
 
-	int value = 0;
+	if (lightType == NO_LIGHT)
+		return 0.0;
+
+	if (lightType == POINT_LIGHT)
+		return 0.0;
+
+	if (shadowIntensity <= 0.0)
+		return 0.0;
+
+	//float bias = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
+
+	vec4  shadowCoord = shadowMatrix * vec4 (v, 1.0);
+	float bias        = 0.005 / shadowCoord .w;
+	int   value       = 0;
+
+	shadowCoord .xyz /= shadowCoord .w;
 
 	for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 	{
@@ -157,26 +172,7 @@ getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion
 		}
 	}
 
-	return float (value) / float (SHADOW_SAMPLES);
-}
-
-float
-getShadowIntensity (float shadowIntensity, float shadowDiffusion, mat4 shadowMatrix, sampler2D shadowMap, int lightType)
-{
-	if (lightType == NO_LIGHT)
-		return 0.0;
-
-	if (lightType == POINT_LIGHT)
-		return 0.0;
-
-	if (shadowIntensity <= 0.0)
-		return 0.0;
-
-	//float bias = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
-
-	vec4 shadowCoord = shadowMatrix * vec4 (v, 1.0);
-
-	return shadowIntensity * getShadowIntensity (shadowMap, shadowCoord .xyz / shadowCoord .w, shadowDiffusion / 100.0, 0.005);
+	return shadowIntensity * float (value) / float (SHADOW_SAMPLES);
 }
 
 vec3

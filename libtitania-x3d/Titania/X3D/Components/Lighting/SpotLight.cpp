@@ -206,33 +206,26 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 	try
 	{
 		getBrowser () -> setRenderTools (false);
+
+		auto modelViewMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+
+		modelViewMatrix .translate (location () .getValue ());
+		modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
+		modelViewMatrix .inverse ();
 	
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
-		const auto   lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
 		const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
 		const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
-		const auto   lightLocation    = lightSpaceMatrix .mult_vec_matrix (location () .getValue ());           // Location in scene coordinate system.
-		const auto   lightDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Negated direction in scene coordinate system.
-		const auto   lightRotation    = Matrix4d (Rotation4d (lightDirection, Vector3d (0, 0, 1)));             // Inverse rotation of light from direction to identity.
-		const auto   lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
+		const auto   lightBBox        = groupBBox * modelViewMatrix;                                            // Group bbox from the perspective of the light.
 		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
-		const auto   farVal           = lightLocation .z () - lightBBoxExtents .first .z ();
+		const auto   farVal           = -lightBBoxExtents .first .z ();
 		const auto   viewport         = Vector4i (0, 0, shadowMapSize (), shadowMapSize ());
 		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farVal, viewport);
 
 		if (farVal < 0)
 			return false;
 
-		auto modelViewMatrix = lightSpaceMatrix;
-
-		modelViewMatrix .translate (location () .getValue ());
-		modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
-		modelViewMatrix .inverse ();
-
 		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * modelViewMatrix * projectionMatrix * getBiasMatrix ());
-
-__LOG__ << std::endl;
-__LOG__ << Vector3d (0, 0, 0) * modelViewMatrix * projectionMatrix * getBiasMatrix () << std::endl;
 
 		textureBuffer -> bind ();
 

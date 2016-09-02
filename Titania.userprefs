@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.h" Line="154" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="165" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="162" Column="162" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/SpotLight.cpp" Line="225" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="98" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="73" Column="102" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="161" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="175" Column="25" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="146" Column="4" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="10" Column="34" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="9" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="285" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.vs" Line="25" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Gouraud.fs" Line="110" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -139,7 +139,7 @@ getShadowColor (vec3 color)
 		//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
 
 		vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
-		float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i] / 100.0);
+		float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i]);
 
 		colorIntensity *= 1.0 - shadowIntensity;
 		shadowColor    += shadowIntensity * x3d_ShadowColor [i];
