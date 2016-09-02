@@ -231,6 +231,9 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 
 		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * modelViewMatrix * projectionMatrix * getBiasMatrix ());
 
+__LOG__ << std::endl;
+__LOG__ << Vector3d (0, 0, 0) * modelViewMatrix * projectionMatrix * getBiasMatrix () << std::endl;
+
 		textureBuffer -> bind ();
 
 		getViewVolumes      () .emplace_back (projectionMatrix, viewport);

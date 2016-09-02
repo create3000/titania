@@ -124,6 +124,22 @@ getTextureColor ()
 }
 
 float
+getSpotFactor (int lightType, float cutOffAngle, float beamWidth, vec3 L, vec3 d)
+{
+	if (lightType != SPOT_LIGHT)
+		return 1.0;
+
+	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
+	
+	if (spotAngle >= cutOffAngle)
+		return 0.0;
+	else if (spotAngle <= beamWidth)
+		return 1.0;
+
+	return (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
+}
+
+float
 getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion, float bias)
 {
 	#define SHADOW_SAMPLES 16
@@ -144,35 +160,23 @@ getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion
 	return float (value) / float (SHADOW_SAMPLES);
 }
 
-vec3
-getShadowColor (vec3 color)
+float
+getShadowIntensity (float shadowIntensity, float shadowDiffusion, mat4 shadowMatrix, sampler2D shadowMap, int lightType)
 {
-	float colorIntensity = 1.0;
-	vec3  shadowColor    = vec3 (0.0, 0.0, 0.0);
+	if (lightType == NO_LIGHT)
+		return 0.0;
 
-	for (int i = 0; i < MAX_LIGHTS; ++ i)
-	{
-		int lightType = x3d_LightType [i];
+	if (lightType == POINT_LIGHT)
+		return 0.0;
 
-		if (lightType == NO_LIGHT)
-			break;
+	if (shadowIntensity <= 0.0)
+		return 0.0;
 
-		if (lightType == POINT_LIGHT)
-			continue;
+	//float bias = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
 
-		if (x3d_ShadowIntensity [i] <= 0.0)
-			continue;
+	vec4 shadowCoord = shadowMatrix * vec4 (v, 1.0);
 
-		//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
-
-		vec4  shadowCoord     = x3d_ShadowMatrix [i] * vec4 (v, 1.0);
-		float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord .xyz / shadowCoord .w, x3d_ShadowDiffusion [i] / 100.0, 0.005);
-
-		colorIntensity *= 1.0 - shadowIntensity;
-		shadowColor    += shadowIntensity * x3d_ShadowColor [i];
-	}
-
-	return mix (shadowColor, color, colorIntensity);
+	return shadowIntensity * getShadowIntensity (shadowMap, shadowCoord .xyz / shadowCoord .w, shadowDiffusion / 100.0, 0.005);
 }
 
 vec3
@@ -275,24 +279,11 @@ main ()
 				float specularFactor = bool (shininess) ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
 				vec3  specularTerm   = specularColor * specularFactor;
 
-				float attenuation = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-				float spot        = 1.0;
+				float attenuation     = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
+				float spot            = getSpotFactor (lightType, x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d);
+				float shadowIntensity = getShadowIntensity (x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], lightType);
 
-				if (lightType == SPOT_LIGHT)
-				{
-					float spotAngle   = acos (clamp (dot (-L, d), -1.0, 1.0));
-					float cutOffAngle = x3d_LightCutOffAngle [i];
-					float beamWidth   = x3d_LightBeamWidth [i];
-					
-					if (spotAngle >= cutOffAngle)
-						spot = 0.0;
-					else if (spotAngle <= beamWidth)
-						spot = 1.0;
-					else
-						spot = (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
-				}
-
-				finalColor += (attenuation * spot) * x3d_LightColor [i] *
+				finalColor += mix ((attenuation * spot) * x3d_LightColor [i], x3d_ShadowColor [i], shadowIntensity) *
 				              (x3d_LightAmbientIntensity [i] * ambientTerm +
 				               x3d_LightIntensity [i] * (diffuseTerm + specularTerm));
 			}
@@ -326,5 +317,5 @@ main ()
 		gl_FragColor = finalColor;
 	}
 
-	gl_FragColor .rgb = getFogColor (getShadowColor (gl_FragColor .rgb));
+	gl_FragColor .rgb = getFogColor (gl_FragColor .rgb);
 }
