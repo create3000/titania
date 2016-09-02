@@ -241,7 +241,7 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 
 		textureBuffer -> unbind ();
 
-		#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
+		//#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
 		FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);

@@ -65,6 +65,22 @@ varying vec4  t;          // texCoord
 varying vec4  v;          // point on geometry
 // 15, max 16
 
+float
+getSpotFactor (int lightType, float cutOffAngle, float beamWidth, vec3 L, vec3 d)
+{
+	if (lightType != SPOT_LIGHT)
+		return 1.0;
+
+	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
+	
+	if (spotAngle >= cutOffAngle)
+		return 0.0;
+	else if (spotAngle <= beamWidth)
+		return 1.0;
+
+	return (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
+}
+
 vec4
 getMaterial (vec3 N,
              vec3 v,
@@ -119,21 +135,7 @@ getMaterial (vec3 N,
 			vec3  specularTerm   = x3d_SpecularColor * specularFactor;
 
 			float attenuation = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-			float spot        = 1.0;
-
-			if (lightType == SPOT_LIGHT)
-			{
-				float spotAngle   = acos (clamp (dot (-L, d), -1.0, 1.0));
-				float cutOffAngle = x3d_LightCutOffAngle [i];
-				float beamWidth   = x3d_LightBeamWidth [i];
-				
-				if (spotAngle >= cutOffAngle)
-					spot = 0.0;
-				else if (spotAngle <= beamWidth)
-					spot = 1.0;
-				else
-					spot = (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
-			}
+			float spot        = getSpotFactor (lightType, x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d);
 		
 			vec3 lightFactor  = (attenuation * spot) * x3d_LightColor [i];
 			vec3 ambientLight = (lightFactor * x3d_LightAmbientIntensity [i]) * ambientTerm;
