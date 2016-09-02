@@ -72,7 +72,7 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 {
 	try
 	{
-		if (node -> shadowIntensity () > 0)
+		if (node -> shadowIntensity () > 0 and not browser -> getFixedPipelineRequired ())
 		{
 			textureBuffer .reset (new TextureBuffer (browser,
 			                                         std::max <int32_t> (node -> shadowMapSize (), 1),
@@ -91,7 +91,10 @@ void
 LightContainer::renderShadowMap ()
 {
 	if (textureBuffer)
-		node -> renderShadowMap (this);
+	{
+		if (not node -> renderShadowMap (this))
+			textureBuffer .reset ();
+	}
 }
 
 void
@@ -152,9 +155,9 @@ LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 
 	if (textureUnit)
 	{
-		glUniform1f  (shaderObject -> getShadowIntensityUniformLocation () [i], clamp <float> (node -> shadowIntensity (), 0, 1));
-		glUniform1f  (shaderObject -> getShadowDiffusionUniformLocation () [i], clamp <float> (node -> shadowDiffusion (), 0, 1));
-		glUniform3fv (shaderObject -> getShadowColorUniformLocation     () [i], 1, node -> shadowColor () .getValue () .data ());
+		glUniform1f  (shaderObject -> getShadowIntensityUniformLocation () [i], node -> getShadowIntensity ());
+		glUniform1f  (shaderObject -> getShadowDiffusionUniformLocation () [i], node -> getShadowDiffusion ());
+		glUniform3fv (shaderObject -> getShadowColorUniformLocation     () [i], 1, node -> getShadowColor () .data ());
 
 		if (shaderObject -> isExtensionGPUShaderFP64Available ())
 			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, shadowMatrix .data ());

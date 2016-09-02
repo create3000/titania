@@ -53,12 +53,12 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/LightContainer.h"
-#include "../../Tools/Lighting/DirectionalLightTool.h"
-#include "../Layering/X3DLayerNode.h"
-#include "../Shaders/X3DProgrammableShaderObject.h"
-
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/TextureBuffer.h"
+#include "../../Tools/Lighting/DirectionalLightTool.h"
+
+#include "../Layering/X3DLayerNode.h"
+#include "../Shaders/X3DProgrammableShaderObject.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -115,17 +115,17 @@ DirectionalLight::initialize ()
 void
 DirectionalLight::eventsProcessed ()
 {
-	const float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
-	const float glIntensity        = math::clamp <float> (intensity (), 0, 1);
+	const auto ambientIntensity = getAmbientIntensity ();
+	const auto intensity        = getIntensity ();
 
-	glAmbient [0] = glAmbientIntensity * color () .getRed ();
-	glAmbient [1] = glAmbientIntensity * color () .getGreen ();
-	glAmbient [2] = glAmbientIntensity * color () .getBlue ();
+	glAmbient [0] = ambientIntensity * color () .getRed ();
+	glAmbient [1] = ambientIntensity * color () .getGreen ();
+	glAmbient [2] = ambientIntensity * color () .getBlue ();
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = glIntensity * color () .getRed ();
-	glDiffuseSpecular [1] = glIntensity * color () .getGreen ();
-	glDiffuseSpecular [2] = glIntensity * color () .getBlue ();
+	glDiffuseSpecular [0] = intensity * color () .getRed ();
+	glDiffuseSpecular [1] = intensity * color () .getGreen ();
+	glDiffuseSpecular [2] = intensity * color () .getBlue ();
 	glDiffuseSpecular [3] = 1;
 
 	glPosition [0] = -direction () .getX ();
@@ -149,33 +149,26 @@ DirectionalLight::draw (GLenum lightId)
 
 // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/
 
-static constexpr auto biasMatrix = Matrix4d (0.5, 0.0, 0.0, 0.0,
-                                             0.0, 0.5, 0.0, 0.0,
-                                             0.0, 0.0, 0.5, 0.0,
-                                             0.5, 0.5, 0.5, 1.0);
-
-void
+bool
 DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
-	if (getBrowser () -> getFixedPipelineRequired ())
-		return;
-
 	getBrowser () -> setRenderTools (false);
 
 	const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
 	const auto   lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
 	const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
 	const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
-	const auto   sceneDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Direction in scene coordinate system.
-	const auto   lightRotation    = Matrix4d (Rotation4d (sceneDirection, Vector3d (0, 0, 1)));             // Rotation from light direction to normal zero.
+	const auto   lightDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Negated direction in scene coordinate system.
+	const auto   lightRotation    = Matrix4d (Rotation4d (lightDirection, Vector3d (0, 0, 1)));             // Inverse rotation of light from direction to identity.
 	const auto   lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
+	const auto   viewport         = Vector4i (0, 0, shadowMapSize (), shadowMapSize ());
 	const auto   projectionMatrix = ortho (lightBBox);
 
-	lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * lightRotation * projectionMatrix * biasMatrix);
+	lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * lightRotation * projectionMatrix * getBiasMatrix ());
 
 	textureBuffer -> bind ();
 
-	getViewVolumes      () .emplace_back (projectionMatrix, Vector4i (0, 0, shadowMapSize (), shadowMapSize ()));
+	getViewVolumes      () .emplace_back (projectionMatrix, viewport);
 	getProjectionMatrix () .push (projectionMatrix);
 	getModelViewMatrix  () .push (lightRotation);
 
@@ -195,6 +188,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	frameBuffer .setup ();
 	frameBuffer .bind ();
 
+	getViewVolumes      () .emplace_back (projectionMatrix, viewport);
 	getProjectionMatrix () .push (projectionMatrix);
 	getModelViewMatrix  () .push (lightRotation);
 
@@ -202,6 +196,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 
 	getModelViewMatrix  () .pop ();
 	getProjectionMatrix () .pop ();
+	getViewVolumes      () .pop_back ();
 
 	frameBuffer .readDepth ();
 	frameBuffer .unbind ();
@@ -211,6 +206,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	#endif
 
 	getBrowser () -> setRenderTools (true);
+	return true;
 }
 
 void
@@ -219,9 +215,9 @@ DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], DIRECTIONAL_LIGHT);
-	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
-	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
-	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
+	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, getColor () .data ());
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], getIntensity ());
+	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], getAmbientIntensity ());
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
 }
 

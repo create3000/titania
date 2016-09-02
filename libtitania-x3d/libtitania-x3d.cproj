@@ -822,6 +822,7 @@
     <None Include="share\titania\shaders\Shaders\Depth.vs" />
     <None Include="Titania\X3D\Rendering\TextureBuffer.h" />
     <None Include="Titania\X3D\Rendering\ViewVolumeStack.h" />
+    <None Include="share\titania\shaders\Shaders\Bits\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1451,6 +1452,7 @@
     <Folder Include="share\mime\" />
     <Folder Include="share\mime\packages\" />
     <Folder Include="share\titania\icc\" />
+    <Folder Include="share\titania\shaders\Shaders\Bits\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

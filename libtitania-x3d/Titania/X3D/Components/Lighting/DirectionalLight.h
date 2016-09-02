@@ -124,6 +124,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+
+	virtual
+	bool
+	renderShadowMap (LightContainer* const) final override;
+
 
 private:
 
@@ -131,12 +137,6 @@ private:
 
 	void
 	eventsProcessed ();
-
-	///  @name Operations
-
-	virtual
-	void
-	renderShadowMap (LightContainer* const) final override;
 
 	///  @name Static members
 

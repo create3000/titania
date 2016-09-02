@@ -57,22 +57,31 @@
 namespace titania {
 namespace math {
 
+///  Creates an perspective projection matrix.
+///  @param left      Specify the coordinates for the left vertical clipping plane.
+///  @param right     Specify the coordinates for the left vertical clipping plane.
+///  @param bottom    Specify the coordinates for the bottom horizontal clipping plane.
+///  @param top       Specify the coordinates for the bottom horizontal clipping plane.
+///  @param nearVal   Specify the distances to the nearer depth clipping plane.
+///                   This value must be positive.
+///  @param farVal    Specify the distances to the nearer depth clipping plane.
+///                   This value must be positive.
 template <class Type>
 static
 matrix4 <Type>
-frustum (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
+frustum (const Type & left, const Type & right, const Type & bottom, const Type & top, const Type & nearVal, const Type & farVal)
 {
-	const Type r_l = r - l;
-	const Type t_b = t - b;
-	const Type f_n = f - n;
-	const Type n_2 = 2 * n;
+	const auto r_l = right - left;
+	const auto t_b = top - bottom;
+	const auto f_n = farVal - nearVal;
+	const auto n_2 = 2 * nearVal;
 
-	const Type A = (r + l) / r_l;
-	const Type B = (t + b) / t_b;
-	const Type C = -(f + n) / f_n;
-	const Type D = -n_2 * f / f_n;
-	const Type E = n_2 / r_l;
-	const Type F = n_2 / t_b;
+	const auto A = (right + left) / r_l;
+	const auto B = (top + bottom) / t_b;
+	const auto C = -(farVal + nearVal) / f_n;
+	const auto D = -n_2 * farVal / f_n;
+	const auto E = n_2 / r_l;
+	const auto F = n_2 / t_b;
 
 	return matrix4 <Type> (E, 0, 0, 0,
 	                       0, F, 0, 0,
@@ -80,42 +89,58 @@ frustum (const Type & l, const Type & r, const Type & b, const Type & t, const T
 	                       0, 0, D, 0);
 }
 
+///  Creates an perspective projection matrix.
+///  @param fieldOfView   Specify the field of view angle.
+///  @param nearVal       Specify the distances to the nearer depth clipping plane.
+///                       This value must be positive.
+///  @param farVal        Specify the distances to the nearer depth clipping plane.
+///                       This value must be positive.
+///  @param farVal        Specify the current viewport dimensions.
 template <class Type>
 matrix4 <Type>
-perspective (const Type & fieldOfView, const Type & zNear, const Type & zFar, const vector4 <int> & viewport)
+perspective (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const vector4 <int32_t> & viewport)
 {
-	const int width  = viewport [2];
-	const int height = viewport [3];
+	const auto width  = viewport [2];
+	const auto height = viewport [3];
 
-	const Type ratio = std::tan (fieldOfView / 2) * zNear;
+	const auto ratio = std::tan (fieldOfView / 2) * nearVal;
 
 	if (width > height)
 	{
-		const Type aspect = width * ratio / height;
-		return frustum (-aspect, aspect, -ratio, ratio, zNear, zFar);
+		const auto aspect = width * ratio / height;
+		return frustum (-aspect, aspect, -ratio, ratio, nearVal, farVal);
 	}
 	else
 	{
-		const Type aspect = height * ratio / width;
-		return frustum (-ratio, ratio, -aspect, aspect, zNear, zFar);
+		const auto aspect = height * ratio / width;
+		return frustum (-ratio, ratio, -aspect, aspect, nearVal, farVal);
 	}
 }
 
+///  Creates an othographic projection matrix.
+///  @param left      Specify the coordinates for the left vertical clipping plane.
+///  @param right     Specify the coordinates for the left vertical clipping plane.
+///  @param bottom    Specify the coordinates for the bottom horizontal clipping plane.
+///  @param top       Specify the coordinates for the bottom horizontal clipping plane.
+///  @param nearVal   Specify the distances to the nearer depth clipping plane.
+///                   This value is negative if the plane is to be behind the viewer.
+///  @param farVal    Specify the distances to the nearer depth clipping plane.
+///                   This value is negative if the plane is to be behind the viewer.
 template <class Type>
 static
 matrix4 <Type>
-ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Type & n, const Type & f)
+ortho (const Type & left, const Type & right, const Type & bottom, const Type & top, const Type & nearVal, const Type & farVal)
 {
-	const Type r_l = r - l;
-	const Type t_b = t - b;
-	const Type f_n = f - n;
+	const auto r_l = right - left;
+	const auto t_b = top - bottom;
+	const auto f_n = farVal - nearVal;
 
-	const Type A =  2 / r_l;
-	const Type B =  2 / t_b;
-	const Type C = -2 / f_n;
-	const Type D = -(r + l) / r_l;
-	const Type E = -(t + b) / t_b;
-	const Type F = -(f + n) / f_n;
+	const auto A =  2 / r_l;
+	const auto B =  2 / t_b;
+	const auto C = -2 / f_n;
+	const auto D = -(right + left) / r_l;
+	const auto E = -(top + bottom) / t_b;
+	const auto F = -(farVal + nearVal) / f_n;
 
 	return matrix4 <Type> (A, 0, 0, 0,
 	                       0, B, 0, 0,
@@ -123,12 +148,13 @@ ortho (const Type & l, const Type & r, const Type & b, const Type & t, const Typ
 	                       D, E, F, 1);
 }
 
+///  Creates an othographic projection matrix that has the size of @a box.
 template <class Type>
 static
 matrix4 <Type>
-ortho (const box3 <Type> & bbox)
+ortho (const box3 <Type> & box)
 {
-	const auto   extents = bbox .extents ();
+	const auto   extents = box .extents ();
 	const auto & min     = extents .first;
 	const auto & max     = extents .second;
 

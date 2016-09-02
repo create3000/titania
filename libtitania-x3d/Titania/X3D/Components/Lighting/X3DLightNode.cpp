@@ -76,6 +76,42 @@ X3DLightNode::X3DLightNode () :
 	addType (X3DConstants::X3DLightNode);
 }
 
+const Color3f &
+X3DLightNode::getColor () const
+{
+	return color () .getValue ();
+}
+
+float
+X3DLightNode::getAmbientIntensity () const
+{
+	return math::clamp <float> (ambientIntensity (), 0, 1);
+}
+
+float
+X3DLightNode::getIntensity () const
+{
+	return math::clamp <float> (intensity (), 0, 1);
+}
+
+const Color3f &
+X3DLightNode::getShadowColor () const
+{
+	return shadowColor () .getValue ();
+}
+
+float
+X3DLightNode::getShadowIntensity () const
+{
+	return math::clamp <float> (shadowIntensity (), 0, 1);
+}
+
+float
+X3DLightNode::getShadowDiffusion () const
+{
+	return math::clamp <float> (shadowDiffusion (), 0, 1);
+}
+
 void
 X3DLightNode::push (X3DGroupingNode* const group)
 {

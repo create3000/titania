@@ -52,8 +52,15 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/LightContainer.h"
+#include "../../Rendering/FrameBuffer.h"
+#include "../../Rendering/TextureBuffer.h"
 #include "../../Tools/Lighting/SpotLightTool.h"
+
+#include "../Layering/X3DLayerNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -120,24 +127,50 @@ SpotLight::initialize ()
 	eventsProcessed ();
 }
 
+float
+SpotLight::getRadius () const
+{
+	return std::max <float> (0, radius ());
+}
+
+float
+SpotLight::getBeamWidth () const
+{
+	// If the beamWidth is greater than the cutOffAngle, beamWidth is defined to be equal to the cutOffAngle.
+
+	const auto cutOffAngle = getCutOffAngle ();
+
+	if (beamWidth () > cutOffAngle)
+		return cutOffAngle;
+
+	return math::clamp <float> (beamWidth (), 0, math::PI <float> / 2);
+}
+
+float
+SpotLight::getCutOffAngle () const
+{
+	return math::clamp <float> (cutOffAngle (), 0, math::PI <float> / 2);
+}
+
 void
 SpotLight::eventsProcessed ()
 {
-	const float glAmbientIntensity = math::clamp <float> (ambientIntensity (), 0, 1);
-	const float glIntensity        = math::clamp <float> (intensity (), 0, 1);
+	const auto ambientIntensity = getAmbientIntensity ();
+	const auto intensity        = getIntensity ();
+	const auto beamWidth        = getBeamWidth ();
 
-	glAmbient [0] = glAmbientIntensity * color () .getRed ();
-	glAmbient [1] = glAmbientIntensity * color () .getGreen ();
-	glAmbient [2] = glAmbientIntensity * color () .getBlue ();
+	glAmbient [0] = ambientIntensity * color () .getRed ();
+	glAmbient [1] = ambientIntensity * color () .getGreen ();
+	glAmbient [2] = ambientIntensity * color () .getBlue ();
 	glAmbient [3] = 1;
 
-	glDiffuseSpecular [0] = glIntensity * color () .getRed ();
-	glDiffuseSpecular [1] = glIntensity * color () .getGreen ();
-	glDiffuseSpecular [2] = glIntensity * color () .getBlue ();
+	glDiffuseSpecular [0] = intensity * color () .getRed ();
+	glDiffuseSpecular [1] = intensity * color () .getGreen ();
+	glDiffuseSpecular [2] = intensity * color () .getBlue ();
 	glDiffuseSpecular [3] = 1;
 
-	glSpotExponent = math::clamp <float> (beamWidth () ? 0.5f / beamWidth () : 0.0f, 0, 128);
-	glSpotCutOff   = math::clamp <float> (math::degrees <float> (cutOffAngle ()), 0, 90);
+	glSpotExponent = math::clamp <float> (beamWidth ? 0.5f / beamWidth : 0.0f, 0, 128);
+	glSpotCutOff   = math::clamp <float> (math::degrees (getCutOffAngle ()), 0, 90);
 
 	glPosition [0] = location () .getX ();
 	glPosition [1] = location () .getY ();
@@ -167,31 +200,101 @@ SpotLight::draw (GLenum lightId)
 	glLightfv (lightId, GL_SPOT_DIRECTION, glSpotDirection);
 }
 
-void
+bool
 SpotLight::renderShadowMap (LightContainer* const lightContainer)
 {
+	try
+	{
+		getBrowser () -> setRenderTools (false);
+	
+		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
+		const auto   lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
+		const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
+		const auto   lightLocation    = lightSpaceMatrix .mult_vec_matrix (location () .getValue ());           // Location in scene coordinate system.
+		const auto   lightDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Negated direction in scene coordinate system.
+		const auto   lightRotation    = Matrix4d (Rotation4d (lightDirection, Vector3d (0, 0, 1)));             // Inverse rotation of light from direction to identity.
+		const auto   lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
+		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
+		const auto   farVal           = lightLocation .z () - lightBBoxExtents .first .z ();
+		const auto   viewport         = Vector4i (0, 0, shadowMapSize (), shadowMapSize ());
+		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farVal, viewport);
 
+		if (farVal < 0)
+			return false;
+
+		auto modelViewMatrix = lightSpaceMatrix;
+
+		modelViewMatrix .translate (location () .getValue ());
+		modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
+		modelViewMatrix .inverse ();
+
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * modelViewMatrix * projectionMatrix * getBiasMatrix ());
+
+		textureBuffer -> bind ();
+
+		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+		getProjectionMatrix () .push (projectionMatrix);
+		getModelViewMatrix  () .push (modelViewMatrix);
+
+		getCurrentLayer () -> renderDepth (group);
+
+		getModelViewMatrix  () .pop ();
+		getProjectionMatrix () .pop ();
+		getViewVolumes      () .pop_back ();
+
+		textureBuffer -> unbind ();
+
+		#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
+		#ifdef  DEBUG_SPOT_LIGHT_SHADOW_BUFFER
+		#ifdef  TITANIA_DEBUG
+		FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+
+		frameBuffer .setup ();
+		frameBuffer .bind ();
+
+		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+		getProjectionMatrix () .push (projectionMatrix);
+		getModelViewMatrix  () .push (modelViewMatrix);
+
+		getCurrentLayer () -> renderDepth (group);
+
+		getModelViewMatrix  () .pop ();
+		getProjectionMatrix () .pop ();
+		getViewVolumes      () .pop_back ();
+
+		frameBuffer .readDepth ();
+		frameBuffer .unbind ();
+
+		glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+		#endif
+		#endif
+
+		getBrowser () -> setRenderTools (true);
+		return true;
+	}
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 void
-SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & lightSpaceMatrix)
+SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix)
 {
-	const auto worldLocation  = Vector3f (lightSpaceMatrix .mult_vec_matrix (location () .getValue ()));
-	const auto worldDirection = Vector3f (normalize (lightSpaceMatrix .mult_dir_matrix (direction () .getValue ())));
+	const auto worldLocation  = Vector3f (modelViewMatrix .mult_vec_matrix (location () .getValue ()));
+	const auto worldDirection = Vector3f (normalize (modelViewMatrix .mult_dir_matrix (direction () .getValue ())));
 
 	glUniform1i  (shaderObject -> getLightTypeUniformLocation             () [i], SPOT_LIGHT);
-	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, color () .getValue () .data ());
-	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], intensity ());        // clamp
-	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], ambientIntensity ()); // clamp
+	glUniform3fv (shaderObject -> getLightColorUniformLocation            () [i], 1, getColor () .data ());
+	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], getIntensity ()); 
+	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], getAmbientIntensity ());
 	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
-	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], beamWidth ());   // clamp
-	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], cutOffAngle ()); // clamp
-	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], radius ());
-
-	// TODO: remove me
-	glUniform1f (shaderObject -> getShadowIntensityUniformLocation () [i], 0);
+	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], getBeamWidth ());
+	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], getCutOffAngle ());
+	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], getRadius ());
 }
 
 void

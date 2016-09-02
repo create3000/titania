@@ -151,6 +151,17 @@ public:
 	cutOffAngle () const
 	{ return *fields .cutOffAngle; }
 
+	///  @name Member access
+
+	float
+	getRadius () const;
+
+	float
+	getBeamWidth () const;
+	
+	float
+	getCutOffAngle () const;
+
 	///  @name Operations
 
 	virtual
@@ -174,6 +185,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+
+	virtual
+	bool
+	renderShadowMap (LightContainer* const) final override;
+
 
 private:
 
@@ -181,12 +198,6 @@ private:
 
 	void
 	eventsProcessed ();
-
-	///  @name Operations
-
-	virtual
-	void
-	renderShadowMap (LightContainer* const) final override;
 
 	///  @name Static members
 

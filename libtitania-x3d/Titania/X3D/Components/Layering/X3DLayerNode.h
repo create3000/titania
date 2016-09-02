@@ -137,10 +137,6 @@ public:
 	Box3d
 	getBBox () const;
 
-	const X3DPtr <X3DGroupingNode>
-	getGroup () const
-	{ return group; }
-
 	///  @name Bindable node stack handling
 
 	X3DViewportNode*
@@ -247,6 +243,10 @@ protected:
 	using X3DNode::addChildren;
 	using X3DNode::removeChildren;
 
+	///  @name Friends
+
+	friend class X3DLightNode;
+
 	///  @name Construction
 
 	X3DLayerNode (X3DViewpointNode*, X3DGroupingNode*);
@@ -256,6 +256,10 @@ protected:
 	initialize () override;
 
 	///  @name Member access
+
+	const X3DPtr <X3DGroupingNode> &
+	getGroup () const
+	{ return group; }
 
 	virtual
 	X3DFogObject*

@@ -78,6 +78,7 @@ X3DPointLightEditor::setPointLight (const X3D::X3DPtr <X3D::X3DLightNode> & ligh
 	const X3D::X3DPtr <X3D::PointLight> pointLight (lightNode);
 
 	getPointLightExpander () .set_visible (pointLight);
+	getShadowExpander ()     .set_visible (not pointLight);
 
 	const auto pointLights = pointLight ? X3D::MFNode ({ pointLight }) : X3D::MFNode ();
 

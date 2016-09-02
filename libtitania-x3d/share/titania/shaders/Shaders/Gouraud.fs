@@ -28,7 +28,13 @@ uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, other
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 // 3
 
-#define MAX_LIGHTS 8
+#define MAX_LIGHTS        8
+#define NO_LIGHT          0
+#define DIRECTIONAL_LIGHT 1
+#define POINT_LIGHT       2
+#define SPOT_LIGHT        3
+
+uniform int x3d_LightType [MAX_LIGHTS]; // 0: No, 1: DirectionalLight, 2: PointLight, 3: SpotLight
 
 uniform vec3      x3d_ShadowColor [MAX_LIGHTS];
 uniform float     x3d_ShadowIntensity [MAX_LIGHTS];
@@ -52,6 +58,8 @@ varying vec4 backColor;  // color
 varying vec4 t;          // texCoord
 varying vec4 v;          // point on geometry
 // 16, max 16
+
+#pragma X3D include "Bits/Random.h"
 
 void
 clip ()
@@ -90,30 +98,17 @@ getTextureColor ()
 	return vec4 (1.0, 1.0, 1.0, 1.0);
 }
 
-const int RAND_MAX = int (0x7fffffff);
-const int RAND_MIN = int (0x80000000);
-
-int seed = int (fract (v .x * v .y) * float (RAND_MAX));
-
-// Return a uniform distributed random floating point number in the interval [-1, 1].
 float
-random1 ()
+getShadowIntensity (sampler2D shadowMap, vec4 shadowCoord, float shadowDiffusion)
 {
-	return float (seed = seed * 1103515245 + 12345) / float (RAND_MAX);
-}
-
-float
-getShadowIntensity (sampler2D shadowMap, vec3 shadowCoord, float shadowDiffusion)
-{
-	float bias = 0.005;
-
 	#define SAMPLES 16
 
-	int value = 0;
+	float bias  = 0.005;
+	int   value = 0;
 
 	for (int i = 0; i < SAMPLES; ++ i)
 	{
-		if (texture2D (shadowMap, shadowCoord .xy + vec2 (random1 (), random1 ()) * shadowDiffusion). z < shadowCoord.z - bias)
+		if (texture2D (shadowMap, (shadowCoord .xy / shadowCoord .w) + random2 () * shadowDiffusion). z < (shadowCoord.z - bias) / shadowCoord .w)
 		{
 			++ value;
 		}
@@ -130,16 +125,24 @@ getShadowColor (vec3 color)
 
 	for (int i = 0; i < MAX_LIGHTS; ++ i)
 	{
-		if (x3d_ShadowIntensity [i] > 0.0)
-		{
-			//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
+		int lightType = x3d_LightType [i];
 
-			vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
-			float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord .xyz, x3d_ShadowDiffusion [i] / 100.0);
+		if (lightType == NO_LIGHT)
+			break;
 
-			colorIntensity *= 1.0 - shadowIntensity;
-			shadowColor    += shadowIntensity * x3d_ShadowColor [i];
-		}
+		if (lightType == POINT_LIGHT)
+			continue;
+
+		if (x3d_ShadowIntensity [i] <= 0.0)
+			continue;
+
+		//float bias          = max (0.05 * (1.0 - dot (normal, lightDir)), 0.005);
+
+		vec4  shadowCoord     = x3d_ShadowMatrix [i] * v;
+		float shadowIntensity = x3d_ShadowIntensity [i] * getShadowIntensity (x3d_ShadowMap [i], shadowCoord, x3d_ShadowDiffusion [i] / 100.0);
+
+		colorIntensity *= 1.0 - shadowIntensity;
+		shadowColor    += shadowIntensity * x3d_ShadowColor [i];
 	}
 
 	return mix (shadowColor, color, colorIntensity);

@@ -159,6 +159,26 @@ public:
 
 	///  @name Operations
 
+	const Color3f &
+	getColor () const;
+
+	float
+	getAmbientIntensity () const;
+	
+	float
+	getIntensity () const;
+
+	const Color3f &
+	getShadowColor () const;
+	
+	float
+	getShadowIntensity () const;
+	
+	float
+	getShadowDiffusion () const;
+
+	///  @name Operations
+
 	virtual
 	void
 	push (X3DGroupingNode* const);
@@ -186,10 +206,20 @@ protected:
 
 	X3DLightNode ();
 
+	static
+	constexpr Matrix4d
+	getBiasMatrix ()
+	{
+		return Matrix4d (0.5, 0.0, 0.0, 0.0,
+		                 0.0, 0.5, 0.0, 0.0,
+		                 0.0, 0.0, 0.5, 0.0,
+		                 0.5, 0.5, 0.5, 1.0);
+	}
+
 	///  @name Operations
 
 	virtual
-	void
+	bool
 	renderShadowMap (LightContainer* const) = 0;
 
 
