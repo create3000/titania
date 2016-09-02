@@ -5,7 +5,7 @@
   <object class="GtkAdjustment" id="AmbientIntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ColorAdjustment">
     <property name="upper">1</property>
@@ -33,7 +33,7 @@
   <object class="GtkAdjustment" id="IntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkMenu" id="NewLightMenu">
     <property name="visible">True</property>
@@ -112,12 +112,12 @@
   <object class="GtkAdjustment" id="ShadowDiffusionAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ShadowIntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
-    <property name="page_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ShadowMapSizeAdjustment">
     <property name="upper">1000000000</property>

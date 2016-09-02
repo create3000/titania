@@ -3,7 +3,7 @@
 const int RAND_MAX = int (0x7fffffff);
 const int RAND_MIN = int (0x80000000);
 
-int seed = int (fract (dot (v .x, v .y)) * float (RAND_MAX));
+int seed = int (fract (dot (v, v)) * float (RAND_MAX));
 
 // Return a uniform distributed random floating point number in the interval [-1, 1].
 float

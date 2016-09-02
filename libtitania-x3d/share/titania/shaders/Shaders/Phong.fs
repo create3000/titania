@@ -87,6 +87,8 @@ varying vec3 v;  // point on geometry
 #pragma X3D include "Bits/Random.h"
 #pragma X3D include "Bits/Plane3.h"
 
+Plane3 plane = plane3 (v, vN);
+
 void
 clip ()
 {
@@ -143,22 +145,16 @@ getSpotFactor (in int lightType, in float cutOffAngle, in float beamWidth, in ve
 float
 getShadowIntensity (in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in int lightType, in float a)
 {
-	#define SHADOW_SAMPLES 16
-
-	if (lightType == NO_LIGHT)
-		return 0.0;
+	#define SHADOW_SAMPLES 8
 
 	if (lightType == POINT_LIGHT)
-		return 0.0;
-
-	if (shadowIntensity <= 0.0)
 		return 0.0;
 
 	int value = 0;
 
 	for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 	{
-		vec3  vertex      = closest_point (plane3 (v, vN), v + normalize (random3 ()) * shadowDiffusion);
+		vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 		vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
 		float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (a))
 
@@ -284,10 +280,15 @@ main ()
 				vec3  diffuseSpecularColor = diffuseTerm + specularTerm;
 				vec3  color                = lightColor * (ambientColor + x3d_LightIntensity [i] * diffuseSpecularColor);
 
-				float shadowIntensity = getShadowIntensity (x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], lightType, a);
-				vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];
-
-				finalColor += mix (color, shadowColor, shadowIntensity);
+				if (x3d_ShadowIntensity [i] >= 0.0)
+				{
+					float shadowIntensity = getShadowIntensity (x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], lightType, a);
+					vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];
+	
+					finalColor += mix (color, shadowColor, shadowIntensity);
+				}
+				else
+					finalColor += color;
 			}
 		}
 

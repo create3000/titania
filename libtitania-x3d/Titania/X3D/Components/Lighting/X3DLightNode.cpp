@@ -111,7 +111,7 @@ X3DLightNode::getShadowIntensity () const
 float
 X3DLightNode::getShadowDiffusion () const
 {
-	return math::clamp <float> (shadowDiffusion (), 0, 1);
+	return std::max <float> (shadowDiffusion (), 0);
 }
 
 void
