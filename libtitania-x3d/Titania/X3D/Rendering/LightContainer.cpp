@@ -72,18 +72,19 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 {
 	try
 	{
-		if (node -> shadowIntensity () > 0 and not browser -> getFixedPipelineRequired ())
+		if (node -> getShadowIntensity () > 0 and node -> getShadowMapSize () > 0 and not browser -> getFixedPipelineRequired ())
 		{
 			textureBuffer .reset (new TextureBuffer (browser,
-			                                         std::max <int32_t> (node -> shadowMapSize (), 1),
-			                                         std::max <int32_t> (node -> shadowMapSize (), 1),
+			                                         node -> getShadowMapSize (),
+			                                         node -> getShadowMapSize (),
 			                                         false));
 			textureBuffer -> setup ();
 		}
 	}
-	catch (const std::runtime_error &)
+	catch (const std::runtime_error & error)
 	{
 		// Couldn't create texture buffer.
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

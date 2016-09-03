@@ -107,6 +107,18 @@ public:
 	radius () const final override
 	{ return getNode <PointLight> () -> radius (); }
 
+	///  @name Member access
+
+	virtual
+	float
+	getRadius () const final override
+	{ return getNode <PointLight> () -> getRadius (); }
+
+	virtual
+	size_t
+	getShadowMapSize () const final override
+	{ return getNode <PointLight> () -> getShadowMapSize (); }
+
 	///  @name Operations
 
 	virtual

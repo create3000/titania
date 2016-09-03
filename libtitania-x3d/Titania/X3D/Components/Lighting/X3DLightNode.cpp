@@ -114,6 +114,12 @@ X3DLightNode::getShadowDiffusion () const
 	return std::max <float> (shadowDiffusion (), 0);
 }
 
+size_t
+X3DLightNode::getShadowMapSize () const
+{
+	return shadowMapSize ();
+}
+
 void
 X3DLightNode::push (X3DGroupingNode* const group)
 {

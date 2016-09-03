@@ -63,6 +63,8 @@
 namespace titania {
 namespace X3D {
 
+const Matrix4d X3DGroupingNode::matrix;
+
 X3DGroupingNode::Fields::Fields () :
 	   addChildren (new MFNode ()),
 	removeChildren (new MFNode ()),

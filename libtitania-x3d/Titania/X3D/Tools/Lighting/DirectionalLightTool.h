@@ -31,21 +31,6 @@
  *
  * This file is part of the Titania Project.
  *
-	virtual
-	const SFloat &
-	shadowIntensity () const
-	{ return *fields .shadowIntensity; }
-
-	virtual
-	SFInt32 &
-	shadowMapSize ()
-	{ return *fields .shadowMapSize; }
-
-	virtual
-	const SFInt32 &
-	shadowMapSize () const
-	{ return *fields .shadowMapSize; }
-
  * Titania is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License version 3 only, as published by the
  * Free Software Foundation.

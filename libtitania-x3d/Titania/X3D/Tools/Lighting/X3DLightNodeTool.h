@@ -160,6 +160,43 @@ public:
 	shadowMapSize () const final override
 	{ return getNode <X3DLightNode> () -> shadowMapSize (); }
 
+	///  @name Member access
+
+	virtual
+	const Color3f &
+	getColor () const final override
+	{ return getNode <X3DLightNode> () -> getColor (); }
+
+	virtual
+	float
+	getAmbientIntensity () const final override
+	{ return getNode <X3DLightNode> () -> getAmbientIntensity (); }
+	
+	virtual
+	float
+	getIntensity () const final override
+	{ return getNode <X3DLightNode> () -> getIntensity (); }
+
+	virtual
+	const Color3f &
+	getShadowColor () const final override
+	{ return getNode <X3DLightNode> () -> getShadowColor (); }
+	
+	virtual
+	float
+	getShadowIntensity () const final override
+	{ return getNode <X3DLightNode> () -> getShadowIntensity (); }
+	
+	virtual
+	float
+	getShadowDiffusion () const final override
+	{ return getNode <X3DLightNode> () -> getShadowDiffusion (); }
+
+	virtual
+	size_t
+	getShadowMapSize () const override
+	{ return getNode <X3DLightNode> () -> getShadowMapSize (); }
+
 	///  @name Operations
 	
 	virtual

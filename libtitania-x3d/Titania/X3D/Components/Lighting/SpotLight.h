@@ -153,12 +153,15 @@ public:
 
 	///  @name Member access
 
+	virtual
 	float
 	getRadius () const;
 
+	virtual
 	float
 	getBeamWidth () const;
 	
+	virtual
 	float
 	getCutOffAngle () const;
 

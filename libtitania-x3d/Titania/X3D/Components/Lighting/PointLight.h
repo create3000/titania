@@ -123,8 +123,13 @@ public:
 
 	///  @name Member access
 
+	virtual
 	float
 	getRadius () const;
+
+	virtual
+	size_t
+	getShadowMapSize () const;
 
 	///  @name Operations
 

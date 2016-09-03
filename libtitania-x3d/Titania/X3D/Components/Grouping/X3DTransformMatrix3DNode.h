@@ -73,7 +73,7 @@ public:
 
 	virtual
 	const Matrix4d &
-	getMatrix () const
+	getMatrix () const override
 	{ return matrix; }
 
 	///  @name Operations

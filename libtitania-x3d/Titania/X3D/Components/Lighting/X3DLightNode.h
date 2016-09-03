@@ -157,25 +157,35 @@ public:
 	shadowMapSize () const
 	{ return *fields .shadowMapSize; }
 
-	///  @name Operations
+	///  @name Member access
 
+	virtual
 	const Color3f &
 	getColor () const;
 
+	virtual
 	float
 	getAmbientIntensity () const;
 	
+	virtual
 	float
 	getIntensity () const;
 
+	virtual
 	const Color3f &
 	getShadowColor () const;
 	
+	virtual
 	float
 	getShadowIntensity () const;
 	
+	virtual
 	float
 	getShadowDiffusion () const;
+
+	virtual
+	size_t
+	getShadowMapSize () const;
 
 	///  @name Operations
 

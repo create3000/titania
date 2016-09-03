@@ -152,61 +152,80 @@ DirectionalLight::draw (GLenum lightId)
 bool
 DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
-	getBrowser () -> setRenderTools (false);
+	try
+	{
+		getBrowser () -> setRenderTools (false);
+	
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
+	
+		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
+		invLightSpaceMatrix .inverse ();
+	
+		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
+		const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
+		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                                   // Group bbox.
+		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
+		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
+		const auto   projectionMatrix = ortho (lightBBox);
+	
+		textureBuffer -> bind ();
+	
+		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+		getProjectionMatrix () .push (projectionMatrix);
+		getModelViewMatrix  () .push (invLightSpaceMatrix);
+		getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+	
+		getCurrentLayer () -> renderDepth (group);
+	
+		getModelViewMatrix  () .pop ();
+		getProjectionMatrix () .pop ();
+		getViewVolumes      () .pop_back ();
+	
+		textureBuffer -> unbind ();
+	
+		//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+		#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+		#ifdef  TITANIA_DEBUG
+		{
+			const auto viewport = Vector4i (0, 0, 100, 100);
+	
+			FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+		
+			frameBuffer .setup ();
+			frameBuffer .bind ();
+		
+			getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+			getProjectionMatrix () .push (projectionMatrix);
+			getModelViewMatrix  () .push (invLightSpaceMatrix);
+			getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+		
+			getCurrentLayer () -> renderDepth (group);
+		
+			getModelViewMatrix  () .pop ();
+			getProjectionMatrix () .pop ();
+			getViewVolumes      () .pop_back ();
+		
+			frameBuffer .readDepth ();
+			frameBuffer .unbind ();
+		
+			glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+		}
+		#endif
+		#endif
+		
+		if (not global ())
+			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
+	
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
-	const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
-	const auto   lightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
-	const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
-	const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
-	const auto   lightDirection   = lightSpaceMatrix .mult_dir_matrix (negate (direction () .getValue ())); // Negated direction in scene coordinate system.
-	const auto   lightRotation    = Matrix4d (Rotation4d (lightDirection, Vector3d (0, 0, 1)));             // Inverse rotation of light from direction to identity.
-	const auto   lightBBox        = groupBBox * lightRotation;                                              // Group bbox from the perspective of the light.
-	const auto   viewport         = Vector4i (0, 0, shadowMapSize (), shadowMapSize ());
-	const auto   projectionMatrix = ortho (lightBBox);
-
-	lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * lightRotation * projectionMatrix * getBiasMatrix ());
-
-	textureBuffer -> bind ();
-
-	getViewVolumes      () .emplace_back (projectionMatrix, viewport);
-	getProjectionMatrix () .push (projectionMatrix);
-	getModelViewMatrix  () .push (lightRotation);
-
-	getCurrentLayer () -> renderDepth (group);
-
-	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
-	getViewVolumes      () .pop_back ();
-
-	textureBuffer -> unbind ();
-
-	//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
-	#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
-	#ifdef  TITANIA_DEBUG
-	FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
-
-	frameBuffer .setup ();
-	frameBuffer .bind ();
-
-	getViewVolumes      () .emplace_back (projectionMatrix, viewport);
-	getProjectionMatrix () .push (projectionMatrix);
-	getModelViewMatrix  () .push (lightRotation);
-
-	getCurrentLayer () -> renderDepth (group);
-
-	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
-	getViewVolumes      () .pop_back ();
-
-	frameBuffer .readDepth ();
-	frameBuffer .unbind ();
-
-	glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
-	#endif
-	#endif
-
-	getBrowser () -> setRenderTools (true);
-	return true;
+		getBrowser () -> setRenderTools (true);
+		return true;
+	}
+	catch (const std::domain_error & error)
+	{
+		return false;
+	}
 }
 
 void

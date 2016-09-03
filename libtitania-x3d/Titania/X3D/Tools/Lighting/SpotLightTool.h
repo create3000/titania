@@ -137,6 +137,23 @@ public:
 	radius () const final override
 	{ return getNode <SpotLight> () -> radius (); }
 
+	///  @name Member access
+
+	virtual
+	float
+	getRadius () const final override
+	{ return getNode <SpotLight> () -> getRadius (); }
+
+	virtual
+	float
+	getBeamWidth () const final override
+	{ return getNode <SpotLight> () -> getBeamWidth (); }
+	
+	virtual
+	float
+	getCutOffAngle () const final override
+	{ return getNode <SpotLight> () -> getCutOffAngle (); }
+
 	///  @name Operations
 
 	virtual

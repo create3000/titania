@@ -105,6 +105,11 @@ public:
 	getBBox () const override
 	{ return X3DBoundedObjectTool::getBBox (); }
 
+	virtual
+	const Matrix4d &
+	getMatrix () const
+	{ return X3DBoundedObjectTool::getMatrix (); }
+
 	/// @name Operations
 
 	virtual

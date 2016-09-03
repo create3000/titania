@@ -52,8 +52,14 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/FrameBuffer.h"
+#include "../../Rendering/TextureBuffer.h"
 #include "../../Tools/Lighting/PointLightTool.h"
+
+#include "../Layering/X3DLayerNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -118,6 +124,12 @@ PointLight::getRadius () const
 	return std::max <float> (0, radius ());
 }
 
+size_t
+PointLight::getShadowMapSize () const
+{
+	return shadowMapSize () - shadowMapSize () % 2;
+}
+
 void
 PointLight::eventsProcessed ()
 {
@@ -160,7 +172,111 @@ PointLight::draw (GLenum lightId)
 bool
 PointLight::renderShadowMap (LightContainer* const lightContainer)
 {
-	return false;
+	try
+	{
+		static const Vector3d directions [4] = {
+			Vector3d (0, 1, 0),
+			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)),
+			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians ( 120.0)),
+			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians (-120.0)),
+		};
+
+		getBrowser () -> setRenderTools (false);
+
+		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
+		const auto   group            = lightContainer -> getGroup ();           // Group to be shadowd
+		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();    // Group bbox.
+		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
+
+		//lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * projectionMatrix * getBiasMatrix ());
+
+		#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
+		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
+		#ifdef  TITANIA_DEBUG
+		FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+	
+		frameBuffer .setup ();
+		#endif
+		#endif
+		
+__LOG__ << std::endl;
+
+		for (size_t y = 0; y < 2; ++ y)
+		{
+			for (size_t x = 0; x < 2; ++ x)
+			{
+				auto invLightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		
+				invLightSpaceMatrix .translate (location () .getValue ());
+				invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), directions [y * 2 + x]));
+				invLightSpaceMatrix .inverse ();
+
+				const auto lightBBox        = groupBBox * invLightSpaceMatrix;                                     // Group bbox from the perspective of the light.
+				const auto lightBBoxExtents = lightBBox .extents ();                                               // Group bbox from the perspective of the light.
+				const auto farVal           = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
+				const auto viewport         = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
+				const auto projectionMatrix = perspective <double> (radians (120.0), 0.125, farVal, viewport);
+
+__LOG__ << farVal << std::endl;
+
+				if (farVal < 0)
+					return false;
+
+				textureBuffer -> bind ();
+		
+				getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+				getProjectionMatrix () .push (projectionMatrix);
+				getModelViewMatrix  () .push (invLightSpaceMatrix);
+	
+				getCurrentLayer () -> renderDepth (group);
+	
+				getModelViewMatrix  () .pop ();
+				getProjectionMatrix () .pop ();
+				getViewVolumes      () .pop_back ();
+	
+				textureBuffer -> unbind ();
+	
+				#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
+				#ifdef  TITANIA_DEBUG
+				{
+					const auto viewport = Vector4i (x * 50, y * 50, 50, 50);
+
+					frameBuffer .bind ();
+		
+					getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+					getProjectionMatrix () .push (projectionMatrix);
+					getModelViewMatrix  () .push (invLightSpaceMatrix);
+		
+					getCurrentLayer () -> renderDepth (group);
+		
+					getModelViewMatrix  () .pop ();
+					getProjectionMatrix () .pop ();
+					getViewVolumes      () .pop_back ();
+		
+					frameBuffer .unbind ();
+				}
+				#endif
+				#endif
+			}
+		}
+
+		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
+		#ifdef  TITANIA_DEBUG
+		frameBuffer .bind ();
+		frameBuffer .readDepth ();
+		frameBuffer .unbind ();
+
+		glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+		#endif
+		#endif
+
+		getBrowser () -> setRenderTools (true);
+		return true;
+	}
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 void

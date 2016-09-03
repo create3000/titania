@@ -207,31 +207,31 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 	{
 		getBrowser () -> setRenderTools (false);
 
-		auto modelViewMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
-		modelViewMatrix .translate (location () .getValue ());
-		modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
-		modelViewMatrix .inverse ();
-	
+		invLightSpaceMatrix .translate (location () .getValue ());
+		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
+		invLightSpaceMatrix .inverse ();
+
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
 		const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
-		const auto   groupBBox        = group -> getBBox ();                                                    // Group bbox.
-		const auto   lightBBox        = groupBBox * modelViewMatrix;                                            // Group bbox from the perspective of the light.
+		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                                   // Group bbox.
+		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
-		const auto   farVal           = -lightBBoxExtents .first .z ();
-		const auto   viewport         = Vector4i (0, 0, shadowMapSize (), shadowMapSize ());
+		const auto   farVal           = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
+		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
 		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farVal, viewport);
 
 		if (farVal < 0)
 			return false;
 
-		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * modelViewMatrix * projectionMatrix * getBiasMatrix ());
-
 		textureBuffer -> bind ();
 
 		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
 		getProjectionMatrix () .push (projectionMatrix);
-		getModelViewMatrix  () .push (modelViewMatrix);
+		getModelViewMatrix  () .push (invLightSpaceMatrix);
+		getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
 
 		getCurrentLayer () -> renderDepth (group);
 
@@ -244,32 +244,42 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 		//#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
-		FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+		{
+			const auto viewport = Vector4i (0, 0, 100, 100);
 
-		frameBuffer .setup ();
-		frameBuffer .bind ();
-
-		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
-		getProjectionMatrix () .push (projectionMatrix);
-		getModelViewMatrix  () .push (modelViewMatrix);
-
-		getCurrentLayer () -> renderDepth (group);
-
-		getModelViewMatrix  () .pop ();
-		getProjectionMatrix () .pop ();
-		getViewVolumes      () .pop_back ();
-
-		frameBuffer .readDepth ();
-		frameBuffer .unbind ();
-
-		glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+			FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+	
+			frameBuffer .setup ();
+			frameBuffer .bind ();
+	
+			getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+			getProjectionMatrix () .push (projectionMatrix);
+			getModelViewMatrix  () .push (invLightSpaceMatrix);
+			getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+	
+			getCurrentLayer () -> renderDepth (group);
+	
+			getModelViewMatrix  () .pop ();
+			getProjectionMatrix () .pop ();
+			getViewVolumes      () .pop_back ();
+	
+			frameBuffer .readDepth ();
+			frameBuffer .unbind ();
+	
+			glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+		}
 		#endif
 		#endif
+	
+		if (not global ())
+			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
 
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
+	
 		getBrowser () -> setRenderTools (true);
 		return true;
 	}
-	catch (const std::domain_error &)
+	catch (const std::domain_error & error)
 	{
 		return false;
 	}
