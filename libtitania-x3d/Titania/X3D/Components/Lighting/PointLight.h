@@ -163,6 +163,11 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	double
+	getFarValue (const Box3d & box) const;
+
 	///  @name Event handlers
 
 	void

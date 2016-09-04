@@ -372,83 +372,51 @@ c3 ()
 	std::clog << "scaleOrientation " << so << std::endl;
 }
 
-void
-unique ()
-{
-	static std::default_random_engine
-	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
-	std::uniform_int_distribution <size_t> random (0, 1000);
-
-	std::vector <int32_t> values;
-
-	for (size_t i = 0; i < 100000000; ++ i)
-		values .emplace_back (random (random_engine));
-
-	{
-		const auto t0 = chrono::now ();
-	
-		std::set <int32_t> set (values .begin (), values .end ());
-	
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
-
-	{
-		const auto t0 = chrono::now ();
-	
-		std::vector <int32_t> vector (values .begin (), values .end ());
-	
-		std::sort (vector .begin (), vector .end ());
-	
-		vector .erase (std::unique (vector .begin (), vector .end ()), vector .end ());
-	
-		__LOG__ << chrono::now () - t0 << std::endl;
-	}
-}
-
-class mesh
-{
+class A {
 public:
 
-	mesh (const mesh &) = default;
+	A ()
+	{
+		__LOG__ << std::endl;
+	}
 
-	mesh (mesh &&) = default;
+	A (const A &)
+	{
+		__LOG__ << std::endl;
+	}
 
-	mesh (const std::vector <double> & a) : a (a), b (a) { }
+	A (A &&)
+	{
+		__LOG__ << std::endl;
+	}
 
-	///  Assigns mesh @a other to this mesh.
-	mesh &
-	operator = (const mesh & other) = default;
+	A &
+	operator = (const A &)
+	{
+		__LOG__ << std::endl;
 
-	///  Assigns mesh @a other to this mesh with move semantics.
-	mesh &
-	operator = (mesh && other) = default;
+		return *this;
+	}
 
-	std::vector <double> a;	
-	std::vector <double> b;	
+	A &
+	operator = (A &&)
+	{
+		__LOG__ << std::endl;
 
+		return *this;
+	}
+
+	
 };
 
-void
-filter_bad_utf8_characters (std::string & string)
+
+A
+f ()
 {
-	static const std::regex UTF8Characters (R"/(([\x00-\x7f])/"
-	                                        R"/(|[\xc0-\xdf][\x80-\xbf])/"
-	                                        R"/(|[\xe0-\xef][\x80-\xbf]{2})/"
-	                                        R"/(|[\xf0-\xf7][\x80-\xbf]{3})/"
-	                                        R"/(|[\xf8-\xfb][\x80-\xbf]{4})/"
-	                                        R"/(|[\xfc-\xfd][\x80-\xbf]{5})/"
-	                                        R"/()|.)/");
+	A a;
 
-	string = std::regex_replace (string, UTF8Characters, "$1");
-}
-
-void
-filter_control_characters (std::string & string)
-{
-	static const std::regex ControlCharacters (R"/([\x00-\x08\x0b\x0c\x0e-\x1f])/");
-
-	string = std::regex_replace (string, ControlCharacters, "");
+	return a;
 }
 
 int
@@ -468,21 +436,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-	static const std::regex ECMAScript (R"/(\s*(vrmlscript|javascript|ecmascript|v8|peaseblossom)\:([\s\S]*))/");
-	
-	std::string string = "javascript:bah\nbah";
-
-	std::smatch match;
-
-	if (std::regex_match (string, match, ECMAScript))
-	{
-		__LOG__ << true << std::endl;
-		__LOG__ << match .str (1) << std::endl;
-		__LOG__ << match .str (2) << std::endl;
-	}
-	else
-		__LOG__ << false << std::endl;
+	const auto a = f ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

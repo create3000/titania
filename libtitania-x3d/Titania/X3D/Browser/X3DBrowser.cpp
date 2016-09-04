@@ -171,6 +171,11 @@ X3DBrowser::set_loaded (const bool loaded)
 	       "\tCompiled at ", __DATE__, " ", __TIME__, '\n',
 
 	       renderingProperties, '\n',
+
+			 "\t\tMax vertex uniform vectors: ", getMaxVertexUniformVectors (), "\n",
+			 "\t\tMax fragment uniform vectors: ", getMaxFragmentUniformVectors (), "\n",
+			 "\t\tMax vertex attribs: ", getMaxVertexAttributes (), "\n",
+
 	       getJavaScriptEngine (), '\n',
 
 	       #ifdef TITANIA_DEBUG

@@ -72,6 +72,18 @@ public:
 	getShadingLanguageVersion () const
 	{ return shadingLanguageVersion; }
 
+	int32_t
+	getMaxVertexUniformVectors () const
+	{ return maxVertexUniformVectors; }
+
+	int32_t
+	getMaxFragmentUniformVectors () const
+	{ return maxFragmentUniformVectors; }
+
+	int32_t
+	getMaxVertexAttributes () const
+	{ return maxVertexAttributes; }
+
 	const X3DPtr <ComposedShader> &
 	getPointShader () const
 	{ return pointShader; }
@@ -149,6 +161,9 @@ private:
 	///  @name Members
 
 	float                   shadingLanguageVersion;
+	int32_t                 maxVertexUniformVectors;
+	int32_t                 maxFragmentUniformVectors;
+	int32_t                 maxVertexAttributes;
 	#ifdef FIXED_PIPELINE
 	SFBool                  fixedPipeline;
 	#endif

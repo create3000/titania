@@ -130,6 +130,25 @@ PointLight::getShadowMapSize () const
 	return shadowMapSize () - shadowMapSize () % 2;
 }
 
+// Determine far value for shadow map calculation.
+double
+PointLight::getFarValue (const Box3d & box) const
+{
+	double farValue = 0;
+
+	// Determine far value.
+
+	for (const auto point : box .points ())
+	{
+		const auto length = abs (point);
+
+		if (length > farValue)
+			farValue = length;
+	}
+	
+	return std::min <double> (getRadius (), farValue);
+}
+
 void
 PointLight::eventsProcessed ()
 {
@@ -185,12 +204,21 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 		getBrowser () -> setRenderTools (false);
 
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
+		
+		invLightSpaceMatrix .translate (location () .getValue ());
+		invLightSpaceMatrix .inverse ();
+
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
 		const auto   group            = lightContainer -> getGroup ();           // Group to be shadowd
 		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();    // Group bbox.
+		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;         // Group bbox from the perspective of the light.
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
+		const auto   viewport         = Vector4i (0, 0, shadowMapSize1_2, shadowMapSize1_2);
+		const auto   projectionMatrix = perspective <double> (radians (120.0), 0.125, getFarValue (lightBBox), viewport);
 
-		//lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * projectionMatrix * getBiasMatrix ());
+		// Render to frame buffer.
 
 		#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
@@ -212,14 +240,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 				invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x])));
 				invLightSpaceMatrix .inverse ();
 
-				const auto lightBBox        = groupBBox * invLightSpaceMatrix;                                     // Group bbox from the perspective of the light.
-				const auto lightBBoxExtents = lightBBox .extents ();                                               // Group bbox from the perspective of the light.
-				const auto farVal           = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
-				const auto viewport         = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
-				const auto projectionMatrix = perspective <double> (radians (120.0), 0.125, farVal, viewport);
-
-				if (farVal < 0)
-					continue;
+				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
 
 				textureBuffer -> bind ();
 
@@ -270,6 +291,11 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
 		#endif
 		#endif
+	
+		if (not global ())
+			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
+
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
 		getBrowser () -> setRenderTools (true);
 		return true;

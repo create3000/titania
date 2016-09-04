@@ -63,17 +63,20 @@ namespace titania {
 namespace X3D {
 
 X3DShadersContext::X3DShadersContext () :
-	           X3DBaseNode (),
-	shadingLanguageVersion (),
+	              X3DBaseNode (),
+	   shadingLanguageVersion (),
+	  maxVertexUniformVectors (0),
+	maxFragmentUniformVectors (0),
+	      maxVertexAttributes (0),
 #ifdef FIXED_PIPELINE
-	         fixedPipeline (true),
+	            fixedPipeline (true),
 #endif
-	           pointShader (),
-	       wireframeShader (),
-	         gouraudShader (),
-	           phongShader (),
-	         defaultShader (),
-	            shaderNode (nullptr)
+	              pointShader (),
+	          wireframeShader (),
+	            gouraudShader (),
+	              phongShader (),
+	            defaultShader (),
+	               shaderNode (nullptr)
 {
 	addChildren (fixedPipeline,
                 pointShader,
@@ -95,6 +98,10 @@ X3DShadersContext::initialize ()
 		shadingLanguageVersionStream .imbue (std::locale::classic ());
 
 		shadingLanguageVersionStream >> shadingLanguageVersion;
+
+		glGetIntegerv (GL_MAX_VERTEX_UNIFORM_VECTORS,   &maxVertexUniformVectors);
+		glGetIntegerv (GL_MAX_FRAGMENT_UNIFORM_VECTORS, &maxFragmentUniformVectors);
+		glGetIntegerv (GL_MAX_VERTEX_ATTRIBS,           &maxVertexAttributes);
 
 		// Shaders
 

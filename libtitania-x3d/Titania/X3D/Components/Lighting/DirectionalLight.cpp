@@ -184,7 +184,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	
 		textureBuffer -> unbind ();
 	
-		#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
+		//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
 		{

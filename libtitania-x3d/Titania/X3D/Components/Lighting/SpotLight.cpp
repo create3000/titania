@@ -219,11 +219,11 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                                   // Group bbox.
 		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
-		const auto   farVal           = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
+		const auto   farValue         = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
 		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
-		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farVal, viewport);
+		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farValue, viewport);
 
-		if (farVal < 0)
+		if (farValue < 0)
 			return false;
 
 		textureBuffer -> bind ();

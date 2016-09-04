@@ -127,11 +127,8 @@ getTextureColor ()
 }
 
 float
-getSpotFactor (in int lightType, in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
+getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 {
-	if (lightType != SPOT_LIGHT)
-		return 1.0;
-
 	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
 	
 	if (spotAngle >= cutOffAngle)
@@ -172,31 +169,9 @@ getShadowIntensity (in float shadowIntensity, in float shadowDiffusion, in mat4 
 	return shadowIntensity * float (value) / float (SHADOW_SAMPLES);
 }
 
-vec3
-getFogColor (in vec3 color)
+vec4
+getMaterialColor ()
 {
-	if (x3d_FogType == NO_FOG)
-		return color;
-
-	float dV = length (v);
-
-	if (dV >= x3d_FogVisibilityRange)
-		return x3d_FogColor;
-
-	if (x3d_FogType == LINEAR_FOG)
-		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
-
-	if (x3d_FogType == EXPONENTIAL_FOG)
-		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
-
-	return color;
-}
-
-void
-main ()
-{
-	clip ();
-
 	if (x3d_Lighting)
 	{
 		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
@@ -274,7 +249,7 @@ main ()
 				vec3  specularTerm   = specularColor * specularFactor;
 
 				float attenuation          = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-				float spot                 = getSpotFactor (lightType, x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d);
+				float spot                 = lightType == SPOT_LIGHT ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
 				vec3  lightColor           = (attenuation * spot) * x3d_LightColor [i];
 				vec3  ambientColor         = x3d_LightAmbientIntensity [i] * ambientTerm;
 				vec3  diffuseSpecularColor = diffuseTerm + specularTerm;
@@ -294,7 +269,7 @@ main ()
 
 		finalColor += emissiveColor;
 
-		gl_FragColor = vec4 (finalColor, alpha);
+		return vec4 (finalColor, alpha);
 	}
 	else
 	{
@@ -317,8 +292,36 @@ main ()
 				finalColor = getTextureColor ();
 		}
 
-		gl_FragColor = finalColor;
+		return finalColor;
 	}
+}
+
+vec3
+getFogColor (in vec3 color)
+{
+	if (x3d_FogType == NO_FOG)
+		return color;
+
+	float dV = length (v);
+
+	if (dV >= x3d_FogVisibilityRange)
+		return x3d_FogColor;
+
+	if (x3d_FogType == LINEAR_FOG)
+		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
+
+	if (x3d_FogType == EXPONENTIAL_FOG)
+		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
+
+	return color;
+}
+
+void
+main ()
+{
+	clip ();
+
+	gl_FragColor = getMaterialColor ();
 
 	gl_FragColor .rgb = getFogColor (gl_FragColor .rgb);
 }

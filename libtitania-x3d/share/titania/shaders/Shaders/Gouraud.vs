@@ -66,11 +66,8 @@ varying vec4  v;          // point on geometry
 // 15, max 16
 
 float
-getSpotFactor (int lightType, float cutOffAngle, float beamWidth, vec3 L, vec3 d)
+getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 {
-	if (lightType != SPOT_LIGHT)
-		return 1.0;
-
 	float spotAngle = acos (clamp (dot (-L, d), -1.0, 1.0));
 	
 	if (spotAngle >= cutOffAngle)
@@ -82,14 +79,14 @@ getSpotFactor (int lightType, float cutOffAngle, float beamWidth, vec3 L, vec3 d
 }
 
 vec4
-getMaterial (vec3 N,
-             vec3 v,
-             float x3d_AmbientIntensity,
-             vec3  x3d_DiffuseColor,
-             vec3  x3d_SpecularColor,
-             vec3  x3d_EmissiveColor,
-             float x3d_Shininess,
-             float x3d_Transparency)
+getMaterialColor (in vec3 N,
+                  in vec3 v,
+                  in float x3d_AmbientIntensity,
+                  in vec3  x3d_DiffuseColor,
+                  in vec3  x3d_SpecularColor,
+                  in vec3  x3d_EmissiveColor,
+                  in float x3d_Shininess,
+                  in float x3d_Transparency)
 {  
 	vec3 V = normalize (-v); // normalized vector from point on geometry to viewer's position
 
@@ -135,7 +132,7 @@ getMaterial (vec3 N,
 			vec3  specularTerm   = x3d_SpecularColor * specularFactor;
 
 			float attenuation = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-			float spot        = getSpotFactor (lightType, x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d);
+			float spot        = lightType == SPOT_LIGHT ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
 		
 			vec3 lightFactor  = (attenuation * spot) * x3d_LightColor [i];
 			vec3 ambientLight = (lightFactor * x3d_LightAmbientIntensity [i]) * ambientTerm;
@@ -171,13 +168,13 @@ main ()
 		float shininess        = x3d_Shininess;
 		float transparency     = x3d_Transparency;
 
-		frontColor = getMaterial (N, v .xyz,
-		                          ambientIntensity,
-		                          diffuseColor,
-		                          specularColor,
-		                          emissiveColor,
-		                          shininess,
-		                          transparency);
+		frontColor = getMaterialColor (N, v .xyz,
+		                              ambientIntensity,
+		                              diffuseColor,
+		                              specularColor,
+		                              emissiveColor,
+		                              shininess,
+		                              transparency);
 
 		if (x3d_SeparateBackColor)
 		{
@@ -188,14 +185,14 @@ main ()
 			shininess        = x3d_BackShininess;
 			transparency     = x3d_BackTransparency;
 		}
-			
-		backColor = getMaterial (-N, v .xyz,
-		                         ambientIntensity,
-		                         diffuseColor,
-		                         specularColor,
-		                         emissiveColor,
-		                         shininess,
-		                         transparency);
+
+		backColor = getMaterialColor (-N, v .xyz,
+		                              ambientIntensity,
+		                              diffuseColor,
+		                              specularColor,
+		                              emissiveColor,
+		                              shininess,
+		                              transparency);
 	}
 	else
 	{
