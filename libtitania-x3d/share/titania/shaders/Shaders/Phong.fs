@@ -140,12 +140,19 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 }
 
 float
-getShadowIntensity (in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in int lightType, in float a)
+getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in float angle)
 {
 	#define SHADOW_SAMPLES 8
 
 	if (lightType == POINT_LIGHT)
+	{
+		// lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
+		//	v = x3d_ModelViewMatrix * x3d_Vertex;
+
+		//shadowMatrix * directions [i] * v;
+
 		return 0.0;
+	}
 
 	int value = 0;
 
@@ -153,7 +160,7 @@ getShadowIntensity (in float shadowIntensity, in float shadowDiffusion, in mat4 
 	{
 		vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 		vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
-		float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (a))
+		float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (angle))
 
 		shadowCoord .xyz /= shadowCoord .w;
 
@@ -257,7 +264,7 @@ getMaterialColor ()
 
 				if (x3d_ShadowIntensity [i] >= 0.0)
 				{
-					float shadowIntensity = getShadowIntensity (x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], lightType, a);
+					float shadowIntensity = getShadowIntensity (lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
 					vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];
 	
 					finalColor += mix (color, shadowColor, shadowIntensity);

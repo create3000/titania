@@ -195,11 +195,11 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 	{
 		// Vertices of the tetrahedron.
 
-		static const Vector3d directions [4] = {
-			Vector3d (0, 1, 0),
-			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)),
-			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians ( 120.0)),
-			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians (-120.0)),
+		static const Matrix4d rotations [4] = {
+			Matrix4d (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (0, 1, 0)))),
+			Matrix4d (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0))))),
+			Matrix4d (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians ( 120.0))))),
+			Matrix4d (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)) * Rotation4d (0, 1, 0, radians (-120.0))))),
 		};
 
 		getBrowser () -> setRenderTools (false);
@@ -217,6 +217,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
 		const auto   viewport         = Vector4i (0, 0, shadowMapSize1_2, shadowMapSize1_2);
 		const auto   projectionMatrix = perspective <double> (radians (120.0), 0.125, getFarValue (lightBBox), viewport);
+		const auto   directionMatrix  = getCameraSpaceMatrix () * invLightSpaceMatrix;
 
 		// Render to frame buffer.
 
@@ -233,11 +234,12 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		{
 			for (size_t x = 0; x < 2; ++ x)
 			{
+				const auto rotation             = rotations [y * 2 + x] * directionMatrix;
 				const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
 				auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
-		
+
 				invLightSpaceMatrix .translate (location () .getValue ());
-				invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x])));
+				invLightSpaceMatrix .mult_left (rotation);
 				invLightSpaceMatrix .inverse ();
 
 				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
