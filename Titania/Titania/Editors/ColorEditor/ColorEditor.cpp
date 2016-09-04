@@ -56,6 +56,7 @@
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Layering/LayerSet.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
 #include <Titania/X3D/Components/Rendering/Color.h>
 #include <Titania/X3D/Components/Rendering/Coordinate.h>

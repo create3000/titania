@@ -52,10 +52,11 @@
 #define __TITANIA_X3D_COMPONENTS_LAYERING_LAYER_SET_H__
 
 #include "../Core/X3DNode.h"
-#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
+
+class X3DLayerNode;
 
 class LayerSet :
 	virtual public X3DNode
@@ -130,13 +131,13 @@ public:
 	getActiveLayerIndex () const;
 
 	void
-	setLayer0 (const X3DLayerNodePtr &);
+	setLayer0 (const X3DPtr <X3DLayerNode> &);
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getLayer0 () const
 	{ return layerNode0; }
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayerNode; }
 
@@ -156,6 +157,9 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+	virtual
+	~LayerSet ();
 
 
 private:
@@ -195,8 +199,8 @@ private:
 	Fields fields;
 
 	X3DPtrArray <X3DLayerNode> layerNodes;
-	X3DLayerNodePtr            layerNode0;
-	X3DLayerNodePtr            activeLayerNode;
+	X3DPtr <X3DLayerNode>      layerNode0;
+	X3DPtr <X3DLayerNode>      activeLayerNode;
 
 };
 

@@ -50,9 +50,11 @@
 
 #include "X3DPointingDeviceSensorContext.h"
 
+#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
 #include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
+
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
 #include "../ContextLock.h"

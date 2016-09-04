@@ -54,6 +54,7 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
+#include "../Layering/X3DLayerNode.h"
 #include "../Layering/X3DViewportNode.h"
 
 namespace titania {

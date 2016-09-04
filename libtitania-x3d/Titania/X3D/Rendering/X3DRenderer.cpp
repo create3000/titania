@@ -555,12 +555,16 @@ X3DRenderer::display ()
 	}
 	#endif
 
-	// Render opaque objects first
+	// Configure viewport and background
 
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	getBackground () -> draw (viewport);
+
+	// Render opaque objects first
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 

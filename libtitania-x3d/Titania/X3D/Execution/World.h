@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+class LayerSet;
+class X3DLayerNode;
+
 class World :
 	public X3DBaseNode
 {
@@ -88,19 +91,19 @@ public:
 
 	///  @name Scene handling
 
-	const LayerSetPtr &
+	const X3DPtr <LayerSet> &
 	getDefaultLayerSet () const
 	{ return defaultLayerSet; }
 
-	const LayerSetPtr &
+	const X3DPtr <LayerSet> &
 	getLayerSet () const
 	{ return layerSet; }
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getLayer0 () const
 	{ return layer0; }
 
@@ -110,6 +113,11 @@ public:
 	void
 	traverse (const TraverseType type) final override
 	{ layerSet -> traverse (type); }
+
+	///  @name Detruction
+
+	virtual
+	~World ();
 
 
 private:
@@ -139,10 +147,10 @@ private:
 
 	///  @name Members
 
-	LayerSetPtr            layerSet;
-	LayerSetPtr            defaultLayerSet;
-	X3DLayerNodePtr        layer0;
-	X3DLayerNodePtr        activeLayer;
+	X3DPtr <LayerSet>    layerSet;
+	X3DPtr <LayerSet>     defaultLayerSet;
+	X3DPtr <X3DLayerNode> layer0;
+	X3DPtr <X3DLayerNode> activeLayer;
 
 };
 

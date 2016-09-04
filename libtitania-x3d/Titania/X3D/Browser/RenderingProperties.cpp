@@ -56,6 +56,8 @@
 #include "../Execution/X3DExecutionContext.h"
 #include "../InputOutput/Loader.h"
 
+#include "../Components/Layering/X3DLayerNode.h"
+
 #include <Titania/String.h>
 
 #include <iomanip>

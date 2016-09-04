@@ -94,6 +94,10 @@ public:
 	getViewpoint () const = 0;
 
 	virtual
+	X3DBackgroundNode*
+	getBackground () const = 0;
+
+	virtual
 	X3DFogObject*
 	getFog () const = 0;
 

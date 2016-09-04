@@ -151,8 +151,9 @@ public:
 	X3DViewpointNode*
 	getViewpoint () const final override;
 
+	virtual
 	X3DBackgroundNode*
-	getBackground () const;
+	getBackground () const final override;
 
 	///  @name X3DBindableNode stack handling
 

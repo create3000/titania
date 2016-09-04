@@ -55,6 +55,7 @@
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Execution/X3DExecutionContext.h>
 

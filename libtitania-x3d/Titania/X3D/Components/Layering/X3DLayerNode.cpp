@@ -416,8 +416,6 @@ X3DLayerNode::display (const TraverseType type)
 	getProjectionMatrix () .push (Matrix4d ());
 	getModelViewMatrix  () .push (Matrix4d ());
 
-	getBackground () -> draw (getViewport () -> getRectangle ());
-
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();

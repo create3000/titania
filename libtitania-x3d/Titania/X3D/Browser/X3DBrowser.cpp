@@ -57,6 +57,7 @@
 #include "../Browser/ContextLock.h"
 #include "../Browser/Notification.h"
 #include "../Browser/RenderingProperties.h"
+#include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Networking/LoadSensor.h"
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"

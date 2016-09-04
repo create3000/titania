@@ -55,6 +55,7 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
+
 #include "../Layering/Layer.h"
 
 namespace titania {
@@ -121,7 +122,7 @@ LayerSet::getActiveLayerIndex () const
 }
 
 void
-LayerSet::setLayer0 (const X3DLayerNodePtr & value)
+LayerSet::setLayer0 (const X3DPtr <X3DLayerNode> & value)
 {
 	layerNode0 = value;
 
@@ -224,6 +225,9 @@ LayerSet::dispose ()
 {
 	X3DNode::dispose ();
 }
+
+LayerSet::~LayerSet ()
+{ }
 
 } // X3D
 } // titania

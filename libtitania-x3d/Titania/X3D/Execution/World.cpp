@@ -52,7 +52,9 @@
 
 #include "../Browser/Core/Cast.h"
 #include "../Browser/X3DBrowser.h"
+
 #include "../Components/Layering/Layer.h"
+#include "../Components/Layering/LayerSet.h"
 
 namespace titania {
 namespace X3D {
@@ -152,6 +154,9 @@ World::bind ()
 	catch (const X3D::X3DError &)
 	{ }
 }
+
+World::~World ()
+{ }
 
 } // X3D
 } // titania
