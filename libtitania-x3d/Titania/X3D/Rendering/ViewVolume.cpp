@@ -75,20 +75,20 @@ ViewVolume::ViewVolume () :
 	  valid (false)
 { }
 
-ViewVolume::ViewVolume (const Matrix4d & projection, const Vector4i & scissor) :
+ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & viewport, const Vector4i & scissor) :
+	viewport (viewport),
 	 scissor (scissor),
 	  planes (),
 	   valid (true)
 {
 	try
 	{
-		const int x1 = scissor [0];
-		const int x2 = scissor [0] + scissor [2];
-		const int y1 = scissor [1];
-		const int y2 = scissor [1] + scissor [3];
+		const int32_t x1 = scissor [0];
+		const int32_t x2 = scissor [0] + scissor [2];
+		const int32_t y1 = scissor [1];
+		const int32_t y2 = scissor [1] + scissor [3];
 
-		const Matrix4d matrix   = inverse (projection);
-		const Vector4i viewport = Viewport4i ();
+		const Matrix4d matrix = inverse (projectionMatrix);
 
 		Vector3f p1 = unProjectPoint (x1, y2, 1, matrix, viewport);
 		Vector3f p2 = unProjectPoint (x1, y1, 1, matrix, viewport);
@@ -131,14 +131,15 @@ ViewVolume::intersects (const Box3d & bbox) const
 // http://www.opengl.org/wiki/GluProject_and_gluUnProject_code
 
 Vector3d
-ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::unProjectPoint (double winx, double winy, double winz,
+                            const Matrix4d & modelViewMatrix,
+                            const Matrix4d & projectionMatrix,
+                            const Vector4i & viewport)
 throw (std::domain_error)
 {
-	// Calculation for inverting a matrix, compute projection x modelview
-	// and store in A
-	const Matrix4d matrix = inverse (modelview * projection);
+	const Matrix4d invModelViewProjection = inverse (modelViewMatrix * projectionMatrix);
 
-	return unProjectPoint (winx, winy, winz, matrix, viewport);
+	return unProjectPoint (winx, winy, winz, invModelViewProjection, viewport);
 }
 
 Vector3d
@@ -163,10 +164,13 @@ throw (std::domain_error)
 }
 
 Line3d
-ViewVolume::unProjectRay (double winx, double winy, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::unProjectRay (double winx, double winy,
+                          const Matrix4d & modelViewMatrix,
+                          const Matrix4d & projectionMatrix,
+                          const Vector4i & viewport)
 throw (std::domain_error)
 {
-	return unProjectRay (winx, winy, inverse (modelView * projection), viewport);
+	return unProjectRay (winx, winy, inverse (modelViewMatrix * projectionMatrix), viewport);
 }
 
 Line3d
@@ -180,21 +184,10 @@ throw (std::domain_error)
 }
 
 Vector3d
-ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelView, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::projectPoint (const Vector3d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	Vector4d in (point .x (), point .y (), point .z (), 1);
-
-	in = in * modelView * projection;
-
-	if (in .w () == 0)
-		throw std::domain_error ("Couldn't project point: divisor is 0.");
-
-	const double d = 1 / in .w ();
-
-	return Vector3d ((in .x () * d / 2 + 0.5) * viewport [2] + viewport [0],
-	                 (in .y () * d / 2 + 0.5) * viewport [3] + viewport [1],
-	                 (1 + in .z () * d) / 2);
+	return projectPoint (point, modelViewMatrix * projectionMatrix, viewport);
 }
 
 Vector3d
@@ -216,11 +209,13 @@ throw (std::domain_error)
 }
 
 Line2d
-ViewVolume::projectLine (const Line3d & line, const Matrix4d & modelview, const Matrix4d & projection, const Vector4i & viewport)
+ViewVolume::projectLine (const Line3d & line, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	Vector3d point1 = ViewVolume::projectPoint (line .point (),                            modelview, projection, viewport);
-	Vector3d point2 = ViewVolume::projectPoint (line .point () + line .direction () * 1e9, modelview, projection, viewport);
+	const auto modelViewProjection = modelViewMatrix * projectionMatrix;
+
+	Vector3d point1 = ViewVolume::projectPoint (line .point (),                            modelViewProjection, viewport);
+	Vector3d point2 = ViewVolume::projectPoint (line .point () + line .direction () * 1e9, modelViewProjection, viewport);
 
 	return Line2d (Vector2d (point1 .x (), point1 .y ()),
 	               Vector2d (point2 .x (), point2 .y ()),

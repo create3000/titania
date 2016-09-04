@@ -97,7 +97,7 @@ LineProperties::enable ()
 			glLineStipple (1, linetypes [linetype ()]);
 
 		else
-			glLineStipple (1, int (LineType::SOLID));
+			glLineStipple (1, int32_t (LineType::SOLID));
 
 		if (linewidthScaleFactor () > 0)
 		{
@@ -131,7 +131,7 @@ LineProperties::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 			glLineStipple (1, linetypes [linetype ()]);
 	
 		else
-			glLineStipple (1, int (LineType::SOLID));
+			glLineStipple (1, int32_t (LineType::SOLID));
 
 		if (linewidthScaleFactor () > 0)
 		{

@@ -128,7 +128,7 @@ QuadSphereOptions::createTexCoord () const
 
 	const auto polOffset = 1 / (2 * double (xDimension () - 1));
 
-	for (int u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension () - 1; ++ u)
 	{
 		const double x = u / double (xDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 1, 0, 1);
@@ -138,7 +138,7 @@ QuadSphereOptions::createTexCoord () const
 	{
 		const double y = v / double (yDimension () - 1);
 
-		for (int u = 0; u < xDimension () - 1; ++ u)
+		for (int32_t u = 0; u < xDimension () - 1; ++ u)
 		{
 			const double x = u / double (xDimension () - 1);
 			texCoord .emplace_back (x, 1 - y, 0, 1);
@@ -147,7 +147,7 @@ QuadSphereOptions::createTexCoord () const
 		texCoord .emplace_back (1, 1 - y, 0, 1);
 	}
 
-	for (int u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension () - 1; ++ u)
 	{
 		const double x = u / double (xDimension () - 1) + polOffset;
 		texCoord .emplace_back (x, 0, 0, 1);

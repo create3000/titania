@@ -83,7 +83,7 @@ public:
 	catchEventsProcessed () = 0;
 
 	void
-	setError (const std::string &, const std::string &, const int, const int, std::string) const;
+	setError (const std::string &, const std::string &, const int32_t, const int32_t, std::string) const;
 
 	///  @name Operations
 

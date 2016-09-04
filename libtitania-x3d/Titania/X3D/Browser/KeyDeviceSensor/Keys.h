@@ -83,20 +83,20 @@ public:
 
 private:
 
-	static constexpr int Shift_R   = 1;
-	static constexpr int Shift_L   = 2;
-	static constexpr int Control_R = 1;
-	static constexpr int Control_L = 2;
-	static constexpr int Alt_R     = 1;
-	static constexpr int Alt_L     = 2;
+	static constexpr int32_t Shift_R   = 1;
+	static constexpr int32_t Shift_L   = 2;
+	static constexpr int32_t Control_R = 1;
+	static constexpr int32_t Control_L = 2;
+	static constexpr int32_t Alt_R     = 1;
+	static constexpr int32_t Alt_L     = 2;
 
-	int m_shift;
-	int m_control;
-	bool m_alt;
+	int32_t m_shift;
+	int32_t m_control;
+	bool   m_alt;
 
-	int m_saved_shift;
-	int m_saved_control;
-	bool m_saved_alt;
+	int32_t m_saved_shift;
+	int32_t m_saved_control;
+	bool    m_saved_alt;
 
 };
 

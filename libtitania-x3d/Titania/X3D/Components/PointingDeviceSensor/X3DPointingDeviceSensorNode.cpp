@@ -54,6 +54,8 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
+#include "../Layering/X3DViewportNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -175,7 +177,7 @@ X3DPointingDeviceSensorNode::push ()
 		getCurrentLayer () -> disposed () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
 	}
 
-	iter -> second = Matrices { getModelViewMatrix () .get (), getProjectionMatrix () .get (), Viewport4i () };
+	iter -> second = Matrices { getModelViewMatrix () .get (), getProjectionMatrix () .get (), getCurrentViewport () -> getRectangle ()  };
 }
 
 void

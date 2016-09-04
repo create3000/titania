@@ -52,8 +52,9 @@
 
 #include "../Browser/ContextLock.h"
 
-#include <Titania/LOG.h>
 #include <stdexcept>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace X3D {

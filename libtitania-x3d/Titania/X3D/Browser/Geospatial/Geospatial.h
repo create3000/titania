@@ -108,7 +108,7 @@ public:
 	getNorthingFirst (const MFString &);
 
 	static
-	int
+	int32_t
 	getZone (const MFString &);
 
 	static

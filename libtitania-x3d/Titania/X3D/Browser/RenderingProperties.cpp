@@ -152,7 +152,7 @@ RenderingProperties::initialize ()
 		Shading () .addInterest (this, &RenderingProperties::set_Shading);
 
 		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_Enabled);
-		getBrowser () -> reshaped ()    .addInterest (this, &RenderingProperties::build);
+		getBrowser () -> getViewport () .addInterest (this, &RenderingProperties::build);
 	}
 }
 
@@ -264,14 +264,14 @@ format_time (const time_type & time, const size_t fractions = 0)
 	auto       t = std::floor (time);
 	const auto f = std::floor ((t - time) * std::pow (10, fractions));
 
-	const int s = std::fmod (t, 60);
+	const int32_t s = std::fmod (t, 60);
 
 	t = std::floor (t / 60);
 
-	const int m = std::fmod (t, 60);
+	const int32_t m = std::fmod (t, 60);
 	t = std::floor (t / 60);
 
-	const int h = std::fmod (t, 24);
+	const int32_t h = std::fmod (t, 24);
 	t = std::floor (t / 24);
 
 	const auto d = t;
@@ -312,7 +312,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("  Name: %s"), Renderer () .c_str ()));
 		string .emplace_back ();
 		string .emplace_back (_ ("Rendering properties"));
-		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getRectangle () [2], getBrowser () -> getRectangle () [3]));
+		string .emplace_back (basic::sprintf (_ ("Viewport:                  %d × %d pixel"), getBrowser () -> getViewport () [2] .getValue (), getBrowser () -> getViewport () [3] .getValue ()));
 		string .emplace_back (basic::sprintf (_ ("Texture units:             %zd / %zd"), getBrowser () -> getTextureUnits () .size (), getBrowser () -> getCombinedTextureUnits () .size ()));
 		string .emplace_back (basic::sprintf (_ ("Max texture size:          %zd × %zd pixel"), getBrowser () -> getMaxTextureSize (), getBrowser () -> getMaxTextureSize ()));
 		string .emplace_back (basic::sprintf (_ ("Antialiased:               %s (%d/%d)"), Antialiased () .toString () .c_str (), sampleBuffers, samples));

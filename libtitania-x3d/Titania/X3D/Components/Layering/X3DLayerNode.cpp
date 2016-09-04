@@ -55,7 +55,10 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
+
 #include "../EnvironmentalEffects/Background.h"
+#include "../EnvironmentalEffects/LocalFog.h"
+#include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
 
 namespace titania {
@@ -294,7 +297,7 @@ X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
 
-	currentViewport -> enable ();
+	currentViewport -> push ();
 
 	switch (type)
 	{
@@ -325,7 +328,7 @@ X3DLayerNode::traverse (const TraverseType type)
 		}
 	}
 
-	currentViewport -> disable ();
+	currentViewport -> pop ();
 
 	getBrowser () -> getLayers () .pop ();
 }
@@ -346,17 +349,16 @@ X3DLayerNode::pointer ()
 				return;
 		}
 
-		getProjectionMatrix () .push ();
+		getProjectionMatrix () .push (Matrix4d ());
 		getModelViewMatrix  () .push (Matrix4d ());
 
 		getViewpoint () -> reshape ();
 		getViewpoint () -> transform ();
-		getBrowser   () -> setHitRay (Matrix4d (), getProjectionMatrix () .get (), currentViewport -> getRectangle ());
+
+		getBrowser   () -> setHitRay (currentViewport -> getRectangle ());
 
 		currentViewport -> push ();
-
 		collect (TraverseType::POINTER);
-
 		currentViewport -> pop ();
 
 		getGlobalObjects    () .clear ();
@@ -368,7 +370,7 @@ X3DLayerNode::pointer ()
 void
 X3DLayerNode::camera ()
 {
-	getProjectionMatrix () .push ();
+	getProjectionMatrix () .push (Matrix4d ());
 	getModelViewMatrix  () .push (Matrix4d ());
 
 	getViewpoint () -> reshape ();
@@ -394,7 +396,7 @@ X3DLayerNode::camera ()
 void
 X3DLayerNode::collision ()
 {
-	getProjectionMatrix () .push ();
+	getProjectionMatrix () .push (Matrix4d ());
 	getModelViewMatrix  () .push (Matrix4d ());
 
 	getViewpoint () -> reshape ();
@@ -411,12 +413,10 @@ X3DLayerNode::collision ()
 void
 X3DLayerNode::display (const TraverseType type)
 {
-	glClear (GL_DEPTH_BUFFER_BIT);
-
-	getProjectionMatrix () .push ();
+	getProjectionMatrix () .push (Matrix4d ());
 	getModelViewMatrix  () .push (Matrix4d ());
 
-	getBackground () -> draw ();
+	getBackground () -> draw (getViewport () -> getRectangle ());
 
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
@@ -445,6 +445,9 @@ X3DLayerNode::dispose ()
 	X3DNode::dispose ();
 	X3DRenderer::dispose ();
 }
+
+X3DLayerNode::~X3DLayerNode ()
+{ }
 
 } // X3D
 } // titania

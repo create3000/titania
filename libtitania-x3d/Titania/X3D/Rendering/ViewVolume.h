@@ -63,21 +63,28 @@ class ViewVolume
 {
 public:
 
+	///  @name Construction
+
 	ViewVolume ();
 
-	ViewVolume (const Matrix4d &, const Vector4i &);
+	ViewVolume (const Matrix4d &, const Vector4i &, const Vector4i &);
 
-	ViewVolume (const ViewVolume &) = default;
+	///  @name Member access
 
-	ViewVolume &
-	operator = (const ViewVolume &) = default;
+	const Vector4i &
+	getViewport () const
+	{ return viewport; }
 
 	const Vector4i &
 	getScissor () const
 	{ return scissor; }
 
+	///  @name Operations
+
 	bool
 	intersects (const Box3d &) const;
+
+	///  @name Projection operations
 
 	static
 	Vector3d
@@ -117,6 +124,9 @@ public:
 
 private:
 
+	///  @name Members
+
+	const Vector4i        viewport;
 	const Vector4i        scissor;
 	std::vector <Plane3d> planes;
 	bool                  valid;

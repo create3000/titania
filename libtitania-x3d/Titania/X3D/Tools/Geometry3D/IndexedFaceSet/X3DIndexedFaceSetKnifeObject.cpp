@@ -318,61 +318,68 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & pla
 void
 X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation (PlaneSensor* const planeSensor)
 {
-	if (not setEndMagicSelection (planeSensor))
-	   return;
-
-	Vector3d closestPoint;
-
- 	if (getHotPoints () .size () == 1)
+	try
 	{
-		// Snap to vertex.
-		cutPoints .second = getCoord () -> get1Point (getHotPoints () .front ());
-		closestPoint      = cutPoints .second;
-
-		snapToVertex (cutFace, endPoints, closestPoint);
-	}
-	else
-	{
-		cutPoints .second = planeSensors [cutFaceIndex] -> translation_changed () .getValue ();
-
-		const auto point1     = getCoord () -> get1Point (coordIndex () [endEdge .first]);
-		const auto point2     = getCoord () -> get1Point (coordIndex () [endEdge .second]);
-		const auto edgeLine   = Line3d (point1, point2, math::points_type ());
-		const auto orthoPoint = edgeLine .closest_point (cutPoints .first);
-
-		closestPoint = getClosestPoint (endEdge, cutPoints);	                   
-
-		if (snapToVertex (cutFace, endPoints, closestPoint))
-			;
+		if (not setEndMagicSelection (planeSensor))
+		   return;
+	
+		Vector3d closestPoint;
+	
+	 	if (getHotPoints () .size () == 1)
+		{
+			// Snap to vertex.
+			cutPoints .second = getCoord () -> get1Point (getHotPoints () .front ());
+			closestPoint      = cutPoints .second;
+	
+			snapToVertex (cutFace, endPoints, closestPoint);
+		}
 		else
 		{
-			if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE and cutSnapping ())
-			{
-			   // Snap to ortho point of edge.
-				closestPoint = orthoPoint;
-
-				knifeArcSwitch   -> whichChoice () = true;
-				knifeArc         -> translation () = orthoPoint;
-				knifeArcGeometry -> startAngle ()  = 0;
-				knifeArcGeometry -> endAngle ()    = PI <double> / 2;
-			}
-			else if (snapToCenter (endEdge, closestPoint))
+			cutPoints .second = planeSensors [cutFaceIndex] -> translation_changed () .getValue ();
+	
+			const auto point1     = getCoord () -> get1Point (coordIndex () [endEdge .first]);
+			const auto point2     = getCoord () -> get1Point (coordIndex () [endEdge .second]);
+			const auto edgeLine   = Line3d (point1, point2, math::points_type ());
+			const auto orthoPoint = edgeLine .closest_point (cutPoints .first);
+	
+			closestPoint = getClosestPoint (endEdge, cutPoints);	                   
+	
+			if (snapToVertex (cutFace, endPoints, closestPoint))
 				;
 			else
-				knifeArcSwitch -> whichChoice () = false;
+			{
+				if (getDistance (orthoPoint, closestPoint) <= SELECTION_DISTANCE and cutSnapping ())
+				{
+				   // Snap to ortho point of edge.
+					closestPoint = orthoPoint;
+	
+					knifeArcSwitch   -> whichChoice () = true;
+					knifeArc         -> translation () = orthoPoint;
+					knifeArcGeometry -> startAngle ()  = 0;
+					knifeArcGeometry -> endAngle ()    = PI <double> / 2;
+				}
+				else if (snapToCenter (endEdge, closestPoint))
+					;
+				else
+					knifeArcSwitch -> whichChoice () = false;
+			}
 		}
+	
+		knifeLineCoordinate -> point () [1] = cutPoints .second;
+		knifeEndPoint -> translation ()     = closestPoint;
+		cutEdge .second                     = closestPoint;
+	
+		// Ugly fallback if the track point lies behind the screen.
+	
+		const auto trackPoint = Vector3d (planeSensors [cutFaceIndex] -> trackPoint_changed () .getValue ()) * getModelViewMatrix ();
+	
+		if (trackPoint .z () > 0)
+			knifeLineCoordinate -> point () [1] = (getBrowser () -> getHitRay () * inverse (getModelViewMatrix ())) .point ();
 	}
-
-	knifeLineCoordinate -> point () [1] = cutPoints .second;
-	knifeEndPoint -> translation ()     = closestPoint;
-	cutEdge .second                     = closestPoint;
-
-	// Ugly fallback if the track point lies behind the screen.
-
-	const auto trackPoint = Vector3d (planeSensors [cutFaceIndex] -> trackPoint_changed () .getValue ()) * getModelViewMatrix ();
-
-	if (trackPoint .z () > 0)
-		knifeLineCoordinate -> point () [1] = getBrowser () -> getHitRay (getModelViewMatrix (), getProjectionMatrix (), getViewport ()) .point ();
+	catch (const std::domain_error &)
+	{
+		// TODO: disable all.
+	}
 }
 
 ///  Determine and update hot and active points, edges and face

@@ -151,11 +151,11 @@ public:
 
 	virtual
 	void
-	setActionKeyPressEvent (const int) final override;
+	setActionKeyPressEvent (const int32_t) final override;
 
 	virtual
 	void
-	setActionKeyReleaseEvent (const int) final override;
+	setActionKeyReleaseEvent (const int32_t) final override;
 
 	virtual
 	void
@@ -195,8 +195,8 @@ private:
 
 	Fields fields;
 
-	int shiftKeys;
-	int controlKeys;
+	int32_t shiftKeys;
+	int32_t controlKeys;
 
 };
 

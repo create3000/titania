@@ -115,8 +115,8 @@ throw (std::domain_error)
 
 	modelViewMatrix .get (translation, rotation, scale);
 
+	const auto & viewport         = getViewVolumes () .back () .getViewport ();
 	const auto & projectionMatrix = getProjectionMatrix () .get ();
-	const auto   viewport         = Viewport4i ();
 	const auto   screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (scale .x () < 0 ? -1 : 1),

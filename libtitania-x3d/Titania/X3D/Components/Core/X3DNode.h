@@ -66,6 +66,8 @@ class X3DScene;
 class X3DLayerNode;
 class NavigationInfo;
 class X3DViewpointNode;
+class X3DViewportNode;
+
 class MetadataBoolean;
 class MetadataDouble;
 class MetadataFloat;
@@ -162,6 +164,9 @@ protected:
 
 	const ViewVolumeStack &
 	getViewVolumes () const;
+
+	X3DViewportNode*
+	getCurrentViewport () const;
 
 	NavigationInfo*
 	getCurrentNavigationInfo () const;

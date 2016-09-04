@@ -126,11 +126,11 @@ public:
 	double
 	getDuration () const;
 
-	int
+	int32_t
 	getWidth () const
 	{ return vsink -> get_width (); }
 
-	int
+	int32_t
 	getHeight () const
 	{ return vsink -> get_height (); }
 

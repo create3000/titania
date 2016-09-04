@@ -75,8 +75,8 @@ MediaStream::MediaStream () :
 {
 	// Static init
 
-	int    argc = 0;
-	char** argv = nullptr;
+	int32_t argc = 0;
+	char**  argv = nullptr;
 
 	Gst::init_check (argc, argv);
 

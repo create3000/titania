@@ -81,7 +81,7 @@ TouchGroupTool::set_enabled (const bool value)
 {
 	try
 	{
-		getToolNode () -> setField <SFInt32> ("linetype", int (value ? LineType::SOLID : LineType::DOTTED));
+		getToolNode () -> setField <SFInt32> ("linetype", int32_t (value ? LineType::SOLID : LineType::DOTTED));
 	}
 	catch (const X3DError & error)
 	{ }

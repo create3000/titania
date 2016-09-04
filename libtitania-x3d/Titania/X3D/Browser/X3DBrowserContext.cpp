@@ -85,7 +85,6 @@ X3DBrowserContext::X3DBrowserContext () :
 	               X3DRouterObject (),
 	                X3DToolContext (),
 	             initializedOutput (),
-	                reshapedOutput (),
 	           prepareEventsOutput (),
 	                 sensorsOutput (),
 	               displayedOutput (),
@@ -235,20 +234,6 @@ X3DBrowserContext::endUpdateForFrame ()
 	changedTime = getCurrentTime ();
 }
 
-void
-X3DBrowserContext::reshape ()
-noexcept (true)
-{
-	try
-	{
-		ContextLock lock (this);
-       
-		reshaped () .processInterests ();
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
-}
-
 /*
  * a) Update camera based on currently bound Viewpoint's position and orientation.
  * b) Evaluate input from sensors.
@@ -332,7 +317,6 @@ void
 X3DBrowserContext::dispose ()
 {
 	initializedOutput   .dispose ();
-	reshapedOutput      .dispose ();
 	prepareEventsOutput .dispose ();
 	sensorsOutput       .dispose ();
 	displayedOutput     .dispose ();

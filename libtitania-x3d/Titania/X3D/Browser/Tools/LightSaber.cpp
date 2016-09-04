@@ -151,11 +151,11 @@ LightSaber::display ()
 
 	// Configure HUD
 
-	const auto & viewport = getBrowser () -> getRectangle ();
-	const int    width    = viewport [2];
-	const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getViewport ();
+	const auto & width    = viewport [2];
+	const auto & height   = viewport [3];
 
-	const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
+	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .data ());
@@ -184,7 +184,7 @@ LightSaber::display ()
 Vector2d
 LightSaber::getPoint (const double x, const double y) const
 {
-	const auto height = getBrowser () -> getRectangle () [3];
+	const auto height = getBrowser () -> getViewport () [3];
 
 	return Vector2d (x, height - y);
 }

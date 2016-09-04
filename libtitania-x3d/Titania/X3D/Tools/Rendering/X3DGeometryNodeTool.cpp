@@ -310,7 +310,7 @@ X3DGeometryNodeTool::draw (ShapeContainer* const context)
 		getNode <X3DGeometryNode> () -> draw (context);
 	}
 
-	viewport         = Viewport4i ();
+	viewport         = getViewVolumes () .back () .getViewport ();
 	projectionMatrix = getBrowser () -> getProjectionMatrix () .get ();
 	modelViewMatrix  = context -> getModelViewMatrix ();
 }

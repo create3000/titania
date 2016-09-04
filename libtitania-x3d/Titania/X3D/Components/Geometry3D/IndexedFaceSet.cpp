@@ -209,7 +209,7 @@ IndexedFaceSet::build ()
 
 	// Fill GeometryNode
 
-	int    face        = 0;
+	size_t face        = 0;
 	GLenum vertexMode  = getVertexMode (polygons [0] .elements [0] .size ());
 	size_t numVertices = 0;
 
@@ -489,7 +489,7 @@ IndexedFaceSet::addTexCoords ()
 
 	Vector3d min;
 	double   Ssize;
-	int      Sindex, Tindex;
+	int32_t  Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 

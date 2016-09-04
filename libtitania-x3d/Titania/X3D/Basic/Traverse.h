@@ -63,64 +63,64 @@
 namespace titania {
 namespace X3D {
 
-constexpr int TRAVERSE_EXTERNPROTO_DECLARATIONS       = 1;
-constexpr int TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS = 1 << 1;
-constexpr int TRAVERSE_PROTO_DECLARATIONS             = 1 << 2;
-constexpr int TRAVERSE_ROOT_NODES                     = 1 << 3;
-constexpr int TRAVERSE_PROTOTYPE_INSTANCES            = 1 << 4;
-constexpr int TRAVERSE_IMPORTED_NODES                 = 1 << 5;
-constexpr int TRAVERSE_EXPORTED_NODES                 = 1 << 6;
-constexpr int TRAVERSE_INLINE_NODES                   = 1 << 7;
-constexpr int TRAVERSE_TOOL_OBJECTS                   = 1 << 8;
-constexpr int TRAVERSE_VISIBLE_NODES                  = 1 << 9;
-constexpr int TRAVERSE_CLONED_NODES                   = 1 << 10;
+constexpr int32_t TRAVERSE_EXTERNPROTO_DECLARATIONS       = 1;
+constexpr int32_t TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS = 1 << 1;
+constexpr int32_t TRAVERSE_PROTO_DECLARATIONS             = 1 << 2;
+constexpr int32_t TRAVERSE_ROOT_NODES                     = 1 << 3;
+constexpr int32_t TRAVERSE_PROTOTYPE_INSTANCES            = 1 << 4;
+constexpr int32_t TRAVERSE_IMPORTED_NODES                 = 1 << 5;
+constexpr int32_t TRAVERSE_EXPORTED_NODES                 = 1 << 6;
+constexpr int32_t TRAVERSE_INLINE_NODES                   = 1 << 7;
+constexpr int32_t TRAVERSE_TOOL_OBJECTS                   = 1 << 8;
+constexpr int32_t TRAVERSE_VISIBLE_NODES                  = 1 << 9;
+constexpr int32_t TRAVERSE_CLONED_NODES                   = 1 << 10;
 
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 
 bool
-traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
+traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
 
 inline
 bool
-traverse (const X3DScenePtr & scene, const TraverseCallback & callback, const bool distinct = true, const int flags = TRAVERSE_ROOT_NODES)
+traverse (const X3DScenePtr & scene, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return traverse (scene .getValue (), callback, distinct, flags); }
 
 inline
 bool
-traverse (const X3DExecutionContextPtr & executionContext, const TraverseCallback & callback, const bool distinct = true, const int flags = TRAVERSE_ROOT_NODES)
+traverse (const X3DExecutionContextPtr & executionContext, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return traverse (executionContext .getValue (), callback, distinct, flags); }
 
 bool
-traverse (MFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
+traverse (MFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
 
 bool
-traverse (SFNode &, const TraverseCallback &, const bool = true, const int = TRAVERSE_ROOT_NODES);
+traverse (SFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
-find (X3DScene* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
+find (X3DScene* const, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 inline
 std::vector <X3DChildObject*>
-find (const X3DScenePtr & scene, X3DChildObject* const object, const int flags = TRAVERSE_ROOT_NODES)
+find (const X3DScenePtr & scene, X3DChildObject* const object, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return find (scene .getValue (), object, flags); }
 
 std::vector <X3DChildObject*>
-find (X3DExecutionContext* const, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
+find (X3DExecutionContext* const, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 inline
 std::vector <X3DChildObject*>
-find (const X3DExecutionContextPtr & executionContext, X3DChildObject* const object, const int flags = TRAVERSE_ROOT_NODES)
+find (const X3DExecutionContextPtr & executionContext, X3DChildObject* const object, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return find (executionContext .getValue (), object, flags); }
 
 std::vector <X3DChildObject*>
-find (const X3D::MFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
+find (const X3D::MFNode &, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 std::vector <X3DChildObject*>
-find (const X3D::SFNode &, X3DChildObject* const, const int = TRAVERSE_ROOT_NODES);
+find (const X3D::SFNode &, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 template <class Type>
 void
-findParents (X3DChildObject* const object, std::vector <Type*> & parents, const int flags, ChildObjectSet & seen)
+findParents (X3DChildObject* const object, std::vector <Type*> & parents, const int32_t flags, ChildObjectSet & seen)
 {
 	if (not seen .emplace (object) .second)
 		return;
@@ -170,7 +170,7 @@ findParents (X3DChildObject* const object, std::vector <Type*> & parents, const 
 
 template <class Type>
 std::vector <Type*>
-findParents (const X3DChildObject* const object, const int flags = 0)
+findParents (const X3DChildObject* const object, const int32_t flags = 0)
 {
 	std::vector <Type*> parents;
 	ChildObjectSet      seen;

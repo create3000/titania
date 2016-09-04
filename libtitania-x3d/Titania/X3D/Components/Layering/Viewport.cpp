@@ -87,32 +87,14 @@ Viewport::create (X3DExecutionContext* const executionContext) const
 }
 
 Vector4i
-Viewport::getRectangle (const int width, const int height) const
+Viewport::getRectangle (const int32_t width, const int32_t height) const
 {
 	// The clipBoundary field of a Viewport node is specified in fractions of the -normal-render-surface-.
 
-	const int left   = width  * getLeft ();
-	const int right  = width  * getRight ();
-	const int bottom = height * getBottom ();
-	const int top    = height * getTop ();
-
-	return Vector4i (left,
-	                 bottom,
-	                 std::max (0, right - left),
-	                 std::max (0, top - bottom));
-}
-
-Vector4i
-Viewport::getScissor (const int width, const int height) const
-{
-	if (getViewVolumes () .empty ())
-		return getRectangle (width, height);
-
-	const auto parent = getViewVolumes () .back () .getScissor ();
-	const int  left   = std::max (int (width  * getLeft ()),   parent [0]);
-	const int  right  = std::min (int (width  * getRight ()),  parent [0] + parent [2]);
-	const int  bottom = std::max (int (height * getBottom ()), parent [1]);
-	const int  top    = std::min (int (height * getTop ()),    parent [1] + parent [3]);
+	const int32_t left   = width  * getLeft ();
+	const int32_t right  = width  * getRight ();
+	const int32_t bottom = height * getBottom ();
+	const int32_t top    = height * getTop ();
 
 	return Vector4i (left,
 	                 bottom,
@@ -145,19 +127,12 @@ Viewport::getTop () const
 }
 
 void
-Viewport::traverse (const TraverseType type)
-{
-	push ();
-
-	X3DGroupingNode::traverse (type);
-
-	pop ();
-}
-
-void
 Viewport::push ()
 {
-	getViewVolumes () .emplace_back (getProjectionMatrix () .get (), getScissor ());
+	const auto & scissor  = getRectangle ();
+	const auto & viewport = getViewVolumes () .empty () ? scissor : getViewVolumes () .back () .getViewport ();
+
+	getViewVolumes () .emplace_back (getProjectionMatrix () .get (), viewport, scissor);
 }
 
 void
@@ -167,35 +142,13 @@ Viewport::pop ()
 }
 
 void
-Viewport::enable ()
+Viewport::traverse (const TraverseType type)
 {
-	const auto viewport = getRectangle ();
+	push ();
 
-	glViewport (viewport [0],
-	            viewport [1],
-	            viewport [2],
-	            viewport [3]);
+	X3DGroupingNode::traverse (type);
 
-	glScissor (viewport [0],
-	           viewport [1],
-	           viewport [2],
-	           viewport [3]);
-}
-
-void
-Viewport::disable ()
-{
-	const auto viewport = getBrowser () -> getRectangle ();
-
-	glViewport (viewport [0],
-	            viewport [1],
-	            viewport [2],
-	            viewport [3]);
-
-	glScissor (viewport [0],
-	           viewport [1],
-	           viewport [2],
-	           viewport [3]);
+	pop ();
 }
 
 } // X3D

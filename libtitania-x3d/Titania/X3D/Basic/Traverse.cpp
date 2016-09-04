@@ -66,11 +66,11 @@ namespace X3D {
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen);
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen);
 
 static
 bool
-traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen)
 {
 	if (not executionContext)
 		return true;
@@ -137,7 +137,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 }
 
 bool
-traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int flags)
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int32_t flags)
 {
 	NodeSet seen;
 
@@ -146,7 +146,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags, NodeSet & seen)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen)
 {
 	if (not node)
 		return true;
@@ -369,7 +369,7 @@ CONTINUE:;
 }
 
 bool
-traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool distinct, const int flags)
+traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool distinct, const int32_t flags)
 {
 	NodeSet seen;
 
@@ -385,7 +385,7 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool dis
 }
 
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int flags)
+traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags)
 {
 	NodeSet seen;
 
@@ -394,11 +394,11 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 
 static
 bool
-find (X3DBaseNode* const, X3DChildObject* const, const int, std::vector <X3DChildObject*> &, NodeSet &);
+find (X3DBaseNode* const, X3DChildObject* const, const int32_t, std::vector <X3DChildObject*> &, NodeSet &);
 
 static
 bool
-find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not executionContext)
 		return false;
@@ -460,14 +460,14 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 
 static
 bool
-find (X3DScene* const scene, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DScene* const scene, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	return find (static_cast <X3DExecutionContext*> (scene), object, flags, hierarchy, seen);
 }
 
 static
 bool
-find (X3DBaseNode* const node, X3DChildObject* const object, const int flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
 {
 	if (not node)
 		return false;
@@ -707,7 +707,7 @@ END:
 }
 
 std::vector <X3DChildObject*>
-find (X3DScene* const scene, X3DChildObject* const object, const int flags)
+find (X3DScene* const scene, X3DChildObject* const object, const int32_t flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
@@ -718,7 +718,7 @@ find (X3DScene* const scene, X3DChildObject* const object, const int flags)
 }
 
 std::vector <X3DChildObject*>
-find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int flags)
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int32_t flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
@@ -729,7 +729,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 }
 
 std::vector <X3DChildObject*>
-find (const X3D::MFNode & nodes, X3DChildObject* const object, const int flags)
+find (const X3D::MFNode & nodes, X3DChildObject* const object, const int32_t flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;
@@ -744,7 +744,7 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object, const int flags)
 }
 
 std::vector <X3DChildObject*>
-find (const X3D::SFNode & node, X3DChildObject* const object, const int flags)
+find (const X3D::SFNode & node, X3DChildObject* const object, const int32_t flags)
 {
 	std::vector <X3DChildObject*> hierarchy;
 	NodeSet                       seen;

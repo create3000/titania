@@ -64,7 +64,6 @@ class Viewport :
 public:
 
 	using X3DViewportNode::getRectangle;
-	using X3DViewportNode::getScissor;
 
 	///  @name Construction
 
@@ -120,25 +119,9 @@ public:
 
 	virtual
 	Vector4i
-	getRectangle (const int, const int) const final override;
-
-	virtual
-	Vector4i
-	getScissor (const int, const int) const final override;
+	getRectangle (const int32_t, const int32_t) const final override;
 
 	///  @name Operations
-
-	virtual
-	void
-	traverse (const TraverseType) final override;
-
-	virtual
-	void
-	enable () final override;
-
-	virtual
-	void
-	disable () final override;
 
 	virtual
 	void
@@ -147,6 +130,10 @@ public:
 	virtual
 	void
 	pop () final override;
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
 
 
 private:

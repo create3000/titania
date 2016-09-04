@@ -54,6 +54,7 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Components/Layering/X3DViewportNode.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>

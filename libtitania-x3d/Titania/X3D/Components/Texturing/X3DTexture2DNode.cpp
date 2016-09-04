@@ -150,7 +150,7 @@ X3DTexture2DNode::setImage (const GLenum internalFormat, const bool t, const siz
 	              0,     // This texture is level 0 in mimpap generation.
 	              internalFormat,
 	              width, height,
-	              0, /* clamp <int> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
+	              0, /* clamp <int32_t> (texturePropertiesNode -> borderWidth (), 0, 1), */ // This value must be 0.
 	              format, GL_UNSIGNED_BYTE,
 	              data);
 

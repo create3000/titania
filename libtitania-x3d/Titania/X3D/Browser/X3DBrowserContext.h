@@ -122,10 +122,6 @@ public:
 	{ return initializedOutput; }
 
 	const Output &
-	reshaped () const
-	{ return reshapedOutput; }
-
-	const Output &
 	sensors () const
 	{ return sensorsOutput; }
 
@@ -219,11 +215,6 @@ protected:
 	setWorld (World* const value)
 	{ world = value; }
 
-	virtual
-	void
-	reshape ()
-	noexcept (true);
-
 	void
 	update ()
 	noexcept (true);
@@ -240,7 +231,6 @@ private:
 
 	SFTime initializedOutput;
 	Output pickedOutput;
-	Output reshapedOutput;
 	Output prepareEventsOutput;
 	Output sensorsOutput;
 	Output displayedOutput;

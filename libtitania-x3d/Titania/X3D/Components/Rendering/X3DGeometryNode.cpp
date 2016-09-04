@@ -544,7 +544,7 @@ X3DGeometryNode::buildTexCoords ()
 {
 	Vector3d min;
 	double   Ssize;
-	int      Sindex, Tindex;
+	int32_t  Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 
@@ -562,7 +562,7 @@ X3DGeometryNode::buildTexCoords ()
 
 ///  Determine the min extent of the bbox, the largest size of the bbox and the two largest indices.
 void
-X3DGeometryNode::getTexCoordParams (Vector3d & min, double & Ssize, int & Sindex, int & Tindex)
+X3DGeometryNode::getTexCoordParams (Vector3d & min, double & Ssize, int32_t & Sindex, int32_t & Tindex)
 {
 	// Thanks to H3D.
 

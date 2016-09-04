@@ -219,11 +219,11 @@ ScreenText::build ()
 				break;
 		}
 
-		const int first = topToBottom ? 0 : getText () -> string () .size () - 1;
-		const int last  = topToBottom ? getText () -> string () .size () : -1;
-		const int step  = topToBottom ? 1 : -1;
+		const int32_t first = topToBottom ? 0 : getText () -> string () .size () - 1;
+		const int32_t last  = topToBottom ? getText () -> string () .size () : -1;
+		const int32_t step  = topToBottom ? 1 : -1;
 
-		for (int i = first; i not_eq last; i += step)
+		for (int32_t i = first; i not_eq last; i += step)
 		{
 			const auto & line = getText () -> string () [i] .getValue ();
 
@@ -289,13 +289,13 @@ ScreenText::build ()
 				break;
 		}
 
-		const bool leftToRight = fontStyle -> leftToRight ();
-		const bool topToBottom = fontStyle -> topToBottom ();
-		const int  first       = leftToRight ? 0 : getText () -> string () .size () - 1;
-		const int  last        = leftToRight ? getText () -> string () .size () : -1;
-		const int  step        = leftToRight ? 1 : -1;
+		const bool    leftToRight = fontStyle -> leftToRight ();
+		const bool    topToBottom = fontStyle -> topToBottom ();
+		const int32_t first       = leftToRight ? 0 : getText () -> string () .size () - 1;
+		const int32_t last        = leftToRight ? getText () -> string () .size () : -1;
+		const int32_t step        = leftToRight ? 1 : -1;
 
-		for (int i = first, g = 0; i not_eq last; i += step)
+		for (int32_t i = first, g = 0; i not_eq last; i += step)
 		{
 			const auto & line = getText () -> string () [i] .getValue ();
 
@@ -401,8 +401,8 @@ ScreenText::transform (const TraverseType type)
 
 		modelViewMatrix .get (translation, rotation, scale);
 
+		const auto & viewport         = getText () -> getViewVolumes () .back () .getViewport ();
 		const auto & projectionMatrix = getText () -> getProjectionMatrix () .get ();
-		const auto   viewport         = Viewport4i ();
 		const auto   screenScale      = fontStyle -> getCurrentViewpoint () -> getScreenScale (translation, viewport);
 
 		Matrix4d screenMatrix;

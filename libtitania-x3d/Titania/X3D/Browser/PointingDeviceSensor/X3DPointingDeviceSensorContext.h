@@ -138,10 +138,11 @@ public:
 	{ return enabledSensors; }
 
 	void
-	setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport);
+	setHitRay (const Vector4i & viewport);
 
-	Line3d
-	getHitRay (const Matrix4d &, const Matrix4d &, const Vector4i &) const;
+	const Line3d &
+	getHitRay () const
+	{ return hitRay; }
 
 	void
 	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);

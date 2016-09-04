@@ -116,15 +116,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DRenderer::addShape (X3DShapeNode* const shape)
 {
-	const Box3d  bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
-	const double depth  = bbox .size () .z () / 2;
-	const double min    = bbox .center () .z () - depth;
-	const double center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
+	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const auto depth  = bbox .size () .z () / 2;
+	const auto min    = bbox .center () .z () - depth;
+	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
 
 	if (min > 0)
 	   return;
 
-	const auto & viewVolume = viewVolumeStack .back ();
+	const auto & viewVolume = getViewVolumes () .back ();
 
 	if (viewVolume .intersects (bbox))
 	{
@@ -185,7 +185,7 @@ Vector3d
 X3DRenderer::constrainTranslation (const Vector3d & translation) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
-	double     distance        = getDistance (translation);
+	auto       distance        = getDistance (translation);
 	const auto zFar            = navigationInfo -> getFarPlane (getViewpoint ());
 
 	// Constrain translation when the viewer collides with a wall.
@@ -342,8 +342,6 @@ void
 X3DRenderer::renderDepth (X3DGroupingNode* const group)
 {
 	numCollisionContainers = 0;
-
-	glClear (GL_DEPTH_BUFFER_BIT);
 
 	group -> traverse (TraverseType::DEPTH);
 
@@ -542,6 +540,8 @@ X3DRenderer::display ()
 
 	// Set global uniforms
 
+	// TODO: set global uniforms.
+
 	// Sorted blend
 
 	#ifdef FIXED_PIPELINE
@@ -556,6 +556,13 @@ X3DRenderer::display ()
 	#endif
 
 	// Render opaque objects first
+
+	const auto & viewport = getViewVolumes () .back () .getViewport ();
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	glClear (GL_DEPTH_BUFFER_BIT);
 
 	glEnable (GL_BLEND);
 	glEnable (GL_DEPTH_TEST);
@@ -599,6 +606,8 @@ X3DRenderer::display ()
 void
 X3DRenderer::depth ()
 {
+	const auto & viewport = getViewVolumes () .back () .getViewport ();
+
 	// Setup projection matrix
 
 	glMatrixMode (GL_PROJECTION);
@@ -606,8 +615,11 @@ X3DRenderer::depth ()
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer
-	glClearColor (1, 1, 1, 1);
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	glClear (GL_DEPTH_BUFFER_BIT);
 
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);

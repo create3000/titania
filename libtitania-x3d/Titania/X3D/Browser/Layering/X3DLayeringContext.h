@@ -75,10 +75,6 @@ public:
 	getLayers ()
 	{ return layers; }
 
-	const Vector4i &
-	getRectangle () const
-	{ return rectangle; }
-
 	const X3DPtr <X3DViewportNode> &
 	getDefaultViewport () const
 	{ return defaultViewport; }
@@ -107,15 +103,9 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	set_reshaped ();
-
 	///  @name Members
 
 	LayerStack layers;
-	Vector4i   rectangle;
 
 	X3DPtr <X3DViewportNode> defaultViewport;
 

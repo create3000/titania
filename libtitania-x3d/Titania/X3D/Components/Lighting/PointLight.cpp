@@ -174,6 +174,8 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 {
 	try
 	{
+		// Vertices of the tetrahedron.
+
 		static const Vector3d directions [4] = {
 			Vector3d (0, 1, 0),
 			Vector3d (0, 1, 0) * Rotation4d (1, 0, 0, radians (120.0)),
@@ -205,10 +207,11 @@ __LOG__ << std::endl;
 		{
 			for (size_t x = 0; x < 2; ++ x)
 			{
-				auto invLightSpaceMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+				const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+				auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 		
 				invLightSpaceMatrix .translate (location () .getValue ());
-				invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), directions [y * 2 + x]));
+				invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x])));
 				invLightSpaceMatrix .inverse ();
 
 				const auto lightBBox        = groupBBox * invLightSpaceMatrix;                                     // Group bbox from the perspective of the light.
@@ -220,39 +223,41 @@ __LOG__ << std::endl;
 __LOG__ << farVal << std::endl;
 
 				if (farVal < 0)
-					return false;
+					continue;
 
 				textureBuffer -> bind ();
-		
-				getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+
+				getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 				getProjectionMatrix () .push (projectionMatrix);
 				getModelViewMatrix  () .push (invLightSpaceMatrix);
-	
+				getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+
 				getCurrentLayer () -> renderDepth (group);
-	
+
 				getModelViewMatrix  () .pop ();
 				getProjectionMatrix () .pop ();
 				getViewVolumes      () .pop_back ();
-	
+
 				textureBuffer -> unbind ();
-	
+
 				#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
 				#ifdef  TITANIA_DEBUG
 				{
 					const auto viewport = Vector4i (x * 50, y * 50, 50, 50);
 
 					frameBuffer .bind ();
-		
-					getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+
+					getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 					getProjectionMatrix () .push (projectionMatrix);
 					getModelViewMatrix  () .push (invLightSpaceMatrix);
-		
+					getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+
 					getCurrentLayer () -> renderDepth (group);
-		
+
 					getModelViewMatrix  () .pop ();
 					getProjectionMatrix () .pop ();
 					getViewVolumes      () .pop_back ();
-		
+
 					frameBuffer .unbind ();
 				}
 				#endif

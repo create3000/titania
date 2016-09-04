@@ -52,10 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
 #include "../../Rendering/X3DRenderer.h"
-#include "../../Types/Pointer.h"
-#include "../EnvironmentalEffects/LocalFog.h"
-#include "../Grouping/X3DGroupingNode.h"
-#include "../Layering/X3DViewportNode.h"
 
 #include "../EnvironmentalEffects/Fog.h"
 #include "../EnvironmentalEffects/X3DBackgroundNode.h"
@@ -66,6 +62,10 @@
 
 namespace titania {
 namespace X3D {
+
+class LocalFog;
+class X3DGroupingNode;
+class X3DViewportNode;
 
 typedef std::vector <X3D::X3DViewpointNode*> UserViewpointList;
 typedef std::stack <LocalFog*>               LocalFogStack;
@@ -139,7 +139,7 @@ public:
 
 	///  @name Bindable node stack handling
 
-	X3DViewportNode*
+	const X3DPtr <X3DViewportNode> &
 	getViewport () const
 	{ return currentViewport; }
 
@@ -237,6 +237,9 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~X3DLayerNode ();
+
 
 protected:
 
@@ -311,7 +314,7 @@ private:
 	X3DBackgroundNodePtr defaultBackground;
 	FogPtr               defaultFog;
 
-	X3DViewportNodePtr currentViewport;
+	X3DPtr <X3DViewportNode> currentViewport;
 
 	NavigationInfoStackPtr navigationInfoStack;
 	ViewpointStackPtr      viewpointStack;

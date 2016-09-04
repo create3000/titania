@@ -74,6 +74,10 @@ public:
 
 	///  @name Member access
 
+	const MFInt32 &
+	getViewport () const
+	{ return viewport; }
+
 	Matrix4dStack &
 	getProjectionMatrix ()
 	{ return projectionMatrix; }
@@ -134,12 +138,22 @@ protected:
 	void
 	initialize () override;
 
+	virtual
+	void
+	reshape ()
+	noexcept (true);
+
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_reshaped ();
+
 	///  @name Members
 
-
+	MFInt32             viewport;
 	Matrix4dStack       projectionMatrix;
 	Matrix4dStack       modelViewMatrix;
 	int32_t             maxClipPlanes;

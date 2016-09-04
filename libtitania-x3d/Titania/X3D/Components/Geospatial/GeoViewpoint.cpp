@@ -54,7 +54,9 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Geospatial/GeoViewpointTool.h"
+
 #include "../Layering/X3DLayerNode.h"
+#include "../Layering/X3DViewportNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -244,9 +246,9 @@ GeoViewpoint::getSpeedFactor () const
 Vector3d
 GeoViewpoint::getScreenScale (const Vector3d & point, const Vector4i & viewport) const
 {
-	const int width  = viewport [2];
-	const int height = viewport [3];
-	double    size   = abs (point) * std::tan (getFieldOfView () / 2) * 2;
+	const int32_t width  = viewport [2];
+	const int32_t height = viewport [3];
+	double        size   = abs (point) * std::tan (getFieldOfView () / 2) * 2;
 
 	size *= std::abs (dot (normalize (point), Vector3d (0, 0, 1)));
 
@@ -297,7 +299,7 @@ GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 void
 GeoViewpoint::setBackgroundProjection (const double zNear, const double zFar)
 {
-	X3DNode::getProjectionMatrix () .set (perspective (getFieldOfView (), zNear, zFar, Viewport4i ()));
+	X3DNode::getProjectionMatrix () .set (perspective (getFieldOfView (), zNear, zFar, getCurrentViewport () -> getRectangle ()));
 }
 
 Matrix4d

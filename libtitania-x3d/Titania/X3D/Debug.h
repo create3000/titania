@@ -76,7 +76,7 @@ debug_roots (X3DChildObject* node, std::set <X3DChildObject*> & seen)
 	if (not seen .emplace (node) .second)
 		return;
 
-	static int i = 0;
+	static size_t i = 0;
 
 	__LOG__ << std::string (i, '\t') << node -> getParents () .size () << " : " << node -> getTypeName () << " : " << node -> getName () << " : " << node << std::endl;
 
@@ -108,7 +108,7 @@ inline
 void
 debug_print_parent_nodes (const X3D::X3DChildObject* object)
 {
-	static int i = 0;
+	static int32_t i = 0;
 
 	for (auto & parent : object -> getParents ())
 	{

@@ -59,7 +59,6 @@ namespace X3D {
 X3DLayeringContext::X3DLayeringContext () :
 	    X3DBaseNode (),
 	         layers (),
-	      rectangle (),
    defaultViewport (new Viewport (getExecutionContext ()))
 {
 	addChildren (defaultViewport);
@@ -69,16 +68,6 @@ void
 X3DLayeringContext::initialize ()
 {
 	defaultViewport -> setup ();
-
-	getBrowser () -> reshaped () .addInterest (this, &X3DLayeringContext::set_reshaped);
-
-	set_reshaped ();
-}
-
-void
-X3DLayeringContext::set_reshaped ()
-{
-	rectangle = Viewport4i ();
 }
 
 X3DLayeringContext::~X3DLayeringContext ()

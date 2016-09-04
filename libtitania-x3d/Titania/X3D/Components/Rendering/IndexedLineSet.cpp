@@ -303,7 +303,7 @@ IndexedLineSet::build ()
 
 	// Fill GeometryNode
 
-	int face = 0;
+	size_t face = 0;
 
 	for (const auto & polyline : polylines)
 	{

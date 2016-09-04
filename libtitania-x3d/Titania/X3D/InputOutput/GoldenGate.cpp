@@ -89,12 +89,12 @@ golden_pipe (const std::string & program, const std::string & input)
 {
 	constexpr size_t BUFFER_SIZE = 1024;
 
-	int    pid       = 0;
-	int    status    = 0;
-	int    stdin     = 0;
-	int    stdout    = 0;
-	int    stderr    = 0;
-	size_t bytesRead = 0;
+	int32_t pid       = 0;
+	int32_t status    = 0;
+	int32_t stdin     = 0;
+	int32_t stdout    = 0;
+	int32_t stderr    = 0;
+	size_t  bytesRead = 0;
 
 	std::vector <char> buffer (BUFFER_SIZE);
 
@@ -105,7 +105,7 @@ golden_pipe (const std::string & program, const std::string & input)
 
 	// Write to pipe.
 
-	if (write (stdin, input .c_str (), input .size ()) not_eq (int) input .size ())
+	if (write (stdin, input .c_str (), input .size ()) not_eq (int32_t) input .size ())
 		throw Error <URL_UNAVAILABLE> ("Write to pipe failed.");
 
 	close (stdin);

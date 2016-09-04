@@ -122,7 +122,7 @@ TriangleSet2D::buildTexCoords ()
 
 	Vector3d min;
 	double   Ssize;
-	int      Sindex, Tindex;
+	int32_t  Sindex, Tindex;
 
 	getTexCoordParams (min, Ssize, Sindex, Tindex);
 

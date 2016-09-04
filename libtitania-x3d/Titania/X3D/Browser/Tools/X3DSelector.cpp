@@ -154,7 +154,7 @@ X3DSelector::on_motion1_notify_event (GdkEventMotion* event)
 void
 X3DSelector::addPoint (const double x, const double y)
 {
-	const auto & viewport = getBrowser () -> getRectangle ();
+	const auto & viewport = getBrowser () -> getViewport ();
 	const double height   = viewport [3];
 
 	points .emplace_back (x, height - y, 0);
@@ -173,11 +173,11 @@ X3DSelector::display ()
 
 	// Configure HUD
 
-	const auto & viewport = getBrowser () -> getRectangle ();
-	const int    width    = viewport [2];
-	const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getViewport ();
+	const auto & width    = viewport [2];
+	const auto & height   = viewport [3];
 
-	const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .data ());
@@ -217,11 +217,11 @@ X3DSelector::draw ()
 
 	// Configure HUD
 
-	const auto & viewport = getBrowser () -> getRectangle ();
-	const int    width    = viewport [2];
-	const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getViewport ();
+	const auto & width    = viewport [2];
+	const auto & height   = viewport [3];
 
-	const Matrix4d projection = ortho <float> (0, width, 0, height, -1, 1);
+	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
 
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -246,7 +246,7 @@ X3DSelector::draw ()
 void
 X3DSelector::polygon ()
 {
-	math::tessellator <double, int> tessellator;
+	math::tessellator <double, int32_t> tessellator;
 
 	tessellator .begin_polygon ();
 	tessellator .begin_contour ();

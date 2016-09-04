@@ -153,7 +153,7 @@ public:
 	traverse (const TraverseType) final override;
 
 	void
-	draw ();
+	draw (const Vector4i &);
 
 
 protected:

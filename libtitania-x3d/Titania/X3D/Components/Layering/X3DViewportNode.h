@@ -68,22 +68,7 @@ public:
 
 	virtual
 	Vector4i
-	getRectangle (const int, const int) const = 0;
-
-	Vector4i
-	getScissor () const;
-
-	virtual
-	Vector4i
-	getScissor (const int, const int) const = 0;
-
-	virtual
-	void
-	enable () = 0;
-
-	virtual
-	void
-	disable () = 0;
+	getRectangle (const int32_t, const int32_t) const = 0;
 
 	virtual
 	void

@@ -323,7 +323,7 @@ protected:
 	{ return Matrix4d (); }
 
 	void
-	getTexCoordParams (Vector3d &, double &, int &, int &);
+	getTexCoordParams (Vector3d &, double &, int32_t &, int32_t &);
 
 	void
 	refineNormals (const NormalIndex &, std::vector <Vector3f> &, const float, const bool) const;

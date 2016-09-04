@@ -68,7 +68,7 @@ namespace X3D {
 static constexpr time_type SPEED_FACTOR           = 0.007;
 static constexpr time_type SHIFT_SPEED_FACTOR     = 4 * SPEED_FACTOR;
 static constexpr time_type ROTATION_SPEED_FACTOR  = 1.4;
-static constexpr int       ROTATION_LIMIT         = 40;
+static constexpr int32_t   ROTATION_LIMIT         = 40;
 static constexpr time_type PAN_SPEED_FACTOR       = SPEED_FACTOR;
 static constexpr time_type PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
 static constexpr double    ROLL_ANGLE             = PI <double> / 32;
@@ -446,11 +446,11 @@ X3DFlyViewer::display (const MoveType type)
 
 	// Configure HUD
 
-	const auto & viewport = getBrowser () -> getRectangle ();
-	const int    width    = viewport [2];
-	const int    height   = viewport [3];
+	const auto & viewport = getBrowser () -> getViewport ();
+	const auto & width    = viewport [2];
+	const auto & height   = viewport [3];
 
-	const Matrix4d projection = ortho <double> (0, width, 0, height, -1, 1);
+	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
 
 	std::vector <Vector2d> points;
 

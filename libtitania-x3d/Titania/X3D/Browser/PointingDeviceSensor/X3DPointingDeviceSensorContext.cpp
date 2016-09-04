@@ -140,23 +140,15 @@ X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle
 }
 
 void
-X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
-{
-	hitRay = getHitRay (modelViewMatrix, projectionMatrix, viewport);
-
-	getBrowser () -> getLayers () .top () -> setHitRay (hitRay);
-}
-
-Line3d
-X3DPointingDeviceSensorContext::getHitRay (const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport) const
+X3DPointingDeviceSensorContext::setHitRay (const Vector4i & viewport)
 {
 	try
 	{
-		return ViewVolume::unProjectRay (pointer .x (), pointer .y (), modelViewMatrix, projectionMatrix, viewport);
+		hitRay = ViewVolume::unProjectRay (pointer .x (), pointer .y (), Matrix4d (), getBrowser () -> getProjectionMatrix () .get (), viewport);
 	}
 	catch (const std::domain_error &)
 	{
-		return Line3d (Vector3d (), Vector3d ());
+		hitRay = Line3d (Vector3d (), Vector3d ());
 	}
 }
 

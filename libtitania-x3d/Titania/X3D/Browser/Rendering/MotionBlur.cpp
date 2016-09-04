@@ -98,13 +98,13 @@ MotionBlur::set_enabled ()
 
 	if (enabled ())
 	{
-		getBrowser () -> reshaped ()  .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed () .addInterest (this, &MotionBlur::display);
+		getBrowser () -> getViewport () .addInterest (this, &MotionBlur::clear);
+		getBrowser () -> displayed ()   .addInterest (this, &MotionBlur::display);
 	}
 	else
 	{
-		getBrowser () -> reshaped ()  .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed () .removeInterest (this, &MotionBlur::display);
+		getBrowser () -> getViewport () .removeInterest (this, &MotionBlur::clear);
+		getBrowser () -> displayed ()   .removeInterest (this, &MotionBlur::display);
 	}
 }
 

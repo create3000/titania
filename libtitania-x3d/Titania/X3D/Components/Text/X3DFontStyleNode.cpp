@@ -119,11 +119,11 @@ X3DTextGeometry::horizontal ()
 
 	// Calculate bboxes.
 
-	const int first = topToBottom ? 0 : numLines - 1;
-	const int last  = topToBottom ? numLines : -1;
-	const int step  = topToBottom ? 1 : -1;
+	const int32_t first = topToBottom ? 0 : numLines - 1;
+	const int32_t last  = topToBottom ? numLines : -1;
+	const int32_t step  = topToBottom ? 1 : -1;
 
-	for (int l = first; l not_eq last; l += step)
+	for (int32_t l = first; l not_eq last; l += step)
 	{
 		const auto & line = text -> string () [l];
 
@@ -255,27 +255,27 @@ X3DTextGeometry::vertical ()
 
 	// Calculate bboxes.
 
-	const int first = leftToRight ? 0 : numLines - 1;
-	const int last  = leftToRight ? numLines : -1;
-	const int step  = leftToRight ? 1 : -1;
-	size_t    t     = 0; // Translation index
+	const int32_t first = leftToRight ? 0 : numLines - 1;
+	const int32_t last  = leftToRight ? numLines : -1;
+	const int32_t step  = leftToRight ? 1 : -1;
+	size_t        t     = 0; // Translation index
 
-	for (int l = first; l not_eq last; l += step)
+	for (int32_t l = first; l not_eq last; l += step)
 	{
 		const auto & line = text -> string () [l] .getValue ();
 		
-		const int    t0       = t;
-		const size_t numChars = line .length ();
+		const int32_t t0       = t;
+		const size_t  numChars = line .length ();
 
 		// Calculate line bbox
 
 		Box2d lineBBox;
 
-		const int first = topToBottom ? 0 : numChars - 1;
-		const int last  = topToBottom ? numChars : -1;
-		const int step  = topToBottom ? 1 : -1;
+		const int32_t first = topToBottom ? 0 : numChars - 1;
+		const int32_t last  = topToBottom ? numChars : -1;
+		const int32_t step  = topToBottom ? 1 : -1;
 
-		for (int g = first; g not_eq last; g += step)
+		for (int32_t g = first; g not_eq last; g += step)
 		{
 			const auto & glyph = line [g];
 
@@ -288,7 +288,7 @@ X3DTextGeometry::vertical ()
 			
 			// Calculate glyph translation
 			
-			const int glyphNumber = topToBottom ? g : numChars - g - 1;
+			const int32_t glyphNumber = topToBottom ? g : numChars - g - 1;
 
 			translations [t] = Vector2d ((spacing - size .x () - min .x ()) / 2, -glyphNumber * height);
 			

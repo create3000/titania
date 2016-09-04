@@ -137,7 +137,7 @@ Arc2D::getAngle ()
 	if (not std::isnan (difference))
 		return difference;
 	
-	// We must test for NAN, as NAN to int is undefined.
+	// We must test for NAN, as NAN to int32_t is undefined.
 	return 0;
 }
 

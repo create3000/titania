@@ -83,10 +83,10 @@ static constexpr int32_t X3D_KEY_DOWN  = 18;
 static constexpr int32_t X3D_KEY_LEFT  = 19;
 static constexpr int32_t X3D_KEY_RIGHT = 20;
 
-static constexpr int Control_R = 1;
-static constexpr int Control_L = 2;
-static constexpr int Shift_R   = 1;
-static constexpr int Shift_L   = 2;
+static constexpr int32_t Control_R = 1;
+static constexpr int32_t Control_L = 2;
+static constexpr int32_t Shift_R   = 1;
+static constexpr int32_t Shift_L   = 2;
 
 KeySensor::Fields::Fields () :
 	      controlKey (new SFBool ()),
@@ -126,7 +126,7 @@ KeySensor::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-KeySensor::setActionKeyPressEvent (const int keyval)
+KeySensor::setActionKeyPressEvent (const int32_t keyval)
 {
 	switch (keyval)
 	{
@@ -284,7 +284,7 @@ KeySensor::setActionKeyPressEvent (const int keyval)
 }
 
 void
-KeySensor::setActionKeyReleaseEvent (const int keyval)
+KeySensor::setActionKeyReleaseEvent (const int32_t keyval)
 {
 	switch (keyval)
 	{

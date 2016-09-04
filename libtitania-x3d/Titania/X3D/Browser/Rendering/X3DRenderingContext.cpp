@@ -59,6 +59,7 @@ namespace X3D {
 
 X3DRenderingContext::X3DRenderingContext () :
 	     X3DBaseNode (),
+	        viewport ({ 0, 0, 0, 0 }),
 	projectionMatrix (),
 	 modelViewMatrix (),
 	   maxClipPlanes (0),
@@ -67,7 +68,7 @@ X3DRenderingContext::X3DRenderingContext () :
 	     depthOffset (),
 	      motionBlur (new MotionBlur (getExecutionContext ()))
 {
-	addChildren (motionBlur);
+	addChildren (viewport, motionBlur);
 
 	depthTest   .push (true);
 	depthOffset .push (0);
@@ -76,46 +77,59 @@ X3DRenderingContext::X3DRenderingContext () :
 void
 X3DRenderingContext::initialize ()
 {
-	if (glXGetCurrentContext ())
-	{
-		#ifndef FIXED_PIPELINE
-		glEnable (GL_POINT_SPRITE);
-		glEnable (GL_PROGRAM_POINT_SIZE);
-		#endif
+	if (not glXGetCurrentContext ())
+		return;
 
-		glEnable (GL_SCISSOR_TEST);
+	// Configure context
 
-		glCullFace (GL_BACK);
-		glEnable (GL_NORMALIZE);
+	#ifndef FIXED_PIPELINE
+	glEnable (GL_POINT_SPRITE);
+	glEnable (GL_PROGRAM_POINT_SIZE);
+	#endif
 
-		glDepthFunc (GL_LEQUAL);
-		glClearDepth (1);
+	glEnable (GL_SCISSOR_TEST);
 
-		glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
+	glCullFace (GL_BACK);
+	glEnable (GL_NORMALIZE);
 
-		glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glDepthFunc (GL_LEQUAL);
+	glClearDepth (1);
 
-		glHint (GL_FOG_HINT, GL_NICEST);
+	glBlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquationSeparate (GL_FUNC_ADD, GL_FUNC_ADD);
 
-		// ClipPlanes
+	glColorMaterial (GL_FRONT_AND_BACK, GL_DIFFUSE);
 
-		glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
+	glHint (GL_FOG_HINT, GL_NICEST);
 
-		for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
-			clipPlanes .push (GL_CLIP_PLANE0 + i);
-	}
+	// ClipPlanes
+
+	glGetIntegerv (GL_MAX_CLIP_PLANES, &maxClipPlanes);
+
+	for (int32_t i = maxClipPlanes - 1; i >= 0; -- i)
+		clipPlanes .push (GL_CLIP_PLANE0 + i);
+
+	// Setup
 
 	motionBlur -> setup ();
 }
 
 void
+X3DRenderingContext::reshape ()
+noexcept (true)
+{
+	Vector4i value;
+
+	glGetIntegerv (GL_VIEWPORT, value .data ());
+
+	viewport .assign (value .data (), value .data () + value .size ());
+}
+
+void
 X3DRenderingContext::renderBackground ()
 {
-	const auto rectangle = getBrowser () -> getRectangle ();
-
-	glViewport (rectangle [0], rectangle [1], rectangle [2], rectangle [3]);
-	glScissor  (rectangle [0], rectangle [1], rectangle [2], rectangle [3]);
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
 
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT);

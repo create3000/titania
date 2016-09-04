@@ -188,48 +188,48 @@ Shape::pointer ()
 void
 Shape::touch ()
 {
-	std::vector <IntersectionPtr> itersections;
-
-	const Line3d hitRay = getBrowser () -> getHitRay (getModelViewMatrix () .get (), getProjectionMatrix () .get (), Viewport4i ());
-
-	if (not getGeometry () -> intersects (hitRay, itersections))
-		return;
-
-	// Finally we have intersections and must now find the closest hit in front of the camera.
-
-	// Transform hitPoints to absolute space.
-	for (auto & itersection : itersections)
-		itersection -> point = itersection -> point * getModelViewMatrix () .get ();
-
-	// Sort desc
-	std::sort (itersections .begin (), itersections .end (),
-	           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
-	           {
-	              return lhs -> point .z () > rhs -> point .z ();
-				  });
-
-	// Find first point that is not greater than near plane;
-	const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
-	                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
-	                                           {
-	                                              return lhs -> point .z () > rhs;
-															 });
-
-	// There are only intersections behind the camera.
-	if (itersection == itersections .end ())
-		return;
-
 	try
 	{
+		std::vector <IntersectionPtr> itersections;
+	
+		const auto hitRay = getBrowser () -> getHitRay () * inverse (getModelViewMatrix () .get ());
+	
+		if (not getGeometry () -> intersects (hitRay, itersections))
+			return;
+	
+		// Finally we have intersections and must now find the closest hit in front of the camera.
+	
+		// Transform hitPoints to absolute space.
+		for (auto & itersection : itersections)
+			itersection -> point = itersection -> point * getModelViewMatrix () .get ();
+	
+		// Sort desc
+		std::sort (itersections .begin (), itersections .end (),
+		           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
+		           {
+		              return lhs -> point .z () > rhs -> point .z ();
+					  });
+	
+		// Find first point that is not greater than near plane;
+		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+		                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+		                                           {
+		                                              return lhs -> point .z () > rhs;
+																 });
+	
+		// There are only intersections behind the camera.
+		if (itersection == itersections .end ())
+			return;
+
 		// Transform hitNormal to absolute space.
 		(*itersection) -> normal = normalize (inverse (getModelViewMatrix () .get ()) .mult_matrix_dir ((*itersection) -> normal));
+
+		getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 	}
 	catch (const std::domain_error &)
 	{
 		return;
 	}
-
-	getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
 }
 
 void

@@ -236,7 +236,7 @@ X3DBackgroundNode::build ()
 
 		numIndices = 24;
 
-		for (int i = 0; i < numIndices; ++ i)
+		for (int32_t i = 0; i < numIndices; ++ i)
 			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
 
 		// Back
@@ -332,7 +332,7 @@ X3DBackgroundNode::traverse (const TraverseType type)
 }
 
 void
-X3DBackgroundNode::draw ()
+X3DBackgroundNode::draw (const Vector4i & viewport)
 {
 	if (hidden)
 		return;
@@ -341,8 +341,7 @@ X3DBackgroundNode::draw ()
 
 	// Scale background
 
-	const auto viewport = Viewport4i ();
-	auto       scale    = getCurrentViewpoint () -> getScreenScale (Vector3d (0, 0, SIZE), viewport);
+	auto scale = getCurrentViewpoint () -> getScreenScale (Vector3d (0, 0, SIZE), viewport);
 
 	scale *= std::max (viewport [2], viewport [3]);
 

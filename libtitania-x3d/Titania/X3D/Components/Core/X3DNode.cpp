@@ -1295,6 +1295,12 @@ X3DNode::getCurrentLayer () const
 	return getBrowser () -> getLayers () .top ();
 }
 
+X3DViewportNode*
+X3DNode::getCurrentViewport () const
+{
+	return getCurrentLayer () -> getViewport ();
+}
+
 const ViewVolumeStack &
 X3DNode::getViewVolumes () const
 {

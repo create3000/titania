@@ -228,7 +228,7 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 
 		textureBuffer -> bind ();
 
-		getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+		getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 		getProjectionMatrix () .push (projectionMatrix);
 		getModelViewMatrix  () .push (invLightSpaceMatrix);
 		getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
@@ -252,7 +252,7 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 			frameBuffer .setup ();
 			frameBuffer .bind ();
 	
-			getViewVolumes      () .emplace_back (projectionMatrix, viewport);
+			getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 			getProjectionMatrix () .push (projectionMatrix);
 			getModelViewMatrix  () .push (invLightSpaceMatrix);
 			getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));

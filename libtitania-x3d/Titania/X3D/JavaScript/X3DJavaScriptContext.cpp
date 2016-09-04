@@ -83,7 +83,7 @@ X3DJavaScriptContext::isLive () const
 }
 
 void
-X3DJavaScriptContext::setError (const std::string & message, const std::string & filename, const int lineNumber, const int startColumn, std::string line) const
+X3DJavaScriptContext::setError (const std::string & message, const std::string & filename, const int32_t lineNumber, const int32_t startColumn, std::string line) const
 {
 	if (line .empty ())
 	{
@@ -98,7 +98,7 @@ X3DJavaScriptContext::setError (const std::string & message, const std::string &
 			std::string::size_type start = 0;
 			std::string::size_type end   = 0;
 
-			for (int i = 0; i < lineNumber - 1; ++ i)
+			for (int32_t i = 0; i < lineNumber - 1; ++ i)
 			{
 				start = ecmascript .find (nl, start);
 

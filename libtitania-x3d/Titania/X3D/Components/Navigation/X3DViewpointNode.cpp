@@ -54,12 +54,13 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DScene.h"
-#include "../Layering/X3DLayerNode.h"
-#include "../Navigation/NavigationInfo.h"
 
 #include "../Interpolation/EaseInEaseOut.h"
 #include "../Interpolation/PositionInterpolator.h"
 #include "../Interpolation/OrientationInterpolator.h"
+#include "../Layering/X3DLayerNode.h"
+#include "../Layering/X3DViewportNode.h"
+#include "../Navigation/NavigationInfo.h"
 #include "../Time/TimeSensor.h"
 
 namespace titania {
@@ -608,7 +609,7 @@ X3DViewpointNode::reshape ()
 void
 X3DViewpointNode::reshape (const double zNear, const double zFar)
 {
-	X3DNode::getProjectionMatrix () .set (getProjectionMatrix (zNear, zFar, Viewport4i ()));
+	X3DNode::getProjectionMatrix () .set (getProjectionMatrix (zNear, zFar, getCurrentViewport () -> getRectangle ()));
 }
 
 void

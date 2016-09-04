@@ -222,7 +222,7 @@ Geospatial::getNorthingFirst (const MFString & geoSystem)
 	return true;
 }
 
-int
+int32_t
 Geospatial::getZone (const MFString & geoSystem)
 {
 	static const std::regex Zone (R"/(Z(\d+))/");

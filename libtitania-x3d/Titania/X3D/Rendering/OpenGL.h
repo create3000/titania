@@ -67,26 +67,6 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-inline
-Vector4i
-Viewport4i ()
-{
-	Vector4i viewport;
-
-	glGetIntegerv (GL_VIEWPORT, viewport .data ());
-	return viewport;
-}
-
-inline
-Vector4i
-Scissor4i ()
-{
-	Vector4i scissor;
-
-	glGetIntegerv (GL_SCISSOR_BOX, scissor .data ());
-	return scissor;
-}
-
 class PolygonMode
 {
 public:

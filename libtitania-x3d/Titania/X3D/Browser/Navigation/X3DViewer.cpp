@@ -54,6 +54,7 @@
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Layering/X3DViewportNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
 #include "../../Rendering/ViewVolume.h"
 
