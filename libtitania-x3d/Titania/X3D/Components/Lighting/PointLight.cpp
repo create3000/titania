@@ -200,7 +200,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		frameBuffer .setup ();
 		#endif
 		#endif
-		
+
 __LOG__ << std::endl;
 
 		for (size_t y = 0; y < 2; ++ y)
@@ -240,8 +240,8 @@ __LOG__ << farVal << std::endl;
 
 				textureBuffer -> unbind ();
 
-				#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
-				#ifdef  TITANIA_DEBUG
+				#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
+				#ifdef TITANIA_DEBUG
 				{
 					const auto viewport = Vector4i (x * 50, y * 50, 50, 50);
 
@@ -265,8 +265,8 @@ __LOG__ << farVal << std::endl;
 			}
 		}
 
-		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
-		#ifdef  TITANIA_DEBUG
+		#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
+		#ifdef TITANIA_DEBUG
 		frameBuffer .bind ();
 		frameBuffer .readDepth ();
 		frameBuffer .unbind ();

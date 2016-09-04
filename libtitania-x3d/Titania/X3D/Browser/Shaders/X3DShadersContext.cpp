@@ -56,7 +56,7 @@
 #include "../../Rendering/OpenGL.h"
 #include "../ContextLock.h"
 #include "../Networking/config.h"
-#include "../RenderingProperties.h"
+#include "../BrowserOptions.h"
 #include "../X3DBrowser.h"
 
 namespace titania {
@@ -105,9 +105,9 @@ X3DShadersContext::initialize ()
 
 		// Shading
 
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (this, &X3DShadersContext::set_shading);
+		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (this, &X3DShadersContext::set_shading);
 
-		set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
+		set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
 	}
 }
 
@@ -117,7 +117,7 @@ X3DShadersContext::setFixedPipeline (const bool value)
 {
 	fixedPipeline = value;
 
-	set_shading (getBrowser () -> getRenderingProperties () -> getShading ());
+	set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
 }
 
 bool
