@@ -67,8 +67,6 @@
 
 #include <Titania/String/to_string.h>
 
-#include "../../Debug.h"
-
 namespace titania {
 namespace X3D {
 

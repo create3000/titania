@@ -201,8 +201,6 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		#endif
 		#endif
 
-__LOG__ << std::endl;
-
 		for (size_t y = 0; y < 2; ++ y)
 		{
 			for (size_t x = 0; x < 2; ++ x)
@@ -219,8 +217,6 @@ __LOG__ << std::endl;
 				const auto farVal           = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
 				const auto viewport         = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
 				const auto projectionMatrix = perspective <double> (radians (120.0), 0.125, farVal, viewport);
-
-__LOG__ << farVal << std::endl;
 
 				if (farVal < 0)
 					continue;

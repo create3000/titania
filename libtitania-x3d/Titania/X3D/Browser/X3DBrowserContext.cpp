@@ -58,8 +58,6 @@
 
 #include "../Components/Layering/X3DLayerNode.h"
 
-#include "../Debug.h"
-
 namespace titania {
 namespace X3D {
 

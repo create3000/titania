@@ -70,8 +70,9 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t DEPTH_BUFFER_WIDTH  = 16;
-static constexpr size_t DEPTH_BUFFER_HEIGHT = 16;
+static constexpr size_t DEPTH_BUFFER_WIDTH    = 16;
+static constexpr size_t DEPTH_BUFFER_HEIGHT   = 16;
+static constexpr auto   DEPTH_BUFFER_VIEWPORT = Vector4i (0, 0, DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT);
 
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
@@ -275,11 +276,15 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 double
 X3DRenderer::getDepth () const
 {
+	static const ViewVolume viewVolume (Matrix4d (), DEPTH_BUFFER_VIEWPORT, DEPTH_BUFFER_VIEWPORT);
+
 	// Render all objects
 
 	depthBuffer -> bind ();
 
+	const_cast <X3DRenderer*> (this) -> getViewVolumes () .emplace_back (viewVolume);
 	const_cast <X3DRenderer*> (this) -> depth ();
+	const_cast <X3DRenderer*> (this) -> getViewVolumes () .pop_back ();
 
 	// Get distance from depth buffer
 		
