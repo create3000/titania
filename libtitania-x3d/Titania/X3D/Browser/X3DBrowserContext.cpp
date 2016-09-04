@@ -162,7 +162,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (getWorld ())
 	{
-		const bool backgroundHidden = getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden ();
+		const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
+		const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
 	
 		// Render to frame buffer.
 
@@ -171,7 +172,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .setup ();
 		frameBuffer .bind ();
 
-		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (alphaChannel);
+		layer0 -> getBackground () -> isHidden (alphaChannel);
 		getBrowser () -> setRenderTools (false);
 		getBrowser () -> reshape ();
 
@@ -187,7 +188,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		getBrowser () -> reshape ();
 		getBrowser () -> setRenderTools (true);
-		getWorld () -> getLayerSet () -> getLayer0 () -> getBackground () -> isHidden (backgroundHidden);
+		layer0 -> getBackground () -> isHidden (backgroundHidden);
 
 		// Process image.
 

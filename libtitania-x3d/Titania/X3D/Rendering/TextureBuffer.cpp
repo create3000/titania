@@ -80,6 +80,7 @@ TextureBuffer::setup ()
 		return;
 
 	// Generate and bind frame buffer.
+	glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
 	glGenFramebuffers (1, &id);
 	glBindFramebuffer (GL_FRAMEBUFFER, id);
 
@@ -109,7 +110,7 @@ TextureBuffer::setup ()
 	if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
 		throw std::runtime_error ("Couldn't create frame buffer.");
 
-	glBindFramebuffer (GL_FRAMEBUFFER, 0);
+	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
 }
 
 void

@@ -82,6 +82,7 @@ FrameBuffer::setup ()
 	if (glXGetCurrentContext ()) // GL_EXT_framebuffer_object
 	{
 		// Generate and bind frame buffer.
+		glGetIntegerv (GL_FRAMEBUFFER_BINDING, &frameBuffer);
 		glGenFramebuffers (1, &id);
 		glBindFramebuffer (GL_FRAMEBUFFER, id);
 
@@ -119,7 +120,7 @@ FrameBuffer::setup ()
 		if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
 			throw std::runtime_error ("Couldn't create frame buffer.");
 
-		glBindFramebuffer (GL_FRAMEBUFFER, 0);
+		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
 	}
 }
 
@@ -212,33 +213,6 @@ FrameBuffer::readDepth ()
 	else
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 }
-
-//// DEBUG
-//
-//void
-//FrameBuffer::save ()
-//{
-//	glBindFramebuffer (GL_FRAMEBUFFER, id);
-//	glReadPixels (0, 0, width, height, GL_RGB, GL_FLOAT, color .data ());
-//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
-//}
-//
-//// DEBUG
-//
-//void
-//FrameBuffer::display ()
-//{
-//	glWindowPos2i (0, 0);
-//	glDrawPixels (width, height, GL_RGB, GL_FLOAT, color .data ());
-//
-//	//	glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-//	//	glBindFramebuffer (GL_DRAW_FRAMEBUFFER, 0);
-//	//
-//	//	glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-//	//
-//	//	// Bind frame buffer.
-//	//	glBindFramebuffer (GL_FRAMEBUFFER, 0);
-//}
 
 FrameBuffer::~FrameBuffer ()
 {

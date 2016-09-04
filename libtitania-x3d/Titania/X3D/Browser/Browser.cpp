@@ -63,11 +63,12 @@
 #include "../Browser/Tools/LightSaber.h"
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
+#include "../Execution/World.h"
+
 #include "../Components/EnvironmentalEffects/Fog.h"
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
-#include "../Execution/World.h"
 
 #include <glibmm/main.h>
 #include <gtkmm/container.h>
