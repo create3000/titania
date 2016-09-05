@@ -200,16 +200,6 @@ public:
 	getLocalFogs ()
 	{ return localFogs; }
 
-	///  @name User picking handling
-
-	void
-	setHitRay (const Line3d & value)
-	{ hitRay = value; }
-
-	const Line3d &
-	getHitRay () const
-	{ return hitRay; }
-
 	///  @name Friends handling
 
 	X3DPtr <X3DGroupingNode> &
@@ -328,8 +318,6 @@ private:
 	FogListPtr            fogs;
 
 	LocalFogStack  localFogs;
-	
-	Line3d hitRay;
 
 	X3DPtr <X3DGroupingNode> group;
 	X3DPtr <X3DGroupingNode> friends;

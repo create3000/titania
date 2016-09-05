@@ -82,8 +82,10 @@ public:
 
 private:
 
-	GLuint                textureId;
-	math::matrix4 <float> projectionMatrix;
+	GLuint                 textureId;
+	math::matrix4 <double> projectionMatrix;
+	size_t                 width;
+	size_t                 height;
 };
 
 

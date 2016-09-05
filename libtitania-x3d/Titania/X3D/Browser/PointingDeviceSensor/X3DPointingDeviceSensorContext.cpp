@@ -184,7 +184,7 @@ X3DPointingDeviceSensorContext::setMotionNotifyEvent (const double x, const doub
 void
 X3DPointingDeviceSensorContext::motion ()
 {
-	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
+	const auto hitRay = selectedLayer ? this -> hitRay : Line3d (Vector3d (), Vector3d ());
 
 	const auto nearestHit = getHits () .empty ()
 	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)
@@ -269,8 +269,6 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
 		if (getBrowser () -> getSelection () -> select ())
 			return true;
 	}
-
-	const auto hitRay = selectedLayer ? selectedLayer -> getHitRay () : Line3d (Vector3d (), Vector3d ());
 
 	const auto nearestHit = getHits () .empty ()
 	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)

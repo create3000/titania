@@ -92,7 +92,9 @@ private:
 
 Background::Background () :
 	       textureId (0),
-	projectionMatrix (ortho <float> (0, 1, 0, 1, -1, 1))
+	projectionMatrix (ortho <double> (0, 1, 0, 1, -1, 1)),
+	           width (0),
+	          height (0)
 { }
 
 void
@@ -104,6 +106,9 @@ Background::setup ()
 void
 Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
 {
+	this -> width  = width;
+	this -> height = height;
+
 	Cairo::RefPtr <Cairo::ImageSurface> surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
 
 	const auto cairo = Cairo::Context::create (surface);
@@ -132,8 +137,11 @@ Background::draw ()
 		vector4 <float> (0, 1, 0, 1)
 	};
 
+	glViewport (0, 0, width, height);
+	glScissor  (0, 0, width, height);
+
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixf (projectionMatrix .data ());
+	glLoadMatrixd (projectionMatrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();

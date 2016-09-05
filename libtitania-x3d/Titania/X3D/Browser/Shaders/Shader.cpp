@@ -90,7 +90,7 @@ throw (Error <INVALID_URL>,
 	input  .imbue (std::locale::classic ());
 	output .imbue (std::locale::classic ());
 
-	size_t      lineNumber = 1;
+	size_t      lineNumber = 0;
 	std::string line;
 
 	if (level)

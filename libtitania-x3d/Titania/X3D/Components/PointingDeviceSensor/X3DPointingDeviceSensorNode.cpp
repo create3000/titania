@@ -178,7 +178,7 @@ X3DPointingDeviceSensorNode::push ()
 		getCurrentLayer () -> disposed () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
 	}
 
-	iter -> second = Matrices { getModelViewMatrix () .get (), getProjectionMatrix () .get (), getCurrentViewport () -> getRectangle ()  };
+	iter -> second = Matrices { getModelViewMatrix () .get (), getProjectionMatrix () .get (), getCurrentViewport () -> getRectangle () };
 }
 
 void

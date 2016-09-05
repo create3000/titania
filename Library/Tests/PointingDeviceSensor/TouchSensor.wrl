@@ -1,10 +1,75 @@
-#VRML V2.0 utf8 Titania V0.7.5
+#VRML V2.0 utf8 Titania V1.4.9
 
-META "title" "TouchSensor"
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              9.64484928920026,
+              12.143861061643,
+              -1.62839420746134
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.0609119051953254,
+              0.828927918236406,
+              0.556028997601504,
+              2.49687294768632
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              3.33892201258892,
+              -0.344722510308543,
+              1.87617746879294
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "TouchSensor"
+}
 
 Transform {
   translation 2 4 54
-  rotation 0.0961869 0.964997 0.243986 0.601776
+  rotation 0.0961868856712038 0.964996856246065 0.243985963653827 0.601776
   scale 0.234 234 12.23
   children [
     Viewpoint {
@@ -40,6 +105,14 @@ Transform {
             }
             geometry DEF Cube IndexedFaceSet {
               colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
               texCoordIndex [
                 0,
                 1,
@@ -71,14 +144,6 @@ Transform {
                 3,
                 2,
                 -1
-              ]
-              colorIndex [
-                0,
-                1,
-                2,
-                3,
-                4,
-                5
               ]
               coordIndex [
                 0,
@@ -148,7 +213,7 @@ Transform {
         Transform {
           translation 3.29156 -0.792914 -1.04336
           scale -1.12121 -0.719564 -0.719564
-          scaleOrientation 1 2.13974e-05 2.58497e-05 0.0457694
+          scaleOrientation 0.999999999436972 2.13973999879527e-05 2.58496999854459e-05 0.0457693999999979
           children Shape {
             appearance Appearance {
               material Material { }
@@ -156,6 +221,14 @@ Transform {
             geometry DEF Cube_1 IndexedFaceSet {
               ccw FALSE
               colorPerVertex FALSE
+              colorIndex [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
               texCoordIndex [
                 0,
                 1,
@@ -187,14 +260,6 @@ Transform {
                 3,
                 2,
                 -1
-              ]
-              colorIndex [
-                0,
-                1,
-                2,
-                3,
-                4,
-                5
               ]
               coordIndex [
                 0,
@@ -263,9 +328,8 @@ Transform {
         }
         Transform {
           translation 6.90227 -0.792914 -1.22259
-          rotation 0 0 1 0
           scale -1.12121 -0.719564 -0.719564
-          scaleOrientation 1 2.13974e-05 2.58497e-05 0.0457694
+          scaleOrientation 0.999999999436972 2.13973999879527e-05 2.58496999854459e-05 0.0457693999999979
           children Shape {
             appearance Appearance {
               material Material { }
