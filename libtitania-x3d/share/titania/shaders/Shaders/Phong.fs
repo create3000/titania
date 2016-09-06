@@ -149,28 +149,27 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 		mat4 locationMatrix    = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,  location .x,  location .y,  location .z, 1.0);
 		mat4 invLocationMatrix = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -location .x, -location .y, -location .z, 1.0);
 
-		mat4 rotations [4];
-		rotations [0] = mat4 (0.788675134594813, -0.211324865405187, -0.577350269189626, 0.0, -0.211324865405187, 0.788675134594813, -0.577350269189626, 0.0,  0.577350269189626,  0.577350269189626,  0.577350269189626, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [1] = mat4 (0.211324865405187,  0.788675134594813, -0.577350269189626, 0.0,  0.788675134594813, 0.211324865405187,  0.577350269189626, 0.0,  0.577350269189626, -0.577350269189626, -0.577350269189626, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [2] = mat4 (0.211324865405187,  0.788675134594813,  0.577350269189626, 0.0,  0.788675134594813, 0.211324865405187, -0.577350269189626, 0.0, -0.577350269189626,  0.577350269189626, -0.577350269189626, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [3] = mat4 (0.788675134594813, -0.211324865405187,  0.577350269189626, 0.0, -0.211324865405187, 0.788675134594813,  0.577350269189626, 0.0, -0.577350269189626, -0.577350269189626,  0.577350269189626, 0.0, 0.0, 0.0, 0.0, 1.0);
+		mat4 rotations [6];
+		rotations [0] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [1] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
-		vec2 offsets [4];
+		vec2 offsets [6];
 		offsets [0] = vec2 (0.0, 0.0);
 		offsets [1] = vec2 (0.5, 0.0);
-		offsets [2] = vec2 (0.0, 0.5);
-		offsets [3] = vec2 (0.5, 0.5);
-
-		// lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
-		//	v = x3d_ModelViewMatrix * x3d_Vertex;
-
-		//shadowMatrix * directions [i] * v;
+		offsets [2] = vec2 (0.0, 1.0 / 3.0);
+		offsets [3] = vec2 (0.5, 1.0 / 3.0);
+		offsets [4] = vec2 (0.0, 2.0 / 3.0);
+		offsets [5] = vec2 (0.5, 2.0 / 3.0);
 
 		int value = 0;
 	
 		for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 		{
-			for (int m = 0; m < 4; ++ m)
+			for (int m = 0; m < 1; ++ m)
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = shadowMatrix * (locationMatrix * rotations [m] * invLocationMatrix) * vec4 (vertex, 1.0);
@@ -178,10 +177,10 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 	
 				shadowCoord .xyz /= shadowCoord .w;
 
-				if (shadowCoord .x < 0.0 || shadowCoord .x > 0.5)
+				if (shadowCoord .x < 0.0 || shadowCoord .x > 1.0 / 3.0)
 					continue;
 		
-				if (shadowCoord .y < 0.0 || shadowCoord .y > 0.5)
+				if (shadowCoord .y < 0.0 || shadowCoord .y > 1.0 / 3.0)
 					continue;
 
 				if (shadowCoord .z >= 1.0)
@@ -194,7 +193,7 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 			}
 		}
 
-		return shadowIntensity * float (value) / float (SHADOW_SAMPLES * 4);
+		return shadowIntensity * float (value) / float (SHADOW_SAMPLES * 6);
 	}
 
 	int value = 0;

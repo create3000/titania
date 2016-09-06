@@ -93,16 +93,12 @@ frustum (const Type & left, const Type & right, const Type & bottom, const Type 
 ///  @param fieldOfView   Specify the field of view angle.
 ///  @param nearVal       Specify the distances to the nearer depth clipping plane.
 ///                       This value must be positive.
-///  @param farVal        Specify the distances to the nearer depth clipping plane.
-///                       This value must be positive.
-///  @param farVal        Specify the current viewport dimensions.
+///  @param width         Specify the width of the current viewport.
+///  @param height        Specify the height of the current viewport.
 template <class Type>
 matrix4 <Type>
-perspective (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const vector4 <int32_t> & viewport)
+perspective (const Type & fieldOfView, const Type & nearVal, const Type & farVal, const Type & width, const Type & height)
 {
-	const auto width  = viewport [2];
-	const auto height = viewport [3];
-
 	const auto ratio = std::tan (fieldOfView / 2) * nearVal;
 
 	if (width > height)

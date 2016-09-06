@@ -127,25 +127,19 @@ PointLight::getRadius () const
 size_t
 PointLight::getShadowMapSize () const
 {
-	return shadowMapSize () - shadowMapSize () % 2;
+	return shadowMapSize () - shadowMapSize () % 6;
 }
 
 // Determine far value for shadow map calculation.
 double
-PointLight::getFarValue (const Box3d & box) const
+PointLight::getFarValue (const Box3d & box, const Vector3d & location) const
 {
-	double farValue = 0;
+	const auto   extents = box .extents ();
+	const auto & min     = extents .first;
+	const auto & max     = extents .second;
 
-	// Determine far value.
+	const auto farValue = std::max (abs (min - location), abs (max - location));
 
-	for (const auto point : box .points ())
-	{
-		const auto length = abs (point);
-
-		if (length > farValue)
-			farValue = length;
-	}
-	
 	return std::min <double> (getRadius (), farValue);
 }
 
@@ -195,14 +189,14 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 	{
 		// Vertices of the tetrahedron.
 
-		static constexpr Vector3d directions [4] = {
-			Vector3d ( 1,  1,  1),
-			Vector3d ( 1, -1, -1),
-			Vector3d (-1,  1, -1),
-			Vector3d (-1, -1,  1),
+		static constexpr Vector3d directions [6] = {
+			Vector3d (-1,  0,  0),
+			Vector3d ( 1,  0,  0),
+			Vector3d ( 0, -1,  0),
+			Vector3d ( 0,  1,  0),
+			Vector3d ( 0,  0, -1),
+			Vector3d ( 0,  0,  1),
 		};
-
-		static const auto fieldOfView = std::acos (dot (normalize (directions [0]), normalize (directions [1])));
 
 		getBrowser () -> setRenderTools (false);
 
@@ -212,88 +206,94 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		invLightSpaceMatrix .translate (location () .getValue ());
 		invLightSpaceMatrix .inverse ();
 
-		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
-		const auto   group            = lightContainer -> getGroup ();           // Group to be shadowd
-		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();    // Group bbox.
-		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;         // Group bbox from the perspective of the light.
+		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();                            
+		const auto   group            = lightContainer -> getGroup ();                                     // Group to be shadowed.
+		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                              // Group bbox.
+		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                   // Group bbox from the perspective of the light.
+		const auto   sceneLocation    = transformationMatrix .mult_vec_matrix (location () .getValue ());  // Location relative to bbox.
+		const auto   worldLocation    = lightContainer -> getModelViewMatrix () .mult_vec_matrix (location () .getValue ());
+		const auto   relativeLocation = global () ? sceneLocation : Vector3d (location () .getValue ());
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
-		const auto   viewport         = Vector4i (0, 0, shadowMapSize1_2, shadowMapSize1_2);
-		const auto   projectionMatrix = perspective <double> (radians (140.0), 0.125, getFarValue (lightBBox), viewport);
-		const auto   worldLocation    = Vector3f (lightContainer -> getModelViewMatrix () .mult_vec_matrix (location () .getValue ()));
+		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
+		const auto   nearValue        = 0.125;
+		const auto   farValue         = getFarValue (lightBBox, relativeLocation);
+		const auto   aspect           = std::tan (radians (45.0)) * nearValue;
+		const auto   projectionMatrix = frustum <double> (-aspect, aspect, -aspect, aspect, nearValue, farValue);
+
+std::clog << farValue << std::endl;
 
 		// Render to frame buffer.
 
 		#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
-		FrameBuffer frameBuffer (getBrowser (), 200, 200, 4);
+		FrameBuffer frameBuffer (getBrowser (), 180, 180, 4);
 
 		frameBuffer .setup ();
 		#endif
 		#endif
 
 std::clog << std::endl;
-		for (size_t y = 0; y < 2; ++ y)
+		for (size_t y = 0; y < 3; ++ y)
 		{
 			for (size_t x = 0; x < 2; ++ x)
 			{
-				const auto rotation = Rotation4d (Vector3d (0, 0, 1), directions [y * 2 + x]);
-				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_2, shadowMapSize1_2, shadowMapSize1_2);
+				const auto rotation = Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x]));
+				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_3, shadowMapSize1_2, shadowMapSize1_3);
 
-const auto matrix = Matrix4d (rotation);
-
-for (const auto value : std::make_pair (matrix .data (), matrix .data () + matrix .size ()))
-	std::clog << SFDouble (value) << ", ";
+const auto m = Matrix4d (rotation);
+for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
+	std::clog << v << ", ";
 std::clog << std::endl;
 
 				textureBuffer -> bind ();
-
+	
 				getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 				getProjectionMatrix () .push (projectionMatrix);
 				getModelViewMatrix  () .push (invLightSpaceMatrix);
-
-//v' = v * T * iC * -(t*iC) * r * (t*iC) * C * iL //  iL = t * TL
-//v' = v * T * iL              //  iL = r * t * TL
-
+	
+	//v' = v * T * iC * -(t*iC) * r * (t*iC) * C * iL //  iL = t * TL
+	//v' = v * T * iL              //  iL = r * t * TL
+	
 				getModelViewMatrix  () .mult_left (getCameraSpaceMatrix ());
 				getModelViewMatrix  () .translate (worldLocation);
 				getModelViewMatrix  () .rotate (rotation);
 				getModelViewMatrix  () .translate (negate (worldLocation));
-
+	
 				getModelViewMatrix  () .mult_left (getInverseCameraSpaceMatrix ());
 				//getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
 				getCurrentLayer () -> renderDepth (group);
-
+	
 				getModelViewMatrix  () .pop ();
 				getProjectionMatrix () .pop ();
 				getViewVolumes      () .pop_back ();
-
+	
 				textureBuffer -> unbind ();
-
+	
 				#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
 				#ifdef TITANIA_DEBUG
 				{
-					const auto viewport = Vector4i (x * 100, y * 100, 100, 100);
-
+					const auto viewport = Vector4i (x * 90, y * 60, 90, 60);
+	
 					frameBuffer .bind ();
-
+	
 					getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 					getProjectionMatrix () .push (projectionMatrix);
 					getModelViewMatrix  () .push (invLightSpaceMatrix);
-
+	
 					getModelViewMatrix  () .mult_left (getCameraSpaceMatrix ());
 					getModelViewMatrix  () .translate (worldLocation);
 					getModelViewMatrix  () .rotate (rotation);
 					getModelViewMatrix  () .translate (negate (worldLocation));
-
+	
 					getModelViewMatrix  () .mult_left (getInverseCameraSpaceMatrix ());
 					//getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
 					getCurrentLayer () -> renderDepth (group);
-
+	
 					getModelViewMatrix  () .pop ();
 					getProjectionMatrix () .pop ();
 					getViewVolumes      () .pop_back ();
-
+	
 					frameBuffer .unbind ();
 				}
 				#endif
@@ -307,7 +307,7 @@ std::clog << std::endl;
 		frameBuffer .readDepth ();
 		frameBuffer .unbind ();
 
-		glDrawPixels (200, 200, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
+		glDrawPixels (180, 180, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
 		#endif
 		#endif
 	

@@ -168,15 +168,15 @@ private:
 	getBiasMatrix ()
 	{
 		return Matrix4d (0.25, 0.0,  0.0, 0.0,
-		                 0.0,  0.25, 0.0, 0.0,
+		                 0.0,  1.0 / 6.0, 0.0, 0.0,
 		                 0.0,  0.0,  0.5, 0.0,
-		                 0.25, 0.25, 0.5, 1.0);
+		                 0.25, 1.0 / 6.0, 0.5, 1.0);
 	}
 
 	///  @name Operations
 
 	double
-	getFarValue (const Box3d & box) const;
+	getFarValue (const Box3d & box, const Vector3d &) const;
 
 	///  @name Event handlers
 
