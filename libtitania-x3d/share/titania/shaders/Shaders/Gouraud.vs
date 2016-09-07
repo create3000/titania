@@ -128,7 +128,7 @@ getMaterialColor (in vec3 N,
 			vec3 H = normalize (L + V); // specular term
 
 			vec3  diffuseTerm    = diffuseFactor * max (dot (N, L), 0.0);
-			float specularFactor = bool (x3d_Shininess) ? pow (max (dot (N, H), 0.0), x3d_Shininess * 128.0) : 1.0;
+			float specularFactor = x3d_Shininess > 0.0 ? pow (max (dot (N, H), 0.0), x3d_Shininess * 128.0) : 1.0;
 			vec3  specularTerm   = x3d_SpecularColor * specularFactor;
 
 			float attenuation = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);

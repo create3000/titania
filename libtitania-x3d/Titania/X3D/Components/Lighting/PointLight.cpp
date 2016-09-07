@@ -211,8 +211,8 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
 		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
 		const auto   nearValue        = 0.125;
-		const auto   farValue         = 100'000.0;
-		const auto   aspect           = std::tan (radians (140.0) / 2) * nearValue;
+		const auto   farValue         = 1'000.0;
+		const auto   aspect           = std::tan (radians (120.0) / 2) * nearValue;
 		const auto   projectionMatrix = frustum <double> (-aspect, aspect, -aspect, aspect, nearValue, farValue);
 
 		// Render to frame buffer.
@@ -227,8 +227,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		#endif
 		#endif
 
-//		std::clog << std::endl;
-//		
+//		std::clog << std::endl;	
 //		const auto m = projectionMatrix * getBiasMatrix ();
 //		for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
 //			std::clog << v << ".0, ";

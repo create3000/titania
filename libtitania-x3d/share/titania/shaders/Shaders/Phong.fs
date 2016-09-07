@@ -140,14 +140,14 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 }
 
 float
-getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in float angle)
+getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in float angle)
 {
 	#define SHADOW_SAMPLES 8
 
 	if (lightType == POINT_LIGHT)
 	{
 		// The projection bias matrix should be a uniform but this would require MAX_LIGHTS * 16 floats.
-		mat4 projectionBias = mat4 (0.0909926, 0.0, 0.0, 0.0, 0.0, 0.0606617, 0.0, 0.0, -0.25, -0.166667, -1.0, -1.0, 0.0, 0.0, -0.125, 0.0);
+		mat4 projectionBias = mat4 (0.144338, 0.0, 0.0, 0.0, 0.0, 0.096225, 0.0, 0.0, -0.25, -0.166667, -1.00013, -1.0, 0.0, 0.0, -0.125016, 0.0); // fov: 120deg, 1000m
 
 		mat4 rotations [6];
 		rotations [0] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
@@ -166,20 +166,20 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 		offsets [5] = vec2 (0.5, 2.0 / 3.0);
 
 		int value = 0;
-	
+
 		for (int m = 0, s = 0; m < 6 && s < SHADOW_SAMPLES; ++ m)
 		{
 			for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = projectionBias * rotations [m] * shadowMatrix * vec4 (vertex, 1.0);
-				float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (angle))
-	
+				float bias        = (0.001 + 0.004 * pow (angle, 3.0)) / shadowCoord .w; // 0.005 / shadowCoord .w;
+
 				shadowCoord .xyz /= shadowCoord .w;
 
 				if (shadowCoord .x < 0.0 || shadowCoord .x > 1.0 / 2.0)
 					continue;
-		
+
 				if (shadowCoord .y < 0.0 || shadowCoord .y > 1.0 / 3.0)
 					continue;
 
@@ -205,7 +205,7 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 	{
 		vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 		vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
-		float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (angle))
+		float bias        = (0.001 + 0.004 * pow (angle, 3.0)) / shadowCoord .w; // 0.005 / shadowCoord .w;
 
 		shadowCoord .xyz /= shadowCoord .w;
 
@@ -294,10 +294,10 @@ getMaterialColor ()
 				vec3  c = x3d_LightAttenuation [i];
 				vec3  L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
 				vec3  H = normalize (L + V);             // Specular term
-				float a = clamp (dot (N, L), 0.0, 1.0);  // Angle between normal and light ray.
+				float a = dot (N, L);  // Angle between normal and light ray.
 
-				vec3  diffuseTerm    = diffuseFactor * a;
-				float specularFactor = bool (shininess) ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
+				vec3  diffuseTerm    = diffuseFactor * clamp (a, 0.0, 1.0);
+				float specularFactor = shininess > 0.0 ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
 				vec3  specularTerm   = specularColor * specularFactor;
 
 				float attenuation          = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
@@ -307,9 +307,9 @@ getMaterialColor ()
 				vec3  diffuseSpecularColor = diffuseTerm + specularTerm;
 				vec3  color                = lightColor * (ambientColor + x3d_LightIntensity [i] * diffuseSpecularColor);
 
-				if (x3d_ShadowIntensity [i] >= 0.0)
+				if (x3d_ShadowIntensity [i] >= 0.0 && a > 0.0)
 				{
-					float shadowIntensity = getShadowIntensity (lightType, x3d_LightLocation [i], x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
+					float shadowIntensity = getShadowIntensity (lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
 					vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];
 	
 					finalColor += mix (color, shadowColor, shadowIntensity);
