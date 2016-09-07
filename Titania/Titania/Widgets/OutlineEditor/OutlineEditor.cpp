@@ -1465,7 +1465,7 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -1493,7 +1493,7 @@ OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContex
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

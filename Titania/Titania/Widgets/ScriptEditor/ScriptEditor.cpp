@@ -507,7 +507,7 @@ ScriptEditor::set_executionContext ()
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
    
    // Fallback if the node has no name or was not found.
@@ -531,7 +531,7 @@ ScriptEditor::store ()
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 
 	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());

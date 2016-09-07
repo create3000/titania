@@ -217,7 +217,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 		// Render to frame buffer.
 
-		#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
+		//#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
 		// Disable background in renderer when debug framebuffer.

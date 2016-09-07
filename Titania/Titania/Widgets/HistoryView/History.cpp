@@ -133,7 +133,7 @@ History::History () :
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -176,7 +176,7 @@ History::constrainSize (const int32_t months)
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -219,7 +219,7 @@ History::setPreview (const std::string & worldURL, const std::string & image)
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -252,7 +252,7 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -265,7 +265,7 @@ History::removeItem (const std::string & id)
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -280,7 +280,7 @@ History::getItemFromIndex (const std::string & index) const
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 
 		static const sql::sqlite3::assoc_row_type empty;
 
@@ -299,7 +299,7 @@ History::getItemFromURL (const std::string & worldURL) const
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 
 		static const sql::sqlite3::assoc_row_type empty;
 
@@ -343,7 +343,7 @@ History::getItems (const size_t offset, const size_t size, const Columns column,
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 
 		static const sql::sqlite3::assoc_type empty;
 

@@ -167,9 +167,9 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 
 		int value = 0;
 	
-		for (int i = 0; i < SHADOW_SAMPLES; ++ i)
+		for (int m = 0, s = 0; m < 6 && s < SHADOW_SAMPLES; ++ m)
 		{
-			for (int m = 0; m < 6; ++ m)
+			for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = projectionBias * rotations [m] * shadowMatrix * vec4 (vertex, 1.0);
@@ -190,9 +190,9 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 				{
 					++ value;
 				}
-	
+
 				// We definitely have a shadow sample.
-				++ i;
+				++ s;
 			}
 		}
 
