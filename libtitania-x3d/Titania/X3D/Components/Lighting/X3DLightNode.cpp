@@ -50,8 +50,10 @@
 
 #include "X3DLightNode.h"
 
-#include "../Layering/X3DLayerNode.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/LightContainer.h"
+
+#include "../Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
@@ -117,7 +119,7 @@ X3DLightNode::getShadowDiffusion () const
 size_t
 X3DLightNode::getShadowMapSize () const
 {
-	return shadowMapSize ();
+	return std::min <int32_t> (shadowMapSize (), getBrowser () -> getMaxTextureSize ());
 }
 
 void

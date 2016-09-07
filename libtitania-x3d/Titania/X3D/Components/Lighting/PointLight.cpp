@@ -127,7 +127,9 @@ PointLight::getRadius () const
 size_t
 PointLight::getShadowMapSize () const
 {
-	return shadowMapSize () - shadowMapSize () % 6;
+	const auto shadowMapSize = X3DLightNode::getShadowMapSize ();
+
+	return shadowMapSize - shadowMapSize % 6;
 }
 
 // Determine far value for shadow map calculation.
