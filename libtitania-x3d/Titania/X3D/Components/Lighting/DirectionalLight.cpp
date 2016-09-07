@@ -187,6 +187,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 		//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
+		// Disable background in renderer when debug framebuffer.
 		{
 			const auto viewport = Vector4i (0, 0, 100, 100);
 	

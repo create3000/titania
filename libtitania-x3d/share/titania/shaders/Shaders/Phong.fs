@@ -146,15 +146,16 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 
 	if (lightType == POINT_LIGHT)
 	{
-		mat4 projectionBias = mat4 (0.25, 0.0, 0.0, 0.0, 0.0, 0.166667, 0.0, 0.0, -0.25, -0.166667, -1.0, -1.0, 0.0, 0.0, -0.125, 0.0);
+		// The projection bias matrix should be a uniform but this would require MAX_LIGHTS * 16 floats.
+		mat4 projectionBias = mat4 (0.0909926, 0.0, 0.0, 0.0, 0.0, 0.0606617, 0.0, 0.0, -0.25, -0.166667, -1.0, -1.0, 0.0, 0.0, -0.125, 0.0);
 
 		mat4 rotations [6];
-		rotations [0] = mat4 (0.0, 0.0, 1.0, 0.0, 0.0, 1.0, -0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [1] = mat4 (0.0, -0.0, -1.0, 0.0, 0.0, 1.0, -0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [2] = mat4 (1.0, -0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [3] = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [4] = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
-		rotations [5] = mat4 (-1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
+		rotations [0] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [1] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
+		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
 
 		vec2 offsets [6];
 		offsets [0] = vec2 (0.0, 0.0);
@@ -176,7 +177,7 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 	
 				shadowCoord .xyz /= shadowCoord .w;
 
-				if (shadowCoord .x < 0.0 || shadowCoord .x > 1.0 / 3.0)
+				if (shadowCoord .x < 0.0 || shadowCoord .x > 1.0 / 2.0)
 					continue;
 		
 				if (shadowCoord .y < 0.0 || shadowCoord .y > 1.0 / 3.0)
@@ -184,11 +185,14 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 
 				if (shadowCoord .z >= 1.0)
 					continue;
-		
+
 				if (texture2D (shadowMap, shadowCoord .xy + offsets [m]) .z < shadowCoord .z - bias)
 				{
 					++ value;
 				}
+	
+				// We definitely have a shadow sample.
+				++ i;
 			}
 		}
 

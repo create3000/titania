@@ -208,37 +208,32 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();                            
 		const auto   group            = lightContainer -> getGroup ();                                     // Group to be shadowed.
-		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                              // Group bbox.
-		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                   // Group bbox from the perspective of the light.
-		const auto   sceneLocation    = transformationMatrix .mult_vec_matrix (location () .getValue ());  // Location with transformations.
-		const auto   relativeLocation = global () ? sceneLocation : Vector3d (location () .getValue ());   // Location relative to bbox.
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
 		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
 		const auto   nearValue        = 0.125;
 		const auto   farValue         = 100'000.0;
-		const auto   aspect           = std::tan (radians (45.0)) * nearValue;
+		const auto   aspect           = std::tan (radians (140.0) / 2) * nearValue;
 		const auto   projectionMatrix = frustum <double> (-aspect, aspect, -aspect, aspect, nearValue, farValue);
-
-std::clog << farValue << std::endl;
 
 		// Render to frame buffer.
 
 		#define DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef  TITANIA_DEBUG
+		// Disable background in renderer when debug framebuffer.
 		FrameBuffer frameBuffer (getBrowser (), 180, 180, 4);
 
 		frameBuffer .setup ();
 		#endif
 		#endif
 
-std::clog << std::endl;
-
-const auto m = projectionMatrix * getBiasMatrix ();
-for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-	std::clog << v << ".0, ";
-std::clog << std::endl;
-std::clog << std::endl;
+//		std::clog << std::endl;
+//		
+//		const auto m = projectionMatrix * getBiasMatrix ();
+//		for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
+//			std::clog << v << ".0, ";
+//		std::clog << std::endl;
+//		std::clog << std::endl;
 
 		for (size_t y = 0; y < 3; ++ y)
 		{
@@ -247,10 +242,10 @@ std::clog << std::endl;
 				const auto rotation = Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x]));
 				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_3, shadowMapSize1_2, shadowMapSize1_3);
 
-const auto m = Matrix4d (inverse (rotation));
-for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-	std::clog << v << ".0, ";
-std::clog << std::endl;
+//				const auto m = Matrix4d (inverse (rotation));
+//				for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
+//					std::clog << v << ".0, ";
+//				std::clog << std::endl;
 
 				textureBuffer -> bind ();
 	
