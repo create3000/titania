@@ -843,8 +843,6 @@ X3DGeometryNode::transfer ()
 void
 X3DGeometryNode::collision (const CollisionContainer* const context)
 {
-	glDisable (GL_CULL_FACE);
-
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_DOUBLE, 0, 0);

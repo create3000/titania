@@ -147,16 +147,18 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 	if (lightType == POINT_LIGHT)
 	{
 		// The projection bias matrix should be a uniform but this would require MAX_LIGHTS * 16 floats.
-		mat4 projectionBias = mat4 (0.144338, 0.0, 0.0, 0.0, 0.0, 0.096225, 0.0, 0.0, -0.25, -0.166667, -1.00013, -1.0, 0.0, 0.0, -0.125016, 0.0); // fov: 120deg, 1000m
+		mat4 projectionBias = mat4 (0.144337567297406, 0.0, 0.0, 0.0, 0.0, 0.0962250448649377, 0.0, 0.0, -0.25, -0.166666666666667, -1.00012501562695, -1.0, 0.0, 0.0, -0.125015626953369, 0.0); // fov: 120deg, 1000m
 
+		// Normals of the point light cube.
 		mat4 rotations [6];
-		rotations [0] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [1] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
-		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
+		rotations [0] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // left
+		rotations [1] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // right
+		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // bottom
+		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // top
+		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // back
+		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // front
 
+		// Offsets to the shadow map.
 		vec2 offsets [6];
 		offsets [0] = vec2 (0.0, 0.0);
 		offsets [1] = vec2 (0.5, 0.0);
@@ -294,7 +296,7 @@ getMaterialColor ()
 				vec3  c = x3d_LightAttenuation [i];
 				vec3  L = di ? -d : normalize (vL);      // Normalized vector from point on geometry to light source i position.
 				vec3  H = normalize (L + V);             // Specular term
-				float a = dot (N, L);  // Angle between normal and light ray.
+				float a = dot (N, L);                    // Angle between normal and light ray.
 
 				vec3  diffuseTerm    = diffuseFactor * clamp (a, 0.0, 1.0);
 				float specularFactor = shininess > 0.0 ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
@@ -307,7 +309,7 @@ getMaterialColor ()
 				vec3  diffuseSpecularColor = diffuseTerm + specularTerm;
 				vec3  color                = lightColor * (ambientColor + x3d_LightIntensity [i] * diffuseSpecularColor);
 
-				if (x3d_ShadowIntensity [i] >= 0.0 && a > 0.0)
+				if (x3d_ShadowIntensity [i] > 0.0 && a > 0.0)
 				{
 					float shadowIntensity = getShadowIntensity (lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
 					vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];

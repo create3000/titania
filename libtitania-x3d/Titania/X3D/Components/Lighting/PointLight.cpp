@@ -187,15 +187,15 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 {
 	try
 	{
-		// Vertices of the tetrahedron.
+		// Normals of the point light cube.
 
 		static constexpr Vector3d directions [6] = {
-			Vector3d (-1,  0,  0),
-			Vector3d ( 1,  0,  0),
-			Vector3d ( 0, -1,  0),
-			Vector3d ( 0,  1,  0),
-			Vector3d ( 0,  0, -1),
-			Vector3d ( 0,  0,  1),
+			Vector3d (-1,  0,  0), // left
+			Vector3d ( 1,  0,  0), // right
+			Vector3d ( 0, -1,  0), // bottom
+			Vector3d ( 0,  1,  0), // top
+			Vector3d ( 0,  0, -1), // back
+			Vector3d ( 0,  0,  1), // front
 		};
 
 		getBrowser () -> setRenderTools (false);
@@ -230,7 +230,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 //		std::clog << std::endl;	
 //		const auto m = projectionMatrix * getBiasMatrix ();
 //		for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-//			std::clog << v << ".0, ";
+//			std::clog << SFDouble (v) << ".0, ";
 //		std::clog << std::endl;
 //		std::clog << std::endl;
 
@@ -243,7 +243,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 //				const auto m = Matrix4d (inverse (rotation));
 //				for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-//					std::clog << v << ".0, ";
+//					std::clog << SFDouble (v) << ".0, ";
 //				std::clog << std::endl;
 
 				textureBuffer -> bind ();

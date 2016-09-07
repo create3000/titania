@@ -633,6 +633,7 @@ X3DRenderer::depth ()
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
+	glDisable (GL_CULL_FACE);
 
 	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
 		context -> draw ();

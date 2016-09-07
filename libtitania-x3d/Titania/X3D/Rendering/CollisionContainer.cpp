@@ -79,6 +79,7 @@ CollisionContainer::intersects (CollisionSphere3d sphere) const
 void
 CollisionContainer::draw ()
 {
+	// TODO: viewport must not be the browser or layer viewport.
 	glScissor (scissor [0],
 	           scissor [1],
 	           scissor [2],
