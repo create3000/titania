@@ -210,13 +210,12 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   group            = lightContainer -> getGroup ();                                     // Group to be shadowed.
 		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                              // Group bbox.
 		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                   // Group bbox from the perspective of the light.
-		const auto   sceneLocation    = transformationMatrix .mult_vec_matrix (location () .getValue ());  // Location relative to bbox.
-		const auto   worldLocation    = lightContainer -> getModelViewMatrix () .mult_vec_matrix (location () .getValue ());
-		const auto   relativeLocation = global () ? sceneLocation : Vector3d (location () .getValue ());
+		const auto   sceneLocation    = transformationMatrix .mult_vec_matrix (location () .getValue ());  // Location with transformations.
+		const auto   relativeLocation = global () ? sceneLocation : Vector3d (location () .getValue ());   // Location relative to bbox.
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
 		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
 		const auto   nearValue        = 0.125;
-		const auto   farValue         = getFarValue (lightBBox, relativeLocation);
+		const auto   farValue         = 100'000.0;
 		const auto   aspect           = std::tan (radians (45.0)) * nearValue;
 		const auto   projectionMatrix = frustum <double> (-aspect, aspect, -aspect, aspect, nearValue, farValue);
 
@@ -234,6 +233,13 @@ std::clog << farValue << std::endl;
 		#endif
 
 std::clog << std::endl;
+
+const auto m = projectionMatrix * getBiasMatrix ();
+for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
+	std::clog << v << ".0, ";
+std::clog << std::endl;
+std::clog << std::endl;
+
 		for (size_t y = 0; y < 3; ++ y)
 		{
 			for (size_t x = 0; x < 2; ++ x)
@@ -241,27 +247,20 @@ std::clog << std::endl;
 				const auto rotation = Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x]));
 				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_3, shadowMapSize1_2, shadowMapSize1_3);
 
-const auto m = Matrix4d (rotation);
+const auto m = Matrix4d (inverse (rotation));
 for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
-	std::clog << v << ", ";
+	std::clog << v << ".0, ";
 std::clog << std::endl;
 
 				textureBuffer -> bind ();
 	
 				getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 				getProjectionMatrix () .push (projectionMatrix);
-				getModelViewMatrix  () .push (invLightSpaceMatrix);
+
+				getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
+				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
 	
-	//v' = v * T * iC * -(t*iC) * r * (t*iC) * C * iL //  iL = t * TL
-	//v' = v * T * iL              //  iL = r * t * TL
-	
-				getModelViewMatrix  () .mult_left (getCameraSpaceMatrix ());
-				getModelViewMatrix  () .translate (worldLocation);
-				getModelViewMatrix  () .rotate (rotation);
-				getModelViewMatrix  () .translate (negate (worldLocation));
-	
-				getModelViewMatrix  () .mult_left (getInverseCameraSpaceMatrix ());
-				//getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+				getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
 				getCurrentLayer () -> renderDepth (group);
 	
 				getModelViewMatrix  () .pop ();
@@ -279,15 +278,11 @@ std::clog << std::endl;
 	
 					getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 					getProjectionMatrix () .push (projectionMatrix);
-					getModelViewMatrix  () .push (invLightSpaceMatrix);
-	
-					getModelViewMatrix  () .mult_left (getCameraSpaceMatrix ());
-					getModelViewMatrix  () .translate (worldLocation);
-					getModelViewMatrix  () .rotate (rotation);
-					getModelViewMatrix  () .translate (negate (worldLocation));
-	
-					getModelViewMatrix  () .mult_left (getInverseCameraSpaceMatrix ());
-					//getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+
+					getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
+					getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
+		
+					getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
 					getCurrentLayer () -> renderDepth (group);
 	
 					getModelViewMatrix  () .pop ();
@@ -310,11 +305,11 @@ std::clog << std::endl;
 		glDrawPixels (180, 180, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());
 		#endif
 		#endif
-	
+
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
 
-		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix);
 
 		getBrowser () -> setRenderTools (true);
 		return true;

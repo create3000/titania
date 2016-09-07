@@ -2,15 +2,18 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="186" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/SpotLight.cpp" Line="216" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.h" Line="156" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.cpp" Line="227" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="98" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="98" Column="3" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="31" Column="1" />
-      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="173" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="572" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/SpotLight.cpp" Line="224" Column="122" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.h" Line="173" Column="35" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/PointLight.cpp" Line="317" Column="83" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/LightContainer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.vs" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/share/titania/shaders/Shaders/Phong.fs" Line="175" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="570" Column="2" />
+      <File FileName="libtitania-standard/Titania/Math/Geometry/Camera.h" Line="103" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geospatial/GeoViewpoint.cpp" Line="302" Column="48" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Navigation/Viewpoint.cpp" Line="138" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

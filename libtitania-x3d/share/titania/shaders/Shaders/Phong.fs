@@ -146,16 +146,15 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 
 	if (lightType == POINT_LIGHT)
 	{
-		mat4 locationMatrix    = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,  location .x,  location .y,  location .z, 1.0);
-		mat4 invLocationMatrix = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -location .x, -location .y, -location .z, 1.0);
+		mat4 projectionBias = mat4 (0.25, 0.0, 0.0, 0.0, 0.0, 0.166667, 0.0, 0.0, -0.25, -0.166667, -1.0, -1.0, 0.0, 0.0, -0.125, 0.0);
 
 		mat4 rotations [6];
-		rotations [0] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [1] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
-		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [0] = mat4 (0.0, 0.0, 1.0, 0.0, 0.0, 1.0, -0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [1] = mat4 (0.0, -0.0, -1.0, 0.0, 0.0, 1.0, -0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [2] = mat4 (1.0, -0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [3] = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+		rotations [4] = mat4 (1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
+		rotations [5] = mat4 (-1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); 
 
 		vec2 offsets [6];
 		offsets [0] = vec2 (0.0, 0.0);
@@ -169,10 +168,10 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 	
 		for (int i = 0; i < SHADOW_SAMPLES; ++ i)
 		{
-			for (int m = 0; m < 1; ++ m)
+			for (int m = 0; m < 6; ++ m)
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
-				vec4  shadowCoord = shadowMatrix * (locationMatrix * rotations [m] * invLocationMatrix) * vec4 (vertex, 1.0);
+				vec4  shadowCoord = projectionBias * rotations [m] * shadowMatrix * vec4 (vertex, 1.0);
 				float bias        = 0.005 / shadowCoord .w; // 0.005 * tan (acos (angle))
 	
 				shadowCoord .xyz /= shadowCoord .w;
@@ -193,7 +192,7 @@ getShadowIntensity (in int lightType, in vec3 location, in float shadowIntensity
 			}
 		}
 
-		return shadowIntensity * float (value) / float (SHADOW_SAMPLES * 6);
+		return shadowIntensity * min (float (value), float (SHADOW_SAMPLES)) / float (SHADOW_SAMPLES);
 	}
 
 	int value = 0;
