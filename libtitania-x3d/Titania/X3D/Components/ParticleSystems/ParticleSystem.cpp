@@ -1233,10 +1233,25 @@ ParticleSystem::traverse (const TraverseType type)
 		}
 		case TraverseType::COLLISION:
 		{
+			if (isHidden ())
+				break;
+
+			if (isActive ())
+				getCurrentLayer () -> addCollisionShape (this);
+
+			break;
+		}
+		case TraverseType::DEPTH:
+		{
+			if (isHidden ())
+				break;
+
+			if (isActive ())
+				getCurrentLayer () -> addDepthShape (this);
+
 			break;
 		}
 		case TraverseType::DISPLAY:
-		case TraverseType::DEPTH:
 		{
 			if (isHidden ())
 				break;

@@ -90,11 +90,13 @@ X3DRenderer::X3DRenderer () :
 	     transparentShapes (),
 	       collisionShapes (),
 	      activeCollisions (),
+	           depthShapes (),
 	           depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
 	                 speed (),
 	       numOpaqueShapes (0),
 	  numTransparentShapes (0),
-	numCollisionContainers (0)
+	    numCollisionShapes (0),
+	        numDepthShapes (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }
@@ -162,16 +164,36 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 }
 
 void
-X3DRenderer::addCollision (X3DShapeNode* const shape)
+X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
 {
 	// It should be possible to sort out shapes that are far away.
 
-	if (numCollisionContainers == collisionShapes .size ())
+	if (numCollisionShapes == collisionShapes .size ())
 		collisionShapes .emplace_back (new CollisionContainer ());
 
-	const auto & context = collisionShapes [numCollisionContainers];
+	const auto & context = collisionShapes [numCollisionShapes];
 
-	++ numCollisionContainers;
+	++ numCollisionShapes;
+
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setCollisions (getCollisions ());
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+}
+
+void
+X3DRenderer::addDepthShape (X3DShapeNode* const shape)
+{
+	// It should be possible to sort out shapes that are far away.
+
+	if (numDepthShapes == depthShapes .size ())
+		depthShapes .emplace_back (new CollisionContainer ());
+
+	const auto & context = depthShapes [numDepthShapes];
+
+	++ numDepthShapes;
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
@@ -283,7 +305,7 @@ X3DRenderer::getDepth () const
 	depthBuffer -> bind ();
 
 	const_cast <X3DRenderer*> (this) -> getViewVolumes () .emplace_back (viewVolume);
-	const_cast <X3DRenderer*> (this) -> depth ();
+	const_cast <X3DRenderer*> (this) -> depth (collisionShapes, numCollisionShapes);
 	const_cast <X3DRenderer*> (this) -> getViewVolumes () .pop_back ();
 
 	// Get distance from depth buffer
@@ -309,7 +331,7 @@ X3DRenderer::render (const TraverseType type)
 		case TraverseType::COLLISION:
 		{
 			// Collect for collide and gravite
-			numCollisionContainers = 0;
+			numCollisionShapes = 0;
 
 			collect (type);
 			collide ();
@@ -327,10 +349,10 @@ X3DRenderer::render (const TraverseType type)
 		}
 		case TraverseType::DEPTH:
 		{
-			numCollisionContainers = 0;
+			numDepthShapes = 0;
 
 			collect (type);
-			depth ();
+			depth (depthShapes, numDepthShapes);
 			break;
 		}
 		default:
@@ -346,11 +368,11 @@ X3DRenderer::render (const TraverseType type)
 void
 X3DRenderer::renderDepth (X3DGroupingNode* const group)
 {
-	numCollisionContainers = 0;
+	numDepthShapes = 0;
 
 	group -> traverse (TraverseType::DEPTH);
 
-	depth ();
+	depth (depthShapes, numDepthShapes);
 
 	getGlobalObjects () .clear ();
 	getClipPlanes    () .clear ();
@@ -361,13 +383,13 @@ X3DRenderer::collide ()
 {
 	// Collision
 
-	const auto collisionSphere = CollisionSphere3d (/* inverse ??? getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
+	const auto collisionSphere = CollisionSphere3d (/* getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
 	                                                getNavigationInfo () -> getCollisionRadius () * 1.2f,
 	                                                Vector3d ());
 
 	std::vector <Collision*> collisions;
 
-	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
+	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionShapes))
 	{
 	   try
 	   {
@@ -613,7 +635,7 @@ X3DRenderer::display ()
 }
 
 void
-X3DRenderer::depth ()
+X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShapes)
 {
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
@@ -635,7 +657,7 @@ X3DRenderer::depth ()
 	glDisable (GL_BLEND);
 	glDisable (GL_CULL_FACE);
 
-	for (const auto & context : basic::make_range (collisionShapes .cbegin (), numCollisionContainers))
+	for (const auto & context : basic::make_range (shapes .cbegin (), numShapes))
 		context -> draw ();
 }
 

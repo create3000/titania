@@ -153,7 +153,10 @@ public:
 	addShape (X3DShapeNode* const);
 
 	void
-	addCollision (X3DShapeNode* const);
+	addCollisionShape (X3DShapeNode* const);
+
+	void
+	addDepthShape (X3DShapeNode* const);
 
 	Vector3d
 	constrainTranslation (const Vector3d &) const;
@@ -211,7 +214,7 @@ private:
 	display ();
 
 	void
-	depth ();
+	depth (const CollisionContainerArray &, const size_t);
 
 	///  @name Members
 
@@ -226,16 +229,17 @@ private:
 
 	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;
-	ShapeContainerArray      depthShapes;
 	CollisionContainerArray  collisionShapes;
 	std::vector <Collision*> activeCollisions;
+	CollisionContainerArray  depthShapes;
 
 	std::unique_ptr <FrameBuffer> depthBuffer;
 	double                        speed;
 
 	size_t numOpaqueShapes;
 	size_t numTransparentShapes;
-	size_t numCollisionContainers;
+	size_t numCollisionShapes;
+	size_t numDepthShapes;
 
 };
 
