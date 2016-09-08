@@ -110,6 +110,19 @@ Polyline2D::create (X3DExecutionContext* const executionContext) const
 	return new Polyline2D (executionContext);
 }
 
+bool
+Polyline2D::isTransparent () const
+{
+	#ifdef FIXED_PIPELINE
+
+	if (getBrowser () -> getFixedPipeline ())
+		return false;
+
+	#endif
+
+	return true; // The antialiased border is transparent!
+}
+
 void
 Polyline2D::build ()
 {

@@ -129,12 +129,11 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
-	///  @name Test
+	///  @name Member access
 
 	virtual
 	bool
-	isTransparent () const final override
-	{ return transparent; }
+	isTransparent () const final override;
 
 	///  @name Operations
 

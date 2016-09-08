@@ -595,7 +595,7 @@ X3DRenderer::display ()
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	glEnable (GL_BLEND);
+	glDisable (GL_BLEND);
 	glEnable (GL_DEPTH_TEST);
 	glDepthMask (GL_TRUE);
 
@@ -604,6 +604,7 @@ X3DRenderer::display ()
 
 	// Render transparent objects
 
+	glEnable (GL_BLEND);
 	glDepthMask (GL_FALSE);
 
 	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);

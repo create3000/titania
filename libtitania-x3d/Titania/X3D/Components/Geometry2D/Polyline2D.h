@@ -105,6 +105,12 @@ public:
 	lineSegments () const
 	{ return *fields .lineSegments; }
 
+	///  @name Member access
+
+	virtual
+	bool
+	isTransparent () const final override;
+
 	///  @name Operations
 
 	virtual
