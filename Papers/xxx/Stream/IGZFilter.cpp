@@ -3,7 +3,7 @@
 //  *
 //  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 //  *
-//  * Copyright 1999, 2012 Holger Seelig <holger.seelig@yahoo.de>.
+//  * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
 //  *
 //  * Titania - a multi-platform office productivity suite
 //  *
