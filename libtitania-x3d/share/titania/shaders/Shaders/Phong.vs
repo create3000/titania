@@ -2,9 +2,7 @@
 
 precision mediump float;
 
-#define X3D_MAX_TEXTURES 1
-
-uniform mat4 x3d_TextureMatrix [X3D_MAX_TEXTURES];
+uniform mat4 x3d_TextureMatrix [x3d_MaxTextures];
 uniform mat3 x3d_NormalMatrix;
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;

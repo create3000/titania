@@ -15,24 +15,18 @@ uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, other
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 // 3
 
-#define X3D_MAX_LIGHTS        8
-#define X3D_NO_LIGHT          0
-#define X3D_DIRECTIONAL_LIGHT 1
-#define X3D_POINT_LIGHT       2
-#define X3D_SPOT_LIGHT        3
-
-uniform int   x3d_LightType [X3D_MAX_LIGHTS]; // 0: No, 1: DirectionalLight, 2: PointLight, 3: SpotLight
-uniform bool  x3d_LightOn [X3D_MAX_LIGHTS];
-uniform vec3  x3d_LightColor [X3D_MAX_LIGHTS];
-uniform float x3d_LightIntensity [X3D_MAX_LIGHTS];
-uniform float x3d_LightAmbientIntensity [X3D_MAX_LIGHTS];
-uniform vec3  x3d_LightAttenuation [X3D_MAX_LIGHTS];
-uniform vec3  x3d_LightLocation [X3D_MAX_LIGHTS];
-uniform vec3  x3d_LightDirection [X3D_MAX_LIGHTS];
-uniform float x3d_LightRadius [X3D_MAX_LIGHTS];
-uniform float x3d_LightBeamWidth [X3D_MAX_LIGHTS];
-uniform float x3d_LightCutOffAngle [X3D_MAX_LIGHTS];
-// 19 * X3D_MAX_LIGHTS
+uniform int   x3d_LightType [x3d_MaxLights]; // 0: No, 1: DirectionalLight, 2: PointLight, 3: SpotLight
+uniform bool  x3d_LightOn [x3d_MaxLights];
+uniform vec3  x3d_LightColor [x3d_MaxLights];
+uniform float x3d_LightIntensity [x3d_MaxLights];
+uniform float x3d_LightAmbientIntensity [x3d_MaxLights];
+uniform vec3  x3d_LightAttenuation [x3d_MaxLights];
+uniform vec3  x3d_LightLocation [x3d_MaxLights];
+uniform vec3  x3d_LightDirection [x3d_MaxLights];
+uniform float x3d_LightRadius [x3d_MaxLights];
+uniform float x3d_LightBeamWidth [x3d_MaxLights];
+uniform float x3d_LightCutOffAngle [x3d_MaxLights];
+// 19 * x3d_MaxLights
 
 uniform bool x3d_SeparateBackColor;
 // 1
@@ -109,16 +103,16 @@ getMaterialColor (in vec3 N,
 
 	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
 
-	for (int i = 0; i < X3D_MAX_LIGHTS; ++ i)
+	for (int i = 0; i < x3d_MaxLights; ++ i)
 	{
 		int lightType = x3d_LightType [i];
 
-		if (lightType == X3D_NO_LIGHT)
+		if (lightType == x3d_NoLight)
 			break;
 
 		vec3  vL = x3d_LightLocation [i] - v;
 		float dL = length (vL);
-		bool  di = lightType == X3D_DIRECTIONAL_LIGHT;
+		bool  di = lightType == x3d_DirectionalLight;
 
 		if (di || dL <= x3d_LightRadius [i])
 		{
@@ -132,7 +126,7 @@ getMaterialColor (in vec3 N,
 			vec3  specularTerm   = x3d_SpecularColor * specularFactor;
 
 			float attenuation = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-			float spot        = lightType == X3D_SPOT_LIGHT ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
+			float spot        = lightType == x3d_SpotLight ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
 		
 			vec3 lightFactor  = (attenuation * spot) * x3d_LightColor [i];
 			vec3 ambientLight = (lightFactor * x3d_LightAmbientIntensity [i]) * ambientTerm;

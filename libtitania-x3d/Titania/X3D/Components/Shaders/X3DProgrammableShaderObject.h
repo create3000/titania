@@ -252,8 +252,8 @@ public:
 	{ return x3d_TextureType; }
 
 	GLint
-	getTextureUniformLocation () const
-	{ return x3d_Texture; }
+	getTexture2DUniformLocation () const
+	{ return x3d_Texture2D; }
 
 	GLint
 	getTextureMatrixUniformLocation () const
@@ -425,7 +425,7 @@ private:
 	GLint x3d_BackTransparency;
 
 	GLint x3d_TextureType;
-	GLint x3d_Texture;
+	GLint x3d_Texture2D;
 	GLint x3d_CubeMapTexture;
 
 	GLint x3d_TextureMatrix;

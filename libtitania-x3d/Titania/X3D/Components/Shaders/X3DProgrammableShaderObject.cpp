@@ -113,7 +113,7 @@ X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	        x3d_BackShininess (-1),
 	     x3d_BackTransparency (-1),
 	          x3d_TextureType (-1),
-	              x3d_Texture (-1),
+	            x3d_Texture2D (-1),
 	       x3d_CubeMapTexture (-1),
 	        x3d_TextureMatrix (-1),
 	         x3d_NormalMatrix (-1),
@@ -236,8 +236,10 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_BackTransparency     = glGetUniformLocation (program, "x3d_BackTransparency");
 
 	x3d_TextureType    = glGetUniformLocation (program, "x3d_TextureType");
-	x3d_Texture        = glGetUniformLocation (program, "x3d_Texture");
+	x3d_Texture2D      = glGetUniformLocation (program, "x3d_Texture2D");
 	x3d_CubeMapTexture = glGetUniformLocation (program, "x3d_CubeMapTexture");
+
+	const auto x3d_Texture = glGetUniformLocation (program, "x3d_Texture"); // depreciated
 
 	x3d_TextureMatrix    = glGetUniformLocation (program, "x3d_TextureMatrix");
 	x3d_NormalMatrix     = glGetUniformLocation (program, "x3d_NormalMatrix");
@@ -250,12 +252,13 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
 
 	static const auto textureType    = std::vector <int32_t> ({ 0 });
-	static const auto texture        = std::vector <int32_t> ({ 0 });
+	static const auto texture2D      = std::vector <int32_t> ({ 0 });
 	static const auto cubeMapTexture = std::vector <int32_t> ({ 1 });
 
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
 	glUniform1iv (x3d_TextureType,          1, textureType    .data ());
-	glUniform1iv (x3d_Texture,              1, texture        .data ()); // Set texture to active texture unit 0.
+	glUniform1iv (x3d_Texture,              1, texture2D      .data ()); // depreciated
+	glUniform1iv (x3d_Texture2D,            1, texture2D      .data ()); // Set texture to active texture unit 0.
 	glUniform1iv (x3d_CubeMapTexture,       1, cubeMapTexture .data ()); // Set cube map texture to active texture unit 1.
 
 	glUseProgram (0);

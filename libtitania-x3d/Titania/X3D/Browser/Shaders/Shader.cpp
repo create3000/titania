@@ -52,6 +52,7 @@
 
 #include "../../InputOutput/Loader.h"
 
+#include <Titania/String/to_string.h>
 #include <regex>
 
 namespace titania {
@@ -179,20 +180,66 @@ getProgramStageBit (const std::string & type)
 }
 
 std::string
+addConstants (X3DBrowser* const browser, const std::string & source)
+{
+	static const std::regex version (R"/(^([\s\S]*\n)?(#version\s+\d+.*?\n))/");
+
+	std::smatch match;
+
+	if (not std::regex_search (source, match, version))
+		return source;
+
+	const auto begin    = match .str (0);
+	const auto numLines = std::count (begin .begin (), begin .end (), '\n');
+
+	std::string constants = "$1$2";
+
+	constants += "#define x3d_GeometryPoints  0\n";
+	constants += "#define x3d_GeometryLines   1\n";
+	constants += "#define x3d_Geometry2D      2\n";
+	constants += "#define x3d_Geometry3D      3\n";
+
+	constants += "#define x3d_MaxClipPlanes  6\n";
+
+	constants += "#define x3d_NoFog            0\n";
+	constants += "#define x3d_LinearFog        1\n";
+	constants += "#define x3d_ExponentialFog   2\n";
+	constants += "#define x3d_Exponential2Fog  3\n";
+
+	constants += "#define x3d_MaxLights         8\n";
+	constants += "#define x3d_NoLight           0\n";
+	constants += "#define x3d_DirectionalLight  1\n";
+	constants += "#define x3d_PointLight        2\n";
+	constants += "#define x3d_SpotLight         3\n";
+
+	constants += "#define x3d_MaxTextures                1\n";
+	constants += "#define x3d_NoTexture                  0\n";
+	constants += "#define x3d_TextureType2D              2\n";
+	constants += "#define x3d_TextureType3D              3\n";
+	constants += "#define x3d_TextureTypeCubeMapTexture  4\n";
+
+	constants += "#define x3d_ShadowSamples  8\n";
+
+	constants += "#line " + basic::to_string (numLines, std::locale::classic ()) + "\n";
+
+	return std::regex_replace (source, version, constants);
+}
+
+std::string
 getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	static const std::regex version (R"/(^(\s*|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
+	static const std::regex version (R"/(^(?:\s*|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
 
 	std::set <basic::uri> files;
 
 	const auto source = getShaderSource (node, string, worldURL, 0, files);
 
 	if (std::regex_search (source, version))
-		return source;
+		return addConstants (node -> getBrowser (), source);
 
-	return "#version 100\n#line 0\n" + source;
+	return addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source);
 }
 
 void
