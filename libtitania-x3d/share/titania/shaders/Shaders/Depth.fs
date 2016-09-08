@@ -2,9 +2,9 @@
 
 precision mediump float;
 
-#define MAX_CLIP_PLANES 6
+#define X3D_MAX_CLIP_PLANES 6
 
-uniform vec4 x3d_ClipPlane [MAX_CLIP_PLANES];
+uniform vec4 x3d_ClipPlane [X3D_MAX_CLIP_PLANES];
 // 24
 
 varying vec3 v; // point on geometry
@@ -13,7 +13,7 @@ varying vec3 v; // point on geometry
 void
 clip ()
 {
-	for (int i = 0; i < MAX_CLIP_PLANES; ++ i)
+	for (int i = 0; i < X3D_MAX_CLIP_PLANES; ++ i)
 	{
 		if (x3d_ClipPlane [i] == vec4 (0.0, 0.0, 0.0, 0.0))
 			break;

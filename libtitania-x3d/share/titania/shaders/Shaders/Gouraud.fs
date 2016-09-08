@@ -2,21 +2,21 @@
 
 precision mediump float;
 
-#define GEOMETRY_2D 2
-#define GEOMETRY_3D 3
+#define X3D_GEOMETRY_2D 2
+#define X3D_GEOMETRY_3D 3
 
 uniform int x3d_GeometryType;
 // 1
 
-#define MAX_CLIP_PLANES 6
+#define X3D_MAX_CLIP_PLANES 6
 
-uniform vec4 x3d_ClipPlane [MAX_CLIP_PLANES];
+uniform vec4 x3d_ClipPlane [X3D_MAX_CLIP_PLANES];
 // 24
 
-#define NO_FOG           0
-#define LINEAR_FOG       1
-#define EXPONENTIAL_FOG  2
-#define EXPONENTIAL2_FOG 3
+#define X3D_NO_FOG           0
+#define X3D_LINEAR_FOG       1
+#define X3D_EXPONENTIAL_FOG  2
+#define X3D_EXPONENTIAL2_FOG 3
 
 uniform int   x3d_FogType;
 uniform vec3  x3d_FogColor;
@@ -28,14 +28,14 @@ uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, other
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 // 3
 
-#define MAX_TEXTURES 1
-#define NO_TEXTURE   0
-#define TEXTURE_2D   2
-#define TEXTURE_CUBE 4
+#define X3D_MAX_TEXTURES 1
+#define X3D_NO_TEXTURE   0
+#define X3D_TEXTURE_2D   2
+#define X3D_TEXTURE_CUBE 4
 
-uniform int         x3d_TextureType [MAX_TEXTURES]; // NO_TEXTURE, TEXTURE_2D or TEXTURE_CUBE
-uniform sampler2D   x3d_Texture [MAX_TEXTURES];
-uniform samplerCube x3d_CubeMapTexture [MAX_TEXTURES];
+uniform int         x3d_TextureType [X3D_MAX_TEXTURES]; // X3D_NO_TEXTURE, X3D_TEXTURE_2D or X3D_TEXTURE_CUBE
+uniform sampler2D   x3d_Texture [X3D_MAX_TEXTURES];
+uniform samplerCube x3d_CubeMapTexture [X3D_MAX_TEXTURES];
 // 3
 
 varying vec4 frontColor; // color
@@ -49,7 +49,7 @@ varying vec4 v;          // point on geometry
 void
 clip ()
 {
-	for (int i = 0; i < MAX_CLIP_PLANES; ++ i)
+	for (int i = 0; i < X3D_MAX_CLIP_PLANES; ++ i)
 	{
 		if (x3d_ClipPlane [i] == vec4 (0.0, 0.0, 0.0, 0.0))
 			break;
@@ -62,21 +62,21 @@ clip ()
 vec4
 getTextureColor ()
 {
-	if (x3d_TextureType [0] == TEXTURE_2D)
+	if (x3d_TextureType [0] == X3D_TEXTURE_2D)
 	{
-		if (x3d_GeometryType == GEOMETRY_3D || gl_FrontFacing)
+		if (x3d_GeometryType == X3D_GEOMETRY_3D || gl_FrontFacing)
 			return texture2D (x3d_Texture [0], vec2 (t));
 		
-		// If dimension is GEOMETRY_2D the texCoords must be flipped.
+		// If dimension is X3D_GEOMETRY_2D the texCoords must be flipped.
 		return texture2D (x3d_Texture [0], vec2 (1.0 - t .s, t .t));
 	}
 
- 	if (x3d_TextureType [0] == TEXTURE_CUBE)
+ 	if (x3d_TextureType [0] == X3D_TEXTURE_CUBE)
 	{
-		if (x3d_GeometryType == GEOMETRY_3D || gl_FrontFacing)
+		if (x3d_GeometryType == X3D_GEOMETRY_3D || gl_FrontFacing)
 			return textureCube (x3d_CubeMapTexture [0], vec3 (t));
 		
-		// If dimension is GEOMETRY_2D the texCoords must be flipped.
+		// If dimension is X3D_GEOMETRY_2D the texCoords must be flipped.
 		return textureCube (x3d_CubeMapTexture [0], vec3 (1.0 - t .s, t .t, t .z));
 	}
  
@@ -86,7 +86,7 @@ getTextureColor ()
 vec3
 getFogColor (in vec3 color)
 {
-	if (x3d_FogType == NO_FOG)
+	if (x3d_FogType == X3D_NO_FOG)
 		return color;
 
 	float dV = length (v);
@@ -94,10 +94,10 @@ getFogColor (in vec3 color)
 	if (dV >= x3d_FogVisibilityRange)
 		return x3d_FogColor;
 
-	if (x3d_FogType == LINEAR_FOG)
+	if (x3d_FogType == X3D_LINEAR_FOG)
 		return mix (x3d_FogColor, color, (x3d_FogVisibilityRange - dV) / x3d_FogVisibilityRange);
 
-	if (x3d_FogType == EXPONENTIAL_FOG)
+	if (x3d_FogType == X3D_EXPONENTIAL_FOG)
 		return mix (x3d_FogColor, color, exp (-dV / (x3d_FogVisibilityRange - dV)));
 
 	return color;
@@ -110,7 +110,7 @@ main ()
 
 	vec4 finalColor = gl_FrontFacing ? frontColor : backColor;
 
-	if (x3d_TextureType [0] != NO_TEXTURE)
+	if (x3d_TextureType [0] != X3D_NO_TEXTURE)
 	{
 		if (x3d_Lighting)
 			finalColor *= getTextureColor ();

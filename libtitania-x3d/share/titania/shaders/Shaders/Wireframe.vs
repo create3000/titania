@@ -5,6 +5,9 @@ precision mediump float;
 uniform mat4 x3d_ProjectionMatrix;
 uniform mat4 x3d_ModelViewMatrix;
 
+#define X3D_GEOMETRY_POINTS 0
+#define X3D_GEOMETRY_LINES  1
+
 uniform int x3d_GeometryType;
 // 1
 
@@ -24,7 +27,7 @@ void
 main ()
 {
 	// If we are points, make the gl_PointSize one pixel larger.
-	gl_PointSize = x3d_GeometryType == 1 ? x3d_LinewidthScaleFactor : x3d_LinewidthScaleFactor + 1.0;
+	gl_PointSize = x3d_GeometryType == X3D_GEOMETRY_LINES ? x3d_LinewidthScaleFactor : x3d_LinewidthScaleFactor + 1.0;
 
 	vec4 p = x3d_ModelViewMatrix * x3d_Vertex;
 
