@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -174,6 +174,8 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BillboardAxisOfRotationToolBox", m_BillboardAxisOfRotationToolBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationBox", m_BillboardAxisOfRotationBox);
 	m_builder -> get_widget ("BillboardAxisOfRotationComboBoxText", m_BillboardAxisOfRotationComboBoxText);
+	m_builder -> get_widget ("CollisionExpander", m_CollisionExpander);
+	m_builder -> get_widget ("CollisionEnabledCheckButton", m_CollisionEnabledCheckButton);
 	m_builder -> get_widget ("LODExpander", m_LODExpander);
 	m_builder -> get_widget ("LODBox", m_LODBox);
 	m_builder -> get_widget ("LODForceTransitionsCheckButton", m_LODForceTransitionsCheckButton);

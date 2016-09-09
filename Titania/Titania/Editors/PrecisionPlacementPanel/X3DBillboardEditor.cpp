@@ -88,7 +88,7 @@ X3DBillboardEditor::set_selection (const X3D::MFNode & selection)
 	// Get Billboard
 
 	billboard = selection .empty () ? nullptr : selection .back ();
-	const X3D::MFNode billboards (billboard ? X3D::MFNode ({ billboard }) : X3D::MFNode ());
+	const auto billboards = billboard ? X3D::MFNode ({ billboard }) : X3D::MFNode ();
 
 	getBillboardExpander () .set_visible (billboard);
 

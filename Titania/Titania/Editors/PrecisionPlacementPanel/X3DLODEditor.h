@@ -60,7 +60,6 @@
 namespace titania {
 namespace puck {
 
-class BrowserWindow;
 class LODRangeWidget;
 
 class X3DLODEditor :

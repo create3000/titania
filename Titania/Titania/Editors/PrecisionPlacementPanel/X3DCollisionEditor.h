@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DCOLLISION_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DCOLLISION_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
@@ -57,7 +57,7 @@
 namespace titania {
 namespace puck {
 
-class X3DSwitchEditor :
+class X3DCollisionEditor :
 	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
@@ -65,14 +65,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSwitchEditor ();
+	~X3DCollisionEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DSwitchEditor ();
+	X3DCollisionEditor ();
 
 	virtual
 	void
@@ -87,7 +87,7 @@ private:
 
 	///  @name Members
 
-	X3DFieldAdjustment <X3D::SFInt32> whichChoice;
+	X3DFieldToggleButton <X3D::SFBool> enabled;
 
 };
 

@@ -199,6 +199,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.$(OBJEXT) \
+	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeometrySelectionEditor.$(OBJEXT) \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.$(OBJEXT) \
@@ -663,6 +664,7 @@ titania_SOURCES = \
 	Titania/Editors/NodePropertiesEditor/X3DUserDefinedFieldsEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.cpp \
+	Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeometrySelectionEditor.cpp \
 	Titania/Editors/PrecisionPlacementPanel/X3DGeoTransformEditor.cpp \
@@ -1353,6 +1355,9 @@ Titania/Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.$(OBJEXT):  \
 Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.$(OBJEXT):  \
 	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.$(OBJEXT):  \
+	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
+	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/PrecisionPlacementPanel/X3DGeoLocationEditor.$(OBJEXT):  \
 	Titania/Editors/PrecisionPlacementPanel/$(am__dirstamp) \
 	Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/$(am__dirstamp)
@@ -1967,6 +1972,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/NodePropertiesEditor/$(DEPDIR)/X3DUserDefinedFieldsEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/PrecisionPlacementPanel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DBillboardEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DCollisionEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DGeoLocationEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DGeoTransformEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/PrecisionPlacementPanel/$(DEPDIR)/X3DGeometrySelectionEditor.Po@am__quote@

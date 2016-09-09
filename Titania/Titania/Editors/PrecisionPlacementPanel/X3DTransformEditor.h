@@ -54,7 +54,6 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
-
 namespace titania {
 namespace puck {
 

@@ -96,8 +96,8 @@ X3DGeoLocationEditor::initialize ()
 void
 X3DGeoLocationEditor::set_selection (const X3D::MFNode & selection)
 {
-	const X3D::X3DPtr <X3D::GeoLocation> geoLocation (selection .empty () ? nullptr : selection .back ());
-	const X3D::MFNode                    geoLocations (geoLocation ? X3D::MFNode ({ geoLocation }) : X3D::MFNode ());
+	const auto geoLocation  = X3D::X3DPtr <X3D::GeoLocation> (selection .empty () ? nullptr : selection .back ());
+	const auto geoLocations = geoLocation ? X3D::MFNode ({ geoLocation }) : X3D::MFNode ();
 
 	getGeoLocationExpander () .set_visible (geoLocation);
 

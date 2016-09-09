@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -542,6 +542,14 @@ public:
 	Gtk::ComboBoxText &
 	getBillboardAxisOfRotationComboBoxText () const
 	{ return *m_BillboardAxisOfRotationComboBoxText; }
+
+	Gtk::Expander &
+	getCollisionExpander () const
+	{ return *m_CollisionExpander; }
+
+	Gtk::CheckButton &
+	getCollisionEnabledCheckButton () const
+	{ return *m_CollisionEnabledCheckButton; }
 
 	Gtk::Expander &
 	getLODExpander () const
@@ -1206,6 +1214,8 @@ private:
 	Gtk::Box*                      m_BillboardAxisOfRotationToolBox;
 	Gtk::Box*                      m_BillboardAxisOfRotationBox;
 	Gtk::ComboBoxText*             m_BillboardAxisOfRotationComboBoxText;
+	Gtk::Expander*                 m_CollisionExpander;
+	Gtk::CheckButton*              m_CollisionEnabledCheckButton;
 	Gtk::Expander*                 m_LODExpander;
 	Gtk::Grid*                     m_LODBox;
 	Gtk::CheckButton*              m_LODForceTransitionsCheckButton;

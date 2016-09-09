@@ -281,6 +281,7 @@
     <Compile Include="Titania\Editors\LibraryView\X3DModelsPaletteEditor.cpp" />
     <Compile Include="Titania\Dialogs\MessageDialog\MessageDialog.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DMessageDialogInterface.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2544,6 +2545,7 @@
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-question.png" />
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-warning.png" />
     <None Include="titania" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

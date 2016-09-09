@@ -127,8 +127,8 @@ X3DGeoTransformEditor::configure ()
 void
 X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)
 {
-	const X3D::X3DPtr <X3D::GeoTransform> transform (selection .empty () ? nullptr : selection .back ());
-	const X3D::MFNode                     transforms (transform ? X3D::MFNode ({ transform }) : X3D::MFNode ());
+	const auto transform  = X3D::X3DPtr <X3D::GeoTransform> (selection .empty () ? nullptr : selection .back ());
+	const auto transforms = transform ? X3D::MFNode ({ transform }) : X3D::MFNode ();
 
 	getGeoTransformExpander () .set_visible (transform);
 

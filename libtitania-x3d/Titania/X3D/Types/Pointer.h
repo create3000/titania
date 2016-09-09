@@ -56,35 +56,6 @@
 namespace titania {
 namespace X3D {
 
-// Forward declarations
-
-//
-class BrowserApplication;
-class Browser;
-class RenderingProperties;
-class BrowserProperties;
-class BrowserOptions;
-class X3DJavaScriptEngine;
-class Notification;
-class Selection;
-class Console;
-class Clipboard;
-
-//
-class World;
-class Scene;
-class X3DScene;
-class X3DExecutionContext;
-class ProtoDeclaration;
-class X3DProtoDeclarationNode;
-class X3DPrototypeInstance;
-class ExternProtoDeclaration;
-class NamedNode;
-class ImportedNode;
-class Route;
-class ExportedNode;
-class WorldInfo;
-
 // Basic node types
 
 class Anchor;
@@ -378,6 +349,138 @@ class X3DVertexAttributeNode;
 class X3DViewpointNode;
 class X3DViewpointObject;
 class X3DViewportNode;
+
+// Non statndard
+
+class Clipboard;
+class DepthBuffer;
+class FaceSelection;
+class PolygonOffsetGroup;
+class TouchGroup;
+class TransformMatrix3D;
+class X3DFaceSelection;
+
+// Browser node types
+
+class Browser;
+class BrowserApplication;
+class BrowserOptions;
+class BrowserProperties;
+class Console;
+class ExportedNode;
+class ExternProtoDeclaration;
+class FieldSet;
+class ImportedNode;
+class MotionBlur;
+class NamedNode;
+class Notification;
+class Parser;
+class ProtoDeclaration;
+class RenderingProperties;
+class Route;
+class Scene;
+class Selection;
+class World;
+class X3DBrowser;
+class X3DBrowserContext;
+class X3DExecutionContext;
+class X3DJavaScriptContext;
+class X3DJavaScriptEngine;
+class X3DParser;
+class X3DProtoDeclarationNode;
+class X3DRenderObject;
+class X3DRouterObject;
+class X3DScene;
+
+// Viewer
+
+class DefaultViewer;
+class ExamineViewer;
+class FlyViewer;
+class LookAtViewer;
+class NoneViewer;
+class PlaneViewer;
+class WalkViewer;
+class X3DExamineViewer;
+
+// Viewer tools
+
+class LightSaber;
+class RectangleSelection;
+class LassoSelection;
+class X3DSelector;
+
+// Tool nodes
+
+class UndoStepContainer;
+
+class AnchorTool;
+class AngleTool;
+class BillboardTool;
+class CADAssemblyTool;
+class CADFaceTool;
+class CADLayerTool;
+class CADPartTool;
+class CollisionTool;
+class CoordinateTool;
+class DirectionalLightTool;
+class GeoLocationTool;
+class GeoLODTool;
+class GeoTransformTool;
+class GeoViewpointTool;
+class GridTool;
+class GroupTool;
+class IndexedFaceSetTool;
+class InlineTool;
+class LayoutGroupTool;
+class LODTool;
+class NormalTool;
+class OrthoViewpointTool;
+class ParticleSystemTool;
+class PickableGroupTool;
+class PointLightTool;
+class ProximitySensorTool;
+class ScreenGroupTool;
+class ShapeTool;
+class SoundTool;
+class SpotLightTool;
+class SwitchTool;
+class Tool;
+class TouchGroupTool;
+class TransformTool;
+class TransformSensorTool;
+class ViewpointTool;
+class VisibilitySensorTool;
+class X3DActiveLayerTool;
+class X3DBindableNodeTool;
+class X3DBoundedObjectTool;
+class X3DChildNodeTool;
+class X3DComposedGeometryNodeTool;
+class X3DCoordinateNodeTool;
+class X3DGeometricPropertyNodeTool;
+class X3DEnvironmentalSensorNodeTool;
+class X3DGeometryNodeTool;
+class X3DGeospatialObjectTool;
+class X3DGridTool;
+class X3DGroupingNodeTool;
+class X3DIndexedFaceSetCutObject;
+class X3DIndexedFaceSetKnifeObject;
+class X3DIndexedFaceSetOperationsObject;
+class X3DIndexedFaceSetSelectionObject;
+class X3DIndexedFaceSetTool;
+class X3DIndexedFaceSetTransformObject;
+class X3DLightNodeTool;
+class X3DNodeTool;
+class X3DNormalNodeTool;
+class X3DProductStructureChildNodeTool;
+class X3DSensorNodeTool;
+class X3DShapeNodeTool;
+class X3DSoundNodeTool;
+class X3DToolObject;
+class X3DTransformMatrix3DNodeTool;
+class X3DTransformNodeTool;
+class X3DUrlObjectTool;
+class X3DViewpointNodeTool;
 
 // Bindable stacks and lists
 

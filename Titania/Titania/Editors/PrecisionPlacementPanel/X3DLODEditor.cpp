@@ -88,15 +88,15 @@ X3DLODEditor::initialize ()
 void
 X3DLODEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3D::X3DPtr <X3D::LOD> lod (selection .empty () ? nullptr : selection .back ());
-	const auto nodes = lod ? X3D::MFNode ({ lod }) : X3D::MFNode ();
+	const auto lod  = X3D::X3DPtr <X3D::LOD> (selection .empty () ? nullptr : selection .back ());
+	const auto lods = lod ? X3D::MFNode ({ lod }) : X3D::MFNode ();
 
 	nodeName         .setNode  (X3D::SFNode (lod));
-	forceTransitions .setNodes (nodes);
-	center           .setNodes (nodes);
-	range            .setNodes (nodes);
-	singleRange      .setNodes (nodes);
-	level_changed    .setNodes (nodes);
+	forceTransitions .setNodes (lods);
+	center           .setNodes (lods);
+	range            .setNodes (lods);
+	singleRange      .setNodes (lods);
+	level_changed    .setNodes (lods);
 
 	getLODExpander ()                    .set_visible (lod);
 	getLODKeepCurrentLevelCheckButton () .set_sensitive (lod);

@@ -48,50 +48,37 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DSWITCH_EDITOR_H__
+#include "X3DCollisionEditor.h"
 
-#include "../../ComposedWidgets.h"
-#include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
+#include <Titania/X3D/Components/Navigation/Collision.h>
 
 namespace titania {
 namespace puck {
 
-class X3DSwitchEditor :
-	virtual public X3DPrecisionPlacementPanelInterface
+X3DCollisionEditor::X3DCollisionEditor () :
+	X3DPrecisionPlacementPanelInterface (),
+	                            enabled (this, getCollisionEnabledCheckButton (),  "enabled")
+{ }
+
+void
+X3DCollisionEditor::initialize ()
+{ }
+
+void
+X3DCollisionEditor::set_selection (const X3D::MFNode & selection)
 {
-public:
+	// Get Collision
 
-	///  @name Destruction
+	const auto collisionNode  = X3D::X3DPtr <X3D::Collision> (selection .empty () ? nullptr : selection .back ());
+	const auto collisionNodes = collisionNode ? X3D::MFNode ({ collisionNode }) : X3D::MFNode ();
 
-	virtual
-	~X3DSwitchEditor ();
+	getCollisionExpander () .set_visible (collisionNode);
 
+	enabled .setNodes (collisionNodes);
+}
 
-protected:
-
-	///  @name Construction
-
-	X3DSwitchEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) override;
-
-
-private:
-
-	///  @name Members
-
-	X3DFieldAdjustment <X3D::SFInt32> whichChoice;
-
-};
+X3DCollisionEditor::~X3DCollisionEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif

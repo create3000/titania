@@ -72,8 +72,8 @@ X3DSwitchEditor::set_selection (const X3D::MFNode & selection)
 {
 	// Get Switch
 
-	const X3D::X3DPtr <X3D::Switch> switchNode (selection .empty () ? nullptr : selection .back ());
-	const X3D::MFNode switchNodes (switchNode ? X3D::MFNode ({ switchNode }) : X3D::MFNode ());
+	const auto switchNode  = X3D::X3DPtr <X3D::Switch> (selection .empty () ? nullptr : selection .back ());
+	const auto switchNodes = switchNode ? X3D::MFNode ({ switchNode }) : X3D::MFNode ();
 
 	getSwitchExpander () .set_visible (switchNode);
 

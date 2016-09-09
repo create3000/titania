@@ -63,6 +63,7 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                 X3DTransformEditor (),
 	                    X3DSwitchEditor (),
 	                 X3DBillboardEditor (),
+	                 X3DCollisionEditor (),
 	                       X3DLODEditor (),
 	                    X3DLayoutEditor (),
 	                  X3DViewportEditor (),
@@ -109,6 +110,7 @@ PrecisionPlacementPanel::initialize ()
 	X3DTransformEditor::initialize ();
 	X3DSwitchEditor::initialize ();
 	X3DBillboardEditor::initialize ();
+	X3DCollisionEditor::initialize ();
 	X3DLODEditor::initialize ();
 	X3DLayoutEditor::initialize ();
 	X3DViewportEditor::initialize ();
@@ -124,6 +126,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DTransformEditor::set_selection (selection);
 	X3DSwitchEditor::set_selection (selection);
 	X3DBillboardEditor::set_selection (selection);
+	X3DCollisionEditor::set_selection (selection);
 	X3DLODEditor::set_selection (selection);
 	X3DLayoutEditor::set_selection (selection);
 	X3DViewportEditor::set_selection (selection);

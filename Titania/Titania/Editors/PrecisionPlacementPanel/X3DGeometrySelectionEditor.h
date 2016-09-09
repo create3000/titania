@@ -55,14 +55,6 @@
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
 
 namespace titania {
-namespace X3D {
-
-class IndexedFaceSetTool;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class RotationTool;
