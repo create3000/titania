@@ -267,10 +267,10 @@ noexcept (true)
 }
 
 void
-Browser::reshape ()
+Browser::reshape (const Vector4i & viewport)
 noexcept (true)
 {
-	X3DBrowser::reshape ();
+	X3DBrowser::reshape (viewport);
 }
 
 void

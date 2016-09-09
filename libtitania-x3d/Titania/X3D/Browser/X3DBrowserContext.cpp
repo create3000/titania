@@ -164,8 +164,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
 		const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
+		const auto   viewport         = getBrowser () -> getViewport ();
 	
 		// Render to frame buffer.
+
 
 		FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
 
@@ -174,7 +176,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 		layer0 -> getBackground () -> isHidden (alphaChannel);
 		getBrowser () -> setRenderTools (false);
-		getBrowser () -> reshape ();
+		getBrowser () -> reshape (Vector4i (0, 0, width, height));
 
 		if (alphaChannel)
 			getBrowser () -> X3DRenderingContext::renderBackground ();
@@ -186,7 +188,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .readPixels ();
 		frameBuffer .unbind ();
 
-		getBrowser () -> reshape ();
+		getBrowser () -> reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 		getBrowser () -> setRenderTools (true);
 		layer0 -> getBackground () -> isHidden (backgroundHidden);
 

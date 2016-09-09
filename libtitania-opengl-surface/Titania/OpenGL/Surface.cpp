@@ -225,11 +225,9 @@ Surface::set_configure_event (GdkEventConfigure* const event)
 {
 	if (makeCurrent ())
 	{
-		glViewport (0, 0, get_width (), get_height ());
-
 		background -> configure (get_style_context (), get_width (), get_height ());
 
-		reshape ();
+		reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
 	}
 
 	queue_draw ();

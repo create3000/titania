@@ -115,13 +115,9 @@ X3DRenderingContext::initialize ()
 }
 
 void
-X3DRenderingContext::reshape ()
+X3DRenderingContext::reshape (const Vector4i & value)
 noexcept (true)
 {
-	Vector4i value;
-
-	glGetIntegerv (GL_VIEWPORT, value .data ());
-
 	viewport .assign (value .data (), value .data () + value .size ());
 }
 

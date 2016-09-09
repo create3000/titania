@@ -160,7 +160,7 @@ private:
 
 	virtual
 	void
-	reshape ()
+	reshape (const Vector4i &)
 	noexcept (true) final override;
 	
 	virtual

@@ -56,6 +56,8 @@
 
 #include "Context/WindowContext.h"
 
+#include <Titania/Math/Numbers/Vector4.h>
+
 #include <memory>
 #include <thread>
 
@@ -109,7 +111,7 @@ protected:
 
 	virtual
 	void
-	reshape () = 0;
+	reshape (const math::vector4 <int32_t> &) = 0;
 
 	virtual
 	void

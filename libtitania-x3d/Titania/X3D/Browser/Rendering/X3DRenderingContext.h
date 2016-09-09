@@ -140,7 +140,7 @@ protected:
 
 	virtual
 	void
-	reshape ()
+	reshape (const Vector4i &)
 	noexcept (true);
 
 
