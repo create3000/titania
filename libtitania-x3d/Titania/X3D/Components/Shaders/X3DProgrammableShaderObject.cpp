@@ -369,6 +369,20 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::SFImage:
 		{
+			const auto image = static_cast <SFImage*> (field);
+
+			std::vector <int32_t> vector;
+
+			vector .reserve (3 + image -> getArray () .size ());
+
+			vector .emplace_back (image -> getWidth ());
+			vector .emplace_back (image -> getHeight ());
+			vector .emplace_back (image -> getComponents ());
+
+			for (const auto & value : image -> getArray ())
+				vector .emplace_back (value);
+
+			glUniform1iv (location, vector .size (), vector .data ());
 			break;
 		}
 		case X3DConstants::SFMatrix3d:
@@ -557,6 +571,21 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		}
 		case X3DConstants::MFImage:
 		{
+			const auto images = static_cast <MFImage*> (field);
+
+			std::vector <int32_t> vector;
+
+			for (const auto & image : *images)
+			{
+				vector .emplace_back (image .getWidth ());
+				vector .emplace_back (image .getHeight ());
+				vector .emplace_back (image .getComponents ());
+
+				for (const auto & value : image .getArray ())
+					vector .emplace_back (value);
+			}
+
+			glUniform1iv (location, vector .size (), vector .data ());
 			break;
 		}
 		case X3DConstants::MFInt32:
