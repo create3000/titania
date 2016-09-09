@@ -1,9 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="27" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/SpotLight.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/DirectionalLight.cpp" Line="6" Column="40" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Lighting/SpotLight.cpp" Line="62" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.h" Line="60" Column="25" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DCollisionEditor.cpp" Line="66" Column="1" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DBillboardEditor.h" Line="107" Column="19" />
+      <File FileName="Titania/Titania/Editors/PrecisionPlacementPanel/X3DGeometrySelectionEditor.h" Line="76" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
