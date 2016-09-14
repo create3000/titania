@@ -295,8 +295,9 @@ void
 X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
-
-	currentViewport -> push ();
+	
+	getProjectionMatrix () .push (Matrix4d ());
+	getModelViewMatrix  () .push (Matrix4d ());
 
 	switch (type)
 	{
@@ -315,19 +316,20 @@ X3DLayerNode::traverse (const TraverseType type)
 			collision ();
 			break;
 		}
-		case TraverseType::DISPLAY:
-		{
-			display (type);
-			break;
-		}
 		case TraverseType::DEPTH:
 		{
 			display (type);
 			break;
 		}
+		case TraverseType::DISPLAY:
+		{
+			display (type);
+			break;
+		}
 	}
-
-	currentViewport -> pop ();
+	
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
 
 	getBrowser () -> getLayers () .pop ();
 }
@@ -348,9 +350,6 @@ X3DLayerNode::pointer ()
 				return;
 		}
 
-		getProjectionMatrix () .push (Matrix4d ());
-		getModelViewMatrix  () .push (Matrix4d ());
-
 		getViewpoint () -> reshape ();
 		getViewpoint () -> transform ();
 
@@ -360,18 +359,13 @@ X3DLayerNode::pointer ()
 		collect (TraverseType::POINTER);
 		currentViewport -> pop ();
 
-		getGlobalObjects    () .clear ();
-		getModelViewMatrix  () .pop ();
-		getProjectionMatrix () .pop ();
+		getGlobalObjects () .clear ();
 	}
 }
 
 void
 X3DLayerNode::camera ()
 {
-	getProjectionMatrix () .push (Matrix4d ());
-	getModelViewMatrix  () .push (Matrix4d ());
-
 	getViewpoint () -> reshape ();
 
 	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
@@ -387,34 +381,22 @@ X3DLayerNode::camera ()
 	viewpoints      -> update ();
 	backgrounds     -> update ();
 	fogs            -> update ();
-
-	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
 }
 
 void
 X3DLayerNode::collision ()
 {
-	getProjectionMatrix () .push (Matrix4d ());
-	getModelViewMatrix  () .push (Matrix4d ());
-
 	getViewpoint () -> reshape ();
 
 	// Render
 	currentViewport -> push ();
 	render (TraverseType::COLLISION);
 	currentViewport -> pop ();
-
-	getModelViewMatrix () .pop ();
-	getProjectionMatrix () .pop ();
 }
 
 void
 X3DLayerNode::display (const TraverseType type)
 {
-	getProjectionMatrix () .push (Matrix4d ());
-	getModelViewMatrix  () .push (Matrix4d ());
-
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
@@ -424,9 +406,6 @@ X3DLayerNode::display (const TraverseType type)
 	currentViewport -> pop ();
 
 	getNavigationInfo () -> disable ();
-
-	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
 }
 
 void

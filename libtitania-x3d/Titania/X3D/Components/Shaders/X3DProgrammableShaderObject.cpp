@@ -1088,17 +1088,6 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	context -> getFog () -> setShaderUniforms (this);
 
-	// Lights
-
-	const auto & localLights = context -> getLocalLights ();
-	const auto   numLights   = std::min (MAX_LIGHTS, numGlobalLights + localLights .size ());
-
-	for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
-		localLights [l] -> setShaderUniforms (this, i);
-
-	if (numLights < MAX_LIGHTS)
-		glUniform1i (x3d_LightType [numLights], 0);
-
 	// Appearance
 
 	glUniform1i (x3d_ColorMaterial, context -> getColorMaterial ());
@@ -1106,7 +1095,24 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	linePropertiesNode -> setShaderUniforms (this);
 
 	if (materialNode)
+	{
+		glUniform1i (x3d_Lighting, true);
+
+		// Lights
+
+		const auto & localLights = context -> getLocalLights ();
+		const auto   numLights   = std::min (MAX_LIGHTS, numGlobalLights + localLights .size ());
+
+		for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
+			localLights [l] -> setShaderUniforms (this, i);
+
+		if (numLights < MAX_LIGHTS)
+			glUniform1i (x3d_LightType [numLights], 0);
+		
+		// Material
+		
 		materialNode -> setShaderUniforms (this);
+	}
 	else
 		glUniform1i (x3d_Lighting, false);
 

@@ -1225,6 +1225,12 @@ ParticleSystem::intersects (const CollisionSphere3d & sphere, const ClipPlaneCon
 void
 ParticleSystem::traverse (const TraverseType type)
 {
+	if (isHidden ())
+		return;
+		
+	if (not isActive ())
+		return;
+
 	switch (type)
 	{
 		case TraverseType::POINTER:
@@ -1233,32 +1239,17 @@ ParticleSystem::traverse (const TraverseType type)
 		}
 		case TraverseType::COLLISION:
 		{
-			if (isHidden ())
-				break;
-
-			if (isActive ())
-				getCurrentLayer () -> addCollisionShape (this);
-
+			getCurrentLayer () -> addCollisionShape (this);
 			break;
 		}
 		case TraverseType::DEPTH:
 		{
-			if (isHidden ())
-				break;
-
-			if (isActive ())
-				getCurrentLayer () -> addDepthShape (this);
-
+			getCurrentLayer () -> addDepthShape (this);
 			break;
 		}
 		case TraverseType::DISPLAY:
 		{
-			if (isHidden ())
-				break;
-
-			if (isActive ())
-				getCurrentLayer () -> addShape (this);
-
+			getCurrentLayer () -> addShape (this);
 			break;
 		}
 		default:

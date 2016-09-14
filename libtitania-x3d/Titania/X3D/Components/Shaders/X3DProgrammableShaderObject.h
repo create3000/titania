@@ -121,10 +121,6 @@ public:
 
 	///  @name Uniform location access lighting
 
-	GLint
-	getLightingUniformLocation () const
-	{ return x3d_Lighting; }
-
 	const std::vector <GLint> &
 	getLightTypeUniformLocation () const
 	{ return x3d_LightType; }

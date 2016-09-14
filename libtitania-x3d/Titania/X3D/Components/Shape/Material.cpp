@@ -138,7 +138,6 @@ Material::eventsProcessed ()
 void
 Material::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
-	glUniform1i  (shaderObject -> getLightingUniformLocation          (), true);
 	glUniform1i  (shaderObject -> getSeparateBackColorUniformLocation (), false);
 
 	glUniform1f  (shaderObject -> getAmbientIntensityUniformLocation (), ambientIntensity ());

@@ -182,7 +182,7 @@ getProgramStageBit (const std::string & type)
 std::string
 addConstants (X3DBrowser* const browser, const std::string & source)
 {
-	static const std::regex version (R"/(^([\s\S]*\n)?(#version\s+\d+.*?\n))/");
+	static const std::regex version (R"/(^([\s\S]*?[\n]{0,1})(\s*#version\s+\d+.*?\n))/");
 
 	std::smatch match;
 

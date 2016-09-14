@@ -93,10 +93,10 @@ PointLight::PointLight (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "location",         location ());
 	addField (inputOutput, "radius",           radius ());
 
-	addField (inputOutput, "shadowColor",      shadowColor ());
-	addField (inputOutput, "shadowIntensity",  shadowIntensity ());
-	addField (inputOutput, "shadowDiffusion",  shadowDiffusion ());
-	addField (inputOutput, "shadowMapSize",    shadowMapSize ());
+	addField (inputOutput,    "shadowColor",      shadowColor ());
+	addField (inputOutput,    "shadowIntensity",  shadowIntensity ());
+	addField (inputOutput,    "shadowDiffusion",  shadowDiffusion ());
+	addField (initializeOnly, "shadowMapSize",    shadowMapSize ());
 
 	location () .setUnit (UnitCategory::LENGTH);
 	radius ()   .setUnit (UnitCategory::LENGTH);

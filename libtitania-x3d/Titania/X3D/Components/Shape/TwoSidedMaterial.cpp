@@ -214,7 +214,6 @@ TwoSidedMaterial::eventsProcessed ()
 void
 TwoSidedMaterial::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) const
 {
-	glUniform1i  (shaderObject -> getLightingUniformLocation          (), true);
 	glUniform1i  (shaderObject -> getSeparateBackColorUniformLocation (), separateBackColor ());
 
 	glUniform1f  (shaderObject -> getAmbientIntensityUniformLocation (), ambientIntensity ());

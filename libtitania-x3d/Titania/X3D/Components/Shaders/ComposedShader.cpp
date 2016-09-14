@@ -208,11 +208,6 @@ ComposedShader::set_loaded ()
 			// Check for link status
 	
 			glGetProgramiv (programId, GL_LINK_STATUS, &valid);
-
-			// Initialize uniform variables
-	
-			getDefaultUniforms ();
-			addShaderFields ();
 		}
 
 		// Print info log
@@ -221,6 +216,14 @@ ComposedShader::set_loaded ()
 
 		if (bool (valid) != isValid ())
 			isValid () = valid;
+
+		if (valid)
+		{
+			// Initialize uniform variables
+	
+			getDefaultUniforms ();
+			addShaderFields ();
+		}
 
 		// Detach shaders
 

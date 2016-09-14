@@ -3,12 +3,13 @@
   <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="597" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/Viewport.cpp" Line="133" Column="53" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DViewportNode.cpp" Line="68" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.h" Line="77" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp" Line="121" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="282" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="300" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/Viewport.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DViewportNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="383" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

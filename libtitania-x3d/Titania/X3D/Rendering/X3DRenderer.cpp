@@ -198,7 +198,6 @@ X3DRenderer::addDepthShape (X3DShapeNode* const shape)
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shape);
-	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 }
@@ -338,6 +337,14 @@ X3DRenderer::render (const TraverseType type)
 			gravite ();
 			break;
 		}
+		case TraverseType::DEPTH:
+		{
+			numDepthShapes = 0;
+
+			collect (type);
+			depth (depthShapes, numDepthShapes);
+			break;
+		}
 		case TraverseType::DISPLAY:
 		{
 			numOpaqueShapes      = 0;
@@ -345,14 +352,6 @@ X3DRenderer::render (const TraverseType type)
 
 			collect (type);
 			display ();
-			break;
-		}
-		case TraverseType::DEPTH:
-		{
-			numDepthShapes = 0;
-
-			collect (type);
-			depth (depthShapes, numDepthShapes);
 			break;
 		}
 		default:
@@ -550,22 +549,22 @@ X3DRenderer::display ()
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
-	// Render shadow maps
+	// Render shadow maps.
 
 	for (const auto & object : getLights ())
 		object -> renderShadowMap ();
 
-	// Enable global lights
+	// Enable global lights.
 
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
 
-	// Enable global objects
+	// Enable global objects.
 
 	for (const auto & object : getGlobalObjects ())
 		object -> enable ();
 
-	// Set global uniforms
+	// Set global uniforms.
 
 	// TODO: set global uniforms.
 

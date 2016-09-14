@@ -95,6 +95,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 
 	// Setup shader.
 
+	context -> setGeometryType  (getGeometryType ());
 	context -> setColorMaterial (not getColors () .empty ());
 
 	shaderNode -> setGlobalUniforms (context);
