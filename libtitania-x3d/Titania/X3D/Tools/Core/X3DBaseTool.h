@@ -258,6 +258,10 @@ public:
 	getCDATA () const final override
 	{ return node -> getCDATA (); }
 
+	///  @name Clone handling
+
+	// Clone handling must not be overloaded!
+
 	///  @name Tool support
 
 	virtual
@@ -321,6 +325,10 @@ public:
 	const std::vector <std::string> &
 	getInnerComments () const final override
 	{ return node -> getInnerComments (); }
+
+	///  @name Input/Output
+
+	// Input/Output must not be overloaded!
 
 	///  @name Destruction
 
