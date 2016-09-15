@@ -153,6 +153,24 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
+	///  @name Field handling
+
+	///  Checks if a field with @a name exists for this node.
+	virtual
+	bool
+	hasField (const std::string & name) const
+	throw (Error <DISPOSED>) final override
+	{ return node -> hasField (name); }
+
+	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
+	virtual
+	bool
+	isDefaultValue (const X3DFieldDefinition* const field) const
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ return node -> isDefaultValue (field); }
+
 	///  Return the field with @a name.
 	virtual
 	X3DFieldDefinition*
@@ -160,6 +178,21 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
+
+	///  Returns whether this node can have user defined fields.
+	virtual
+	bool
+	canUserDefinedFields () const final override
+	{ return node -> canUserDefinedFields (); }
+
+	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	virtual
+	void
+	setUserDefinedFields (const X3D::FieldDefinitionArray & fieldDefinitions)
+	throw (Error <INVALID_NAME>,
+	       Error <INVALID_FIELD>,
+	       Error <DISPOSED>) final override
+	{ node -> setUserDefinedFields (fieldDefinitions); }
 
 	///  Adds @a field to the set of user defined fields of this node.
 	virtual
@@ -225,6 +258,8 @@ public:
 	getCDATA () const final override
 	{ return node -> getCDATA (); }
 
+	///  @name Tool support
+
 	virtual
 	void
 	addTool () override
@@ -233,6 +268,8 @@ public:
 	virtual
 	void
 	removeTool (const bool = false) override;
+
+	///  @name Event handling
 
 	virtual
 	SFBool &
@@ -243,7 +280,6 @@ public:
 	const SFBool &
 	isLive () const final override
 	{ return node -> isLive (); }
-
 
 	virtual
 	void
@@ -257,6 +293,12 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return node -> endUpdate (); }
 
+	///  Returns true if any field has a input or output route otherwise false.
+	virtual
+	bool
+	hasRoutes () const final override
+	{ return node -> hasRoutes (); }
+
 	virtual
 	void
 	addEvent () final override;
@@ -265,6 +307,20 @@ public:
 	void
 	traverse (const TraverseType) override
 	{ }
+
+	///  @name Comment handling
+
+	///  Adds comments for this node.  The comments will be printed before the '}'.
+	virtual
+	void
+	addInnerComments (const std::vector <std::string> & value) final override
+	{ node -> addInnerComments (value); }
+
+	///  Returns the comments for this node.
+	virtual
+	const std::vector <std::string> &
+	getInnerComments () const final override
+	{ return node -> getInnerComments (); }
 
 	///  @name Destruction
 

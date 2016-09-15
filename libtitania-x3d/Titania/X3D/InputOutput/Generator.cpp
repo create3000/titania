@@ -408,19 +408,19 @@ Generator::AddImportedNode (const X3DBaseNode* const exportedNode, const std::st
 }
 
 const std::string &
-Generator::LocalName (const X3DBaseNode* node)
+Generator::LocalName (const X3DBaseNode* baseNode)
 {
 	try
 	{
-		return importedNames .at (node -> getId ());
+		return importedNames .at (baseNode -> getId ());
 	}
 	catch (...)
 	{
-		if (ExistsNode (node))
-			return Name (node);
+		if (ExistsNode (baseNode))
+			return Name (baseNode);
 	}
 
-	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + node -> getTypeName () + "'.");
+	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + baseNode -> getTypeName () + "'.");
 }
 
 void

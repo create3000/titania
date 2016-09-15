@@ -208,11 +208,13 @@ public:
 	///  @name Field handling
 
 	///  Checks if a field with @a name exists for this node.
+	virtual
 	bool
 	hasField (const std::string &) const
 	throw (Error <DISPOSED>);
 
 	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
+	virtual
 	bool
 	isDefaultValue (const X3DFieldDefinition* const) const
 	throw (Error <INVALID_NAME>,
@@ -262,6 +264,7 @@ public:
 	{ return false; }
 
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
+	virtual
 	void
 	setUserDefinedFields (const X3D::FieldDefinitionArray &)
 	throw (Error <INVALID_NAME>,
@@ -397,6 +400,7 @@ public:
 	throw (Error <DISPOSED>);
 
 	///  Returns true if any field has a input or output route otherwise false.
+	virtual
 	bool
 	hasRoutes () const;
 
@@ -438,11 +442,13 @@ public:
 	///  @name Comment handling
 
 	///  Adds comments for this node.  The comments will be printed before the '}'.
+	virtual
 	void
 	addInnerComments (const std::vector <std::string> & value)
 	{ comments .insert (comments .end (), value .begin (), value .end ()); }
 
 	///  Returns the comments for this node.
+	virtual
 	const std::vector <std::string> &
 	getInnerComments () const
 	{ return comments; }
