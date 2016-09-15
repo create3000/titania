@@ -131,7 +131,7 @@ public:
 	getObject (X3DChildObject* const field) const
 	noexcept (true);
 
-	std::shared_ptr <X3D::SceneLoader> &
+	X3DPtr <X3D::SceneLoader> &
 	getFuture ()
 	{ return future; }
 
@@ -218,7 +218,7 @@ private:
 	mutable std::vector <pb::ptr <pb::NativeFunction>> classes;
 	std::map <X3D::X3DChildObject*, pb::pbObject*>     objects;
 	std::vector <pb::var>                              values;
-	std::shared_ptr <X3D::SceneLoader>                 future;
+	X3DPtr <X3D::SceneLoader>                          future;
 
 };
 

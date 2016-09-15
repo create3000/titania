@@ -80,8 +80,33 @@ public:
 
 	///  @name Member access
 
+	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const);
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Member access
 
 	const MFString &
 	getUrlError () const
@@ -106,12 +131,12 @@ public:
 
 private:
 
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
 	std::future <X3DScenePtr>
 	getFuture (const MFString &);
-
-	X3DBrowser*
-	getBrowser () const
-	{ return browser; }
 
 	X3DScenePtr
 	loadAsync (const MFString &);
@@ -122,9 +147,14 @@ private:
 	void
 	set_loadCount (const int32_t);
 
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
 	///  @name Members
 
-	std::atomic <X3DBrowser*> browser;
 	Callback                  callback;
 	Loader                    loader;
 	X3DScenePtr               scene;

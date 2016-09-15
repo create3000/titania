@@ -88,7 +88,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 
-	addChildren (scene, group, buffer);
+	addChildren (scene, group, buffer, future);
 }
 
 X3DBaseNode*
@@ -103,8 +103,6 @@ Inline::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
-
-	shutdown () .addInterest (this, &Inline::set_shutdown);
 
 	getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
 	isLive () .addInterest (this, &Inline::set_live);
@@ -333,11 +331,9 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (new SceneLoader (getExecutionContext (),
-	                                url (),
-	                                std::bind (&Inline::setSceneAsync, this, _1)));
+	future .setValue (new SceneLoader (getExecutionContext (),
+	                                   url (),
+	                                   std::bind (&Inline::setSceneAsync, this, _1)));
 }
 
 void
@@ -346,9 +342,7 @@ Inline::requestUnload ()
 	if (checkLoadState () == NOT_STARTED_STATE or checkLoadState () == FAILED_STATE)
 		return;
 
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset ();
+	future .setValue (nullptr);
 
 	setLoadState (NOT_STARTED_STATE);
 
@@ -417,20 +411,15 @@ Inline::addTool ()
 }
 
 void
-Inline::set_shutdown ()
-{
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (); // XXX: See Inline
-}
-
-void
 Inline::dispose ()
 {
 	X3DUrlObject::dispose ();
 	X3DBoundedObject::dispose ();
 	X3DChildNode::dispose ();
 }
+
+Inline::~Inline ()
+{ }
 
 } // X3D
 } // titania

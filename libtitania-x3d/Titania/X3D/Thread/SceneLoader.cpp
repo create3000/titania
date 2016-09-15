@@ -89,17 +89,27 @@ private:
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
+const ComponentType SceneLoader::component      = ComponentType::TITANIA;
+const std::string   SceneLoader::typeName       = "SceneLoader";
+const std::string   SceneLoader::containerField = "future";
+
 SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
-	X3DFuture (),
-	  browser (executionContext -> getBrowser ()),
-	 callback (callback),
-	   loader (nullptr, executionContext -> getWorldURL ()),
-	    scene (),
-	 urlError (),
-	   future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DFuture (),
+	  callback (callback),
+	    loader (nullptr, executionContext -> getWorldURL ()),
+	     scene (),
+	  urlError (),
+	    future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
 	getBrowser () -> addEvent ();
+}
+
+X3DBaseNode*
+SceneLoader::create (X3DExecutionContext* const executionContext) const
+{
+	throw Error <NOT_SUPPORTED> ("SceneLoader::create");
 }
 
 std::future <X3DScenePtr> 
@@ -110,18 +120,21 @@ SceneLoader::getFuture (const MFString & url)
 
 void
 SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	const auto browser = executionContext -> getBrowser ();
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (this, &SceneLoader::set_scene);
 
-	if (getBrowser () -> prepareEvents () .hasInterest (this, &SceneLoader::set_scene))
+	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::set_scene);
+
+	X3DFuture::setExecutionContext (executionContext);
+
+	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::set_scene);
-		browser -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
+		getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
+
+		getBrowser () -> addEvent ();
 	}
-
-	this -> browser = browser;
-
-	getBrowser () -> addEvent ();
 }
 
 bool
@@ -165,7 +178,7 @@ SceneLoader::wait ()
 		}
 	}
 
-	dispose ();
+	stop ();
 }
 
 X3DScenePtr
@@ -224,8 +237,7 @@ SceneLoader::set_scene (const bool addEvent)
 	if (status not_eq std::future_status::ready)
 		return;
 
-	// Remove set_scene connection.
-	X3DFuture::dispose ();
+	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::set_scene);
 
 	try
 	{
@@ -256,9 +268,9 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 	if (loadCount)
 	   return;
 
-	callback (std::move (scene));
+	scene -> getExternProtosLoadCount () .removeInterest (this, &SceneLoader::set_loadCount);
 
-	dispose ();
+	callback (std::move (scene));
 }
 
 void
@@ -280,8 +292,6 @@ SceneLoader::dispose ()
 
 SceneLoader::~SceneLoader ()
 {
-	dispose ();
-
 	if (future .valid ())
 		future .wait ();
 }

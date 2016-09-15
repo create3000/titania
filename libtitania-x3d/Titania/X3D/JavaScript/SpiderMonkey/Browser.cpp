@@ -717,13 +717,13 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 			using namespace std::placeholders;
 
-			context -> getFuture () .reset (new X3D::SceneLoader (script -> getExecutionContext (),
-			                                                      *url,
-			                                                      std::bind (&Browser::setSceneAsync,
-			                                                                 X3D::SFNode (script),
-			                                                                 *node,
-			                                                                 static_cast <X3D::MFNode*> (field),
-			                                                                 _1)));
+			context -> getFuture () .setValue (new X3D::SceneLoader (script -> getExecutionContext (),
+			                                                         *url,
+			                                                         std::bind (&Browser::setSceneAsync,
+			                                                                    X3D::SFNode (script),
+			                                                                    *node,
+			                                                                    static_cast <X3D::MFNode*> (field),
+			                                                                    _1)));
 
 			JS_SET_RVAL (cx, vp, JSVAL_VOID);
 			return true;

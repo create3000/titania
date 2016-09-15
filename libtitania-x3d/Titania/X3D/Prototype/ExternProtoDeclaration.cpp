@@ -81,7 +81,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
 	addField (inputOutput, "metadata", metadata ());
 	url () .setName ("url");
 
-	addChildren (url (), scene, proto);
+	addChildren (url (), scene, proto, future);
 }
 
 ExternProtoDeclaration*
@@ -158,8 +158,6 @@ ExternProtoDeclaration::initialize ()
 	X3DProtoDeclarationNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	shutdown () .addInterest (this, &ExternProtoDeclaration::set_shutdown);
-
 	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
 
@@ -198,7 +196,7 @@ ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 	proto = value;
 
 	if (not proto)
-	   return;
+		return;
 
 	if (getBrowser () -> isStrict ())
 	{
@@ -227,8 +225,8 @@ ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 	else
 	{
 		for (const auto & fieldDefinition : getUserDefinedFields ())
-		   removeField (fieldDefinition -> getName ());
-		
+			removeField (fieldDefinition -> getName ());
+
 		for (const auto & fieldDefinition : proto -> getUserDefinedFields ())
 			addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), fieldDefinition);
 	}
@@ -290,11 +288,9 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	getScene () -> addExternProtoLoadCount (this);
 
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (new SceneLoader (getExecutionContext (),
-	                                url (),
-	                                std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
+	future .setValue (new SceneLoader (getExecutionContext (),
+	                                   url (),
+	                                   std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
 }
 
 void
@@ -575,14 +571,6 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</ExternProtoDeclare>";
-}
-
-void
-ExternProtoDeclaration::set_shutdown ()
-{
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset ();
 }
 
 void

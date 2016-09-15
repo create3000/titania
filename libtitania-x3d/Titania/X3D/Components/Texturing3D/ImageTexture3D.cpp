@@ -76,6 +76,8 @@ ImageTexture3D::ImageTexture3D (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "repeatR",           repeatR ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+
+	addChildren (future);
 }
 
 X3DBaseNode*
@@ -89,8 +91,6 @@ ImageTexture3D::initialize ()
 {
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
-
-	shutdown () .addInterest (this, &ImageTexture3D::set_shutdown);
 
 	url () .addInterest (this, &ImageTexture3D::update);
 
@@ -147,13 +147,11 @@ ImageTexture3D::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (new Texture3DLoader (getExecutionContext (),
-	                                    url (),
-	                                    getBrowser () -> getMinTextureSize (),
-	                                    getBrowser () -> getMaxTextureSize (),
-	                                    std::bind (&ImageTexture3D::setTexture, this, _1)));
+	future .setValue (new Texture3DLoader (getExecutionContext (),
+	                                       url (),
+	                                       getBrowser () -> getMinTextureSize (),
+	                                       getBrowser () -> getMaxTextureSize (),
+	                                       std::bind (&ImageTexture3D::setTexture, this, _1)));
 }
 
 void
@@ -165,19 +163,14 @@ ImageTexture3D::update ()
 }
 
 void
-ImageTexture3D::set_shutdown ()
-{
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset ();
-}
-
-void
 ImageTexture3D::dispose ()
 {
 	X3DUrlObject::dispose ();
 	X3DTexture3DNode::dispose ();
 }
+
+ImageTexture3D::~ImageTexture3D ()
+{ }
 
 } // X3D
 } // titania

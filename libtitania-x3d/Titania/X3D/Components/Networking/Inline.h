@@ -194,6 +194,9 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~Inline ();
+
 
 protected:
 
@@ -238,9 +241,6 @@ private:
 	void
 	set_buffer ();
 
-	void
-	set_shutdown ();
-
 	///  @name Static members
 
 	static const ComponentType component;
@@ -258,12 +258,11 @@ private:
 
 	Fields fields;
 
-	X3DScenePtr scene;
-	GroupPtr    group;
-	SFTime      buffer;
-	bool        preventLoad;
-
-	std::shared_ptr <SceneLoader> future;
+	X3DScenePtr          scene;
+	GroupPtr             group;
+	SFTime               buffer;
+	bool                 preventLoad;
+	X3DPtr <SceneLoader> future;
 
 };
 

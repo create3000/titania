@@ -381,7 +381,7 @@ private:
 	MFString               urlError;
 	size_t                 inShutdown;
 
-	std::shared_ptr <SceneLoader> future;
+	X3DPtr <SceneLoader> future;
 
 };
 

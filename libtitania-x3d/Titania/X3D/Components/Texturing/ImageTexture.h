@@ -138,6 +138,9 @@ public:
 	virtual
 	void
 	dispose () final override;
+	
+	virtual
+	~ImageTexture ();
 
 
 private:
@@ -158,9 +161,6 @@ private:
 	void
 	update () final override;
 
-	void
-	set_shutdown ();
-
 	///  @name Static members
 
 	static const ComponentType component;
@@ -169,10 +169,10 @@ private:
 
 	///  @name Members
 	
-	size_t                          imageWidth;
-	size_t                          imageHeight;
-	bool                            resize;
-	std::shared_ptr <TextureLoader> future;
+	size_t                 imageWidth;
+	size_t                 imageHeight;
+	bool                   resize;
+	X3DPtr <TextureLoader> future;
 
 
 };

@@ -382,13 +382,13 @@ Browser::createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> & ec, const p
 
 		using namespace std::placeholders;
 
-		context -> getFuture () .reset (new X3D::SceneLoader (script -> getExecutionContext (),
-		                                                      *url,
-		                                                      std::bind (&Browser::setSceneAsync,
-		                                                                 X3D::SFNode (script),
-		                                                                 *node,
-		                                                                 static_cast <X3D::MFNode*> (field),
-		                                                                 _1)));
+		context -> getFuture () .setValue (new X3D::SceneLoader (script -> getExecutionContext (),
+		                                                         *url,
+		                                                         std::bind (&Browser::setSceneAsync,
+		                                                                    X3D::SFNode (script),
+		                                                                    *node,
+		                                                                    static_cast <X3D::MFNode*> (field),
+		                                                                    _1)));
 
 		return pb::undefined;
 	}

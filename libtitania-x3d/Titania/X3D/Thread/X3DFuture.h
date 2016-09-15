@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,15 +51,15 @@
 #ifndef __TITANIA_X3D_THREAD_X3DFUTURE_H__
 #define __TITANIA_X3D_THREAD_X3DFUTURE_H__
 
+#include "../Basic/X3DBaseNode.h"
 #include "X3DInterruptibleThread.h"
-#include "../Base/X3DInput.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DFuture :
-	public X3DInterruptibleThread,
-	public X3DInput
+	virtual public X3DBaseNode,
+	public X3DInterruptibleThread
 {
 public:
 
@@ -69,19 +69,14 @@ public:
 	bool
 	ready () = 0;
 
-	///  @name Destruction
-
-	virtual
-	~X3DFuture () = default;
-
 
 protected:
 
 	///  @name Construction
 
 	X3DFuture () :
-	X3DInterruptibleThread (),
-	              X3DInput ()
+		           X3DBaseNode (),
+		X3DInterruptibleThread ()
 	{ }
 
 };

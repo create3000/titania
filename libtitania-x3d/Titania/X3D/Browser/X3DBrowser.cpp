@@ -108,7 +108,8 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	             executionContext,
 	             loadState,
 	             urlError,
-	             getRootNodes ());
+	             getRootNodes (),
+	             future);
 }
 
 void
@@ -318,7 +319,7 @@ throw (Error <INVALID_SCENE>,
 
 	if (future)
 	{
-		removeLoadCount (future .get ());
+		removeLoadCount (future .getValue ());
 		future -> stop ();
 	}
 
@@ -424,15 +425,15 @@ throw (Error <INVALID_URL>,
 
 	finished () .removeInterest (this, &X3DBrowser::set_scene);
 
-   setLoadState (IN_PROGRESS_STATE);
+	setLoadState (IN_PROGRESS_STATE);
 
-	addFuture (std::static_pointer_cast <X3DFuture> (future));
+	removeLoadCount (future .getValue ());
 
-	future .reset (new SceneLoader (this,
-	                                url,
-	                                std::bind (&X3DBrowser::set_scene_async, this, _1)));
+	future .setValue (new SceneLoader (this,
+	                                   url,
+	                                   std::bind (&X3DBrowser::set_scene_async, this, _1)));
 
-	addLoadCount (future .get ());
+	addLoadCount (future .getValue ());
 }
 
 void
@@ -451,7 +452,7 @@ X3DBrowser::set_scene (const X3DScenePtr & scene)
 {
 	finished () .removeInterest (this, &X3DBrowser::set_scene);
 
-	removeLoadCount (future .get ());
+	removeLoadCount (future .getValue ());
 
 	if (scene)
 	{
@@ -662,10 +663,6 @@ void
 X3DBrowser::dispose ()
 {
 	__LOG__ << this << std::endl;
-
-	addFuture (future);
-
-	future .reset ();
 
 	X3DBrowserContext::dispose ();
 	X3DBaseNode::dispose ();

@@ -55,18 +55,29 @@
 namespace titania {
 namespace X3D {
 
+const ComponentType TextureLoader::component      = ComponentType::TITANIA;
+const std::string   TextureLoader::typeName       = "TextureLoader";
+const std::string   TextureLoader::containerField = "future";
+
 TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	X3DFuture (),
-	  browser (executionContext -> getBrowser ()),
-	 callback (callback),
-	   loader (nullptr, executionContext -> getWorldURL ()),
-	   future (getFuture (url, minTextureSize, maxTextureSize))
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	  X3DFuture (),
+	    browser (executionContext -> getBrowser ()),
+	   callback (callback),
+	     loader (nullptr, executionContext -> getWorldURL ()),
+	     future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
 	getBrowser () -> addEvent ();
+}
+
+X3DBaseNode*
+TextureLoader::create (X3DExecutionContext* const executionContext) const
+{
+	throw Error <NOT_SUPPORTED> ("TextureLoader::create");
 }
 
 std::future <TexturePtr>
@@ -83,12 +94,21 @@ TextureLoader::getFuture (const MFString & url,
 
 void
 TextureLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (this, &TextureLoader::prepareEvents);
+
 	getBrowser () -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
 
-	browser = executionContext -> getBrowser ();
-	getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
-	getBrowser () -> addEvent ();
+	X3DFuture::setExecutionContext (executionContext);
+
+	if (prepareEvents)
+	{
+		getBrowser () -> prepareEvents () .addInterest (this, &TextureLoader::prepareEvents);
+
+		getBrowser () -> addEvent ();
+	}
 }
 
 bool
@@ -172,6 +192,8 @@ TextureLoader::prepareEvents ()
 	if (status not_eq std::future_status::ready)
 	   return;
 	
+	getBrowser () -> prepareEvents () .removeInterest (this, &TextureLoader::prepareEvents);
+
 	try
 	{
 		callback (future .get ());
@@ -180,8 +202,6 @@ TextureLoader::prepareEvents ()
 	{
 	   // Interrupt
 	}
-
-	dispose ();
 }
 
 void
@@ -200,8 +220,6 @@ TextureLoader::dispose ()
 
 TextureLoader::~TextureLoader ()
 {
-	dispose ();
-
 	if (future .valid ())
 		future .wait ();
 }

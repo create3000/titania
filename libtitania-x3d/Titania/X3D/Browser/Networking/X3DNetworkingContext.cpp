@@ -74,11 +74,9 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	downloadMutexIndex (0),
 	   downloadMutexes ({ std::make_shared <std::mutex> () }),
 	     downloadMutex (),
-	           futures (),
 	    loadingObjects (),
 	         loadCount (),
-	      notifyOnLoad (false),
-	   contextDisposed (false)
+	      notifyOnLoad (false)
 {
 	addChildren (loaded, privateScene, loadSensor, loadCount);
 }
@@ -119,39 +117,6 @@ X3DNetworkingContext::getDownloadMutex ()
 	downloadMutexIndex = (downloadMutexIndex + 1) % downloadMutexes .size ();
 
 	return downloadMutexes [downloadMutexIndex];
-}
-
-void
-X3DNetworkingContext::addFuture (const std::shared_ptr <X3DFuture> & future)
-{
-	if (not future)
-		return;
-
-	if (contextDisposed)
-		return;
-
-	future -> dispose ();
-
-	futures .emplace_back (future);
-
-	getBrowser () -> prepareEvents () .addInterest (this, &X3DNetworkingContext::set_future);
-
-	getBrowser () -> addEvent ();
-}
-
-void
-X3DNetworkingContext::set_future ()
-{
-	const auto iter = std::remove_if (futures .begin (),
-	                                  futures .end (),
-	                                  [ ] (const std::shared_ptr <X3DFuture> & future) { return future -> ready (); });
-
-	futures .erase (iter, futures .end ());
-
-	if (futures .empty ())
-		getBrowser () -> prepareEvents () .removeInterest (this, &X3DNetworkingContext::set_future);
-	else
-		getBrowser () -> addEvent ();
 }
 
 void
@@ -216,11 +181,7 @@ X3DNetworkingContext::resetLoadCount ()
 
 void
 X3DNetworkingContext::dispose ()
-{
-	contextDisposed = true;
-
-	futures .clear ();
-}
+{ }
 
 X3DNetworkingContext::~X3DNetworkingContext ()
 { }

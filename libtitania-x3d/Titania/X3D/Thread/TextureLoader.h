@@ -76,8 +76,31 @@ public:
 	               const MFString &, const size_t, const size_t,
 	               const Callback &);
 
+	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const);
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
 
 	///  @name Destruction
 
@@ -95,6 +118,10 @@ public:
 
 private:
 
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
 	std::future <TexturePtr>
 	getFuture (const MFString &, const size_t, const size_t);
 
@@ -107,6 +134,12 @@ private:
 
 	void
 	prepareEvents ();
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 	///  @name Members
 

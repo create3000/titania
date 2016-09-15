@@ -125,6 +125,8 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	              future (),
 	               frame (0)
 {
+	addChildren (future);
+
 	rt = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 
 	if (rt == nullptr)
@@ -606,10 +608,6 @@ Context::set_shutdown ()
 
 	if (not JSVAL_IS_VOID (shutdownFn))
 		callFunction (shutdownFn);
-
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (); // XXX: See Inline
 
 	for (auto & field : fields)
 		JS_RemoveValueRoot (cx, &field .second);

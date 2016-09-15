@@ -85,6 +85,8 @@ throw (std::exception) :
 
 	try
 	{
+		addChildren (future);
+
 		addClasses ();
 		addUserDefinedFields ();
 
@@ -526,10 +528,6 @@ Context::set_shutdown ()
 	//__LOG__ << objects .size () << std::endl;
 	assert (p -> getParents () .empty ());
 	assert (objects .empty ());
-
-	getBrowser () -> addFuture (std::static_pointer_cast <X3DFuture> (future));
-
-	future .reset (); // XXX: See Inline
 }
 
 void

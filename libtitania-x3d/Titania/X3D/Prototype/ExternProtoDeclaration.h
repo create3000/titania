@@ -199,9 +199,6 @@ private:
 	void
 	set_url ();
 
-	void
-	set_shutdown ();
-
 	///  @name Input/Output
 
 	void
@@ -215,10 +212,9 @@ private:
 
 	///  @name Members
 
-	X3DScenePtr         scene;
-	ProtoDeclarationPtr proto;
-
-	std::shared_ptr <SceneLoader> future;
+	X3DScenePtr          scene;
+	ProtoDeclarationPtr  proto;
+	X3DPtr <SceneLoader> future;
 
 };
 
