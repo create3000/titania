@@ -568,6 +568,17 @@ X3DRenderer::display ()
 
 	// TODO: set global uniforms.
 
+	// Configure viewport and background
+
+	const auto & viewport = getViewVolumes () .back () .getViewport ();
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	glClear (GL_DEPTH_BUFFER_BIT);
+
+	getBackground () -> draw (viewport);
+
 	// Sorted blend
 
 	#ifdef FIXED_PIPELINE
@@ -580,17 +591,6 @@ X3DRenderer::display ()
 		glMatrixMode (GL_MODELVIEW);
 	}
 	#endif
-
-	// Configure viewport and background
-
-	const auto & viewport = getViewVolumes () .back () .getViewport ();
-
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-	glClear (GL_DEPTH_BUFFER_BIT);
-
-	getBackground () -> draw (viewport);
 
 	// Render opaque objects first
 
