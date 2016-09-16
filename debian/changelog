@@ -1,3 +1,9 @@
+titania (1.4.10) xenial; urgency=medium
+
+  * Various fixed and user interface improvements.
+
+ -- Holger Seelig <holger@qualle>  date -R
+
 titania (1.4.9) xenial; urgency=medium
 
   * Various fixed and user interface improvements.
