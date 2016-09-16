@@ -142,8 +142,6 @@ X3DEnvironmentTextureNode::draw ()
 void
 X3DEnvironmentTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
 {
-__LOG__ << std::endl;
-
 	static const auto textureType = std::vector <GLint> ({ 4 }); 
 
 	glActiveTexture (GL_TEXTURE1);
