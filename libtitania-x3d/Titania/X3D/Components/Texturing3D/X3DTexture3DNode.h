@@ -167,6 +167,9 @@ protected:
 	setTexture (const Texture3DPtr &);
 
 	void
+	clearTexture ();
+
+	void
 	setImage (const GLenum, size_t, const GLint w, const GLint, const GLint, const GLenum, const void* const);
 
 	virtual

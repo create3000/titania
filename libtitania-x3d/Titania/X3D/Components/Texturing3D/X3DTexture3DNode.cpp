@@ -131,7 +131,27 @@ X3DTexture3DNode::setTexture (const Texture3DPtr & texture)
 		          texture -> getData ());
 	}
 	else
-		setImage (getInternalFormat (3), 3, 0, 0, 0, GL_RGB, nullptr);
+		clearTexture ();
+}
+
+void
+X3DTexture3DNode::clearTexture ()
+{
+	// Set texture to white
+
+	width       = 0;
+	height      = 0;
+	depth       = 0;
+	components  = 3;
+	transparent = false;
+
+	static const uint8_t data [3] = { 255, 255, 255 };
+
+	glBindTexture (GL_TEXTURE_3D, getTextureId ());
+
+	glTexImage3D (GL_TEXTURE_3D, 0, GL_RGB, 1, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glBindTexture (GL_TEXTURE_3D, 0);
 }
 
 void

@@ -1,28 +1,118 @@
-#VRML V2.0 utf8 Titania V0.7.1
+#VRML V2.0 utf8 Titania V1.4.9
 
-META "title" "Text test"
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF Sphere Transform {
+              translation 0 0 3
+              children Shape {
+                appearance DEF _1 Appearance {
+                  material DEF _2 TwoSidedMaterial {
+                    separateBackColor TRUE
+                    ambientIntensity 0.245763
+                    diffuseColor 0.288982 0.330084 0.172823
+                    specularColor 0.108805 0.0980667 0.0968068
+                    shininess 0.0612245
+                    backDiffuseColor 1 0 0
+                    backShininess 0.199655
+                  }
+                  texture DEF _3 ImageTexture {
+                    url [
+                      "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
+                      "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
+                    ]
+                    textureProperties TextureProperties { }
+                  }
+                }
+                geometry Sphere { }
+              }
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -2.02067941951075,
+              5.0599662266261,
+              8.38531987582982
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.910861280456519,
+              -0.398276839144832,
+              -0.108200217956859,
+              0.579714140625362
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value TRUE
+        }
+      }
+    ]
+  }
+  title "test"
+}
 
 DEF Text Transform {
   translation -6.13288 2.37259 0
   children Shape {
-    appearance Appearance {
-      material TwoSidedMaterial {
-        separateBackColor TRUE
-        ambientIntensity 0.245763
-        diffuseColor 0.288982 0.330084 0.172823
-        specularColor 0.108805 0.0980667 0.0968068
-        shininess 0.0612245
-        backDiffuseColor 1 0 0
-        backShininess 0.199655
-      }
-      texture DEF _1 ImageTexture {
-        url [
-          "../../../Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg",
-          "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Textures/Miscellaneous/lena.jpg"
-        ]
-        textureProperties TextureProperties { }
-      }
-    }
+    appearance USE _1
     geometry Text {
       string [
         "Lieber Text,",
@@ -83,7 +173,7 @@ DEF DefaultText Transform {
   children Shape {
     appearance Appearance {
       material Material { }
-      texture USE _1
+      texture USE _3
       textureTransform TextureTransform {
         translation 4.66 0
         scale 7.51 7.59
@@ -95,7 +185,7 @@ DEF DefaultText Transform {
   }
 }
 
-DEF Sphere Transform {
+DEF Sphere_1 Transform {
   translation 7.02118 -2.53626 0
   scale 0.323278 0.323278 0.323278
   children Shape {
@@ -105,3 +195,5 @@ DEF Sphere Transform {
     geometry Sphere { }
   }
 }
+
+USE Sphere

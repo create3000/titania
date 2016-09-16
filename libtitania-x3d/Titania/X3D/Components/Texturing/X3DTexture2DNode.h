@@ -151,6 +151,9 @@ protected:
 	setTexture (const TexturePtr &);
 
 	void
+	clearTexture ();
+
+	void
 	setImage (const GLenum, const bool, size_t, const GLint, const GLint, const GLenum, const void* const);
 
 	void
