@@ -189,15 +189,15 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 {
 	try
 	{
-		// Normals of the point light cube.
+		// Negated normals of the point light cube.
 
 		static constexpr Vector3d directions [6] = {
-			Vector3d (-1,  0,  0), // left
-			Vector3d ( 1,  0,  0), // right
-			Vector3d ( 0, -1,  0), // bottom
-			Vector3d ( 0,  1,  0), // top
-			Vector3d ( 0,  0, -1), // back
-			Vector3d ( 0,  0,  1), // front
+			Vector3d ( 1,  0,  0), // left
+			Vector3d (-1,  0,  0), // right
+			Vector3d ( 0,  0,  1), // back
+			Vector3d ( 0,  0, -1), // front
+			Vector3d ( 0,  1,  0), // bottom
+			Vector3d ( 0, -1,  0), // top
 		};
 
 		getBrowser () -> setRenderTools (false);
@@ -236,12 +236,12 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 //		std::clog << std::endl;
 //		std::clog << std::endl;
 
-		for (size_t y = 0; y < 3; ++ y)
+		for (size_t y = 0; y < 2; ++ y)
 		{
-			for (size_t x = 0; x < 2; ++ x)
+			for (size_t x = 0; x < 3; ++ x)
 			{
-				const auto rotation = Rotation4d (Vector3d (0, 0, 1), negate (directions [y * 2 + x]));
-				const auto viewport = Vector4i (x * shadowMapSize1_2, y * shadowMapSize1_3, shadowMapSize1_2, shadowMapSize1_3);
+				const auto rotation = Rotation4d (directions [y * 3 + x], Vector3d (0, 0, 1));
+				const auto viewport = Vector4i (x * shadowMapSize1_3, y * shadowMapSize1_2, shadowMapSize1_3, shadowMapSize1_2);
 
 //				const auto m = Matrix4d (inverse (rotation));
 //				for (const auto v : std::make_pair (m .data (), m .data () + m .size ()))
@@ -253,10 +253,10 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 				getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 				getProjectionMatrix () .push (projectionMatrix);
 
-				getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
+				getModelViewMatrix  () .push (Matrix4d (rotation));
 				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-	
 				getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+				
 				getCurrentLayer () -> renderDepth (group);
 	
 				getModelViewMatrix  () .pop ();

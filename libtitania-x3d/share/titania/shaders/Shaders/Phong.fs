@@ -123,43 +123,49 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 {
 	if (lightType == x3d_PointLight)
 	{
+		#define SHADOW_TEXTURE_EPS 0.01
+		
 		// The projection bias matrix should be a uniform but this would require x3d_MaxLights * 16 floats.
-		mat4 projectionBias = mat4 (0.144337567297406, 0.0, 0.0, 0.0, 0.0, 0.0962250448649377, 0.0, 0.0, -0.25, -0.166666666666667, -1.00012501562695, -1.0, 0.0, 0.0, -0.125015626953369, 0.0); // fov: 120deg, 1000m
+		mat4 projectionBias = mat4 (0.09622504486493766, 0.0, 0.0, 0.0, 0.0, 0.1443375672974065, 0.0, 0.0, -0.16666666666666666, -0.25, -1.0001250156269532, -1.0, 0.0, 0.0, -0.12501562695336918, 0.0); // fov: 120deg, 1000m
 
 		// Normals of the point light cube.
 		mat4 rotations [6];
 		rotations [0] = mat4 ( 0.0, 0.0,  1.0, 0.0, 0.0, 1.0,  0.0, 0.0, -1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // left
 		rotations [1] = mat4 ( 0.0, 0.0, -1.0, 0.0, 0.0, 1.0,  0.0, 0.0,  1.0,  0.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // right
-		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // bottom
-		rotations [3] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // top
-		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // back
-		rotations [5] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // front
+		rotations [2] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0,  1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // back
+		rotations [3] = mat4 (-1.0, 0.0,  0.0, 0.0, 0.0, 1.0,  0.0, 0.0,  0.0,  0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0); // front
+		rotations [4] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0,  1.0, 0.0,  0.0, -1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // bottom
+		rotations [5] = mat4 ( 1.0, 0.0,  0.0, 0.0, 0.0, 0.0, -1.0, 0.0,  0.0,  1.0,  0.0, 0.0, 0.0, 0.0, 0.0, 1.0); // top
 
 		// Offsets to the shadow map.
 		vec2 offsets [6];
-		offsets [0] = vec2 (0.0, 0.0);
-		offsets [1] = vec2 (0.5, 0.0);
-		offsets [2] = vec2 (0.0, 1.0 / 3.0);
-		offsets [3] = vec2 (0.5, 1.0 / 3.0);
-		offsets [4] = vec2 (0.0, 2.0 / 3.0);
-		offsets [5] = vec2 (0.5, 2.0 / 3.0);
+		offsets [0] = vec2 (0.0,       0.0);
+		offsets [1] = vec2 (1.0 / 3.0, 0.0);
+		offsets [2] = vec2 (2.0 / 3.0, 0.0);
+		offsets [3] = vec2 (0.0,       0.5);
+		offsets [4] = vec2 (1.0 / 3.0, 0.5);
+		offsets [5] = vec2 (2.0 / 3.0, 0.5);
 
-		int value = 0;
+		int value   = 0;
+		int samples = 0;
 
-		for (int m = 0, s = 0; m < 6 && s < x3d_ShadowSamples; ++ m)
+		for (int m = 0, s = 0; m < 6; ++ m)
 		{
+			if (samples >= x3d_ShadowSamples)
+				break;
+
 			for (int i = 0; i < x3d_ShadowSamples; ++ i)
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = projectionBias * rotations [m] * shadowMatrix * vec4 (vertex, 1.0);
-				float bias        = (0.001 + 0.004 * pow (angle, 3.0)) / shadowCoord .w; // 0.005 / shadowCoord .w;
+				float bias        = (0.001 + 0.004 * (1.0 - abs (angle))) / shadowCoord .w; // 0.005 / shadowCoord .w;
 
 				shadowCoord .xyz /= shadowCoord .w;
 
-				if (shadowCoord .x < 0.0 || shadowCoord .x > 1.0 / 2.0)
+				if (shadowCoord .x < SHADOW_TEXTURE_EPS || shadowCoord .x > 1.0 / 3.0 - SHADOW_TEXTURE_EPS)
 					continue;
 
-				if (shadowCoord .y < 0.0 || shadowCoord .y > 1.0 / 3.0)
+				if (shadowCoord .y < SHADOW_TEXTURE_EPS || shadowCoord .y > 1.0 / 2.0 - SHADOW_TEXTURE_EPS)
 					continue;
 
 				if (shadowCoord .z >= 1.0)
@@ -171,7 +177,7 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 				}
 
 				// We definitely have a shadow sample.
-				++ s;
+				++ samples;
 			}
 		}
 
@@ -184,7 +190,7 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 	{
 		vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 		vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
-		float bias        = (0.001 + 0.004 * pow (angle, 3.0)) / shadowCoord .w; // 0.005 / shadowCoord .w;
+		float bias        = (0.001 + 0.004 * (1.0 - abs (angle))) / shadowCoord .w; // 0.005 / shadowCoord .w;
 
 		shadowCoord .xyz /= shadowCoord .w;
 
@@ -279,22 +285,20 @@ getMaterialColor ()
 				float specularFactor = shininess > 0.0 ? pow (max (dot (N, H), 0.0), shininess * 128.0) : 1.0;
 				vec3  specularTerm   = specularColor * specularFactor;
 
-				float attenuation          = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
-				float spot                 = lightType == x3d_SpotLight ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
-				vec3  lightColor           = (attenuation * spot) * x3d_LightColor [i];
-				vec3  ambientColor         = x3d_LightAmbientIntensity [i] * ambientTerm;
-				vec3  diffuseSpecularColor = diffuseTerm + specularTerm;
-				vec3  color                = lightColor * (ambientColor + x3d_LightIntensity [i] * diffuseSpecularColor);
+				float attenuationFactor           = di ? 1.0 : 1.0 / max (c [0] + c [1] * dL + c [2] * (dL * dL), 1.0);
+				float spotFactor                  = lightType == x3d_SpotLight ? getSpotFactor (x3d_LightCutOffAngle [i], x3d_LightBeamWidth [i], L, d) : 1.0;
+				float attenuationSpotFactor       = attenuationFactor * spotFactor;
+				vec3  ambientColor                = x3d_LightAmbientIntensity [i] * ambientTerm;
+				vec3  ambientDiffuseSpecularColor = ambientColor + x3d_LightIntensity [i] * (diffuseTerm + specularTerm);
 
 				if (x3d_ShadowIntensity [i] > 0.0 && a > 0.0)
 				{
 					float shadowIntensity = getShadowIntensity (lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
-					vec3  shadowColor     = lightColor * ambientColor + diffuseSpecularColor * x3d_ShadowColor [i];
 	
-					finalColor += mix (color, shadowColor, shadowIntensity);
+					finalColor += attenuationSpotFactor * (mix (x3d_LightColor [i], x3d_ShadowColor [i], shadowIntensity) * ambientDiffuseSpecularColor);
 				}
 				else
-					finalColor += color;
+					finalColor += attenuationSpotFactor * (x3d_LightColor [i] * ambientDiffuseSpecularColor);
 			}
 		}
 

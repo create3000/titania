@@ -204,8 +204,8 @@ PlaneSensor::trackStart (const Vector3d & trackPoint)
 {
 	startOffset = offset () .getValue ();
 
-	trackPoint_changed ()  .set (trackPoint);
-	translation_changed () .set (offset ());
+	trackPoint_changed ()  .setValue (trackPoint);
+	translation_changed () .setValue (offset ());
 }
 
 void

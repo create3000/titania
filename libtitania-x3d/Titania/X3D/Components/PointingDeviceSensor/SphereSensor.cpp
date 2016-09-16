@@ -133,8 +133,8 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 			startPoint  = hit -> intersection -> point;
 			startOffset = offset () .getValue ();
 
-			trackPoint_changed () .set (hitPoint);
-			rotation_changed ()   .set (offset ());
+			trackPoint_changed () .setValue (hitPoint);
+			rotation_changed ()   .setValue (offset ());
 		}
 		else
 		{
