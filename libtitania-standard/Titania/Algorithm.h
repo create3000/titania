@@ -49,4 +49,3 @@
  ******************************************************************************/
 
 #include "Algorithm/IndicesOf.h"
-#include "Algorithm/Remove.h"

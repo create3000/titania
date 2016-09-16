@@ -136,30 +136,20 @@ X3DGroupingNode::isHidden (const bool value)
 	}
 }
 
-//void
-//X3DGroupingNode::set_addChildren ()
-//{
-//	if (addChildren () .empty ())
-//		return;
-//
-//	MFNode childrenToAdd = addChildren ();
-//
-//	childrenToAdd .remove (children () .begin (), children () .end ());
-//
-//	children () .insert (children () .end (), childrenToAdd .begin (), childrenToAdd .end ());
-//
-//	addChildren () .set ({ });
-//}
-
 void
 X3DGroupingNode::set_addChildren ()
 {
 	if (addChildren () .empty ())
 		return;
 
+	std::set <size_t> set;
+
+	for (const auto & value : children ())
+		set .emplace (value ? value -> getId () : 0);
+
 	addChildren () .isTainted (true);
-	addChildren () .erase (basic::remove (addChildren () .begin (), addChildren () .end (),
-	                                      children () .begin (), children () .end ()),
+	addChildren () .erase (std::remove_if (addChildren () .begin (), addChildren () .end (),
+	                                       [&set] (const SFNode & value) { return set .count (value ? value -> getId () : 0); }),
 	                       addChildren () .end ());
 
 	if (not children () .isTainted ())
@@ -190,8 +180,13 @@ X3DGroupingNode::set_removeChildren ()
 		children () .addInterest (this, &X3DGroupingNode::connectChildren);
 	}
 
-	children () .erase (basic::remove (children () .begin (), children () .end (),
-	                                   removeChildren () .begin (), removeChildren () .end ()),
+	std::set <size_t> set;
+
+	for (const auto & value : removeChildren ())
+		set .emplace (value ? value -> getId () : 0);
+
+	children () .erase (std::remove_if (children () .begin (), children () .end (),
+	                                   [&set] (const SFNode & value) { return set .count (value ? value -> getId () : 0); }),
 	                    children () .end ());
 
 	removeChildren () .set ({ });
