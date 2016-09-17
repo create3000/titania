@@ -119,7 +119,21 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 }
 
 float
-getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in sampler2D shadowMap, in float angle)
+getShadowDepth (in int index, in vec2 shadowCoord)
+{
+	for (int i = 0; i < x3d_MaxLights; ++ i)
+	{
+		if (i == index)
+		{
+			return texture2D (x3d_ShadowMap [i], shadowCoord) .z;
+		}
+	}
+
+	return 0.0;
+}
+
+float
+getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in Plane3 plane, in float angle)
 {
 	if (lightType == x3d_PointLight)
 	{
@@ -171,7 +185,7 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 				if (shadowCoord .z >= 1.0)
 					continue;
 
-				if (texture2D (shadowMap, shadowCoord .xy + offsets [m]) .z < shadowCoord .z - bias)
+				if (getShadowDepth (index, shadowCoord .xy + offsets [m]) < shadowCoord .z - bias)
 				{
 					++ value;
 				}
@@ -197,7 +211,7 @@ getShadowIntensity (in int lightType, in float shadowIntensity, in float shadowD
 		if (shadowCoord .z >= 1.0)
 			continue;
 
-		if (texture2D (shadowMap, shadowCoord .xy) .z < shadowCoord .z - bias)
+		if (getShadowDepth (index, shadowCoord .xy) < shadowCoord .z - bias)
 		{
 			++ value;
 		}
@@ -293,7 +307,7 @@ getMaterialColor ()
 
 				if (x3d_ShadowIntensity [i] > 0.0 && a > 0.0)
 				{
-					float shadowIntensity = getShadowIntensity (lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], x3d_ShadowMap [i], a);
+					float shadowIntensity = getShadowIntensity (i, lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], plane, a);
 	
 					finalColor += attenuationSpotFactor * (mix (x3d_LightColor [i], x3d_ShadowColor [i], shadowIntensity) * ambientDiffuseSpecularColor);
 				}
