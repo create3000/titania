@@ -1,11 +1,113 @@
-#X3D V3.3 utf8 Titania V0.7.5
+#X3D V3.3 utf8 Titania V1.4.10
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:16:44 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.5, http://titania.create3000.de"
-META "modified" "Sun, 02 Nov 2014 08:23:51 GMT"
+META "generator" "Titania V1.4.10, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water1.x3dv"
+META "modified" "Sat, 17 Sep 2016 12:06:59 GMT"
 META "title" "Water Shader 1"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 ShaderPart {
+              type "FRAGMENT"
+              url "data:text/plain,
+
+precision mediump float;
+
+#define WAVE_MAX 8
+
+uniform int   waves;
+uniform float amplitude [WAVE_MAX];
+uniform vec3  color;
+uniform float transparency;
+uniform vec3  bottomColor;
+uniform float bottomTransparency;
+
+varying float positionY;
+
+void
+main ()
+{
+	float height = 0.0;
+
+	for (int i = 0; i < waves; ++ i)
+		height += amplitude [i];
+
+	float alpha = ((height + positionY) / (2.0 * height));
+	
+	vec4 topColor    = vec4 (color, alpha * (1.0 - transparency));
+	vec4 bottomColor = vec4 (bottomColor, alpha * (1.0 - bottomTransparency));
+
+	gl_FragColor = mix (bottomColor, topColor, alpha);
+}
+"
+            }
+          }
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -25.1071586608887,
+              27.3201084136963,
+              37.5268669128418
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.662704715753239,
+              -0.72133386384795,
+              -0.201245910727663,
+              0.796936681203819
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Water1"
+}
 
 DEF Water1 Transform {
   children [
@@ -65,7 +167,8 @@ DEF Water1 Transform {
           parts [
             ShaderPart {
               url "data:text/plain,
-#version 120
+
+precision mediump float;
 
 #define WAVE_MAX 8
 
@@ -76,6 +179,11 @@ uniform float waveLength [WAVE_MAX];
 uniform float speed [WAVE_MAX];
 uniform vec2  direction [WAVE_MAX];
 
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+attribute vec4 x3d_Vertex;
+
 varying float positionY;
 
 const float M_PI = 3.14159;
@@ -83,7 +191,7 @@ const float M_PI = 3.14159;
 float
 wave (in int i, in float x, in float y)
 {
-	float frequency = 2 * M_PI / waveLength [i];
+	float frequency = 2.0 * M_PI / waveLength [i];
 	float phase     = speed [i] * frequency;
 	float theta     = dot (direction [i], vec2 (x, y));
 
@@ -104,46 +212,14 @@ waveHeight (in float x, in float y)
 void
 main ()
 {
-	vec4 pos    = gl_Vertex;
+	vec4 pos    = x3d_Vertex;
 	pos .y      = waveHeight (pos .x, pos .z);
 	positionY   = pos .y / pos .w;
-	gl_Position = gl_ModelViewProjectionMatrix * pos;
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * pos;
 }
 "
             }
-            ShaderPart {
-              type "FRAGMENT"
-              url "data:text/plain,
-#version 120
-
-#define WAVE_MAX 8
-
-uniform int   waves;
-uniform float amplitude [WAVE_MAX];
-uniform vec3  color;
-uniform float transparency;
-uniform vec3  bottomColor;
-uniform float bottomTransparency;
-
-varying float positionY;
-
-void
-main ()
-{
-	float height = 0;
-
-	for (int i = 0; i < waves; ++ i)
-		height += amplitude [i];
-
-	float alpha = ((height + positionY) / (2 * height));
-	
-	vec4 topColor    = vec4 (color, alpha * (1 - transparency));
-	vec4 bottomColor = vec4 (bottomColor, alpha * (1 - bottomTransparency));
-
-	gl_FragColor = mix (bottomColor, topColor, alpha);
-}
-"
-            }
+            USE _1
           ]
         }
       }
