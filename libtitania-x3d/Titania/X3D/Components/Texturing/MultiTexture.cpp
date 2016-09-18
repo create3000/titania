@@ -277,8 +277,8 @@ MultiTexture::set_function ()
 void
 MultiTexture::set_texture ()
 {
-	//for (const auto & node : textureNodes)
-	//	node -> removeInterest (this);
+	for (const auto & textureNode : textureNodes)
+		textureNode -> isCameraObject () .removeInterest (this, &MultiTexture::set_cameraObject);
 
 	std::vector <X3DTextureNode*> value;
 
@@ -295,8 +295,19 @@ MultiTexture::set_texture ()
 
 	textureNodes .set (value .begin (), value .end ());
 
-	//for (const auto & node : textureNodes)
-	//	node -> addInterest (this);
+	for (const auto & textureNode : textureNodes)
+		textureNode -> isCameraObject () .addInterest (this, &MultiTexture::set_cameraObject);
+
+	set_cameraObject ();
+}
+
+void
+MultiTexture::set_cameraObject ()
+{
+	setCameraObject (std::any_of (textureNodes .begin (),
+	                              textureNodes .end (),
+	                              [ ] (const X3DPtr <X3DTextureNode> & textureNode)
+	                              { return textureNode -> isCameraObject (); }));
 }
 
 void

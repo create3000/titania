@@ -188,13 +188,13 @@ OrthoViewpoint::getProjectionMatrix (const double zNear, const double zFar, cons
 		const double center  = (getMinimumX () + getMaximumX ()) / 2;
 		const double size1_2 = (getSizeY () * aspect) / 2;
 
-		return ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar);
+		return camera <double>::ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar);
 	}
 
 	const double center  = (getMinimumY () + getMaximumY ()) / 2;
 	const double size1_2 = (getSizeX () / aspect) / 2;
 
-	return ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar);
+	return camera <double>::ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar);
 }
 
 void

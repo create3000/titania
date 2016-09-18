@@ -66,9 +66,12 @@
 namespace titania {
 namespace X3D {
 
+class GeneratedCubeMapTexture;
 class FrameBuffer;
 class X3DFogObject;
 class X3DGroupingNode;
+
+using GeneratedCubeMapTexturesArray = std::set <GeneratedCubeMapTexture*>;
 
 class X3DRenderer :
 	virtual public X3DNode
@@ -104,6 +107,10 @@ public:
 	ViewVolumeStack &
 	getViewVolumes ()
 	{ return viewVolumeStack; }
+
+	GeneratedCubeMapTexturesArray &
+	getGeneratedCubeMapTextures ()
+	{ return generatedCubeMapTextures; }
 
 	LightContainerArray &
 	getGlobalLights ()
@@ -160,6 +167,9 @@ public:
 	void
 	render (const std::function <void (const TraverseType)> &, const TraverseType);
 
+	void
+	renderGeneratedCubeMapTextures ();
+
 	///  @name Destruction
 
 	virtual
@@ -205,13 +215,14 @@ private:
 
 	///  @name Members
 
-	ViewVolumeStack         viewVolumeStack;
-	LightContainerArray     globalLights;
-	CollectableObjectArray  localObjects;
-	ClipPlaneContainerArray clipPlanes;
-	LightContainerArray     localLights;
-	LightContainerArray     lights;
-	CollisionArray          collisions;
+	ViewVolumeStack               viewVolumeStack;
+	GeneratedCubeMapTexturesArray generatedCubeMapTextures;
+	LightContainerArray           globalLights;
+	CollectableObjectArray        localObjects;
+	ClipPlaneContainerArray       clipPlanes;
+	LightContainerArray           localLights;
+	LightContainerArray           lights;
+	CollisionArray                collisions;
 
 	ShapeContainerArray      opaqueShapes;
 	ShapeContainerArray      transparentShapes;

@@ -301,7 +301,7 @@ GeoViewpoint::setBackgroundProjection (const double zNear, const double zFar)
 {
 	const auto & viewport = getCurrentViewport () -> getRectangle ();
 
-	X3DNode::getProjectionMatrix () .set (perspective <double> (getFieldOfView (), zNear, zFar, viewport [2], viewport [3]));
+	X3DNode::getProjectionMatrix () .set (camera <double>::perspective (getFieldOfView (), zNear, zFar, viewport [2], viewport [3]));
 }
 
 Matrix4d
@@ -310,7 +310,7 @@ GeoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const 
 	const double geoZNear = std::max (math::lerp (std::min (zNear, 1e4), 1e4, elevation / 1e7), 1.0);
 	const double geoZFar  = std::max (math::lerp (1e6, std::max (zFar, 1e6),  elevation / 1e7), 1e6);
 
-	return perspective <double> (getFieldOfView (), geoZNear, geoZFar, viewport [2], viewport [3]);
+	return camera <double>::perspective (getFieldOfView (), geoZNear, geoZFar, viewport [2], viewport [3]);
 }
 
 void

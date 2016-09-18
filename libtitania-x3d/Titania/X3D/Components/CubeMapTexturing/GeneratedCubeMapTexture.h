@@ -140,6 +140,9 @@ public:
 	void
 	traverse (const TraverseType) final override;
 
+	void
+	renderTexture ();
+
 
 private:
 

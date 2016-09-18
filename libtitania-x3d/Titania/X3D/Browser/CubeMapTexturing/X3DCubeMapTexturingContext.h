@@ -60,7 +60,6 @@
 namespace titania {
 namespace X3D {
 
-class GeneratedCubeMapTexture;
 class TextureProperties;
 
 class X3DCubeMapTexturingContext :
@@ -73,10 +72,6 @@ public:
 	const X3DPtr <TextureProperties> &
 	getDefaultCubeMapTextureProperties () const
 	{ return defaultCubeMapTextureProperties; }
-
-	std::vector <GeneratedCubeMapTexture*> &
-	getGeneratedCubeMapTextures ()
-	{ return generatedCubeMapTextures; }
 
 	///  @name Destruction
 
@@ -104,8 +99,7 @@ private:
 
 	///  @name Members
 
-	X3DPtr <TextureProperties>             defaultCubeMapTextureProperties;
-	std::vector <GeneratedCubeMapTexture*> generatedCubeMapTextures;
+	X3DPtr <TextureProperties> defaultCubeMapTextureProperties;
 
 };
 

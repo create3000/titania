@@ -217,7 +217,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   nearValue        = 0.125;
 		const auto   farValue         = 1'000.0;
 		const auto   aspect           = std::tan (radians (120.0) / 2) * nearValue;
-		const auto   projectionMatrix = frustum <double> (-aspect, aspect, -aspect, aspect, nearValue, farValue);
+		const auto   projectionMatrix = camera <double>::frustum (-aspect, aspect, -aspect, aspect, nearValue, farValue);
 
 		// Render to frame buffer.
 

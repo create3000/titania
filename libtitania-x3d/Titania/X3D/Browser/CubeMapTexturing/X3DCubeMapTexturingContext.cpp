@@ -57,8 +57,7 @@ namespace X3D {
 
 X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
 	                    X3DBaseNode (),
-   defaultCubeMapTextureProperties (new TextureProperties (getExecutionContext ())),
-          generatedCubeMapTextures ()
+   defaultCubeMapTextureProperties (new TextureProperties (getExecutionContext ()))
 {
 	addChildren (defaultCubeMapTextureProperties);
 }

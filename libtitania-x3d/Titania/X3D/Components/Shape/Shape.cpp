@@ -130,10 +130,8 @@ Shape::traverse (const TraverseType type)
 {
 	if (getGeometry ())
 	{
-		if (getAppearance ())
-			getAppearance () -> traverse (type);
-
-		getGeometry () -> traverse (type);
+		getAppearance () -> traverse (type);
+		getGeometry ()   -> traverse (type);
 
 		switch (type)
 		{

@@ -169,7 +169,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   groupBBox        = groupNode -> X3DGroupingNode::getBBox ();                               // Group bbox.
 		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
-		const auto   projectionMatrix = ortho (lightBBox);
+		const auto   projectionMatrix = camera <double>::ortho (lightBBox);
 	
 		textureBuffer -> bind ();
 	

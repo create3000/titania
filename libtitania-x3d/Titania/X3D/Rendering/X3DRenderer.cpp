@@ -53,6 +53,7 @@
 #include "../Browser/BrowserOptions.h"
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
+#include "../Components/CubeMapTexturing/GeneratedCubeMapTexture.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
 #include "../Components/Layering/X3DLayerNode.h"
@@ -77,25 +78,26 @@ static constexpr auto   DEPTH_BUFFER_VIEWPORT = Vector4i (0, 0, DEPTH_BUFFER_WID
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderer::X3DRenderer () :
-	               X3DNode (),
-	       viewVolumeStack (),
-	          globalLights (),
-	          localObjects (),
-	            clipPlanes (),
-	           localLights (),
-	                lights (),
-	            collisions (),
-	          opaqueShapes (),
-	     transparentShapes (),
-	       collisionShapes (),
-	      activeCollisions (),
-	           depthShapes (),
-	           depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
-	                 speed (),
-	       numOpaqueShapes (0),
-	  numTransparentShapes (0),
-	    numCollisionShapes (0),
-	        numDepthShapes (0)
+	                 X3DNode (),
+	         viewVolumeStack (),
+	generatedCubeMapTextures (),
+	            globalLights (),
+	            localObjects (),
+	              clipPlanes (),
+	             localLights (),
+	                  lights (),
+	              collisions (),
+	            opaqueShapes (),
+	       transparentShapes (),
+	         collisionShapes (),
+	        activeCollisions (),
+	             depthShapes (),
+	             depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
+	                   speed (),
+	         numOpaqueShapes (0),
+	    numTransparentShapes (0),
+	      numCollisionShapes (0),
+	          numDepthShapes (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }
@@ -258,7 +260,7 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 
 		// Reshape camera
 
-		const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
 
 		// Translate camera to user position and to look in the direction of the @a direction.
 
@@ -359,6 +361,18 @@ X3DRenderer::render (const std::function <void (const TraverseType)> & traverse,
 }
 
 void
+X3DRenderer::renderGeneratedCubeMapTextures ()
+{
+	// Render generated cube map textures.
+
+	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
+		generatedCubeMapTexture -> renderTexture ();
+
+	getGeneratedCubeMapTextures () .clear ();
+
+}
+
+void
 X3DRenderer::collide ()
 {
 	// Collision
@@ -438,7 +452,7 @@ X3DRenderer::gravite ()
 
 		// Reshape viewpoint for gravite.
 
-		const auto projectionMatrix = ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
 					
 		// Transform viewpoint to look down the up vector
 
@@ -608,10 +622,6 @@ X3DRenderer::display ()
 		getBrowser () -> getDefaultAppearance () -> draw ();
 	}
 	#endif
-
-	// TODO: Clear GeneratedCubeMapTexture nodes array.
-
-	getBrowser () -> getGeneratedCubeMapTextures () .clear ();
 }
 
 void

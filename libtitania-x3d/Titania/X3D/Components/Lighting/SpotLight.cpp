@@ -223,7 +223,7 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
 		const auto   farValue         = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
 		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
-		const auto   projectionMatrix = perspective <double> (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
+		const auto   projectionMatrix = camera <double>::perspective (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
 
 		if (farValue < 0)
 			return false;

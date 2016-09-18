@@ -309,6 +309,7 @@ X3DLayerNode::traverse (const TraverseType type)
 		case TraverseType::CAMERA:
 		{
 			camera ();
+			renderGeneratedCubeMapTextures ();
 			break;
 		}
 		case TraverseType::COLLISION:

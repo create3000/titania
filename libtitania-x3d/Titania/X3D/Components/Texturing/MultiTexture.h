@@ -242,6 +242,9 @@ private:
 	void
 	set_texture ();
 
+	void
+	set_cameraObject ();
+
 	///  @name Static members
 
 	static const ComponentType component;

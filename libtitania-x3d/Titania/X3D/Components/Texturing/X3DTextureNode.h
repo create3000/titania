@@ -72,6 +72,10 @@ public:
 
 	///  @name Member access
 
+	const SFBool &
+	isCameraObject () const
+	{ return cameraObject; }
+
 	virtual
 	bool
 	isTransparent () const = 0;
@@ -112,6 +116,11 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	void
+	setCameraObject (const bool);
+
 	///  @name Operations
 
 	void
@@ -129,6 +138,7 @@ private:
 
 	///  @name Members
 
+	SFBool cameraObject;
 	GLuint textureId;
 
 };

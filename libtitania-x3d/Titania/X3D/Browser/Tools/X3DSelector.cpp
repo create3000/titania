@@ -177,7 +177,7 @@ X3DSelector::display ()
 	const auto & width    = viewport [2];
 	const auto & height   = viewport [3];
 
-	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
+	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (projection .data ());
@@ -221,7 +221,7 @@ X3DSelector::draw ()
 	const auto & width    = viewport [2];
 	const auto & height   = viewport [3];
 
-	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
+	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
 	glClearColor (0, 0, 0, 0);
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

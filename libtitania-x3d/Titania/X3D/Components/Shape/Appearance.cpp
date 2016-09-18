@@ -194,7 +194,19 @@ Appearance::set_material ()
 void
 Appearance::set_texture ()
 {
+	if (textureNode)
+		textureNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	textureNode .set (x3d_cast <X3DTextureNode*> (texture ()));
+
+	if (textureNode)
+	{
+		textureNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+
+		setCameraObject (textureNode -> isCameraObject ());
+	}
+	else
+		setCameraObject (false);
 }
 
 void

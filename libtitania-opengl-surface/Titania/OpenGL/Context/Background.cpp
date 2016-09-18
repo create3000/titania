@@ -92,7 +92,7 @@ private:
 
 Background::Background () :
 	       textureId (0),
-	projectionMatrix (ortho <double> (0, 1, 0, 1, -1, 1)),
+	projectionMatrix (camera <double>::ortho (0, 1, 0, 1, -1, 1)),
 	           width (0),
 	          height (0)
 { }

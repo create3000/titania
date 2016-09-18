@@ -450,7 +450,7 @@ X3DFlyViewer::display (const MoveType type)
 	const auto & width    = viewport [2];
 	const auto & height   = viewport [3];
 
-	const auto projection = ortho <double> (0, width, 0, height, -1, 1);
+	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
 	std::vector <Vector2d> points;
 

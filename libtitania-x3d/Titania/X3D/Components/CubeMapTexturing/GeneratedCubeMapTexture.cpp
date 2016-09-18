@@ -52,6 +52,9 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../Layering/X3DLayerNode.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -78,6 +81,8 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (inputOutput,    "update",            update ());
 	addField (initializeOnly, "size",              size ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
+
+	setCameraObject (true); // TODO: set to false if update NONE
 }
 
 X3DBaseNode*
@@ -89,8 +94,31 @@ GeneratedCubeMapTexture::create (X3DExecutionContext* const executionContext) co
 void
 GeneratedCubeMapTexture::traverse (const TraverseType type)
 {
-	if (type == TraverseType::DISPLAY)
-		getBrowser () -> getGeneratedCubeMapTextures () .emplace_back (this);
+	if (type == TraverseType::CAMERA)
+		getCurrentLayer () -> getGeneratedCubeMapTextures () .emplace (this);
+}
+
+void
+GeneratedCubeMapTexture::renderTexture ()
+{
+	__LOG__ << std::endl;
+
+//	using namespace std::placeholders;
+//
+//	textureBuffer -> bind ();
+//
+//	// six times:
+//	getViewVolumes ()      .emplace_back (projectionMatrix, viewport, viewport);
+//	getProjectionMatrix () .push (projectionMatrix);
+//	getModelViewMatrix ()  .push ();
+//
+//	getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1), TraverseType::DISPLAY);
+//
+//	getModelViewMatrix ()  .pop ();
+//	getProjectionMatrix () .pop ();
+//	getViewVolumes ()      .pop_back ();
+//
+//	textureBuffer -> unbind ();
 }
 
 } // X3D

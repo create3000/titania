@@ -64,13 +64,15 @@ class X3DAppearanceNode :
 {
 public:
 
-	///  @name Tests
+	///  @name Member access
+
+	const SFBool &
+	isCameraObject () const
+	{ return cameraObject; }
 
 	virtual
 	bool
 	isTransparent () const = 0;
-
-	///  @name Member access
 
 	virtual
 	const X3DPtr <FillProperties> &
@@ -92,6 +94,18 @@ protected:
 	///  @name Construction
 
 	X3DAppearanceNode ();
+
+	///  @name Member access
+
+	void
+	setCameraObject (const bool);
+
+
+private:
+
+	///  @name Members
+
+	SFBool cameraObject;
 
 };
 
