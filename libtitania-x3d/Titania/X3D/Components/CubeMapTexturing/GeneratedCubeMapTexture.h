@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class FrameBuffer;
+
 class GeneratedCubeMapTexture :
 	public X3DEnvironmentTextureNode
 {
@@ -88,6 +90,12 @@ public:
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
@@ -122,17 +130,17 @@ public:
 	virtual
 	size_t
 	getWidth () const final override
-	{ return 0; }
+	{ return size (); }
 
 	virtual
 	size_t
 	getHeight () const final override
-	{ return 0; }
+	{ return size (); }
 
 	virtual
 	size_t
 	getComponents () const final override
-	{ return 0; }
+	{ return 4; }
 
 	///  @name Operations
 
@@ -143,14 +151,33 @@ public:
 	void
 	renderTexture ();
 
+	///  @name Destruction
+
+	virtual
+	~GeneratedCubeMapTexture ();
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Member access
 
 	void
 	setLoadState (const LoadState & value)
 	{ loadState = value; }
+
+	///  @name Event handlers
+
+	void
+	set_update ();
+
+	void
+	set_size ();
 
 	///  @name Static members
 
@@ -170,7 +197,10 @@ private:
 	};
 
 	Fields fields;
-	SFEnum <LoadState> loadState;
+
+	SFEnum <LoadState>            loadState;
+	std::unique_ptr <FrameBuffer> frameBuffer;
+	Matrix4d                      transformationMatrix;
 
 };
 

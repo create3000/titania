@@ -380,7 +380,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 	{
 		point = point * inverse (getTransformationMatrix ());
 
-		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
 		lookAt (point, minDistance, factor, straighten);
 	}
@@ -401,7 +401,7 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 	{
 		bbox *= inverse (getTransformationMatrix ());
 
-		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearPlane () * 2;
+		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
 		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten);
 	}
@@ -603,7 +603,7 @@ X3DViewpointNode::reshape ()
 {
 	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
 
-	reshape (navigationInfo -> getNearPlane (), navigationInfo -> getFarPlane (this));
+	reshape (navigationInfo -> getNearValue (), navigationInfo -> getFarValue (this));
 }
 
 void

@@ -115,7 +115,7 @@ X3DFogObject::getVisibilityRange ()
 
 	const auto viewpoint = getBrowser () -> getLayers () .top () -> getViewpoint ();
 
-	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarPlane (viewpoint);
+	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarValue (viewpoint);
 }
 
 float

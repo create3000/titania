@@ -60,7 +60,6 @@ namespace titania {
 namespace X3D {
 
 class LightContainer;
-class DirectionalLight;
 
 enum class TransitionType :
 	uint8_t
@@ -196,10 +195,10 @@ public:
 	getStepHeight () const;
 
 	double
-	getNearPlane () const;
+	getNearValue () const;
 
 	double
-	getFarPlane (X3DViewpointNode* const) const;
+	getFarValue (X3DViewpointNode* const) const;
 
 	TransitionType
 	getTransitionType () const;
@@ -280,7 +279,6 @@ private:
 
 	Fields fields;
 
-	X3DPtr <DirectionalLight>        directionalLight;
 	std::shared_ptr <LightContainer> light;
 
 };

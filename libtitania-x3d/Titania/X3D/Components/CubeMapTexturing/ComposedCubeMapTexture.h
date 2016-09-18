@@ -216,8 +216,6 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static const GLenum targets [6];
-
 	///  @name Members
 
 	struct Fields

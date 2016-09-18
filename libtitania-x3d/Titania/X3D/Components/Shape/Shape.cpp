@@ -216,7 +216,7 @@ Shape::touch ()
 					  });
 	
 		// Find first point that is not greater than near plane;
-		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearPlane (),
+		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearValue (),
 		                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
 		                                           {
 		                                              return lhs -> point .z () > rhs;

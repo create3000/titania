@@ -239,6 +239,7 @@ protected:
 
 	///  @name Friends
 
+	friend class GeneratedCubeMapTexture;
 	friend class X3DLightNode;
 
 	///  @name Construction

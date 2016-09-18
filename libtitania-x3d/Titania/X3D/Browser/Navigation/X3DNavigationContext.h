@@ -57,10 +57,16 @@
 namespace titania {
 namespace X3D {
 
+class DirectionalLight;
+
 class X3DNavigationContext :
 	virtual public X3DBaseNode
 {
 public:
+
+	const X3DPtr <DirectionalLight> &
+	getHeadLight () const
+	{ return headLight; }
 
 	const X3DLayerNodePtr &
 	getActiveLayer () const
@@ -177,6 +183,7 @@ private:
 
 	///  @name Members
 
+	X3DPtr <DirectionalLight>       headLight;
 	X3DLayerNodePtr                 activeLayer;
 	NavigationInfo*                 activeNavigationInfo;
 	SFTime                          activeNavigationInfoOutput;

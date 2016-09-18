@@ -110,6 +110,8 @@ public:
 
 protected:
 
+	using TargetArray = GLenum [6];
+
 	///  @name Construction
 
 	X3DEnvironmentTextureNode ();
@@ -117,6 +119,11 @@ protected:
 	virtual
 	void
 	initialize () override;
+
+	static
+	const TargetArray &
+	getTargets ()
+	{ return targets; }
 
 	void
 	setImage (const GLenum, const GLenum, const GLenum, const void* const);
@@ -133,6 +140,10 @@ private:
 
 	void
 	updateTextureProperties ();
+
+	///  @name Static embers
+
+	static const TargetArray targets;
 
 	///  @name Members
 

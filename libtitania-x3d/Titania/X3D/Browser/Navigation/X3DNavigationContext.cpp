@@ -51,6 +51,7 @@
 #include "X3DNavigationContext.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Lighting/DirectionalLight.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../X3DBrowser.h"
@@ -63,6 +64,7 @@ namespace X3D {
 
 X3DNavigationContext::X3DNavigationContext () :
 	               X3DBaseNode (),
+	                 headLight (new DirectionalLight (getExecutionContext ())),
 	               activeLayer (),
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
@@ -73,7 +75,8 @@ X3DNavigationContext::X3DNavigationContext () :
 	          activeCollisions (),
 	         straightenHorizon ()
 {
-	addChildren (activeLayer,
+	addChildren (headLight,
+	             activeLayer,
 	             activeNavigationInfoOutput,
 	             viewerType,
 	             privateViewer,
@@ -85,6 +88,8 @@ X3DNavigationContext::X3DNavigationContext () :
 void
 X3DNavigationContext::initialize ()
 {
+	headLight -> setup ();
+
 	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
 }
 

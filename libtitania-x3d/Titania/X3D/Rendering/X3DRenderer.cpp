@@ -209,11 +209,11 @@ X3DRenderer::constrainTranslation (const Vector3d & translation) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
 	auto       distance        = getDistance (translation);
-	const auto zFar            = navigationInfo -> getFarPlane (getViewpoint ());
+	const auto farValue        = navigationInfo -> getFarValue (getViewpoint ());
 
 	// Constrain translation when the viewer collides with a wall.
 
-	if (zFar - distance > 0) // Are there polygons before the viewer
+	if (farValue - distance > 0) // Are there polygons before the viewer
 	{
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
@@ -255,12 +255,12 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 		const auto navigationInfo  = getNavigationInfo ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 		const auto bottom          = navigationInfo -> getStepHeight () - navigationInfo -> getAvatarHeight ();
-		const auto zNear           = navigationInfo -> getNearPlane ();
-		const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+		const auto nearValue       = navigationInfo -> getNearValue ();
+		const auto farValue        = navigationInfo -> getFarValue (viewpoint);
 
 		// Reshape camera
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, zNear, zFar);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, farValue);
 
 		// Translate camera to user position and to look in the direction of the @a direction.
 
@@ -309,14 +309,14 @@ X3DRenderer::getDepth () const
 	const_cast <X3DRenderer*> (this) -> getViewVolumes () .pop_back ();
 
 	// Get distance from depth buffer
-		
-	const auto navigationInfo  = getNavigationInfo ();
-	const auto viewpoint       = getViewpoint ();
-	const auto zNear           = navigationInfo -> getNearPlane ();
-	const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
-	const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
-	const auto distance = depthBuffer -> getDistance (collisionRadius, zNear, zFar);
+	const auto & navigationInfo  = getNavigationInfo ();
+	const auto & viewpoint       = getViewpoint ();
+	const auto   nearValue       = navigationInfo -> getNearValue ();
+	const auto   farValue        = navigationInfo -> getFarValue (viewpoint);
+	const auto   collisionRadius = navigationInfo -> getCollisionRadius ();
+
+	const auto distance = depthBuffer -> getDistance (collisionRadius, nearValue, farValue);
 
 	depthBuffer -> unbind ();
 
@@ -445,14 +445,14 @@ X3DRenderer::gravite ()
 		const auto navigationInfo  = getNavigationInfo ();
 		const auto viewpoint       = getViewpoint ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
-		const auto zNear           = navigationInfo -> getNearPlane ();
-		const auto zFar            = navigationInfo -> getFarPlane (viewpoint);
+		const auto nearValue       = navigationInfo -> getNearValue ();
+		const auto farValue        = navigationInfo -> getFarValue (viewpoint);
 		const auto height          = navigationInfo -> getAvatarHeight ();
 		const auto stepHeight      = navigationInfo -> getStepHeight ();
 
 		// Reshape viewpoint for gravite.
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, zNear, zFar);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, farValue);
 					
 		// Transform viewpoint to look down the up vector
 
@@ -476,11 +476,11 @@ X3DRenderer::gravite ()
 
 		// Gravite or step up
 
-		if (zFar - distance > 0) // Are there polygons under the viewer
+		if (farValue - distance > 0) // Are there polygons under the viewer
 		{
-			distance -= height;
-
 			const Rotation4d up (Vector3d (0, 1, 0), upVector);
+
+			distance -= height;
 
 			if (distance > 0)
 			{

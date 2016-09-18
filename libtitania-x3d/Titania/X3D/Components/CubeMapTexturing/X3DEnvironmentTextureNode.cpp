@@ -57,6 +57,16 @@
 namespace titania {
 namespace X3D {
 
+const X3DEnvironmentTextureNode::TargetArray X3DEnvironmentTextureNode::targets = {
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
+	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top
+	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, // Bottom
+
+};
+
 X3DEnvironmentTextureNode::Fields::Fields () :
 	textureProperties (new SFNode ())
 { }

@@ -83,7 +83,6 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	 X3DBindableNode (),
 	          fields (),
-	directionalLight (new DirectionalLight (executionContext)),
 	           light ()
 {
 	addType (X3DConstants::NavigationInfo);
@@ -105,7 +104,7 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	speed ()           .setUnit (UnitCategory::SPEED);
 	visibilityLimit () .setUnit (UnitCategory::SPEED);
 
-	addChildren (transitionStart (), directionalLight);
+	addChildren (transitionStart ());
 }
 
 X3DBaseNode*
@@ -119,8 +118,6 @@ NavigationInfo::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	directionalLight -> setup ();
-
 	headlight () .addInterest (this, &NavigationInfo::set_headlight);
 
 	set_headlight ();
@@ -131,9 +128,10 @@ NavigationInfo::setExecutionContext (X3DExecutionContext* const executionContext
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	directionalLight -> setExecutionContext (executionContext);
-
 	X3DBindableNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_headlight ();
 }
 
 void
@@ -142,7 +140,7 @@ NavigationInfo::set_headlight ()
 	getModelViewMatrix () .identity ();
 
 	if (headlight ())
-		light .reset (new LightContainer (directionalLight, nullptr)); // There should always be the indentity matrix
+		light .reset (new LightContainer (getBrowser () -> getHeadLight (), nullptr)); // There should always be the indentity matrix
 
 	else
 		light .reset ();
@@ -179,7 +177,7 @@ NavigationInfo::getStepHeight () const
 }
 
 double
-NavigationInfo::getNearPlane () const
+NavigationInfo::getNearValue () const
 {
 	const double zNear = getCollisionRadius ();
 
@@ -191,7 +189,7 @@ NavigationInfo::getNearPlane () const
 }
 
 double
-NavigationInfo::getFarPlane (X3DViewpointNode* const viewpoint) const
+NavigationInfo::getFarValue (X3DViewpointNode* const viewpoint) const
 {
 	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxZFar ();
 }

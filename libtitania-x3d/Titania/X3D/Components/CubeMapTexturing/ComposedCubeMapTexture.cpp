@@ -62,16 +62,6 @@ const ComponentType ComposedCubeMapTexture::component      = ComponentType::CUBE
 const std::string   ComposedCubeMapTexture::typeName       = "ComposedCubeMapTexture";
 const std::string   ComposedCubeMapTexture::containerField = "texture";
 
-const GLenum ComposedCubeMapTexture::targets [6] = {
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
-	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, // Bottom
-
-};
-
 ComposedCubeMapTexture::Fields::Fields () :
 	 front (new SFNode ()),
 	  back (new SFNode ()),
@@ -150,7 +140,7 @@ ComposedCubeMapTexture::set_texture_0 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_0, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void
@@ -166,7 +156,7 @@ ComposedCubeMapTexture::set_texture_1 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_1, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void
@@ -182,7 +172,7 @@ ComposedCubeMapTexture::set_texture_2 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_2, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void
@@ -198,7 +188,7 @@ ComposedCubeMapTexture::set_texture_3 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_3, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void
@@ -214,7 +204,7 @@ ComposedCubeMapTexture::set_texture_4 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_4, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void
@@ -230,7 +220,7 @@ ComposedCubeMapTexture::set_texture_5 (const SFNode & node)
 	if (nodes [i])
 		nodes [i] -> addInterest (this, &ComposedCubeMapTexture::set_texture_5, std::cref (node));
 
-	setTexture (targets [i], node);
+	setTexture (getTargets () [i], node);
 }
 
 void

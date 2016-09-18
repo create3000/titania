@@ -60,16 +60,6 @@ const ComponentType ImageCubeMapTexture::component      = ComponentType::CUBE_MA
 const std::string   ImageCubeMapTexture::typeName       = "ImageCubeMapTexture";
 const std::string   ImageCubeMapTexture::containerField = "texture";
 
-const GLenum ImageCubeMapTexture::targets [6] = {
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Z, // Front
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, // Back
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_X, // Left
-	GL_TEXTURE_CUBE_MAP_POSITIVE_X, // Right
-	GL_TEXTURE_CUBE_MAP_POSITIVE_Y, // Top
-	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, // Bottom
-
-};
-
 ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionContext) :
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
@@ -181,7 +171,7 @@ ImageCubeMapTexture::set_loadState ()
 				getBrowser () -> println ("Error: ImageCubeMapTexture: width and height must be equal, and all images must be of the same size!");
 
 				for (size_t i = 0; i < 6; ++ i)
-					setImage (targets [i], GL_RGBA, GL_RGBA, nullptr);
+					setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);
 
 				setLoadState (FAILED_STATE);
 				return;
@@ -214,7 +204,7 @@ ImageCubeMapTexture::set_loadState ()
 				// Transfer image
 				// Important: width and height must be equal, and all images must be of the same size!!!
 	
-				setImage (targets [i], GL_RGBA, GL_RGBA, image .data ());
+				setImage (getTargets () [i], GL_RGBA, GL_RGBA, image .data ());
 			}
 	
 			break;
@@ -222,7 +212,7 @@ ImageCubeMapTexture::set_loadState ()
 		case FAILED_STATE:
 		{
 			for (size_t i = 0; i < 6; ++ i)
-				setImage (targets [i], GL_RGBA, GL_RGBA, nullptr);
+				setImage (getTargets () [i], GL_RGBA, GL_RGBA, nullptr);
 
 			break;
 		}

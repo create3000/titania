@@ -216,8 +216,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
 		const auto   nearValue        = 0.125;
 		const auto   farValue         = 1'000.0;
-		const auto   aspect           = std::tan (radians (120.0) / 2) * nearValue;
-		const auto   projectionMatrix = camera <double>::frustum (-aspect, aspect, -aspect, aspect, nearValue, farValue);
+		const auto   projectionMatrix = camera <double>::perspective (radians (120.0), nearValue, farValue, 1, 1);
 
 		// Render to frame buffer.
 
@@ -242,7 +241,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		{
 			for (size_t x = 0; x < 3; ++ x)
 			{
-				const auto rotation = Rotation4d (directions [y * 3 + x], Vector3d (0, 0, 1));
+				const auto rotation = Rotation4d (directions [y * 3 + x], Vector3d (0, 0, 1)); // Inverse rotation.
 				const auto viewport = Vector4i (x * shadowMapSize1_3, y * shadowMapSize1_2, shadowMapSize1_3, shadowMapSize1_2);
 
 //				const auto m = Matrix4d (inverse (rotation));

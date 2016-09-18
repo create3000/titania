@@ -158,8 +158,6 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static const GLenum targets [6];
-
 	///  @name Members
 
 	X3D::X3DPtr <X3D::ImageTexture> textureNode;

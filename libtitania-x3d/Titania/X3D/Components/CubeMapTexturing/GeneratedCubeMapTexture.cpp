@@ -52,7 +52,9 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/FrameBuffer.h"
 #include "../Layering/X3DLayerNode.h"
+#include "../Lighting/DirectionalLight.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -73,7 +75,9 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	              X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DEnvironmentTextureNode (),
 	                   fields (),
-	                loadState (NOT_STARTED_STATE)
+	                loadState (NOT_STARTED_STATE),
+	              frameBuffer (),
+	     transformationMatrix ()
 {
 	addType (X3DConstants::GeneratedCubeMapTexture);
 
@@ -82,7 +86,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (initializeOnly, "size",              size ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	setCameraObject (true); // TODO: set to false if update NONE
+	addChildren (loadState);
 }
 
 X3DBaseNode*
@@ -92,34 +96,161 @@ GeneratedCubeMapTexture::create (X3DExecutionContext* const executionContext) co
 }
 
 void
+GeneratedCubeMapTexture::initialize ()
+{
+	X3DEnvironmentTextureNode::initialize ();
+
+	update () .addInterest (this, &GeneratedCubeMapTexture::set_update);
+	size   () .addInterest (this, &GeneratedCubeMapTexture::set_size);
+
+	set_update ();
+	set_size ();
+}
+
+void
+GeneratedCubeMapTexture::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	X3DEnvironmentTextureNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+		set_size ();
+}
+
+void
+GeneratedCubeMapTexture::set_update ()
+{
+	if (update () == "ALWAYS")
+		setCameraObject (true);
+
+	else if (update () == "NEXT_FRAME_ONLY")
+		setCameraObject (true);
+
+	else if (update () == "NONE")
+		setCameraObject (false);
+}
+
+void
+GeneratedCubeMapTexture::set_size ()
+{
+	frameBuffer .reset (new FrameBuffer (getBrowser (), size (), size (), std::min <size_t> (getBrowser () -> getMaxSamples (), 8)));
+
+	frameBuffer -> setup ();
+}
+
+void
 GeneratedCubeMapTexture::traverse (const TraverseType type)
 {
-	if (type == TraverseType::CAMERA)
-		getCurrentLayer () -> getGeneratedCubeMapTextures () .emplace (this);
+	if (type != TraverseType::CAMERA)
+		return;
+
+	if (size () <= 0)
+		return;
+
+	transformationMatrix = getModelViewMatrix () .get ();
+
+	getCurrentLayer () -> getGeneratedCubeMapTextures () .emplace (this);
 }
 
 void
 GeneratedCubeMapTexture::renderTexture ()
 {
-	__LOG__ << std::endl;
+	try
+	{
+		using namespace std::placeholders;
 
-//	using namespace std::placeholders;
-//
-//	textureBuffer -> bind ();
-//
-//	// six times:
-//	getViewVolumes ()      .emplace_back (projectionMatrix, viewport, viewport);
-//	getProjectionMatrix () .push (projectionMatrix);
-//	getModelViewMatrix ()  .push ();
-//
-//	getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1), TraverseType::DISPLAY);
-//
-//	getModelViewMatrix ()  .pop ();
-//	getProjectionMatrix () .pop ();
-//	getViewVolumes ()      .pop_back ();
-//
-//	textureBuffer -> unbind ();
+		// Negated normals of the texture cube.
+
+		static constexpr Vector3d directions [6] = {
+			Vector3d ( 0,  0, -1), // front
+			Vector3d ( 0,  0,  1), // back
+			Vector3d ( 1,  0,  0), // left
+			Vector3d (-1,  0,  0), // right
+			Vector3d ( 0, -1,  0), // top
+			Vector3d ( 0,  1,  0), // bottom
+		};
+
+		// Negated scales of the texture cube.
+
+		static constexpr Vector3d scale [6] = {
+			Vector3d (-1, -1,  1), // front
+			Vector3d (-1, -1,  1), // back
+			Vector3d (-1, -1,  1), // left
+			Vector3d (-1, -1,  1), // right
+			Vector3d ( 1,  1,  1), // top
+			Vector3d ( 1,  1,  1), // bottom
+		};
+
+		const auto   viewport              = Vector4i (0, 0, size (), size ());
+		const auto & navigationInfo        = getCurrentNavigationInfo ();
+		const auto & viewpoint             = getCurrentViewpoint ();
+		const auto   nearValue             = navigationInfo -> getNearValue ();
+		const auto   farValue              = navigationInfo -> getFarValue (viewpoint);
+		const auto   projectionMatrix      = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
+		auto         invTextureSpaceMatrix = Matrix4d ();
+
+		invTextureSpaceMatrix .set (negate (transformationMatrix .origin ()));
+
+		frameBuffer -> bind ();
+
+		getViewVolumes ()      .emplace_back (projectionMatrix, viewport, viewport);
+		getProjectionMatrix () .push (projectionMatrix);
+
+		for (size_t i = 0; i < 6; ++ i)
+		{
+			const auto rotation = Rotation4d (directions [i], Vector3d (0, 0, 1)); // Inverse rotation.
+
+			glClear (GL_COLOR_BUFFER_BIT); // Always clear, X3DBackground could be transparent!
+
+			// Setup inverse texture space matrix.
+
+			getModelViewMatrix () .push (Matrix4d ());
+			getModelViewMatrix () .scale (scale [i]);
+			getModelViewMatrix () .rotate (rotation);
+			getModelViewMatrix () .mult_left (invTextureSpaceMatrix);
+
+			// Setup headlight if enabled.
+
+//			if (navigationInfo -> headlight ())
+//			{
+//				getModelViewMatrix () .push ();
+//				getModelViewMatrix () .mult_left (viewpoint -> getCameraSpaceMatrix ());
+//				getCurrentLayer () -> getGlobalLights () .emplace_back (std::make_shared <LightContainer> (getBrowser () -> getHeadLight (), nullptr));
+//				getModelViewMatrix () .pop ();
+//			}
+
+			// Render layer's children.
+
+			getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1), TraverseType::DISPLAY);
+
+			getModelViewMatrix ()  .pop ();
+
+			// Transfer image.
+
+			frameBuffer -> readPixels ();
+
+			setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> getPixels () .data ());
+		}
+
+		getProjectionMatrix () .pop ();
+		getViewVolumes ()      .pop_back ();
+
+		frameBuffer -> unbind ();
+
+		if (update () == "NEXT_FRAME_ONLY")
+		   update () = "NONE";
+
+		if (checkLoadState () != COMPLETE_STATE)
+			setLoadState (COMPLETE_STATE);
+	}
+	catch (const std::domain_error &)
+	{
+	}
 }
+
+GeneratedCubeMapTexture::~GeneratedCubeMapTexture ()
+{ }
 
 } // X3D
 } // titania
