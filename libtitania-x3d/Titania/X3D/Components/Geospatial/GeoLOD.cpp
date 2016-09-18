@@ -69,7 +69,7 @@ GeoLOD::Fields::Fields () :
 	    child4Url (new MFString ()),
 	       center (new SFVec3d ()),
 	        range (new SFFloat (10)),
-	level_changed (new SFInt32 ()),
+	level_changed (new SFInt32 (-1)),
 	     rootNode (new MFNode ()),
 	     children (new MFNode ())
 { }
@@ -225,7 +225,10 @@ GeoLOD::set_rootLoadState ()
 		return;
 
 	if (rootInline -> checkLoadState () == COMPLETE_STATE)
-		children () = rootInline -> getRootNodes ();
+	{
+		children ()    = rootInline -> getRootNodes ();
+		childrenLoaded = false;
+	}
 }
 
 void
@@ -236,8 +239,6 @@ GeoLOD::set_childLoadState ()
 
 	int32_t loaded = 0;
 
-	children () .clear ();
-
 	if (child1Inline -> checkLoadState () == COMPLETE_STATE)
 	{
 		children () .insert (children () .end (),
@@ -245,6 +246,8 @@ GeoLOD::set_childLoadState ()
 		                     child1Inline -> getRootNodes () .end ());
 		++ loaded;
 	}
+	else if (child1Inline -> url () .empty ())
+		++ loaded;
 
 	if (child2Inline -> checkLoadState () == COMPLETE_STATE)
 	{
@@ -253,6 +256,8 @@ GeoLOD::set_childLoadState ()
 		                     child2Inline -> getRootNodes () .end ());
 		++ loaded;
 	}
+	else if (child2Inline -> url () .empty ())
+		++ loaded;
 
 	if (child3Inline -> checkLoadState () == COMPLETE_STATE)
 	{
@@ -261,6 +266,8 @@ GeoLOD::set_childLoadState ()
 		                     child3Inline -> getRootNodes () .end ());
 		++ loaded;
 	}
+	else if (child2Inline -> url () .empty ())
+		++ loaded;
 
 	if (child4Inline -> checkLoadState () == COMPLETE_STATE)
 	{
@@ -269,8 +276,11 @@ GeoLOD::set_childLoadState ()
 		                     child4Inline -> getRootNodes () .end ());
 		++ loaded;
 	}
+	else if (child4Inline -> url () .empty ())
+		++ loaded;
 
-	childrenLoaded = loaded == 4;
+	if (loaded == 4)
+		childrenLoaded = true;
 }
 
 size_t
@@ -297,45 +307,51 @@ GeoLOD::getDistance (const TraverseType type) const
 void
 GeoLOD::traverse (const TraverseType type)
 {
-	const int32_t level = getLevel (type);
-
-	if (level not_eq level_changed ())
+	if (type == TraverseType::DISPLAY)
 	{
-		level_changed () = level;
-
-		switch (level)
+		const int32_t level = getLevel (type);
+	
+		if (level not_eq level_changed ())
 		{
-			case 0:
+			level_changed () = level;
+	
+			switch (level)
 			{
-				if (rootNode () .empty ())
+				case 0:
 				{
-					if (rootInline -> checkLoadState () == COMPLETE_STATE)
-						children () = rootInline -> getRootNodes ();
+					if (rootNode () .empty ())
+					{
+						if (rootInline -> checkLoadState () == COMPLETE_STATE)
+						{
+							children ()    = rootInline -> getRootNodes ();
+							childrenLoaded = false;
+						}
+					}
+					else
+					{
+						children ()    = rootNode ();
+						childrenLoaded = false;
+					}
+	
+					child1Inline -> load () = false;
+					child2Inline -> load () = false;
+					child3Inline -> load () = false;
+					child4Inline -> load () = false;
+					break;
 				}
-				else
-					children () = rootNode ();
-
-				child1Inline -> load () = false;
-				child2Inline -> load () = false;
-				child3Inline -> load () = false;
-				child4Inline -> load () = false;
-
-				childrenLoaded = false;
-				break;
-			}
-			case 1:
-			{
-				child1Inline -> load () = true;
-				child2Inline -> load () = true;
-				child3Inline -> load () = true;
-				child4Inline -> load () = true;
-
-				break;
+				case 1:
+				{
+					child1Inline -> load () = true;
+					child2Inline -> load () = true;
+					child3Inline -> load () = true;
+					child4Inline -> load () = true;
+					break;
+				}
 			}
 		}
 	}
 
-	switch (childrenLoaded ? level : 0)
+	switch (childrenLoaded ? level_changed () .getValue () : 0)
 	{
 		case 0:
 		{

@@ -182,10 +182,7 @@ LOD::traverse (const TraverseType type)
 {
 	int32_t level = 0;
 
-	if (keepCurrentLevel)
-		level = level_changed ();
-	
-	else
+	if (not keepCurrentLevel)
 	{
 		level = getLevel (type);
 
@@ -197,20 +194,20 @@ LOD::traverse (const TraverseType type)
 			else if (level < level_changed ())
 				level = level_changed () - 1;
 		}
-	}
 
-	if (type == TraverseType::DISPLAY)
-	{
-		if (level not_eq level_changed ())
+		if (type == TraverseType::DISPLAY)
 		{
-			level_changed () = level;
+			if (level not_eq level_changed ())
+			{
+				level_changed () = level;
 
-			set_child (level);
+				set_child (level);
 
-			const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+				const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+			}
+			else if (keepCurrentLevel)
+				set_child (level);
 		}
-		else if (keepCurrentLevel)
-			set_child (level);
 	}
 
 	if (childNode)
