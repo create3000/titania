@@ -185,9 +185,9 @@ GeoLOD::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
 	{
-		const size_t level = level_changed ();
+		const int32_t level = level_changed ();
 
-		switch (level)
+		switch (childrenLoaded ? level : 0)
 		{
 			case 0:
 			{
