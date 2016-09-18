@@ -300,6 +300,13 @@ MultiTexture::set_texture ()
 }
 
 void
+MultiTexture::traverse (const TraverseType type)
+{
+	for (const auto & textureNode : textureNodes)
+		textureNode -> traverse (type);
+}
+
+void
 MultiTexture::draw ()
 {
 	size_t index = 0;

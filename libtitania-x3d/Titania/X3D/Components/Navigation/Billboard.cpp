@@ -100,12 +100,11 @@ Billboard::getBBox () const
 	return X3DGroupingNode::getBBox () * matrix;
 }
 
-Matrix4d
-Billboard::rotate (const TraverseType type)
+const Matrix4d &
+Billboard::rotate ()
 throw (std::domain_error)
 {
-	const Matrix4d modelViewMatrix        = getModelViewMatrix (type);
-	const Matrix4d inverseModelViewMatrix = inverse (modelViewMatrix);
+	const Matrix4d inverseModelViewMatrix = inverse (getBrowser () -> getModelViewMatrix () .get ());
 	const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 	if (axisOfRotation () == Vector3f ())
@@ -144,8 +143,11 @@ Billboard::traverse (const TraverseType type)
 
 	try
 	{
-		getModelViewMatrix () .mult_left (rotate (type));
-	
+		if (type == TraverseType::DISPLAY)
+			getModelViewMatrix () .mult_left (rotate ());
+		else
+			getModelViewMatrix () .mult_left (matrix);
+
 		X3DGroupingNode::traverse (type);
 	}
 	catch (const std::domain_error &)

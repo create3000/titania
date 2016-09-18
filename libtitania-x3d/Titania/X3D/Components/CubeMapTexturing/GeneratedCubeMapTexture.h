@@ -107,7 +107,7 @@ public:
 	size () const
 	{ return *fields .size; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	const SFEnum <LoadState> &
@@ -133,6 +133,12 @@ public:
 	size_t
 	getComponents () const final override
 	{ return 0; }
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType) final override;
 
 
 private:

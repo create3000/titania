@@ -124,8 +124,8 @@ private:
 
 	///  @name Operations
 
-	Matrix4d
-	rotate (const TraverseType)
+	const Matrix4d &
+	rotate ()
 	throw (std::domain_error);
 
 	///  @name Static members

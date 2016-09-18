@@ -632,6 +632,10 @@ X3DRenderer::display ()
 		getBrowser () -> getDefaultAppearance () -> draw ();
 	}
 	#endif
+
+	// Clear GeneratedCubeMapTexture nodes array.
+
+	getBrowser () -> getGeneratedCubeMapTextures () .clear ();
 }
 
 void

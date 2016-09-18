@@ -50,6 +50,7 @@
 
 #include "GeneratedCubeMapTexture.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -60,8 +61,8 @@ const std::string   GeneratedCubeMapTexture::typeName       = "GeneratedCubeMapT
 const std::string   GeneratedCubeMapTexture::containerField = "texture";
 
 GeneratedCubeMapTexture::Fields::Fields () :
-	update (new SFString ("NONE")),
-	size (new SFInt32 (128)),
+	           update (new SFString ("NONE")),
+	             size (new SFInt32 (128)),
 	textureProperties (new SFNode ())
 { }
 
@@ -85,6 +86,12 @@ GeneratedCubeMapTexture::create (X3DExecutionContext* const executionContext) co
 	return new GeneratedCubeMapTexture (executionContext);
 }
 
+void
+GeneratedCubeMapTexture::traverse (const TraverseType type)
+{
+	if (type == TraverseType::DISPLAY)
+		getBrowser () -> getGeneratedCubeMapTextures () .emplace_back (this);
+}
 
 } // X3D
 } // titania

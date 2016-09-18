@@ -192,6 +192,10 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType) final override;
+
+	virtual
+	void
 	draw () final override;
 
 

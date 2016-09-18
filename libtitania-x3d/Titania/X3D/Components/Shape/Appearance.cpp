@@ -253,6 +253,13 @@ Appearance::set_shader ()
 }
 
 void
+Appearance::traverse (const TraverseType type)
+{
+	if (textureNode)
+		textureNode -> traverse (type);
+}
+
+void
 Appearance::draw ()
 {
 	#ifdef FIXED_PIPELINE
