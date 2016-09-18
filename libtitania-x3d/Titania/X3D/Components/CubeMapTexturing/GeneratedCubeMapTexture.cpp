@@ -182,15 +182,15 @@ GeneratedCubeMapTexture::renderTexture ()
 			Vector3d ( 1,  1,  1), // bottom
 		};
 
+		getBrowser () -> setRenderTools (false);
+
 		const auto   viewport              = Vector4i (0, 0, size (), size ());
 		const auto & navigationInfo        = getCurrentNavigationInfo ();
 		const auto & viewpoint             = getCurrentViewpoint ();
 		const auto   nearValue             = navigationInfo -> getNearValue ();
 		const auto   farValue              = navigationInfo -> getFarValue (viewpoint);
 		const auto   projectionMatrix      = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
-		auto         invTextureSpaceMatrix = Matrix4d ();
-
-		invTextureSpaceMatrix .set (negate (transformationMatrix .origin ()));
+		const auto   invTextureSpaceMatrix = inverse (transformationMatrix);
 
 		frameBuffer -> bind ();
 
@@ -212,13 +212,12 @@ GeneratedCubeMapTexture::renderTexture ()
 
 			// Setup headlight if enabled.
 
-//			if (navigationInfo -> headlight ())
-//			{
-//				getModelViewMatrix () .push ();
-//				getModelViewMatrix () .mult_left (viewpoint -> getCameraSpaceMatrix ());
-//				getCurrentLayer () -> getGlobalLights () .emplace_back (std::make_shared <LightContainer> (getBrowser () -> getHeadLight (), nullptr));
-//				getModelViewMatrix () .pop ();
-//			}
+			if (navigationInfo -> headlight ())
+			{
+				getModelViewMatrix () .push (viewpoint -> getCameraSpaceMatrix ());
+				getCurrentLayer () -> getGlobalLights () .emplace_back (std::make_shared <LightContainer> (getBrowser () -> getHeadLight (), nullptr));
+				getModelViewMatrix () .pop ();
+			}
 
 			// Render layer's children.
 
@@ -243,6 +242,7 @@ GeneratedCubeMapTexture::renderTexture ()
 
 		if (checkLoadState () != COMPLETE_STATE)
 			setLoadState (COMPLETE_STATE);
+		getBrowser () -> setRenderTools (true);
 	}
 	catch (const std::domain_error &)
 	{
