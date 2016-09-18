@@ -102,10 +102,10 @@ public:
 
 	virtual
 	void
-	collision (const CollisionContainer* const context) final override
-	{ return X3DShapeNodeTool::collision (context); }
+	depth (const CollisionContainer* const context) final override
+	{ return X3DShapeNodeTool::depth (context); }
 
-	///  @name Operations
+	///  @name Tool handling
 
 	virtual
 	void

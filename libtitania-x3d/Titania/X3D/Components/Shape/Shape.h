@@ -111,7 +111,7 @@ public:
 
 	virtual
 	void
-	collision (const CollisionContainer* const) override;
+	depth (const CollisionContainer* const) override;
 
 	virtual
 	void

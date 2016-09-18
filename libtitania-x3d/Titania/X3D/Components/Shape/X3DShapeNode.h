@@ -135,11 +135,11 @@ public:
 
 	virtual
 	void
-	display (ShapeContainer* const);
+	depth (const CollisionContainer* const) = 0;
 
 	virtual
 	void
-	collision (const CollisionContainer* const) = 0;
+	display (ShapeContainer* const);
 
 	///  @name Destruction
 

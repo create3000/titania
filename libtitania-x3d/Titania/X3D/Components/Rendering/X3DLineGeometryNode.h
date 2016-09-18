@@ -65,6 +65,10 @@ public:
 
 	virtual
 	void
+	depth (const CollisionContainer* const) final override;
+
+	virtual
+	void
 	draw (ShapeContainer* const) override;
 
 	///  @name Destruction

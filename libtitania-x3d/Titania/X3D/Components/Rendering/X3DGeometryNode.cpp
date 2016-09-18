@@ -841,7 +841,7 @@ X3DGeometryNode::transfer ()
 }
 
 void
-X3DGeometryNode::collision (const CollisionContainer* const context)
+X3DGeometryNode::depth (const CollisionContainer* const context)
 {
 	glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
 	glEnableClientState (GL_VERTEX_ARRAY);

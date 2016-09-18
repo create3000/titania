@@ -75,6 +75,10 @@ X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
 }
 
 void
+X3DLineGeometryNode::depth (const CollisionContainer* const)
+{ }
+
+void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
 	const auto & browser       = getBrowser ();

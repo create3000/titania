@@ -187,7 +187,7 @@ public:
 
 	virtual
 	void
-	collision (const CollisionContainer* const);
+	depth (const CollisionContainer* const);
 
 	virtual
 	void

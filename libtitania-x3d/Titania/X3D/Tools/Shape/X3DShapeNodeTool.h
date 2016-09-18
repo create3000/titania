@@ -137,8 +137,8 @@ public:
 
 	virtual
 	void
-	collision (const CollisionContainer* const context) override
-	{ return getNode <X3DShapeNode> () -> collision (context); }
+	depth (const CollisionContainer* const context) override
+	{ return getNode <X3DShapeNode> () -> depth (context); }
 
 	virtual
 	void

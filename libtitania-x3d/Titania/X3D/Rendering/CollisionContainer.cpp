@@ -93,7 +93,7 @@ CollisionContainer::draw ()
 
 	glLoadMatrixd (modelViewMatrix .data ());
 
-	shape -> collision (this);
+	shape -> depth (this);
 
 	for (const auto & clipPlane :  basic::make_reverse_range (clipPlanes))
 		clipPlane -> disable ();

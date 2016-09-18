@@ -1424,7 +1424,7 @@ ParticleSystem::update ()
 }
 
 void
-ParticleSystem::collision (const CollisionContainer* const)
+ParticleSystem::depth (const CollisionContainer* const)
 { }
 
 void

@@ -254,9 +254,9 @@ Shape::cut ()
 }
 
 void
-Shape::collision (const CollisionContainer* const context)
+Shape::depth (const CollisionContainer* const context)
 {
-	getGeometry () -> collision (context);
+	getGeometry () -> depth (context);
 }
 
 void

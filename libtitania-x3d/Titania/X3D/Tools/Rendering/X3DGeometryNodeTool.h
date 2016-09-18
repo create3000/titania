@@ -182,12 +182,12 @@ public:
 
 	virtual
 	void
-	collision (const CollisionContainer* const container) final override
-	{ getNode <X3DGeometryNode> () -> collision (container); }
+	traverse (const TraverseType) final override;
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	depth (const CollisionContainer* const context) final override
+	{ getNode <X3DGeometryNode> () -> depth (context); }
 
 	virtual
 	void
