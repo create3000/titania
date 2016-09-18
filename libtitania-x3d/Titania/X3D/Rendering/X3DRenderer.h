@@ -105,10 +105,6 @@ public:
 	getViewVolumes ()
 	{ return viewVolumeStack; }
 
-	CollectableObjectArray &
-	getGlobalObjects ()
-	{ return globalObjects; }
-
 	LightContainerArray &
 	getGlobalLights ()
 	{ return globalLights; }
@@ -162,7 +158,7 @@ public:
 	constrainTranslation (const Vector3d &) const;
 
 	void
-	renderDepth (X3DGroupingNode* const);
+	render (const std::function <void (const TraverseType)> &, const TraverseType);
 
 	///  @name Destruction
 
@@ -183,15 +179,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Operations
-
-	virtual
-	void
-	collect (const TraverseType) = 0;
-
-	void
-	render (const TraverseType);
 
 
 private:
@@ -219,7 +206,6 @@ private:
 	///  @name Members
 
 	ViewVolumeStack         viewVolumeStack;
-	CollectableObjectArray  globalObjects;
 	LightContainerArray     globalLights;
 	CollectableObjectArray  localObjects;
 	ClipPlaneContainerArray clipPlanes;

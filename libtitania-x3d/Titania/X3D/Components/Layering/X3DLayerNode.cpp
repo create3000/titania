@@ -91,8 +91,8 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	          backgrounds (new BackgroundList (getExecutionContext ())),
 	                 fogs (new FogList (getExecutionContext ())),
 	            localFogs (),
-	                group (layerGroup_),
-	              friends (layerGroup_ -> create (getExecutionContext ()))
+	            groupNode (layerGroup_),
+	          friendsNode (layerGroup_ -> create (getExecutionContext ()))
 {
 	addType (X3DConstants::X3DLayerNode);
 
@@ -109,8 +109,8 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	             viewpoints,
 	             backgrounds,
 	             fogs,
-	             group,
-	             friends);
+	             groupNode,
+	             friendsNode);
 
 	defaultNavigationInfo -> isBound () = true;
 	defaultViewpoint      -> isBound () = true;
@@ -142,17 +142,17 @@ X3DLayerNode::initialize ()
 	backgrounds     -> setup ();
 	fogs            -> setup ();
 
-	group -> isPrivate (true);
-	group -> children () = children ();
-	group -> setup ();
+	groupNode -> isPrivate (true);
+	groupNode -> children () = children ();
+	groupNode -> setup ();
 
-	friends -> isPrivate (true);
-	friends -> setup ();
+	friendsNode -> isPrivate (true);
+	friendsNode -> setup ();
 
 	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
-	addChildren ()    .addInterest (group -> addChildren ());
-	removeChildren () .addInterest (group -> removeChildren ());
-	children ()       .addInterest (group -> children ());
+	addChildren ()    .addInterest (groupNode -> addChildren ());
+	removeChildren () .addInterest (groupNode -> removeChildren ());
+	children ()       .addInterest (groupNode -> children ());
 
 	set_viewport ();
 }
@@ -177,8 +177,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	backgrounds     -> setExecutionContext (executionContext);
 	fogs            -> setExecutionContext (executionContext);
 
-	group   -> setExecutionContext (executionContext);
-	friends -> setExecutionContext (executionContext);
+	groupNode   -> setExecutionContext (executionContext);
+	friendsNode -> setExecutionContext (executionContext);
 
 	X3DRenderer::setExecutionContext (executionContext);
 	X3DNode::setExecutionContext (executionContext);
@@ -198,7 +198,7 @@ X3DLayerNode::isLayer0 (const bool value)
 Box3d
 X3DLayerNode::getBBox () const
 {
-	return group -> getBBox ();
+	return groupNode -> getBBox ();
 }
 
 NavigationInfo*
@@ -358,8 +358,6 @@ X3DLayerNode::pointer ()
 		currentViewport -> push ();
 		collect (TraverseType::POINTER);
 		currentViewport -> pop ();
-
-		getGlobalObjects () .clear ();
 	}
 }
 
@@ -386,23 +384,27 @@ X3DLayerNode::camera ()
 void
 X3DLayerNode::collision ()
 {
+	using namespace std::placeholders;
+
 	getViewpoint () -> reshape ();
 
 	// Render
 	currentViewport -> push ();
-	render (TraverseType::COLLISION);
+	render (std::bind (&X3DLayerNode::collect, this, _1), TraverseType::COLLISION);
 	currentViewport -> pop ();
 }
 
 void
 X3DLayerNode::display (const TraverseType type)
 {
+	using namespace std::placeholders;
+
 	getNavigationInfo () -> enable ();
 	getViewpoint ()      -> reshape ();
 	getViewpoint ()      -> transform ();
 
 	currentViewport -> push ();
-	render (type);
+	render (std::bind (&X3DLayerNode::collect, this, _1), type);
 	currentViewport -> pop ();
 
 	getNavigationInfo () -> disable ();
@@ -411,8 +413,8 @@ X3DLayerNode::display (const TraverseType type)
 void
 X3DLayerNode::collect (const TraverseType type)
 {
-	group   -> traverse (type);
-	friends -> traverse (type);
+	groupNode   -> traverse (type);
+	friendsNode -> traverse (type);
 }
 
 void

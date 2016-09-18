@@ -189,6 +189,8 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 {
 	try
 	{
+		using namespace std::placeholders;
+
 		// Negated normals of the point light cube.
 
 		static constexpr Vector3d directions [6] = {
@@ -209,7 +211,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		invLightSpaceMatrix .inverse ();
 
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();                            
-		const auto   group            = lightContainer -> getGroup ();                                     // Group to be shadowed.
+		const auto   groupNode        = lightContainer -> getGroup ();                                     // Group to be shadowed.
 		const auto   shadowMapSize1_2 = getShadowMapSize () / 2;
 		const auto   shadowMapSize1_3 = getShadowMapSize () / 3;
 		const auto   nearValue        = 0.125;
@@ -255,9 +257,9 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 				getModelViewMatrix  () .push (Matrix4d (rotation));
 				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-				getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+				getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 				
-				getCurrentLayer () -> renderDepth (group);
+				getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse,groupNode, _1), TraverseType::DEPTH);
 	
 				getModelViewMatrix  () .pop ();
 				getProjectionMatrix () .pop ();
@@ -278,8 +280,8 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 					getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
 					getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
 		
-					getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
-					getCurrentLayer () -> renderDepth (group);
+					getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
+					getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1), TraverseType::DEPTH);
 	
 					getModelViewMatrix  () .pop ();
 					getProjectionMatrix () .pop ();

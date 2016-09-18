@@ -373,7 +373,8 @@ c3 ()
 }
 
 
-class A {
+class A
+{
 public:
 
 	A ()
@@ -381,42 +382,41 @@ public:
 		__LOG__ << std::endl;
 	}
 
-	A (const A &)
+	virtual
+	void
+	f ()
 	{
 		__LOG__ << std::endl;
 	}
-
-	A (A &&)
-	{
-		__LOG__ << std::endl;
-	}
-
-	A &
-	operator = (const A &)
-	{
-		__LOG__ << std::endl;
-
-		return *this;
-	}
-
-	A &
-	operator = (A &&)
-	{
-		__LOG__ << std::endl;
-
-		return *this;
-	}
-
 	
 };
 
 
-A
+class B :
+	public A
+{
+public:
+
+	B ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	virtual
+	void
+	f () final override
+	{
+		__LOG__ << std::endl;
+	}
+	
+};
+
+void
 f ()
 {
-	A a;
+	B b;
 
-	return a;
+	std::bind (&A::f, static_cast <A*> (&b)) ();
 }
 
 int
@@ -436,7 +436,7 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const auto a = f ();
+	f ();
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

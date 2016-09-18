@@ -204,11 +204,11 @@ public:
 
 	X3DPtr <X3DGroupingNode> &
 	getFriends ()
-	{ return friends; }
+	{ return friendsNode; }
 
 	const X3DPtr <X3DGroupingNode> &
 	getFriends () const
-	{ return friends; }
+	{ return friendsNode; }
 
 	///  @name Operations
 
@@ -253,7 +253,7 @@ protected:
 
 	const X3DPtr <X3DGroupingNode> &
 	getGroup () const
-	{ return group; }
+	{ return groupNode; }
 
 	virtual
 	X3DFogObject*
@@ -279,9 +279,8 @@ private:
 	void
 	display (const TraverseType);
 
-	virtual
 	void
-	collect (const TraverseType) final override;
+	collect (const TraverseType);
 
 	///  @name Members
 
@@ -319,8 +318,8 @@ private:
 
 	LocalFogStack  localFogs;
 
-	X3DPtr <X3DGroupingNode> group;
-	X3DPtr <X3DGroupingNode> friends;
+	X3DPtr <X3DGroupingNode> groupNode;
+	X3DPtr <X3DGroupingNode> friendsNode;
 
 };
 

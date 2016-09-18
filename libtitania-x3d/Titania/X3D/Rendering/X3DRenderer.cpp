@@ -79,7 +79,6 @@ static constexpr auto zAxis = Vector3d (0, 0, 1);
 X3DRenderer::X3DRenderer () :
 	               X3DNode (),
 	       viewVolumeStack (),
-	         globalObjects (),
 	          globalLights (),
 	          localObjects (),
 	            clipPlanes (),
@@ -323,7 +322,7 @@ X3DRenderer::getDepth () const
 }
 
 void
-X3DRenderer::render (const TraverseType type)
+X3DRenderer::render (const std::function <void (const TraverseType)> & traverse, const TraverseType type)
 {
 	switch (type)
 	{
@@ -332,7 +331,7 @@ X3DRenderer::render (const TraverseType type)
 			// Collect for collide and gravite
 			numCollisionShapes = 0;
 
-			collect (type);
+			traverse (type);
 			collide ();
 			gravite ();
 			break;
@@ -341,7 +340,7 @@ X3DRenderer::render (const TraverseType type)
 		{
 			numDepthShapes = 0;
 
-			collect (type);
+			traverse (type);
 			depth (depthShapes, numDepthShapes);
 			break;
 		}
@@ -350,31 +349,13 @@ X3DRenderer::render (const TraverseType type)
 			numOpaqueShapes      = 0;
 			numTransparentShapes = 0;
 
-			collect (type);
+			traverse (type);
 			display ();
 			break;
 		}
 		default:
 			break;
 	}
-
-	getGlobalObjects () .clear ();
-	getClipPlanes    () .clear ();
-	getGlobalLights  () .clear ();
-	getLights        () .clear ();
-}
-
-void
-X3DRenderer::renderDepth (X3DGroupingNode* const group)
-{
-	numDepthShapes = 0;
-
-	group -> traverse (TraverseType::DEPTH);
-
-	depth (depthShapes, numDepthShapes);
-
-	getGlobalObjects () .clear ();
-	getClipPlanes    () .clear ();
 }
 
 void
@@ -559,16 +540,11 @@ X3DRenderer::display ()
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
 
-	// Enable global objects.
-
-	for (const auto & object : getGlobalObjects ())
-		object -> enable ();
-
 	// Set global uniforms.
 
 	// TODO: set global uniforms.
 
-	// Configure viewport and background
+	// Configure viewport and background.
 
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
@@ -579,7 +555,7 @@ X3DRenderer::display ()
 
 	getBackground () -> draw (viewport);
 
-	// Sorted blend
+	// Sorted blend.
 
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
@@ -592,7 +568,7 @@ X3DRenderer::display ()
 	}
 	#endif
 
-	// Render opaque objects first
+	// Render opaque objects first.
 
 	glDisable (GL_BLEND);
 	glEnable (GL_DEPTH_TEST);
@@ -601,7 +577,7 @@ X3DRenderer::display ()
 	for (const auto & context : basic::make_range (opaqueShapes .cbegin (), numOpaqueShapes))
 		context -> display ();
 
-	// Render transparent objects
+	// Render transparent objects.
 
 	glEnable (GL_BLEND);
 	glDepthMask (GL_FALSE);
@@ -614,15 +590,15 @@ X3DRenderer::display ()
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	// Disable global objects
-
-	for (const auto & object : basic::make_reverse_range (getGlobalObjects ()))
-		object -> disable ();
-
 	// Disable global lights
 	
 	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
+
+	// Clear light nodes arrays.
+
+	getGlobalLights () .clear ();
+	getLights       () .clear ();
 
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
@@ -633,7 +609,7 @@ X3DRenderer::display ()
 	}
 	#endif
 
-	// Clear GeneratedCubeMapTexture nodes array.
+	// TODO: Clear GeneratedCubeMapTexture nodes array.
 
 	getBrowser () -> getGeneratedCubeMapTextures () .clear ();
 }
@@ -643,13 +619,13 @@ X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShap
 {
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
-	// Setup projection matrix
+	// Setup projection matrix.
 
 	glMatrixMode (GL_PROJECTION);
 	glLoadMatrixd (getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
-	// Render to depth buffer
+	// Render to depth buffer.
 
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);

@@ -154,6 +154,8 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 {
 	try
 	{
+		using namespace std::placeholders;
+
 		getBrowser () -> setRenderTools (false);
 	
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
@@ -163,8 +165,8 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 		invLightSpaceMatrix .inverse ();
 	
 		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
-		const auto   group            = lightContainer -> getGroup ();                                          // Group to be shadowd
-		const auto   groupBBox        = group -> X3DGroupingNode::getBBox ();                                   // Group bbox.
+		const auto   groupNode        = lightContainer -> getGroup ();                                          // Group to be shadowd
+		const auto   groupBBox        = groupNode -> X3DGroupingNode::getBBox ();                               // Group bbox.
 		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
 		const auto   projectionMatrix = ortho (lightBBox);
@@ -174,9 +176,9 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 		getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 		getProjectionMatrix () .push (projectionMatrix);
 		getModelViewMatrix  () .push (invLightSpaceMatrix);
-		getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+		getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 	
-		getCurrentLayer () -> renderDepth (group);
+		getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1), TraverseType::DEPTH);
 	
 		getModelViewMatrix  () .pop ();
 		getProjectionMatrix () .pop ();
@@ -199,9 +201,9 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 			getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
 			getProjectionMatrix () .push (projectionMatrix);
 			getModelViewMatrix  () .push (invLightSpaceMatrix);
-			getModelViewMatrix  () .mult_left (inverse (group -> getMatrix ()));
+			getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 		
-			getCurrentLayer () -> renderDepth (group);
+			getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1), TraverseType::DEPTH);
 		
 			getModelViewMatrix  () .pop ();
 			getProjectionMatrix () .pop ();
@@ -221,6 +223,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
 		getBrowser () -> setRenderTools (true);
+
 		return true;
 	}
 	catch (const std::domain_error & error)
