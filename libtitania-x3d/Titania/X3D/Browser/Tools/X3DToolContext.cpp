@@ -57,7 +57,7 @@ namespace X3D {
 
 X3DToolContext::X3DToolContext () :
 	         X3DBaseNode (),
-	         renderTools ({ true }),
+	        displayTools ({ true }),
 	transformToolOptions (new TransformToolOptions (getExecutionContext ())),
 	             cutLine ()
 {

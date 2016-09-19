@@ -175,7 +175,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .bind ();
 
 		layer0 -> getBackground () -> isHidden (alphaChannel);
-		getBrowser () -> getRenderTools () .push (false);
+		getBrowser () -> getDisplayTools () .push (false);
 		getBrowser () -> reshape (Vector4i (0, 0, width, height));
 
 		if (alphaChannel)
@@ -189,7 +189,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		frameBuffer .unbind ();
 
 		getBrowser () -> reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
-		getBrowser () -> getRenderTools () .pop ();
+		getBrowser () -> getDisplayTools () .pop ();
 		layer0 -> getBackground () -> isHidden (backgroundHidden);
 
 		// Process image.

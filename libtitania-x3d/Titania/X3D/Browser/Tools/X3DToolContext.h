@@ -72,12 +72,12 @@ public:
 	///  @name Member access
 
 	RenderToolsStack &
-	getRenderTools ()
-	{ return renderTools; }
+	getDisplayTools ()
+	{ return displayTools; }
 
 	const RenderToolsStack &
-	getRenderTools () const
-	{ return renderTools; }
+	getDisplayTools () const
+	{ return displayTools; }
 
 	const X3DPtr <TransformToolOptions> &
 	getTransformToolOptions () const
@@ -114,7 +114,7 @@ protected:
 
 private:
 
-	RenderToolsStack              renderTools;
+	RenderToolsStack              displayTools;
 	X3DPtr <TransformToolOptions> transformToolOptions;
 	Line2d                        cutLine;
 

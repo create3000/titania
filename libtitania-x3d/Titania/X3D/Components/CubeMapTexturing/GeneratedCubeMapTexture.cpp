@@ -182,7 +182,7 @@ GeneratedCubeMapTexture::renderTexture ()
 			Vector3d ( 1,  1,  1), // bottom
 		};
 
-		getBrowser () -> getRenderTools () .push (false);
+		getBrowser () -> getDisplayTools () .push (false);
 
 		const auto   viewport           = Vector4i (0, 0, size (), size ());
 		const auto & navigationInfo     = getCurrentNavigationInfo ();
@@ -247,7 +247,7 @@ GeneratedCubeMapTexture::renderTexture ()
 		if (checkLoadState () != COMPLETE_STATE)
 			setLoadState (COMPLETE_STATE);
 
-		getBrowser () -> getRenderTools () .pop ();
+		getBrowser () -> getDisplayTools () .pop ();
 	}
 	catch (const std::domain_error &)
 	{

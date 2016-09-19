@@ -202,7 +202,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 			Vector3d ( 0, -1,  0), // top
 		};
 
-		getBrowser () -> getRenderTools () .push (false);
+		getBrowser () -> getDisplayTools () .push (false);
 
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
@@ -316,7 +316,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () .get () * invLightSpaceMatrix);
 
-		getBrowser () -> getRenderTools () .pop ();
+		getBrowser () -> getDisplayTools () .pop ();
 		return true;
 	}
 	catch (const std::domain_error &)

@@ -156,7 +156,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	{
 		using namespace std::placeholders;
 
-		getBrowser () -> getRenderTools () .push (false);
+		getBrowser () -> getDisplayTools () .push (false);
 	
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
@@ -230,7 +230,7 @@ DirectionalLight::renderShadowMap (LightContainer* const lightContainer)
 	
 		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () .get () * invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
-		getBrowser () -> getRenderTools () .pop ();
+		getBrowser () -> getDisplayTools () .pop ();
 
 		return true;
 	}
