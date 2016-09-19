@@ -162,10 +162,10 @@ private:
 	///  @name Member access
 
 	size_t
-	getLevel (const TraverseType) const;
+	getLevel () const;
 
 	double
-	getDistance (const TraverseType) const;
+	getDistance () const;
 
 	///  @name Event handlers
 

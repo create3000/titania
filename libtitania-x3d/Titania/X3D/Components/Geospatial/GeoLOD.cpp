@@ -284,9 +284,9 @@ GeoLOD::set_childLoadState ()
 }
 
 size_t
-GeoLOD::getLevel (const TraverseType type) const
+GeoLOD::getLevel () const
 {
-	const double distance = getDistance (type);
+	const double distance = getDistance ();
 
 	if (distance < range ())
 		return 1;
@@ -295,9 +295,9 @@ GeoLOD::getLevel (const TraverseType type) const
 }
 
 double
-GeoLOD::getDistance (const TraverseType type) const
+GeoLOD::getDistance () const
 {
-	Matrix4d modelViewMatrix = getModelViewMatrix (type);
+	auto modelViewMatrix = getModelViewMatrix () .get ();
 
 	modelViewMatrix .translate (getCoord (center ()));
 
@@ -309,7 +309,7 @@ GeoLOD::traverse (const TraverseType type)
 {
 	if (type == TraverseType::DISPLAY)
 	{
-		const int32_t level = getLevel (type);
+		const int32_t level = getLevel ();
 	
 		if (level not_eq level_changed ())
 		{

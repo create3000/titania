@@ -135,7 +135,7 @@ LOD::setKeepCurrentLevel (const bool value)
 }
 
 size_t
-LOD::getLevel (const TraverseType type) const
+LOD::getLevel () const
 {
 	if (range () .empty ())
 	{
@@ -155,16 +155,16 @@ LOD::getLevel (const TraverseType type) const
 		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
 	}
 
-	const double distance = getDistance (type);
+	const double distance = getDistance ();
 	const auto   iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }
 
 double
-LOD::getDistance (const TraverseType type) const
+LOD::getDistance () const
 {
-	Matrix4d modelViewMatrix = getModelViewMatrix (type);
+	auto modelViewMatrix = getModelViewMatrix () .get ();
 
 	modelViewMatrix .translate (center () .getValue ());
 
@@ -180,23 +180,21 @@ LOD::set_cameraObjects ()
 void
 LOD::traverse (const TraverseType type)
 {
-	int32_t level = 0;
-
 	if (not keepCurrentLevel)
 	{
-		level = getLevel (type);
-
-		if (forceTransitions ())
-		{
-			if (level > level_changed ())
-				level = level_changed () + 1;
-			
-			else if (level < level_changed ())
-				level = level_changed () - 1;
-		}
-
 		if (type == TraverseType::DISPLAY)
 		{
+			int32_t level = getLevel ();
+	
+			if (forceTransitions ())
+			{
+				if (level > level_changed ())
+					level = level_changed () + 1;
+				
+				else if (level < level_changed ())
+					level = level_changed () - 1;
+			}
+	
 			if (level not_eq level_changed ())
 			{
 				level_changed () = level;

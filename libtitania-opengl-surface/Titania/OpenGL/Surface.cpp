@@ -258,7 +258,7 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 bool
 Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	for (size_t i = 0; i < 2 && Gtk::Main::events_pending (); ++ i)
+	for (size_t i = 0; i < 2 and Gtk::Main::events_pending (); ++ i)
 		Gtk::Main::iteration (false);
 
 	update ();

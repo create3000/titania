@@ -78,6 +78,8 @@ X3DLightNode::X3DLightNode () :
 	addType (X3DConstants::X3DLightNode);
 
 	shadowDiffusion () .setUnit (UnitCategory::LENGTH);
+
+	setCameraObject (true);
 }
 
 const Color3f &

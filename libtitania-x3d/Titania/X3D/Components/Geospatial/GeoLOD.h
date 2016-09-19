@@ -258,10 +258,10 @@ private:
 	///  @name Operations
 
 	size_t
-	getLevel (const TraverseType) const;
+	getLevel () const;
 
 	double
-	getDistance (const TraverseType) const;
+	getDistance () const;
 
 	///  @name Static members
 
