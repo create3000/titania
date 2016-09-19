@@ -252,8 +252,8 @@ X3DProgrammableShaderObject::getDefaultUniforms ()
 	x3d_Vertex   = glGetAttribLocation (program, "x3d_Vertex");
 
 	static const auto textureType    = std::vector <int32_t> ({ 0 });
-	static const auto texture2D      = std::vector <int32_t> ({ 0 });
-	static const auto cubeMapTexture = std::vector <int32_t> ({ 1 });
+	static const auto texture2D      = std::vector <int32_t> ({ 2 });
+	static const auto cubeMapTexture = std::vector <int32_t> ({ 4 });
 
 	glUniform1f  (x3d_LinewidthScaleFactor, 1);
 	glUniform1iv (x3d_TextureType,          1, textureType    .data ());

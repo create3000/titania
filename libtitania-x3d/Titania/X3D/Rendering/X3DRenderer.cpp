@@ -516,7 +516,7 @@ X3DRenderer::gravite ()
 					{
 						auto step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
 
-						step = abs (getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3d (0, step, 0) * up));
+						step = abs (viewpoint -> getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3d (0, step, 0) * up));
 
 						Vector3d offset = Vector3d (0, step, 0) * up;
 
@@ -558,29 +558,26 @@ X3DRenderer::display ()
 
 	// TODO: set global uniforms.
 
-	// Configure viewport and background.
+	// Configure viewport.
 
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
 
+	// Setup projection matrix
+	// for fixed pipeline, background, particle systems.
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glMatrixMode (GL_MODELVIEW);
+
+	// Draw background.
+
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	getBackground () -> draw (viewport);
 
 	// Sorted blend.
-
-	#ifdef FIXED_PIPELINE
-	if (getBrowser () -> getFixedPipelineRequired ())
-	{
-		// Setup projection matrix
-
-		glMatrixMode (GL_PROJECTION);
-		glLoadMatrixd (getProjectionMatrix () .get () .data ());
-		glMatrixMode (GL_MODELVIEW);
-	}
-	#endif
 
 	// Render opaque objects first.
 

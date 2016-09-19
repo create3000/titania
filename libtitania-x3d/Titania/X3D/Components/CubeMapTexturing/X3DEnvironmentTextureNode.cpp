@@ -154,7 +154,7 @@ X3DEnvironmentTextureNode::setShaderUniforms (X3DProgrammableShaderObject* const
 {
 	static const auto textureType = std::vector <GLint> ({ 4 }); 
 
-	glActiveTexture (GL_TEXTURE1);
+	glActiveTexture (GL_TEXTURE4);
 	glBindTexture (GL_TEXTURE_CUBE_MAP, getTextureId ());
 	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
 }

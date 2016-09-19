@@ -295,20 +295,11 @@ GeoViewpoint::removeFromLayer (X3DLayerNode* const layer)
 	X3DViewpointNode::removeFromLayer (layer);
 }
 
-///  Reshape viewpoint that it suits for X3DBackground.
-void
-GeoViewpoint::setBackgroundProjection (const double zNear, const double zFar)
-{
-	const auto & viewport = getCurrentViewport () -> getRectangle ();
-
-	X3DNode::getProjectionMatrix () .set (camera <double>::perspective (getFieldOfView (), zNear, zFar, viewport [2], viewport [3]));
-}
-
 Matrix4d
-GeoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
+GeoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const
 {
-	const double geoZNear = std::max (math::lerp (std::min (zNear, 1e4), 1e4, elevation / 1e7), 1.0);
-	const double geoZFar  = std::max (math::lerp (1e6, std::max (zFar, 1e6),  elevation / 1e7), 1e6);
+	const double geoZNear = std::max (math::lerp (std::min (nearValue, 1e4), 1e4, elevation / 1e7), 1.0);
+	const double geoZFar  = std::max (math::lerp (1e6, std::max (farValue, 1e6),  elevation / 1e7), 1e6);
 
 	return camera <double>::perspective (getFieldOfView (), geoZNear, geoZFar, viewport [2], viewport [3]);
 }

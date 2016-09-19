@@ -62,7 +62,7 @@ namespace X3D {
 class X3DLayerNode;
 class X3DViewportNode;
 
-using LayerStack = std::stack <X3DLayerNode*>;
+using LayerStack = std::stack <X3DLayerNode*, std::vector <X3DLayerNode*>>;
 
 class X3DLayeringContext :
 	virtual public X3DBaseNode

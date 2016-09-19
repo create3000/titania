@@ -58,15 +58,18 @@ namespace titania {
 namespace X3D {
 
 X3DRenderingContext::X3DRenderingContext () :
-	     X3DBaseNode (),
-	        viewport ({ 0, 0, 0, 0 }),
-	projectionMatrix (),
-	 modelViewMatrix (),
-	   maxClipPlanes (0),
-	      clipPlanes (),
-	       depthTest (),
-	     depthOffset (),
-	      motionBlur (new MotionBlur (getExecutionContext ()))
+	         X3DBaseNode (),
+	         updateNodes ({ true }),
+	            viewport ({ 0, 0, 0, 0 }),
+	    projectionMatrix (),
+	   cameraSpaceMatrix (),
+	invCameraSpaceMatrix (),
+	     modelViewMatrix (),
+	       maxClipPlanes (0),
+	          clipPlanes (),
+	           depthTest (),
+	         depthOffset (),
+	          motionBlur (new MotionBlur (getExecutionContext ()))
 {
 	addChildren (viewport, motionBlur);
 

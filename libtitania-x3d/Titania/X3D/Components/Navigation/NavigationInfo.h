@@ -198,7 +198,7 @@ public:
 	getNearValue () const;
 
 	double
-	getFarValue (X3DViewpointNode* const) const;
+	getFarValue (const X3DViewpointNode* const) const;
 
 	TransitionType
 	getTransitionType () const;

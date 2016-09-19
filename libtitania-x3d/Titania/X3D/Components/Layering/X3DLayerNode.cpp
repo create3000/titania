@@ -296,8 +296,9 @@ X3DLayerNode::traverse (const TraverseType type)
 {
 	getBrowser () -> getLayers () .push (this);
 	
-	getProjectionMatrix () .push (Matrix4d ());
-	getModelViewMatrix  () .push (Matrix4d ());
+	getCameraSpaceMatrix        () .push (getViewpoint () -> getCameraSpaceMatrix ());
+	getInverseCameraSpaceMatrix () .push (getViewpoint () -> getInverseCameraSpaceMatrix ());
+	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix ());
 
 	switch (type)
 	{
@@ -329,8 +330,9 @@ X3DLayerNode::traverse (const TraverseType type)
 		}
 	}
 	
-	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
+	getProjectionMatrix         () .pop ();
+	getInverseCameraSpaceMatrix () .pop ();
+	getCameraSpaceMatrix        () .pop ();
 
 	getBrowser () -> getLayers () .pop ();
 }
@@ -351,21 +353,22 @@ X3DLayerNode::pointer ()
 				return;
 		}
 
-		getViewpoint () -> reshape ();
-		getViewpoint () -> transform ();
+		getBrowser () -> setHitRay (currentViewport -> getRectangle ());
 
-		getBrowser   () -> setHitRay (currentViewport -> getRectangle ());
+		getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 		currentViewport -> push ();
 		collect (TraverseType::POINTER);
 		currentViewport -> pop ();
+
+		getModelViewMatrix () .pop ();
 	}
 }
 
 void
 X3DLayerNode::camera ()
 {
-	getViewpoint () -> reshape ();
+	getModelViewMatrix () .push (Matrix4d ());
 
 	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
 	defaultViewpoint      -> traverse (TraverseType::CAMERA);
@@ -380,6 +383,8 @@ X3DLayerNode::camera ()
 	viewpoints      -> update ();
 	backgrounds     -> update ();
 	fogs            -> update ();
+
+	getModelViewMatrix () .pop ();
 }
 
 void
@@ -387,12 +392,14 @@ X3DLayerNode::collision ()
 {
 	using namespace std::placeholders;
 
-	getViewpoint () -> reshape ();
+	getModelViewMatrix () .push (Matrix4d ());
 
 	// Render
 	currentViewport -> push ();
 	render (std::bind (&X3DLayerNode::collect, this, _1), TraverseType::COLLISION);
 	currentViewport -> pop ();
+
+	getModelViewMatrix () .pop ();
 }
 
 void
@@ -401,13 +408,13 @@ X3DLayerNode::display (const TraverseType type)
 	using namespace std::placeholders;
 
 	getNavigationInfo () -> enable ();
-	getViewpoint ()      -> reshape ();
-	getViewpoint ()      -> transform ();
+	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 	currentViewport -> push ();
 	render (std::bind (&X3DLayerNode::collect, this, _1), type);
 	currentViewport -> pop ();
 
+	getModelViewMatrix () .pop ();
 	getNavigationInfo () -> disable ();
 }
 

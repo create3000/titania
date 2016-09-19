@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-using LightStack = std::stack <GLenum>;
+using LightStack = std::stack <GLenum, std::vector <GLenum>>;
 
 class X3DLightingContext :
 	virtual public X3DBaseNode

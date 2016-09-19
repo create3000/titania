@@ -200,7 +200,7 @@ X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 {
 	static const auto textureType = std::vector <GLint> ({ 2 }); 
 
-	glActiveTexture (GL_TEXTURE0);
+	glActiveTexture (GL_TEXTURE2);
 	glBindTexture (GL_TEXTURE_2D, getTextureId ());
 	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
 }

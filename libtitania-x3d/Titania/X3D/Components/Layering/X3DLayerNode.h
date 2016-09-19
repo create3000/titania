@@ -67,8 +67,8 @@ class LocalFog;
 class X3DGroupingNode;
 class X3DViewportNode;
 
-typedef std::vector <X3D::X3DViewpointNode*> UserViewpointList;
-typedef std::stack <LocalFog*>               LocalFogStack;
+using UserViewpointList = std::vector <X3D::X3DViewpointNode*>;
+using LocalFogStack     = std::stack <LocalFog*, std::vector <LocalFog*>>;
 
 class X3DLayerNode :
 	virtual public X3DNode, public X3DRenderer

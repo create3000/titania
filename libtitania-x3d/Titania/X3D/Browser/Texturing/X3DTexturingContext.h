@@ -65,7 +65,7 @@ class X3DTextureCoordinateNode;
 class X3DTextureNode;
 class X3DTextureTransformNode;
 
-using TextureUnitStack = std::stack <int32_t>;
+using TextureUnitStack = std::stack <int32_t, std::vector <int32_t>>;
 using TextureArray     = std::vector <int32_t>;
 
 class X3DTexturingContext :

@@ -1325,18 +1325,6 @@ X3DNode::getCurrentViewpoint () const
 	return getCurrentLayer () -> getViewpoint ();
 }
 
-const Matrix4d &
-X3DNode::getCameraSpaceMatrix () const
-{
-	return getCurrentViewpoint () -> getCameraSpaceMatrix ();
-}
-
-const Matrix4d &
-X3DNode::getInverseCameraSpaceMatrix () const
-{
-	return getCurrentViewpoint () -> getInverseCameraSpaceMatrix ();
-}
-
 Matrix4dStack &
 X3DNode::getProjectionMatrix ()
 {
@@ -1347,6 +1335,30 @@ const Matrix4dStack &
 X3DNode::getProjectionMatrix () const
 {
 	return getBrowser () -> getProjectionMatrix ();
+}
+
+Matrix4dStack &
+X3DNode::getCameraSpaceMatrix ()
+{
+	return getBrowser () -> getCameraSpaceMatrix ();
+}
+
+const Matrix4dStack &
+X3DNode::getCameraSpaceMatrix () const
+{
+	return getBrowser () -> getCameraSpaceMatrix ();
+}
+
+Matrix4dStack &
+X3DNode::getInverseCameraSpaceMatrix ()
+{
+	return getBrowser () -> getInverseCameraSpaceMatrix ();
+}
+
+const Matrix4dStack &
+X3DNode::getInverseCameraSpaceMatrix () const
+{
+	return getBrowser () -> getInverseCameraSpaceMatrix ();
 }
 
 Matrix4dStack &
@@ -1365,7 +1377,7 @@ Matrix4d
 X3DNode::getModelViewMatrix (const TraverseType type) const
 {
 	if (type == TraverseType::CAMERA)
-		return getBrowser () -> getModelViewMatrix () .get () * getInverseCameraSpaceMatrix ();
+		return getBrowser () -> getModelViewMatrix () .get () * getInverseCameraSpaceMatrix () .get ();
 
 	return getBrowser () ->  getModelViewMatrix () .get ();
 }

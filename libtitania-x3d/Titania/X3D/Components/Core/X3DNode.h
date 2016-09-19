@@ -174,17 +174,23 @@ protected:
 	X3DViewpointNode*
 	getCurrentViewpoint () const;
 
-	const Matrix4d &
-	getCameraSpaceMatrix () const;
-
-	const Matrix4d &
-	getInverseCameraSpaceMatrix () const;
-
 	Matrix4dStack &
 	getProjectionMatrix ();
 
 	const Matrix4dStack &
 	getProjectionMatrix () const;
+
+	Matrix4dStack &
+	getCameraSpaceMatrix ();
+
+	const Matrix4dStack &
+	getCameraSpaceMatrix () const;
+
+	Matrix4dStack &
+	getInverseCameraSpaceMatrix ();
+
+	const Matrix4dStack &
+	getInverseCameraSpaceMatrix () const;
 
 	Matrix4dStack &
 	getModelViewMatrix ();

@@ -63,9 +63,10 @@ namespace X3D {
 
 class MotionBlur;
 
-using ClipPlaneStack   = std::stack <GLenum>;
-using DepthTestStack   = std::stack <bool>;
-using DepthOffsetStack = std::stack <double>;
+using UpdateNodesStack = std::stack <bool, std::vector <bool>>;
+using ClipPlaneStack   = std::stack <GLenum, std::vector <GLenum>>;
+using DepthTestStack   = std::stack <bool, std::vector <bool>>;
+using DepthOffsetStack = std::stack <double, std::vector <double>>;
 
 class X3DRenderingContext :
 	virtual public X3DBaseNode
@@ -73,6 +74,14 @@ class X3DRenderingContext :
 public:
 
 	///  @name Member access
+
+	UpdateNodesStack &
+	getUpdateNodes ()
+	{ return updateNodes; }
+
+	const UpdateNodesStack &
+	getUpdateNodes () const
+	{ return updateNodes; }
 
 	const MFInt32 &
 	getViewport () const
@@ -85,6 +94,22 @@ public:
 	const Matrix4dStack &
 	getProjectionMatrix () const
 	{ return projectionMatrix; }
+
+	Matrix4dStack &
+	getCameraSpaceMatrix ()
+	{ return cameraSpaceMatrix; }
+
+	const Matrix4dStack &
+	getCameraSpaceMatrix () const
+	{ return cameraSpaceMatrix; }
+
+	Matrix4dStack &
+	getInverseCameraSpaceMatrix ()
+	{ return invCameraSpaceMatrix; }
+
+	const Matrix4dStack &
+	getInverseCameraSpaceMatrix () const
+	{ return invCameraSpaceMatrix; }
 
 	Matrix4dStack &
 	getModelViewMatrix ()
@@ -153,8 +178,11 @@ private:
 
 	///  @name Members
 
+	UpdateNodesStack    updateNodes;
 	MFInt32             viewport;
 	Matrix4dStack       projectionMatrix;
+	Matrix4dStack       cameraSpaceMatrix;
+	Matrix4dStack       invCameraSpaceMatrix;
 	Matrix4dStack       modelViewMatrix;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;

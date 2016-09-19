@@ -177,7 +177,7 @@ OrthoViewpoint::getLookAtDistance (const Box3d & bbox) const
 }
 
 Matrix4d
-OrthoViewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
+OrthoViewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const
 {
 	const double width  = viewport [2];
 	const double height = viewport [3];
@@ -188,13 +188,13 @@ OrthoViewpoint::getProjectionMatrix (const double zNear, const double zFar, cons
 		const double center  = (getMinimumX () + getMaximumX ()) / 2;
 		const double size1_2 = (getSizeY () * aspect) / 2;
 
-		return camera <double>::ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), zNear, zFar);
+		return camera <double>::ortho (center - size1_2, center + size1_2, getMinimumY (), getMaximumY (), nearValue, farValue);
 	}
 
 	const double center  = (getMinimumY () + getMaximumY ()) / 2;
 	const double size1_2 = (getSizeX () / aspect) / 2;
 
-	return camera <double>::ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, zNear, zFar);
+	return camera <double>::ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, nearValue, farValue);
 }
 
 void

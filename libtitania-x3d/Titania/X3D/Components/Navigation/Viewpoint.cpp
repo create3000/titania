@@ -133,9 +133,9 @@ Viewpoint::getLookAtDistance (const Box3d & bbox) const
 }
 
 Matrix4d
-Viewpoint::getProjectionMatrix (const double zNear, const double zFar, const Vector4i & viewport)
+Viewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const
 {
-	return camera <double>::perspective (getFieldOfView (), zNear, zFar, viewport [2], viewport [3]);
+	return camera <double>::perspective (getFieldOfView (), nearValue, farValue, viewport [2], viewport [3]);
 }
 
 void

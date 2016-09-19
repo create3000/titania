@@ -193,7 +193,7 @@ public:
 
 	virtual
 	double
-	getMaxZFar () const
+	getMaxFarValue () const
 	{ return 1e5; }
 
 	virtual
@@ -201,9 +201,13 @@ public:
 	getSpeedFactor () const
 	{ return 1; }
 
+	///  Setup projection matrix.
+	Matrix4d
+	getProjectionMatrix () const;
+
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double, const double, const Vector4i &) = 0;
+	getProjectionMatrix (const double, const double, const Vector4i &) const = 0;
 
 	const Matrix4d &
 	getCameraSpaceMatrix () const
@@ -256,23 +260,6 @@ public:
 
 	void
 	transitionStop ();
-
-	///  Setup projection matrix for X3DBackgroundNode.
-	virtual
-	void
-	setBackgroundProjection (const double, const double);
-
-	///  Setup projection matrix.
-	void
-	reshape ();
-
-	///  Setup custom projection matrix.
-	void
-	reshape (const double, const double);
-
-	///  Setup modelview matrix.
-	void
-	transform ();
 
 	virtual
 	void

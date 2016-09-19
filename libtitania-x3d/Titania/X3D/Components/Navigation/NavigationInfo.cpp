@@ -179,19 +179,19 @@ NavigationInfo::getStepHeight () const
 double
 NavigationInfo::getNearValue () const
 {
-	const double zNear = getCollisionRadius ();
+	const double nearValue = getCollisionRadius ();
 
-	if (zNear == 0)
+	if (nearValue == 0)
 		return std::numeric_limits <float>::epsilon () * 100;
 
 	else
-		return zNear / 2;
+		return nearValue / 2;
 }
 
 double
-NavigationInfo::getFarValue (X3DViewpointNode* const viewpoint) const
+NavigationInfo::getFarValue (const X3DViewpointNode* const viewpoint) const
 {
-	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxZFar ();
+	return visibilityLimit () ? visibilityLimit () : viewpoint -> getMaxFarValue ();
 }
 
 TransitionType

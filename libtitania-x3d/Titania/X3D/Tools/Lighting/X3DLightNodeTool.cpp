@@ -90,7 +90,7 @@ X3DLightNodeTool::realize ()
 Box3d
 X3DLightNodeTool::getBBox () const
 {
-	if (getBrowser () -> getRenderTools ())
+	if (getBrowser () -> getRenderTools () .top ())
 		return getInlineNode () -> getBBox ();
 
 	return Box3d ();

@@ -257,8 +257,8 @@ X3DEnvironmentalSensorNodeTool::reshape ()
 	{
 	   getBrowser () -> endUpdateForFrame ();
 		
-		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix (),       true);
-		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix   () .get (), true);
 
 		getBrowser () -> processEvents ();
 	   getBrowser () -> beginUpdateForFrame ();

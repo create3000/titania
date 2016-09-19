@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SIZE = 10000;
+static constexpr float SIZE = 1;
 
 //static constexpr float U_DIMENSION = 16;// LOW
 //static constexpr float U_DIMENSION = 24;// HIGH
@@ -339,20 +339,10 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 
 	PolygonMode polygonMode (GL_FILL);
 
-	// Scale background
-
-	auto scale = getCurrentViewpoint () -> getScreenScale (Vector3d (0, 0, SIZE), viewport);
-
-	scale *= std::max (viewport [2], viewport [3]);
-
 	// Setup projection matrix
 
-	getProjectionMatrix () .push ();
-	getCurrentViewpoint () -> setBackgroundProjection (1, std::max (2.0, 3 * SIZE * scale .z ()));
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
-	glMatrixMode (GL_MODELVIEW);
+	const double farValue = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (getProjectionMatrix () .get ()), viewport) .z ();
+	const double radius   = std::sqrt (2 * std::pow (SIZE, 2));
 
 	// Rotate and scale background
 
@@ -362,7 +352,7 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 	matrix .get (translation, rotation);
 
 	Matrix4d modelViewMatrix;
-	modelViewMatrix .scale (scale);
+	modelViewMatrix .scale (Vector3d (farValue, farValue, farValue) / radius);
 	modelViewMatrix .rotate (rotation);
 
 	glLoadMatrixd (modelViewMatrix .data ());
@@ -371,8 +361,6 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 
 	drawSphere ();
 	drawCube ();
-
-	getProjectionMatrix () .pop ();
 }
 
 void
@@ -411,8 +399,7 @@ X3DBackgroundNode::drawSphere ()
 void
 X3DBackgroundNode::drawCube ()
 {
-	const float radius = SIZE;
-	const float s      = std::sqrt (std::pow (2 * radius, 2) / 2) / 2;
+	static constexpr auto s = SIZE;
 
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);

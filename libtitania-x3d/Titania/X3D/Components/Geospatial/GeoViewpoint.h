@@ -172,7 +172,7 @@ public:
 
 	virtual
 	double
-	getMaxZFar () const final override
+	getMaxFarValue () const final override
 	{ return 1e9; }
 
 	virtual
@@ -185,13 +185,9 @@ public:
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double, const double, const Vector4i &) final override;
+	getProjectionMatrix (const double, const double, const Vector4i &) const final override;
 
 	///  @name Operations
-
-	virtual
-	void
-	setBackgroundProjection (const double, const double) final override;
 
 	virtual
 	void

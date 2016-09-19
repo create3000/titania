@@ -164,7 +164,7 @@ public:
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double, const double, const Vector4i &) final override;
+	getProjectionMatrix (const double, const double, const Vector4i &) const final override;
 
 	///  @name Operations
 

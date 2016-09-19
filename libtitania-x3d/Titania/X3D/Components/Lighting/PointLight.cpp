@@ -202,9 +202,9 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 			Vector3d ( 0, -1,  0), // top
 		};
 
-		getBrowser () -> setRenderTools (false);
+		getBrowser () -> getRenderTools () .push (false);
 
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
 		invLightSpaceMatrix .translate (location () .getValue ());
@@ -251,8 +251,10 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 				textureBuffer -> bind ();
 	
-				getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
-				getProjectionMatrix () .push (projectionMatrix);
+				getCameraSpaceMatrix        () .push (getCurrentViewpoint () -> getCameraSpaceMatrix ());
+				getInverseCameraSpaceMatrix () .push (getCurrentViewpoint () -> getInverseCameraSpaceMatrix ());
+				getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+				getProjectionMatrix         () .push (projectionMatrix);
 
 				getModelViewMatrix  () .push (Matrix4d (rotation));
 				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
@@ -260,9 +262,11 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 				
 				getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse,groupNode, _1), TraverseType::DEPTH);
 	
-				getModelViewMatrix  () .pop ();
-				getProjectionMatrix () .pop ();
-				getViewVolumes      () .pop_back ();
+				getModelViewMatrix          () .pop ();
+				getProjectionMatrix         () .pop ();
+				getViewVolumes              () .pop_back ();
+				getInverseCameraSpaceMatrix () .pop ();
+				getCameraSpaceMatrix        () .pop ();
 	
 				textureBuffer -> unbind ();
 	
@@ -273,8 +277,10 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 	
 					frameBuffer .bind ();
 	
-					getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
-					getProjectionMatrix () .push (projectionMatrix);
+					getCameraSpaceMatrix        () .push (getCurrentViewpoint () -> getCameraSpaceMatrix ());
+					getInverseCameraSpaceMatrix () .push (getCurrentViewpoint () -> getInverseCameraSpaceMatrix ());
+					getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+					getProjectionMatrix         () .push (projectionMatrix);
 
 					getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
 					getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
@@ -282,9 +288,11 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 					getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 					getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1), TraverseType::DEPTH);
 	
-					getModelViewMatrix  () .pop ();
-					getProjectionMatrix () .pop ();
-					getViewVolumes      () .pop_back ();
+					getModelViewMatrix          () .pop ();
+					getProjectionMatrix         () .pop ();
+					getViewVolumes              () .pop_back ();
+					getInverseCameraSpaceMatrix () .pop ();
+					getCameraSpaceMatrix        () .pop ();
 	
 					frameBuffer .unbind ();
 				}
@@ -306,9 +314,9 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
 
-		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () * invLightSpaceMatrix);
+		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () .get () * invLightSpaceMatrix);
 
-		getBrowser () -> setRenderTools (true);
+		getBrowser () -> getRenderTools () .pop ();
 		return true;
 	}
 	catch (const std::domain_error &)

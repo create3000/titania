@@ -182,39 +182,41 @@ GeneratedCubeMapTexture::renderTexture ()
 			Vector3d ( 1,  1,  1), // bottom
 		};
 
-		getBrowser () -> setRenderTools (false);
+		getBrowser () -> getRenderTools () .push (false);
 
-		const auto   viewport              = Vector4i (0, 0, size (), size ());
-		const auto & navigationInfo        = getCurrentNavigationInfo ();
-		const auto & viewpoint             = getCurrentViewpoint ();
-		const auto   nearValue             = navigationInfo -> getNearValue ();
-		const auto   farValue              = navigationInfo -> getFarValue (viewpoint);
-		const auto   projectionMatrix      = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
-		const auto   invTextureSpaceMatrix = inverse (transformationMatrix);
+		const auto   viewport           = Vector4i (0, 0, size (), size ());
+		const auto & navigationInfo     = getCurrentNavigationInfo ();
+		const auto & viewpoint          = getCurrentViewpoint ();
+		const auto   nearValue          = navigationInfo -> getNearValue ();
+		const auto   farValue           = navigationInfo -> getFarValue (viewpoint);
+		const auto   projectionMatrix   = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
 
 		frameBuffer -> bind ();
 
-		getViewVolumes ()      .emplace_back (projectionMatrix, viewport, viewport);
-		getProjectionMatrix () .push (projectionMatrix);
+		getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+		getProjectionMatrix         () .push (projectionMatrix);
 
 		for (size_t i = 0; i < 6; ++ i)
 		{
-			const auto rotation = Rotation4d (directions [i], Vector3d (0, 0, 1)); // Inverse rotation.
+			const auto rotation = Rotation4d (Vector3d (0, 0, 1), directions [i]);
 
 			glClear (GL_COLOR_BUFFER_BIT); // Always clear, X3DBackground could be transparent!
 
 			// Setup inverse texture space matrix.
 
-			getModelViewMatrix () .push (Matrix4d ());
-			getModelViewMatrix () .scale (scale [i]);
-			getModelViewMatrix () .rotate (rotation);
-			getModelViewMatrix () .mult_left (invTextureSpaceMatrix);
+			getCameraSpaceMatrix        () .push (transformationMatrix);
+			getCameraSpaceMatrix        () .rotate (rotation);
+			getCameraSpaceMatrix        () .scale (scale [i]);
+			getInverseCameraSpaceMatrix () .push (inverse (getCameraSpaceMatrix () .get ()));
+
+			getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 			// Setup headlight if enabled.
 
 			if (navigationInfo -> headlight ())
 			{
-				getModelViewMatrix () .push (viewpoint -> getCameraSpaceMatrix ());
+				getModelViewMatrix () .push ();
+				getModelViewMatrix () .mult_left (viewpoint -> getCameraSpaceMatrix ());
 				getCurrentLayer () -> getGlobalLights () .emplace_back (std::make_shared <LightContainer> (getBrowser () -> getHeadLight (), nullptr));
 				getModelViewMatrix () .pop ();
 			}
@@ -223,7 +225,9 @@ GeneratedCubeMapTexture::renderTexture ()
 
 			getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1), TraverseType::DISPLAY);
 
-			getModelViewMatrix ()  .pop ();
+			getModelViewMatrix          () .pop ();
+			getCameraSpaceMatrix        () .pop ();
+			getInverseCameraSpaceMatrix () .pop ();
 
 			// Transfer image.
 
@@ -232,8 +236,8 @@ GeneratedCubeMapTexture::renderTexture ()
 			setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> getPixels () .data ());
 		}
 
-		getProjectionMatrix () .pop ();
-		getViewVolumes ()      .pop_back ();
+		getProjectionMatrix         () .pop ();
+		getViewVolumes              () .pop_back ();
 
 		frameBuffer -> unbind ();
 
@@ -242,7 +246,8 @@ GeneratedCubeMapTexture::renderTexture ()
 
 		if (checkLoadState () != COMPLETE_STATE)
 			setLoadState (COMPLETE_STATE);
-		getBrowser () -> setRenderTools (true);
+
+		getBrowser () -> getRenderTools () .pop ();
 	}
 	catch (const std::domain_error &)
 	{

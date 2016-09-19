@@ -228,6 +228,14 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 	relativeOrientation = ~getOrientation () * relativeOrientation; // mit gepuffereter location matrix
 }
 
+Matrix4d
+X3DViewpointNode::getProjectionMatrix () const
+{
+	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
+
+	return getProjectionMatrix (navigationInfo -> getNearValue (), navigationInfo -> getFarValue (this), getCurrentViewport () -> getRectangle ());
+}
+
 void
 X3DViewpointNode::setCameraSpaceMatrix (const Matrix4d & value)
 {
@@ -588,34 +596,6 @@ X3DViewpointNode::traverse (const TraverseType type)
 		default:
 			return;
 	}
-}
-
-///  Reshape viewpoint that it suits for X3DBackground.
-///  Overloaded in GeoViewpoint.
-void
-X3DViewpointNode::setBackgroundProjection (const double zNear, const double zFar)
-{
-	reshape (zNear, zFar);
-}
-
-void
-X3DViewpointNode::reshape ()
-{
-	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
-
-	reshape (navigationInfo -> getNearValue (), navigationInfo -> getFarValue (this));
-}
-
-void
-X3DViewpointNode::reshape (const double zNear, const double zFar)
-{
-	X3DNode::getProjectionMatrix () .set (getProjectionMatrix (zNear, zFar, getCurrentViewport () -> getRectangle ()));
-}
-
-void
-X3DViewpointNode::transform ()
-{
-	getModelViewMatrix () .set (getInverseCameraSpaceMatrix ());
 }
 
 void

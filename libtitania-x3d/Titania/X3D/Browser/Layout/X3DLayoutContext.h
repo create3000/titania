@@ -60,7 +60,7 @@ namespace X3D {
 
 class X3DLayoutNode;
 
-using LayoutStack = std::stack <X3DLayoutNode*>;
+using LayoutStack = std::stack <X3DLayoutNode*, std::vector <X3DLayoutNode*>>;
 
 class X3DLayoutContext :
 	virtual public X3DBaseNode

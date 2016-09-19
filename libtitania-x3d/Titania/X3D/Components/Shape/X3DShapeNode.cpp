@@ -230,6 +230,7 @@ X3DShapeNode::disableTextures ()
 {
 	if (getBrowser () -> getTextureStages () .empty ())
 	{
+		glActiveTexture (GL_TEXTURE0);
 		glDisable (GL_TEXTURE_2D);
 		glDisable (GL_TEXTURE_3D);
 		glDisable (GL_TEXTURE_CUBE_MAP);

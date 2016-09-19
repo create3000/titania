@@ -55,10 +55,14 @@
 #include "../../Fields/X3DPtr.h"
 #include "../../Types/Geometry.h"
 
+#include <stack>
+
 namespace titania {
 namespace X3D {
 
 class TransformToolOptions;
+
+using RenderToolsStack = std::stack <bool, std::vector <bool>>;
 
 class X3DToolContext :
 	virtual public X3DBaseNode
@@ -67,11 +71,11 @@ public:
 
 	///  @name Member access
 
-	void
-	setRenderTools (const bool value)
-	{ renderTools = value; }
+	RenderToolsStack &
+	getRenderTools ()
+	{ return renderTools; }
 
-	bool
+	const RenderToolsStack &
 	getRenderTools () const
 	{ return renderTools; }
 
@@ -110,7 +114,7 @@ protected:
 
 private:
 
-	bool                          renderTools;
+	RenderToolsStack              renderTools;
 	X3DPtr <TransformToolOptions> transformToolOptions;
 	Line2d                        cutLine;
 
