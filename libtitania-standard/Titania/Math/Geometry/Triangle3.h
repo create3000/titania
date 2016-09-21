@@ -104,7 +104,7 @@ normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Typ
 	return normalize (cross (v3 - v1, v4 - v2));
 }
 
-///  Returns the index of one of the three points given defined by @a p0, @a p1, @a p2 to @a point.
+///  Returns the index of one of the three points defined by @a p0, @a p1, @a p2 to @a point.
 template <class Type>
 size_t
 triangle_closest_point (const vector3 <Type> & p0, const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & point)

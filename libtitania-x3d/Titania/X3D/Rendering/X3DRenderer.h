@@ -199,7 +199,7 @@ private:
 	getDistance (const Vector3d &) const;
 
 	double
-	getDepth () const;
+	getDepth (const Matrix4d &) const;
 
 	void
 	collide ();

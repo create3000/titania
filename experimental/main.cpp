@@ -372,51 +372,14 @@ c3 ()
 	std::clog << "scaleOrientation " << so << std::endl;
 }
 
-
-class A
-{
-public:
-
-	A ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	virtual
-	void
-	f ()
-	{
-		__LOG__ << std::endl;
-	}
-	
-};
-
-
-class B :
-	public A
-{
-public:
-
-	B ()
-	{
-		__LOG__ << std::endl;
-	}
-
-	virtual
-	void
-	f () final override
-	{
-		__LOG__ << std::endl;
-	}
-	
-};
-
 void
 f ()
 {
-	B b;
+	Box3d b (Vector3d (2, 2, 2), Vector3d ());
 
-	std::bind (&A::f, static_cast <A*> (&b)) ();
+	Vector3d  o (0.49, 0.49, 0);
+
+	__LOG__ << b .intersects (Vector3d (0, 1.5, 0) + o, Vector3d (1.5, 0, 0) + o, Vector3d (1.5, 1.5, 0) + o) << std::endl;
 }
 
 int

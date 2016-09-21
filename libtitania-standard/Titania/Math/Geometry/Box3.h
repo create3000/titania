@@ -203,18 +203,18 @@ public:
 	box3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		mult_box_matrix (matrix);
+		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	mult_matrix_box (const matrix4 <Type> & matrix)
+	mult_left (const matrix4 <Type> & matrix)
 	{ m_matrix .mult_left (matrix); }
 
 	///  Transform this box by @a matrix.
 	void
-	mult_box_matrix (const matrix4 <Type> & matrix)
+	mult_right (const matrix4 <Type> & matrix)
 	{ m_matrix .mult_right (matrix); }
 
 	///  Translate this box by @a translation.
@@ -244,7 +244,7 @@ public:
 
 	///  @name Intersection
 
-	///  Returns true if @a point is inside this box min and max extents.
+	///  Returns true if @a point is inside this box's min and max extents.
 	bool
 	intersects (const vector3 <Type> &) const;
 
@@ -252,13 +252,17 @@ public:
 	bool
 	intersects (const line3 <Type> &) const;
 
-	///  Returns true if @a sphere intersects with this box min and max extends.
+	///  Returns true if @a sphere intersects with this box's min and max extends.
 	bool
 	intersects (const sphere3 <Type> &) const;
 
-	///  Returns true if @a box intersects with this box.
+	///  Returns true if @a box intersects with this oriented box.
 	bool
 	intersects (const box3 &) const;
+
+	///  Returns true if the triangle defined by the points @a a, @a b, and @a c intersects with this oriented box.
+	bool
+	intersects (const vector3 <Type> & a, const vector3 <Type> & b, const vector3 <Type> & c) const;
 
 	///  Returns true if @a box is within this box's min and max extends.
 	bool
@@ -436,7 +440,6 @@ box3 <Type>::intersects (const vector3 <Type> & point) const
 	       min .z () <= point .z () and
 	       max .z () >= point .z ();
 }
-
 template <class Type>
 bool
 box3 <Type>::intersects (const line3 <Type> & line) const
@@ -561,6 +564,55 @@ box3 <Type>::intersects (const box3 & other) const
 
 template <class Type>
 bool
+box3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, const vector3 <Type> & c) const
+{
+	// Test special cases.
+
+	if (empty ())
+		return false;
+
+	// Get points.
+
+	const std::vector <vector3 <Type>>  points1 = points ();
+	const std::vector <vector3 <Type>>  points2 = { a, b, c };
+
+	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
+
+	if (sat::separated (planes (), points1, points2))
+		return false;
+
+	// Test the normal of the triangle.
+
+	if (sat::separated ({ normal (a, b, c) }, points1, points2))
+		return false;
+
+	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.
+
+	const std::array <vector3 <Type>, 3> triangleEdges = {
+		a - b,
+		b - c,
+		c - a,
+	};
+
+	std::vector <vector3 <Type>>  axes9;
+
+	for (const auto & axis1 : axes ())
+	{
+		for (const auto & axis2 : triangleEdges)
+			axes9 .emplace_back (cross (axis1, axis2));
+	}
+
+	if (sat::separated (axes9, points1, points2))
+		return false;
+
+	// Box and triangle intersect.
+
+	return true;
+}
+
+
+template <class Type>
+bool
 box3 <Type>::contains (const box3 <Type> & other) const
 {
 	if (empty () or other .empty ())
@@ -622,7 +674,7 @@ box3 <Type>
 operator * (const box3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	box3 <Type> result (lhs);
-	result .mult_box_matrix (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -633,7 +685,7 @@ box3 <Type>
 operator * (const matrix4 <Type> & lhs, const box3 <Type> & rhs)
 {
 	box3 <Type> result (rhs);
-	result .mult_matrix_box (lhs);
+	result .mult_left (lhs);
 	return result;
 }
 

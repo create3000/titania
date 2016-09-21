@@ -51,6 +51,7 @@
 #include "FrameBuffer.h"
 
 #include "../Browser/ContextLock.h"
+#include "../Rendering/ViewVolume.h"
 
 #include <Titania/LOG.h>
 #include <stdexcept>
@@ -125,29 +126,31 @@ FrameBuffer::setup ()
 }
 
 double
-FrameBuffer::getDistance (const double radius, const double nearValue, const double farValue)
+FrameBuffer::getDepth (const Matrix4d & projectionMatrix, const Vector4i & viewport)
 {
-	glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
-
-	double       distance = std::numeric_limits <double>::infinity ();
-	const double w1       = 2.0 / (width  - 1);
-	const double h1       = 2.0 / (height - 1);
-	const double zWidth   = farValue - nearValue;
-
-	for (size_t py = 0, i = 0; py < height; ++ py)
+	try
 	{
-		const double y2 = math::sqr ((py * h1 - 1) * radius);
+		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+	
+		const auto invProjectionMatrix = inverse (projectionMatrix);
+		double     depthValue          = -std::numeric_limits <double>::infinity ();
+	
+		for (size_t wy = 0, i = 0; wy < height; ++ wy)
+		{
+		   for (size_t wx = 0; wx < width; ++ wx, ++ i)
+		   {
+				const auto point = ViewVolume::unProjectPoint (wx, wy, depth [i], invProjectionMatrix, viewport);
 
-	   for (size_t px = 0; px < width; ++ px, ++ i)
-	   {
-		   const double x = (px * w1 - 1) * radius;
-			const double z = nearValue + zWidth * depth [i];
+				depthValue = std::max (depthValue, point .z ());
+		   }
+		}
 
-			distance = std::min (distance, std::sqrt (x * x + y2 + z * z));
-	   }
+		return depthValue;
 	}
-
-	return distance;
+	catch (const std::domain_error &)
+	{
+		return 0;
+	}
 }
 
 void

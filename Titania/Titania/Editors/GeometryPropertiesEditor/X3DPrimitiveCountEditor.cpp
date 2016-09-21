@@ -326,14 +326,6 @@ X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 			quads += element .count / 4;
 			//triangles += 2 * element .count / 4;
 			break;
-		case GL_QUAD_STRIP:
-			quads += element .count / 2 - 1;
-			//triangles += 2 * (element .count / 2 - 1);
-			break;
-		case GL_TRIANGLE_FAN:
-		case GL_TRIANGLE_STRIP:
-			triangles += element .count - 2;
-			break;
 		case GL_POLYGON:
 			++ polygons;
 			//triangles += element .count - 2;

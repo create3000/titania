@@ -123,13 +123,13 @@ public:
 	line3 &
 	operator *= (const matrix4 <Type> & matrix)
 	{
-		mult_line_matrix (matrix);
+		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	mult_matrix_line (const matrix4 <Type> & matrix)
+	mult_left (const matrix4 <Type> & matrix)
 	{
 		m_point     = matrix .mult_matrix_vec (m_point);
 		m_direction = normalize (matrix .mult_matrix_dir (m_direction));
@@ -137,7 +137,7 @@ public:
 
 	///  Transform this box by @a matrix.
 	void
-	mult_line_matrix (const matrix4 <Type> & matrix)
+	mult_right (const matrix4 <Type> & matrix)
 	{
 		m_point     = matrix .mult_vec_matrix (m_point);
 		m_direction = normalize (matrix .mult_dir_matrix (m_direction));
@@ -238,6 +238,9 @@ line3 <Type>::intersects (const vector3 <Type> & A,
                           const vector3 <Type> & C,
                           Type & u, Type & v, Type & t) const
 {
+	// Möller–Trumbore intersection algorithm.
+	// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+
 	// find vectors for two edges sharing vert0
 	const vector3 <Type> edge1 = B - A;
 	const vector3 <Type> edge2 = C - A;
@@ -288,7 +291,7 @@ line3 <Type>
 operator * (const line3 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	line3 <Type> result (lhs);
-	result .mult_line_matrix (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -299,7 +302,7 @@ line3 <Type>
 operator * (const matrix4 <Type> & lhs, const line3 <Type> & rhs)
 {
 	line3 <Type> result (rhs);
-	result .mult_matrix_line (lhs);
+	result .mult_left (lhs);
 	return result;
 }
 

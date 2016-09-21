@@ -221,16 +221,6 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 
 					break;
 				}
-				case GL_QUAD_STRIP:
-				{
-					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
-					{
-						intersected |= intersects (line, i,     i + 1, i + 2, modelViewMatrix, intersections);
-						intersected |= intersects (line, i + 1, i + 3, i + 2, modelViewMatrix, intersections);
-					}
-
-					break;
-				}
 				case GL_POLYGON:
 				{
 					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
@@ -393,22 +383,6 @@ X3DGeometryNode::intersects (CollisionSphere3d sphere, const ClipPlaneContainerA
 
 				break;
 			}
-			case GL_QUAD_STRIP:
-			{
-				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
-				{
-					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
-						continue;
-
-					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
-						return true;
-
-					if (sphere .intersects (vertices [i + 1], vertices [i + 3], vertices [i + 2]))
-						return true;
-				}
-
-				break;
-			}
 			case GL_POLYGON:
 			{
 				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
@@ -476,16 +450,6 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 				{
 					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
 					triangulate (i, i + 2, i + 3, colors_, texCoords_, normals_, vertices_);
-				}
-
-				break;
-			}
-			case GL_QUAD_STRIP:
-			{
-				for (size_t i = first, size = first + element .count - 2; i < size; i += 4)
-				{
-					triangulate (i + 0, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
-					triangulate (i + 1, i + 3, i + 2, colors_, texCoords_, normals_, vertices_);
 				}
 
 				break;
@@ -697,48 +661,21 @@ X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 	
 		addElements (vertexMode, getVertices () .size ());
 		setSolid (true);
-	
-		switch (vertexMode)
+
+		if (not convex)
 		{
-			case GL_QUAD_STRIP:
-			{
-				for (int32_t i = texCoords .size () - 2; i >= 0; i -= 2)
-				{
-					const auto & texCoord1 = texCoords [i];
-					const auto & texCoord0 = texCoords [i + 1];
-					texCoords .emplace_back (1 - texCoord1 .x (), texCoord1 .y (), texCoord1 .z (), 1);
-					texCoords .emplace_back (1 - texCoord0 .x (), texCoord0 .y (), texCoord0 .z (), 1);
-				}
-	
-				for (int32_t i = getVertices () .size () - 2; i >= 0; i -= 2)
-				{
-					getNormals  () .emplace_back (0, 0, -1);
-					getNormals  () .emplace_back (0, 0, -1);
-					getVertices () .emplace_back (getVertices () [i]);
-					getVertices () .emplace_back (getVertices () [i + 1]);
-				}
-	
-				break;
-			}
-	
-			default:
-			{
-				if (not convex)
-				{
-					texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
-					getNormals  () .emplace_back (0, 0, -1);
-					getVertices () .emplace_back (getVertices () .front ());
-				}
-	
-				const int32_t offset = convex ? 0 : 1;
-	
-				for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
-				{
-					texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
-					getNormals  () .emplace_back (0, 0, -1);
-					getVertices () .emplace_back (getVertices () [i]);
-				}
-			}
+			texCoords .emplace_back (1 - texCoords .front () .x (), texCoords .front () .y (), texCoords .front () .z (), texCoords .front () .w ());
+			getNormals  () .emplace_back (0, 0, -1);
+			getVertices () .emplace_back (getVertices () .front ());
+		}
+
+		const int32_t offset = convex ? 0 : 1;
+
+		for (int32_t i = getVertices () .size () - 1 - offset; i >= offset; -- i)
+		{
+			texCoords .emplace_back (1 - texCoords [i] .x (), texCoords [i] .y (), texCoords [i] .z (), texCoords [i] .w ());
+			getNormals  () .emplace_back (0, 0, -1);
+			getVertices () .emplace_back (getVertices () [i]);
 		}
 	}
 }

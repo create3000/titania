@@ -93,8 +93,8 @@ public:
 	///  Constructs a line of from @a matrix.
 	constexpr
 	collision_sphere3 (const matrix4 <Type> & matrix, const Type & radius, const vector3 <Type> & center) :
-		matrix_ (matrix),
-		sphere_ (radius, center)
+		m_matrix (matrix),
+		m_sphere (radius, center)
 	{ }
 
 	///  @name Member access
@@ -102,46 +102,46 @@ public:
 	///  Sets the matrix of this collision sphere.
 	void
 	matrix (const matrix4 <Type> & value)
-	{ matrix_ = value; }
+	{ m_matrix = value; }
 
 	///  Returns the matrix of this collision sphere.
 	const matrix4 <Type> &
 	matrix () const
-	{ return matrix_; }
+	{ return m_matrix; }
 
 	///  Sets the radius of this collision sphere.
 	void
 	radius (const Type & value)
-	{ sphere_ .radius (value); }
+	{ m_sphere .radius (value); }
 
 	///  Returns the radius of this collision sphere.
 	const Type &
 	radius () const
-	{ return sphere_ .radius (); }
+	{ return m_sphere .radius (); }
 
 	///  Sets the center of this collision sphere.
 	void
 	center (const vector3 <Type> & value)
-	{ sphere_ .center (value); }
+	{ m_sphere .center (value); }
 
 	///  Returns the center of this collision sphere.
 	const vector3 <Type> &
 	center () const
-	{ return sphere_ .center (); }
+	{ return m_sphere .center (); }
 
 	///  @name Operations
 
 	///  Transform this plane by @a matrix.
 	void
 	mult_right (const matrix4 <Type> & matrix)
-	{ matrix_ .mult_right (matrix); }
+	{ m_matrix .mult_right (matrix); }
 
 	///  Transform this plane by @a matrix.
 	void
 	mult_left (const matrix4 <Type> & matrix)
-	{ matrix_ .mult_left (matrix); }
+	{ m_matrix .mult_left (matrix); }
 
-	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this collision sphere.
+	///  Returns true if the triangle of points @a a, @a b and @a c intersects with this collision sphere.
 	bool
 	intersects (const vector3 <Type> &, const vector3 <Type> &, const vector3 <Type> &) const;
 
@@ -151,19 +151,19 @@ public:
 
 private:
 
-	matrix4 <Type> matrix_;
-	sphere3 <Type> sphere_;
+	matrix4 <Type> m_matrix;
+	sphere3 <Type> m_sphere;
 
 };
 
 template <class Type>
 inline
 bool
-collision_sphere3 <Type>::intersects (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C) const
+collision_sphere3 <Type>::intersects (const vector3 <Type> & a, const vector3 <Type> & b, const vector3 <Type> & c) const
 {
-	return sphere_ .intersects (A * matrix (),
-	                            B * matrix (),
-	                            C * matrix ());
+	return m_sphere .intersects (a * matrix (),
+	                             b * matrix (),
+	                             c * matrix ());
 }
 
 template <class Type>
@@ -171,7 +171,7 @@ inline
 bool
 collision_sphere3 <Type>::intersects (const box3 <Type> & box) const
 {
-	return (box * matrix ()) .intersects (sphere_);
+	return (box * matrix ()) .intersects (m_sphere);
 }
 
 ///  @relates collision_sphere3

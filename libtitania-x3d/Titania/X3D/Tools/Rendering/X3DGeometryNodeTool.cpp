@@ -227,20 +227,6 @@ X3DGeometryNodeTool::eventProcessed ()
 
 					break;
 				}
-				case GL_QUAD_STRIP:
-				{
-					for (size_t i = first, size = first + element .count - 2; i < size; i += 2)
-					{
-						edgesVertexCount .set1Value (v ++, 5);
-						edgesPoint       .set1Value (p ++, vertices [i + 0]);
-						edgesPoint       .set1Value (p ++, vertices [i + 1]);
-						edgesPoint       .set1Value (p ++, vertices [i + 3]);
-						edgesPoint       .set1Value (p ++, vertices [i + 2]);
-						edgesPoint       .set1Value (p ++, vertices [i + 0]);
-					}
-
-					break;
-				}
 				case GL_POLYGON:
 				{
 					edgesVertexCount .set1Value (v ++, element .count + 1);

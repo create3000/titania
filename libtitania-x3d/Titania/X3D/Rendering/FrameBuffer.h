@@ -101,7 +101,7 @@ public:
 	///  @name Operations
 
 	double
-	getDistance (const double, const double, const double);
+	getDepth (const Matrix4d &, const Vector4i &);
 
 	void
 	bind ();

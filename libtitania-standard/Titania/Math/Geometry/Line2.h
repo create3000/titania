@@ -130,13 +130,13 @@ public:
 	line2 &
 	operator *= (const matrix3 <Type> & matrix)
 	{
-		mult_line_matrix (matrix);
+		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this box by @a matrix.
 	void
-	mult_matrix_line (const matrix3 <Type> & matrix)
+	mult_left (const matrix3 <Type> & matrix)
 	{
 		m_point     = matrix .mult_matrix_vec (m_point);
 		m_direction = normalize (matrix .mult_matrix_dir (m_direction));
@@ -144,7 +144,7 @@ public:
 
 	///  Transform this box by @a matrix.
 	void
-	mult_line_matrix (const matrix3 <Type> & matrix)
+	mult_right (const matrix3 <Type> & matrix)
 	{
 		m_point     = matrix .mult_vec_matrix (m_point);
 		m_direction = normalize (matrix .mult_dir_matrix (m_direction));
@@ -248,7 +248,7 @@ line2 <Type>
 operator * (const line2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	line2 <Type> result (lhs);
-	result .mult_line_matrix (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -259,7 +259,7 @@ line2 <Type>
 operator * (const matrix3 <Type> & lhs, const line2 <Type> & rhs)
 {
 	line2 <Type> result (rhs);
-	result .mult_matrix_line (lhs);
+	result .mult_left (lhs);
 	return result;
 }
 

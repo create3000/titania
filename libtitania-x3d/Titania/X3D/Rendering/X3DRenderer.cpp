@@ -281,11 +281,11 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 
 		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .push (modelViewMatrix);
 
-		const auto depth = getDepth ();
+		const auto depth = getDepth (projectionMatrix);
 
 		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .pop ();
 
-		return depth;
+		return -depth;
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }
@@ -296,7 +296,7 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 }
 
 double
-X3DRenderer::getDepth () const
+X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
 {
 	static const ViewVolume viewVolume (Matrix4d (), DEPTH_BUFFER_VIEWPORT, DEPTH_BUFFER_VIEWPORT);
 
@@ -310,17 +310,11 @@ X3DRenderer::getDepth () const
 
 	// Get distance from depth buffer
 
-	const auto & navigationInfo  = getNavigationInfo ();
-	const auto & viewpoint       = getViewpoint ();
-	const auto   nearValue       = navigationInfo -> getNearValue ();
-	const auto   farValue        = navigationInfo -> getFarValue (viewpoint);
-	const auto   collisionRadius = navigationInfo -> getCollisionRadius ();
-
-	const auto distance = depthBuffer -> getDistance (collisionRadius, nearValue, farValue);
+	const auto depth = depthBuffer -> getDepth (projectionMatrix, DEPTH_BUFFER_VIEWPORT);
 
 	depthBuffer -> unbind ();
 
-	return distance;
+	return depth;
 }
 
 void
@@ -378,7 +372,7 @@ X3DRenderer::collide ()
 	// Collision
 
 	const auto collisionSphere = CollisionSphere3d (/* getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
-	                                                getNavigationInfo () -> getCollisionRadius () * 1.2f,
+	                                                getNavigationInfo () -> getCollisionRadius () * 1.2,
 	                                                Vector3d ());
 
 	std::vector <Collision*> collisions;
@@ -470,7 +464,7 @@ X3DRenderer::gravite ()
 
 		getProjectionMatrix () .push (modelViewMatrix);
 
-		auto distance = getDepth ();
+		auto distance = -getDepth (projectionMatrix);
 
 		getProjectionMatrix () .pop ();
 

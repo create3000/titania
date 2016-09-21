@@ -202,18 +202,18 @@ public:
 	box2 &
 	operator *= (const matrix3 <Type> & matrix)
 	{
-		mult_box_matrix (matrix);
+		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this box by matrix.
 	void
-	mult_matrix_box (const matrix3 <Type> & matrix)
+	mult_left (const matrix3 <Type> & matrix)
 	{ m_matrix .mult_left (matrix); }
 
 	///  Transform this box by matrix.
 	void
-	mult_box_matrix (const matrix3 <Type> & matrix)
+	mult_right (const matrix3 <Type> & matrix)
 	{ m_matrix .mult_right (matrix); }
 
 	///  Translate this box by @a translation.
@@ -444,7 +444,7 @@ box2 <Type>
 operator * (const box2 <Type> & lhs, const matrix3 <Type> & rhs)
 {
 	box2 <Type> result (lhs);
-	result .mult_box_matrix (rhs);
+	result .mult_right (rhs);
 	return result;
 }
 
@@ -455,7 +455,7 @@ box2 <Type>
 operator * (const matrix3 <Type> & lhs, const box2 <Type> & rhs)
 {
 	box2 <Type> result (rhs);
-	result .mult_matrix_box (lhs);
+	result .mult_left (lhs);
 	return result;
 }
 
@@ -605,7 +605,7 @@ minimum_bounding_rectangle (const std::vector <vector2 <Type>> & points)
 		{
 			matrix .set (vector2 <Type> (), theta, vector2 <Type> (1, 1), Type (0), points [polygon [indices [i]]]);
 
-			lines [i] .mult_line_matrix (matrix);
+			lines [i] .mult_right (matrix);
 		}
 
 		rotation += theta;

@@ -214,30 +214,37 @@ Disk2D::build ()
 
 	// Texture Coordinates
 
+	const auto & texCoords = options -> getTexCoords ();
+	const auto & normals   = options -> getNormals ();
+	const auto & vertices  = options -> getVertices ();
 	const double maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
 	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const double scale     = minRadius / maxRadius;
 
-	for (const auto & texCoord : options -> getTexCoords ())
+	for (size_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
 	{
-		getTexCoords () [0] .emplace_back (texCoord .x () * scale + (1 - scale) / 2, texCoord .y () * scale + (1 - scale) / 2, 0, 1);
-		getTexCoords () [0] .emplace_back (texCoord);
-	}
+		const auto i1 = (i + 1) % size;
 
-	// Normals
+		// TexCoords
+	
+		getTexCoords () [0] .emplace_back (texCoords [i] .x () * scale + (1 - scale) / 2, texCoords [i] .y () * scale + (1 - scale) / 2, 0, 1);
+		getTexCoords () [0] .emplace_back (texCoords [i]);
+		getTexCoords () [0] .emplace_back (texCoords [i1]);
+		getTexCoords () [0] .emplace_back (texCoords [i1] .x () * scale + (1 - scale) / 2, texCoords [i1] .y () * scale + (1 - scale) / 2, 0, 1);
 
-	for (const auto & normal : options -> getNormals ())
-	{
-		getNormals () .emplace_back (normal);
-		getNormals () .emplace_back (normal);
-	}
+		// Normals
+	
+		getNormals () .emplace_back (normals [i]);
+		getNormals () .emplace_back (normals [i]);
+		getNormals () .emplace_back (normals [i1]);
+		getNormals () .emplace_back (normals [i1]);
 
-	// Vertices
+		// Vertices
 
-	for (const auto & vertex : options -> getVertices ())
-	{
-		getVertices () .emplace_back (vertex * minRadius);
-		getVertices () .emplace_back (vertex * maxRadius);
+		getVertices () .emplace_back (vertices [i]  * minRadius);
+		getVertices () .emplace_back (vertices [i]  * maxRadius);
+		getVertices () .emplace_back (vertices [i1] * maxRadius);
+		getVertices () .emplace_back (vertices [i1] * minRadius);
 	}
 
 	// The last two vertices are the first two.
@@ -248,10 +255,10 @@ Disk2D::build ()
 	getVertices () .emplace_back (getVertices () [0]);
 	getVertices () .emplace_back (getVertices () [1]);
 
-	addElements (GL_QUAD_STRIP, getVertices () .size ());
+	addElements (GL_QUADS, getVertices () .size ());
 	setGeometryType (GeometryType::GEOMETRY_2D);
 	setSolid (solid ());
-	addMirrorVertices (GL_QUAD_STRIP, true);
+	addMirrorVertices (GL_QUADS, true);
 }
 
 void
