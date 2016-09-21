@@ -66,14 +66,21 @@ CollisionContainer::CollisionContainer () :
 { }
 
 bool
-CollisionContainer::intersects (CollisionSphere3d sphere) const
+CollisionContainer::intersects (Box3d box) const
 {
-	if (collisions .empty ())
-		return false;
-	
-	sphere .mult_left (modelViewMatrix);
+	try
+	{
+		if (collisions .empty ())
+			return false;
+		
+		box *= inverse (modelViewMatrix);
 
-	return shape -> intersects (sphere, clipPlanes);
+		return shape -> intersects (box, clipPlanes);
+	}
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 void

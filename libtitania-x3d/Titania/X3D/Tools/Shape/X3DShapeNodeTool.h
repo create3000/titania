@@ -124,8 +124,8 @@ public:
 
 	virtual
 	bool
-	intersects (const CollisionSphere3d & sphere, const ClipPlaneContainerArray & clipPlanes) override
-	{ return getNode <X3DShapeNode> () -> intersects (sphere, clipPlanes); }
+	intersects (const Box3d & box, const ClipPlaneContainerArray & clipPlanes) override
+	{ return getNode <X3DShapeNode> () -> intersects (box, clipPlanes); }
 
 	virtual
 	void

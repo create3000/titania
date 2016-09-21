@@ -159,7 +159,7 @@ Text::getLength (const size_t index)
 	return 0;
 }
 
-Matrix4d
+const Matrix4d &
 Text::getMatrix () const
 {
 	return textGeometry -> getMatrix ();

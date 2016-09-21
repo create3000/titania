@@ -230,7 +230,7 @@ private:
 	createBBox () const final override;
 
 	virtual
-	Matrix4d
+	const Matrix4d &
 	getMatrix () const final override;
 
 	///  @name Event handlers

@@ -113,7 +113,7 @@ public:
    ///  @name Operations
 
 	bool
-	intersects (CollisionSphere3d) const;
+	intersects (Box3d) const;
 
 	void
 	draw ();

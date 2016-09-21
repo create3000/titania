@@ -62,6 +62,8 @@
 namespace titania {
 namespace X3D {
 
+const Matrix4d X3DGeometryNode::matrix;
+
 X3DGeometryNode::X3DGeometryNode () :
 	          X3DNode (),
 	     cameraObject (),
@@ -202,7 +204,7 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 		{
 			switch (element .vertexMode)
 			{
-				case GL_TRIANGLES :
+				case GL_TRIANGLES:
 				{
 					for (size_t i = first, size = first + element .count; i < size; i += 3)
 					{
@@ -341,69 +343,76 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 }
 
 bool
-X3DGeometryNode::intersects (CollisionSphere3d sphere, const ClipPlaneContainerArray & clipPlanes) const
+X3DGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes) const
 {
-	if (not sphere .intersects (getBBox ()))
-		return false;
-	
-	sphere .mult_left (getMatrix ());
-
-	size_t first = 0;
-
-	for (const auto & element : elements)
+	try
 	{
-		switch (element .vertexMode)
+		if (not box .intersects (getBBox ()))
+			return false;
+		
+		box *= inverse (getMatrix ());
+	
+		size_t first = 0;
+
+		for (const auto & element : elements)
 		{
-			case GL_TRIANGLES :
+			switch (element .vertexMode)
 			{
-				for (size_t i = first, size = first + element .count; i < size; i += 3)
+				case GL_TRIANGLES :
 				{
-					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
-						continue;
-
-					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
-						return true;
+					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					{
+						if (isClipped (vertices [i], box .matrix (), clipPlanes))
+							continue;
+	
+						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
+							return true;
+					}
+	
+					break;
 				}
-
-				break;
-			}
-			case GL_QUADS:
-			{
-				for (size_t i = first, size = first + element .count; i < size; i += 4)
+				case GL_QUADS:
 				{
-					if (isClipped (vertices [i], sphere .matrix (), clipPlanes))
-						continue;
-
-					if (sphere .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
-						return true;
-
-					if (sphere .intersects (vertices [i], vertices [i + 2], vertices [i + 3]))
-						return true;
+					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					{
+						if (isClipped (vertices [i], box .matrix (), clipPlanes))
+							continue;
+	
+						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
+							return true;
+	
+						if (box .intersects (vertices [i], vertices [i + 2], vertices [i + 3]))
+							return true;
+					}
+	
+					break;
 				}
-
-				break;
-			}
-			case GL_POLYGON:
-			{
-				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+				case GL_POLYGON:
 				{
-					if (isClipped (vertices [first], sphere .matrix (), clipPlanes))
-						continue;
-
-					if (sphere .intersects (vertices [first], vertices [i], vertices [i + 1]))
-						return true;
+					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+					{
+						if (isClipped (vertices [first], box .matrix (), clipPlanes))
+							continue;
+	
+						if (box .intersects (vertices [first], vertices [i], vertices [i + 1]))
+							return true;
+					}
+	
+					break;
 				}
-
-				break;
+				default:
+					break;
 			}
-			default:
-				break;
+	
+			first += element .count;
 		}
-
-		first += element .count;
+	
+		return false;
 	}
-
-	return false;
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 bool

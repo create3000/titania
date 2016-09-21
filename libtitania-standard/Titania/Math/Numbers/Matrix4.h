@@ -133,8 +133,16 @@ public:
 	///  @name Constructors
 
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
+	constexpr
 	matrix4 () :
-		matrix4 (Identity)
+		array
+	{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	}
+
 	{ }
 
 	///  Copy constructor.

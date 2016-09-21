@@ -175,7 +175,7 @@ public:
 
 	virtual
 	bool
-	intersects (CollisionSphere3d, const ClipPlaneContainerArray &) const;
+	intersects (Box3d, const ClipPlaneContainerArray &) const;
 
 	virtual
 	bool
@@ -318,9 +318,9 @@ protected:
 	createBBox () const;
 
 	virtual
-	Matrix4d
+	const Matrix4d &
 	getMatrix () const
-	{ return Matrix4d (); }
+	{ return matrix; }
 
 	void
 	getTexCoordParams (Vector3d &, double &, int32_t &, int32_t &);
@@ -367,6 +367,10 @@ private:
 	virtual
 	void
 	buildTexCoords ();
+
+	///  @name Static members
+
+	static const Matrix4d matrix;
 
 	///  @name Members
 

@@ -72,9 +72,9 @@ public:
 	isTransparent () const = 0;
 
 	virtual
-	Matrix4d
+	const Matrix4d &
 	getMatrix () const
-	{ return Matrix4d (); }
+	{ return matrix; }
 
 	virtual
 	const Box3d &
@@ -156,6 +156,12 @@ private:
 
 	void
 	getGlyphExtents (const String::value_type &, Vector2d &, Vector2d &) const;
+
+	///  @name Static members
+
+	static const Matrix4d matrix;;
+
+	///  @name Members
 
 	Text* const                   text;
 	const X3DFontStyleNode* const fontStyle;

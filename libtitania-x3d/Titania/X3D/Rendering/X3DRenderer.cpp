@@ -371,9 +371,10 @@ X3DRenderer::collide ()
 {
 	// Collision
 
-	const auto collisionSphere = CollisionSphere3d (/* getNavigationInfo () -> getTransformationMatix () mult_right */ getViewpoint () -> getInverseCameraSpaceMatrix (),
-	                                                getNavigationInfo () -> getCollisionRadius () * 1.2,
-	                                                Vector3d ());
+	// TODO: transform collisionBox by getNavigationInfo () -> getTransformationMatrix ()
+
+	const auto collisionRadius2 = 2.2 * getNavigationInfo () -> getCollisionRadius ();
+	const auto collisionBox     = Box3d (Vector3d (collisionRadius2, collisionRadius2, collisionRadius2), Vector3d ()) * getViewpoint () -> getCameraSpaceMatrix ();
 
 	std::vector <Collision*> collisions;
 
@@ -381,7 +382,7 @@ X3DRenderer::collide ()
 	{
 	   try
 	   {
-			if (context -> intersects (collisionSphere))
+			if (context -> intersects (collisionBox))
 			{
 				for (auto & collision : context -> getCollisions ())
 					collisions .emplace_back (collision);

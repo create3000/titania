@@ -131,7 +131,7 @@ public:
 	
 	virtual
 	bool
-	intersects (const CollisionSphere3d &, const ClipPlaneContainerArray &) = 0;
+	intersects (const Box3d &, const ClipPlaneContainerArray &) = 0;
 
 	virtual
 	void

@@ -63,6 +63,8 @@
 namespace titania {
 namespace X3D {
 
+const Matrix4d X3DTextGeometry::matrix;;
+
 X3DTextGeometry::X3DTextGeometry (Text* const text, const X3DFontStyleNode* const fontStyle) :
 	          text (text),
 	     fontStyle (fontStyle),

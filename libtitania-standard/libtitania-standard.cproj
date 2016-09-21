@@ -559,7 +559,6 @@
     <None Include="Titania\RegEx\regex_escape.h" />
     <None Include="Titania\Math\Mesh\Tessellator.h" />
     <None Include="Titania\Math\Mesh\Combine.h" />
-    <None Include="Titania\Math\Geometry\CollisionSphere3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -640,7 +639,6 @@
     <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
     <Compile Include="Titania\RegEx\regex_escape.cpp" />
     <Compile Include="Titania\Math\Mesh\Combine.cpp" />
-    <Compile Include="Titania\Math\Geometry\CollisionSphere3.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

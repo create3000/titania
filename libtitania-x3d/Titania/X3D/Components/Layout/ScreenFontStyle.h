@@ -108,7 +108,7 @@ public:
 	{ return bbox; }
 
 	virtual
-	Matrix4d
+	const Matrix4d &
 	getMatrix () const final override
 	{ return matrix; }
 
