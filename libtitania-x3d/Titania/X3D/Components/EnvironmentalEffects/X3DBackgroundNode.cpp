@@ -321,6 +321,7 @@ X3DBackgroundNode::traverse (const TraverseType type)
 			getCurrentLayer () -> getBackgrounds () -> push_back (this);
 			break;
 		}
+		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
 		{
 			matrix = getModelViewMatrix () .get ();
