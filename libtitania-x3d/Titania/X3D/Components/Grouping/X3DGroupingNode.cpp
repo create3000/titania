@@ -377,8 +377,8 @@ X3DGroupingNode::traverse (const TraverseType type)
 
 			return;
 		}
-		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
 		{
 			for (const auto & childNode : clipPlanes)
 				childNode -> push ();

@@ -239,18 +239,18 @@ private:
 
 	Fields fields;
 
-	bool                   hidden;
-	Matrix4d               matrix;
-	std::vector <Color4f>  glColors;
-	std::vector <Vector3f> glPoints;
-	GLsizei                numIndices;
-
 	X3DPtr <X3DTextureNode> frontTexture;
 	X3DPtr <X3DTextureNode> backTexture;
 	X3DPtr <X3DTextureNode> leftTexture;
 	X3DPtr <X3DTextureNode> rightTexture;
 	X3DPtr <X3DTextureNode> topTexture;
 	X3DPtr <X3DTextureNode> bottomTexture;
+
+	bool                   hidden;
+	std::vector <Matrix4d> modelViewMatrix;
+	std::vector <Color4f>  glColors;
+	std::vector <Vector3f> glPoints;
+	GLsizei                numIndices;
 
 };
 

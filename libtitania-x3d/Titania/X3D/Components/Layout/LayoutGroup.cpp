@@ -172,8 +172,8 @@ LayoutGroup::traverse (const TraverseType type)
 		case TraverseType::POINTER:
 		case TraverseType::CAMERA:
 		case TraverseType::DEPTH:
-		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
 		{
 			if (viewportNode)
 				viewportNode -> push ();

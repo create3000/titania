@@ -156,14 +156,14 @@ Shape::traverse (const TraverseType type)
 				getCurrentLayer () -> addDepthShape (this);
 				break;
 			}
-			case TraverseType::DRAW:
-			{
-				getCurrentLayer () -> addDrawShape (this);
-				break;
-			}
 			case TraverseType::DISPLAY:
 			{
 				getCurrentLayer () -> addDisplayShape (this);
+				break;
+			}
+			case TraverseType::DRAW:
+			{
+				getCurrentLayer () -> addDrawShape (this);
 				break;
 			}
 		}

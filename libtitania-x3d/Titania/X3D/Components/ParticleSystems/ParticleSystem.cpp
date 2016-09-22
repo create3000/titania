@@ -1249,11 +1249,6 @@ ParticleSystem::traverse (const TraverseType type)
 			getCurrentLayer () -> addDepthShape (this);
 			break;
 		}
-		case TraverseType::DRAW:
-		{
-			getCurrentLayer () -> addDrawShape (this);
-			break;
-		}
 		case TraverseType::DISPLAY:
 		{
 			try
@@ -1280,6 +1275,11 @@ ParticleSystem::traverse (const TraverseType type)
 			{ }
 
 			getCurrentLayer () -> addDisplayShape (this);
+			break;
+		}
+		case TraverseType::DRAW:
+		{
+			getCurrentLayer () -> addDrawShape (this);
 			break;
 		}
 		default:

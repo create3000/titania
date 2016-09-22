@@ -136,8 +136,8 @@ DepthBuffer::traverse (const TraverseType type)
 
 	switch (type)
 	{
-		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
 		{
 			getCurrentLayer () -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
 

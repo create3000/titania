@@ -78,17 +78,17 @@ X3DBackgroundNode::Fields::Fields () :
 X3DBackgroundNode::X3DBackgroundNode () :
 	X3DBindableNode (),
 	         fields (),
-	         hidden (false),
-	         matrix (),
-	       glColors (),
-	       glPoints (),
-	     numIndices (),
 	   frontTexture (),
 	    backTexture (),
 	    leftTexture (),
 	   rightTexture (),
 	     topTexture (),
-	  bottomTexture ()
+	  bottomTexture (),
+	         hidden (false),
+	modelViewMatrix (1),
+	       glColors (),
+	       glPoints (),
+	     numIndices ()
 {
 	addType (X3DConstants::X3DBackgroundNode);
 
@@ -321,10 +321,10 @@ X3DBackgroundNode::traverse (const TraverseType type)
 			getCurrentLayer () -> getBackgrounds () -> push_back (this);
 			break;
 		}
-		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
 		{
-			matrix = getModelViewMatrix () .get ();
+			modelViewMatrix .emplace_back (getModelViewMatrix () .get ());
 			break;
 		}
 		default:
@@ -350,13 +350,13 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 	Vector3d   translation;
 	Rotation4d rotation;
 
-	matrix .get (translation, rotation);
+	modelViewMatrix .back () .get (translation, rotation);
+	modelViewMatrix .back () .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue) / radius);
 
-	Matrix4d modelViewMatrix;
-	modelViewMatrix .scale (Vector3d (farValue, farValue, farValue) / radius);
-	modelViewMatrix .rotate (rotation);
+	glLoadMatrixd (modelViewMatrix .back () .data ());
 
-	glLoadMatrixd (modelViewMatrix .data ());
+	if (modelViewMatrix .size () > 1)
+		modelViewMatrix .pop_back ();
 
 	// Draw
 

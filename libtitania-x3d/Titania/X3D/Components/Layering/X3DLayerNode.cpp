@@ -322,8 +322,8 @@ X3DLayerNode::traverse (const TraverseType type)
 			display (type);
 			break;
 		}
-		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
 		{
 			display (type);
 			break;
