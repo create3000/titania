@@ -125,23 +125,43 @@ X3DLightNode::getShadowMapSize () const
 }
 
 void
-X3DLightNode::push (X3DGroupingNode* const group)
+X3DLightNode::push (const TraverseType type, X3DGroupingNode* const group)
 {
 	if (on ())
 	{
 		if (global ())
 		{
-			const auto lightContainer = std::make_shared <LightContainer> (this, getCurrentLayer () -> getGroup ());
+			if (type == TraverseType::DRAW)
+			{
+				const auto & lightContainer = getCurrentLayer () -> getLight ();
 
-			getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
-			getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
+				lightContainer -> getModelViewMatrix () .emplace_back (getModelViewMatrix () .get ());
+			}
+			else if (type == TraverseType::DISPLAY)
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (this, getCurrentLayer () -> getGroup ());
+	
+				getCurrentLayer () -> getGlobalLights () .emplace_back (lightContainer);
+				getCurrentLayer () -> getLights ()       .emplace_back (lightContainer);
+			}
 		}
 		else
 		{
-			const auto lightContainer = std::make_shared <LightContainer> (this, group);
+			if (type == TraverseType::DRAW)
+			{
+				const auto & lightContainer = getCurrentLayer () -> getLight ();
 
-			getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
-			getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
+				lightContainer -> getModelViewMatrix () .emplace_back (getModelViewMatrix () .get ());
+
+				getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
+			}
+			else if (type == TraverseType::DISPLAY)
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (this, group);
+	
+				getCurrentLayer () -> getLocalLights () .emplace_back (lightContainer);
+				getCurrentLayer () -> getLights ()      .emplace_back (lightContainer);
+			}
 		}
 	}
 }

@@ -76,7 +76,11 @@ public:
 
 	///  @name Member access
 
-	const Matrix4d &
+	std::vector <Matrix4d> &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
+
+	const std::vector <Matrix4d> &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -123,7 +127,7 @@ private:
 
 	X3DBrowser* const               browser;
 	X3DLightNode* const             node;
-	const Matrix4d                  modelViewMatrix;
+	std::vector <Matrix4d>          modelViewMatrix;
 	Matrix4d                        shadowMatrix;
 	X3DGroupingNode* const          group;
 	std::unique_ptr <TextureBuffer> textureBuffer;

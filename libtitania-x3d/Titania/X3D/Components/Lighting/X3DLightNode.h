@@ -191,7 +191,7 @@ public:
 
 	virtual
 	void
-	push (X3DGroupingNode* const);
+	push (const TraverseType type, X3DGroupingNode* const);
 
 	virtual
 	void

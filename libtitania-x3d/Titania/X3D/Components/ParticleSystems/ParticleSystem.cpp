@@ -1249,9 +1249,37 @@ ParticleSystem::traverse (const TraverseType type)
 			getCurrentLayer () -> addDepthShape (this);
 			break;
 		}
+		case TraverseType::DRAW:
+		{
+			getCurrentLayer () -> addDrawShape (this);
+			break;
+		}
 		case TraverseType::DISPLAY:
 		{
-			getCurrentLayer () -> addShape (this);
+			try
+			{
+				if (getExecutionContext () -> isLive () and isLive ())
+				{
+					switch (geometryTypeId)
+					{
+						case GeometryType::SPRITE:
+						{
+							const auto rotation = getScreenAlignedRotation (getModelViewMatrix () .get ());
+
+							geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
+							break;
+						}
+						default:
+							break;
+					}
+
+					transformShader -> setField <SFMatrix4f> ("modelViewMatrix", getModelViewMatrix () .get ());
+				}
+			}
+			catch (const std::exception &)
+			{ }
+
+			getCurrentLayer () -> addDisplayShape (this);
 			break;
 		}
 		default:
@@ -1476,12 +1504,9 @@ ParticleSystem::draw (ShapeContainer* const context)
 			{
 				try
 				{
-					Matrix3f rotation = getScreenAlignedRotation (context -> getModelViewMatrix ());
+					const auto & rotation = geometryShader -> getField <SFMatrix3f> ("rotation") .getValue ();
 
-					glNormal3fv (rotation [2] .data ());
-
-					if (getExecutionContext () -> isLive () and isLive ())
-						geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
+					glNormal3fv (cross (rotation [0], rotation [1]) .data ());
 				}
 				catch (const std::exception &)
 				{ }
@@ -1558,9 +1583,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 				break;
 			}
 		}
-
-		if (getExecutionContext () -> isLive () and isLive ())
-			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", context -> getModelViewMatrix ());
 	}
 	catch (const X3DError & error)
 	{

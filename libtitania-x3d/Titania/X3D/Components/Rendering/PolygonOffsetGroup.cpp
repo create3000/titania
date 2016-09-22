@@ -124,6 +124,7 @@ PolygonOffsetGroup::traverse (const TraverseType type)
 {
 	switch (type)
 	{
+		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
 		{
 			getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));

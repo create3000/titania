@@ -103,12 +103,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
-
 	///  @name Fields
 
 	MFString &
@@ -226,7 +220,7 @@ public:
 	{ }
 
 	void
-	enable ();
+	enable (const TraverseType type);
 
 	void
 	disable ();
@@ -242,17 +236,6 @@ public:
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handling
-
-	void
-	set_headlight ();
 
 	///  @name Static members
 
@@ -273,13 +256,11 @@ private:
 		SFFloat* const visibilityLimit;
 		MFString* const transitionType;
 		SFTime* const transitionTime;
-		SFBool transitionStart;
 		SFBool* const transitionComplete;
+		SFBool transitionStart;
 	};
 
 	Fields fields;
-
-	std::shared_ptr <LightContainer> light;
 
 };
 

@@ -75,15 +75,14 @@ NavigationInfo::Fields::Fields () :
 	   visibilityLimit (new SFFloat ()),
 	    transitionType (new MFString ({ "LINEAR" })),
 	    transitionTime (new SFTime (1)),
-	   transitionStart (),
-	transitionComplete (new SFBool ())
+	transitionComplete (new SFBool ()),
+	   transitionStart ()
 { }
 
 NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	     X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	 X3DBindableNode (),
-	          fields (),
-	           light ()
+	          fields ()
 {
 	addType (X3DConstants::NavigationInfo);
 
@@ -111,39 +110,6 @@ X3DBaseNode*
 NavigationInfo::create (X3DExecutionContext* const executionContext) const
 {
 	return new NavigationInfo (executionContext);
-}
-
-void
-NavigationInfo::initialize ()
-{
-	X3DBindableNode::initialize ();
-
-	headlight () .addInterest (this, &NavigationInfo::set_headlight);
-
-	set_headlight ();
-}
-
-void
-NavigationInfo::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	X3DBindableNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-		set_headlight ();
-}
-
-void
-NavigationInfo::set_headlight ()
-{
-	getModelViewMatrix () .identity ();
-
-	if (headlight ())
-		light .reset (new LightContainer (getBrowser () -> getHeadLight (), nullptr)); // There should always be the indentity matrix
-
-	else
-		light .reset ();
 }
 
 double
@@ -235,10 +201,10 @@ NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
-NavigationInfo::enable ()
+NavigationInfo::enable (const TraverseType type)
 {
 	if (headlight ())
-		getCurrentLayer () -> getGlobalLights () .emplace_back (light);
+		getBrowser () -> getHeadLight () -> push (type, nullptr);
 }
 
 void

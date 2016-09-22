@@ -78,26 +78,31 @@ static constexpr auto   DEPTH_BUFFER_VIEWPORT = Vector4i (0, 0, DEPTH_BUFFER_WID
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderer::X3DRenderer () :
-	                 X3DNode (),
-	         viewVolumeStack (),
-	generatedCubeMapTextures (),
-	            globalLights (),
-	            localObjects (),
-	              clipPlanes (),
-	             localLights (),
-	                  lights (),
-	              collisions (),
-	            opaqueShapes (),
-	       transparentShapes (),
-	         collisionShapes (),
-	        activeCollisions (),
-	             depthShapes (),
-	             depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
-	                   speed (),
-	         numOpaqueShapes (0),
-	    numTransparentShapes (0),
-	      numCollisionShapes (0),
-	          numDepthShapes (0)
+	                    X3DNode (),
+	            viewVolumeStack (),
+	   generatedCubeMapTextures (),
+	               globalLights (),
+	               localObjects (),
+	                 clipPlanes (),
+	                localLights (),
+	                     lights (),
+	                    lightId (0),
+	                 collisions (),
+	           opaqueDrawShapes (),
+	      transparentDrawShapes (),
+	        opaqueDisplayShapes (),
+	   transparentDisplayShapes (),
+	            collisionShapes (),
+	           activeCollisions (),
+	                depthShapes (),
+	                depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
+	                      speed (),
+	        numOpaqueDrawShapes (0),
+	   numTransparentDrawShapes (0),
+	     numOpaqueDisplayShapes (0),
+	numTransparentDisplayShapes (0),
+	         numCollisionShapes (0),
+	             numDepthShapes (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }
@@ -118,10 +123,65 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-X3DRenderer::addShape (X3DShapeNode* const shape)
+X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
+{
+	// It should be possible to sort out shapes that are far away.
+
+	if (numCollisionShapes == collisionShapes .size ())
+		collisionShapes .emplace_back (new CollisionContainer ());
+
+	const auto & context = collisionShapes [numCollisionShapes];
+
+	++ numCollisionShapes;
+
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setCollisions (getCollisions ());
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+}
+
+void
+X3DRenderer::addDepthShape (X3DShapeNode* const shape)
+{
+	// It should be possible to sort out shapes that are far away.
+
+	if (numDepthShapes == depthShapes .size ())
+		depthShapes .emplace_back (new CollisionContainer ());
+
+	const auto & context = depthShapes [numDepthShapes];
+
+	++ numDepthShapes;
+
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+}
+
+void
+X3DRenderer::addDrawShape (X3DShapeNode* const shape)
+{
+	addShape (shape, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+}
+
+void
+X3DRenderer::addDisplayShape (X3DShapeNode* const shape)
+{
+	addShape (shape, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
+}
+
+void
+X3DRenderer::addShape (X3DShapeNode* const shape,
+                       ShapeContainerArray & opaqueShapes,
+                       size_t & numOpaqueShapes,
+                       ShapeContainerArray & transparentShapes,
+                       size_t & numTransparentShapes)
 {
 	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
-	const auto depth  = bbox .size () .z () / 2;
+	const auto depth  = bbox .size   () .z () / 2;
 	const auto min    = bbox .center () .z () - depth;
 	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
 
@@ -162,45 +222,6 @@ X3DRenderer::addShape (X3DShapeNode* const shape)
 		context -> setLocalLights (getLocalLights ());
 		context -> setDistance (center);
 	}
-}
-
-void
-X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
-{
-	// It should be possible to sort out shapes that are far away.
-
-	if (numCollisionShapes == collisionShapes .size ())
-		collisionShapes .emplace_back (new CollisionContainer ());
-
-	const auto & context = collisionShapes [numCollisionShapes];
-
-	++ numCollisionShapes;
-
-	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
-	context -> setCollisions (getCollisions ());
-	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
-}
-
-void
-X3DRenderer::addDepthShape (X3DShapeNode* const shape)
-{
-	// It should be possible to sort out shapes that are far away.
-
-	if (numDepthShapes == depthShapes .size ())
-		depthShapes .emplace_back (new CollisionContainer ());
-
-	const auto & context = depthShapes [numDepthShapes];
-
-	++ numDepthShapes;
-
-	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
-	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
 }
 
 ///  Constrains @a translation when the viewer collides with a wall.
@@ -317,8 +338,14 @@ X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
 	return depth;
 }
 
+const std::shared_ptr <LightContainer> &
+X3DRenderer::getLight () const
+{
+	return lights [const_cast <size_t &> (lightId) ++];
+}
+
 void
-X3DRenderer::render (const std::function <void (const TraverseType)> & traverse, const TraverseType type)
+X3DRenderer::render (const TraverseType type, const std::function <void (const TraverseType)> & traverse)
 {
 	switch (type)
 	{
@@ -340,10 +367,24 @@ X3DRenderer::render (const std::function <void (const TraverseType)> & traverse,
 			depth (depthShapes, numDepthShapes);
 			break;
 		}
+		case TraverseType::DRAW:
+		{
+			lightId                  = 0;
+			numOpaqueDrawShapes      = 0;
+			numTransparentDrawShapes = 0;
+
+			traverse (type);
+			draw (opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+
+			for (const auto & light : getLights ())
+				light -> getModelViewMatrix () .pop_back ();
+
+			break;
+		}
 		case TraverseType::DISPLAY:
 		{
-			numOpaqueShapes      = 0;
-			numTransparentShapes = 0;
+			numOpaqueDisplayShapes      = 0;
+			numTransparentDisplayShapes = 0;
 
 			traverse (type);
 			display ();
@@ -352,18 +393,6 @@ X3DRenderer::render (const std::function <void (const TraverseType)> & traverse,
 		default:
 			break;
 	}
-}
-
-void
-X3DRenderer::renderGeneratedCubeMapTextures ()
-{
-	// Render generated cube map textures.
-
-	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
-		generatedCubeMapTexture -> renderTexture ();
-
-	getGeneratedCubeMapTextures () .clear ();
-
 }
 
 void
@@ -535,10 +564,35 @@ X3DRenderer::gravite ()
 }
 
 void
+X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShapes)
+{
+	const auto & viewport = getViewVolumes () .back () .getViewport ();
+
+	// Setup projection matrix.
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glMatrixMode (GL_MODELVIEW);
+
+	// Render to depth buffer.
+
+	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
+
+	glClear (GL_DEPTH_BUFFER_BIT);
+
+	glEnable (GL_DEPTH_TEST);
+	glDepthMask (GL_TRUE);
+	glDisable (GL_BLEND);
+	glDisable (GL_CULL_FACE);
+
+	for (const auto & context : basic::make_range (shapes .cbegin (), numShapes))
+		context -> draw ();
+}
+
+void
 X3DRenderer::display ()
 {
-	static constexpr auto comp = ShapeContainerComp { };
-
 	// Render shadow maps.
 
 	for (const auto & object : getLights ())
@@ -548,6 +602,46 @@ X3DRenderer::display ()
 
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
+
+	// Render generated cube map textures.
+
+	renderGeneratedCubeMapTextures ();
+
+	// Set global uniforms.
+
+	// TODO: set global uniforms.
+
+	draw (opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
+
+	// Disable global lights
+	
+	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+		object -> disable ();
+
+	// Clear light nodes arrays.
+
+	getGlobalLights () .clear ();
+	getLights       () .clear ();
+}
+
+void
+X3DRenderer::renderGeneratedCubeMapTextures ()
+{
+	// Render generated cube map textures.
+
+	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
+		generatedCubeMapTexture -> renderTexture ();
+
+	getGeneratedCubeMapTextures () .clear ();
+}
+
+void
+X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
+                   size_t & numOpaqueShapes,
+                   ShapeContainerArray & transparentShapes,
+                   size_t & numTransparentShapes)
+{
+	static constexpr auto comp = ShapeContainerComp { };
 
 	// Set global uniforms.
 
@@ -596,16 +690,6 @@ X3DRenderer::display ()
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 
-	// Disable global lights
-	
-	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
-		object -> disable ();
-
-	// Clear light nodes arrays.
-
-	getGlobalLights () .clear ();
-	getLights       () .clear ();
-
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
@@ -614,33 +698,6 @@ X3DRenderer::display ()
 		getBrowser () -> getDefaultAppearance () -> draw ();
 	}
 	#endif
-}
-
-void
-X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShapes)
-{
-	const auto & viewport = getViewVolumes () .back () .getViewport ();
-
-	// Setup projection matrix.
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
-	glMatrixMode (GL_MODELVIEW);
-
-	// Render to depth buffer.
-
-	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
-	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
-
-	glClear (GL_DEPTH_BUFFER_BIT);
-
-	glEnable (GL_DEPTH_TEST);
-	glDepthMask (GL_TRUE);
-	glDisable (GL_BLEND);
-	glDisable (GL_CULL_FACE);
-
-	for (const auto & context : basic::make_range (shapes .cbegin (), numShapes))
-		context -> draw ();
 }
 
 void

@@ -63,7 +63,7 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 	X3DCollectableObject (),
 	             browser (node -> getBrowser ()),
 	                node (node),
-	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	     modelViewMatrix ({ node -> getModelViewMatrix () .get () }),
 	        shadowMatrix (),
 	               group (group),
 	       textureBuffer (),
@@ -113,7 +113,7 @@ LightContainer::enable ()
 	
 			glEnable (lightId);
 	
-			glLoadMatrixd (modelViewMatrix .data ());
+			glLoadMatrixd (modelViewMatrix .back () .data ());
 	
 			node -> draw (lightId);
 		}
@@ -152,7 +152,7 @@ LightContainer::disable ()
 void
 LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .back ());
 
 	if (textureUnit)
 	{
@@ -161,9 +161,9 @@ LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObje
 		glUniform3fv (shaderObject -> getShadowColorUniformLocation     () [i], 1, node -> getShadowColor () .data ());
 
 		if (shaderObject -> isExtensionGPUShaderFP64Available ())
-			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, shadowMatrix .data ());
+			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, (node -> getCameraSpaceMatrix () .get () * shadowMatrix) .data ());
 		else
-			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (shadowMatrix) .data ());
+			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (node -> getCameraSpaceMatrix () .get () * shadowMatrix) .data ());
 	
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}

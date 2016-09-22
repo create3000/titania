@@ -138,37 +138,40 @@ public:
 
 	size_t
 	getNumOpaqueShapes () const
-	{ return numOpaqueShapes; }
+	{ return numOpaqueDisplayShapes; }
 
 	const ShapeContainerArray &
 	getOpaqueShapes () const
-	{ return opaqueShapes; }
+	{ return opaqueDisplayShapes; }
 
 	size_t
 	getNumTransparentShapes () const
-	{ return numTransparentShapes; }
+	{ return numTransparentDisplayShapes; }
 
 	const ShapeContainerArray &
 	getTransparentShapes () const
-	{ return transparentShapes; }
+	{ return transparentDisplayShapes; }
+
+	const std::shared_ptr <LightContainer> &
+	getLight () const;
 
 	void
-	addShape (X3DShapeNode* const);
+	addCollisionShape (X3DShapeNode* const shape);
 
 	void
-	addCollisionShape (X3DShapeNode* const);
+	addDepthShape (X3DShapeNode* const shape);
 
 	void
-	addDepthShape (X3DShapeNode* const);
+	addDrawShape (X3DShapeNode* const shape);
+
+	void
+	addDisplayShape (X3DShapeNode* const shape);
 
 	Vector3d
-	constrainTranslation (const Vector3d &) const;
+	constrainTranslation (const Vector3d & translation) const;
 
 	void
-	render (const std::function <void (const TraverseType)> &, const TraverseType);
-
-	void
-	renderGeneratedCubeMapTextures ();
+	render (const TraverseType type, const std::function <void (const TraverseType)> & traverse);
 
 	///  @name Destruction
 
@@ -195,6 +198,13 @@ private:
 
 	///  @name Operations
 
+	void
+	addShape (X3DShapeNode* const shape,
+	          ShapeContainerArray & opaqueShapes,
+	          size_t & numOpaqueShapes,
+	          ShapeContainerArray & transparentShapes,
+	          size_t & numTransparentShapes);
+
 	double
 	getDistance (const Vector3d &) const;
 
@@ -208,10 +218,19 @@ private:
 	gravite ();
 
 	void
+	depth (const CollisionContainerArray &, const size_t);
+
+	void
 	display ();
 
 	void
-	depth (const CollisionContainerArray &, const size_t);
+	renderGeneratedCubeMapTextures ();
+
+	void
+	draw (ShapeContainerArray & opaqueShapes,
+	      size_t & numOpaqueShapes,
+	      ShapeContainerArray & transparentShapes,
+	      size_t & numTransparentShapes);
 
 	///  @name Members
 
@@ -222,10 +241,13 @@ private:
 	ClipPlaneContainerArray       clipPlanes;
 	LightContainerArray           localLights;
 	LightContainerArray           lights;
+	size_t                        lightId;
 	CollisionArray                collisions;
 
-	ShapeContainerArray      opaqueShapes;
-	ShapeContainerArray      transparentShapes;
+	ShapeContainerArray      opaqueDrawShapes;
+	ShapeContainerArray      transparentDrawShapes;
+	ShapeContainerArray      opaqueDisplayShapes;
+	ShapeContainerArray      transparentDisplayShapes;
 	CollisionContainerArray  collisionShapes;
 	std::vector <Collision*> activeCollisions;
 	CollisionContainerArray  depthShapes;
@@ -233,8 +255,10 @@ private:
 	std::unique_ptr <FrameBuffer> depthBuffer;
 	double                        speed;
 
-	size_t numOpaqueShapes;
-	size_t numTransparentShapes;
+	size_t numOpaqueDrawShapes;
+	size_t numTransparentDrawShapes;
+	size_t numOpaqueDisplayShapes;
+	size_t numTransparentDisplayShapes;
 	size_t numCollisionShapes;
 	size_t numDepthShapes;
 

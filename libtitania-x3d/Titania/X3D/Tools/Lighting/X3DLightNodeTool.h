@@ -205,8 +205,8 @@ public:
 
 	virtual
 	void
-	push (X3DGroupingNode* const group) final override
-	{ return getNode <X3DLightNode> () -> push (group); }
+	push (const TraverseType type, X3DGroupingNode* const group) final override
+	{ return getNode <X3DLightNode> () -> push (type, group); }
 
 	virtual
 	void

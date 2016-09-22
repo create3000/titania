@@ -204,7 +204,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 
 		getBrowser () -> getDisplayTools () .push (false);
 
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * getCameraSpaceMatrix () .get ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .back () * getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
 		invLightSpaceMatrix .translate (location () .getValue ());
@@ -260,7 +260,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
 				getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 				
-				getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse,groupNode, _1), TraverseType::DEPTH);
+				getCurrentLayer () -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1));
 	
 				getModelViewMatrix          () .pop ();
 				getProjectionMatrix         () .pop ();
@@ -314,7 +314,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 		if (not global ())
 			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
 
-		lightContainer -> setShadowMatrix (getCameraSpaceMatrix () .get () * invLightSpaceMatrix);
+		lightContainer -> setShadowMatrix (invLightSpaceMatrix);
 
 		getBrowser () -> getDisplayTools () .pop ();
 		return true;

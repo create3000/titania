@@ -310,7 +310,6 @@ X3DLayerNode::traverse (const TraverseType type)
 		case TraverseType::CAMERA:
 		{
 			camera ();
-			renderGeneratedCubeMapTextures ();
 			break;
 		}
 		case TraverseType::COLLISION:
@@ -323,6 +322,7 @@ X3DLayerNode::traverse (const TraverseType type)
 			display (type);
 			break;
 		}
+		case TraverseType::DRAW:
 		case TraverseType::DISPLAY:
 		{
 			display (type);
@@ -396,7 +396,7 @@ X3DLayerNode::collision ()
 
 	// Render
 	currentViewport -> push ();
-	render (std::bind (&X3DLayerNode::collect, this, _1), TraverseType::COLLISION);
+	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1));
 	currentViewport -> pop ();
 
 	getModelViewMatrix () .pop ();
@@ -407,11 +407,11 @@ X3DLayerNode::display (const TraverseType type)
 {
 	using namespace std::placeholders;
 
-	getNavigationInfo () -> enable ();
+	getNavigationInfo () -> enable (type);
 	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 	currentViewport -> push ();
-	render (std::bind (&X3DLayerNode::collect, this, _1), type);
+	render (type, std::bind (&X3DLayerNode::collect, this, _1));
 	currentViewport -> pop ();
 
 	getModelViewMatrix () .pop ();

@@ -193,8 +193,8 @@ GeneratedCubeMapTexture::renderTexture ()
 
 		frameBuffer -> bind ();
 
-		getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
-		getProjectionMatrix         () .push (projectionMatrix);
+		getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
+		getProjectionMatrix () .push (projectionMatrix);
 
 		for (size_t i = 0; i < 6; ++ i)
 		{
@@ -217,13 +217,13 @@ GeneratedCubeMapTexture::renderTexture ()
 			{
 				getModelViewMatrix () .push ();
 				getModelViewMatrix () .mult_left (viewpoint -> getCameraSpaceMatrix ());
-				getCurrentLayer () -> getGlobalLights () .emplace_back (std::make_shared <LightContainer> (getBrowser () -> getHeadLight (), nullptr));
+				getBrowser () -> getHeadLight () -> push (TraverseType::DRAW, nullptr);
 				getModelViewMatrix () .pop ();
 			}
 
 			// Render layer's children.
 
-			getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1), TraverseType::DISPLAY);
+			getCurrentLayer () -> render (TraverseType::DRAW, std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1));
 
 			getModelViewMatrix          () .pop ();
 			getCameraSpaceMatrix        () .pop ();
@@ -236,8 +236,8 @@ GeneratedCubeMapTexture::renderTexture ()
 			setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> getPixels () .data ());
 		}
 
-		getProjectionMatrix         () .pop ();
-		getViewVolumes              () .pop_back ();
+		getProjectionMatrix () .pop ();
+		getViewVolumes      () .pop_back ();
 
 		frameBuffer -> unbind ();
 
