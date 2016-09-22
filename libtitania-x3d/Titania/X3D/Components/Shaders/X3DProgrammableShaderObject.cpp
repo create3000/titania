@@ -74,6 +74,8 @@ static constexpr size_t MAX_CLIP_PLANES = 6;
 static constexpr size_t MAX_LIGHTS      = 8;
 static constexpr size_t MAX_TEX_COORD   = 4;
 
+static constexpr auto x3d_NoneClipPlane = Vector4f (88, 51, 68, 0);
+
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),
 	         x3d_GeometryType (-1),
@@ -1071,19 +1073,17 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	if (clipPlanes .empty ())
 	{
-		glUniform4f (x3d_ClipPlane [0], 0, 0, 0, 0);
+		glUniform4fv (x3d_ClipPlane [0], 1, x3d_NoneClipPlane .data ());
 	}
 	else
 	{
-		static constexpr auto nan = std::numeric_limits <float>::quiet_NaN ();
-
 		const auto numClipPlanes = std::min (MAX_CLIP_PLANES, clipPlanes .size ());
 
 		for (size_t i = 0; i < numClipPlanes; ++ i)
 			clipPlanes [i] -> setShaderUniforms (this, i);
 
 		if (numClipPlanes < MAX_CLIP_PLANES)
-			glUniform4f (x3d_ClipPlane [numClipPlanes], nan, nan, nan, nan);
+			glUniform4fv (x3d_ClipPlane [numClipPlanes], 1, x3d_NoneClipPlane .data ());
 	}
 
 	// Fog

@@ -200,7 +200,7 @@ addConstants (X3DBrowser* const browser, const std::string & source)
 	constants += "#define x3d_Geometry3D      3\n";
 
 	constants += "#define x3d_MaxClipPlanes  6\n";
-	constants += "#define x3d_NoneClipPlane  vec4 (0.0 / 0.0, 0.0 / 0.0, 0.0 / 0.0, 0.0 / 0.0)\n";
+	constants += "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 0.0)\n";
 
 	constants += "#define x3d_NoneFog          0\n";
 	constants += "#define x3d_LinearFog        1\n";
