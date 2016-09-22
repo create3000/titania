@@ -598,11 +598,6 @@ X3DRenderer::display ()
 	for (const auto & object : getLights ())
 		object -> renderShadowMap ();
 
-	// Enable global lights.
-
-	for (const auto & object : getGlobalLights ())
-		object -> enable ();
-
 	// Render generated cube map textures.
 
 	renderGeneratedCubeMapTextures ();
@@ -612,11 +607,6 @@ X3DRenderer::display ()
 	// TODO: set global uniforms.
 
 	draw (opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
-
-	// Disable global lights
-	
-	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
-		object -> disable ();
 
 	// Clear light nodes arrays.
 
@@ -642,6 +632,11 @@ X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
                    size_t & numTransparentShapes)
 {
 	static constexpr auto comp = ShapeContainerComp { };
+
+	// Enable global lights.
+
+	for (const auto & object : getGlobalLights ())
+		object -> enable ();
 
 	// Set global uniforms.
 
@@ -689,6 +684,11 @@ X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
 
 	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
+
+	// Disable global lights
+	
+	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
+		object -> disable ();
 
 	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
