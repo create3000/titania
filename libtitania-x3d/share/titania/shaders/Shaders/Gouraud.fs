@@ -18,7 +18,7 @@ uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, other
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
 // 3
 
-uniform int         x3d_TextureType [x3d_MaxTextures]; // x3d_NoTexture, x3d_TextureType2D or x3d_TextureTypeCubeMapTexture
+uniform int         x3d_TextureType [x3d_MaxTextures]; // x3d_NoneTexture, x3d_TextureType2D or x3d_TextureTypeCubeMapTexture
 uniform sampler2D   x3d_Texture2D [x3d_MaxTextures];
 uniform samplerCube x3d_CubeMapTexture [x3d_MaxTextures];
 // 3
@@ -36,7 +36,7 @@ clip ()
 {
 	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
 	{
-		if (x3d_ClipPlane [i] == vec4 (0.0, 0.0, 0.0, 0.0))
+		if (x3d_ClipPlane [i] == x3d_NoneClipPlane)
 			break;
 
 		if (dot (v .xyz, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
@@ -71,7 +71,7 @@ getTextureColor ()
 vec3
 getFogColor (in vec3 color)
 {
-	if (x3d_FogType == x3d_NoFog)
+	if (x3d_FogType == x3d_NoneFog)
 		return color;
 
 	float dV = length (v);
@@ -95,7 +95,7 @@ main ()
 
 	vec4 finalColor = gl_FrontFacing ? frontColor : backColor;
 
-	if (x3d_TextureType [0] != x3d_NoTexture)
+	if (x3d_TextureType [0] != x3d_NoneTexture)
 	{
 		if (x3d_Lighting)
 			finalColor *= getTextureColor ();

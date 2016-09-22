@@ -1075,13 +1075,15 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	}
 	else
 	{
+		static constexpr auto nan = std::numeric_limits <float>::quiet_NaN ();
+
 		const auto numClipPlanes = std::min (MAX_CLIP_PLANES, clipPlanes .size ());
 
 		for (size_t i = 0; i < numClipPlanes; ++ i)
 			clipPlanes [i] -> setShaderUniforms (this, i);
 
 		if (numClipPlanes < MAX_CLIP_PLANES)
-			glUniform4f (x3d_ClipPlane [numClipPlanes], 0, 0, 0, 0);
+			glUniform4f (x3d_ClipPlane [numClipPlanes], nan, nan, nan, nan);
 	}
 
 	// Fog

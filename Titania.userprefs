@@ -1,15 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="202" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="376" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.h" Line="104" Column="12" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.cpp" Line="142" Column="81" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="389" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="354" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionContainer.cpp" Line="78" Column="34" />
-      <File FileName="libtitania-standard/Titania/Math/Geometry/Box3.h" Line="613" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/CollisionContainer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/Shader.cpp" Line="193" Column="22" />
+      <File FileName="../Cobweb/cobweb.js/cobweb/Browser/Shaders/Gouraud.vs" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/ClipPlane.cpp" Line="122" Column="5" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

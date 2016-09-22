@@ -132,8 +132,10 @@ ClipPlane::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 		             clipPlane .distance_from_origin ());
 	}
 	catch (const std::domain_error &)
-	{	
-		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i], 0, 1, 0, 0);
+	{
+		static constexpr auto nan = std::numeric_limits <float>::quiet_NaN ();
+
+		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i], nan, nan, nan, nan);
 	}
 }
 

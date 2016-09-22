@@ -107,7 +107,7 @@ getMaterialColor (in vec3 N,
 	{
 		int lightType = x3d_LightType [i];
 
-		if (lightType == x3d_NoLight)
+		if (lightType == x3d_NoneLight)
 			break;
 
 		vec3  vL = x3d_LightLocation [i] - v;

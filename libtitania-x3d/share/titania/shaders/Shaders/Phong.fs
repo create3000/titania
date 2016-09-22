@@ -73,7 +73,7 @@ clip ()
 {
 	for (int i = 0; i < x3d_MaxClipPlanes; ++ i)
 	{
-		if (x3d_ClipPlane [i] == vec4 (0.0, 0.0, 0.0, 0.0))
+		if (x3d_ClipPlane [i] == x3d_NoneClipPlane)
 			break;
 
 		if (dot (v, x3d_ClipPlane [i] .xyz) - x3d_ClipPlane [i] .w < 0.0)
@@ -245,7 +245,7 @@ getMaterialColor ()
 
 		if (x3d_ColorMaterial)
 		{
-			if (x3d_TextureType [0] != x3d_NoTexture)
+			if (x3d_TextureType [0] != x3d_NoneTexture)
 			{
 				vec4 T = getTextureColor ();
 
@@ -259,7 +259,7 @@ getMaterialColor ()
 		}
 		else
 		{
-			if (x3d_TextureType [0] != x3d_NoTexture)
+			if (x3d_TextureType [0] != x3d_NoneTexture)
 			{
 				vec4 T = getTextureColor ();
 
@@ -280,7 +280,7 @@ getMaterialColor ()
 		{
 			int lightType = x3d_LightType [i];
 
-			if (lightType == x3d_NoLight)
+			if (lightType == x3d_NoneLight)
 				break;
 
 			vec3  vL = x3d_LightLocation [i] - v;
@@ -326,7 +326,7 @@ getMaterialColor ()
 	
 		if (x3d_ColorMaterial)
 		{
-			if (x3d_TextureType [0] != x3d_NoTexture)
+			if (x3d_TextureType [0] != x3d_NoneTexture)
 			{
 				vec4 T = getTextureColor ();
 
@@ -337,7 +337,7 @@ getMaterialColor ()
 		}
 		else
 		{
-			if (x3d_TextureType [0] != x3d_NoTexture)
+			if (x3d_TextureType [0] != x3d_NoneTexture)
 				finalColor = getTextureColor ();
 		}
 
@@ -348,7 +348,7 @@ getMaterialColor ()
 vec3
 getFogColor (in vec3 color)
 {
-	if (x3d_FogType == x3d_NoFog)
+	if (x3d_FogType == x3d_NoneFog)
 		return color;
 
 	float dV = length (v);

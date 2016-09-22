@@ -486,12 +486,6 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 		return std::vector <Vector3d> ();
 	}
 }
-	                    	                   
-bool
-X3DGeometryNode::cut (const Line2d & cutLine)
-{
-	return false;
-}
 
 void
 X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
@@ -746,6 +740,12 @@ X3DGeometryNode::addMirrorVertices (const GLenum vertexMode, const bool convex)
 			getVertices () .emplace_back (getVertices () [i]);
 		}
 	}
+}
+	                    	                   
+bool
+X3DGeometryNode::cut (const Line2d & cutLine)
+{
+	return false;
 }
 
 void
