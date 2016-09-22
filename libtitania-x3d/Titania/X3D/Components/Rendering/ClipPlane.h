@@ -108,7 +108,7 @@ public:
 	///  @name Operations
 
 	bool
-	isClipped (const Matrix4d &, const Vector3d &);
+	isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix);
 
 	void
 	push ();
@@ -117,7 +117,7 @@ public:
 	pop ();
 
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t, const Matrix4d &);
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix);
 
 
 private:

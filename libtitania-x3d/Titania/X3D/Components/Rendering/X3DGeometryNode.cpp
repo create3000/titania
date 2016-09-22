@@ -181,16 +181,44 @@ X3DGeometryNode::setTextureCoordinate (X3DTextureCoordinateNode* const value)
 		texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
 }
 
+GLenum
+X3DGeometryNode::getVertexMode (const size_t n)
+{
+	switch (n)
+	{
+		case 3:
+			return GL_TRIANGLES;
+		case 4:
+			return GL_QUADS;
+		default:
+			return GL_POLYGON;
+	}
+}
+
+void
+X3DGeometryNode::addElements (const GLenum vertexMode, const size_t count)
+{
+	const auto first = elements .empty () ? 0 : elements .back () .last ();
+
+	elements .emplace_back (vertexMode, first, first + count);
+}
+
+bool
+X3DGeometryNode::isClipped (const Vector3d & point, const ClipPlaneContainerArray & clipPlanes) const
+{
+	return std::any_of (clipPlanes .begin (),
+	                    clipPlanes .end (),
+	                    [&point] (const std::shared_ptr <ClipPlaneContainer> & clipPlane)
+	                    { return clipPlane -> isClipped (point); });
+}
+
 bool
 X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
 {
 	try
 	{
-		if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
-			return false;
-
-		const Matrix4d matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
-		const Matrix4d modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
+		const auto & matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
+		const auto   modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
 
 		line *= inverse (matrix);
 
@@ -198,45 +226,44 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 			return false;
 
 		bool   intersected = false;
-		size_t first       = 0;
 
 		for (const auto & element : elements)
 		{
-			switch (element .vertexMode)
+			switch (element .vertexMode ())
 			{
 				case GL_TRIANGLES:
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
+					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 					{
 						intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
 					}
 
-					break;
+					continue;
 				}
 				case GL_QUADS:
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 					{
 						intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
 						intersected |= intersects (line, i, i + 2, i + 3, modelViewMatrix, intersections);
 					}
 
-					break;
+					continue;
 				}
 				case GL_POLYGON:
 				{
-					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+					const auto first = element .first ();
+
+					for (int32_t i = first + 1, size = first + element .last () - 1; i < size; ++ i)
 					{
 						intersected |= intersects (line, first, i, i + 1, modelViewMatrix, intersections);
 					}
 
-					break;
+					continue;
 				}
 				default:
-					break;
+					continue;
 			}
-
-			first += element .count;
 		}
 
 		return intersected;
@@ -268,14 +295,132 @@ X3DGeometryNode::intersects (const Line3d & line,
 	if (i1 < texCoordSize)
 		texCoord = float (t) * texCoords [0] [i1] + float (u) * texCoords [0] [i2] + float (v) * texCoords [0] [i3];
 
-	const Vector3f normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
-	const Vector3d point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+	const auto normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
+	const auto point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
-	if (isClipped (point, modelViewMatrix, getCurrentLayer () -> getClipPlanes ()))
+	if (isClipped (point * modelViewMatrix, getCurrentLayer () -> getClipPlanes ()))
 		return false;
 
 	intersections .emplace_back (new Intersection { texCoord, normal, point * getMatrix (), std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
 	return true;
+}
+
+bool
+X3DGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const
+{
+	try
+	{
+		if (not box .intersects (getBBox ()))
+			return false;
+		
+		box *= inverse (getMatrix ());
+	
+		for (const auto & element : elements)
+		{
+			switch (element .vertexMode ())
+			{
+				case GL_TRIANGLES :
+				{
+					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
+					{
+						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
+						{
+							if (not clipPlanes .empty ())
+							{
+								if (isClipped (vertices [i + 0] * modelViewMatrix, clipPlanes))
+									continue;
+	
+								if (isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes))
+									continue;
+
+								if (isClipped (vertices [i + 2] * modelViewMatrix, clipPlanes))
+									continue;
+							}
+
+							return true;
+						}
+					}
+
+					continue;
+				}
+				case GL_QUADS:
+				{
+					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
+					{
+						// Triangle 1.
+
+						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
+						{
+							if (not clipPlanes .empty ())
+							{
+								if (not (isClipped (vertices [i + 0] * modelViewMatrix, clipPlanes) or
+									      isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes) or
+									      isClipped (vertices [i + 2] * modelViewMatrix, clipPlanes)))
+								{
+									return true;
+								}
+							}
+							else
+								return true;
+						}
+
+						// Triangle 2.
+
+						if (box .intersects (vertices [i], vertices [i + 2], vertices [i + 3]))
+						{
+							if (not clipPlanes .empty ())
+							{
+								if (not (isClipped (vertices [i + 0] * modelViewMatrix, clipPlanes) or
+									      isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes) or
+									      isClipped (vertices [i + 3] * modelViewMatrix, clipPlanes)))
+								{
+									return true;
+								}
+							}
+							else
+								return true;
+						}
+					}
+	
+					continue;
+				}
+				case GL_POLYGON:
+				{
+					const auto first = element .first ();
+
+					for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
+					{
+						if (box .intersects (vertices [first], vertices [i], vertices [i + 1]))
+						{
+							if (not clipPlanes .empty ())
+							{
+								if (isClipped (vertices [first] * modelViewMatrix, clipPlanes))
+									continue;
+		
+								if (isClipped (vertices [i] * modelViewMatrix, clipPlanes))
+									continue;
+		
+								if (isClipped (vertices [i + 1] * modelViewMatrix, clipPlanes))
+									continue;
+							}
+
+							return true;
+						}
+					}
+
+					continue;
+				}
+				default:
+					continue;
+			}
+		}
+
+		return false;
+	}
+	catch (const std::domain_error &)
+	{
+		return false;
+	}
 }
 
 std::vector <Vector3d>
@@ -341,90 +486,6 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 		return std::vector <Vector3d> ();
 	}
 }
-
-bool
-X3DGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes) const
-{
-	try
-	{
-		if (not box .intersects (getBBox ()))
-			return false;
-		
-		box *= inverse (getMatrix ());
-	
-		size_t first = 0;
-
-		for (const auto & element : elements)
-		{
-			switch (element .vertexMode)
-			{
-				case GL_TRIANGLES :
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 3)
-					{
-						if (isClipped (vertices [i], box .matrix (), clipPlanes))
-							continue;
-	
-						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
-							return true;
-					}
-	
-					break;
-				}
-				case GL_QUADS:
-				{
-					for (size_t i = first, size = first + element .count; i < size; i += 4)
-					{
-						if (isClipped (vertices [i], box .matrix (), clipPlanes))
-							continue;
-	
-						if (box .intersects (vertices [i], vertices [i + 1], vertices [i + 2]))
-							return true;
-	
-						if (box .intersects (vertices [i], vertices [i + 2], vertices [i + 3]))
-							return true;
-					}
-	
-					break;
-				}
-				case GL_POLYGON:
-				{
-					for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
-					{
-						if (isClipped (vertices [first], box .matrix (), clipPlanes))
-							continue;
-	
-						if (box .intersects (vertices [first], vertices [i], vertices [i + 1]))
-							return true;
-					}
-	
-					break;
-				}
-				default:
-					break;
-			}
-	
-			first += element .count;
-		}
-	
-		return false;
-	}
-	catch (const std::domain_error &)
-	{
-		return false;
-	}
-}
-
-bool
-X3DGeometryNode::isClipped (const Vector3d & point,
-	                         const Matrix4d & modelViewMatrix,
-	                         const ClipPlaneContainerArray & clipPlanes) const
-{
-	return std::any_of (clipPlanes .begin (),
-	                    clipPlanes .end (),
-	                    [&point, &modelViewMatrix] (const std::shared_ptr <ClipPlaneContainer> & clipPlane)
-	                    { return clipPlane -> isClipped (point, modelViewMatrix); });
-}
 	                    	                   
 bool
 X3DGeometryNode::cut (const Line2d & cutLine)
@@ -438,45 +499,43 @@ X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
 	                          std::vector <Vector3f> & normals_,
 	                          std::vector <Vector3d> & vertices_) const
 {
-	size_t first = 0;
-
 	for (const auto & element : elements)
 	{
-		switch (element .vertexMode)
+		switch (element .vertexMode ())
 		{
 			case GL_TRIANGLES :
 			{
-				for (size_t i = first, size = first + element .count; i < size; i += 3)
+				for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 				{
 					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
 				}
 
-				break;
+				continue;
 			}
 			case GL_QUADS:
 			{
-				for (size_t i = first, size = first + element .count; i < size; i += 4)
+				for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 				{
 					triangulate (i, i + 1, i + 2, colors_, texCoords_, normals_, vertices_);
 					triangulate (i, i + 2, i + 3, colors_, texCoords_, normals_, vertices_);
 				}
 
-				break;
+				continue;
 			}
 			case GL_POLYGON:
 			{
-				for (int32_t i = first + 1, size = first + element .count - 1; i < size; ++ i)
+				const auto first = element .first ();
+
+				for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
 				{
 					triangulate (first, i, i + 1, colors_, texCoords_, normals_, vertices_);
 				}
 
-				break;
+				continue;
 			}
 			default:
-				break;
+				continue;
 		}
-
-		first += element .count;
 	}
 }
 
@@ -793,12 +852,9 @@ X3DGeometryNode::depth (const CollisionContainer* const context)
 	glEnableClientState (GL_VERTEX_ARRAY);
 	glVertexPointer (3, GL_DOUBLE, 0, 0);
 
-	size_t first = 0;
-
 	for (const auto & element : elements)
 	{
-		glDrawArrays (element .vertexMode, first, element .count);
-		first += element .count;
+		glDrawArrays (element .vertexMode (), element .first (), element .count ());
 	}
 	
 	glDisableClientState (GL_VERTEX_ARRAY);
@@ -889,24 +945,18 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		// Draw
 
-		size_t first = 0;
-
 		for (const auto & element : elements)
 		{
-			glDrawArrays (element .vertexMode, first, element .count);
-			first += element .count;
+			glDrawArrays (element .vertexMode (), element .first (), element .count ());
 		}
 
 		glCullFace (GL_BACK);
 
 		// Draw
 
-		first = 0;
-
 		for (const auto & element : elements)
 		{
-			glDrawArrays (element .vertexMode, first, element .count);
-			first += element .count;
+			glDrawArrays (element .vertexMode (), element .first (), element .count ());
 		}
 	}
 	else
@@ -921,12 +971,9 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
 
-		size_t first = 0;
-
 		for (const auto & element : elements)
 		{
-			glDrawArrays (element .vertexMode, first, element .count);
-			first += element .count;
+			glDrawArrays (element .vertexMode (), element .first (), element .count ());
 		}
 	}
 

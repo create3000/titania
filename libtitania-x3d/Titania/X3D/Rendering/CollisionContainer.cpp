@@ -75,7 +75,7 @@ CollisionContainer::intersects (Box3d box) const
 		
 		box *= inverse (modelViewMatrix);
 
-		return shape -> intersects (box, clipPlanes);
+		return shape -> intersects (box, clipPlanes, modelViewMatrix);
 	}
 	catch (const std::domain_error &)
 	{

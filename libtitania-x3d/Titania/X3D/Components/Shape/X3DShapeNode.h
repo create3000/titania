@@ -131,15 +131,17 @@ public:
 	
 	virtual
 	bool
-	intersects (const Box3d &, const ClipPlaneContainerArray &) = 0;
+	intersects (const Box3d & box,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            const Matrix4d & modelViewMatrix) = 0;
 
 	virtual
 	void
-	depth (const CollisionContainer* const) = 0;
+	depth (const CollisionContainer* const context) = 0;
 
 	virtual
 	void
-	display (ShapeContainer* const);
+	display (ShapeContainer* const context);
 
 	///  @name Destruction
 

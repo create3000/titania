@@ -210,9 +210,9 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 	
-	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
+	coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count ());
 
-	for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
+	for (int32_t i = 0, size = getElements () [0] .count (); i < size; ++ i)
 	{
 		texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
 		geometry -> texCoordIndex () .emplace_back (i);
@@ -227,13 +227,13 @@ throw (Error <NOT_SUPPORTED>,
 		if (closureType () not_eq "CHORD")
 		{
 			texCoord -> point () .emplace_back (1 - texCoord -> point () [0] .getX (), texCoord -> point () [0] .getY ());
-			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count);
+			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count ());
 			geometry -> coordIndex ()    .emplace_back (0);
 		
-			for (int32_t i = 1, size = getElements () [0] .count; i < size; ++ i)
+			for (int32_t i = 1, size = getElements () [0] .count (); i < size; ++ i)
 			{
 				texCoord -> point () .emplace_back (1 - texCoord -> point () [size - i] .getX (), texCoord -> point () [size - i] .getY ());
-				geometry -> texCoordIndex () .emplace_back (i + getElements () [0] .count);
+				geometry -> texCoordIndex () .emplace_back (i + getElements () [0] .count ());
 				geometry -> coordIndex ()    .emplace_back (size - i);
 			}
 	
@@ -242,7 +242,7 @@ throw (Error <NOT_SUPPORTED>,
 		}
 		else
 		{
-			for (int32_t i = getElements () [0] .count - 1, t = getElements () [0] .count; i >= 0; -- i, ++ t)
+			for (int32_t i = getElements () [0] .count () - 1, t = getElements () [0] .count (); i >= 0; -- i, ++ t)
 			{
 				texCoord -> point () .emplace_back (1 - texCoord -> point () [i] .getX (), texCoord -> point () [i] .getY ());
 				geometry -> texCoordIndex () .emplace_back (t);

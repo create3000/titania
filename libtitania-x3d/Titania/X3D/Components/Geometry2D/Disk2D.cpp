@@ -278,7 +278,7 @@ throw (Error <NOT_SUPPORTED>,
 	if (getElements () .empty ())
 		throw Error <DISPOSED> ("Disk2D::toPrimitive");
 
-	if (getElements () [0] .vertexMode == GL_POINTS)
+	if (getElements () [0] .vertexMode () == GL_POINTS)
 	{
 		// Point
 	
@@ -294,7 +294,7 @@ throw (Error <NOT_SUPPORTED>,
 		return SFNode (geometry);
 	}
 
-	if (getElements () [0] .vertexMode == GL_LINE_LOOP)
+	if (getElements () [0] .vertexMode () == GL_LINE_LOOP)
 	{
 		// Circle
 	
@@ -324,13 +324,13 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 		
-	if (getElements () [0] .vertexMode == GL_POLYGON)
+	if (getElements () [0] .vertexMode () == GL_POLYGON)
 	{
 		// Disk
 	
-		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count);
+		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count ());
 
-		for (int32_t i = 0, size = getElements () [0] .count; i < size; ++ i)
+		for (int32_t i = 0, size = getElements () [0] .count (); i < size; ++ i)
 		{
 			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
 			geometry -> texCoordIndex () .emplace_back (i);
@@ -342,15 +342,15 @@ throw (Error <NOT_SUPPORTED>,
 		
 		if (not solid ())
 		{
-			for (int32_t i = 1, size = getElements () [0] .count; i < size; ++ i)
+			for (int32_t i = 1, size = getElements () [0] .count (); i < size; ++ i)
 			{
 				texCoord -> point () .emplace_back (1 - texCoord -> point () [size - i] .getX (), texCoord -> point () [size - i] .getY ());
-				geometry -> texCoordIndex () .emplace_back (i - 1 + getElements () [0] .count);
+				geometry -> texCoordIndex () .emplace_back (i - 1 + getElements () [0] .count ());
 				geometry -> coordIndex ()    .emplace_back (size - i);
 			}
 
 			texCoord -> point () .emplace_back (1 - texCoord -> point () [0] .getX (), texCoord -> point () [0] .getY ());
-			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count);
+			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count ());
 			geometry -> coordIndex ()    .emplace_back (0);
 			geometry -> texCoordIndex () .emplace_back (-1);
 			geometry -> coordIndex ()    .emplace_back (-1);
@@ -360,13 +360,13 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		// Disk with hole
 
-		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count - 2);
+		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count () - 2);
 
-		for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count))
+		for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 
 		int32_t       i    = 0;
-		const int32_t size = getElements () [0] .count - 4;
+		const int32_t size = getElements () [0] .count () - 4;
 
 		for (; i < size; i += 2)
 		{
@@ -399,7 +399,7 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const int32_t ts = texCoord -> point () .size ();
 
-			for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count))
+			for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
 				texCoord -> point () .emplace_back (1 - point .x (), point .y ());
 
 			i = 0;

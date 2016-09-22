@@ -305,30 +305,28 @@ X3DPrimitiveCountEditor::traverse (X3D::SFNode & node)
 void
 X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 {
-	switch (element .vertexMode)
+	switch (element .vertexMode ())
 	{
 		case GL_POINTS:
-			points += element .count;
+			points += element .count ();
 			break;
 		case GL_LINES:
-			lines += element .count / 2;
+			lines += element .count () / 2;
 			break;
 		case GL_LINE_LOOP:
-			lines += element .count;
+			lines += element .count ();
 			break;
 		case GL_LINE_STRIP:
-			lines += element .count - 1;
+			lines += element .count () - 1;
 			break;
 		case GL_TRIANGLES:
-			triangles += element .count / 3;
+			triangles += element .count () / 3;
 			break;
 		case GL_QUADS:
-			quads += element .count / 4;
-			//triangles += 2 * element .count / 4;
+			quads += element .count () / 4;
 			break;
 		case GL_POLYGON:
 			++ polygons;
-			//triangles += element .count - 2;
 			break;
 	}
 }

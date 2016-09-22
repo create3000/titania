@@ -192,17 +192,16 @@ X3DGeometryNodeTool::eventProcessed ()
 		auto &       edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
 		auto &       edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
 
-		size_t first = 0;
-		size_t p     = 0;
-		size_t v     = 0;
+		size_t p = 0;
+		size_t v = 0;
 
 		for (const auto & element : elements)
 		{
-			switch (element .vertexMode)
+			switch (element .vertexMode ())
 			{
 				case GL_TRIANGLES :
 					{
-						for (size_t i = first, size = first + element .count; i < size; i += 3)
+						for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 						{
 							edgesVertexCount .set1Value (v ++, 4);
 							edgesPoint       .set1Value (p ++, vertices [i + 0]);
@@ -215,7 +214,7 @@ X3DGeometryNodeTool::eventProcessed ()
 					}
 				case GL_QUADS:
 				{
-					for (size_t i = first, size = first + element .count; i < size; i += 4)
+					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 					{
 						edgesVertexCount .set1Value (v ++, 5);
 						edgesPoint       .set1Value (p ++, vertices [i + 0]);
@@ -229,19 +228,17 @@ X3DGeometryNodeTool::eventProcessed ()
 				}
 				case GL_POLYGON:
 				{
-					edgesVertexCount .set1Value (v ++, element .count + 1);
+					edgesVertexCount .set1Value (v ++, element .count () + 1);
 
-					for (size_t i = first, size = first + element .count; i < size; ++ i)
+					for (size_t i = element .first (), size = element .last (); i < size; ++ i)
 						edgesPoint .set1Value (p ++, vertices [i]);
 
-					edgesPoint .set1Value (p ++, vertices [first]);
+					edgesPoint .set1Value (p ++, vertices [element .first ()]);
 					break;
 				}
 				default:
 					break;
 			}
-
-			first += element .count;
 		}
 
 		edgesVertexCount .resize (v);

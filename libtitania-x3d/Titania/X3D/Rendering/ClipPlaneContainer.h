@@ -68,7 +68,7 @@ public:
 	ClipPlaneContainer (ClipPlane* const);
 
 	bool
-	isClipped (const Vector3d &, const Matrix4d &) const;
+	isClipped (const Vector3d &) const;
 
 	virtual
 	void

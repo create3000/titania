@@ -167,17 +167,22 @@ public:
 	intersects (Line3d, std::vector <IntersectionPtr> &) const final override;
 
 	virtual
-	std::vector <Vector3d>
-	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer, const std::shared_ptr <FrameBuffer> & depthBuffer, std::vector <IntersectionPtr> &) final override;
+	bool
+	intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const final override
+	{ return getNode <X3DGeometryNode> () -> intersects (box, clipPlanes, modelViewMatrix); }
 
 	virtual
-	bool
-	intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes) const final override
-	{ return getNode <X3DGeometryNode> () -> intersects (box, clipPlanes); }
+	std::vector <Vector3d>
+	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+	            const std::shared_ptr <FrameBuffer> & depthBuffer,
+	            std::vector <IntersectionPtr> & intersections) final override;
 
 	virtual
 	void
-	triangulate (std::vector <Color4f> & colors, TexCoordArray & texCoords, std::vector <Vector3f> & normals, std::vector <Vector3d> & vertices) const final override
+	triangulate (std::vector <Color4f> & colors,
+	             TexCoordArray & texCoords,
+	             std::vector <Vector3f> & normals,
+	             std::vector <Vector3d> & vertices) const final override
 	{ getNode <X3DGeometryNode> () -> triangulate (colors, texCoords, normals, vertices); }
 
 	virtual

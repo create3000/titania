@@ -74,8 +74,30 @@ X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
 	shaderNode .set (value);
 }
 
+bool
+X3DLineGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
+{
+	return false;
+}
+
+bool
+X3DLineGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const
+{
+	return false;
+}
+
+std::vector <Vector3d>
+X3DLineGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+                       	         const std::shared_ptr <FrameBuffer> & depthBuffer,
+                       	         std::vector <IntersectionPtr> & intersections)
+{
+	std::vector <Vector3d> hitPoints;
+
+	return hitPoints;
+}
+
 void
-X3DLineGeometryNode::depth (const CollisionContainer* const)
+X3DLineGeometryNode::depth (const CollisionContainer* const context)
 { }
 
 void
@@ -118,12 +140,9 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	// Draw
 	// Wireframes are always solid so only one drawing call is needed.
 
-	size_t first = 0;
-
 	for (const auto & element : getElements ())
 	{
-		glDrawArrays (pointShading ? GL_POINTS : element .vertexMode, first, element .count);
-		first += element .count;
+		glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
 	}
 
 	// VertexAttribs

@@ -89,16 +89,16 @@ public:
 	///  Default constructor. Constructs a plane in the Z=0 plane with distance 0.
 	constexpr
 	plane3 () :
-		value { { 0, 0, 1 }, 0 }
-
+		              m_normal (0, 0, 1),
+		m_distance_from_origin (0)
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	plane3 (const plane3 <Up> & plane) :
-		value { plane .normal (), plane .distance_from_origin () }
-
+		              m_normal (plane .normal ()),
+		m_distance_from_origin (plane .distance_from_origin ())
 	{ }
 
 	///  Constructs a plane from @a point1, @a point2 and @a point3. The normal is calculated
@@ -110,14 +110,15 @@ public:
 	///  Constructs a plane from @a point and @a normal.
 	constexpr
 	plane3 (const vector3 <Type> & point, const vector3 <Type> & normal) :
-		value { normal, dot (normal, point) }
-
+		              m_normal (normal),
+		m_distance_from_origin (dot (normal, point))
 	{ }
 
-	///  Constructs a plane from @a normal and @a distanceFromOrigin.
-	plane3 (const vector3 <Type> & normal, const Type & distanceFromOrigin) :
-		value { normal, distanceFromOrigin }
-
+	///  Constructs a plane from @a normal and @a distance_from_origin.
+	constexpr
+	plane3 (const vector3 <Type> & normal, const Type & distance_from_origin) :
+		              m_normal (normal),
+		m_distance_from_origin (distance_from_origin)
 	{ }
 
 	///  @name Element access
@@ -125,12 +126,12 @@ public:
 	///  Returns the normal of this plane.
 	const vector3 <Type> &
 	normal () const
-	{ return value .normal; }
+	{ return m_normal; }
 
 	///  Returns the distance form origin.
 	const Type &
 	distance_from_origin () const
-	{ return value .distanceFromOrigin; }
+	{ return m_distance_from_origin; }
 	
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.
@@ -140,18 +141,18 @@ public:
 	operator *= (const matrix4 <Type> & matrix)
 	throw (std::domain_error)
 	{
-		mult_plane_matrix (matrix);
+		mult_right (matrix);
 		return *this;
 	}
 
 	///  Transform this plane by @a matrix.
 	void
-	mult_plane_matrix (const matrix4 <Type> &)
+	mult_right (const matrix4 <Type> &)
 	throw (std::domain_error);
 
 	///  Transform this plane by @a matrix.
 	void
-	mult_matrix_plane (const matrix4 <Type> &)
+	mult_left (const matrix4 <Type> &)
 	throw (std::domain_error);
 
 	//  @name Distance
@@ -165,7 +166,7 @@ public:
 	closest_point (const vector3 <Type> & point)
 	{
 		vector3 <Type> closest_point;
-		intersects (line3 <Type> (point, value .normal), closest_point);
+		intersects (line3 <Type> (point, m_normal), closest_point);
 		return closest_point;
 	}
 
@@ -176,13 +177,8 @@ public:
 
 private:
 
-	struct Value
-	{
-		vector3 <Type> normal;
-		Type distanceFromOrigin;
-	};
-
-	Value value;
+	vector3 <Type> m_normal;
+	Type           m_distance_from_origin;
 
 };
 
@@ -191,7 +187,7 @@ private:
 ///  Transform a plane by the given matrix
 template <class Type>
 void
-plane3 <Type>::mult_plane_matrix (const matrix4 <Type> & matrix)
+plane3 <Type>::mult_right (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
 	// Taken from Inventor:
@@ -217,7 +213,7 @@ throw (std::domain_error)
 
 template <class Type>
 void
-plane3 <Type>::mult_matrix_plane (const matrix4 <Type> & matrix)
+plane3 <Type>::mult_left (const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
 	// Taken from Inventor:
@@ -284,7 +280,7 @@ operator * (const plane3 <Type> & plane, const matrix4 <Type> & matrix)
 throw (std::domain_error)
 {
 	plane3 <Type> result (plane);
-	result .mult_plane_matrix (matrix);
+	result .mult_right (matrix);
 	return result;
 }
 
@@ -294,7 +290,7 @@ operator * (const matrix4 <Type> & matrix, const plane3 <Type> & plane)
 throw (std::domain_error)
 {
 	plane3 <Type> result (plane);
-	result .mult_matrix_plane (matrix);
+	result .mult_left (matrix);
 	return result;
 }
 

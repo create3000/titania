@@ -86,13 +86,13 @@ ClipPlane::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-ClipPlane::isClipped (const Matrix4d & matrix, const Vector3d & point)
+ClipPlane::isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix)
 {
 	try
 	{
 		auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
 
-		clipPlane .mult_plane_matrix (matrix);
+		clipPlane .mult_right (modelViewMatrix);
 
 		return clipPlane .distance (point) < 0;
 	}
@@ -123,7 +123,7 @@ ClipPlane::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	{
 		auto clipPlane = Plane3d (Vector3d (plane () .getX (), plane () .getY (), plane () .getZ ()), -plane () .getW ());
 	
-		clipPlane .mult_plane_matrix (modelViewMatrix);
+		clipPlane .mult_right (modelViewMatrix);
 	
 		glUniform4f (shaderObject -> getClipPlaneUniformLocation () [i],
 		             clipPlane .normal () .x (),

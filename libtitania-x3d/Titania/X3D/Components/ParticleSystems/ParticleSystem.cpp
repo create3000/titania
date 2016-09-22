@@ -1217,7 +1217,9 @@ ParticleSystem::set_geometry_shader_texture_buffers ()
 }
 
 bool
-ParticleSystem::intersects (const Box3d & box, const ClipPlaneContainerArray & clipPlanes)
+ParticleSystem::intersects (const Box3d & box,
+                            const ClipPlaneContainerArray & clipPlanes,
+                            const Matrix4d & modelViewMatrix)
 {
 	return false;
 }

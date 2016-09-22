@@ -120,9 +120,11 @@ Shape::getBBox () const
 }
 
 bool
-Shape::intersects (const Box3d & box, const ClipPlaneContainerArray & clipPlanes)
+Shape::intersects (const Box3d & box,
+                   const ClipPlaneContainerArray & clipPlanes,
+                   const Matrix4d & modelViewMatrix)
 {
-	return getGeometry () -> intersects (box, clipPlanes);
+	return getGeometry () -> intersects (box, clipPlanes, modelViewMatrix);
 }
 
 void

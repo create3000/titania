@@ -377,9 +377,7 @@ f ()
 {
 	Box3d b (Vector3d (2, 2, 2), Vector3d ());
 
-	Vector3d  o (0.49, 0.49, 0);
-
-	__LOG__ << b .intersects (Vector3d (0, 1.5, 0) + o, Vector3d (1.5, 0, 0) + o, Vector3d (1.5, 1.5, 0) + o) << std::endl;
+	__LOG__ << b .intersects (Vector3d (0, 0, 0), Vector3d (0.5, 0, 0), Vector3d (0, 0.5, 0)) << std::endl;
 }
 
 int

@@ -259,15 +259,17 @@ public:
 
 	virtual
 	bool
-	intersects (const Box3d &, const ClipPlaneContainerArray &) override;
+	intersects (const Box3d & box,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            const Matrix4d & modelViewMatrix) override;
 
 	virtual
 	void
-	traverse (const TraverseType) override;
+	traverse (const TraverseType type) override;
 
 	virtual
 	void
-	depth (const CollisionContainer* const) override;
+	depth (const CollisionContainer* const context) override;
 
 	virtual
 	void

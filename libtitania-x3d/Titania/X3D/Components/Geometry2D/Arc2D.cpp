@@ -192,7 +192,7 @@ throw (Error <NOT_SUPPORTED>,
 	for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
 		geometry -> coordIndex () .emplace_back (i);
 
-	if (getElements () [0] .vertexMode == GL_LINE_LOOP)
+	if (getElements () [0] .vertexMode () == GL_LINE_LOOP)
 		geometry -> coordIndex () .emplace_back (0);
 
 	geometry -> coordIndex () .emplace_back (-1);

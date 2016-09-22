@@ -64,9 +64,9 @@ ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
 { }
 
 bool
-ClipPlaneContainer::isClipped (const Vector3d & point, const Matrix4d & matrix) const
+ClipPlaneContainer::isClipped (const Vector3d & point) const
 {
-	return node -> isClipped (modelViewMatrix, point * matrix);
+	return node -> isClipped (point, modelViewMatrix);
 }
 
 void

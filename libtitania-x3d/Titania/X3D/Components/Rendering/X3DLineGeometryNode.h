@@ -64,12 +64,25 @@ public:
 	///  @name Operations
 
 	virtual
-	void
-	depth (const CollisionContainer* const) final override;
+	bool
+	intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const final override;
+
+	virtual
+	bool
+	intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const final override;
+
+	std::vector <Vector3d>
+	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+	            const std::shared_ptr <FrameBuffer> & depthBuffer,
+	            std::vector <IntersectionPtr> & intersections) final override;
 
 	virtual
 	void
-	draw (ShapeContainer* const) override;
+	depth (const CollisionContainer* const context) final override;
+
+	virtual
+	void
+	draw (ShapeContainer* const context) override;
 
 	///  @name Destruction
 
@@ -86,7 +99,7 @@ protected:
 	///  @name Member access
 
 	void
-	setShader (const X3DPtr <ComposedShader> &);
+	setShader (const X3DPtr <ComposedShader> & value);
 
 	const X3DPtr <ComposedShader> &
 	getShader () const

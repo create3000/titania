@@ -77,15 +77,38 @@ public:
 
 	///  @name Member types
 
-	struct Element
+	class Element
 	{
-		Element (const GLenum vertexMode, const size_t count) :
-			vertexMode (vertexMode),
-			     count (count)
+	public:
+
+		Element (const GLenum vertexMode, const size_t first, const size_t last) :
+			m_vertexMode (vertexMode),
+			     m_first (first),
+			      m_last (last)
 		{ }
 
-		const GLenum vertexMode;
-		const size_t count;
+		GLenum
+		vertexMode () const
+		{ return m_vertexMode; }
+
+		size_t
+		first () const
+		{ return m_first; }
+
+		size_t
+		last () const
+		{ return m_last; }
+
+		size_t
+		count () const
+		{ return m_last - m_first; }
+
+
+	private:
+
+		const GLenum m_vertexMode;
+		const size_t m_first;
+		const size_t m_last;
 
 	};
 
@@ -167,15 +190,17 @@ public:
 
 	virtual
 	bool
-	intersects (Line3d, std::vector <IntersectionPtr> &) const;
-
-	virtual
-	std::vector <Vector3d>
-	intersects (const std::shared_ptr <FrameBuffer> &, const std::shared_ptr <FrameBuffer> &, std::vector <IntersectionPtr> &);
+	intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const;
 
 	virtual
 	bool
-	intersects (Box3d, const ClipPlaneContainerArray &) const;
+	intersects (Box3d, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const;
+
+	virtual
+	std::vector <Vector3d>
+	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+	            const std::shared_ptr <FrameBuffer> & depthBuffer,
+	            std::vector <IntersectionPtr> & intersections);
 
 	virtual
 	bool
@@ -274,22 +299,10 @@ protected:
 
 	static
 	GLenum
-	getVertexMode (size_t n)
-	{
-		switch (n)
-		{
-			case 3:
-				return GL_TRIANGLES;
-			case 4:
-				return GL_QUADS;
-			default:
-				return GL_POLYGON;
-		}
-	}
+	getVertexMode (const size_t n);
 
 	void
-	addElements (const GLenum count, const size_t vertexCount)
-	{ elements .emplace_back (count, vertexCount); }
+	addElements (const GLenum vertexMode, const size_t vertexCount);
 
 	const std::vector <GLuint> &
 	getAttribBufferIds () const
@@ -353,7 +366,7 @@ private:
 	intersects (const Line3d &, const size_t, const size_t, const size_t, const Matrix4d &, std::vector <IntersectionPtr>&) const;
 
 	bool
-	isClipped (const Vector3d &, const Matrix4d &, const ClipPlaneContainerArray &) const;
+	isClipped (const Vector3d &, const ClipPlaneContainerArray &) const;
 
 	void
 	triangulate (const size_t, const size_t, const size_t, std::vector <Color4f>&, TexCoordArray &, std::vector <Vector3f>&, std::vector <Vector3d>&) const;
