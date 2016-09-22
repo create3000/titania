@@ -199,21 +199,21 @@ addConstants (X3DBrowser* const browser, const std::string & source)
 	constants += "#define x3d_Geometry2D      2\n";
 	constants += "#define x3d_Geometry3D      3\n";
 
-	constants += "#define x3d_MaxClipPlanes  6\n";
-	constants += "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 0.0)\n";
+	constants += "#define x3d_MaxClipPlanes  " + basic::to_string (browser -> getMaxClipPlanes (), std::locale::classic ()) + "\n";
+	constants += "#define x3d_NoneClipPlane  vec4 (88.0, 51.0, 68.0, 33.0)\n"; // X3D!
 
 	constants += "#define x3d_NoneFog          0\n";
 	constants += "#define x3d_LinearFog        1\n";
 	constants += "#define x3d_ExponentialFog   2\n";
 	constants += "#define x3d_Exponential2Fog  3\n";
 
-	constants += "#define x3d_MaxLights         8\n";
+	constants += "#define x3d_MaxLights         " + basic::to_string (browser -> getMaxLights (), std::locale::classic ()) + "\n";
 	constants += "#define x3d_NoneLight         0\n";
 	constants += "#define x3d_DirectionalLight  1\n";
 	constants += "#define x3d_PointLight        2\n";
 	constants += "#define x3d_SpotLight         3\n";
 
-	constants += "#define x3d_MaxTextures                1\n";
+	constants += "#define x3d_MaxTextures                " + basic::to_string (browser -> getMaxTextures (), std::locale::classic ()) + "\n";
 	constants += "#define x3d_NoneTexture                0\n";
 	constants += "#define x3d_TextureType2D              2\n";
 	constants += "#define x3d_TextureType3D              3\n";

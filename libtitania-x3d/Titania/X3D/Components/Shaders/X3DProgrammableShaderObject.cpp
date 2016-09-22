@@ -74,7 +74,7 @@ static constexpr size_t MAX_CLIP_PLANES = 6;
 static constexpr size_t MAX_LIGHTS      = 8;
 static constexpr size_t MAX_TEX_COORD   = 4;
 
-static constexpr auto x3d_NoneClipPlane = Vector4f (88, 51, 68, 0);
+static constexpr auto x3d_NoneClipPlane = Vector4f (88, 51, 68, 33); // X3D!
 
 X3DProgrammableShaderObject::X3DProgrammableShaderObject () :
 	              X3DBaseNode (),

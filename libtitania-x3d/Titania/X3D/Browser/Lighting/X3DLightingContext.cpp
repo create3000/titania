@@ -80,5 +80,11 @@ X3DLightingContext::initialize ()
 	}
 }
 
+size_t
+X3DLightingContext::getMaxLights () const
+{
+	return 8;
+}
+
 } // X3D
 } // titania

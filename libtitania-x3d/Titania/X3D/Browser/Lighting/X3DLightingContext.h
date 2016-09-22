@@ -69,8 +69,7 @@ public:
 	///  @name Member access
 
 	size_t
-	getMaxLights () const
-	{ return maxLights; }
+	getMaxLights () const;
 
 	LightStack &
 	getLights ()

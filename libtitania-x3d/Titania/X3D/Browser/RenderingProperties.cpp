@@ -349,7 +349,7 @@ RenderingProperties::toStream (std::ostream & stream) const
 			<< "\tCurrent Graphics Renderer" << std::endl
 			<< "\t\tName: " << Vendor () .getValue () << ' ' << Renderer () .getValue () << std::endl
 			<< "\tOpenGL extension version: " << Version () .getValue () << std::endl
-			<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << std::endl
+			<< "\tShading language version: " << glGetString (GL_SHADING_LANGUAGE_VERSION) << ", 1.0 es Cobweb (default)" << std::endl
 
 			<< "\tRendering Properties" << std::endl
 			<< "\t\tTexture units: " << TextureUnits () << " / " << getBrowser () -> getMaxCombinedTextureUnits () - getBrowser () -> getMaxTextureUnits () << std::endl

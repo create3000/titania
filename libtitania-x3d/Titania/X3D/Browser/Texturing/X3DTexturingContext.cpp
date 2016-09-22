@@ -127,6 +127,12 @@ X3DTexturingContext::initialize ()
 }
 
 size_t
+X3DTexturingContext::getMaxTextures () const
+{
+	return 1;
+}
+
+size_t
 X3DTexturingContext::getAvailableTextureMemory () const
 {
 	try

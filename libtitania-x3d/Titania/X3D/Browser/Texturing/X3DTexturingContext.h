@@ -76,6 +76,9 @@ public:
 	///  @name Member access
 
 	size_t
+	getMaxTextures () const;
+
+	size_t
 	getTextureMemory () const
 	{ return textureMemory; }
 

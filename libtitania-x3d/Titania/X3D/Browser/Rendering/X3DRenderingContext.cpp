@@ -117,6 +117,12 @@ X3DRenderingContext::initialize ()
 	motionBlur -> setup ();
 }
 
+size_t
+X3DRenderingContext::getMaxClipPlanes () const
+{
+	return 6;
+}
+
 void
 X3DRenderingContext::reshape (const Vector4i & value)
 noexcept (true)

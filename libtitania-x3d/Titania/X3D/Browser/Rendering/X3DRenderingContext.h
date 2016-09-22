@@ -120,8 +120,7 @@ public:
 	{ return modelViewMatrix; }
 
 	size_t
-	getMaxClipPlanes () const
-	{ return maxClipPlanes; }
+	getMaxClipPlanes () const;
 
 	ClipPlaneStack &
 	getClipPlanes ()
