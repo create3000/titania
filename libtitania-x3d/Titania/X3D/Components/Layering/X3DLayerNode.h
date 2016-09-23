@@ -234,12 +234,11 @@ public:
 
 protected:
 
-	using X3DNode::addChildren;
-	using X3DNode::removeChildren;
-
 	///  @name Friends
 
 	friend class GeneratedCubeMapTexture;
+	friend class ParticleSystem;
+	friend class Shape;
 	friend class X3DLightNode;
 
 	///  @name Construction

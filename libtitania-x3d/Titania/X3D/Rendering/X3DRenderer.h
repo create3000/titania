@@ -155,21 +155,6 @@ public:
 	Vector3d
 	constrainTranslation (const Vector3d & translation) const;
 
-	const std::shared_ptr <LightContainer> &
-	getLight () const;
-
-	void
-	addCollisionShape (X3DShapeNode* const shape);
-
-	void
-	addDepthShape (X3DShapeNode* const shape);
-
-	void
-	addDrawShape (X3DShapeNode* const shape);
-
-	void
-	addDisplayShape (X3DShapeNode* const shape);
-
 	void
 	render (const TraverseType type, const std::function <void (const TraverseType)> & traverse);
 
@@ -193,16 +178,27 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member acess
+
+	const std::shared_ptr <LightContainer> &
+	getLight () const;
+
+	void
+	addCollisionShape (X3DShapeNode* const shape);
+
+	void
+	addDepthShape (X3DShapeNode* const shape);
+
+	void
+	addDrawShape (X3DShapeNode* const shape);
+
+	void
+	addDisplayShape (X3DShapeNode* const shape);
+
 
 private:
 
 	///  @name Operations
-
-	double
-	getDistance (const Vector3d &) const;
-
-	double
-	getDepth (const Matrix4d &) const;
 
 	void
 	addShape (X3DShapeNode* const shape,
@@ -210,6 +206,12 @@ private:
 	          size_t & numOpaqueShapes,
 	          ShapeContainerArray & transparentShapes,
 	          size_t & numTransparentShapes);
+
+	double
+	getDistance (const Vector3d &) const;
+
+	double
+	getDepth (const Matrix4d &) const;
 
 	void
 	collide ();

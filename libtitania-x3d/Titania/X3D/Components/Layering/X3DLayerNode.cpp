@@ -72,13 +72,13 @@ X3DLayerNode::Fields::Fields () :
 	      children (new MFNode ())
 { }
 
-X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode* layerGroup_) :
+X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNode* p_layerGroup) :
 	              X3DNode (),
 	          X3DRenderer (),
 	               fields (),
 	               layer0 (false),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
-	     defaultViewpoint (defaultViewpoint_),
+	     defaultViewpoint (p_defaultViewpoint),
 	    defaultBackground (new Background (getExecutionContext ())),
 	           defaultFog (new Fog (getExecutionContext ())),
 	      currentViewport (),
@@ -91,26 +91,26 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* defaultViewpoint_, X3DGroupingNode
 	          backgrounds (new BackgroundList (getExecutionContext ())),
 	                 fogs (new FogList (getExecutionContext ())),
 	            localFogs (),
-	            groupNode (layerGroup_),
-	          friendsNode (layerGroup_ -> create (getExecutionContext ()))
+	            groupNode (p_layerGroup),
+	          friendsNode (p_layerGroup -> create (getExecutionContext ()))
 {
 	addType (X3DConstants::X3DLayerNode);
 
-	addChildren (defaultNavigationInfo,
-	             defaultViewpoint,
-	             defaultBackground,
-	             defaultFog,
-	             currentViewport,
-	             navigationInfoStack,
-	             viewpointStack,
-	             backgroundStack,
-	             fogStack,
-	             navigationInfos,
-	             viewpoints,
-	             backgrounds,
-	             fogs,
-	             groupNode,
-	             friendsNode);
+	X3DParentObject::addChildren (defaultNavigationInfo,
+	                              defaultViewpoint,
+	                              defaultBackground,
+	                              defaultFog,
+	                              currentViewport,
+	                              navigationInfoStack,
+	                              viewpointStack,
+	                              backgroundStack,
+	                              fogStack,
+	                              navigationInfos,
+	                              viewpoints,
+	                              backgrounds,
+	                              fogs,
+	                              groupNode,
+	                              friendsNode);
 
 	defaultNavigationInfo -> isBound () = true;
 	defaultViewpoint      -> isBound () = true;

@@ -69,11 +69,11 @@ namespace X3D {
 const ComponentType X3DPrototypeInstance::component      = ComponentType::CORE;
 const std::string   X3DPrototypeInstance::containerField = "children";
 
-X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoDeclarationNodePtr & protoNode_) :
+X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const executionContext, const X3DProtoDeclarationNodePtr & p_protoNode) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	            X3DNode (),
 	X3DExecutionContext (),
-	          protoNode (protoNode_),
+	          protoNode (p_protoNode),
 	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
