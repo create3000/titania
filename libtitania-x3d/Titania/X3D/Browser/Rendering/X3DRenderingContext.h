@@ -63,7 +63,6 @@ namespace X3D {
 
 class MotionBlur;
 
-using UpdateNodesStack = std::stack <bool, std::vector <bool>>;
 using ClipPlaneStack   = std::stack <GLenum, std::vector <GLenum>>;
 using DepthTestStack   = std::stack <bool, std::vector <bool>>;
 using DepthOffsetStack = std::stack <double, std::vector <double>>;
@@ -74,14 +73,6 @@ class X3DRenderingContext :
 public:
 
 	///  @name Member access
-
-	UpdateNodesStack &
-	getUpdateNodes ()
-	{ return updateNodes; }
-
-	const UpdateNodesStack &
-	getUpdateNodes () const
-	{ return updateNodes; }
 
 	const MFInt32 &
 	getViewport () const
@@ -177,7 +168,6 @@ private:
 
 	///  @name Members
 
-	UpdateNodesStack    updateNodes;
 	MFInt32             viewport;
 	Matrix4dStack       projectionMatrix;
 	Matrix4dStack       cameraSpaceMatrix;

@@ -237,6 +237,7 @@
     <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\wp-embed.js" />
     <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\wp-emoji-release.js" />
     <None Include="moeller_triangle.pdf" />
+    <None Include="GDC01_Shadows.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

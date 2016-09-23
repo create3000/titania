@@ -152,6 +152,9 @@ public:
 	getTransparentShapes () const
 	{ return transparentDisplayShapes; }
 
+	Vector3d
+	constrainTranslation (const Vector3d & translation) const;
+
 	const std::shared_ptr <LightContainer> &
 	getLight () const;
 
@@ -166,9 +169,6 @@ public:
 
 	void
 	addDisplayShape (X3DShapeNode* const shape);
-
-	Vector3d
-	constrainTranslation (const Vector3d & translation) const;
 
 	void
 	render (const TraverseType type, const std::function <void (const TraverseType)> & traverse);
@@ -198,18 +198,18 @@ private:
 
 	///  @name Operations
 
+	double
+	getDistance (const Vector3d &) const;
+
+	double
+	getDepth (const Matrix4d &) const;
+
 	void
 	addShape (X3DShapeNode* const shape,
 	          ShapeContainerArray & opaqueShapes,
 	          size_t & numOpaqueShapes,
 	          ShapeContainerArray & transparentShapes,
 	          size_t & numTransparentShapes);
-
-	double
-	getDistance (const Vector3d &) const;
-
-	double
-	getDepth (const Matrix4d &) const;
 
 	void
 	collide ();

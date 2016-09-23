@@ -59,7 +59,6 @@ namespace X3D {
 
 X3DRenderingContext::X3DRenderingContext () :
 	         X3DBaseNode (),
-	         updateNodes ({ true }),
 	            viewport ({ 0, 0, 0, 0 }),
 	    projectionMatrix (),
 	   cameraSpaceMatrix (),

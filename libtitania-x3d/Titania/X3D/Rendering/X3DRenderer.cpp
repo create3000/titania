@@ -122,108 +122,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		depthBuffer -> setBrowser (executionContext -> getBrowser ());
 }
 
-void
-X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
-{
-	// It should be possible to sort out shapes that are far away.
-
-	if (numCollisionShapes == collisionShapes .size ())
-		collisionShapes .emplace_back (new CollisionContainer ());
-
-	const auto & context = collisionShapes [numCollisionShapes];
-
-	++ numCollisionShapes;
-
-	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
-	context -> setCollisions (getCollisions ());
-	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
-}
-
-void
-X3DRenderer::addDepthShape (X3DShapeNode* const shape)
-{
-	// It should be possible to sort out shapes that are far away.
-
-	if (numDepthShapes == depthShapes .size ())
-		depthShapes .emplace_back (new CollisionContainer ());
-
-	const auto & context = depthShapes [numDepthShapes];
-
-	++ numDepthShapes;
-
-	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
-	context -> setLocalObjects (getLocalObjects ());
-	context -> setClipPlanes (getClipPlanes ());
-}
-
-void
-X3DRenderer::addDrawShape (X3DShapeNode* const shape)
-{
-	addShape (shape, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
-}
-
-void
-X3DRenderer::addDisplayShape (X3DShapeNode* const shape)
-{
-	addShape (shape, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
-}
-
-void
-X3DRenderer::addShape (X3DShapeNode* const shape,
-                       ShapeContainerArray & opaqueShapes,
-                       size_t & numOpaqueShapes,
-                       ShapeContainerArray & transparentShapes,
-                       size_t & numTransparentShapes)
-{
-	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
-	const auto depth  = bbox .size   () .z () / 2;
-	const auto min    = bbox .center () .z () - depth;
-	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
-
-	if (min > 0)
-	   return;
-
-	const auto & viewVolume = getViewVolumes () .back ();
-
-	if (viewVolume .intersects (bbox))
-	{
-	   ShapeContainer* context = nullptr;
-
-		if (shape -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
-		{
-		   if (numTransparentShapes == transparentShapes .size ())
-		      transparentShapes .emplace_back (new ShapeContainer (this, true));
-
-			context = transparentShapes [numTransparentShapes] .get ();
-
-			++ numTransparentShapes;
-		}
-		else
-		{
-		   if (numOpaqueShapes == opaqueShapes .size ())
-		      opaqueShapes .emplace_back (new ShapeContainer (this, false));
-
-			context = opaqueShapes [numOpaqueShapes] .get ();
-
-			++ numOpaqueShapes;
-		}
-
-		context -> setScissor (viewVolume .getScissor ());
-		context -> setModelViewMatrix (getModelViewMatrix () .get ());
-		context -> setShape (shape);
-		context -> setFog (getFog ());
-		context -> setLocalObjects (getLocalObjects ());
-		context -> setClipPlanes (getClipPlanes ());
-		context -> setLocalLights (getLocalLights ());
-		context -> setDistance (center);
-	}
-}
-
 ///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
 X3DRenderer::constrainTranslation (const Vector3d & translation) const
@@ -338,12 +236,6 @@ X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
 	return depth;
 }
 
-const std::shared_ptr <LightContainer> &
-X3DRenderer::getLight () const
-{
-	return lights [const_cast <size_t &> (lightId) ++];
-}
-
 void
 X3DRenderer::render (const TraverseType type, const std::function <void (const TraverseType)> & traverse)
 {
@@ -392,6 +284,114 @@ X3DRenderer::render (const TraverseType type, const std::function <void (const T
 		}
 		default:
 			break;
+	}
+}
+
+const std::shared_ptr <LightContainer> &
+X3DRenderer::getLight () const
+{
+	return lights [const_cast <size_t &> (lightId) ++];
+}
+
+void
+X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
+{
+	// It should be possible to sort out shapes that are far away.
+
+	if (numCollisionShapes == collisionShapes .size ())
+		collisionShapes .emplace_back (new CollisionContainer ());
+
+	const auto & context = collisionShapes [numCollisionShapes];
+
+	++ numCollisionShapes;
+
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setCollisions (getCollisions ());
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+}
+
+void
+X3DRenderer::addDepthShape (X3DShapeNode* const shape)
+{
+	// It should be possible to sort out shapes that are far away.
+
+	if (numDepthShapes == depthShapes .size ())
+		depthShapes .emplace_back (new CollisionContainer ());
+
+	const auto & context = depthShapes [numDepthShapes];
+
+	++ numDepthShapes;
+
+	context -> setScissor (getViewVolumes () .back () .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shape);
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+}
+
+void
+X3DRenderer::addDrawShape (X3DShapeNode* const shape)
+{
+	addShape (shape, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+}
+
+void
+X3DRenderer::addDisplayShape (X3DShapeNode* const shape)
+{
+	addShape (shape, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
+}
+
+void
+X3DRenderer::addShape (X3DShapeNode* const shape,
+                       ShapeContainerArray & opaqueShapes,
+                       size_t & numOpaqueShapes,
+                       ShapeContainerArray & transparentShapes,
+                       size_t & numTransparentShapes)
+{
+	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const auto depth  = bbox .size   () .z () / 2;
+	const auto min    = bbox .center () .z () - depth;
+	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
+
+	if (min > 0)
+	   return;
+
+	const auto & viewVolume = getViewVolumes () .back ();
+
+	if (viewVolume .intersects (bbox))
+	{
+	   ShapeContainer* context = nullptr;
+
+		if (shape -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
+		{
+		   if (numTransparentShapes == transparentShapes .size ())
+		      transparentShapes .emplace_back (new ShapeContainer (this, true));
+
+			context = transparentShapes [numTransparentShapes] .get ();
+
+			++ numTransparentShapes;
+		}
+		else
+		{
+		   if (numOpaqueShapes == opaqueShapes .size ())
+		      opaqueShapes .emplace_back (new ShapeContainer (this, false));
+
+			context = opaqueShapes [numOpaqueShapes] .get ();
+
+			++ numOpaqueShapes;
+		}
+
+		context -> setScissor (viewVolume .getScissor ());
+		context -> setModelViewMatrix (getModelViewMatrix () .get ());
+		context -> setShape (shape);
+		context -> setFog (getFog ());
+		context -> setLocalObjects (getLocalObjects ());
+		context -> setClipPlanes (getClipPlanes ());
+		context -> setLocalLights (getLocalLights ());
+		context -> setDistance (center);
 	}
 }
 
