@@ -268,15 +268,15 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const);
+	setGlobalUniforms (ShapeContainer* const context);
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const);
+	setLocalUniforms (ShapeContainer* const context);
 
 	virtual
 	void
-	enableColorAttrib (const GLuint);
+	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
 	
 	virtual
 	void
@@ -284,7 +284,10 @@ public:
 
 	virtual
 	void
-	enableTexCoordAttrib (const std::vector <GLuint> &);
+	enableTexCoordAttrib (const std::vector <GLuint> &,
+	                      const GLenum type,
+	                      const std::vector <GLsizei> & stride,
+	                      const std::vector <GLvoid*> & pointer);
 	
 	virtual
 	void
@@ -292,7 +295,7 @@ public:
 
 	virtual
 	void
-	enableNormalAttrib (const GLuint);
+	enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
 	
 	virtual
 	void
@@ -300,7 +303,7 @@ public:
 
 	virtual
 	void
-	enableVertexAttrib (const GLuint);
+	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer);
 	
 	virtual
 	void

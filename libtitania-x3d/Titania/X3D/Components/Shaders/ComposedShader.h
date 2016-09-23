@@ -153,8 +153,8 @@ public:
 
 	virtual
 	void
-	enableColorAttrib (const GLuint buffer) final override
-	{ X3DProgrammableShaderObject::enableColorAttrib (buffer); }
+	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
+	{ X3DProgrammableShaderObject::enableColorAttrib (buffer, type, stride, pointer); }
 	
 	virtual
 	void
@@ -163,9 +163,12 @@ public:
 
 	virtual
 	void
-	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
-	{ X3DProgrammableShaderObject::enableTexCoordAttrib (buffers); }
-	
+	enableTexCoordAttrib (const std::vector <GLuint> & buffer,
+	                      const GLenum type,
+	                      const std::vector <GLsizei> & stride,
+	                      const std::vector <GLvoid*> & pointer) final override
+	{ X3DProgrammableShaderObject::enableTexCoordAttrib (buffer, type, stride, pointer); }
+
 	virtual
 	void
 	disableTexCoordAttrib () final override
@@ -173,8 +176,8 @@ public:
 
 	virtual
 	void
-	enableNormalAttrib (const GLuint buffer) final override
-	{ X3DProgrammableShaderObject::enableNormalAttrib (buffer); }
+	enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
+	{ X3DProgrammableShaderObject::enableNormalAttrib (buffer, type, stride, pointer); }
 	
 	virtual
 	void
@@ -183,8 +186,8 @@ public:
 
 	virtual
 	void
-	enableVertexAttrib (const GLuint buffer) final override
-	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer); }
+	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride = 0, const GLvoid* pointer = nullptr) final override
+	{ X3DProgrammableShaderObject::enableVertexAttrib (buffer, type, stride, pointer); }
 	
 	virtual
 	void

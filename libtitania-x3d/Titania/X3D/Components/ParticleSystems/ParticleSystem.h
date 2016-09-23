@@ -329,6 +329,9 @@ private:
 	set_geometryType ();
 
 	void
+	set_shader ();
+
+	void
 	set_createParticles ();
 
 	void
@@ -438,6 +441,7 @@ private:
 	Fields fields;
 
 	GeometryType                              geometryTypeId;
+	X3D::GeometryType                         shaderGeometryType;
 	GLenum                                    glGeometryType;
 	size_t                                    numVertices;
 	int32_t                                   numParticles;
@@ -461,6 +465,7 @@ private:
 	X3DPtr <X3DColorNode>                     colorRampNode;
 	X3DPtr <X3DTextureCoordinateNode>         texCoordRampNode;
 	X3DPtr <X3DGeometryNode>                  geometryNode;
+	X3DPtr <ComposedShader>                   shaderNode;
 	size_t                                    numColors;
 	size_t                                    numTexCoord;
 	X3DPtrArray <X3DParticlePhysicsModelNode> physicsModelNodes;

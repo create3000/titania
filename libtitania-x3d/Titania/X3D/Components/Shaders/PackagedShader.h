@@ -138,7 +138,7 @@ public:
 
 	virtual
 	void
-	enableColorAttrib (const GLuint buffer) final override
+	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ }
 	
 	virtual
@@ -148,9 +148,12 @@ public:
 
 	virtual
 	void
-	enableTexCoordAttrib (const std::vector <GLuint> & buffers) final override
+	enableTexCoordAttrib (const std::vector <GLuint> &,
+	                      const GLenum type,
+	                      const std::vector <GLsizei> & stride,
+	                      const std::vector <GLvoid*> & pointer) final override
 	{ }
-	
+
 	virtual
 	void
 	disableTexCoordAttrib () final override
@@ -158,7 +161,7 @@ public:
 
 	virtual
 	void
-	enableNormalAttrib (const GLuint buffer) final override
+	enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ }
 	
 	virtual
@@ -168,7 +171,7 @@ public:
 
 	virtual
 	void
-	enableVertexAttrib (const GLuint buffer) final override
+	enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override
 	{ }
 	
 	virtual

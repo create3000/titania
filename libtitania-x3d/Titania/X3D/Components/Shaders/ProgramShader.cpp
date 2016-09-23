@@ -246,10 +246,10 @@ ProgramShader::setLocalUniforms (ShapeContainer* const context)
 }
 
 void
-ProgramShader::enableColorAttrib (const GLuint buffer)
+ProgramShader::enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> enableColorAttrib (buffer);
+		programNode -> enableColorAttrib (buffer, type, stride, pointer);
 }
 
 void
@@ -260,10 +260,13 @@ ProgramShader::disableColorAttrib ()
 }
 
 void
-ProgramShader::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
+ProgramShader::enableTexCoordAttrib (const std::vector <GLuint> & buffer,
+                                     const GLenum type,
+                                     const std::vector <GLsizei> & stride,
+                                     const std::vector <GLvoid*> & pointer)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> enableTexCoordAttrib (buffers);
+		programNode -> enableTexCoordAttrib (buffer, type, stride, pointer);
 }
 
 void
@@ -274,10 +277,10 @@ ProgramShader::disableTexCoordAttrib ()
 }
 
 void
-ProgramShader::enableNormalAttrib (const GLuint buffer)
+ProgramShader::enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> enableNormalAttrib (buffer);
+		programNode -> enableNormalAttrib (buffer, type, stride, pointer);
 }
 
 void
@@ -288,10 +291,10 @@ ProgramShader::disableNormalAttrib ()
 }
 
 void
-ProgramShader::enableVertexAttrib (const GLuint buffer)
+ProgramShader::enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	for (const auto & programNode : programNodes)
-		programNode -> enableVertexAttrib (buffer);
+		programNode -> enableVertexAttrib (buffer, type, stride, pointer);
 }
 
 void

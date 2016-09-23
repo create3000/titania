@@ -133,9 +133,9 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
 
 	if (not getColors () .empty ())
-		shaderNode -> enableColorAttrib (getColorBufferId ());
+		shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
 
-	shaderNode -> enableVertexAttrib (getVertexBufferId ());
+	shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
 
 	// Draw
 	// Wireframes are always solid so only one drawing call is needed.

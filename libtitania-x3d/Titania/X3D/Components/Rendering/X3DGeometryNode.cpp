@@ -919,17 +919,17 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
-	
+
 		if (not colors .empty ())
-			shaderNode -> enableColorAttrib (colorBufferId);
-	
+			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
+
 		if (not texCoords .empty ())
-			shaderNode -> enableTexCoordAttrib (texCoordBufferIds);
-	
+			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
+
 		if (not normals .empty ())
-			shaderNode -> enableNormalAttrib (normalBufferId);
+			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
 	
-		shaderNode -> enableVertexAttrib (vertexBufferId);
+		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
 	}
 
 	// Draw depending on ccw, transparency and solid.

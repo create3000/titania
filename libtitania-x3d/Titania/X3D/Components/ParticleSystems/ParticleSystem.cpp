@@ -50,6 +50,7 @@
 
 #include "ParticleSystem.h"
 
+#include "../../Browser/BrowserOptions.h"
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/ContextLock.h"
@@ -275,6 +276,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	            X3DShapeNode (),
 	                  fields (),
 	          geometryTypeId (GeometryType::QUAD),
+	      shaderGeometryType (X3D::GeometryType::GEOMETRY_3D),
 	          glGeometryType (GL_POINTS),
 	             numVertices (0),
 	            numParticles (0),
@@ -298,6 +300,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	           colorRampNode (),
 	        texCoordRampNode (),
 	            geometryNode (),
+	              shaderNode (),
 	               numColors (0),
 	             numTexCoord (0),
 	       physicsModelNodes (),
@@ -344,6 +347,7 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 	             colorRampNode,
 	             texCoordRampNode,
 	             geometryNode,
+	             shaderNode,
 	             physicsModelNodes,
 	             boundedPhysicsModelNodes);
 }
@@ -423,6 +427,8 @@ ParticleSystem::initialize ()
 	getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
 	isLive () .addInterest (this, &ParticleSystem::set_live);
 
+	getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &ParticleSystem::set_shader);
+
 	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
 	createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
@@ -456,6 +462,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
+		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &ParticleSystem::set_shader);
+
 		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::animate);
 		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::update);
 		getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
@@ -465,10 +473,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
+		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &ParticleSystem::set_shader);
+
 		getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
 
 		set_live ();
 		set_emitter ();
+		set_shader ();
 	}
 }
 
@@ -481,32 +492,27 @@ ParticleSystem::isTransparent () const
 	if (numColors and colorRampNode -> isTransparent ())
 		return true;
 
+	if (geometryTypeId == GeometryType::POINT)
+		return true;
+
+	if (geometryTypeId == GeometryType::GEOMETRY and getGeometry ())
+		return getGeometry () -> isTransparent ();
+
 	return false;
 }
 
 GeometryType
 ParticleSystem::getGeometryType () const
 {
-	switch (geometryTypeId)
+	if (geometryTypeId == GeometryType::GEOMETRY)
 	{
-		case GeometryType::POINT:
-			return X3D::GeometryType::GEOMETRY_POINTS;
-		case GeometryType::LINE:
-			return X3D::GeometryType::GEOMETRY_LINES;
-		case GeometryType::TRIANGLE:
-		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-			return X3D::GeometryType::GEOMETRY_3D;
-		case GeometryType::GEOMETRY:
-		{
-			if (getGeometry ())
-				return getGeometry () -> getGeometryType ();
+		if (getGeometry ())
+			return getGeometry () -> getGeometryType ();
 
-			return X3D::GeometryType::GEOMETRY_3D;
-		}
+		return shaderGeometryType;
 	}
 
-	return X3D::GeometryType::GEOMETRY_3D;
+	return shaderGeometryType;
 }
 
 Box3d
@@ -700,14 +706,50 @@ ParticleSystem::set_geometryType ()
 		}
 
 		set_texCoord ();
+		set_shader ();
 
 		geometryShader -> setField <SFInt32> ("numVertices",  int32_t (numVertices));
 		geometryShader -> setField <SFInt32> ("geometryType", int32_t (geometryTypeId));
 		geometryShader -> setField <MFVec4f> ("texCoord",     texCoord);
+	
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+ParticleSystem::set_shader ()
+{
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+		{
+			shaderGeometryType = X3D::GeometryType::GEOMETRY_POINTS;
+			shaderNode         = getBrowser () -> getPointShader ();
+			break;
+		}
+		case GeometryType::LINE:
+		{
+			shaderGeometryType = X3D::GeometryType::GEOMETRY_LINES;
+			shaderNode         = getBrowser () -> getWireframeShader ();
+			break;
+		}
+		case GeometryType::TRIANGLE:
+		case GeometryType::QUAD:
+		case GeometryType::SPRITE:
+		{
+			shaderGeometryType = X3D::GeometryType::GEOMETRY_3D;
+			shaderNode         = getBrowser () -> getDefaultShader ();
+			break;
+		}
+		case GeometryType::GEOMETRY:
+		{
+			shaderGeometryType = X3D::GeometryType::GEOMETRY_3D;
+			shaderNode         = getBrowser () -> getDefaultShader ();
+			break;
+		}
 	}
 }
 
@@ -1233,6 +1275,11 @@ ParticleSystem::traverse (const TraverseType type)
 	if (not isActive ())
 		return;
 
+	getAppearance () -> traverse (type);
+
+	if (getGeometry ())
+		getGeometry () -> traverse (type);
+
 	switch (type)
 	{
 		case TraverseType::POINTER:
@@ -1251,29 +1298,6 @@ ParticleSystem::traverse (const TraverseType type)
 		}
 		case TraverseType::DISPLAY:
 		{
-			try
-			{
-				if (getExecutionContext () -> isLive () and isLive ())
-				{
-					switch (geometryTypeId)
-					{
-						case GeometryType::SPRITE:
-						{
-							const auto rotation = getScreenAlignedRotation (getModelViewMatrix () .get ());
-
-							geometryShader -> setField <SFMatrix3f> ("rotation", rotation);
-							break;
-						}
-						default:
-							break;
-					}
-
-					transformShader -> setField <SFMatrix4f> ("modelViewMatrix", getModelViewMatrix () .get ());
-				}
-			}
-			catch (const std::exception &)
-			{ }
-
 			getCurrentLayer () -> addDisplayShape (this);
 			break;
 		}
@@ -1379,78 +1403,9 @@ ParticleSystem::update ()
 
 	transformShader -> disable ();
 
-	// Swap particle buffers
+	// Swap particle buffers.
 
 	swap_particle_buffers ();
-
-	// Geometry shader
-
-	switch (geometryTypeId)
-	{
-		case GeometryType::POINT:
-			break;
-		case GeometryType::LINE:
-		case GeometryType::TRIANGLE:
-		case GeometryType::QUAD:
-		case GeometryType::SPRITE:
-		{
-			geometryShader -> enable ();
-
-			glEnableVertexAttribArray (0);
-			glEnableVertexAttribArray (1);
-			glEnableVertexAttribArray (2);
-			glEnableVertexAttribArray (3);
-			glEnableVertexAttribArray (4);
-			glEnableVertexAttribArray (5);
-
-			glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
-			glVertexAttribPointer (0, 3, GL_FLOAT, false, 0, (void*) 0);
-
-			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-			glVertexAttribPointer (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
-			glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
-			glVertexAttribPointer (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
-			glVertexAttribPointer (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
-			glVertexAttribPointer (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
-
-			glVertexAttribDivisor (1, 1);
-			glVertexAttribDivisor (2, 1);
-			glVertexAttribDivisor (3, 1);
-			glVertexAttribDivisor (4, 1);
-			glVertexAttribDivisor (5, 1);
-
-			glEnable (GL_RASTERIZER_DISCARD);
-			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
-			glBeginTransformFeedback (GL_POINTS);
-
-			glDrawArraysInstanced (GL_POINTS, 0, numVertices, numParticles);
-
-			glEndTransformFeedback ();
-			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
-			glDisable (GL_RASTERIZER_DISCARD);
-
-			glVertexAttribDivisor (1, 0);
-			glVertexAttribDivisor (2, 0);
-			glVertexAttribDivisor (3, 0);
-			glVertexAttribDivisor (4, 0);
-			glVertexAttribDivisor (5, 0);
-
-			glDisableVertexAttribArray (0);
-			glDisableVertexAttribArray (1);
-			glDisableVertexAttribArray (2);
-			glDisableVertexAttribArray (3);
-			glDisableVertexAttribArray (4);
-			glDisableVertexAttribArray (5);
-			glBindBuffer (GL_ARRAY_BUFFER, 0);
-
-			geometryShader -> disable ();
-			break;
-		}
-		case GeometryType::GEOMETRY:
-		{
-			break;
-		}
-	}
 }
 
 void
@@ -1462,41 +1417,160 @@ ParticleSystem::draw (ShapeContainer* const context)
 {
 	try
 	{
-		const bool   solid     = true;
-		const GLenum frontFace = GL_CCW;
+		// Geometry shader
+	
+		switch (geometryTypeId)
+		{
+			case GeometryType::POINT:
+				break;
+			case GeometryType::SPRITE:
+			{
+				try
+				{
+					if (getExecutionContext () -> isLive () and isLive ())
+					{
+						glUseProgram (geometryShader -> getProgramId ());
 
-		if (solid)
-			glEnable (GL_CULL_FACE);
+						const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
+						const auto rotation         = getScreenAlignedRotation (getModelViewMatrix () .get ());
 
-		else
-			glDisable (GL_CULL_FACE);
+						glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
+					}
+				}
+				catch (const std::exception &)
+				{ }
 
-		glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+				// Proceed with next case.
+			}
+			case GeometryType::LINE:
+			case GeometryType::TRIANGLE:
+			case GeometryType::QUAD:
+			{
+				geometryShader -> enable ();
+	
+				glEnableVertexAttribArray (0);
+				glEnableVertexAttribArray (1);
+				glEnableVertexAttribArray (2);
+				glEnableVertexAttribArray (3);
+				glEnableVertexAttribArray (4);
+				glEnableVertexAttribArray (5);
+	
+				glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+				glVertexAttribPointer (0, 3, GL_FLOAT, false, 0, (void*) 0);
+	
+				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+				glVertexAttribPointer (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
+				glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
+				glVertexAttribPointer (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
+				glVertexAttribPointer (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
+				glVertexAttribPointer (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
+	
+				glVertexAttribDivisor (1, 1);
+				glVertexAttribDivisor (2, 1);
+				glVertexAttribDivisor (3, 1);
+				glVertexAttribDivisor (4, 1);
+				glVertexAttribDivisor (5, 1);
+	
+				glEnable (GL_RASTERIZER_DISCARD);
+				glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
+				glBeginTransformFeedback (GL_POINTS);
+	
+				glDrawArraysInstanced (GL_POINTS, 0, numVertices, numParticles);
+	
+				glEndTransformFeedback ();
+				glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+				glDisable (GL_RASTERIZER_DISCARD);
+	
+				glVertexAttribDivisor (1, 0);
+				glVertexAttribDivisor (2, 0);
+				glVertexAttribDivisor (3, 0);
+				glVertexAttribDivisor (4, 0);
+				glVertexAttribDivisor (5, 0);
+	
+				glDisableVertexAttribArray (0);
+				glDisableVertexAttribArray (1);
+				glDisableVertexAttribArray (2);
+				glDisableVertexAttribArray (3);
+				glDisableVertexAttribArray (4);
+				glDisableVertexAttribArray (5);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+	
+				geometryShader -> disable ();
+				break;
+			}
+			case GeometryType::GEOMETRY:
+			{
+				break;
+			}
+		}
+	
+		// Draw.
 
+		const auto & browser    = getBrowser ();
+		auto         shaderNode = browser -> getShader ();
+
+		if (shaderNode == browser -> getDefaultShader ())
+			shaderNode = this -> shaderNode;
+
+		context -> setGeometryType  (getGeometryType ());
+		context -> setColorMaterial (numColors);
+
+		glEnable (GL_CULL_FACE);
+		glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? GL_CCW : GL_CW);
 		glNormal3f (0, 0, 1);
 
 		switch (geometryTypeId)
 		{
 			case GeometryType::POINT:
 			{
-				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-
-				if (numColors)
+				#ifdef FIXED_PIPELINE
+				if (browser -> getFixedPipelineRequired ())
 				{
-					if (glIsEnabled (GL_LIGHTING))
-						glEnable (GL_COLOR_MATERIAL);
-
-					glEnableClientState (GL_COLOR_ARRAY);
-					glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
+					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+	
+					if (numColors)
+					{
+						if (glIsEnabled (GL_LIGHTING))
+							glEnable (GL_COLOR_MATERIAL);
+	
+						glEnableClientState (GL_COLOR_ARRAY);
+						glColorPointer (4, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
+					}
+	
+					glEnableClientState (GL_VERTEX_ARRAY);
+					glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
+	
+					glDrawArrays (GL_POINTS, 0, numParticles);
+	
+					glDisableClientState (GL_COLOR_ARRAY);
+					glDisableClientState (GL_VERTEX_ARRAY);
+					glBindBuffer (GL_ARRAY_BUFFER, 0);
+					break;
 				}
+				#endif
 
-				glEnableClientState (GL_VERTEX_ARRAY);
-				glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
+				// Enable shader.
+			
+				shaderNode -> enable ();
+				shaderNode -> setGlobalUniforms (context);
+				shaderNode -> setLocalUniforms (context);
+		
+				// Enable vertex attribute nodes.
+		
+				if (numColors)
+					shaderNode -> enableColorAttrib (particleBufferId [readBuffer], GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, color));
+			
+				shaderNode -> enableVertexAttrib (particleBufferId [readBuffer], GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
+
+				// Draw.
 
 				glDrawArrays (GL_POINTS, 0, numParticles);
 
-				glDisableClientState (GL_COLOR_ARRAY);
-				glDisableClientState (GL_VERTEX_ARRAY);
+				// Disable shader.
+				
+				shaderNode -> disableColorAttrib ();
+				shaderNode -> disableVertexAttrib ();
+
 				glBindBuffer (GL_ARRAY_BUFFER, 0);
 				break;
 			}
@@ -1517,30 +1591,62 @@ ParticleSystem::draw (ShapeContainer* const context)
 			case GeometryType::TRIANGLE:
 			case GeometryType::QUAD:
 			{
-				glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-
-				if (numColors)
+				#ifdef FIXED_PIPELINE
+				if (browser -> getFixedPipelineRequired ())
 				{
-					if (glIsEnabled (GL_LIGHTING))
-						glEnable (GL_COLOR_MATERIAL);
-
-					glEnableClientState (GL_COLOR_ARRAY);
-					glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
+					glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+	
+					if (numColors)
+					{
+						if (glIsEnabled (GL_LIGHTING))
+							glEnable (GL_COLOR_MATERIAL);
+	
+						glEnableClientState (GL_COLOR_ARRAY);
+						glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
+					}
+	
+					if (getBrowser () -> getTexture ())
+						enableTexCoord ();
+	
+					glEnableClientState (GL_VERTEX_ARRAY);
+					glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
+	
+					glDrawArrays (glGeometryType, 0, numParticles * numVertices);
+	
+					if (getBrowser () -> getTexture ())
+						disableTexCoord ();
+	
+					glDisableClientState (GL_COLOR_ARRAY);
+					glDisableClientState (GL_VERTEX_ARRAY);
+					glBindBuffer (GL_ARRAY_BUFFER, 0);
+					break;
 				}
+				#endif
 
-				if (getBrowser () -> getTexture ())
-					enableTexCoord ();
+				// Enable shader.
+			
+				shaderNode -> enable ();
+				shaderNode -> setGlobalUniforms (context);
+				shaderNode -> setLocalUniforms (context);
+		
+				// Enable vertex attribute nodes
+		
+				if (numColors)
+					shaderNode -> enableColorAttrib (vertexBufferId, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
+			
+				shaderNode -> enableTexCoordAttrib ({ vertexBufferId }, GL_FLOAT, { sizeof (Vertex) }, { (void*) offsetof (Vertex, texCoord) });
+				shaderNode -> enableVertexAttrib (vertexBufferId, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
 
-				glEnableClientState (GL_VERTEX_ARRAY);
-				glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
-
+				// Draw.
+			
 				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 
-				if (getBrowser () -> getTexture ())
-					disableTexCoord ();
+				// Disable shader.
+			
+				shaderNode -> disableColorAttrib ();
+				shaderNode -> disableTexCoordAttrib ();
+				shaderNode -> disableVertexAttrib ();
 
-				glDisableClientState (GL_COLOR_ARRAY);
-				glDisableClientState (GL_VERTEX_ARRAY);
 				glBindBuffer (GL_ARRAY_BUFFER, 0);
 				break;
 			}
@@ -1553,7 +1659,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 					std::vector <Vector3f> positions;
 					positions .reserve (numParticles);
 
-					// Copy positions
+					// Copy positions.
 
 					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
 					const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
@@ -1564,7 +1670,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 					glUnmapBuffer (GL_ARRAY_BUFFER);
 					glBindBuffer (GL_ARRAY_BUFFER, 0);
 
-					// Draw geometries
+					// Draw geometries.
 
 					for (const auto & position : positions)
 					{
@@ -1583,6 +1689,11 @@ ParticleSystem::draw (ShapeContainer* const context)
 				break;
 			}
 		}
+
+		// Set model view matrix for transparency sorting.
+
+		if (getExecutionContext () -> isLive () and isLive ())
+			transformShader -> setField <SFMatrix4f> ("modelViewMatrix", context -> getModelViewMatrix ());
 	}
 	catch (const X3DError & error)
 	{

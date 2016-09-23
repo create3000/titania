@@ -132,6 +132,8 @@ Shape::traverse (const TraverseType type)
 {
 	if (getGeometry ())
 	{
+		// Always look at ParticleSystem if you do modify something here and there.
+
 		getAppearance () -> traverse (type);
 		getGeometry ()   -> traverse (type);
 

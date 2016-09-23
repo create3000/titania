@@ -1140,7 +1140,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 }
 
 void
-X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)
+X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	if (x3d_Color == -1)
 		return;
@@ -1148,7 +1148,7 @@ X3DProgrammableShaderObject::enableColorAttrib (const GLuint buffer)
 	glEnableVertexAttribArray (x3d_Color);
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer (x3d_Color, 4, GL_FLOAT, false, 0, nullptr);
+	glVertexAttribPointer (x3d_Color, 4, type, false, stride, pointer);
 }
 
 void
@@ -1161,17 +1161,20 @@ X3DProgrammableShaderObject::disableColorAttrib ()
 }
 
 void
-X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & buffers)
+X3DProgrammableShaderObject::enableTexCoordAttrib (const std::vector <GLuint> & buffer,
+                                                   const GLenum type,
+                                                   const std::vector <GLsizei> & stride,
+                                                   const std::vector <GLvoid*> & pointer)
 {
 	if (x3d_TexCoord == -1)
 		return;
 
-	for (size_t i = 0, size = std::min (MAX_TEX_COORD, buffers .size ()); i < size; ++ i)
+	for (size_t i = 0, size = std::min (MAX_TEX_COORD, buffer .size ()); i < size; ++ i)
 	{
 		glEnableVertexAttribArray (x3d_TexCoord + i);
 
-		glBindBuffer (GL_ARRAY_BUFFER, buffers [i]);
-		glVertexAttribPointer (x3d_TexCoord + i, 4, GL_FLOAT, false, 0, nullptr);
+		glBindBuffer (GL_ARRAY_BUFFER, buffer [i]);
+		glVertexAttribPointer (x3d_TexCoord + i, 4, type, false, stride .empty () ? 0 : stride [i], pointer .empty () ? nullptr : pointer [i]);
 
 		break; // TODO: Currently only one tex coord node is supported.
 	}
@@ -1187,7 +1190,7 @@ X3DProgrammableShaderObject::disableTexCoordAttrib ()
 }
 
 void
-X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
+X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	if (x3d_Normal == -1)
 		return;
@@ -1195,7 +1198,7 @@ X3DProgrammableShaderObject::enableNormalAttrib (const GLuint buffer)
 	glEnableVertexAttribArray (x3d_Normal);
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer (x3d_Normal, 3, GL_FLOAT, false, 0, nullptr);
+	glVertexAttribPointer (x3d_Normal, 3, type, false, stride, pointer);
 }
 
 void
@@ -1208,7 +1211,7 @@ X3DProgrammableShaderObject::disableNormalAttrib ()
 }
 
 void
-X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
+X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer)
 {
 	if (x3d_Vertex == -1)
 		return;
@@ -1216,7 +1219,7 @@ X3DProgrammableShaderObject::enableVertexAttrib (const GLuint buffer)
 	glEnableVertexAttribArray (x3d_Vertex);
 
 	glBindBuffer (GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer (x3d_Vertex, 3, GL_DOUBLE, false, 0, nullptr);
+	glVertexAttribPointer (x3d_Vertex, 3, type, false, stride, pointer);
 }
 
 void
