@@ -140,7 +140,7 @@ X3DEnvironmentTextureNode::setImage (const GLenum target, const GLenum internalF
 void
 X3DEnvironmentTextureNode::updateTextureProperties ()
 {
-	X3DTextureNode::updateTextureProperties (GL_TEXTURE_CUBE_MAP, textureProperties (), texturePropertiesNode, getWidth (), getHeight (), true, true, true);
+	X3DTextureNode::updateTextureProperties (GL_TEXTURE_CUBE_MAP, true, texturePropertiesNode, getWidth (), getHeight (), true, true, true);
 }
 
 void

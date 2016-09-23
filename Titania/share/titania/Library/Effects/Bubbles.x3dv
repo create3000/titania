@@ -1,40 +1,110 @@
-#X3D V3.3 utf8 Titania
+#X3D V3.3 utf8 Titania V2.0.0
 
-DEF Bubbles ParticleSystem {
-  geometryType "GEOMETRY"
-  maxParticles 20
-  particleLifetime 8
-  lifetimeVariation 0.8
-  particleSize 1 1
-  emitter PointEmitter {
-    direction 0 0 0
-    speed 0.5
-    variation 0.5
-    mass 0.1
-    surfaceArea 0.1
+META "comment" "World of Titania"
+META "created" "Fri, 23 Sep 2016 03:40:32 GMT"
+META "creator" "holger"
+META "generator" "Titania V2.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Bubbles.x3dv"
+META "modified" "Fri, 23 Sep 2016 03:44:03 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
   }
-  appearance Appearance {
-    material Material {
-      ambientIntensity 0.25
-      diffuseColor 1 0.520125 0.73699
-      specularColor 0.951515 0.951515 0.951515
-      shininess 0.557576
-      transparency 0.58
+  title "Bubbles"
+}
+
+DEF Bubbles Transform {
+  children ParticleSystem {
+    geometryType "GEOMETRY"
+    maxParticles 20
+    particleLifetime 8
+    lifetimeVariation 0.8
+    particleSize 1 1
+    emitter PointEmitter {
+      direction 0 0 0
+      speed 0.5
+      variation 0.5
+      mass 0.1
+      surfaceArea 0.1
+    }
+    physics [
+      WindPhysicsModel {
+        direction 0 1 0
+        speed 0.3
+        gustiness 1.7
+        turbulence 0.3
+      }
+      WindPhysicsModel {
+        speed 1
+        gustiness 1
+      }
+    ]
+    appearance Appearance {
+      material Material {
+        ambientIntensity 0.25
+        diffuseColor 1 0.520125 0.73699
+        specularColor 0.951515 0.951515 0.951515
+        shininess 0.557576
+        transparency 0.58
+      }
+    }
+    geometry Sphere {
+      radius 0.2
     }
   }
-  geometry Sphere {
-    radius 0.2
-  }
-  physics [
-    WindPhysicsModel {
-      direction 0 1 0
-      speed 0.3
-      gustiness 1.7
-      turbulence 0.3
-    }
-    WindPhysicsModel {
-      speed 1
-      gustiness 1
-    }
-  ]
 }

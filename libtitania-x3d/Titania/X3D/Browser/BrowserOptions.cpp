@@ -206,14 +206,18 @@ BrowserOptions::set_Antialiased ()
 void
 BrowserOptions::set_TextureQuality ()
 {
-	const auto & textureProperties = getBrowser () -> getDefaultTextureProperties ();
+	const auto & textureProperties        = getBrowser () -> getDefaultTextureProperties ();
+	const auto & cubeMapTextureProperties = getBrowser () -> getDefaultCubeMapTextureProperties ();
 
 	if (TextureQuality () == "HIGH")
 	{
 		textureProperties -> magnificationFilter () = "NICEST";
-		textureProperties -> minificationFilter ()  = "NICEST";
-		textureProperties -> textureCompression ()  = "NICEST";
-		textureProperties -> generateMipMaps ()     = true;
+		textureProperties -> minificationFilter  () = "NICEST";
+		textureProperties -> textureCompression  () = "NICEST";
+		textureProperties -> generateMipMaps     () = true;
+
+		cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
+		cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
 
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_NICEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -223,9 +227,12 @@ BrowserOptions::set_TextureQuality ()
 	if (TextureQuality () == "LOW")
 	{
 		textureProperties -> magnificationFilter () = "NICEST";
-		textureProperties -> minificationFilter ()  = "AVG_PIXEL_NEAREST_MIPMAP";
-		textureProperties -> textureCompression ()  = "FASTEST";
-		textureProperties -> generateMipMaps ()     = true;
+		textureProperties -> minificationFilter  () = "AVG_PIXEL_NEAREST_MIPMAP";
+		textureProperties -> textureCompression  () = "FASTEST";
+		textureProperties -> generateMipMaps     () = true;
+
+		cubeMapTextureProperties -> minificationFilter  () = "NEAREST_PIXEL";
+		cubeMapTextureProperties -> magnificationFilter () = "NEAREST_PIXEL";
 
 		glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -235,9 +242,12 @@ BrowserOptions::set_TextureQuality ()
 	// MEDIUM
 
 	textureProperties -> magnificationFilter () = "NICEST";
-	textureProperties -> minificationFilter ()  = "AVG_PIXEL_AVG_MIPMAP";
-	textureProperties -> textureCompression ()  = "NICEST";
-	textureProperties -> generateMipMaps ()     = true;
+	textureProperties -> minificationFilter  () = "AVG_PIXEL_AVG_MIPMAP";
+	textureProperties -> textureCompression  () = "NICEST";
+	textureProperties -> generateMipMaps     () = true;
+
+	cubeMapTextureProperties -> minificationFilter  () = "AVG_PIXEL";
+	cubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
 
 	glHint (GL_GENERATE_MIPMAP_HINT,        GL_FASTEST);
 	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);

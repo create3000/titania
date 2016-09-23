@@ -1,154 +1,216 @@
-#X3D V3.3 utf8 Titania V1.4.1
+#X3D V3.3 utf8 Titania V2.0.0
 
 META "comment" "World of Titania"
 META "created" "Thu, 21 Apr 2016 05:59:35 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.1, http://titania.create3000.de"
+META "generator" "Titania V2.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Fire3.x3dv"
-META "modified" "Thu, 21 Apr 2016 06:42:07 GMT"
+META "modified" "Fri, 23 Sep 2016 03:43:46 GMT"
 
-
-DEF Fire3 ParticleSystem {
-  geometryType "SPRITE"
-  particleLifetime 2
-  lifetimeVariation 0.5
-  particleSize 1 1
-  emitter PointEmitter {
-    direction 0 0 0
-    speed 0.2
-    variation 0
-    mass 0.1
-    surfaceArea 0.1
-  }
-  physics [
-    WindPhysicsModel {
-      direction 0 1 0
-      speed 0.5
-      gustiness 1.9
-    }
-    WindPhysicsModel {
-      direction 1 -1 0
-      speed 0.15
-      gustiness 7
-    }
-  ]
-  texCoordKey [
-    0,
-    0.0588235,
-    0.117647,
-    0.176471,
-    0.235294,
-    0.294118,
-    0.352941,
-    0.411765,
-    0.470588,
-    0.529412,
-    0.588235,
-    0.647059,
-    0.705882,
-    0.764706,
-    0.823529,
-    0.882353,
-    0.941176,
-    1
-  ]
-  texCoordRamp TextureCoordinate {
-    point [
-      0 0,
-      0.25 0,
-      0.25 0.25,
-      0 0.25,
-      0.25 0,
-      0.5 0,
-      0.5 0.25,
-      0.25 0.25,
-      0.5 0,
-      0.75 0,
-      0.75 0.25,
-      0.5 0.25,
-      0.75 0,
-      1 0,
-      1 0.25,
-      0.75 0.25,
-      0 0.25,
-      0.25 0.25,
-      0.25 0.5,
-      0 0.5,
-      0.25 0.25,
-      0.5 0.25,
-      0.5 0.5,
-      0.25 0.5,
-      0.5 0.25,
-      0.75 0.25,
-      0.75 0.5,
-      0.5 0.5,
-      0.75 0.25,
-      1 0.25,
-      1 0.5,
-      0.75 0.5,
-      0 0.5,
-      0.25 0.5,
-      0.25 0.75,
-      0 0.75,
-      0.25 0.5,
-      0.5 0.5,
-      0.5 0.75,
-      0.25 0.75,
-      0.5 0.5,
-      0.75 0.5,
-      0.75 0.75,
-      0.5 0.75,
-      0.75 0.5,
-      1 0.5,
-      1 0.75,
-      0.75 0.75,
-      0 0.75,
-      0.25 0.75,
-      0.25 1,
-      0 1,
-      0.25 0.75,
-      0.5 0.75,
-      0.5 1,
-      0.25 1,
-      0.5 0.75,
-      0.75 0.75,
-      0.75 1,
-      0.5 1,
-      0.75 0.75,
-      1 0.75,
-      1 1,
-      0.75 1,
-      0 0.75,
-      0.25 0.75,
-      0.25 1,
-      0 1,
-      0.25 0.75,
-      0.5 0.75,
-      0.5 1,
-      0.25 1,
-      0.5 0.75,
-      0.75 0.75,
-      0.75 1,
-      0.5 1,
-      0.75 0.75,
-      1 0.75,
-      1 1,
-      0.75 1
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
     ]
   }
-  appearance Appearance {
-    material Material {
-      diffuseColor 0 0 0
-      emissiveColor 1 1 1
-      transparency 0.923833
+  title "Fire3"
+}
+
+DEF Fire3 Transform {
+  children ParticleSystem {
+    geometryType "SPRITE"
+    particleLifetime 2
+    lifetimeVariation 0.5
+    particleSize 1 1
+    emitter PointEmitter {
+      direction 0 0 0
+      speed 0.2
+      variation 0
+      mass 0.1
+      surfaceArea 0.1
     }
-    texture ImageTexture {
-      url [
-        "http://rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
-        "https://rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
-        "http://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
-        "https://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire3.png"
+    physics [
+      WindPhysicsModel {
+        direction 0 1 0
+        speed 0.5
+        gustiness 1.9
+      }
+      WindPhysicsModel {
+        direction 1 -1 0
+        speed 0.15
+        gustiness 7
+      }
+    ]
+    texCoordKey [
+      0,
+      0.0588235,
+      0.117647,
+      0.176471,
+      0.235294,
+      0.294118,
+      0.352941,
+      0.411765,
+      0.470588,
+      0.529412,
+      0.588235,
+      0.647059,
+      0.705882,
+      0.764706,
+      0.823529,
+      0.882353,
+      0.941176,
+      1
+    ]
+    texCoordRamp TextureCoordinate {
+      point [
+        0 0,
+        0.25 0,
+        0.25 0.25,
+        0 0.25,
+        0.25 0,
+        0.5 0,
+        0.5 0.25,
+        0.25 0.25,
+        0.5 0,
+        0.75 0,
+        0.75 0.25,
+        0.5 0.25,
+        0.75 0,
+        1 0,
+        1 0.25,
+        0.75 0.25,
+        0 0.25,
+        0.25 0.25,
+        0.25 0.5,
+        0 0.5,
+        0.25 0.25,
+        0.5 0.25,
+        0.5 0.5,
+        0.25 0.5,
+        0.5 0.25,
+        0.75 0.25,
+        0.75 0.5,
+        0.5 0.5,
+        0.75 0.25,
+        1 0.25,
+        1 0.5,
+        0.75 0.5,
+        0 0.5,
+        0.25 0.5,
+        0.25 0.75,
+        0 0.75,
+        0.25 0.5,
+        0.5 0.5,
+        0.5 0.75,
+        0.25 0.75,
+        0.5 0.5,
+        0.75 0.5,
+        0.75 0.75,
+        0.5 0.75,
+        0.75 0.5,
+        1 0.5,
+        1 0.75,
+        0.75 0.75,
+        0 0.75,
+        0.25 0.75,
+        0.25 1,
+        0 1,
+        0.25 0.75,
+        0.5 0.75,
+        0.5 1,
+        0.25 1,
+        0.5 0.75,
+        0.75 0.75,
+        0.75 1,
+        0.5 1,
+        0.75 0.75,
+        1 0.75,
+        1 1,
+        0.75 1,
+        0 0.75,
+        0.25 0.75,
+        0.25 1,
+        0 1,
+        0.25 0.75,
+        0.5 0.75,
+        0.5 1,
+        0.25 1,
+        0.5 0.75,
+        0.75 0.75,
+        0.75 1,
+        0.5 1,
+        0.75 0.75,
+        1 0.75,
+        1 1,
+        0.75 1
       ]
+    }
+    appearance Appearance {
+      material Material {
+        diffuseColor 0 0 0
+        emissiveColor 1 1 1
+        transparency 0.923833
+      }
+      texture ImageTexture {
+        url [
+          "http://rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
+          "https://rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
+          "http://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire3.png",
+          "https://cdn.rawgit.com/create3000/Library/master/Textures/Effects/fire3.png"
+        ]
+      }
     }
   }
 }

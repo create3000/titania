@@ -1419,15 +1419,20 @@ ParticleSystem::updateGeometry (ShapeContainer* const context)
 			break;
 		case GeometryType::SPRITE:
 		{
-			if (getExecutionContext () -> isLive () and isLive ())
+			try
 			{
-				glUseProgram (geometryShader -> getProgramId ());
-
-				const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
-				const auto rotation         = getScreenAlignedRotation (getModelViewMatrix () .get ());
-
-				glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
+				if (getExecutionContext () -> isLive () and isLive ())
+				{
+					glUseProgram (geometryShader -> getProgramId ());
+	
+					const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
+					const auto rotation         = getScreenAlignedRotation (context -> getModelViewMatrix ());
+	
+					glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
+				}
 			}
+			catch (const std::domain_error &)
+			{ }
 
 			// Proceed with next case.
 		}
@@ -1708,24 +1713,24 @@ Matrix3d
 ParticleSystem::getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const
 throw (std::domain_error)
 {
-	const Matrix4d inverseModelViewMatrix = inverse (modelViewMatrix);
+	const auto invModelViewMatrix = inverse (modelViewMatrix);
+	const auto billboardToScreen  = normalize (invModelViewMatrix .mult_dir_matrix (zAxis));
+	const auto viewerYAxis        = normalize (invModelViewMatrix .mult_dir_matrix (yAxis));
 
-	const Vector3d billboardToScreen = inverseModelViewMatrix .mult_dir_matrix (zAxis);
-	const Vector3d viewerYAxis       = inverseModelViewMatrix .mult_dir_matrix (yAxis);
-
-	Vector3d x = cross (viewerYAxis, billboardToScreen);
-	Vector3d y = cross (billboardToScreen, x);
-	Vector3d z = billboardToScreen;
+	auto x = cross (viewerYAxis, billboardToScreen);
+	auto y = cross (billboardToScreen, x);
+	auto z = billboardToScreen;
 
 	// Compose rotation
 
 	x .normalize ();
 	y .normalize ();
-	z .normalize ();
 
-	return Matrix3d (x [0], x [1], x [2],
-	                 y [0], y [1], y [2],
-	                 z [0], z [1], z [2]);
+	const auto rotation = Matrix3d (x [0], x [1], x [2],
+	                                y [0], y [1], y [2],
+	                                z [0], z [1], z [2]);
+
+	return rotation;
 }
 
 void

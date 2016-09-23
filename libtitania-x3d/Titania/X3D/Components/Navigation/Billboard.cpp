@@ -104,16 +104,16 @@ const Matrix4d &
 Billboard::rotate ()
 throw (std::domain_error)
 {
-	const Matrix4d inverseModelViewMatrix = inverse (getBrowser () -> getModelViewMatrix () .get ());
-	const Vector3d billboardToViewer      = normalize (inverseModelViewMatrix .origin ());       // Normalized to get work with Geo
+	const auto invModelViewMatrix = inverse (getBrowser () -> getModelViewMatrix () .get ());
+	const auto billboardToViewer  = normalize (invModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 	if (axisOfRotation () == Vector3f ())
 	{
-		const Vector3d viewerYAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
+		const auto viewerYAxis = normalize (invModelViewMatrix .mult_dir_matrix (yAxis)); // Normalized to get work with Geo
 
-		Vector3d x = cross (viewerYAxis, billboardToViewer);
-		Vector3d y = cross (billboardToViewer, x);
-		Vector3d z = billboardToViewer;
+		auto x = cross (viewerYAxis, billboardToViewer);
+		auto y = cross (billboardToViewer, x);
+		auto z = billboardToViewer;
 
 		// Compose rotation
 
@@ -127,10 +127,10 @@ throw (std::domain_error)
 	}
 	else
 	{
-		const Vector3d N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
-		const Vector3d N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
+		const auto N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
+		const auto N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
 
-		matrix = Matrix4d (Rotation4d (N2, N1));                                       // Rotate zAxis in plane
+		matrix = Matrix4d (Rotation4d (N2, N1));                                            // Rotate zAxis in plane
 	}
 
 	return matrix;

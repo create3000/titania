@@ -1,66 +1,136 @@
-#X3D V3.3 utf8 Titania
+#X3D V3.3 utf8 Titania V2.0.0
 
-DEF BlackSmoke ParticleSystem {
-  geometryType "POINT"
-  maxParticles 4000
-  particleLifetime 4
-  lifetimeVariation 0.5
-  particleSize 1 1
-  colorKey [
-    0,
-    0.2,
-    0.5,
-    0.7,
-    0.8,
-    1
-  ]
-  emitter PointEmitter {
-    direction 0 0 0
-    speed 0.2
-    variation 0.5
-    mass 0.1
-    surfaceArea 0.1
-  }
-  appearance Appearance {
-    lineProperties LineProperties {
-      linewidthScaleFactor 8
-    }
-    material Material {
-      emissiveColor 0.0437445 0.0437445 0.0437445
-      transparency 0.96
-    }
-  }
-  physics [
-    WindPhysicsModel {
-      direction 0 1 0
-      speed 0.5
-      gustiness 1.7
-      turbulence 0.1
-    }
-    WindPhysicsModel {
-      direction 1 0 0
-      speed 0.3
-      gustiness 2
-    }
-    BoundedPhysicsModel {
-      geometry DEF Plane IndexedFaceSet {
-        solid FALSE
-        coordIndex [
-          0,
-          1,
-          2,
-          3,
-          -1
-        ]
-        coord Coordinate {
-          point [
-            -10 10 10,
-            10 10 10,
-            10 10 -10,
-            -10 10 -10
-          ]
+META "comment" "World of Titania"
+META "created" "Fri, 23 Sep 2016 03:42:48 GMT"
+META "creator" "holger"
+META "generator" "Titania V2.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Smoke.x3dv"
+META "modified" "Fri, 23 Sep 2016 03:43:32 GMT"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
         }
       }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "Smoke"
+}
+
+DEF BlackSmoke Transform {
+  children ParticleSystem {
+    geometryType "POINT"
+    maxParticles 4000
+    particleLifetime 4
+    lifetimeVariation 0.5
+    particleSize 1 1
+    emitter PointEmitter {
+      direction 0 0 0
+      speed 0.2
+      variation 0.5
+      mass 0.1
+      surfaceArea 0.1
     }
-  ]
+    physics [
+      WindPhysicsModel {
+        direction 0 1 0
+        speed 0.5
+        gustiness 1.7
+        turbulence 0.1
+      }
+      WindPhysicsModel {
+        direction 1 0 0
+        speed 0.3
+        gustiness 2
+      }
+      BoundedPhysicsModel {
+        geometry DEF Plane IndexedFaceSet {
+          solid FALSE
+          coordIndex [
+            0,
+            1,
+            2,
+            3,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              -10 10 10,
+              10 10 10,
+              10 10 -10,
+              -10 10 -10
+            ]
+          }
+        }
+      }
+    ]
+    colorKey [
+      0,
+      0.2,
+      0.5,
+      0.7,
+      0.8,
+      1
+    ]
+    appearance Appearance {
+      lineProperties LineProperties {
+        linewidthScaleFactor 8
+      }
+      material Material {
+        emissiveColor 0.0437445 0.0437445 0.0437445
+        transparency 0.96
+      }
+    }
+  }
 }

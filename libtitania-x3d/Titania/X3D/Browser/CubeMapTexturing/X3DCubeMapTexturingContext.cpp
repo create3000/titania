@@ -65,8 +65,8 @@ X3DCubeMapTexturingContext::X3DCubeMapTexturingContext () :
 void
 X3DCubeMapTexturingContext::initialize ()
 {
-	defaultCubeMapTextureProperties -> minificationFilter ()  = "NEAREST_PIXEL";
-	defaultCubeMapTextureProperties -> magnificationFilter () = "NEAREST_PIXEL";
+	defaultCubeMapTextureProperties -> minificationFilter ()  = "AVG_PIXEL";
+	defaultCubeMapTextureProperties -> magnificationFilter () = "AVG_PIXEL";
 	defaultCubeMapTextureProperties -> boundaryModeS ()       = "CLAMP_TO_EDGE";
 	defaultCubeMapTextureProperties -> boundaryModeT ()       = "CLAMP_TO_EDGE";
 	defaultCubeMapTextureProperties -> boundaryModeR ()       = "CLAMP_TO_EDGE";
