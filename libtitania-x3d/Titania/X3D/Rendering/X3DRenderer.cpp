@@ -713,6 +713,7 @@ X3DRenderer::dispose ()
 	localLights              .clear ();
 	lights                   .clear ();
 	collisions               .clear ();
+
 	lightId = 0;
 
 	opaqueDrawShapes         .clear ();

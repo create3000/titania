@@ -7,67 +7,6 @@ META "generator" "Titania V2.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Fire.x3dv"
 META "modified" "Fri, 23 Sep 2016 03:43:58 GMT"
 
-WorldInfo {
-  metadata DEF Titania MetadataSet {
-    name "Titania"
-    reference "http://titania.create3000.de"
-    value [
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
-      }
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              0,
-              10
-            ]
-          }
-          DEF orientation MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              0,
-              1,
-              0
-            ]
-          }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              0,
-              0
-            ]
-          }
-        ]
-      }
-    ]
-  }
-  title "Fire"
-}
-
 DEF Fire Transform {
   children ParticleSystem {
     geometryType "POINT"
