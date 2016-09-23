@@ -118,8 +118,10 @@ X3DRenderer::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	X3DRenderer::dispose ();
+
 	if (depthBuffer)
-		depthBuffer -> setBrowser (executionContext -> getBrowser ());
+		depthBuffer .reset (new FrameBuffer (executionContext -> getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)); // runtime error
 }
 
 ///  Constrains @a translation when the viewer collides with a wall.
@@ -703,8 +705,33 @@ X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
 void
 X3DRenderer::dispose ()
 {
+	viewVolumeStack          .clear ();
+	generatedCubeMapTextures .clear ();
+	globalLights             .clear ();
+	localObjects             .clear ();
+	clipPlanes               .clear ();
+	localLights              .clear ();
+	lights                   .clear ();
+	collisions               .clear ();
+	lightId = 0;
+
+	opaqueDrawShapes         .clear ();
+	transparentDrawShapes    .clear ();
+	opaqueDisplayShapes      .clear ();
+	transparentDisplayShapes .clear ();
+	collisionShapes          .clear ();
+	activeCollisions         .clear ();
+	depthShapes              .clear ();
+
 	depthBuffer .reset ();
-	activeCollisions .clear ();
+	speed = 0;
+
+	numOpaqueDrawShapes         = 0;
+	numTransparentDrawShapes    = 0;
+	numOpaqueDisplayShapes      = 0;
+	numTransparentDisplayShapes = 0;
+	numCollisionShapes          = 0;
+	numDepthShapes              = 0;
 }
 
 X3DRenderer::~X3DRenderer ()
