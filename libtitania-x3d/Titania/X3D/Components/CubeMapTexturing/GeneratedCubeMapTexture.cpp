@@ -254,6 +254,14 @@ GeneratedCubeMapTexture::renderTexture ()
 	}
 }
 
+void
+GeneratedCubeMapTexture::dispose ()
+{
+	frameBuffer .reset ();
+
+	X3DEnvironmentTextureNode::dispose ();
+}
+
 GeneratedCubeMapTexture::~GeneratedCubeMapTexture ()
 { }
 

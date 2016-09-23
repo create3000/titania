@@ -211,8 +211,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (TextureQuality () == "HIGH")
 	{
-		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> minificationFilter  () = "NICEST";
+		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> textureCompression  () = "NICEST";
 		textureProperties -> generateMipMaps     () = true;
 
@@ -226,8 +226,8 @@ BrowserOptions::set_TextureQuality ()
 
 	if (TextureQuality () == "LOW")
 	{
-		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> minificationFilter  () = "AVG_PIXEL_NEAREST_MIPMAP";
+		textureProperties -> magnificationFilter () = "NICEST";
 		textureProperties -> textureCompression  () = "FASTEST";
 		textureProperties -> generateMipMaps     () = true;
 
@@ -241,8 +241,8 @@ BrowserOptions::set_TextureQuality ()
 
 	// MEDIUM
 
-	textureProperties -> magnificationFilter () = "NICEST";
 	textureProperties -> minificationFilter  () = "AVG_PIXEL_AVG_MIPMAP";
+	textureProperties -> magnificationFilter () = "NICEST";
 	textureProperties -> textureCompression  () = "NICEST";
 	textureProperties -> generateMipMaps     () = true;
 

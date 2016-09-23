@@ -169,12 +169,12 @@ TextureProperties::getMinificationFilter () const
 		if (generateMipMaps ())
 			return minificationFilters .at (minificationFilter ());
 		
-		return GL_LINEAR;
+		return GL_LINEAR; // or GL_NEAREST
 	}
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getMinificationFilter ();
+		return getBrowser () -> getDefaultTextureProperties () -> getMinificationFilter ();
 	}
 }
 
@@ -195,7 +195,7 @@ TextureProperties::getMagnificationFilter () const
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getMagnificationFilter ();
+		return getBrowser () -> getDefaultTextureProperties () -> getMagnificationFilter ();
 	}
 }
 
@@ -217,7 +217,7 @@ TextureProperties::getTextureCompression () const
 	catch (const std::out_of_range &)
 	{
 		// DEFAULT
-		return x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()) -> getTextureCompression ();
+		return getBrowser () -> getDefaultTextureProperties () -> getTextureCompression ();
 	}
 }
 
