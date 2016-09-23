@@ -110,7 +110,7 @@ X3DRenderer::X3DRenderer () :
 void
 X3DRenderer::initialize ()
 {
-	depthBuffer -> setup ();
+	depthBuffer -> setup (); // Throws a runtime error.
 }
 
 void
@@ -120,12 +120,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DRenderer::dispose ();
 
-	if (depthBuffer)
-	{
-		depthBuffer .reset (new FrameBuffer (executionContext -> getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)); // runtime error
+	depthBuffer .reset (new FrameBuffer (executionContext -> getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true));
 
-		depthBuffer -> setup ();
-	}
+	if (isInitialized ())
+		depthBuffer -> setup (); // Throws a runtime error.
 }
 
 ///  Constrains @a translation when the viewer collides with a wall.
