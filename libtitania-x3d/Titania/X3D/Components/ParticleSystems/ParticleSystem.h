@@ -391,10 +391,13 @@ private:
 	///  @name Operations
 
 	void
-	animate ();
+	animateParticles ();
 
 	void
-	update ();
+	updateParticles ();
+
+	void
+	updateGeometry (ShapeContainer* const context);
 
 	virtual
 	void

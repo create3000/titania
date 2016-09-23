@@ -464,8 +464,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &ParticleSystem::set_shader);
 
-		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::animate);
-		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::update);
+		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::animateParticles);
+		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::updateParticles);
 		getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
 	}
 
@@ -532,8 +532,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animate);
-			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
+			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animateParticles);
+			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::updateParticles);
 
 			if (pauseTime)
 			{
@@ -546,8 +546,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animate);
-			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
+			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animateParticles);
+			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::updateParticles);
 
 			if (pauseTime == 0)
 				pauseTime = chrono::now ();
@@ -564,8 +564,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animate);
-				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::update);
+				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animateParticles);
+				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::updateParticles);
 				pauseTime = 0;
 			}
 			else
@@ -580,8 +580,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animate);
-				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::update);
+				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animateParticles);
+				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::updateParticles);
 			}
 
 			isActive () = false;
@@ -1312,7 +1312,7 @@ ParticleSystem::traverse (const TraverseType type)
 }
 
 void
-ParticleSystem::animate ()
+ParticleSystem::animateParticles ()
 {
 	try
 	{
@@ -1385,7 +1385,7 @@ ParticleSystem::animate ()
 }
 
 void
-ParticleSystem::update ()
+ParticleSystem::updateParticles ()
 {
 	// Transform particles.
 
@@ -1409,6 +1409,92 @@ ParticleSystem::update ()
 }
 
 void
+ParticleSystem::updateGeometry (ShapeContainer* const context)
+{
+	// Geometry shader
+
+	switch (geometryTypeId)
+	{
+		case GeometryType::POINT:
+			break;
+		case GeometryType::SPRITE:
+		{
+			if (getExecutionContext () -> isLive () and isLive ())
+			{
+				glUseProgram (geometryShader -> getProgramId ());
+
+				const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
+				const auto rotation         = getScreenAlignedRotation (getModelViewMatrix () .get ());
+
+				glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
+			}
+
+			// Proceed with next case.
+		}
+		case GeometryType::LINE:
+		case GeometryType::TRIANGLE:
+		case GeometryType::QUAD:
+		{
+			geometryShader -> enable ();
+
+			glEnableVertexAttribArray (0);
+			glEnableVertexAttribArray (1);
+			glEnableVertexAttribArray (2);
+			glEnableVertexAttribArray (3);
+			glEnableVertexAttribArray (4);
+			glEnableVertexAttribArray (5);
+
+			glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
+			glVertexAttribPointer (0, 3, GL_FLOAT, false, 0, (void*) 0);
+
+			glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+			glVertexAttribPointer (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
+			glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
+			glVertexAttribPointer (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
+			glVertexAttribPointer (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
+			glVertexAttribPointer (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
+
+			glVertexAttribDivisor (1, 1);
+			glVertexAttribDivisor (2, 1);
+			glVertexAttribDivisor (3, 1);
+			glVertexAttribDivisor (4, 1);
+			glVertexAttribDivisor (5, 1);
+
+			glEnable (GL_RASTERIZER_DISCARD);
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
+			glBeginTransformFeedback (GL_POINTS);
+
+			glDrawArraysInstanced (GL_POINTS, 0, numVertices, numParticles);
+
+			glEndTransformFeedback ();
+			glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
+			glDisable (GL_RASTERIZER_DISCARD);
+
+			glVertexAttribDivisor (1, 0);
+			glVertexAttribDivisor (2, 0);
+			glVertexAttribDivisor (3, 0);
+			glVertexAttribDivisor (4, 0);
+			glVertexAttribDivisor (5, 0);
+
+			glDisableVertexAttribArray (0);
+			glDisableVertexAttribArray (1);
+			glDisableVertexAttribArray (2);
+			glDisableVertexAttribArray (3);
+			glDisableVertexAttribArray (4);
+			glDisableVertexAttribArray (5);
+			glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+			geometryShader -> disable ();
+			break;
+		}
+		case GeometryType::GEOMETRY:
+		{
+			break;
+		}
+	}
+}
+
+void
 ParticleSystem::depth (const CollisionContainer* const)
 { }
 
@@ -1417,93 +1503,10 @@ ParticleSystem::draw (ShapeContainer* const context)
 {
 	try
 	{
-		// Geometry shader
+		// Geometry shader.
 	
-		switch (geometryTypeId)
-		{
-			case GeometryType::POINT:
-				break;
-			case GeometryType::SPRITE:
-			{
-				try
-				{
-					if (getExecutionContext () -> isLive () and isLive ())
-					{
-						glUseProgram (geometryShader -> getProgramId ());
+		updateGeometry (context);
 
-						const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
-						const auto rotation         = getScreenAlignedRotation (getModelViewMatrix () .get ());
-
-						glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
-					}
-				}
-				catch (const std::exception &)
-				{ }
-
-				// Proceed with next case.
-			}
-			case GeometryType::LINE:
-			case GeometryType::TRIANGLE:
-			case GeometryType::QUAD:
-			{
-				geometryShader -> enable ();
-	
-				glEnableVertexAttribArray (0);
-				glEnableVertexAttribArray (1);
-				glEnableVertexAttribArray (2);
-				glEnableVertexAttribArray (3);
-				glEnableVertexAttribArray (4);
-				glEnableVertexAttribArray (5);
-	
-				glBindBuffer (GL_ARRAY_BUFFER, geometryBufferId);
-				glVertexAttribPointer (0, 3, GL_FLOAT, false, 0, (void*) 0);
-	
-				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-				glVertexAttribPointer (1, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, lifetime));
-				glVertexAttribPointer (2, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, position));
-				glVertexAttribPointer (3, 3, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, velocity));
-				glVertexAttribPointer (4, 4, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, color));
-				glVertexAttribPointer (5, 1, GL_FLOAT, false, sizeof (Particle), (void*) offsetof (Particle, elapsedTime));
-	
-				glVertexAttribDivisor (1, 1);
-				glVertexAttribDivisor (2, 1);
-				glVertexAttribDivisor (3, 1);
-				glVertexAttribDivisor (4, 1);
-				glVertexAttribDivisor (5, 1);
-	
-				glEnable (GL_RASTERIZER_DISCARD);
-				glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, vertexFeedbackId);
-				glBeginTransformFeedback (GL_POINTS);
-	
-				glDrawArraysInstanced (GL_POINTS, 0, numVertices, numParticles);
-	
-				glEndTransformFeedback ();
-				glBindTransformFeedback (GL_TRANSFORM_FEEDBACK, 0);
-				glDisable (GL_RASTERIZER_DISCARD);
-	
-				glVertexAttribDivisor (1, 0);
-				glVertexAttribDivisor (2, 0);
-				glVertexAttribDivisor (3, 0);
-				glVertexAttribDivisor (4, 0);
-				glVertexAttribDivisor (5, 0);
-	
-				glDisableVertexAttribArray (0);
-				glDisableVertexAttribArray (1);
-				glDisableVertexAttribArray (2);
-				glDisableVertexAttribArray (3);
-				glDisableVertexAttribArray (4);
-				glDisableVertexAttribArray (5);
-				glBindBuffer (GL_ARRAY_BUFFER, 0);
-	
-				geometryShader -> disable ();
-				break;
-			}
-			case GeometryType::GEOMETRY:
-			{
-				break;
-			}
-		}
-	
 		// Draw.
 
 		const auto & browser    = getBrowser ();
