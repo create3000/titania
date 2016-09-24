@@ -165,7 +165,7 @@ LayoutGroup::set_layout ()
 }
 
 void
-LayoutGroup::traverse (const TraverseType type)
+LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -190,14 +190,14 @@ LayoutGroup::traverse (const TraverseType type)
 
 				getBrowser () -> getLayouts () .push (layoutNode);
 
-				X3DGroupingNode::traverse (type);
+				X3DGroupingNode::traverse (type, renderObject);
 
 				getBrowser () -> getLayouts () .pop ();
 
 				getModelViewMatrix () .pop ();
 			}
 			else
-				X3DGroupingNode::traverse (type);
+				X3DGroupingNode::traverse (type, renderObject);
 
 			if (viewportNode)
 				viewportNode -> pop ();

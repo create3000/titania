@@ -389,7 +389,7 @@ ScreenText::build ()
 }
 
 void
-ScreenText::traverse (const TraverseType type)
+ScreenText::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	try
 	{

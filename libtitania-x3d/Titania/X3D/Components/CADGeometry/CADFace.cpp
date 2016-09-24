@@ -153,10 +153,10 @@ CADFace::getBBox () const
 }
 
 void
-CADFace::traverse (const TraverseType type)
+CADFace::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (shapeNode)
-		shapeNode -> traverse (type);
+		shapeNode -> traverse (type, renderObject);
 }
 
 void

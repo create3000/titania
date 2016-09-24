@@ -157,10 +157,10 @@ Switch::set_cameraObjects ()
 }
 
 void
-Switch::traverse (const TraverseType type)
+Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (childNode)
-		childNode -> traverse (type);
+		childNode -> traverse (type, renderObject);
 }
 
 void

@@ -150,7 +150,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
@@ -255,16 +255,16 @@ X3DViewpointNodeTool::removeTool (const bool really)
 
 inline
 void
-X3DViewpointNodeTool::traverse (const TraverseType type)
+X3DViewpointNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DViewpointNode> () -> traverse (type);
+	getNode <X3DViewpointNode> () -> traverse (type, renderObject);
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
 	// Tool
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 }
 
 } // X3D

@@ -85,8 +85,8 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) override
-	{ X3DGroupingNodeTool::traverse (type); }
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override
+	{ X3DGroupingNodeTool::traverse (type, renderObject); }
 
 
 protected:

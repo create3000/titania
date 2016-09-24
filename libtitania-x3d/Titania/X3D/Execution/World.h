@@ -111,8 +111,8 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
-	{ layerSet -> traverse (type); }
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ layerSet -> traverse (type, renderObject); }
 
 	///  @name Detruction
 

@@ -312,7 +312,7 @@ X3DBackgroundNode::build ()
 }
 
 void
-X3DBackgroundNode::traverse (const TraverseType type)
+X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{

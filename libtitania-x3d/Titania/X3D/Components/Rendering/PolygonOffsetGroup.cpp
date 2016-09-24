@@ -120,7 +120,7 @@ PolygonOffsetGroup::set_type ()
 }
 
 void
-PolygonOffsetGroup::traverse (const TraverseType type)
+PolygonOffsetGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -129,14 +129,14 @@ PolygonOffsetGroup::traverse (const TraverseType type)
 		{
 			getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
 
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 
 			getCurrentLayer () -> getLocalObjects () .pop_back ();
 			break;
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 			break;
 		}
 	}

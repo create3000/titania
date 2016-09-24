@@ -275,12 +275,12 @@ X3DGeometryNodeTool::set_selection (const MFVec3d &)
 }
 
 void
-X3DGeometryNodeTool::traverse (const TraverseType type)
+X3DGeometryNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DGeometryNode> () -> traverse (type);
+	getNode <X3DGeometryNode> () -> traverse (type, renderObject);
 
-	normalToolNode -> traverse (type);
-	coordToolNode  -> traverse (type);
+	normalToolNode -> traverse (type, renderObject);
+	coordToolNode  -> traverse (type, renderObject);
 }
 
 void

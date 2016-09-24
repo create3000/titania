@@ -95,10 +95,10 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{
-		X3DTransformMatrix3DNodeTool::traverse (type);
-		X3DGeospatialObjectTool::traverse (type);
+		X3DTransformMatrix3DNodeTool::traverse (type, renderObject);
+		X3DGeospatialObjectTool::traverse (type, renderObject);
 	}
 
 	virtual

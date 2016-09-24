@@ -140,7 +140,7 @@ Anchor::requestImmediateLoad ()
 }
 
 void
-Anchor::traverse (const TraverseType type)
+Anchor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -149,14 +149,14 @@ Anchor::traverse (const TraverseType type)
 			getBrowser () -> getSensors () .emplace_back ();
 			touchSensorNode -> push ();
 
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 
 			getBrowser () -> getSensors () .pop_back ();
 			break;
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 			break;
 		}
 	}

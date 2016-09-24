@@ -151,9 +151,9 @@ GeoProximitySensor::set_position (const Vector3f & position)
 }
 
 void
-GeoProximitySensor::traverse (const TraverseType type)
+GeoProximitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	proximitySensor -> traverse (type);
+	proximitySensor -> traverse (type, renderObject);
 }
 
 void

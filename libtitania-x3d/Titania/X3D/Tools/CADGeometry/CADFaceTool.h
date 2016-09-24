@@ -102,10 +102,10 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{
-		X3DProductStructureChildNodeTool::traverse (type);
-		X3DBoundedObjectTool::traverse (type);
+		X3DProductStructureChildNodeTool::traverse (type, renderObject);
+		X3DBoundedObjectTool::traverse (type, renderObject);
 	}
 
 	virtual

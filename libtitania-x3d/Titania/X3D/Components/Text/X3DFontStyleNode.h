@@ -83,7 +83,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType)
+	traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{ }
 
 	virtual

@@ -176,7 +176,7 @@ ProximitySensor::update ()
 }
 
 void
-ProximitySensor::traverse (const TraverseType type)
+ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	try
 	{

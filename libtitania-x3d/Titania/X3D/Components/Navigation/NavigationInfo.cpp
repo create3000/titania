@@ -212,7 +212,7 @@ NavigationInfo::disable ()
 { }
 
 void
-NavigationInfo::traverse (const TraverseType type)
+NavigationInfo::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{

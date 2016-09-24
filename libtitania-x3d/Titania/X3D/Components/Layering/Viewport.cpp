@@ -142,11 +142,11 @@ Viewport::pop ()
 }
 
 void
-Viewport::traverse (const TraverseType type)
+Viewport::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	push ();
 
-	X3DGroupingNode::traverse (type);
+	X3DGroupingNode::traverse (type, renderObject);
 
 	pop ();
 }

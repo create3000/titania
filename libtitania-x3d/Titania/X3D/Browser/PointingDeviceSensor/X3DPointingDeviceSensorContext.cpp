@@ -120,7 +120,7 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 
 		//update (); // We cannot make an update here because of gravity.
 
-		getWorld () -> traverse (TraverseType::POINTER);
+		getWorld () -> traverse (TraverseType::POINTER, nullptr);
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }

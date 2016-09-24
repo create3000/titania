@@ -128,7 +128,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
@@ -271,16 +271,16 @@ X3DEnvironmentalSensorNodeTool::reshape ()
 
 inline
 void
-X3DEnvironmentalSensorNodeTool::traverse (const TraverseType type)
+X3DEnvironmentalSensorNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DEnvironmentalSensorNode> () -> traverse (type);
+	getNode <X3DEnvironmentalSensorNode> () -> traverse (type, renderObject);
 
 	// Tool
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 }
 
 } // X3D

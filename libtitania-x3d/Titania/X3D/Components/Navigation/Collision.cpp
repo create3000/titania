@@ -142,7 +142,7 @@ Collision::set_proxy ()
 }
 
 void
-Collision::traverse (const TraverseType type)
+Collision::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -153,10 +153,10 @@ Collision::traverse (const TraverseType type)
 				getCurrentLayer () -> getCollisions () .emplace_back (this);
 
 				if (proxyNode)
-					proxyNode -> traverse (type);
+					proxyNode -> traverse (type, renderObject);
 
 				else
-					X3DGroupingNode::traverse (type);
+					X3DGroupingNode::traverse (type, renderObject);
 
 				getCurrentLayer () -> getCollisions () .pop_back ();
 			}
@@ -165,7 +165,7 @@ Collision::traverse (const TraverseType type)
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 			break;
 		}
 	}

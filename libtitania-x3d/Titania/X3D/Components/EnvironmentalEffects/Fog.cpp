@@ -111,7 +111,7 @@ Fog::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
-Fog::traverse (const TraverseType type)
+Fog::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{

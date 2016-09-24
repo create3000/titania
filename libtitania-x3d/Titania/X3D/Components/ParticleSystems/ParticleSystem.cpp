@@ -1270,7 +1270,7 @@ ParticleSystem::intersects (const Box3d & box,
 }
 
 void
-ParticleSystem::traverse (const TraverseType type)
+ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (isHidden ())
 		return;
@@ -1278,10 +1278,10 @@ ParticleSystem::traverse (const TraverseType type)
 	if (not isActive ())
 		return;
 
-	getAppearance () -> traverse (type);
+	getAppearance () -> traverse (type, renderObject);
 
 	if (getGeometry ())
-		getGeometry () -> traverse (type);
+		getGeometry () -> traverse (type, renderObject);
 
 	switch (type)
 	{

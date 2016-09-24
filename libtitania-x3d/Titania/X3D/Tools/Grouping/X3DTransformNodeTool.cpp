@@ -234,9 +234,9 @@ X3DTransformNodeTool::reshape ()
 }
 
 void
-X3DTransformNodeTool::traverse (const TraverseType type)
+X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DTransformNode> () -> traverse (type);
+	getNode <X3DTransformNode> () -> traverse (type, renderObject);
 
 	// Remember matrices
 
@@ -254,7 +254,7 @@ X3DTransformNodeTool::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 
 	getModelViewMatrix () .pop ();
 }

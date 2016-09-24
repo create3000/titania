@@ -134,9 +134,9 @@ StaticGroup::getBBox () const
 }
 
 void
-StaticGroup::traverse (const TraverseType type)
+StaticGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	group -> traverse (type);
+	group -> traverse (type, renderObject);
 }
 
 void

@@ -129,7 +129,7 @@ DepthBuffer::set_depthFunction ()
 }
 
 void
-DepthBuffer::traverse (const TraverseType type)
+DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	getBrowser () -> getDepthTest ()   .push (enabled ());
 	getBrowser () -> getDepthOffset () .push (depthOffset ());
@@ -141,14 +141,14 @@ DepthBuffer::traverse (const TraverseType type)
 		{
 			getCurrentLayer () -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
 
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 
 			getCurrentLayer () -> getLocalObjects () .pop_back ();
 			break;
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 			break;
 		}
 	}

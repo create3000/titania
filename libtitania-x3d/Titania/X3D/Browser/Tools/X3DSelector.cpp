@@ -111,7 +111,7 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 		getBrowser () -> getDepthBuffer () -> setup ();
 		getBrowser () -> getDepthBuffer () -> bind ();
 	
-		getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH);
+		getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH, nullptr);
 	
 		getBrowser () -> getDepthBuffer () -> readDepth ();
 		getBrowser () -> getDepthBuffer () -> unbind ();

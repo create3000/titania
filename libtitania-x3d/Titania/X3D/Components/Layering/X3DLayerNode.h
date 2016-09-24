@@ -221,7 +221,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	///  @name Destruction
 
@@ -281,7 +281,7 @@ private:
 	display (const TraverseType);
 
 	void
-	collect (const TraverseType);
+	collect (const TraverseType, X3DRenderObject* const renderObject);
 
 	///  @name Members
 

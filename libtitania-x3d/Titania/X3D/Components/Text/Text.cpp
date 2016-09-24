@@ -195,9 +195,9 @@ Text::build ()
 }
 
 void
-Text::traverse (const TraverseType type)
+Text::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	textGeometry -> traverse (type);
+	textGeometry -> traverse (type, renderObject);
 }
 
 void

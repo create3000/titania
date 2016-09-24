@@ -94,12 +94,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-Tool::traverse (const TraverseType type)
+Tool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type == TraverseType::CAMERA)
 		transformationMatrix = getModelViewMatrix () .get ();
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 }
 
 void

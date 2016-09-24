@@ -305,12 +305,12 @@ GeoViewpoint::getProjectionMatrix (const double nearValue, const double farValue
 }
 
 void
-GeoViewpoint::traverse (const TraverseType type)
+GeoViewpoint::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	X3DViewpointNode::traverse (type);
+	X3DViewpointNode::traverse (type, renderObject);
 
 	if (not navType () .isHidden ())
-		navigationInfoNode -> traverse (type);
+		navigationInfoNode -> traverse (type, renderObject);
 }
 
 void

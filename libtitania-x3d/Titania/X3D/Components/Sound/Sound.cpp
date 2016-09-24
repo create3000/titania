@@ -133,7 +133,7 @@ Sound::set_source ()
 }
 
 void
-Sound::traverse (const TraverseType type)
+Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type not_eq TraverseType::DISPLAY)
 		return;

@@ -98,7 +98,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	///  @name Destruction
 
@@ -227,9 +227,9 @@ X3DBoundedObjectTool::reshape ()
 
 inline
 void
-X3DBoundedObjectTool::traverse (const TraverseType type)
+X3DBoundedObjectTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DBoundedObject> () -> traverse (type);
+	getNode <X3DBoundedObject> () -> traverse (type, renderObject);
 
 	// Tool
 
@@ -239,7 +239,7 @@ X3DBoundedObjectTool::traverse (const TraverseType type)
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 
 	getModelViewMatrix () .pop ();
 }

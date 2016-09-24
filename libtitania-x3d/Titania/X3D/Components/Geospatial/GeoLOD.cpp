@@ -305,7 +305,7 @@ GeoLOD::getDistance () const
 }
 
 void
-GeoLOD::traverse (const TraverseType type)
+GeoLOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type == TraverseType::DISPLAY)
 	{
@@ -356,18 +356,18 @@ GeoLOD::traverse (const TraverseType type)
 		case 0:
 		{
 			if (rootNode () .empty ())
-				rootInline -> traverse (type);
+				rootInline -> traverse (type, renderObject);
 			else
-				rootGroup -> traverse (type);
+				rootGroup -> traverse (type, renderObject);
 
 			break;
 		}
 		case 1:
 		{
-			child1Inline -> traverse (type);
-			child2Inline -> traverse (type);
-			child3Inline -> traverse (type);
-			child4Inline -> traverse (type);
+			child1Inline -> traverse (type, renderObject);
+			child2Inline -> traverse (type, renderObject);
+			child3Inline -> traverse (type, renderObject);
+			child4Inline -> traverse (type, renderObject);
 			break;
 		}
 	}

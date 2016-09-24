@@ -311,10 +311,10 @@ MultiTexture::set_cameraObject ()
 }
 
 void
-MultiTexture::traverse (const TraverseType type)
+MultiTexture::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	for (const auto & textureNode : textureNodes)
-		textureNode -> traverse (type);
+		textureNode -> traverse (type, renderObject);
 }
 
 void

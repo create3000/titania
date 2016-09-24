@@ -83,8 +83,8 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
-	{ X3DTransformNodeTool::traverse (type); }
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ X3DTransformNodeTool::traverse (type, renderObject); }
 
 	virtual
 	void

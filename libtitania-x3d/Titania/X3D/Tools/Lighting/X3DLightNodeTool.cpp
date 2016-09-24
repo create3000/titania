@@ -125,13 +125,13 @@ X3DLightNodeTool::removeTool (const bool really)
 }
 
 void
-X3DLightNodeTool::traverse (const TraverseType type)
+X3DLightNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DLightNode> () -> traverse (type);
+	getNode <X3DLightNode> () -> traverse (type, renderObject);
 
 	// Tool
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 }
 
 void

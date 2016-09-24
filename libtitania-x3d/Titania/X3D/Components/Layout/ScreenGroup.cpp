@@ -141,7 +141,7 @@ throw (std::domain_error)
 }
 
 void
-ScreenGroup::traverse (const TraverseType type)
+ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	try
 	{
@@ -150,7 +150,7 @@ ScreenGroup::traverse (const TraverseType type)
 		else
 			getModelViewMatrix () .push (screenMatrix);
 
-		X3DGroupingNode::traverse (type);
+		X3DGroupingNode::traverse (type, renderObject);
 	
 		getModelViewMatrix () .pop ();
 	}

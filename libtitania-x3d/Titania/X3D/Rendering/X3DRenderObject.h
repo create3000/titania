@@ -156,7 +156,7 @@ public:
 	constrainTranslation (const Vector3d & translation) const;
 
 	void
-	render (const TraverseType type, const std::function <void (const TraverseType)> & traverse);
+	render (const TraverseType type, const std::function <void (const TraverseType, X3DRenderObject* const)> & traverse);
 
 	///  @name Destruction
 

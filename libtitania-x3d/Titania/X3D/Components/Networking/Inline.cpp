@@ -399,9 +399,9 @@ Inline::set_buffer ()
 }
 
 void
-Inline::traverse (const TraverseType type)
+Inline::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	group -> traverse (type);
+	group -> traverse (type, renderObject);
 }
 
 void

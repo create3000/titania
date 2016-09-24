@@ -107,11 +107,11 @@ SoundTool::getBBox () const
 }
 
 void
-SoundTool::traverse (const TraverseType type)
+SoundTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <Sound> () -> traverse (type);
+	getNode <Sound> () -> traverse (type, renderObject);
 
-	X3DToolObject::traverse (type);
+	X3DToolObject::traverse (type, renderObject);
 }
 
 void

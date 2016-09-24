@@ -89,7 +89,7 @@ TouchGroup::initialize ()
 }
 
 void
-TouchGroup::traverse (const TraverseType type)
+TouchGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -102,7 +102,7 @@ TouchGroup::traverse (const TraverseType type)
 		}
 		default:
 		{
-			X3DGroupingNode::traverse (type);
+			X3DGroupingNode::traverse (type, renderObject);
 			return;
 		}
 	}

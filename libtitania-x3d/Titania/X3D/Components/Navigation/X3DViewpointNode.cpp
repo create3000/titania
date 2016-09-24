@@ -573,7 +573,7 @@ X3DViewpointNode::set_bind_ ()
 }
 
 void
-X3DViewpointNode::traverse (const TraverseType type)
+X3DViewpointNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{

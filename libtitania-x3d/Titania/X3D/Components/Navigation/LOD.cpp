@@ -178,7 +178,7 @@ LOD::set_cameraObjects ()
 }
 
 void
-LOD::traverse (const TraverseType type)
+LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (not keepCurrentLevel)
 	{
@@ -209,7 +209,7 @@ LOD::traverse (const TraverseType type)
 	}
 
 	if (childNode)
-		childNode -> traverse (type);
+		childNode -> traverse (type, renderObject);
 }
 
 void

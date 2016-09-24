@@ -265,7 +265,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual
 	void

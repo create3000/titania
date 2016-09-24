@@ -134,10 +134,10 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type) final override
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{
-		X3DViewpointNodeTool::traverse (type);
-		X3DGeospatialObjectTool::traverse (type);
+		X3DViewpointNodeTool::traverse (type, renderObject);
+		X3DGeospatialObjectTool::traverse (type, renderObject);
 	}
 
 	virtual

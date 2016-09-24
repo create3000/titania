@@ -81,11 +81,11 @@ X3DGeometricPropertyNodeTool::initialize ()
 }
 
 void
-X3DGeometricPropertyNodeTool::traverse (const TraverseType type)
+X3DGeometricPropertyNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	try
 	{
-		tool -> traverse (type);
+		tool -> traverse (type, renderObject);
 	}
 	catch (const X3DError & error)
 	{ }

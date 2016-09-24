@@ -260,7 +260,7 @@ X3DLayerNode::set_viewport ()
 void
 X3DLayerNode::bind ()
 {
-	traverse (TraverseType::CAMERA);
+	traverse (TraverseType::CAMERA, this);
 
 	if (not getNavigationInfos () -> empty ())
 	{
@@ -292,7 +292,7 @@ X3DLayerNode::bind ()
 }
 
 void
-X3DLayerNode::traverse (const TraverseType type)
+X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	getBrowser () -> getLayers () .push (this);
 	
@@ -358,7 +358,7 @@ X3DLayerNode::pointer ()
 		getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 		currentViewport -> push ();
-		collect (TraverseType::POINTER);
+		collect (TraverseType::POINTER, this);
 		currentViewport -> pop ();
 
 		getModelViewMatrix () .pop ();
@@ -370,13 +370,13 @@ X3DLayerNode::camera ()
 {
 	getModelViewMatrix () .push (Matrix4d ());
 
-	defaultNavigationInfo -> traverse (TraverseType::CAMERA);
-	defaultViewpoint      -> traverse (TraverseType::CAMERA);
-	defaultBackground     -> traverse (TraverseType::CAMERA);
-	defaultFog            -> traverse (TraverseType::CAMERA);
+	defaultNavigationInfo -> traverse (TraverseType::CAMERA, this);
+	defaultViewpoint      -> traverse (TraverseType::CAMERA, this);
+	defaultBackground     -> traverse (TraverseType::CAMERA, this);
+	defaultFog            -> traverse (TraverseType::CAMERA, this);
 
 	currentViewport -> push ();
-	collect (TraverseType::CAMERA);
+	collect (TraverseType::CAMERA, this);
 	currentViewport -> pop ();
 
 	navigationInfos -> update ();
@@ -396,7 +396,7 @@ X3DLayerNode::collision ()
 
 	// Render
 	currentViewport -> push ();
-	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1));
+	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1, _2));
 	currentViewport -> pop ();
 
 	getModelViewMatrix () .pop ();
@@ -411,7 +411,7 @@ X3DLayerNode::display (const TraverseType type)
 	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 	currentViewport -> push ();
-	render (type, std::bind (&X3DLayerNode::collect, this, _1));
+	render (type, std::bind (&X3DLayerNode::collect, this, _1, _2));
 	currentViewport -> pop ();
 
 	getModelViewMatrix () .pop ();
@@ -419,10 +419,10 @@ X3DLayerNode::display (const TraverseType type)
 }
 
 void
-X3DLayerNode::collect (const TraverseType type)
+X3DLayerNode::collect (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	groupNode   -> traverse (type);
-	friendsNode -> traverse (type);
+	groupNode   -> traverse (type, renderObject);
+	friendsNode -> traverse (type, renderObject);
 }
 
 void

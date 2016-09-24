@@ -128,14 +128,14 @@ Shape::intersects (const Box3d & box,
 }
 
 void
-Shape::traverse (const TraverseType type)
+Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (getGeometry ())
 	{
 		// Always look at ParticleSystem if you do modify something here and there.
 
-		getAppearance () -> traverse (type);
-		getGeometry ()   -> traverse (type);
+		getAppearance () -> traverse (type, renderObject);
+		getGeometry ()   -> traverse (type, renderObject);
 
 		switch (type)
 		{

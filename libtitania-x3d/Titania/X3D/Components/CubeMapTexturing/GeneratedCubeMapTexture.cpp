@@ -140,7 +140,7 @@ GeneratedCubeMapTexture::set_size ()
 }
 
 void
-GeneratedCubeMapTexture::traverse (const TraverseType type)
+GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type != TraverseType::CAMERA)
 		return;
@@ -223,7 +223,7 @@ GeneratedCubeMapTexture::renderTexture ()
 
 			// Render layer's children.
 
-			getCurrentLayer () -> render (TraverseType::DRAW, std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1));
+			getCurrentLayer () -> render (TraverseType::DRAW, std::bind (&X3DGroupingNode::traverse, getCurrentLayer () -> getGroup () .getValue (), _1, _2));
 
 			getModelViewMatrix          () .pop ();
 			getCameraSpaceMatrix        () .pop ();

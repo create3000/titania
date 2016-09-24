@@ -91,9 +91,9 @@ PickableGroup::initialize ()
 }
 
 void
-PickableGroup::traverse (const TraverseType type)
+PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	X3DGroupingNode::traverse (type);
+	X3DGroupingNode::traverse (type, renderObject);
 }
 
 void

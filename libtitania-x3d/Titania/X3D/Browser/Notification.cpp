@@ -152,7 +152,7 @@ Notification::display ()
 {
 	PolygonMode polygonMode (GL_FILL);
 
-	world -> traverse (TraverseType::DISPLAY);
+	world -> traverse (TraverseType::DISPLAY, nullptr);
 }
 
 void

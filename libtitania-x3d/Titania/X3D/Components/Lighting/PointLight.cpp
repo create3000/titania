@@ -260,7 +260,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 				getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
 				getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
 				
-				getCurrentLayer () -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1));
+				getCurrentLayer () -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1, _2));
 	
 				getModelViewMatrix          () .pop ();
 				getProjectionMatrix         () .pop ();
@@ -286,7 +286,7 @@ PointLight::renderShadowMap (LightContainer* const lightContainer)
 					getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
 		
 					getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
-					getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1), TraverseType::DEPTH);
+					getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
 	
 					getModelViewMatrix          () .pop ();
 					getProjectionMatrix         () .pop ();

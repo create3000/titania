@@ -328,7 +328,7 @@ X3DGroupingNode::set_cameraObjects ()
 }
 
 void
-X3DGroupingNode::traverse (const TraverseType type)
+X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	switch (type)
 	{
@@ -346,7 +346,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 				childNode -> push ();
 
 			for (const auto & childNode : childNodes)
-				childNode -> traverse (type);
+				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
 				childNode -> pop ();
@@ -359,7 +359,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 		case TraverseType::CAMERA:
 		{
 			for (const auto & childNode : cameraObjects)
-				childNode -> traverse (type);
+				childNode -> traverse (type, renderObject);
 
 			return;
 		}
@@ -370,7 +370,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 				childNode -> push ();
 
 			for (const auto & childNode : childNodes)
-				childNode -> traverse (type);
+				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
 				childNode -> pop ();
@@ -390,7 +390,7 @@ X3DGroupingNode::traverse (const TraverseType type)
 				childNode -> push (type, this);
 
 			for (const auto & childNode : childNodes)
-				childNode -> traverse (type);
+				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (lights))
 				childNode -> pop ();

@@ -92,13 +92,13 @@ X3DTransformMatrix3DNode::getBBox () const
 }
 
 void
-X3DTransformMatrix3DNode::traverse (const TraverseType type)
+X3DTransformMatrix3DNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	getModelViewMatrix () .push ();
 
 	getModelViewMatrix () .mult_left (matrix);
 
-	X3DGroupingNode::traverse (type);
+	X3DGroupingNode::traverse (type, renderObject);
 
 	getModelViewMatrix () .pop ();
 }

@@ -241,7 +241,7 @@ X3DRenderObject::getDepth (const Matrix4d & projectionMatrix) const
 }
 
 void
-X3DRenderObject::render (const TraverseType type, const std::function <void (const TraverseType)> & traverse)
+X3DRenderObject::render (const TraverseType type, const std::function <void (const TraverseType, X3DRenderObject* const)> & traverse)
 {
 	switch (type)
 	{
@@ -250,7 +250,7 @@ X3DRenderObject::render (const TraverseType type, const std::function <void (con
 			// Collect for collide and gravite
 			numCollisionShapes = 0;
 
-			traverse (type);
+			traverse (type, this);
 			collide ();
 			gravite ();
 			break;
@@ -259,7 +259,7 @@ X3DRenderObject::render (const TraverseType type, const std::function <void (con
 		{
 			numDepthShapes = 0;
 
-			traverse (type);
+			traverse (type, this);
 			depth (depthShapes, numDepthShapes);
 			break;
 		}
@@ -269,7 +269,7 @@ X3DRenderObject::render (const TraverseType type, const std::function <void (con
 			numOpaqueDrawShapes      = 0;
 			numTransparentDrawShapes = 0;
 
-			traverse (type);
+			traverse (type, this);
 			draw (opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
 
 			for (const auto & light : getLights ())
@@ -282,7 +282,7 @@ X3DRenderObject::render (const TraverseType type, const std::function <void (con
 			numOpaqueDisplayShapes      = 0;
 			numTransparentDisplayShapes = 0;
 
-			traverse (type);
+			traverse (type, this);
 			display ();
 			break;
 		}

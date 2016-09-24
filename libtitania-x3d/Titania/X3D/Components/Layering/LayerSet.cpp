@@ -199,7 +199,7 @@ LayerSet::bind ()
 }
 
 void
-LayerSet::traverse (const TraverseType type)
+LayerSet::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type == TraverseType::POINTER)
 	{
@@ -208,14 +208,14 @@ LayerSet::traverse (const TraverseType type)
 		for (const auto & layerNode : layerNodes)
 		{
 			getBrowser () -> setLayerNumber (layerNumber ++);
-			layerNode -> traverse (type);
+			layerNode -> traverse (type, renderObject);
 		}
 	}
 	else
 	{
 		for (const auto & layerNode : layerNodes)
 		{
-			layerNode -> traverse (type);
+			layerNode -> traverse (type, renderObject);
 		}
 	}
 }

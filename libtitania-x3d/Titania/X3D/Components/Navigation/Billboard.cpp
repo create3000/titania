@@ -137,7 +137,7 @@ throw (std::domain_error)
 }
 
 void
-Billboard::traverse (const TraverseType type)
+Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	getModelViewMatrix () .push ();
 
@@ -148,7 +148,7 @@ Billboard::traverse (const TraverseType type)
 		else
 			getModelViewMatrix () .mult_left (matrix);
 
-		X3DGroupingNode::traverse (type);
+		X3DGroupingNode::traverse (type, renderObject);
 	}
 	catch (const std::domain_error &)
 	{ }

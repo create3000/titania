@@ -72,6 +72,7 @@ typedef std::map <std::string, X3DFieldDefinition*> FieldIndex;
 class X3DBrowser;
 class X3DScene;
 class X3DExecutionContext;
+class X3DRenderObject;
 
 /**
  *  Class to represent an object that is the base for all nodes.
@@ -436,7 +437,7 @@ public:
 	///  Traverses the scene graph depending on @a type.
 	virtual
 	void
-	traverse (const TraverseType)
+	traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{ }
 
 	///  @name Comment handling

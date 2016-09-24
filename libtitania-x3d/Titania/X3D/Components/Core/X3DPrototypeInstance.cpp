@@ -352,11 +352,11 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DPrototypeInstance::traverse (const TraverseType type)
+X3DPrototypeInstance::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	try
 	{
-		getRootNode () -> traverse (type);
+		getRootNode () -> traverse (type, renderObject);
 	}
 	catch (const X3DError &)
 	{ }

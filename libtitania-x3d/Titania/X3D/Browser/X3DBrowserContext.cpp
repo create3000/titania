@@ -183,7 +183,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		else
 		   getBrowser () -> renderBackground ();
 
-		getWorld () -> traverse (TraverseType::DISPLAY);
+		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
 
 		frameBuffer .readPixels ();
 		frameBuffer .unbind ();
@@ -261,10 +261,10 @@ noexcept (true)
 		prepareEvents () .processInterests ();
 		processEvents ();
 
-		getWorld () -> traverse (TraverseType::CAMERA);
+		getWorld () -> traverse (TraverseType::CAMERA, nullptr);
 
 		if (not getActiveCollisions () .empty ())
-			getWorld () -> traverse (TraverseType::COLLISION);
+			getWorld () -> traverse (TraverseType::COLLISION, nullptr);
 
 		//__LOG__ << getActiveCollisions () .size () << std::endl;
 
@@ -280,7 +280,7 @@ noexcept (true)
 
 		renderBackground ();
 
-		getWorld () -> traverse (TraverseType::DISPLAY);
+		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
 
 		displayed () .processInterests ();
 		swapBuffers ();

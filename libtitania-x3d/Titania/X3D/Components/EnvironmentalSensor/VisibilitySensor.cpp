@@ -125,7 +125,7 @@ VisibilitySensor::update ()
 }
 
 void
-VisibilitySensor::traverse (const TraverseType type)
+VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (enabled ())
 	{

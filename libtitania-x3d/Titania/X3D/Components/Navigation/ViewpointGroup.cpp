@@ -170,14 +170,14 @@ ViewpointGroup::set_children ()
 }
 
 void
-ViewpointGroup::traverse (const TraverseType type)
+ViewpointGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	proximitySensor -> traverse (type);
+	proximitySensor -> traverse (type, renderObject);
 
 	if (proximitySensor -> isActive () or size () == Vector3f ())
 	{
 		for (const auto & viewpointObject : viewpointObjects)
-			viewpointObject -> traverse (type);
+			viewpointObject -> traverse (type, renderObject);
 	}
 }
 

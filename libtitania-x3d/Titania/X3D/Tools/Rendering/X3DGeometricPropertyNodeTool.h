@@ -82,7 +82,7 @@ public:
 	///  @name Operations
 
 	void
-	traverse (const TraverseType);
+	traverse (const TraverseType type, X3DRenderObject* const renderObject);
 
 	///  @name Destruction
 

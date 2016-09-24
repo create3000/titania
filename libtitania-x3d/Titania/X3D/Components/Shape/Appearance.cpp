@@ -265,10 +265,10 @@ Appearance::set_shader ()
 }
 
 void
-Appearance::traverse (const TraverseType type)
+Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (textureNode)
-		textureNode -> traverse (type);
+		textureNode -> traverse (type, renderObject);
 }
 
 void
