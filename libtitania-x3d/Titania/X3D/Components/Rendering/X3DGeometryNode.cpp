@@ -94,9 +94,9 @@ X3DGeometryNode::X3DGeometryNode () :
 void
 X3DGeometryNode::setup ()
 {
-	X3DNode::setup ();
-
 	texCoordNode .set (getBrowser () -> getDefaultTexCoord ());
+
+	X3DNode::setup ();
 
 	if (glXGetCurrentContext ())
 	{
@@ -887,8 +887,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		if (browser -> getTexture ())
 		{
-			if (texCoordNode)
-				texCoordNode -> enable (texCoordBufferIds);
+			texCoordNode -> enable (texCoordBufferIds);
 		}
 
 		if (glIsEnabled (GL_LIGHTING) or shaderNode)
