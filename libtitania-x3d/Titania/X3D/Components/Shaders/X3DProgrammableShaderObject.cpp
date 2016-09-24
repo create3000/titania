@@ -54,7 +54,7 @@
 #include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/ShapeContainer.h"
-#include "../../Rendering/X3DRenderer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../CubeMapTexturing/X3DEnvironmentTextureNode.h"
 #include "../EnvironmentalEffects/X3DFogObject.h"

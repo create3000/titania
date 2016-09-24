@@ -104,15 +104,14 @@ ScreenGroup::getMatrix () const
 }
 
 // Same as in Text
-Matrix4d
-ScreenGroup::scale (const TraverseType type)
+const Matrix4d &
+ScreenGroup::scale ()
 throw (std::domain_error)
 {
-	modelViewMatrix = getModelViewMatrix (type);
-
 	Vector3d   translation, scale;
 	Rotation4d rotation;
 
+	modelViewMatrix = getModelViewMatrix () .get ();
 	modelViewMatrix .get (translation, rotation, scale);
 
 	const auto & viewport         = getViewVolumes () .back () .getViewport ();
@@ -146,8 +145,11 @@ ScreenGroup::traverse (const TraverseType type)
 {
 	try
 	{
-		getModelViewMatrix () .push (scale (type));
-	
+		if (type == TraverseType::DISPLAY)
+			getModelViewMatrix () .push (scale ());
+		else
+			getModelViewMatrix () .push (screenMatrix);
+
 		X3DGroupingNode::traverse (type);
 	
 		getModelViewMatrix () .pop ();

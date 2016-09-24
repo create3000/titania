@@ -129,30 +129,20 @@ VisibilitySensor::traverse (const TraverseType type)
 {
 	if (enabled ())
 	{
-		switch (type)
+		if (type == TraverseType::DISPLAY)
 		{
-			case TraverseType::CAMERA:
+			setTraversed (true);
+
+			if (visible)
+				return;
+				
+			if (size () == Vector3f (-1, -1, -1))
+				visible = true;
+
+			else
 			{
-				if (visible)
-					return;
-					
-				if (size () == Vector3f (-1, -1, -1))
-					visible = true;
-	
-				else
-				{
-					visible = getViewVolumes () .back () .intersects (Box3d (size () .getValue (), center () .getValue ()) * getModelViewMatrix (type));
-				}
-	
-				return;
+				visible = getViewVolumes () .back () .intersects (Box3d (size () .getValue (), center () .getValue ()) * getModelViewMatrix () .get ());
 			}
-			case TraverseType::DISPLAY:
-			{
-				setTraversed (true);
-				return;
-			}
-			default:
-				return;
 		}
 	}
 }

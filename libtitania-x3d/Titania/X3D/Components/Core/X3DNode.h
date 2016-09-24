@@ -198,9 +198,6 @@ protected:
 	const Matrix4dStack &
 	getModelViewMatrix () const;
 
-	Matrix4d
-	getModelViewMatrix (const TraverseType) const;
-
 
 private:
 

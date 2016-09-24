@@ -65,7 +65,7 @@ namespace titania {
 namespace X3D {
 
 class X3DFogObject;
-class X3DRenderer;
+class X3DRenderObject;
 class X3DShapeNode;
 
 class ShapeContainer
@@ -74,11 +74,11 @@ public:
 
 	///  @name Construction
 
-	ShapeContainer (X3DRenderer* const, const bool);
+	ShapeContainer (X3DRenderObject* const, const bool);
 
 	///  @name Member access
 
-	X3DRenderer*
+	X3DRenderObject*
 	getRenderer () const
 	{ return renderer; }
 
@@ -176,7 +176,7 @@ private:
 
 	///  @name Members
 
-	X3DRenderer* const      renderer;
+	X3DRenderObject* const  renderer;
 	bool                    transparent;
 	Vector4i                scissor;
 	Matrix4d                modelViewMatrix;

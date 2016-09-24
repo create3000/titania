@@ -113,8 +113,8 @@ private:
 
 	///  @name Operations
 
-	Matrix4d
-	scale (const TraverseType)
+	const Matrix4d &
+	scale ()
 	throw (std::domain_error);
 
 	///  @name Static members

@@ -388,16 +388,18 @@ ScreenText::build ()
 	getText () -> setSolid (getText () -> solid ());
 }
 
-// Same as in ScreenGroup
 void
-ScreenText::transform (const TraverseType type)
+ScreenText::traverse (const TraverseType type)
 {
 	try
 	{
-		const auto modelViewMatrix = fontStyle -> getModelViewMatrix (type);
+		if (type != TraverseType::DISPLAY)
+			return;
 
 		Vector3d   translation, scale;
 		Rotation4d rotation;
+
+		const auto & modelViewMatrix = fontStyle -> getModelViewMatrix () .get ();
 
 		modelViewMatrix .get (translation, rotation, scale);
 
@@ -430,12 +432,6 @@ ScreenText::transform (const TraverseType type)
 	}
 	catch (const std::domain_error &)
 	{ }
-}
-
-void
-ScreenText::traverse (const TraverseType type)
-{
-	transform (type);
 }
 
 void

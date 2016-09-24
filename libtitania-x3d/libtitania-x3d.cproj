@@ -398,7 +398,6 @@
     <None Include="Titania\X3D\Rendering\ViewVolume.h" />
     <None Include="Titania\X3D\Fields\X3DScalar.h" />
     <None Include="Titania\X3D\Browser\X3DBrowser.h" />
-    <None Include="Titania\X3D\Rendering\X3DRenderer.h" />
     <None Include="Titania\X3D\Base\X3DOutput.h" />
     <None Include="Titania\X3D\Basic\X3DArrayField.h" />
     <None Include="Titania\X3D\Basic\X3DField.h" />
@@ -825,6 +824,7 @@
     <None Include="share\titania\shaders\Shaders\Bits\Random.h" />
     <None Include="share\titania\shaders\Shaders\Bits\Line3.h" />
     <None Include="share\titania\shaders\Shaders\Bits\Plane3.h" />
+    <None Include="Titania\X3D\Rendering\X3DRenderObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -863,7 +863,6 @@
     <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />
-    <Compile Include="Titania\X3D\Rendering\X3DRenderer.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteArray.cpp" />
     <Compile Include="Titania\X3D\Routing\Route.cpp" />
     <Compile Include="Titania\X3D\Routing\RouteSet.cpp" />
@@ -1377,6 +1376,7 @@
     <Compile Include="Titania\X3D\Browser\Text\FontStyleOptions.cpp" />
     <Compile Include="Titania\X3D\Tools\Lighting\X3DLightNodeTool.cpp" />
     <Compile Include="Titania\X3D\Rendering\TextureBuffer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\X3DRenderObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

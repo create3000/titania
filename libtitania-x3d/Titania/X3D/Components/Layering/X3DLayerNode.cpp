@@ -74,7 +74,7 @@ X3DLayerNode::Fields::Fields () :
 
 X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNode* p_layerGroup) :
 	              X3DNode (),
-	          X3DRenderer (),
+	      X3DRenderObject (),
 	               fields (),
 	               layer0 (false),
 	defaultNavigationInfo (new NavigationInfo (getExecutionContext ())),
@@ -125,7 +125,7 @@ void
 X3DLayerNode::initialize ()
 {
 	X3DNode::initialize ();
-	X3DRenderer::initialize ();
+	X3DRenderObject::initialize ();
 
 	defaultNavigationInfo -> setup ();
 	defaultViewpoint      -> setup ();
@@ -180,7 +180,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	groupNode   -> setExecutionContext (executionContext);
 	friendsNode -> setExecutionContext (executionContext);
 
-	X3DRenderer::setExecutionContext (executionContext);
+	X3DRenderObject::setExecutionContext (executionContext);
 	X3DNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
@@ -429,7 +429,7 @@ void
 X3DLayerNode::dispose ()
 {
 	X3DNode::dispose ();
-	X3DRenderer::dispose ();
+	X3DRenderObject::dispose ();
 }
 
 X3DLayerNode::~X3DLayerNode ()

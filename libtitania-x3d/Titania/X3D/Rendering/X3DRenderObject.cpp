@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DRenderer.h"
+#include "X3DRenderObject.h"
 
 #include "../Browser/BrowserOptions.h"
 #include "../Browser/ContextLock.h"
@@ -77,8 +77,8 @@ static constexpr auto   DEPTH_BUFFER_VIEWPORT = Vector4i (0, 0, DEPTH_BUFFER_WID
 
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
-X3DRenderer::X3DRenderer () :
-	                    X3DNode (),
+X3DRenderObject::X3DRenderObject () :
+	                X3DBaseNode (),
 	            viewVolumeStack (),
 	   generatedCubeMapTextures (),
 	               globalLights (),
@@ -108,17 +108,17 @@ X3DRenderer::X3DRenderer () :
 }
 
 void
-X3DRenderer::initialize ()
+X3DRenderObject::initialize ()
 {
 	depthBuffer -> setup (); // Throws a runtime error.
 }
 
 void
-X3DRenderer::setExecutionContext (X3DExecutionContext* const executionContext)
+X3DRenderObject::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	X3DRenderer::dispose ();
+	X3DRenderObject::dispose ();
 
 	depthBuffer .reset (new FrameBuffer (executionContext -> getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true));
 
@@ -128,7 +128,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 ///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
-X3DRenderer::constrainTranslation (const Vector3d & translation) const
+X3DRenderObject::constrainTranslation (const Vector3d & translation) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
 	auto       distance        = getDistance (translation);
@@ -166,7 +166,7 @@ X3DRenderer::constrainTranslation (const Vector3d & translation) const
 
 ///  Returns the distance to the nearest object in @a direction.
 double
-X3DRenderer::getDistance (const Vector3d & direction) const
+X3DRenderObject::getDistance (const Vector3d & direction) const
 {
 	try
 	{
@@ -202,11 +202,11 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 	
 		// Render depth.
 
-		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .push (modelViewMatrix);
+		getBrowser () -> getProjectionMatrix () .push (modelViewMatrix);
 
 		const auto depth = getDepth (projectionMatrix);
 
-		const_cast <X3DRenderer*> (this) -> getProjectionMatrix () .pop ();
+		getBrowser () -> getProjectionMatrix () .pop ();
 
 		return -depth;
 	}
@@ -219,7 +219,7 @@ X3DRenderer::getDistance (const Vector3d & direction) const
 }
 
 double
-X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
+X3DRenderObject::getDepth (const Matrix4d & projectionMatrix) const
 {
 	static const ViewVolume viewVolume (Matrix4d (), DEPTH_BUFFER_VIEWPORT, DEPTH_BUFFER_VIEWPORT);
 
@@ -227,9 +227,9 @@ X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
 
 	depthBuffer -> bind ();
 
-	const_cast <X3DRenderer*> (this) -> getViewVolumes () .emplace_back (viewVolume);
-	const_cast <X3DRenderer*> (this) -> depth (collisionShapes, numCollisionShapes);
-	const_cast <X3DRenderer*> (this) -> getViewVolumes () .pop_back ();
+	const_cast <X3DRenderObject*> (this) -> getViewVolumes () .emplace_back (viewVolume);
+	const_cast <X3DRenderObject*> (this) -> depth (collisionShapes, numCollisionShapes);
+	const_cast <X3DRenderObject*> (this) -> getViewVolumes () .pop_back ();
 
 	// Get distance from depth buffer
 
@@ -241,7 +241,7 @@ X3DRenderer::getDepth (const Matrix4d & projectionMatrix) const
 }
 
 void
-X3DRenderer::render (const TraverseType type, const std::function <void (const TraverseType)> & traverse)
+X3DRenderObject::render (const TraverseType type, const std::function <void (const TraverseType)> & traverse)
 {
 	switch (type)
 	{
@@ -292,13 +292,13 @@ X3DRenderer::render (const TraverseType type, const std::function <void (const T
 }
 
 const std::shared_ptr <LightContainer> &
-X3DRenderer::getLight () const
+X3DRenderObject::getLight () const
 {
 	return lights [const_cast <size_t &> (lightId) ++];
 }
 
 void
-X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
+X3DRenderObject::addCollisionShape (X3DShapeNode* const shape)
 {
 	// It should be possible to sort out shapes that are far away.
 
@@ -310,7 +310,7 @@ X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
 	++ numCollisionShapes;
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
@@ -318,7 +318,7 @@ X3DRenderer::addCollisionShape (X3DShapeNode* const shape)
 }
 
 void
-X3DRenderer::addDepthShape (X3DShapeNode* const shape)
+X3DRenderObject::addDepthShape (X3DShapeNode* const shape)
 {
 	// It should be possible to sort out shapes that are far away.
 
@@ -330,32 +330,32 @@ X3DRenderer::addDepthShape (X3DShapeNode* const shape)
 	++ numDepthShapes;
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 }
 
 void
-X3DRenderer::addDrawShape (X3DShapeNode* const shape)
+X3DRenderObject::addDrawShape (X3DShapeNode* const shape)
 {
 	addShape (shape, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
 }
 
 void
-X3DRenderer::addDisplayShape (X3DShapeNode* const shape)
+X3DRenderObject::addDisplayShape (X3DShapeNode* const shape)
 {
 	addShape (shape, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
 }
 
 void
-X3DRenderer::addShape (X3DShapeNode* const shape,
+X3DRenderObject::addShape (X3DShapeNode* const shape,
                        ShapeContainerArray & opaqueShapes,
                        size_t & numOpaqueShapes,
                        ShapeContainerArray & transparentShapes,
                        size_t & numTransparentShapes)
 {
-	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const auto bbox   = shape -> getBBox () * getBrowser () -> getModelViewMatrix () .get ();
 	const auto depth  = bbox .size   () .z () / 2;
 	const auto min    = bbox .center () .z () - depth;
 	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
@@ -389,7 +389,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape,
 		}
 
 		context -> setScissor (viewVolume .getScissor ());
-		context -> setModelViewMatrix (getModelViewMatrix () .get ());
+		context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
 		context -> setShape (shape);
 		context -> setFog (getFog ());
 		context -> setLocalObjects (getLocalObjects ());
@@ -400,7 +400,7 @@ X3DRenderer::addShape (X3DShapeNode* const shape,
 }
 
 void
-X3DRenderer::collide ()
+X3DRenderObject::collide ()
 {
 	// Collision
 
@@ -459,7 +459,7 @@ X3DRenderer::collide ()
 }
 
 void
-X3DRenderer::gravite ()
+X3DRenderObject::gravite ()
 {
 	try
 	{
@@ -496,11 +496,11 @@ X3DRenderer::gravite ()
 
 		// Render depth.
 
-		getProjectionMatrix () .push (modelViewMatrix);
+		getBrowser () -> getProjectionMatrix () .push (modelViewMatrix);
 
 		auto distance = -getDepth (projectionMatrix);
 
-		getProjectionMatrix () .pop ();
+		getBrowser () -> getProjectionMatrix () .pop ();
 
 		// Gravite or step up
 
@@ -568,14 +568,14 @@ X3DRenderer::gravite ()
 }
 
 void
-X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShapes)
+X3DRenderObject::depth (const CollisionContainerArray & shapes, const size_t numShapes)
 {
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
 
 	// Setup projection matrix.
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer.
@@ -595,7 +595,7 @@ X3DRenderer::depth (const CollisionContainerArray & shapes, const size_t numShap
 }
 
 void
-X3DRenderer::display ()
+X3DRenderObject::display ()
 {
 	// Render shadow maps.
 
@@ -619,7 +619,7 @@ X3DRenderer::display ()
 }
 
 void
-X3DRenderer::renderGeneratedCubeMapTextures ()
+X3DRenderObject::renderGeneratedCubeMapTextures ()
 {
 	// Render generated cube map textures.
 
@@ -630,7 +630,7 @@ X3DRenderer::renderGeneratedCubeMapTextures ()
 }
 
 void
-X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
+X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
                    size_t & numOpaqueShapes,
                    ShapeContainerArray & transparentShapes,
                    size_t & numTransparentShapes)
@@ -656,7 +656,7 @@ X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
 	// Setup projection matrix
 	// for fixed pipeline, background, particle systems.
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Draw background.
@@ -705,7 +705,7 @@ X3DRenderer::draw (ShapeContainerArray & opaqueShapes,
 }
 
 void
-X3DRenderer::dispose ()
+X3DRenderObject::dispose ()
 {
 	viewVolumeStack          .clear ();
 	generatedCubeMapTextures .clear ();
@@ -737,7 +737,7 @@ X3DRenderer::dispose ()
 	numDepthShapes              = 0;
 }
 
-X3DRenderer::~X3DRenderer ()
+X3DRenderObject::~X3DRenderObject ()
 { }
 
 } // X3D

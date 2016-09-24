@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_LAYERING_X3DLAYER_NODE_H__
 
-#include "../../Rendering/X3DRenderer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../EnvironmentalEffects/Fog.h"
 #include "../EnvironmentalEffects/X3DBackgroundNode.h"
@@ -71,7 +71,8 @@ using UserViewpointList = std::vector <X3D::X3DViewpointNode*>;
 using LocalFogStack     = std::stack <LocalFog*, std::vector <LocalFog*>>;
 
 class X3DLayerNode :
-	virtual public X3DNode, public X3DRenderer
+	virtual public X3DNode,
+	public X3DRenderObject
 {
 public:
 

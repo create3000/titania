@@ -151,9 +151,6 @@ private:
 	void
 	build () final override;
 
-	void
-	transform (const TraverseType type);
-
 	///  @name Static members
 
 	static const ComponentType component;

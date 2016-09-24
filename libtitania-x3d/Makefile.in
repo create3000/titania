@@ -636,7 +636,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Rendering/ShapeContainer.lo \
 	Titania/X3D/Rendering/TextureBuffer.lo \
 	Titania/X3D/Rendering/ViewVolume.lo \
-	Titania/X3D/Rendering/X3DRenderer.lo \
+	Titania/X3D/Rendering/X3DRenderObject.lo \
 	Titania/X3D/Routing/Route.lo Titania/X3D/Routing/RouteArray.lo \
 	Titania/X3D/Routing/RouteSet.lo \
 	Titania/X3D/Routing/X3DRouterObject.lo \
@@ -1429,7 +1429,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/TextureBuffer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
-	Titania/X3D/Rendering/X3DRenderer.cpp \
+	Titania/X3D/Rendering/X3DRenderObject.cpp \
 	Titania/X3D/Routing/Route.cpp \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
@@ -3500,7 +3500,7 @@ Titania/X3D/Rendering/TextureBuffer.lo:  \
 Titania/X3D/Rendering/ViewVolume.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Rendering/X3DRenderer.lo:  \
+Titania/X3D/Rendering/X3DRenderObject.lo:  \
 	Titania/X3D/Rendering/$(am__dirstamp) \
 	Titania/X3D/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Routing/$(am__dirstamp):
@@ -4396,7 +4396,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ShapeContainer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/TextureBuffer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/ViewVolume.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/X3DRenderer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Rendering/$(DEPDIR)/X3DRenderObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/Route.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteSet.Plo@am__quote@

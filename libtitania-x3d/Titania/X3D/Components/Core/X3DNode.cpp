@@ -1304,13 +1304,13 @@ X3DNode::getCurrentViewport () const
 const ViewVolumeStack &
 X3DNode::getViewVolumes () const
 {
-	return getCurrentLayer () -> getViewVolumes ();
+	return getCurrentLayer () -> X3DRenderObject::getViewVolumes ();
 }
 
 ViewVolumeStack &
 X3DNode::getViewVolumes ()
 {
-	return getCurrentLayer () -> getViewVolumes ();
+	return getCurrentLayer () -> X3DRenderObject::getViewVolumes ();
 }
 
 NavigationInfo*
@@ -1371,15 +1371,6 @@ const Matrix4dStack &
 X3DNode::getModelViewMatrix () const
 {
 	return getBrowser () -> getModelViewMatrix ();
-}
-
-Matrix4d
-X3DNode::getModelViewMatrix (const TraverseType type) const
-{
-	if (type == TraverseType::CAMERA)
-		return getBrowser () -> getModelViewMatrix () .get () * getInverseCameraSpaceMatrix () .get ();
-
-	return getBrowser () ->  getModelViewMatrix () .get ();
 }
 
 } // X3D

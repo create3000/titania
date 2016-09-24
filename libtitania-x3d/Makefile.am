@@ -516,7 +516,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Rendering/ShapeContainer.cpp \
 	Titania/X3D/Rendering/TextureBuffer.cpp \
 	Titania/X3D/Rendering/ViewVolume.cpp \
-	Titania/X3D/Rendering/X3DRenderer.cpp \
+	Titania/X3D/Rendering/X3DRenderObject.cpp \
 	Titania/X3D/Routing/Route.cpp \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \

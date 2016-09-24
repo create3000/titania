@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_RENDERING_X3DRENDERER_H__
 
 #include "../Base/Output.h"
-#include "../Components/Core/X3DNode.h"
+#include "../Basic/X3DBaseNode.h"
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/CollisionContainer.h"
@@ -73,8 +73,8 @@ class X3DGroupingNode;
 
 using GeneratedCubeMapTexturesArray = std::set <GeneratedCubeMapTexture*>;
 
-class X3DRenderer :
-	virtual public X3DNode
+class X3DRenderObject :
+	virtual public X3DBaseNode
 {
 public:
 
@@ -165,14 +165,14 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DRenderer ();
+	~X3DRenderObject ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DRenderer ();
+	X3DRenderObject ();
 
 	virtual
 	void
