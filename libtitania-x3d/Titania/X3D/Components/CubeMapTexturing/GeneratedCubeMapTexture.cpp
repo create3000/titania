@@ -166,13 +166,13 @@ GeneratedCubeMapTexture::set_size ()
 void
 GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type != TraverseType::CAMERA)
+	if (type != TraverseType::DISPLAY)
 		return;
 
 	if (size () <= 0)
 		return;
 
-	transformationMatrix = renderObject -> getModelViewMatrix () .get ();
+	transformationMatrix = renderObject -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 
 	renderObject -> getGeneratedCubeMapTextures () .emplace (this);
 }

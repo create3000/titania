@@ -134,11 +134,6 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (getGeometry ())
 	{
-		// Always look at ParticleSystem if you do modify something here and there.
-
-		getAppearance () -> traverse (type, renderObject);
-		getGeometry ()   -> traverse (type, renderObject);
-
 		switch (type)
 		{
 			case TraverseType::POINTER:

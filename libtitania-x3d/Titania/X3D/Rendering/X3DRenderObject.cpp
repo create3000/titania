@@ -57,6 +57,7 @@
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Components/Rendering/X3DGeometryNode.h"
 #include "../Components/Shaders/ComposedShader.h"
 #include "../Components/Shape/Appearance.h"
 #include "../Components/Shape/X3DShapeNode.h"
@@ -354,16 +355,28 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 void
 X3DRenderObject::addDrawShape (X3DShapeNode* const shapeNode)
 {
-	addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+	if (addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes))
+	{
+		shapeNode -> getAppearance () -> traverse (TraverseType::DRAW, this);
+	
+		if (shapeNode -> getGeometry ())
+			shapeNode -> getGeometry () -> traverse (TraverseType::DRAW, this);
+	}
 }
 
 void
 X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 {
-	addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
+	if (addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes))
+	{
+		shapeNode -> getAppearance () -> traverse (TraverseType::DISPLAY, this);
+	
+		if (shapeNode -> getGeometry ())
+			shapeNode -> getGeometry () -> traverse (TraverseType::DISPLAY, this);
+	}
 }
 
-void
+bool
 X3DRenderObject::addShape (X3DShapeNode* const shapeNode,
                            ShapeContainerArray & opaqueShapes,
                            size_t & numOpaqueShapes,
@@ -376,42 +389,44 @@ X3DRenderObject::addShape (X3DShapeNode* const shapeNode,
 	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
 
 	if (min > 0)
-	   return;
+	   return false;
 
 	const auto & viewVolume = getViewVolumes () .back ();
 
-	if (viewVolume .intersects (bbox))
+	if (not viewVolume .intersects (bbox))
+		return false;
+
+   ShapeContainer* context = nullptr;
+
+	if (shapeNode -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
 	{
-	   ShapeContainer* context = nullptr;
+	   if (numTransparentShapes == transparentShapes .size ())
+	      transparentShapes .emplace_back (new ShapeContainer (this, true));
 
-		if (shapeNode -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
-		{
-		   if (numTransparentShapes == transparentShapes .size ())
-		      transparentShapes .emplace_back (new ShapeContainer (this, true));
+		context = transparentShapes [numTransparentShapes] .get ();
 
-			context = transparentShapes [numTransparentShapes] .get ();
-
-			++ numTransparentShapes;
-		}
-		else
-		{
-		   if (numOpaqueShapes == opaqueShapes .size ())
-		      opaqueShapes .emplace_back (new ShapeContainer (this, false));
-
-			context = opaqueShapes [numOpaqueShapes] .get ();
-
-			++ numOpaqueShapes;
-		}
-
-		context -> setScissor (viewVolume .getScissor ());
-		context -> setModelViewMatrix (getModelViewMatrix () .get ());
-		context -> setShape (shapeNode);
-		context -> setFog (getFog ());
-		context -> setLocalObjects (getLocalObjects ());
-		context -> setClipPlanes (getClipPlanes ());
-		context -> setLocalLights (getLocalLights ());
-		context -> setDistance (center);
+		++ numTransparentShapes;
 	}
+	else
+	{
+	   if (numOpaqueShapes == opaqueShapes .size ())
+	      opaqueShapes .emplace_back (new ShapeContainer (this, false));
+
+		context = opaqueShapes [numOpaqueShapes] .get ();
+
+		++ numOpaqueShapes;
+	}
+
+	context -> setScissor (viewVolume .getScissor ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
+	context -> setShape (shapeNode);
+	context -> setFog (getFog ());
+	context -> setLocalObjects (getLocalObjects ());
+	context -> setClipPlanes (getClipPlanes ());
+	context -> setLocalLights (getLocalLights ());
+	context -> setDistance (center);
+
+	return true;
 }
 
 void

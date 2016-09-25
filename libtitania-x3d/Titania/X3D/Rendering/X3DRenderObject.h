@@ -269,7 +269,7 @@ private:
 
 	///  @name Operations
 
-	void
+	bool
 	addShape (X3DShapeNode* const shape,
 	          ShapeContainerArray & opaqueShapes,
 	          size_t & numOpaqueShapes,
