@@ -60,13 +60,18 @@ namespace X3D {
 #define GL_ERROR  debug_gl_error (std::string (__FILE__) + ":" + std::to_string (__LINE__) + ": in function '" + __func__)
 
 inline
-void
+bool
 debug_gl_error (const std::string & identifer)
 {
 	GLenum errorNum = glGetError ();
 
 	if (errorNum not_eq GL_NO_ERROR)
+	{
 		std::clog << "OpenGL Error at " << identifer << ": " << gluErrorString (errorNum) << std::endl;
+		return true;
+	}
+
+	return false;
 }
 
 inline

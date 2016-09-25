@@ -1076,13 +1076,19 @@ ParticleSystem::set_particle_buffers ()
 
 	// Particle buffers
 	
-	glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
-	const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
-
 	std::vector <Particle> particleArray;
+	
+	if (numParticles)
+	{
+		glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+	
+		const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
+	
+		if (particles)
+			particleArray .assign (particles, particles + numParticles);
 
-	if (particles)
-		particleArray .assign (particles, particles + numParticles);
+		glUnmapBuffer (GL_ARRAY_BUFFER);
+	}
 
 	particleArray .resize (maxParticles);
 
@@ -1092,7 +1098,6 @@ ParticleSystem::set_particle_buffers ()
 		glBufferData (GL_ARRAY_BUFFER, particleArray .size () * sizeof (Particle), particleArray .data (), GL_STATIC_COPY);
 	}
 
-	glUnmapBuffer (GL_ARRAY_BUFFER);
 	glBindBuffer (GL_ARRAY_BUFFER, 0);
 	
 	numParticles = std::min <size_t> (numParticles, maxParticles);
