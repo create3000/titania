@@ -269,7 +269,7 @@ public:
 
 	virtual
 	void
-	depth (const CollisionContainer* const context) override;
+	depth (const X3DShapeContainer* const context) override;
 
 	virtual
 	void
@@ -397,14 +397,14 @@ private:
 	updateParticles ();
 
 	void
-	updateGeometry (ShapeContainer* const context);
+	updateGeometry (const Matrix4d & modelViewMatrix);
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	draw (ShapeContainer* const context) final override;
 
 	Matrix3d
-	getScreenAlignedRotation (const Matrix4d &) const
+	getScreenAlignedRotation (const Matrix4d & modelViewMatrix) const
 	throw (std::domain_error);
 
 	void

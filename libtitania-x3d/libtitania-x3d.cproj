@@ -825,6 +825,7 @@
     <None Include="share\titania\shaders\Shaders\Bits\Line3.h" />
     <None Include="share\titania\shaders\Shaders\Bits\Plane3.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderObject.h" />
+    <None Include="Titania\X3D\Rendering\X3DShapeContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1377,6 +1378,7 @@
     <Compile Include="Titania\X3D\Tools\Lighting\X3DLightNodeTool.cpp" />
     <Compile Include="Titania\X3D\Rendering\TextureBuffer.cpp" />
     <Compile Include="Titania\X3D\Rendering\X3DRenderObject.cpp" />
+    <Compile Include="Titania\X3D\Rendering\X3DShapeContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

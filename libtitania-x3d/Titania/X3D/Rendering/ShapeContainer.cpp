@@ -60,18 +60,14 @@ namespace titania {
 namespace X3D {
 
 ShapeContainer::ShapeContainer (X3DRenderObject* const renderer, const bool transparent) :
-	       renderer (renderer),
-	    transparent (transparent),
-	        scissor (),
-	modelViewMatrix (),
-	          shape (nullptr),
-	            fog (nullptr),
-	   localObjects (),
-	     clipPlanes (),
-	    localLights (),
-	   geometryType (GeometryType::GEOMETRY_3D),
-	  colorMaterial (false),
-	       distance (0)
+	X3DShapeContainer (),
+	         renderer (renderer),
+	      transparent (transparent),
+	              fog (nullptr),
+	      localLights (),
+	     geometryType (GeometryType::GEOMETRY_3D),
+	    colorMaterial (false),
+	         distance (0)
 { }
 
 X3DBrowser*
@@ -83,33 +79,33 @@ ShapeContainer::getBrowser () const
 void
 ShapeContainer::display ()
 {
-	glScissor (scissor [0],
-	           scissor [1],
-	           scissor [2],
-	           scissor [3]);
+	glScissor (getScissor () [0],
+	           getScissor () [1],
+	           getScissor () [2],
+	           getScissor () [3]);
 
-	for (const auto & object : localObjects)
+	for (const auto & object : getLocalObjects ())
 		object -> enable ();
 
-	for (const auto & clipPlane : clipPlanes)
+	for (const auto & clipPlane : getClipPlanes ())
 		clipPlane -> enable ();
 
-	for (const auto & object : localLights)
+	for (const auto & object : getLocalLights ())
 		object -> enable ();
 
-	glLoadMatrixd (modelViewMatrix .data ());
+	glLoadMatrixd (getModelViewMatrix () .data ());
 
-	fog -> enable (renderer);
+	getFog () -> enable (renderer);
 
-	shape -> display (this);
+	getShape () -> display (this);
 
-	for (const auto & object : basic::make_reverse_range (localLights))
+	for (const auto & object : basic::make_reverse_range (getLocalLights ()))
 		object -> disable ();
 
-	for (const auto & clipPlane : basic::make_reverse_range (clipPlanes))
+	for (const auto & clipPlane : basic::make_reverse_range (getClipPlanes ()))
 		clipPlane -> disable ();
 
-	for (const auto & object : basic::make_reverse_range (localObjects))
+	for (const auto & object : basic::make_reverse_range (getLocalObjects ()))
 		object -> disable ();
 }
 

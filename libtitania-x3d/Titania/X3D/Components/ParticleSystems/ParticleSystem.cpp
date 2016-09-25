@@ -1409,10 +1409,13 @@ ParticleSystem::updateParticles ()
 	// Swap particle buffers.
 
 	swap_particle_buffers ();
+
+	if (geometryTypeId != GeometryType::SPRITE)
+		updateGeometry (Matrix4d ());
 }
 
 void
-ParticleSystem::updateGeometry (ShapeContainer* const context)
+ParticleSystem::updateGeometry (const Matrix4d & modelViewMatrix)
 {
 	// Geometry shader
 
@@ -1429,7 +1432,7 @@ ParticleSystem::updateGeometry (ShapeContainer* const context)
 					geometryShader -> enable ();
 	
 					const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
-					const auto rotation         = getScreenAlignedRotation (context -> getModelViewMatrix ());
+					const auto rotation         = getScreenAlignedRotation (modelViewMatrix);
 	
 					glUniformMatrix3fv (rotationLocation, 1, false, Matrix3f (rotation) .data ());
 				}
@@ -1503,8 +1506,93 @@ ParticleSystem::updateGeometry (ShapeContainer* const context)
 }
 
 void
-ParticleSystem::depth (const CollisionContainer* const)
-{ }
+ParticleSystem::depth (const X3DShapeContainer* const context)
+{
+	try
+	{
+		// Geometry shader.
+	
+		//if (geometryTypeId == GeometryType::SPRITE)
+			updateGeometry (context -> getModelViewMatrix ());
+
+		// Draw.
+
+		switch (geometryTypeId)
+		{
+			case GeometryType::POINT:
+			{
+				glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+
+				glEnableClientState (GL_VERTEX_ARRAY);
+				glVertexPointer (3, GL_FLOAT, sizeof (Particle), (void*) offsetof (Particle, position));
+
+				glDrawArrays (GL_POINTS, 0, numParticles);
+
+				glDisableClientState (GL_VERTEX_ARRAY);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+				break;
+			}
+			case GeometryType::LINE:
+			case GeometryType::TRIANGLE:
+			case GeometryType::QUAD:
+			case GeometryType::SPRITE:
+			{
+				glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+
+				glEnableClientState (GL_VERTEX_ARRAY);
+				glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
+
+				glDrawArrays (glGeometryType, 0, numParticles * numVertices);
+
+				glDisableClientState (GL_VERTEX_ARRAY);
+				glBindBuffer (GL_ARRAY_BUFFER, 0);
+				break;
+			}
+			case GeometryType::GEOMETRY:
+			{
+				const auto geometryNode = x3d_cast <X3DGeometryNode*> (geometry ());
+
+				if (geometryNode)
+				{
+					std::vector <Vector3f> positions;
+					positions .reserve (numParticles);
+
+					// Copy positions.
+
+					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
+					const auto particles = static_cast <const Particle*> (glMapBufferRange (GL_ARRAY_BUFFER, 0, sizeof (Particle) * numParticles, GL_MAP_READ_BIT));
+
+					for (const auto & particle : basic::make_range (particles, numParticles))
+						positions .emplace_back (particle .position);
+
+					glUnmapBuffer (GL_ARRAY_BUFFER);
+					glBindBuffer (GL_ARRAY_BUFFER, 0);
+
+					// Draw geometries.
+
+					for (const auto & position : positions)
+					{
+						glPushMatrix ();
+
+						glTranslatef (position .x (),
+						              position .y (),
+						              position .z ());
+
+						geometryNode -> depth (context);
+
+						glPopMatrix ();
+					}
+				}
+
+				break;
+			}
+		}
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
 void
 ParticleSystem::draw (ShapeContainer* const context)
@@ -1513,7 +1601,8 @@ ParticleSystem::draw (ShapeContainer* const context)
 	{
 		// Geometry shader.
 	
-		updateGeometry (context);
+		//if (geometryTypeId == GeometryType::SPRITE)
+			updateGeometry (context -> getModelViewMatrix ());
 
 		// Draw.
 

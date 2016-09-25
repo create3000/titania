@@ -621,7 +621,7 @@ X3DRenderObject::depth (const CollisionContainerArray & shapes, const size_t num
 	glDisable (GL_CULL_FACE);
 
 	for (const auto & context : basic::make_range (shapes .cbegin (), numShapes))
-		context -> draw ();
+		context -> depth ();
 }
 
 void

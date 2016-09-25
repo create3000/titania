@@ -103,7 +103,7 @@ X3DLineGeometryNode::intersects (X3DRenderObject* const renderObject,
 }
 
 void
-X3DLineGeometryNode::depth (const CollisionContainer* const context)
+X3DLineGeometryNode::depth (const X3DShapeContainer* const context)
 { }
 
 void

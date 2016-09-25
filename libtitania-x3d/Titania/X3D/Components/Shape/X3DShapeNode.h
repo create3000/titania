@@ -62,7 +62,7 @@ namespace X3D {
 class X3DAppearanceNode;
 class X3DGeometryNode;
 class ShapeContainer;
-class CollisionContainer;
+class X3DShapeContainer;
 
 class X3DShapeNode :
 	virtual public X3DChildNode,
@@ -137,7 +137,7 @@ public:
 
 	virtual
 	void
-	depth (const CollisionContainer* const context) = 0;
+	depth (const X3DShapeContainer* const context) = 0;
 
 	virtual
 	void

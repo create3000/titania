@@ -270,7 +270,7 @@ Shape::cut (X3DRenderObject* const renderObject)
 }
 
 void
-Shape::depth (const CollisionContainer* const context)
+Shape::depth (const X3DShapeContainer* const context)
 {
 	getGeometry () -> depth (context);
 }

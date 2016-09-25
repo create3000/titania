@@ -308,7 +308,7 @@ getMaterialColor ()
 				if (x3d_ShadowIntensity [i] > 0.0 && a > 0.0)
 				{
 					float shadowIntensity = getShadowIntensity (i, lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], plane, a);
-	
+
 					finalColor += attenuationSpotFactor * (mix (x3d_LightColor [i], x3d_ShadowColor [i], shadowIntensity) * ambientDiffuseSpecularColor);
 				}
 				else

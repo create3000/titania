@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,62 +48,84 @@
  *
  ******************************************************************************/
 
-#include "CollisionContainer.h"
+#ifndef __TITANIA_X3D_RENDERING_X3DSHAPE_CONTAINER_H__
+#define __TITANIA_X3D_RENDERING_X3DSHAPE_CONTAINER_H__
 
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/ClipPlaneContainer.h"
+#include "../Rendering/X3DCollectableObject.h"
+
+#include "../Types/Geometry.h"
+#include "../Types/Numbers.h"
 
 namespace titania {
 namespace X3D {
 
-CollisionContainer::CollisionContainer () :
-	X3DShapeContainer (),
-	       collisions ()
-{ }
+class X3DShapeNode;
 
-bool
-CollisionContainer::intersects (Box3d box) const
+class X3DShapeContainer
 {
-	try
-	{
-		if (getCollisions () .empty ())
-			return false;
-		
-		box *= inverse (getModelViewMatrix ());
+public:
 
-		return getShape () -> intersects (box, getClipPlanes (), getModelViewMatrix ());
-	}
-	catch (const std::domain_error &)
-	{
-		return false;
-	}
-}
+	///  @name Construction
 
-void
-CollisionContainer::depth ()
-{
-	// TODO: viewport must not be the browser or layer viewport.
-	glScissor (getScissor () [0],
-	           getScissor () [1],
-	           getScissor () [2],
-	           getScissor () [3]);
+	X3DShapeContainer ();
 
-	for (const auto & localObject : getLocalObjects ())
-		localObject -> enable ();
+	///  @name Member access
 
-	for (const auto & clipPlane : getClipPlanes ())
-		clipPlane -> enable ();
+	void
+	setShape (X3DShapeNode* value)
+	{ shape = value; }
 
-	glLoadMatrixd (getModelViewMatrix () .data ());
+	X3DShapeNode*
+	getShape () const
+	{ return shape; }
 
-	getShape () -> depth (this);
+	void
+	setScissor (const Vector4i & value)
+	{ scissor = value; }
 
-	for (const auto & clipPlane :  basic::make_reverse_range (getClipPlanes ()))
-		clipPlane -> disable ();
+	const Vector4i &
+	getScissor () const
+	{ return scissor; }
 
-	for (const auto & localObject : basic::make_reverse_range (getLocalObjects ()))
-		localObject -> disable ();
-}
+	void
+	setModelViewMatrix (const Matrix4d & value)
+	{ modelViewMatrix = value; }
+
+	const Matrix4d &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
+	void
+	setLocalObjects (const CollectableObjectArray & value)
+	{ localObjects = value; }
+
+	const CollectableObjectArray &
+	getLocalObjects () const
+	{ return localObjects; }
+
+	void
+	setClipPlanes (const ClipPlaneContainerArray & value)
+	{ clipPlanes = value; }
+
+	const ClipPlaneContainerArray &
+	getClipPlanes () const
+	{ return clipPlanes; }
+
+
+private:
+
+	///  @name Members
+
+	X3DShapeNode*           shape;
+	Vector4i                scissor;
+	Matrix4d                modelViewMatrix;
+	CollectableObjectArray  localObjects;
+	ClipPlaneContainerArray clipPlanes;
+
+};
 
 } // X3D
 } // titania
+
+#endif

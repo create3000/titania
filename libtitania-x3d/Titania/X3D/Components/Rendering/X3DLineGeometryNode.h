@@ -85,7 +85,7 @@ public:
 
 	virtual
 	void
-	depth (const CollisionContainer* const context) final override;
+	depth (const X3DShapeContainer* const context) final override;
 
 	virtual
 	void

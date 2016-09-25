@@ -67,7 +67,7 @@ namespace titania {
 namespace X3D {
 
 class ShapeContainer;
-class CollisionContainer;
+class X3DShapeContainer;
 class FrameBuffer;
 
 class X3DGeometryNode :
@@ -218,7 +218,7 @@ public:
 
 	virtual
 	void
-	depth (const CollisionContainer* const);
+	depth (const X3DShapeContainer* const);
 
 	virtual
 	void

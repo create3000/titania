@@ -48,62 +48,18 @@
  *
  ******************************************************************************/
 
-#include "CollisionContainer.h"
-
-#include "../Components/Navigation/Collision.h"
-#include "../Components/Shape/X3DShapeNode.h"
+#include "X3DShapeContainer.h"
 
 namespace titania {
 namespace X3D {
 
-CollisionContainer::CollisionContainer () :
-	X3DShapeContainer (),
-	       collisions ()
+X3DShapeContainer::X3DShapeContainer () :
+	          shape (nullptr),
+	        scissor (),
+	modelViewMatrix (),
+	   localObjects (),
+	     clipPlanes ()
 { }
-
-bool
-CollisionContainer::intersects (Box3d box) const
-{
-	try
-	{
-		if (getCollisions () .empty ())
-			return false;
-		
-		box *= inverse (getModelViewMatrix ());
-
-		return getShape () -> intersects (box, getClipPlanes (), getModelViewMatrix ());
-	}
-	catch (const std::domain_error &)
-	{
-		return false;
-	}
-}
-
-void
-CollisionContainer::depth ()
-{
-	// TODO: viewport must not be the browser or layer viewport.
-	glScissor (getScissor () [0],
-	           getScissor () [1],
-	           getScissor () [2],
-	           getScissor () [3]);
-
-	for (const auto & localObject : getLocalObjects ())
-		localObject -> enable ();
-
-	for (const auto & clipPlane : getClipPlanes ())
-		clipPlane -> enable ();
-
-	glLoadMatrixd (getModelViewMatrix () .data ());
-
-	getShape () -> depth (this);
-
-	for (const auto & clipPlane :  basic::make_reverse_range (getClipPlanes ()))
-		clipPlane -> disable ();
-
-	for (const auto & localObject : basic::make_reverse_range (getLocalObjects ()))
-		localObject -> disable ();
-}
 
 } // X3D
 } // titania

@@ -55,6 +55,7 @@
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/LightContainer.h"
 #include "../Rendering/X3DCollectableObject.h"
+#include "../Rendering/X3DShapeContainer.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
@@ -69,7 +70,8 @@ class X3DFogObject;
 class X3DRenderObject;
 class X3DShapeNode;
 
-class ShapeContainer
+class ShapeContainer :
+	public X3DShapeContainer
 {
 public:
 
@@ -91,52 +93,12 @@ public:
 	{ return transparent; }
 
 	void
-	setScissor (const Vector4i & value)
-	{ scissor = value; }
-
-	const Vector4i &
-	getScissor () const
-	{ return scissor; }
-
-	void
-	setModelViewMatrix (const Matrix4d & value)
-	{ modelViewMatrix = value; }
-
-	const Matrix4d &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
-
-	void
-	setShape (X3DShapeNode* value)
-	{ shape = value; }
-
-	X3DShapeNode*
-	getShape () const
-	{ return shape; }
-
-	void
 	setFog (X3DFogObject* value)
 	{ fog = value; }
 
 	X3DFogObject*
 	getFog () const
 	{ return fog; }
-
-	void
-	setLocalObjects (const CollectableObjectArray & value)
-	{ localObjects = value; }
-
-	const CollectableObjectArray &
-	getLocalObjects () const
-	{ return localObjects; }
-
-	void
-	setClipPlanes (const ClipPlaneContainerArray & value)
-	{ clipPlanes = value; }
-
-	const ClipPlaneContainerArray &
-	getClipPlanes () const
-	{ return clipPlanes; }
 
 	void
 	setLocalLights (const LightContainerArray & value)
@@ -182,12 +144,7 @@ private:
 
 	X3DRenderObject* const  renderer;
 	bool                    transparent;
-	Vector4i                scissor;
-	Matrix4d                modelViewMatrix;
-	X3DShapeNode*           shape;
 	X3DFogObject*           fog;
-	CollectableObjectArray  localObjects;
-	ClipPlaneContainerArray clipPlanes;
 	LightContainerArray     localLights;
 	GeometryType            geometryType;
 	bool                    colorMaterial;

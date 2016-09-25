@@ -54,6 +54,7 @@
 #include "../Rendering/ClipPlaneContainer.h"
 #include "../Rendering/CollisionArray.h"
 #include "../Rendering/X3DCollectableObject.h"
+#include "../Rendering/X3DShapeContainer.h"
 
 #include "../Types/Geometry.h"
 #include "../Types/Numbers.h"
@@ -64,7 +65,8 @@ namespace X3D {
 class Collision;
 class X3DShapeNode;
 
-class CollisionContainer
+class CollisionContainer :
+	public X3DShapeContainer
 {
 public:
 
@@ -75,22 +77,6 @@ public:
    ///  @name Member access
 
 	void
-	setScissor (const Vector4i & value)
-	{ scissor = value; }
-
-	void
-	setModelViewMatrix (const Matrix4d & value)
-	{ modelViewMatrix = value; }
-
-	const Matrix4d &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
-
-	void
-	setShape (X3DShapeNode* const value)
-	{ shape = value; }
-
-	void
 	setCollisions (const CollisionArray & value)
 	{ collisions = value; }
 
@@ -98,37 +84,20 @@ public:
 	getCollisions () const
 	{ return collisions; }
 
-	void
-	setLocalObjects (const CollectableObjectArray & value)
-	{ localObjects = value; }
-
-	void
-	setClipPlanes (const ClipPlaneContainerArray & value)
-	{ clipPlanes = value; }
-
-	const ClipPlaneContainerArray &
-	getClipPlanes () const
-	{ return clipPlanes; }
-
    ///  @name Operations
 
 	bool
 	intersects (Box3d) const;
 
 	void
-	draw ();
+	depth ();
 
 
 private:
 
    ///  @name Members
 
-	Vector4i                scissor;
-	Matrix4d                modelViewMatrix;
-	X3DShapeNode*           shape;
-	CollisionArray          collisions;
-	CollectableObjectArray  localObjects;
-	ClipPlaneContainerArray clipPlanes;
+	CollisionArray collisions;
 
 };
 
