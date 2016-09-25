@@ -51,6 +51,7 @@
 #include "X3DShaderNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -92,8 +93,11 @@ X3DShaderNode::deselect ()
 }
 
 void
-X3DShaderNode::draw ()
-{ }
+X3DShaderNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	if (type == TraverseType::DISPLAY)
+		renderObject -> getShaders () .emplace (this);
+}
 
 } // X3D
 } // titania

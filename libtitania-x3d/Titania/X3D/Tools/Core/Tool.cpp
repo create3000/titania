@@ -50,8 +50,8 @@
 
 #include "Tool.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -97,7 +97,7 @@ void
 Tool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (type == TraverseType::CAMERA)
-		transformationMatrix = getModelViewMatrix () .get ();
+		transformationMatrix = renderObject -> getModelViewMatrix () .get ();
 
 	X3DToolObject::traverse (type, renderObject);
 }

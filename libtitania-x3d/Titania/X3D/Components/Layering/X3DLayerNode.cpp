@@ -90,7 +90,6 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNod
 	           viewpoints (new ViewpointList (getExecutionContext ())),
 	          backgrounds (new BackgroundList (getExecutionContext ())),
 	                 fogs (new FogList (getExecutionContext ())),
-	            localFogs (),
 	            groupNode (p_layerGroup),
 	          friendsNode (p_layerGroup -> create (getExecutionContext ()))
 {
@@ -222,10 +221,10 @@ X3DLayerNode::getBackground () const
 X3DFogObject*
 X3DLayerNode::getFog () const
 {
-	if (localFogs .empty ())
+	if (getLocalFogs () .empty ())
 		return fogStack -> top ();
 
-	return localFogs .top ();
+	return getLocalFogs () .top ();
 }
 
 UserViewpointList
@@ -298,7 +297,7 @@ X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderOb
 	
 	getCameraSpaceMatrix        () .push (getViewpoint () -> getCameraSpaceMatrix ());
 	getInverseCameraSpaceMatrix () .push (getViewpoint () -> getInverseCameraSpaceMatrix ());
-	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix ());
+	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix (this));
 
 	switch (type)
 	{
@@ -349,17 +348,17 @@ X3DLayerNode::pointer ()
 		}
 		else
 		{
-			if (not getBrowser () -> isPointerInRectangle (currentViewport -> getRectangle ()))
+			if (not getBrowser () -> isPointerInRectangle (currentViewport -> getRectangle (getBrowser ())))
 				return;
 		}
 
-		getBrowser () -> setHitRay (currentViewport -> getRectangle ());
+		getBrowser () -> setHitRay (getProjectionMatrix () .get (), currentViewport -> getRectangle (getBrowser ()));
 
 		getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
-		currentViewport -> push ();
+		currentViewport -> push (this);
 		collect (TraverseType::POINTER, this);
-		currentViewport -> pop ();
+		currentViewport -> pop (this);
 
 		getModelViewMatrix () .pop ();
 	}
@@ -375,9 +374,9 @@ X3DLayerNode::camera ()
 	defaultBackground     -> traverse (TraverseType::CAMERA, this);
 	defaultFog            -> traverse (TraverseType::CAMERA, this);
 
-	currentViewport -> push ();
+	currentViewport -> push (this);
 	collect (TraverseType::CAMERA, this);
-	currentViewport -> pop ();
+	currentViewport -> pop (this);
 
 	navigationInfos -> update ();
 	viewpoints      -> update ();
@@ -395,9 +394,9 @@ X3DLayerNode::collision ()
 	getModelViewMatrix () .push (Matrix4d ());
 
 	// Render
-	currentViewport -> push ();
+	currentViewport -> push (this);
 	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1, _2));
-	currentViewport -> pop ();
+	currentViewport -> pop (this);
 
 	getModelViewMatrix () .pop ();
 }
@@ -407,12 +406,12 @@ X3DLayerNode::display (const TraverseType type)
 {
 	using namespace std::placeholders;
 
-	getNavigationInfo () -> enable (type);
+	getNavigationInfo () -> enable (type, this);
 	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
-	currentViewport -> push ();
+	currentViewport -> push (this);
 	render (type, std::bind (&X3DLayerNode::collect, this, _1, _2));
-	currentViewport -> pop ();
+	currentViewport -> pop (this);
 
 	getModelViewMatrix () .pop ();
 	getNavigationInfo () -> disable ();

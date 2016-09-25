@@ -53,20 +53,21 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Lighting/X3DLightNode.h"
 #include "../Components/Shaders/X3DProgrammableShaderObject.h"
+#include "../Rendering/X3DRenderObject.h"
 
 #include "TextureBuffer.h"
 
 namespace titania {
 namespace X3D {
 
-LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const group) :
+LightContainer::LightContainer (X3DBrowser* const browser, X3DLightNode* const node, X3DGroupingNode* const group, const Matrix4d & modelViewMatrix) :
 	X3DCollectableObject (),
-	             browser (node -> getBrowser ()),
+	             browser (browser),
 	                node (node),
-	     modelViewMatrix ({ node -> getModelViewMatrix () .get () }),
-	        shadowMatrix (),
 	               group (group),
-	       textureBuffer (),
+	     modelViewMatrix ({ modelViewMatrix }),
+	        shadowMatrix (),
+	 shadowTextureBuffer (),
 	         textureUnit (0),
 	             lightId (0)
 {
@@ -74,11 +75,11 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 	{
 		if (node -> getShadowIntensity () > 0 and node -> getShadowMapSize () > 0 and not browser -> getFixedPipelineRequired ())
 		{
-			textureBuffer .reset (new TextureBuffer (browser,
-			                                         node -> getShadowMapSize (),
-			                                         node -> getShadowMapSize (),
-			                                         false));
-			textureBuffer -> setup ();
+			shadowTextureBuffer .reset (new TextureBuffer (browser,
+			                                               node -> getShadowMapSize (),
+			                                               node -> getShadowMapSize (),
+			                                               false));
+			shadowTextureBuffer -> setup ();
 		}
 	}
 	catch (const std::runtime_error & error)
@@ -89,12 +90,12 @@ LightContainer::LightContainer (X3DLightNode* const node, X3DGroupingNode* const
 }
 
 void
-LightContainer::renderShadowMap ()
+LightContainer::renderShadowMap (X3DRenderObject* const renderObject)
 {
-	if (textureBuffer)
+	if (shadowTextureBuffer)
 	{
-		if (not node -> renderShadowMap (this))
-			textureBuffer .reset ();
+		if (not node -> renderShadowMap (renderObject, this))
+			shadowTextureBuffer .reset ();
 	}
 }
 
@@ -120,13 +121,13 @@ LightContainer::enable ()
 	}
 	#endif
 
-	if (textureBuffer and not browser -> getCombinedTextureUnits () .empty ())
+	if (shadowTextureBuffer and not browser -> getCombinedTextureUnits () .empty ())
 	{
 		textureUnit = browser -> getCombinedTextureUnits () .top ();
 		browser -> getCombinedTextureUnits () .pop ();
 
 		glActiveTexture (GL_TEXTURE0 + textureUnit);
-		glBindTexture (GL_TEXTURE_2D, textureBuffer -> getDepthTextureId ());
+		glBindTexture (GL_TEXTURE_2D, shadowTextureBuffer -> getDepthTextureId ());
 		glActiveTexture (GL_TEXTURE0);
 	}
 }
@@ -150,20 +151,22 @@ LightContainer::disable ()
 }
 
 void
-LightContainer::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i)
+LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
 	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .back ());
 
 	if (textureUnit)
 	{
+		const auto cameraSpaceMatrix = renderObject -> getCameraSpaceMatrix () .get ();
+
 		glUniform1f  (shaderObject -> getShadowIntensityUniformLocation () [i], node -> getShadowIntensity ());
 		glUniform1f  (shaderObject -> getShadowDiffusionUniformLocation () [i], node -> getShadowDiffusion ());
 		glUniform3fv (shaderObject -> getShadowColorUniformLocation     () [i], 1, node -> getShadowColor () .data ());
 
 		if (shaderObject -> isExtensionGPUShaderFP64Available ())
-			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, (node -> getCameraSpaceMatrix () .get () * shadowMatrix) .data ());
+			glUniformMatrix4dv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, (cameraSpaceMatrix * shadowMatrix) .data ());
 		else
-			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (node -> getCameraSpaceMatrix () .get () * shadowMatrix) .data ());
+			glUniformMatrix4fv (shaderObject -> getShadowMatrixUniformLocation () [i], 1, false, Matrix4f (cameraSpaceMatrix * shadowMatrix) .data ());
 	
 		glUniform1i (shaderObject -> getShadowMapUniformLocation () [i], textureUnit);
 	}

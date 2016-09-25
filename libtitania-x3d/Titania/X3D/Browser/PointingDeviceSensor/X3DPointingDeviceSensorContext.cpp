@@ -142,11 +142,11 @@ X3DPointingDeviceSensorContext::isPointerInRectangle (const Vector4i & rectangle
 }
 
 void
-X3DPointingDeviceSensorContext::setHitRay (const Vector4i & viewport)
+X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & projectionMatrix, const Vector4i & viewport)
 {
 	try
 	{
-		hitRay = ViewVolume::unProjectRay (pointer .x (), pointer .y (), Matrix4d (), getBrowser () -> getProjectionMatrix () .get (), viewport);
+		hitRay = ViewVolume::unProjectRay (pointer .x (), pointer .y (), Matrix4d (), projectionMatrix, viewport);
 	}
 	catch (const std::domain_error &)
 	{

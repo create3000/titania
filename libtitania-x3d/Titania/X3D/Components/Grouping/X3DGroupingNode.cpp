@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../EnvironmentalEffects/LocalFog.h"
 #include "../Lighting/X3DLightNode.h"
@@ -336,23 +337,23 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		{
 			if (not pointingDeviceSensors .empty ())
 			{
-				getBrowser () -> getSensors () .emplace_back ();
+				renderObject -> getBrowser () -> getSensors () .emplace_back ();
 
 				for (const auto & childNode : pointingDeviceSensors)
-					childNode -> push ();
+					childNode -> push (renderObject);
 			}
 
 			for (const auto & childNode : clipPlanes)
-				childNode -> push ();
+				childNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop ();
+				childNode -> pop (renderObject);
 
 			if (not pointingDeviceSensors .empty ())
-				getBrowser () -> getSensors () .pop_back ();
+				renderObject -> getBrowser () -> getSensors () .pop_back ();
 
 			return;
 		}
@@ -367,13 +368,13 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		case TraverseType::DEPTH:
 		{
 			for (const auto & childNode : clipPlanes)
-				childNode -> push ();
+				childNode -> push (renderObject);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop ();
+				childNode -> pop (renderObject);
 
 			return;
 		}
@@ -381,25 +382,25 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 		case TraverseType::DRAW:
 		{
 			for (const auto & childNode : clipPlanes)
-				childNode -> push ();
+				childNode -> push (renderObject);
 
 			for (const auto & childNode : localFogs)
-				childNode -> push ();
+				childNode -> push (renderObject);
 
 			for (const auto & childNode : lights)
-				childNode -> push (type, this);
+				childNode -> push (type, renderObject, this);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (lights))
-				childNode -> pop ();
+				childNode -> pop (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (localFogs))
-				childNode -> pop ();
+				childNode -> pop (renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (clipPlanes))
-				childNode -> pop ();
+				childNode -> pop (renderObject);
 
 			return;
 		}

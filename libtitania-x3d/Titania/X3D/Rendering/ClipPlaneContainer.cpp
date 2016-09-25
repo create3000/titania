@@ -56,10 +56,11 @@
 namespace titania {
 namespace X3D {
 
-ClipPlaneContainer::ClipPlaneContainer (ClipPlane* const node) :
+ClipPlaneContainer::ClipPlaneContainer (X3DBrowser* const browser, ClipPlane* const node, const Matrix4d & modelViewMatrix) :
 	X3DCollectableObject (),
+	             browser (browser),
 	                node (node),
-	     modelViewMatrix (node -> getModelViewMatrix () .get ()),
+	     modelViewMatrix (modelViewMatrix),
 	             planeId (0)
 { }
 
@@ -73,8 +74,6 @@ void
 ClipPlaneContainer::enable ()
 {
 	#ifdef FIXED_PIPELINE
-	const auto & browser = node -> getBrowser ();
-
 	if (browser -> getFixedPipelineRequired ())
 	{
 		auto & clipPlanes = browser -> getClipPlanes ();
@@ -98,8 +97,6 @@ void
 ClipPlaneContainer::disable ()
 {
 	#ifdef FIXED_PIPELINE
-	const auto & browser = node -> getBrowser ();
-
 	if (browser -> getFixedPipelineRequired ())
 	{
 		if (planeId)

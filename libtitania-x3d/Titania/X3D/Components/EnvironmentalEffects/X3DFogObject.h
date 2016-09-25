@@ -60,6 +60,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DFogObject :
 	virtual public X3DBaseNode
 {
@@ -112,10 +114,10 @@ public:
 
 	virtual
 	void
-	enable ();
+	enable (X3DRenderObject* const renderObject);
 
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const);
+	setShaderUniforms (X3DProgrammableShaderObject* const, X3DRenderObject* const renderObject);
 
 	///  @name Destruction
 
@@ -140,7 +142,7 @@ private:
 	///  @name Member access
 
 	float
-	getVisibilityRange ();
+	getVisibilityRange (X3DRenderObject* const renderObject);
 
 	float
 	getDensitiy (const float);

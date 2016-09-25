@@ -54,6 +54,7 @@
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Layering/X3DLayerNode.h"
 
 namespace titania {
@@ -117,7 +118,7 @@ Fog::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		case TraverseType::CAMERA:
 		{
-			getCurrentLayer () -> getFogs () -> push_back (this);
+			renderObject -> getLayer () -> getFogs () -> push_back (this);
 			break;
 		}
 		default:

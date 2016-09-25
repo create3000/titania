@@ -53,6 +53,7 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include <Titania/String.h>
 
@@ -318,34 +319,35 @@ MultiTexture::traverse (const TraverseType type, X3DRenderObject* const renderOb
 }
 
 void
-MultiTexture::draw ()
+MultiTexture::draw (X3DRenderObject* const renderObject)
 {
-	size_t index = 0;
+	const auto browser = renderObject -> getBrowser ();
+	size_t     index   = 0;
 
 	for (const auto & textureNode : textureNodes)
 	{
 		if (getMode (index) == ModeType::OFF and getAlphaMode (index) == ModeType::OFF)
 		{
-			getBrowser () -> getTextureStages () .emplace_back (-1);
+			browser -> getTextureStages () .emplace_back (-1);
 			++ index;
 			continue;
 		}
 
-		if (getBrowser () -> getTextureUnits () .empty ())
+		if (browser -> getTextureUnits () .empty ())
 			break;
 
 		// Get texture unit.
 
-		const int32_t unit = getBrowser () -> getTextureUnits () .top ();
-		getBrowser () -> getTextureUnits () .pop ();
+		const int32_t unit = browser -> getTextureUnits () .top ();
+		browser -> getTextureUnits () .pop ();
 
-		getBrowser () -> getTextureStages () .emplace_back (unit);
+		browser -> getTextureStages () .emplace_back (unit);
 
 		// Activate texture
 
 		glActiveTexture (GL_TEXTURE0 + unit);
 
-		textureNode -> draw ();
+		textureNode -> draw (renderObject);
 
 		// Setup color
 

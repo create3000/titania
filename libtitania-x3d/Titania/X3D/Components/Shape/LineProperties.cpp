@@ -87,7 +87,7 @@ LineProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-LineProperties::enable ()
+LineProperties::enable (X3DRenderObject* const renderObject)
 {
 	if (applied ())
 	{
@@ -113,7 +113,7 @@ LineProperties::enable ()
 }
 
 void
-LineProperties::disable ()
+LineProperties::disable (X3DRenderObject* const renderObject)
 {
 	glDisable (GL_LINE_STIPPLE);
 	glLineWidth (1);

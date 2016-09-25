@@ -89,17 +89,17 @@ FillProperties::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-FillProperties::enable ()
+FillProperties::enable (X3DRenderObject* const renderObject)
 {
 	lighting = glIsEnabled (GL_LIGHTING);
 
 	glDisable (GL_LIGHTING);
 
-	draw ();
+	draw (renderObject);
 }
 
 void
-FillProperties::disable ()
+FillProperties::disable (X3DRenderObject* const renderObject)
 {
 	if (lighting)
 		glEnable (GL_LIGHTING);
@@ -111,7 +111,7 @@ FillProperties::disable ()
 }
 
 void
-FillProperties::draw ()
+FillProperties::draw (X3DRenderObject* const renderObject)
 {
 	if (hatched ())
 	{

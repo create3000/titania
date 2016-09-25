@@ -140,7 +140,7 @@ TextureCoordinateGenerator::init (TexCoordArray & texCoords, const size_t) const
 }
 
 void
-TextureCoordinateGenerator::enable (const int32_t unit, const size_t, const std::vector <GLuint> &) const
+TextureCoordinateGenerator::enable (ShapeContainer* const context, const int32_t unit, const size_t, const std::vector <GLuint> &) const
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 
@@ -280,7 +280,7 @@ TextureCoordinateGenerator::enable (const int32_t unit, const size_t, const std:
 }
 
 void
-TextureCoordinateGenerator::disable (const int32_t unit) const
+TextureCoordinateGenerator::disable (ShapeContainer* const context, const int32_t unit) const
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

@@ -162,10 +162,10 @@ private:
 	///  @name Member access
 
 	size_t
-	getLevel () const;
+	getLevel (X3DBrowser* const browser, const Matrix4d & modelViewMatrix) const;
 
 	double
-	getDistance () const;
+	getDistance (Matrix4d modelViewMatrix) const;
 
 	///  @name Event handlers
 

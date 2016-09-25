@@ -52,6 +52,8 @@
 
 #include "LookAtViewer.h"
 
+#include "../../Components/Navigation/X3DViewpointNode.h"
+
 namespace titania {
 namespace X3D {
 

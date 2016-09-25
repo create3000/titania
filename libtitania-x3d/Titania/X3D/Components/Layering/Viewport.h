@@ -125,11 +125,11 @@ public:
 
 	virtual
 	void
-	push () final override;
+	push (X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void
-	pop () final override;
+	pop (X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void

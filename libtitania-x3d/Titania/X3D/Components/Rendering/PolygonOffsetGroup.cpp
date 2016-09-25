@@ -20,8 +20,6 @@
  *
  * NON-MILITARY USE ONLY
  *
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
-
  * All create3000 software are effectively free software with a non-military use
  * restriction. It is free. Well commented source is provided. You may reuse the
  * source in any way you please with the exception anything that uses it must be
@@ -52,9 +50,9 @@
 
 #include "PolygonOffsetGroup.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/PolygonOffsetContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
@@ -127,11 +125,11 @@ PolygonOffsetGroup::traverse (const TraverseType type, X3DRenderObject* const re
 		case TraverseType::DISPLAY:
 		case TraverseType::DRAW:
 		{
-			getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
+			renderObject -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
 
 			X3DGroupingNode::traverse (type, renderObject);
 
-			getCurrentLayer () -> getLocalObjects () .pop_back ();
+			renderObject -> getLocalObjects () .pop_back ();
 			break;
 		}
 		default:

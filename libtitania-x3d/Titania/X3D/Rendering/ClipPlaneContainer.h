@@ -58,6 +58,7 @@ namespace titania {
 namespace X3D {
 
 class ClipPlane;
+class X3DBrowser;
 class X3DProgrammableShaderObject;
 
 class ClipPlaneContainer :
@@ -65,10 +66,10 @@ class ClipPlaneContainer :
 {
 public:
 
-	ClipPlaneContainer (ClipPlane* const);
+	ClipPlaneContainer (X3DBrowser* const browser, ClipPlane* const node, const Matrix4d & modelViewMatrix);
 
 	bool
-	isClipped (const Vector3d &) const;
+	isClipped (const Vector3d & point) const;
 
 	virtual
 	void
@@ -79,14 +80,15 @@ public:
 	disable () final override;
 
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i);
 
 
 private:
 
-	ClipPlane* const node;
-	const Matrix4d   modelViewMatrix;
-	GLenum           planeId;
+	X3DBrowser* const browser;
+	ClipPlane* const  node;
+	const Matrix4d    modelViewMatrix;
+	GLenum            planeId;
 
 };
 

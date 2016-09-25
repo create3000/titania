@@ -99,10 +99,10 @@ public:
 	{ return *fields .enabled; }
 
 	void
-	push ();
+	push (X3DRenderObject* const renderObject);
 
 	void
-	pop ();
+	pop (X3DRenderObject* const renderObject);
 
 	virtual
 	void

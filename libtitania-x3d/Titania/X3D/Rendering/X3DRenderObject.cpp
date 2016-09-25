@@ -54,9 +54,10 @@
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/CubeMapTexturing/GeneratedCubeMapTexture.h"
+#include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
-#include "../Components/Layering/X3DLayerNode.h"
+#include "../Components/Shaders/ComposedShader.h"
 #include "../Components/Shape/Appearance.h"
 #include "../Components/Shape/X3DShapeNode.h"
 #include "../Rendering/FrameBuffer.h"
@@ -79,15 +80,21 @@ static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderObject::X3DRenderObject () :
 	                X3DBaseNode (),
+	           projectionMatrix (),
+	          cameraSpaceMatrix (),
+	       invCameraSpaceMatrix (),
+	            modelViewMatrix (),
 	            viewVolumeStack (),
-	   generatedCubeMapTextures (),
 	               globalLights (),
 	               localObjects (),
 	                 clipPlanes (),
+	                  localFogs (),
 	                localLights (),
 	                     lights (),
 	                    lightId (0),
 	                 collisions (),
+	   generatedCubeMapTextures (),
+	                    shaders (),
 	           opaqueDrawShapes (),
 	      transparentDrawShapes (),
 	        opaqueDisplayShapes (),
@@ -202,11 +209,11 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 	
 		// Render depth.
 
-		getBrowser () -> getProjectionMatrix () .push (modelViewMatrix);
+		const_cast <X3DRenderObject*> (this) -> getProjectionMatrix () .push (modelViewMatrix);
 
 		const auto depth = getDepth (projectionMatrix);
 
-		getBrowser () -> getProjectionMatrix () .pop ();
+		const_cast <X3DRenderObject*> (this) -> getProjectionMatrix () .pop ();
 
 		return -depth;
 	}
@@ -241,7 +248,7 @@ X3DRenderObject::getDepth (const Matrix4d & projectionMatrix) const
 }
 
 void
-X3DRenderObject::render (const TraverseType type, const std::function <void (const TraverseType, X3DRenderObject* const)> & traverse)
+X3DRenderObject::render (const TraverseType type, const TraverseFunction & traverse)
 {
 	switch (type)
 	{
@@ -283,7 +290,7 @@ X3DRenderObject::render (const TraverseType type, const std::function <void (con
 			numTransparentDisplayShapes = 0;
 
 			traverse (type, this);
-			display ();
+			display (traverse);
 			break;
 		}
 		default:
@@ -310,7 +317,7 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shape)
 	++ numCollisionShapes;
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
@@ -330,7 +337,7 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shape)
 	++ numDepthShapes;
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
-	context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
+	context -> setModelViewMatrix (getModelViewMatrix () .get ());
 	context -> setShape (shape);
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
@@ -355,7 +362,7 @@ X3DRenderObject::addShape (X3DShapeNode* const shape,
                        ShapeContainerArray & transparentShapes,
                        size_t & numTransparentShapes)
 {
-	const auto bbox   = shape -> getBBox () * getBrowser () -> getModelViewMatrix () .get ();
+	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
 	const auto depth  = bbox .size   () .z () / 2;
 	const auto min    = bbox .center () .z () - depth;
 	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
@@ -389,7 +396,7 @@ X3DRenderObject::addShape (X3DShapeNode* const shape,
 		}
 
 		context -> setScissor (viewVolume .getScissor ());
-		context -> setModelViewMatrix (getBrowser () -> getModelViewMatrix () .get ());
+		context -> setModelViewMatrix (getModelViewMatrix () .get ());
 		context -> setShape (shape);
 		context -> setFog (getFog ());
 		context -> setLocalObjects (getLocalObjects ());
@@ -496,11 +503,11 @@ X3DRenderObject::gravite ()
 
 		// Render depth.
 
-		getBrowser () -> getProjectionMatrix () .push (modelViewMatrix);
+		getProjectionMatrix () .push (modelViewMatrix);
 
 		auto distance = -getDepth (projectionMatrix);
 
-		getBrowser () -> getProjectionMatrix () .pop ();
+		getProjectionMatrix () .pop ();
 
 		// Gravite or step up
 
@@ -575,7 +582,7 @@ X3DRenderObject::depth (const CollisionContainerArray & shapes, const size_t num
 	// Setup projection matrix.
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Render to depth buffer.
@@ -595,45 +602,35 @@ X3DRenderObject::depth (const CollisionContainerArray & shapes, const size_t num
 }
 
 void
-X3DRenderObject::display ()
+X3DRenderObject::display (const TraverseFunction & traverse)
 {
 	// Render shadow maps.
 
 	for (const auto & object : getLights ())
-		object -> renderShadowMap ();
+		object -> renderShadowMap (this);
 
 	// Render generated cube map textures.
 
-	renderGeneratedCubeMapTextures ();
+	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
+		generatedCubeMapTexture -> renderTexture (this, traverse);
 
-	// Set global uniforms.
-
-	// TODO: set global uniforms.
+	// Draw.
 
 	draw (opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
 
 	// Clear light nodes arrays.
 
-	getGlobalLights () .clear ();
-	getLights       () .clear ();
-}
-
-void
-X3DRenderObject::renderGeneratedCubeMapTextures ()
-{
-	// Render generated cube map textures.
-
-	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
-		generatedCubeMapTexture -> renderTexture ();
-
+	getShaders                  () .clear ();
 	getGeneratedCubeMapTextures () .clear ();
+	getGlobalLights             () .clear ();
+	getLights                   () .clear ();
 }
 
 void
 X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
-                   size_t & numOpaqueShapes,
-                   ShapeContainerArray & transparentShapes,
-                   size_t & numTransparentShapes)
+                       size_t & numOpaqueShapes,
+                       ShapeContainerArray & transparentShapes,
+                       size_t & numTransparentShapes)
 {
 	static constexpr auto comp = ShapeContainerComp { };
 
@@ -641,10 +638,6 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
-
-	// Set global uniforms.
-
-	// TODO: set global uniforms.
 
 	// Configure viewport.
 
@@ -656,14 +649,26 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 	// Setup projection matrix
 	// for fixed pipeline, background, particle systems.
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (getBrowser () -> getProjectionMatrix () .get () .data ());
+	glLoadMatrixd (getProjectionMatrix () .get () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Draw background.
 
 	glClear (GL_DEPTH_BUFFER_BIT);
 
-	getBackground () -> draw (viewport);
+	getBackground () -> draw (this, viewport);
+
+	// Set global uniforms.
+
+	if (not getBrowser () -> getFixedPipelineRequired ())
+	{
+		getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
+		getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
+		getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
+	}
+
+	for (const auto & shaderNode : getShaders ())
+		shaderNode -> setGlobalUniforms (this);
 
 	// Sorted blend.
 
@@ -699,7 +704,7 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 	{
 		// Reset to default OpenGL appearance
 
-		getBrowser () -> getDefaultAppearance () -> draw ();
+		getBrowser () -> getDefaultAppearance () -> draw (this);
 	}
 	#endif
 }

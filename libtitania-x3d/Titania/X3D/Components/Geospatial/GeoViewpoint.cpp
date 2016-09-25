@@ -55,7 +55,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Tools/Geospatial/GeoViewpointTool.h"
 
-#include "../Layering/X3DLayerNode.h"
 #include "../Layering/X3DViewportNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>

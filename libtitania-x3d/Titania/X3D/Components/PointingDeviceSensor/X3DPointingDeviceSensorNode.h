@@ -101,7 +101,7 @@ public:
 	///  @name Operations
 
 	void
-	push ();
+	push (X3DRenderObject* const renderObject);
 
 
 protected:
@@ -144,7 +144,7 @@ private:
 	set_enabled ();
 
 	void
-	eraseMatrices (X3DLayerNode* const);
+	eraseMatrices (X3DLayerNode* const layerNode);
 
 	///  @name Members
 

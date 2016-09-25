@@ -186,8 +186,8 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 			{
 				case TraverseType::CAMERA:
 				{
-					viewpointNode   = getCurrentViewpoint ();
-					modelViewMatrix = getModelViewMatrix () .get ();
+					viewpointNode   = renderObject -> getViewpoint ();
+					modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 					return;
 				}
 				case TraverseType::DISPLAY:
@@ -201,7 +201,11 @@ ProximitySensor::traverse (const TraverseType type, X3DRenderObject* const rende
 						inside = true;
 	
 					else
-						inside = Box3d (size () .getValue (), center () .getValue ()) .intersects (inverse (getModelViewMatrix () .get ()) .origin ());
+					{
+						const auto bbox = Box3d (size () .getValue (), center () .getValue ());
+
+						inside = bbox .intersects (inverse (renderObject -> getModelViewMatrix () .get ()) .origin ());
+					}
 	
 					return;
 				}

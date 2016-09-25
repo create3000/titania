@@ -60,7 +60,6 @@
 #include "../../Browser/X3DBrowser.h"
 
 #include "../../Components/Grouping/X3DTransformNode.h"
-#include "../../Components/Layering/X3DLayerNode.h"
 
 namespace titania {
 namespace X3D {
@@ -231,7 +230,7 @@ private:
 	///  @name Operatations
 
 	void
-	reshape ();
+	reshape (X3DRenderObject* const renderObject);
 
 	///  @name Members
 

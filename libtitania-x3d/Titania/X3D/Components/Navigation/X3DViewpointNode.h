@@ -203,7 +203,7 @@ public:
 
 	///  Setup projection matrix.
 	Matrix4d
-	getProjectionMatrix () const;
+	getProjectionMatrix (X3DRenderObject* const renderObject) const;
 
 	virtual
 	Matrix4d

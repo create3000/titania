@@ -127,7 +127,7 @@ TextureCoordinate::getTexCoord (std::vector <Vector4f> & texCoords) const
 }
 
 void
-TextureCoordinate::enable (const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const
+TextureCoordinate::enable (ShapeContainer* const context, const int32_t unit, const size_t channel, const std::vector <GLuint> & texCoordBufferIds) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glBindBuffer (GL_ARRAY_BUFFER, texCoordBufferIds [channel]);
@@ -136,7 +136,7 @@ TextureCoordinate::enable (const int32_t unit, const size_t channel, const std::
 }
 
 void
-TextureCoordinate::disable (int32_t unit) const
+TextureCoordinate::disable (ShapeContainer* const context, const int32_t unit) const
 {
 	glClientActiveTexture (GL_TEXTURE0 + unit);
 	glDisableClientState (GL_TEXTURE_COORD_ARRAY);

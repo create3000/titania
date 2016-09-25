@@ -50,6 +50,7 @@
 
 #include "X3DExamineViewer.h"
 
+#include "../../Components/Navigation/NavigationInfo.h"
 #include "../Browser.h"
 
 #include <Titania/Chrono/Now.h>

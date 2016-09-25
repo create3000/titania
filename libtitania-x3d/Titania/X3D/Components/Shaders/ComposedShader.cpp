@@ -258,18 +258,16 @@ ComposedShader::disable ()
 }
 
 void
-ComposedShader::draw ()
+ComposedShader::draw (X3DRenderObject* const renderObject)
 {
-	X3DShaderNode::draw ();
-
 	glUseProgram (programId);
 }
 
 void
-ComposedShader::setGlobalUniforms (ShapeContainer* const context)
+ComposedShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
 	glUseProgram (programId);
-	X3DProgrammableShaderObject::setGlobalUniforms (context);
+	X3DProgrammableShaderObject::setGlobalUniforms (renderObject);
 }
 
 void

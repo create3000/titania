@@ -164,16 +164,21 @@ public:
 
 	virtual
 	bool
-	intersects (Line3d, std::vector <IntersectionPtr> &) const final override;
+	intersects (Line3d,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix,
+	            std::vector <IntersectionPtr> &) const final override;
 
 	virtual
 	bool
-	intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const final override
-	{ return getNode <X3DGeometryNode> () -> intersects (box, clipPlanes, modelViewMatrix); }
+	intersects (Box3d box,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix) const final override;
 
 	virtual
 	std::vector <Vector3d>
-	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+	intersects (X3DRenderObject* const renderObject,
+	            const std::shared_ptr <FrameBuffer> & frameBuffer,
 	            const std::shared_ptr <FrameBuffer> & depthBuffer,
 	            std::vector <IntersectionPtr> & intersections) final override;
 

@@ -112,7 +112,7 @@ PackagedShader::disable ()
 { }
 
 void
-PackagedShader::draw ()
+PackagedShader::draw (X3DRenderObject* const renderObject)
 { }
 
 void

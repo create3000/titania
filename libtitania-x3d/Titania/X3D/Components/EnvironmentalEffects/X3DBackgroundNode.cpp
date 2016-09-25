@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-static constexpr float SIZE = 1;
+static constexpr float RADIUS = 1;
 
 //static constexpr float U_DIMENSION = 16;// LOW
 //static constexpr float U_DIMENSION = 24;// HIGH
@@ -116,6 +116,36 @@ X3DBackgroundNode::isHidden (const bool value)
 	hidden = value;
 
 	getBrowser () -> addEvent ();
+}
+
+bool
+X3DBackgroundNode::isTransparent () const
+{
+	if (hidden)
+		return true;
+
+	if (transparency () == 0.0f)
+		return false;
+
+	if (not frontTexture  or frontTexture  -> isTransparent ())
+			return true;
+
+	if (not backTexture   or backTexture   -> isTransparent ())
+			return true;
+
+	if (not leftTexture   or leftTexture   -> isTransparent ())
+			return true;
+
+	if (not rightTexture  or rightTexture  -> isTransparent ())
+			return true;
+
+	if (not topTexture    or topTexture    -> isTransparent ())
+			return true;
+
+	if (not bottomTexture or bottomTexture -> isTransparent ())
+			return true;
+
+	return false;
 }
 
 void
@@ -230,8 +260,7 @@ X3DBackgroundNode::build ()
 	{
 		// Build cube
 
-		const float r = SIZE;
-
+		const float     s = std::sqrt (RADIUS * RADIUS / 2);
 		const Color3f & c = skyColor () [0];
 
 		numIndices = 24;
@@ -240,46 +269,44 @@ X3DBackgroundNode::build ()
 			glColors .emplace_back (c .r (), c .g (), c .b (), opacity);
 
 		// Back
-		glPoints .emplace_back (-r,  r, -r);
-		glPoints .emplace_back (r,  r, -r);
-		glPoints .emplace_back (r, -r, -r);
-		glPoints .emplace_back (-r, -r, -r);
+		glPoints .emplace_back (-s,  s, -s);
+		glPoints .emplace_back ( s,  s, -s);
+		glPoints .emplace_back ( s, -s, -s);
+		glPoints .emplace_back (-s, -s, -s);
 
 		// Front
-		glPoints .emplace_back (r,  r,  r);
-		glPoints .emplace_back (-r,  r,  r);
-		glPoints .emplace_back (-r, -r,  r);
-		glPoints .emplace_back (r, -r,  r);
+		glPoints .emplace_back ( s,  s,  s);
+		glPoints .emplace_back (-s,  s,  s);
+		glPoints .emplace_back (-s, -s,  s);
+		glPoints .emplace_back ( s, -s,  s);
 
 		// Left
-		glPoints .emplace_back (-r,  r,  r);
-		glPoints .emplace_back (-r,  r, -r);
-		glPoints .emplace_back (-r, -r, -r);
-		glPoints .emplace_back (-r, -r,  r);
+		glPoints .emplace_back (-s,  s,  s);
+		glPoints .emplace_back (-s,  s, -s);
+		glPoints .emplace_back (-s, -s, -s);
+		glPoints .emplace_back (-s, -s,  s);
 
 		// Right
-		glPoints .emplace_back (r,  r, -r);
-		glPoints .emplace_back (r,  r,  r);
-		glPoints .emplace_back (r, -r,  r);
-		glPoints .emplace_back (r, -r, -r);
+		glPoints .emplace_back (s,  s, -s);
+		glPoints .emplace_back (s,  s,  s);
+		glPoints .emplace_back (s, -s,  s);
+		glPoints .emplace_back (s, -s, -s);
 
 		// Top
-		glPoints .emplace_back (-r,  r,  r);
-		glPoints .emplace_back (r,  r,  r);
-		glPoints .emplace_back (r,  r, -r);
-		glPoints .emplace_back (-r,  r, -r);
+		glPoints .emplace_back (-s,  s,  s);
+		glPoints .emplace_back ( s,  s,  s);
+		glPoints .emplace_back ( s,  s, -s);
+		glPoints .emplace_back (-s,  s, -s);
 
 		// Bottom
-		glPoints .emplace_back (r, -r,  r);
-		glPoints .emplace_back (-r, -r,  r);
-		glPoints .emplace_back (-r, -r, -r);
-		glPoints .emplace_back (r, -r, -r);
+		glPoints .emplace_back ( s, -s,  s);
+		glPoints .emplace_back (-s, -s,  s);
+		glPoints .emplace_back (-s, -s, -s);
+		glPoints .emplace_back ( s, -s, -s);
 	}
 	else
 	{
 		// Build sphere
-
-		const float radius = std::sqrt (2 * std::pow (SIZE, 2));
 
 		if (skyColor () .size () > skyAngle () .size ())
 		{
@@ -293,7 +320,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .back () < vAngleMax)
 				vAngle .emplace_back (vAngleMax);
 
-			build (radius, vAngle, skyAngle (), skyColor (), opacity, false);
+			build (RADIUS, vAngle, skyAngle (), skyColor (), opacity, false);
 		}
 
 		if (groundColor () .size () > groundAngle () .size ())
@@ -306,7 +333,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .back () > 0)
 				vAngle .emplace_back (0);
 
-			build (radius, vAngle, groundAngle (), groundColor (), opacity, true);
+			build (RADIUS, vAngle, groundAngle (), groundColor (), opacity, true);
 		}
 	}
 }
@@ -318,13 +345,15 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 	{
 		case TraverseType::CAMERA:
 		{
-			getCurrentLayer () -> getBackgrounds () -> push_back (this);
+			renderObject -> getLayer () -> getBackgrounds () -> push_back (this);
 			break;
 		}
 		case TraverseType::DISPLAY:
 		case TraverseType::DRAW:
 		{
-			modelViewMatrix .emplace_back (getModelViewMatrix () .get ());
+			if (isBound ())
+				modelViewMatrix .emplace_back (renderObject -> getModelViewMatrix () .get ());
+
 			break;
 		}
 		default:
@@ -333,7 +362,7 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 }
 
 void
-X3DBackgroundNode::draw (const Vector4i & viewport)
+X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & viewport)
 {
 	if (hidden)
 		return;
@@ -342,8 +371,7 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 
 	// Setup projection matrix
 
-	const double farValue = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (getProjectionMatrix () .get ()), viewport) .z ();
-	const double radius   = std::sqrt (2 * std::pow (SIZE, 2));
+	const double farValue = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z ();
 
 	// Rotate and scale background
 
@@ -351,24 +379,24 @@ X3DBackgroundNode::draw (const Vector4i & viewport)
 	Rotation4d rotation;
 
 	modelViewMatrix .back () .get (translation, rotation);
-	modelViewMatrix .back () .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue) / radius);
+	modelViewMatrix .back () .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
 
 	glLoadMatrixd (modelViewMatrix .back () .data ());
 
+	// The default background does not push a model view matrix, thus we must not pop back.
 	if (modelViewMatrix .size () > 1)
 		modelViewMatrix .pop_back ();
 
 	// Draw
 
-	drawSphere ();
-	drawCube ();
+	drawSphere (renderObject);
+	drawCube   (renderObject);
 }
 
 void
-X3DBackgroundNode::drawSphere ()
+X3DBackgroundNode::drawSphere (X3DRenderObject* const renderObject)
 {
 	if (transparency () >= 1.0f)
-		return;
 
 	// Draw
 
@@ -377,6 +405,8 @@ X3DBackgroundNode::drawSphere ()
 
 	if (transparency ())
 		glEnable (GL_BLEND);
+	else
+		glDisable (GL_BLEND);
 
 	glEnable (GL_CULL_FACE);
 	glFrontFace (GL_CW);
@@ -398,9 +428,9 @@ X3DBackgroundNode::drawSphere ()
 }
 
 void
-X3DBackgroundNode::drawCube ()
+X3DBackgroundNode::drawCube (X3DRenderObject* const renderObject)
 {
-	static constexpr auto s = SIZE;
+	static const auto s = std::sqrt (RADIUS * RADIUS / 2);
 
 	glDisable (GL_DEPTH_TEST);
 	glDepthMask (GL_FALSE);
@@ -421,7 +451,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			frontTexture -> draw ();
+			frontTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (1, 1);
 			glVertex3f (s, s, -s);
@@ -444,7 +474,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			backTexture -> draw ();
+			backTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (0, 0);
 			glVertex3f (s, -s, s);
@@ -467,7 +497,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			leftTexture -> draw ();
+			leftTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (0, 1);
 			glVertex3f (-s, s, s);
@@ -490,7 +520,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			rightTexture -> draw ();
+			rightTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (0, 1);
 			glVertex3f (s, s, -s);
@@ -513,7 +543,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			topTexture -> draw ();
+			topTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (0, 1);
 			glVertex3f (-s, s, s);
@@ -536,7 +566,7 @@ X3DBackgroundNode::drawCube ()
 			else
 				glDisable (GL_BLEND);
 
-			bottomTexture -> draw ();
+			bottomTexture -> draw (renderObject);
 			glBegin (GL_QUADS);
 			glTexCoord2f (1, 0);
 			glVertex3f (s, -s, s);

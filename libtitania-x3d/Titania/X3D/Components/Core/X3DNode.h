@@ -54,19 +54,10 @@
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Basic/X3DConstants.h"
 #include "../../Fields.h"
-
 #include "../../Rendering/OpenGL.h"
-#include "../../Rendering/ViewVolumeStack.h"
-#include "../../Types/MatrixStack.h"
 
 namespace titania {
 namespace X3D {
-
-class X3DScene;
-class X3DLayerNode;
-class NavigationInfo;
-class X3DViewpointNode;
-class X3DViewportNode;
 
 class MetadataBoolean;
 class MetadataDouble;
@@ -153,50 +144,6 @@ protected:
 	///  @name Construction
 
 	X3DNode ();
-
-	///  @name Member access
-
-	X3DLayerNode*
-	getCurrentLayer () const;
-
-	ViewVolumeStack &
-	getViewVolumes ();
-
-	const ViewVolumeStack &
-	getViewVolumes () const;
-
-	X3DViewportNode*
-	getCurrentViewport () const;
-
-	NavigationInfo*
-	getCurrentNavigationInfo () const;
-
-	X3DViewpointNode*
-	getCurrentViewpoint () const;
-
-	Matrix4dStack &
-	getProjectionMatrix ();
-
-	const Matrix4dStack &
-	getProjectionMatrix () const;
-
-	Matrix4dStack &
-	getCameraSpaceMatrix ();
-
-	const Matrix4dStack &
-	getCameraSpaceMatrix () const;
-
-	Matrix4dStack &
-	getInverseCameraSpaceMatrix ();
-
-	const Matrix4dStack &
-	getInverseCameraSpaceMatrix () const;
-
-	Matrix4dStack &
-	getModelViewMatrix ();
-
-	const Matrix4dStack &
-	getModelViewMatrix () const;
 
 
 private:

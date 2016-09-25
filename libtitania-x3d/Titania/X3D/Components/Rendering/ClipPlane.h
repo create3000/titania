@@ -111,10 +111,10 @@ public:
 	isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix);
 
 	void
-	push ();
+	push (X3DRenderObject* const renderObject);
 	
 	void
-	pop ();
+	pop (X3DRenderObject* const renderObject);
 
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i, const Matrix4d & modelViewMatrix);

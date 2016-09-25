@@ -211,7 +211,7 @@ X3DTransformNodeTool::eventsProcessed ()
 // Traverse
 
 void
-X3DTransformNodeTool::reshape ()
+X3DTransformNodeTool::reshape (X3DRenderObject* const renderObject)
 {
 	try
 	{
@@ -219,10 +219,10 @@ X3DTransformNodeTool::reshape ()
 
 		const auto bbox = getNode <X3DTransformNode> () -> X3DGroupingNode::getBBox ();
 
-		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix () .get (), true);
-		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix   () .get (), true);
-		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),                   true);
-		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (),                 true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", renderObject -> getCameraSpaceMatrix () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   renderObject -> getModelViewMatrix   () .get (), true);
+		getToolNode () -> setField <SFVec3f>    ("bboxSize",          bbox .size (),   true);
+		getToolNode () -> setField <SFVec3f>    ("bboxCenter",        bbox .center (), true);
 
 		getBrowser () -> processEvents ();
 		getBrowser () -> beginUpdateForFrame ();
@@ -242,21 +242,21 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 
 	if (type == TraverseType::CAMERA)
 	{
-		transformationMatrix = getModelViewMatrix () .get ();
+		transformationMatrix = renderObject -> getModelViewMatrix () .get ();
 		matrix               = getMatrix ();
 	}
 
 	// Tool
 
-	getModelViewMatrix () .push ();
-	getModelViewMatrix () .mult_left (getMatrix ());
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
+		reshape (renderObject);
 
 	X3DToolObject::traverse (type, renderObject);
 
-	getModelViewMatrix () .pop ();
+	renderObject -> getModelViewMatrix () .pop ();
 }
 
 } // X3D

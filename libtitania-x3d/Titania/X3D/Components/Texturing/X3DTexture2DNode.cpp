@@ -190,9 +190,9 @@ X3DTexture2DNode::updateImage (const GLint width, const GLint height, const GLen
 }
 
 void
-X3DTexture2DNode::draw ()
+X3DTexture2DNode::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureNode::draw (GL_TEXTURE_2D, components);
+	X3DTextureNode::draw (renderObject, GL_TEXTURE_2D, components);
 }
 
 void

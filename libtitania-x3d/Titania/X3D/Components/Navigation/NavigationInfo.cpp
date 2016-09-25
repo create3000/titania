@@ -57,6 +57,7 @@
 #include "../../Rendering/LightContainer.h"
 #include "../Layering/X3DLayerNode.h"
 #include "../Lighting/DirectionalLight.h"
+#include "../Navigation/X3DViewpointNode.h"
 
 #include <limits>
 
@@ -201,10 +202,10 @@ NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
-NavigationInfo::enable (const TraverseType type)
+NavigationInfo::enable (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (headlight ())
-		getBrowser () -> getHeadLight () -> push (type, nullptr);
+		renderObject -> getBrowser () -> getHeadLight () -> push (type, renderObject, nullptr);
 }
 
 void
@@ -218,7 +219,7 @@ NavigationInfo::traverse (const TraverseType type, X3DRenderObject* const render
 	{
 		case TraverseType::CAMERA:
 		{
-			getCurrentLayer () -> getNavigationInfos () -> push_back (this);
+			renderObject -> getLayer () -> getNavigationInfos () -> push_back (this);
 			break;
 		}
 		default:

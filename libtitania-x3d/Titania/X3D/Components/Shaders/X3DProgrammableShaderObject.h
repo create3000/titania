@@ -268,7 +268,7 @@ public:
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const context);
+	setGlobalUniforms (X3DRenderObject* const renderObject);
 
 	virtual
 	void

@@ -60,18 +60,24 @@
 #include "../Rendering/ShapeContainer.h"
 #include "../Rendering/ViewVolumeStack.h"
 #include "../Rendering/X3DCollectableObject.h"
+#include "../Types/MatrixStack.h"
 
 #include <memory>
+#include <stack>
 
 namespace titania {
 namespace X3D {
 
 class GeneratedCubeMapTexture;
 class FrameBuffer;
+class LocalFog;
 class X3DFogObject;
 class X3DGroupingNode;
+class X3DShaderNode;
 
-using GeneratedCubeMapTexturesArray = std::set <GeneratedCubeMapTexture*>;
+using LocalFogStack              = std::stack <LocalFog*, std::vector <LocalFog*>>;
+using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
+using ShaderSet                  = std::set <X3DShaderNode*>;
 
 class X3DRenderObject :
 	virtual public X3DBaseNode
@@ -86,7 +92,11 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
-	///  @name Member access
+	///  @name Layer handling
+
+	virtual
+	X3DLayerNode*
+	getLayer () const = 0;
 
 	virtual
 	NavigationInfo*
@@ -104,13 +114,45 @@ public:
 	X3DFogObject*
 	getFog () const = 0;
 
+	///  @name Matrix stacks
+
+	Matrix4dStack &
+	getProjectionMatrix ()
+	{ return projectionMatrix; }
+
+	const Matrix4dStack &
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
+
+	Matrix4dStack &
+	getCameraSpaceMatrix ()
+	{ return cameraSpaceMatrix; }
+
+	const Matrix4dStack &
+	getCameraSpaceMatrix () const
+	{ return cameraSpaceMatrix; }
+
+	Matrix4dStack &
+	getInverseCameraSpaceMatrix ()
+	{ return invCameraSpaceMatrix; }
+
+	const Matrix4dStack &
+	getInverseCameraSpaceMatrix () const
+	{ return invCameraSpaceMatrix; }
+
+	Matrix4dStack &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
+
+	const Matrix4dStack &
+	getModelViewMatrix () const
+	{ return modelViewMatrix; }
+
 	ViewVolumeStack &
 	getViewVolumes ()
 	{ return viewVolumeStack; }
 
-	GeneratedCubeMapTexturesArray &
-	getGeneratedCubeMapTextures ()
-	{ return generatedCubeMapTextures; }
+	///  @name Node stacks
 
 	LightContainerArray &
 	getGlobalLights ()
@@ -124,6 +166,14 @@ public:
 	getClipPlanes ()
 	{ return clipPlanes; }
 
+	LocalFogStack &
+	getLocalFogs ()
+	{ return localFogs; }
+
+	const LocalFogStack &
+	getLocalFogs () const
+	{ return localFogs; }
+
 	LightContainerArray &
 	getLocalLights ()
 	{ return localLights; }
@@ -135,6 +185,16 @@ public:
 	CollisionArray &
 	getCollisions ()
 	{ return collisions; }
+
+	GeneratedCubeMapTextureSet &
+	getGeneratedCubeMapTextures ()
+	{ return generatedCubeMapTextures; }
+
+	ShaderSet &
+	getShaders ()
+	{ return shaders; }
+
+	///  @name Observer
 
 	size_t
 	getNumOpaqueShapes () const
@@ -152,11 +212,13 @@ public:
 	getTransparentShapes () const
 	{ return transparentDisplayShapes; }
 
+	///  @name Operations
+
 	Vector3d
 	constrainTranslation (const Vector3d & translation) const;
 
 	void
-	render (const TraverseType type, const std::function <void (const TraverseType, X3DRenderObject* const)> & traverse);
+	render (const TraverseType type, const TraverseFunction & traverse);
 
 	///  @name Destruction
 
@@ -169,6 +231,12 @@ public:
 
 
 protected:
+
+	///  @name Friends
+
+	friend class ParticleSystem;
+	friend class Shape;
+	friend class X3DLightNode;
 
 	///  @name Construction
 
@@ -223,10 +291,7 @@ private:
 	depth (const CollisionContainerArray &, const size_t);
 
 	void
-	display ();
-
-	void
-	renderGeneratedCubeMapTextures ();
+	display (const TraverseFunction & traverse);
 
 	void
 	draw (ShapeContainerArray & opaqueShapes,
@@ -236,15 +301,22 @@ private:
 
 	///  @name Members
 
-	ViewVolumeStack               viewVolumeStack;
-	GeneratedCubeMapTexturesArray generatedCubeMapTextures;
-	LightContainerArray           globalLights;
-	CollectableObjectArray        localObjects;
-	ClipPlaneContainerArray       clipPlanes;
-	LightContainerArray           localLights;
-	LightContainerArray           lights;
-	size_t                        lightId;
-	CollisionArray                collisions;
+	Matrix4dStack projectionMatrix;
+	Matrix4dStack cameraSpaceMatrix;
+	Matrix4dStack invCameraSpaceMatrix;
+	Matrix4dStack modelViewMatrix;
+
+	ViewVolumeStack            viewVolumeStack;
+	LightContainerArray        globalLights;
+	CollectableObjectArray     localObjects;
+	ClipPlaneContainerArray    clipPlanes;
+	LocalFogStack              localFogs;
+	LightContainerArray        localLights;
+	LightContainerArray        lights;
+	size_t                     lightId;
+	CollisionArray             collisions;
+	GeneratedCubeMapTextureSet generatedCubeMapTextures;
+	ShaderSet                  shaders;
 
 	ShapeContainerArray      opaqueDrawShapes;
 	ShapeContainerArray      transparentDrawShapes;

@@ -51,6 +51,7 @@
 #include "X3DTextureTransformNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
@@ -64,23 +65,25 @@ X3DTextureTransformNode::X3DTextureTransformNode () :
 }
 
 void
-X3DTextureTransformNode::draw ()
+X3DTextureTransformNode::draw (X3DRenderObject* const renderObject)
 {
-	if (getBrowser () -> getTextureStages () .empty ())
-		draw (0);
+	const auto browser = renderObject -> getBrowser ();
+
+	if (browser -> getTextureStages () .empty ())
+		draw (renderObject, 0);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextureStages ())
+		for (const auto & unit : browser -> getTextureStages ())
 		{
 			if (unit >= 0)
-				draw (unit);
+				draw (renderObject, unit);
 		}
 	}
 }
 
 void
-X3DTextureTransformNode::draw (const int32_t unit)
+X3DTextureTransformNode::draw (X3DRenderObject* const renderObject, const int32_t unit)
 {
 	glActiveTexture (GL_TEXTURE0 + unit);
 

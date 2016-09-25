@@ -59,6 +59,7 @@
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -251,17 +252,29 @@ X3DGeometryNodeTool::eventProcessed ()
 }
 
 bool
-X3DGeometryNodeTool::intersects (Line3d hitRay, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNodeTool::intersects (Line3d hitRay,
+                                 const ClipPlaneContainerArray & clipPlanes,
+                                 Matrix4d modelViewMatrix, 
+                                 std::vector <IntersectionPtr> & intersections) const
 {
-	return getNode <X3DGeometryNode> () -> intersects (hitRay, intersections);
+	return getNode <X3DGeometryNode> () -> intersects (hitRay, clipPlanes, modelViewMatrix, intersections);
+}
+
+bool
+X3DGeometryNodeTool::intersects (Box3d box,
+                                 const ClipPlaneContainerArray & clipPlanes,
+                                 Matrix4d modelViewMatrix) const
+{
+	return getNode <X3DGeometryNode> () -> intersects (box, clipPlanes, modelViewMatrix);
 }
 
 std::vector <Vector3d>
-X3DGeometryNodeTool::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+X3DGeometryNodeTool::intersects (X3DRenderObject* const renderObject,
+                                 const std::shared_ptr <FrameBuffer> & frameBuffer,
                                  const std::shared_ptr <FrameBuffer> & depthBuffer,
                                  std::vector <IntersectionPtr> & intersections)
 {
-	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (frameBuffer, depthBuffer, intersections);
+	const auto hitPoints = getNode <X3DGeometryNode> () -> intersects (renderObject, frameBuffer, depthBuffer, intersections);
 
 	selection .insert (selection .end (), hitPoints .begin (), hitPoints .end ());
 
@@ -293,8 +306,8 @@ X3DGeometryNodeTool::draw (ShapeContainer* const context)
 		getNode <X3DGeometryNode> () -> draw (context);
 	}
 
-	viewport         = getViewVolumes () .back () .getViewport ();
-	projectionMatrix = getBrowser () -> getProjectionMatrix () .get ();
+	viewport         = context -> getRenderer () -> getViewVolumes () .back () .getViewport ();
+	projectionMatrix = context -> getRenderer () -> getProjectionMatrix () .get ();
 	modelViewMatrix  = context -> getModelViewMatrix ();
 }
 

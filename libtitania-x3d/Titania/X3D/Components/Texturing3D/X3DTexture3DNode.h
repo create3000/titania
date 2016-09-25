@@ -139,7 +139,7 @@ public:
 
 	virtual
 	void
-	draw () override;
+	draw (X3DRenderObject* const renderObject) override;
 
 	virtual
 	void

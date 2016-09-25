@@ -64,6 +64,7 @@
 namespace titania {
 namespace X3D {
 
+class X3DBrowser;
 class X3DFogObject;
 class X3DRenderObject;
 class X3DShapeNode;
@@ -77,6 +78,9 @@ public:
 	ShapeContainer (X3DRenderObject* const, const bool);
 
 	///  @name Member access
+
+	X3DBrowser*
+	getBrowser () const;
 
 	X3DRenderObject*
 	getRenderer () const

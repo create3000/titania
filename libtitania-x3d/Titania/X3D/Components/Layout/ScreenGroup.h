@@ -114,7 +114,7 @@ private:
 	///  @name Operations
 
 	const Matrix4d &
-	scale ()
+	scale (X3DRenderObject* const renderObject)
 	throw (std::domain_error);
 
 	///  @name Static members

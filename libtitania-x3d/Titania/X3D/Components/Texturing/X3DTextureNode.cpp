@@ -139,7 +139,7 @@ X3DTextureNode::updateTextureProperties (const GLenum target,
 }
 
 void
-X3DTextureNode::draw (const GLenum target, const size_t components)
+X3DTextureNode::draw (X3DRenderObject* const renderObject, const GLenum target, const size_t components)
 {
 	glEnable (target);
 	glBindTexture (target, getTextureId ());

@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -94,17 +94,17 @@ LocalFog::initialize ()
 }
 
 void
-LocalFog::push ()
+LocalFog::push (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		getCurrentLayer () -> getLocalFogs () .push (this);
+		renderObject -> getLocalFogs () .push (this);
 }
 
 void
-LocalFog::pop ()
+LocalFog::pop (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		getCurrentLayer () -> getLocalFogs () .pop ();
+		renderObject -> getLocalFogs () .pop ();
 }
 
 void

@@ -196,7 +196,7 @@ public:
 
 	virtual
 	void
-	draw () final override;
+	draw (X3DRenderObject* const renderObject) final override;
 
 
 private:

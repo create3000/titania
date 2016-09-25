@@ -78,38 +78,6 @@ public:
 	getViewport () const
 	{ return viewport; }
 
-	Matrix4dStack &
-	getProjectionMatrix ()
-	{ return projectionMatrix; }
-
-	const Matrix4dStack &
-	getProjectionMatrix () const
-	{ return projectionMatrix; }
-
-	Matrix4dStack &
-	getCameraSpaceMatrix ()
-	{ return cameraSpaceMatrix; }
-
-	const Matrix4dStack &
-	getCameraSpaceMatrix () const
-	{ return cameraSpaceMatrix; }
-
-	Matrix4dStack &
-	getInverseCameraSpaceMatrix ()
-	{ return invCameraSpaceMatrix; }
-
-	const Matrix4dStack &
-	getInverseCameraSpaceMatrix () const
-	{ return invCameraSpaceMatrix; }
-
-	Matrix4dStack &
-	getModelViewMatrix ()
-	{ return modelViewMatrix; }
-
-	const Matrix4dStack &
-	getModelViewMatrix () const
-	{ return modelViewMatrix; }
-
 	size_t
 	getMaxClipPlanes () const;
 
@@ -169,10 +137,6 @@ private:
 	///  @name Members
 
 	MFInt32             viewport;
-	Matrix4dStack       projectionMatrix;
-	Matrix4dStack       cameraSpaceMatrix;
-	Matrix4dStack       invCameraSpaceMatrix;
-	Matrix4dStack       modelViewMatrix;
 	int32_t             maxClipPlanes;
 	ClipPlaneStack      clipPlanes;
 	DepthTestStack      depthTest;

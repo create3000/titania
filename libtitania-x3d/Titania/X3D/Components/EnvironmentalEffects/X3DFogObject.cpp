@@ -51,7 +51,8 @@
 #include "X3DFogObject.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../Navigation/NavigationInfo.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
@@ -106,16 +107,16 @@ X3DFogObject::isHidden (const bool value)
 }
 
 float
-X3DFogObject::getVisibilityRange ()
+X3DFogObject::getVisibilityRange (X3DRenderObject* const renderObject)
 {
 	const auto visibilityRange = std::max <float> (0, this -> visibilityRange ());
 
 	if (visibilityRange)
 		return visibilityRange;
 
-	const auto viewpoint = getBrowser () -> getLayers () .top () -> getViewpoint ();
+	const auto viewpoint = renderObject -> getViewpoint ();
 
-	return getBrowser () -> getLayers () .top () -> getNavigationInfo () -> getFarValue (viewpoint);
+	return renderObject -> getNavigationInfo () -> getFarValue (viewpoint);
 }
 
 float
@@ -167,11 +168,11 @@ X3DFogObject::set_fogType ()
 }
 
 void
-X3DFogObject::enable ()
+X3DFogObject::enable (X3DRenderObject* const renderObject)
 {
 	if (glColor [3])
 	{
-		const float glVisibilityRange = getVisibilityRange ();
+		const float glVisibilityRange = getVisibilityRange (renderObject);
 		const float glDensity         = getDensitiy (glVisibilityRange);
 
 		glEnable (GL_FOG);
@@ -185,7 +186,7 @@ X3DFogObject::enable ()
 }
 
 void
-X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject)
+X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, X3DRenderObject* const renderObject)
 {
 	if (hidden)
 		glUniform1i (shaderObject -> getFogTypeUniformLocation (), 0); // NO_FOG
@@ -194,7 +195,7 @@ X3DFogObject::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject
 	{
 		glUniform1i  (shaderObject -> getFogTypeUniformLocation (),            mode);
 		glUniform3fv (shaderObject -> getFogColorUniformLocation (),           1, color () .getValue () .data ());
-		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), getVisibilityRange ());
+		glUniform1f  (shaderObject -> getFogVisibilityRangeUniformLocation (), getVisibilityRange (renderObject));
 	}
 }
 

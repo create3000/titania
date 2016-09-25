@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_LIGHTING_POINT_LIGHT_H__
 #define __TITANIA_X3D_COMPONENTS_LIGHTING_POINT_LIGHT_H__
 
+#include "../../Types/Geometry.h"
 #include "../Lighting/X3DLightNode.h"
 
 namespace titania {
@@ -158,7 +159,7 @@ protected:
 
 	virtual
 	bool
-	renderShadowMap (LightContainer* const) final override;
+	renderShadowMap (X3DRenderObject* const renderObject, LightContainer* const lightContainer) final override;
 
 
 private:

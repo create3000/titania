@@ -55,6 +55,7 @@
 
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../../Components/Grouping/X3DBoundedObject.h"
 
@@ -233,15 +234,15 @@ X3DBoundedObjectTool::traverse (const TraverseType type, X3DRenderObject* const 
 
 	// Tool
 
-	getModelViewMatrix () .push ();
-	getModelViewMatrix () .mult_left (getMatrix ());
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
 		reshape ();
 
 	X3DToolObject::traverse (type, renderObject);
 
-	getModelViewMatrix () .pop ();
+	renderObject -> getModelViewMatrix () .pop ();
 }
 
 } // X3D

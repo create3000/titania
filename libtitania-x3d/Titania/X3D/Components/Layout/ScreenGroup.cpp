@@ -105,18 +105,20 @@ ScreenGroup::getMatrix () const
 
 // Same as in Text
 const Matrix4d &
-ScreenGroup::scale ()
+ScreenGroup::scale (X3DRenderObject* const renderObject)
 throw (std::domain_error)
 {
+	// Determine model view matrix.
+
 	Vector3d   translation, scale;
 	Rotation4d rotation;
 
-	modelViewMatrix = getModelViewMatrix () .get ();
+	modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 	modelViewMatrix .get (translation, rotation, scale);
 
-	const auto & viewport         = getViewVolumes () .back () .getViewport ();
-	const auto & projectionMatrix = getProjectionMatrix () .get ();
-	const auto   screenScale      = getCurrentViewpoint () -> getScreenScale (translation, viewport);
+	const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
+	const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
+	const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
 
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (scale .x () < 0 ? -1 : 1),
 	                                                    screenScale .y () * (scale .y () < 0 ? -1 : 1),
@@ -146,13 +148,13 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 	try
 	{
 		if (type == TraverseType::DISPLAY)
-			getModelViewMatrix () .push (scale ());
+			renderObject -> getModelViewMatrix () .push (scale (renderObject));
 		else
-			getModelViewMatrix () .push (screenMatrix);
+			renderObject -> getModelViewMatrix () .push (screenMatrix);
 
 		X3DGroupingNode::traverse (type, renderObject);
 	
-		getModelViewMatrix () .pop ();
+		renderObject -> getModelViewMatrix () .pop ();
 	}
 	catch (const std::domain_error &)
 	{ }

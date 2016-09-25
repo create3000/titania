@@ -191,11 +191,11 @@ public:
 
 	virtual
 	void
-	push (const TraverseType type, X3DGroupingNode* const);
+	push (const TraverseType type, X3DRenderObject* const renderObject, X3DGroupingNode* const);
 
 	virtual
 	void
-	pop ();
+	pop (const TraverseType type, X3DRenderObject* const renderObject);
 
 	virtual
 	void
@@ -230,7 +230,7 @@ protected:
 
 	virtual
 	bool
-	renderShadowMap (LightContainer* const) = 0;
+	renderShadowMap (X3DRenderObject* const renderObject, LightContainer* const lightContainer) = 0;
 
 
 private:

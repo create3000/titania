@@ -64,7 +64,7 @@ public:
 	///  @name Operations
 
 	Vector4i
-	getRectangle () const;
+	getRectangle (X3DBrowser* const browser) const;
 
 	virtual
 	Vector4i
@@ -72,11 +72,11 @@ public:
 
 	virtual
 	void
-	push () = 0;
+	push (X3DRenderObject* const renderObject) = 0;
 
 	virtual
 	void
-	pop () = 0;
+	pop (X3DRenderObject* const renderObject) = 0;
 
 
 protected:

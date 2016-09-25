@@ -52,11 +52,13 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/PointingDeviceSensor/Hit.h"
+#include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Shape/ShapeTool.h"
 #include "../../Types/Geometry.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../Navigation/NavigationInfo.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shape/Appearance.h"
 
@@ -141,7 +143,7 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 		{
 			case TraverseType::POINTER:
 			{
-				pointer ();
+				pointer (renderObject);
 				break;
 			}
 			case TraverseType::CAMERA:
@@ -150,22 +152,22 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			}
 			case TraverseType::COLLISION:
 			{
-				getCurrentLayer () -> addCollisionShape (this);
+				renderObject -> addCollisionShape (this);
 				break;
 			}
 			case TraverseType::DEPTH:
 			{
-				getCurrentLayer () -> addDepthShape (this);
+				renderObject -> addDepthShape (this);
 				break;
 			}
 			case TraverseType::DISPLAY:
 			{
-				getCurrentLayer () -> addDisplayShape (this);
+				renderObject -> addDisplayShape (this);
 				break;
 			}
 			case TraverseType::DRAW:
 			{
-				getCurrentLayer () -> addDrawShape (this);
+				renderObject -> addDrawShape (this);
 				break;
 			}
 		}
@@ -173,72 +175,77 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 }
 
 void
-Shape::pointer ()
+Shape::pointer (X3DRenderObject* const renderObject)
 {
 	// All geometries must be picked
 
-	if (not getBrowser () -> isPointerInRectangle (getViewVolumes () .back () .getScissor ()))
+	const auto browser = renderObject -> getBrowser ();
+
+	if (not browser -> isPointerInRectangle (renderObject -> getViewVolumes () .back () .getScissor ()))
 		return;
 
-	const Box3d bbox = getBBox () * getModelViewMatrix () .get ();
+	const Box3d bbox = getBBox () * renderObject -> getModelViewMatrix () .get ();
 
-	if (not getViewVolumes () .back () .intersects (bbox))
+	if (not renderObject -> getViewVolumes () .back () .intersects (bbox))
 		return;
 
-	switch (getBrowser () -> getSelectionType ())
+	switch (browser -> getSelectionType ())
 	{
 		case SelectionType::DEFAULT:
-			touch ();
+			touch (renderObject);
 			break;
 		case SelectionType::LASSO:
-			lasso ();
+			lasso (renderObject);
 			break;
 		case SelectionType::CUT:
-			cut ();
+			cut (renderObject);
 			break;
 	}
 }
 
 void
-Shape::touch ()
+Shape::touch (X3DRenderObject* const renderObject)
 {
 	try
 	{
 		std::vector <IntersectionPtr> itersections;
-	
-		const auto hitRay = getBrowser () -> getHitRay () * inverse (getModelViewMatrix () .get ());
-	
-		if (not getGeometry () -> intersects (hitRay, itersections))
+
+		const auto   browser            = renderObject -> getBrowser ();
+		const auto & modelViewMatrix    = renderObject -> getModelViewMatrix () .get ();
+		const auto   invModelViewMatrix = inverse (modelViewMatrix);
+		const auto   hitRay             = browser -> getHitRay () * invModelViewMatrix;
+
+		if (not getGeometry () -> intersects (hitRay, renderObject -> getClipPlanes (), modelViewMatrix, itersections))
 			return;
-	
+
 		// Finally we have intersections and must now find the closest hit in front of the camera.
-	
+
 		// Transform hitPoints to absolute space.
 		for (auto & itersection : itersections)
-			itersection -> point = itersection -> point * getModelViewMatrix () .get ();
+			itersection -> point = itersection -> point * modelViewMatrix;
 	
 		// Sort desc
 		std::sort (itersections .begin (), itersections .end (),
-		           [ ] (const IntersectionPtr &lhs, const IntersectionPtr &rhs) -> bool
+		           [ ] (const IntersectionPtr & lhs, const IntersectionPtr & rhs) -> bool
 		           {
 		              return lhs -> point .z () > rhs -> point .z ();
-					  });
-	
+		           });
+
 		// Find first point that is not greater than near plane;
-		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -getCurrentNavigationInfo () -> getNearValue (),
-		                                           [ ] (const IntersectionPtr &lhs, const float & rhs) -> bool
+		const auto itersection = std::lower_bound (itersections .cbegin (), itersections .cend (), -renderObject -> getNavigationInfo () -> getNearValue (),
+		                                           [ ] (const IntersectionPtr & lhs, const float & rhs) -> bool
 		                                           {
 		                                              return lhs -> point .z () > rhs;
-																 });
-	
+		                                           });
+
 		// There are only intersections behind the camera.
 		if (itersection == itersections .end ())
 			return;
 
 		// Transform hitNormal to absolute space.
-		(*itersection) -> normal = normalize (inverse (getModelViewMatrix () .get ()) .mult_matrix_dir ((*itersection) -> normal));
+		(*itersection) -> normal = normalize (invModelViewMatrix .mult_matrix_dir ((*itersection) -> normal));
 
-		getBrowser () -> addHit (getModelViewMatrix () .get (), *itersection, this, getCurrentLayer ());
+		browser -> addHit (modelViewMatrix, *itersection, this, renderObject -> getLayer ());
 	}
 	catch (const std::domain_error &)
 	{
@@ -247,17 +254,24 @@ Shape::touch ()
 }
 
 void
-Shape::lasso ()
+Shape::lasso (X3DRenderObject* const renderObject)
 {
+	const auto browser = renderObject -> getBrowser ();
+
 	std::vector <IntersectionPtr> itersections;
 
-	getGeometry () -> intersects (getBrowser () -> getSelectionBuffer (), getBrowser () -> getDepthBuffer (), itersections);
+	getGeometry () -> intersects (renderObject,
+	                              browser -> getSelectionBuffer (),
+	                              browser -> getDepthBuffer (),
+	                              itersections);
 }
 
 void
-Shape::cut ()
+Shape::cut (X3DRenderObject* const renderObject)
 {
-	getGeometry () -> cut (getBrowser () -> getCutLine ());
+	const auto browser = renderObject -> getBrowser ();
+
+	getGeometry () -> cut (browser -> getCutLine ());
 }
 
 void

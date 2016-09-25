@@ -160,31 +160,33 @@ X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
 }
 
 void
-X3DPointingDeviceSensorNode::push ()
+X3DPointingDeviceSensorNode::push (X3DRenderObject* const renderObject)
 {
 	if (disabled)
 		return;
 
-	getBrowser () -> getSensors () .back () .emplace (this);
+	renderObject -> getBrowser () -> getSensors () .back () .emplace (this);
 	
 	// Create a matrix set for each layer if needed.
 
-	auto iter = matrices .find (getCurrentLayer ());
+	auto iter = matrices .find (renderObject -> getLayer ());
 
 	if (iter == matrices .end ())
 	{
-		iter = matrices .emplace (getCurrentLayer (), Matrices { }) .first;
+		iter = matrices .emplace (renderObject -> getLayer (), Matrices { }) .first;
 
-		getCurrentLayer () -> disposed () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, getCurrentLayer ());
+		renderObject -> disposed () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, renderObject -> getLayer ());
 	}
 
-	iter -> second = Matrices { getModelViewMatrix () .get (), getProjectionMatrix () .get (), getCurrentViewport () -> getRectangle () };
+	iter -> second = Matrices { renderObject -> getModelViewMatrix () .get (),
+	                            renderObject -> getProjectionMatrix () .get (),
+	                            renderObject -> getViewVolumes () .back () .getViewport () };
 }
 
 void
-X3DPointingDeviceSensorNode::eraseMatrices (X3DLayerNode* const layer)
+X3DPointingDeviceSensorNode::eraseMatrices (X3DLayerNode* const layerNode)
 {
-	matrices .erase (layer);
+	matrices .erase (layerNode);
 }
 
 } // X3D

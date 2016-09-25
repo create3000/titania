@@ -144,9 +144,9 @@ X3DEnvironmentTextureNode::updateTextureProperties ()
 }
 
 void
-X3DEnvironmentTextureNode::draw ()
+X3DEnvironmentTextureNode::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureNode::draw (GL_TEXTURE_CUBE_MAP, getComponents ());
+	X3DTextureNode::draw (renderObject, GL_TEXTURE_CUBE_MAP, getComponents ());
 }
 
 void

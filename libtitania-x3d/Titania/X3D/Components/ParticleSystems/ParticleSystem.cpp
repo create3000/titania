@@ -59,8 +59,8 @@
 #include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/ParticleSystems/Random.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/ParticleSystems/ParticleSystemTool.h"
-#include "../Layering/X3DLayerNode.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
@@ -1291,22 +1291,22 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 		}
 		case TraverseType::COLLISION:
 		{
-			getCurrentLayer () -> addCollisionShape (this);
+			renderObject -> addCollisionShape (this);
 			break;
 		}
 		case TraverseType::DEPTH:
 		{
-			getCurrentLayer () -> addDepthShape (this);
+			renderObject -> addDepthShape (this);
 			break;
 		}
 		case TraverseType::DISPLAY:
 		{
-			getCurrentLayer () -> addDisplayShape (this);
+			renderObject -> addDisplayShape (this);
 			break;
 		}
 		case TraverseType::DRAW:
 		{
-			getCurrentLayer () -> addDrawShape (this);
+			renderObject -> addDrawShape (this);
 			break;
 		}
 		default:
@@ -1517,7 +1517,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 		// Draw.
 
-		const auto & browser    = getBrowser ();
+		const auto & browser    = context -> getBrowser ();
 		auto         shaderNode = browser -> getShader ();
 
 		if (shaderNode == browser -> getDefaultShader ())
@@ -1563,7 +1563,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 				// Enable shader.
 			
 				shaderNode -> enable ();
-				shaderNode -> setGlobalUniforms (context);
 				shaderNode -> setLocalUniforms (context);
 		
 				// Enable vertex attribute nodes.
@@ -1616,16 +1615,16 @@ ParticleSystem::draw (ShapeContainer* const context)
 						glColorPointer (4, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, color));
 					}
 	
-					if (getBrowser () -> getTexture ())
-						enableTexCoord ();
+					if (browser -> getTexture ())
+						enableTexCoord (browser);
 	
 					glEnableClientState (GL_VERTEX_ARRAY);
 					glVertexPointer (3, GL_FLOAT, sizeof (Vertex), (void*) offsetof (Vertex, position));
 	
 					glDrawArrays (glGeometryType, 0, numParticles * numVertices);
 	
-					if (getBrowser () -> getTexture ())
-						disableTexCoord ();
+					if (browser -> getTexture ())
+						disableTexCoord (browser);
 	
 					glDisableClientState (GL_COLOR_ARRAY);
 					glDisableClientState (GL_VERTEX_ARRAY);
@@ -1637,7 +1636,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 				// Enable shader.
 			
 				shaderNode -> enable ();
-				shaderNode -> setGlobalUniforms (context);
 				shaderNode -> setLocalUniforms (context);
 		
 				// Enable vertex attribute nodes
@@ -1737,9 +1735,9 @@ throw (std::domain_error)
 }
 
 void
-ParticleSystem::enableTexCoord () const
+ParticleSystem::enableTexCoord (X3DBrowser* const browser) const
 {
-	if (getBrowser () -> getTextureStages () .empty ())
+	if (browser -> getTextureStages () .empty ())
 	{
 		glClientActiveTexture (GL_TEXTURE0);
 		glEnableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -1747,7 +1745,7 @@ ParticleSystem::enableTexCoord () const
 	}
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextureStages ())
+		for (const auto & unit : browser -> getTextureStages ())
 		{
 			if (unit >= 0)
 			{
@@ -1760,16 +1758,16 @@ ParticleSystem::enableTexCoord () const
 }
 
 void
-ParticleSystem::disableTexCoord () const
+ParticleSystem::disableTexCoord (X3DBrowser* const browser) const
 {
-	if (getBrowser () -> getTextureStages () .empty ())
+	if (browser -> getTextureStages () .empty ())
 	{
 		glClientActiveTexture (GL_TEXTURE0);
 		glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 	}
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextureStages ())
+		for (const auto & unit : browser -> getTextureStages ())
 		{
 			if (unit >= 0)
 			{

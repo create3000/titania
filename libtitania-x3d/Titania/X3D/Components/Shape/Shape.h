@@ -129,16 +129,16 @@ private:
 	getGeometryType () const final override;
 
 	void
-	pointer ();
+	pointer (X3DRenderObject* const renderObject);
 
 	void
-	touch ();
+	touch (X3DRenderObject* const renderObject);
 
 	void
-	lasso ();
+	lasso (X3DRenderObject* const renderObject);
 
 	void
-	cut ();
+	cut (X3DRenderObject* const renderObject);
 
 	virtual
 	void

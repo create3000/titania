@@ -125,7 +125,7 @@ public:
 	virtual
 	bool
 	isTransparent () const final override
-	{ return false; }
+	{ return transparent; }
 
 	virtual
 	size_t
@@ -149,7 +149,7 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	void
-	renderTexture ();
+	renderTexture (X3DRenderObject* const renderObject, const TraverseFunction & traverse);
 
 	///  @name Destruction
 
@@ -203,6 +203,7 @@ private:
 	Fields fields;
 
 	SFEnum <LoadState>            loadState;
+	bool                          transparent;
 	std::unique_ptr <FrameBuffer> frameBuffer;
 	Matrix4d                      transformationMatrix;
 

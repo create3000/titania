@@ -2269,14 +2269,14 @@ TextureMappingEditor::set_right_hitPoint ()
 
 X3D::Vector2d
 TextureMappingEditor::projectPoint (const X3D::Vector3d & point, const X3D::BrowserPtr & browser) const
-throw (std::domain_error)
+throw (std::domain_error) // TODO: runtime_error
 {
 	const auto & activeLayer = browser -> getActiveLayer ();
 
 	if (not activeLayer)
 		throw std::domain_error ("No active layer.");
 
-	const auto viewport   = activeLayer -> getViewport () -> getRectangle ();
+	const auto viewport   = activeLayer -> getViewport () -> getRectangle (browser);
 	const auto projection = activeLayer -> getViewpoint () -> getProjectionMatrix (0, -10, viewport);
 	const auto modelview  = X3D::Matrix4d ();
 	const auto p          = X3D::ViewVolume::projectPoint (point, modelview, projection, viewport);

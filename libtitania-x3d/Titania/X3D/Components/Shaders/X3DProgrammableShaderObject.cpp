@@ -70,8 +70,6 @@
 namespace titania {
 namespace X3D {
 
-static constexpr size_t MAX_CLIP_PLANES = 6;
-static constexpr size_t MAX_LIGHTS      = 8;
 static constexpr size_t MAX_TEX_COORD   = 4;
 
 static constexpr auto x3d_NoneClipPlane = Vector4f (88, 51, 68, 33); // X3D!
@@ -1025,22 +1023,25 @@ X3DProgrammableShaderObject::set_shading (const ShadingType & shading)
 }
 
 void
-X3DProgrammableShaderObject::setGlobalUniforms (ShapeContainer* const context)
+X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
-	const auto & browser      = getBrowser ();
-	const auto & globalLights = context -> getRenderer () -> getGlobalLights ();
+	const auto & browser          = renderObject -> getBrowser ();
+	const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
+	const auto & globalLights     = renderObject -> getGlobalLights ();
+
+	// Set projection matrix.
 
 	if (extensionGPUShaderFP64)
-		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, browser -> getProjectionMatrix () .get () .data ());
+		glUniformMatrix4dv (x3d_ProjectionMatrix, 1, false, projectionMatrix .data ());
 	else
-		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (browser -> getProjectionMatrix () .get ()) .data ());
+		glUniformMatrix4fv (x3d_ProjectionMatrix, 1, false, Matrix4f (projectionMatrix) .data ());
 
-	// Set global lights
+	// Set global lights.
 
-	numGlobalLights = std::min (MAX_LIGHTS, globalLights .size ());
+	numGlobalLights = std::min (browser -> getMaxLights (), globalLights .size ());
 
 	for (size_t i = 0; i < numGlobalLights; ++ i)
-		globalLights [i] -> setShaderUniforms (this, i);
+		globalLights [i] -> setShaderUniforms (renderObject, this, i);
 }
 
 void
@@ -1048,7 +1049,8 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 {
 	static const auto textureType = std::vector <int32_t> ({ 0 });
 
-	const auto & browser              = getBrowser ();
+	const auto & browser              = context -> getBrowser ();
+	const auto & renderObject         = context -> getRenderer ();
 	const auto & clipPlanes           = context -> getClipPlanes ();
 	const auto & linePropertiesNode   = browser -> getLineProperties ();
 	const auto & materialNode         = browser -> getMaterial ();
@@ -1077,18 +1079,18 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	}
 	else
 	{
-		const auto numClipPlanes = std::min (MAX_CLIP_PLANES, clipPlanes .size ());
+		const auto numClipPlanes = std::min (browser -> getMaxClipPlanes (), clipPlanes .size ());
 
 		for (size_t i = 0; i < numClipPlanes; ++ i)
 			clipPlanes [i] -> setShaderUniforms (this, i);
 
-		if (numClipPlanes < MAX_CLIP_PLANES)
+		if (numClipPlanes < browser -> getMaxClipPlanes ())
 			glUniform4fv (x3d_ClipPlane [numClipPlanes], 1, x3d_NoneClipPlane .data ());
 	}
 
 	// Fog
 
-	context -> getFog () -> setShaderUniforms (this);
+	context -> getFog () -> setShaderUniforms (this, renderObject);
 
 	// Appearance
 
@@ -1103,12 +1105,12 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 		// Lights
 
 		const auto & localLights = context -> getLocalLights ();
-		const auto   numLights   = std::min (MAX_LIGHTS, numGlobalLights + localLights .size ());
+		const auto   numLights   = std::min (browser -> getMaxLights (), numGlobalLights + localLights .size ());
 
 		for (size_t i = numGlobalLights, l = 0; i < numLights; ++ i, ++ l)
-			localLights [l] -> setShaderUniforms (this, i);
+			localLights [l] -> setShaderUniforms (renderObject, this, i);
 
-		if (numLights < MAX_LIGHTS)
+		if (numLights < browser -> getMaxLights ())
 			glUniform1i (x3d_LightType [numLights], 0);
 		
 		// Material

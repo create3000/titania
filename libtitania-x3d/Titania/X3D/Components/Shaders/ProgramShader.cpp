@@ -218,20 +218,18 @@ ProgramShader::disable ()
 }
 
 void
-ProgramShader::draw ()
+ProgramShader::draw (X3DRenderObject* const renderObject)
 {
-	X3DShaderNode::draw ();
-
 	glBindProgramPipeline (pipelineId);
 }
 
 void
-ProgramShader::setGlobalUniforms (ShapeContainer* const context)
+ProgramShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
 	for (const auto & programNode : programNodes)
 	{
 		glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
-		programNode -> setGlobalUniforms (context);
+		programNode -> setGlobalUniforms (renderObject);
 	}
 }
 

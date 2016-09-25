@@ -51,8 +51,12 @@
 #ifndef __TITANIA_X3D_BITS_TRAVERSE_TYPE_H__
 #define __TITANIA_X3D_BITS_TRAVERSE_TYPE_H__
 
+#include <functional>
+
 namespace titania {
 namespace X3D {
+
+class X3DRenderObject;
 
 enum class TraverseType : uint8_t
 {
@@ -64,6 +68,8 @@ enum class TraverseType : uint8_t
 	DISPLAY,
 
 };
+
+using TraverseFunction = std::function <void (const TraverseType, X3DRenderObject* const)>;
 
 } // X3D
 } // titania

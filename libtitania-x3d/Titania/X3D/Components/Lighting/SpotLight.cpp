@@ -55,9 +55,10 @@
 #include "../../Rendering/LightContainer.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/TextureBuffer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Lighting/SpotLightTool.h"
 
-#include "../Layering/X3DLayerNode.h"
+#include "../Navigation/X3DViewpointNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 
 #include <Titania/Math/Geometry/Camera.h>
@@ -201,51 +202,51 @@ SpotLight::draw (GLenum lightId)
 }
 
 bool
-SpotLight::renderShadowMap (LightContainer* const lightContainer)
+SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer* const lightContainer)
 {
 	try
 	{
 		using namespace std::placeholders;
 
-		getBrowser () -> getDisplayTools () .push (false);
+		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .back () * getCameraSpaceMatrix () .get ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .back () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
 		invLightSpaceMatrix .translate (location () .getValue ());
 		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
 		invLightSpaceMatrix .inverse ();
 
-		const auto & textureBuffer    = lightContainer -> getTextureBuffer ();
-		const auto   groupNode        = lightContainer -> getGroup ();                                          // Group to be shadowd
-		const auto   groupBBox        = groupNode -> X3DGroupingNode::getBBox ();                               // Group bbox.
-		const auto   lightBBox        = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
-		const auto   lightBBoxExtents = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
-		const auto   farValue         = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
-		const auto   viewport         = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
-		const auto   projectionMatrix = camera <double>::perspective (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
+		const auto & shadowTextureBuffer = lightContainer -> getShadowTextureBuffer ();
+		const auto   groupNode           = lightContainer -> getGroup ();                                          // Group to be shadowd
+		const auto   groupBBox           = groupNode -> X3DGroupingNode::getBBox ();                               // Group bbox.
+		const auto   lightBBox           = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
+		const auto   lightBBoxExtents    = lightBBox .extents ();                                                  // Group bbox from the perspective of the light.
+		const auto   farValue            = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
+		const auto   viewport            = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
+		const auto   projectionMatrix    = camera <double>::perspective (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
 
 		if (farValue < 0)
 			return false;
 
-		textureBuffer -> bind ();
+		shadowTextureBuffer -> bind ();
 
-		getCameraSpaceMatrix        () .push (getCurrentViewpoint () -> getCameraSpaceMatrix ());
-		getInverseCameraSpaceMatrix () .push (getCurrentViewpoint () -> getInverseCameraSpaceMatrix ());
-		getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
-		getProjectionMatrix         () .push (projectionMatrix);
-		getModelViewMatrix          () .push (invLightSpaceMatrix);
-		getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+		renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
+		renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
+		renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+		renderObject -> getProjectionMatrix         () .push (projectionMatrix);
+		renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
+		renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
 
-		getCurrentLayer () -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
+		renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
 
-		getModelViewMatrix          () .pop ();
-		getProjectionMatrix         () .pop ();
-		getViewVolumes              () .pop_back ();
-		getInverseCameraSpaceMatrix () .pop ();
-		getCameraSpaceMatrix        () .pop ();
+		renderObject -> getModelViewMatrix          () .pop ();
+		renderObject -> getProjectionMatrix         () .pop ();
+		renderObject -> getViewVolumes              () .pop_back ();
+		renderObject -> getInverseCameraSpaceMatrix () .pop ();
+		renderObject -> getCameraSpaceMatrix        () .pop ();
 
-		textureBuffer -> unbind ();
+		shadowTextureBuffer -> unbind ();
 
 		//#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_SPOT_LIGHT_SHADOW_BUFFER
@@ -254,25 +255,25 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 		{
 			const auto viewport = Vector4i (0, 0, 100, 100);
 
-			FrameBuffer frameBuffer (getBrowser (), 100, 100, 4);
+			FrameBuffer frameBuffer (renderObject -> getBrowser (), 100, 100, 4);
 	
 			frameBuffer .setup ();
 			frameBuffer .bind ();
 	
-			getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
-			getProjectionMatrix         () .push (projectionMatrix);
-			getCameraSpaceMatrix        () .push (getCurrentViewpoint () -> getCameraSpaceMatrix ());
-			getInverseCameraSpaceMatrix () .push (getCurrentViewpoint () -> getInverseCameraSpaceMatrix ());
-			getModelViewMatrix          () .push (invLightSpaceMatrix);
-			getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+			renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
+			renderObject -> getProjectionMatrix         () .push (projectionMatrix);
+			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
+			renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
+			renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
+			renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
 	
-			getCurrentLayer () -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
+			renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
 	
-			getModelViewMatrix          () .pop ();
-			getProjectionMatrix         () .pop ();
-			getViewVolumes              () .pop_back ();
-			getInverseCameraSpaceMatrix () .pop ();
-			getCameraSpaceMatrix        () .pop ();
+			renderObject -> getModelViewMatrix          () .pop ();
+			renderObject -> getProjectionMatrix         () .pop ();
+			renderObject -> getViewVolumes              () .pop_back ();
+			renderObject -> getInverseCameraSpaceMatrix () .pop ();
+			renderObject -> getCameraSpaceMatrix        () .pop ();
 	
 			frameBuffer .readDepth ();
 			frameBuffer .unbind ();
@@ -287,7 +288,7 @@ SpotLight::renderShadowMap (LightContainer* const lightContainer)
 
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 	
-		getBrowser () -> getDisplayTools () .pop ();
+		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 		return true;
 	}
 	catch (const std::domain_error & error)

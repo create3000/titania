@@ -51,6 +51,7 @@
 #include "X3DTextureCoordinateNode.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -62,33 +63,37 @@ X3DTextureCoordinateNode::X3DTextureCoordinateNode () :
 }
 
 void
-X3DTextureCoordinateNode::enable (const std::vector <GLuint> & texCoordBufferIds) const
+X3DTextureCoordinateNode::enable (ShapeContainer* const context, const std::vector <GLuint> & texCoordBufferIds) const
 {
-	if (getBrowser () -> getTextureStages () .empty ())
-		enable (0, 0, texCoordBufferIds);
+	const auto browser = context -> getBrowser ();
+
+	if (browser -> getTextureStages () .empty ())
+		enable (context, 0, 0, texCoordBufferIds);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextureStages ())
+		for (const auto & unit : browser -> getTextureStages ())
 		{
 			if (unit >= 0)
-				enable (unit, 0, texCoordBufferIds);
+				enable (context, unit, 0, texCoordBufferIds);
 		}
 	}
 }
 
 void
-X3DTextureCoordinateNode::disable () const
+X3DTextureCoordinateNode::disable (ShapeContainer* const context) const
 {
-	if (getBrowser () -> getTextureStages () .empty ())
-		disable (0);
+	const auto browser = context -> getBrowser ();
+
+	if (browser -> getTextureStages () .empty ())
+		disable (context, 0);
 
 	else
 	{
-		for (const auto & unit : getBrowser () -> getTextureStages ())
+		for (const auto & unit : browser -> getTextureStages ())
 		{
 			if (unit >= 0)
-				disable (unit);
+				disable (context, unit);
 		}
 	}
 }

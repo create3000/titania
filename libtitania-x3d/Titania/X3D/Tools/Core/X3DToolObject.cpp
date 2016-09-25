@@ -53,9 +53,9 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Networking/Inline.h"
 #include "../../Rendering/PolygonModeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -139,11 +139,11 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 	if (not getBrowser () -> getDisplayTools () .top ())
 		return;
 
-	getCurrentLayer () -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
+	renderObject -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 
 	inlineNode -> traverse (type, renderObject);
 
-	getCurrentLayer () -> getLocalObjects () .pop_back ();
+	renderObject -> getLocalObjects () .pop_back ();
 }
 
 } // X3D

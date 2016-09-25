@@ -116,14 +116,14 @@ public:
 	///  @name Operations
 
 	void
-	enable ();
+	enable (X3DRenderObject* const renderObject);
 
 	void
-	disable ();
+	disable (X3DRenderObject* const renderObject);
 
 	virtual
 	void
-	draw () final override
+	draw (X3DRenderObject* const renderObject) final override
 	{ }
 
 	virtual

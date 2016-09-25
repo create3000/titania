@@ -127,7 +127,7 @@ protected:
 	updateTextureProperties (const GLenum, const bool, const X3DPtr <TextureProperties> &, const size_t, const size_t, const bool, const bool, const bool);
 
 	void
-	draw (const GLenum, const size_t);
+	draw (X3DRenderObject* const renderObject, const GLenum, const size_t);
 
 
 private:

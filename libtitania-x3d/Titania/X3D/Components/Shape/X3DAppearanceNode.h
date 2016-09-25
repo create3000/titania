@@ -58,6 +58,7 @@ namespace X3D {
 
 class FillProperties;
 class LineProperties;
+class ShapeContainer;
 
 class X3DAppearanceNode :
 	virtual public X3DNode
@@ -86,7 +87,7 @@ public:
 
 	virtual
 	void
-	draw () = 0;
+	draw (X3DRenderObject* const renderObject) = 0;
 
 
 protected:

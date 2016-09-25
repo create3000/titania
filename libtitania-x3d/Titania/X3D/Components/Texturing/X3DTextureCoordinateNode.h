@@ -57,6 +57,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DTextureCoordinateNode :
 	public X3DGeometricPropertyNode
 {
@@ -90,19 +92,19 @@ public:
 
 	virtual
 	void
-	enable (const std::vector <GLuint> &) const;
+	enable (ShapeContainer* const context, const std::vector <GLuint> &) const;
 
 	virtual
 	void
-	enable (const int32_t, const size_t, const std::vector <GLuint> &) const = 0;
+	enable (ShapeContainer* const context, const int32_t, const size_t, const std::vector <GLuint> &) const = 0;
 
 	virtual
 	void
-	disable () const;
+	disable (ShapeContainer* const context) const;
 
 	virtual
 	void
-	disable (const int32_t) const = 0;
+	disable (ShapeContainer* const context, const int32_t) const = 0;
 
 	virtual
 	bool

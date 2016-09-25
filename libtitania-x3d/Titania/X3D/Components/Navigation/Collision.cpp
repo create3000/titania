@@ -52,7 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Navigation/CollisionTool.h"
 
 namespace titania {
@@ -150,7 +150,7 @@ Collision::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 		{
 			if (enabled ())
 			{
-				getCurrentLayer () -> getCollisions () .emplace_back (this);
+				renderObject -> getCollisions () .emplace_back (this);
 
 				if (proxyNode)
 					proxyNode -> traverse (type, renderObject);
@@ -158,7 +158,7 @@ Collision::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 				else
 					X3DGroupingNode::traverse (type, renderObject);
 
-				getCurrentLayer () -> getCollisions () .pop_back ();
+				renderObject -> getCollisions () .pop_back ();
 			}
 
 			break;

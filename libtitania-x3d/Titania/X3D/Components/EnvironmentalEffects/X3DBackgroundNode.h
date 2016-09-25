@@ -113,6 +113,9 @@ public:
 	isHidden () const
 	{ return hidden; }
 
+	bool
+	isTransparent () const;
+
 	const X3DPtr <X3DTextureNode> &
 	getFrontTexture () const
 	{ return frontTexture; }
@@ -153,7 +156,7 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	void
-	draw (const Vector4i &);
+	draw (X3DRenderObject* const renderObject, const Vector4i &);
 
 
 protected:
@@ -219,10 +222,10 @@ private:
 	build (const float, const std::vector <float> &, const MFFloat &, const MFColor &, const float, const bool);
 
 	void
-	drawSphere ();
+	drawSphere (X3DRenderObject* const renderObject);
 
 	void
-	drawCube ();
+	drawCube (X3DRenderObject* const renderObject);
 
 	///  @name Members
 

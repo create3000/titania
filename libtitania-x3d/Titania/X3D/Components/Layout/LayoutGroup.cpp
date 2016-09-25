@@ -53,8 +53,9 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Layout/Layout.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Layout/LayoutGroupTool.h"
+#include "../Layout/Layout.h"
 
 namespace titania {
 namespace X3D {
@@ -176,31 +177,26 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		case TraverseType::DRAW:
 		{
 			if (viewportNode)
-				viewportNode -> push ();
+				viewportNode -> push (renderObject);
 
 			if (layoutNode)
 			{
-				getModelViewMatrix () .push ();
+				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+				screenMatrix    = layoutNode -> transform (type, renderObject);
 
-				modelViewMatrix = getModelViewMatrix () .get ();
-
-				layoutNode -> transform (type);
-				
-				screenMatrix = layoutNode -> getMatrix ();
-
-				getBrowser () -> getLayouts () .push (layoutNode);
+				renderObject -> getModelViewMatrix () .push (screenMatrix);
+				renderObject -> getBrowser () -> getLayouts () .push (layoutNode);
 
 				X3DGroupingNode::traverse (type, renderObject);
 
-				getBrowser () -> getLayouts () .pop ();
-
-				getModelViewMatrix () .pop ();
+				renderObject -> getBrowser () -> getLayouts () .pop ();
+				renderObject -> getModelViewMatrix () .pop ();
 			}
 			else
 				X3DGroupingNode::traverse (type, renderObject);
 
 			if (viewportNode)
-				viewportNode -> pop ();
+				viewportNode -> pop (renderObject);
 
 			break;
 		}

@@ -50,8 +50,8 @@
 
 #include "Billboard.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Navigation/BillboardTool.h"
 
 namespace titania {
@@ -101,10 +101,10 @@ Billboard::getBBox () const
 }
 
 const Matrix4d &
-Billboard::rotate ()
+Billboard::rotate (X3DRenderObject* const renderObject)
 throw (std::domain_error)
 {
-	const auto invModelViewMatrix = inverse (getBrowser () -> getModelViewMatrix () .get ());
+	const auto invModelViewMatrix = inverse (renderObject -> getModelViewMatrix () .get ());
 	const auto billboardToViewer  = normalize (invModelViewMatrix .origin ());       // Normalized to get work with Geo
 
 	if (axisOfRotation () == Vector3f ())
@@ -139,21 +139,21 @@ throw (std::domain_error)
 void
 Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .push ();
 
 	try
 	{
 		if (type == TraverseType::DISPLAY)
-			getModelViewMatrix () .mult_left (rotate ());
+			renderObject -> getModelViewMatrix () .mult_left (rotate (renderObject));
 		else
-			getModelViewMatrix () .mult_left (matrix);
+			renderObject -> getModelViewMatrix () .mult_left (matrix);
 
 		X3DGroupingNode::traverse (type, renderObject);
 	}
 	catch (const std::domain_error &)
 	{ }
 
-	getModelViewMatrix () .pop ();
+	renderObject -> getModelViewMatrix () .pop ();
 }
 
 void

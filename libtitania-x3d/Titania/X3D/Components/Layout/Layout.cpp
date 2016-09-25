@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Navigation/OrthoViewpoint.h"
 
 #include <Titania/Math/Functional.h>
@@ -422,22 +422,22 @@ Layout::set_size ()
 	}
 }
 
-void
-Layout::transform (const TraverseType type)
+const Matrix4d &
+Layout::transform (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	const auto & layouts = getBrowser () -> getLayouts ();
+	const auto & layouts = renderObject -> getBrowser () -> getLayouts ();
 
 	parent = layouts .empty () ? nullptr : layouts .top ();
 
 	// OrthoViewpoint
 
-	const auto viewpoint = dynamic_cast <OrthoViewpoint*> (getCurrentViewpoint ());
+	const auto viewpoint = dynamic_cast <OrthoViewpoint*> (renderObject -> getViewpoint ());
 
 	if (viewpoint)
 	{
 		// Calculate rectangleSize
 
-		const auto & viewport      = getViewVolumes () .back () .getScissor ();  // in pixel
+		const auto & viewport      = renderObject -> getViewVolumes () .back () .getScissor ();  // in pixel
 		const auto   viewportPixel = Vector2i (viewport [2], viewport [3]);                                 // in pixel
 
 		const Vector2d   viewportMeter       = viewpoint -> getViewportSize (viewport);                     // in meter
@@ -539,7 +539,7 @@ Layout::transform (const TraverseType type)
 		Vector3d   currentTranslation, currentScale;
 		Rotation4d currentRotation;
 
-		const Matrix4d modelViewMatrix = getModelViewMatrix () .get ();
+		const Matrix4d modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 		modelViewMatrix .get (currentTranslation, currentRotation, currentScale);
 
 		switch (getScaleModeX ())
@@ -606,12 +606,12 @@ Layout::transform (const TraverseType type)
 		matrix .translate (translation + offset);
 		matrix .scale (scale);
 
-		getModelViewMatrix () .set (matrix);
-
 		//__LOG__ << this << " : " << rectangleSize << std::endl;
 		//__LOG__ << this << " : " << scale << std::endl;
 		//__LOG__ << matrix << std::endl;
 	}
+
+	return matrix;
 }
 
 } // X3D

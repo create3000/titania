@@ -58,17 +58,13 @@
 #include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
 
-#include <stack>
-
 namespace titania {
 namespace X3D {
 
-class LocalFog;
 class X3DGroupingNode;
 class X3DViewportNode;
 
 using UserViewpointList = std::vector <X3D::X3DViewpointNode*>;
-using LocalFogStack     = std::stack <LocalFog*, std::vector <LocalFog*>>;
 
 class X3DLayerNode :
 	virtual public X3DNode,
@@ -138,7 +134,12 @@ public:
 	Box3d
 	getBBox () const;
 
-	///  @name Bindable node stack handling
+	///  @name Member access
+
+	virtual
+	X3DLayerNode*
+	getLayer () const final override
+	{ return const_cast <X3DLayerNode*> (this); }
 
 	const X3DPtr <X3DViewportNode> &
 	getViewport () const
@@ -195,12 +196,6 @@ public:
 	UserViewpointList
 	getUserViewpoints () const;
 
-	///  @name Fog handling
-
-	LocalFogStack &
-	getLocalFogs ()
-	{ return localFogs; }
-
 	///  @name Friends handling
 
 	X3DPtr <X3DGroupingNode> &
@@ -237,9 +232,6 @@ protected:
 
 	///  @name Friends
 
-	friend class GeneratedCubeMapTexture;
-	friend class ParticleSystem;
-	friend class Shape;
 	friend class X3DLightNode;
 
 	///  @name Construction
@@ -316,8 +308,6 @@ private:
 	ViewpointListPtr      viewpoints;
 	BackgroundListPtr     backgrounds;
 	FogListPtr            fogs;
-
-	LocalFogStack  localFogs;
 
 	X3DPtr <X3DGroupingNode> groupNode;
 	X3DPtr <X3DGroupingNode> friendsNode;

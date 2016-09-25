@@ -113,15 +113,11 @@ public:
 	void
 	deselect ();
 
-	virtual
-	void
-	draw () override;
-
 	///  @name Pipeline
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const context) = 0;
+	setGlobalUniforms (X3DRenderObject* const renderObject) = 0;
 
 	virtual
 	void
@@ -185,6 +181,10 @@ public:
 	virtual
 	void
 	disableMatrix4Attrib (const std::string &) = 0;
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 
 protected:

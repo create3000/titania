@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ShapeContainer;
+
 class X3DAppearanceChildNode :
 	virtual public X3DNode
 {
@@ -65,7 +67,7 @@ public:
 
 	virtual
 	void
-	draw () = 0;
+	draw (X3DRenderObject* const renderObject) = 0;
 
 
 protected:

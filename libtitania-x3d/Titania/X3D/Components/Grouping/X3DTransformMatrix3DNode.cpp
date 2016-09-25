@@ -51,6 +51,7 @@
 #include "X3DTransformMatrix3DNode.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -94,13 +95,12 @@ X3DTransformMatrix3DNode::getBBox () const
 void
 X3DTransformMatrix3DNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getModelViewMatrix () .push ();
-
-	getModelViewMatrix () .mult_left (matrix);
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (matrix);
 
 	X3DGroupingNode::traverse (type, renderObject);
 
-	getModelViewMatrix () .pop ();
+	renderObject -> getModelViewMatrix () .pop ();
 }
 
 } // X3D

@@ -52,8 +52,8 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Navigation/LODTool.h"
 
 namespace titania {
@@ -135,11 +135,11 @@ LOD::setKeepCurrentLevel (const bool value)
 }
 
 size_t
-LOD::getLevel () const
+LOD::getLevel (X3DBrowser* const browser, const Matrix4d & modelViewMatrix) const
 {
 	if (range () .empty ())
 	{
-		frameRate = ((FRAMES - 1) * frameRate + getBrowser () -> getCurrentFrameRate ()) / FRAMES;
+		frameRate = ((FRAMES - 1) * frameRate + browser -> getCurrentFrameRate ()) / FRAMES;
 
 		const auto size = children () .size ();
 
@@ -155,17 +155,15 @@ LOD::getLevel () const
 		return std::min <size_t> (std::ceil (fraction * (n - 1)), n);
 	}
 
-	const double distance = getDistance ();
+	const double distance = getDistance (modelViewMatrix);
 	const auto   iter     = std::upper_bound (range () .cbegin (), range () .cend (), distance);
 
 	return iter - range () .cbegin ();
 }
 
 double
-LOD::getDistance () const
+LOD::getDistance (Matrix4d modelViewMatrix) const
 {
-	auto modelViewMatrix = getModelViewMatrix () .get ();
-
 	modelViewMatrix .translate (center () .getValue ());
 
 	return math::abs (modelViewMatrix .origin ());
@@ -184,7 +182,7 @@ LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		if (type == TraverseType::DISPLAY)
 		{
-			int32_t level = getLevel ();
+			int32_t level = getLevel (renderObject -> getBrowser (), renderObject -> getModelViewMatrix () .get ());
 	
 			if (forceTransitions ())
 			{

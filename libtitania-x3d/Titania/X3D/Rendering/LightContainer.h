@@ -64,6 +64,7 @@ class X3DBrowser;
 class X3DGroupingNode;
 class X3DLightNode;
 class X3DProgrammableShaderObject;
+class X3DRenderObject;
 
 class LightContainer :
 	public X3DCollectableObject
@@ -72,9 +73,13 @@ public:
 
 	///  @name Construction
 
-	LightContainer (X3DLightNode* const, X3DGroupingNode* const);
+	LightContainer (X3DBrowser* const browser, X3DLightNode* const node, X3DGroupingNode* const group, const Matrix4d & modelViewMatrix);
 
 	///  @name Member access
+
+	X3DGroupingNode*
+	getGroup () const
+	{ return group; }
 
 	std::vector <Matrix4d> &
 	getModelViewMatrix ()
@@ -92,13 +97,9 @@ public:
 	getShadowMatrix () const
 	{ return shadowMatrix; }
 
-	X3DGroupingNode*
-	getGroup () const
-	{ return group; }
-
 	const std::unique_ptr <TextureBuffer> &
-	getTextureBuffer () const
-	{ return textureBuffer; }
+	getShadowTextureBuffer () const
+	{ return shadowTextureBuffer; }
 
 	///  @name Operations
 
@@ -111,10 +112,10 @@ public:
 	disable () final override;
 
 	void
-	renderShadowMap ();
+	renderShadowMap (X3DRenderObject* const renderObject);
 
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t);
+	setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t index);
 
 	///  @name Destruction
 
@@ -127,10 +128,10 @@ private:
 
 	X3DBrowser* const               browser;
 	X3DLightNode* const             node;
+	X3DGroupingNode* const          group;
 	std::vector <Matrix4d>          modelViewMatrix;
 	Matrix4d                        shadowMatrix;
-	X3DGroupingNode* const          group;
-	std::unique_ptr <TextureBuffer> textureBuffer;
+	std::unique_ptr <TextureBuffer> shadowTextureBuffer;
 	size_t                          textureUnit;
 	GLenum                          lightId;
 

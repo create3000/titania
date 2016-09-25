@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Types/Geometry.h"
 
 #include "../Sound/X3DSoundSourceNode.h"
@@ -146,10 +147,12 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 
 	try
 	{
+		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+
 		float minRadius, maxRadius, minDistance, maxDistance;
 
-		getEllipsoidParameter (maxBack (), maxFront (), maxRadius, maxDistance);
-		getEllipsoidParameter (minBack (), minFront (), minRadius, minDistance);
+		getEllipsoidParameter (modelViewMatrix, maxBack (), maxFront (), maxRadius, maxDistance);
+		getEllipsoidParameter (modelViewMatrix, minBack (), minFront (), minRadius, minDistance);
 
 		if (maxDistance < maxRadius)
 		{
@@ -181,14 +184,12 @@ Sound::traverse (const TraverseType type, X3DRenderObject* const renderObject)
  */
 
 void
-Sound::getEllipsoidParameter (const float & back, const float & front, float & radius, float & distance)
+Sound::getEllipsoidParameter (Matrix4d modelViewMatrix, const float & back, const float & front, float & radius, float & distance)
 throw (std::domain_error)
 {
 	const auto a = (back + front) / 2;
 	const auto e = a - back;
 	const auto b = std::sqrt (a * a - e * e);
-
-	auto modelViewMatrix  = getModelViewMatrix () .get ();
 
 	modelViewMatrix .translate (location () .getValue ());
 	modelViewMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), Vector3d (direction () .getValue ())));

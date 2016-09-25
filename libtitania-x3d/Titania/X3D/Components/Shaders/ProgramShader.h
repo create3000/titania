@@ -118,13 +118,13 @@ public:
 
 	virtual
 	void
-	draw () final override;
+	draw (X3DRenderObject* const renderObject) final override;
 
 	///  @name Pipeline
 
 	virtual
 	void
-	setGlobalUniforms (ShapeContainer* const) final override;
+	setGlobalUniforms (X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void

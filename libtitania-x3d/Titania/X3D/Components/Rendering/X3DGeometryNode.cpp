@@ -56,7 +56,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/ShapeContainer.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/X3DShaderNode.h"
 
 namespace titania {
@@ -213,12 +213,16 @@ X3DGeometryNode::isClipped (const Vector3d & point, const ClipPlaneContainerArra
 }
 
 bool
-X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
+X3DGeometryNode::intersects (Line3d line,
+                             const ClipPlaneContainerArray & clipPlanes,
+                             Matrix4d modelViewMatrix,
+                             std::vector <IntersectionPtr> & intersections) const
 {
 	try
 	{
-		const auto & matrix          = getMatrix ();                           // Get the current matrix from screen nodes.
-		const auto   modelViewMatrix = matrix * getModelViewMatrix () .get (); // This matrix is for clipping only.
+		const auto & matrix = getMatrix ();  // Get the current matrix from screen nodes.
+
+		modelViewMatrix .mult_left (matrix); // This matrix is for clipping only.
 
 		line *= inverse (matrix);
 
@@ -235,7 +239,7 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 				{
 					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 					{
-						intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 1, i + 2, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
@@ -244,8 +248,8 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 				{
 					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 					{
-						intersected |= intersects (line, i, i + 1, i + 2, modelViewMatrix, intersections);
-						intersected |= intersects (line, i, i + 2, i + 3, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 1, i + 2, clipPlanes, modelViewMatrix, intersections);
+						intersected |= intersects (line, i, i + 2, i + 3, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
@@ -256,7 +260,7 @@ X3DGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & inters
 
 					for (int32_t i = first + 1, size = first + element .last () - 1; i < size; ++ i)
 					{
-						intersected |= intersects (line, first, i, i + 1, modelViewMatrix, intersections);
+						intersected |= intersects (line, first, i, i + 1, clipPlanes, modelViewMatrix, intersections);
 					}
 
 					continue;
@@ -279,6 +283,7 @@ X3DGeometryNode::intersects (const Line3d & line,
 	                          const size_t i1,
 	                          const size_t i2,
 	                          const size_t i3,
+                             const ClipPlaneContainerArray & clipPlanes,
 	                          const Matrix4d & modelViewMatrix,
 	                          std::vector <IntersectionPtr> & intersections) const
 {
@@ -298,7 +303,7 @@ X3DGeometryNode::intersects (const Line3d & line,
 	const auto normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
 	const auto point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
 
-	if (isClipped (point * modelViewMatrix, getCurrentLayer () -> getClipPlanes ()))
+	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;
 
 	intersections .emplace_back (new Intersection { texCoord, normal, point * getMatrix (), std::array <Vector3d, 3> { vertices [i1], vertices [i2], vertices [i3] } });
@@ -306,14 +311,20 @@ X3DGeometryNode::intersects (const Line3d & line,
 }
 
 bool
-X3DGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const
+X3DGeometryNode::intersects (Box3d box,
+                             const ClipPlaneContainerArray & clipPlanes, 
+                             Matrix4d modelViewMatrix) const
 {
 	try
 	{
 		if (not box .intersects (getBBox ()))
 			return false;
 		
-		box *= inverse (getMatrix ());
+		const auto & matrix = getMatrix ();  // Get the current matrix from screen nodes.
+
+		modelViewMatrix .mult_left (matrix); // This matrix is for clipping only.
+
+		box *= inverse (matrix);
 	
 		for (const auto & element : elements)
 		{
@@ -424,7 +435,8 @@ X3DGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlan
 }
 
 std::vector <Vector3d>
-X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
+                             const std::shared_ptr <FrameBuffer> & frameBuffer,
                        	     const std::shared_ptr <FrameBuffer> & depthBuffer,
                        	     std::vector <IntersectionPtr> & intersections)
 {
@@ -432,10 +444,15 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 	{
 		std::vector <Vector3d> hitPoints;
 
+		const auto   shading             = renderObject -> getBrowser () -> getRenderingProperties () -> getShading ();
+		const auto & projectionMatrix    = renderObject -> getProjectionMatrix () .get ();
+		const auto & modelViewMatrix     = renderObject -> getModelViewMatrix () .get ();
+		const auto & viewport            = renderObject -> getViewVolumes () .back () .getScissor ();
+		const auto   modelViewProjection = modelViewMatrix * projectionMatrix;
+		const auto   invProjection       = inverse (projectionMatrix);
+		const auto   width               = frameBuffer -> getWidth ();
+		const auto   height              = frameBuffer -> getHeight ();
 		const auto & depth               = depthBuffer -> getDepth ();
-		const auto & viewport            = getViewVolumes () .back () .getScissor ();
-		const auto   modelViewProjection = getModelViewMatrix () .get () * getProjectionMatrix () .get ();
-		const auto   invProjection       = inverse (getProjectionMatrix () .get ());
 
 		for (const Vector3d & vertex : vertices)
 		{
@@ -443,18 +460,18 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 			const auto x      = std::floor (screen .x ());
 			const auto y      = std::floor (screen .y ());
 
-			if (x < 0 or x >= frameBuffer -> getWidth ())
+			if (x < 0 or x >= width)
 				continue;
 
-			if (y < 0 or y >= frameBuffer -> getHeight ())
+			if (y < 0 or y >= height)
 				continue;
 
-			const auto world = vertex * getModelViewMatrix () .get () ;
+			const auto world = vertex * modelViewMatrix;
 
 			if (world .z () > 0)
 			   continue;
 
-			switch (getBrowser () -> getRenderingProperties () -> getShading ())
+			switch (shading)
 			{
 				case ShadingType::GOURAUD:
 				case ShadingType::PHONG:
@@ -469,7 +486,7 @@ X3DGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
 					break;
 			}
 	
-			const auto index = x * 4 + y * frameBuffer -> getWidth () * 4;
+			const auto index = x * 4 + y * width * 4;
 	
 			if (frameBuffer -> getPixels () [index])
 				hitPoints .emplace_back (vertex);
@@ -864,7 +881,7 @@ X3DGeometryNode::depth (const CollisionContainer* const context)
 void
 X3DGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto & browser    = getBrowser ();
+	const auto & browser    = context -> getBrowser ();
 	const auto & shaderNode = browser -> getShader ();
 
 	context -> setGeometryType  (geometryType);
@@ -887,7 +904,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		if (browser -> getTexture ())
 		{
-			texCoordNode -> enable (texCoordBufferIds);
+			texCoordNode -> enable (context, texCoordBufferIds);
 		}
 
 		if (glIsEnabled (GL_LIGHTING) or shaderNode)
@@ -911,7 +928,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		// Enable shader
 	
 		shaderNode -> enable ();
-		shaderNode -> setGlobalUniforms (context);
 		shaderNode -> setLocalUniforms (context);
 
 		// Enable vertex attribute nodes
@@ -984,7 +1000,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		// Texture
 	
 		if (browser -> getTexture ())
-			texCoordNode -> disable ();
+			texCoordNode -> disable (context);
 
 		// Other arrays
 

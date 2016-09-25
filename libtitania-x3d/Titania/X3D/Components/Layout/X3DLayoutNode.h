@@ -135,8 +135,8 @@ public:
 	///  @name Operations
 
 	virtual
-	void
-	transform (const TraverseType) = 0;
+	const Matrix4d &
+	transform (const TraverseType type, X3DRenderObject* const renderObject) = 0;
 
 
 protected:

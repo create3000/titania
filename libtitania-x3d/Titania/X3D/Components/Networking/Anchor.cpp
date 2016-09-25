@@ -55,6 +55,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Networking/AnchorTool.h"
 
 namespace titania {
@@ -146,12 +147,12 @@ Anchor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 	{
 		case TraverseType::POINTER:
 		{
-			getBrowser () -> getSensors () .emplace_back ();
-			touchSensorNode -> push ();
+			renderObject -> getBrowser () -> getSensors () .emplace_back ();
+			touchSensorNode -> push (renderObject);
 
 			X3DGroupingNode::traverse (type, renderObject);
 
-			getBrowser () -> getSensors () .pop_back ();
+			renderObject -> getBrowser () -> getSensors () .pop_back ();
 			break;
 		}
 		default:

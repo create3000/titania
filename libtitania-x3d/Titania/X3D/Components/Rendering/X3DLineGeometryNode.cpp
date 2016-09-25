@@ -75,19 +75,25 @@ X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
 }
 
 bool
-X3DLineGeometryNode::intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const
+X3DLineGeometryNode::intersects (Line3d line,
+                                 const ClipPlaneContainerArray & clipPlanes,
+                                 Matrix4d modelViewMatrix,
+                                 std::vector <IntersectionPtr> & intersections) const
 {
 	return false;
 }
 
 bool
-X3DLineGeometryNode::intersects (Box3d box, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const
+X3DLineGeometryNode::intersects (Box3d box,
+                                 const ClipPlaneContainerArray & clipPlanes,
+                                 Matrix4d modelViewMatrix) const
 {
 	return false;
 }
 
 std::vector <Vector3d>
-X3DLineGeometryNode::intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+X3DLineGeometryNode::intersects (X3DRenderObject* const renderObject,
+                                 const std::shared_ptr <FrameBuffer> & frameBuffer,
                        	         const std::shared_ptr <FrameBuffer> & depthBuffer,
                        	         std::vector <IntersectionPtr> & intersections)
 {
@@ -103,7 +109,7 @@ X3DLineGeometryNode::depth (const CollisionContainer* const context)
 void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto & browser       = getBrowser ();
+	const auto & browser       = context -> getBrowser ();
 	const bool   pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
 	auto         shaderNode    = browser -> getShader ();
 
@@ -124,7 +130,6 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	context -> setGeometryType  (getGeometryType ());
 	context -> setColorMaterial (not getColors () .empty ());
 
-	shaderNode -> setGlobalUniforms (context);
 	shaderNode -> setLocalUniforms (context);
 
 	// Setup vertex attributes.

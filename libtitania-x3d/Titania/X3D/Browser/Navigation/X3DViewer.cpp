@@ -53,6 +53,8 @@
 #include "X3DViewer.h"
 
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Layering/X3DViewportNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
@@ -77,7 +79,7 @@ X3DViewer::getNavigationInfo () const
 	return getBrowser () -> getActiveLayer () -> getNavigationInfo ();
 }
 
-const X3DLayerNodePtr &
+const X3DPtr <X3DLayerNode> &
 X3DViewer::getActiveLayer () const
 {
 	return getBrowser () -> getActiveLayer ();
@@ -96,7 +98,7 @@ X3DViewer::getPointOnCenterPlane (const double x, const double y)
 	try
 	{
 		const auto &   viewpoint  = getActiveViewpoint ();
-		const auto &   viewport   = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle ();
+		const auto &   viewport   = getBrowser () -> getActiveLayer () -> getViewport () -> getRectangle (getBrowser ());
 		const auto     projection = viewpoint -> getProjectionMatrix (getNavigationInfo () -> getNearValue (), getNavigationInfo () -> getFarValue (viewpoint), viewport);
 		const Matrix4d modelview; // Use identity
 
@@ -185,6 +187,9 @@ X3DViewer::touch (const double x, const double y) const
 
 	return not getBrowser () -> getHits () .empty ();
 }
+
+X3DViewer::~X3DViewer ()
+{ }
 
 } // X3D
 } // titania

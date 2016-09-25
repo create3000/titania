@@ -408,10 +408,10 @@ private:
 	throw (std::domain_error);
 
 	void
-	enableTexCoord () const;
+	enableTexCoord (X3DBrowser* const browser) const;
 
 	void
-	disableTexCoord () const;
+	disableTexCoord (X3DBrowser* const browser) const;
 
 	///  @name Static members
 

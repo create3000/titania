@@ -53,6 +53,8 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ShapeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 #include "../Shaders/X3DShaderNode.h"
 #include "../Shape/FillProperties.h"
@@ -269,18 +271,23 @@ Appearance::traverse (const TraverseType type, X3DRenderObject* const renderObje
 {
 	if (textureNode)
 		textureNode -> traverse (type, renderObject);
+
+	if (shaderNode)
+		shaderNode -> traverse (type, renderObject);
 }
 
 void
-Appearance::draw ()
+Appearance::draw (X3DRenderObject* const renderObject)
 {
+	const auto browser = renderObject -> getBrowser ();
+
 	#ifdef FIXED_PIPELINE
-	if (getBrowser () -> getFixedPipelineRequired ())
+	if (browser -> getFixedPipelineRequired ())
 	{
 		// Material
 
 		if (materialNode)
-			materialNode -> draw ();
+			materialNode -> draw (renderObject);
 	
 		else
 		{
@@ -292,26 +299,27 @@ Appearance::draw ()
 	
 		if (textureNode)
 		{
-			textureNode -> draw ();
-			getBrowser () -> setTexture (textureNode);
+			textureNode -> draw (renderObject);
+
+			browser -> setTexture (textureNode);
 		}
 	
 		// TextureTransform
 	
-		textureTransformNode -> draw ();
+		textureTransformNode -> draw (renderObject);
 	
 		// Shader
 	
 		if (shaderNode)
-			shaderNode -> draw ();
+			shaderNode -> draw (renderObject);
 	}
 	#endif
 
-	getBrowser () -> setLineProperties (linePropertiesNode);
-	getBrowser () -> setMaterial (materialNode);
-	getBrowser () -> setTexture (textureNode);
-	getBrowser () -> setTextureTransform (textureTransformNode);
-	getBrowser () -> setShader (shaderNode ? shaderNode : getBrowser () -> getDefaultShader ());
+	browser -> setLineProperties (linePropertiesNode);
+	browser -> setMaterial (materialNode);
+	browser -> setTexture (textureNode);
+	browser -> setTextureTransform (textureTransformNode);
+	browser -> setShader (shaderNode ? shaderNode : getBrowser () -> getDefaultShader ());
 }
 
 } // X3D

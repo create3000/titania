@@ -229,11 +229,13 @@ X3DViewpointNode::getRelativeTransformation (X3DViewpointNode* const fromViewpoi
 }
 
 Matrix4d
-X3DViewpointNode::getProjectionMatrix () const
+X3DViewpointNode::getProjectionMatrix (X3DRenderObject* const renderObject) const
 {
-	NavigationInfo* const navigationInfo = getCurrentLayer () -> getNavigationInfo ();
+	const auto & navigationInfo = renderObject -> getNavigationInfo ();
 
-	return getProjectionMatrix (navigationInfo -> getNearValue (), navigationInfo -> getFarValue (this), getCurrentViewport () -> getRectangle ());
+	return getProjectionMatrix (navigationInfo -> getNearValue (),
+	                            navigationInfo -> getFarValue (this),
+	                            renderObject -> getLayer () -> getViewport () -> getRectangle (renderObject -> getBrowser ()));
 }
 
 void
@@ -579,16 +581,18 @@ X3DViewpointNode::traverse (const TraverseType type, X3DRenderObject* const rend
 	{
 		case TraverseType::CAMERA:
 		{
-			getCurrentLayer () -> getViewpoints () -> push_back (this);
+			const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
-			setTransformationMatrix (getModelViewMatrix () .get ());
+			renderObject -> getLayer () -> getViewpoints () -> push_back (this);
+
+			setTransformationMatrix (modelViewMatrix);
 
 			if (isBound ())
 			{
 				Matrix4d matrix;
 				matrix .set (getUserPosition (), getUserOrientation (), scaleOffset (), scaleOrientationOffset ());
 
-				setCameraSpaceMatrix (matrix * getModelViewMatrix () .get ());
+				setCameraSpaceMatrix (matrix * modelViewMatrix);
 			}
 
 			return;

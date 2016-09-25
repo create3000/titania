@@ -53,6 +53,7 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/ShapeContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -172,18 +173,19 @@ MultiTextureCoordinate::resize (const size_t value)
 }
 
 void
-MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) const
+MultiTextureCoordinate::enable (ShapeContainer* const context, const std::vector <GLuint> & texCoordBufferIds) const
 {
+	const auto                browser = context -> getBrowser ();
 	X3DTextureCoordinateNode* last    = nullptr;
 	size_t                    channel = 0;
-	const size_t              size    = getBrowser () -> getTextureStages () .size ();
+	const size_t              size    = browser -> getTextureStages () .size ();
 
 	for (const auto & texCoordNode : texCoords)
 	{
-		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		const int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
 
 		if (unit >= 0)
-			texCoordNode -> enable (unit, channel, texCoordBufferIds);
+			texCoordNode -> enable (context, unit, channel, texCoordBufferIds);
 
 		last = texCoordNode;
 		++ channel;
@@ -196,27 +198,28 @@ MultiTextureCoordinate::enable (const std::vector <GLuint> & texCoordBufferIds) 
 	{
 		for (size_t lastChannel = channel - 1; channel < size; ++ channel)
 		{
-			const int32_t unit = getBrowser () -> getTextureStages () [channel];
+			const int32_t unit = browser -> getTextureStages () [channel];
 		
 			if (unit >= 0)
-				last -> enable (unit, lastChannel, texCoordBufferIds);
+				last -> enable (context, unit, lastChannel, texCoordBufferIds);
 		}
 	}
 }
 
 void
-MultiTextureCoordinate::disable () const
+MultiTextureCoordinate::disable (ShapeContainer* const context) const
 {
+	const auto                browser = context -> getBrowser ();
 	X3DTextureCoordinateNode* last    = nullptr;
 	size_t                    channel = 0;
-	const  size_t             size    = getBrowser () -> getTextureStages () .size ();
+	const  size_t             size    = browser -> getTextureStages () .size ();
 
 	for (const auto & texCoordNode : texCoords)
 	{
-		int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
 		
 		if (unit >= 0)
-			texCoordNode -> disable (unit);
+			texCoordNode -> disable (context, unit);
 
 		last = texCoordNode;
 		++ channel;
@@ -229,10 +232,10 @@ MultiTextureCoordinate::disable () const
 	{
 		for ( ; channel < size; ++ channel)
 		{
-			int32_t unit = getBrowser () -> getTextureStages () [channel];
+			int32_t unit = browser -> getTextureStages () [channel];
 
 			if (unit >= 0)
-				last -> disable (unit);
+				last -> disable (context, unit);
 		}
 	}
 }

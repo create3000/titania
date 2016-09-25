@@ -52,7 +52,7 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ClipPlaneContainer.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
 
 namespace titania {
@@ -103,17 +103,17 @@ ClipPlane::isClipped (const Vector3d & point, const Matrix4d & modelViewMatrix)
 }
 
 void
-ClipPlane::push ()
+ClipPlane::push (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		getCurrentLayer () -> getClipPlanes () .emplace_back (new ClipPlaneContainer (this));
+		renderObject -> getClipPlanes () .emplace_back (new ClipPlaneContainer (renderObject -> getBrowser (), this, renderObject -> getModelViewMatrix () .get ()));
 }
 
 void
-ClipPlane::pop ()
+ClipPlane::pop (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		getCurrentLayer () -> getClipPlanes () .pop_back ();
+		renderObject-> getClipPlanes () .pop_back ();
 }
 
 void

@@ -53,11 +53,12 @@
 
 #include "../X3DBrowserObject.h"
 
-#include "../../Components/Navigation/NavigationInfo.h"
-#include "../../Components/Navigation/X3DViewpointNode.h"
-
 namespace titania {
 namespace X3D {
+
+class NavigationInfo;
+class X3DViewpointNode;
+class X3DLayerNode;
 
 class X3DViewer :
 	public X3DBrowserObject
@@ -90,6 +91,11 @@ public:
 	scrollTime () const
 	{ return *fields .scrollTime; }
 
+	///  @name Constructors
+
+	virtual
+	~X3DViewer ();
+
 
 protected:
 
@@ -98,7 +104,7 @@ protected:
 	NavigationInfo*
 	getNavigationInfo () const;
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const;
 
 	X3DViewpointNode*

@@ -207,8 +207,8 @@ public:
 	///  @name Operations
 
 	virtual
-	void
-	transform (const TraverseType type) final override;
+	const Matrix4d &
+	transform (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 
 private:

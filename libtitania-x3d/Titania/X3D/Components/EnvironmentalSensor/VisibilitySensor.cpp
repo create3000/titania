@@ -51,7 +51,6 @@
 #include "VisibilitySensor.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../Layering/X3DLayerNode.h"
 #include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
 
 namespace titania {
@@ -141,7 +140,9 @@ VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const rend
 
 			else
 			{
-				visible = getViewVolumes () .back () .intersects (Box3d (size () .getValue (), center () .getValue ()) * getModelViewMatrix () .get ());
+				const auto bbox = Box3d (size () .getValue (), center () .getValue ()) * renderObject -> getModelViewMatrix () .get ();
+
+				visible = renderObject -> getViewVolumes () .back () .intersects (bbox);
 			}
 		}
 	}

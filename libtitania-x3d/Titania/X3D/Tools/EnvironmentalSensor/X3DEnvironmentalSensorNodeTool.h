@@ -56,6 +56,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../../Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
@@ -178,7 +179,7 @@ protected:
 private:
 
 	void
-	reshape ();
+	reshape (X3DRenderObject* const renderObject);
 
 	///  @name Members
 
@@ -251,14 +252,14 @@ X3DEnvironmentalSensorNodeTool::removeTool (const bool really)
 
 inline
 void
-X3DEnvironmentalSensorNodeTool::reshape ()
+X3DEnvironmentalSensorNodeTool::reshape (X3DRenderObject* const renderObject)
 {
 	try
 	{
 	   getBrowser () -> endUpdateForFrame ();
 		
-		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", getCameraSpaceMatrix () .get (), true);
-		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   getModelViewMatrix   () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", renderObject -> getCameraSpaceMatrix () .get (), true);
+		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   renderObject -> getModelViewMatrix   () .get (), true);
 
 		getBrowser () -> processEvents ();
 	   getBrowser () -> beginUpdateForFrame ();
@@ -278,7 +279,7 @@ X3DEnvironmentalSensorNodeTool::traverse (const TraverseType type, X3DRenderObje
 	// Tool
 
 	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
+		reshape (renderObject);
 
 	X3DToolObject::traverse (type, renderObject);
 }

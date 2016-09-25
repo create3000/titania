@@ -53,6 +53,7 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -119,19 +120,20 @@ MultiTextureTransform::set_textureTransform ()
 }
 
 void
-MultiTextureTransform::draw ()
+MultiTextureTransform::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureTransformNode* const defaultTextureTransform = getBrowser () -> getDefaultTextureTransform ();
+	X3DBrowser* const              browser                 = renderObject -> getBrowser ();
+	X3DTextureTransformNode* const defaultTextureTransform = browser -> getDefaultTextureTransform ();
 	X3DTextureTransformNode*       last                    = defaultTextureTransform;
 	size_t                         channel                 = 0;
-	const size_t                   size                    = getBrowser () -> getTextureStages () .size ();
+	const size_t                   size                    = browser -> getTextureStages () .size ();
 
 	for (const auto & textureTransform : textureTransformNodes)
 	{
-		const int32_t unit = channel < size ? getBrowser () -> getTextureStages () [channel] : 0;
+		const int32_t unit = channel < size ? browser -> getTextureStages () [channel] : 0;
 
 		if (unit >= 0)
-			textureTransform -> draw (unit);
+			textureTransform -> draw (renderObject, unit);
 
 		last = textureTransform;
 		++ channel;
@@ -142,10 +144,10 @@ MultiTextureTransform::draw ()
 
 	for ( ; channel < size; ++ channel)
 	{
-		const int32_t unit = getBrowser () -> getTextureStages () [channel];
+		const int32_t unit = browser -> getTextureStages () [channel];
 
 		if (unit >= 0)
-			last -> draw (unit);
+			last -> draw (renderObject, unit);
 	}
 }
 

@@ -149,7 +149,7 @@ Material::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject) co
 }
 
 void
-Material::draw ()
+Material::draw (X3DRenderObject* const renderObject)
 {
 	glEnable (GL_LIGHTING);
 

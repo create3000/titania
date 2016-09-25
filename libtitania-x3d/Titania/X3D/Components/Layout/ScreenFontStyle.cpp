@@ -55,6 +55,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Texturing/PixelTexture.h"
 #include "../Text/Text.h"
@@ -396,16 +397,18 @@ ScreenText::traverse (const TraverseType type, X3DRenderObject* const renderObje
 		if (type != TraverseType::DISPLAY)
 			return;
 
+		// Determine model view matrix and bbox.
+
 		Vector3d   translation, scale;
 		Rotation4d rotation;
 
-		const auto & modelViewMatrix = fontStyle -> getModelViewMatrix () .get ();
+		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
 
 		modelViewMatrix .get (translation, rotation, scale);
 
-		const auto & viewport         = getText () -> getViewVolumes () .back () .getViewport ();
-		const auto & projectionMatrix = getText () -> getProjectionMatrix () .get ();
-		const auto   screenScale      = fontStyle -> getCurrentViewpoint () -> getScreenScale (translation, viewport);
+		const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
+		const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
+		const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
 
 		Matrix4d screenMatrix;
 
@@ -440,7 +443,7 @@ ScreenText::draw (ShapeContainer* const context)
 	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
 
 	#ifdef FIXED_PIPELINE
-	if (getBrowser () -> getFixedPipelineRequired ())
+	if (context -> getBrowser () -> getFixedPipelineRequired ())
 	{
 		glEnable (GL_TEXTURE_2D);
 		glBindTexture (GL_TEXTURE_2D, textureNode -> getTextureId ());
@@ -454,8 +457,8 @@ ScreenText::draw (ShapeContainer* const context)
 	}
 	#endif
 
-	getBrowser () -> setTexture (textureNode);
-	getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());
+	context -> getBrowser () -> setTexture (textureNode);
+	context -> getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());
 
 	context -> setModelViewMatrix (modelViewMatrix);
 }

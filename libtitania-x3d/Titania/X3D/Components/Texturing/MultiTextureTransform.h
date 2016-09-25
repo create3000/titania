@@ -109,11 +109,11 @@ public:
 
 	virtual
 	void
-	draw () final override;
+	draw (X3DRenderObject* const renderObject) final override;
 
 	virtual
 	void
-	draw (const int32_t) final override
+	draw (X3DRenderObject* const renderObject, const int32_t) final override
 	{ }
 
 	virtual

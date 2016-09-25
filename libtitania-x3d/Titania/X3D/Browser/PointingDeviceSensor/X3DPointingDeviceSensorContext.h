@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_CONTEXT_H__
 #define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_X3DPOINTING_DEVICE_SENSOR_CONTEXT_H__
 
-#include "../../Basic/NodeSet.h"
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
 #include "../../Types/Pointer.h"
@@ -89,7 +88,7 @@ public:
 	getHits () const
 	{ return hits; }
 
-	X3DLayerNode*
+	const X3DPtr <X3DLayerNode> &
 	getSelectedLayer () const
 	{ return selectedLayer; }
 
@@ -138,14 +137,14 @@ public:
 	{ return enabledSensors; }
 
 	void
-	setHitRay (const Vector4i & viewport);
+	setHitRay (const Matrix4d & projectionMatrix, const Vector4i & viewport);
 
 	const Line3d &
 	getHitRay () const
 	{ return hitRay; }
 
 	void
-	addHit (const Matrix4d &, const IntersectionPtr &, X3DShapeNode* const, X3DLayerNode* const);
+	addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
 
 	///  @name Event handlers
 
@@ -210,7 +209,7 @@ private:
 	std::vector <PointingDeviceSensorSet>     enabledSensors;
 	X3DPtrArray <X3DPointingDeviceSensorNode> overSensors;
 	X3DPtrArray <X3DPointingDeviceSensorNode> activeSensors;
-	X3DLayerNodePtr                           selectedLayer;
+	X3DPtr <X3DLayerNode>                     selectedLayer;
 	size_t                                    layerNumber;
 	time_type                                 pressTime;
 	bool                                      hasMoved;

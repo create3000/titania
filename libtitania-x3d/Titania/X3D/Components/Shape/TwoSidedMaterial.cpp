@@ -235,7 +235,7 @@ TwoSidedMaterial::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 }
 
 void
-TwoSidedMaterial::draw ()
+TwoSidedMaterial::draw (X3DRenderObject* const renderObject)
 {
 	glEnable (GL_LIGHTING);
 

@@ -51,7 +51,7 @@
 #include "Viewport.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../Layering/X3DLayerNode.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
@@ -127,28 +127,28 @@ Viewport::getTop () const
 }
 
 void
-Viewport::push ()
+Viewport::push (X3DRenderObject* const renderObject)
 {
-	const auto & scissor  = getRectangle ();
-	const auto & viewport = getViewVolumes () .empty () ? scissor : getViewVolumes () .back () .getViewport ();
+	const auto & scissor  = getRectangle (renderObject -> getBrowser ());
+	const auto & viewport = renderObject -> getViewVolumes () .empty () ? scissor : renderObject -> getViewVolumes () .back () .getViewport ();
 
-	getViewVolumes () .emplace_back (getProjectionMatrix () .get (), viewport, scissor);
+	renderObject -> getViewVolumes () .emplace_back (renderObject -> getProjectionMatrix () .get (), viewport, scissor);
 }
 
 void
-Viewport::pop ()
+Viewport::pop (X3DRenderObject* const renderObject)
 {
-	getViewVolumes () .pop_back ();
+	renderObject -> getViewVolumes () .pop_back ();
 }
 
 void
 Viewport::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	push ();
+	push (renderObject);
 
 	X3DGroupingNode::traverse (type, renderObject);
 
-	pop ();
+	pop (renderObject);
 }
 
 } // X3D

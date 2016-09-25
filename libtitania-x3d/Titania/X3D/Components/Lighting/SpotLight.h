@@ -192,7 +192,7 @@ protected:
 
 	virtual
 	bool
-	renderShadowMap (LightContainer* const) final override;
+	renderShadowMap (X3DRenderObject* const renderObject, LightContainer* const lightContainer) final override;
 
 
 private:

@@ -52,6 +52,7 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/ShapeContainer.h"
 #include "../Shape/Appearance.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
@@ -156,21 +157,23 @@ X3DShapeNode::set_geometry ()
 void
 X3DShapeNode::display (ShapeContainer* const context)
 {
+	const auto browser      = context -> getBrowser ();
+	const auto renderObject = context -> getRenderer ();
 	const auto geometryType = getGeometryType ();
 
-	appearanceNode -> draw ();
+	appearanceNode -> draw (renderObject);
 
 	if (geometryType == GeometryType::GEOMETRY_POINTS or geometryType == GeometryType::GEOMETRY_LINES)
 	{
-		appearanceNode -> getLineProperties () -> enable ();
+		appearanceNode -> getLineProperties () -> enable (renderObject);
 
 		glDisable (GL_LIGHTING);
 		draw (context);
 
-		appearanceNode -> getLineProperties () -> disable ();
+		appearanceNode -> getLineProperties () -> disable (renderObject);
 
 		#ifdef FIXED_PIPELINE
-		disableTextures ();
+		disableTextures (browser);
 		#endif
 	}
 	else
@@ -182,7 +185,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 			draw (context);
 
 			#ifdef FIXED_PIPELINE
-			disableTextures ();
+			disableTextures (browser);
 			#endif
 		}
 
@@ -195,9 +198,9 @@ X3DShapeNode::display (ShapeContainer* const context)
 		{
 			if (appearanceNode -> getFillProperties () -> hatched ())
 			{
-				appearanceNode -> getFillProperties () -> enable ();
+				appearanceNode -> getFillProperties () -> enable (renderObject);
 				draw (context);
-				appearanceNode -> getFillProperties () -> disable ();
+				appearanceNode -> getFillProperties () -> disable (renderObject);
 			}
 		}
 
@@ -208,9 +211,9 @@ X3DShapeNode::display (ShapeContainer* const context)
 			if (polygonMode [0] == GL_FILL)
 				glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
 
-			appearanceNode -> getLineProperties () -> enable ();
+			appearanceNode -> getLineProperties () -> enable (renderObject);
 			draw (context);
-			appearanceNode -> getLineProperties () -> disable ();
+			appearanceNode -> getLineProperties () -> disable (renderObject);
 
 			glPolygonMode (GL_FRONT, polygonMode [0]);
 			glPolygonMode (GL_BACK,  polygonMode [1]);
@@ -226,9 +229,9 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 #ifdef FIXED_PIPELINE
 void
-X3DShapeNode::disableTextures ()
+X3DShapeNode::disableTextures (X3DBrowser* const browser)
 {
-	if (getBrowser () -> getTextureStages () .empty ())
+	if (browser -> getTextureStages () .empty ())
 	{
 		glActiveTexture (GL_TEXTURE0);
 		glDisable (GL_TEXTURE_2D);
@@ -237,7 +240,7 @@ X3DShapeNode::disableTextures ()
 	}
 	else
 	{
-		for (const auto & unit : basic::make_reverse_range (getBrowser () -> getTextureStages ()))
+		for (const auto & unit : basic::make_reverse_range (browser -> getTextureStages ()))
 		{
 			if (unit < 0)
 				continue;
@@ -248,10 +251,10 @@ X3DShapeNode::disableTextures ()
 			glDisable (GL_TEXTURE_3D);
 			glDisable (GL_TEXTURE_CUBE_MAP);
 
-			getBrowser () -> getTextureUnits () .push (unit);
+			browser -> getTextureUnits () .push (unit);
 		}
 
-		getBrowser () -> getTextureStages () .clear ();
+		browser -> getTextureStages () .clear ();
 		glActiveTexture (GL_TEXTURE0);
 	}
 }

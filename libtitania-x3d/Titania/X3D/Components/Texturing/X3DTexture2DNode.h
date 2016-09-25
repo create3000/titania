@@ -127,11 +127,11 @@ public:
 
 	virtual
 	void
-	draw () override;
+	draw (X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
-	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t) const final override;
+	setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t i) const final override;
 
 
 protected:

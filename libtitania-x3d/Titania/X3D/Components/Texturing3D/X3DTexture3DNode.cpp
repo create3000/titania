@@ -182,9 +182,9 @@ X3DTexture3DNode::updateTextureProperties ()
 }
 
 void
-X3DTexture3DNode::draw ()
+X3DTexture3DNode::draw (X3DRenderObject* const renderObject)
 {
-	X3DTextureNode::draw (GL_TEXTURE_3D, components);
+	X3DTextureNode::draw (renderObject, GL_TEXTURE_3D, components);
 }
 
 void

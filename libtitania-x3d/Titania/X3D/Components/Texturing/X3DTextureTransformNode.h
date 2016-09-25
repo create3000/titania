@@ -71,11 +71,11 @@ public:
 
 	virtual
 	void
-	draw () override;
+	draw (X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
-	draw (const int32_t);
+	draw (X3DRenderObject* const renderObject, const int32_t unit);
 
 	virtual
 	void

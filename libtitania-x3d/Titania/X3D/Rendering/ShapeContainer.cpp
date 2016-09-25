@@ -52,6 +52,7 @@
 
 #include "../Components/EnvironmentalEffects/X3DFogObject.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Rendering/X3DRenderObject.h"
 
 #include <Titania/Utility/Range.h>
 
@@ -73,6 +74,12 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderer, const bool tran
 	       distance (0)
 { }
 
+X3DBrowser*
+ShapeContainer::getBrowser () const
+{
+	return renderer -> getBrowser ();
+}
+
 void
 ShapeContainer::display ()
 {
@@ -92,7 +99,7 @@ ShapeContainer::display ()
 
 	glLoadMatrixd (modelViewMatrix .data ());
 
-	fog -> enable ();
+	fog -> enable (renderer);
 
 	shape -> display (this);
 

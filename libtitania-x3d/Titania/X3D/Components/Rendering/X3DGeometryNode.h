@@ -190,15 +190,21 @@ public:
 
 	virtual
 	bool
-	intersects (Line3d line, std::vector <IntersectionPtr> & intersections) const;
+	intersects (Line3d line,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix,
+	            std::vector <IntersectionPtr> & intersections) const;
 
 	virtual
 	bool
-	intersects (Box3d, const ClipPlaneContainerArray & clipPlanes, const Matrix4d & modelViewMatrix) const;
+	intersects (Box3d,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix) const;
 
 	virtual
 	std::vector <Vector3d>
-	intersects (const std::shared_ptr <FrameBuffer> & frameBuffer,
+	intersects (X3DRenderObject* const renderObject,
+	            const std::shared_ptr <FrameBuffer> & frameBuffer,
 	            const std::shared_ptr <FrameBuffer> & depthBuffer,
 	            std::vector <IntersectionPtr> & intersections);
 
@@ -363,7 +369,13 @@ private:
 	///  @name Operations
 
 	bool
-	intersects (const Line3d &, const size_t, const size_t, const size_t, const Matrix4d &, std::vector <IntersectionPtr>&) const;
+	intersects (const Line3d & line,
+	            const size_t i0,
+	            const size_t i1,
+	            const size_t i2,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            const Matrix4d & modelViewMatrix,
+	            std::vector <IntersectionPtr> & intersections) const;
 
 	bool
 	isClipped (const Vector3d &, const ClipPlaneContainerArray &) const;

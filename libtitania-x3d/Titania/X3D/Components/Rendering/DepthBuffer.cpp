@@ -50,9 +50,9 @@
 
 #include "DepthBuffer.h"
 
-#include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/DepthTestContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
@@ -131,19 +131,19 @@ DepthBuffer::set_depthFunction ()
 void
 DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getBrowser () -> getDepthTest ()   .push (enabled ());
-	getBrowser () -> getDepthOffset () .push (depthOffset ());
+	renderObject -> getBrowser () -> getDepthTest ()   .push (enabled ());
+	renderObject -> getBrowser () -> getDepthOffset () .push (depthOffset ());
 
 	switch (type)
 	{
 		case TraverseType::DISPLAY:
 		case TraverseType::DRAW:
 		{
-			getCurrentLayer () -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
+			renderObject -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
 
 			X3DGroupingNode::traverse (type, renderObject);
 
-			getCurrentLayer () -> getLocalObjects () .pop_back ();
+			renderObject -> getLocalObjects () .pop_back ();
 			break;
 		}
 		default:
@@ -153,8 +153,8 @@ DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		}
 	}
 
-	getBrowser () -> getDepthOffset () .pop ();
-	getBrowser () -> getDepthTest ()   .pop ();
+	renderObject -> getBrowser () -> getDepthOffset () .pop ();
+	renderObject -> getBrowser () -> getDepthTest ()   .pop ();
 }
 
 void

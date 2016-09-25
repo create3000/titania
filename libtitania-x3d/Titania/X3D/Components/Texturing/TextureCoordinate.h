@@ -121,11 +121,11 @@ public:
 
 	virtual
 	void
-	enable (const int32_t, const size_t, const std::vector <GLuint> &) const final override;
+	enable (ShapeContainer* const context, const int32_t, const size_t, const std::vector <GLuint> & texCoordBufferIds) const final override;
 
 	virtual
 	void
-	disable (const int32_t) const final override;
+	disable (ShapeContainer* const context, const int32_t) const final override;
 
 	virtual
 	bool

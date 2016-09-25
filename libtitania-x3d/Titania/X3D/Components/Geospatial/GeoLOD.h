@@ -258,10 +258,10 @@ private:
 	///  @name Operations
 
 	size_t
-	getLevel () const;
+	getLevel (const Matrix4d & modelViewMatrix) const;
 
 	double
-	getDistance () const;
+	getDistance (Matrix4d modelViewMatrix) const;
 
 	///  @name Static members
 
