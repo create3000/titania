@@ -272,6 +272,7 @@ ComposedShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 
 void
 ComposedShader::setLocalUniforms (ShapeContainer* const context)
+throw (std::domain_error)
 {
 	glUseProgram (programId);
 	X3DProgrammableShaderObject::setLocalUniforms (context);

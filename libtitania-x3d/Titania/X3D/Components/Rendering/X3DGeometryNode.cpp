@@ -881,148 +881,153 @@ X3DGeometryNode::depth (const X3DShapeContainer* const context)
 void
 X3DGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto browser    = context -> getBrowser ();
-	const auto shaderNode = browser -> getShader ();
-
-	context -> setGeometryType  (geometryType);
-	context -> setColorMaterial (not colors .empty ());
-
-	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipelineRequired ())
+	try
 	{
-		// Enable colors, texture coords, normals and vertices.
-
-		if (not colors .empty ())
+		const auto browser    = context -> getBrowser ();
+		const auto shaderNode = browser -> getShader ();
+	
+		context -> setGeometryType  (geometryType);
+		context -> setColorMaterial (not colors .empty ());
+	
+		#ifdef FIXED_PIPELINE
+		if (browser -> getFixedPipelineRequired ())
 		{
-			if (glIsEnabled (GL_LIGHTING))
-				glEnable (GL_COLOR_MATERIAL);
-
-			glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
-			glEnableClientState (GL_COLOR_ARRAY);
-			glColorPointer (4, GL_FLOAT, 0, 0);
-		}
-
-		if (browser -> getTexture ())
-		{
-			texCoordNode -> enable (context, texCoordBufferIds);
-		}
-
-		if (glIsEnabled (GL_LIGHTING) or shaderNode)
-		{
-			if (not normals .empty ())
+			// Enable colors, texture coords, normals and vertices.
+	
+			if (not colors .empty ())
 			{
-				glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
-				glEnableClientState (GL_NORMAL_ARRAY);
-				glNormalPointer (GL_FLOAT, 0, 0);
+				if (glIsEnabled (GL_LIGHTING))
+					glEnable (GL_COLOR_MATERIAL);
+	
+				glBindBuffer (GL_ARRAY_BUFFER, colorBufferId);
+				glEnableClientState (GL_COLOR_ARRAY);
+				glColorPointer (4, GL_FLOAT, 0, 0);
+			}
+	
+			if (browser -> getTexture ())
+			{
+				texCoordNode -> enable (context, texCoordBufferIds);
+			}
+	
+			if (glIsEnabled (GL_LIGHTING) or shaderNode)
+			{
+				if (not normals .empty ())
+				{
+					glBindBuffer (GL_ARRAY_BUFFER, normalBufferId);
+					glEnableClientState (GL_NORMAL_ARRAY);
+					glNormalPointer (GL_FLOAT, 0, 0);
+				}
+			}
+	
+			glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
+			glEnableClientState (GL_VERTEX_ARRAY);
+			glVertexPointer (3, GL_DOUBLE, 0, 0);
+		}
+		#endif
+	
+		if (shaderNode)
+		{
+			// Enable shader
+		
+			shaderNode -> setLocalUniforms (context);
+	
+			// Enable vertex attribute nodes
+	
+			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+				attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
+	
+			if (not colors .empty ())
+				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
+	
+			if (not texCoords .empty ())
+				shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
+	
+			if (not normals .empty ())
+				shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
+		
+			shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
+		}
+	
+		// Draw depending on ccw, transparency and solid.
+	
+		const auto positiveScale = determinant3 (context -> getModelViewMatrix ()) > 0;
+	
+		if (context -> isTransparent () && not solid)
+		{
+			glEnable (GL_CULL_FACE);
+			glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+	
+			glCullFace (GL_FRONT);
+	
+			// Draw
+	
+			for (const auto & element : elements)
+			{
+				glDrawArrays (element .vertexMode (), element .first (), element .count ());
+			}
+	
+			glCullFace (GL_BACK);
+	
+			// Draw
+	
+			for (const auto & element : elements)
+			{
+				glDrawArrays (element .vertexMode (), element .first (), element .count ());
 			}
 		}
-
-		glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
-		glEnableClientState (GL_VERTEX_ARRAY);
-		glVertexPointer (3, GL_DOUBLE, 0, 0);
-	}
-	#endif
-
-	if (shaderNode)
-	{
-		// Enable shader
-	
-		shaderNode -> setLocalUniforms (context);
-
-		// Enable vertex attribute nodes
-
-		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-			attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
-
-		if (not colors .empty ())
-			shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
-
-		if (not texCoords .empty ())
-			shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
-
-		if (not normals .empty ())
-			shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
-	
-		shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
-	}
-
-	// Draw depending on ccw, transparency and solid.
-
-	const auto positiveScale = determinant3 (context -> getModelViewMatrix ()) > 0;
-
-	if (context -> isTransparent () && not solid)
-	{
-		glEnable (GL_CULL_FACE);
-		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
-
-		glCullFace (GL_FRONT);
-
-		// Draw
-
-		for (const auto & element : elements)
-		{
-			glDrawArrays (element .vertexMode (), element .first (), element .count ());
-		}
-
-		glCullFace (GL_BACK);
-
-		// Draw
-
-		for (const auto & element : elements)
-		{
-			glDrawArrays (element .vertexMode (), element .first (), element .count ());
-		}
-	}
-	else
-	{
-		// Solid & ccw.
-
-		if (solid)
-			glEnable (GL_CULL_FACE);
-
 		else
-			glDisable (GL_CULL_FACE);
-
-		glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
-
-		for (const auto & element : elements)
 		{
-			glDrawArrays (element .vertexMode (), element .first (), element .count ());
+			// Solid & ccw.
+	
+			if (solid)
+				glEnable (GL_CULL_FACE);
+	
+			else
+				glDisable (GL_CULL_FACE);
+	
+			glFrontFace (positiveScale ? frontFace : (frontFace == GL_CCW ? GL_CW : GL_CCW));
+	
+			for (const auto & element : elements)
+			{
+				glDrawArrays (element .vertexMode (), element .first (), element .count ());
+			}
 		}
-	}
-
-	// VertexAttribs
-
-	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipelineRequired ())
-	{
-		// Texture
 	
-		if (browser -> getTexture ())
-			texCoordNode -> disable (context);
-
-		// Other arrays
-
-		glDisableClientState (GL_COLOR_ARRAY);
-		glDisableClientState (GL_NORMAL_ARRAY);
-		glDisableClientState (GL_VERTEX_ARRAY);
-	}
-	#endif
-
-	if (shaderNode)
-	{
-		for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
-			attribNodes [i] -> disable (shaderNode);
+		// VertexAttribs
 	
-		// Disable shader
+		#ifdef FIXED_PIPELINE
+		if (browser -> getFixedPipelineRequired ())
+		{
+			// Texture
+		
+			if (browser -> getTexture ())
+				texCoordNode -> disable (context);
 	
-		shaderNode -> disableColorAttrib ();
-		shaderNode -> disableTexCoordAttrib ();
-		shaderNode -> disableNormalAttrib ();
-		shaderNode -> disableVertexAttrib ();
+			// Other arrays
+	
+			glDisableClientState (GL_COLOR_ARRAY);
+			glDisableClientState (GL_NORMAL_ARRAY);
+			glDisableClientState (GL_VERTEX_ARRAY);
+		}
+		#endif
+	
+		if (shaderNode)
+		{
+			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
+				attribNodes [i] -> disable (shaderNode);
+		
+			// Disable shader
+		
+			shaderNode -> disableColorAttrib ();
+			shaderNode -> disableTexCoordAttrib ();
+			shaderNode -> disableNormalAttrib ();
+			shaderNode -> disableVertexAttrib ();
+		}
+	
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
-
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	catch (const std::exception &)
+	{ }
 }
 
 void

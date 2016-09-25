@@ -128,7 +128,8 @@ public:
 
 	virtual
 	void
-	setLocalUniforms (ShapeContainer* const) final override;
+	setLocalUniforms (ShapeContainer* const)
+	throw (std::domain_error) final override;
 
 	virtual
 	void

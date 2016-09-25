@@ -1048,6 +1048,7 @@ X3DProgrammableShaderObject::setGlobalUniforms (X3DRenderObject* const renderObj
 
 void
 X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
+throw (std::domain_error)
 {
 	static const auto textureType = std::vector <int32_t> ({ 0 });
 
@@ -1059,17 +1060,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & textureNode          = browser -> getTexture ();
 	const auto & textureTransformNode = browser -> getTextureTransform ();
 	const auto & modelViewMatrix      = context -> getModelViewMatrix ();
-	auto         normalMatrix         = Matrix3d (modelViewMatrix); // Transposed when uniform is set.
-
-	try
-	{
-		normalMatrix .inverse ();
-	}
-	catch (const std::domain_error &)
-	{
-		normalMatrix .set ();
-		// TODO: throw and don't render geometry.
-	}
+	const auto   normalMatrix         = inverse (Matrix3d (modelViewMatrix)); // Transposed when uniform is set.
 
 	// Geometry type
 

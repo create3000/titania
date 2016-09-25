@@ -235,6 +235,7 @@ ProgramShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 
 void
 ProgramShader::setLocalUniforms (ShapeContainer* const context)
+throw (std::domain_error)
 {
 	for (const auto & programNode : programNodes)
 	{

@@ -109,56 +109,61 @@ X3DLineGeometryNode::depth (const X3DShapeContainer* const context)
 void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto browser       = context -> getBrowser ();
-	const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
-	auto       shaderNode    = browser -> getShader ();
-
-	#ifdef FIXED_PIPELINE
-	if (browser -> getFixedPipelineRequired ())
+	try
 	{
-		glDisable (GL_LIGHTING);
-		X3DGeometryNode::draw (context);
-		return;
+		const auto browser       = context -> getBrowser ();
+		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
+		auto       shaderNode    = browser -> getShader ();
+	
+		#ifdef FIXED_PIPELINE
+		if (browser -> getFixedPipelineRequired ())
+		{
+			glDisable (GL_LIGHTING);
+			X3DGeometryNode::draw (context);
+			return;
+		}
+		#endif
+	
+		if (shaderNode == browser -> getDefaultShader ())
+			shaderNode = this -> shaderNode;
+	
+		// Setup shader.
+	
+		context -> setGeometryType  (getGeometryType ());
+		context -> setColorMaterial (not getColors () .empty ());
+	
+		shaderNode -> setLocalUniforms (context);
+	
+		// Setup vertex attributes.
+	
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
+	
+		if (not getColors () .empty ())
+			shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
+	
+		shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
+	
+		// Draw
+		// Wireframes are always solid so only one drawing call is needed.
+	
+		for (const auto & element : getElements ())
+		{
+			glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
+		}
+	
+		// VertexAttribs
+	
+		for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
+			getAttribs () [i] -> disable (shaderNode);
+	
+		shaderNode -> disableColorAttrib ();
+		shaderNode -> disableVertexAttrib ();
+	
+		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
-	#endif
-
-	if (shaderNode == browser -> getDefaultShader ())
-		shaderNode = this -> shaderNode;
-
-	// Setup shader.
-
-	context -> setGeometryType  (getGeometryType ());
-	context -> setColorMaterial (not getColors () .empty ());
-
-	shaderNode -> setLocalUniforms (context);
-
-	// Setup vertex attributes.
-
-	for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
-		getAttribs () [i] -> enable (shaderNode, getAttribBufferIds () [i]);
-
-	if (not getColors () .empty ())
-		shaderNode -> enableColorAttrib (getColorBufferId (), GL_FLOAT, 0, nullptr);
-
-	shaderNode -> enableVertexAttrib (getVertexBufferId (), GL_DOUBLE, 0, nullptr);
-
-	// Draw
-	// Wireframes are always solid so only one drawing call is needed.
-
-	for (const auto & element : getElements ())
-	{
-		glDrawArrays (pointShading ? GL_POINTS : element .vertexMode (), element .first (), element .count ());
-	}
-
-	// VertexAttribs
-
-	for (size_t i = 0, size = getAttribs () .size (); i < size; ++ i)
-		getAttribs () [i] -> disable (shaderNode);
-
-	shaderNode -> disableColorAttrib ();
-	shaderNode -> disableVertexAttrib ();
-
-	glBindBuffer (GL_ARRAY_BUFFER, 0);
+	catch (const std::exception &)
+	{ }
 }
 
 X3DLineGeometryNode::~X3DLineGeometryNode ()

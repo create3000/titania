@@ -746,6 +746,7 @@ X3DRenderObject::dispose ()
 	localLights              .clear ();
 	lights                   .clear ();
 	collisions               .clear ();
+	shaders                  .clear ();
 
 	lightId = 0;
 
