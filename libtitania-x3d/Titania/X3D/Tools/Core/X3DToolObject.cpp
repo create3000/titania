@@ -136,7 +136,7 @@ X3DToolObject::set_loadState (const LoadState loadState)
 void
 X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (not getBrowser () -> getDisplayTools () .top ())
+	if (not renderObject -> getBrowser () -> getDisplayTools () .top ())
 		return;
 
 	renderObject -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));

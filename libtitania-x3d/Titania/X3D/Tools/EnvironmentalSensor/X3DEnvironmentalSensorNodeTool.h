@@ -125,7 +125,12 @@ public:
 	virtual
 	Box3d
 	getBBox () const final override
-	{ return Box3d (size () .getValue (), center () .getValue ()); }
+	{
+		if (getBrowser () -> getDisplayTools () .top ())
+			return Box3d (size () .getValue (), center () .getValue ());
+
+		return Box3d ();
+	}
 
 	virtual
 	void

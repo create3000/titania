@@ -144,7 +144,12 @@ public:
 	virtual
 	Box3d
 	getBBox () const final override
-	{ return getInlineNode () -> getBBox (); }
+	{
+		if (getBrowser () -> getDisplayTools () .top ())
+			return getInlineNode () -> getBBox ();
+
+		return Box3d ();
+	}
 
 	///  @name Operations
 
