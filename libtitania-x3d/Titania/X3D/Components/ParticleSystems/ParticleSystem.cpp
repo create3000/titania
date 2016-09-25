@@ -427,8 +427,8 @@ ParticleSystem::initialize ()
 	getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
 	isLive () .addInterest (this, &ParticleSystem::set_live);
 
-	getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &ParticleSystem::set_shader);
-	getBrowser () -> getFixedPipeline ()                .addInterest (this, &ParticleSystem::set_shader);
+	getBrowser () -> getDefaultShader () .addInterest (this, &ParticleSystem::set_shader);
+	getBrowser () -> getFixedPipeline () .addInterest (this, &ParticleSystem::set_shader);
 
 	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
 	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
@@ -1431,7 +1431,7 @@ ParticleSystem::updateGeometry (ShapeContainer* const context)
 			{
 				if (getExecutionContext () -> isLive () and isLive ())
 				{
-					glUseProgram (geometryShader -> getProgramId ());
+					geometryShader -> enable ();
 	
 					const auto rotationLocation = glGetUniformLocation (geometryShader -> getProgramId (), "rotation");
 					const auto rotation         = getScreenAlignedRotation (context -> getModelViewMatrix ());
@@ -1522,8 +1522,8 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 		// Draw.
 
-		const auto & browser    = context -> getBrowser ();
-		auto         shaderNode = browser -> getShader ();
+		const auto browser    = context -> getBrowser ();
+		auto       shaderNode = browser -> getShader ();
 
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = this -> shaderNode;
@@ -1567,9 +1567,8 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 				// Enable shader.
 			
-				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
-		
+
 				// Enable vertex attribute nodes.
 		
 				if (numColors)
@@ -1640,7 +1639,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 				// Enable shader.
 			
-				shaderNode -> enable ();
 				shaderNode -> setLocalUniforms (context);
 		
 				// Enable vertex attribute nodes

@@ -109,9 +109,9 @@ X3DLineGeometryNode::depth (const CollisionContainer* const context)
 void
 X3DLineGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto & browser       = context -> getBrowser ();
-	const bool   pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
-	auto         shaderNode    = browser -> getShader ();
+	const auto browser       = context -> getBrowser ();
+	const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
+	auto       shaderNode    = browser -> getShader ();
 
 	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())

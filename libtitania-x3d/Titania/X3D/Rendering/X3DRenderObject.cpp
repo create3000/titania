@@ -276,8 +276,12 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 			numOpaqueDrawShapes      = 0;
 			numTransparentDrawShapes = 0;
 
+			shaders .emplace_back ();
+
 			traverse (type, this);
 			draw (opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+
+			shaders .pop_back ();
 
 			for (const auto & light : getLights ())
 				light -> getModelViewMatrix () .pop_back ();
@@ -289,8 +293,12 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 			numOpaqueDisplayShapes      = 0;
 			numTransparentDisplayShapes = 0;
 
+			shaders .emplace_back ();
+
 			traverse (type, this);
 			display (traverse);
+
+			shaders .pop_back ();
 			break;
 		}
 		default:
@@ -305,7 +313,7 @@ X3DRenderObject::getLight () const
 }
 
 void
-X3DRenderObject::addCollisionShape (X3DShapeNode* const shape)
+X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 {
 	// It should be possible to sort out shapes that are far away.
 
@@ -318,14 +326,14 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shape)
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
+	context -> setShape (shapeNode);
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 }
 
 void
-X3DRenderObject::addDepthShape (X3DShapeNode* const shape)
+X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 {
 	// It should be possible to sort out shapes that are far away.
 
@@ -338,31 +346,31 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shape)
 
 	context -> setScissor (getViewVolumes () .back () .getScissor ());
 	context -> setModelViewMatrix (getModelViewMatrix () .get ());
-	context -> setShape (shape);
+	context -> setShape (shapeNode);
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
 }
 
 void
-X3DRenderObject::addDrawShape (X3DShapeNode* const shape)
+X3DRenderObject::addDrawShape (X3DShapeNode* const shapeNode)
 {
-	addShape (shape, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
+	addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
 }
 
 void
-X3DRenderObject::addDisplayShape (X3DShapeNode* const shape)
+X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 {
-	addShape (shape, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
+	addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
 }
 
 void
-X3DRenderObject::addShape (X3DShapeNode* const shape,
-                       ShapeContainerArray & opaqueShapes,
-                       size_t & numOpaqueShapes,
-                       ShapeContainerArray & transparentShapes,
-                       size_t & numTransparentShapes)
+X3DRenderObject::addShape (X3DShapeNode* const shapeNode,
+                           ShapeContainerArray & opaqueShapes,
+                           size_t & numOpaqueShapes,
+                           ShapeContainerArray & transparentShapes,
+                           size_t & numTransparentShapes)
 {
-	const auto bbox   = shape -> getBBox () * getModelViewMatrix () .get ();
+	const auto bbox   = shapeNode -> getBBox () * getModelViewMatrix () .get ();
 	const auto depth  = bbox .size   () .z () / 2;
 	const auto min    = bbox .center () .z () - depth;
 	const auto center = bbox .center () .z () + getBrowser () -> getDepthOffset () .top ();
@@ -376,7 +384,7 @@ X3DRenderObject::addShape (X3DShapeNode* const shape,
 	{
 	   ShapeContainer* context = nullptr;
 
-		if (shape -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
+		if (shapeNode -> isTransparent () or not getBrowser () -> getDepthTest () .top ())
 		{
 		   if (numTransparentShapes == transparentShapes .size ())
 		      transparentShapes .emplace_back (new ShapeContainer (this, true));
@@ -397,7 +405,7 @@ X3DRenderObject::addShape (X3DShapeNode* const shape,
 
 		context -> setScissor (viewVolume .getScissor ());
 		context -> setModelViewMatrix (getModelViewMatrix () .get ());
-		context -> setShape (shape);
+		context -> setShape (shapeNode);
 		context -> setFog (getFog ());
 		context -> setLocalObjects (getLocalObjects ());
 		context -> setClipPlanes (getClipPlanes ());
@@ -639,6 +647,21 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 	for (const auto & object : getGlobalLights ())
 		object -> enable ();
 
+	// Set global uniforms.
+
+	if (not getBrowser () -> getFixedPipelineRequired ())
+	{
+		getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
+		getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
+		getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
+	}
+
+	for (const auto & shaderNode : getShaders ())
+		shaderNode -> setGlobalUniforms (this);
+
+	glUseProgram (0);
+	glBindProgramPipeline (0);
+
 	// Configure viewport.
 
 	const auto & viewport = getViewVolumes () .back () .getViewport ();
@@ -657,19 +680,6 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 	glClear (GL_DEPTH_BUFFER_BIT);
 
 	getBackground () -> draw (this, viewport);
-
-	// Set global uniforms.
-	// As long as the background is not rendered with a shader, do this after background draw, otherwise after global lights enable.
-
-	if (not getBrowser () -> getFixedPipelineRequired ())
-	{
-		getBrowser () -> getPointShader ()     -> setGlobalUniforms (this);
-		getBrowser () -> getWireframeShader () -> setGlobalUniforms (this);
-		getBrowser () -> getDefaultShader ()   -> setGlobalUniforms (this);
-	}
-
-	for (const auto & shaderNode : getShaders ())
-		shaderNode -> setGlobalUniforms (this);
 
 	// Sorted blend.
 

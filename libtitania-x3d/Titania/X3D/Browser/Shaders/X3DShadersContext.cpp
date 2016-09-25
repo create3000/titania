@@ -105,10 +105,10 @@ X3DShadersContext::initialize ()
 
 		// Shaders
 
-		pointShader     = createShader ({ get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Point.fs")     .str () });
-		wireframeShader = createShader ({ get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
-		gouraudShader   = createShader ({ get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
-		phongShader     = createShader ({ get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
+		pointShader     = createShader ("TitaniaPoint",     { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Point.fs")     .str () });
+		wireframeShader = createShader ("TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
+		gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
+		phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
 
 		// Shading
 
@@ -135,10 +135,8 @@ X3DShadersContext::getFixedPipelineRequired () const
 #endif
 
 X3DPtr <ComposedShader>
-X3DShadersContext::createShader (const MFString & vertexUrl, const MFString & fragmentUrl)
+X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl)
 {
-	const std::string name = "Internal";
-
 	const auto vertexPart   = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto fragmentPart = getExecutionContext () -> createNode <ShaderPart> ();
 	const auto shader       = getExecutionContext () -> createNode <ComposedShader> ();

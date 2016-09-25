@@ -156,7 +156,9 @@ GeneratedCubeMapTexture::set_update ()
 void
 GeneratedCubeMapTexture::set_size ()
 {
-	frameBuffer .reset (new FrameBuffer (getBrowser (), size (), size (), std::min <size_t> (getBrowser () -> getMaxSamples (), 8)));
+	const auto s = std::max <int32_t> (1, size ());
+
+	frameBuffer .reset (new FrameBuffer (getBrowser (), s, s, std::min <size_t> (getBrowser () -> getMaxSamples (), 8)));
 
 	frameBuffer -> setup ();
 }

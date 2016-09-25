@@ -67,6 +67,8 @@
 
 #include <Titania/String/to_string.h>
 
+#include "../Shape/X3DShapeNode.h"
+
 namespace titania {
 namespace X3D {
 
@@ -1056,7 +1058,8 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	const auto & materialNode         = browser -> getMaterial ();
 	const auto & textureNode          = browser -> getTexture ();
 	const auto & textureTransformNode = browser -> getTextureTransform ();
-	auto         normalMatrix         = Matrix3d (context -> getModelViewMatrix ()); // Transposed when uniform is set.
+	const auto & modelViewMatrix      = context -> getModelViewMatrix ();
+	auto         normalMatrix         = Matrix3d (modelViewMatrix); // Transposed when uniform is set.
 
 	try
 	{
@@ -1065,6 +1068,7 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 	catch (const std::domain_error &)
 	{
 		normalMatrix .set ();
+		// TODO: throw and don't render geometry.
 	}
 
 	// Geometry type
@@ -1131,13 +1135,13 @@ X3DProgrammableShaderObject::setLocalUniforms (ShapeContainer* const context)
 
 	if (extensionGPUShaderFP64)
 	{
-		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix .data ());
-		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, context -> getModelViewMatrix () .data ());
+		glUniformMatrix3dv (x3d_NormalMatrix,    1, true,  normalMatrix    .data ());
+		glUniformMatrix4dv (x3d_ModelViewMatrix, 1, false, modelViewMatrix .data ());
 	}
 	else
 	{
-		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix) .data ());
-		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (context -> getModelViewMatrix ()) .data ());
+		glUniformMatrix3fv (x3d_NormalMatrix,    1, true,  Matrix3f (normalMatrix)    .data ());
+		glUniformMatrix4fv (x3d_ModelViewMatrix, 1, false, Matrix4f (modelViewMatrix) .data ());
 	}
 }
 

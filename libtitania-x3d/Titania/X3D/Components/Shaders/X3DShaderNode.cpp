@@ -95,8 +95,15 @@ X3DShaderNode::deselect ()
 void
 X3DShaderNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (type == TraverseType::DISPLAY)
-		renderObject -> getShaders () .emplace (this);
+	switch (type)
+	{
+		case TraverseType::DISPLAY:
+		case TraverseType::DRAW:
+			renderObject -> getShaders () .emplace (this);
+			break;
+		default:
+			break;
+	}
 }
 
 } // X3D

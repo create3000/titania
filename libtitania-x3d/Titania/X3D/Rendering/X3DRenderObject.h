@@ -78,6 +78,7 @@ class X3DShaderNode;
 using LocalFogStack              = std::stack <LocalFog*, std::vector <LocalFog*>>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;
+using ShaderSetStack             = std::vector <ShaderSet>;
 
 class X3DRenderObject :
 	virtual public X3DBaseNode
@@ -192,7 +193,7 @@ public:
 
 	ShaderSet &
 	getShaders ()
-	{ return shaders; }
+	{ return shaders .back (); }
 
 	///  @name Observer
 
@@ -316,7 +317,7 @@ private:
 	size_t                     lightId;
 	CollisionArray             collisions;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
-	ShaderSet                  shaders;
+	ShaderSetStack             shaders;
 
 	ShapeContainerArray      opaqueDrawShapes;
 	ShapeContainerArray      transparentDrawShapes;

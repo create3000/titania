@@ -881,8 +881,8 @@ X3DGeometryNode::depth (const CollisionContainer* const context)
 void
 X3DGeometryNode::draw (ShapeContainer* const context)
 {
-	const auto & browser    = context -> getBrowser ();
-	const auto & shaderNode = browser -> getShader ();
+	const auto browser    = context -> getBrowser ();
+	const auto shaderNode = browser -> getShader ();
 
 	context -> setGeometryType  (geometryType);
 	context -> setColorMaterial (not colors .empty ());
@@ -927,7 +927,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		// Enable shader
 	
-		shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 
 		// Enable vertex attribute nodes

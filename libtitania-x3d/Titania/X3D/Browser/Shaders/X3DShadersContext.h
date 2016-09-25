@@ -151,7 +151,7 @@ private:
 	///  Operations
 
 	X3DPtr <ComposedShader>
-	createShader (const MFString &, const MFString &);
+	createShader (const std::string & name, const MFString &, const MFString &);
 
 	///  @name Event handlers
 
