@@ -163,6 +163,17 @@ public:
 
 private:
 
+	///  @name Member types
+
+	enum class UpdateType :
+		uint8_t
+	{
+		NONE,
+		NEXT_FRAME_ONLY,
+		ALWAYS
+
+	};
+
 	///  @name Construction
 
 	virtual
@@ -204,6 +215,7 @@ private:
 
 	SFEnum <LoadState>            loadState;
 	bool                          transparent;
+	UpdateType                    updateType;
 	std::unique_ptr <FrameBuffer> frameBuffer;
 	Matrix4d                      transformationMatrix;
 

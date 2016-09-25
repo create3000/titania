@@ -80,6 +80,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	                   fields (),
 	                loadState (NOT_STARTED_STATE),
 	              transparent (false),
+	               updateType (UpdateType::NONE),
 	              frameBuffer (),
 	     transformationMatrix ()
 {
@@ -125,14 +126,31 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 GeneratedCubeMapTexture::set_update ()
 {
-	if (update () == "ALWAYS")
-		setCameraObject (true);
+	static const std::map <std::string, UpdateType> updateTypes = {
+		std::make_pair ("NONE",            UpdateType::NONE),
+		std::make_pair ("NEXT_FRAME_ONLY", UpdateType::NEXT_FRAME_ONLY),
+		std::make_pair ("ALWAYS",          UpdateType::ALWAYS),
+	};
 
-	else if (update () == "NEXT_FRAME_ONLY")
-		setCameraObject (true);
+	try
+	{
+		updateType = updateTypes .at (update ());
+	}
+	catch (const std::out_of_range &)
+	{
+		updateType = UpdateType::NONE;
+	}
 
-	else if (update () == "NONE")
-		setCameraObject (false);
+	switch (updateType)
+	{
+		case UpdateType::NONE:
+			setCameraObject (false);
+			break;
+		case UpdateType::NEXT_FRAME_ONLY:
+		case UpdateType::ALWAYS:
+			setCameraObject (true);
+			break;
+	}
 }
 
 void
@@ -248,16 +266,16 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 		frameBuffer -> unbind ();
 
-		if (update () == "NEXT_FRAME_ONLY")
-		   update () = "NONE";
-
-		if (checkLoadState () != COMPLETE_STATE)
-			setLoadState (COMPLETE_STATE);
-
 		renderObject -> getBrowser () -> getDisplayTools () .pop ();
+
+		setLoadState (COMPLETE_STATE);
+
+		if (updateType == UpdateType::NEXT_FRAME_ONLY)
+		   update () = "NONE";
 	}
 	catch (const std::domain_error &)
 	{
+		setLoadState (FAILED_STATE);
 	}
 }
 
