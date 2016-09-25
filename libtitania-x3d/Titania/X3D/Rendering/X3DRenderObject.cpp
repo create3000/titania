@@ -659,6 +659,7 @@ X3DRenderObject::draw (ShapeContainerArray & opaqueShapes,
 	getBackground () -> draw (this, viewport);
 
 	// Set global uniforms.
+	// As long as the background is not rendered with a shader, do this after background draw, otherwise after global lights enable.
 
 	if (not getBrowser () -> getFixedPipelineRequired ())
 	{

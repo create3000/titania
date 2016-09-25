@@ -229,7 +229,7 @@ X3DGeometryNode::intersects (Line3d line,
 		if (not bbox .intersects (line))
 			return false;
 
-		bool   intersected = false;
+		bool intersected = false;
 
 		for (const auto & element : elements)
 		{
@@ -258,7 +258,7 @@ X3DGeometryNode::intersects (Line3d line,
 				{
 					const auto first = element .first ();
 
-					for (int32_t i = first + 1, size = first + element .last () - 1; i < size; ++ i)
+					for (int32_t i = first + 1, size = element .last () - 1; i < size; ++ i)
 					{
 						intersected |= intersects (line, first, i, i + 1, clipPlanes, modelViewMatrix, intersections);
 					}
