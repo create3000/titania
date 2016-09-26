@@ -313,7 +313,7 @@ X3DRenderObject::getLight () const
 	return lights [const_cast <size_t &> (lightId) ++];
 }
 
-void
+bool
 X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 {
 	// It should be possible to sort out shapes that are far away.
@@ -331,9 +331,11 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 	context -> setCollisions (getCollisions ());
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
+
+	return true;
 }
 
-void
+bool
 X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 {
 	// It should be possible to sort out shapes that are far away.
@@ -350,20 +352,20 @@ X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 	context -> setShape (shapeNode);
 	context -> setLocalObjects (getLocalObjects ());
 	context -> setClipPlanes (getClipPlanes ());
+
+	return true;
 }
 
-void
+bool
 X3DRenderObject::addDrawShape (X3DShapeNode* const shapeNode)
 {
-	if (addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes))
-		shapeNode -> getAppearance () -> traverse (TraverseType::DRAW, this);
+	return addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes);
 }
 
-void
+bool
 X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 {
-	if (addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes))
-		shapeNode -> getAppearance () -> traverse (TraverseType::DISPLAY, this);
+	return addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes);
 }
 
 bool

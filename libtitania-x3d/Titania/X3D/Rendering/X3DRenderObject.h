@@ -252,16 +252,16 @@ protected:
 	const std::shared_ptr <LightContainer> &
 	getLight () const;
 
-	void
+	bool
 	addCollisionShape (X3DShapeNode* const shape);
 
-	void
+	bool
 	addDepthShape (X3DShapeNode* const shape);
 
-	void
+	bool
 	addDrawShape (X3DShapeNode* const shape);
 
-	void
+	bool
 	addDisplayShape (X3DShapeNode* const shape);
 
 

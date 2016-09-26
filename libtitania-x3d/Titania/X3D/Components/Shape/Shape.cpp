@@ -159,12 +159,16 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			}
 			case TraverseType::DISPLAY:
 			{
-				renderObject -> addDisplayShape (this);
+				if (renderObject -> addDisplayShape (this))
+					getAppearance () -> traverse (type, renderObject);
+
 				break;
 			}
 			case TraverseType::DRAW:
 			{
-				renderObject -> addDrawShape (this);
+				if (renderObject -> addDrawShape (this))
+					getAppearance () -> traverse (type, renderObject);
+
 				break;
 			}
 		}
