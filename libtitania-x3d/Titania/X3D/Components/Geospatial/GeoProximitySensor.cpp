@@ -116,7 +116,7 @@ GeoProximitySensor::initialize ()
 	size ()    .addInterest (proximitySensor -> size ());
 	center ()  .addInterest (proximitySensor -> center ());
 
-	proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	proximitySensor -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &GeoProximitySensor::setCameraObject);
 
 	proximitySensor -> isActive ()                 .addInterest (isActive ());
 	proximitySensor -> enterTime ()                .addInterest (enterTime ());

@@ -61,12 +61,9 @@ const GLint X3DTextureNode::wrapTypes [2] = { GL_CLAMP, GL_REPEAT };
 
 X3DTextureNode::X3DTextureNode () :
 	X3DAppearanceChildNode (),
-	          cameraObject (),
 	             textureId (0)
 {
 	addType (X3DConstants::X3DTextureNode);
-
-	addChildren (cameraObject);
 }
 
 void
@@ -82,13 +79,6 @@ X3DTextureNode::initialize ()
 	X3DAppearanceChildNode::initialize ();
 
 	glGenTextures (1, &textureId);
-}
-
-void
-X3DTextureNode::setCameraObject (const bool value)
-{
-	if (value not_eq cameraObject)
-	   cameraObject = value;
 }
 
 void

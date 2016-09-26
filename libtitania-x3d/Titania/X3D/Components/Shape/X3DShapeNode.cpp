@@ -126,32 +126,24 @@ X3DShapeNode::isHidden (const bool value)
 void
 X3DShapeNode::set_appearance ()
 {
-	if (appearanceNode)
-		appearanceNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
-
 	appearanceNode = x3d_cast <X3DAppearanceNode*> (appearance ());
 
 	if (not appearanceNode)
 		appearanceNode .set (getBrowser () -> getDefaultAppearance ());
-
-	appearanceNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
-
-	setCameraObject (appearanceNode -> isCameraObject ());
 }
 
 void
 X3DShapeNode::set_geometry ()
 {
 	if (geometryNode)
-	   geometryNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+	   geometryNode -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &X3DShapeNode::setCameraObject);
 
 	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
 
 	if (geometryNode)
-	{
-	   geometryNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
-	   setCameraObject (geometryNode -> isCameraObject ());
-	}
+	   geometryNode -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &X3DShapeNode::setCameraObject);
+
+	setCameraObject (geometryNode and geometryNode -> isCameraObject ());
 }
 
 void

@@ -356,24 +356,14 @@ void
 X3DRenderObject::addDrawShape (X3DShapeNode* const shapeNode)
 {
 	if (addShape (shapeNode, opaqueDrawShapes, numOpaqueDrawShapes, transparentDrawShapes, numTransparentDrawShapes))
-	{
 		shapeNode -> getAppearance () -> traverse (TraverseType::DRAW, this);
-	
-		if (shapeNode -> getGeometry ())
-			shapeNode -> getGeometry () -> traverse (TraverseType::DRAW, this);
-	}
 }
 
 void
 X3DRenderObject::addDisplayShape (X3DShapeNode* const shapeNode)
 {
 	if (addShape (shapeNode, opaqueDisplayShapes, numOpaqueDisplayShapes, transparentDisplayShapes, numTransparentDisplayShapes))
-	{
 		shapeNode -> getAppearance () -> traverse (TraverseType::DISPLAY, this);
-	
-		if (shapeNode -> getGeometry ())
-			shapeNode -> getGeometry () -> traverse (TraverseType::DISPLAY, this);
-	}
 }
 
 bool

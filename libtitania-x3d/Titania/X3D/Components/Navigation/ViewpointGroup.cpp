@@ -144,12 +144,12 @@ ViewpointGroup::set_displayed ()
 
 	if (proximitySensor -> enabled ())
 	{
-		proximitySensor -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+		proximitySensor -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &ViewpointGroup::setCameraObject);
 		setCameraObject (proximitySensor -> isCameraObject ());
 	}
 	else
 	{
-		proximitySensor -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+		proximitySensor -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &ViewpointGroup::setCameraObject);
 		setCameraObject (true);
 	}
 }

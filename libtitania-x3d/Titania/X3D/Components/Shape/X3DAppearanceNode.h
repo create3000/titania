@@ -67,10 +67,6 @@ public:
 
 	///  @name Member access
 
-	const SFBool &
-	isCameraObject () const
-	{ return cameraObject; }
-
 	virtual
 	bool
 	isTransparent () const = 0;
@@ -95,18 +91,6 @@ protected:
 	///  @name Construction
 
 	X3DAppearanceNode ();
-
-	///  @name Member access
-
-	void
-	setCameraObject (const bool);
-
-
-private:
-
-	///  @name Members
-
-	SFBool cameraObject;
 
 };
 

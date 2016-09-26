@@ -54,19 +54,9 @@ namespace titania {
 namespace X3D {
 
 X3DAppearanceNode::X3DAppearanceNode () :
-	     X3DNode (),
-	cameraObject ()
+	X3DNode ()
 {
 	addType (X3DConstants::X3DAppearanceNode);
-
-	addChildren (cameraObject);
-}
-
-void
-X3DAppearanceNode::setCameraObject (const bool value)
-{
-	if (value not_eq cameraObject)
-	   cameraObject = value;
 }
 
 } // X3D

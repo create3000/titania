@@ -135,7 +135,7 @@ Inline::initialize ()
 		}
 	}
 
-	group -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	group -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &Inline::setCameraObject);
 
 	group -> isPrivate (true);
 	group -> setup ();

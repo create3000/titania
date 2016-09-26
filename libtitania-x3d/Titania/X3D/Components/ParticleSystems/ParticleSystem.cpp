@@ -1283,6 +1283,14 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 	if (not isActive ())
 		return;
 
+	if (geometryTypeId == GeometryType::GEOMETRY)
+	{
+		if (getGeometry ())
+			getGeometry () -> traverse (type, renderObject);
+		else
+			return;
+	}
+
 	switch (type)
 	{
 		case TraverseType::POINTER:

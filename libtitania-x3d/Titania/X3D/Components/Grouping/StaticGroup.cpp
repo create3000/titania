@@ -105,7 +105,7 @@ StaticGroup::initialize ()
 	group -> setup ();
 
 	// Connect after Group setup.
-	group -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+	group -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &StaticGroup::setCameraObject);
 	group -> children ()       .addInterest (this, &StaticGroup::set_children);
 
 	set_children ();

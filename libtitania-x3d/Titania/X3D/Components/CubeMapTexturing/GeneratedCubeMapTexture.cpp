@@ -140,25 +140,14 @@ GeneratedCubeMapTexture::set_update ()
 	{
 		updateType = UpdateType::NONE;
 	}
-
-	switch (updateType)
-	{
-		case UpdateType::NONE:
-			setCameraObject (false);
-			break;
-		case UpdateType::NEXT_FRAME_ONLY:
-		case UpdateType::ALWAYS:
-			setCameraObject (true);
-			break;
-	}
 }
 
 void
 GeneratedCubeMapTexture::set_size ()
 {
-	const auto s = std::max <int32_t> (1, size ());
+	const auto size = std::max <int32_t> (1, this -> size ());
 
-	frameBuffer .reset (new FrameBuffer (getBrowser (), s, s, std::min <size_t> (getBrowser () -> getMaxSamples (), 8)));
+	frameBuffer .reset (new FrameBuffer (getBrowser (), size, size, std::min <size_t> (getBrowser () -> getMaxSamples (), 8)));
 
 	frameBuffer -> setup ();
 }
