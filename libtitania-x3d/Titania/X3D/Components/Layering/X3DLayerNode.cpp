@@ -61,6 +61,8 @@
 #include "../Grouping/X3DGroupingNode.h"
 #include "../Layering/Viewport.h"
 
+#include <Titania/Math/Geometry/Camera.h>
+
 namespace titania {
 namespace X3D {
 
@@ -387,14 +389,23 @@ X3DLayerNode::collision ()
 {
 	using namespace std::placeholders;
 
-	getModelViewMatrix () .push (Matrix4d ());
+	const auto collisionRadius2 = getNavigationInfo () -> getCollisionRadius () * 2;
+	const auto avatarHeight2    = getNavigationInfo () -> getAvatarHeight () * 2;
+
+	auto projectionMatrix = math::camera <double>::ortho (-collisionRadius2, collisionRadius2, -avatarHeight2, collisionRadius2, -collisionRadius2, collisionRadius2);
+
+	projectionMatrix .mult_left (getViewpoint () -> getInverseCameraSpaceMatrix ());
+
+	getProjectionMatrix () .push (projectionMatrix);
+	getModelViewMatrix  () .push (Matrix4d ());
 
 	// Render
 	currentViewport -> push (this);
 	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1, _2));
 	currentViewport -> pop (this);
 
-	getModelViewMatrix () .pop ();
+	getModelViewMatrix  () .pop ();
+	getProjectionMatrix () .pop ();
 }
 
 void

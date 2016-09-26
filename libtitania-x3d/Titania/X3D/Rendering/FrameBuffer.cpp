@@ -133,19 +133,26 @@ FrameBuffer::getDepth (const Matrix4d & projectionMatrix, const Vector4i & viewp
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
 	
 		const auto invProjectionMatrix = inverse (projectionMatrix);
-		double     depthValue          = -std::numeric_limits <double>::infinity ();
+		double     winx                = 0;
+		double     winy                = 0;
+		double     winz                = std::numeric_limits <double>::infinity ();
 	
 		for (size_t wy = 0, i = 0; wy < height; ++ wy)
 		{
 		   for (size_t wx = 0; wx < width; ++ wx, ++ i)
 		   {
-				const auto point = ViewVolume::unProjectPoint (wx, wy, depth [i], invProjectionMatrix, viewport);
-
-				depthValue = std::max (depthValue, point .z ());
+				if (winz < depth [i])
+				{
+					winx = wx;
+					winy = wy;
+					winz = depth [i];
+				}
 		   }
 		}
 
-		return depthValue;
+		const auto point = ViewVolume::unProjectPoint (winx, winy, winz, invProjectionMatrix, viewport);
+
+		return point .z ();
 	}
 	catch (const std::domain_error &)
 	{

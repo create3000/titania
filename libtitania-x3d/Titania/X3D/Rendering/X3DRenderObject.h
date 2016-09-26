@@ -226,7 +226,7 @@ public:
 	///  @name Operations
 
 	Vector3d
-	constrainTranslation (const Vector3d & translation) const;
+	constrainTranslation (const Vector3d & translation, const bool stepBack) const;
 
 	void
 	render (const TraverseType type, const TraverseFunction & traverse);

@@ -137,7 +137,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 ///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
-X3DRenderObject::constrainTranslation (const Vector3d & translation) const
+X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
 	auto       distance        = getDistance (translation);
@@ -147,9 +147,11 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation) const
 
 	if (farValue - distance > 0) // Are there polygons before the viewer
 	{
+		const auto cosTetha        = dot (normalize (translation), Vector3d (0, 1, 0));
+		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
-		distance -= collisionRadius;
+		distance -= cosTetha > 0 ? collisionRadius : lerp (cosTetha, avatarHeight, std::pow (-cosTetha, 1.0 / 5.0));
 
 		if (distance > 0)
 		{
@@ -166,8 +168,12 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation) const
 			return translation;
 		}
 
-		// Collision
-		return normalize (translation) * distance;
+		// Collision, the avatar is within the wall.
+
+		if (stepBack)
+			return constrainTranslation (normalize (translation) * distance, false);
+
+		return Vector3d ();
 	}
 
 	return translation;
@@ -317,6 +323,12 @@ X3DRenderObject::getLight () const
 bool
 X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 {
+	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
+	const auto & viewVolume = getViewVolumes () .back ();
+
+	if (not viewVolume .intersects (bbox))
+		return false;
+
 	// It should be possible to sort out shapes that are far away.
 
 	if (numCollisionShapes == collisionShapes .size ())
@@ -339,6 +351,12 @@ X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 bool
 X3DRenderObject::addDepthShape (X3DShapeNode* const shapeNode)
 {
+	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
+	const auto & viewVolume = getViewVolumes () .back ();
+
+	if (not viewVolume .intersects (bbox))
+		return false;
+
 	// It should be possible to sort out shapes that are far away.
 
 	if (numDepthShapes == depthShapes .size ())
@@ -561,7 +579,7 @@ X3DRenderObject::gravite ()
 				if (distance > 0.01 and distance < stepHeight)
 				{
 					// Step up
-					const auto translation = constrainTranslation (Vector3d (0, distance, 0) * up);
+					const auto translation = constrainTranslation (Vector3d (0, distance, 0) * up, false);
 
 					if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
 					{

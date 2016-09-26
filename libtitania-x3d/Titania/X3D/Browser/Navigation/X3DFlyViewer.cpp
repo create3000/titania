@@ -316,7 +316,7 @@ X3DFlyViewer::fly ()
 
 		const auto translation = getTranslationOffset (speedFactor * direction);
 
-		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
+		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation, true);
 
 		// Rotation
 
@@ -362,7 +362,7 @@ X3DFlyViewer::pan ()
 		const auto orientation = viewpoint -> getUserOrientation () * Rotation4d (yAxis * viewpoint -> getUserOrientation (), upVector);
 		const auto translation = speedFactor * direction * orientation;
 
-		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation);
+		viewpoint -> positionOffset () += getActiveLayer () -> constrainTranslation (translation, true);
 
 		startTime = now;
 		return true;
