@@ -226,7 +226,7 @@ X3DGeometryNode::intersects (Line3d line,
 
 		line *= inverse (matrix);
 
-		if (not bbox .intersects (line))
+		if (not getBBox () .intersects (line))
 			return false;
 
 		bool intersected = false;

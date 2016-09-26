@@ -143,10 +143,18 @@ Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 
 	try
 	{
-		if (type == TraverseType::DISPLAY)
-			renderObject -> getModelViewMatrix () .mult_left (rotate (renderObject));
-		else
-			renderObject -> getModelViewMatrix () .mult_left (matrix);
+		switch (type)
+		{
+			case TraverseType::CAMERA:
+			case TraverseType::DEPTH:
+			case TraverseType::DRAW:
+				// No clone support for shadow and generated cube map texture
+				renderObject -> getModelViewMatrix () .mult_left (matrix);
+				break;
+			default:
+				renderObject -> getModelViewMatrix () .mult_left (rotate (renderObject));
+				break;
+		}
 
 		X3DGroupingNode::traverse (type, renderObject);
 	}

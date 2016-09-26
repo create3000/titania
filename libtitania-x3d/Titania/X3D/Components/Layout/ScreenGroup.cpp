@@ -147,10 +147,18 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 {
 	try
 	{
-		if (type == TraverseType::DISPLAY)
-			renderObject -> getModelViewMatrix () .push (scale (renderObject));
-		else
-			renderObject -> getModelViewMatrix () .push (screenMatrix);
+		switch (type)
+		{
+			case TraverseType::CAMERA:
+			case TraverseType::DEPTH:
+			case TraverseType::DRAW:
+				// No clone support for shadow and generated cube map texture
+				renderObject -> getModelViewMatrix () .mult_left (screenMatrix);
+				break;
+			default:
+				renderObject -> getModelViewMatrix () .push (scale (renderObject));
+				break;
+		}
 
 		X3DGroupingNode::traverse (type, renderObject);
 	
