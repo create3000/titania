@@ -137,7 +137,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 ///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
-X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack) const
+X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack, const bool moveFree) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
 	auto       distance        = getDistance (translation);
@@ -151,7 +151,10 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool 
 		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
-		distance -= cosTetha > 0 ? collisionRadius : lerp (cosTetha, avatarHeight, std::pow (-cosTetha, 1.0 / 5.0));
+		if (moveFree)
+			distance -= cosTetha > 0 ? collisionRadius : lerp (cosTetha, avatarHeight, std::pow (-cosTetha, 1.0 / 5.0));
+		else
+			distance -= collisionRadius;
 
 		if (distance > 0)
 		{

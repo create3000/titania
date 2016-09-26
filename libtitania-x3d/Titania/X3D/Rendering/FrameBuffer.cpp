@@ -141,11 +141,13 @@ FrameBuffer::getDepth (const Matrix4d & projectionMatrix, const Vector4i & viewp
 		{
 		   for (size_t wx = 0; wx < width; ++ wx, ++ i)
 		   {
-				if (winz < depth [i])
+				const auto wz = depth [i];
+
+				if (wz < winz)
 				{
 					winx = wx;
 					winy = wy;
-					winz = depth [i];
+					winz = wz;
 				}
 		   }
 		}
