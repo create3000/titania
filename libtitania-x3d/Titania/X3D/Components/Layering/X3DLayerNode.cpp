@@ -224,7 +224,7 @@ X3DLayerNode::getFog () const
 	if (getLocalFogs () .empty ())
 		return fogStack -> top ();
 
-	return getLocalFogs () .top ();
+	return getLocalFogs () .back ();
 }
 
 UserViewpointList
@@ -293,8 +293,6 @@ X3DLayerNode::bind ()
 void
 X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getBrowser () -> getLayers () .push (this);
-	
 	getCameraSpaceMatrix        () .push (getViewpoint () -> getCameraSpaceMatrix ());
 	getInverseCameraSpaceMatrix () .push (getViewpoint () -> getInverseCameraSpaceMatrix ());
 	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix (this));
@@ -328,12 +326,10 @@ X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderOb
 			break;
 		}
 	}
-	
+
 	getProjectionMatrix         () .pop ();
 	getInverseCameraSpaceMatrix () .pop ();
 	getCameraSpaceMatrix        () .pop ();
-
-	getBrowser () -> getLayers () .pop ();
 }
 
 void

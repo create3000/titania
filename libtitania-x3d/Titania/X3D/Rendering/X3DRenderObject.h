@@ -73,9 +73,11 @@ class FrameBuffer;
 class LocalFog;
 class X3DFogObject;
 class X3DGroupingNode;
+class X3DLayoutNode;
 class X3DShaderNode;
 
-using LocalFogStack              = std::stack <LocalFog*, std::vector <LocalFog*>>;
+using LocalFogStack              = std::vector <LocalFog*>;
+using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;
 using ShaderSetStack             = std::vector <ShaderSet>;
@@ -183,9 +185,13 @@ public:
 	getLights ()
 	{ return lights; }
 
-	CollisionArray &
-	getCollisions ()
-	{ return collisions; }
+	LayoutStack &
+	getLayouts ()
+	{ return layouts; }
+
+	X3DLayoutNode*
+	getParentLayout ()
+	{ return layouts .empty () ? nullptr : layouts .back (); }
 
 	GeneratedCubeMapTextureSet &
 	getGeneratedCubeMapTextures ()
@@ -194,6 +200,10 @@ public:
 	ShaderSet &
 	getShaders ()
 	{ return shaders .back (); }
+
+	CollisionArray &
+	getCollisions ()
+	{ return collisions; }
 
 	///  @name Observer
 
@@ -315,9 +325,10 @@ private:
 	LightContainerArray        localLights;
 	LightContainerArray        lights;
 	size_t                     lightId;
-	CollisionArray             collisions;
+	LayoutStack                layouts;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
 	ShaderSetStack             shaders;
+	CollisionArray             collisions;
 
 	ShapeContainerArray      opaqueDrawShapes;
 	ShapeContainerArray      transparentDrawShapes;

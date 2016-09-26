@@ -425,9 +425,7 @@ Layout::set_size ()
 const Matrix4d &
 Layout::transform (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	const auto & layouts = renderObject -> getBrowser () -> getLayouts ();
-
-	parent = layouts .empty () ? nullptr : layouts .top ();
+	parent = renderObject -> getParentLayout ();
 
 	// OrthoViewpoint
 

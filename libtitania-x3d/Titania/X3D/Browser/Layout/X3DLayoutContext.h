@@ -53,25 +53,15 @@
 
 #include "../../Basic/X3DBaseNode.h"
 
-#include <stack>
-
 namespace titania {
 namespace X3D {
 
 class X3DLayoutNode;
 
-using LayoutStack = std::stack <X3DLayoutNode*, std::vector <X3DLayoutNode*>>;
-
 class X3DLayoutContext :
 	virtual public X3DBaseNode
 {
 public:
-
-	///  @name Member access
-
-	LayoutStack &
-	getLayouts ()
-	{ return layouts; }
 
 	///  @name Destruction
 
@@ -86,8 +76,7 @@ protected:
 	///  @name Construction
 
 	X3DLayoutContext () :
-		X3DBaseNode (),
-		    layouts ()
+		X3DBaseNode ()
 	{ }
 
 	virtual
@@ -97,10 +86,6 @@ protected:
 
 
 private:
-
-	///  @name Members
-
-	LayoutStack layouts;
 
 };
 

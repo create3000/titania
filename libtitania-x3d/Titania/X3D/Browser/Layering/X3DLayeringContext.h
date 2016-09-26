@@ -62,18 +62,12 @@ namespace X3D {
 class X3DLayerNode;
 class X3DViewportNode;
 
-using LayerStack = std::stack <X3DLayerNode*, std::vector <X3DLayerNode*>>;
-
 class X3DLayeringContext :
 	virtual public X3DBaseNode
 {
 public:
 
 	///  @name Member access
-
-	LayerStack &
-	getLayers ()
-	{ return layers; }
 
 	const X3DPtr <X3DViewportNode> &
 	getDefaultViewport () const
@@ -104,8 +98,6 @@ protected:
 private:
 
 	///  @name Members
-
-	LayerStack layers;
 
 	X3DPtr <X3DViewportNode> defaultViewport;
 

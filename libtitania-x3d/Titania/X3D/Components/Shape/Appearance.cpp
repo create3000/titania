@@ -307,7 +307,7 @@ Appearance::draw (X3DRenderObject* const renderObject)
 	browser -> setMaterial (materialNode);
 	browser -> setTexture (textureNode);
 	browser -> setTextureTransform (textureTransformNode);
-	browser -> setShader (shaderNode ? shaderNode : getBrowser () -> getDefaultShader ());
+	browser -> setShader (shaderNode ? shaderNode : renderObject -> getBrowser () -> getDefaultShader ());
 }
 
 } // X3D

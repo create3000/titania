@@ -93,9 +93,10 @@ X3DRenderObject::X3DRenderObject () :
 	                localLights (),
 	                     lights (),
 	                    lightId (0),
-	                 collisions (),
+	                    layouts (),
 	   generatedCubeMapTextures (),
 	                    shaders (),
+	                 collisions (),
 	           opaqueDrawShapes (),
 	      transparentDrawShapes (),
 	        opaqueDisplayShapes (),
@@ -735,10 +736,12 @@ X3DRenderObject::dispose ()
 	globalLights             .clear ();
 	localObjects             .clear ();
 	clipPlanes               .clear ();
+	localFogs                .clear ();
 	localLights              .clear ();
 	lights                   .clear ();
-	collisions               .clear ();
+	layouts                  .clear ();
 	shaders                  .clear ();
+	collisions               .clear ();
 
 	lightId = 0;
 

@@ -97,14 +97,14 @@ void
 LocalFog::push (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		renderObject -> getLocalFogs () .push (this);
+		renderObject -> getLocalFogs () .emplace_back (this);
 }
 
 void
 LocalFog::pop (X3DRenderObject* const renderObject)
 {
 	if (enabled ())
-		renderObject -> getLocalFogs () .pop ();
+		renderObject -> getLocalFogs () .pop_back ();
 }
 
 void

@@ -1683,7 +1683,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 				{
 					const auto & rotation = geometryShader -> getField <SFMatrix3f> ("rotation") .getValue ();
 
-					glNormal3fv (cross (rotation [0], rotation [1]) .data ());
+					glNormal3fv (normalize (cross (rotation [0], rotation [1])) .data ());
 				}
 				catch (const std::exception &)
 				{ }

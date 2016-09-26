@@ -185,11 +185,11 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 				screenMatrix    = layoutNode -> transform (type, renderObject);
 
 				renderObject -> getModelViewMatrix () .push (screenMatrix);
-				renderObject -> getBrowser () -> getLayouts () .push (layoutNode);
+				renderObject -> getLayouts         () .emplace_back (layoutNode);
 
 				X3DGroupingNode::traverse (type, renderObject);
 
-				renderObject -> getBrowser () -> getLayouts () .pop ();
+				renderObject -> getLayouts         () .pop_back ();
 				renderObject -> getModelViewMatrix () .pop ();
 			}
 			else

@@ -2,11 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="57" Column="42" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.h" Line="159" Column="97" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="256" Column="10" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="379" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.h" Line="284" Column="46" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.h" Line="255" Column="6" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="356" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/GeneratedCubeMapTexture.h" Line="218" Column="42" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/CubeMapTexturing/GeneratedCubeMapTexture.cpp" Line="149" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/ParticleSystems/ParticleSystem.cpp" Line="1320" Column="53" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="170" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

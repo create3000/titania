@@ -58,7 +58,6 @@ namespace X3D {
 
 X3DLayeringContext::X3DLayeringContext () :
 	    X3DBaseNode (),
-	         layers (),
    defaultViewport (new Viewport (getExecutionContext ()))
 {
 	addChildren (defaultViewport);
