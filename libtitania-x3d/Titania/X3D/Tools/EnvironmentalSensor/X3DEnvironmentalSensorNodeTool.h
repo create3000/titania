@@ -213,6 +213,10 @@ X3DEnvironmentalSensorNodeTool::realize ()
 		getToolNode () -> setField <SFColor> ("color", color);
 		getToolNode () -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
 
+		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
+		enabled () .addInterest (set_enabled);
+		set_enabled = getNode <X3DEnvironmentalSensorNode> () -> enabled ();
+
 		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
 		size () .addInterest (set_size);
 		set_size = getNode <X3DEnvironmentalSensorNode> () -> size ();

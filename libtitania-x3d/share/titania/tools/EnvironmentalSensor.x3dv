@@ -1,10 +1,11 @@
-#X3D V3.3 utf8 Titania V0.6.8
+#X3D V3.3 utf8 Titania V2.0.0
 
 META "comment" "World of Titania"
 META "created" "Thu, 29 May 2014 16:43:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.6.8, http://titania.create3000.de"
-META "modified" "Thu, 29 May 2014 16:43:52 GMT"
+META "generator" "Titania V2.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/EnvironmentalSensor.x3dv"
+META "modified" "Mon, 26 Sep 2016 00:54:17 GMT"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -37,10 +38,12 @@ PROTO EnvironmentalSensor [
         BooleanSwitch {
           whichChoice IS selected
           children [
-            Group { }
+            DEF _1 Group { }
             DEF Lines Shape {
               appearance Appearance {
-                lineProperties DEF LineProperties LineProperties { linewidthScaleFactor 1 }
+                lineProperties DEF LineProperties LineProperties {
+                  linewidthScaleFactor 1
+                }
                 material Material {
                   emissiveColor 1 1 1
                   transparency 0.2
@@ -102,7 +105,7 @@ PROTO EnvironmentalSensor [
                   material DEF BBoxMaterial Material {
                     ambientIntensity 0
                     diffuseColor 0.2 0.2 0.2
-                    emissiveColor IS color
+                    emissiveColor 0.35 1 0.7
                     shininess 0
                     transparency 0.5
                   }
@@ -185,6 +188,8 @@ PROTO EnvironmentalSensor [
   }
 
   DEF BBoxScript Script {
+    inputOutput    SFBool     enabled IS enabled
+    inputOutput    SFColor    color IS color
     inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
     inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
     inputOutput    SFVec3f    bboxSize IS size
@@ -197,8 +202,28 @@ PROTO EnvironmentalSensor [
     initializeOnly SFNode     top USE Top
     initializeOnly SFNode     bottom USE Bottom
     inputOutput    SFNode     node IS node
+    initializeOnly SFNode     material USE BBoxMaterial
 
     url "peaseblossom:
+
+function initialize ()
+{
+	set_color ();
+}
+
+function set_enabled ()
+{
+	set_color ();
+}
+
+function set_color ()
+{
+	if (enabled)
+		material .emissiveColor = color;
+	else
+		material .emissiveColor = new SFColor (color .r / 2, color .g / 2, color .b / 2);
+}
+
 function eventsProcessed ()
 {
 	var bboxSize1_2 = bboxSize .divide (2);
@@ -242,6 +267,67 @@ function eventsProcessed ()
 "
     directOutput TRUE
   }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value DEF previous MetadataSet {
+          name "previous"
+          reference "http://titania.create3000.de"
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              10
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "EnvironmentalSensor"
 }
 
 DEF Tool EnvironmentalSensor {
