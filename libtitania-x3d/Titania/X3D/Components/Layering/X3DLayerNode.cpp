@@ -389,14 +389,6 @@ X3DLayerNode::collision ()
 {
 	using namespace std::placeholders;
 
-	const auto collisionRadius2 = getNavigationInfo () -> getCollisionRadius () * 2;
-	const auto avatarHeight2    = getNavigationInfo () -> getAvatarHeight () * 2;
-
-	auto projectionMatrix = math::camera <double>::ortho (-collisionRadius2, collisionRadius2, -avatarHeight2, collisionRadius2, -collisionRadius2, collisionRadius2);
-
-	projectionMatrix .mult_left (getViewpoint () -> getInverseCameraSpaceMatrix ());
-
-	getProjectionMatrix () .push (projectionMatrix);
 	getModelViewMatrix  () .push (Matrix4d ());
 
 	// Render
@@ -405,7 +397,6 @@ X3DLayerNode::collision ()
 	currentViewport -> pop (this);
 
 	getModelViewMatrix  () .pop ();
-	getProjectionMatrix () .pop ();
 }
 
 void

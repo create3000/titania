@@ -147,7 +147,8 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool 
 
 	if (farValue - distance > 0) // Are there polygons before the viewer
 	{
-		const auto cosTetha        = dot (normalize (translation), Vector3d (0, 1, 0));
+		const auto viewpoint       = getViewpoint ();
+		const auto cosTetha        = dot (normalize (translation), viewpoint -> getUpVector ());
 		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 
@@ -326,14 +327,6 @@ X3DRenderObject::getLight () const
 bool
 X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 {
-	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
-	const auto & viewVolume = getViewVolumes () .back ();
-
-	if (not viewVolume .intersects (bbox))
-		return false;
-
-	// It should be possible to sort out shapes that are far away.
-
 	if (numCollisionShapes == collisionShapes .size ())
 		collisionShapes .emplace_back (new CollisionContainer ());
 
