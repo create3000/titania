@@ -394,7 +394,7 @@ X3DLayerNode::collision ()
 	const auto projectionMatrix = math::camera <double>::ortho (-avatarHeight2, avatarHeight2, -avatarHeight2, avatarHeight2, -avatarHeight2, avatarHeight2);
 
 	getProjectionMatrix () .push (projectionMatrix);
-	getModelViewMatrix  () .push (getInverseCameraSpaceMatrix () .get ());
+	getModelViewMatrix  () .push (getViewpoint () -> getInverseCameraSpaceMatrix ()); // !!! Must be from viewpoint.
 
 	// Render
 	currentViewport -> push (this);
