@@ -102,7 +102,11 @@ protected:
 
 	virtual
 	Vector3d
-	getTranslationOffset (const Vector3d &) = 0;
+	getTranslationOffset (const Vector3d & velocity) = 0;
+
+	virtual
+	Vector3d
+	constrainPanDirection (const Vector3d & direction) = 0;
 
 
 private:

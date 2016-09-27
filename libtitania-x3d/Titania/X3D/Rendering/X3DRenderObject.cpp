@@ -137,7 +137,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 ///  Constrains @a translation when the viewer collides with a wall.
 Vector3d
-X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack, const bool moveFree) const
+X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack) const
 {
 	const auto navigationInfo  = getNavigationInfo ();
 	auto       distance        = getDistance (translation);
@@ -147,15 +147,7 @@ X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool 
 
 	if (farValue - distance > 0) // Are there polygons before the viewer
 	{
-		const auto viewpoint       = getViewpoint ();
-		const auto cosTetha        = dot (normalize (translation), viewpoint -> getUpVector ());
-		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
-		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
-
-		if (moveFree)
-			distance -= cosTetha > 0 ? collisionRadius : lerp (cosTetha, avatarHeight, std::pow (-cosTetha, 1.0 / 5.0));
-		else
-			distance -= collisionRadius;
+		distance -= navigationInfo -> getCollisionRadius ();
 
 		if (distance > 0)
 		{
@@ -191,7 +183,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 	{
 		ContextLock lock (getBrowser ());
 
-		// Determine width and height of camera
+		// Determine width and height of camera.
 
 		const auto viewpoint       = getViewpoint ();
 		const auto navigationInfo  = getNavigationInfo ();
@@ -200,28 +192,29 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 		const auto nearValue       = navigationInfo -> getNearValue ();
 		const auto farValue        = navigationInfo -> getFarValue (viewpoint);
 
-		// Reshape camera
+		// Reshape camera.
 
 		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, farValue);
 
 		// Translate camera to user position and to look in the direction of the @a direction.
 
 		const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
-		auto       rotation         = Rotation4d (zAxis, -direction) * localOrientation;
+		const auto rotation         = Rotation4d (zAxis, -direction) * localOrientation;
 	
 		// The viewer is alway a straight box depending on the upVector.
 		// rotation *= viewpoint -> straightenHorizon (rotation);
 
-		auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
-		modelViewMatrix .translate (viewpoint -> getUserPosition ());
-		modelViewMatrix .rotate (rotation);
-		modelViewMatrix .inverse ();
+		auto cameraSpaceProjectionMatrix = viewpoint -> getTransformationMatrix ();
+		cameraSpaceProjectionMatrix .translate (viewpoint -> getUserPosition ());
+		cameraSpaceProjectionMatrix .rotate (rotation);
+		cameraSpaceProjectionMatrix .inverse ();
 
-		modelViewMatrix .mult_right (projectionMatrix);
-	
+		cameraSpaceProjectionMatrix .mult_right (projectionMatrix);
+		cameraSpaceProjectionMatrix .mult_left  (viewpoint -> getCameraSpaceMatrix ());
+
 		// Render depth.
 
-		const_cast <X3DRenderObject*> (this) -> getProjectionMatrix () .push (modelViewMatrix);
+		const_cast <X3DRenderObject*> (this) -> getProjectionMatrix () .push (cameraSpaceProjectionMatrix);
 
 		const auto depth = getDepth (projectionMatrix);
 
@@ -450,7 +443,7 @@ X3DRenderObject::collide ()
 	// TODO: transform collisionBox by getNavigationInfo () -> getTransformationMatrix ()
 
 	const auto collisionRadius2 = 2.2 * getNavigationInfo () -> getCollisionRadius ();
-	const auto collisionBox     = Box3d (Vector3d (collisionRadius2, collisionRadius2, collisionRadius2), Vector3d ()) * getViewpoint () -> getCameraSpaceMatrix ();
+	const auto collisionBox     = Box3d (Vector3d (collisionRadius2, collisionRadius2, collisionRadius2), Vector3d ());
 
 	std::vector <Collision*> collisions;
 
@@ -530,16 +523,17 @@ X3DRenderObject::gravite ()
 		const auto upVector = viewpoint -> getUpVector ();
 		const auto down     = Rotation4d (zAxis, upVector);
 
-		auto modelViewMatrix = viewpoint -> getTransformationMatrix ();
-		modelViewMatrix .translate (viewpoint -> getUserPosition ());
-		modelViewMatrix .rotate (down);
-		modelViewMatrix .inverse ();
+		auto cameraSpaceProjectionMatrix = viewpoint -> getTransformationMatrix ();
+		cameraSpaceProjectionMatrix .translate (viewpoint -> getUserPosition ());
+		cameraSpaceProjectionMatrix .rotate (down);
+		cameraSpaceProjectionMatrix .inverse ();
 
-		modelViewMatrix .mult_right (projectionMatrix);
+		cameraSpaceProjectionMatrix .mult_right (projectionMatrix);
+		cameraSpaceProjectionMatrix .mult_left  (getCameraSpaceMatrix () .get ());
 
 		// Render depth.
 
-		getProjectionMatrix () .push (modelViewMatrix);
+		getProjectionMatrix () .push (cameraSpaceProjectionMatrix);
 
 		auto distance = -getDepth (projectionMatrix);
 
@@ -555,7 +549,7 @@ X3DRenderObject::gravite ()
 
 			if (distance > 0)
 			{
-				// Gravite and fall down the floor
+				// Gravite and fall down to the floor.
 
 				const auto currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 

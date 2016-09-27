@@ -275,6 +275,7 @@ X3DLayerNode::bind ()
 		const auto viewpoint = getViewpoints () -> bound ();
 		getViewpointStack () -> force_push (viewpoint);
 		viewpoint -> addLayer (this);
+		viewpoint -> resetUserOffsets ();
 	}
 
 	if (not getBackgrounds () -> empty ())
@@ -389,15 +390,11 @@ X3DLayerNode::collision ()
 {
 	using namespace std::placeholders;
 
-	const auto collisionRadius2 = getNavigationInfo () -> getCollisionRadius () * 2;
-	const auto avatarHeight2    = getNavigationInfo () -> getAvatarHeight () * 2;
-
-	auto projectionMatrix = math::camera <double>::ortho (-collisionRadius2, collisionRadius2, -avatarHeight2, collisionRadius2, -collisionRadius2, collisionRadius2);
-
-	projectionMatrix .mult_left (getViewpoint () -> getInverseCameraSpaceMatrix ());
+	const auto avatarHeight2    = getNavigationInfo () -> getAvatarHeight () ;
+	const auto projectionMatrix = math::camera <double>::ortho (-avatarHeight2, avatarHeight2, -avatarHeight2, avatarHeight2, -avatarHeight2, avatarHeight2);
 
 	getProjectionMatrix () .push (projectionMatrix);
-	getModelViewMatrix  () .push (Matrix4d ());
+	getModelViewMatrix  () .push (getInverseCameraSpaceMatrix () .get ());
 
 	// Render
 	currentViewport -> push (this);

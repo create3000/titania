@@ -95,6 +95,15 @@ WalkViewer::getTranslationOffset (const Vector3d & velocity)
 	return velocity * orientation;
 }
 
+Vector3d
+WalkViewer::constrainPanDirection (const Vector3d & direction)
+{
+	if (direction .y () < 0)
+		return Vector3d (direction .x (), 0, direction .z ());
+
+	return direction;
+}
+
 void
 WalkViewer::dispose ()
 {

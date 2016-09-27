@@ -107,7 +107,11 @@ private:
 
 	virtual
 	Vector3d
-	getTranslationOffset (const Vector3d &) final override;
+	getTranslationOffset (const Vector3d & velocity) final override;
+
+	virtual
+	Vector3d
+	constrainPanDirection (const Vector3d & direction);
 
 	///  @name Static members
 

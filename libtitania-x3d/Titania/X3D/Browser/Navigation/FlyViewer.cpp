@@ -91,5 +91,11 @@ FlyViewer::getTranslationOffset (const Vector3d & velocity)
 	return velocity * getActiveViewpoint () -> getUserOrientation ();
 }
 
+Vector3d
+FlyViewer::constrainPanDirection (const Vector3d & direction)
+{
+	return direction;
+}
+
 } // X3D
 } // titania
