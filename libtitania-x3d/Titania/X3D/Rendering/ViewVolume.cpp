@@ -98,12 +98,12 @@ ViewVolume::ViewVolume (const Matrix4d & projectionMatrix, const Vector4i & view
 		Vector3f p6 = unProjectPoint (x2, y2, 1, matrix, viewport);
 
 		planes .reserve (6);
-		planes .emplace_back (p4, normalize (cross (p3 - p4, p5 - p4)));  // front
-		planes .emplace_back (p1, normalize (cross (p2 - p1, p6 - p1)));  // back
-		planes .emplace_back (p2, normalize (cross (p1 - p2, p3 - p2)));  // left
-		planes .emplace_back (p5, normalize (cross (p6 - p5, p4 - p5)));  // right
-		planes .emplace_back (p6, normalize (cross (p5 - p6, p1 - p6)));  // top
-		planes .emplace_back (p3, normalize (cross (p4 - p3, p2 - p3)));  // bottom
+		planes .emplace_back (p4, normal (p3, p4, p5));  // front
+		planes .emplace_back (p2, normal (p1, p2, p3));  // left
+		planes .emplace_back (p5, normal (p6, p5, p4));  // right
+		planes .emplace_back (p6, normal (p5, p6, p1));  // top
+		planes .emplace_back (p3, normal (p4, p3, p2));  // bottom
+		planes .emplace_back (p1, normal (p2, p1, p6));  // back
 	}
 	catch (const std::domain_error & error)
 	{
@@ -116,11 +116,11 @@ ViewVolume::intersects (const Box3d & bbox) const
 {
 	if (valid)
 	{
-		const double nradius = math::abs (bbox .size ()) / 2;
+		const double radius = math::abs (bbox .size ()) / 2;
 
 		for (const auto & plane : planes)
 		{
-			if (plane .distance (bbox .center ()) + nradius < 0)
+			if (plane .distance (bbox .center ()) > radius)
 				return false;
 		}
 	}

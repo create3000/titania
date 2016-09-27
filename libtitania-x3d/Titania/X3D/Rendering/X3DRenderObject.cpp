@@ -327,6 +327,12 @@ X3DRenderObject::getLight () const
 bool
 X3DRenderObject::addCollisionShape (X3DShapeNode* const shapeNode)
 {
+	const auto   bbox       = shapeNode -> getBBox () * getModelViewMatrix () .get ();
+	const auto & viewVolume = getViewVolumes () .back ();
+
+	if (not viewVolume .intersects (bbox))
+		return false;
+
 	if (numCollisionShapes == collisionShapes .size ())
 		collisionShapes .emplace_back (new CollisionContainer ());
 
@@ -502,7 +508,7 @@ X3DRenderObject::gravite ()
 	{
 		// Terrain following and gravitation
 
-		if (getBrowser () -> getCurrentViewer () not_eq X3DConstants::WalkViewer)
+		if (getNavigationInfo () -> getViewer () not_eq X3DConstants::WalkViewer)
 			return;
 
 		// Get NavigationInfo values
@@ -541,7 +547,7 @@ X3DRenderObject::gravite ()
 
 		// Gravite or step up
 
-		if (farValue - distance > 0) // Are there polygons under the viewer
+		if (farValue - distance > 0 or true) // Are there polygons under the viewer
 		{
 			const Rotation4d up (Vector3d (0, 1, 0), upVector);
 

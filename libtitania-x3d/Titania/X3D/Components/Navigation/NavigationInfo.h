@@ -179,6 +179,14 @@ public:
 
 	///  @name Member access
 
+	const SFEnum <X3DConstants::NodeType> &
+	getViewer () const
+	{ return viewer; }
+
+	const MFEnum <X3DConstants::NodeType> &
+	getAvailableViewers () const
+	{ return availableViewers; }
+
 	double
 	getCollisionRadius () const;
 
@@ -237,6 +245,14 @@ public:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	initialize ();
+
+	void
+	set_type ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -261,6 +277,9 @@ private:
 	};
 
 	Fields fields;
+
+	SFEnum <X3DConstants::NodeType> viewer;
+	MFEnum <X3DConstants::NodeType> availableViewers;
 
 };
 

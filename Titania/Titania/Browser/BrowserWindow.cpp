@@ -260,13 +260,11 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	// Initialize
 
 	set_activeLayer ();
-	set_viewer ();
-	set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
-
-	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
-	set_shading (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
+	set_dashboard        (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
+	set_shading          (getCurrentBrowser () -> getBrowserOptions () -> Shading ());
 	set_primitiveQuality (getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality ());
-	set_textureQuality (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
+	set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
+	set_viewer ();
 
 	set_browserHistory ();
 
@@ -1256,6 +1254,9 @@ BrowserWindow::on_browser_toggled ()
 
 		isEditor (false);
 		isLive (true);
+		setViewer (getCurrentBrowser () -> getViewerType ());
+
+		getSelection () -> setChildren ({ });
 
 		if (not getBackgroundsAction () -> get_active ())
 			getBackgroundsAction () -> set_active (true);
@@ -2470,6 +2471,7 @@ BrowserWindow::on_hand_button_toggled ()
 	if (getHandButton () .get_active ())
 	{
 		setViewer (viewer);
+
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 

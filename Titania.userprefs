@@ -3,10 +3,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="138" Column="22" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="393" Column="72" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="330" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="314" Column="32" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DFlyViewer.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/FrameBuffer.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/ViewVolume.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

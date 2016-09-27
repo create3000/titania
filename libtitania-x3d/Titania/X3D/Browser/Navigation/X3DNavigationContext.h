@@ -86,12 +86,12 @@ public:
 	virtual
 	void
 	setViewerType (const X3DConstants::NodeType value)
-	{ viewerType = value; }
+	{ viewer = value; }
 
 	virtual
 	const SFEnum <X3DConstants::NodeType> &
 	getViewerType () const
-	{ return viewerType; }
+	{ return viewer; }
 
 	void
 	setPrivateViewer (const X3DConstants::NodeType value)
@@ -178,16 +178,13 @@ private:
 	void
 	set_viewpoint ();
 
-	void
-	set_navigationInfo_type ();
-
 	///  @name Members
 
 	X3DPtr <DirectionalLight>       headLight;
 	X3DLayerNodePtr                 activeLayer;
 	NavigationInfo*                 activeNavigationInfo;
 	SFTime                          activeNavigationInfoOutput;
-	SFEnum <X3DConstants::NodeType> viewerType;
+	SFEnum <X3DConstants::NodeType> viewer;
 	SFEnum <X3DConstants::NodeType> privateViewer;
 	MFEnum <X3DConstants::NodeType> availableViewers;
 	SFTime                          activeViewpointOutput;
