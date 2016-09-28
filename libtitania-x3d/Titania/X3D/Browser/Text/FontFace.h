@@ -70,10 +70,10 @@ namespace X3D {
 
 class Font;
 
-using FreeTypePtr = std::shared_ptr <std::remove_pointer <FT_Library>::type>;
-using FontFacePtr = std::shared_ptr <std::remove_pointer <FT_Face>::type>;
+using FTLibraryPtr = std::shared_ptr <std::remove_pointer <FT_Library>::type>;
+using FTFacePtr    = std::shared_ptr <std::remove_pointer <FT_Face>::type>;
 
-struct FreeTypeDeleter
+struct FTLibraryDeleter
 {
 	void
 	operator () (FT_Library library) const
@@ -83,19 +83,19 @@ struct FreeTypeDeleter
 
 };
 
+struct FTFaceDeleter
+{
+	void
+	operator () (FT_Face face) const
+	{
+		FT_Done_Face (face);
+	}
+
+};
+
 class FontFace
 {
 public:
-
-	struct FaceDeleter
-	{
-		void
-		operator () (FT_Face face) const
-		{
-			FT_Done_Face (face);
-		}
-
-	};
 
 	///  @name Construction
 
@@ -108,11 +108,11 @@ public:
 
 	///  @name Member access
 
-	const FreeTypePtr &
+	const FTLibraryPtr &
 	getLibrary () const
 	{ return freetype; }
 
-	const FontFacePtr &
+	const FTFacePtr &
 	getFace () const;
 
 	unsigned short
@@ -148,12 +148,12 @@ private:
 
 	///  @name Construction
 
-	FontFace (const FreeTypePtr &, const FontFacePtr &);
+	FontFace (const FTLibraryPtr &, const FTFacePtr &);
 
 	///  @name Members
 
-	FreeTypePtr freetype;
-	FontFacePtr face;
+	FTLibraryPtr freetype;
+	FTFacePtr    face;
 
 };
 

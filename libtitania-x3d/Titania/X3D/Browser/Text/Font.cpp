@@ -179,7 +179,7 @@ throw (std::runtime_error)
 	if (FT_New_Face (freetype, getFilename () .c_str (), 0, &face))
 		throw std::runtime_error ("FT_New_Face failed (there is probably a problem with your font file)");
 
-	return FontFace (FreeTypePtr (freetype, FreeTypeDeleter ()), FontFacePtr (face, FontFace::FaceDeleter ()));
+	return FontFace (FTLibraryPtr (freetype, FTLibraryDeleter ()), FTFacePtr (face, FTFaceDeleter ()));
 }
 
 void

@@ -200,6 +200,8 @@ throw (Error <INVALID_URL>,
 			golden_gate (scene, worldURL, istream);
 
 			scene -> isCompressed (istream .is_compressed ());
+
+			istream .close ();
 			return;
 		}
 		catch (const X3DError & error)
@@ -207,6 +209,8 @@ throw (Error <INVALID_URL>,
 			urlError .emplace_back (error .what ());
 		}
 	}
+
+	istream .close ();
 
 	std::ostringstream error;
 
@@ -257,6 +261,8 @@ throw (Error <INVALID_URL>,
 	std::ostringstream ostringstream;
 
 	ostringstream << istream .rdbuf ();
+
+	istream .close ();
 
 	return ostringstream .str ();
 }
