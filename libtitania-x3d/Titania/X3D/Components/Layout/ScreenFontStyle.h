@@ -116,10 +116,6 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
-
-	virtual
-	void
 	draw (ShapeContainer* const) final override;
 
 	virtual
@@ -150,6 +146,10 @@ private:
 	virtual
 	void
 	build () final override;
+
+	const Matrix4d &
+	transform (ShapeContainer* const context)
+	throw (std::domain_error);
 
 	///  @name Static members
 

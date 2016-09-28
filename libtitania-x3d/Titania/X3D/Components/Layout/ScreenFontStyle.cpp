@@ -389,58 +389,54 @@ ScreenText::build ()
 	getText () -> setSolid (getText () -> solid ());
 }
 
-void
-ScreenText::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+const Matrix4d &
+ScreenText::transform (ShapeContainer* const context)
+throw (std::domain_error)
 {
-	try
-	{
-		if (type != TraverseType::DISPLAY)
-			return;
+	// Determine model view matrix and bbox.
 
-		// Determine model view matrix and bbox.
+	Vector3d   translation, scale;
+	Rotation4d rotation;
 
-		Vector3d   translation, scale;
-		Rotation4d rotation;
+	const auto & modelViewMatrix = context -> getModelViewMatrix ();
 
-		const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+	modelViewMatrix .get (translation, rotation, scale);
 
-		modelViewMatrix .get (translation, rotation, scale);
+	const auto & renderObject     = context -> getRenderer ();
+	const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
+	const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
+	const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
 
-		const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
-		const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
-		const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
+	Matrix4d screenMatrix;
 
-		Matrix4d screenMatrix;
+	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
+	                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
+	                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
 
-		screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (signum (scale .x ()) < 0 ? -1 : 1),
-		                                                    screenScale .y () * (signum (scale .y ()) < 0 ? -1 : 1),
-		                                                    screenScale .z () * (signum (scale .z ()) < 0 ? -1 : 1)));
+	// Snap to whole pixel
 
-		// Snap to whole pixel
+	auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
 
-		auto screenPoint = ViewVolume::projectPoint (Vector3d (), screenMatrix, projectionMatrix, viewport);
+	screenPoint .x (std::round (screenPoint .x ()));
+	screenPoint .y (std::round (screenPoint .y ()));
 
-		screenPoint .x (std::round (screenPoint .x ()));
-		screenPoint .y (std::round (screenPoint .y ()));
+	auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
 
-		auto offset = ViewVolume::unProjectPoint (screenPoint .x (), screenPoint .y (), screenPoint .z (), screenMatrix, projectionMatrix, viewport);
+	offset .z (0);
+	screenMatrix .translate (offset);
 
-		offset .z (0);
-		screenMatrix .translate (offset);
+	// Assign modelViewMatrix and relative matrix
 
-		// Assign modelViewMatrix and relative matrix
+	matrix = screenMatrix * inverse (modelViewMatrix);
+	bbox   = X3DTextGeometry::getBBox () * matrix;
 
-		matrix = screenMatrix * inverse (modelViewMatrix);
-		bbox   = X3DTextGeometry::getBBox () * matrix;
-	}
-	catch (const std::domain_error &)
-	{ }
+	return matrix;
 }
 
 void
 ScreenText::draw (ShapeContainer* const context)
 {
-	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
+	const auto modelViewMatrix = transform (context) * context -> getModelViewMatrix ();
 
 	#ifdef FIXED_PIPELINE
 	if (context -> getBrowser () -> getFixedPipelineRequired ())

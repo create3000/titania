@@ -195,17 +195,18 @@ Text::build ()
 }
 
 void
-Text::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	textGeometry -> traverse (type, renderObject);
-}
-
-void
 Text::draw (ShapeContainer* const context)
 {
-	textGeometry -> draw (context);
-
-	X3DGeometryNode::draw (context);
+	try
+	{
+		textGeometry -> draw (context);
+	
+		X3DGeometryNode::draw (context);
+	}
+	catch (const std::exception &)
+	{
+		// Bad alloc.
+	}
 }
 
 SFNode

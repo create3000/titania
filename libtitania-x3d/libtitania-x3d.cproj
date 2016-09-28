@@ -826,6 +826,10 @@
     <None Include="share\titania\shaders\Shaders\Bits\Plane3.h" />
     <None Include="Titania\X3D\Rendering\X3DRenderObject.h" />
     <None Include="Titania\X3D\Rendering\X3DShapeContainer.h" />
+    <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Bold.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\DroidSerif-BoldItalic.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Italic.ttf" />
+    <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1457,6 +1461,9 @@
     <Folder Include="share\mime\packages\" />
     <Folder Include="share\titania\icc\" />
     <Folder Include="share\titania\shaders\Shaders\Bits\" />
+    <Folder Include="share\fonts\" />
+    <Folder Include="share\fonts\truetype\" />
+    <Folder Include="share\fonts\truetype\titania-fonts\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
