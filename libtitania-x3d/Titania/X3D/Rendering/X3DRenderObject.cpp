@@ -135,47 +135,46 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		depthBuffer -> setup (); // Throws a runtime error.
 }
 
-///  Constrains @a translation when the viewer collides with a wall.
+///  Contrains @a translation to a possible value the avatar can move.  If the avatar reaches and intersects with an
+///  and obstacle and @a stepBack is true a translation in the opposite directiion is returned.  Future implementation will
+///  will then return a value where the avatar slides along the wall. 
 Vector3d
 X3DRenderObject::constrainTranslation (const Vector3d & translation, const bool stepBack) const
 {
-	const auto navigationInfo  = getNavigationInfo ();
-	auto       distance        = getDistance (translation);
-	const auto farValue        = navigationInfo -> getFarValue (getViewpoint ());
+	const auto navigationInfo = getNavigationInfo ();
+	auto       distance       = getDistance (translation);
 
-	// Constrain translation when the viewer collides with a wall.
+	// Constrain translation when the viewer collides with an obstacle.
 
-	if (farValue - distance > 0) // Are there polygons before the viewer
+	distance -= navigationInfo -> getCollisionRadius ();
+
+	if (distance > 0)
 	{
-		distance -= navigationInfo -> getCollisionRadius ();
+		// Move.
 
-		if (distance > 0)
+		const auto length = abs (translation);
+		
+		if (length > distance)
 		{
-			// Move
+			// Collision, the avatar would intersect with the obstacle.
 
-			const auto length = abs (translation);
-			
-			if (length > distance)
-			{
-				// Collision: The wall is reached.
-				return normalize (translation) * distance;
-			}
-
-			return translation;
+			return normalize (translation) * distance;
 		}
 
-		// Collision, the avatar is within the wall.
+		// Everything is fine.
 
-		if (stepBack)
-			return constrainTranslation (normalize (translation) * distance, false);
-
-		return Vector3d ();
+		return translation;
 	}
 
-	return translation;
+	// Collision, the avatar is already within an obstacle.
+
+	if (stepBack)
+		return constrainTranslation (normalize (translation) * distance, false);
+
+	return Vector3d ();
 }
 
-///  Returns the distance to the nearest object in @a direction.
+///  Returns the distance to the closest object in @a direction.  The maximum determinable value is avatarHeight * 2.
 double
 X3DRenderObject::getDistance (const Vector3d & direction) const
 {
@@ -190,11 +189,11 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 		const auto bottom          = navigationInfo -> getStepHeight () - navigationInfo -> getAvatarHeight ();
 		const auto nearValue       = navigationInfo -> getNearValue ();
-		const auto farValue        = navigationInfo -> getFarValue (viewpoint);
+		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
 
 		// Reshape camera.
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, farValue);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, avatarHeight * 2);
 
 		// Translate camera to user position and to look in the direction of the @a direction.
 
@@ -210,7 +209,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 		cameraSpaceProjectionMatrix .inverse ();
 
 		cameraSpaceProjectionMatrix .mult_right (projectionMatrix);
-		cameraSpaceProjectionMatrix .mult_left  (viewpoint -> getCameraSpaceMatrix ());
+		cameraSpaceProjectionMatrix .mult_left  (viewpoint -> getCameraSpaceMatrix ()); // !!! Must be from viewpoint.
 
 		// Render depth.
 
@@ -230,6 +229,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 	return 0;
 }
 
+///  Returns the depth value to the closest object.  The maximum determinable value is avatarHeight * 2.
 double
 X3DRenderObject::getDepth (const Matrix4d & projectionMatrix) const
 {
@@ -510,13 +510,12 @@ X3DRenderObject::gravite ()
 		const auto viewpoint       = getViewpoint ();
 		const auto collisionRadius = navigationInfo -> getCollisionRadius ();
 		const auto nearValue       = navigationInfo -> getNearValue ();
-		const auto farValue        = navigationInfo -> getFarValue (viewpoint);
-		const auto height          = navigationInfo -> getAvatarHeight ();
+		const auto avatarHeight    = navigationInfo -> getAvatarHeight ();
 		const auto stepHeight      = navigationInfo -> getStepHeight ();
 
 		// Reshape viewpoint for gravite.
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, farValue);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, avatarHeight * 2);
 					
 		// Transform viewpoint to look down the up vector
 
@@ -529,7 +528,7 @@ X3DRenderObject::gravite ()
 		cameraSpaceProjectionMatrix .inverse ();
 
 		cameraSpaceProjectionMatrix .mult_right (projectionMatrix);
-		cameraSpaceProjectionMatrix .mult_left  (getCameraSpaceMatrix () .get ());
+		cameraSpaceProjectionMatrix .mult_left  (viewpoint -> getCameraSpaceMatrix ()); // !!! Must be from viewpoint.
 
 		// Render depth.
 
@@ -541,63 +540,56 @@ X3DRenderObject::gravite ()
 
 		// Gravite or step up
 
-		if (farValue - distance > 0 or true) // Are there polygons under the viewer
+		const Rotation4d up (Vector3d (0, 1, 0), upVector);
+
+		distance -= avatarHeight;
+
+		if (distance > 0)
 		{
-			const Rotation4d up (Vector3d (0, 1, 0), upVector);
+			// Gravite and fall down to the floor.
 
-			distance -= height;
+			const auto currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
 
-			if (distance > 0)
+			speed -= getBrowser () -> getBrowserOptions () -> Gravity () / currentFrameRate;
+
+			auto translation = speed / currentFrameRate;
+
+			if (translation < -distance)
 			{
-				// Gravite and fall down to the floor.
-
-				const auto currentFrameRate = speed ? getBrowser () -> getCurrentFrameRate () : 1000000.0;
-
-				speed -= getBrowser () -> getBrowserOptions () -> Gravity () / currentFrameRate;
-
-				auto translation = speed / currentFrameRate;
-
-				if (translation < -distance)
-				{
-					// The ground is reached.
-					translation = -distance;
-					speed       = 0;
-				}
-
-				getViewpoint () -> positionOffset () += Vector3d (0, translation, 0) * up;
+				// The ground is reached.
+				translation = -distance;
+				speed       = 0;
 			}
-			else
-			{
-				speed = 0;
 
-				distance = -distance;
-
-				if (distance > 0.01 and distance < stepHeight)
-				{
-					// Step up
-					const auto translation = constrainTranslation (Vector3d (0, distance, 0) * up, false);
-
-					if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
-					{
-						auto step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
-
-						step = abs (viewpoint -> getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3d (0, step, 0) * up));
-
-						Vector3d offset = Vector3d (0, step, 0) * up;
-
-						if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
-							offset = translation;
-
-						getViewpoint () -> positionOffset () += offset;
-					}
-					else
-						getViewpoint () -> positionOffset () += translation;
-				}
-			}
+			getViewpoint () -> positionOffset () += Vector3d (0, translation, 0) * up;
 		}
 		else
 		{
 			speed = 0;
+
+			distance = -distance;
+
+			if (distance > 0.01 and distance < stepHeight)
+			{
+				// Step up
+				const auto translation = constrainTranslation (Vector3d (0, distance, 0) * up, false);
+
+				if (getBrowser () -> getBrowserOptions () -> AnimateStairWalks ())
+				{
+					auto step = getBrowser () -> getCurrentSpeed () / getBrowser () -> getCurrentFrameRate ();
+
+					step = abs (viewpoint -> getInverseCameraSpaceMatrix () .mult_matrix_dir (Vector3d (0, step, 0) * up));
+
+					Vector3d offset = Vector3d (0, step, 0) * up;
+
+					if (math::abs (offset) > math::abs (translation) or getBrowser () -> getCurrentSpeed () == 0)
+						offset = translation;
+
+					getViewpoint () -> positionOffset () += offset;
+				}
+				else
+					getViewpoint () -> positionOffset () += translation;
+			}
 		}
 	}
 	catch (const std::domain_error &)
