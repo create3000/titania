@@ -193,7 +193,7 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 
 		// Reshape camera.
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, avatarHeight * 2);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, std::min (bottom, -collisionRadius), collisionRadius, nearValue, std::max (collisionRadius * 2, avatarHeight * 2));
 
 		// Translate camera to user position and to look in the direction of the @a direction.
 
@@ -515,7 +515,7 @@ X3DRenderObject::gravite ()
 
 		// Reshape viewpoint for gravite.
 
-		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, avatarHeight * 2);
+		const auto projectionMatrix = camera <double>::ortho (-collisionRadius, collisionRadius, -collisionRadius, collisionRadius, nearValue, std::max (collisionRadius * 2, avatarHeight * 2));
 					
 		// Transform viewpoint to look down the up vector
 
