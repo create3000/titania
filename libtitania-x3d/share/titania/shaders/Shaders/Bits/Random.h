@@ -3,13 +3,19 @@
 const int RAND_MAX = int (0x7fffffff);
 const int RAND_MIN = int (0x80000000);
 
-int seed = int (fract (dot (v, v)) * float (RAND_MAX));
+int seedValue = 0;
+
+void
+seed (in int value)
+{
+	seedValue = value;
+}
 
 // Return a uniform distributed random floating point number in the interval [-1, 1].
 float
 random1 ()
 {
-	return float (seed = seed * 1103515245 + 12345) / float (RAND_MAX);
+	return float (seedValue = seedValue * 1103515245 + 12345) / float (RAND_MAX);
 }
 
 vec2

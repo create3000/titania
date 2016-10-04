@@ -1,22 +1,62 @@
 // -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+//
+//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+// 
+//  Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+// 
+//  All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+// 
+//  The copyright notice above does not evidence any actual of intended
+//  publication of such source code, and is an unpublished work by create3000.
+//  This material contains CONFIDENTIAL INFORMATION that is the property of
+//  create3000.
+// 
+//  No permission is granted to copy, distribute, or create derivative works from
+//  the contents of this software, in whole or in part, without the prior written
+//  permission of create3000.
+// 
+//  NON-MILITARY USE ONLY
+// 
+//  All create3000 software are effectively free software with a non-military use
+//  restriction. It is free. Well commented source is provided. You may reuse the
+//  source in any way you please with the exception anything that uses it must be
+//  marked to indicate is contains 'non-military use only' components.
+// 
+//  DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+// 
+//  Copyright 2015, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+// 
+//  This file is part of the Cobweb Project.
+// 
+//  Cobweb is free software: you can redistribute it and/or modify it under the
+//  terms of the GNU General Public License version 3 only, as published by the
+//  Free Software Foundation.
+// 
+//  Cobweb is distributed in the hope that it will be useful, but WITHOUT ANY
+//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+//  A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+//  details (a copy is included in the LICENSE file that accompanied this code).
+// 
+//  You should have received a copy of the GNU General Public License version 3
+//  along with Cobweb.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+//  copy of the GPLv3 License.
+// 
+//  For Silvio, Joy and Adi.
+
 
 precision mediump float;
 
 uniform int x3d_GeometryType;
-// 1
 
 uniform vec4 x3d_ClipPlane [x3d_MaxClipPlanes];
-// 24
 
 uniform int   x3d_FogType;
 uniform vec3  x3d_FogColor;
 uniform float x3d_FogVisibilityRange;
-// 5
 
 uniform float x3d_LinewidthScaleFactor;
 uniform bool  x3d_Lighting;      // true if a X3DMaterialNode is attached, otherwise false
 uniform bool  x3d_ColorMaterial; // true if a X3DColorNode is attached, otherwise false
-// 3
 
 uniform int   x3d_LightType [x3d_MaxLights];
 uniform bool  x3d_LightOn [x3d_MaxLights];
@@ -29,14 +69,14 @@ uniform vec3  x3d_LightDirection [x3d_MaxLights];
 uniform float x3d_LightRadius [x3d_MaxLights];
 uniform float x3d_LightBeamWidth [x3d_MaxLights];
 uniform float x3d_LightCutOffAngle [x3d_MaxLights];
-// 19 * x3d_MaxLights
 
+#ifdef X3D_SHADOW
 uniform vec3      x3d_ShadowColor [x3d_MaxLights];
 uniform float     x3d_ShadowIntensity [x3d_MaxLights];
 uniform float     x3d_ShadowDiffusion [x3d_MaxLights];
 uniform mat4      x3d_ShadowMatrix [x3d_MaxLights];
 uniform sampler2D x3d_ShadowMap [x3d_MaxLights];
-// 22 * x3d_MaxLights = 176
+#endif
 
 uniform bool x3d_SeparateBackColor;
 
@@ -65,8 +105,6 @@ varying vec3 v;  // point on geometry
 
 #pragma X3D include "Bits/Random.h"
 #pragma X3D include "Bits/Plane3.h"
-
-Plane3 plane = plane3 (v, vN);
 
 void
 clip ()
@@ -118,16 +156,55 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 	return (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
 }
 
+#ifdef X3D_SHADOW
+float
+unpack (in vec4 color)
+{
+	return color .z;
+}
+
 float
 getShadowDepth (in int index, in vec2 shadowCoord)
 {
-	for (int i = 0; i < x3d_MaxLights; ++ i)
-	{
-		if (i == index)
-		{
-			return texture2D (x3d_ShadowMap [i], shadowCoord) .z;
-		}
-	}
+	#if x3d_MaxShadows > 0
+	if (index == 0)
+		return unpack (texture2D (x3d_ShadowMap [0], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 1
+	if (index == 1)
+		return unpack (texture2D (x3d_ShadowMap [1], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 2
+	if (index == 2)
+		return unpack (texture2D (x3d_ShadowMap [2], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 3
+	if (index == 3)
+		return unpack (texture2D (x3d_ShadowMap [3], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 4
+	if (index == 4)
+		return unpack (texture2D (x3d_ShadowMap [4], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 5
+	if (index == 5)
+		return unpack (texture2D (x3d_ShadowMap [5], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 6
+	if (index == 6)
+		return unpack (texture2D (x3d_ShadowMap [6], shadowCoord));
+	#endif
+
+	#if x3d_MaxShadows > 7
+	if (index == 7)
+		return unpack (texture2D (x3d_ShadowMap [7], shadowCoord));
+	#endif
 
 	return 0.0;
 }
@@ -135,10 +212,14 @@ getShadowDepth (in int index, in vec2 shadowCoord)
 float
 getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in float shadowDiffusion, in mat4 shadowMatrix, in Plane3 plane, in float angle)
 {
+	#define SHADOW_TEXTURE_EPS 0.01
+	#define SHADOW_BIAS_OFFSET 0.002
+	#define SHADOW_BIAS_FACTOR 0.004
+		
+	float shadowBias = SHADOW_BIAS_OFFSET + SHADOW_BIAS_FACTOR * (1.0 - abs (angle));
+
 	if (lightType == x3d_PointLight)
 	{
-		#define SHADOW_TEXTURE_EPS 0.01
-		
 		// The projection bias matrix should be a uniform but this would require x3d_MaxLights * 16 floats.
 		mat4 projectionBias = mat4 (0.09622504486493766, 0.0, 0.0, 0.0, 0.0, 0.1443375672974065, 0.0, 0.0, -0.16666666666666666, -0.25, -1.0001250156269532, -1.0, 0.0, 0.0, -0.12501562695336918, 0.0); // fov: 120deg, 1000m
 
@@ -163,7 +244,7 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 		int value   = 0;
 		int samples = 0;
 
-		for (int m = 0, s = 0; m < 6; ++ m)
+		for (int m = 0; m < 6; ++ m)
 		{
 			if (samples >= x3d_ShadowSamples)
 				break;
@@ -172,7 +253,7 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 			{
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = projectionBias * rotations [m] * shadowMatrix * vec4 (vertex, 1.0);
-				float bias        = (0.001 + 0.004 * (1.0 - abs (angle))) / shadowCoord .w; // 0.005 / shadowCoord .w;
+				float bias        = shadowBias / shadowCoord .w; // 0.005 / shadowCoord .w;
 
 				shadowCoord .xyz /= shadowCoord .w;
 
@@ -204,7 +285,7 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 	{
 		vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 		vec4  shadowCoord = shadowMatrix * vec4 (vertex, 1.0);
-		float bias        = (0.001 + 0.004 * (1.0 - abs (angle))) / shadowCoord .w; // 0.005 / shadowCoord .w;
+		float bias        = shadowBias / shadowCoord .w; // 0.005 / shadowCoord .w;
 
 		shadowCoord .xyz /= shadowCoord .w;
 
@@ -219,12 +300,15 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 
 	return shadowIntensity * float (value) / float (x3d_ShadowSamples);
 }
+#endif
 
 vec4
 getMaterialColor ()
 {
 	if (x3d_Lighting)
 	{
+		Plane3 plane = plane3 (v, vN);
+
 		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
 		vec3  V  = normalize (-v); // normalized vector from point on geometry to viewer's position
 		float dV = length (v);
@@ -305,14 +389,22 @@ getMaterialColor ()
 				vec3  ambientColor                = x3d_LightAmbientIntensity [i] * ambientTerm;
 				vec3  ambientDiffuseSpecularColor = ambientColor + x3d_LightIntensity [i] * (diffuseTerm + specularTerm);
 
+				#ifdef X3D_SHADOW
+
 				if (x3d_ShadowIntensity [i] > 0.0 && a > 0.0)
 				{
 					float shadowIntensity = getShadowIntensity (i, lightType, x3d_ShadowIntensity [i], x3d_ShadowDiffusion [i], x3d_ShadowMatrix [i], plane, a);
-
+	
 					finalColor += attenuationSpotFactor * (mix (x3d_LightColor [i], x3d_ShadowColor [i], shadowIntensity) * ambientDiffuseSpecularColor);
 				}
 				else
 					finalColor += attenuationSpotFactor * (x3d_LightColor [i] * ambientDiffuseSpecularColor);
+
+				#else
+
+					finalColor += attenuationSpotFactor * (x3d_LightColor [i] * ambientDiffuseSpecularColor);
+
+				#endif
 			}
 		}
 
@@ -368,6 +460,8 @@ getFogColor (in vec3 color)
 void
 main ()
 {
+	seed (int (fract (dot (v, v)) * float (RAND_MAX)));
+
 	clip ();
 
 	gl_FragColor = getMaterialColor ();

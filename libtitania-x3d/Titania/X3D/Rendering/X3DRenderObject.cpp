@@ -198,10 +198,10 @@ X3DRenderObject::getDistance (const Vector3d & direction) const
 		// Translate camera to user position and to look in the direction of the @a direction.
 
 		const auto localOrientation = ~Rotation4d (viewpoint -> orientation () .getValue ()) * viewpoint -> getOrientation ();
-		const auto rotation         = Rotation4d (zAxis, -direction) * localOrientation;
+		auto       rotation         = Rotation4d (zAxis, -direction) * localOrientation;
 	
 		// The viewer is alway a straight box depending on the upVector.
-		// rotation *= viewpoint -> straightenHorizon (rotation);
+		rotation *= viewpoint -> straightenHorizon (rotation);
 
 		auto cameraSpaceProjectionMatrix = viewpoint -> getTransformationMatrix ();
 		cameraSpaceProjectionMatrix .translate (viewpoint -> getUserPosition ());

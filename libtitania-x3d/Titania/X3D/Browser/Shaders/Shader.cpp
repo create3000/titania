@@ -66,7 +66,7 @@ isOpenGLES (const std::string & source)
 	// OpenGL ES2 shaders use '#version 100' directive, there is no '#version 200'.
 	// OpenGL ES3 shaders use '#version 300 es' directive.
 
-	static const std::regex version_es (R"/(^(\s*|/\*.*?\*/|//.*?\n)*(#version\s+100|#version\s+300\s+es)\s*?\n)/");
+	static const std::regex version_es (R"/(^(\s+|/\*.*?\*/|//.*?\n)*(#version\s+100|#version\s+300\s+es)\s*?\n)/");
 
 	return std::regex_search (source, version_es);
 }
@@ -219,6 +219,8 @@ addConstants (X3DBrowser* const browser, const std::string & source)
 	constants += "#define x3d_TextureType3D              3\n";
 	constants += "#define x3d_TextureTypeCubeMapTexture  4\n";
 
+	constants += "#define X3D_SHADOW\n";
+	constants += "#define x3d_MaxShadows     4\n";
 	constants += "#define x3d_ShadowSamples  8\n";
 
 	constants += "#line " + basic::to_string (numLines, std::locale::classic ()) + "\n";
@@ -231,7 +233,7 @@ getShaderSource (X3DBaseNode* const node, const std::string & string, const basi
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	static const std::regex version (R"/(^(?:\s*|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
+	static const std::regex version (R"/(^(?:\s+|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
 
 	std::set <basic::uri> files;
 

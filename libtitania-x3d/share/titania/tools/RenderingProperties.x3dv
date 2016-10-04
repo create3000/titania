@@ -169,7 +169,7 @@ LayoutGroup {
         }
         geometry DEF Text Text {
           fontStyle ScreenFontStyle {
-            family "TYPEWRITER"
+            family "monospace"
             pointSize 7.5
             spacing 1.2
             justify [
