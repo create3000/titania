@@ -87,8 +87,8 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	addButton .signal_clicked ()                    .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_add_clicked));
 	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_remove_clicked));
 
-	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-	treeView .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+	treeView .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_COPY);
 	treeView .set_model (listStore);
 }
 
@@ -240,7 +240,7 @@ X3DMFStringWidget::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> 
 
 	on_string_changed ();
 
-	context -> drag_finish (false, false, time);
+	context -> drag_finish (true, false, time);
 }
 
 void

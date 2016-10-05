@@ -155,8 +155,8 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 		}
 		else
 		{
-			getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
-			getUserDefinedFieldsTreeView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_MOVE);
+			getUserDefinedFieldsTreeView () .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
+			getUserDefinedFieldsTreeView () .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_COPY);
 		}
 	}
 	else
@@ -244,7 +244,7 @@ X3DUserDefinedFieldsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::Drag
 	catch (...)
 	{ }
 
-	context -> drag_finish (false, false, time);
+	context -> drag_finish (true, false, time);
 }
 
 void
