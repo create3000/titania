@@ -54,7 +54,10 @@
 #include "../Geometry/Box3.h"
 #include "../Numbers/Vector3.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #include <Titania/External/ApproxMVBB/ComputeApproxMVBB.hpp>
+#pragma GCC diagnostic pop
 
 #include <vector>
 

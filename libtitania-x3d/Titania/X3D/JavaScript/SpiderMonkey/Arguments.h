@@ -56,7 +56,12 @@
 
 #include "../../Types/String.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
+
 #include <string>
 #include <type_traits>
 #include <stdexcept>

@@ -51,8 +51,13 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JS_GLOBALS_H__
 
-#include <iostream>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
+
+#include <iostream>
 
 namespace titania {
 namespace X3D {

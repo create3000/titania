@@ -50,6 +50,7 @@
 
 //#include <Titania/Basic/Geometry/Line3.h>
 
+
 #include "URI.h"
 #include <Titania/Algorithm/Remove.h>
 #include <Titania/Basic/Path.h>
@@ -119,6 +120,7 @@
 #include <cstdarg>
 
 #include <Titania/String/dtoa.h>
+
 
 using namespace titania;
 using namespace titania::basic;
@@ -397,11 +399,9 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const auto x = math::polar <double> (-1, 1);
+	const auto x = std::polar <double> (-1, 1);
 
 	__LOG__ << x << std::endl;
-	__LOG__ << abs (x) << std::endl;
-	__LOG__ << std::hypot (x .x (), x .y ()) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

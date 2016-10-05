@@ -48,6 +48,9 @@
  *
  ******************************************************************************/
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+
 #include "SFNode.h"
 
 #include "../../../Browser/X3DBrowser.h"
@@ -432,3 +435,5 @@ SFNode::toString (JSContext* cx, uint32_t argc, jsval* vp)
 } // spidermonkey
 } // X3D
 } // titania
+
+#pragma GCC diagnostic pop

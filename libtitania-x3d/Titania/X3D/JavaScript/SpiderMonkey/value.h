@@ -52,7 +52,12 @@
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_JSFIELD_H__
 
 #include "../../Basic/X3DFieldDefinition.h"
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
 
 namespace titania {
 namespace X3D {

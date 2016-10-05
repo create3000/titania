@@ -55,8 +55,13 @@
 #include "../../Types/Pointer.h"
 #include "ObjectType.h"
 
-#include <iostream>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
+
+#include <iostream>
 
 namespace titania {
 namespace X3D {

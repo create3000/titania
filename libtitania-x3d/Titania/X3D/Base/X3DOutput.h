@@ -51,6 +51,9 @@
 #ifndef __TITANIA_X3D_BASE_X3DOUTPUT_H__
 #define __TITANIA_X3D_BASE_X3DOUTPUT_H__
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpmf-conversions"
+
 #include "../Base/X3DBase.h"
 #include <functional>
 #include <list>
@@ -249,5 +252,7 @@ private:
 
 } // X3D
 } // titania
+
+#pragma GCC diagnostic pop
 
 #endif

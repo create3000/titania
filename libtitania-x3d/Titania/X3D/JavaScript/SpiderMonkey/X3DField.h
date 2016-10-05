@@ -58,7 +58,11 @@
 #include "ObjectType.h"
 #include "String.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
 
 namespace titania {
 namespace X3D {

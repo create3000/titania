@@ -423,9 +423,9 @@ SFMatrix3 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			if (argc > 1)
 			{
-				const auto complex = polar <typename Type::value_type> (1, rotation);
+				const auto complex = std::polar <typename Type::value_type> (1, rotation);
 
-				getArgument <vector3_type> (cx, argv, 1) -> setValue (typename vector3_type::internal_type (complex .x (), complex .y (), rotation));
+				getArgument <vector3_type> (cx, argv, 1) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), rotation));
 			}
 		}
 		catch (const std::domain_error &)
@@ -443,9 +443,9 @@ SFMatrix3 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			if (argc > 3)
 			{
-				const auto complex = polar <typename Type::value_type> (1, scaleOrientation);
+				const auto complex = std::polar <typename Type::value_type> (1, scaleOrientation);
 
-				getArgument <vector3_type> (cx, argv, 3) -> setValue (typename vector3_type::internal_type (complex .x (), complex .y (), scaleOrientation));
+				getArgument <vector3_type> (cx, argv, 3) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
 			}
 		}
 		catch (const std::domain_error &)

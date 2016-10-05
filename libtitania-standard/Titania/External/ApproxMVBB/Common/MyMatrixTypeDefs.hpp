@@ -15,7 +15,11 @@
 //#define EIGEN_DONT_VECTORIZE
 //#define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #include <Titania/External/Eigen/Dense>
+#pragma GCC diagnostic pop
 
 namespace ApproxMVBB{
 

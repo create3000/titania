@@ -51,12 +51,19 @@
 #ifndef __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
 #define __TITANIA_X3D_JAVA_SCRIPT_SPIDER_MONKEY_CONTEXT_H__
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+
 #include "../../Components/Networking/X3DUrlObject.h"
 #include "../../Components/Scripting/Script.h"
 #include "../X3DJavaScriptContext.h"
 #include "ObjectType.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
 #include <jsapi.h>
+#pragma GCC diagnostic pop
 
 #include <map>
 #include <mutex>
@@ -271,5 +278,7 @@ getContext (JSContext* const cx)
 } // spidermonkey
 } // X3D
 } // titania
+
+#pragma GCC diagnostic pop
 
 #endif

@@ -334,7 +334,7 @@ convex_hull3 <Type>::create_simplex () const
 	                                          [ ] (const vector3 <Type> & a, const vector3 <Type> & b)
                                              { return a .z () < b .z (); });
 
-	const std::vector <size_t> extreme_points = {
+	const std::vector <std::vector <size_t>::difference_type> extreme_points = {
 		resultX .first  - m_points .begin (),
 		resultX .second - m_points .begin (),
 		resultY .first  - m_points .begin (),

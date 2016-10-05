@@ -52,7 +52,9 @@
 
 #include <Titania/LOG.h>
 #include <Titania/Utility/Range.h>
+
 #include <algorithm>
+#include <numeric>
 
 namespace titania {
 namespace X3D {

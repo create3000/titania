@@ -44,14 +44,14 @@ dnl ***************************************************************************
 
 dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing -Wno-ignored-attributes"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" "
 fi
 
 if test "x$enable_parallel" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4 -D_GLIBCXX_PARALLEL"
+	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
 fi
 
 if test "x$enable_fixed_pipeline" = "xyes" ; then

@@ -58,6 +58,7 @@
 #include <algorithm>
 #include <limits>
 #include <map>
+#include <numeric>
 #include <vector>
 
 namespace titania {

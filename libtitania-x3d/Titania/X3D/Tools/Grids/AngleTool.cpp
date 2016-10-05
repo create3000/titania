@@ -151,10 +151,10 @@ AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi) or dimension () [1] == 0)
 		snapAngle = angle;
 
-	const auto snapPolar = polar (snapRadius, snapAngle);
+	const auto snapPolar = std::polar (snapRadius, snapAngle);
 
-	translation .x (snapPolar .x ());
-	translation .z (snapPolar .y ());
+	translation .x (snapPolar .real ());
+	translation .z (snapPolar .imag ());
 
 	const auto y = getSnapPosition (translation .y ());
 	

@@ -518,16 +518,6 @@ reflect (const vector2 <Type> & vector, const vector2 <Type> & normal)
 	return vector - (normal * (2 * dot (vector, normal)));
 }
 
-///  Returns a vector from @a rho and @a theta.
-template <class Type>
-inline
-vector2 <Type>
-polar (const Type & rho, const Type & theta)
-{
-	return vector2 <Type> (rho * std::cos (theta),
-	                       rho * std::sin (theta));
-}
-
 /**
  * @returns the lesser of each component.
  * @param a, b Items to compare.\n

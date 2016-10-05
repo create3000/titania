@@ -180,12 +180,12 @@ ArcClose2D::build ()
 	for (size_t n = 0; n < segments; ++ n)
 	{
 		const double theta    = startAngle () + angle * n;
-		const auto   texCoord = polar <double> (0.5, theta) + Vector2d (0.5, 0.5);
-		const auto   point    = polar <double> (std::abs (radius ()), theta);
+		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
 
-		getTexCoords () [0] .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
+		getTexCoords () [0] .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals  () .emplace_back (0, 0, 1);
-		getVertices () .emplace_back (point .x (), point .y (), 0);
+		getVertices () .emplace_back (point .real (), point .imag (), 0);
 	}
 
 	addElements (GL_POLYGON, getVertices () .size ());

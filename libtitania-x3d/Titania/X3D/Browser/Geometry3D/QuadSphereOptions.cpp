@@ -192,13 +192,13 @@ QuadSphereOptions::createPoints () const
 	// sphere segments
 	for (int32_t v = 1; v < yDimension () - 1; ++ v)
 	{
-		const auto zPlane = polar <double> (1, -PI <double> * (v / double (yDimension () - 1)));
+		const auto zPlane = std::polar <double> (1, -PI <double> * (v / double (yDimension () - 1)));
 
 		for (int32_t u = 0; u < xDimension () - 1; ++ u)
 		{
-			const auto yPlane = polar <double> (zPlane .y (), 2 * PI <double> * (u / double (xDimension () - 1)));
+			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * PI <double> * (u / double (xDimension () - 1)));
 
-			points .emplace_back (yPlane .y (), zPlane .x (), yPlane .x ());
+			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
 	}
 
