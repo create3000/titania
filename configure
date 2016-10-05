@@ -3905,7 +3905,7 @@ fi
 
 
 
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing -Wno-ignored-attributes"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" "
@@ -17703,7 +17703,6 @@ if test -n "$TITANIA_X3D_CFLAGS"; then
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17711,7 +17710,6 @@ libgtop-2.0\""; } >&5
   ($PKG_CONFIG --exists --print-errors "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17722,7 +17720,6 @@ libgtop-2.0") 2>&5
   pkg_cv_TITANIA_X3D_CFLAGS=`$PKG_CONFIG --cflags "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17741,7 +17738,6 @@ if test -n "$TITANIA_X3D_LIBS"; then
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17749,7 +17745,6 @@ libgtop-2.0\""; } >&5
   ($PKG_CONFIG --exists --print-errors "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17760,7 +17755,6 @@ libgtop-2.0") 2>&5
   pkg_cv_TITANIA_X3D_LIBS=`$PKG_CONFIG --libs "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17788,7 +17782,6 @@ fi
 	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17797,7 +17790,6 @@ libgtop-2.0" 2>&1`
 	        TITANIA_X3D_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -17809,7 +17801,6 @@ libgtop-2.0" 2>&1`
 	as_fn_error $? "Package requirements (glibmm-2.4
 gstreamermm-1.0
 fontconfig
-ftgl
 glu
 mozjs185
 ImageMagick++
@@ -20332,7 +20323,6 @@ $as_echo X"$file" |
     cat <<_LT_EOF >> "$cfgfile"
 #! $SHELL
 # Generated automatically by $as_me ($PACKAGE) $VERSION
-# Libtool was configured on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 
 # Provide generalized library-building support services.

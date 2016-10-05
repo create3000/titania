@@ -135,13 +135,13 @@ AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 
 	// Calculate snap radius and snap angle
 
-	std::complex <double> polar (translation .x (), translation .z ());
+	const std::complex <double> complex (translation .x (), translation .z ());
 
 	constexpr double offset = PI <double> / 2;
 
 	const auto phi        = 2 * PI <double> / dimension () [1];
-	const auto radius     = std::abs (polar);
-	const auto angle      = std::arg (polar);
+	const auto radius     = std::abs (complex);
+	const auto angle      = std::arg (complex);
 	auto       snapRadius = std::round (radius);
 	auto       snapAngle  = std::round ((angle - offset) / phi) * phi + offset;
 
@@ -151,10 +151,10 @@ AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 	if (std::abs (snapAngle - angle) > std::abs (snapDistance () * phi) or dimension () [1] == 0)
 		snapAngle = angle;
 
-	polar = std::polar (snapRadius, snapAngle);
+	const auto snapPolar = polar (snapRadius, snapAngle);
 
-	translation .x (polar .real ());
-	translation .z (polar .imag ());
+	translation .x (snapPolar .x ());
+	translation .z (snapPolar .y ());
 
 	const auto y = getSnapPosition (translation .y ());
 	

@@ -293,9 +293,8 @@ basic_path <StringT>::relative_path (const basic_path & descendant) const
 	for (j = i, size = base_path .size (); j < size; ++ j)
 		path .emplace_back (dots);
 
-
-for (j = i, size = descendant_path .size (); j < size; ++ j)
-	path .emplace_back (descendant_path [j]);
+	for (j = i, size = descendant_path .size (); j < size; ++ j)
+		path .emplace_back (descendant_path [j]);
 
 	return path;
 }

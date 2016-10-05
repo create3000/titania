@@ -485,7 +485,7 @@ constexpr
 Type
 abs (const vector2 <Type> & vector)
 {
-	return std::sqrt (norm (vector));
+	return std::hypot (vector .x (), vector .y ());
 }
 
 ///  Returns the @a vector magnitude squared.
@@ -516,6 +516,16 @@ vector2 <Type>
 reflect (const vector2 <Type> & vector, const vector2 <Type> & normal)
 {
 	return vector - (normal * (2 * dot (vector, normal)));
+}
+
+///  Returns a vector from @a rho and @a theta.
+template <class Type>
+inline
+vector2 <Type>
+polar (const Type & rho, const Type & theta)
+{
+	return vector2 <Type> (rho * std::cos (theta),
+	                       rho * std::sin (theta));
 }
 
 /**

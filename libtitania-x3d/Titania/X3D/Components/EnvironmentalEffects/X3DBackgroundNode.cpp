@@ -185,8 +185,8 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 
 	float phi = 0;
 
-	std::complex <float> y;
-	Vector3f             p;
+	Vector2f y;
+	Vector3f p;
 	
 	const auto    vAngleMax   = bottom ? PI1_2 <float> : PI <float>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
@@ -204,8 +204,8 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 			theta2 = PI <float> - theta2;
 		}
 
-		const auto z1 = std::polar (radius, theta1);
-		const auto z2 = std::polar (radius, theta2);
+		const auto z1 = polar (radius, theta1);
+		const auto z2 = polar (radius, theta2);
 
 		const Color3f c1 = getColor (vAngle [v],     color, angle);
 		const Color3f c2 = getColor (vAngle [v + 1], color, angle);
@@ -217,29 +217,29 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 
 			// p1
 			phi = PI2 <float> * (u / U_DIMENSION);
-			y   = std::polar (-z1 .imag (), phi);
+			y   = polar (-z1 .y (), phi);
 
 			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
+			glPoints .emplace_back (y .y (), z1 .x (), y .x ());
 
 			// p2
-			y = std::polar (-z2 .imag (), phi);
+			y = polar (-z2 .y (), phi);
 
 			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
+			glPoints .emplace_back (y .y (), z2 .x (), y .x ());
 
 			// p3
 			phi = PI2 <float> * (u1 / U_DIMENSION);
-			y   = std::polar (-z2 .imag (), phi);
+			y   = polar (-z2 .y (), phi);
 
 			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
+			glPoints .emplace_back (y .y (), z2 .x (), y .x ());
 
 			// p4
-			y = std::polar (-z1 .imag (), phi);
+			y = polar (-z1 .y (), phi);
 
 			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
-			glPoints .emplace_back (y .imag (), z1 .real (), y .real ());
+			glPoints .emplace_back (y .y (), z1 .x (), y .x ());
 		}
 	}
 }

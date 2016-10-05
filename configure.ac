@@ -44,7 +44,7 @@ dnl ***************************************************************************
 
 dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-pmf-conversions -Wno-narrowing -Wno-ignored-attributes"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" "

@@ -89,12 +89,12 @@ Disk2DOptions::build ()
 	{
 		const double theta = angle * n;
 
-		const std::complex <double> texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const std::complex <double> point    = std::polar <double> (1, theta);
+		const auto texCoord = polar <double> (0.5, theta) + Vector2d (0.5, 0.5);
+		const auto point    = polar <double> (1, theta);
 
-		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
+		getTexCoords () .emplace_back (texCoord .x (), texCoord .y (), 0, 1);
 		getNormals   () .emplace_back (0, 0, 1);
-		getVertices  () .emplace_back (point .real (), point .imag (), 0);
+		getVertices  () .emplace_back (point .x (), point .y (), 0);
 	}
 }
 

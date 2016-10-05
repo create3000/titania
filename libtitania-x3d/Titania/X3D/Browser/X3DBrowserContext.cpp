@@ -296,15 +296,6 @@ noexcept (true)
 			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 		#endif
 	}
-	catch (const Error <INVALID_OPERATION_TIMING> & exception)
-	{
-		std::clog
-		   << getName () << " "
-			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
-			<< "  " << exception .what () << std::endl;
-
-		addEvent ();
-	}
 	catch (const std::exception & exception)
 	{
 		std::clog
@@ -312,7 +303,15 @@ noexcept (true)
 			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled exception:" << std::endl
 			<< "  " << exception .what () << std::endl;
 
-		throw;
+		//throw; // DEBUG
+	}
+	catch (...)
+	{
+		std::clog
+		   << getName () << " "
+			<< SFTime (getCurrentTime ()) .toUTCString () << " Unhandled unkowm exception." << std::endl;
+
+		//throw; // DEBUG
 	}
 }
 

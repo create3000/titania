@@ -157,12 +157,12 @@ Cylinder::build ()
 		{
 			const double u1     = i / xDimension;
 			const double theta1 = 2 * PI <double> * u1;
-			const auto   n1     = std::polar <double> (-1, theta1);
+			const auto   n1     = polar <double> (-1, theta1);
 			const auto   p1     = n1 * double (radius () .getValue ());
 
 			const double u2     = (i + 1) / xDimension;
 			const double theta2 = 2 * PI <double> * u2;
-			const auto   n2     = std::polar <double> (-1, theta2);
+			const auto   n2     = polar <double> (-1, theta2);
 			const auto   p2     = n2 * double (radius () .getValue ());
 
 			// p1 - p4
@@ -171,23 +171,23 @@ Cylinder::build ()
 
 			// p1
 			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
-			getVertices () .emplace_back (p1 .imag (), y1, p1 .real ());
+			getNormals  () .emplace_back (n1 .y (), 0, n1 .x ());
+			getVertices () .emplace_back (p1 .y (), y1, p1 .x ());
 
 			// p2
 			getTexCoords () [0] .emplace_back (u1, 0, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), 0, n1 .real ());
-			getVertices () .emplace_back (p1 .imag (), y2, p1 .real ());
+			getNormals  () .emplace_back (n1 .y (), 0, n1 .x ());
+			getVertices () .emplace_back (p1 .y (), y2, p1 .x ());
 
 			// p3
 			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
+			getNormals  () .emplace_back (n2 .y (), 0, n2 .x ());
+			getVertices () .emplace_back (p2 .y (), y2, p2 .x ());
 
 			// p4
 			getTexCoords () [0] .emplace_back (u2, 1, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), 0, n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y1, p2 .real ());
+			getNormals  () .emplace_back (n2 .y (), 0, n2 .x ());
+			getVertices () .emplace_back (p2 .y (), y1, p2 .x ());
 		}
 
 		addElements (GL_QUADS, xDimension * 4);
@@ -199,12 +199,12 @@ Cylinder::build ()
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * PI <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .y () + 1) / 2, -(t .x () - 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, 1, 0);
-			getVertices () .emplace_back (p .imag (), y1, p .real ());
+			getVertices () .emplace_back (p .y (), y1, p .x ());
 		}
 
 		addElements (GL_POLYGON, xDimension);
@@ -216,12 +216,12 @@ Cylinder::build ()
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * PI <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .y () + 1) / 2, (t .x () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (p .imag (), y2, p .real ());
+			getVertices () .emplace_back (p .y (), y2, p .x ());
 		}
 
 		addElements (GL_POLYGON, xDimension);
@@ -257,13 +257,13 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * PI <double> * u;
-			const auto  t     = std::polar <double> (-1, theta);
+			const auto  t     = polar <double> (-1, theta);
 			const auto  p     = t * double (radius () .getValue ());
 
 			if (top ())
-				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2);
+				texCoord -> point () .emplace_back ((t .y () + 1) / 2, -(t .x () - 1) / 2);
 
-			coord -> point () .emplace_back (p .imag (), y1, p .real ());
+			coord -> point () .emplace_back (p .y (), y1, p .x ());
 		}
 	}
 
@@ -273,13 +273,13 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * PI <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
 			if (bottom ())
-				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);
+				texCoord -> point () .emplace_back ((t .y () + 1) / 2, (t .x () + 1) / 2);
 
-			coord -> point () .emplace_back (p .imag (), y2, p .real ());
+			coord -> point () .emplace_back (p .y (), y2, p .x ());
 		}
 	}
 

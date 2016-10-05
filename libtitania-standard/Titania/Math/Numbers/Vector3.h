@@ -517,6 +517,9 @@ constexpr
 Type
 abs (const vector3 <Type> & vector)
 {
+	// C++17
+	//return std::hypot (vector .x (), vector .y (), vector .z ());
+
 	return std::sqrt (norm (vector));
 }
 

@@ -144,7 +144,7 @@ Cone::build ()
 
 	const double y1 = height () / 2;
 	const double y2 = -y1;
-	const auto   nz = std::polar <double> (1, -PI <double> / 2 + std::atan (bottomRadius () / height ()));
+	const auto   nz = polar <double> (1, -PI <double> / 2 + std::atan (bottomRadius () / height ()));
 
 	if (side ())
 	{
@@ -152,17 +152,17 @@ Cone::build ()
 		{
 			const double u1     = (i + 0.5f) / xDimension;
 			const double theta1 = 2 * PI <double> * u1;
-			const auto   n1     = std::polar <double> (nz .imag (), theta1);
+			const auto   n1     = polar <double> (nz .y (), theta1);
 
 			const double u2     = i / xDimension;
 			const double theta2 = 2 * PI <double> * u2;
-			const auto   p2     = std::polar <double> (-bottomRadius (), theta2);
-			const auto   n2     = std::polar <double> (nz .imag (), theta2);
+			const auto   p2     = polar <double> (-bottomRadius (), theta2);
+			const auto   n2     = polar <double> (nz .y (), theta2);
 
 			const double u3     = (i + 1) / xDimension;
 			const double theta3 = 2 * PI <double> * u3;
-			const auto   p3     = std::polar <double> (-bottomRadius (), theta3);
-			const auto   n3     = std::polar <double> (nz .imag (), theta3);
+			const auto   p3     = polar <double> (-bottomRadius (), theta3);
+			const auto   n3     = polar <double> (nz .y (), theta3);
 
 			/*    p1
 			 *   /  \
@@ -172,18 +172,18 @@ Cone::build ()
 
 			// p1
 			getTexCoords () [0] .emplace_back (u1, 1, 0, 1);
-			getNormals  () .emplace_back (n1 .imag (), nz .real (), n1 .real ());
+			getNormals  () .emplace_back (n1 .y (), nz .x (), n1 .x ());
 			getVertices () .emplace_back (0, y1, 0);
 
 			// p2
 			getTexCoords () [0] .emplace_back (u2, 0, 0, 1);
-			getNormals  () .emplace_back (n2 .imag (), nz .real (), n2 .real ());
-			getVertices () .emplace_back (p2 .imag (), y2, p2 .real ());
+			getNormals  () .emplace_back (n2 .y (), nz .x (), n2 .x ());
+			getVertices () .emplace_back (p2 .y (), y2, p2 .x ());
 
 			// p3
 			getTexCoords () [0] .emplace_back (u3, 0, 0, 1);
-			getNormals  () .emplace_back (n3 .imag (), nz .real (), n3 .real ());
-			getVertices () .emplace_back (p3 .imag (), y2, p3 .real ());
+			getNormals  () .emplace_back (n3 .y (), nz .x (), n3 .x ());
+			getVertices () .emplace_back (p3 .y (), y2, p3 .x ());
 		}
 
 		addElements (GL_TRIANGLES, getVertices () .size ());
@@ -195,12 +195,12 @@ Cone::build ()
 		{
 			const double u     = i / xDimension;
 			const double theta = 2 * PI <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
+			const auto   t     = polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 
-			getTexCoords () [0] .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2, 0, 1);
+			getTexCoords () [0] .emplace_back ((t .y () + 1) / 2, (t .x () + 1) / 2, 0, 1);
 			getNormals  () .emplace_back (0, -1, 0);
-			getVertices () .emplace_back (p .imag (), y2, p .real ());
+			getVertices () .emplace_back (p .y (), y2, p .x ());
 		}
 
 		addElements (GL_POLYGON, xDimension);
