@@ -87,7 +87,7 @@ History::History () :
 	
 		if (not have_history)
 		{
-			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/master/Examples/Gears/gears.wrl",  "");
+			setItem ("Gears",                 "https://cdn.rawgit.com/create3000/Library/master/Examples/Gears/gears.x3d",  "");
 			setItem ("Schacht",               "https://cdn.rawgit.com/create3000/Library/master/Examples/Schacht/index.wrl",  "");
 			setItem ("Appartment",            "https://cdn.rawgit.com/create3000/Library/master/Examples/Appartment/index.wrl",  "");
 			setItem ("LogoPieces",            "https://cdn.rawgit.com/create3000/Library/master/Examples/LogoPieces/index.x3d",  "");
