@@ -122,6 +122,9 @@ Text::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (textGeometry)
+		textGeometry -> setExecutionContext (executionContext);
+
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
