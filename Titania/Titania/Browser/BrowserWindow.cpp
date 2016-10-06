@@ -273,7 +273,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	#ifdef FIXED_PIPELINE
 	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
-	getCobwebCompatibilityAction () -> set_sensitive (not getCurrentBrowser () -> getFixedPipelineRequired ());
+	//getCobwebCompatibilityAction () -> set_sensitive (not getCurrentBrowser () -> getFixedPipelineRequired ()); // TODO: Shaders still not loaded.
 	#endif
 
 	on_transform_tool_mode_toggled ();
