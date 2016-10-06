@@ -10,8 +10,7 @@
 
 */
 
-#Console GtkTextView,
-#ScriptEditor GtkTextView {
+.titania-console {
 	font: monospace;
 }
 

@@ -2544,9 +2544,9 @@
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-info.png" />
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-question.png" />
     <None Include="share\titania\ui\icons\Faenza\64\gtk-dialog-warning.png" />
-    <None Include="titania" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.h" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\GeneratedCubeMapTexture" />
+    <None Include="titania" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

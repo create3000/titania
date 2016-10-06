@@ -91,6 +91,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 {
 	Gsv::init ();
 
+	textView .get_style_context () -> add_class ("titania-console");
+
 	addChildren (node);
 
 	setup ();
